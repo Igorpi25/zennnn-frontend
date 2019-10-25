@@ -11,7 +11,6 @@ import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 
-
 Vue.config.productionTip = false
 
 // HTTP connection to the API

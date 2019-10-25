@@ -27,7 +27,7 @@ export default {
   apollo: {
     spec: gql `
       {
-        spec(id:"5da54114f323ee162603d430"){
+        spec(id:"5da5445ccccfa2162e13978b"){
           id
           name
           invoices{
@@ -47,19 +47,82 @@ export default {
     `
   },
   mounted(){
-    // setTimeout(()=>{
-    //   const fun = this.$apollo.provider.defaultClient.readFragment({
-    //     id: "Product:5da54114f323ee162603d432",
-    //     fragment: gql`
-    //       fragment myProduct on Product{
-    //         id
-    //         name
-    //       }
-    //     `
-    //   })
-    //   // eslint-disable-next-line
-    //   console.log(fun)
-    // }, 2000)
+    const subQuery = gql`
+      subscription delta {
+        delta {
+          operation
+          parentId
+          payload{
+            __typename
+            ... on Product{
+              id
+              name
+              price
+              count
+              amount
+          }
+          }
+        }
+      }
+    `
+
+    const observer = this.$apollo.subscribe({
+      query: subQuery
+    })
+
+    const myapollo = this.$apollo
+
+    observer.subscribe({
+      next ({data}) {
+
+        //eslint-disable-next-line
+        console.log(JSON.stringify(data))
+        if(data.delta.operation === 'Insert' && data.delta.payload.__typename === 'Product'){
+          const parentInvoice = myapollo.provider.defaultClient.readFragment({
+            id: "Invoice:" + data.delta.parentId,
+            fragment: gql`
+              fragment parentInvoice on Invoice{
+                id
+                name
+                totalPrice
+                products{
+                  id
+                  name
+                  count
+                  price
+                  amount
+                }
+              }
+            `
+          })
+          parentInvoice.products.push(data.delta.payload)
+
+          myapollo.provider.defaultClient.writeFragment({
+            id: "Invoice:" + data.delta.parentId,
+            fragment: gql`
+              fragment parentInvoice on Invoice {
+                id
+                name
+                totalPrice
+                products{
+                  id
+                  name
+                  count
+                  price
+                  amount
+                }
+              }
+            `,
+            data: parentInvoice,
+          })
+        }
+      },
+      error (error) {
+        //eslint-disable-next-line
+        console.error(error)
+      },
+    })
+
   }
 }
 </script>
