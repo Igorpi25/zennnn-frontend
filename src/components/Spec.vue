@@ -118,8 +118,8 @@ export default {
         }
         if(data.delta.operation === 'Delete'){
           // Тут надо доделать
-          const parentInvoice = myapollo.provider.defaultClient.readFragment({
-            id: "Product:" + data.delta.id,
+          let parentInvoice = myapollo.provider.defaultClient.readFragment({
+            id: "Invoice:" + data.delta.parentId,
             fragment: gql`
               fragment parentInvoice on Invoice{
                 id
@@ -136,14 +136,16 @@ export default {
             `
           })
 
-          console.log('Data', parentInvoice)
+          const index = parentInvoice.products.findIndex(p => p.id == data.delta.payload.id)
 
-          parentInvoice.products.push(data.delta.payload)
+          if (index !== -1) {
+            parentInvoice.products.splice(index, 1)
+          }
 
           myapollo.provider.defaultClient.writeFragment({
             id: "Invoice:" + data.delta.parentId,
             fragment: gql`
-              fragment parentInvoice on Invoice {
+              fragment deleteInvoice on Invoice {
                 id
                 name
                 totalPrice
