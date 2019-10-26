@@ -116,6 +116,46 @@ export default {
             data: parentInvoice,
           })
         }
+        if(data.delta.operation === 'Delete'){
+          Тут надо доделать
+          const parentInvoice = myapollo.provider.defaultClient.readFragment({
+            id: "Product:" + data.delta.id,
+            fragment: gql`
+              fragment parentInvoice on Invoice{
+                id
+                name
+                totalPrice
+                products{
+                  id
+                  name
+                  count
+                  price
+                  amount
+                }
+              }
+            `
+          })
+          parentInvoice.products.push(data.delta.payload)
+
+          myapollo.provider.defaultClient.writeFragment({
+            id: "Invoice:" + data.delta.parentId,
+            fragment: gql`
+              fragment parentInvoice on Invoice {
+                id
+                name
+                totalPrice
+                products{
+                  id
+                  name
+                  count
+                  price
+                  amount
+                }
+              }
+            `,
+            data: parentInvoice,
+          })
+        }
       },
       error (error) {
         //eslint-disable-next-line

@@ -13,6 +13,8 @@ import { getMainDefinition } from 'apollo-utilities'
 
 Vue.config.productionTip = false
 
+import {typeDefs} from './schema'
+
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
@@ -45,6 +47,7 @@ const cache = new InMemoryCache()
 export const apolloClient = new ApolloClient({
   link,
   cache,
+  typeDefs,
   connectToDevTools: true,
 })
 
