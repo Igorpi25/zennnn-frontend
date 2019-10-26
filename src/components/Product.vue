@@ -51,8 +51,8 @@ export default {
           productId: this.content.id,
           product: {
             name: this.content.name,
-            count: this.content.count,
-            price: this.content.price,
+            count: Number.parseInt(this.content.count, 10),
+            price: Number(this.content.price),
           }
         },
       }).then((data) => {
