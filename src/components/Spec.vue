@@ -117,7 +117,7 @@ export default {
           })
         }
         if(data.delta.operation === 'Delete'){
-          Тут надо доделать
+          // Тут надо доделать
           const parentInvoice = myapollo.provider.defaultClient.readFragment({
             id: "Product:" + data.delta.id,
             fragment: gql`
@@ -135,6 +135,9 @@ export default {
               }
             `
           })
+
+          console.log('Data', parentInvoice)
+
           parentInvoice.products.push(data.delta.payload)
 
           myapollo.provider.defaultClient.writeFragment({

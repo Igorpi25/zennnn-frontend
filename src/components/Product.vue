@@ -3,7 +3,7 @@
     Продукт: <input type="text" size="20"  v-model="content.name" @change="onChanged"> стоимость:
     <input type="text" size="5" v-model="content.count" @change="onChanged"> x
     <input type="text" size="5"  v-model="content.price" @change="onChanged"> = {{content.amount}}
-    <button v-on:click="counter += 1">+1</button>
+    <button v-on:click="onDelete">x</button>
   </div>
 </template>
 
@@ -18,9 +18,13 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      deleteLoading: false
+    }
+  },
   methods: {
     onChanged() {
-
       // Call to the graphql mutation
       this.$apollo.mutate({
         // Query
@@ -61,7 +65,7 @@ export default {
         console.error(error)
       })
     },
-    delete() {
+    onDelete() {
 
       // Call to the graphql mutation
       this.$apollo.mutate({
