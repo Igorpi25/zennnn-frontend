@@ -6,6 +6,7 @@ import VueApollo from 'vue-apollo'
 import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { setContext } from 'apollo-link-context'
 
 import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
@@ -14,6 +15,19 @@ import { getMainDefinition } from 'apollo-utilities'
 Vue.config.productionTip = false
 
 import {typeDefs} from './schema'
+
+// eslint-disable-next-line
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('token')
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : ''
+    }
+  }
+})
 
 // HTTP connection to the API
 const httpLink = createHttpLink({
@@ -26,6 +40,12 @@ const wsLink = new WebSocketLink({
   uri: 'ws://localhost:3000/graphql',
   options: {
     reconnect: true,
+    connectionParams: () => {
+      const token = localStorage.getItem('token')
+      return {
+        authToken: token || ''
+      }
+    }
   },
 })
 
@@ -39,7 +59,7 @@ const link = split(
       definition.operation === 'subscription'
   },
   wsLink,
-  httpLink
+  authLink.concat(httpLink)
 )
 
 const cache = new InMemoryCache()
