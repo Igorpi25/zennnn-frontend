@@ -11,10 +11,10 @@ import { setContext } from 'apollo-link-context'
 import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
+import { typeDefs, resolvers } from './schema'
+import router from './router'
 
 Vue.config.productionTip = false
-
-import {typeDefs} from './schema'
 
 // eslint-disable-next-line
 const authLink = setContext((_, { headers }) => {
@@ -24,7 +24,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : ''
+      authorization: token ? `${token}` : ''
     }
   }
 })
@@ -68,8 +68,17 @@ export const apolloClient = new ApolloClient({
   link,
   cache,
   typeDefs,
+  resolvers,
   connectToDevTools: true,
 })
+
+const data = {
+  isLoggedIn: false,
+  loggedInUser: null
+}
+
+cache.writeData({ data })
+apolloClient.onResetStore(() => cache.writeData({ data }))
 
 Vue.use(VueApollo)
 
@@ -79,5 +88,6 @@ const apolloProvider = new VueApollo({
 
 new Vue({
   apolloProvider,
-  render: h => h(App),
+  router,
+  render: h => h(App)
 }).$mount('#app')
