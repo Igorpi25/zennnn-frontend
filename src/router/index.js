@@ -7,6 +7,7 @@ import PasswordRestore from '../views/PasswordRestore.vue'
 import PasswordRestoreConfirm from '../views/PasswordRestoreConfirm.vue'
 import NotFound from '../views/NotFound.vue'
 import { apolloClient } from '../main'
+import { GET_PROFILE_CLIENT, GET_PROFILE } from '../schema'
 
 Vue.use(VueRouter)
 
@@ -91,10 +92,20 @@ router.beforeEach(async (to, from, next) => {
   // check amplify auth, for init
   const token = localStorage.getItem('token') || ''
   const loggedIn = !!token
-  const data = {
+  let localData = {
     isLoggedIn: loggedIn
   }
-  apolloClient.cache.writeData({ data })
+  if (loggedIn) {
+    const { getProfile } = await apolloClient.query({
+      query: GET_PROFILE_CLIENT
+    })
+    if (!getProfile) {
+      await apolloClient.query({
+        query: GET_PROFILE
+      })
+    }
+  }
+  apolloClient.cache.writeData({ data: localData })
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.

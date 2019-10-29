@@ -43,7 +43,7 @@ import {
   CognitoUser,
   AuthenticationDetails
 } from 'amazon-cognito-identity-js'
-import { apolloClient } from '../main'
+import { GET_PROFILE_CLIENT, LOGIN } from '../schema'
 
 export default {
   name: 'SignIn',
@@ -107,7 +107,22 @@ export default {
             const data = {
               isLoggedIn: true
             }
-            apolloClient.cache.writeData({ data })
+            this.$apollo.provider.defaultClient.cache.writeData({ data })
+            this.$apollo.mutate({
+              mutation: LOGIN
+            }).then(result => {
+              console.log('User', result)
+              if (result && result.data && result.data.login) {
+                this.$apollo.provider.defaultClient.cache.writeQuery({
+                  query: GET_PROFILE_CLIENT,
+                  data: {
+                    getProfile: result.data.login
+                  }
+                })
+              }
+            }).catch(error => {
+              console.log('Error', error)
+            })
             resolve(result)
           },
 

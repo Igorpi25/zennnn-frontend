@@ -1,11 +1,13 @@
 <template>
   <div id="app">
     <div id="nav">
-      <a
-        v-if="isLoggedIn"
-        href="#"
-        @click.prevent="logout"
-      >Log out</a>
+      <template v-if="isLoggedIn">
+        {{ getProfile }}
+        <a
+          href="#"
+          @click.prevent="logout"
+        >Log out</a>
+      </template>
       <template v-else>
         <router-link to="/signin">Sign In</router-link> |
         <router-link to="/signup">Sign Up</router-link> |
@@ -17,18 +19,20 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import { apolloClient } from './main'
+import { GET_PROFILE_CLIENT, GET_IS_LOGGED_IN } from './schema'
 
 export default {
   name: 'app',
   apollo: {
     isLoggedIn: {
-      query: gql`
-        query IsLoggedIn {
-          isLoggedIn @client
-        }
-      `
+      query: GET_IS_LOGGED_IN
+    },
+    getProfile: {
+      query: GET_PROFILE_CLIENT,
+      skip () {
+        return !this.isLoggedIn
+      }
     }
   },
   methods: {
