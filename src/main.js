@@ -4,17 +4,19 @@ import App from './App.vue'
 import VueApollo from 'vue-apollo'
 
 import { ApolloClient } from 'apollo-client'
+import { ApolloLink, split } from 'apollo-link'
 import { createHttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
-
-import { split } from 'apollo-link'
+import { onError } from 'apollo-link-error'
 import { WebSocketLink } from 'apollo-link-ws'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from './schema'
 import router from './router'
 
 Vue.config.productionTip = false
+
+const cache = new InMemoryCache()
 
 // eslint-disable-next-line
 const authLink = setContext((_, { headers }) => {
@@ -49,6 +51,32 @@ const wsLink = new WebSocketLink({
   },
 })
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    for (let err of graphQLErrors) {
+      const { message, locations, path } = err
+      switch (err.extensions.code) {
+        case 'UNAUTHENTICATED':
+          // error code is set to UNAUTHENTICATED
+          // when AuthenticationError thrown in resolver
+          cache.reset()
+          localStorage.removeItem('token')
+          router.push({
+            name: 'signin',
+            query: router.currentRoute.fullPath && router.currentRoute.fullPath !== '/'
+              ? { redirect: router.currentRoute.fullPath }: {}
+          })
+          break
+        default:
+          console.log(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          )
+      }
+    }
+  }
+  if (networkError) console.log(`[Network error]: ${networkError}`)
+})
+
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
 const link = split(
@@ -62,10 +90,8 @@ const link = split(
   authLink.concat(httpLink)
 )
 
-const cache = new InMemoryCache()
-
 export const apolloClient = new ApolloClient({
-  link,
+  link: ApolloLink.from([errorLink, link]),
   cache,
   typeDefs,
   resolvers,
