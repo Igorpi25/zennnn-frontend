@@ -15,15 +15,13 @@
         Загрузка...
       </span>
       <span
-        v-else
+        v-show="!$apollo.queries.getSpec.loading"
         ref="name"
         :contenteditable="!updateLoading"
         placeholder="----"
         @keydown.enter.stop.prevent="updateSpec"
         @blur="updateSpec"
-      >
-        {{ spec.name }}
-      </span>
+      />
       <div v-if="updateLoading" class="spinner">
         <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>
