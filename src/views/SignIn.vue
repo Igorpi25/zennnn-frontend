@@ -74,7 +74,9 @@ export default {
           this.errorMessages = []
           const response = await this.signIn()
           console.log('Sign In', response)
-          this.$router.push({ name: 'home' })
+          const route = this.$route.query.redirect
+            ? this.$route.query.redirect : { name: 'home' }
+          this.$router.push(route)
         }
       } catch (error) {
         this.errorMessages.push(error)
@@ -103,29 +105,33 @@ export default {
         cognitoUser.authenticateUser(authenticationDetails, {
           onSuccess: (result) => {
             const idToken = result.getIdToken().getJwtToken()
-            localStorage.setItem('token', idToken)
-            const data = {
-              isLoggedIn: true
-            }
-            this.$apollo.provider.defaultClient.cache.writeData({ data })
+            // set token to session storage for Login operation
+            // after remove from session storage
+            sessionStorage.setItem('loginToken', idToken)
             this.$apollo.mutate({
               mutation: LOGIN
-            }).then(result => {
-              console.log('User', result)
-              if (result && result.data && result.data.login) {
+            }).then(loginResult => {
+              if (loginResult && loginResult.data && loginResult.data.login) {
                 this.$apollo.provider.defaultClient.cache.writeQuery({
                   query: GET_PROFILE_CLIENT,
                   data: {
-                    getProfile: result.data.login
+                    getProfile: loginResult.data.login
                   }
                 })
               }
+              sessionStorage.removeItem('loginToken')
+              localStorage.setItem('token', idToken)
+              this.$apollo.provider.defaultClient.cache.writeData({
+                data: {
+                  isLoggedIn: true
+                }
+              })
+              resolve(result)
             }).catch(error => {
-              console.log('Error', error)
+              console.warn('Login Error', error)
+              reject(error)
             })
-            resolve(result)
           },
-
           onFailure: (err) => {
             reject(err)
           },

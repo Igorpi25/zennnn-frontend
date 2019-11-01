@@ -54,6 +54,12 @@ export const typeDefs = gql`
     count: Int,
     price: Float
   }
+  input InvoiceInput {
+    name: String
+  }
+  input SpecInput {
+    name: String
+  }
   type LoggedInUser {
     id: String!
     email: String

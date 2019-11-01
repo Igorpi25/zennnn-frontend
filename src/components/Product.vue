@@ -1,9 +1,31 @@
 <template>
   <div>
-    Продукт: <input type="text" size="20"  v-model="content.name" @change="onChanged"> стоимость:
-    <input type="text" size="5" v-model="content.count" @change="onChanged"> x
-    <input type="text" size="5"  v-model="content.price" @change="onChanged"> = {{content.amount}}
-    <button v-on:click="onDelete">x</button>
+    Продукт: 
+    <input
+      v-model="content.name"
+      type="text"
+      size="20"
+      @change="e => updateProduct({ name: e.target.value })"
+    > стоимость:
+    <input
+      v-model="content.count"
+      type="text"
+      size="5"
+      @change="e => updateProduct({ count: Number(e.target.value) })"
+    > *
+    <input
+      v-model="content.price"
+      type="text"
+      size="5"
+      @change="e => updateProduct({ price: Number(e.target.value) })"
+    > = {{ content.amount }}
+    <button
+      :disabled="deleteLoading"
+      @click="deleteProduct"
+    >x</button>
+    <div class="spinner">
+      <div v-if="updateLoading" class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
   </div>
 </template>
 
@@ -20,79 +42,65 @@ export default {
   },
   data () {
     return {
+      updateLoading: false,
       deleteLoading: false
     }
   },
   methods: {
-    onChanged() {
-      // Call to the graphql mutation
-      this.$apollo.mutate({
-        // Query
-        mutation:
-        gql`
-          mutation updateProduct (
-            $productId:ID!,
-            $product: ProductInput!
-          ){
-            updateProduct (
-              productId: $productId,
-              product: $product
-            ){
-              id
-              name
-              price
-              count
-              amount
+    async updateProduct (productInput) {
+      try {
+        this.updateLoading = true
+        // Call to the graphql mutation
+        await this.$apollo.mutate({
+          // Query
+          mutation: gql`
+            mutation updateProduct($productId: ID!, $productInput: ProductInput!) {
+              updateProduct(productId: $productId, productInput: $productInput) {
+                id
+                name
+                price
+                count
+                amount
+              }
             }
-          }
-        `,
-        // Parameters
-        variables: {
-          productId: this.content.id,
-          product: {
-            name: this.content.name,
-            count: Number.parseInt(this.content.count, 10),
-            price: Number(this.content.price),
-          }
-        },
-      }).then((data) => {
-        // Result
-        //eslint-disable-next-line
-        console.log(data)
-      }).catch((error) => {
-        // Error
-        //eslint-disable-next-line
-        console.error(error)
-      })
+          `,
+          // Parameters
+          variables: {
+            productId: this.content.id,
+            productInput
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.updateLoading = false
+      }
     },
-    onDelete() {
-
-      // Call to the graphql mutation
-      this.$apollo.mutate({
-        // Query
-        mutation:
-        gql`
-          mutation deleteProduct (
-            $productId:ID!
-          ){
-            deleteProduct (
-              productId: $productId
-            )
-          }
-        `,
-        // Parameters
-        variables: {
-          productId: this.content.id,
-        },
-      }).then((data) => {
-        // Result
-        //eslint-disable-next-line
-        console.log(data)
-      }).catch((error) => {
-        // Error
-        //eslint-disable-next-line
-        console.error(error)
-      })
+    async deleteProduct () {
+      try {
+        this.deleteLoading = true
+        // Call to the graphql mutation
+        await this.$apollo.mutate({
+          // Query
+          mutation: gql`
+            mutation deleteProduct(
+              $productId: ID!
+            ) {
+              deleteProduct(
+                productId: $productId
+              )
+            }
+          `,
+          // Parameters
+          variables: {
+            productId: this.content.id,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.deleteLoading = false
+      }
     },
   },
 }

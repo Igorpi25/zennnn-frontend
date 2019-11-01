@@ -9,19 +9,52 @@ import { createHttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 import { WebSocketLink } from 'apollo-link-ws'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory'
 import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from './schema'
 import router from './router'
 
 Vue.config.productionTip = false
 
-const cache = new InMemoryCache()
+// hardcoded TODO with https://www.apollographql.com/docs/react/data/fragments/#fragments-on-unions-and-interfaces
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData: {
+    __schema: {
+      types: [
+        {
+          kind: 'UNION',
+          name: 'DeltaObject',
+          possibleTypes: [
+            {
+              name: 'Spec'
+            },
+            {
+              name: 'SpecWithInvoices'
+            },
+            {
+              name: 'Invoice'
+            },
+            {
+              name: 'InvoiceWithProducts'
+            },
+            {
+              name: 'Product'
+            }
+          ]
+        }
+      ]
+    }
+  }
+})
 
-// eslint-disable-next-line
-const authLink = setContext((_, { headers }) => {
+const cache = new InMemoryCache({ fragmentMatcher })
+
+const authLink = setContext(({ operationName }, { headers }) => {
+  // on Login get token from sessionStorage
   // get the authentication token from local storage if it exists
-  const token = localStorage.getItem('token')
+  const token = operationName === 'Login'
+    ? sessionStorage.getItem('loginToken')
+    : localStorage.getItem('token')
   // return the headers to the context so httpLink can read them
   return {
     headers: {

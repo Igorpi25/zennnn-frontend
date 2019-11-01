@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Spec from '../views/Spec.vue'
 import SignIn from '../views/SignIn.vue'
 import SignUp from '../views/SignUp.vue'
 import PasswordRestore from '../views/PasswordRestore.vue'
@@ -16,6 +17,14 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/spec/:specId',
+    name: 'spec',
+    component: Spec,
     meta: {
       requiresAuth: true
     }
@@ -112,7 +121,8 @@ router.beforeEach(async (to, from, next) => {
     if (!loggedIn) {
       next({
         name: 'signin',
-        query: { redirect: to.fullPath }
+        query: to.fullPath && to.fullPath !== '/' && to.fullPath !== '/signin'
+          ? { redirect: to.fullPath } : {}
       })
     } else {
       next()
