@@ -15,6 +15,7 @@
         Загрузка...
       </span>
       <span
+        v-else
         ref="name"
         :contenteditable="!updateLoading"
         placeholder="----"
@@ -84,7 +85,7 @@ export default {
   },
   watch: {
     'spec.name' (val) {
-      this.$refs.name.innerText = val
+      this.$refs.name.innerText = val || ''
     }
   },
   apollo: {
@@ -119,7 +120,7 @@ export default {
   },
   mounted () {
 
-    this.$refs.name.innerText = this.spec.name
+    this.$refs.name.innerText = this.spec.name || ''
 
     const subQuery = gql`
       subscription delta {

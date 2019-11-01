@@ -52,11 +52,11 @@ export default {
   },
   watch: {
     'content.name' (val) {
-      this.$refs.name.innerText = val
+      this.$refs.name.innerText = val || ''
     }
   },
   mounted () {
-    this.$refs.name.innerText = this.content.name
+    this.$refs.name.innerText = this.content.name || ''
   },
   methods: {
     async createProduct () {
