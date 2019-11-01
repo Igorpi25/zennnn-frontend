@@ -120,9 +120,11 @@ export default {
 
     this.$refs.name.innerText = this.spec.name || ''
 
+    const token = localStorage.getItem('token')
+
     const subQuery = gql`
-      subscription delta {
-        delta {
+      subscription delta ($token: ID!) {
+        delta (token: $token) {
           operation
           parentId
           payload {
@@ -162,7 +164,10 @@ export default {
     `
 
     const observer = this.$apollo.subscribe({
-      query: subQuery
+      query: subQuery,
+      variables: {
+        token
+      }
     })
 
     const apolloClient = this.$apollo.provider.defaultClient
