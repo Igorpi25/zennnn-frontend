@@ -61,18 +61,24 @@
 <script>
 import gql from 'graphql-tag'
 
-const OPERATION = {
-  INSERT: 'Insert',
-  UPDATE: 'Update',
-  DELETE: 'Delete'
+const TYPENAME = {
+  SPEC: 'Spec',
+  INVOICE: 'Invoice',
+  PRODUCT: 'Product'
 }
 
-const TYPENAME = {
-  PRODUCT: 'Product',
-  INVOICE: 'Invoice',
-  INVOICE_WITH_PRODUCTS: 'InvoiceWithProducts',
-  SPEC: 'Spec',
-  SPEC_WITH_INVOICES: 'SpecWithInvoices'
+const OPERATION = {
+  INSERT_PRODUCT: 'INSERT_PRODUCT',
+  INSERT_INVOICE: 'INSERT_INVOICE',
+  INSERT_SPEC: 'INSERT_SPEC',
+  UPDATE_PRODUCT: 'UPDATE_PRODUCT',
+  UPDATE_INVOICE: 'UPDATE_INVOICE',
+  UPDATE_INVOICE_WITH_PRODUCTS: 'UPDATE_INVOICE_WITH_PRODUCTS',
+  UPDATE_SPEC: 'UPDATE_SPEC',
+  UPDATE_SPEC_WITH_INVOICES: 'UPDATE_SPEC_WITH_INVOICES',
+  DELETE_PRODUCT: 'DELETE_PRODUCT',
+  DELETE_INVOICE: 'DELETE_INVOICE',
+  DELETE_SPEC: 'DELETE_SPEC'
 }
 
 const GET_SPECS = gql`
@@ -80,19 +86,18 @@ const GET_SPECS = gql`
     getSpecs {
       id
       name
-      invoices {
-        id
-        name
-        products {
-          id
-          name
-          count
-          price
-          amount
-        }
-        totalPrice
-      }
+      totalPrice
+      estimateShippingDate
     }
+  }
+`
+
+const SPEC_FRAGMENT = gql`
+  fragment SpecFragment on Spec {
+    id
+    name
+    totalPrice
+    estimateShippingDate
   }
 `
 
@@ -123,27 +128,11 @@ export default {
           parentId
           payload {
             __typename
-            ... on SpecWithInvoices {
-              id
-              name
-              totalPrice
-              invoices {
-                id
-                name
-                totalPrice
-                products {
-                  id
-                  name
-                  price
-                  count
-                  amount
-                }
-              }
-            }
             ... on Spec {
               id
               name
               totalPrice
+              estimateShippingDate
             }
           }
         }
@@ -154,7 +143,8 @@ export default {
       query: subQuery,
       variables: {
         token
-      }
+      },
+      fetchPolicy: 'no-cache'
     })
 
     const apolloClient = this.$apollo.provider.defaultClient
@@ -166,18 +156,13 @@ export default {
 
         console.log(`[${typename}]: ${JSON.stringify(data)}`)
 
-        if (operation === OPERATION.INSERT && typename === TYPENAME.SPEC_WITH_INVOICES) {
+        if (operation === OPERATION.INSERT_SPEC) {
           const { getSpecs } = apolloClient.readQuery({
             query: GET_SPECS
           })
 
           if (!getSpecs.some(el => el.id === data.delta.payload.id)) {
-            // SpecWithInvoices type to Spec
-            const newSpec = {
-              ...data.delta.payload,
-              __typename: TYPENAME.SPEC
-            }
-            getSpecs.push(newSpec)
+            getSpecs.push(data.delta.payload)
 
             apolloClient.writeQuery({
               query: GET_SPECS,
@@ -188,7 +173,15 @@ export default {
           }
         }
 
-        if (operation === OPERATION.DELETE && typename === TYPENAME.SPEC) {
+        if (operation === OPERATION.UPDATE_SPEC) {
+          apolloClient.writeFragment({
+            id: `${TYPENAME.SPEC}:${data.delta.payload.id}`,
+            fragment: SPEC_FRAGMENT,
+            data: data.delta.payload
+          })
+        }
+
+        if (operation === OPERATION.DELETE_SPEC) {
           const { getSpecs } = apolloClient.readQuery({
             query: GET_SPECS
           })

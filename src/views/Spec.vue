@@ -20,7 +20,7 @@
         :contenteditable="!updateLoading"
         placeholder="----"
         @keydown.enter.stop.prevent="updateSpec"
-        @blur="updateSpec"
+        @blur="onBlur"
       />
       <div v-if="updateLoading" class="spinner">
         <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -51,19 +51,117 @@
 import gql from 'graphql-tag'
 import Invoice from '@/components/Invoice.vue'
 
-const OPERATION = {
-  INSERT: 'Insert',
-  UPDATE: 'Update',
-  DELETE: 'Delete'
+const TYPENAME = {
+  SPEC: 'Spec',
+  INVOICE: 'Invoice',
+  PRODUCT: 'Product'
 }
 
-const TYPENAME = {
-  PRODUCT: 'Product',
-  INVOICE: 'Invoice',
-  INVOICE_WITH_PRODUCTS: 'InvoiceWithProducts',
-  SPEC: 'Spec',
-  SPEC_WITH_INVOICES: 'SpecWithInvoices'
+const OPERATION = {
+  INSERT_PRODUCT: 'INSERT_PRODUCT',
+  INSERT_INVOICE: 'INSERT_INVOICE',
+  INSERT_SPEC: 'INSERT_SPEC',
+  UPDATE_PRODUCT: 'UPDATE_PRODUCT',
+  UPDATE_INVOICE: 'UPDATE_INVOICE',
+  UPDATE_INVOICE_WITH_PRODUCTS: 'UPDATE_INVOICE_WITH_PRODUCTS',
+  UPDATE_SPEC: 'UPDATE_SPEC',
+  UPDATE_SPEC_WITH_INVOICES: 'UPDATE_SPEC_WITH_INVOICES',
+  DELETE_PRODUCT: 'DELETE_PRODUCT',
+  DELETE_INVOICE: 'DELETE_INVOICE',
+  DELETE_SPEC: 'DELETE_SPEC'
 }
+
+const GET_SPEC = gql`
+  query GetSpec ($specId: ID!) {
+    getSpec (specId: $specId) {
+      id
+      name
+      invoices {
+        id
+        name
+        products {
+          id
+          name
+          count
+          price
+          amount
+          net
+          gross
+        }
+        totalPrice
+        purchaseDate
+      }
+      totalPrice
+      estimateShippingDate
+    }
+  }
+`
+
+const PRODUCT_FRAGMENT = gql`
+  fragment ProductFragment on Product {
+    id
+    name
+    count
+    price
+    amount
+    net
+    gross
+  }
+`
+
+const INVOICE_PRODUCTS_FRAGMENT = gql`
+  fragment InvoiceProductsFragment on Invoice {
+    id
+    products {
+      id
+      name
+      count
+      price
+      amount
+      net
+      gross
+    }
+  }
+`
+
+const INVOICE_FRAGMENT = gql`
+  fragment InvoiceFragment on Invoice {
+    id
+    name
+    totalPrice
+    purchaseDate
+  }
+`
+
+const SPEC_INVOICES_FRAGMENT = gql`
+  fragment SpecInvoicesFragment on Spec {
+    id
+    invoices {
+      id
+      name
+      products {
+        id
+        name
+        count
+        price
+        amount
+        net
+        gross
+      }
+      totalPrice
+      purchaseDate
+    }
+  }
+`
+
+const SPEC_FRAGMENT = gql`
+  fragment SpecFragment on Spec {
+    id
+    name
+    totalPrice
+    estimateShippingDate
+  }
+`
 
 export default {
   name: 'Spec',
@@ -88,27 +186,7 @@ export default {
   },
   apollo: {
     getSpec: {
-      query: gql`
-        query GetSpec ($specId: ID!) {
-          getSpec (specId: $specId) {
-            id
-            name
-            invoices {
-              id
-              name
-              products {
-                id
-                name
-                count
-                price
-                amount
-              }
-              totalPrice
-            }
-            totalPrice
-          }
-        }
-      `,
+      query: GET_SPEC,
       variables () {
         return {
           specId: this.$route.params.specId
@@ -135,28 +213,44 @@ export default {
               price
               count
               amount
+              net
+              gross
             }
             ... on Invoice {
               id
               name
-              totalPrice
-            }
-            ... on InvoiceWithProducts {
-              id
-              name
-              totalPrice
               products {
                 id
                 name
                 price
                 count
                 amount
+                net
+                gross
               }
+              totalPrice
+              purchaseDate
             }
             ... on Spec {
               id
               name
+              invoices {
+                id
+                name
+                products {
+                  id
+                  name
+                  price
+                  count
+                  amount
+                  net
+                  gross
+                }
+                totalPrice
+                purchaseDate
+              }
               totalPrice
+              estimateShippingDate
             }
           }
         }
@@ -167,7 +261,8 @@ export default {
       query: subQuery,
       variables: {
         token
-      }
+      },
+      fetchPolicy: 'no-cache'
     })
 
     const apolloClient = this.$apollo.provider.defaultClient
@@ -181,23 +276,10 @@ export default {
 
         // PRODUCT
 
-        if (operation === OPERATION.INSERT && typename === TYPENAME.PRODUCT) {
+        if (operation === OPERATION.INSERT_PRODUCT) {
           const parentInvoice = apolloClient.readFragment({
             id: `${TYPENAME.INVOICE}:${data.delta.parentId}`,
-            fragment: gql`
-              fragment CreateProductInvoiceReadFragment on Invoice {
-                id
-                name
-                totalPrice
-                products {
-                  id
-                  name
-                  count
-                  price
-                  amount
-                }
-              }
-            `
+            fragment: INVOICE_PRODUCTS_FRAGMENT
           })
 
           if (!parentInvoice.products.some(el => el.id === data.delta.payload.id)) {
@@ -205,42 +287,24 @@ export default {
 
             apolloClient.writeFragment({
               id: `${TYPENAME.INVOICE}:${data.delta.parentId}`,
-              fragment: gql`
-                fragment CreateProductInvoiceWriteFragment on Invoice {
-                  id
-                  name
-                  totalPrice
-                  products {
-                    id
-                    name
-                    count
-                    price
-                    amount
-                  }
-                }
-              `,
+              fragment: INVOICE_PRODUCTS_FRAGMENT,
               data: parentInvoice,
             })
           }
         }
 
-        if (operation === OPERATION.DELETE && typename === TYPENAME.PRODUCT) {
+        if (operation === OPERATION.UPDATE_PRODUCT) {
+          apolloClient.writeFragment({
+            id: `${TYPENAME.PRODUCT}:${data.delta.payload.id}`,
+            fragment: PRODUCT_FRAGMENT,
+            data: data.delta.payload,
+          })
+        }
+
+        if (operation === OPERATION.DELETE_PRODUCT) {
           let parentInvoice = apolloClient.readFragment({
             id: `${TYPENAME.INVOICE}:${data.delta.parentId}`,
-            fragment: gql`
-              fragment DeleteProductInvoiceReadFragment on Invoice {
-                id
-                name
-                totalPrice
-                products {
-                  id
-                  name
-                  count
-                  price
-                  amount
-                }
-              }
-            `
+            fragment: INVOICE_PRODUCTS_FRAGMENT
           })
 
           const index = parentInvoice.products.findIndex(p => p.id === data.delta.payload.id)
@@ -249,20 +313,7 @@ export default {
             parentInvoice.products.splice(index, 1)
             apolloClient.writeFragment({
               id: `${TYPENAME.INVOICE}:${data.delta.parentId}`,
-              fragment: gql`
-                fragment DeleteProductInvoiceWriteFragment on Invoice {
-                  id
-                  name
-                  totalPrice
-                  products {
-                    id
-                    name
-                    count
-                    price
-                    amount
-                  }
-                }
-              `,
+              fragment: INVOICE_PRODUCTS_FRAGMENT,
               data: parentInvoice,
             })
           }
@@ -270,80 +321,35 @@ export default {
 
         // INVOICE
 
-        if (operation === OPERATION.INSERT && typename === TYPENAME.INVOICE_WITH_PRODUCTS) {
+        if (operation === OPERATION.INSERT_INVOICE) {
           const parentSpec = apolloClient.readFragment({
             id: `${TYPENAME.SPEC}:${data.delta.parentId}`,
-            fragment: gql`
-              fragment CreateInvoiceSpecReadFragment on Spec {
-                id
-                invoices {
-                  id
-                  name
-                  totalPrice
-                  products {
-                    id
-                    name
-                    count
-                    price
-                    amount
-                  }
-                }
-              }
-            `
+            fragment: SPEC_INVOICES_FRAGMENT
           })
 
           if (!parentSpec.invoices.some(el => el.id === data.delta.payload.id)) {
-            // InvoiceWithProducts type to Invoice
-            const newInvoice = {
-              ...data.delta.payload,
-              __typename: TYPENAME.INVOICE
-            }
-            parentSpec.invoices.push(newInvoice)
+            parentSpec.invoices.push(data.delta.payload)
 
             apolloClient.writeFragment({
               id: `${TYPENAME.SPEC}:${data.delta.parentId}`,
-              fragment: gql`
-                fragment CreateInvoiceSpecWriteFragment on Spec {
-                  id
-                  invoices {
-                    id
-                    name
-                    totalPrice
-                    products {
-                      id
-                      name
-                      count
-                      price
-                      amount
-                    }
-                  }
-                }
-              `,
+              fragment: SPEC_INVOICES_FRAGMENT,
               data: parentSpec,
             })
           }
         }
 
-        if (operation === OPERATION.DELETE && typename === TYPENAME.INVOICE) {
+        if (operation === OPERATION.UPDATE_INVOICE) {
+          apolloClient.writeFragment({
+            id: `${TYPENAME.INVOICE}:${data.delta.payload.id}`,
+            fragment: INVOICE_FRAGMENT,
+            data: data.delta.payload
+          })
+        }
+
+        if (operation === OPERATION.DELETE_INVOICE) {
           let parentSpec = apolloClient.readFragment({
             id: `${TYPENAME.SPEC}:${data.delta.parentId}`,
-            fragment: gql`
-              fragment DeleteInvoiceSpecReadFragment on Spec {
-                id
-                invoices {
-                  id
-                  name
-                  totalPrice
-                  products {
-                    id
-                    name
-                    count
-                    price
-                    amount
-                  }
-                }
-              }
-            `
+            fragment: SPEC_INVOICES_FRAGMENT
           })
 
           const index = parentSpec.invoices.findIndex(p => p.id === data.delta.payload.id)
@@ -352,27 +358,22 @@ export default {
             parentSpec.invoices.splice(index, 1)
             apolloClient.writeFragment({
               id: `${TYPENAME.SPEC}:${data.delta.parentId}`,
-              fragment: gql`
-                fragment DeleteInvoiceSpecWriteFragment on Spec {
-                  id
-                  invoices {
-                    id
-                    name
-                    totalPrice
-                    products {
-                      id
-                      name
-                      count
-                      price
-                      amount
-                    }
-                  }
-                }
-              `,
+              fragment: SPEC_INVOICES_FRAGMENT,
               data: parentSpec,
             })
           }
         }
+
+        // SPEC
+
+        if (operation === OPERATION.UPDATE_SPEC) {
+          apolloClient.writeFragment({
+            id: `${TYPENAME.SPEC}:${data.delta.payload.id}`,
+            fragment: SPEC_FRAGMENT,
+            data: data.delta.payload
+          })
+        }
+
       },
       error (error) {
         console.error(error)
@@ -381,6 +382,9 @@ export default {
 
   },
   methods: {
+    onBlur () {
+      this.$refs.name.innerText = this.spec.name || ''
+    },
     async createInvoice () {
       try {
         this.createLoading = true
@@ -389,6 +393,7 @@ export default {
             mutation CreateInvoice($specId: ID!) {
               createInvoice(specId: $specId) {
                 id
+                totalPrice
                 products {
                   id
                 }

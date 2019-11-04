@@ -6,7 +6,7 @@
         :contenteditable="!updateLoading"
         placeholder="----"
         @keydown.enter.stop.prevent="updateInvoice"
-        @blur="updateInvoice"
+        @blur="onBlur"
       />
       <div v-if="updateLoading" class="spinner">
         <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -59,6 +59,9 @@ export default {
     this.$refs.name.innerText = this.content.name || ''
   },
   methods: {
+    onBlur () {
+      this.$refs.name.innerText = this.content.name || ''
+    },
     async createProduct () {
       try {
         this.createLoading = true

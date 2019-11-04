@@ -29,13 +29,7 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
               name: 'Spec'
             },
             {
-              name: 'SpecWithInvoices'
-            },
-            {
               name: 'Invoice'
-            },
-            {
-              name: 'InvoiceWithProducts'
             },
             {
               name: 'Product'
