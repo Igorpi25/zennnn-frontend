@@ -8,7 +8,7 @@ import PasswordRestore from '../views/PasswordRestore.vue'
 import PasswordRestoreConfirm from '../views/PasswordRestoreConfirm.vue'
 import NotFound from '../views/NotFound.vue'
 import { apolloClient } from '../main'
-import { GET_PROFILE_CLIENT, GET_PROFILE } from '../schema'
+import { GET_PROFILE_CLIENT, GET_PROFILE, GET_ROLE_IN_PROJECT } from '../schema'
 
 Vue.use(VueRouter)
 
@@ -27,6 +27,26 @@ const routes = [
     component: Spec,
     meta: {
       requiresAuth: true
+    },
+    beforeEnter: async (to, from, next) => {
+      try {
+        const specId = to.params.specId
+        const { data: { roleInProject } } = await apolloClient.query({
+          query: GET_ROLE_IN_PROJECT,
+          variables: {
+            specId
+          },
+          fetchPolicy: 'network-only'
+        })
+
+        if (!roleInProject) {
+          throw new Error('No have access!')
+        }
+
+        next()
+      } catch (error) { // eslint-disable-line
+        next(false)
+      }
     }
   },
   {

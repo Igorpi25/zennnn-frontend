@@ -7,56 +7,36 @@
         }"
       >
         Спецификации
-      </router-link> / {{ spec.id }}
-    </div>
-    <h1>
-      Спецификация:
-      <span v-if="$apollo.queries.getSpec.loading">
-        Загрузка...
-      </span>
-      <span
-        v-show="!$apollo.queries.getSpec.loading"
-        ref="name"
-        :contenteditable="!updateLoading"
-        placeholder="----"
-        @keydown.enter.stop.prevent="e => updateSpec({ name: e.target.textContent || e.target.innerText })"
-        @blur="onBlur"
-      />
-      <div v-if="updateLoading" class="spinner">
+      </router-link> / {{ specId }}
+      <div v-if="$apollo.queries.getSpec.loading" class="spinner">
         <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>
-    </h1>
-    Estimate Shipping date: 
-    <input
-      v-model="spec.estimateShippingDate"
-      type="text"
-      size="20"
-      @change="e => updateSpec({ estimateShippingDate: e.target.value })"
-    >
-    <Invoice
-      v-for="(item, index) in spec.invoices"
-      :key="index"
-      :content="item"
+      ({{ roleInProject }})
+    </div>
+    <component
+      v-if="roleInProject"
+      :is="componentName"
     />
-    <br>
-    <template v-if="!$apollo.queries.getSpec.loading">
-      <button
-        :disabled="createLoading"
-        @click="createInvoice"
-      >
-        Создать накладную
-      </button>
-      <div>
-        Итого: {{ spec.totalPrice }}
-      </div>
-    </template>
-
   </div>
 </template>
 
 <script>
 import gql from 'graphql-tag'
-import Invoice from '@/components/Invoice.vue'
+import { GET_ROLE_IN_PROJECT } from '@/schema'
+
+import OwnerSpec from '@/components/Owner/Spec.vue'
+import ManagerSpec from '@/components/Manager/Spec.vue'
+import AccauntantSpec from '@/components/Accauntant/Spec.vue'
+import WarehousemanSpec from '@/components/Warehouseman/Spec.vue'
+import FreelancerSpec from '@/components/Freelancer/Spec.vue'
+
+const ROLE = {
+  OWNER: 'OWNER',
+  MANAGER: 'MANAGER',
+  ACCAUNTANT: 'ACCAUNTANT',
+  WAREHOUSEMAN: 'WAREHOUSEMAN',
+  FREELANCER: 'FREELANCER'
+}
 
 const TYPENAME = {
   SPEC: 'Spec',
@@ -173,37 +153,54 @@ const SPEC_FRAGMENT = gql`
 export default {
   name: 'Spec',
   components: {
-    Invoice,
+    OwnerSpec,
+    ManagerSpec,
+    AccauntantSpec,
+    WarehousemanSpec,
+    FreelancerSpec,
   },
   data () {
     return {
+      role: null,
       createLoading: false,
       updateLoading: false,
     }
   },
   computed: {
-    spec () {
-      return this.getSpec || {}
-    }
-  },
-  watch: {
-    'spec.name' (val) {
-      this.$refs.name.innerText = val || ''
+    specId () {
+      return this.$route.params.specId
+    },
+    componentName () {
+      switch (this.roleInProject) {
+        case ROLE.OWNER: return 'OwnerSpec'
+        case ROLE.MANAGER: return 'ManagerSpec'
+        case ROLE.ACCAUNTANT: return 'AccauntantSpec'
+        case ROLE.WAREHOUSEMAN: return 'WarehousemanSpec'
+        case ROLE.FREELANCER: return 'FreelancerSpec'
+        default: return null
+      }
     }
   },
   apollo: {
+    roleInProject: {
+      query: GET_ROLE_IN_PROJECT,
+      variables () {
+        return {
+          specId: this.specId
+        }
+      },
+      fetchPolicy: 'cache-only'
+    },
     getSpec: {
       query: GET_SPEC,
       variables () {
         return {
-          specId: this.$route.params.specId
+          specId: this.specId
         }
       }
     }
   },
   mounted () {
-
-    this.$refs.name.innerText = this.spec.name || ''
 
     const subQuery = gql`
       subscription SpecDelta ($specId: ID!) {
@@ -388,9 +385,6 @@ export default {
 
   },
   methods: {
-    onBlur () {
-      this.$refs.name.innerText = this.spec.name || ''
-    },
     async createInvoice () {
       try {
         this.createLoading = true
@@ -407,7 +401,7 @@ export default {
             }
           `,
           variables: {
-            specId: this.spec.id,
+            specId: this.specId,
           },
         })
       } catch (error) {
@@ -429,7 +423,7 @@ export default {
             }
           `,
           variables: {
-            specId: this.spec.id,
+            specId: this.specId,
             specInput
           },
         })
