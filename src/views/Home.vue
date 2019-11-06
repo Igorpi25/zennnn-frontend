@@ -119,11 +119,9 @@ export default {
   },
   mounted () {
 
-    const token = localStorage.getItem('token')
-
     const subQuery = gql`
-      subscription delta($token: ID!) {
-        delta (token: $token) {
+      subscription delta {
+        delta {
           operation
           parentId
           payload {
@@ -141,9 +139,6 @@ export default {
 
     const observer = this.$apollo.subscribe({
       query: subQuery,
-      variables: {
-        token
-      },
       fetchPolicy: 'no-cache'
     })
 

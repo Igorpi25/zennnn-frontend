@@ -23,7 +23,7 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
       types: [
         {
           kind: 'UNION',
-          name: 'DeltaObject',
+          name: 'SpecDeltaObject',
           possibleTypes: [
             {
               name: 'Spec'

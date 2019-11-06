@@ -19,13 +19,20 @@
         ref="name"
         :contenteditable="!updateLoading"
         placeholder="----"
-        @keydown.enter.stop.prevent="updateSpec"
+        @keydown.enter.stop.prevent="e => updateSpec({ name: e.target.textContent || e.target.innerText })"
         @blur="onBlur"
       />
       <div v-if="updateLoading" class="spinner">
         <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>
     </h1>
+    Estimate Shipping date: 
+    <input
+      v-model="spec.estimateShippingDate"
+      type="text"
+      size="20"
+      @change="e => updateSpec({ estimateShippingDate: e.target.value })"
+    >
     <Invoice
       v-for="(item, index) in spec.invoices"
       :key="index"
@@ -198,11 +205,9 @@ export default {
 
     this.$refs.name.innerText = this.spec.name || ''
 
-    const token = localStorage.getItem('token')
-
     const subQuery = gql`
-      subscription delta ($token: ID!) {
-        delta (token: $token) {
+      subscription SpecDelta ($specId: ID!) {
+        specDelta (specId: $specId) {
           operation
           parentId
           payload {
@@ -260,7 +265,7 @@ export default {
     const observer = this.$apollo.subscribe({
       query: subQuery,
       variables: {
-        token
+        specId: this.$route.params.specId
       },
       fetchPolicy: 'no-cache'
     })
@@ -269,8 +274,9 @@ export default {
 
     observer.subscribe({
       next ({ data }) {
-        const operation = data.delta.operation
-        const typename = data.delta.payload.__typename
+        const delta = data.specDelta
+        const operation = delta.operation
+        const typename = delta.payload.__typename
 
         console.log(`[${typename}]: ${JSON.stringify(data)}`)
 
@@ -278,15 +284,15 @@ export default {
 
         if (operation === OPERATION.INSERT_PRODUCT) {
           const parentInvoice = apolloClient.readFragment({
-            id: `${TYPENAME.INVOICE}:${data.delta.parentId}`,
+            id: `${TYPENAME.INVOICE}:${delta.parentId}`,
             fragment: INVOICE_PRODUCTS_FRAGMENT
           })
 
-          if (!parentInvoice.products.some(el => el.id === data.delta.payload.id)) {
-            parentInvoice.products.push(data.delta.payload)
+          if (!parentInvoice.products.some(el => el.id === delta.payload.id)) {
+            parentInvoice.products.push(delta.payload)
 
             apolloClient.writeFragment({
-              id: `${TYPENAME.INVOICE}:${data.delta.parentId}`,
+              id: `${TYPENAME.INVOICE}:${delta.parentId}`,
               fragment: INVOICE_PRODUCTS_FRAGMENT,
               data: parentInvoice,
             })
@@ -295,24 +301,24 @@ export default {
 
         if (operation === OPERATION.UPDATE_PRODUCT) {
           apolloClient.writeFragment({
-            id: `${TYPENAME.PRODUCT}:${data.delta.payload.id}`,
+            id: `${TYPENAME.PRODUCT}:${delta.payload.id}`,
             fragment: PRODUCT_FRAGMENT,
-            data: data.delta.payload,
+            data: delta.payload,
           })
         }
 
         if (operation === OPERATION.DELETE_PRODUCT) {
           let parentInvoice = apolloClient.readFragment({
-            id: `${TYPENAME.INVOICE}:${data.delta.parentId}`,
+            id: `${TYPENAME.INVOICE}:${delta.parentId}`,
             fragment: INVOICE_PRODUCTS_FRAGMENT
           })
 
-          const index = parentInvoice.products.findIndex(p => p.id === data.delta.payload.id)
+          const index = parentInvoice.products.findIndex(p => p.id === delta.payload.id)
 
           if (index !== -1) {
             parentInvoice.products.splice(index, 1)
             apolloClient.writeFragment({
-              id: `${TYPENAME.INVOICE}:${data.delta.parentId}`,
+              id: `${TYPENAME.INVOICE}:${delta.parentId}`,
               fragment: INVOICE_PRODUCTS_FRAGMENT,
               data: parentInvoice,
             })
@@ -323,15 +329,15 @@ export default {
 
         if (operation === OPERATION.INSERT_INVOICE) {
           const parentSpec = apolloClient.readFragment({
-            id: `${TYPENAME.SPEC}:${data.delta.parentId}`,
+            id: `${TYPENAME.SPEC}:${delta.parentId}`,
             fragment: SPEC_INVOICES_FRAGMENT
           })
 
-          if (!parentSpec.invoices.some(el => el.id === data.delta.payload.id)) {
-            parentSpec.invoices.push(data.delta.payload)
+          if (!parentSpec.invoices.some(el => el.id === delta.payload.id)) {
+            parentSpec.invoices.push(delta.payload)
 
             apolloClient.writeFragment({
-              id: `${TYPENAME.SPEC}:${data.delta.parentId}`,
+              id: `${TYPENAME.SPEC}:${delta.parentId}`,
               fragment: SPEC_INVOICES_FRAGMENT,
               data: parentSpec,
             })
@@ -340,24 +346,24 @@ export default {
 
         if (operation === OPERATION.UPDATE_INVOICE) {
           apolloClient.writeFragment({
-            id: `${TYPENAME.INVOICE}:${data.delta.payload.id}`,
+            id: `${TYPENAME.INVOICE}:${delta.payload.id}`,
             fragment: INVOICE_FRAGMENT,
-            data: data.delta.payload
+            data: delta.payload
           })
         }
 
         if (operation === OPERATION.DELETE_INVOICE) {
           let parentSpec = apolloClient.readFragment({
-            id: `${TYPENAME.SPEC}:${data.delta.parentId}`,
+            id: `${TYPENAME.SPEC}:${delta.parentId}`,
             fragment: SPEC_INVOICES_FRAGMENT
           })
 
-          const index = parentSpec.invoices.findIndex(p => p.id === data.delta.payload.id)
+          const index = parentSpec.invoices.findIndex(p => p.id === delta.payload.id)
 
           if (index !== -1) {
             parentSpec.invoices.splice(index, 1)
             apolloClient.writeFragment({
-              id: `${TYPENAME.SPEC}:${data.delta.parentId}`,
+              id: `${TYPENAME.SPEC}:${delta.parentId}`,
               fragment: SPEC_INVOICES_FRAGMENT,
               data: parentSpec,
             })
@@ -368,9 +374,9 @@ export default {
 
         if (operation === OPERATION.UPDATE_SPEC) {
           apolloClient.writeFragment({
-            id: `${TYPENAME.SPEC}:${data.delta.payload.id}`,
+            id: `${TYPENAME.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
-            data: data.delta.payload
+            data: delta.payload
           })
         }
 
@@ -410,10 +416,9 @@ export default {
         this.createLoading = false
       }
     },
-    async updateSpec (e) {
+    async updateSpec (specInput) {
       try {
         this.updateLoading = true
-        const value = e.target.textContent || e.target.innerText
         await this.$apollo.mutate({
           mutation: gql`
             mutation UpdateSpec($specId: ID!, $specInput: SpecInput!) {
@@ -425,9 +430,7 @@ export default {
           `,
           variables: {
             specId: this.spec.id,
-            specInput: {
-              name: value
-            }
+            specInput
           },
         })
       } catch (error) {

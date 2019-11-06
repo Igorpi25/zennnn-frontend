@@ -5,7 +5,7 @@
         ref="name"
         :contenteditable="!updateLoading"
         placeholder="----"
-        @keydown.enter.stop.prevent="updateInvoice"
+        @keydown.enter.stop.prevent="e => updateInvoice({ name: e.target.textContent || e.target.innerText })"
         @blur="onBlur"
       />
       <div v-if="updateLoading" class="spinner">
@@ -24,6 +24,13 @@
       Добавить
     </button>
     <div>
+      Purchase date: 
+      <input
+        v-model="content.purchaseDate"
+        type="text"
+        size="20"
+        @change="e => updateInvoice({ purchaseDate: e.target.value })"
+      >
       Сумма: {{ content.totalPrice }}
     </div>
   </div>
@@ -83,10 +90,9 @@ export default {
         this.createLoading = false
       }
     },
-    async updateInvoice (e) {
+    async updateInvoice (invoiceInput) {
       try {
         this.updateLoading = true
-        const value = e.target.textContent || e.target.innerText
         await this.$apollo.mutate({
           mutation: gql`
             mutation UpdateInvoice($invoiceId: ID!, $invoiceInput: InvoiceInput!) {
@@ -98,9 +104,7 @@ export default {
           `,
           variables: {
             invoiceId: this.content.id,
-            invoiceInput: {
-              name: value
-            }
+            invoiceInput
           },
         })
       } catch (error) {

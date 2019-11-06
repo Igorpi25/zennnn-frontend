@@ -1,30 +1,48 @@
 <template>
-  <div>
+  <div style="padding-bottom: 8px">
     Продукт: 
-    <input
-      v-model="content.name"
-      type="text"
-      size="20"
-      @change="e => updateProduct({ name: e.target.value })"
-    > стоимость:
-    <input
-      v-model="content.count"
-      type="text"
-      size="5"
-      @change="e => updateProduct({ count: Number(e.target.value) })"
-    > *
-    <input
-      v-model="content.price"
-      type="text"
-      size="5"
-      @change="e => updateProduct({ price: Number(e.target.value) })"
-    > = {{ content.amount }}
-    <button
-      :disabled="deleteLoading"
-      @click="deleteProduct"
-    >x</button>
-    <div class="spinner">
-      <div v-if="updateLoading" class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    <div>
+      <div>
+        <input
+          v-model="content.name"
+          type="text"
+          size="20"
+          @change="e => updateProduct({ name: e.target.value })"
+        > стоимость:
+        <input
+          v-model="content.count"
+          type="text"
+          size="5"
+          @change="e => updateProduct({ count: Number(e.target.value) })"
+        > *
+        <input
+          v-model="content.price"
+          type="text"
+          size="5"
+          @change="e => updateProduct({ price: Number(e.target.value) })"
+        > = {{ content.amount }}
+        <button
+          :disabled="deleteLoading"
+          @click="deleteProduct"
+        >x</button>
+        <div class="spinner">
+          <div v-if="updateLoading" class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+      </div>
+      <div>
+        net: <input
+          v-model="content.net"
+          type="text"
+          size="5"
+          @change="e => updateProduct({ net: Number(e.target.value) })"
+        > *
+        gross: <input
+          v-model="content.gross"
+          type="text"
+          size="5"
+          @change="e => updateProduct({ gross: Number(e.target.value) })"
+        >
+      </div>
     </div>
   </div>
 </template>
