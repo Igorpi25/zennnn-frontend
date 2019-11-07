@@ -66,7 +66,7 @@ const httpLink = createHttpLink({
 
 // Create the subscription websocket link
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:3000/graphql',
+  uri: 'ws://localhost:4000/graphql',
   options: {
     reconnect: true,
     connectionParams: () => {
@@ -81,8 +81,9 @@ const wsLink = new WebSocketLink({
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     for (let err of graphQLErrors) {
-      const { message, locations, path } = err
-      switch (err.extensions.code) {
+      const { message, locations, path, extensions } = err
+      const code = extensions && extensions.code
+      switch (code) {
         case 'UNAUTHENTICATED':
           // error code is set to UNAUTHENTICATED
           // when AuthenticationError thrown in resolver
