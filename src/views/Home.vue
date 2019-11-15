@@ -204,21 +204,36 @@ export default {
     async createSpec () {
       try {
         this.createLoading = true
-        await this.$apollo.mutate({
+        const response = await this.$apollo.mutate({
           mutation: gql`
             mutation CreateSpec {
               createSpec {
                 id
-                invoices {
-                  id
-                  products {
-                    id
-                  }
-                }
+                name
+                totalPrice
+                estimateShippingDate
               }
             }
           `
         })
+        if (response && response.data && response.data.createSpec) {
+          const spec = response.data.createSpec
+
+          const { getSpecs } = this.$apollo.provider.defaultClient.readQuery({
+            query: GET_SPECS
+          })
+
+          if (!getSpecs.some(el => el.id === spec.id)) {
+            getSpecs.push(spec)
+
+            this.$apollo.provider.defaultClient.writeQuery({
+              query: GET_SPECS,
+              data: {
+                getSpecs
+              }
+            })
+          }
+        }
       } catch (error) {
         throw new Error(error)
       } finally {
@@ -238,6 +253,21 @@ export default {
             specId
           }
         })
+        const { getSpecs } = this.$apollo.provider.defaultClient.readQuery({
+          query: GET_SPECS
+        })
+
+        const index = getSpecs.findIndex(el => el.id === specId)
+
+        if (index !== -1) {
+          getSpecs.splice(index, 1)
+          this.$apollo.provider.defaultClient.writeQuery({
+            query: GET_SPECS,
+            data: {
+              getSpecs
+            }
+          })
+        }
       } catch (error) {
         throw new Error(error)
       } finally {
