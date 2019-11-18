@@ -63,7 +63,7 @@ export default {
       firstName: '',
       lastName: '',
       email: '',
-      password: ''
+      password: '',
     }
   },
   methods: {
@@ -87,17 +87,16 @@ export default {
           const attrs = {
             family_name: this.lastName,
             given_name: this.firstName,
-            email: this.email
+            email: this.email,
           }
-          const data = await this.signUp(this.email, this.password, attrs)
+          await this.signUp(this.email, this.password, attrs)
           this.successMessage = 'Register success. Follow the link in the email.'
-          console.log('Sign Up', data)
         }
       } catch (error) {
         this.errorMessages.push(error)
         throw new Error(error)
       }
-    }
-  }
+    },
+  },
 }
 </script>

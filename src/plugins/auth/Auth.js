@@ -2,7 +2,7 @@ import {
   CognitoUserPool,
   CognitoUser,
   CognitoUserAttribute,
-  AuthenticationDetails
+  AuthenticationDetails,
 } from 'amazon-cognito-identity-js'
 import StorageHelper from './StorageHelper'
 import Logger from '../logger/Logger'
@@ -21,13 +21,13 @@ export default class Auth {
     this._config = {
       region,
       userPoolId,
-      userPoolWebClientId
+      userPoolWebClientId,
     }
     this._memoryStorage = new StorageHelper(true).getStorage()
     this._storage = new StorageHelper().getStorage()
     const userPoolData = {
       UserPoolId: userPoolId,
-      ClientId: userPoolWebClientId
+      ClientId: userPoolWebClientId,
     }
     this.userPool = new CognitoUserPool(userPoolData)
   }
@@ -40,10 +40,10 @@ export default class Auth {
     }
     const authenticationData = {
       Username: username,
-      Password: password
+      Password: password,
     }
     const authenticationDetails = new AuthenticationDetails(
-      authenticationData
+      authenticationData,
     )
     // use memory storage for login
     const cognitoUser = this._createCognitoUser(username, true)
@@ -68,27 +68,27 @@ export default class Auth {
         },
         onFailure: (err) => {
           reject(err)
-        }
+        },
       })
     })
   }
   login () {
     return new Promise((resolve, reject) => {
       apolloClient.mutate({
-        mutation: LOGIN
+        mutation: LOGIN,
       }).then(loginResult => {
         if (loginResult && loginResult.data && loginResult.data.login) {
           apolloClient.cache.writeQuery({
             query: GET_PROFILE_CLIENT,
             data: {
-              getProfile: loginResult.data.login
-            }
+              getProfile: loginResult.data.login,
+            },
           })
         }
         apolloClient.cache.writeData({
           data: {
-            isLoggedIn: true
-          }
+            isLoggedIn: true,
+          },
         })
         resolve()
       }).catch(error => {
@@ -134,7 +134,7 @@ export default class Auth {
         },
         onFailure: (err) => {
           reject(err)
-        }
+        },
       })
     })
   }
@@ -153,7 +153,7 @@ export default class Auth {
         },
         onFailure: (err) => {
           reject(err)
-        }
+        },
       })
     })
   }
@@ -223,7 +223,7 @@ export default class Auth {
               for (let i = 0; i < data.UserAttributes.length; i++) {
                 const attribute = {
                   Name: data.UserAttributes[i].Name,
-                  Value: data.UserAttributes[i].Value
+                  Value: data.UserAttributes[i].Value,
                 }
                 const userAttribute = new CognitoUserAttribute(attribute)
                 attributeList.push(userAttribute)
@@ -233,12 +233,12 @@ export default class Auth {
               Object.assign(user, { attributes, preferredMFA })
               return resolve(user)
             },
-            { bypassCache }
+            { bypassCache },
           )
         } else {
           logger.debug(
             `Unable to get the user data because the ${USER_ADMIN_SCOPE} ` +
-              `is not in the scopes of the access token`
+              `is not in the scopes of the access token`,
           )
           return resolve(user)
         }
@@ -322,7 +322,7 @@ export default class Auth {
   _createCognitoUser (username, forceMemoryStorage) {
     const userData = {
       Username: username,
-      Pool: this.userPool
+      Pool: this.userPool,
     }
     if (forceMemoryStorage) {
       userData.Storage = this._memoryStorage

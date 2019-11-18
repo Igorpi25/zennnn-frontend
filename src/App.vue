@@ -26,22 +26,22 @@ export default {
   name: 'app',
   apollo: {
     isLoggedIn: {
-      query: GET_IS_LOGGED_IN
+      query: GET_IS_LOGGED_IN,
     },
     getProfile: {
       query: GET_PROFILE_CLIENT,
       skip () {
         return !this.isLoggedIn
-      }
-    }
+      },
+    },
   },
   methods: {
     logout () {
       apolloClient.store.reset()
       this.$Auth.signOut()
       this.$router.push({ name: 'signin' })
-    }
-  }
+    },
+  },
 }
 </script>
 

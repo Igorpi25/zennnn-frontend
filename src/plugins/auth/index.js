@@ -10,10 +10,10 @@ const AuthPlugin = {
       $Auth: {
         get () {
           return _instance
-        }
-      }
+        },
+      },
     })
-  }
+  },
 }
 
 Vue.use(AuthPlugin)

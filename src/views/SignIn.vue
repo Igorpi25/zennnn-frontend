@@ -45,7 +45,7 @@ export default {
       wasValidated: false,
       errorMessages: [],
       email: '',
-      password: ''
+      password: '',
     }
   },
   methods: {
@@ -65,8 +65,7 @@ export default {
           this.setErrorMessages()
         } else {
           this.errorMessages = []
-          const response = await this.$Auth.signIn(this.email, this.password)
-          console.log('Sign In', response)
+          await this.$Auth.signIn(this.email, this.password)
           const route = this.$route.query.redirect
             ? this.$route.query.redirect : { name: 'home' }
           this.$router.push(route)
@@ -75,7 +74,7 @@ export default {
         this.errorMessages.push(error)
         throw new Error(error)
       }
-    }
-  }
+    },
+  },
 }
 </script>

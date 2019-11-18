@@ -33,18 +33,18 @@ import Product from './Product.vue'
 export default {
   name: 'Invoice',
   components: {
-    Product
+    Product,
   },
   props: {
     content: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data () {
     return {
       createLoading: false,
-      updateLoading: false
+      updateLoading: false,
     }
   },
   methods: {
@@ -60,8 +60,8 @@ export default {
             }
           `,
           variables: {
-            invoiceId: this.content.id
-          }
+            invoiceId: this.content.id,
+          },
         })
       } catch (error) {
         throw new Error(error)
@@ -83,16 +83,16 @@ export default {
           `,
           variables: {
             invoiceId: this.content.id,
-            invoiceInput
-          }
+            invoiceInput,
+          },
         })
       } catch (error) {
         throw new Error(error)
       } finally {
         this.updateLoading = false
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

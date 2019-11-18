@@ -41,7 +41,7 @@ export default {
       wasValidated: false,
       errorMessages: [],
       successMessage: '',
-      email: ''
+      email: '',
     }
   },
   methods: {
@@ -62,16 +62,14 @@ export default {
         } else {
           this.successMessage = ''
           this.errorMessages = []
-          const response = await this.$Auth
-            .forgotPassword(this.email)
+          await this.$Auth.forgotPassword(this.email)
           this.successMessage = 'Password restore link send in the email.'
-          console.log('Forgot password', response)
         }
       } catch (error) {
         this.errorMessages.push(error)
         throw new Error(error)
       }
-    }
-  }
+    },
+  },
 }
 </script>

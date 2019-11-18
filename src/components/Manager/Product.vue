@@ -55,13 +55,13 @@ export default {
   props: {
     content: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data () {
     return {
       updateLoading: false,
-      deleteLoading: false
+      deleteLoading: false,
     }
   },
   methods: {
@@ -85,8 +85,8 @@ export default {
           // Parameters
           variables: {
             productId: this.content.id,
-            productInput
-          }
+            productInput,
+          },
         })
       } catch (error) {
         throw new Error(error)
@@ -111,15 +111,15 @@ export default {
           `,
           // Parameters
           variables: {
-            productId: this.content.id
-          }
+            productId: this.content.id,
+          },
         })
       } catch (error) {
         throw new Error(error)
       } finally {
         this.deleteLoading = false
       }
-    }
-  }
+    },
+  },
 }
 </script>

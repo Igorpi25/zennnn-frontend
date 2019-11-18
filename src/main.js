@@ -28,19 +28,19 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
           name: 'SpecDeltaObject',
           possibleTypes: [
             {
-              name: 'Spec'
+              name: 'Spec',
             },
             {
-              name: 'Invoice'
+              name: 'Invoice',
             },
             {
-              name: 'Product'
-            }
-          ]
-        }
-      ]
-    }
-  }
+              name: 'Product',
+            },
+          ],
+        },
+      ],
+    },
+  },
 })
 
 const cache = new InMemoryCache({ fragmentMatcher })
@@ -57,15 +57,15 @@ const authLink = setContext(async ({ operationName }, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `${token}` : ''
-    }
+      authorization: token ? `${token}` : '',
+    },
   }
 })
 
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: 'http://localhost:3000/graphql'
+  uri: 'http://localhost:3000/graphql',
 })
 
 // Create the subscription websocket link
@@ -77,10 +77,10 @@ const wsLink = new WebSocketLink({
       const session = await Auth.currentSession()
       const token = session.getIdToken().getJwtToken()
       return {
-        authToken: token || ''
+        authToken: token || '',
       }
-    }
-  }
+    },
+  },
 })
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -97,17 +97,21 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
           router.push({
             name: 'signin',
             query: router.currentRoute.fullPath && router.currentRoute.fullPath !== '/'
-              ? { redirect: router.currentRoute.fullPath } : {}
+              ? { redirect: router.currentRoute.fullPath } : {},
           })
           break
         default:
+          // eslint-disable-next-line no-console
           console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
           )
       }
     }
   }
-  if (networkError) console.log(`[Network error]: ${networkError}`)
+  if (networkError) {
+    // eslint-disable-next-line no-console
+    console.log(`[Network error]: ${networkError}`)
+  }
 })
 
 // using the ability to split links, you can send data to each link
@@ -120,7 +124,7 @@ const link = split(
       definition.operation === 'subscription'
   },
   wsLink,
-  authLink.concat(httpLink)
+  authLink.concat(httpLink),
 )
 
 export const apolloClient = new ApolloClient({
@@ -128,12 +132,12 @@ export const apolloClient = new ApolloClient({
   cache,
   typeDefs,
   resolvers,
-  connectToDevTools: true
+  connectToDevTools: true,
 })
 
 const data = {
   isLoggedIn: false,
-  loggedInUser: null
+  loggedInUser: null,
 }
 
 cache.writeData({ data })
@@ -142,11 +146,11 @@ apolloClient.onResetStore(() => cache.writeData({ data }))
 Vue.use(VueApollo)
 
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
+  defaultClient: apolloClient,
 })
 
 new Vue({
   apolloProvider,
   router,
-  render: h => h(App)
+  render: h => h(App),
 }).$mount('#app')

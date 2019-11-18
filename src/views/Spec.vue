@@ -35,13 +35,13 @@ const ROLE = {
   MANAGER: 'MANAGER',
   ACCAUNTANT: 'ACCAUNTANT',
   WAREHOUSEMAN: 'WAREHOUSEMAN',
-  FREELANCER: 'FREELANCER'
+  FREELANCER: 'FREELANCER',
 }
 
 const TYPENAME = {
   SPEC: 'Spec',
   INVOICE: 'Invoice',
-  PRODUCT: 'Product'
+  PRODUCT: 'Product',
 }
 
 const OPERATION = {
@@ -55,7 +55,7 @@ const OPERATION = {
   UPDATE_SPEC_WITH_INVOICES: 'UPDATE_SPEC_WITH_INVOICES',
   DELETE_PRODUCT: 'DELETE_PRODUCT',
   DELETE_INVOICE: 'DELETE_INVOICE',
-  DELETE_SPEC: 'DELETE_SPEC'
+  DELETE_SPEC: 'DELETE_SPEC',
 }
 
 const GET_SPEC = gql`
@@ -157,13 +157,13 @@ export default {
     ManagerSpec,
     AccauntantSpec,
     WarehousemanSpec,
-    FreelancerSpec
+    FreelancerSpec,
   },
   data () {
     return {
       role: null,
       createLoading: false,
-      updateLoading: false
+      updateLoading: false,
     }
   },
   computed: {
@@ -179,26 +179,26 @@ export default {
         case ROLE.FREELANCER: return 'FreelancerSpec'
         default: return null
       }
-    }
+    },
   },
   apollo: {
     roleInProject: {
       query: GET_ROLE_IN_PROJECT,
       variables () {
         return {
-          specId: this.specId
+          specId: this.specId,
         }
       },
-      fetchPolicy: 'cache-only'
+      fetchPolicy: 'cache-only',
     },
     getSpec: {
       query: GET_SPEC,
       variables () {
         return {
-          specId: this.specId
+          specId: this.specId,
         }
-      }
-    }
+      },
+    },
   },
   mounted () {
     const subQuery = gql`
@@ -261,9 +261,9 @@ export default {
     const observer = this.$apollo.subscribe({
       query: subQuery,
       variables: {
-        specId: this.$route.params.specId
+        specId: this.$route.params.specId,
       },
-      fetchPolicy: 'no-cache'
+      fetchPolicy: 'no-cache',
     })
 
     const apolloClient = this.$apollo.provider.defaultClient
@@ -281,7 +281,7 @@ export default {
         if (operation === OPERATION.INSERT_PRODUCT) {
           const parentInvoice = apolloClient.readFragment({
             id: `${TYPENAME.INVOICE}:${delta.parentId}`,
-            fragment: INVOICE_PRODUCTS_FRAGMENT
+            fragment: INVOICE_PRODUCTS_FRAGMENT,
           })
 
           if (!parentInvoice.products.some(el => el.id === delta.payload.id)) {
@@ -290,7 +290,7 @@ export default {
             apolloClient.writeFragment({
               id: `${TYPENAME.INVOICE}:${delta.parentId}`,
               fragment: INVOICE_PRODUCTS_FRAGMENT,
-              data: parentInvoice
+              data: parentInvoice,
             })
           }
         }
@@ -299,14 +299,14 @@ export default {
           apolloClient.writeFragment({
             id: `${TYPENAME.PRODUCT}:${delta.payload.id}`,
             fragment: PRODUCT_FRAGMENT,
-            data: delta.payload
+            data: delta.payload,
           })
         }
 
         if (operation === OPERATION.DELETE_PRODUCT) {
           let parentInvoice = apolloClient.readFragment({
             id: `${TYPENAME.INVOICE}:${delta.parentId}`,
-            fragment: INVOICE_PRODUCTS_FRAGMENT
+            fragment: INVOICE_PRODUCTS_FRAGMENT,
           })
 
           const index = parentInvoice.products.findIndex(p => p.id === delta.payload.id)
@@ -316,7 +316,7 @@ export default {
             apolloClient.writeFragment({
               id: `${TYPENAME.INVOICE}:${delta.parentId}`,
               fragment: INVOICE_PRODUCTS_FRAGMENT,
-              data: parentInvoice
+              data: parentInvoice,
             })
           }
         }
@@ -326,7 +326,7 @@ export default {
         if (operation === OPERATION.INSERT_INVOICE) {
           const parentSpec = apolloClient.readFragment({
             id: `${TYPENAME.SPEC}:${delta.parentId}`,
-            fragment: SPEC_INVOICES_FRAGMENT
+            fragment: SPEC_INVOICES_FRAGMENT,
           })
 
           if (!parentSpec.invoices.some(el => el.id === delta.payload.id)) {
@@ -335,7 +335,7 @@ export default {
             apolloClient.writeFragment({
               id: `${TYPENAME.SPEC}:${delta.parentId}`,
               fragment: SPEC_INVOICES_FRAGMENT,
-              data: parentSpec
+              data: parentSpec,
             })
           }
         }
@@ -344,14 +344,14 @@ export default {
           apolloClient.writeFragment({
             id: `${TYPENAME.INVOICE}:${delta.payload.id}`,
             fragment: INVOICE_FRAGMENT,
-            data: delta.payload
+            data: delta.payload,
           })
         }
 
         if (operation === OPERATION.DELETE_INVOICE) {
           let parentSpec = apolloClient.readFragment({
             id: `${TYPENAME.SPEC}:${delta.parentId}`,
-            fragment: SPEC_INVOICES_FRAGMENT
+            fragment: SPEC_INVOICES_FRAGMENT,
           })
 
           const index = parentSpec.invoices.findIndex(p => p.id === delta.payload.id)
@@ -361,7 +361,7 @@ export default {
             apolloClient.writeFragment({
               id: `${TYPENAME.SPEC}:${delta.parentId}`,
               fragment: SPEC_INVOICES_FRAGMENT,
-              data: parentSpec
+              data: parentSpec,
             })
           }
         }
@@ -372,13 +372,13 @@ export default {
           apolloClient.writeFragment({
             id: `${TYPENAME.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
-            data: delta.payload
+            data: delta.payload,
           })
         }
       },
       error (error) {
         this.$logger.warn(`Error: `, error)
-      }
+      },
     })
   },
   methods: {
@@ -398,8 +398,8 @@ export default {
             }
           `,
           variables: {
-            specId: this.specId
-          }
+            specId: this.specId,
+          },
         })
       } catch (error) {
         throw new Error(error)
@@ -421,16 +421,16 @@ export default {
           `,
           variables: {
             specId: this.specId,
-            specInput
-          }
+            specInput,
+          },
         })
       } catch (error) {
         throw new Error(error)
       } finally {
         this.updateLoading = false
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

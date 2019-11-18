@@ -58,29 +58,29 @@ const GET_SPEC = gql`
 export default {
   name: 'Spec',
   components: {
-    Invoice
+    Invoice,
   },
   data () {
     return {
       createLoading: false,
-      updateLoading: false
+      updateLoading: false,
     }
   },
   computed: {
     spec () {
       return this.getSpec || {}
-    }
+    },
   },
   apollo: {
     getSpec: {
       query: GET_SPEC,
       variables () {
         return {
-          specId: this.$route.params.specId
+          specId: this.$route.params.specId,
         }
       },
-      fetchPolicy: 'cache-only'
-    }
+      fetchPolicy: 'cache-only',
+    },
   },
   methods: {
     async createInvoice () {
@@ -99,8 +99,8 @@ export default {
             }
           `,
           variables: {
-            specId: this.spec.id
-          }
+            specId: this.spec.id,
+          },
         })
       } catch (error) {
         throw new Error(error)
@@ -122,16 +122,16 @@ export default {
           `,
           variables: {
             specId: this.spec.id,
-            specInput
-          }
+            specInput,
+          },
         })
       } catch (error) {
         throw new Error(error)
       } finally {
         this.updateLoading = false
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

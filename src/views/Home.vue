@@ -64,7 +64,7 @@ import gql from 'graphql-tag'
 const TYPENAME = {
   SPEC: 'Spec',
   INVOICE: 'Invoice',
-  PRODUCT: 'Product'
+  PRODUCT: 'Product',
 }
 
 const OPERATION = {
@@ -78,7 +78,7 @@ const OPERATION = {
   UPDATE_SPEC_WITH_INVOICES: 'UPDATE_SPEC_WITH_INVOICES',
   DELETE_PRODUCT: 'DELETE_PRODUCT',
   DELETE_INVOICE: 'DELETE_INVOICE',
-  DELETE_SPEC: 'DELETE_SPEC'
+  DELETE_SPEC: 'DELETE_SPEC',
 }
 
 const GET_SPECS = gql`
@@ -106,16 +106,16 @@ export default {
   data () {
     return {
       createLoading: false,
-      deleteLoading: null
+      deleteLoading: null,
     }
   },
   computed: {
     specs () {
       return this.getSpecs || []
-    }
+    },
   },
   apollo: {
-    getSpecs: GET_SPECS
+    getSpecs: GET_SPECS,
   },
   mounted () {
     const subQuery = gql`
@@ -138,7 +138,7 @@ export default {
 
     const observer = this.$apollo.subscribe({
       query: subQuery,
-      fetchPolicy: 'no-cache'
+      fetchPolicy: 'no-cache',
     })
 
     const apolloClient = this.$apollo.provider.defaultClient
@@ -152,7 +152,7 @@ export default {
 
         if (operation === OPERATION.INSERT_SPEC) {
           const { getSpecs } = apolloClient.readQuery({
-            query: GET_SPECS
+            query: GET_SPECS,
           })
 
           if (!getSpecs.some(el => el.id === data.delta.payload.id)) {
@@ -161,8 +161,8 @@ export default {
             apolloClient.writeQuery({
               query: GET_SPECS,
               data: {
-                getSpecs
-              }
+                getSpecs,
+              },
             })
           }
         }
@@ -171,13 +171,13 @@ export default {
           apolloClient.writeFragment({
             id: `${TYPENAME.SPEC}:${data.delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
-            data: data.delta.payload
+            data: data.delta.payload,
           })
         }
 
         if (operation === OPERATION.DELETE_SPEC) {
           const { getSpecs } = apolloClient.readQuery({
-            query: GET_SPECS
+            query: GET_SPECS,
           })
 
           const index = getSpecs.findIndex(el => el.id === data.delta.payload.id)
@@ -187,15 +187,15 @@ export default {
             apolloClient.writeQuery({
               query: GET_SPECS,
               data: {
-                getSpecs
-              }
+                getSpecs,
+              },
             })
           }
         }
       },
       error (error) {
         this.$logger.warn(`Error: `, error)
-      }
+      },
     })
   },
   methods: {
@@ -212,13 +212,13 @@ export default {
                 estimateShippingDate
               }
             }
-          `
+          `,
         })
         if (response && response.data && response.data.createSpec) {
           const spec = response.data.createSpec
 
           const { getSpecs } = this.$apollo.provider.defaultClient.readQuery({
-            query: GET_SPECS
+            query: GET_SPECS,
           })
 
           if (!getSpecs.some(el => el.id === spec.id)) {
@@ -227,8 +227,8 @@ export default {
             this.$apollo.provider.defaultClient.writeQuery({
               query: GET_SPECS,
               data: {
-                getSpecs
-              }
+                getSpecs,
+              },
             })
           }
         }
@@ -248,11 +248,11 @@ export default {
             }
           `,
           variables: {
-            specId
-          }
+            specId,
+          },
         })
         const { getSpecs } = this.$apollo.provider.defaultClient.readQuery({
-          query: GET_SPECS
+          query: GET_SPECS,
         })
 
         const index = getSpecs.findIndex(el => el.id === specId)
@@ -262,8 +262,8 @@ export default {
           this.$apollo.provider.defaultClient.writeQuery({
             query: GET_SPECS,
             data: {
-              getSpecs
-            }
+              getSpecs,
+            },
           })
         }
       } catch (error) {
@@ -271,8 +271,8 @@ export default {
       } finally {
         this.deleteLoading = null
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

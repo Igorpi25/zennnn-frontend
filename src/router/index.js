@@ -19,15 +19,15 @@ const routes = [
     name: 'home',
     component: Home,
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
     path: '/spec/:specId',
     name: 'spec',
     component: Spec,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
     beforeEnter: async (to, from, next) => {
       try {
@@ -35,9 +35,9 @@ const routes = [
         const { data: { roleInProject } } = await apolloClient.query({
           query: GET_ROLE_IN_PROJECT,
           variables: {
-            specId
+            specId,
           },
-          fetchPolicy: 'network-only'
+          fetchPolicy: 'network-only',
         })
 
         if (!roleInProject) {
@@ -48,23 +48,23 @@ const routes = [
       } catch (error) { // eslint-disable-line
         next(false)
       }
-    }
+    },
   },
   {
     path: '/signin',
     name: 'signin',
     component: SignIn,
     meta: {
-      requiresNotAuth: true
-    }
+      requiresNotAuth: true,
+    },
   },
   {
     path: '/signup',
     name: 'signup',
     component: SignUp,
     meta: {
-      requiresNotAuth: true
-    }
+      requiresNotAuth: true,
+    },
   },
   {
     path: '/email-confirm',
@@ -80,12 +80,12 @@ const routes = [
         }
       }
       next('/')
-    }
+    },
   },
   {
     path: '/password-restore',
     name: 'password-restore',
-    component: PasswordRestore
+    component: PasswordRestore,
   },
   {
     path: '/password-restore/confirm',
@@ -99,19 +99,19 @@ const routes = [
         alert('Incorrect request to restore password.')
         next('/')
       }
-    }
+    },
   },
   {
     path: '*',
     name: 'not-found',
-    component: NotFound
-  }
+    component: NotFound,
+  },
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
 })
 
 router.beforeEach(async (to, from, next) => {
@@ -128,15 +128,15 @@ router.beforeEach(async (to, from, next) => {
   }
   const loggedIn = !!session
   let localData = {
-    isLoggedIn: loggedIn
+    isLoggedIn: loggedIn,
   }
   if (loggedIn) {
     const { getProfile } = await apolloClient.query({
-      query: GET_PROFILE_CLIENT
+      query: GET_PROFILE_CLIENT,
     })
     if (!getProfile) {
       await apolloClient.query({
-        query: GET_PROFILE
+        query: GET_PROFILE,
       })
     }
   }
@@ -148,7 +148,7 @@ router.beforeEach(async (to, from, next) => {
       next({
         name: 'signin',
         query: to.fullPath && to.fullPath !== '/' && to.fullPath !== '/signin'
-          ? { redirect: to.fullPath } : {}
+          ? { redirect: to.fullPath } : {},
       })
     } else {
       next()

@@ -30,17 +30,17 @@ const LoggerPlugin = {
             },
             verbose: (...msg) => {
               _instance.verbose(...msg)
-            }
+            },
           }
-        }
+        },
       },
       $Logger: {
         get () {
           return Logger
-        }
-      }
+        },
+      },
     })
-  }
+  },
 }
 
 Vue.use(LoggerPlugin)

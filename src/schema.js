@@ -87,7 +87,7 @@ export const resolvers = {
   Mutation: {
     setIsLoggedIn: (_, { isLoggedIn }, { cache }) => {
       const data = {
-        isLoggedIn
+        isLoggedIn,
       }
       cache.writeData({ data })
       return isLoggedIn
@@ -97,10 +97,10 @@ export const resolvers = {
       user.__typename = 'LoggedInUser'
       const data = {
         isLoggedIn,
-        loggedInUser: user
+        loggedInUser: user,
       }
       cache.writeData({ data })
       return isLoggedIn
-    }
-  }
+    },
+  },
 }

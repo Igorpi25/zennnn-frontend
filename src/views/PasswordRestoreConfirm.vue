@@ -51,7 +51,7 @@ export default {
       successMessage: '',
       email: '',
       password: '',
-      code: ''
+      code: '',
     }
   },
   mounted () {
@@ -76,16 +76,14 @@ export default {
         } else {
           this.successMessage = ''
           this.errorMessages = []
-          const response = await this.$Auth
-            .forgotPasswordConfirm(this.email, this.code, this.password)
+          await this.$Auth.forgotPasswordConfirm(this.email, this.code, this.password)
           this.successMessage = 'Password restored.'
-          console.log('Forgot password confirm', response)
         }
       } catch (error) {
         this.errorMessages.push(error)
         throw new Error(error)
       }
-    }
-  }
+    },
+  },
 }
 </script>

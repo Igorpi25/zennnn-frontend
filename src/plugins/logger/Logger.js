@@ -3,7 +3,7 @@ const LOG_LEVEL = {
   DEBUG: 2,
   INFO: 3,
   WARN: 4,
-  ERROR: 5
+  ERROR: 5,
 }
 
 export default class Logger {
@@ -18,7 +18,7 @@ export default class Logger {
     const dt = new Date()
     return [
       this._padding(dt.getMinutes()),
-      this._padding(dt.getSeconds())
+      this._padding(dt.getSeconds()),
     ].join(':') + '.' + dt.getMilliseconds()
   }
   _log (type, ...msg) {
@@ -33,9 +33,9 @@ export default class Logger {
       return
     }
 
-    let log = console.log.bind(console)
-    if (type === 'ERROR' && console.error) { log = console.error.bind(console) }
-    if (type === 'WARN' && console.warn) { log = console.warn.bind(console) }
+    let log = console.log.bind(console) // eslint-disable-line no-console
+    if (type === 'ERROR' && console.error) { log = console.error.bind(console) } // eslint-disable-line no-console
+    if (type === 'WARN' && console.warn) { log = console.warn.bind(console) } // eslint-disable-line no-console
 
     let prefix = `[${type}] ${this._ts()}`
     if (this.name) {
