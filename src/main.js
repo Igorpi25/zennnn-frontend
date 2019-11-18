@@ -15,6 +15,7 @@ import { typeDefs, resolvers } from './schema'
 import router from './router'
 import Auth from './plugins/auth'
 import './plugins/logger'
+import i18n from './plugins/i18n'
 
 Vue.config.productionTip = false
 
@@ -152,5 +153,6 @@ const apolloProvider = new VueApollo({
 new Vue({
   apolloProvider,
   router,
+  i18n,
   render: h => h(App),
 }).$mount('#app')
