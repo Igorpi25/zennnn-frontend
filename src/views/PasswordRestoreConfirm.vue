@@ -42,11 +42,6 @@
 </template>
 
 <script>
-import {
-  CognitoUserPool,
-  CognitoUser
-} from 'amazon-cognito-identity-js'
-
 export default {
   name: 'SignUp',
   data () {
@@ -81,7 +76,8 @@ export default {
         } else {
           this.successMessage = ''
           this.errorMessages = []
-          const response = await this.forgotPasswordConfirm()
+          const response = await this.$Auth
+            .forgotPasswordConfirm(this.email, this.code, this.password)
           this.successMessage = 'Password restored.'
           console.log('Forgot password confirm', response)
         }
@@ -89,30 +85,6 @@ export default {
         this.errorMessages.push(error)
         throw new Error(error)
       }
-    },
-    forgotPasswordConfirm () {
-      const userPoolData = {
-        UserPoolId: 'ap-northeast-1_NEJZeLMhQ',
-        ClientId: '1nmop1fsfqa28cvapbgd1rffqo'
-      }
-      const userPool = new CognitoUserPool(userPoolData)
-      const userData = {
-        Username: this.email,
-        Pool: userPool,
-      }
-      const cognitoUser = new CognitoUser(userData)
-      return new Promise((resolve, reject) => {
-        cognitoUser.confirmPassword(this.code, this.password, {
-          onSuccess: () => {
-            console.log('Password confirmed!')
-            resolve()
-          },
-
-          onFailure: (err) => {
-            reject(err)
-          },
-        })
-      })
     }
   }
 }

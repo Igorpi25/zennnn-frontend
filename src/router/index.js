@@ -7,6 +7,7 @@ import SignUp from '../views/SignUp.vue'
 import PasswordRestore from '../views/PasswordRestore.vue'
 import PasswordRestoreConfirm from '../views/PasswordRestoreConfirm.vue'
 import NotFound from '../views/NotFound.vue'
+import Auth from '../plugins/auth'
 import { apolloClient } from '../main'
 import { GET_PROFILE_CLIENT, GET_PROFILE, GET_ROLE_IN_PROJECT } from '../schema'
 
@@ -118,9 +119,14 @@ router.beforeEach(async (to, from, next) => {
     next()
     return
   }
-  // check amplify auth, for init
-  const token = localStorage.getItem('token') || ''
-  const loggedIn = !!token
+  // check cognito auth, for init
+  let session = null
+  try {
+    session = await Auth.currentSession()
+  } catch (error) { // eslint-disable-line
+    session = null
+  }
+  const loggedIn = !!session
   let localData = {
     isLoggedIn: loggedIn
   }

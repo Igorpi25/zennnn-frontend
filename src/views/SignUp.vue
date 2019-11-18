@@ -53,8 +53,6 @@
 </template>
 
 <script>
-import { CognitoUserPool } from 'amazon-cognito-identity-js'
-
 export default {
   name: 'SignUp',
   data () {
@@ -86,7 +84,12 @@ export default {
         } else {
           this.successMessage = ''
           this.errorMessages = []
-          const data = await this.signUp()
+          const attrs = {
+            family_name: this.lastName,
+            given_name: this.firstName,
+            email: this.email
+          }
+          const data = await this.signUp(this.email, this.password, attrs)
           this.successMessage = 'Register success. Follow the link in the email.'
           console.log('Sign Up', data)
         }
@@ -94,34 +97,6 @@ export default {
         this.errorMessages.push(error)
         throw new Error(error)
       }
-    },
-    signUp () {
-      const userPoolData = {
-        UserPoolId: 'ap-northeast-1_NEJZeLMhQ',
-        ClientId: '1nmop1fsfqa28cvapbgd1rffqo'
-      }
-      const userPool = new CognitoUserPool(userPoolData)
-      const username = this.email
-      const password = this.password
-      const attrs = {
-        family_name: this.lastName,
-        given_name: this.firstName,
-        email: this.email
-      }
-      let attributes = []
-      Object.keys(attrs).map(key => {
-        const attr = { Name: key, Value: attrs[key] }
-        attributes.push(attr)
-      })
-      return new Promise((resolve, reject) => {
-        userPool.signUp(username, password, attributes, null, (err, data) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(data)
-          }
-        })
-      })
     }
   }
 }

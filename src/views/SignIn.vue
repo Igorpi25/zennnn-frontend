@@ -38,13 +38,6 @@
 </template>
 
 <script>
-import {
-  CognitoUserPool,
-  CognitoUser,
-  AuthenticationDetails
-} from 'amazon-cognito-identity-js'
-import { GET_PROFILE_CLIENT, LOGIN } from '../schema'
-
 export default {
   name: 'SignIn',
   data () {
@@ -72,7 +65,7 @@ export default {
           this.setErrorMessages()
         } else {
           this.errorMessages = []
-          const response = await this.signIn()
+          const response = await this.$Auth.signIn(this.email, this.password)
           console.log('Sign In', response)
           const route = this.$route.query.redirect
             ? this.$route.query.redirect : { name: 'home' }
@@ -82,61 +75,6 @@ export default {
         this.errorMessages.push(error)
         throw new Error(error)
       }
-    },
-    signIn () {
-      const authenticationData = {
-        Username: this.email,
-        Password: this.password,
-      }
-      const authenticationDetails = new AuthenticationDetails(
-        authenticationData
-      )
-      const userPoolData = {
-        UserPoolId: 'ap-northeast-1_NEJZeLMhQ',
-        ClientId: '1nmop1fsfqa28cvapbgd1rffqo'
-      }
-      const userPool = new CognitoUserPool(userPoolData)
-      const userData = {
-        Username: this.email,
-        Pool: userPool,
-      }
-      const cognitoUser = new CognitoUser(userData)
-      return new Promise((resolve, reject) => {
-        cognitoUser.authenticateUser(authenticationDetails, {
-          onSuccess: (result) => {
-            const idToken = result.getIdToken().getJwtToken()
-            // set token to session storage for Login operation
-            // after remove from session storage
-            sessionStorage.setItem('loginToken', idToken)
-            this.$apollo.mutate({
-              mutation: LOGIN
-            }).then(loginResult => {
-              if (loginResult && loginResult.data && loginResult.data.login) {
-                this.$apollo.provider.defaultClient.cache.writeQuery({
-                  query: GET_PROFILE_CLIENT,
-                  data: {
-                    getProfile: loginResult.data.login
-                  }
-                })
-              }
-              sessionStorage.removeItem('loginToken')
-              localStorage.setItem('token', idToken)
-              this.$apollo.provider.defaultClient.cache.writeData({
-                data: {
-                  isLoggedIn: true
-                }
-              })
-              resolve(result)
-            }).catch(error => {
-              console.warn('Login Error', error)
-              reject(error)
-            })
-          },
-          onFailure: (err) => {
-            reject(err)
-          },
-        })
-      })
     }
   }
 }

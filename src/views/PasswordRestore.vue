@@ -34,11 +34,6 @@
 </template>
 
 <script>
-import {
-  CognitoUserPool,
-  CognitoUser
-} from 'amazon-cognito-identity-js'
-
 export default {
   name: 'SignUp',
   data () {
@@ -67,7 +62,8 @@ export default {
         } else {
           this.successMessage = ''
           this.errorMessages = []
-          const response = await this.forgotPassword()
+          const response = await this.$Auth
+            .forgotPassword(this.email)
           this.successMessage = 'Password restore link send in the email.'
           console.log('Forgot password', response)
         }
@@ -75,30 +71,6 @@ export default {
         this.errorMessages.push(error)
         throw new Error(error)
       }
-    },
-    forgotPassword () {
-      const userPoolData = {
-        UserPoolId: 'ap-northeast-1_NEJZeLMhQ',
-        ClientId: '1nmop1fsfqa28cvapbgd1rffqo'
-      }
-      const userPool = new CognitoUserPool(userPoolData)
-      const userData = {
-        Username: this.email,
-        Pool: userPool,
-      }
-      const cognitoUser = new CognitoUser(userData)
-      return new Promise((resolve, reject) => {
-        cognitoUser.forgotPassword({
-          onSuccess: (data) => {
-            console.log('CodeDeliveryData from forgotPassword: ' + data)
-            resolve(data)
-          },
-
-          onFailure: (err) => {
-            reject(err)
-          },
-        })
-      })
     }
   }
 }

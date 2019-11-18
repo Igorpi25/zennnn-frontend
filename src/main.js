@@ -13,6 +13,7 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemo
 import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from './schema'
 import router from './router'
+import Auth from './plugins/auth'
 
 Vue.config.productionTip = false
 
@@ -43,12 +44,14 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 
 const cache = new InMemoryCache({ fragmentMatcher })
 
-const authLink = setContext(({ operationName }, { headers }) => {
+const authLink = setContext(async ({ operationName }, { headers }) => {
   // on Login get token from sessionStorage
   // get the authentication token from local storage if it exists
+  const session = await Auth.currentSession()
   const token = operationName === 'Login'
-    ? sessionStorage.getItem('loginToken')
-    : localStorage.getItem('token')
+    // on Login operation, session setted to Memory storage
+    ? session.getIdToken().getJwtToken()
+    : session.getIdToken().getJwtToken()
   // return the headers to the context so httpLink can read them
   return {
     headers: {
@@ -69,8 +72,9 @@ const wsLink = new WebSocketLink({
   uri: 'ws://localhost:4000/graphql',
   options: {
     reconnect: true,
-    connectionParams: () => {
-      const token = localStorage.getItem('token')
+    connectionParams: async () => {
+      const session = await Auth.currentSession()
+      const token = session.getIdToken().getJwtToken()
       return {
         authToken: token || ''
       }
@@ -88,7 +92,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
           // error code is set to UNAUTHENTICATED
           // when AuthenticationError thrown in resolver
           cache.reset()
-          localStorage.removeItem('token')
+          Auth.signOut()
           router.push({
             name: 'signin',
             query: router.currentRoute.fullPath && router.currentRoute.fullPath !== '/'

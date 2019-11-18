@@ -37,8 +37,8 @@ export default {
   },
   methods: {
     logout () {
-      localStorage.removeItem('token')
       apolloClient.store.reset()
+      this.$Auth.signOut()
       this.$router.push({ name: 'signin' })
     }
   }
