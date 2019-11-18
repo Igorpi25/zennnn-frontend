@@ -8,13 +8,14 @@ const AuthPlugin = {
     if (AuthPlugin.installed) return
     Object.defineProperties(Vue.prototype, {
       $Auth: {
-        get() {
+        get () {
           return _instance
         }
       }
     })
   }
 }
+
 Vue.use(AuthPlugin)
 
 export default _instance

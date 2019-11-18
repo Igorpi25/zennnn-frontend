@@ -14,6 +14,7 @@ import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from './schema'
 import router from './router'
 import Auth from './plugins/auth'
+import './plugins/logger'
 
 Vue.config.productionTip = false
 

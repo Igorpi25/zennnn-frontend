@@ -5,11 +5,13 @@ import {
   AuthenticationDetails
 } from 'amazon-cognito-identity-js'
 import StorageHelper from './StorageHelper'
+import Logger from '../logger/Logger'
 
 import { apolloClient } from '../../main'
 import { GET_PROFILE_CLIENT, LOGIN } from '../../schema'
 
 const USER_ADMIN_SCOPE = 'aws.cognito.signin.user.admin'
+const logger = new Logger('Auth')
 
 export default class Auth {
   constructor (config = {}) {
@@ -90,7 +92,7 @@ export default class Auth {
         })
         resolve()
       }).catch(error => {
-        console.warn('Login Error', error)
+        logger.warn('Login Error', error)
         reject(error)
       })
     })
@@ -128,7 +130,6 @@ export default class Auth {
     return new Promise((resolve, reject) => {
       cognitoUser.forgotPassword({
         onSuccess: (data) => {
-          console.log('CodeDeliveryData from forgotPassword: ' + data)
           resolve(data)
         },
         onFailure: (err) => {
@@ -148,7 +149,6 @@ export default class Auth {
     return new Promise((resolve, reject) => {
       cognitoUser.confirmPassword(code, password, {
         onSuccess: () => {
-          console.log('Password confirmed!')
           resolve()
         },
         onFailure: (err) => {
@@ -166,14 +166,10 @@ export default class Auth {
         // await this.cognitoIdentitySignOut(opts, user)
         user.signOut()
 			} else {
-        // for debug
-        // eslint-diable-next-line
-        console.log('no current Cognito user')
+        logger.debug('no current Cognito user')
 			}
 		} else {
-      // for debug
-      // eslint-diable-next-line
-      console.log('no Congito User pool')
+      logger.debug('no Congito User pool')
     }
   }
   /**
@@ -188,19 +184,14 @@ export default class Auth {
 		return new Promise((resolve, reject) => {
 			const user = that.userPool.getCurrentUser()
       if (!user) {
-        // for debug
-        // eslint-disable-next-line
-        console.log('Failed to get user from user pool')
-        reject('No current user')
-        return
+        logger.debug('Failed to get user from user pool')
+        return reject('No current user')
       }
 
       // refresh the session if the session expired.
       user.getSession((err, session) => {
         if (err) {
-          // for debug
-          // eslint-disable-next-line
-          console.log('Failed to get the user session', err)
+          logger.debug('Failed to get the user session', err)
           return reject(err)
         }
 
@@ -212,9 +203,7 @@ export default class Auth {
           user.getUserData(
             (err, data) => {
               if (err) {
-                // for debug
-                // eslint-disable-next-line
-                console.log('getting user data failed', err)
+                logger.debug('getting user data failed', err)
                 // Make sure the user is still valid
                 if (
                   err.message === 'User is disabled' ||
@@ -247,9 +236,7 @@ export default class Auth {
             { bypassCache }
           )
         } else {
-          // for debug
-          // eslint-disable-next-line
-          console.log(
+          logger.debug(
             `Unable to get the user data because the ${USER_ADMIN_SCOPE} ` +
               `is not in the scopes of the access token`
           )
@@ -264,9 +251,7 @@ export default class Auth {
 	 */
 	currentSession () {
     const that = this
-    // for debug
-    // eslint-disable-next-line
-    console.log('Getting current session')
+    logger.debug('Getting current session')
 		// Purposely not calling the reject method here because we don't need a console error
 		if (!this.userPool) {
 			return Promise.reject()
@@ -282,16 +267,12 @@ export default class Auth {
 							return resolve(session)
 						})
 						.catch(e => {
-              // for debug
-              // eslint-disable-next-line
-              console.log('Failed to get the current session', e)
+              logger.debug('Failed to get the current session', e)
 							return reject(e)
 						})
 				})
 				.catch(e => {
-          // for debug
-          // eslint-disable-next-line
-          console.log('Failed to get the current user', e)
+          logger.debug('Failed to get the current user', e)
 					return reject(e)
 				})
 		})
@@ -303,25 +284,17 @@ export default class Auth {
 	 */
 	userSession (user) {
 		if (!user) {
-			// for debug
-      // eslint-disable-next-line
-      console.log('the user is null')
+			logger.debug('the user is null')
 			return Promise.reject(new Error('no user session.'))
 		}
 		return new Promise((resolve, reject) => {
-      // for debug
-      // eslint-disable-next-line
-      console.log('Getting the session from this user:', user)
+      logger.debug('Getting the session from this user:', user)
 			user.getSession((err, session) => {
 				if (err) {
-          // for debug
-          // eslint-disable-next-line
-          console.log('Failed to get the session from user', user)
+          logger.debug('Failed to get the session from user', user)
 					return reject(err)
 				} else {
-          // for debug
-          // eslint-disable-next-line
-          console.log('Succeed to get the user session', session)
+          logger.log('Succeed to get the user session', session)
 					return resolve(session)
 				}
 			})
