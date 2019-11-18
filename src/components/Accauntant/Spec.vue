@@ -9,7 +9,7 @@
         <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       </div>
     </h1>
-    Estimate Shipping date: 
+    Estimate Shipping date:
     <input
       v-model="spec.estimateShippingDate"
       type="text"
@@ -70,12 +70,12 @@ const GET_SPEC = gql`
 export default {
   name: 'Spec',
   components: {
-    Invoice,
+    Invoice
   },
   data () {
     return {
       createLoading: false,
-      updateLoading: false,
+      updateLoading: false
     }
   },
   computed: {
@@ -111,8 +111,8 @@ export default {
             }
           `,
           variables: {
-            specId: this.spec.id,
-          },
+            specId: this.spec.id
+          }
         })
       } catch (error) {
         throw new Error(error)
@@ -135,7 +135,7 @@ export default {
           variables: {
             specId: this.spec.id,
             specInput
-          },
+          }
         })
       } catch (error) {
         throw new Error(error)

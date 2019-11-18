@@ -40,7 +40,7 @@ export default class Auth {
     }
     const authenticationData = {
       Username: username,
-      Password: password,
+      Password: password
     }
     const authenticationDetails = new AuthenticationDetails(
       authenticationData
@@ -68,7 +68,7 @@ export default class Auth {
         },
         onFailure: (err) => {
           reject(err)
-        },
+        }
       })
     })
   }
@@ -134,7 +134,7 @@ export default class Auth {
         },
         onFailure: (err) => {
           reject(err)
-        },
+        }
       })
     })
   }
@@ -153,39 +153,39 @@ export default class Auth {
         },
         onFailure: (err) => {
           reject(err)
-        },
+        }
       })
     })
   }
   signOut (opts) { // eslint-disable-line
-		this._cleanCachedItems()
-		if (this.userPool) {
-			const user = this.userPool.getCurrentUser()
-			if (user) {
+    this._cleanCachedItems()
+    if (this.userPool) {
+      const user = this.userPool.getCurrentUser()
+      if (user) {
         // TODO global signout method
         // await this.cognitoIdentitySignOut(opts, user)
         user.signOut()
-			} else {
+      } else {
         logger.debug('no current Cognito user')
-			}
-		} else {
+      }
+    } else {
       logger.debug('no Congito User pool')
     }
   }
   /**
-	 * Get current authenticated user
-	 * @return - A promise resolves to current authenticated CognitoUser if success
-	 */
-	currentUserPoolUser (params) {
-		if (!this.userPool) {
+   * Get current authenticated user
+   * @return - A promise resolves to current authenticated CognitoUser if success
+   */
+  currentUserPoolUser (params) {
+    if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
-		const that = this
-		return new Promise((resolve, reject) => {
-			const user = that.userPool.getCurrentUser()
+    const that = this
+    return new Promise((resolve, reject) => {
+      const user = that.userPool.getCurrentUser()
       if (!user) {
         logger.debug('Failed to get user from user pool')
-        return reject('No current user')
+        return reject(new Error('No current user'))
       }
 
       // refresh the session if the session expired.
@@ -223,7 +223,7 @@ export default class Auth {
               for (let i = 0; i < data.UserAttributes.length; i++) {
                 const attribute = {
                   Name: data.UserAttributes[i].Name,
-                  Value: data.UserAttributes[i].Value,
+                  Value: data.UserAttributes[i].Value
                 }
                 const userAttribute = new CognitoUserAttribute(attribute)
                 attributeList.push(userAttribute)
@@ -243,62 +243,62 @@ export default class Auth {
           return resolve(user)
         }
       })
-		})
+    })
   }
   /**
-	 * Get current user's session
-	 * @return - A promise resolves to session object if success
-	 */
-	currentSession () {
+   * Get current user's session
+   * @return - A promise resolves to session object if success
+   */
+  currentSession () {
     const that = this
     logger.debug('Getting current session')
-		// Purposely not calling the reject method here because we don't need a console error
-		if (!this.userPool) {
-			return Promise.reject()
-		}
+    // Purposely not calling the reject method here because we don't need a console error
+    if (!this.userPool) {
+      return Promise.reject() //eslint-disable-line
+    }
 
-		return new Promise((resolve, reject) => {
-			that
-				.currentUserPoolUser()
-				.then(user => {
-					that
-						.userSession(user)
-						.then(session => {
-							return resolve(session)
-						})
-						.catch(e => {
+    return new Promise((resolve, reject) => {
+      that
+        .currentUserPoolUser()
+        .then(user => {
+          that
+            .userSession(user)
+            .then(session => {
+              return resolve(session)
+            })
+            .catch(e => {
               logger.debug('Failed to get the current session', e)
-							return reject(e)
-						})
-				})
-				.catch(e => {
+              return reject(e)
+            })
+        })
+        .catch(e => {
           logger.debug('Failed to get the current user', e)
-					return reject(e)
-				})
-		})
+          return reject(e)
+        })
+    })
   }
   /**
-	 * Get the corresponding user session
-	 * @param {Object} user - The CognitoUser object
-	 * @return - A promise resolves to the session
-	 */
-	userSession (user) {
-		if (!user) {
-			logger.debug('the user is null')
-			return Promise.reject(new Error('no user session.'))
-		}
-		return new Promise((resolve, reject) => {
+   * Get the corresponding user session
+   * @param {Object} user - The CognitoUser object
+   * @return - A promise resolves to the session
+   */
+  userSession (user) {
+    if (!user) {
+      logger.debug('the user is null')
+      return Promise.reject(new Error('no user session.'))
+    }
+    return new Promise((resolve, reject) => {
       logger.debug('Getting the session from this user:', user)
-			user.getSession((err, session) => {
-				if (err) {
+      user.getSession((err, session) => {
+        if (err) {
           logger.debug('Failed to get the session from user', user)
-					return reject(err)
-				} else {
+          return reject(err)
+        } else {
           logger.log('Succeed to get the user session', session)
-					return resolve(session)
-				}
-			})
-		})
+          return resolve(session)
+        }
+      })
+    })
   }
   attributesToObject (attributes) {
     const obj = {}
@@ -320,9 +320,9 @@ export default class Auth {
     this._storage.clear()
   }
   _createCognitoUser (username, forceMemoryStorage) {
-		const userData = {
-			Username: username,
-			Pool: this.userPool
+    const userData = {
+      Username: username,
+      Pool: this.userPool
     }
     if (forceMemoryStorage) {
       userData.Storage = this._memoryStorage
@@ -331,7 +331,7 @@ export default class Auth {
     }
     userData.Storage = this._storage
 
-		const user = new CognitoUser(userData)
-		return user
-	}
+    const user = new CognitoUser(userData)
+    return user
+  }
 }

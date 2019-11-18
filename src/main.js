@@ -65,7 +65,7 @@ const authLink = setContext(async ({ operationName }, { headers }) => {
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: 'http://localhost:3000/graphql',
+  uri: 'http://localhost:3000/graphql'
 })
 
 // Create the subscription websocket link
@@ -80,7 +80,7 @@ const wsLink = new WebSocketLink({
         authToken: token || ''
       }
     }
-  },
+  }
 })
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -97,7 +97,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
           router.push({
             name: 'signin',
             query: router.currentRoute.fullPath && router.currentRoute.fullPath !== '/'
-              ? { redirect: router.currentRoute.fullPath }: {}
+              ? { redirect: router.currentRoute.fullPath } : {}
           })
           break
         default:
@@ -128,7 +128,7 @@ export const apolloClient = new ApolloClient({
   cache,
   typeDefs,
   resolvers,
-  connectToDevTools: true,
+  connectToDevTools: true
 })
 
 const data = {
@@ -142,7 +142,7 @@ apolloClient.onResetStore(() => cache.writeData({ data }))
 Vue.use(VueApollo)
 
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient,
+  defaultClient: apolloClient
 })
 
 new Vue({

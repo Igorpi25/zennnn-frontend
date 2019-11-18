@@ -1,6 +1,6 @@
 <template>
   <div style="padding-bottom: 8px">
-    Продукт: 
+    Продукт:
     <div>
       <div>
         <input
@@ -86,7 +86,7 @@ export default {
           variables: {
             productId: this.content.id,
             productInput
-          },
+          }
         })
       } catch (error) {
         throw new Error(error)
@@ -111,15 +111,15 @@ export default {
           `,
           // Parameters
           variables: {
-            productId: this.content.id,
-          },
+            productId: this.content.id
+          }
         })
       } catch (error) {
         throw new Error(error)
       } finally {
         this.deleteLoading = false
       }
-    },
-  },
+    }
+  }
 }
 </script>

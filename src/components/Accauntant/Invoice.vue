@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Накладная: 
+    <h3>Накладная:
       <span>
         {{ content.name }}
       </span>
@@ -14,7 +14,7 @@
       :content="item"
     />
     <div>
-      Purchase date: 
+      Purchase date:
       <input
         v-model="content.purchaseDate"
         type="text"
@@ -33,7 +33,7 @@ import Product from './Product.vue'
 export default {
   name: 'Invoice',
   components: {
-    Product,
+    Product
   },
   props: {
     content: {
@@ -44,7 +44,7 @@ export default {
   data () {
     return {
       createLoading: false,
-      updateLoading: false,
+      updateLoading: false
     }
   },
   methods: {
@@ -60,8 +60,8 @@ export default {
             }
           `,
           variables: {
-            invoiceId: this.content.id,
-          },
+            invoiceId: this.content.id
+          }
         })
       } catch (error) {
         throw new Error(error)
@@ -84,7 +84,7 @@ export default {
           variables: {
             invoiceId: this.content.id,
             invoiceInput
-          },
+          }
         })
       } catch (error) {
         throw new Error(error)

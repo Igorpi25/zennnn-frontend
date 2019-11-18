@@ -58,12 +58,12 @@ const GET_SPEC = gql`
 export default {
   name: 'Spec',
   components: {
-    Invoice,
+    Invoice
   },
   data () {
     return {
       createLoading: false,
-      updateLoading: false,
+      updateLoading: false
     }
   },
   computed: {
@@ -99,8 +99,8 @@ export default {
             }
           `,
           variables: {
-            specId: this.spec.id,
-          },
+            specId: this.spec.id
+          }
         })
       } catch (error) {
         throw new Error(error)
@@ -123,7 +123,7 @@ export default {
           variables: {
             specId: this.spec.id,
             specInput
-          },
+          }
         })
       } catch (error) {
         throw new Error(error)

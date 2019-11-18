@@ -157,13 +157,13 @@ export default {
     ManagerSpec,
     AccauntantSpec,
     WarehousemanSpec,
-    FreelancerSpec,
+    FreelancerSpec
   },
   data () {
     return {
       role: null,
       createLoading: false,
-      updateLoading: false,
+      updateLoading: false
     }
   },
   computed: {
@@ -201,7 +201,6 @@ export default {
     }
   },
   mounted () {
-
     const subQuery = gql`
       subscription SpecDelta ($specId: ID!) {
         specDelta (specId: $specId) {
@@ -275,7 +274,7 @@ export default {
         const operation = delta.operation
         const typename = delta.payload.__typename
 
-        console.log(`[${typename}]: ${JSON.stringify(data)}`)
+        this.$logger.info(`[${typename}]: ${JSON.stringify(data)}`)
 
         // PRODUCT
 
@@ -291,7 +290,7 @@ export default {
             apolloClient.writeFragment({
               id: `${TYPENAME.INVOICE}:${delta.parentId}`,
               fragment: INVOICE_PRODUCTS_FRAGMENT,
-              data: parentInvoice,
+              data: parentInvoice
             })
           }
         }
@@ -300,7 +299,7 @@ export default {
           apolloClient.writeFragment({
             id: `${TYPENAME.PRODUCT}:${delta.payload.id}`,
             fragment: PRODUCT_FRAGMENT,
-            data: delta.payload,
+            data: delta.payload
           })
         }
 
@@ -317,7 +316,7 @@ export default {
             apolloClient.writeFragment({
               id: `${TYPENAME.INVOICE}:${delta.parentId}`,
               fragment: INVOICE_PRODUCTS_FRAGMENT,
-              data: parentInvoice,
+              data: parentInvoice
             })
           }
         }
@@ -336,7 +335,7 @@ export default {
             apolloClient.writeFragment({
               id: `${TYPENAME.SPEC}:${delta.parentId}`,
               fragment: SPEC_INVOICES_FRAGMENT,
-              data: parentSpec,
+              data: parentSpec
             })
           }
         }
@@ -362,7 +361,7 @@ export default {
             apolloClient.writeFragment({
               id: `${TYPENAME.SPEC}:${delta.parentId}`,
               fragment: SPEC_INVOICES_FRAGMENT,
-              data: parentSpec,
+              data: parentSpec
             })
           }
         }
@@ -376,13 +375,11 @@ export default {
             data: delta.payload
           })
         }
-
       },
       error (error) {
-        console.error(error)
-      },
+        this.$logger.warn(`Error: `, error)
+      }
     })
-
   },
   methods: {
     async createInvoice () {
@@ -401,8 +398,8 @@ export default {
             }
           `,
           variables: {
-            specId: this.specId,
-          },
+            specId: this.specId
+          }
         })
       } catch (error) {
         throw new Error(error)
@@ -425,7 +422,7 @@ export default {
           variables: {
             specId: this.specId,
             specInput
-          },
+          }
         })
       } catch (error) {
         throw new Error(error)

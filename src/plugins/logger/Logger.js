@@ -12,14 +12,14 @@ export default class Logger {
     this.level = level
   }
   _padding (n) {
-    return n < 10? '0' + n : '' + n
+    return n < 10 ? '0' + n : '' + n
   }
   _ts () {
     const dt = new Date()
     return [
       this._padding(dt.getMinutes()),
       this._padding(dt.getSeconds())
-    ].join(':') + '.' + dt.getMilliseconds();
+    ].join(':') + '.' + dt.getMilliseconds()
   }
   _log (type, ...msg) {
     let loggerLevelName = this.level

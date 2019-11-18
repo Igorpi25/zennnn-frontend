@@ -106,7 +106,7 @@ export default {
   data () {
     return {
       createLoading: false,
-      deleteLoading: null,
+      deleteLoading: null
     }
   },
   computed: {
@@ -118,7 +118,6 @@ export default {
     getSpecs: GET_SPECS
   },
   mounted () {
-
     const subQuery = gql`
       subscription delta {
         delta {
@@ -149,7 +148,7 @@ export default {
         const operation = data.delta.operation
         const typename = data.delta.payload.__typename
 
-        console.log(`[${typename}]: ${JSON.stringify(data)}`)
+        this.$logger.info(`[${typename}]: ${JSON.stringify(data)}`)
 
         if (operation === OPERATION.INSERT_SPEC) {
           const { getSpecs } = apolloClient.readQuery({
@@ -195,10 +194,9 @@ export default {
         }
       },
       error (error) {
-        console.error(error)
-      },
+        this.$logger.warn(`Error: `, error)
+      }
     })
-
   },
   methods: {
     async createSpec () {
@@ -274,7 +272,7 @@ export default {
         this.deleteLoading = null
       }
     }
-  },
+  }
 }
 </script>
 
