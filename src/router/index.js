@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from '../views/Home.vue'
+import Specs from '../views/Specs.vue'
 import Spec from '../views/Spec.vue'
 import SignIn from '../views/SignIn.vue'
 import SignUp from '../views/SignUp.vue'
@@ -11,11 +11,7 @@ import NotFound from '../views/NotFound.vue'
 
 import Auth from '../plugins/auth'
 import { apolloClient } from '../plugins/apollo'
-import {
-  GET_PROFILE,
-  GET_PROFILE_CLIENT,
-  GET_ROLE_IN_PROJECT,
-} from '../graphql/queries'
+import { GET_ROLE_IN_PROJECT } from '../graphql/queries'
 
 Vue.use(VueRouter)
 
@@ -23,7 +19,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home,
+    component: Specs,
     meta: {
       requiresAuth: true,
     },
@@ -121,32 +117,8 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.matched.some(record => record.meta.skipAuth)) {
-    next()
-    return
-  }
-  // check cognito auth, for init
-  let session = null
-  try {
-    session = await Auth.currentSession()
-  } catch (error) { // eslint-disable-line
-    session = null
-  }
-  const loggedIn = !!session
-  let localData = {
-    isLoggedIn: loggedIn,
-  }
-  if (loggedIn) {
-    const { getProfile } = await apolloClient.query({
-      query: GET_PROFILE_CLIENT,
-    })
-    if (!getProfile) {
-      await apolloClient.query({
-        query: GET_PROFILE,
-      })
-    }
-  }
-  apolloClient.cache.writeData({ data: localData })
+  // check auth
+  const loggedIn = await Auth.checkAuth()
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.

@@ -8,7 +8,8 @@ import StorageHelper from './StorageHelper'
 import Logger from '../logger/Logger'
 
 import { apolloClient } from '../apollo'
-import { GET_PROFILE_CLIENT, LOGIN } from '../../graphql/queries'
+import { GET_PROFILE } from '../../graphql/queries'
+import { LOGIN } from '../../graphql/mutations'
 
 const USER_ADMIN_SCOPE = 'aws.cognito.signin.user.admin'
 const logger = new Logger('Auth')
@@ -30,6 +31,62 @@ export default class Auth {
       ClientId: userPoolWebClientId,
     }
     this.userPool = new CognitoUserPool(userPoolData)
+  }
+  /**
+   * After signin tokens sets to Memory storage,
+   * after Login operation will be re setup to local storage
+   * @return - A promise resolves to set current authenticated User profile to cache
+   */
+  login () {
+    return new Promise((resolve, reject) => {
+      apolloClient.mutate({
+        mutation: LOGIN,
+      }).then(loginResult => {
+        if (loginResult && loginResult.data && loginResult.data.login) {
+          apolloClient.cache.writeQuery({
+            query: GET_PROFILE,
+            data: {
+              getProfile: loginResult.data.login,
+            },
+          })
+        }
+        apolloClient.cache.writeData({
+          data: {
+            isLoggedIn: true,
+          },
+        })
+        resolve()
+      }).catch(error => {
+        logger.warn('Login Error', error)
+        reject(error)
+      })
+    })
+  }
+  /**
+   * Check auth of current user
+   * @return {boolean} - logged in
+   */
+  async checkAuth () {
+    try {
+      const session = await this.currentSession()
+      const loggedIn = !!session
+      let localData = {
+        isLoggedIn: loggedIn,
+      }
+      if (loggedIn) {
+        // check profile
+        await apolloClient.query({
+          query: GET_PROFILE,
+          fetchPolicy: 'cache-first',
+        })
+      }
+      // set isLoggedIn to cache
+      apolloClient.cache.writeData({ data: localData })
+      return true
+    } catch (error) {
+      logger.debug('check auth error: ', error)
+      return false
+    }
   }
   signIn (username, password) {
     if (!this.userPool) {
@@ -69,31 +126,6 @@ export default class Auth {
         onFailure: (err) => {
           reject(err)
         },
-      })
-    })
-  }
-  login () {
-    return new Promise((resolve, reject) => {
-      apolloClient.mutate({
-        mutation: LOGIN,
-      }).then(loginResult => {
-        if (loginResult && loginResult.data && loginResult.data.login) {
-          apolloClient.cache.writeQuery({
-            query: GET_PROFILE_CLIENT,
-            data: {
-              getProfile: loginResult.data.login,
-            },
-          })
-        }
-        apolloClient.cache.writeData({
-          data: {
-            isLoggedIn: true,
-          },
-        })
-        resolve()
-      }).catch(error => {
-        logger.warn('Login Error', error)
-        reject(error)
       })
     })
   }

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { GET_PROFILE_CLIENT, GET_IS_LOGGED_IN } from './graphql/queries'
+import { GET_PROFILE, GET_IS_LOGGED_IN } from './graphql/queries'
 
 export default {
   name: 'app',
@@ -36,7 +36,8 @@ export default {
       query: GET_IS_LOGGED_IN,
     },
     getProfile: {
-      query: GET_PROFILE_CLIENT,
+      query: GET_PROFILE,
+      fetchPolicy: 'cache-only',
       skip () {
         return !this.isLoggedIn
       },

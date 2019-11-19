@@ -269,7 +269,7 @@ export default {
     const apolloClient = this.$apollo.provider.defaultClient
 
     observer.subscribe({
-      next ({ data }) {
+      next: ({ data }) => {
         const delta = data.specDelta
         const operation = delta.operation
         const typename = delta.payload.__typename
@@ -376,8 +376,8 @@ export default {
           })
         }
       },
-      error (error) {
-        this.$logger.warn(`Error: `, error)
+      error: (error) => {
+        this.$logger.warn('Error: ', error)
       },
     })
   },

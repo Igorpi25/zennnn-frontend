@@ -42,10 +42,7 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 const cache = new InMemoryCache({ fragmentMatcher })
 
 const authLink = setContext(async (request, { headers }) => {
-  // on Login get token from sessionStorage
-  // get the authentication token from local storage if it exists
   const session = await Auth.currentSession()
-  // on Login operation, session setted to Memory storage
   const token = session.getIdToken().getJwtToken()
   // return the headers to the context so httpLink can read them
   return {
