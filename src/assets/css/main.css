@@ -1,0 +1,12 @@
+@import "tailwindcss/base";
+@import "./base.css";
+@import "./fonts.css";
+
+@import "tailwindcss/utilities";
+
+:root {
+  --base-accent1: #404040;    /* spec invoice-header */
+  --base-accent2: #616161;    /* table header text */
+  --base-accent3: #252525;    /* table tr items */
+  --base-background: #0F0F0F; /* view */
+}

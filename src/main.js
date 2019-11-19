@@ -7,6 +7,11 @@ import {
   apolloProvider,
 } from './plugins'
 
+// Tailwindcss
+import './assets/css/main.css'
+
+Vue.config.productionTip = false
+
 new Vue({
   router,
   i18n,
