@@ -1,4 +1,9 @@
 import gql from 'graphql-tag'
+import {
+  SPEC_FRAGMENT,
+  INVOICE_FRAGMENT,
+  PRODUCT_FRAGMENT,
+} from './typeDefs'
 
 export const GET_ROLE_IN_PROJECT = gql`
   query GetRoleInProject($specId: ID!) {
@@ -22,4 +27,30 @@ export const GET_PROFILE = gql`
       picture
     }
   }
+`
+
+export const GET_SPECS = gql`
+  query GetSpecs {
+    getSpecs {
+      ...SpecFragment
+    }
+  }
+  ${SPEC_FRAGMENT}
+`
+
+export const GET_SPEC = gql`
+  query GetSpec ($specId: ID!) {
+    getSpec (specId: $specId) {
+      ...SpecFragment
+      invoices {
+        ...InvoiceFragment
+        products {
+          ...ProductFragment
+        }
+      }
+    }
+  }
+  ${SPEC_FRAGMENT}
+  ${INVOICE_FRAGMENT}
+  ${PRODUCT_FRAGMENT}
 `

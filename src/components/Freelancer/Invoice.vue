@@ -21,89 +21,14 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import Product from './Product.vue'
+import invoice from '../../mixins/invoice'
 
 export default {
-  name: 'Invoice',
+  name: 'FreelancerInvoice',
   components: {
     Product,
   },
-  props: {
-    content: {
-      type: Object,
-      required: true,
-    },
-  },
-  data () {
-    return {
-      createLoading: false,
-      updateLoading: false,
-    }
-  },
-  methods: {
-    async createProduct () {
-      try {
-        this.createLoading = true
-        await this.$apollo.mutate({
-          mutation: gql`
-            mutation CreateProduct($invoiceId: ID!) {
-              createProduct(invoiceId: $invoiceId) {
-                id
-              }
-            }
-          `,
-          variables: {
-            invoiceId: this.content.id,
-          },
-        })
-      } catch (error) {
-        throw new Error(error)
-      } finally {
-        this.createLoading = false
-      }
-    },
-    async updateInvoice (invoiceInput) {
-      try {
-        this.updateLoading = true
-        await this.$apollo.mutate({
-          mutation: gql`
-            mutation UpdateInvoice($invoiceId: ID!, $invoiceInput: InvoiceInput!) {
-              updateInvoice(invoiceId: $invoiceId, invoiceInput: $invoiceInput) {
-                id
-                name
-              }
-            }
-          `,
-          variables: {
-            invoiceId: this.content.id,
-            invoiceInput,
-          },
-        })
-      } catch (error) {
-        throw new Error(error)
-      } finally {
-        this.updateLoading = false
-      }
-    },
-  },
+  mixins: [invoice],
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>

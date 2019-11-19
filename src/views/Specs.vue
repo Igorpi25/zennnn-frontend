@@ -59,50 +59,14 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-
-const TYPENAME = {
-  SPEC: 'Spec',
-  INVOICE: 'Invoice',
-  PRODUCT: 'Product',
-}
-
-const OPERATION = {
-  INSERT_PRODUCT: 'INSERT_PRODUCT',
-  INSERT_INVOICE: 'INSERT_INVOICE',
-  INSERT_SPEC: 'INSERT_SPEC',
-  UPDATE_PRODUCT: 'UPDATE_PRODUCT',
-  UPDATE_INVOICE: 'UPDATE_INVOICE',
-  UPDATE_INVOICE_WITH_PRODUCTS: 'UPDATE_INVOICE_WITH_PRODUCTS',
-  UPDATE_SPEC: 'UPDATE_SPEC',
-  UPDATE_SPEC_WITH_INVOICES: 'UPDATE_SPEC_WITH_INVOICES',
-  DELETE_PRODUCT: 'DELETE_PRODUCT',
-  DELETE_INVOICE: 'DELETE_INVOICE',
-  DELETE_SPEC: 'DELETE_SPEC',
-}
-
-const GET_SPECS = gql`
-  query GetSpecs {
-    getSpecs {
-      id
-      name
-      totalPrice
-      estimateShippingDate
-    }
-  }
-`
-
-const SPEC_FRAGMENT = gql`
-  fragment SpecFragment on Spec {
-    id
-    name
-    totalPrice
-    estimateShippingDate
-  }
-`
+import { TYPENAME, OPERATION } from '../graphql/constants'
+import { SPEC_FRAGMENT } from '../graphql/typeDefs'
+import { GET_SPECS } from '../graphql/queries'
+import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
+import { SPECS_DELTA } from '../graphql/subscriptions'
 
 export default {
-  name: 'Spec',
+  name: 'Specs',
   data () {
     return {
       createLoading: false,
@@ -118,26 +82,8 @@ export default {
     getSpecs: GET_SPECS,
   },
   mounted () {
-    const subQuery = gql`
-      subscription delta {
-        delta {
-          operation
-          parentId
-          payload {
-            __typename
-            ... on Spec {
-              id
-              name
-              totalPrice
-              estimateShippingDate
-            }
-          }
-        }
-      }
-    `
-
     const observer = this.$apollo.subscribe({
-      query: subQuery,
+      query: SPECS_DELTA,
       fetchPolicy: 'no-cache',
     })
 
@@ -203,16 +149,7 @@ export default {
       try {
         this.createLoading = true
         const response = await this.$apollo.mutate({
-          mutation: gql`
-            mutation CreateSpec {
-              createSpec {
-                id
-                name
-                totalPrice
-                estimateShippingDate
-              }
-            }
-          `,
+          mutation: CREATE_SPEC,
         })
         if (response && response.data && response.data.createSpec) {
           const spec = response.data.createSpec
@@ -242,11 +179,7 @@ export default {
       try {
         this.deleteLoading = specId
         await this.$apollo.mutate({
-          mutation: gql`
-            mutation DeleteSpec($specId: ID!) {
-              deleteSpec(specId: $specId)
-            }
-          `,
+          mutation: DELETE_SPEC,
           variables: {
             specId,
           },

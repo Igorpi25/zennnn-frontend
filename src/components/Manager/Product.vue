@@ -48,78 +48,10 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import product from '../../mixins/product'
 
 export default {
-  name: 'Product',
-  props: {
-    content: {
-      type: Object,
-      required: true,
-    },
-  },
-  data () {
-    return {
-      updateLoading: false,
-      deleteLoading: false,
-    }
-  },
-  methods: {
-    async updateProduct (productInput) {
-      try {
-        this.updateLoading = true
-        // Call to the graphql mutation
-        await this.$apollo.mutate({
-          // Query
-          mutation: gql`
-            mutation updateProduct($productId: ID!, $productInput: ProductInput!) {
-              updateProduct(productId: $productId, productInput: $productInput) {
-                id
-                name
-                price
-                count
-                amount
-              }
-            }
-          `,
-          // Parameters
-          variables: {
-            productId: this.content.id,
-            productInput,
-          },
-        })
-      } catch (error) {
-        throw new Error(error)
-      } finally {
-        this.updateLoading = false
-      }
-    },
-    async deleteProduct () {
-      try {
-        this.deleteLoading = true
-        // Call to the graphql mutation
-        await this.$apollo.mutate({
-          // Query
-          mutation: gql`
-            mutation deleteProduct(
-              $productId: ID!
-            ) {
-              deleteProduct(
-                productId: $productId
-              )
-            }
-          `,
-          // Parameters
-          variables: {
-            productId: this.content.id,
-          },
-        })
-      } catch (error) {
-        throw new Error(error)
-      } finally {
-        this.deleteLoading = false
-      }
-    },
-  },
+  name: 'ManagerProduct',
+  mixins: [product],
 }
 </script>
