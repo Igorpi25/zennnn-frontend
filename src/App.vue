@@ -1,5 +1,6 @@
 <template>
-  <div id="app">
+  <!-- [data-app] for vuetify components -->
+  <div data-app="true" id="app">
     <div id="nav">
       <template v-if="isLoggedIn">
         {{ getProfile }}
