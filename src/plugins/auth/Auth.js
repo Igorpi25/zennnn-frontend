@@ -7,8 +7,8 @@ import {
 import StorageHelper from './StorageHelper'
 import Logger from '../logger/Logger'
 
-import { apolloClient } from '../../main'
-import { GET_PROFILE_CLIENT, LOGIN } from '../../schema'
+import { apolloClient } from '../apollo'
+import { GET_PROFILE_CLIENT, LOGIN } from '../../graphql/queries'
 
 const USER_ADMIN_SCOPE = 'aws.cognito.signin.user.admin'
 const logger = new Logger('Auth')

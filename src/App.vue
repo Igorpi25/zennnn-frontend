@@ -19,11 +19,17 @@
 </template>
 
 <script>
-import { apolloClient } from './main'
-import { GET_PROFILE_CLIENT, GET_IS_LOGGED_IN } from './schema'
+import { GET_PROFILE_CLIENT, GET_IS_LOGGED_IN } from './graphql/queries'
 
 export default {
   name: 'app',
+  metaInfo () {
+    return {
+      htmlAttrs: {
+        lang: this.$i18n.locale,
+      },
+    }
+  },
   apollo: {
     isLoggedIn: {
       query: GET_IS_LOGGED_IN,
@@ -37,7 +43,7 @@ export default {
   },
   methods: {
     logout () {
-      apolloClient.store.reset()
+      this.$apollo.provider.defaultClient.store.reset()
       this.$Auth.signOut()
       this.$router.push({ name: 'signin' })
     },

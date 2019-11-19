@@ -22,7 +22,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import { GET_ROLE_IN_PROJECT } from '@/schema'
+import { GET_ROLE_IN_PROJECT } from '@/graphql/queries'
 
 import OwnerSpec from '@/components/Owner/Spec.vue'
 import ManagerSpec from '@/components/Manager/Spec.vue'
