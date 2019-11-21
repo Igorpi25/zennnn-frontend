@@ -39,8 +39,8 @@ export const GET_SPECS = gql`
 `
 
 export const GET_SPEC = gql`
-  query GetSpec ($specId: ID!) {
-    getSpec (specId: $specId) {
+  query GetSpec ($id: ID!) {
+    getSpec (id: $id) {
       ...SpecFragment
       invoices {
         ...InvoiceFragment

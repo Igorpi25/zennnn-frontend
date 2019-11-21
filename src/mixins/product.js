@@ -14,14 +14,14 @@ export default {
     }
   },
   methods: {
-    async updateProduct (productInput) {
+    async updateProduct (input) {
       try {
         this.updateLoading = true
         await this.$apollo.mutate({
           mutation: UPDATE_PRODUCT,
           variables: {
-            productId: this.content.id,
-            productInput,
+            id: this.content.id,
+            input,
           },
         })
       } catch (error) {
@@ -36,7 +36,7 @@ export default {
         await this.$apollo.mutate({
           mutation: DELETE_PRODUCT,
           variables: {
-            productId: this.content.id,
+            id: this.content.id,
           },
         })
       } catch (error) {

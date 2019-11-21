@@ -5,7 +5,7 @@
         ref="name"
         :contenteditable="!updateLoading"
         placeholder="----"
-        @keydown.enter.stop.prevent="e => updateInvoice({ name: e.target.textContent || e.target.innerText })"
+        @keydown.enter.stop.prevent="e => updateInvoice({ invoiceNo: e.target.textContent || e.target.innerText })"
         @blur="onBlur"
       />
       <div v-if="updateLoading" class="spinner">
@@ -26,10 +26,10 @@
     <div>
       Purchase date:
       <input
-        v-model="content.purchaseDate"
+        v-model="content.shippingDate"
         type="text"
         size="20"
-        @change="e => updateInvoice({ purchaseDate: e.target.value })"
+        @change="e => updateInvoice({ shippingDate: e.target.value })"
       >
       Сумма: {{ content.totalPrice }}
     </div>

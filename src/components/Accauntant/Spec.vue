@@ -3,7 +3,7 @@
     <h1>
       Спецификация:
       <span>
-        {{ spec.name }}
+        {{ spec.specNo }}
       </span>
       <div v-if="updateLoading" class="spinner">
         <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>

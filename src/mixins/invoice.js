@@ -14,16 +14,16 @@ export default {
     }
   },
   watch: {
-    'content.name' (val) {
+    'content.invoiceNo' (val) {
       this.$refs.name.innerText = val || ''
     },
   },
   mounted () {
-    this.$refs.name.innerText = this.content.name || ''
+    this.$refs.name.innerText = this.content.invoiceNo || ''
   },
   methods: {
     onBlur () {
-      this.$refs.name.innerText = this.content.name || ''
+      this.$refs.name.innerText = this.content.invoiceNo || ''
     },
     async createProduct () {
       try {
@@ -40,14 +40,14 @@ export default {
         this.createLoading = false
       }
     },
-    async updateInvoice (invoiceInput) {
+    async updateInvoice (input) {
       try {
         this.updateLoading = true
         await this.$apollo.mutate({
           mutation: UPDATE_INVOICE,
           variables: {
-            invoiceId: this.content.id,
-            invoiceInput,
+            id: this.content.id,
+            input,
           },
         })
       } catch (error) {

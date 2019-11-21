@@ -7,7 +7,7 @@ export default {
       query: GET_SPEC,
       variables () {
         return {
-          specId: this.$route.params.specId,
+          id: this.specId,
         }
       },
       fetchPolicy: 'cache-only',
@@ -20,21 +20,24 @@ export default {
     }
   },
   computed: {
+    specId () {
+      return this.$route.params.specId
+    },
     spec () {
       return this.getSpec || {}
     },
   },
   watch: {
-    'spec.name' (val) {
+    'spec.specNo' (val) {
       this.$refs.name.innerText = val || ''
     },
   },
   mounted () {
-    this.$refs.name.innerText = this.spec.name || ''
+    this.$refs.name.innerText = this.spec.specNo || ''
   },
   methods: {
     onBlur () {
-      this.$refs.name.innerText = this.spec.name || ''
+      this.$refs.name.innerText = this.spec.specNo || ''
     },
     async createInvoice () {
       try {
@@ -51,14 +54,14 @@ export default {
         this.createLoading = false
       }
     },
-    async updateSpec (specInput) {
+    async updateSpec (input) {
       try {
         this.updateLoading = true
         await this.$apollo.mutate({
           mutation: UPDATE_SPEC,
           variables: {
-            specId: this.specId,
-            specInput,
+            id: this.specId,
+            input,
           },
         })
       } catch (error) {

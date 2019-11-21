@@ -2,7 +2,7 @@
   <div>
     <h3>Накладная:
       <span>
-        {{ content.name }}
+        {{ content.invoiceNo }}
       </span>
       <div v-if="updateLoading" class="spinner">
         <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>

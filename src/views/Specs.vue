@@ -175,20 +175,20 @@ export default {
         this.createLoading = false
       }
     },
-    async deleteSpec (specId) {
+    async deleteSpec (id) {
       try {
-        this.deleteLoading = specId
+        this.deleteLoading = id
         await this.$apollo.mutate({
           mutation: DELETE_SPEC,
           variables: {
-            specId,
+            id,
           },
         })
         const { getSpecs } = this.$apollo.provider.defaultClient.readQuery({
           query: GET_SPECS,
         })
 
-        const index = getSpecs.findIndex(el => el.id === specId)
+        const index = getSpecs.findIndex(el => el.id === id)
 
         if (index !== -1) {
           getSpecs.splice(index, 1)

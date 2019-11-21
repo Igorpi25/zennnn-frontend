@@ -33,18 +33,9 @@ export const SPEC_DELTA = gql`
         }
         ... on Invoice {
           ...InvoiceFragment
-          products {
-            ...ProductFragment
-          }
         }
         ... on Spec {
           ...SpecFragment
-          invoices {
-            ...InvoiceFragment
-            products {
-              ...ProductFragment
-            }
-          }
         }
       }
     }

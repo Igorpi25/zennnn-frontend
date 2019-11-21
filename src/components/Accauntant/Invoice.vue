@@ -2,7 +2,7 @@
   <div>
     <h3>Накладная:
       <span>
-        {{ content.name }}
+        {{ content.invoiceNo }}
       </span>
       <div v-if="updateLoading" class="spinner">
         <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -16,10 +16,10 @@
     <div>
       Purchase date:
       <input
-        v-model="content.purchaseDate"
+        v-model="content.shippingDate"
         type="text"
         size="20"
-        @change="e => updateInvoice({ purchaseDate: e.target.value })"
+        @change="e => updateInvoice({ shippingDate: e.target.value })"
       >
       Сумма: {{ content.totalPrice }}
     </div>

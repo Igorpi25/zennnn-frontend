@@ -64,7 +64,7 @@ export default {
       query: GET_SPEC,
       variables () {
         return {
-          specId: this.$route.params.specId,
+          id: this.specId,
         }
       },
     },
@@ -93,7 +93,7 @@ export default {
     const observer = this.$apollo.subscribe({
       query: SPEC_DELTA,
       variables: {
-        specId: this.$route.params.specId,
+        specId: this.specId,
       },
       fetchPolicy: 'no-cache',
     })

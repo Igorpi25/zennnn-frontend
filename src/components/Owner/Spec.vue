@@ -6,7 +6,7 @@
         ref="name"
         :contenteditable="!updateLoading"
         placeholder="----"
-        @keydown.enter.stop.prevent="e => updateSpec({ name: e.target.textContent || e.target.innerText })"
+        @keydown.enter.stop.prevent="e => updateSpec({ specNo: e.target.textContent || e.target.innerText })"
         @blur="onBlur"
       />
       <div v-if="updateLoading" class="spinner">
