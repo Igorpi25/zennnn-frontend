@@ -76,8 +76,8 @@ export default class StorageHelper {
         throw 'Forced use of memory storage.' // eslint-disable-line
       }
       this.storageWindow = window.localStorage
-      this.storageWindow.setItem('aws.amplify.test-ls', 1)
-      this.storageWindow.removeItem('aws.amplify.test-ls')
+      this.storageWindow.setItem('aws.test-ls', 1)
+      this.storageWindow.removeItem('aws.test-ls')
     } catch (exception) { // eslint-disable-line
       this.storageWindow = MemoryStorage
     }

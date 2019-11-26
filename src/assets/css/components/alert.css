@@ -1,0 +1,13 @@
+.alert {
+  @apply text-white py-3 px-8 relative flex;
+}
+.alert_close {
+  @apply flex-shrink-0 cursor-pointer select-none flex items-center;
+  @apply text-white;
+}
+.alert_close:hover {
+  color: #E0E0E0;
+}
+.alert_close svg {
+  fill: currentColor;
+}

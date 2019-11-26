@@ -26,7 +26,7 @@ export const ClientType = {
   NATURAL: 'NATURAL',
 }
 
-export const ROLE = {
+export const Role = {
   OWNER: 'OWNER',
   MANAGER: 'MANAGER',
   ACCAUNTANT: 'ACCAUNTANT',
@@ -34,13 +34,13 @@ export const ROLE = {
   FREELANCER: 'FREELANCER',
 }
 
-export const TYPENAME = {
+export const Typename = {
   SPEC: 'Spec',
   INVOICE: 'Invoice',
   PRODUCT: 'Product',
 }
 
-export const OPERATION = {
+export const Operation = {
   INSERT_PRODUCT: 'INSERT_PRODUCT',
   INSERT_INVOICE: 'INSERT_INVOICE',
   INSERT_SPEC: 'INSERT_SPEC',

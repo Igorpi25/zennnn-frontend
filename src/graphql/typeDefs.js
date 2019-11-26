@@ -101,6 +101,197 @@ export const SPEC_FRAGMENT = gql`
   }
 `
 
+export const CLIENT_FRAGMENT = gql`
+  fragment ClientFragment on Client {
+    id
+    uid
+    customUid
+    clientType
+    createdAt
+    updatedAt
+    # legal
+    companyName
+    legalAddress
+    legalAddressPostcode
+    mailingAddress
+    mailingAddressPostcode
+    phone
+    fax
+    email
+    itn
+    iec
+    psrn
+    bankName
+    bankAddress
+    bankAccountNumber
+    correspondentAccountNumber
+    bic
+    okpo
+    swift
+    ownerFullName
+    jobPosition
+    consignee
+    shippingAddress
+    contactPerson
+    contactMobilePhone
+    legalTypeNote
+    # natural
+    firstName
+    lastName
+    middleName
+    passportId
+    mobilePhone
+    additionalPhone
+    address
+    deliveryAddress
+    naturalTypeNote
+  }
+`
+
+export const CLIENT_TEMPLATE_FRAGMENT = gql`
+  fragment ClientTemplateFragment on ClientTemplate {
+    id
+    templateName
+    uid
+    # legal
+    companyName
+    legalAddress
+    legalAddressPostcode
+    mailingAddress
+    mailingAddressPostcode
+    phone
+    fax
+    email
+    itn
+    iec
+    psrn
+    bankName
+    bankAddress
+    bankAccountNumber
+    correspondentAccountNumber
+    bic
+    okpo
+    swift
+    ownerFullName
+    ownerJobPosition
+    consignee
+    shippingAddress
+    contactPerson
+    contactMobilePhone
+    legalTypeNote
+    # natural
+    firstName
+    lastName
+    middleName
+    passportId
+    mobilePhone
+    additionalPhone
+    address
+    deliveryAddress
+    naturalTypeNote
+  }
+`
+
+export const SUPPLIER_FRAGMENT = gql`
+  fragment SupplierFragment on Supplier {
+    id
+    uid
+    customUid
+    createdAt
+    updatedAt
+    companyNameSl
+    companyNameCl
+    website
+    companyType
+    fieldOfActivity
+    legalAddress
+    legalAddressPostcode
+    manufacturersAddress
+    manager
+    workPhone
+    fax
+    mobilePhone
+    wechat
+    email
+    skype
+    qq
+    bankName
+    bankAddress
+    accountNumber
+    swift
+    ownerFullName
+    ownerJobPosition
+    responsiblePerson
+    deliveryAddress
+    contactNumber
+    note
+  }
+`
+
+export const SUPPLIER_TEMPLATE_FRAGMENT = gql`
+  fragment SupplierTemplateFragment on SupplierTemplate {
+    id
+    templateName
+    uid
+    companyNameSl
+    companyNameCl
+    website
+    companyType
+    fieldOfActivity
+    legalAddress
+    legalAddressPostcode
+    manufacturersAddress
+    manager
+    workPhone
+    fax
+    mobilePhone
+    wechat
+    email
+    skype
+    qq
+    bankName
+    bankAddress
+    accountNumber
+    swift
+    ownerFullName
+    ownerJobPosition
+    responsiblePerson
+    deliveryAddress
+    contactNumber
+    note
+  }
+`
+
+export const SUPPLIER_SHOP_FRAGMENT = gql`
+  fragment SupplierShopFragment on SupplierShop {
+    id
+    name
+    address
+    seller
+    workPhone
+    mobilePhone
+    wechat
+    email
+    qq
+    skype
+  }
+`
+
+export const SUPPLIER_SHOP_TEMPLATE_FRAGMENT = gql`
+  fragment SupplierShopTemplateFragment on SupplierShopTemplate {
+    id
+    name
+    address
+    seller
+    workPhone
+    mobilePhone
+    wechat
+    email
+    qq
+    skype
+  }
+`
+
 export const SPEC_INVOICES_FRAGMENT = gql`
   fragment SpecInvoicesFragment on Spec {
     id

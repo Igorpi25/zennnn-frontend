@@ -1,0 +1,48 @@
+.form {
+  @apply w-full leading-tight;
+}
+
+.form-header {
+  @apply flex items-center py-3 px-8 font-semibold text-lg;
+  color: #989898;
+  background-color: #2e2e2e;
+}
+
+.form-body {
+  @apply flex flex-wrap bg-accent1 p-8;
+}
+
+.form-submit {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 48px;
+}
+@screen sm {
+  .form-submit {
+    @apply text-lg;
+  }
+}
+
+.form-append {
+  @apply flex justify-center p-8;
+}
+@screen sm {
+  .form-append {
+    @apply justify-start;
+  }
+}
+
+.form--max-w-sm {
+  max-width: 360px;
+}
+.form--max-w-md {
+  max-width: 660px;
+}
+@screen md {
+  .form-shadow .form-content {
+    @apply shadow-lg overflow-hidden;
+  }
+}
+.form--rounded .form-content {
+  @apply rounded-sm;
+}

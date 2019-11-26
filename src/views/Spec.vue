@@ -1,18 +1,5 @@
 <template>
   <div>
-    <div style="font-size: 12px; color: grey; text-align: left;">
-      <router-link
-        :to="{
-          name: 'home'
-        }"
-      >
-        Спецификации
-      </router-link> / {{ specId }}
-      <div v-if="$apollo.queries.getSpec.loading" class="spinner">
-        <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-      </div>
-      ({{ roleInProject }})
-    </div>
     <component
       v-if="roleInProject"
       :is="componentName"
@@ -27,7 +14,7 @@ import AccauntantSpec from '@/components/Accauntant/Spec.vue'
 import WarehousemanSpec from '@/components/Warehouseman/Spec.vue'
 import FreelancerSpec from '@/components/Freelancer/Spec.vue'
 
-import { ROLE, TYPENAME, OPERATION } from '../graphql/constants'
+import { Role, Typename, Operation } from '../graphql/enums'
 import {
   SPEC_FRAGMENT,
   INVOICE_FRAGMENT,
@@ -80,11 +67,11 @@ export default {
     },
     componentName () {
       switch (this.roleInProject) {
-        case ROLE.OWNER: return 'OwnerSpec'
-        case ROLE.MANAGER: return 'ManagerSpec'
-        case ROLE.ACCAUNTANT: return 'AccauntantSpec'
-        case ROLE.WAREHOUSEMAN: return 'WarehousemanSpec'
-        case ROLE.FREELANCER: return 'FreelancerSpec'
+        case Role.OWNER: return 'OwnerSpec'
+        case Role.MANAGER: return 'ManagerSpec'
+        case Role.ACCAUNTANT: return 'AccauntantSpec'
+        case Role.WAREHOUSEMAN: return 'WarehousemanSpec'
+        case Role.FREELANCER: return 'FreelancerSpec'
         default: return null
       }
     },
@@ -110,9 +97,9 @@ export default {
 
         // PRODUCT
 
-        if (operation === OPERATION.INSERT_PRODUCT) {
+        if (operation === Operation.INSERT_PRODUCT) {
           const parentInvoice = apolloClient.readFragment({
-            id: `${TYPENAME.INVOICE}:${delta.parentId}`,
+            id: `${Typename.INVOICE}:${delta.parentId}`,
             fragment: INVOICE_PRODUCTS_FRAGMENT,
           })
 
@@ -120,24 +107,24 @@ export default {
             parentInvoice.products.push(delta.payload)
 
             apolloClient.writeFragment({
-              id: `${TYPENAME.INVOICE}:${delta.parentId}`,
+              id: `${Typename.INVOICE}:${delta.parentId}`,
               fragment: INVOICE_PRODUCTS_FRAGMENT,
               data: parentInvoice,
             })
           }
         }
 
-        if (operation === OPERATION.UPDATE_PRODUCT) {
+        if (operation === Operation.UPDATE_PRODUCT) {
           apolloClient.writeFragment({
-            id: `${TYPENAME.PRODUCT}:${delta.payload.id}`,
+            id: `${Typename.PRODUCT}:${delta.payload.id}`,
             fragment: PRODUCT_FRAGMENT,
             data: delta.payload,
           })
         }
 
-        if (operation === OPERATION.DELETE_PRODUCT) {
+        if (operation === Operation.DELETE_PRODUCT) {
           let parentInvoice = apolloClient.readFragment({
-            id: `${TYPENAME.INVOICE}:${delta.parentId}`,
+            id: `${Typename.INVOICE}:${delta.parentId}`,
             fragment: INVOICE_PRODUCTS_FRAGMENT,
           })
 
@@ -146,7 +133,7 @@ export default {
           if (index !== -1) {
             parentInvoice.products.splice(index, 1)
             apolloClient.writeFragment({
-              id: `${TYPENAME.INVOICE}:${delta.parentId}`,
+              id: `${Typename.INVOICE}:${delta.parentId}`,
               fragment: INVOICE_PRODUCTS_FRAGMENT,
               data: parentInvoice,
             })
@@ -155,9 +142,9 @@ export default {
 
         // INVOICE
 
-        if (operation === OPERATION.INSERT_INVOICE) {
+        if (operation === Operation.INSERT_INVOICE) {
           const parentSpec = apolloClient.readFragment({
-            id: `${TYPENAME.SPEC}:${delta.parentId}`,
+            id: `${Typename.SPEC}:${delta.parentId}`,
             fragment: SPEC_INVOICES_FRAGMENT,
           })
 
@@ -165,24 +152,24 @@ export default {
             parentSpec.invoices.push(delta.payload)
 
             apolloClient.writeFragment({
-              id: `${TYPENAME.SPEC}:${delta.parentId}`,
+              id: `${Typename.SPEC}:${delta.parentId}`,
               fragment: SPEC_INVOICES_FRAGMENT,
               data: parentSpec,
             })
           }
         }
 
-        if (operation === OPERATION.UPDATE_INVOICE) {
+        if (operation === Operation.UPDATE_INVOICE) {
           apolloClient.writeFragment({
-            id: `${TYPENAME.INVOICE}:${delta.payload.id}`,
+            id: `${Typename.INVOICE}:${delta.payload.id}`,
             fragment: INVOICE_FRAGMENT,
             data: delta.payload,
           })
         }
 
-        if (operation === OPERATION.DELETE_INVOICE) {
+        if (operation === Operation.DELETE_INVOICE) {
           let parentSpec = apolloClient.readFragment({
-            id: `${TYPENAME.SPEC}:${delta.parentId}`,
+            id: `${Typename.SPEC}:${delta.parentId}`,
             fragment: SPEC_INVOICES_FRAGMENT,
           })
 
@@ -191,7 +178,7 @@ export default {
           if (index !== -1) {
             parentSpec.invoices.splice(index, 1)
             apolloClient.writeFragment({
-              id: `${TYPENAME.SPEC}:${delta.parentId}`,
+              id: `${Typename.SPEC}:${delta.parentId}`,
               fragment: SPEC_INVOICES_FRAGMENT,
               data: parentSpec,
             })
@@ -200,9 +187,9 @@ export default {
 
         // SPEC
 
-        if (operation === OPERATION.UPDATE_SPEC) {
+        if (operation === Operation.UPDATE_SPEC) {
           apolloClient.writeFragment({
-            id: `${TYPENAME.SPEC}:${delta.payload.id}`,
+            id: `${Typename.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
             data: delta.payload,
           })
@@ -216,20 +203,35 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style lang="postcss">
+.invoice-wrapper {
+  @apply mb-6;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.light-theme .invoice-wrapper {
+  -webkit-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
+  -moz-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
+  box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+.invoice-header {
+  padding: 5px 10px;
+  @apply relative flex items-center mx-auto w-full;
+  @apply rounded-sm bg-accent1 text-right;
+  color: #252525;
 }
-a {
-  color: #42b983;
+.light-theme .invoice-header {
+  --base-accent1: #d6d6d6;
+  color: #797979;
 }
+
+.invoice-header__expand {
+  @apply ml-auto flex justify-end flex-grow;
+  @apply text-sm cursor-pointer;
+}
+.invoice-header__expand__icon {
+  @apply w-5 h-5;
+  @apply flex justify-center items-center;
+  @apply border-2;
+}
+
 </style>

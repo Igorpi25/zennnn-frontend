@@ -7,6 +7,9 @@ import {
   apolloProvider,
 } from './plugins'
 
+// Base components
+import './components'
+
 // Tailwindcss
 import './assets/css/main.css'
 

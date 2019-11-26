@@ -2,14 +2,21 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Specs from '../views/Specs.vue'
+import SpecLayout from '../views/SpecLayout.vue'
 import Spec from '../views/Spec.vue'
+import ClientItem from '../views/ClientItem.vue'
+import ClientList from '../views/ClientList.vue'
+import SupplierItem from '..//views/SupplierItem.vue'
+import SupplierList from '../views/SupplierList.vue'
+import Staff from '../views/Staff.vue'
 import SignIn from '../views/SignIn.vue'
 import SignUp from '../views/SignUp.vue'
+import Welcome from '../views/Welcome.vue'
 import PasswordRestore from '../views/PasswordRestore.vue'
 import PasswordRestoreConfirm from '../views/PasswordRestoreConfirm.vue'
 import NotFound from '../views/NotFound.vue'
 
-import Auth from '../plugins/auth'
+import { Auth, i18n } from '../plugins'
 import { apolloClient } from '../plugins/apollo'
 import { GET_ROLE_IN_PROJECT } from '../graphql/queries'
 
@@ -20,17 +27,12 @@ const routes = [
     path: '/',
     name: 'home',
     component: Specs,
-    meta: {
-      requiresAuth: true,
-    },
+    meta: { requiresAuth: true },
   },
   {
     path: '/spec/:specId',
-    name: 'spec',
-    component: Spec,
-    meta: {
-      requiresAuth: true,
-    },
+    meta: { requiresAuth: true },
+    component: SpecLayout,
     beforeEnter: async (to, from, next) => {
       try {
         const specId = to.params.specId
@@ -51,22 +53,76 @@ const routes = [
         next(false)
       }
     },
+    children: [
+      {
+        path: '',
+        name: 'spec',
+        meta: { requiresAuth: true },
+        component: Spec,
+      },
+      {
+        path: 'clients',
+        name: 'clients',
+        meta: { requiresAuth: true },
+        component: ClientList,
+      },
+      {
+        path: 'clients/create',
+        name: 'client-create',
+        meta: { requiresAuth: true },
+        props: { create: true },
+        component: ClientItem,
+      },
+      {
+        path: 'clients/:clientId',
+        name: 'client',
+        meta: { requiresAuth: true },
+        component: ClientItem,
+      },
+      {
+        path: 'suppliers',
+        name: 'suppliers',
+        meta: { requiresAuth: true },
+        component: SupplierList,
+      },
+      {
+        path: 'suppliers/create',
+        name: 'supplier-create',
+        meta: { requiresAuth: true },
+        props: { create: true },
+        component: SupplierItem,
+      },
+      {
+        path: 'suppliers/:supplierId',
+        name: 'supplier',
+        meta: { requiresAuth: true },
+        component: SupplierItem,
+      },
+      {
+        path: 'staff',
+        name: 'staff',
+        meta: { requiresAuth: true },
+        component: Staff,
+      },
+    ],
   },
   {
     path: '/signin',
     name: 'signin',
+    meta: { requiresNotAuth: true },
     component: SignIn,
-    meta: {
-      requiresNotAuth: true,
-    },
   },
   {
     path: '/signup',
     name: 'signup',
+    meta: { requiresNotAuth: true },
     component: SignUp,
-    meta: {
-      requiresNotAuth: true,
-    },
+  },
+  {
+    path: '/welcome',
+    name: 'welcome',
+    meta: { requiresNotAuth: true },
+    component: Welcome,
   },
   {
     path: '/email-confirm',
@@ -74,11 +130,12 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (to.query.username) {
         if (to.query.state === 'success') {
-          alert('Email confirmed.')
+          router.app.$notify({ color: 'green', text: i18n.t('message.emailConfirmed') })
         } else if (to.query.state === 'confirmed') {
-          alert('Email already confirmed.')
+          router.app.$notify({ color: 'orange', text: i18n.t('message.emailAlreadyConfirmed') })
         } else if (to.query.state === 'error') {
-          alert(`Email confirm error: ${to.query.message}`)
+          router.app.$notify({ color: 'red', text: to.query.message })
+          // Add message to Analytics
         }
       }
       next('/')
@@ -87,6 +144,7 @@ const routes = [
   {
     path: '/password-restore',
     name: 'password-restore',
+    meta: { requiresNotAuth: true },
     component: PasswordRestore,
   },
   {
@@ -98,7 +156,7 @@ const routes = [
         next()
       } else {
         // Incorrect request to restore password
-        alert('Incorrect request to restore password.')
+        router.app.$notify({ color: 'red', text: i18n.t('message.incorrectRestorePassword') })
         next('/')
       }
     },

@@ -151,12 +151,30 @@ export default class Auth {
       })
     })
   }
+  resendSignUp (username) {
+    if (!this.userPool) {
+      return Promise.reject(new Error('No user pool.'))
+    }
+    if (!username) {
+      return Promise.reject(new Error('Username cannot be empty.'))
+    }
+    const cognitoUser = this._createCognitoUser(username)
+    return new Promise((resolve, reject) => {
+      cognitoUser.resendConfirmationCode((err, data) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(data)
+        }
+      })
+    })
+  }
   forgotPassword (username) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
     if (!username) {
-      return Promise.reject(new Error('Username not defined.'))
+      return Promise.reject(new Error('Username cannot be empty.'))
     }
     const cognitoUser = this._createCognitoUser(username)
     return new Promise((resolve, reject) => {

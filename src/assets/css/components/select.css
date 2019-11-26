@@ -1,0 +1,214 @@
+.select {
+  padding-top: 10px;
+  min-width: 64px;
+}
+.select__controls {
+  @apply relative w-full flex items-center;
+}
+.select__slot {
+  @apply relative w-full flex items-center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.select__slot:before {
+  @apply absolute left-0 right-auto w-full;
+  /* @apply border-t border-solid border-gray-light; */
+  content: "";
+  bottom: -1px;
+}
+.select__label {
+  @apply absolute left-0 right-auto;
+  @apply pointer-events-none truncate;
+  @apply text-gray-lighter;
+  top: 5px;
+  height: 1.25em;
+  max-width: 90%;
+  transform-origin: top left;
+  transition: .3s cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+.select__label--active {
+  @apply text-gray-light;
+  max-width: 133%;
+  transform: translateY(-18px) scale(0.75);
+}
+
+.select input {
+  @apply appearance-none outline-none w-full;
+  @apply bg-accent1 text-white;
+}
+.select input::placeholder {
+  @apply text-gray-lighter;
+}
+
+.select__append-outer {
+  @apply flex items-center;
+}
+.select__append-outer > div {
+  @apply ml-2;
+}
+
+.select__state-icon {
+  margin-left: 8px;
+}
+
+.select.has-error .select__label {
+  @apply text-error;
+}
+.select.has-error .select__slot:before {
+  @apply border-error;
+}
+.select.has-error.select--outlined .select__slot {
+  @apply border-red;
+}
+
+.select--outlined {
+  @apply leading-none text-base;
+}
+.select--outlined .select__slot {
+  padding: 1px 8px;
+  border-color: #4b4b4b;
+  @apply border rounded-sm;
+}
+.select--outlined .select__slot:before {
+  border: none;
+}
+.select--outlined input {
+  @apply text-primary;
+}
+.select--focused.select--outlined .select__slot {
+  @apply bg-gray-darkest;
+}
+.select--focused.select--colored .select__slot {
+  @apply bg-gray-darkest;
+}
+.select--outlined input {
+  background: transparent;
+}
+
+.select--outlined input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  @apply text-primary;
+}
+.select--outlined input::-moz-placeholder { /* Firefox 19+ */
+  @apply text-primary;
+}
+.select--outlined input:-ms-input-placeholder { /* IE 10+ */
+  @apply text-primary;
+}
+.select--outlined input:-moz-placeholder { /* Firefox 18- */
+  @apply text-primary;
+}
+
+.select--outlined input:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  @apply text-gray-lighter;
+}
+.select--outlined input:focus::-moz-placeholder { /* Firefox 19+ */
+  @apply text-gray-lighter;
+}
+.select--outlined input:focus:-ms-input-placeholder { /* IE 10+ */
+  @apply text-gray-lighter;
+}
+.select--outlined input:focus:-moz-placeholder { /* Firefox 18- */
+  @apply text-gray-lighter;
+}
+
+.select--squared {
+  @apply text-base;
+}
+.select--squared .select__slot {
+  padding: 0 8px;
+  border-color: #4b4b4b;
+  @apply border;
+}
+.select--squared .select__slot:before {
+  border: none;
+}
+.select--squared input {
+  @apply text-white;
+}
+.select--focused.select--squared .select__slot {
+  @apply bg-gray-darkest;
+}
+.select--squared input {
+  background: transparent;
+}
+
+.select--squared input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #646464;
+}
+.select--squared input::-moz-placeholder { /* Firefox 19+ */
+  color: #646464;
+}
+.select--squared input:-ms-input-placeholder { /* IE 10+ */
+  color: #646464;
+}
+.select--squared input:-moz-placeholder { /* Firefox 18- */
+  color: #646464;
+}
+
+.select--squared input:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  @apply text-gray-lighter;
+}
+.select--squared input:focus::-moz-placeholder { /* Firefox 19+ */
+  @apply text-gray-lighter;
+}
+.select--squared input:focus:-ms-input-placeholder { /* IE 10+ */
+  @apply text-gray-lighter;
+}
+.select--squared input:focus:-moz-placeholder { /* Firefox 18- */
+  @apply text-gray-lighter;
+}
+.select--borderless .select__slot,
+.select--borderless .text-field__slot {
+  border: none!important;
+}
+.select--colored input {
+  background: transparent;
+}
+.select--colored input {
+  @apply text-primary;
+}
+.select--colored input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  @apply text-primary;
+}
+.select--colored input::-moz-placeholder { /* Firefox 19+ */
+  @apply text-primary;
+}
+.select--colored input:-ms-input-placeholder { /* IE 10+ */
+  @apply text-primary;
+}
+.select--colored input:-moz-placeholder { /* Firefox 18- */
+  @apply text-primary;
+}
+
+.select--solo {
+  @apply pt-1;
+}
+
+.select__prepend {
+  margin-right: 6px;
+}
+.select__append {
+  margin-left: 6px;
+}
+
+.select .v-menu__content {
+  border-top-left-radius: 0!important;
+  border-top-right-radius: 0!important;
+}
+.select-picker {
+  color: #aaaaaa;
+  @apply py-1 bg-gray text-left;
+}
+.select-picker__item {
+  min-height: 28px;
+  @apply flex items-center cursor-pointer px-2 outline-none;
+}
+.select-picker__item--selected {
+  @apply text-primary;
+}
+.select-picker__item:not(.select-picker__item--disabled):hover {
+  @apply bg-gray-darker;
+}
+.select-picker__item--disabled {
+  @apply cursor-default;
+}
