@@ -6,9 +6,6 @@
   @apply flex justify-center items-center;
   @apply rounded-full bg-primary text-white relative;
 }
-.button.input {
-  padding-bottom: 0;
-}
 .button:hover {
   background-color: #6996B2;
 }
