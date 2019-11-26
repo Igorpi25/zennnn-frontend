@@ -58,7 +58,7 @@
           profitForAll: item.profitForAll
         })"
       >
-        <span class="text-sm">{{ $t('shipping.forAll') }}</span>
+        <span>{{ $t('shipping.forAll') }}</span>
       </ToggleButton>
     </div>
 

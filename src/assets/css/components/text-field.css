@@ -118,6 +118,7 @@
 }
 
 /* TEXTFIELD SINGLE LINE */
+.text-field--single-line,
 .text-field--single-line .text-field__slot {
   padding: 0;
 }

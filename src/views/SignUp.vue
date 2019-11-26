@@ -21,17 +21,19 @@
                 </span>
               </p>
             </div>
-            <Button
-              outline
-              secondary
-              class="flex-grow mx-auto md:mx-0 mt-8 md:mt-24"
-              @click="$router.push({name: 'signin'})"
-            >
-              <template v-slot:text>
-                <span>{{ $t('signup.hasAccount') }}</span>
-              </template>
-              <span>{{ $t('action.login') }}</span>
-            </Button>
+            <div class="flex-grow">
+              <Button
+                outline
+                secondary
+                class="mx-auto md:mx-0 md:mt-0 mt-8 md:mt-24"
+                @click="$router.push({name: 'signin'})"
+              >
+                <template v-slot:text>
+                  <span>{{ $t('signup.hasAccount') }}</span>
+                </template>
+                <span>{{ $t('action.login') }}</span>
+              </Button>
+            </div>
             <div class="hidden md:flex">
               <Social />
             </div>

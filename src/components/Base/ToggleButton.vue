@@ -10,31 +10,17 @@
       type="checkbox"
       v-model="internalValue"
     >
-    <div
-      v-if="checked"
-      class="icon mr-2"
-      style="width:10px; height:10px"
-    >
+    <div class="toggle__icon">
       <div class="icon__item">
-        <Icon size="8">
-          <IconToggleIndicator />
-        </Icon>
+        <svg v-if="checked" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8"><title>toggle-checked</title><circle cx="4" cy="4" r="4" style="fill:#5a8199"/><circle cx="4" cy="4" r="3" style="fill:#16a0ce"/></svg>
+        <svg v-else xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8"><title>toggle</title><path d="M4,0A4,4,0,1,0,8,4,4,4,0,0,0,4,0ZM4,7A3,3,0,1,1,7,4,3,3,0,0,1,4,7Z" style="fill:#5a8199"/></svg>
       </div>
     </div>
-    <Icon
-      v-else
-      size="10"
-      class="mr-2"
-    >
-      {{ icons.mdiCircleOutline }}
-    </Icon>
     <slot />
   </div>
 </template>
 
 <script>
-import { mdiCircleOutline } from '@mdi/js'
-
 export default {
   name: 'ToggleButton',
   props: {
@@ -55,9 +41,6 @@ export default {
     return {
       checked: false,
       lazyValue: this.value,
-      icons: {
-        mdiCircleOutline,
-      },
     }
   },
   computed: {
@@ -79,32 +62,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="postcss">
-.toggle {
-  width: 150px;
-  height: 26px;
-  padding-left: 5px;
-  padding-right: 20px;
-  position: relative;
-  cursor: pointer;
-  @apply flex justify-center items-center;
-  @apply text-primary border border-primary rounded-full relative;
-}
-.toggle input {
-  opacity: 0;
-  position: absolute;
-  user-select: none;
-  width: 100%;
-  height: 100%;
-}
-.toggle--small {
-  width: 95px;
-  height: 22px;
-  padding-right: 10px;
-}
-.toggle--large {
-  height: 36px;
-  padding: 0 35px;
-}
-</style>

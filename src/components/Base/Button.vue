@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { convertToUnit } from '@/util/helpers'
+
 export default {
   name: 'Button',
   props: {
@@ -97,6 +99,9 @@ export default {
         this.checked = !this.checked
         this.$emit('click', val)
       },
+    },
+    computedWidth () {
+      return this.width ? convertToUnit(this.width) : null
     },
   },
   watch: {

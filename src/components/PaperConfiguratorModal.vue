@@ -19,7 +19,6 @@
         v-model="blank.name"
         outlined
         hide-details
-        height="32"
         class="w-5/6 ml-6"
       />
     </div>
@@ -29,7 +28,6 @@
         <div class="paper-title">
           <div class="flex flex-col md:flex-row justify-between">
             <span class="paper-title__title mb-8 md:mt-0">
-              <!-- TODO EDITABLE COMPONENT HERE -->
               <Editable
                 :placeholder="$t('paper.heading')"
                 v-model="blank.heading"
@@ -405,13 +403,13 @@
       </Button>
     </div>
     <span class="close-btn" @click="$emit('close')">
-      <Icon>{{ icons.mdiCloseCircle }}</Icon>
+      <Icon>{{ icons.mdiClose }}</Icon>
     </span>
   </div>
 </template>
 
 <script>
-import { mdiPlusCircleOutline, mdiCloseCircle } from '@mdi/js'
+import { mdiPlusCircleOutline, mdiClose } from '@mdi/js'
 import { ziGear, ziPencil, ziChevronUpCircle } from '@/assets/icons'
 
 import PaperCompanyListModal from '@/components/PaperCompanyListModal.vue'
@@ -434,7 +432,7 @@ export default {
         ziPencil,
         ziChevronUpCircle,
         mdiPlusCircleOutline,
-        mdiCloseCircle,
+        mdiClose,
       },
       isStandardHeader: false,
       supplierList: false,
@@ -720,8 +718,11 @@ export default {
     .paragraph__number {
       left: -42px;
     }
+    .icon-move-up--heading {
+      top: 2px;
+    }
     .remove-item {
-      right: -20px;
+      right: -25px;
     }
   }
 </style>

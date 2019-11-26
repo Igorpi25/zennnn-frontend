@@ -285,25 +285,25 @@
           </div>
         </div>
         <div class="spec-summary__actions">
-          <Button text @click="openPaperList">
+          <Button text class="mb-4" @click="openPaperList">
             <template v-slot:icon>
-              <Icon size="29">
+              <Icon size="32" color="#aaaaaa">
                 {{ icons.ziSettings }}
               </Icon>
             </template>
             <span class="text-left">{{ $t('shipping.paperConfigurator') }}</span>
           </Button>
-          <Button text @click.prevent>
+          <Button text class="mb-4" @click.prevent>
             <template v-slot:icon>
-              <Icon size="30">
+              <Icon size="32" color="#aaaaaa">
                 {{ icons.ziPaperPlane }}
               </Icon>
             </template>
             <span class="text-left">{{ $t('shipping.notifyClient') }}</span>
           </Button>
-          <Button text @click.prevent>
+          <Button text class="mb-4" @click.prevent>
             <template v-slot:icon>
-              <Icon size="25">
+              <Icon size="32" color="#aaaaaa">
                 {{ icons.ziPrint }}
               </Icon>
             </template>
@@ -311,7 +311,7 @@
           </Button>
           <Button text @click.prevent>
             <template v-slot:icon>
-              <Icon size="24">
+              <Icon size="32" color="#aaaaaa">
                 {{ icons.ziShare }}
               </Icon>
             </template>
