@@ -187,15 +187,15 @@ export default {
         const isValid = this.$refs.form.validate()
         if (isValid) {
           const { firstName, lastName, email, password } = this.formModel
-          const response = await this.$Auth.signUp({
-            username: email,
+          const response = await this.$Auth.signUp(
+            email,
             password,
-            attributes: {
+            {
               family_name: lastName,
               given_name: firstName,
               email,
             },
-          })
+          )
           this.$logger.info('Registered user', response.user)
           const username = response.user && response.user.username
           // set username to sessionStorage and check on Welcome page mounted
