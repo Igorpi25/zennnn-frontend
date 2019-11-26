@@ -10,6 +10,10 @@
   @apply flex items-center;
 }
 
+.checkbox--secondary {
+  @apply text-secondary;
+}
+
 .checkbox__input label {
   @apply text-sm select-none;
   cursor: pointer !important;
@@ -26,22 +30,9 @@
   height: 16px;
 }
 
-/* disabled checkbox */
-.checkbox__input input:disabled + .checkbox__icon {
-  @apply border-gray-light;
-}
-.checkbox__input input:disabled:checked + .checkbox__icon:before {
-  @apply bg-gray-light;
-}
-
 .checkbox__icon {
   @apply inline-flex relative;
-  @apply border-2 border-solid border-primary;
   @apply pointer-events-none select-none cursor-pointer;
   width: 16px;
   height: 16px;
-}
-
-.checkbox--secondary .checkbox__icon {
-  @apply border-secondary;
 }

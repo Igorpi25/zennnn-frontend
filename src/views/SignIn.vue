@@ -6,7 +6,7 @@
         <Button
           outline
           secondary
-          class="mb-5 mt-8 flex justify-center sm:justify-end"
+          class="mb-5 mt-8 mx-auto md:mx-0 md:ml-auto"
           @click="$router.push({name: 'signup'})"
         >
           <template v-slot:text>

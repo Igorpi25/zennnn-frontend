@@ -64,8 +64,9 @@
               <ToggleButton
                 v-if="!create"
                 :value="editMode"
-                @input="editMode=!editMode"
+                small
                 class="mr-2"
+                @input="editMode=!editMode"
               >
                 <span>{{ $t('supplier.edit') }}</span>
               </ToggleButton>
@@ -114,14 +115,14 @@
                   <Button
                     large
                     :disabled="!editMode"
-                    class="mb-4 flex justify-center"
+                    class="mb-4 mx-auto"
                     @click="update"
                   >
                     <span>{{ $t('client.save') }}</span>
                   </Button>
                   <Button
                     text
-                    class="flex justify-center"
+                    class="mx-auto"
                     @click="saveAsTemplate"
                   >
                     <span class="text-sm">{{ $t('supplier.saveAsPattern') }}</span>
@@ -213,7 +214,7 @@
                         v-if="!create"
                         large
                         :disabled="updateLoading"
-                        class="mb-4 flex justify-center"
+                        class="mb-4 mx-auto"
                         @click="updateShop(index)"
                       >
                         <span>{{ $t('supplier.save') }}</span>

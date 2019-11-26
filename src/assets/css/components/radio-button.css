@@ -15,7 +15,6 @@
   height: 12px;
   margin-right: 5px;
   @apply inline-flex relative;
-  @apply border border-primary rounded-full;
   @apply pointer-events-none select-none;
 }
 

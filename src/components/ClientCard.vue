@@ -53,8 +53,9 @@
               <ToggleButton
                 v-if="!create"
                 :value="editMode"
-                @input="editMode=!editMode"
+                small
                 class="mr-2"
+                @input="editMode=!editMode"
               >
                 <span>{{ $t('client.edit') }}</span>
               </ToggleButton>
@@ -115,7 +116,7 @@
                   <Button
                     large
                     :disabled="isNaturalPerson || updateLoading"
-                    class="mb-4 flex justify-center"
+                    class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
                     <span>{{ $t('client.save') }}</span>
@@ -123,7 +124,7 @@
                   <Button
                     text
                     :disabled="isNaturalPerson"
-                    class="flex justify-center"
+                    class="mx-auto"
                     @click="saveAsTemplate"
                   >
                     <span class="text-sm">{{ $t('client.saveAsPattern') }}</span>
@@ -157,7 +158,7 @@
                   <Button
                     large
                     :disabled="!isNaturalPerson || updateLoading"
-                    class="mb-4 flex justify-center"
+                    class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
                     <span>{{ $t('client.save') }}</span>
@@ -165,7 +166,7 @@
                   <Button
                     text
                     :disabled="!isNaturalPerson"
-                    class="flex justify-center"
+                    class="mx-auto"
                     @click="saveAsTemplate"
                   >
                     <span class="text-sm">{{ $t('client.saveAsPattern') }}</span>
