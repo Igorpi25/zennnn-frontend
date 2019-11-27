@@ -512,6 +512,9 @@ export default {
 .spec-summary {
   padding: 50px 0 50px;
 }
+..light-theme .spec-summary {
+  @apply bg-background;
+}
 
 .spec-summary__wrapper {
   @apply flex justify-between;
