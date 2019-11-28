@@ -3,8 +3,8 @@
     <div class="content view">
       <StatusBar />
       <div class="container container--sm">
-        <div class="pt-10 pb-32">
-          <div class="flex justify-between">
+        <div class="pt-10 md:pb-32">
+          <div class="flex flex-col sm:flex-row justify-between">
             <span class="mb-3">
               <span>{{ $t('shipping.shippingTitle') }}</span>&nbsp;
               <span class="text-primary">
@@ -16,7 +16,7 @@
               </span>
             </span>
             <span
-              class="text-primary text-sm cursor-pointer whitespace-no-wrap"
+              class="mb-2 md:m-0 text-right text-primary text-sm cursor-pointer whitespace-no-wrap"
               @click="collapseAll"
             >{{ $t('action.collapseAll') }}</span>
           </div>
@@ -33,14 +33,17 @@
               >
               </span>
 
-              <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto">
-                <span>{{ item.number }}</span>&nbsp;
-                <span>{{ $t('preposition.from') }}</span>&nbsp;
-                <span>{{ item.purchaseDate }}</span>&nbsp;
-                <span>//</span>&nbsp;
-                <span>ожидаемая готовность:</span>&nbsp;
-                <span>{{ item.shippingdate }}</span>
-                <!-- 18-2072 от 28.10.2018 // ожидаемая готовность: 29.10.2018 -->
+              <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto text-left">
+                <div>
+                  <span>{{ item.number }}</span>&nbsp;
+                  <span>{{ $t('preposition.from') }}</span>&nbsp;
+                  <span>{{ item.purchaseDate }}</span>&nbsp;
+                </div>
+                <span class="hidden md:block">//</span>&nbsp;
+                <div>
+                  <span>ожидаемая готовность:</span>&nbsp;
+                  <span>{{ item.shippingdate }}</span>
+                </div>
               </div>
 
               <div @click="expand(item.id)" class="invoice-header__expand text-primary">
@@ -93,8 +96,8 @@
                 </template>
               </DataTable>
             </div>
-            <div class="invoice-footer p-6 w-full flex justify-end">
-              <div class="invoice-footer__total mr-12 w-1/2 flex">
+            <div class="invoice-footer p-2 md:p-6 w-full flex justify-end">
+              <div class="invoice-footer__total md:mr-12 w-full md:w-1/2 flex">
                 <ul class="leaders w-2/3">
                   <li>
                     <span class="bg-white font-black text-right">Итого: {{ $t('currency.CNY.symbol') }}</span>
@@ -397,10 +400,11 @@ export default {
   max-width: 490px;
 }
 .spec-summary__cost__card {
-  padding: 80px 60px 20px;
+  margin-top: 20px;
+  padding: 60px 20px 20px;
   background-color: #272727;
   border-radius: 4px;
-  font-size: 18px;
+  font-size: 14px;
 }
 .light-theme .spec-summary__cost__card {
   background: linear-gradient(to top, #f4f4f4 70%, #e5e5e5 100%);
@@ -411,6 +415,14 @@ export default {
 }
 .light-theme .cost-card__cost {
   @apply text-accent1;
+}
+@screen md {
+  .spec-summary__cost__card {
+  margin-top: 0;
+  padding-left: 60px;
+  padding-right: 60px;
+  font-size: 18px;
+}
 }
 
 .spec-summary__actions {
