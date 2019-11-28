@@ -59,69 +59,71 @@
                 </template>
               </div>
             </div>
-            <div class="data-table-wrapper">
-              <DataTable
-                :headers="headers"
-                :items="item.products"
-                table-width="100%"
-                table-class="table-fixed"
-                thead-class="text-accent2"
-              >
-                <template v-slot:items="{ items }">
-                  <tr
-                    v-for="(item, index) in items"
-                    :key="item.id"
-                    class="items base-accent3 border-none"
-                  >
-                    <td class="text-gray-lighter text-right leading-none py-2 align-top">
-                      {{ index + 1 }}
-                    </td>
-                    <td>{{ item.photo }}</td>
-                    <td>
-                      <span>{{ item.name }}</span> <br>
-                      <span class="text-gray-light">{{ item.model }}</span>
-                      <span class="flex">
-                        <img src="../assets/icons/factory-green.png" width="21px">
-                        <span class="ml-2 text-orange">{{ item.status }}</span>
-                      </span>
-                    </td>
-                    <td class="text-right">{{ item.morePhoto }}</td>
-                    <td class="text-right">{{ item.cost }}</td>
-                    <td class="text-right">{{ item.qty }}</td>
-                    <td class="text-right font-bold">{{ item.cost }}</td>
-                    <td class="text-right">{{ item.cargoQty }}</td>
-                    <td class="text-right">{{ item.cargoNum }}</td>
-                    <td class="text-right">{{ item.note }}</td>
-                  </tr>
-                </template>
-              </DataTable>
-            </div>
-            <div class="invoice-footer p-2 md:p-6 w-full flex justify-end">
-              <div class="invoice-footer__total md:mr-12 w-full md:w-1/2 flex">
-                <ul class="leaders w-2/3">
-                  <li>
-                    <span class="bg-white font-black text-right">Итого: {{ $t('currency.CNY.symbol') }}</span>
-                    <span class="bg-white font-bold">7 210</span>
-                  </li>
-                  <li class="text-gray-lightest">
-                    <span class="bg-white font-semibold">Скидка: {{ $t('currency.CNY.symbol') }}</span>
-                    <span class="bg-white font-bold">0</span>
-                  </li>
-                  <li>
-                    <span class="bg-white font-semibold min-w-1/2">Предоплата: {{ $t('currency.CNY.symbol') }}</span>
-                    <span class="bg-white font-bold">2 000</span>
-                  </li>
-                  <li>
-                    <span class="bg-white font-semibold">Остаток: {{ $t('currency.CNY.symbol') }}</span>
-                    <span class="bg-white font-bold" style="color:#ff0000">5 210</span>
-                  </li>
-                </ul>
-                <ul class="invoice-footer__details ml-5 text-sm text-gray-light">
-                  <li class="mt-1">(без скидки)</li>
-                  <br>
-                  <li class="mt-1">18.06.2019</li>
-                  <li class="mt-1">--.--.--</li>
-                </ul>
+            <div v-if="expanded.includes(item.id)">
+              <div class="data-table-wrapper">
+                <DataTable
+                  :headers="headers"
+                  :items="item.products"
+                  table-width="100%"
+                  table-class="table-fixed"
+                  thead-class="text-accent2"
+                >
+                  <template v-slot:items="{ items }">
+                    <tr
+                      v-for="(item, index) in items"
+                      :key="item.id"
+                      class="items base-accent3 border-none"
+                    >
+                      <td class="text-gray-lighter text-right leading-none py-2 align-top">
+                        {{ index + 1 }}
+                      </td>
+                      <td>{{ item.photo }}</td>
+                      <td>
+                        <span>{{ item.name }}</span> <br>
+                        <span class="text-gray-light">{{ item.model }}</span>
+                        <span class="flex">
+                          <img src="../assets/icons/factory-green.png" width="21px">
+                          <span class="ml-2 text-orange">{{ item.status }}</span>
+                        </span>
+                      </td>
+                      <td class="text-right">{{ item.morePhoto }}</td>
+                      <td class="text-right">{{ item.cost }}</td>
+                      <td class="text-right">{{ item.qty }}</td>
+                      <td class="text-right font-bold">{{ item.cost }}</td>
+                      <td class="text-right">{{ item.cargoQty }}</td>
+                      <td class="text-right">{{ item.cargoNum }}</td>
+                      <td class="text-right">{{ item.note }}</td>
+                    </tr>
+                  </template>
+                </DataTable>
+              </div>
+              <div class="invoice-footer p-2 md:p-6 w-full flex justify-end">
+                <div class="invoice-footer__total md:mr-12 w-full md:w-1/2 flex">
+                  <ul class="leaders w-2/3">
+                    <li>
+                      <span class="bg-white font-black text-right">Итого: {{ $t('currency.CNY.symbol') }}</span>
+                      <span class="bg-white font-bold">7 210</span>
+                    </li>
+                    <li class="text-gray-lightest">
+                      <span class="bg-white font-semibold">Скидка: {{ $t('currency.CNY.symbol') }}</span>
+                      <span class="bg-white font-bold">0</span>
+                    </li>
+                    <li>
+                      <span class="bg-white font-semibold min-w-1/2">Предоплата: {{ $t('currency.CNY.symbol') }}</span>
+                      <span class="bg-white font-bold">2 000</span>
+                    </li>
+                    <li>
+                      <span class="bg-white font-semibold">Остаток: {{ $t('currency.CNY.symbol') }}</span>
+                      <span class="bg-white font-bold" style="color:#ff0000">5 210</span>
+                    </li>
+                  </ul>
+                  <ul class="invoice-footer__details ml-5 text-sm text-gray-light">
+                    <li class="mt-1">(без скидки)</li>
+                    <br>
+                    <li class="mt-1">18.06.2019</li>
+                    <li class="mt-1">--.--.--</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -370,6 +372,9 @@ export default {
     collapseAll () {
       this.expanded = []
     },
+  },
+  created () {
+    console.log(this.items)
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
