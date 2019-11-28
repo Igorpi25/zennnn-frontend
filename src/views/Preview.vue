@@ -373,9 +373,6 @@ export default {
       this.expanded = []
     },
   },
-  created () {
-    console.log(this.items)
-  },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm.$el.classList.add('light-theme')
