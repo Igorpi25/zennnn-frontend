@@ -326,6 +326,12 @@
           large
           squared
           outline
+          @click="$router.push({
+            name: 'preview',
+            params: {
+              specId: $route.params.specId
+              }
+          })"
         >
           <span class="text-lg">{{ $t('shipping.overview') }}</span>
         </Button>
@@ -521,7 +527,7 @@ export default {
 }
 
 .spec-summary__info {
-  width: 340px;
+  max-width: 340px;
 }
 
 .spec-summary__cost {

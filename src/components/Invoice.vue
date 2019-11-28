@@ -454,12 +454,12 @@ export default {
     async createProduct () {
       try {
         this.createLoading = true
-        const input = {
+        const variables = {
           invoiceId: this.invoice.id,
         }
         await this.$apollo.mutate({
           mutation: CREATE_PRODUCT,
-          variables: { input },
+          variables,
           fetchPolicy: 'no-cache',
         })
       } catch (error) {
