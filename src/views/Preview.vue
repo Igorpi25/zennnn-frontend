@@ -21,18 +21,13 @@
             >{{ $t('action.collapseAll') }}</span>
           </div>
 
-          <div v-for="(item) in items" :key="item.id" class="invoice-wrapper">
-            <div class="invoice-header">
-              <span
-                :class="[
-                  'status-indicator mr-2 md:mr-6 flex-shrink-0',
-                  item.status === InvoiceStatus.IN_PRODUCTION
-                    ? 'status-indicator--orange' : item.status === InvoiceStatus.IN_STOCK
-                      ? 'status-indicator--green' : 'status-indicator--pink'
-                ]"
-              >
-              </span>
-
+          <div v-for="(item) in items" :key="item.id" class="preview-invoice-wrapper">
+            <InvoiceHeader
+              :item="item"
+              :expanded="expanded"
+              icon-color-primary
+              @click="expand"
+            >
               <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto text-left">
                 <div>
                   <span>{{ item.number }}</span>&nbsp;
@@ -45,20 +40,7 @@
                   <span>{{ item.shippingdate }}</span>
                 </div>
               </div>
-
-              <div @click="expand(item.id)" class="invoice-header__expand text-primary">
-                <template v-if="expanded.includes(item.id)">
-                  <div class="invoice-header__expand__icon">
-                    <svg width="10" height="2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 10 2"><defs></defs><g><g><title>{{ $t('action.collapse') }}</title><path d="M10,0v0h-10v0v1.998v0h10v0z"></path></g></g></svg>
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="invoice-header__expand__icon">
-                    <svg width="10" height="10" fill="currentColor" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 10 10"><defs></defs><g><g><title>{{ $t('action.expand') }}</title><path d="M4.0017,10v0h1.998v0v-4.002v0h4.001v0v-1.998v0h-4.001v0v-4v0h-1.998v0v4v0h-4.001v0v1.998v0h4.001v0z"></path></g></g></svg>
-                  </div>
-                </template>
-              </div>
-            </div>
+            </InvoiceHeader>
             <div v-if="expanded.includes(item.id)">
               <div class="data-table-wrapper">
                 <DataTable
@@ -97,8 +79,9 @@
                   </template>
                 </DataTable>
               </div>
-              <div class="invoice-footer p-2 md:p-6 w-full flex justify-end">
-                <div class="invoice-footer__total md:mr-12 w-full md:w-1/2 flex">
+              <!-- / INVOICE FOOTER -->
+              <div class="p-2 md:p-6 w-full flex justify-end bg-white">
+                <div class="preview-footer md:mr-12 w-full md:w-1/2 flex">
                   <ul class="leaders w-2/3">
                     <li>
                       <span class="bg-white font-black text-right">Итого: {{ $t('currency.CNY.symbol') }}</span>
@@ -109,7 +92,7 @@
                       <span class="bg-white font-bold">0</span>
                     </li>
                     <li>
-                      <span class="bg-white font-semibold min-w-1/2">Предоплата: {{ $t('currency.CNY.symbol') }}</span>
+                      <span class="bg-white font-semibold">Предоплата: {{ $t('currency.CNY.symbol') }}</span>
                       <span class="bg-white font-bold">2 000</span>
                     </li>
                     <li>
@@ -117,7 +100,7 @@
                       <span class="bg-white font-bold" style="color:#ff0000">5 210</span>
                     </li>
                   </ul>
-                  <ul class="invoice-footer__details ml-5 text-sm text-gray-light">
+                  <ul class="ml-5 text-sm text-gray-light">
                     <li class="mt-1">(без скидки)</li>
                     <br>
                     <li class="mt-1">18.06.2019</li>
@@ -125,21 +108,22 @@
                   </ul>
                 </div>
               </div>
+              <!-- INVOICE FOOTER / -->
             </div>
           </div>
 
-          <div class="spec-summary">
+          <div class="preview-summary">
             <h4 class="text-lg mb-4">
               {{ $t('shipping.summaryTitle') }}
             </h4>
-            <div class="spec-summary__wrapper flex-col lg:flex-row">
-              <div class="spec-summary__info">
+            <div class="preview-summary__wrapper flex-col lg:flex-row">
+              <div class="preview-summary__info">
                 <div class="relative">
                   <div
-                    class="spec-summary__container"
+                    class="preview-summary__container"
                   >
                     <div
-                      class="spec-summary__container__image spec-summary__container__image--full"
+                      class="preview-summary__container__image preview-summary__container__image--full"
                       :style="{
                         width: 25 + '%',
                         height: '85px'
@@ -191,8 +175,8 @@
                   </ul>
                 </div>
               </div>
-              <div class="spec-summary__cost">
-                <div class="spec-summary__cost__card">
+              <div class="preview-summary__cost">
+                <div class="preview-summary__cost__card">
                   <ul class="leaders">
                     <li class="pb-2">
                       <span class="font-bold">
@@ -201,7 +185,7 @@
                       <!-- TODO to custom component or Intl polyfill -->
                       <!-- i18n-n has Error formatter.formatToParts is not a function. -->
                       <span class="flex font-bold">
-                        <div class="cost-card__cost">{{ $n(spec.finalCost, 'integer') }}</div>
+                        <div class="text-accent1">{{ $n(spec.finalCost, 'integer') }}</div>
                         <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
                         <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
                       </span>
@@ -211,7 +195,7 @@
                         {{ $t('shipping.finalObtainCost') }} {{ $t('currency.CNY.symbol') }}
                       </span>
                       <span class="flex ">
-                        <div class="cost-card__cost">{{ $n(spec.finalObtainCost, 'integer') }}</div>
+                        <div class="text-accent1">{{ $n(spec.finalObtainCost, 'integer') }}</div>
                         <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'decimal').slice(-3, -2) }}</div>
                         <div class="text-sm">{{ $n(spec.finalObtainCost, 'decimal').slice(-2) }}</div>
                       </span>
@@ -261,7 +245,7 @@
                   </div>
                 </div>
               </div>
-              <div class="spec-summary__actions">
+              <div class="preview-summary__actions">
                 <div @click.prevent>
                   <img src="@/assets/icons/printer.png" class="mr-3">
                   <span class="text-left">Распечатать</span>
@@ -285,7 +269,13 @@
 </template>
 
 <script>
-import { mdiChevronDown, mdiChevronUp } from '@mdi/js'
+import {
+  mdiChevronDown,
+  mdiChevronUp,
+  mdiMinus,
+  mdiPlus,
+} from '@mdi/js'
+
 import {
   ziSettings,
   ziPaperPlane,
@@ -295,6 +285,7 @@ import {
 
 import StatusBar from '@/components/StatusBar'
 import Copyright from '@/components/Copyright'
+import InvoiceHeader from '../components/InvoiceHeader.vue'
 
 import { InvoiceStatus } from '@/graphql/enums'
 import { GET_SPEC } from '../graphql/queries'
@@ -304,6 +295,7 @@ export default {
   components: {
     StatusBar,
     Copyright,
+    InvoiceHeader,
   },
   apollo: {
     getSpec: {
@@ -337,6 +329,8 @@ export default {
       icons: {
         mdiChevronDown,
         mdiChevronUp,
+        mdiMinus,
+        mdiPlus,
         ziSettings,
         ziPaperPlane,
         ziPrint,
@@ -382,127 +376,100 @@ export default {
 </script>
 
 <style scoped lang="postcss">
-.spec-summary {
-  margin: 70px 0 50px;
+.preview-invoice-wrapper {
+  -webkit-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
+  -moz-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
+  box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
 }
-.light-theme .spec-summary {
+.preview-summary {
+  margin: 70px 0 50px;
   @apply bg-background;
 }
 
-.spec-summary__wrapper {
+.preview-summary__wrapper {
   @apply flex justify-between;
 }
 
-.spec-summary__info {
+.preview-summary__info {
   max-width: 340px;
 }
 
-.spec-summary__cost {
+.preview-summary__cost {
   @apply flex-grow;
   max-width: 490px;
 }
-.spec-summary__cost__card {
+.preview-summary__cost__card {
   margin-top: 20px;
   padding: 60px 20px 20px;
   background-color: #272727;
   border-radius: 4px;
   font-size: 14px;
-}
-.light-theme .spec-summary__cost__card {
   background: linear-gradient(to top, #f4f4f4 70%, #e5e5e5 100%);
   @apply text-accent1;
 }
-.cost-card__cost {
-  @apply text-white;
-}
-.light-theme .cost-card__cost {
-  @apply text-accent1;
-}
 @screen md {
-  .spec-summary__cost__card {
-  margin-top: 0;
-  padding-left: 60px;
-  padding-right: 60px;
-  font-size: 18px;
-}
+  .preview-summary__cost__card {
+    margin-top: 0;
+    padding-left: 60px;
+    padding-right: 60px;
+    font-size: 18px;
+  }
 }
 
-.spec-summary__actions {
+.preview-summary__actions {
   width: 100%;
   padding-top: 20px;
   padding-bottom: 20px;
 }
-.spec-summary__actions > div {
+.preview-summary__actions > div {
   @apply flex items-center text-primary cursor-pointer;
 }
-.spec-summary__actions > div:not(:last-child) {
+.preview-summary__actions > div:not(:last-child) {
   margin-bottom: 25px;
 }
-.spec-summary__actions div:hover {
+.preview-summary__actions div:hover {
   color: #6996B2;
 }
-
 @screen lg {
-  .spec-summary__actions {
+  .preview-summary__actions {
     width: 120px;
   }
 }
-.spec-summary__container {
+
+.preview-summary__container {
   width: 210px;
   @apply mb-4 relative;
 }
-.spec-summary__container__label {
-  @apply absolute inset-0 w-full h-full font-bold text-2xl text-white;
-  @apply flex items-center justify-center;
-}
-/* TODO image import on component */
-.spec-summary__container__image {
+.preview-summary__container__image {
   @apply absolute inset-0 w-full h-full bg-cover bg-left bg-no-repeat;
 }
-.spec-summary__container__image--full {
+.preview-summary__container__image--full {
   background-image: url("/img/container-full.png");
 }
-.spec-summary__container__image--full-sm {
+.preview-summary__container__image--full-sm {
   background-image: url("/img/container-full-sm.png");
 }
-.spec-summary__container__image--shipped {
+.preview-summary__container__image--shipped {
   background-image: url("/img/container-shipped.png");
 }
 
-.spec-summary__info ul.leaders span:first-child,
-.spec-summary__info ul.leaders span + span {
-  @apply bg-chaos-black;
-}
-.light-theme .spec-summary__info ul.leaders span:first-child,
-.light-theme .spec-summary__info ul.leaders span + span {
+.preview-summary__info ul.leaders span:first-child,
+.preview-summary__info ul.leaders span + span {
   @apply bg-background;
 }
-@screen md {
-  .spec-summary__info ul.leaders span:first-child,
-  .spec-summary__info ul.leaders span + span {
-    background: #1e1e1e;
-  }
-  .light-theme .spec-summary__info ul.leaders span:first-child,
-  .light-theme .spec-summary__info ul.leaders span + span {
-    @apply bg-background;
-  }
-}
-.spec-summary__cost ul.leaders span:first-child,
-.spec-summary__cost ul.leaders span + span {
-  background-color: #272727;
-}
-
-.light-theme .spec-summary__cost ul.leaders span:first-child,
-.light-theme .spec-summary__cost ul.leaders span + span {
+.preview-summary__cost ul.leaders span:first-child,
+.preview-summary__cost ul.leaders span + span {
   background-color: #f4f4f4;
 }
 
-ul.leaders {
+.preview-footer .leaders,
+.preview-summary .leaders {
   line-height: 1.5rem;
   padding: 0;
   overflow-x: hidden;
   list-style: none}
-ul.leaders li:after {
+.preview-footer .leaders li:after,
+.preview-summary .leaders li:after {
   float: left;
   width: 0;
   white-space: nowrap;
@@ -510,25 +477,26 @@ ul.leaders li:after {
  ". . . . . . . . . . . . . . . . . . . . "
  ". . . . . . . . . . . . . . . . . . . . "
  ". . . . . . . . . . . . . . . . . . . . "
- ". . . . . . . . . . . . . . . . . . . . "}
-ul.leaders span:first-child {
-  padding-right: 0.33em;}
-ul.leaders span + span {
+ ". . . . . . . . . . . . . . . . . . . . "
+ }
+.preview-footer .leaders span:first-child,
+.preview-summary .leaders span:first-child {
+  padding-right: 0.33em;
+}
+.preview-footer .leaders span + span,
+.preview-summary .leaders span + span {
   float: right;
   padding-left: 0.33em;
   position: relative;
   z-index: 1
 }
-.leaders__num {
-  @apply text-white font-bold
+.preview-summary .leaders__num {
+  @apply text-black font-bold;
 }
-.light-theme .leaders__num {
-  @apply text-black;
-}
-.currency-picker__item {
+.preview-summary .currency-picker__item {
   @apply flex cursor-pointer py-1 px-2 outline-none;
 }
-.currency-picker__item:hover {
+.preview-summary .currency-picker__item:hover {
   @apply text-primary;
 }
 </style>

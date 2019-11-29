@@ -8,6 +8,10 @@ export default {
       type: String,
       default: '',
     },
+    title: {
+      type: [String, Object],
+      default: '',
+    },
     size: {
       type: [String, Number],
       default: 18,
@@ -49,6 +53,9 @@ export default {
           color: this.color,
         },
       },
+      [h('title',
+        this.title,
+      ),
       [h('g', {
         attrs: {
           fill: this.color,
@@ -58,7 +65,7 @@ export default {
         attrs: {
           d: this.$slots.default[0].text,
         },
-      })])])
+      })])]])
     }
     return null
     // else {
