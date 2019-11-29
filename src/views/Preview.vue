@@ -6,7 +6,7 @@
         <div class="pt-10 md:pb-32">
           <div class="flex flex-col sm:flex-row justify-between">
             <span class="mb-3">
-              <span>{{ $t('shipping.shippingTitle') }}</span>&nbsp;
+              <span>{{ $t('preview.shippingTitle') }}</span>&nbsp;
               <span class="text-primary">
                 {{ spec.specNo }}
               </span>&nbsp;
@@ -36,7 +36,7 @@
                 </div>
                 <span class="hidden md:block">//</span>&nbsp;
                 <div>
-                  <span>ожидаемая готовность:</span>&nbsp;
+                  <span>{{ $t('preview.expectedShipment') }}</span>&nbsp;
                   <span>{{ item.shippingdate }}</span>
                 </div>
               </div>
@@ -84,24 +84,24 @@
                 <div class="preview-footer md:mr-12 w-full md:w-1/2 flex">
                   <ul class="leaders w-2/3">
                     <li>
-                      <span class="bg-white font-black text-right">Итого: {{ $t('currency.CNY.symbol') }}</span>
+                      <span class="bg-white font-black text-right">{{ $t('preview.total') }} {{ $t('currency.CNY.symbol') }}</span>
                       <span class="bg-white font-bold">7 210</span>
                     </li>
                     <li class="text-gray-lightest">
-                      <span class="bg-white font-semibold">Скидка: {{ $t('currency.CNY.symbol') }}</span>
+                      <span class="bg-white font-semibold">{{ $t('preview.discount') }} {{ $t('currency.CNY.symbol') }}</span>
                       <span class="bg-white font-bold">0</span>
                     </li>
                     <li>
-                      <span class="bg-white font-semibold">Предоплата: {{ $t('currency.CNY.symbol') }}</span>
+                      <span class="bg-white font-semibold">{{ $t('preview.prepay') }}: {{ $t('currency.CNY.symbol') }}</span>
                       <span class="bg-white font-bold">2 000</span>
                     </li>
                     <li>
-                      <span class="bg-white font-semibold">Остаток: {{ $t('currency.CNY.symbol') }}</span>
+                      <span class="bg-white font-semibold">{{ $t('preview.residue') }}: {{ $t('currency.CNY.symbol') }}</span>
                       <span class="bg-white font-bold" style="color:#ff0000">5 210</span>
                     </li>
                   </ul>
                   <ul class="ml-5 text-sm text-gray-light">
-                    <li class="mt-1">(без скидки)</li>
+                    <li class="mt-1">{{ $t('preview.noDiscount') }}</li>
                     <br>
                     <li class="mt-1">18.06.2019</li>
                     <li class="mt-1">--.--.--</li>
@@ -114,7 +114,7 @@
 
           <div class="preview-summary">
             <h4 class="text-lg mb-4">
-              {{ $t('shipping.summaryTitle') }}
+              {{ $t('preview.summaryTitle') }}
             </h4>
             <div class="preview-summary__wrapper flex-col lg:flex-row">
               <div class="preview-summary__info">
@@ -140,34 +140,34 @@
                     >
                       <span>
                         <span class="leaders__num">
-                          {{ c.type || '20' }}{{ $t('shipping.containerMeasure') }}
+                          {{ c.type || '20' }}{{ $t('preview.containerMeasure') }}
                         </span>
-                        {{ ` ${$t('shipping.container')} ${$t('shipping.containerLoaded')}` }}
+                        {{ ` ${$t('preview.container')} ${$t('preview.containerLoaded')}` }}
                       </span>
                       <span class="leaders__num">
                         {{ c.loaded }}%
                       </span>
                     </li>
                     <li>
-                      <span>{{ $t('shipping.estimateDate') }}</span>
+                      <span>{{ $t('preview.estimateDate') }}</span>
                       <span class="leaders__num">
                         {{ $d($parseISO(spec.estimateShippingDate), 'short') }}
                       </span>
                     </li>
                     <li>
-                      <span>{{ $t('shipping.totalVolume') }}</span>
+                      <span>{{ $t('preview.totalVolume') }}</span>
                       <span class="leaders__num">
                         {{ $n(spec.totalVolume, 'formatted') }} {{ $t('measure.m') }}<sup>3</sup>
                       </span>
                     </li>
                     <li>
-                      <span>{{ $t('shipping.totalWeight') }}</span>
+                      <span>{{ $t('preview.totalWeight') }}</span>
                       <span class="leaders__num">
                         {{ $n(spec.totalWeight, 'formatted') }} {{ $t('measure.kg') }}
                       </span>
                     </li>
                     <li>
-                      <span>{{ $t('shipping.qtyOfPackages') }}</span>
+                      <span>{{ $t('preview.qtyOfPackages') }}</span>
                       <span class="leaders__num">
                         {{ $n(spec.qtyOfPackages, 'formatted') }}
                       </span>
@@ -180,7 +180,7 @@
                   <ul class="leaders">
                     <li class="pb-2">
                       <span class="font-bold">
-                        {{ $t('shipping.finalCost') }} {{ $t('currency.CNY.symbol') }}
+                        {{ $t('preview.costOfGood') }} {{ $t('currency.CNY.symbol') }}
                       </span>
                       <!-- TODO to custom component or Intl polyfill -->
                       <!-- i18n-n has Error formatter.formatToParts is not a function. -->
@@ -192,7 +192,7 @@
                     </li>
                     <li class="pb-2">
                       <span>
-                        {{ $t('shipping.finalObtainCost') }} {{ $t('currency.CNY.symbol') }}
+                        {{ $t('preview.totalPrepay') }} {{ $t('currency.CNY.symbol') }}
                       </span>
                       <span class="flex ">
                         <div class="text-accent1">{{ $n(spec.finalObtainCost, 'integer') }}</div>
@@ -202,7 +202,7 @@
                     </li>
                     <li class="pb-2">
                       <span>
-                        {{ $t('shipping.profit') }}  {{ $t('currency.CNY.symbol') }}
+                        {{ $t('preview.finalToPay') }}  {{ $t('currency.CNY.symbol') }}
                       </span>
                       <span class="flex font-bold" style="color: #ff0000;">
                         <div>{{ $n(spec.profit, 'integer') }}</div>
@@ -237,7 +237,7 @@
                             <span>Bitcoin</span>
                           </li>
                           <li class="currency-picker__item">
-                            <span>Rubl ebat</span>
+                            <span>Rubl</span>
                           </li>
                         </ul>
                       </template>
@@ -248,15 +248,15 @@
               <div class="preview-summary__actions">
                 <div @click.prevent>
                   <img src="@/assets/icons/printer.png" class="mr-3">
-                  <span class="text-left">Распечатать</span>
+                  <span class="text-left">{{ $t('preview.printThis') }}</span>
                 </div>
                 <div @click.prevent>
                   <img src="@/assets/icons/pdf.png" class="mr-3">
-                  <span class="text-left">Скачать PDF</span>
+                  <span class="text-left">{{ $t('preview.downloadPDF') }}</span>
                 </div>
                 <div @click.prevent>
                   <img src="@/assets/icons/message.png" class="mr-3">
-                  <span class="text-left">Оставить комментарий</span>
+                  <span class="text-left">{{ $t('preview.comment') }}</span>
                </div>
               </div>
             </div>
@@ -309,18 +309,6 @@ export default {
   },
   data () {
     return {
-      headers: [
-        { text: '#', value: 'number', align: 'right', width: 55 },
-        { text: 'Фото', value: 'name', align: 'left', width: 80 },
-        { text: 'Наименование', value: 'status', align: 'left', width: 360 },
-        { text: 'Доп. изобр.', value: 'status', align: 'left', width: 70 },
-        { text: 'Цена (¥)', value: 'status', width: 80 },
-        { text: 'Кол-во', value: 'status', width: 70 },
-        { text: 'Стоимость (¥)', value: 'status', align: 'left', width: 100 },
-        { text: 'Кол-во гр. мест', value: 'status', align: 'left', width: 70 },
-        { text: 'Номера гр. мест', value: 'status', align: 'left', width: 70 },
-        { text: 'Оставить заметку', value: 'status', align: 'left', width: 85 },
-      ],
       containers: [
         { type: '20', loaded: 100 },
         { type: '20', loaded: 28 },
@@ -341,6 +329,20 @@ export default {
     }
   },
   computed: {
+    headers () {
+      return [
+        { text: '#', value: 'number', align: 'right', width: 55 },
+        { text: this.$t('preview.photo'), value: 'name', align: 'left', width: 80 },
+        { text: this.$t('preview.name'), value: 'status', align: 'left', width: 360 },
+        { text: this.$t('preview.additionalImages'), value: 'status', align: 'left', width: 70 },
+        { text: `${this.$t('preview.price')}(¥)`, value: 'status', width: 80 },
+        { text: this.$t('preview.qty'), value: 'status', width: 70 },
+        { text: `${this.$t('preview.cost')}(¥)`, value: 'status', align: 'left', width: 100 },
+        { text: this.$t('preview.qtyOfPackages'), value: 'status', align: 'left', width: 70 },
+        { text: this.$t('preview.packageNo'), value: 'status', align: 'left', width: 70 },
+        { text: this.$t('preview.leaveNote'), value: 'status', align: 'left', width: 85 },
+      ]
+    },
     specId () {
       return this.$route.params.specId
     },
