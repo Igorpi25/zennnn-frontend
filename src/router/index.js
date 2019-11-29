@@ -9,6 +9,7 @@ import ClientList from '../views/ClientList.vue'
 import SupplierItem from '..//views/SupplierItem.vue'
 import SupplierList from '../views/SupplierList.vue'
 import Staff from '../views/Staff.vue'
+import Preview from '../views/Preview.vue'
 import SignIn from '../views/SignIn.vue'
 import SignUp from '../views/SignUp.vue'
 import Welcome from '../views/Welcome.vue'
@@ -105,6 +106,12 @@ const routes = [
         component: Staff,
       },
     ],
+  },
+  {
+    path: '/spec/:specId/preview',
+    name: 'preview',
+    meta: { requiresAuth: true },
+    component: Preview,
   },
   {
     path: '/signin',

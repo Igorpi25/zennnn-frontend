@@ -41,17 +41,13 @@
         >{{ $t('action.collapseAll') }}</span>
       </div>
 
-      <div v-for="(item) in items" :key="item.id" class="invoice-wrapper">
-        <div class="invoice-header">
-          <span
-            :class="[
-              'status-indicator mr-2 md:mr-6 flex-shrink-0',
-              item.status === InvoiceStatus.IN_PRODUCTION
-                ? 'status-indicator--orange' : item.status === InvoiceStatus.IN_STOCK
-                  ? 'status-indicator--green' : 'status-indicator--pink'
-            ]"
-          >
-          </span>
+      <div v-for="(item) in items" :key="item.id" class="mb-6">
+        <InvoiceHeader
+          :item="item"
+          :expanded="expanded"
+          has-icon-text
+          @click="expand"
+        >
           <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto">
             <TextField
               :value="item.number"
@@ -166,21 +162,7 @@
               ></v-date-picker>
             </v-menu>
           </div>
-          <div @click="expand(item.id)" class="invoice-header__expand">
-            <template v-if="expanded.includes(item.id)">
-              <span v-text="$t('action.collapse')" class="mr-2 hidden lg:inline" />
-              <div class="invoice-header__expand__icon">
-                <svg width="10" height="2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 10 2"><defs></defs><g><g><title>{{ $t('action.collapse') }}</title><path d="M10,0v0h-10v0v1.998v0h10v0z"></path></g></g></svg>
-              </div>
-            </template>
-            <template v-else>
-              <span v-text="$t('action.expand')" class="mr-2 hidden lg:inline" />
-              <div class="invoice-header__expand__icon">
-                <svg width="10" height="10" fill="currentColor" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 10 10"><defs></defs><g><g><title>{{ $t('action.expand') }}</title><path d="M4.0017,10v0h1.998v0v-4.002v0h4.001v0v-1.998v0h-4.001v0v-4v0h-1.998v0v4v0h-4.001v0v1.998v0h4.001v0z"></path></g></g></svg>
-              </div>
-            </template>
-          </div>
-        </div>
+        </InvoiceHeader>
         <Invoice
           v-if="expanded.includes(item.id)"
           style="margin-top: 1px"
@@ -188,7 +170,6 @@
         />
       </div>
     </div>
-
     <Button
       outline
       class="mt-6"
@@ -224,7 +205,9 @@
 
 <script>
 // import { confirmDialog } from '@/util/helpers'
+import { mdiMinus, mdiPlus } from '@mdi/js'
 
+import InvoiceHeader from '@/components/InvoiceHeader.vue'
 import Invoice from '@/components/Invoice.vue'
 import SpecSummary from '@/components/SpecSummary'
 import SupplierCard from '@/components/SupplierCard'
@@ -234,6 +217,7 @@ import spec from '../../mixins/spec'
 export default {
   name: 'OwnerSpec',
   components: {
+    InvoiceHeader,
     Invoice,
     SpecSummary,
     SupplierCard,
@@ -241,7 +225,10 @@ export default {
   mixins: [spec],
   data () {
     return {
-      //
+      icons: {
+        mdiMinus,
+        mdiPlus,
+      },
     }
   },
   computed: {

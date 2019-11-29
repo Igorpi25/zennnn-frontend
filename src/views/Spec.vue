@@ -202,36 +202,3 @@ export default {
   },
 }
 </script>
-
-<style lang="postcss">
-.invoice-wrapper {
-  @apply mb-6;
-}
-.light-theme .invoice-wrapper {
-  -webkit-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
-  -moz-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
-  box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
-}
-
-.invoice-header {
-  padding: 5px 10px;
-  @apply relative flex items-center mx-auto w-full;
-  @apply rounded-sm bg-accent1 text-right;
-  color: #252525;
-}
-.light-theme .invoice-header {
-  --base-accent1: #d6d6d6;
-  color: #797979;
-}
-
-.invoice-header__expand {
-  @apply ml-auto flex justify-end flex-grow;
-  @apply text-sm cursor-pointer;
-}
-.invoice-header__expand__icon {
-  @apply w-5 h-5;
-  @apply flex justify-center items-center;
-  @apply border-2;
-}
-
-</style>

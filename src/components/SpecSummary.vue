@@ -162,7 +162,7 @@
                 <!-- TODO to custom component or Intl polyfill -->
                 <!-- i18n-n has Error formatter.formatToParts is not a function. -->
                 <span class="flex">
-                  <div class="cost-card__cost">{{ $n(spec.finalCost, 'integer') }}</div>
+                  <div class="text-white">{{ $n(spec.finalCost, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
                 </span>
@@ -183,7 +183,7 @@
                   {{ $t('shipping.finalObtainCost') }} {{ $t('currency.CNY.symbol') }}
                 </span>
                 <span class="flex">
-                  <div class="cost-card__cost">{{ $n(spec.finalObtainCost, 'integer') }}</div>
+                  <div class="text-white">{{ $n(spec.finalObtainCost, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.finalObtainCost, 'decimal').slice(-2) }}</div>
                 </span>
@@ -326,6 +326,12 @@
           large
           squared
           outline
+          @click="$router.push({
+            name: 'preview',
+            params: {
+              specId: $route.params.specId
+              }
+          })"
         >
           <span class="text-lg">{{ $t('shipping.overview') }}</span>
         </Button>
@@ -518,7 +524,7 @@ export default {
 }
 
 .spec-summary__info {
-  width: 340px;
+  max-width: 340px;
 }
 
 .spec-summary__cost {
@@ -531,37 +537,17 @@ export default {
   border-radius: 4px;
   font-size: 18px;
 }
-.light-theme .spec-summary__cost__card {
-  background: linear-gradient(to top, #f4f4f4 70%, #e5e5e5 100%);
-  @apply text-accent1;
-}
-.cost-card__cost {
-  @apply text-white;
-}
-.light-theme .cost-card__cost {
-  @apply text-accent1;
-}
 
 .spec-summary__actions {
   width: 100%;
   padding-top: 20px;
   padding-bottom: 20px;
 }
-.spec-summary__actions > div {
+.spec-summary__actions > button {
   display: flex;
 }
-.spec-summary__actions > div:not(:last-child) {
+.spec-summary__actions > button:not(:last-child) {
   margin-bottom: 25px;
-}
-.spec-summary__actions a {
-  @apply text-primary;
-}
-.spec-summary__actions a:hover {
-  color: #28ACD9;
-}
-.spec-summary__actions__icon {
-  width: 28px;
-  margin-right: 8px;
 }
 
 @screen lg {
@@ -595,18 +581,10 @@ export default {
 .spec-summary__info ul.leaders span + span {
   @apply bg-chaos-black;
 }
-.light-theme .spec-summary__info ul.leaders span:first-child,
-.light-theme .spec-summary__info ul.leaders span + span {
-  @apply bg-background;
-}
 @screen md {
   .spec-summary__info ul.leaders span:first-child,
   .spec-summary__info ul.leaders span + span {
     background: #1e1e1e;
-  }
-  .light-theme .spec-summary__info ul.leaders span:first-child,
-  .light-theme .spec-summary__info ul.leaders span + span {
-    @apply bg-background;
   }
 }
 .spec-summary__cost ul.leaders span:first-child,
@@ -614,17 +592,12 @@ export default {
   background-color: #272727;
 }
 
-.light-theme .spec-summary__cost ul.leaders span:first-child,
-.light-theme .spec-summary__cost ul.leaders span + span {
-  background-color: #f4f4f4;
-}
-
-ul.leaders {
+.spec-summary .leaders {
   line-height: 1.5rem;
   padding: 0;
   overflow-x: hidden;
   list-style: none}
-ul.leaders li:after {
+.spec-summary .leaders li:after {
   float: left;
   width: 0;
   white-space: nowrap;
@@ -633,18 +606,15 @@ ul.leaders li:after {
  ". . . . . . . . . . . . . . . . . . . . "
  ". . . . . . . . . . . . . . . . . . . . "
  ". . . . . . . . . . . . . . . . . . . . "}
-ul.leaders span:first-child {
+.spec-summary .leaders span:first-child {
   padding-right: 0.33em;}
-ul.leaders span + span {
+.spec-summary .leaders span + span {
   float: right;
   padding-left: 0.33em;
   position: relative;
   z-index: 1
 }
-.leaders__num {
+.spec-summary .leaders__num {
   @apply text-white font-bold
-}
-.light-theme .leaders__num {
-  @apply text-black;
 }
 </style>
