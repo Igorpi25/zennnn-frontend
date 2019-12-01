@@ -31,7 +31,7 @@ import Product from './Product.vue'
 import invoice from '../../mixins/invoice'
 
 export default {
-  name: 'AccauntantInvoice',
+  name: 'AccountantInvoice',
   components: {
     Product,
   },

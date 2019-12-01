@@ -10,7 +10,7 @@
 <script>
 import OwnerSpec from '@/components/Owner/Spec.vue'
 import ManagerSpec from '@/components/Manager/Spec.vue'
-import AccauntantSpec from '@/components/Accauntant/Spec.vue'
+import AccountantSpec from '@/components/Accountant/Spec.vue'
 import WarehousemanSpec from '@/components/Warehouseman/Spec.vue'
 import FreelancerSpec from '@/components/Freelancer/Spec.vue'
 
@@ -33,7 +33,7 @@ export default {
   components: {
     OwnerSpec,
     ManagerSpec,
-    AccauntantSpec,
+    AccountantSpec,
     WarehousemanSpec,
     FreelancerSpec,
   },
@@ -69,7 +69,7 @@ export default {
       switch (this.roleInProject) {
         case Role.OWNER: return 'OwnerSpec'
         case Role.MANAGER: return 'ManagerSpec'
-        case Role.ACCAUNTANT: return 'AccauntantSpec'
+        case Role.ACCOUNTANT: return 'AccountantSpec'
         case Role.WAREHOUSEMAN: return 'WarehousemanSpec'
         case Role.FREELANCER: return 'FreelancerSpec'
         default: return null

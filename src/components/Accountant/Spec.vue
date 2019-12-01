@@ -42,7 +42,7 @@ import Invoice from './Invoice.vue'
 import spec from '../../mixins/spec'
 
 export default {
-  name: 'AccauntantSpec',
+  name: 'AccountantSpec',
   components: {
     Invoice,
   },

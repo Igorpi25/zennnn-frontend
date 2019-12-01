@@ -29,7 +29,7 @@ export const ClientType = {
 export const Role = {
   OWNER: 'OWNER',
   MANAGER: 'MANAGER',
-  ACCAUNTANT: 'ACCAUNTANT',
+  ACCOUNTANT: 'ACCOUNTANT',
   WAREHOUSEMAN: 'WAREHOUSEMAN',
   FREELANCER: 'FREELANCER',
 }

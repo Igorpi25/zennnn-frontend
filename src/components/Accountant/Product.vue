@@ -22,7 +22,7 @@
 import product from '../../mixins/product'
 
 export default {
-  name: 'AccauntantProduct',
+  name: 'AccountantProduct',
   mixins: [product],
 }
 </script>
