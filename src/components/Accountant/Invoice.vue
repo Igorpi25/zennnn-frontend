@@ -62,19 +62,6 @@
                   <td colspan="2"></td>
                 </template>
 
-                <template v-else-if="activeTab === 2">
-                  <td class="text-gray-dark">{{ $t('shipping.total') }}</td>
-                  <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalNet, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
-                  </td>
-                  <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalGross, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
-                  </td>
-                  <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalCapacity, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.m') }}<sup>3</sup></span>
-                  </td>
-                </template>
-
                 <template v-else>
                   <td colspan="4"></td>
                 </template>
@@ -113,12 +100,18 @@ export default {
     },
   },
   computed: {
+    tabs () {
+      return [
+        { value: 1, text: this.$t('shipping.prices'), width: 176 },
+        { value: 2, text: this.$t('shipping.description'), width: 175 },
+        { value: 3, text: this.$t('shipping.link'), width: 175 },
+      ]
+    },
     headers () {
       switch (this.activeTab) {
         case 1: return [...this.productHeaders, ...this.costHeaders]
-        case 2: return [...this.productHeaders, ...this.storeHeaders]
-        case 3: return [...this.productHeaders, ...this.infoHeaders]
-        case 4: return [...this.productHeaders, ...this.linkHeaders]
+        case 2: return [...this.productHeaders, ...this.infoHeaders]
+        case 3: return [...this.productHeaders, ...this.linkHeaders]
         default: return []
       }
     },
@@ -146,17 +139,11 @@ export default {
         { text: this.$t('shipping.obtainAmount'), value: 'sellingAmount', minWidth: 100, bgcolor: 'gray-darkest' },
       ]
     },
-    storeHeaders () {
-      return [
-        { text: `${this.$t('shipping.net')}, ${this.$t('measure.kg')}`, value: 'net', width: 150, bgcolor: 'gray-darkest' },
-        { text: `${this.$t('shipping.gross')}, ${this.$t('measure.kg')}`, value: 'gross', width: 145, bgcolor: 'gray-darkest' },
-        { text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`, value: 'size', width: 223, bgcolor: 'gray-darkest' },
-      ]
-    },
     infoHeaders () {
       return [
         { text: this.$t('shipping.additionalPhoto'), value: 'images', width: 85, bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.additionalInfo'), value: 'description', align: 'left', bgcolor: 'gray-darkest' },
+        { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
       ]
     },
     linkHeaders () {

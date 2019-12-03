@@ -44,20 +44,6 @@
 
     <template v-else-if="activeTab === 2">
       <td class="text-right">
-        <span>{{ item.store && item.store.net || $t('placeholder.emptyNumber') }}</span>
-      </td>
-      <td class="text-right">
-        <span>{{ item.store && item.store.gross || $t('placeholder.emptyNumber') }}</span>
-      </td>
-      <td class="flex justify-around items-center" style="line-height:35px">
-        <span>{{ item.store && item.store.width || $t('placeholder.emptyNumber') }}</span>
-        <span>{{ item.store && item.store.height || $t('placeholder.emptyNumber') }}</span>
-        <span>{{ item.store && item.store.length || $t('placeholder.emptyNumber') }}</span>
-      </td>
-    </template>
-
-    <template v-else-if="activeTab === 3">
-      <td class="text-right">
         <div v-if="item.info && item.info.images && item.info.images.length > 0">
           {{ item.info.images }}
         </div>
@@ -65,9 +51,10 @@
       <td class="text-left">
         <span>{{ item.info && item.info.description || $t('placeholder.emptyText') }}</span>
       </td>
+      <td></td>
     </template>
 
-    <template v-else-if="activeTab === 4">
+    <template v-else-if="activeTab === 3">
       <td class="text-left text-primary">
         <span>{{ item.link && item.link.url || $t('placeholder.emptyText') }}</span>
       </td>
