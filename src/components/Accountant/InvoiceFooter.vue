@@ -1,116 +1,17 @@
 <template>
   <div class="invoice-footer">
-
-    <div class="flex items-center">
-      <div class="mr-2 flex flex-col items-start">
-        <RadioButton
-          name="profit-type"
-          hide-details
-          :value="item.profitType"
-          :label="InvoiceProfitType.MARGIN"
-          @input="updateInvoice(item.id, {
-            profitType: $event
-          })"
-        >
-          <span class="text-gray-light">
-            {{ $t('shipping.margin') }}
-          </span>
-        </RadioButton>
-        <RadioButton
-          name="profit-type"
-          hide-details
-          :value="item.profitType"
-          :label="InvoiceProfitType.COMMISSION"
-          @input="updateInvoice(item.id, {
-            profitType: $event
-          })"
-          >
-          <span class="text-gray-light">
-            {{ $t('shipping.commission') }}
-          </span>
-        </RadioButton>
-      </div>
-      <div class="w-16 mr-2">
-        <TextField
-          :value="item.profitPercent"
-          :debounce="250"
-          :placeholder="$t('placeholder.emptyNumber')"
-          type="number"
-          inputmode="numeric"
-          solo
-          colored
-          outlined
-          hide-details
-          @input="updateInvoice(item.id, {
-            profitPercent: $event
-          })"
-        >
-          <template v-slot:append>
-            %
-          </template>
-        </TextField>
-      </div>
-      <ToggleButton
-        small
-        :value="item.profitForAll"
-        @input="updateInvoice(item.id, {
-          profitForAll: item.profitForAll
-        })"
-      >
-        <span>{{ $t('shipping.forAll') }}</span>
-      </ToggleButton>
-    </div>
-
     <div class="flex sm:flex-wrap w-full sm:w-auto md:px-3 max-w-xs">
       <div class="flex flex-col items-end w-full sm:w-32 pr-1 md:pr-0 lg:pr-1">
         <label class="text-xs text-gray-light select-none pr-2">
           {{ $t('shipping.discount') }}
         </label>
-        <TextField
-          :value="item.discount"
-          :debounce="250"
-          :placeholder="$t('placeholder.emptyNumber')"
-          type="number"
-          inputmode="decimal"
-          solo
-          outlined
-          colored
-          hide-details
-          persistent-label
-          class="p-0"
-          @input="updateInvoice(item.id, {
-            discount: $event
-          })"
-        >
-          <template v-slot:append>
-            {{ $t('currency.CNY.symbol') }}
-          </template>
-        </TextField>
+        <span class="mr-2 leading-none">{{ item.discount || $t('placeholder.emptyNumber') }} {{ $t('currency.CNY.symbol') }}</span>
       </div>
       <div class="flex flex-col items-end w-full sm:w-32 pl-1 md:pl-0 lg:pl-1">
         <label class="text-xs text-gray-light select-none pr-2">
           {{ $t('shipping.prepay') }}
         </label>
-        <TextField
-          :value="item.prepayment"
-          :debounce="250"
-          :placeholder="$t('placeholder.emptyNumber')"
-          type="number"
-          inputmode="decimal"
-          solo
-          colored
-          outlined
-          hide-details
-          persistent-label
-          class="p-0"
-          @input="updateInvoice(item.id, {
-            prepayment: $event
-          })"
-        >
-          <template v-slot:append>
-            {{ $t('currency.CNY.symbol') }}
-          </template>
-        </TextField>
+        <span class="mr-2 leading-none">{{ item.prepayment || $t('placeholder.emptyNumber') }} {{ $t('currency.CNY.symbol') }}</span>
         <v-menu
           ref="menu"
           v-model="menuPrepaymentDate"
@@ -154,12 +55,9 @@
         <label class="text-xs text-gray-light select-none">
           {{ $t('shipping.obtainCost') }}
         </label>
-        <div
-          class="leading-none"
-          style="padding: 2px 0 2px;"
-        >
+        <span class="leading-none">
           {{ $n(item.residue, 'formatted') }} {{ $t('currency.CNY.symbol') }}
-        </div>
+        </span>
         <v-menu
           ref="menu"
           v-model="menuResidueDate"
@@ -200,12 +98,9 @@
         <label class="text-xs text-gray-light select-none">
           {{ $t('shipping.clientDebt') }}
         </label>
-        <div
-          class="leading-none text-white"
-          style="padding: 2px 0 2px;"
-        >
+        <span class="leading-none text-white">
           {{ $n(item.clientDebt, 'formatted') }} {{ $t('currency.CNY.symbol') }}
-        </div>
+        </span>
         <v-menu
           ref="menu"
           v-model="menuClientDebtDate"
@@ -251,7 +146,7 @@
 import invoice from '../../mixins/invoice'
 
 export default {
-  name: 'ManagerInvoiceFooter',
+  name: 'AccountantInvoiceFooter',
   mixins: [invoice],
   props: {
     item: {
@@ -267,23 +162,18 @@ export default {
 }
 </script>
 
-<style lang="postcss">
+<style scoped lang="postcss">
 .invoice-footer {
-  @apply flex flex-wrap justify-center items-start py-1 px-4;
+  @apply flex flex-wrap justify-end items-start py-1 px-4;
   @apply bg-accent1;
   border-radius: 2px;
 }
 .invoice-footer > div {
   @apply mt-5;
 }
-@screen sm {
-  .invoice-footer {
-    @apply justify-between
-  }
-}
 @screen md {
   .invoice-footer {
-    @apply flex-no-wrap justify-between items-center px-8;
+    @apply px-8;
   }
   .invoice-footer > div {
     @apply mt-0

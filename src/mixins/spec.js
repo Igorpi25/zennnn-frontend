@@ -4,6 +4,8 @@ import {
   mdiPlusCircleOutline,
   mdiChevronLeft,
   mdiChevronRight,
+  mdiMinus,
+  mdiPlus,
 } from '@mdi/js'
 
 import { ClientType, InvoiceStatus } from '@/graphql/enums'
@@ -70,6 +72,8 @@ export default {
         mdiPlusCircleOutline,
         mdiChevronLeft,
         mdiChevronRight,
+        mdiMinus,
+        mdiPlus,
       },
     }
   },

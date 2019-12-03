@@ -251,7 +251,7 @@
 import invoice from '../../mixins/invoice'
 
 export default {
-  name: 'ManagerInvoiceFooter',
+  name: 'OwnerInvoiceFooter',
   mixins: [invoice],
   props: {
     item: {

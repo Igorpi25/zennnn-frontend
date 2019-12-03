@@ -38,7 +38,6 @@ export default {
       try {
         const id = this.item.id
         this.updateLoading = id
-        console.log(input)
         await this.$apollo.mutate({
           mutation: UPDATE_PRODUCT,
           variables: { id, input },

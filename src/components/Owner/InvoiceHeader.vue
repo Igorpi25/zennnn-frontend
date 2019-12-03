@@ -49,7 +49,7 @@ import { mdiMinus, mdiPlus } from '@mdi/js'
 import { InvoiceStatus } from '@/graphql/enums'
 
 export default {
-  name: 'ManagerInvoiceHeader',
+  name: 'OwnerInvoiceHeader',
   props: {
     item: {
       type: [Array, Object],
