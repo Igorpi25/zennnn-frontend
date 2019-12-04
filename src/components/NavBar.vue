@@ -23,6 +23,7 @@
       </div>
     </router-link>
     <router-link
+      v-if="roleInProject === 'OWNER' || roleInProject === 'MANAGER'"
       :to="{
         name: 'clients',
         params: {
@@ -46,6 +47,7 @@
       </div>
     </router-link>
     <router-link
+      v-if="roleInProject === 'OWNER' || roleInProject === 'MANAGER'"
       :to="{
         name: 'suppliers',
         params: {
@@ -87,8 +89,21 @@
 <script>
 import { mdiArrowLeft } from '@mdi/js'
 
+import { GET_ROLE_IN_PROJECT } from '../graphql/queries'
+
 export default {
   name: 'NavBar',
+  apollo: {
+    roleInProject: {
+      query: GET_ROLE_IN_PROJECT,
+      variables () {
+        return {
+          specId: this.specId,
+        }
+      },
+      fetchPolicy: 'cache-only',
+    },
+  },
   data () {
     return {
       icons: {

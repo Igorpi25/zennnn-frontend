@@ -33,7 +33,16 @@
               </div>
             </template>
             <template v-slot:items="{ items }">
-              <tr
+              <Product
+                v-for="(item, index) in items"
+                :key="item.id"
+                :item="item"
+                :index="index"
+                :profit-type="invoiceItem.profitType"
+                :profit-for-all="invoiceItem.profitForAll"
+                class="items base-accent3"
+              />
+              <!-- <tr
                 v-for="(item, index) in items"
                 :key="item.id"
                 class="items base-accent3"
@@ -255,7 +264,7 @@
                     <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
                   </svg>
                 </td>
-              </tr>
+              </tr> -->
             </template>
 
             <template v-slot:footer>
@@ -324,23 +333,25 @@
 </template>
 
 <script>
-import { mdiPlusCircleOutline } from '@mdi/js'
+import { mdiClose, mdiPlusCircleOutline } from '@mdi/js'
 
 import {
   ProductStatus,
   InvoiceProfitType,
 } from '@/graphql/enums'
-import { CREATE_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT } from '@/graphql/mutations'
 
-import { confirmDialog } from '@/util/helpers'
+import product from '../mixins/product'
 
+import Product from '@/components/Product.vue'
 import InvoiceFooter from '@/components/InvoiceFooter.vue'
 
 export default {
   name: 'Invoice',
   components: {
+    Product,
     InvoiceFooter,
   },
+  mixins: [product],
   props: {
     invoice: {
       type: Object,
@@ -357,6 +368,7 @@ export default {
       activeTab: 1,
       errors: [],
       icons: {
+        mdiClose,
         mdiPlusCircleOutline,
       },
     }
@@ -445,84 +457,6 @@ export default {
         { text: this.$t('shipping.openLink'), value: 'openLink', width: 70, bgcolor: 'gray-darkest' },
         { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
       ]
-    },
-  },
-  methods: {
-    switchTab (event) {
-      this.activeTab = event.target.value
-    },
-    async createProduct () {
-      try {
-        this.createLoading = true
-        const variables = {
-          invoiceId: this.invoice.id,
-        }
-        await this.$apollo.mutate({
-          mutation: CREATE_PRODUCT,
-          variables,
-          fetchPolicy: 'no-cache',
-        })
-      } catch (error) {
-        this.errors = error.errors || []
-        this.$logger.warn('Error: ', error)
-        // Analytics.record({
-        //   name: 'CreateProductError',
-        //   attributes: {
-        //     error: error
-        //   }
-        // })
-      } finally {
-        this.createLoading = null
-      }
-    },
-    async updateProduct (id, input) {
-      try {
-        this.updateLoading = input.id
-        await this.$apollo.mutate({
-          mutation: UPDATE_PRODUCT,
-          variables: { id, input },
-          fetchPolicy: 'no-cache',
-        })
-      } catch (error) {
-        if (error && error.errors && error.errors.length > 0) {
-          this.errors = error.errors
-        }
-        this.$logger.warn('Error: ', error)
-        // Analytics.record({
-        //   name: 'UpdateProductError',
-        //   attributes: {
-        //     error: error
-        //   }
-        // })
-      } finally {
-        this.updateLoading = null
-      }
-    },
-    async deleteProduct (id) {
-      try {
-        const msg = this.$t('alert.removeProduct')
-        const confirm = await confirmDialog(msg)
-        if (confirm === 'not_confirmed') {
-          return
-        }
-        this.deleteLoading = id
-        await this.$apollo.mutate({
-          mutation: DELETE_PRODUCT,
-          variables: { id },
-        })
-      } catch (error) {
-        if (error === 'not_confirmed') return
-        this.errors = error.errors || []
-        this.$logger.warn('Error: ', error)
-        // Analytics.record({
-        //   name: 'DeleteProductError',
-        //   attributes: {
-        //     error: error
-        //   }
-        // })
-      } finally {
-        this.deleteLoading = null
-      }
     },
   },
 }
