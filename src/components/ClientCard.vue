@@ -180,7 +180,7 @@
             @click="$router.push({
               name: 'clients',
               params: {
-                specId
+                orgId,
               }
             })"
           >
@@ -225,7 +225,7 @@ export default {
     TemplateCard,
   },
   props: {
-    specId: {
+    orgId: {
       type: String,
       required: true,
     },
@@ -253,7 +253,7 @@ export default {
       query: LIST_CLIENT_TEMPLATES,
       variables () {
         return {
-          specId: this.$route.params.specId,
+          orgId: this.orgId,
         }
       },
       fetchPolicy: 'cache-and-network',
@@ -262,7 +262,6 @@ export default {
       query: GET_CLIENT,
       variables () {
         return {
-          specId: this.specId,
           id: this.$route.params.clientId,
         }
       },
@@ -483,9 +482,7 @@ export default {
     async update (type) {
       try {
         const templateFieldsKeys = ['templateName', ...this.fieldsKeys]
-        const specId = this.specId
         let input = {
-          specId,
           clientType: this.clientType,
           template: {},
         }
@@ -514,7 +511,7 @@ export default {
           this.$router.push({
             name: 'client',
             params: {
-              specId,
+              orgId: this.orgId,
               clientId: response.data.createClient.id,
             },
           })
@@ -538,7 +535,6 @@ export default {
         this.createTemplateLoading = true
         let input = {
           templateName,
-          specId: this.specId,
         }
         for (let [key, val] of Object.entries(this.client[this.clientType].template)) {
           // id created on server

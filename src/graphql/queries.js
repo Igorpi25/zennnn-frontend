@@ -52,7 +52,7 @@ export const GET_PROFILE = gql`
 `
 
 export const GET_SPECS = gql`
-  query GetSpecs($orgId: ID) {
+  query GetSpecs($orgId: ID!) {
     getSpecs(orgId: $orgId) {
       ...SpecFragment
     }
@@ -91,8 +91,8 @@ export const GET_CLIENT = gql`
 `
 
 export const LIST_CLIENTS = gql`
-  query ListClients($specId: ID!) {
-    listClients(specId: $specId) {
+  query ListClients($orgId: ID!) {
+    listClients(orgId: $orgId) {
       items {
         ...ClientFragment
         template {
@@ -106,8 +106,8 @@ export const LIST_CLIENTS = gql`
 `
 
 export const LIST_CLIENT_TEMPLATES = gql`
-  query ListClientTemplates($specId: ID!) {
-    listClientTemplates(specId: $specId) {
+  query ListClientTemplates($orgId: ID!) {
+    listClientTemplates(orgId: $orgId) {
       items {
         ...ClientTemplateFragment
       }
@@ -117,8 +117,8 @@ export const LIST_CLIENT_TEMPLATES = gql`
 `
 
 export const SEARCH_CLIENTS = gql`
-  query SearchClients($specId: ID!, $search: String) {
-    listClients(specId: $specId, search: $search) {
+  query SearchClients($orgId: ID!, $search: String) {
+    listClients(orgId: $orgId, search: $search) {
       items {
         ...ClientFragment
         template {
@@ -153,8 +153,8 @@ export const GET_SUPPLIER = gql`
 `
 
 export const LIST_SUPPLIERS = gql`
-  query ListSuppliers($specId: ID!) {
-    listSuppliers(specId: $specId) {
+  query ListSuppliers($orgId: ID!) {
+    listSuppliers(orgId: $orgId) {
       items {
         ...SupplierFragment
         template {
@@ -176,8 +176,8 @@ export const LIST_SUPPLIERS = gql`
 `
 
 export const LIST_SUPPLIER_TEMPLATES = gql`
-  query ListSupplierTemplates($specId: ID!) {
-    listSupplierTemplates(specId: $specId) {
+  query ListSupplierTemplates($orgId: ID!) {
+    listSupplierTemplates(orgId: $orgId) {
       items {
         ...SupplierTemplateFragment
       }
@@ -187,8 +187,8 @@ export const LIST_SUPPLIER_TEMPLATES = gql`
 `
 
 export const SEARCH_SUPPLIERS = gql`
-  query SearchSuppliers($specId: ID!) {
-    searchSuppliers(specId: $specId) {
+  query SearchSuppliers($orgId: ID!) {
+    searchSuppliers(orgId: $orgId) {
       items {
         ...SupplierFragment
         template {

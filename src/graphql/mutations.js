@@ -94,8 +94,8 @@ export const DELETE_PRODUCT = gql`
 `
 
 export const CREATE_CLIENT = gql`
-  mutation CreateClient($specId: ID!, $inpit: CreateClientInput!) {
-    createClient(specId: $specId, input: $input) {
+  mutation CreateClient($orgId: ID!, $inpit: CreateClientInput!) {
+    createClient(orgId: $orgId, input: $input) {
       ...ClientFragment
       template {
         ...ClientTemplateFragment
@@ -126,8 +126,8 @@ export const DELETE_CLIENT = gql`
 `
 
 export const CREATE_CLIENT_TEMPLATE = gql`
-  mutation CreateClientTemplate($specId: ID!, $inpit: CreateClientTemplateInput!) {
-    createClientTemplate(specId: $specId, input: $input) {
+  mutation CreateClientTemplate($orgId: ID!, $inpit: CreateClientTemplateInput!) {
+    createClientTemplate(orgId: $orgId, input: $input) {
       ...ClientTemplateFragment
     }
   }
@@ -141,8 +141,8 @@ export const DELETE_CLIENT_TEMPLATE = gql`
 `
 
 export const CREATE_SUPPLIER = gql`
-  mutation CreateSupplier($specId: ID!, $inpit: SupplierInput!) {
-    createSupplier(specId: $specId, input: $input) {
+  mutation CreateSupplier($orgId: ID!, $inpit: SupplierInput!) {
+    createSupplier(orgId: $orgId, input: $input) {
       ...SupplierFragment
       template {
         ...SupplierTemplateFragment
@@ -162,8 +162,8 @@ export const CREATE_SUPPLIER = gql`
 `
 
 export const UPDATE_SUPPLIER = gql`
-  mutation UpdateSupplier($specId: ID!, $inpit: SupplierInput!) {
-    updateSupplier(specId: $specId, input: $input) {
+  mutation UpdateSupplier($id: ID!, $inpit: SupplierInput!) {
+    updateSupplier(id: $id, input: $input) {
       ...SupplierFragment
       template {
         ...SupplierTemplateFragment
@@ -189,8 +189,8 @@ export const DELETE_SUPPLIER = gql`
 `
 
 export const CREATE_SUPPLIER_TEMPLATE = gql`
-  mutation CreateSupplierTemplate($specId: ID!, $inpit: CreateSupplierTemplateInput!) {
-    createSupplierTemplate(specId: $specId, input: $input) {
+  mutation CreateSupplierTemplate($orgId: ID!, $inpit: CreateSupplierTemplateInput!) {
+    createSupplierTemplate(orgId: $orgId, input: $input) {
       ...SupplierTemplateFragment
     }
   }

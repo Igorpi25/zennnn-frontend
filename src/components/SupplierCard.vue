@@ -243,7 +243,7 @@
             @click="$router.push({
               name: 'suppliers',
               params: {
-                specId
+                orgId,
               }
             })"
           >
@@ -293,7 +293,7 @@ export default {
     TemplateCard,
   },
   props: {
-    specId: {
+    orgId: {
       type: String,
       required: true,
     },
@@ -325,7 +325,7 @@ export default {
       query: LIST_SUPPLIER_TEMPLATES,
       variables () {
         return {
-          specId: this.specId,
+          orgId: this.orgId,
         }
       },
       fetchPolicy: 'cache-and-network',
@@ -334,7 +334,6 @@ export default {
       query: GET_SUPPLIER,
       variables () {
         return {
-          specId: this.specId,
           id: this.$route.params.supplierId,
         }
       },
@@ -534,9 +533,7 @@ export default {
     async update () {
       try {
         const templateFieldsKeys = ['templateName', ...this.fieldsKeys]
-        const specId = this.specId
         let input = {
-          specId,
           template: {},
         }
         if (!this.create) {
@@ -580,7 +577,7 @@ export default {
             this.$router.push({
               name: 'supplier',
               params: {
-                specId,
+                orgId: this.orgId,
                 supplierId: response.data.createSupplier.id,
               },
             })
@@ -604,7 +601,6 @@ export default {
         this.createTemplateLoading = true
         let input = {
           templateName,
-          specId: this.specId,
         }
         for (let [key, val] of Object.entries(this.supplier.template)) {
           // id created on server

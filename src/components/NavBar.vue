@@ -2,10 +2,8 @@
   <div class="navbar container container--sm">
     <router-link
       :to="{
-        name: 'home',
-        params: {
-          specId,
-        },
+        name: 'specs',
+        params: { orgId },
       }"
       :class="{ active: $route.name == 'spec' }"
     >
@@ -23,12 +21,10 @@
       </div>
     </router-link>
     <router-link
-      v-if="roleInProject === 'OWNER' || roleInProject === 'MANAGER'"
+      v-if="roleInOrg === 'OWNER' || roleInOrg === 'MANAGER'"
       :to="{
         name: 'clients',
-        params: {
-          specId,
-        },
+        params: { orgId },
       }"
       :class="{ active: $route.name == 'client' || $route.name == 'client-create' }"
     >
@@ -47,12 +43,10 @@
       </div>
     </router-link>
     <router-link
-      v-if="roleInProject === 'OWNER' || roleInProject === 'MANAGER'"
+      v-if="roleInOrg === 'OWNER' || roleInOrg === 'MANAGER'"
       :to="{
         name: 'suppliers',
-        params: {
-          specId,
-        },
+        params: { orgId },
       }"
       :class="{ active: $route.name == 'supplier' ||
       $route.name == 'supplier-create' }"
@@ -74,9 +68,7 @@
     <!-- <router-link
       :to="{
         name: 'staff',
-        params: {
-          specId,
-        },
+        params: { orgId },
       }"
     >
       <div class="navbar__link">
@@ -89,18 +81,13 @@
 <script>
 import { mdiArrowLeft } from '@mdi/js'
 
-import { GET_ROLE_IN_PROJECT } from '../graphql/queries'
+import { GET_ORGS } from '../graphql/queries'
 
 export default {
   name: 'NavBar',
   apollo: {
-    roleInProject: {
-      query: GET_ROLE_IN_PROJECT,
-      variables () {
-        return {
-          specId: this.specId,
-        }
-      },
+    getOrgs: {
+      query: GET_ORGS,
       fetchPolicy: 'cache-only',
     },
   },
@@ -112,8 +99,13 @@ export default {
     }
   },
   computed: {
-    specId () {
-      return this.$route.params.specId
+    orgId () {
+      return this.$route.params.orgId
+    },
+    roleInOrg () {
+      const orgs = this.getOrgs || []
+      const org = orgs.find(el => el.id === this.orgId) || {}
+      return org.role || null
     },
   },
 }

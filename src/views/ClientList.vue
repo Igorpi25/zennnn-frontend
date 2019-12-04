@@ -115,7 +115,7 @@ export default {
       query: LIST_CLIENTS,
       variables () {
         return {
-          specId: this.$route.params.specId,
+          orgId: this.$route.params.orgId,
         }
       },
       fetchPolicy: 'cache-and-network',

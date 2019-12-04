@@ -1,125 +1,121 @@
 <template>
-  <div class="content view">
-    <StatusBar />
-    <NavBar />
-    <div class="container container--sm">
-      <div class="py-10">
-        <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
+  <div class="container container--sm">
+    <div class="py-10">
+      <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
 
-        <div class="pt-5 pb-6">
-          <TextField
-            v-model="search"
-            :placeholder="$t('placeholder.pageSearch')"
-            solo
-            outlined
-            background-dark
-            hide-details
-            class="max-w-2xl text-2xl leading-normal mx-auto"
-          >
-            <template v-slot:append>
-              <Icon size="24">{{ icons.mdiMagnify }}</Icon>
-            </template>
-          </TextField>
-        </div>
-
-        <div class="overflow-x-auto">
-          <DataTable
-            :headers="headers"
-            :items="items"
-            :search="search"
-            table-width="100%"
-            table-class="table-fixed"
-            thead-class="text-accent2 border-b border-accent2"
-          >
-            <template v-slot:header.status="{ header }">
-              <td
-                :width="header.width + 'px'"
-                class="px-3"
-              >
-                <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 10 10"><defs><clipPath id="ClipPath1016"><path d="M5.00003,0c2.76138,0 4.99994,2.23864 4.99994,5.00005c0,2.76141 -2.23856,4.99997 -4.99994,4.99997c-2.76152,0 -5.00007,-2.23855 -5.00007,-4.99997c0,-2.76141 2.23856,-5.00005 5.00007,-5.00005z" fill="currentColor"></path></clipPath></defs><g><g><title>Status</title><path d="M5.00003,0c2.76138,0 4.99994,2.23864 4.99994,5.00005c0,2.76141 -2.23856,4.99997 -4.99994,4.99997c-2.76152,0 -5.00007,-2.23855 -5.00007,-4.99997c0,-2.76141 2.23856,-5.00005 5.00007,-5.00005z" fill-opacity="0" fill="currentColor" stroke-dashoffset="0" stroke-dasharray="" stroke-linejoin="miter" stroke-linecap="butt" stroke-opacity="1" stroke="#414141" stroke-miterlimit="50" stroke-width="2" clip-path="url(&quot;#ClipPath1016&quot;)"></path></g></g></svg>
-              </td>
-            </template>
-            <template v-slot:header.coming="{ header }">
-              <td :width="header.width + 'px'">
-                <v-tooltip top>
-                  <template v-slot:activator="{ on }">
-                    <span v-on="on">
-                      +$
-                    </span>
-                  </template>
-                  <span>
-                    {{ $t('deals.moneyRecieved') }}
-                  </span>
-                </v-tooltip>
-              </td>
-            </template>
-            <template v-slot:header.spending="{ header }">
-              <td :width="header.width + 'px'">
-                <v-tooltip top>
-                  <template v-slot:activator="{ on }">
-                    <span v-on="on">-$</span>
-                  </template>
-                  <span>
-                    {{ $t('deals.expensesPaid') }}
-                  </span>
-                </v-tooltip>
-              </td>
-            </template>
-            <template v-slot:items="{ items }">
-              <tr
-                v-for="(item) in items"
-                :key="item.id"
-                class="items bg-background hover:bg-accent3 border-none"
-                @click="$router.push({
-                  name: 'spec',
-                  params: {
-                    specId: item.id
-                  }
-                })"
-              >
-                <td class="relative px-3">
-                  <span
-                    :class="[
-                      'status-indicator inline-block',
-                      item.status === SpecStatus.IN_PRODUCTION
-                        ? 'status-indicator--orange' : item.status === SpecStatus.IN_STOCK
-                          ? 'status-indicator--green' : 'status-indicator--pink'
-                    ]"
-                  >
-                  </span>
-                </td>
-                <td></td>
-                <td></td>
-                <td>{{ (item.client && item.client.uid) || '' }}</td>
-                <td>{{ getClientName(item.client) }}</td>
-                <td>{{ ((item.client && item.client.phone) || (item.client && item.client.mobilePhone)) || '' }}</td>
-                <td>{{ item.customNumber || item.specNo || '' }}</td>
-                <td class="text-center">
-                  {{ $d($parseISO(item.createdAt), 'short') }}
-                </td>
-                <td class="text-center pointer-events-none" @click.prevent.stop>
-                  <div
-                    class="cursor-pointer pointer-events-auto"
-                    @click="deleteSpec(item.id)"
-                  >
-                    <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 13 16"><defs></defs><g><g><title>Delete</title><image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQCAYAAADNo/U5AAAAU0lEQVQ4T2NkQANBQUH/0cXWrVvHiCyGwgFJgDQhK0Lng9QwYjMZ3SZ0PoZNhDSQbxM2N+OzDaQe7CeQx0mhSVIMM3xUEzSUKQsIYpIPLEGTlWAB2MDtgmErnM4AAAAASUVORK5CYII=" width="13" height="16" transform="matrix(1,0,0,1,0,0)" ></image></g></g></svg>
-                  </div>
-                </td>
-              </tr>
-            </template>
-          </DataTable>
-        </div>
-        <Button
-          outline
-          class="mt-6"
-          @click="createSpec"
+      <div class="pt-5 pb-6">
+        <TextField
+          v-model="search"
+          :placeholder="$t('placeholder.pageSearch')"
+          solo
+          outlined
+          background-dark
+          hide-details
+          class="max-w-2xl text-2xl leading-normal mx-auto"
         >
-          <template v-slot:icon>
-            <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+          <template v-slot:append>
+            <Icon size="24">{{ icons.mdiMagnify }}</Icon>
           </template>
-          <span>{{ $t('deals.createDeal') }}</span>
-        </Button>
+        </TextField>
       </div>
+
+      <div class="overflow-x-auto">
+        <DataTable
+          :headers="headers"
+          :items="items"
+          :search="search"
+          table-width="100%"
+          table-class="table-fixed"
+          thead-class="text-accent2 border-b border-accent2"
+        >
+          <template v-slot:header.status="{ header }">
+            <td
+              :width="header.width + 'px'"
+              class="px-3"
+            >
+              <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 10 10"><defs><clipPath id="ClipPath1016"><path d="M5.00003,0c2.76138,0 4.99994,2.23864 4.99994,5.00005c0,2.76141 -2.23856,4.99997 -4.99994,4.99997c-2.76152,0 -5.00007,-2.23855 -5.00007,-4.99997c0,-2.76141 2.23856,-5.00005 5.00007,-5.00005z" fill="currentColor"></path></clipPath></defs><g><g><title>Status</title><path d="M5.00003,0c2.76138,0 4.99994,2.23864 4.99994,5.00005c0,2.76141 -2.23856,4.99997 -4.99994,4.99997c-2.76152,0 -5.00007,-2.23855 -5.00007,-4.99997c0,-2.76141 2.23856,-5.00005 5.00007,-5.00005z" fill-opacity="0" fill="currentColor" stroke-dashoffset="0" stroke-dasharray="" stroke-linejoin="miter" stroke-linecap="butt" stroke-opacity="1" stroke="#414141" stroke-miterlimit="50" stroke-width="2" clip-path="url(&quot;#ClipPath1016&quot;)"></path></g></g></svg>
+            </td>
+          </template>
+          <template v-slot:header.coming="{ header }">
+            <td :width="header.width + 'px'">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <span v-on="on">
+                    +$
+                  </span>
+                </template>
+                <span>
+                  {{ $t('deals.moneyRecieved') }}
+                </span>
+              </v-tooltip>
+            </td>
+          </template>
+          <template v-slot:header.spending="{ header }">
+            <td :width="header.width + 'px'">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <span v-on="on">-$</span>
+                </template>
+                <span>
+                  {{ $t('deals.expensesPaid') }}
+                </span>
+              </v-tooltip>
+            </td>
+          </template>
+          <template v-slot:items="{ items }">
+            <tr
+              v-for="(item) in items"
+              :key="item.id"
+              class="items bg-background hover:bg-accent3 border-none"
+              @click="$router.push({
+                name: 'spec',
+                params: {
+                  specId: item.id
+                }
+              })"
+            >
+              <td class="relative px-3">
+                <span
+                  :class="[
+                    'status-indicator inline-block',
+                    item.status === SpecStatus.IN_PRODUCTION
+                      ? 'status-indicator--orange' : item.status === SpecStatus.IN_STOCK
+                        ? 'status-indicator--green' : 'status-indicator--pink'
+                  ]"
+                >
+                </span>
+              </td>
+              <td></td>
+              <td></td>
+              <td>{{ (item.client && item.client.uid) || '' }}</td>
+              <td>{{ getClientName(item.client) }}</td>
+              <td>{{ ((item.client && item.client.phone) || (item.client && item.client.mobilePhone)) || '' }}</td>
+              <td>{{ item.customNumber || item.specNo || '' }}</td>
+              <td class="text-center">
+                {{ $d($parseISO(item.createdAt), 'short') }}
+              </td>
+              <td class="text-center pointer-events-none" @click.prevent.stop>
+                <div
+                  class="cursor-pointer pointer-events-auto"
+                  @click="deleteSpec(item.id)"
+                >
+                  <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 13 16"><defs></defs><g><g><title>Delete</title><image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQCAYAAADNo/U5AAAAU0lEQVQ4T2NkQANBQUH/0cXWrVvHiCyGwgFJgDQhK0Lng9QwYjMZ3SZ0PoZNhDSQbxM2N+OzDaQe7CeQx0mhSVIMM3xUEzSUKQsIYpIPLEGTlWAB2MDtgmErnM4AAAAASUVORK5CYII=" width="13" height="16" transform="matrix(1,0,0,1,0,0)" ></image></g></g></svg>
+                </div>
+              </td>
+            </tr>
+          </template>
+        </DataTable>
+      </div>
+      <Button
+        outline
+        class="mt-6"
+        @click="createSpec"
+      >
+        <template v-slot:icon>
+          <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+        </template>
+        <span>{{ $t('deals.createDeal') }}</span>
+      </Button>
     </div>
   </div>
 </template>
@@ -138,16 +134,19 @@ import { GET_SPECS } from '../graphql/queries'
 import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
 import { SPECS_DELTA } from '../graphql/subscriptions'
 
-import StatusBar from '@/components/StatusBar'
-import NavBar from '@/components/NavBar'
-
 import { confirmDialog } from '@/util/helpers'
 
 export default {
   name: 'Specs',
-  components: {
-    StatusBar,
-    NavBar,
+  apollo: {
+    getSpecs: {
+      query: GET_SPECS,
+      variables () {
+        return {
+          orgId: this.orgId,
+        }
+      },
+    },
   },
   data () {
     return {
@@ -163,6 +162,9 @@ export default {
     }
   },
   computed: {
+    orgId () {
+      return this.$route.params.orgId
+    },
     headers () {
       return [
         { text: '', value: 'status', align: 'left', width: 45, bgcolor: 'tansparent', sortable: true },
@@ -179,9 +181,6 @@ export default {
     items () {
       return this.getSpecs || []
     },
-  },
-  apollo: {
-    getSpecs: GET_SPECS,
   },
   mounted () {
     const observer = this.$apollo.subscribe({
@@ -201,6 +200,7 @@ export default {
         if (operation === Operation.INSERT_SPEC) {
           const { getSpecs } = apolloClient.readQuery({
             query: GET_SPECS,
+            variables: { orgId: this.orgId },
           })
 
           if (!getSpecs.some(el => el.id === data.delta.payload.id)) {
@@ -208,6 +208,7 @@ export default {
 
             apolloClient.writeQuery({
               query: GET_SPECS,
+              variables: { orgId: this.orgId },
               data: {
                 getSpecs,
               },
@@ -226,6 +227,7 @@ export default {
         if (operation === Operation.DELETE_SPEC) {
           const { getSpecs } = apolloClient.readQuery({
             query: GET_SPECS,
+            variables: { orgId: this.orgId },
           })
 
           const index = getSpecs.findIndex(el => el.id === data.delta.payload.id)
@@ -234,6 +236,7 @@ export default {
             getSpecs.splice(index, 1)
             apolloClient.writeQuery({
               query: GET_SPECS,
+              variables: { orgId: this.orgId },
               data: {
                 getSpecs,
               },
@@ -270,6 +273,7 @@ export default {
 
           const { getSpecs } = this.$apollo.provider.defaultClient.readQuery({
             query: GET_SPECS,
+            variables: { orgId: this.orgId },
           })
 
           if (!getSpecs.some(el => el.id === spec.id)) {
@@ -277,6 +281,7 @@ export default {
 
             this.$apollo.provider.defaultClient.writeQuery({
               query: GET_SPECS,
+              variables: { orgId: this.orgId },
               data: {
                 getSpecs,
               },
@@ -305,6 +310,7 @@ export default {
         })
         const { getSpecs } = this.$apollo.provider.defaultClient.readQuery({
           query: GET_SPECS,
+          variables: { orgId: this.orgId },
         })
 
         const index = getSpecs.findIndex(el => el.id === id)
@@ -313,6 +319,7 @@ export default {
           getSpecs.splice(index, 1)
           this.$apollo.provider.defaultClient.writeQuery({
             query: GET_SPECS,
+            variables: { orgId: this.orgId },
             data: {
               getSpecs,
             },

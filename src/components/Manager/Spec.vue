@@ -193,7 +193,7 @@
     >
       <SupplierCard
         ref="supplierCard"
-        :spec-id="$route.params.specId"
+        :org-id="$route.params.orgId"
         create
         is-component
         @close="supplierDialog = false"

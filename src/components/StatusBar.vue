@@ -190,7 +190,7 @@
               v-else
               :key="item.id"
               class="px-3 py-2 text-sm cursor-pointer hover:bg-gray-dark"
-              @click="gotoOrg(item.id)"
+              @click="changeOrg(item.id)"
             >
               <div class="flex">
                 <div class="leading-tight">
@@ -229,6 +229,7 @@ export default {
     },
     getOrgs: {
       query: GET_ORGS,
+      fetchPolicy: 'cache-only',
     },
   },
   data () {
@@ -281,9 +282,10 @@ export default {
     },
   },
   methods: {
-    gotoOrg (orgId) {
-      // eslint-disable-next-line
-      console.log('orgId', orgId)
+    changeOrg (orgId) {
+      if (orgId !== this.$route.params.orgId) {
+        this.$router.push({ name: 'specs', params: { orgId } })
+      }
       this.orgDialog = false
     },
     profileAction (value) {

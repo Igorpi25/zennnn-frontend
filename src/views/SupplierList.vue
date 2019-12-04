@@ -132,7 +132,7 @@ export default {
       query: LIST_SUPPLIERS,
       variables () {
         return {
-          specId: this.$route.params.specId,
+          orgId: this.$route.params.orgId,
         }
       },
       fetchPolicy: 'cache-and-network',
@@ -187,7 +187,7 @@ export default {
             const data = store.readQuery({
               query: LIST_SUPPLIERS,
               variables: {
-                specId: this.$route.params.specId,
+                orgId: this.$route.params.orgId,
               },
             })
             const index = data.listSuppliers.items.findIndex(item => item.id === id)
