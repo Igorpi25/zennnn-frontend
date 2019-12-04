@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import RequisitesList from '../views/RequisitesList.vue'
+import RequisitesItem from '../views/RequisitesItem.vue'
 import Specs from '../views/Specs.vue'
 import SpecLayout from '../views/SpecLayout.vue'
 import Spec from '../views/Spec.vue'
@@ -104,6 +106,18 @@ const routes = [
         name: 'staff',
         meta: { requiresAuth: true },
         component: Staff,
+      },
+      {
+        path: '/requisites',
+        name: 'requisites-list',
+        component: RequisitesList,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: '/requisites/:reqId',
+        name: 'requisites',
+        component: RequisitesItem,
+        meta: { requiresAuth: true },
       },
     ],
   },

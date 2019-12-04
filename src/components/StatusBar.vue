@@ -229,6 +229,7 @@ export default {
     },
     getOrgs: {
       query: GET_ORGS,
+      skip: true,
     },
   },
   data () {

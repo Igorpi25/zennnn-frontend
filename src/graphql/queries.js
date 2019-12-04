@@ -52,8 +52,8 @@ export const GET_PROFILE = gql`
 `
 
 export const GET_SPECS = gql`
-  query GetSpecs($orgId: ID) {
-    getSpecs(orgId: $orgId) {
+  query GetSpecs {
+    getSpecs {
       ...SpecFragment
     }
   }
