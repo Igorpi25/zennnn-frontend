@@ -11,6 +11,22 @@ import {
   SUPPLIER_SHOP_TEMPLATE_FRAGMENT,
 } from './typeDefs'
 
+export const GET_ORGS = gql`
+  query GetOrgs {
+    getOrgs {
+      id
+      owner {
+        id
+        email
+        givenName
+        familyName
+        picture
+      }
+      role
+    }
+  }
+`
+
 export const GET_ROLE_IN_PROJECT = gql`
   query GetRoleInProject($specId: ID!) {
     roleInProject(specId: $specId)
@@ -36,8 +52,8 @@ export const GET_PROFILE = gql`
 `
 
 export const GET_SPECS = gql`
-  query GetSpecs {
-    getSpecs {
+  query GetSpecs($orgId: ID) {
+    getSpecs(orgId: $orgId) {
       ...SpecFragment
     }
   }

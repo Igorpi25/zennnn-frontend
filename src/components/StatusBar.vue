@@ -169,11 +169,50 @@
         </div>
       </div>
     </div>
+    <v-dialog
+      v-model="orgDialog"
+      max-width="320px"
+    >
+      <div class="bg-gray">
+        <div class="px-3 py-2 text-gray-lighter bg-gray-darkest">
+          Companies
+        </div>
+        <ul class="list-none text-white">
+          <template v-for="(item, i) in orgsByRole">
+            <li
+              v-if="item.header"
+              :key="`header${i}`"
+              class="px-3 py-2 text-gray-lighter"
+            >
+              {{ item.text }}
+            </li>
+            <li
+              v-else
+              :key="item.id"
+              class="px-3 py-2 text-sm cursor-pointer hover:bg-gray-dark"
+              @click="gotoOrg(item.id)"
+            >
+              <div class="flex">
+                <div class="leading-tight">
+                  <div class="text-sm">
+                    {{ item.owner.email }}, {{ item.role }}
+                  </div>
+                  <div class="text-xs text-gray-lighter">
+                    {{ item.id }}
+                  </div>
+                </div>
+              </div>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
 <script>
-import { GET_PROFILE, GET_IS_LOGGED_IN } from '@/graphql/queries'
+import { Role } from '../graphql/enums'
+import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '@/graphql/queries'
 
 export default {
   name: 'StatusBar',
@@ -188,9 +227,13 @@ export default {
         return !this.isLoggedIn
       },
     },
+    getOrgs: {
+      query: GET_ORGS,
+    },
   },
   data () {
     return {
+      orgDialog: false,
       profileMenu: false,
       langMenu: false,
       langs: [
@@ -200,8 +243,29 @@ export default {
     }
   },
   computed: {
+    orgsByRole () {
+      const orgs = this.getOrgs || []
+      let groups = {}
+      let items = []
+      orgs.forEach(org => {
+        if (groups[org.role]) {
+          groups[org.role].push(org)
+        } else {
+          groups[org.role] = [org]
+        }
+      })
+      Object.keys(Role).forEach(role => {
+        const orgs = groups[role]
+        if (orgs) {
+          items.push({ header: true, text: role })
+          items.push(...groups[role])
+        }
+      })
+      return items
+    },
     profileItems () {
       return [
+        { value: 'orgsList', text: 'My companies' },
         { value: 'logout', text: this.$t('action.logout') },
       ]
     },
@@ -217,8 +281,16 @@ export default {
     },
   },
   methods: {
+    gotoOrg (orgId) {
+      // eslint-disable-next-line
+      console.log('orgId', orgId)
+      this.orgDialog = false
+    },
     profileAction (value) {
       switch (value) {
+        case 'orgsList':
+          this.orgDialog = true
+          break
         case 'logout': return this.onSignOut()
         default: return false
       }
