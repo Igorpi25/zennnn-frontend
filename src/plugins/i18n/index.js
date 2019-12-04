@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+import { CURRENT_LANG_STORE_KEY } from '../../config/globals'
 
 Vue.use(VueI18n)
 
@@ -96,7 +97,7 @@ const numberFormats = {
 }
 
 export default new VueI18n({
-  locale: localStorage.getItem('selected-locale') || process.env.VUE_APP_I18N_LOCALE || 'en',
+  locale: localStorage.getItem(CURRENT_LANG_STORE_KEY) || process.env.VUE_APP_I18N_LOCALE || 'en',
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
   messages: loadLocaleMessages(),
   dateTimeFormats,

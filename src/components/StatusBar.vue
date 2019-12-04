@@ -211,8 +211,9 @@
 </template>
 
 <script>
+import { CURRENT_LANG_STORE_KEY } from '../config/globals'
 import { Role } from '../graphql/enums'
-import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '@/graphql/queries'
+import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 
 export default {
   name: 'StatusBar',
@@ -311,7 +312,7 @@ export default {
       }
     },
     changeLang (lang) {
-      localStorage.setItem('selected-locale', lang)
+      localStorage.setItem(CURRENT_LANG_STORE_KEY, lang)
       this.$i18n.locale = lang
       this.langMenu = false
     },

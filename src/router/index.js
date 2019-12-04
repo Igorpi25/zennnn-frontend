@@ -21,7 +21,7 @@ import { Auth, i18n } from '../plugins'
 import { apolloClient } from '../plugins/apollo'
 import { GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
 
-const CURRENT_ORG_STORE_KEY = 'zCurrentOrg:'
+import { CURRENT_ORG_STORE_KEY } from '../config/globals'
 
 Vue.use(VueRouter)
 
