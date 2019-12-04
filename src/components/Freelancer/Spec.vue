@@ -10,29 +10,6 @@
           <span>{{ $t('preposition.from') }}:</span>&nbsp;
           <span>
             {{ $d($parseISO(spec.createdAt), 'short') }}
-          </span> /
-          <span>{{ $t('shipping.shippingClient') }}:</span>&nbsp;
-          <span>{{ specClient.uid || '' }}</span>&nbsp;
-          <span class="text-primary">
-            <Select
-              :value="specClient"
-              :placeholder="$t('placeholder.emptyText')"
-              :nudge-bottom="28"
-              :search.sync="clientSearch"
-              :items="clients"
-              searchable
-              item-value="id"
-              item-text="name"
-              solo
-              outlined
-              borderless
-              hide-details
-              class="leading-normal max-w-sm w-auto inline-flex spec-search-input"
-              style="min-width: 220px"
-              @input="updateSpec({
-                client: $event
-              })"
-            />
           </span>
         </span>
         <span
