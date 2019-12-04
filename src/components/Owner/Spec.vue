@@ -88,13 +88,13 @@
               </template>
               <v-date-picker
                 v-model="purchaseDate"
-                @change="menuPurchaseDate = false"
                 :locale="$i18n.locale"
                 :next-icon="icons.mdiChevronRight"
                 :prev-icon="icons.mdiChevronLeft"
                 color="#5a8199"
                 no-title
                 dark
+                @change="menuPurchaseDate = false"
               ></v-date-picker>
             </v-menu>
             <!-- TODO on real api, need send id -->
@@ -152,13 +152,13 @@
               </template>
               <v-date-picker
                 v-model="shippingDate"
-                @change="menuShippingDate = false"
                 :locale="$i18n.locale"
                 :next-icon="icons.mdiChevronRight"
                 :prev-icon="icons.mdiChevronLeft"
                 color="#5a8199"
                 no-title
                 dark
+                @change="menuShippingDate = false"
               ></v-date-picker>
             </v-menu>
           </div>
@@ -204,11 +204,8 @@
 </template>
 
 <script>
-// import { confirmDialog } from '@/util/helpers'
-import { mdiMinus, mdiPlus } from '@mdi/js'
-
-import InvoiceHeader from '@/components/InvoiceHeader.vue'
-import Invoice from '@/components/Invoice.vue'
+import InvoiceHeader from './InvoiceHeader.vue'
+import Invoice from './Invoice.vue'
 import SpecSummary from '@/components/SpecSummary'
 import SupplierCard from '@/components/SupplierCard'
 
@@ -225,10 +222,7 @@ export default {
   mixins: [spec],
   data () {
     return {
-      icons: {
-        mdiMinus,
-        mdiPlus,
-      },
+      //
     }
   },
   computed: {
