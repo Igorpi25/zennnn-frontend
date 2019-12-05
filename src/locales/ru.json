@@ -131,8 +131,7 @@
     "requisites": "Реквизиты моей компании",
     "about": "О компании",
     "bankDetails": "Банковские реквизиты",
-    "directorOfCompany": "Руководитель компании",
-    "fillFields": "Заполните поле"
+    "directorOfCompany": "Руководитель компании"
   },
   "shipping": {
     "shippingTitle": "Спецификация №",
@@ -399,7 +398,8 @@
     "toHome": "На главную",
     "getLink": "Получить ссылку",
     "change": "Сменить",
-    "createPatternName": "Придумайте название шаблону"
+    "createPatternName": "Придумайте название шаблону",
+    "fillLater": "Заполнить позже"
   },
   "message": {
     "emailResent": "Письмо отправлено повторно.",
@@ -497,6 +497,9 @@
       "passportId": "Номер паспорта:",
       "additionalPhone": "Дополнительный номер:",
       "address": "Адрес прописки:"
+    },
+    "requisites": {
+      "fillFields": "Заполните поле"
     }
   },
   "dataTable": {

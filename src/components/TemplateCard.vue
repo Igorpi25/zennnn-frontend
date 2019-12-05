@@ -34,12 +34,12 @@
               </label>
               <TextField
                 :disabled="isDisabled"
-                :value="item.template[key]"
+                :value="item.template[key] || ''"
                 :placeholder="item.template[key] || $t(`placeholder.${templateName}.${field.placeholder || key}`)"
                 squared
                 right
                 hide-details
-                class="pt-0 partner-card__label"
+                class="pt-0 template-card__label"
                 @input="$emit('update-template', key, $event)"
               />
             </div>
@@ -66,7 +66,7 @@
                   :value="item[key]"
                   squared
                   hide-details
-                  class="partner-card__input"
+                  class="template-card__input"
                   @input="(v) => $emit('update-value', key, v)"
                 />
               </div>
@@ -156,6 +156,12 @@ export default {
   width: 100%;
   margin-bottom: 30px;
 }
+.card__col-left.card__col-left--full-width label {
+  display: block;
+  height: 20px;
+  color: #2E2E2E;
+  @apply px-2 text-sm;
+}
 .card__col-left--shops {
 
 }
@@ -210,6 +216,9 @@ export default {
     margin-left: auto;
     text-align: right;
   }
+  .card__col-left.card__col-left--full-width {
+    width: 100%;
+  }
   .card__col-left--section {
     margin-top: 60px;
   }
@@ -220,22 +229,22 @@ export default {
 </style>
 
 <style>
-.partner-card__label.text-field--focused input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+.template-card__label.text-field--focused input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #2A2B2D!important;
 }
-.partner-card__label.text-field--focused input::-moz-placeholder { /* Firefox 19+ */
+.template-card__label.text-field--focused input::-moz-placeholder { /* Firefox 19+ */
   color: #2A2B2D!important;
 }
-.partner-card__label.text-field--focused input:-ms-input-placeholder { /* IE 10+ */
+.template-card__label.text-field--focused input:-ms-input-placeholder { /* IE 10+ */
   color: #2A2B2D!important;
 }
-.partner-card__label.text-field--focused input:-moz-placeholder { /* Firefox 18- */
+.template-card__label.text-field--focused input:-moz-placeholder { /* Firefox 18- */
   color: #2A2B2D!important;
 }
-.partner-card__label.text-field.is-disabled .text-field__slot,
-.partner-card__label.text-area.is-disabled .text-area__slot,
-.partner-card__input.text-field.is-disabled .text-field__slot,
-.partner-card__input.text-area.is-disabled .text-area__slot {
+.template-card__label.text-field.is-disabled .text-field__slot,
+.template-card__label.text-area.is-disabled .text-area__slot,
+.template-card__input.text-field.is-disabled .text-field__slot,
+.template-card__input.text-area.is-disabled .text-area__slot {
   border: none!important;
 }
 </style>

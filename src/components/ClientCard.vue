@@ -95,7 +95,7 @@
               :fields="legalFieldsSettings"
               :item="client[legalType]"
               :is-disabled="!editMode"
-              :class="{'partner-card': isNaturalPerson}"
+              :class="{'template-card': isNaturalPerson}"
               @update-template="updateTemplate"
               @update-value="updateValue"
             >
@@ -137,7 +137,7 @@
               :fields="naturalFieldsSettings"
               :item="client[naturalType]"
               :is-disabled="!editMode"
-              :class="{ 'partner-card': !isNaturalPerson }"
+              :class="{ 'template-card': !isNaturalPerson }"
               @update-template="updateTemplate"
               @update-value="updateValue"
             >
@@ -671,10 +671,10 @@ export default {
   .back-to-list-btn:focus {
     @apply outline-none;
   }
-  .partner-card {
+  .template-card {
     display: none;
   }
-  .partner-card__triangle {
+  .template-card__triangle {
     width: 0;
     height: 0;
   }
@@ -700,10 +700,10 @@ export default {
       @apply py-2 pl-3 pr-6 mx-0 mt-6;
       @apply border rounded-full text-sm;
     }
-    .partner-card {
+    .template-card {
       display: block;
     }
-    .partner-card__triangle {
+    .template-card__triangle {
       width: 14px;
       height: 14px;
       transform: rotate(45deg);
