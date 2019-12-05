@@ -127,6 +127,13 @@
     "costOfGoods": "Стоимость тов.",
     "access": "Права доступа"
   },
+  "requisites": {
+    "requisites": "Реквизиты моей компании",
+    "about": "О компании",
+    "bankDetails": "Банковские реквизиты",
+    "directorOfCompany": "Руководитель компании",
+    "fillFields": "Заполните поле"
+  },
   "shipping": {
     "shippingTitle": "Спецификация №",
     "shippingClient": "Клиент",
@@ -285,6 +292,29 @@
       "address": "Адрес прописки",
       "note": "Примечание",
       "password": "Пароль"
+    },
+    "requisites": {
+      "companyName": "Название компании",
+      "companyNameEng": "Название компании на английском",
+      "legalAddress":"Юридический адрес",
+      "legalAddressPostCode":"Индекс юридического адреса",
+      "mailingAddress": "Почтовый адрес",
+      "mailingAddressPostCode": "Индекс почтового адреса",
+      "phone": "Телефон",
+      "fax": "Факс",
+      "email": "Электронная почта",
+      "itn": "ИНН",
+      "iec": "КПП",
+      "psrn": "ОГРН",
+      "bankName":"Наименование банка",
+      "bankAddress": "Адрес банка",
+      "bankAccountNumber": "Номер расчетного счета",
+      "correspondentAccountNumber": "Номер корреспондентского счета",
+      "bic": "БИК",
+      "okpo": "ОКПО",
+      "swift": "SWIFT",
+      "fullName": "ФИО (указывается во всех документах)",
+      "position": "Должность (указывается во всех документах)"
     }
   },
   "suppliers": {

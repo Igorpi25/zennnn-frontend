@@ -6,7 +6,6 @@
         <DataTable
           :headers="headers"
           :items="items"
-          :search="search"
           table-width="100%"
           table-class="table-fixed"
           thead-class="text-accent2 border-b border-accent2 bg-background"

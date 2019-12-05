@@ -127,6 +127,13 @@
     "costOfGoods": "Cost of goods",
     "access": "Access"
   },
+  "requisites": {
+    "requisites": "Details of my company",
+    "about": "About",
+    "bankDetails": "Bank details",
+    "directorOfCompany": "Director of company",
+    "fillFields": "Fill in the field"
+  },
   "shipping": {
     "shippingTitle": "Shipping №",
     "shippingClient": "Client",
@@ -285,6 +292,28 @@
       "address": "Place of residence",
       "note": "Note",
       "password": "Password"
+    },
+    "requisites": {
+      "companyName": "Company name",
+      "legalAddress":"Legal address",
+      "legalAddressPostcode":"Legal address postcode",
+      "mailingAddress": "Mailing Address",
+      "mailingAddressPostCode": "Mailing address postcode",
+      "phone": "Phone",
+      "fax": "Fax",
+      "email": "Email",
+      "itn": "ITN",
+      "iec": "IEC",
+      "psrn": "PSRN",
+      "bankName":"Bank name",
+      "bankAddress": "Bank address",
+      "bankAccountNumber": "Bank account number",
+      "correspondentAccountNumber": "Correspondent account number",
+      "bic": "BIC",
+      "okpo": "OKPO",
+      "swift": "SWIFT",
+      "fullName":"Full name (indicated in all documents)",
+      "position": "Position (indicated in all documents)"
     }
   },
   "suppliers": {

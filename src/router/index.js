@@ -108,13 +108,13 @@ const routes = [
         component: Staff,
       },
       {
-        path: '/requisites',
+        path: 'requisites',
         name: 'requisites-list',
         component: RequisitesList,
         meta: { requiresAuth: true },
       },
       {
-        path: '/requisites/:reqId',
+        path: 'requisites/:reqId',
         name: 'requisites',
         component: RequisitesItem,
         meta: { requiresAuth: true },
