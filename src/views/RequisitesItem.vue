@@ -64,7 +64,7 @@
                     squared
                     colored
                     hide-details
-                    class="pt-0 partner-card__label text-left"
+                    class="pt-0 text-left"
                   />
                 </div>
               </div>
@@ -100,7 +100,7 @@
                     squared
                     colored
                     hide-details
-                    class="pt-0 partner-card__label"
+                    class="pt-0"
                   />
                 </div>
               </div>

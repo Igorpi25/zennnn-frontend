@@ -34,7 +34,7 @@
               </label>
               <TextField
                 :disabled="isDisabled"
-                :value="item.template[key] || ''"
+                :value="item.template[key]"
                 :placeholder="item.template[key] || $t(`placeholder.${templateName}.${field.placeholder || key}`)"
                 squared
                 right
