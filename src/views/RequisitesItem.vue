@@ -13,15 +13,15 @@
     </v-dialog>
 
     <div class="py-12">
-      <header class="header">
-        <span class="header__title">{{ $t('requisites.requisites') }}</span>
-        <span class="header__action">
+      <header class="requisites-header">
+        <span class="requisites-header__title">{{ $t('requisites.requisites') }}</span>
+        <span class="requisites-header__action">
           <Button large>
             <span>{{ $t('action.fillLater') }}</span>
           </Button>
         </span>
       </header>
-      <div class="card__radio-group">
+      <div class="requisites-card__radio-group">
         <RadioButton
           :value="editCardTypes.BANK"
           :input-value="editCard"
@@ -47,7 +47,7 @@
         <TemplateCard
           template-name="requisites"
           :title="$t('requisites.about')"
-          :class="{ 'template-card': isAbout }"
+          :class="{ 'requisites-template-card': isAbout }"
         >
           <template v-slot:items>
             <div v-for="(item, key) in about" :key="key">
@@ -74,7 +74,7 @@
         <TemplateCard
           template-name="requisites"
           :title="$t('requisites.bankDetails')"
-          :class="{ 'template-card': !isAbout }"
+          :class="{ 'requisites-template-card': !isAbout }"
         >
           <template v-slot:items>
             <div v-for="(item, key) in bank" :key="key">
@@ -86,7 +86,7 @@
                     {'card__col-left--section': item.section}
                   ]"
                 >
-                  <span class="card__subtitle">
+                  <span class="requisites-card__subtitle">
                     {{ item.subtitle ? $t(`requisites.${item.subtitle}`) : '' }}
                   </span>
                   <label
@@ -187,24 +187,21 @@ export default {
 </script>
 
 <style scoped lang="postcss">
-  .template-card {
+  .requisites-template-card {
     display: none;
   }
-  .header {
+  .requisites-header {
     @apply mb-3 text-sm flex flex-col;
   }
-  .header__title {
+  .requisites-header__title {
     font-size: 18px;
     @apply mb-4 block text-gray-lighter;
   }
-  .card__radio-group {
+  .requisites-card__radio-group {
     display: flex;
     margin-top: 40px;
   }
-  .card__title {
-    display: block;
-  }
-  .card__subtitle {
+  .requisites-card__subtitle {
     position: absolute;
     top: 35px;
     left: 50%;
@@ -216,22 +213,22 @@ export default {
     font-weight: 600;
   }
    @screen sm {
-    .card__radio-group {
+    .requisites-card__radio-group {
       margin-left: 30px;
     }
   }
   @screen md {
-    .template-card {
+    .requisites-template-card {
       display: block;
     }
-    .header {
+    .requisites-header {
       @apply flex-row justify-between items-center;
     }
-    .header__title {
+    .requisites-header__title {
       font-size: 24px;
       @apply m-0;
     }
-    .card__radio-group {
+    .requisites-card__radio-group {
       display: none;
     }
   }
