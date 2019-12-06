@@ -360,6 +360,14 @@
     "note": "Note",
     "shippingInfo": "Shipping info"
   },
+  "companies": {
+    "myCompanies":"My companies",
+    "director": "Director",
+    "manager": "Manager",
+    "accountant": "Accountant",
+    "freelancer": "Freelancer",
+    "warehouseman": "Warehouseman"
+  },
   "currency": {
     "CNY": {
       "label": "Chinese Yuan Renminbi",

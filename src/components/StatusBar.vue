@@ -171,9 +171,9 @@
     </div>
     <v-dialog
       v-model="orgDialog"
-      max-width="320px"
+      max-width="480px"
     >
-      <div class="bg-gray">
+      <!-- <div class="bg-gray">
         <div class="px-3 py-2 text-gray-lighter bg-gray-darkest">
           Companies
         </div>
@@ -205,7 +205,8 @@
             </li>
           </template>
         </ul>
-      </div>
+      </div> -->
+      <CompanyListModal />
     </v-dialog>
   </div>
 </template>
@@ -214,8 +215,13 @@
 import { Role } from '../graphql/enums'
 import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '@/graphql/queries'
 
+import CompanyListModal from '../components/CompanyListModal.vue'
+
 export default {
   name: 'StatusBar',
+  components: {
+    CompanyListModal,
+  },
   apollo: {
     isLoggedIn: {
       query: GET_IS_LOGGED_IN,
@@ -266,7 +272,7 @@ export default {
     },
     profileItems () {
       return [
-        { value: 'orgsList', text: 'My companies' },
+        { value: 'orgsList', text: this.$t('companies.myCompanies') },
         { value: 'logout', text: this.$t('action.logout') },
       ]
     },

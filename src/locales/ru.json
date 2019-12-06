@@ -360,6 +360,14 @@
     "note": "Примечание",
     "shippingInfo": "Информация для отгрузки"
   },
+  "companies": {
+    "myCompanies":"Мои компании",
+    "director": "Руководитель",
+    "manager": "Менеджер",
+    "accountant": "Бухгалтер",
+    "freelancer": "Фрилансер",
+    "warehouseman": "Складчик"
+  },
   "currency": {
     "CNY": {
       "label": "Chinese Yuan Renminbi",
