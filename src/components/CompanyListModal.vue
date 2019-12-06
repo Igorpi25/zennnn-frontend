@@ -1,4 +1,4 @@
-1<template>
+<template>
   <div class="modal">
     <div class="modal-header">
       <div style="width:28px; height:28px; background-color:#aaa; color:#000"></div>
