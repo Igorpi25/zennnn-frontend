@@ -173,9 +173,6 @@ export default {
     }
   },
   computed: {
-    companyNameEng () {
-      return this.$i18n.locales === 'en' ? '' : {}
-    },
     editCardTypes () {
       return {
         ABOUT: 'ABOUT',
