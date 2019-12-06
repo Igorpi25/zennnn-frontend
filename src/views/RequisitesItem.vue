@@ -49,9 +49,6 @@
           :title="$t('requisites.about')"
           :class="{ 'template-card': isAbout }"
         >
-          <template v-slot:companyNameEng-row="{ item }">
-            jfjf
-          </template>
           <template v-slot:items>
             <div v-for="(item, key) in about" :key="key">
               <div class="card__row relative lg:pt-5">
