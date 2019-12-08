@@ -92,7 +92,7 @@
               <td>{{ ((item.client && item.client.phone) || (item.client && item.client.mobilePhone)) || '' }}</td>
               <td>{{ item.customNumber || item.specNo || '' }}</td>
               <td class="text-center">
-                {{ $d($parseISO(item.createdAt), 'short') }}
+                {{ $d($parseDate(item.createdAt), 'short') }}
               </td>
               <td class="text-center pointer-events-none" @click.prevent.stop>
                 <div
@@ -267,6 +267,9 @@ export default {
         this.createLoading = true
         const response = await this.$apollo.mutate({
           mutation: CREATE_SPEC,
+          variables: {
+            orgId: this.orgId,
+          },
         })
         if (response && response.data && response.data.createSpec) {
           const spec = response.data.createSpec
@@ -289,7 +292,16 @@ export default {
           }
         }
       } catch (error) {
-        throw new Error(error)
+        if (error.graphQLErrors) {
+          for (let err of error.graphQLErrors) {
+            const { message } = err
+            if (message === 'ForbiddenError: Insufficient access rights') {
+              alert('Только купившие ПРО аккаунт могут создавать Спецификацию.')
+            }
+          }
+        } else {
+          throw new Error(error)
+        }
       } finally {
         this.createLoading = false
       }

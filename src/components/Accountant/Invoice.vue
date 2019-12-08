@@ -53,11 +53,11 @@
                 <template v-if="activeTab === 1">
                   <td class="text-gray-light text-right">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-right">
-                    {{ $n(invoiceItem.totalObtainAmount, 'formatted') }}
+                    {{ $n(invoiceItem.totalPurchaseAmount || 0, 'formatted') }}
                   </td>
                   <td class="text-gray-dark text-right">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-right">
-                    {{ $n(invoiceItem.totalSellingAmount, 'formatted') }}
+                    {{ $n(invoiceItem.totalClientAmount || 0, 'formatted') }}
                   </td>
                   <td colspan="2"></td>
                 </template>
@@ -130,13 +130,13 @@ export default {
         {
           text: this.isInvoiceProfitTypeMargin
             ? this.$t('shipping.costPrice') : this.$t('shipping.purchaseCost'),
-          value: 'obtainPrice',
+          value: 'purchasePrice',
           width: 138,
           bgcolor: 'gray-darkest',
         },
-        { text: this.$t('shipping.obtainAmount'), value: 'obtainAmount', minWidth: 100, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.clientCost'), value: 'sellingPrice', width: 138, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.obtainAmount'), value: 'sellingAmount', minWidth: 100, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.obtainAmount'), value: 'purchaseAmount', minWidth: 100, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.clientCost'), value: 'clientPrice', width: 138, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.obtainAmount'), value: 'clientAmount', minWidth: 100, bgcolor: 'gray-darkest' },
       ]
     },
     infoHeaders () {

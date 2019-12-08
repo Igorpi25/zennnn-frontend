@@ -93,9 +93,9 @@
             <TemplateCard
               template-name="client"
               :fields="legalFieldsSettings"
-              :item="client[legalType]"
+              :item="client"
               :is-disabled="!editMode"
-              :class="{'partner-card': isNaturalPerson}"
+              :class="{ 'partner-card': isNaturalPerson }"
               @update-template="updateTemplate"
               @update-value="updateValue"
             >
@@ -112,10 +112,10 @@
                 </RadioButton>
               </template>
               <template v-slot:apend>
-                <div :class="['text-center', {'card__section--faded': isNaturalPerson}]">
+                <div :class="['text-center', { 'card__section--faded': isNaturalPerson }]">
                   <Button
                     large
-                    :disabled="isNaturalPerson || updateLoading"
+                    :disabled="isNaturalPerson || !!updateLoading"
                     class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
@@ -135,7 +135,7 @@
             <TemplateCard
               template-name="client"
               :fields="naturalFieldsSettings"
-              :item="client[naturalType]"
+              :item="client"
               :is-disabled="!editMode"
               :class="{ 'partner-card': !isNaturalPerson }"
               @update-template="updateTemplate"
@@ -154,10 +154,10 @@
                 </RadioButton>
               </template>
               <template v-slot:apend>
-                <div :class="['text-center', {'card__section--faded': !isNaturalPerson}]">
+                <div :class="['text-center', { 'card__section--faded': !isNaturalPerson }]">
                   <Button
                     large
-                    :disabled="!isNaturalPerson || updateLoading"
+                    :disabled="!isNaturalPerson || !!updateLoading"
                     class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
@@ -291,21 +291,25 @@ export default {
       editMode: false,
       expanded: [],
       legalFieldsSettings: {
-        uid: {},
+        customUid: {
+          defaultValueKey: 'uid',
+          label: 'uid',
+          placeholder: 'uid',
+        },
         companyName: {
           rows: 2,
         },
         legalAddress: {
           rows: 2,
         },
-        legalAddressPostCode: {
-          placeholder: 'postCode',
+        legalAddressPostcode: {
+          placeholder: 'postcode',
         },
         mailingAddress: {
           rows: 2,
         },
-        mailingAddressPostCode: {
-          placeholder: 'postCode',
+        mailingAddressPostcode: {
+          placeholder: 'postcode',
         },
         phone: {},
         fax: {},
@@ -315,7 +319,7 @@ export default {
         psrn: {
           section: true,
         },
-        payeesBank: {},
+        bankName: {},
         bankAddress: {},
         bankAccountNumber: {
           placeholder: 'bankAccountNumberAbr',
@@ -327,24 +331,33 @@ export default {
         okpo: {},
         swift: {},
         ownerFullName: {},
-        jobPosition: {},
+        ownerJobPosition: {},
         consignee: {
           section: true,
           subtitle: 'shippingInfo',
         },
-        deliveryAddress: {
+        shippingAddress: {
+          label: 'deliveryAddress',
+          placeholder: 'deliveryAddress',
           rows: 2,
         },
         contactPerson: {},
-        mobilePhone: {},
-        note: {
+        contactMobilePhone: {
+          label: 'mobilePhone',
+          placeholder: 'mobilePhone',
+        },
+        legalTypeNote: {
+          label: 'note',
+          placeholder: 'note',
           section: true,
           subtitle: 'note',
           rows: 3,
         },
       },
       naturalFieldsSettings: {
-        uid: {
+        customUid: {
+          defaultValueKey: 'uid',
+          label: 'uid',
           placeholder: 'uidAbr',
         },
         firstName: {},
@@ -359,23 +372,19 @@ export default {
         deliveryAddress: {
           rows: 2,
         },
-        note: {
+        naturalTypeNote: {
+          label: 'note',
+          placeholder: 'note',
           section: true,
           subtitle: 'note',
           rows: 3,
         },
       },
       client: {
-        [ClientType.LEGAL]: {
-          id: null,
-          clientType: null,
-          template: {},
-        },
-        [ClientType.NATURAL]: {
-          id: null,
-          clientType: null,
-          template: {},
-        },
+        id: null,
+        uid: null,
+        clientType: null,
+        template: {},
       },
       clientClone: {},
       icons: {
@@ -385,9 +394,16 @@ export default {
   },
   computed: {
     fieldsKeys () {
-      return this.isLegalPerson
-        ? this.legalFieldsKeys
-        : this.naturalFieldsKeys
+      return [
+        ...this.legalFieldsKeys,
+        ...this.naturalFieldsKeys,
+      ]
+    },
+    templateFieldsKeys () {
+      return [
+        ...this.fieldsKeys,
+        'templateName',
+      ]
     },
     legalFieldsKeys () {
       return Object.keys(this.legalFieldsSettings)
@@ -399,28 +415,27 @@ export default {
       return this.clientType || ClientType.NATURAL
     },
     hasDeepChange () {
-      return !deepEqual(this.client[this.clientType], this.clientClone[this.clientType])
+      return !deepEqual(this.client, this.clientClone)
     },
     currentTemplate () {
       let result = null
-      const templateFieldsKeys = ['templateName', ...this.fieldsKeys]
-      const template = (this.client[this.clientType] && this.client[this.clientType].template) || {}
+      const template = (this.client && this.client.template) || {}
       if (
         (
           template.templateName === null ||
           template.templateName === 'default'
         ) &&
-        this.fieldsKeys.every(el => template[el] === null)
+        this.fieldsKeys.every(k => template[k] === null)
       ) {
         return 'default'
       }
       let cTemplate = {}
-      templateFieldsKeys.forEach(k => {
+      this.templateFieldsKeys.forEach(k => {
         cTemplate[k] = template[k] || null
       })
       for (const t of this.templates) {
         let c = {}
-        templateFieldsKeys.forEach(k => {
+        this.templateFieldsKeys.forEach(k => {
           c[k] = t[k] || null
         })
         if (deepEqual(cTemplate, c)) {
@@ -431,7 +446,7 @@ export default {
       return result
     },
     templates () {
-      return this.listClientTemplates || []
+      return (this.listClientTemplates && this.listClientTemplates.items) || []
     },
     legalType () {
       return ClientType.LEGAL
@@ -481,30 +496,28 @@ export default {
     },
     async update (type) {
       try {
-        const templateFieldsKeys = ['templateName', ...this.fieldsKeys]
         let input = {
           clientType: this.clientType,
           template: {},
         }
-        if (!this.create) {
-          input.id = this.client[this.clientType].id
-          input.template.id = this.client[this.clientType].id
-        }
         this.fieldsKeys.forEach(key => {
-          input[key] = this.client[this.clientType][key] || null
+          input[key] = this.client[key] || null
         })
-        templateFieldsKeys.forEach(key => {
-          input.template[key] = this.client[this.clientType].template[key] || null
+        const template = this.client.template || {}
+        this.templateFieldsKeys.forEach(key => {
+          input.template[key] = template[key] || null
         })
-
-        this.$logger.info('udpate item', input)
 
         const query = this.create ? CREATE_CLIENT : UPDATE_CLIENT
+
+        const variables = this.create
+          ? { orgId: this.orgId, input }
+          : { id: this.client.id, input }
 
         this.updateLoading = type
         const response = await this.$apollo.mutate({
           mutation: query,
-          variables: { input },
+          variables,
         })
         if (response && response.data && response.data.createClient) {
           this.setData(response.data.createClient)
@@ -527,45 +540,32 @@ export default {
     setData (item) {
       if (!item) return
       this.clientType = item.clientType
-      this.client[this.clientType] = cloneDeep(item)
+      this.client = cloneDeep(item)
       this.clientClone = cloneDeep(this.client)
     },
     async createClientTemplate (templateName) {
       try {
         this.createTemplateLoading = true
-        let input = {
-          templateName,
-        }
-        for (let [key, val] of Object.entries(this.client[this.clientType].template)) {
-          // id created on server
-          // __typename should not be sent
-          // templateName setted from input
-          if (key !== 'id' && key !== '__typename' && key !== 'templateName' && val) {
-            input[key] = val
-          }
-        }
-
-        this.$logger.info('save as template', input)
+        let input = {}
+        const template = this.client.template || {}
+        this.templateFieldsKeys.forEach(key => {
+          input[key] = template[key] || null
+        })
+        input.templateName = templateName
+        const fromClient = !this.create
+          ? this.client.id
+          : null
 
         await this.$apollo.mutate({
           mutation: CREATE_CLIENT_TEMPLATE,
           variables: {
+            orgId: this.orgId,
+            fromClient,
             input,
           },
         })
         this.$apollo.queries.listClientTemplates.refetch()
-        this.client[this.clientType].template.templateName = templateName
-        await this.$apollo.mutate({
-          mutation: UPDATE_CLIENT,
-          variables: {
-            input: {
-              id: this.client[this.clientType].id,
-              template: {
-                templateName: templateName,
-              },
-            },
-          },
-        })
+        this.client.template.templateName = templateName
         this.templateSaveDialog = false
       } catch (error) {
         throw new Error(error)
@@ -595,17 +595,17 @@ export default {
       this.clientType = type
     },
     updateTemplate (key, value) {
-      if (!this.client[this.clientType].template.hasOwnProperty(key)) {
-        this.$set(this.client[this.clientType].template, key, value)
+      if (!this.client.template.hasOwnProperty(key)) {
+        this.$set(this.client.template, key, value)
       } else {
-        this.client[this.clientType].template[key] = value
+        this.client.template[key] = value
       }
     },
     updateValue (key, value) {
-      if (!this.client[this.clientType].hasOwnProperty(key)) {
-        this.$set(this.client[this.clientType], key, value)
+      if (!this.client.hasOwnProperty(key)) {
+        this.$set(this.client, key, value)
       } else {
-        this.client[this.clientType][key] = value
+        this.client[key] = value
       }
     },
     saveAsTemplate () {
@@ -615,20 +615,20 @@ export default {
       this.templateListDialog = true
     },
     restoreTemplate () {
-      this.client[this.clientType].template = this.templateCopy || { id: this.client[this.clientType].id }
+      this.client.template = this.templateCopy || { id: this.client.id }
       this.templateCopy = null
       this.templateListDialog = false
       this.templateChanged = false
     },
     setTemplate (id) {
-      this.templateCopy = Object.assign({}, this.client[this.clientType].template)
+      this.templateCopy = Object.assign({}, this.client.template)
       const template = this.templates.find(t => t.id === id)
       if (template) {
-        let temp = Object.assign({}, template, { id: this.client[this.clientType].template.id })
+        let temp = Object.assign({}, template, { id: this.client.template.id })
         delete temp.__typename
-        this.client[this.clientType].template = temp
+        this.client.template = temp
       } else if (id === 'default') {
-        this.client[this.clientType].template = { id: this.client[this.clientType].id }
+        this.client.template = { id: this.client.id }
       }
       this.templateChanged = true
     },

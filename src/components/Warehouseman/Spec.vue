@@ -9,7 +9,7 @@
           </span>&nbsp;
           <span>{{ $t('preposition.from') }}:</span>&nbsp;
           <span>
-            {{ $d($parseISO(spec.createdAt), 'short') }}
+            {{ $d($parseDate(spec.createdAt), 'short') }}
           </span>
         </span>
         <span

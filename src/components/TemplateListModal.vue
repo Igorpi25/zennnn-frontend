@@ -9,8 +9,8 @@
     <div class="list">
       <div class="list-item">
         <RadioButton
-          :input-value="internalValue"
-          value="default"
+          :value="internalValue"
+          label="default"
           name="template-item"
           @input="change"
         >
@@ -19,8 +19,8 @@
       </div>
       <div v-for="(item, i) in templates" :key="i" class="list-item">
         <RadioButton
-          :value="item.id"
-          :input-value="internalValue"
+          :value="internalValue"
+          :label="item.id"
           name="template-item"
           class="flex-grow"
           @input="change"

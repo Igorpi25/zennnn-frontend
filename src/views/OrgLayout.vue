@@ -11,7 +11,7 @@ import StatusBar from '@/components/StatusBar'
 import NavBar from '@/components/NavBar'
 
 export default {
-  name: 'SpecLayout',
+  name: 'OrgLayout',
   components: {
     StatusBar,
     NavBar,

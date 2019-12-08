@@ -9,6 +9,8 @@ import {
   SUPPLIER_TEMPLATE_FRAGMENT,
   SUPPLIER_SHOP_FRAGMENT,
   SUPPLIER_SHOP_TEMPLATE_FRAGMENT,
+  ORG_REQUISITE_FRAGMENT,
+  ORG_CONTRACT_FRAGMENT,
 } from './typeDefs'
 
 export const GET_ORGS = gql`
@@ -55,6 +57,25 @@ export const GET_SPECS = gql`
   query GetSpecs($orgId: ID!) {
     getSpecs(orgId: $orgId) {
       ...SpecFragment
+      client {
+        id
+        uid
+        customUid
+        clientType
+        createdAt
+        updatedAt
+        # legal
+        companyName
+        phone
+        fax
+        # natural
+        firstName
+        lastName
+        middleName
+        passportId
+        mobilePhone
+        additionalPhone
+      }
     }
   }
   ${SPEC_FRAGMENT}
@@ -69,6 +90,25 @@ export const GET_SPEC = gql`
         products {
           ...ProductFragment
         }
+      }
+      client {
+        id
+        uid
+        customUid
+        clientType
+        createdAt
+        updatedAt
+        # legal
+        companyName
+        phone
+        fax
+        # natural
+        firstName
+        lastName
+        middleName
+        passportId
+        mobilePhone
+        additionalPhone
       }
     }
   }
@@ -199,4 +239,30 @@ export const SEARCH_SUPPLIERS = gql`
   }
   ${SUPPLIER_FRAGMENT}
   ${SUPPLIER_TEMPLATE_FRAGMENT}
+`
+export const GET_ORG_REQUISITE = gql`
+  query GetOrgRequisite($id: ID!) {
+    getOrgRequisite(id: $id) {
+      ...OrgRequisiteFragment
+    }
+  }
+  ${ORG_REQUISITE_FRAGMENT}
+`
+
+export const LIST_ORG_REQUISITES = gql`
+  query ListOrgRequisites($orgId: ID!) {
+    listOrgRequisites(orgId: $orgId) {
+      ...OrgRequisiteFragment
+    }
+  }
+  ${ORG_REQUISITE_FRAGMENT}
+`
+
+export const LIST_ORG_CONTRACTS = gql`
+  query ListOrgContracts($orgId: ID!) {
+    listOrgContracts(orgId: $orgId) {
+      ...OrgContractFragment
+    }
+  }
+  ${ORG_CONTRACT_FRAGMENT}
 `

@@ -12,7 +12,7 @@
               </span>&nbsp;
               <span>{{ $t('preposition.from') }}:</span>&nbsp;
               <span>
-                {{ $d($parseISO(spec.createdAt), 'short') }}
+                {{ $d($parseDate(spec.createdAt), 'short') }}
               </span>
             </span>
             <span
@@ -151,7 +151,7 @@
                     <li>
                       <span>{{ $t('preview.estimateDate') }}</span>
                       <span class="leaders__num">
-                        {{ $d($parseISO(spec.estimateShippingDate), 'short') }}
+                        {{ $d($parseDate(spec.estimateShippingDate), 'short') }}
                       </span>
                     </li>
                     <li>

@@ -1,4 +1,11 @@
-import { CREATE_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT } from '../graphql/mutations'
+import {
+  UPDATE_PRODUCT,
+  UPDATE_PRODUCT_COST,
+  UPDATE_PRODUCT_STORE,
+  UPDATE_PRODUCT_INFO,
+  UPDATE_PRODUCT_LINK,
+  DELETE_PRODUCT,
+} from '../graphql/mutations'
 
 import { confirmDialog } from '@/util/helpers'
 
@@ -9,31 +16,21 @@ export default {
       deleteLoading: false,
     }
   },
-  methods: {
-    async createProduct () {
-      try {
-        this.createLoading = true
-        const variables = {
-          invoiceId: this.invoice.id,
-        }
-        await this.$apollo.mutate({
-          mutation: CREATE_PRODUCT,
-          variables,
-          fetchPolicy: 'no-cache',
-        })
-      } catch (error) {
-        this.errors = error.errors || []
-        this.$logger.warn('Error: ', error)
-        // Analytics.record({
-        //   name: 'CreateProductError',
-        //   attributes: {
-        //     error: error
-        //   }
-        // })
-      } finally {
-        this.createLoading = false
-      }
+  computed: {
+    cost () {
+      return (this.item && this.item.cost) || {}
     },
+    store () {
+      return (this.item && this.item.store) || {}
+    },
+    info () {
+      return (this.item && this.item.info) || {}
+    },
+    link () {
+      return (this.item && this.item.link) || {}
+    },
+  },
+  methods: {
     async updateProduct (input) {
       try {
         const id = this.item.id
@@ -44,9 +41,90 @@ export default {
           fetchPolicy: 'no-cache',
         })
       } catch (error) {
-        if (error && error.errors && error.errors.length > 0) {
-          this.errors = error.errors
-        }
+        this.$logger.warn('Error: ', error)
+        // Analytics.record({
+        //   name: 'UpdateProductError',
+        //   attributes: {
+        //     error: error
+        //   }
+        // })
+      } finally {
+        this.updateLoading = null
+      }
+    },
+    async updateProductCost (input) {
+      try {
+        const id = this.item.id
+        this.updateLoading = id
+        await this.$apollo.mutate({
+          mutation: UPDATE_PRODUCT_COST,
+          variables: { id, input },
+          fetchPolicy: 'no-cache',
+        })
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+        // Analytics.record({
+        //   name: 'UpdateProductError',
+        //   attributes: {
+        //     error: error
+        //   }
+        // })
+      } finally {
+        this.updateLoading = null
+      }
+    },
+    async updateProductStore (input) {
+      try {
+        const id = this.item.id
+        this.updateLoading = id
+        await this.$apollo.mutate({
+          mutation: UPDATE_PRODUCT_STORE,
+          variables: { id, input },
+          fetchPolicy: 'no-cache',
+        })
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+        // Analytics.record({
+        //   name: 'UpdateProductError',
+        //   attributes: {
+        //     error: error
+        //   }
+        // })
+      } finally {
+        this.updateLoading = null
+      }
+    },
+    async updateProductInfo (input) {
+      try {
+        const id = this.item.id
+        this.updateLoading = id
+        await this.$apollo.mutate({
+          mutation: UPDATE_PRODUCT_INFO,
+          variables: { id, input },
+          fetchPolicy: 'no-cache',
+        })
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+        // Analytics.record({
+        //   name: 'UpdateProductError',
+        //   attributes: {
+        //     error: error
+        //   }
+        // })
+      } finally {
+        this.updateLoading = null
+      }
+    },
+    async updateProductLink (input) {
+      try {
+        const id = this.item.id
+        this.updateLoading = id
+        await this.$apollo.mutate({
+          mutation: UPDATE_PRODUCT_LINK,
+          variables: { id, input },
+          fetchPolicy: 'no-cache',
+        })
+      } catch (error) {
         this.$logger.warn('Error: ', error)
         // Analytics.record({
         //   name: 'UpdateProductError',
@@ -72,7 +150,6 @@ export default {
         })
       } catch (error) {
         if (error === 'not_confirmed') return
-        this.errors = error.errors || []
         this.$logger.warn('Error: ', error)
         // Analytics.record({
         //   name: 'DeleteProductError',

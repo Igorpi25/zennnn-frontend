@@ -145,29 +145,40 @@
                         @click="expandShop(index)"
                       >
                         {{ index + 1 }}
-                        <Icon v-if="expanded && expanded.length !== 0">{{ icons.down }}</Icon>
-                        <Icon v-else>{{ icons.up }}</Icon>
+                        <Icon v-if="expanded.includes(index)">{{ icons.mdiChevronUp }}</Icon>
+                        <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
+                      </div>
+                      <div
+                        class="absolute"
+                        style="right: -18px;"
+                        @click="deleteShop(shop.id)"
+                      >
+                        <Icon
+                          class="cursor-pointer"
+                        >
+                          {{ icons.mdiClose }}
+                        </Icon>
                       </div>
                       <TextField
-                        :value="shop.template['address']"
-                        :placeholder="shop.template['address'] || `${$t('placeholder.supplier.shopAddress')}`"
+                        :value="shop.template && shop.template['name']"
+                        :placeholder="(shop.template && shop.template['name']) || `${$t('placeholder.supplier.shopName')}`"
                         :disabled="!expanded.includes(index)"
                         squared
                         right
                         hide-details
                         class="pt-0 partner-card__label"
-                        @input="updateShopTemplate(index, 'address', $event)"
+                        @input="updateShopTemplate(index, 'name', $event)"
                       />
                     </div>
                     <div class="card__col-right">
                       <TextArea
+                        :value="shop.name"
                         :disabled="!expanded.includes(index)"
                         squared
                         rows="2"
                         hide-details
-                        :value="shop.address"
                         class="partner-card__input"
-                        @input="updateShopValue(index, 'address', $event)"
+                        @input="updateShopValue(index, 'name', $event)"
                       />
                     </div>
                   </div>
@@ -177,16 +188,16 @@
                   >
                     <div class="card__row">
                       <template
-                        v-for="key in shopFieldsKeys.slice(1)"
+                        v-for="([key, f]) in Object.entries(shopFieldsSettings).slice(1)"
                       >
                         <div
                           class="card__col-left card__col-left--shops"
                           :key="key"
                         >
-                          <label>{{ $t(`label.supplier.${key}`) }}</label>
+                          <label>{{ $t(`label.supplier.${f.label || key}`) }}</label>
                           <TextField
-                            :value="shop.template[key]"
-                            :placeholder="shop.template[key] || $t(`placeholder.supplier.${key}`)"
+                            :value="shop.template && shop.template[key]"
+                            :placeholder="(shop.template && shop.template[key]) || $t(`placeholder.supplier.${f.label || key}`)"
                             right
                             squared
                             hide-details
@@ -215,7 +226,7 @@
                         large
                         :disabled="updateLoading"
                         class="mb-4 mx-auto"
-                        @click="updateShop(index)"
+                        @click="updateShop(shop.id, index)"
                       >
                         <span>{{ $t('supplier.save') }}</span>
                       </Button>
@@ -230,7 +241,7 @@
                   @click="addShop"
                 >
                   <template v-slot:icon>
-                    <Icon>{{ icons.plus }}</Icon>
+                    <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
                   </template>
                   <span>{{ $t('supplier.addAddress') }}</span>
                 </Button>
@@ -248,7 +259,7 @@
             })"
           >
             <Icon class="mr-2">
-              {{ icons.arrowLeft }}
+              {{ icons.mdiArrowLeft }}
             </Icon>
             {{ $t('supplier.backToSuppliersList') }}
           </button>
@@ -268,6 +279,7 @@ import {
   mdiArrowLeft,
   mdiChevronUp,
   mdiChevronDown,
+  mdiClose,
 } from '@mdi/js'
 
 import { uuid } from '@/util/helpers'
@@ -283,6 +295,7 @@ import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
 import TemplateSaveModal from '@/components/TemplateSaveModal.vue'
 import TemplateListModal from '@/components/TemplateListModal.vue'
 import TemplateCard from '@/components/TemplateCard.vue'
+import { CREATE_SUPPLIER_SHOP, UPDATE_SUPPLIER_SHOP, DELETE_SUPPLIER_SHOP } from '../graphql/mutations'
 
 export default {
   name: 'SupplierCard',
@@ -334,7 +347,7 @@ export default {
       query: GET_SUPPLIER,
       variables () {
         return {
-          id: this.$route.params.supplierId,
+          id: this.supplierId,
         }
       },
       result ({ data, loading }) {
@@ -361,10 +374,18 @@ export default {
       editMode: false,
       expanded: [],
       shopFieldsSettings: {
-        address: {},
+        name: {
+          label: 'shopName',
+          placeholder: 'shopName',
+        },
+        address: {
+          label: 'shopAddress',
+          placeholder: 'shopAddress',
+        },
         seller: {},
         workPhone: {},
         mobilePhone: {},
+        wechat: {},
         email: {},
         qq: {},
         skype: {},
@@ -419,16 +440,26 @@ export default {
       },
       supplierClone: {},
       icons: {
-        plus: mdiPlusCircleOutline,
-        arrowLeft: mdiArrowLeft,
-        up: mdiChevronUp,
-        down: mdiChevronDown,
+        mdiPlusCircleOutline,
+        mdiArrowLeft,
+        mdiChevronDown,
+        mdiChevronUp,
+        mdiClose,
       },
     }
   },
   computed: {
+    supplierId () {
+      return this.$route.params.supplierId
+    },
     shopFieldsKeys () {
       return Object.keys(this.shopFieldsSettings)
+    },
+    templateFieldsKeys () {
+      return [
+        ...this.fieldsKeys,
+        'templateName',
+      ]
     },
     fieldsKeys () {
       return Object.keys(this.fieldsSettings)
@@ -438,7 +469,6 @@ export default {
     },
     currentTemplate () {
       let result = null
-      const templateFieldsKeys = ['templateName', ...this.fieldsKeys]
       const shopCheckFields = this.shopFieldsKeys
       if (
         (
@@ -458,12 +488,12 @@ export default {
         }
       }
       let template = {}
-      templateFieldsKeys.forEach(k => {
+      this.templateFieldsKeys.forEach(k => {
         template[k] = this.supplier.template[k] || null
       })
       for (const t of this.templates) {
         let c = {}
-        templateFieldsKeys.forEach(k => {
+        this.templateFieldsKeys.forEach(k => {
           c[k] = t[k] || null
         })
         if (deepEqual(template, c)) {
@@ -475,7 +505,7 @@ export default {
       return result
     },
     templates () {
-      return this.listSupplierTemplates || []
+      return (this.listSupplierTemplates && this.listSupplierTemplates.items) || []
     },
     editCardTypes () {
       return {
@@ -532,41 +562,43 @@ export default {
     },
     async update () {
       try {
-        const templateFieldsKeys = ['templateName', ...this.fieldsKeys]
         let input = {
           template: {},
-        }
-        if (!this.create) {
-          input.id = this.supplier.id
-          input.template.id = this.supplier.id
         }
         this.fieldsKeys.forEach(key => {
           input[key] = this.supplier[key] || null
         })
-        templateFieldsKeys.forEach(key => {
-          input.template[key] = this.supplier.template[key] || null
+        const template = this.supplier.template || {}
+        this.templateFieldsKeys.forEach(key => {
+          input.template[key] = template[key] || null
         })
-        const supplierShops = this.supplier.shops || []
-        input.shops = supplierShops.map(s => {
-          let shop = { id: s.id }
-          this.shopFieldsKeys.forEach(key => {
-            shop[key] = s[key] || null
+        if (this.create) {
+          const supplierShops = this.supplier.shops || []
+          input.shops = supplierShops.map(s => {
+            let shop = {}
+            this.shopFieldsKeys.forEach(key => {
+              shop[key] = s[key] || null
+            })
+            let sTemplate = s.template || {}
+            let template = {}
+            this.shopFieldsKeys.forEach(key => {
+              template[key] = sTemplate[key] || null
+            })
+            shop.template = template
+            return shop
           })
-          let template = s.template || { id: s.id }
-          // TODO set from shopFieldsKeys
-          delete template.__typename
-          shop.template = template
-          return shop
-        })
-
-        this.$logger.info('udpate item', input)
+        }
 
         const query = this.create ? CREATE_SUPPLIER : UPDATE_SUPPLIER
+
+        const variables = this.create
+          ? { orgId: this.orgId, input }
+          : { id: this.supplier.id, input }
 
         this.updateLoading = 'supplier'
         const response = await this.$apollo.mutate({
           mutation: query,
-          variables: { input },
+          variables,
         })
         if (response && response.data && response.data.createSupplier) {
           this.setData(response.data.createSupplier)
@@ -599,39 +631,26 @@ export default {
     async createSupplierTemplate (templateName) {
       try {
         this.createTemplateLoading = true
-        let input = {
-          templateName,
-        }
-        for (let [key, val] of Object.entries(this.supplier.template)) {
-          // id created on server
-          // __typename should not be sent
-          // templateName setted from input
-          if (key !== 'id' && key !== '__typename' && key !== 'templateName' && val) {
-            input[key] = val
-          }
-        }
-
-        this.$logger.info('save as template', input)
+        let input = {}
+        const template = this.supplier.template || {}
+        this.templateFieldsKeys.forEach(key => {
+          input[key] = template[key] || null
+        })
+        input.templateName = templateName
+        const fromSupplier = !this.create
+          ? this.supplier.id
+          : null
 
         await this.$apollo.mutate({
           mutation: CREATE_SUPPLIER_TEMPLATE,
           variables: {
+            orgId: this.orgId,
+            fromSupplier,
             input,
           },
         })
         this.$apollo.queries.listSupplierTemplates.refetch()
         this.supplier.template.templateName = templateName
-        await this.$apollo.mutate({
-          mutation: UPDATE_SUPPLIER,
-          variables: {
-            input: {
-              id: this.supplier.id,
-              template: {
-                templateName: templateName,
-              },
-            },
-          },
-        })
         this.templateSaveDialog = false
       } catch (error) {
         throw new Error(error)
@@ -685,21 +704,64 @@ export default {
         this.supplier.shops[index][key] = value
       }
     },
-    updateShop (index) {
-      this.$logger.info('updateShop', index)
-      // TODO method for update one shop
-      this.update()
-    },
-    addShop () {
-      const id = uuid()
-      const shop = {
-        id,
-        template: {
-          id,
-        },
+    async addShop () {
+      try {
+        if (this.create) {
+          const id = uuid()
+          const shop = {
+            id,
+            template: {
+              id,
+            },
+          }
+          const index = this.supplier.shops.push(shop)
+          this.expanded.push(index - 1)
+        } else {
+          const response = await this.$apollo.mutate({
+            mutation: CREATE_SUPPLIER_SHOP,
+            variables: { supplierId: this.supplierId, input: {} },
+          })
+          if (response && response.data && response.data.createSupplierShop) {
+            const index = this.supplier.shops.push(response.data.createSupplierShop)
+            this.expanded.push(index - 1)
+          }
+        }
+      } catch (error) {
+        throw new Error(error)
       }
-      const index = this.supplier.shops.push(shop)
-      this.expanded.push(index - 1)
+    },
+    async updateShop (shopId, index) {
+      try {
+        const shop = this.supplier.shops[index] || {}
+        let input = {}
+        this.shopFieldsKeys.forEach(key => {
+          input[key] = shop[key]
+        })
+        const response = await this.$apollo.mutate({
+          mutation: UPDATE_SUPPLIER_SHOP,
+          variables: { id: shopId, input },
+        })
+        if (response && response.data && response.data.updateSupplierShop) {
+          this.supplier.shops.splice(index, 1, response.data.updateSupplierShop)
+        }
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
+    async deleteShop (id) {
+      try {
+        const response = await this.$apollo.mutate({
+          mutation: DELETE_SUPPLIER_SHOP,
+          variables: { id },
+        })
+        if (response && response.data && response.data.deleteSupplierShop) {
+          const index = this.supplier.shops.findIndex(el => el.id === id)
+          this.supplier.shops.splice(index, 1)
+          // TODO remove from cache
+        }
+      } catch (error) {
+        throw new Error(error)
+      }
     },
     expandShop (val) {
       const index = this.expanded.indexOf(val)

@@ -172,24 +172,27 @@ export default {
           return
         }
         this.deleteLoading = id
-        const input = {
-          id,
-        }
         const response = await this.$apollo.mutate({
           mutation: DELETE_CLIENT,
-          variables: { input },
+          variables: { id },
           update: (store) => {
             const data = store.readQuery({
               query: LIST_CLIENTS,
               variables: {
-                projectId: this.$route.params.projectId,
+                orgId: this.$route.params.orgId,
               },
             })
             const index = data.listClients.items.findIndex(item => item.id === id)
             if (index !== -1) {
               data.listClients.items.splice(index, 1)
             }
-            store.writeQuery({ query: LIST_CLIENTS, data })
+            store.writeQuery({
+              query: LIST_CLIENTS,
+              variables: {
+                orgId: this.$route.params.orgId,
+              },
+              data,
+            })
           },
         })
         if (response && response.errors && response.errors.length > 0) {
