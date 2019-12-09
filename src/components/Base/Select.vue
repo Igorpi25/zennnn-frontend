@@ -8,7 +8,6 @@
       customClass,
       'select',
       {
-
         'select--outlined': outlined,
         'select--squared': squared,
         'select--borderless': borderless,
@@ -262,7 +261,9 @@ export default {
   computed: {
     internalValue: {
       get () {
-        return this.lazyValue
+        const val = this.value || {}
+        const v = val[this.itemText]
+        return this.hasFocus ? this.lazyValue : v
       },
       set (val) {
         let value = val || null
@@ -274,10 +275,6 @@ export default {
     },
   },
   watch: {
-    value (val) {
-      const v = val || {}
-      this.internalValue = v[this.itemText]
-    },
     hasFocus (val) {
       if (this.searchable) {
         this.internalValue = (this.value && this.value[this.itemText]) || ''

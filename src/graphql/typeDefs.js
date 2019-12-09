@@ -39,9 +39,46 @@ export const PRODUCT_FRAGMENT = gql`
   }
 `
 
+export const SUPPLIER_FRAGMENT = gql`
+  fragment SupplierFragment on Supplier {
+    id
+    createdAt
+    updatedAt
+    companyNameSl
+    companyNameCl
+    website
+    companyType
+    fieldOfActivity
+    legalAddress
+    legalAddressPostcode
+    manufacturersAddress
+    manager
+    workPhone
+    fax
+    mobilePhone
+    wechat
+    email
+    skype
+    qq
+    bankName
+    bankAddress
+    accountNumber
+    swift
+    ownerFullName
+    ownerJobPosition
+    responsiblePerson
+    deliveryAddress
+    contactNumber
+    note
+  }
+`
+
 export const INVOICE_FRAGMENT = gql`
   fragment InvoiceFragment on Invoice {
     id
+    supplier {
+      ...SupplierFragment
+    }
     invoiceStatus
     invoiceNo
     purchaseDate
@@ -66,6 +103,7 @@ export const INVOICE_FRAGMENT = gql`
     createdAt
     updatedAt
   }
+  ${SUPPLIER_FRAGMENT}
 `
 
 export const INVOICE_PRODUCTS_FRAGMENT = gql`
@@ -196,40 +234,6 @@ export const CLIENT_TEMPLATE_FRAGMENT = gql`
   }
 `
 
-export const SUPPLIER_FRAGMENT = gql`
-  fragment SupplierFragment on Supplier {
-    id
-    createdAt
-    updatedAt
-    companyNameSl
-    companyNameCl
-    website
-    companyType
-    fieldOfActivity
-    legalAddress
-    legalAddressPostcode
-    manufacturersAddress
-    manager
-    workPhone
-    fax
-    mobilePhone
-    wechat
-    email
-    skype
-    qq
-    bankName
-    bankAddress
-    accountNumber
-    swift
-    ownerFullName
-    ownerJobPosition
-    responsiblePerson
-    deliveryAddress
-    contactNumber
-    note
-  }
-`
-
 export const SUPPLIER_TEMPLATE_FRAGMENT = gql`
   fragment SupplierTemplateFragment on SupplierTemplate {
     id
@@ -315,7 +319,7 @@ export const ORG_REQUISITE_FRAGMENT = gql`
     legalAddress
     legalAddressPostcode
     mailingAddress
-    mailingAdressPostcode
+    mailingAddressPostcode
     phone
     fax
     email

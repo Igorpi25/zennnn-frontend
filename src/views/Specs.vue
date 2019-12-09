@@ -253,7 +253,7 @@ export default {
     getClientName (item) {
       if (!item) return ''
       let name = ''
-      if (item.clientType === ClientType.legal) {
+      if (item.clientType === ClientType.LEGAL) {
         name = item.companyNameSl || item.companyNameCl || ''
       } else {
         name = item.lastName || ''

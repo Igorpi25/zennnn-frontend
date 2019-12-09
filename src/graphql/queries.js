@@ -157,8 +157,8 @@ export const LIST_CLIENT_TEMPLATES = gql`
 `
 
 export const SEARCH_CLIENTS = gql`
-  query SearchClients($orgId: ID!, $search: String) {
-    listClients(orgId: $orgId, search: $search) {
+  query SearchClients($orgId: ID!, $search: String!) {
+    searchClients(orgId: $orgId, search: $search) {
       items {
         ...ClientFragment
         template {
@@ -227,8 +227,8 @@ export const LIST_SUPPLIER_TEMPLATES = gql`
 `
 
 export const SEARCH_SUPPLIERS = gql`
-  query SearchSuppliers($orgId: ID!) {
-    searchSuppliers(orgId: $orgId) {
+  query SearchSuppliers($orgId: ID!, $search: String!) {
+    searchSuppliers(orgId: $orgId, search: $search) {
       items {
         ...SupplierFragment
         template {

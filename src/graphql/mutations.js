@@ -136,6 +136,24 @@ export const DELETE_PRODUCT = gql`
   }
 `
 
+export const SET_SPEC_CLIENT = gql`
+  mutation SetSpecClient($specId: ID!, $clientId: ID!) {
+    setSpecClient(specId: $specId, clientId: $clientId) {
+      ...ClientFragment
+    }
+  }
+  ${CLIENT_FRAGMENT}
+`
+
+export const SET_INVOICE_SUPPLIER = gql`
+  mutation SetInvoiceSupplier($invoiceId: ID!, $supplierId: ID!) {
+    setInvoiceSupplier(invoiceId: $invoiceId, supplierId: $supplierId) {
+      ...SupplierFragment
+    }
+  }
+  ${SUPPLIER_FRAGMENT}
+`
+
 export const CREATE_CLIENT = gql`
   mutation CreateClient($orgId: ID!, $input: CreateClientInput!) {
     createClient(orgId: $orgId, input: $input) {

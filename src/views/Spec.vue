@@ -120,6 +120,7 @@ export default {
           apolloClient.writeFragment({
             id: `${Typename.PRODUCT}:${delta.payload.id}`,
             fragment: PRODUCT_FRAGMENT,
+            fragmentName: 'ProductFragment',
             data: delta.payload,
           })
         }
@@ -169,6 +170,7 @@ export default {
           apolloClient.writeFragment({
             id: `${Typename.INVOICE}:${delta.payload.id}`,
             fragment: INVOICE_FRAGMENT,
+            fragmentName: 'InvoiceFragment',
             data: delta.payload,
           })
         }

@@ -10,7 +10,7 @@ import {
 
 import { ClientType, InvoiceStatus } from '@/graphql/enums'
 import { GET_SPEC, SEARCH_CLIENTS, SEARCH_SUPPLIERS } from '../graphql/queries'
-import { CREATE_INVOICE, UPDATE_INVOICE, UPDATE_SPEC } from '../graphql/mutations'
+import { CREATE_INVOICE, UPDATE_INVOICE, UPDATE_SPEC, SET_SPEC_CLIENT, SET_INVOICE_SUPPLIER } from '../graphql/mutations'
 
 export default {
   apollo: {
@@ -27,7 +27,7 @@ export default {
       query: SEARCH_CLIENTS,
       variables () {
         return {
-          specId: this.specId,
+          orgId: this.orgId,
           search: this.clientSearch,
         }
       },
@@ -41,7 +41,7 @@ export default {
       query: SEARCH_SUPPLIERS,
       variables () {
         return {
-          specId: this.specId,
+          orgId: this.orgId,
           search: this.supplierSearch,
         }
       },
@@ -76,6 +76,9 @@ export default {
     }
   },
   computed: {
+    orgId () {
+      return this.$route.params.orgId
+    },
     specId () {
       return this.$route.params.specId
     },
@@ -93,10 +96,22 @@ export default {
       }
     },
     clients () {
-      return (this.searchClients && this.searchClients.items) || []
+      const items = (this.searchClients && this.searchClients.items) || []
+      return items.map(item => {
+        return {
+          ...item,
+          name: this.getClientName(item),
+        }
+      })
     },
     suppliers () {
-      return (this.searchSuppliers && this.searchSuppliers.items) || []
+      const items = (this.searchSuppliers && this.searchSuppliers.items) || []
+      return items.map(item => {
+        return {
+          ...item,
+          name: this.getSupplierName(item),
+        }
+      })
     },
   },
   methods: {
@@ -109,26 +124,21 @@ export default {
             ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
       )
     },
-    getInvoiceSupplierName (item) {
+    getInvoiceSupplier (item) {
       const supplier = item.supplier || {}
-      const name = supplier.companyNameSl || supplier.companyNameCl || ''
       return {
         ...supplier,
-        name,
+        name: this.getSupplierName(supplier),
       }
     },
     openCreateSupplierDialog (item) {
-      this.createSupplier = item
+      this.createSupplierInvoice = item
       this.supplierDialog = true
     },
     setCreatedSupplier (supplier) {
-      this.updateInvoice({
-        id: this.createSupplier.id,
-        invoiceSupplierId: supplier && supplier.id,
-        supplier,
-      })
+      this.setInvoiceSupplier(this.createSupplierInvoice.id, (supplier && supplier.id))
       this.supplierDialog = false
-      this.createSupplier = null
+      this.createSupplierInvoice = null
       this.$apollo.queries.searchSuppliers.refetch()
       setTimeout(() => {
         this.$refs.supplierCard.reset()
@@ -140,14 +150,18 @@ export default {
     getClientName (item) {
       if (!item) return ''
       let name = ''
-      if (item.clientType === ClientType.legal) {
-        name = item.companyNameSl || item.companyNameCl || ''
+      if (item.clientType === ClientType.LEGAL) {
+        name = item.companyName || item.companyNameSl || item.companyNameCl || ''
       } else {
         name = item.lastName || ''
         name += item.firstName ? ` ${item.firstName}` : ''
         name += item.middleName ? ` ${item.middleName}` : ''
       }
       return name
+    },
+    getSupplierName (item) {
+      if (!item) return ''
+      return item.companyNameSl || item.companyNameCl || ''
     },
     expand (id) {
       // this.$apollo.mutate({
@@ -209,6 +223,38 @@ export default {
           variables: {
             id: this.specId,
             input,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.updateLoading = false
+      }
+    },
+    async setSpecClient (clientId) {
+      try {
+        this.updateLoading = true
+        await this.$apollo.mutate({
+          mutation: SET_SPEC_CLIENT,
+          variables: {
+            specId: this.specId,
+            clientId,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.updateLoading = false
+      }
+    },
+    async setInvoiceSupplier (invoiceId, supplierId) {
+      try {
+        this.updateLoading = true
+        await this.$apollo.mutate({
+          mutation: SET_INVOICE_SUPPLIER,
+          variables: {
+            invoiceId,
+            supplierId,
           },
         })
       } catch (error) {

@@ -29,9 +29,7 @@
               hide-details
               class="leading-normal max-w-sm w-auto inline-flex spec-search-input"
               style="min-width: 220px"
-              @input="updateSpec({
-                client: $event
-              })"
+              @input="setSpecClient($event && $event.id)"
             />
           </span>
         </span>
@@ -98,7 +96,7 @@
             </v-menu>
             <!-- TODO on real api, need send id -->
             <Select
-              :value="getInvoiceSupplierName(item)"
+              :value="getInvoiceSupplier(item)"
               :placeholder="$t('shipping.supplierName')"
               :nudge-bottom="23"
               :search.sync="supplierSearch"
@@ -110,9 +108,7 @@
               outlined
               hide-details
               class="text-sm mr-2 md:p-0 leading-normal max-w-sm"
-              @input="updateInvoice({
-                supplier: ($event && $event.id)
-              }, item.id)"
+              @input="setInvoiceSupplier(item.id, ($event && $event.id))"
             >
               <template v-slot:prepend>
                 <a
