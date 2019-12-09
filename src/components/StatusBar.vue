@@ -190,7 +190,7 @@
               v-else
               :key="item.id"
               class="px-3 py-2 text-sm cursor-pointer hover:bg-gray-dark"
-              @click="gotoOrg(item.id)"
+              @click="changeOrg(item.id)"
             >
               <div class="flex">
                 <div class="leading-tight">
@@ -212,8 +212,9 @@
 </template>
 
 <script>
+import { CURRENT_LANG_STORE_KEY } from '../config/globals'
 import { Role } from '../graphql/enums'
-import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '@/graphql/queries'
+import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 
 import CompanyListModal from '../components/CompanyListModal.vue'
 
@@ -235,7 +236,7 @@ export default {
     },
     getOrgs: {
       query: GET_ORGS,
-      skip: true,
+      fetchPolicy: 'cache-only',
     },
   },
   data () {
@@ -288,9 +289,10 @@ export default {
     },
   },
   methods: {
-    gotoOrg (orgId) {
-      // eslint-disable-next-line
-      console.log('orgId', orgId)
+    changeOrg (orgId) {
+      if (orgId !== this.$route.params.orgId) {
+        this.$router.push({ name: 'specs', params: { orgId } })
+      }
       this.orgDialog = false
     },
     profileAction (value) {
@@ -316,7 +318,7 @@ export default {
       }
     },
     changeLang (lang) {
-      localStorage.setItem('selected-locale', lang)
+      localStorage.setItem(CURRENT_LANG_STORE_KEY, lang)
       this.$i18n.locale = lang
       this.langMenu = false
     },

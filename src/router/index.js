@@ -3,8 +3,8 @@ import VueRouter from 'vue-router'
 
 import RequisitesList from '../views/RequisitesList.vue'
 import RequisitesItem from '../views/RequisitesItem.vue'
+import OrgLayout from '../views/OrgLayout.vue'
 import Specs from '../views/Specs.vue'
-import SpecLayout from '../views/SpecLayout.vue'
 import Spec from '../views/Spec.vue'
 import ClientItem from '../views/ClientItem.vue'
 import ClientList from '../views/ClientList.vue'
@@ -21,7 +21,9 @@ import NotFound from '../views/NotFound.vue'
 
 import { Auth, i18n } from '../plugins'
 import { apolloClient } from '../plugins/apollo'
-import { GET_ROLE_IN_PROJECT } from '../graphql/queries'
+import { GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
+
+import { CURRENT_ORG_STORE_KEY } from '../config/globals'
 
 Vue.use(VueRouter)
 
@@ -29,39 +31,79 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Specs,
-    meta: { requiresAuth: true },
+    redirect: () => {
+      const orgId = localStorage.getItem(CURRENT_ORG_STORE_KEY) || ''
+      return { name: 'specs', params: { orgId } }
+    },
   },
   {
-    path: '/spec/:specId',
+    path: '/z-:orgId',
     meta: { requiresAuth: true },
-    component: SpecLayout,
+    component: OrgLayout,
     beforeEnter: async (to, from, next) => {
       try {
-        const specId = to.params.specId
-        const { data: { roleInProject } } = await apolloClient.query({
-          query: GET_ROLE_IN_PROJECT,
-          variables: {
-            specId,
-          },
-          fetchPolicy: 'network-only',
+        const { data: { getOrgs } } = await apolloClient.query({
+          query: GET_ORGS,
+          fetchPolicy: 'cache-first',
         })
-
-        if (!roleInProject) {
-          throw new Error('No have access!')
+        if (!getOrgs || getOrgs.length === 0) {
+          throw new Error('Not found')
         }
-
-        next()
-      } catch (error) { // eslint-disable-line
-        next(false)
+        const orgId = to.params.orgId
+        if (!orgId) {
+          const [org] = getOrgs
+          if (org && org.id) {
+            localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
+            next({ name: 'specs', params: { orgId: org.id } })
+          } else {
+            throw new Error('Not found')
+          }
+        } else if (getOrgs.some(el => el.id === orgId)) {
+          localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
+          next()
+        } else {
+          throw new Error('Not found')
+        }
+      } catch (error) {
+        if (error.message === 'Not found') {
+          next('not-found')
+        } else {
+          next(false)
+        }
       }
     },
     children: [
       {
         path: '',
+        name: 'specs',
+        meta: { requiresAuth: true },
+        component: Specs,
+      },
+      {
+        path: 'spec/:specId',
         name: 'spec',
         meta: { requiresAuth: true },
         component: Spec,
+        beforeEnter: async (to, from, next) => {
+          try {
+            const specId = to.params.specId
+            const { data: { roleInProject } } = await apolloClient.query({
+              query: GET_ROLE_IN_PROJECT,
+              variables: {
+                specId,
+              },
+              fetchPolicy: 'network-only',
+            })
+
+            if (!roleInProject) {
+              throw new Error('No have access!')
+            }
+
+            next()
+          } catch (error) { // eslint-disable-line
+            next(false)
+          }
+        },
       },
       {
         path: 'clients',

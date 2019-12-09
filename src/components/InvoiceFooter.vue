@@ -9,7 +9,7 @@
           :value="item.profitType"
           :label="InvoiceProfitType.MARGIN"
           @input="updateInvoice({
-            id: item.id, profitType: $event
+            profitType: $event
           })"
         >
           <span class="text-gray-light">
@@ -22,7 +22,7 @@
           :value="item.profitType"
           :label="InvoiceProfitType.COMMISSION"
           @input="updateInvoice({
-            id: item.id, profitType: $event
+            profitType: $event
           })"
           >
           <span class="text-gray-light">
@@ -42,7 +42,7 @@
           outlined
           hide-details
           @input="updateInvoice({
-            id: item.id, profitPercent: $event
+            profitPercent: $event
           })"
         >
           <template v-slot:append>
@@ -54,7 +54,6 @@
         small
         :value="item.profitForAll"
         @input="updateInvoice({
-          id: item.id,
           profitForAll: item.profitForAll
         })"
       >
@@ -80,7 +79,7 @@
           persistent-label
           class="p-0"
           @input="updateInvoice({
-            id: item.id, discount: $event
+            discount: $event
           })"
         >
           <template v-slot:append>
@@ -105,7 +104,7 @@
           persistent-label
           class="p-0"
           @input="updateInvoice({
-            id: item.id, prepayment: $event
+            prepayment: $event
           })"
         >
           <template v-slot:append>
@@ -131,7 +130,7 @@
                 hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
                 @input="updateInvoice({
-                  id: item.id, prepaymentDate: $event && $event.toISOString() || null
+                  prepaymentDate: $event && $event.toISOString() || null
                 })"
               />
             </div>
@@ -159,7 +158,7 @@
           class="leading-none"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.residue, 'formatted') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.obtainCost, 'formatted') }} {{ $t('currency.CNY.symbol') }}
         </div>
         <v-menu
           ref="menu"
@@ -180,7 +179,7 @@
                 hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
                 @input="updateInvoice({
-                  id: item.id, residueDate: $event && $event.toISOString() || null
+                  obtainCostDate: $event && $event.toISOString() || null
                 })"
               />
             </div>
@@ -226,7 +225,7 @@
                 hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
                 @input="updateInvoice({
-                  id: item.id, clientDebtDate: $event && $event.toISOString() || null
+                  clientDebtDate: $event && $event.toISOString() || null
                 })"
               />
             </div>
@@ -281,7 +280,7 @@ export default {
   },
   methods: {
     formatDate (date) {
-      return format(this.$parseISO(date), this.$i18n.locale === 'zh'
+      return format(this.$parseDate(date), this.$i18n.locale === 'zh'
         ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
           ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
       )

@@ -7,7 +7,7 @@
           <Button
             outline
             secondary
-            class="mt-8 mb-24 md:mb-0 flex justify-center sm:justify-end"
+            class="mx-auto sm:mr-0 mt-8 mb-24 md:mb-0 flex justify-center sm:justify-end"
             @click="$router.push({name: 'signin'})"
           >
             <template v-slot:text>

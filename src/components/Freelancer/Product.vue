@@ -47,10 +47,8 @@
           type="number"
           inputmode="decimal"
           :placeholder="$t('placeholder.emptyNumber')"
-          :value="item.store && item.store.net"
-          @input="updateProduct({
-            store: { net: $event }
-          })"
+          :value="store.net"
+          @input="updateProductStore({ net: $event })"
         />
       </td>
       <td>
@@ -58,10 +56,8 @@
           type="number"
           inputmode="decimal"
           :placeholder="$t('placeholder.emptyNumber')"
-          :value="item.store && item.store.gross"
-          @input="updateProduct({
-            store: { gross: $event }
-          })"
+          :value="store.gross"
+          @input="updateProductStore({ gross: $event })"
         />
       </td>
       <td class="flex items-center" style="line-height:35px">
@@ -69,45 +65,37 @@
           type="number"
           inputmode="decimal"
           :placeholder="$t('placeholder.emptyNumber')"
-          :value="item.store && item.store.width"
-          @input="updateProduct({
-            store: { width: $event }
-          })"
+          :value="store.width"
+          @input="updateProductStore({ width: $event })"
         />
         <Editable
           type="number"
           inputmode="decimal"
           :placeholder="$t('placeholder.emptyNumber')"
-          :value="item.store && item.store.height"
-          @input="updateProduct({
-            store: { height: $event }
-          })"
+          :value="store.height"
+          @input="updateProductStore({ height: $event })"
         />
         <Editable
           type="number"
           inputmode="decimal"
           :placeholder="$t('placeholder.emptyNumber')"
-          :value="item.store && item.store.length"
-          @input="updateProduct({
-            store: { length: $event }
-          })"
+          :value="store.length"
+          @input="updateProductStore({ length: $event })"
         />
       </td>
     </template>
 
     <template v-else-if="activeTab === 2">
       <td class="text-right">
-        <div v-if="item.info && item.info.images && item.info.images.length > 0">
-          {{ item.info.images }}
+        <div v-if="info.images && info.images.length > 0">
+          {{ info.images }}
         </div>
       </td>
       <td class="text-left">
         <Editable
-          :value="item.info && item.info.description"
+          :value="info.description"
           :placeholder="$t('placeholder.emptyText')"
-          @input="updateProduct({
-            info: { description: $event }
-          })"
+          @input="updateProductInfo({ description: $event })"
         />
       </td>
     </template>
@@ -115,11 +103,9 @@
     <template v-else-if="activeTab === 3">
       <td class="text-left text-primary">
         <Editable
-          :value="item.link && item.link.url"
+          :value="link.url"
           :placeholder="$t('placeholder.emptyText')"
-          @input="updateProduct({
-            link: { url: $event }
-          })"
+          @input="updateProductLink({ url: $event })"
         />
       </td>
       <td class="text-right">
@@ -157,7 +143,7 @@ export default {
     },
     profitForAll: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   data () {
@@ -170,7 +156,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>

@@ -29,34 +29,44 @@
 
     <template v-if="activeTab === 1">
       <td class="text-right">
-        <span>{{ item.cost && item.cost.obtainPrice || $t('placeholder.emptyNumber') }}</span>
+        <span v-if="!profitForAll">
+          {{ cost.customPurchasePrice || cost.purchasePrice || $t('placeholder.emptyNumber') }}
+        </span>
+        <span v-else>
+          {{ cost.purchasePrice || $t('placeholder.emptyNumber') }}
+        </span>
       </td>
       <td class="text-right">
-        {{ item.cost && item.cost.obtainAmount }}
+        {{ cost.purchaseAmount }}
       </td>
       <td class="text-right">
-        <span>{{ item.cost && item.cost.sellingPrice || $t('placeholder.emptyNumber') }}</span>
+        <span v-if="!profitForAll">
+          {{ cost.customClientPrice || cost.clientPrice || $t('placeholder.emptyNumber') }}
+        </span>
+        <span v-else>
+          {{ cost.clientPrice || $t('placeholder.emptyNumber') }}
+        </span>
       </td>
       <td class="text-right">
-        {{ item.cost && item.cost.sellingAmount }}
+        {{ cost.clientAmount }}
       </td>
     </template>
 
     <template v-else-if="activeTab === 2">
       <td class="text-right">
-        <div v-if="item.info && item.info.images && item.info.images.length > 0">
-          {{ item.info.images }}
+        <div v-if="info.images && info.images.length > 0">
+          {{ info.images }}
         </div>
       </td>
       <td class="text-left">
-        <span>{{ item.info && item.info.description || $t('placeholder.emptyText') }}</span>
+        <span>{{ info.description || $t('placeholder.emptyText') }}</span>
       </td>
       <td></td>
     </template>
 
     <template v-else-if="activeTab === 3">
       <td class="text-left text-primary">
-        <span>{{ item.link && item.link.url || $t('placeholder.emptyText') }}</span>
+        <span>{{ link.url || $t('placeholder.emptyText') }}</span>
       </td>
       <td class="text-right">
         <i><a href="#"></a></i>
@@ -68,7 +78,9 @@
 
 <script>
 import { mdiClose } from '@mdi/js'
-import { ProductStatus } from '@/graphql/enums'
+import {
+  ProductStatus,
+} from '@/graphql/enums'
 import product from '../../mixins/product'
 
 export default {
@@ -93,7 +105,7 @@ export default {
     },
     profitForAll: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   data () {
@@ -106,7 +118,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>

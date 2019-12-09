@@ -101,6 +101,7 @@ export default {
           const parentInvoice = apolloClient.readFragment({
             id: `${Typename.INVOICE}:${delta.parentId}`,
             fragment: INVOICE_PRODUCTS_FRAGMENT,
+            fragmentName: 'InvoiceProductsFragment',
           })
 
           if (!parentInvoice.products.some(el => el.id === delta.payload.id)) {
@@ -109,6 +110,7 @@ export default {
             apolloClient.writeFragment({
               id: `${Typename.INVOICE}:${delta.parentId}`,
               fragment: INVOICE_PRODUCTS_FRAGMENT,
+              fragmentName: 'InvoiceProductsFragment',
               data: parentInvoice,
             })
           }
@@ -126,6 +128,7 @@ export default {
           let parentInvoice = apolloClient.readFragment({
             id: `${Typename.INVOICE}:${delta.parentId}`,
             fragment: INVOICE_PRODUCTS_FRAGMENT,
+            fragmentName: 'InvoiceProductsFragment',
           })
 
           const index = parentInvoice.products.findIndex(p => p.id === delta.payload.id)
@@ -135,6 +138,7 @@ export default {
             apolloClient.writeFragment({
               id: `${Typename.INVOICE}:${delta.parentId}`,
               fragment: INVOICE_PRODUCTS_FRAGMENT,
+              fragmentName: 'InvoiceProductsFragment',
               data: parentInvoice,
             })
           }
@@ -146,6 +150,7 @@ export default {
           const parentSpec = apolloClient.readFragment({
             id: `${Typename.SPEC}:${delta.parentId}`,
             fragment: SPEC_INVOICES_FRAGMENT,
+            fragmentName: 'SpecInvoicesFragment',
           })
 
           if (!parentSpec.invoices.some(el => el.id === delta.payload.id)) {
@@ -154,6 +159,7 @@ export default {
             apolloClient.writeFragment({
               id: `${Typename.SPEC}:${delta.parentId}`,
               fragment: SPEC_INVOICES_FRAGMENT,
+              fragmentName: 'SpecInvoicesFragment',
               data: parentSpec,
             })
           }
@@ -171,6 +177,7 @@ export default {
           let parentSpec = apolloClient.readFragment({
             id: `${Typename.SPEC}:${delta.parentId}`,
             fragment: SPEC_INVOICES_FRAGMENT,
+            fragmentName: 'SpecInvoicesFragment',
           })
 
           const index = parentSpec.invoices.findIndex(p => p.id === delta.payload.id)
@@ -180,6 +187,7 @@ export default {
             apolloClient.writeFragment({
               id: `${Typename.SPEC}:${delta.parentId}`,
               fragment: SPEC_INVOICES_FRAGMENT,
+              fragmentName: 'SpecInvoicesFragment',
               data: parentSpec,
             })
           }
@@ -191,6 +199,7 @@ export default {
           apolloClient.writeFragment({
             id: `${Typename.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
+            fragmentName: 'SpecFragment',
             data: delta.payload,
           })
         }

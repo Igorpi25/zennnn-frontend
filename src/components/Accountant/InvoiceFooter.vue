@@ -22,7 +22,7 @@
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(prepaymentDate)"
+                :value="formatDate(item.prepaymentDate)"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -30,21 +30,20 @@
                 readonly
                 hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
-                @input="updateInvoice(item.id, {
-                  prepaymentDate: $event && $event.toISOString() || null
-                })"
               />
             </div>
           </template>
           <v-date-picker
-            v-model="prepaymentDate"
+            :value="$toISOString($parseDate(item.prepaymentDate))"
             :locale="$i18n.locale"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"
             no-title
             dark
-            @change="menuPrepaymentDate = false"
+            @change="updateInvoice({
+              prepaymentDate: $event || null
+            })"
           ></v-date-picker>
         </v-menu>
       </div>
@@ -56,7 +55,7 @@
           {{ $t('shipping.obtainCost') }}
         </label>
         <span class="leading-none">
-          {{ $n(item.residue, 'formatted') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.obtainCost, 'formatted') }} {{ $t('currency.CNY.symbol') }}
         </span>
         <v-menu
           ref="menu"
@@ -68,7 +67,7 @@
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(residueDate)"
+                :value="formatDate(item.obtainCostDate)"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -76,21 +75,20 @@
                 readonly
                 hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
-                @input="updateInvoice(item.id, {
-                  residueDate: $event && $event.toISOString() || null
-                })"
               />
             </div>
           </template>
           <v-date-picker
-            v-model="residueDate"
+            :value="$toISOString($parseDate(item.obtainCostDate))"
             :locale="$i18n.locale"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"
             no-title
             dark
-            @change="menuResidueDate = false"
+            @change="updateInvoice({
+              obtainCostDate: $event || null
+            })"
           ></v-date-picker>
         </v-menu>
       </div>
@@ -111,7 +109,7 @@
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(clientDebtDate)"
+                :value="formatDate(item.clientDebtDate)"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -119,21 +117,20 @@
                 readonly
                 hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
-                @input="updateInvoice(item.id, {
-                  clientDebtDate: $event && $event.toISOString() || null
-                })"
               />
             </div>
           </template>
           <v-date-picker
-            v-model="clientDebtDate"
+            :value="$toISOString($parseDate(item.clientDebtDate))"
             :locale="$i18n.locale"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"
             no-title
             dark
-            @change="menuClientDebtDate = false"
+            @change="updateInvoice({
+              clientDebtDate: $event || null
+            })"
           ></v-date-picker>
         </v-menu>
       </div>

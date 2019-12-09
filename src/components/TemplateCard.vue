@@ -28,14 +28,14 @@
               <label
                 class="truncate"
                 :class="{ 'visibility-hidden opacity-0': isDisabled }"
-                :title="$t(`label.${templateName}.${key}`)"
+                :title="$t(`label.${templateName}.${field.label || key}`)"
               >
-                {{ $t(`label.${templateName}.${key}`) }}
+                {{ $t(`label.${templateName}.${field.label || key}`) }}
               </label>
               <TextField
                 :disabled="isDisabled"
-                :value="item.template[key]"
-                :placeholder="item.template[key] || $t(`placeholder.${templateName}.${field.placeholder || key}`)"
+                :value="item.template && item.template[key]"
+                :placeholder="(item.template && item.template[key]) || $t(`placeholder.${templateName}.${field.placeholder || key}`)"
                 squared
                 right
                 hide-details
@@ -63,7 +63,7 @@
                 <TextArea
                   :rows="field.rows || 1"
                   :disabled="isDisabled"
-                  :value="item[key]"
+                  :value="item[field.defaultValueKey] || item[key]"
                   squared
                   hide-details
                   class="template-card__input"

@@ -24,8 +24,8 @@ export const LOGIN = gql`
 `
 
 export const CREATE_SPEC = gql`
-  mutation CreateSpec {
-    createSpec {
+  mutation CreateSpec($orgId: ID!) {
+    createSpec(orgId: $orgId) {
       ...SpecFragment
     }
   }
@@ -86,6 +86,49 @@ export const UPDATE_PRODUCT = gql`
   }
   ${PRODUCT_FRAGMENT}
 `
+export const UPDATE_PRODUCT_COST = gql`
+  mutation UpdateProductCost($id: ID!, $input: ProductCostInput!) {
+    updateProductCost(id: $id, input: $input) {
+      clientPrice
+      customClientPrice
+      clientAmount
+      purchasePrice
+      customPurchasePrice
+      purchaseAmount
+    }
+  }
+`
+export const UPDATE_PRODUCT_STORE = gql`
+  mutation UpdateProductStore($id: ID!, $input: ProductStoreInput!) {
+    updateProductStore(id: $id, input: $input) {
+      net
+      gross
+      width
+      height
+      length
+      volume
+      weight
+      atWhouse
+      pkgQty
+      pkgNo
+    }
+  }
+`
+export const UPDATE_PRODUCT_INFO = gql`
+  mutation UpdateProductInfo($id: ID!, $input: ProductInfoInput!) {
+    updateProductInfo(id: $id, input: $input) {
+      images
+      description
+    }
+  }
+`
+export const UPDATE_PRODUCT_LINK = gql`
+  mutation UpdateProductLink($id: ID!, $input: ProductLinkInput!) {
+    updateProductLink(id: $id, input: $input) {
+      url
+    }
+  }
+`
 
 export const DELETE_PRODUCT = gql`
   mutation DeleteProduct($id: ID!) {
@@ -94,8 +137,8 @@ export const DELETE_PRODUCT = gql`
 `
 
 export const CREATE_CLIENT = gql`
-  mutation CreateClient($specId: ID!, $inpit: CreateClientInput!) {
-    createClient(specId: $specId, input: $input) {
+  mutation CreateClient($orgId: ID!, $input: CreateClientInput!) {
+    createClient(orgId: $orgId, input: $input) {
       ...ClientFragment
       template {
         ...ClientTemplateFragment
@@ -107,7 +150,7 @@ export const CREATE_CLIENT = gql`
 `
 
 export const UPDATE_CLIENT = gql`
-  mutation UpdateClient($id: ID!, $inpit: ClientInput!) {
+  mutation UpdateClient($id: ID!, $input: UpdateClientInput!) {
     updateClient(id: $id, input: $input) {
       ...ClientFragment
       template {
@@ -126,8 +169,8 @@ export const DELETE_CLIENT = gql`
 `
 
 export const CREATE_CLIENT_TEMPLATE = gql`
-  mutation CreateClientTemplate($specId: ID!, $inpit: CreateClientTemplateInput!) {
-    createClientTemplate(specId: $specId, input: $input) {
+  mutation CreateClientTemplate($orgId: ID!, $fromClient: ID, $input: CreateClientTemplateInput!) {
+    createClientTemplate(orgId: $orgId, fromClient: $fromClient, input: $input) {
       ...ClientTemplateFragment
     }
   }
@@ -141,8 +184,8 @@ export const DELETE_CLIENT_TEMPLATE = gql`
 `
 
 export const CREATE_SUPPLIER = gql`
-  mutation CreateSupplier($specId: ID!, $inpit: SupplierInput!) {
-    createSupplier(specId: $specId, input: $input) {
+  mutation CreateSupplier($orgId: ID!, $input: CreateSupplierInput!) {
+    createSupplier(orgId: $orgId, input: $input) {
       ...SupplierFragment
       template {
         ...SupplierTemplateFragment
@@ -162,8 +205,8 @@ export const CREATE_SUPPLIER = gql`
 `
 
 export const UPDATE_SUPPLIER = gql`
-  mutation UpdateSupplier($specId: ID!, $inpit: SupplierInput!) {
-    updateSupplier(specId: $specId, input: $input) {
+  mutation UpdateSupplier($id: ID!, $input: UpdateSupplierInput!) {
+    updateSupplier(id: $id, input: $input) {
       ...SupplierFragment
       template {
         ...SupplierTemplateFragment
@@ -188,9 +231,41 @@ export const DELETE_SUPPLIER = gql`
   }
 `
 
+export const CREATE_SUPPLIER_SHOP = gql`
+  mutation CreateSupplierShop($supplierId: ID!, $input: SupplierShopInput!) {
+    createSupplierShop(supplierId: $supplierId, input: $input) {
+      ...SupplierShopFragment
+      template {
+        ...SupplierShopTemplateFragment
+      }
+    }
+  }
+  ${SUPPLIER_SHOP_FRAGMENT}
+  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+`
+
+export const UPDATE_SUPPLIER_SHOP = gql`
+  mutation UpdateSupplierShop($id: ID!, $input: SupplierShopInput!) {
+    updateSupplierShop(id: $id, input: $input) {
+      ...SupplierShopFragment
+      template {
+        ...SupplierShopTemplateFragment
+      }
+    }
+  }
+  ${SUPPLIER_SHOP_FRAGMENT}
+  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+`
+
+export const DELETE_SUPPLIER_SHOP = gql`
+  mutation DeleteSupplierShop($id: ID!) {
+    deleteSupplierShop(id: $id)
+  }
+`
+
 export const CREATE_SUPPLIER_TEMPLATE = gql`
-  mutation CreateSupplierTemplate($specId: ID!, $inpit: CreateSupplierTemplateInput!) {
-    createSupplierTemplate(specId: $specId, input: $input) {
+  mutation CreateSupplierTemplate($orgId: ID!, $fromSupplier: ID, $input: CreateSupplierTemplateInput!) {
+    createSupplierTemplate(orgId: $orgId, fromSupplier: $fromSupplier, input: $input) {
       ...SupplierTemplateFragment
     }
   }

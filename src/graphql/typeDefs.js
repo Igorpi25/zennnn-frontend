@@ -11,9 +11,9 @@ export const PRODUCT_FRAGMENT = gql`
       clientPrice
       customClientPrice
       clientAmount
-      sellingPrice
-      customSellingPrice
-      sellingAmount
+      purchasePrice
+      customPurchasePrice
+      purchaseAmount
     }
     store {
       net
@@ -57,7 +57,7 @@ export const INVOICE_FRAGMENT = gql`
     clientDebt
     clientDebtDate
     totalClientAmount
-    totalSellingAmount
+    totalPurchaseAmount
     totalNet
     totalGross
     totalVolume
@@ -76,29 +76,6 @@ export const INVOICE_PRODUCTS_FRAGMENT = gql`
     }
   }
   ${PRODUCT_FRAGMENT}
-`
-
-export const SPEC_FRAGMENT = gql`
-  fragment SpecFragment on Spec {
-    id
-    specStatus
-    specNo
-    estimateShippingDate
-    shipped
-    totalVolume
-    totalWeight
-    qtyOfPackages
-    finalCost
-    finalObtainCost
-    profit
-    totalPrepay
-    totalClientDebt
-    currency
-    currencyRate
-    customCurrencyRate
-    createdAt
-    updatedAt
-  }
 `
 
 export const CLIENT_FRAGMENT = gql`
@@ -129,7 +106,7 @@ export const CLIENT_FRAGMENT = gql`
     okpo
     swift
     ownerFullName
-    jobPosition
+    ownerJobPosition
     consignee
     shippingAddress
     contactPerson
@@ -148,11 +125,38 @@ export const CLIENT_FRAGMENT = gql`
   }
 `
 
+export const SPEC_FRAGMENT = gql`
+  fragment SpecFragment on Spec {
+    id
+    client {
+      ...ClientFragment
+    }
+    specStatus
+    specNo
+    estimateShippingDate
+    shipped
+    totalVolume
+    totalWeight
+    qtyOfPackages
+    finalCost
+    finalObtainCost
+    profit
+    totalPrepay
+    totalClientDebt
+    currency
+    currencyRate
+    customCurrencyRate
+    createdAt
+    updatedAt
+  }
+  ${CLIENT_FRAGMENT}
+`
+
 export const CLIENT_TEMPLATE_FRAGMENT = gql`
   fragment ClientTemplateFragment on ClientTemplate {
     id
     templateName
-    uid
+    customUid
     # legal
     companyName
     legalAddress
@@ -195,8 +199,6 @@ export const CLIENT_TEMPLATE_FRAGMENT = gql`
 export const SUPPLIER_FRAGMENT = gql`
   fragment SupplierFragment on Supplier {
     id
-    uid
-    customUid
     createdAt
     updatedAt
     companyNameSl
@@ -232,7 +234,6 @@ export const SUPPLIER_TEMPLATE_FRAGMENT = gql`
   fragment SupplierTemplateFragment on SupplierTemplate {
     id
     templateName
-    uid
     companyNameSl
     companyNameCl
     website
@@ -304,6 +305,46 @@ export const SPEC_INVOICES_FRAGMENT = gql`
   }
   ${INVOICE_FRAGMENT}
   ${PRODUCT_FRAGMENT}
+`
+
+export const ORG_REQUISITE_FRAGMENT = gql`
+  fragment OrgRequisiteFragment on Contract {
+    id
+    name
+    nameEng
+    legalAddress
+    legalAddressPostcode
+    mailingAddress
+    mailingAdressPostcode
+    phone
+    fax
+    email
+    itn
+    iec
+    psrn
+    bankName
+    bankAddress
+    bankAccountNumber
+    correspondentAccountNumber
+    bic
+    okpo
+    swift
+    ownerFullName
+    ownerJobPosition
+  }
+`
+
+export const ORG_CONTRACT_FRAGMENT = gql`
+  fragment OrgContractFragment on Contract {
+    id
+    name
+    docNo
+    country
+    items {
+      title
+      subtitle
+    }
+  }
 `
 
 const typeDefs = gql`

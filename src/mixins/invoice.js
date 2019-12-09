@@ -7,19 +7,13 @@ import {
   mdiChevronRight,
 } from '@mdi/js'
 
-import { UPDATE_INVOICE } from '../graphql/mutations'
+import { UPDATE_INVOICE, CREATE_PRODUCT } from '../graphql/mutations'
 import {
   ProductStatus,
   InvoiceProfitType,
 } from '../graphql/enums'
 
 export default {
-  // props: {
-  //   content: {
-  //     type: Object,
-  //     required: true,
-  //   },
-  // },
   data () {
     return {
       ProductStatus,
@@ -39,19 +33,11 @@ export default {
       menuPrepaymentDate: false,
       menuResidueDate: false,
       menuClientDebtDate: false,
-      prepaymentDate: new Date().toISOString().substr(0, 10),
-      residueDate: new Date().toISOString().substr(0, 10),
-      clientDebtDate: new Date().toISOString().substr(0, 10),
+      prepaymentDate: null,
+      residueDate: null,
+      clientDebtDate: null,
     }
   },
-  // watch: {
-  //   'content.invoiceNo' (val) {
-  //     this.$refs.name.innerText = val || ''
-  //   },
-  // },
-  // mounted () {
-  //   this.$refs.name.innerText = this.content.invoiceNo || ''
-  // },
   computed: {
     fixedHeadersWidth () {
       return this.productHeaders.reduce((acc, curr) => {
@@ -70,7 +56,7 @@ export default {
       return (this.invoice && this.invoice.products) || []
     },
     invoiceItem () {
-      return this.invoice || {}
+      return this.invoice || this.item || {}
     },
     isInvoiceProfitTypeMargin () {
       return this.invoiceItem.profitType === InvoiceProfitType.MARGIN
@@ -80,11 +66,34 @@ export default {
     },
   },
   methods: {
-    // onBlur () {
-    //   this.$refs.name.innerText = this.content.invoiceNo || ''
-    // },
+    async createProduct () {
+      try {
+        this.createLoading = true
+        const variables = {
+          invoiceId: this.invoiceItem.id,
+        }
+        await this.$apollo.mutate({
+          mutation: CREATE_PRODUCT,
+          variables,
+          fetchPolicy: 'no-cache',
+        })
+      } catch (error) {
+        this.errors = error.errors || []
+        this.$logger.warn('Error: ', error)
+        // Analytics.record({
+        //   name: 'CreateProductError',
+        //   attributes: {
+        //     error: error
+        //   }
+        // })
+      } finally {
+        this.createLoading = false
+      }
+    },
     formatDate (date) {
-      return format(this.$parseISO(date), this.$i18n.locale === 'zh'
+      if (!date) return null
+      const parsedDate = this.$parseDate(date)
+      return format(parsedDate, this.$i18n.locale === 'zh'
         ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
           ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
       )
@@ -92,12 +101,16 @@ export default {
     switchTab (event) {
       this.activeTab = event.target.value
     },
-    async updateInvoice (id, input) {
+    async updateInvoice (input) {
       try {
+        const id = this.invoiceItem.id
         this.updateLoading = id
         await this.$apollo.mutate({
           mutation: UPDATE_INVOICE,
-          variables: { id, input },
+          variables: {
+            id,
+            input,
+          },
         })
       } catch (error) {
         if (error && error.errors && error.errors.length > 0) {

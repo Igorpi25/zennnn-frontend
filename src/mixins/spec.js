@@ -64,10 +64,8 @@ export default {
       supplierDialog: false,
       clientSearch: '',
       supplierSearch: '',
-      menuPurchaseDate: false,
-      menuShippingDate: false,
-      purchaseDate: new Date().toISOString().substr(0, 10),
-      shippingDate: new Date().toISOString().substr(0, 10),
+      menuPurchaseDate: {},
+      menuShippingDate: {},
       icons: {
         mdiPlusCircleOutline,
         mdiChevronLeft,
@@ -103,8 +101,9 @@ export default {
   },
   methods: {
     formatDate (date) {
+      if (!date) return ''
       return format(
-        this.$parseISO(date),
+        this.$parseDate(date),
         this.$i18n.locale === 'zh'
           ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
             ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
@@ -183,16 +182,19 @@ export default {
         this.createLoading = false
       }
     },
-    async updateInvoice (input) {
+    async updateInvoice (input, invoiceId) {
       try {
+        const id = invoiceId
         this.updateLoading = true
         await this.$apollo.mutate({
           mutation: UPDATE_INVOICE,
           variables: {
-            id: this.specId,
+            id,
             input,
           },
         })
+        this.menuPurchaseDate[invoiceId] = false
+        this.menuShippingDate[invoiceId] = false
       } catch (error) {
         throw new Error(error)
       } finally {

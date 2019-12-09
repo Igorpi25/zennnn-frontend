@@ -121,7 +121,7 @@
               <li>
                 <span>{{ $t('shipping.estimateDate') }}</span>
                 <span class="leaders__num">
-                  {{ $d($parseISO(spec.estimateShippingDate), 'short') }}
+                  {{ spec.estimateShippingDate ? $d($parseDate(spec.estimateShippingDate), 'short') : '' }}
                 </span>
               </li>
               <li>
@@ -144,9 +144,9 @@
               </li>
             </ul>
             <ToggleButton
-              :value="isSent"
-              @input="isSent = !isSent"
+              :value="spec.shipped"
               class="my-6"
+              @input="updateSpec({ shipped: $event })"
             >
               <span>{{ $t('shipping.setShipped') }}</span>
             </ToggleButton>
@@ -229,11 +229,11 @@
                   {{ $t('shipping.totalPrepay') }} {{ $t('currency.CNY.symbol') }}
                 </span>
                 <span class="flex">
-                  <div class="text-white">{{ $n(spec.finalCost, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
+                  <div class="text-white">{{ $n(spec.totalPrepay, 'integer') }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
                 </span>
-                <!-- <i18n-n :value="spec.finalCost" format="decimal" class="flex">
+                <!-- <i18n-n :value="spec.totalPrepay" format="decimal" class="flex">
                   <template v-slot:integer="slotProps">
                     <div class="text-white">{{ slotProps.integer }}</div>
                   </template>
@@ -250,11 +250,11 @@
                   {{ $t('shipping.totalClientDebt') }} {{ $t('currency.CNY.symbol') }}
                 </span>
                 <span class="flex">
-                  <div style="color: #ff2900;">{{ $n(spec.finalObtainCost, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.finalObtainCost, 'decimal').slice(-2) }}</div>
+                  <div style="color: #ff2900;">{{ $n(spec.totalClientDebt, 'integer') }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
                 </span>
-                <!-- <i18n-n :value="spec.finalObtainCost" format="decimal" class="flex">
+                <!-- <i18n-n :value="spec.totalClientDebt" format="decimal" class="flex">
                   <template v-slot:integer="slotProps">
                     <div style="color: #ff2900;">{{ slotProps.integer }}</div>
                   </template>
@@ -330,7 +330,7 @@
             name: 'preview',
             params: {
               specId: $route.params.specId
-              }
+            }
           })"
         >
           <span class="text-lg">{{ $t('shipping.overview') }}</span>
@@ -345,6 +345,8 @@
 import cloneDeep from 'clone-deep'
 import deepEqual from 'deep-equal'
 
+import { UPDATE_SPEC } from '@/graphql/mutations'
+
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
 import PaperListModal from '@/components/PaperListModal.vue'
@@ -357,6 +359,12 @@ export default {
     PaperListModal,
     PaperConfiguratorModal,
     SaveBeforeCloseModal,
+  },
+  props: {
+    spec: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -379,25 +387,25 @@ export default {
     }
   },
   computed: {
-    spec () {
-      return {
-        shipped: false,
-        containers: [
-          { type: '20', loaded: 100 },
-          { type: '20', loaded: 28 },
-        ],
-        estimateShippingDate: '2019-09-23T17:28:48.880Z',
-        totalVolume: 7.3,
-        totalWeight: 799,
-        qtyOfPackages: 27,
-        finalCost: 260906.20,
-        finalObtainCost: 101300,
-        profit: 37759.37,
-        totalPrepay: 101300,
-        totalClientDebt: 159606.2,
-        currencyRate: 9.256,
-      }
-    },
+    // spec () {
+    //   return {
+    //     shipped: false,
+    //     containers: [
+    //       { type: '20', loaded: 100 },
+    //       { type: '20', loaded: 28 },
+    //     ],
+    //     estimateShippingDate: '2019-09-23T17:28:48.880Z',
+    //     totalVolume: 7.3,
+    //     totalWeight: 799,
+    //     qtyOfPackages: 27,
+    //     finalCost: 260906.20,
+    //     finalObtainCost: 101300,
+    //     profit: 37759.37,
+    //     totalPrepay: 101300,
+    //     totalClientDebt: 159606.2,
+    //     currencyRate: 9.256,
+    //   }
+    // },
     containers () {
       return this.spec.containers || []
     },
@@ -420,6 +428,22 @@ export default {
     },
   },
   methods: {
+    async updateSpec (input) {
+      try {
+        this.updateLoading = true
+        await this.$apollo.mutate({
+          mutation: UPDATE_SPEC,
+          variables: {
+            id: this.spec.id,
+            input,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.updateLoading = false
+      }
+    },
     openPaperList () {
       this.papers = JSON.parse(localStorage.getItem('zennnn:papers'))
       this.paperList = true

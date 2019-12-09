@@ -1,6 +1,6 @@
 <template>
   <SupplierCard
-    :spec-id="$route.params.specId"
+    :org-id="$route.params.orgId"
     :create="create"
   />
 </template>

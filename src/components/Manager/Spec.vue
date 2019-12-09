@@ -9,7 +9,7 @@
           </span>&nbsp;
           <span>{{ $t('preposition.from') }}:</span>&nbsp;
           <span>
-            {{ $d($parseISO(spec.createdAt), 'short') }}
+            {{ $d($parseDate(spec.createdAt), 'short') }}
           </span> /
           <span>{{ $t('shipping.shippingClient') }}:</span>&nbsp;
           <span>{{ specClient.uid || '' }}</span>&nbsp;
@@ -50,7 +50,7 @@
         >
           <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto">
             <TextField
-              :value="item.number"
+              :value="item.invoiceNo"
               :debounce="250"
               :placeholder="$t('shipping.invoiceNo')"
               solo
@@ -59,12 +59,12 @@
               hide-details
               class="text-sm w-40 mr-2 md:p-0 leading-normal"
               @input="updateInvoice({
-                id: item.id, number: $event
-              })"
+                invoiceNo: $event
+              }, item.id)"
             />
             <v-menu
               ref="menu"
-              v-model="menuPurchaseDate"
+              v-model="menuPurchaseDate[item.id]"
               transition="scale-transition"
               min-width="290px"
               offset-y
@@ -72,7 +72,7 @@
               <template v-slot:activator="{ on }">
                 <div v-on="on">
                   <TextField
-                    :value="formatDate(purchaseDate)"
+                    :value="formatDate(item.purchaseDate)"
                     :placeholder="$t('shipping.purchaseDate')"
                     solo
                     outlined
@@ -80,21 +80,20 @@
                     readonly
                     hide-details
                     class="text-sm w-40 mr-2 md:p-0 leading-normal"
-                    @input="updateInvoice({
-                      id: item.id, purchaseDate: $event && $event.toISOString() || null
-                    })"
                   />
                 </div>
               </template>
               <v-date-picker
-                v-model="purchaseDate"
+                :value="$toISOString($parseDate(item.purchaseDate))"
                 :locale="$i18n.locale"
                 :next-icon="icons.mdiChevronRight"
                 :prev-icon="icons.mdiChevronLeft"
                 color="#5a8199"
                 no-title
                 dark
-                @change="menuPurchaseDate = false"
+                @change="updateInvoice({
+                  purchaseDate: $event || null
+                }, item.id)"
               ></v-date-picker>
             </v-menu>
             <!-- TODO on real api, need send id -->
@@ -112,8 +111,8 @@
               hide-details
               class="text-sm mr-2 md:p-0 leading-normal max-w-sm"
               @input="updateInvoice({
-                id: item.id, invoiceSupplierId: ($event && $event.id), supplier: $event
-              })"
+                supplier: ($event && $event.id)
+              }, item.id)"
             >
               <template v-slot:prepend>
                 <a
@@ -128,7 +127,7 @@
             </Select>
             <v-menu
               ref="menu"
-              v-model="menuShippingDate"
+              v-model="menuShippingDate[item.id]"
               transition="scale-transition"
               min-width="290px"
               offset-y
@@ -136,7 +135,7 @@
               <template v-slot:activator="{ on }">
                 <div v-on="on">
                   <TextField
-                    :value="formatDate(shippingDate)"
+                    :value="formatDate(item.shippingDate)"
                     :placeholder="$t('shipping.shippingDate')"
                     solo
                     outlined
@@ -144,21 +143,20 @@
                     readonly
                     hide-details
                     class="text-sm w-40 mr-2 md:p-0 leading-normal"
-                    @input="updateInvoice({
-                      id: item.id, shippingDate: $event && $event.toISOString() || null
-                    })"
                   />
                 </div>
               </template>
               <v-date-picker
-                v-model="shippingDate"
+                :value="$toISOString($parseDate(item.shippingDate))"
                 :locale="$i18n.locale"
                 :next-icon="icons.mdiChevronRight"
                 :prev-icon="icons.mdiChevronLeft"
                 color="#5a8199"
                 no-title
                 dark
-                @change="menuShippingDate = false"
+                @change="updateInvoice({
+                  shippingDate: $event || null
+                }, item.id)"
               ></v-date-picker>
             </v-menu>
           </div>
@@ -173,6 +171,7 @@
     <Button
       outline
       class="mt-6"
+      @click="createInvoice"
     >
       <template v-slot:icon>
         <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
@@ -181,7 +180,7 @@
     </Button>
 
     <div>
-      <SpecSummary />
+      <SpecSummary :spec="spec" />
     </div>
 
     <v-dialog
@@ -193,7 +192,7 @@
     >
       <SupplierCard
         ref="supplierCard"
-        :spec-id="$route.params.specId"
+        :org-id="$route.params.orgId"
         create
         is-component
         @close="supplierDialog = false"

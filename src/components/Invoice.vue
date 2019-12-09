@@ -42,229 +42,6 @@
                 :profit-for-all="invoiceItem.profitForAll"
                 class="items base-accent3"
               />
-              <!-- <tr
-                v-for="(item, index) in items"
-                :key="item.id"
-                class="items base-accent3"
-              >
-                <td class="relative p-0">
-                  <span
-                    :class="[
-                      'status-indicator__bordered',
-                      item.status === ProductStatus.IN_PRODUCTION
-                        ? 'status-indicator__bordered--orange' : item.status === ProductStatus.IN_STOCK
-                          ? 'status-indicator__bordered--green' : 'status-indicator__bordered--pink'
-                    ]"
-                  >
-                  </span>
-                </td>
-                <td class="text-gray-lighter text-xs leading-none py-2 align-top">
-                  {{ index + 1 }}
-                </td>
-                <td class="text-primary text-center">
-                  <img style="width:35px;height:35px">
-                </td>
-                <td>
-                  <Editable
-                    :value="item.name"
-                    :placeholder="$t('shipping.name')"
-                    @input="updateProduct(item.id, { name: $event })"
-                  />
-                </td>
-                <td>
-                  <Editable
-                    :value="item.article"
-                    :placeholder="$t('shipping.model')"
-                    @input="updateProduct(item.id, { article: $event })"
-                  />
-                </td>
-                <td>
-                  <Editable
-                    type="number"
-                    inputmode="numeric"
-                    :value="item.qty"
-                    :placeholder="$t('placeholder.emptyNumber')"
-                    @input="updateProduct({ qty: $event })"
-                  />
-                </td>
-
-                <template v-if="activeTab === 1">
-                  <td v-if="isInvoiceProfitTypeMargin || !invoiceItem.profitForAll">
-                    <Editable
-                      type="number"
-                      inputmode="decimal"
-                      :value="item.cost && item.cost.obtainPrice"
-                      :placeholder="$t('placeholder.emptyNumber')"
-                      @input="updateProduct({
-                        id: item.id,
-                        cost: { obtainPrice: $event }
-                      })"
-                    />
-                  </td>
-                  <td v-else class="text-right">
-                    {{ item.cost && item.cost.obtainPrice }}
-                  </td>
-                  <td class="text-right">
-                    {{ item.cost && item.cost.obtainAmount }}
-                  </td>
-                  <td v-if="isInvoiceProfitTypeCommission || !invoiceItem.profitForAll">
-                    <Editable
-                      type="number"
-                      inputmode="decimal"
-                      :value="item.cost && item.cost.sellingPrice"
-                      :placeholder="$t('placeholder.emptyNumber')"
-                      @input="updateProduct({
-                        id: item.id,
-                        cost: { sellingPrice: $event }
-                      })"
-                    />
-                  </td>
-                  <td
-                    v-else
-                    class="text-right"
-                  >{{ item.cost && item.cost.sellingPrice }}</td>
-                  <td class="text-right">
-                    {{ item.cost && item.cost.sellingAmount }}
-                  </td>
-                </template>
-
-                <template v-else-if="activeTab === 2">
-                  <td>
-                    <Editable
-                      type="number"
-                      inputmode="decimal"
-                      :placeholder="$t('placeholder.emptyNumber')"
-                      :value="item.store && item.store.net"
-                      @input="updateProduct({
-                        id: item.id,
-                        store: { net: $event }
-                      })"
-                    />
-                  </td>
-                  <td>
-                    <Editable
-                      type="number"
-                      inputmode="decimal"
-                      :placeholder="$t('placeholder.emptyNumber')"
-                      :value="item.store && item.store.gross"
-                      @input="updateProduct({
-                        id: item.id,
-                        store: { gross: $event }
-                      })"
-                    />
-                  </td>
-                  <td class="flex items-center" style="line-height:35px">
-                    <Editable
-                      type="number"
-                      inputmode="decimal"
-                      :placeholder="$t('placeholder.emptyNumber')"
-                      :value="item.store && item.store.width"
-                      @input="updateProduct({
-                        id: item.id,
-                        store: { width: $event }
-                      })"
-                    />
-                    <Editable
-                      type="number"
-                      inputmode="decimal"
-                      :placeholder="$t('placeholder.emptyNumber')"
-                      :value="item.store && item.store.height"
-                      @input="updateProduct({
-                        id: item.id,
-                        store: { height: $event }
-                      })"
-                    />
-                    <Editable
-                      type="number"
-                      inputmode="decimal"
-                      :placeholder="$t('placeholder.emptyNumber')"
-                      :value="item.store && item.store.length"
-                      @input="updateProduct({
-                        id: item.id,
-                        store: { length: $event }
-                      })"
-                    />
-                  </td>
-                  <td>
-                    <Editable
-                      type="number"
-                      inputmode="numeric"
-                      :placeholder="$t('placeholder.emptyNumber')"
-                      :value="item.store && item.store.pkgQty"
-                      @input="updateProduct({
-                        id: item.id,
-                        store: { pkgQty: $event }
-                      })"
-                    />
-                  </td>
-                  <td>
-                    <Editable
-                      type="number"
-                      inputmode="numeric"
-                      :placeholder="$t('placeholder.emptyNumber')"
-                      :value="item.store && item.store.pkgNo"
-                      @input="updateProduct({
-                        id: item.id,
-                        store: { pkgNo: $event }
-                      })"
-                    />
-                  </td>
-                  <td class="text-center text-primary">
-                    <Checkbox
-                      :value="item.store && item.store.atWhouse"
-                      hide-details
-                      vertical-align
-                      horizontal-align
-                      @input="updateProduct({
-                        id: item.id,
-                        store: { atWhouse: $event }
-                      })"
-                    />
-                  </td>
-                </template>
-
-                <template v-else-if="activeTab === 3">
-                  <td class="text-right">
-                    <div v-if="item.info && item.info.images && item.info.images.length > 0">
-                      {{ item.info.images }}
-                    </div>
-                  </td>
-                  <td class="text-left">
-                    <Editable
-                      :value="item.info.description"
-                      :placeholder="$t('placeholder.emptyText')"
-                      @input="updateProduct({
-                        id: item.id,
-                        info: { description: $event }
-                      })"
-                    />
-                  </td>
-                </template>
-
-                <template v-else-if="activeTab === 4">
-                  <td class="text-left text-primary">
-                    <Editable
-                      :value="item.link && item.link.url"
-                      :placeholder="$t('placeholder.emptyText')"
-                      @input="updateProduct({
-                        id: item.id,
-                        link: { url: $event }
-                      })"
-                    />
-                  </td>
-                  <td class="text-right">
-                    <i><a href="#"></a></i>
-                  </td>
-                </template>
-                <td
-                  class="text-gray-lighter text-center cursor-pointer px-0"
-                  @click="deleteProduct(item.id)"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" role="img" aria-hidden="true" fill="currentColor">
-                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                  </svg>
-                </td>
-              </tr> -->
             </template>
 
             <template v-slot:footer>
@@ -288,11 +65,11 @@
                 <template v-if="activeTab === 1">
                   <td class="text-gray-light text-right">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-right">
-                    {{ $n(invoiceItem.totalObtainAmount, 'formatted') }}
+                    {{ $n(invoiceItem.totalPurchaseAmount || 0, 'formatted') }}
                   </td>
                   <td class="text-gray-dark text-right">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-right">
-                    {{ $n(invoiceItem.totalSellingAmount, 'formatted') }}
+                    {{ $n(invoiceItem.totalClientAmount || 0, 'formatted') }}
                   </td>
                   <td colspan="2"></td>
                 </template>
@@ -423,13 +200,13 @@ export default {
         {
           text: this.isInvoiceProfitTypeMargin
             ? this.$t('shipping.costPrice') : this.$t('shipping.purchaseCost'),
-          value: 'obtainPrice',
+          value: 'purchasePrice',
           width: 138,
           bgcolor: 'gray-darkest',
         },
-        { text: this.$t('shipping.obtainAmount'), value: 'obtainAmount', minWidth: 100, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.clientCost'), value: 'sellingPrice', width: 138, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.obtainAmount'), value: 'sellingAmount', minWidth: 100, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.obtainAmount'), value: 'purchaseAmount', minWidth: 100, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.clientCost'), value: 'clientPrice', width: 138, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.obtainAmount'), value: 'clientAmount', minWidth: 100, bgcolor: 'gray-darkest' },
         { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
       ]
     },
