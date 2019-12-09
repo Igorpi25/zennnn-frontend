@@ -127,6 +127,12 @@
     "costOfGoods": "Стоимость тов.",
     "access": "Права доступа"
   },
+  "requisites": {
+    "requisites": "Реквизиты моей компании",
+    "about": "О компании",
+    "bankDetails": "Банковские реквизиты",
+    "directorOfCompany": "Руководитель компании"
+  },
   "shipping": {
     "shippingTitle": "Спецификация №",
     "shippingClient": "Клиент",
@@ -290,6 +296,29 @@
       "address": "Адрес прописки",
       "note": "Примечание",
       "password": "Пароль"
+    },
+    "requisites": {
+      "companyName": "Название компании",
+      "companyNameEng": "Название компании на английском",
+      "legalAddress":"Юридический адрес",
+      "legalAddressPostCode":"Индекс юридического адреса",
+      "mailingAddress": "Почтовый адрес",
+      "mailingAddressPostCode": "Индекс почтового адреса",
+      "phone": "Телефон",
+      "fax": "Факс",
+      "email": "Электронная почта",
+      "itn": "ИНН",
+      "iec": "КПП",
+      "psrn": "ОГРН",
+      "bankName":"Наименование банка",
+      "bankAddress": "Адрес банка",
+      "bankAccountNumber": "Номер расчетного счета",
+      "correspondentAccountNumber": "Номер корреспондентского счета",
+      "bic": "БИК",
+      "okpo": "ОКПО",
+      "swift": "SWIFT",
+      "fullName": "ФИО (указывается во всех документах)",
+      "position": "Должность (указывается во всех документах)"
     }
   },
   "suppliers": {
@@ -336,6 +365,14 @@
     "note": "Примечание",
     "shippingInfo": "Информация для отгрузки"
   },
+  "companies": {
+    "myCompanies":"Мои компании",
+    "director": "Руководитель",
+    "manager": "Менеджер",
+    "accountant": "Бухгалтер",
+    "freelancer": "Фрилансер",
+    "warehouseman": "Складчик"
+  },
   "currency": {
     "CNY": {
       "label": "Chinese Yuan Renminbi",
@@ -374,7 +411,8 @@
     "toHome": "На главную",
     "getLink": "Получить ссылку",
     "change": "Сменить",
-    "createPatternName": "Придумайте название шаблону"
+    "createPatternName": "Придумайте название шаблону",
+    "fillLater": "Заполнить позже"
   },
   "message": {
     "emailResent": "Письмо отправлено повторно.",
@@ -475,6 +513,9 @@
       "passportId": "Номер паспорта:",
       "additionalPhone": "Дополнительный номер:",
       "address": "Адрес прописки:"
+    },
+    "requisites": {
+      "fillFields": "Заполните поле"
     }
   },
   "dataTable": {

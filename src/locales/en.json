@@ -127,6 +127,12 @@
     "costOfGoods": "Cost of goods",
     "access": "Access"
   },
+  "requisites": {
+    "requisites": "Details of my company",
+    "about": "About",
+    "bankDetails": "Bank details",
+    "directorOfCompany": "Director of company"
+  },
   "shipping": {
     "shippingTitle": "Shipping №",
     "shippingClient": "Client",
@@ -290,6 +296,29 @@
       "address": "Place of residence",
       "note": "Note",
       "password": "Password"
+    },
+    "requisites": {
+      "companyName": "Company name",
+      "companyNameEng": "Company name in English",
+      "legalAddress":"Legal address",
+      "legalAddressPostCode":"Legal address postcode",
+      "mailingAddress": "Mailing Address",
+      "mailingAddressPostCode": "Mailing address postcode",
+      "phone": "Phone",
+      "fax": "Fax",
+      "email": "Email",
+      "itn": "ITN",
+      "iec": "IEC",
+      "psrn": "PSRN",
+      "bankName":"Bank name",
+      "bankAddress": "Bank address",
+      "bankAccountNumber": "Bank account number",
+      "correspondentAccountNumber": "Correspondent account number",
+      "bic": "BIC",
+      "okpo": "OKPO",
+      "swift": "SWIFT",
+      "fullName":"Full name (indicated in all documents)",
+      "position": "Position (indicated in all documents)"
     }
   },
   "suppliers": {
@@ -336,6 +365,14 @@
     "note": "Note",
     "shippingInfo": "Shipping info"
   },
+  "companies": {
+    "myCompanies":"My companies",
+    "director": "Director",
+    "manager": "Manager",
+    "accountant": "Accountant",
+    "freelancer": "Freelancer",
+    "warehouseman": "Warehouseman"
+  },
   "currency": {
     "CNY": {
       "label": "Chinese Yuan Renminbi",
@@ -374,7 +411,8 @@
     "toHome": "To Home",
     "getLink": "Get link",
     "change": "Change",
-    "createPatternName": "Create a name for your template"
+    "createPatternName": "Create a name for your template",
+    "fillLater": "Fill later"
   },
   "message": {
     "emailResent": "Email sent again.",
@@ -475,6 +513,9 @@
       "passportId": "Passport ID:",
       "additionalPhone": "Additional phone number:",
       "address": "Place of residence:"
+    },
+    "requisites": {
+      "fillFields": "Fill in the field"
     }
   },
   "dataTable": {

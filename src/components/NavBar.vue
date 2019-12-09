@@ -65,6 +65,28 @@
         {{ $t('navbar.suppliers') }}
       </div>
     </router-link>
+    <router-link
+      :to="{
+        name: 'requisites-list',
+        params: {
+          specId,
+        }
+      }"
+      :class="{ active: $route.name == 'requisites' }"
+    >
+      <div class="navbar__link">
+        <Icon
+          v-if="$route.name == 'requisites'"
+          :class="[
+            'mr-2',
+            {'-ml-2': $route.name == 'requisites'}
+          ]"
+        >
+          {{ icons.mdiArrowLeft }}
+        </Icon>
+        My Requisites
+      </div>
+    </router-link>
     <!-- <router-link
       :to="{
         name: 'staff',

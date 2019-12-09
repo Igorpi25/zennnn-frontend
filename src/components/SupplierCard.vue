@@ -106,7 +106,7 @@
               :item="supplier"
               :is-disabled="!editMode"
               :title="$t('supplier.legalPerson')"
-              :class="{ 'partner-card': isShops }"
+              :class="{ 'template-card': isShops }"
               @update-template="updateTemplate"
               @update-value="updateValue"
             >
@@ -134,7 +134,7 @@
             <TemplateCard
               template-name="supplier"
               :title="$t('supplier.shops')"
-              :class="{ 'partner-card': !isShops }"
+              :class="{ 'template-card': !isShops }"
             >
               <template v-slot:items>
                 <div v-for="(shop, index) in supplier.shops" :key="index">
@@ -166,7 +166,7 @@
                         squared
                         right
                         hide-details
-                        class="pt-0 partner-card__label"
+                        class="pt-0 template-card__label"
                         @input="updateShopTemplate(index, 'name', $event)"
                       />
                     </div>
@@ -177,7 +177,7 @@
                         squared
                         rows="2"
                         hide-details
-                        class="partner-card__input"
+                        class="template-card__input"
                         @input="updateShopValue(index, 'name', $event)"
                       />
                     </div>
@@ -201,7 +201,7 @@
                             right
                             squared
                             hide-details
-                            class="pt-0 partner-card__label"
+                            class="pt-0 template-card__label"
                             @input="updateShopTemplate(index, key, $event)"
                           />
                         </div>
@@ -837,10 +837,10 @@ export default {
   .back-to-list-btn:focus {
     @apply outline-none;
   }
-  .partner-card {
+  .template-card {
     display: none;
   }
-  .partner-card__triangle {
+  .template-card__triangle {
     width: 0;
     height: 0;
   }
@@ -871,10 +871,10 @@ export default {
       @apply py-2 pl-3 pr-6 mx-0 mt-6;
       @apply border rounded-full text-sm;
     }
-    .partner-card {
+    .template-card {
       display: block;
     }
-    .partner-card__triangle {
+    .template-card__triangle {
       width: 14px;
       height: 14px;
       transform: rotate(45deg);
