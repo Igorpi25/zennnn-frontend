@@ -68,9 +68,6 @@
     <router-link
       :to="{
         name: 'requisites-list',
-        params: {
-          specId,
-        }
       }"
       :class="{ active: $route.name == 'requisites' }"
     >
