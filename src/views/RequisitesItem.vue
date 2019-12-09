@@ -132,11 +132,23 @@
 import WelcomeModal from '../components/WelcomeModal.vue'
 import TemplateCard from '../components/TemplateCard.vue'
 
+import { GET_ORG_REQUISITE } from '../graphql/queries'
+
 export default {
   name: 'RequisitesItem',
   components: {
     WelcomeModal,
     TemplateCard,
+  },
+  apollo: {
+    getOrgRequisite: {
+      query: GET_ORG_REQUISITE,
+      variables () {
+        return {
+          id: this.$route.params.reqId,
+        }
+      },
+    },
   },
   data () {
     return {

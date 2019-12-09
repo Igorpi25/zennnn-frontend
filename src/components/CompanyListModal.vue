@@ -6,11 +6,14 @@
     </div>
     <div class="modal-body">
       <ul
-        v-for="item in items"
+        v-for="item in orgsByRole"
         :key="item.id"
         class="mt-2 mb-6"
       >
-        <span class="ml-6 text-gray-light font-bold tracking-widest">
+        <span
+          v-if="item.header"
+          class="ml-6 text-gray-light font-bold tracking-widest"
+        >
           {{ item.position }}
         </span>
         <li
@@ -42,8 +45,17 @@
 <script>
 import { mdiStar, mdiStarOutline } from '@mdi/js'
 
+import { Role } from '../graphql/enums'
+import { GET_ORGS } from '../graphql/queries'
+
 export default {
   name: 'CompanyListModal',
+  apollo: {
+    getOrgs: {
+      query: GET_ORGS,
+      fetchPolicy: 'cache-only',
+    },
+  },
   data () {
     return {
       icons: {
@@ -80,6 +92,26 @@ export default {
           ],
         },
       ]
+    },
+    orgsByRole () {
+      const orgs = this.getOrgs || []
+      let groups = {}
+      let items = []
+      orgs.forEach(org => {
+        if (groups[org.role]) {
+          groups[org.role].push(org)
+        } else {
+          groups[org.role] = [org]
+        }
+      })
+      Object.keys(Role).forEach(role => {
+        const orgs = groups[role]
+        if (orgs) {
+          items.push({ header: true, text: role })
+          items.push(...groups[role])
+        }
+      })
+      return items
     },
   },
 }

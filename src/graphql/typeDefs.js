@@ -312,7 +312,7 @@ export const SPEC_INVOICES_FRAGMENT = gql`
 `
 
 export const ORG_REQUISITE_FRAGMENT = gql`
-  fragment OrgRequisiteFragment on Contract {
+  fragment OrgRequisiteFragment on Requisite {
     id
     name
     nameEng
