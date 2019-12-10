@@ -1,8 +1,5 @@
 # zennnn-frontend
 
-### Date parse on safari
-Parsing ISO 8601 or format like YYYY-MM-DD return Invalid Date on safari. Solved by using `date-fns/parseISO` for safely parse ISO 8601.
-
 ```
 npm install
 ```
@@ -41,3 +38,6 @@ See [Docs](https://cli.vuejs.org/guide/deployment.html#previewing-locally).
 
 ### Environment Variables
 See [Docs](https://cli.vuejs.org/guide/mode-and-env.html).
+
+### Date parse on safari
+Parsing ISO 8601 or format like YYYY-MM-DD return Invalid Date on safari. Solved by using `date-fns/parseISO` for safely parse ISO 8601.
