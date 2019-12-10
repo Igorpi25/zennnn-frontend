@@ -36,12 +36,26 @@
             </tr>
           </template>
         </DataTable>
-       </div>
+      </div>
+      <Button
+        outline
+        class="mt-6"
+        @click="$router.push({
+          name: 'requisites-create'
+        })"
+      >
+        <template v-slot:icon>
+          <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+        </template>
+        <span>{{ $t('requisites.addRequisites') }}</span>
+      </Button>
     </div>
   </div>
 </template>
 
 <script>
+import { mdiPlusCircleOutline } from '@mdi/js'
+
 import { LIST_ORG_REQUISITES } from '../graphql/queries'
 
 export default {
@@ -58,13 +72,9 @@ export default {
   },
   data () {
     return {
-      // items: [
-      //   { id: 1, name: 'AliBaba', location: 'Guangzhou' },
-      //   { id: 2, name: 'Amazon', location: 'Тверь' },
-      //   { id: 3, name: 'Apple', location: '2-я дверь' },
-      //   { id: 4, name: 'Google', location: 'Налево' },
-      //   { id: 5, name: 'Netflix', location: 'ИК-порт' },
-      // ],
+      icons: {
+        mdiPlusCircleOutline,
+      },
     }
   },
   computed: {
@@ -76,6 +86,7 @@ export default {
         { text: this.$t('requisites.companyName'), value: 'name', bgcolor: 'tansparent', align: 'left' },
         { text: this.$t('requisites.companyNameEng'), value: 'nameEng', bgcolor: 'tansparent', align: 'left' },
         { text: this.$t('requisites.fullName'), value: 'ownerFullName', bgcolor: 'tansparent', align: 'left' },
+        { text: '', value: 'action', bgcolor: 'tansparent' },
       ]
     },
     items () {
@@ -85,9 +96,6 @@ export default {
 }
 </script>
 
-<style scoped>
-  li {
-    cursor: pointer;
-    margin-bottom: 10px;
-  }
+<style>
+
 </style>

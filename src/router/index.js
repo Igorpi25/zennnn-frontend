@@ -156,6 +156,13 @@ const routes = [
         meta: { requiresAuth: true },
       },
       {
+        path: 'requisites/create',
+        name: 'requisites-create',
+        meta: { requiresAuth: true },
+        props: { create: true },
+        component: RequisitesItem,
+      },
+      {
         path: 'requisites/:reqId',
         name: 'requisites',
         component: RequisitesItem,

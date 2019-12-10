@@ -131,7 +131,11 @@
     "requisites": "Details of my company",
     "about": "About",
     "bankDetails": "Bank details",
-    "directorOfCompany": "Director of company"
+    "directorOfCompany": "Director of company",
+    "companyName": "Company name",
+    "companyNameEng": "Company name in English",
+    "fullName":"Owner's full name",
+    "addRequisites": "Add requisites"
   },
   "shipping": {
     "shippingTitle": "Shipping №",

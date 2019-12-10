@@ -23,22 +23,22 @@
       </header>
       <div class="requisites-card__radio-group">
         <RadioButton
-          :value="editCardTypes.BANK"
-          :input-value="editCard"
+          :value="editCard"
+          :label="requisitesType.ABOUT"
           hide-details
           name="card-type"
           class="w-1/2 mr-2 text-sm"
-          @input="editCard = editCardTypes.BANK"
+          @input="editCard = requisitesType.ABOUT"
         >
           <span>{{ $t('requisites.about') }}</span>
         </RadioButton>
         <RadioButton
-          :value="editCardTypes.ABOUT"
-          :input-value="editCard"
+          :value="editCard"
+          :label="requisitesType.BANK"
           hide-details
           name="card-type"
           class="w-4/5 text-sm"
-          @input="editCard = editCardTypes.ABOUT"
+          @input="editCard = requisitesType.BANK"
         >
           <span>{{ $t('requisites.bankDetails') }}</span>
         </RadioButton>
@@ -47,7 +47,7 @@
         <TemplateCard
           template-name="requisites"
           :title="$t('requisites.about')"
-          :class="{ 'requisites-template-card': isAbout }"
+          :class="{ 'requisites-template-card': isBank }"
         >
           <template v-slot:items>
             <div v-for="(item, key) in about" :key="key">
@@ -55,9 +55,9 @@
                 <div class="card__col-left card__col-left--full-width">
                   <label
                     class="truncate text-left"
-                    :title="$t(`label.requisites.${key}`)"
+                    :title="$t(`label.requisites.${item.label || key}`)"
                   >
-                    {{ $t(`label.requisites.${key}`) }}
+                    {{ $t(`label.requisites.${item.label || key}`) }}
                   </label>
                   <TextField
                     :placeholder="$t('placeholder.requisites.fillFields')"
@@ -74,7 +74,7 @@
         <TemplateCard
           template-name="requisites"
           :title="$t('requisites.bankDetails')"
-          :class="{ 'requisites-template-card': !isAbout }"
+          :class="{ 'requisites-template-card': !isBank }"
         >
           <template v-slot:items>
             <div v-for="(item, key) in bank" :key="key">
@@ -91,9 +91,9 @@
                   </span>
                   <label
                     class="truncate text-left"
-                    :title="$t(`label.requisites.${key}`)"
+                    :title="$t(`label.requisites.${item.label || key}`)"
                   >
-                    {{ $t(`label.requisites.${key}`) }}
+                    {{ $t(`label.requisites.${item.label || key}`) }}
                   </label>
                   <TextField
                     :placeholder="$t('placeholder.requisites.fillFields')"
@@ -101,6 +101,7 @@
                     colored
                     hide-details
                     class="pt-0"
+                    @input="updateRequisites(key, $event)"
                   />
                 </div>
               </div>
@@ -111,14 +112,9 @@
               <Button
                 large
                 class="mb-4 mx-auto"
+                @click="createReq()"
               >
-                <span>{{ $t('client.save') }}</span>
-              </Button>
-              <Button
-                text
-                class="mx-auto"
-              >
-                <span class="text-sm">{{ $t('supplier.saveAsPattern') }}</span>
+                <span>{{ $t('action.save') }}</span>
               </Button>
             </div>
           </template>
@@ -133,6 +129,7 @@ import WelcomeModal from '../components/WelcomeModal.vue'
 import TemplateCard from '../components/TemplateCard.vue'
 
 import { GET_ORG_REQUISITE } from '../graphql/queries'
+import { CREATE_REQUISITE } from '../graphql/mutations'
 
 export default {
   name: 'RequisitesItem',
@@ -140,27 +137,46 @@ export default {
     WelcomeModal,
     TemplateCard,
   },
+  props: {
+    create: {
+      type: Boolean,
+      default: false,
+    },
+  },
   apollo: {
     getOrgRequisite: {
       query: GET_ORG_REQUISITE,
       variables () {
         return {
-          id: this.$route.params.reqId,
+          id: this.reqId,
         }
       },
+      skip () {
+        return this.create
+      },
+      fetchPolicy: 'cache-and-network',
     },
   },
   data () {
     return {
-      welcomeDialog: true,
+      welcomeDialog: false,
+      editMode: false,
       editCard: 'ABOUT',
       about: {
-        companyName: {},
-        companyNameEng: {},
+        name: {
+          label: 'companyName',
+        },
+        nameEng: {
+          label: 'companyNameEng',
+        },
         legalAddress: {},
-        legalAddressPostCode: {},
+        legalAddressPostcode: {
+          label: 'legalAddressPostCode',
+        },
         mailingAddress: {},
-        mailingAddressPostCode: {},
+        mailingAddressPostcode: {
+          label: 'mailingAddressPostCode',
+        },
         phone: {},
         fax: {},
         email: {},
@@ -176,23 +192,79 @@ export default {
         bic: {},
         okpo: {},
         swift: {},
-        fullName: {
+        ownerFullName: {
+          label: 'fullName',
           section: true,
           subtitle: 'directorOfCompany',
         },
-        position: {},
+        ownerJobPosition: {
+          label: 'position',
+        },
       },
+      requisites: {},
     }
   },
   computed: {
-    editCardTypes () {
+    reqId () {
+      return this.$route.params.reqId
+    },
+    orgId () {
+      return this.$route.params.orgId
+    },
+    requisitesType () {
       return {
         ABOUT: 'ABOUT',
         BANK: 'BANK',
       }
     },
-    isAbout () {
-      return this.editCard === this.editCardTypes.ABOUT
+    isBank () {
+      return this.editCard === this.requisitesType.BANK
+    },
+    fieldsKeys () {
+      return [
+        ...this.aboutFieldsKeys,
+        ...this.bankFieldsKeys,
+      ]
+    },
+    aboutFieldsKeys () {
+      return Object.keys(this.about)
+    },
+    bankFieldsKeys () {
+      return Object.keys(this.bank)
+    },
+  },
+  methods: {
+    async createReq () {
+      try {
+        let input = {}
+        this.fieldsKeys.forEach(key => {
+          input[key] = this.requisites[key] || null
+        })
+        const response = await this.$apollo.mutate({
+          mutation: CREATE_REQUISITE,
+          variables: { orgId: this.orgId, input },
+        })
+        if (response && response.data && response.data.createRequisite) {
+          this.$router.push({
+            name: 'requisites',
+            params: {
+              orgId: this.orgId,
+              reqId: response.data.createRequisite.id,
+            },
+          })
+        }
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+      } finally {
+        this.updateLoading = null
+      }
+    },
+    updateRequisites (key, value) {
+      if (!this.requisites.hasOwnProperty(key)) {
+        this.$set(this.requisites, key, value)
+      } else {
+        this.requisites[key] = value
+      }
     },
   },
 }
