@@ -12,6 +12,19 @@
       />
     </v-dialog>
 
+    <v-dialog
+      v-model="saveBeforeCloseDialog"
+      max-width="520"
+    >
+      <SaveBeforeCloseModal
+        :text=" `${$t('paper.saveChanges')}${$t('paper.beforeClosing')}`"
+        :postScriptum="$t('paper.ifNotSave')"
+        @dontSave="$emit('confirm', 1)"
+        @cancel="saveBeforeCloseDialog = false"
+        @save="$emit('confirm', 2)"
+      />
+    </v-dialog>
+
     <div class="py-12">
       <header class="requisites-header">
         <span class="requisites-header__title">{{ $t('requisites.requisites') }}</span>
@@ -60,11 +73,13 @@
                     {{ $t(`label.requisites.${item.label || key}`) }}
                   </label>
                   <TextField
+                    :value="requisites[key]"
                     :placeholder="$t('placeholder.requisites.fillFields')"
                     squared
                     colored
                     hide-details
                     class="pt-0 text-left"
+                    @input="updateRequisites(key, $event)"
                   />
                 </div>
               </div>
@@ -96,6 +111,7 @@
                     {{ $t(`label.requisites.${item.label || key}`) }}
                   </label>
                   <TextField
+                    :value="requisites[key]"
                     :placeholder="$t('placeholder.requisites.fillFields')"
                     squared
                     colored
@@ -112,7 +128,7 @@
               <Button
                 large
                 class="mb-4 mx-auto"
-                @click="createReq()"
+                @click="update()"
               >
                 <span>{{ $t('action.save') }}</span>
               </Button>
@@ -125,16 +141,22 @@
 </template>
 
 <script>
+import cloneDeep from 'clone-deep'
+import deepEqual from 'deep-equal'
+
 import WelcomeModal from '../components/WelcomeModal.vue'
+import SaveBeforeCloseModal from '../components/SaveBeforeCloseModal.vue'
+
 import TemplateCard from '../components/TemplateCard.vue'
 
 import { GET_ORG_REQUISITE } from '../graphql/queries'
-import { CREATE_REQUISITE } from '../graphql/mutations'
+import { CREATE_REQUISITE, UPDATE_REQUISITE } from '../graphql/mutations'
 
 export default {
   name: 'RequisitesItem',
   components: {
     WelcomeModal,
+    SaveBeforeCloseModal,
     TemplateCard,
   },
   props: {
@@ -143,6 +165,19 @@ export default {
       default: false,
     },
   },
+  async beforeRouteLeave (to, from, next) {
+    if (this.hasDeepChange) {
+      const r = await this.openConfirmDialog()
+      if (r) {
+        if (r === 2) await this.update()
+        next()
+      } else {
+        next(false)
+      }
+    } else {
+      next()
+    }
+  },
   apollo: {
     getOrgRequisite: {
       query: GET_ORG_REQUISITE,
@@ -150,6 +185,10 @@ export default {
         return {
           id: this.reqId,
         }
+      },
+      result ({ data, loading }) {
+        if (loading) return
+        this.setData(data.getOrgRequisite)
       },
       skip () {
         return this.create
@@ -160,6 +199,7 @@ export default {
   data () {
     return {
       welcomeDialog: false,
+      saveBeforeCloseDialog: false,
       editMode: false,
       editCard: 'ABOUT',
       about: {
@@ -202,6 +242,7 @@ export default {
         },
       },
       requisites: {},
+      requisitesClone: {},
     }
   },
   computed: {
@@ -232,32 +273,56 @@ export default {
     bankFieldsKeys () {
       return Object.keys(this.bank)
     },
+    hasDeepChange () {
+      return !deepEqual(this.requisites, this.requisitesClone)
+    },
+  },
+  watch: {
+    saveBeforeCloseDialog (val) {
+      !val && this.$off('confirm')
+    },
   },
   methods: {
-    async createReq () {
+    async openConfirmDialog () {
+      this.saveBeforeCloseDialog = true
+      return new Promise((resolve) => {
+        this.$on('confirm', result => {
+          resolve(result)
+        })
+      })
+    },
+    async update () {
       try {
         let input = {}
         this.fieldsKeys.forEach(key => {
           input[key] = this.requisites[key] || null
         })
+
+        const query = this.create ? CREATE_REQUISITE : UPDATE_REQUISITE
+
+        const variables = this.create
+          ? { orgId: this.orgId, input }
+          : { id: this.reqId, input }
+
         const response = await this.$apollo.mutate({
-          mutation: CREATE_REQUISITE,
-          variables: { orgId: this.orgId, input },
+          mutation: query,
+          variables,
         })
-        if (response && response.data && response.data.createRequisite) {
-          this.$router.push({
-            name: 'requisites',
-            params: {
-              orgId: this.orgId,
-              reqId: response.data.createRequisite.id,
-            },
-          })
+        if (response && response.data && response.data.updateRequisite) {
+          this.setData(response.data.updateRequisite)
         }
+        this.requisitesClone = cloneDeep(this.requisites)
+        this.editMode = false
       } catch (error) {
         this.$logger.warn('Error: ', error)
       } finally {
         this.updateLoading = null
       }
+    },
+    setData (item) {
+      if (!item) return
+      this.requisites = cloneDeep(item)
+      this.requisitesClone = cloneDeep(this.requisites)
     },
     updateRequisites (key, value) {
       if (!this.requisites.hasOwnProperty(key)) {

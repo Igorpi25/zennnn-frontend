@@ -304,3 +304,17 @@ export const CREATE_REQUISITE = gql`
   }
   ${ORG_REQUISITE_FRAGMENT}
 `
+export const UPDATE_REQUISITE = gql`
+  mutation UpdateRequisite($id: ID!, $input: RequisiteInput!) {
+    updateRequisite(id: $id, input: $input) {
+      ...OrgRequisiteFragment
+    }
+  }
+  ${ORG_REQUISITE_FRAGMENT}
+`
+
+export const DELETE_REQUISITE = gql`
+  mutation DeleteRequisite($id: ID!) {
+    deleteRequisite(id: $id)
+  }
+`
