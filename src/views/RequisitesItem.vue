@@ -27,7 +27,7 @@
 
     <div class="py-12">
       <header class="requisites-header">
-        <span class="requisites-header__title">{{ $t('requisites.requisites') }}</span>
+        <span class="requisites-header__title">{{ $t('requisites.requisitesOfMyCompany') }}</span>
         <span class="requisites-header__action">
           <Button large>
             <span>{{ $t('action.fillLater') }}</span>

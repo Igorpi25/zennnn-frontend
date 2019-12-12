@@ -94,7 +94,7 @@
     "paragraphHeading": "Paragraph heading",
     "addParagraph": "Add paragraph",
     "addHeading": "Add Heading",
-    "details": "Details of the parties",
+    "details": "Requisites of the parties",
     "deliveryItem": "Delivery item",
     "specification": "Specification",
     "to": "to",
@@ -104,7 +104,7 @@
     "specNumber": "The document number is affixed automatically when printed and consists of a customer number (Example: A0097) and creation date specifications. If in one day several specifications were created, for the same customer, a serial number is added. (For example: 1, 2, 3 ... n).",
     "paperDate": "The date of the document is stamped automatically when printing and corresponds to the date creating specifications in the \"My Deals\" section.",
     "table": "In this area, a table with a list will be automatically generated list table goods, their quantity and final cost, calculated in accordance with with the established exchange rate for financial documents.",
-    "buyerDetails": "Buyer details will be substituted automatically when printing documents and will match the customer specified in the current specification."
+    "buyerDetails": "Buyer requisites will be substituted automatically when printing documents and will match the customer specified in the current specification."
   },
   "access": {
     "freelancer": "Freelancer",
@@ -128,9 +128,10 @@
     "access": "Access"
   },
   "requisites": {
-    "requisites": "Details of my company",
+    "requisites": "Requisites",
+    "requisitesOfMyCompany": "Requisites of my company",
     "about": "About",
-    "bankDetails": "Bank details",
+    "bankDetails": "Bank requisites",
     "directorOfCompany": "Director of company",
     "companyName": "Company name",
     "companyNameEng": "Company name in English",

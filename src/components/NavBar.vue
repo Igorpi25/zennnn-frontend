@@ -81,7 +81,7 @@
         >
           {{ icons.mdiArrowLeft }}
         </Icon>
-        My Requisites
+        {{ $t('requisites.requisites') }}
       </div>
     </router-link>
     <!-- <router-link

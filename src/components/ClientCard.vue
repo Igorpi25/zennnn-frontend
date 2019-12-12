@@ -479,12 +479,15 @@ export default {
           if (r === 2) {
             try {
               await this.update()
+              return next()
             } catch (error) {
               this.$logger.warn('Error: ', error)
+              this.saveBeforeCloseDialog = false
               return next(false)
             }
+          } else {
+            return next()
           }
-          return next()
         } else {
           return next(false)
         }

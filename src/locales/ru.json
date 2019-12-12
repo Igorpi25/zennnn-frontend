@@ -128,7 +128,8 @@
     "access": "Права доступа"
   },
   "requisites": {
-    "requisites": "Реквизиты моей компании",
+    "requisites": "Реквизиты",
+    "requisitesOfMyCompany": "Реквизиты моей компании",
     "about": "О компании",
     "bankDetails": "Банковские реквизиты",
     "directorOfCompany": "Руководитель компании",
