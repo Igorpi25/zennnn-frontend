@@ -128,10 +128,15 @@
     "access": "Права доступа"
   },
   "requisites": {
-    "requisites": "Реквизиты моей компании",
+    "requisites": "Реквизиты",
+    "requisitesOfMyCompany": "Реквизиты моей компании",
     "about": "О компании",
     "bankDetails": "Банковские реквизиты",
-    "directorOfCompany": "Руководитель компании"
+    "directorOfCompany": "Руководитель компании",
+    "companyName": "Название компании",
+    "companyNameEng": "Название компании на английском",
+    "fullName":"ФИО директора",
+    "addRequisites": "Добавить реквизиты"
   },
   "shipping": {
     "shippingTitle": "Спецификация №",

@@ -9,6 +9,7 @@ import {
   SUPPLIER_TEMPLATE_FRAGMENT,
   SUPPLIER_SHOP_FRAGMENT,
   SUPPLIER_SHOP_TEMPLATE_FRAGMENT,
+  ORG_REQUISITE_FRAGMENT,
 } from './typeDefs'
 
 export const LOGIN = gql`
@@ -293,5 +294,27 @@ export const CREATE_SUPPLIER_TEMPLATE = gql`
 export const DELETE_SUPPLIER_TEMPLATE = gql`
   mutation DeleteSupplierTemplate($id: ID!) {
     deleteSupplierTemplate(id: $id)
+  }
+`
+export const CREATE_REQUISITE = gql`
+  mutation CreateRequisite($orgId: ID!, $input: RequisiteInput!) {
+    createRequisite(orgId: $orgId, input: $input) {
+      ...OrgRequisiteFragment
+    }
+  }
+  ${ORG_REQUISITE_FRAGMENT}
+`
+export const UPDATE_REQUISITE = gql`
+  mutation UpdateRequisite($id: ID!, $input: RequisiteInput!) {
+    updateRequisite(id: $id, input: $input) {
+      ...OrgRequisiteFragment
+    }
+  }
+  ${ORG_REQUISITE_FRAGMENT}
+`
+
+export const DELETE_REQUISITE = gql`
+  mutation DeleteRequisite($id: ID!) {
+    deleteRequisite(id: $id)
   }
 `

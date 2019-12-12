@@ -42,8 +42,17 @@
 <script>
 import { mdiStar, mdiStarOutline } from '@mdi/js'
 
+import { Role } from '../graphql/enums'
+import { GET_ORGS } from '../graphql/queries'
+
 export default {
   name: 'CompanyListModal',
+  apollo: {
+    getOrgs: {
+      query: GET_ORGS,
+      fetchPolicy: 'cache-only',
+    },
+  },
   data () {
     return {
       icons: {
@@ -80,6 +89,26 @@ export default {
           ],
         },
       ]
+    },
+    orgsByRole () {
+      const orgs = this.getOrgs || []
+      let groups = {}
+      let items = []
+      orgs.forEach(org => {
+        if (groups[org.role]) {
+          groups[org.role].push(org)
+        } else {
+          groups[org.role] = [org]
+        }
+      })
+      Object.keys(Role).forEach(role => {
+        const orgs = groups[role]
+        if (orgs) {
+          items.push({ header: true, text: role })
+          items.push(...groups[role])
+        }
+      })
+      return items
     },
   },
 }

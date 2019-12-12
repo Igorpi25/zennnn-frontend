@@ -234,20 +234,6 @@ export default {
       default: false,
     },
   },
-  async beforeRouteLeave (to, from, next) {
-    if (this.hasDeepChange) {
-      this.saveBeforeCloseDialog = true
-      const r = await this.openConfirmDialog()
-      if (r) {
-        if (r === 2) await this.update()
-        next()
-      } else {
-        next(false)
-      }
-    } else {
-      next()
-    }
-  },
   apollo: {
     listClientTemplates: {
       query: LIST_CLIENT_TEMPLATES,
@@ -281,7 +267,6 @@ export default {
       templateChanged: false,
       createTemplateLoading: false,
       deleteTemplateLoading: null,
-      hasChange: false,
       loading: false,
       updateLoading: null,
       templateListDialog: false,
@@ -487,7 +472,30 @@ export default {
     }
   },
   methods: {
+    async checkChangesBeforeLeave (next) {
+      if (this.hasDeepChange) {
+        const r = await this.openConfirmDialog()
+        if (r) {
+          if (r === 2) {
+            try {
+              await this.update()
+              return next()
+            } catch (error) {
+              this.$logger.warn('Error: ', error)
+              return next(false)
+            }
+          } else {
+            return next()
+          }
+        } else {
+          return next(false)
+        }
+      } else {
+        return next()
+      }
+    },
     async openConfirmDialog () {
+      this.saveBeforeCloseDialog = true
       return new Promise((resolve) => {
         this.$on('confirm', result => {
           resolve(result)
@@ -533,6 +541,7 @@ export default {
         this.editMode = false
       } catch (error) {
         this.$logger.warn('Error: ', error)
+        throw new Error(error)
       } finally {
         this.updateLoading = null
       }
