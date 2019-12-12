@@ -26,41 +26,39 @@
     </v-dialog>
 
     <div class="py-12">
-      <header class="requisites-header">
-        <span class="requisites-header__title">{{ $t('requisites.requisitesOfMyCompany') }}</span>
-        <span class="requisites-header__action">
-          <Button large>
-            <span>{{ $t('action.fillLater') }}</span>
-          </Button>
-        </span>
+      <Button large class="mb-6 mx-auto md:mr-0 md:ml-auto">
+        <span>{{ $t('action.fillLater') }}</span>
+      </Button>
+      <header class="requisite-header">
+        <span class="requisite-header__title">{{ $t('requisites.requisitesOfMyCompany') }}</span>
       </header>
-      <div class="requisites-card__radio-group">
+      <div class="requisite-card__radio-group">
         <RadioButton
-          :value="editCard"
-          :label="requisitesType.ABOUT"
+          :value="cardType"
+          :label="requisiteType.ABOUT"
           hide-details
           name="card-type"
           class="w-1/2 mr-2 text-sm"
-          @input="editCard = requisitesType.ABOUT"
+          @input="cardType = requisiteType.ABOUT"
         >
           <span>{{ $t('requisites.about') }}</span>
         </RadioButton>
         <RadioButton
-          :value="editCard"
-          :label="requisitesType.BANK"
+          :value="cardType"
+          :label="requisiteType.BANK"
           hide-details
           name="card-type"
           class="w-4/5 text-sm"
-          @input="editCard = requisitesType.BANK"
+          @input="cardType = requisiteType.BANK"
         >
           <span>{{ $t('requisites.bankDetails') }}</span>
         </RadioButton>
       </div>
       <div class="flex justify-between">
         <TemplateCard
-          template-name="requisites"
+          template-name="requisite"
           :title="$t('requisites.about')"
-          :class="{ 'requisites-template-card': isBank }"
+          :class="{ 'requisite-template-card': isBank }"
         >
           <template v-slot:items>
             <div v-for="(item, key) in about" :key="key">
@@ -73,13 +71,13 @@
                     {{ $t(`label.requisites.${item.label || key}`) }}
                   </label>
                   <TextField
-                    :value="requisites[key]"
+                    :value="requisite[key]"
                     :placeholder="$t('placeholder.requisites.fillFields')"
                     squared
                     colored
                     hide-details
                     class="pt-0 text-left"
-                    @input="updateRequisites(key, $event)"
+                    @input="updateRequisite(key, $event)"
                   />
                 </div>
               </div>
@@ -87,9 +85,9 @@
           </template>
         </TemplateCard>
         <TemplateCard
-          template-name="requisites"
+          template-name="requisite"
           :title="$t('requisites.bankDetails')"
-          :class="{ 'requisites-template-card': !isBank }"
+          :class="{ 'requisite-template-card': !isBank }"
         >
           <template v-slot:items>
             <div v-for="(item, key) in bank" :key="key">
@@ -101,7 +99,7 @@
                     {'card__col-left--section': item.section}
                   ]"
                 >
-                  <span class="requisites-card__subtitle">
+                  <span class="requisite-card__subtitle">
                     {{ item.subtitle ? $t(`requisites.${item.subtitle}`) : '' }}
                   </span>
                   <label
@@ -111,13 +109,13 @@
                     {{ $t(`label.requisites.${item.label || key}`) }}
                   </label>
                   <TextField
-                    :value="requisites[key]"
+                    :value="requisite[key]"
                     :placeholder="$t('placeholder.requisites.fillFields')"
                     squared
                     colored
                     hide-details
                     class="pt-0"
-                    @input="updateRequisites(key, $event)"
+                    @input="updateRequisite(key, $event)"
                   />
                 </div>
               </div>
@@ -153,7 +151,7 @@ import { GET_ORG_REQUISITE } from '../graphql/queries'
 import { CREATE_REQUISITE, UPDATE_REQUISITE } from '../graphql/mutations'
 
 export default {
-  name: 'RequisitesItem',
+  name: 'RequisiteItem',
   components: {
     WelcomeModal,
     SaveBeforeCloseModal,
@@ -169,13 +167,22 @@ export default {
     if (this.hasDeepChange) {
       const r = await this.openConfirmDialog()
       if (r) {
-        if (r === 2) await this.update()
-        next()
+        if (r === 2) {
+          try {
+            await this.update()
+            return next()
+          } catch (error) {
+            this.$logger.warn('Error: ', error)
+            return next(false)
+          }
+        } else {
+          return next()
+        }
       } else {
-        next(false)
+        return next(false)
       }
     } else {
-      next()
+      return next()
     }
   },
   apollo: {
@@ -200,8 +207,7 @@ export default {
     return {
       welcomeDialog: false,
       saveBeforeCloseDialog: false,
-      editMode: false,
-      editCard: 'ABOUT',
+      cardType: 'ABOUT',
       about: {
         name: {
           label: 'companyName',
@@ -241,8 +247,8 @@ export default {
           label: 'position',
         },
       },
-      requisites: {},
-      requisitesClone: {},
+      requisite: {},
+      requisiteClone: {},
     }
   },
   computed: {
@@ -252,14 +258,14 @@ export default {
     orgId () {
       return this.$route.params.orgId
     },
-    requisitesType () {
+    requisiteType () {
       return {
         ABOUT: 'ABOUT',
         BANK: 'BANK',
       }
     },
     isBank () {
-      return this.editCard === this.requisitesType.BANK
+      return this.cardType === this.requisiteType.BANK
     },
     fieldsKeys () {
       return [
@@ -274,7 +280,7 @@ export default {
       return Object.keys(this.bank)
     },
     hasDeepChange () {
-      return !deepEqual(this.requisites, this.requisitesClone)
+      return !deepEqual(this.requisite, this.requisiteClone)
     },
   },
   watch: {
@@ -295,7 +301,7 @@ export default {
       try {
         let input = {}
         this.fieldsKeys.forEach(key => {
-          input[key] = this.requisites[key] || null
+          input[key] = this.requisite[key] || null
         })
 
         const query = this.create ? CREATE_REQUISITE : UPDATE_REQUISITE
@@ -308,27 +314,34 @@ export default {
           mutation: query,
           variables,
         })
-        if (response && response.data && response.data.updateRequisite) {
-          this.setData(response.data.updateRequisite)
+        if (response && response.data && response.data.createRequisite) {
+          this.setData(response.data.createRequisite)
+          this.$router.push({
+            name: 'requisite',
+            params: {
+              orgId: this.orgId,
+              reqId: response.data.createRequisite.id,
+            },
+          })
         }
-        this.requisitesClone = cloneDeep(this.requisites)
-        this.editMode = false
+        this.requisiteClone = cloneDeep(this.requisite)
       } catch (error) {
         this.$logger.warn('Error: ', error)
+        throw new Error(error)
       } finally {
         this.updateLoading = null
       }
     },
     setData (item) {
       if (!item) return
-      this.requisites = cloneDeep(item)
-      this.requisitesClone = cloneDeep(this.requisites)
+      this.requisite = cloneDeep(item)
+      this.requisiteClone = cloneDeep(this.requisite)
     },
-    updateRequisites (key, value) {
-      if (!this.requisites.hasOwnProperty(key)) {
-        this.$set(this.requisites, key, value)
+    updateRequisite (key, value) {
+      if (!this.requisite.hasOwnProperty(key)) {
+        this.$set(this.requisite, key, value)
       } else {
-        this.requisites[key] = value
+        this.requisite[key] = value
       }
     },
   },
@@ -336,21 +349,18 @@ export default {
 </script>
 
 <style scoped lang="postcss">
-  .requisites-template-card {
+  .requisite-template-card {
     display: none;
   }
-  .requisites-header {
-    @apply mb-3 text-sm flex flex-col;
+  .requisite-header__title {
+    font-size: 24px;
+    @apply block text-gray-lighter;
   }
-  .requisites-header__title {
-    font-size: 18px;
-    @apply mb-4 block text-gray-lighter;
-  }
-  .requisites-card__radio-group {
+  .requisite-card__radio-group {
     display: flex;
     margin-top: 40px;
   }
-  .requisites-card__subtitle {
+  .requisite-card__subtitle {
     position: absolute;
     top: 35px;
     left: 50%;
@@ -362,22 +372,18 @@ export default {
     font-weight: 600;
   }
    @screen sm {
-    .requisites-card__radio-group {
+    .requisite-card__radio-group {
       margin-left: 30px;
     }
   }
   @screen md {
-    .requisites-template-card {
+    .requisite-template-card {
       display: block;
     }
-    .requisites-header {
-      @apply flex-row justify-between items-center;
+    .requisite-header__title {
+      @apply mb-4 mr-2 text-base;
     }
-    .requisites-header__title {
-      font-size: 24px;
-      @apply m-0;
-    }
-    .requisites-card__radio-group {
+    .requisite-card__radio-group {
       display: none;
     }
   }

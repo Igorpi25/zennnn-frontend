@@ -16,7 +16,7 @@
               :key="item.id"
               class="items bg-background hover:bg-accent3 border-none"
               @click="$router.push({
-                name: 'requisites',
+                name: 'requisite',
                 params: {
                   reqId: item.id
                 }
@@ -28,7 +28,7 @@
               <td class="text-right pointer-events-none" @click.prevent.stop>
                 <div
                   class="cursor-pointer pointer-events-auto"
-                  @click="deleteRequisites(item.id)"
+                  @click="deleteRequisite(item.id)"
                 >
                   <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 13 16"><defs></defs><g><g><title>Delete</title><image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQCAYAAADNo/U5AAAAU0lEQVQ4T2NkQANBQUH/0cXWrVvHiCyGwgFJgDQhK0Lng9QwYjMZ3SZ0PoZNhDSQbxM2N+OzDaQe7CeQx0mhSVIMM3xUEzSUKQsIYpIPLEGTlWAB2MDtgmErnM4AAAAASUVORK5CYII=" width="13" height="16" transform="matrix(1,0,0,1,0,0)" ></image></g></g></svg>
                 </div>
@@ -41,7 +41,7 @@
         outline
         class="mt-6"
         @click="$router.push({
-          name: 'requisites-create'
+          name: 'requisite-create'
         })"
       >
         <template v-slot:icon>
@@ -98,7 +98,7 @@ export default {
     },
   },
   methods: {
-    async deleteRequisites (id) {
+    async deleteRequisite (id) {
       try {
         const msg = this.$t('alert.removeClient')
         const confirm = await confirmDialog(msg)

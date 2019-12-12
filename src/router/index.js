@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import RequisitesList from '../views/RequisitesList.vue'
-import RequisitesItem from '../views/RequisitesItem.vue'
+import RequisiteList from '../views/RequisiteList.vue'
+import RequisiteItem from '../views/RequisiteItem.vue'
 import OrgLayout from '../views/OrgLayout.vue'
 import Specs from '../views/Specs.vue'
 import Spec from '../views/Spec.vue'
@@ -151,21 +151,21 @@ const routes = [
       },
       {
         path: 'requisites',
-        name: 'requisites-list',
-        component: RequisitesList,
+        name: 'requisites',
+        component: RequisiteList,
         meta: { requiresAuth: true },
       },
       {
         path: 'requisites/create',
-        name: 'requisites-create',
+        name: 'requisite-create',
         meta: { requiresAuth: true },
         props: { create: true },
-        component: RequisitesItem,
+        component: RequisiteItem,
       },
       {
         path: 'requisites/:reqId',
-        name: 'requisites',
-        component: RequisitesItem,
+        name: 'requisite',
+        component: RequisiteItem,
         meta: { requiresAuth: true },
       },
     ],

@@ -538,7 +538,6 @@ export default {
               return next()
             } catch (error) {
               this.$logger.warn('Error: ', error)
-              this.saveBeforeCloseDialog = false
               return next(false)
             }
           } else {

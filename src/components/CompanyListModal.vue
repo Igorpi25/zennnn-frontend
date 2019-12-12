@@ -6,14 +6,11 @@
     </div>
     <div class="modal-body">
       <ul
-        v-for="item in orgsByRole"
+        v-for="item in items"
         :key="item.id"
         class="mt-2 mb-6"
       >
-        <span
-          v-if="item.header"
-          class="ml-6 text-gray-light font-bold tracking-widest"
-        >
+        <span class="ml-6 text-gray-light font-bold tracking-widest">
           {{ item.position }}
         </span>
         <li

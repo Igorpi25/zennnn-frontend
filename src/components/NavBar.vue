@@ -67,16 +67,16 @@
     </router-link>
     <router-link
       :to="{
-        name: 'requisites-list',
+        name: 'requisites',
       }"
-      :class="{ active: $route.name == 'requisites' }"
+      :class="{ active: $route.name == 'requisite' }"
     >
       <div class="navbar__link">
         <Icon
-          v-if="$route.name == 'requisites'"
+          v-if="$route.name == 'requisite'"
           :class="[
             'mr-2',
-            {'-ml-2': $route.name == 'requisites'}
+            {'-ml-2': $route.name == 'requisite'}
           ]"
         >
           {{ icons.mdiArrowLeft }}
