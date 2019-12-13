@@ -173,16 +173,17 @@
       v-model="orgDialog"
       max-width="480px"
     >
-      <!-- <div class="bg-gray">
-        <div class="px-3 py-2 text-gray-lighter bg-gray-darkest">
-          Companies
+      <div class="bg-gray">
+        <div class="p-6 flex items-center bg-gray-darkest">
+          <div style="width:28px; height:28px; background-color:#aaa;"></div>
+          <span class="ml-3" style="color:#aaa">{{ $t('projects.myCompanies') }}</span>
         </div>
-        <ul class="list-none text-white">
+        <ul class="list-none text-white overflow-y-auto" style="max-height:520px;">
           <template v-for="(item, i) in orgsByRole">
             <li
               v-if="item.header"
               :key="`header${i}`"
-              class="px-3 py-2 text-gray-lighter"
+              class="px-3 pt-2 text-sm text-gray-lighter font-bold tracking-widest"
             >
               {{ item.text }}
             </li>
@@ -192,37 +193,40 @@
               class="px-3 py-2 text-sm cursor-pointer hover:bg-gray-dark"
               @click="changeOrg(item.id)"
             >
-              <div class="flex">
+              <div class="flex items-center">
                 <div class="leading-tight">
-                  <div class="text-sm">
-                    {{ item.owner.email }}, {{ item.role }}
+                  <div class="flex items-center">
+                    <span v-if="item.picture">{{ item.picture }}</span>
+                    <div v-else class="border border-gray-lightest rounded-full" style="width:35px; height:35px"></div>
+                    <div class="ml-3">
+                      <div class="text-sm">{{ item.name || item.owner.email }}, {{ item.role }}</div>
+                      <div class="text-xs text-gray-lighter">{{ item.id }}</div>
+                    </div>
                   </div>
-                  <div class="text-xs text-gray-lighter">
-                    {{ item.id }}
-                  </div>
+                </div>
+                <div class="ml-auto" @click.prevent.stop="addFavorites(item.id)">
+                  <Icon size="24">
+                    {{ favorites.includes(item.id) ? icons.mdiStar : icons.mdiStarOutline }}
+                  </Icon>
                 </div>
               </div>
             </li>
           </template>
         </ul>
-      </div> -->
-      <CompanyListModal />
+      </div>
     </v-dialog>
   </div>
 </template>
 
 <script>
+import { mdiStar, mdiStarOutline } from '@mdi/js'
+
 import { CURRENT_LANG_STORE_KEY } from '../config/globals'
 import { Role } from '../graphql/enums'
 import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 
-import CompanyListModal from '../components/CompanyListModal.vue'
-
 export default {
   name: 'StatusBar',
-  components: {
-    CompanyListModal,
-  },
   apollo: {
     isLoggedIn: {
       query: GET_IS_LOGGED_IN,
@@ -241,6 +245,7 @@ export default {
   },
   data () {
     return {
+      favorites: [],
       orgDialog: false,
       profileMenu: false,
       langMenu: false,
@@ -248,13 +253,30 @@ export default {
         { value: 'en', text: 'English' },
         { value: 'ru', text: 'Русский' },
       ],
+      icons: {
+        mdiStar,
+        mdiStarOutline,
+      },
     }
   },
   computed: {
     orgsByRole () {
-      const orgs = this.getOrgs || []
+      let orgs = this.getOrgs || []
       let groups = {}
       let items = []
+      if (this.favorites) {
+        orgs = orgs.sort((a, b) => {
+          const a1 = this.favorites.includes(a.id)
+          const b1 = this.favorites.includes(b.id)
+          if (a1 > b1) {
+            return -1
+          }
+          if (a1 < b1) {
+            return 1
+          }
+          return 0
+        })
+      }
       orgs.forEach(org => {
         if (groups[org.role]) {
           groups[org.role].push(org)
@@ -265,15 +287,18 @@ export default {
       Object.keys(Role).forEach(role => {
         const orgs = groups[role]
         if (orgs) {
-          items.push({ header: true, text: role })
+          items.push({ header: true, text: this.$t(`roles.${role.toLowerCase()}`) })
           items.push(...groups[role])
         }
       })
       return items
     },
+    favoritesKeyStore () {
+      return `zFavorites.${this.getProfile.id}`
+    },
     profileItems () {
       return [
-        { value: 'orgsList', text: this.$t('companies.myCompanies') },
+        { value: 'orgsList', text: this.$t('projects.myCompanies') },
         { value: 'logout', text: this.$t('action.logout') },
       ]
     },
@@ -288,12 +313,23 @@ export default {
         : name
     },
   },
+  mounted () {
+    this.favorites = JSON.parse(localStorage.getItem(this.favoritesKeyStore)) || []
+  },
   methods: {
     changeOrg (orgId) {
       if (orgId !== this.$route.params.orgId) {
         this.$router.push({ name: 'specs', params: { orgId } })
       }
       this.orgDialog = false
+    },
+    addFavorites (id) {
+      if (this.favorites.includes(id)) {
+        this.favorites = this.favorites.filter(el => el !== id)
+      } else {
+        this.favorites.push(id)
+      }
+      localStorage.setItem(this.favoritesKeyStore, JSON.stringify(this.favorites))
     },
     profileAction (value) {
       switch (value) {

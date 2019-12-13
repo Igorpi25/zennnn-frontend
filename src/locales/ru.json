@@ -370,9 +370,8 @@
     "note": "Примечание",
     "shippingInfo": "Информация для отгрузки"
   },
-  "companies": {
-    "myCompanies":"Мои компании",
-    "director": "Руководитель",
+  "roles": {
+    "owner": "Руководитель",
     "manager": "Менеджер",
     "accountant": "Бухгалтер",
     "freelancer": "Фрилансер",
