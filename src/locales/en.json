@@ -370,9 +370,8 @@
     "note": "Note",
     "shippingInfo": "Shipping info"
   },
-  "companies": {
-    "myCompanies":"My companies",
-    "director": "Director",
+  "roles": {
+    "owner": "Owner",
     "manager": "Manager",
     "accountant": "Accountant",
     "freelancer": "Freelancer",

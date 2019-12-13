@@ -25,6 +25,10 @@ export const GET_ORGS = gql`
         picture
       }
       role
+      name
+      nameEng
+      location
+      picture
     }
   }
 `
