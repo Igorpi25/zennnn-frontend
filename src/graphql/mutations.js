@@ -318,3 +318,27 @@ export const DELETE_REQUISITE = gql`
     deleteRequisite(id: $id)
   }
 `
+
+export const INVITE_USER_TO_ORG = gql`
+  mutation InviteUserToOrg($orgId: ID!, $input: UserInvitationInput!) {
+    inviteUserToOrg(orgId: $orgId, input: $input)
+  }
+`
+
+export const ACCEPT_INVITATION = gql`
+  mutation AcceptInvitation($id: ID!) {
+    acceptInvitation(id: $id)
+  }
+`
+
+export const DECLINE_INVITATION = gql`
+  mutation DeclineInvitation($id: ID!) {
+    declineInvitation(id: $id)
+  }
+`
+
+export const CANCEL_INVITATION = gql`
+  mutation CancelInvitation($id: ID!) {
+    cancelInvitation(id: $id)
+  }
+`

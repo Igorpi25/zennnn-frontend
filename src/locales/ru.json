@@ -112,6 +112,13 @@
     "accountant": "Бухгалтер",
     "ceo": "Директор"
   },
+  "role": {
+    "OWNER": "Директор",
+    "MANAGER": "Менеджер",
+    "ACCOUNTANT": "Бухгалтер",
+    "WAREHOUSEMAN": "Склад",
+    "FREELANCER": "Фрилансер"
+  },
   "staff": {
     "createStaff": "Создать сотрудника",
     "addStaff": "Добавить сотрудника",

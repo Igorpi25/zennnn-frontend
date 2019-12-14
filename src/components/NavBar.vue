@@ -84,7 +84,8 @@
         {{ $t('requisites.requisites') }}
       </div>
     </router-link>
-    <!-- <router-link
+    <router-link
+      v-if="roleInOrg === Role.OWNER"
       :to="{
         name: 'staff',
         params: { orgId },
@@ -93,7 +94,7 @@
       <div class="navbar__link">
         {{ $t('navbar.staff') }}
       </div>
-    </router-link> -->
+    </router-link>
   </div>
 </template>
 
@@ -101,6 +102,7 @@
 import { mdiArrowLeft } from '@mdi/js'
 
 import { GET_ORGS } from '../graphql/queries'
+import { Role } from '../graphql/enums'
 
 export default {
   name: 'NavBar',
@@ -112,6 +114,7 @@ export default {
   },
   data () {
     return {
+      Role,
       icons: {
         mdiArrowLeft,
       },

@@ -80,7 +80,7 @@
                 :item="item"
               >
                 <td
-                  :key="item[header.value]"
+                  :key="`${index}-${header.value}`"
                   :class="`text-${header.align || 'center'}`"
                 >
                   {{ item[header.value] }}

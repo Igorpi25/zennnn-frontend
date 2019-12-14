@@ -20,7 +20,8 @@
   @apply absolute left-0 right-auto;
   @apply pointer-events-none truncate;
   @apply text-gray-lighter;
-  top: 5px;
+  /* investigate position problem */
+  top: 10px;
   height: 1.25em;
   max-width: 90%;
   transform-origin: top left;
