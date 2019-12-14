@@ -13,7 +13,7 @@
         'select--borderless': borderless,
         'select--solo': solo,
         'select--colored': colored,
-        'select--focused': hasFocus
+        'select--focused': hasFocus && searchable
       }
     ]"
   >
@@ -53,7 +53,7 @@
           :maxlength="maxlength"
           :autofocus="autofocus"
           :placeholder="placeholder"
-          :class="[inputClass, 'select-input-asd']"
+          :class="[inputClass, 'select-input']"
           autocomplete="off"
           @input="input"
           @focus="onFocus"
@@ -63,11 +63,11 @@
           v-if="$slots.append"
           class="select__append"
         >
-          <slot name="append" />
+          <slot name="append" :isMenuOpen="menu" />
         </div>
       </div>
       <div class="select__append-outer">
-        <slot name="append-outer" />
+        <slot name="append-outer" :isMenuOpen="menu" />
       </div>
       <v-menu
         ref="menu"
@@ -263,7 +263,7 @@ export default {
       get () {
         const val = this.value || {}
         const v = val[this.itemText]
-        return this.hasFocus ? this.lazyValue : v
+        return this.hasFocus && this.searchable ? this.lazyValue : v
       },
       set (val) {
         let value = val || null

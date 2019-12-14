@@ -1,16 +1,13 @@
 <template>
   <div>
 
-    <v-dialog
+    <StaffCreateModal
       v-model="createStaffDialog"
-      :adaptive="true"
-      :max-width="460"
-    >
-      <StaffCreateModal @close="closeCreateStaffModal" />
-    </v-dialog>
+      @update="refetchInvitations"
+    />
 
     <div class="container container--sm">
-      <div class="pt-10">
+      <div class="py-10">
         <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
 
         <div class="pt-5 pb-6">
@@ -30,7 +27,7 @@
           </TextField>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto pb-16">
           <DataTable
             :headers="headers"
             :items="items"
@@ -80,21 +77,21 @@
                   </td>
                   <td>
                     <span class="flex item-center" @click="toggle(index)">
-                      <span>{{ item.inWork }}</span>
+                      <span>{{ item.inWorkCount }}</span>
                       <div class="icon" style="width:18px">
                         <div class="icon__item">
-                          <Icon v-if="expanded && expanded.length !== 0">{{ icons.mdiChevronDown }}</Icon>
-                          <Icon v-else>{{ icons.mdiChevronUp }}</Icon>
+                          <Icon v-if="expanded && expanded.length !== 0">{{ icons.mdiChevronUp }}</Icon>
+                          <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                         </div>
                       </div>
                     </span>
                   </td>
-                  <td>{{ item.diff }}</td>
-                  <td>{{ item.diffPercent }}</td>
-                  <td class="text-right">{{ item.revenue }}</td>
-                  <td class="text-right">{{ item.costOfGoods }}</td>
-                  <td class="text-left pl-10">{{ item.fullName }}</td>
-                  <td class="text-left">{{ item.access }}</td>
+                  <td>{{ item.profit }}</td>
+                  <td>{{ item.percent }}</td>
+                  <td class="text-right">{{ item.finalObtainCost }}</td>
+                  <td class="text-right">{{ item.finalCost }}</td>
+                  <td class="text-left pl-10">{{ item.givenName }} {{ item.familyName }}</td>
+                  <td class="text-left">{{ item.role }}</td>
                   <td class="text-right pointer-events-none" @click.prevent.stop>
                     <div
                       class="cursor-pointer pointer-events-auto"
@@ -105,40 +102,70 @@
                   </td>
                 </tr>
                 <template v-if="expanded.includes(index)" class="expanded">
-                    <tr class="items text-sm bg-chaos-black" :key="`expand-${index}`">
-                      <td class=" text-right relative px-3">
-                        <span
-                          :class="[
-                            'status-mini',
-                            'status-indicator inline-block',
-                            item.status === 'ORANGE'
-                              ? 'status-indicator--orange' : item.status === SpecStatus.IN_STOCK
-                                ? 'status-indicator--green' : 'status-indicator--pink'
-                          ]"
-                        >
-                        </span>
-                      </td>
-                      <td class="text-center relative">
-                        <div class="staff__triangle"></div>
-                        <span>+$</span>&nbsp;&nbsp;<span>-$</span>
-                      </td>
-                      <td>25 000</td>
-                      <td>55%</td>
-                      <td class="text-right">50 000</td>
-                      <td class="text-right">25 000</td>
-                      <td class="text-center">FF024-2019-03-13-2</td>
-                      <td class="text-center">Elton John</td>
-                      <td></td>
-                    </tr>
+                  <tr class="items text-sm bg-chaos-black" :key="`expand-${index}`">
+                    <td :colspan="headers.length">
+                      <DataTable
+                        :headers="headers"
+                        :items="item.specs"
+                        table-width="100%"
+                        table-class="table-fixed"
+                        thead-class="text-accent2 border-b border-accent2"
+                      />
+                    </td>
+                    <!-- <td class="text-right relative px-3" :colspan="headers.length">
+                      <span
+                        :class="[
+                          'status-mini',
+                          'status-indicator inline-block',
+                          item.status === 'ORANGE'
+                            ? 'status-indicator--orange' : item.status === SpecStatus.IN_STOCK
+                              ? 'status-indicator--green' : 'status-indicator--pink'
+                        ]"
+                      >
+                      </span>
+                    </td>
+                    <td class="text-center relative">
+                      <div class="staff__triangle"></div>
+                      <span>+$</span>&nbsp;&nbsp;<span>-$</span>
+                    </td>
+                    <td>25 000</td>
+                    <td>55%</td>
+                    <td class="text-right">50 000</td>
+                    <td class="text-right">25 000</td>
+                    <td class="text-center">FF024-2019-03-13-2</td>
+                    <td class="text-center">Elton John</td>
+                    <td></td> -->
+                  </tr>
                 </template>
               </template>
+            </template>
+          </DataTable>
+        </div>
+        <div class="overflow-x-auto">
+          <h4>Invitations</h4>
+          <DataTable
+            :headers="invitationsHeaders"
+            :items="invitations"
+            table-width="100%"
+            table-class="table-fixed"
+            thead-class="text-accent2 border-b border-accent2"
+          >
+            <template v-slot:item.actions="{ item }">
+              <td>
+                <div
+                  class="cursor-pointer pointer-events-auto"
+                  @click="cancelInvitation(item.id)"
+                >
+                  <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 13 16"><defs></defs><g><g><title>Delete</title><image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQCAYAAADNo/U5AAAAU0lEQVQ4T2NkQANBQUH/0cXWrVvHiCyGwgFJgDQhK0Lng9QwYjMZ3SZ0PoZNhDSQbxM2N+OzDaQe7CeQx0mhSVIMM3xUEzSUKQsIYpIPLEGTlWAB2MDtgmErnM4AAAAASUVORK5CYII=" width="13" height="16" transform="matrix(1,0,0,1,0,0)" ></image></g></g></svg>
+                </div>
+              </td>
             </template>
           </DataTable>
         </div>
         <Button
           outline
           class="mt-6"
-          @click="createStaff"
+          @click="createStaffDialog = true"
         >
           <template v-slot:icon>
             <Icon>
@@ -160,32 +187,54 @@ import {
   mdiPlusCircleOutline,
 } from '@mdi/js'
 
-import StaffCreateModal from '@/components/StaffCreateModal.vue'
+import StaffCreateModal from '../components/StaffCreateModal.vue'
+import { LIST_ORG_INVITATIONS, LIST_STAFF } from '../graphql/queries'
+import { CANCEL_INVITATION } from '../graphql/mutations'
+import { SpecStatus } from '../graphql/enums'
 
 export default {
-  name: 'Home',
+  name: 'Staff',
   components: {
     StaffCreateModal,
   },
+  apollo: {
+    listStaff: {
+      query: LIST_STAFF,
+      variables () {
+        return {
+          orgId: this.orgId,
+        }
+      },
+    },
+    listOrgInvitations: {
+      query: LIST_ORG_INVITATIONS,
+      variables () {
+        return {
+          orgId: this.orgId,
+        }
+      },
+    },
+  },
   data () {
     return {
+      SpecStatus,
       search: '',
       loading: false,
       createLoading: false,
       deleteLoading: null,
       createStaffDialog: false,
-      items: [
-        {
-          status: 'ORANGE',
-          inWork: 3,
-          diff: '150 005',
-          diffPercent: '50%',
-          revenue: '300 000',
-          costOfGoods: '150 000',
-          fullName: 'Игорь Иванов',
-          access: 'Директор',
-        },
-      ],
+      // items: [
+      //   {
+      //     status: 'ORANGE',
+      //     inWork: 3,
+      //     diff: '150 005',
+      //     diffPercent: '50%',
+      //     revenue: '300 000',
+      //     costOfGoods: '150 000',
+      //     fullName: 'Игорь Иванов',
+      //     access: 'Директор',
+      //   },
+      // ],
       expanded: [],
       errors: [],
       icons: {
@@ -197,26 +246,56 @@ export default {
     }
   },
   computed: {
+    items () {
+      return (this.listStaff && this.listStaff.items) || []
+    },
+    orgId () {
+      return this.$route.params.orgId
+    },
+    invitations () {
+      return this.listOrgInvitations || []
+    },
     headers () {
       return [
         { text: '', value: 'status', align: 'left', width: 45, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('staff.inWork'), value: 'inWork', align: 'left', width: 80, minWidth: 80, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.diff'), value: 'diff', align: 'left', width: 60, minWidth: 60, bgcolor: 'tansparent' },
+        { text: this.$t('staff.diff'), value: 'profit', align: 'left', width: 60, minWidth: 60, bgcolor: 'tansparent' },
         { text: '(%)', value: 'diffPercent', align: 'left', width: 40, minWidth: 40, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.revenue'), value: 'revenue', align: 'right', width: 80, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.costOfGoods'), value: 'costOfGoods', align: 'right', width: 120, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('staff.revenue'), value: 'finalObtainCost', align: 'right', width: 80, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('staff.costOfGoods'), value: 'finalCost', align: 'right', width: 120, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('staff.fullName'), value: 'fullName', align: 'left', width: 180, minWidth: 180, bgcolor: 'tansparent' },
         { text: this.$t('staff.access'), value: 'access', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent' },
         { text: '', value: 'actions', width: 48, bgcolor: 'tansparent' },
       ]
     },
+    invitationsHeaders () {
+      return [
+        { text: 'Given Name', value: 'invitationGivenName' },
+        { text: 'Family name', value: 'invitationFamilyName' },
+        { text: 'Email', value: 'invitationEmail' },
+        { text: 'Role', value: 'invitationRole' },
+        { text: 'Status', value: 'status' },
+        { text: 'Created At', value: 'createdAt' },
+        { text: 'Updated At', value: 'updatedAt' },
+        { text: '', value: 'actions', width: 48 },
+      ]
+    },
   },
   methods: {
-    createStaff () {
-      this.createStaffDialog = true
+    // TODO: update on after mutation
+    refetchInvitations () {
+      this.$apollo.queries.listOrgInvitations.refetch()
     },
-    closeCreateStaffModal () {
-      this.$modal.hide('create-staff')
+    async cancelInvitation (id) {
+      try {
+        await this.$apollo.mutate({
+          mutation: CANCEL_INVITATION,
+          variables: { id },
+        })
+        this.refetchInvitations()
+      } catch (error) {
+        throw new Error(error)
+      }
     },
     toggle (index) {
       if (this.expanded.indexOf(index) > -1) {

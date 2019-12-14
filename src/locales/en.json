@@ -112,6 +112,13 @@
     "accountant": "Accountant",
     "ceo": "CEO"
   },
+  "role": {
+    "OWNER": "CEO",
+    "MANAGER": "Manager",
+    "ACCOUNTANT": "Accountant",
+    "WAREHOUSEMAN": "Warehouseman",
+    "FREELANCER": "Freelancer"
+  },
   "staff": {
     "createStaff": "Create a staff",
     "addStaff": "Add staff",

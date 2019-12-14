@@ -149,7 +149,13 @@
                     tabindex="0"
                     role="menuitem"
                   >
-                    {{ username }}
+                    <div>
+                      {{ username }}
+                    </div>
+                    <!-- email for debug -->
+                    <div class="text-xs">
+                      {{ profile.email }}
+                    </div>
                   </li>
                   <li
                     v-for="item in profileItems"
@@ -282,9 +288,9 @@ export default {
     },
     username () {
       const profile = this.profile
-      const name = profile.given_name || ''
-      return profile.family_name
-        ? `${name} ${profile.family_name}`
+      const name = profile.givenName || ''
+      return profile.familyName
+        ? `${name} ${profile.familyName}`
         : name
     },
   },

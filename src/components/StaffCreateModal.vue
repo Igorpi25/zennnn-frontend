@@ -1,166 +1,175 @@
 <template>
-  <div class="modal">
-    <div class="modal__title">
-      <Icon size="30" class="mr-2">
-        {{ icons.ziUserPlus }}
-      </Icon>
-      <span>{{ $t('staff.addStaff') }}</span>
-    </div>
-    <div class="modal__form">
-      <Form
-        ref="form"
-        rounded
-        shadow
-        class="form--max-w-sm mx-auto m-0"
-        body-class="pt-8 md:pt-12 pb-10 px-0"
-      >
-        <div class="w-full">
-          <TextField
-            v-model="formModel.firstName"
-            :label="$t('staff.firstName')"
-            name="firstName"
-            required
-            autofocus
-            state-icon
-          />
-        </div>
-        <div class="w-full">
-          <TextField
-            v-model="formModel.lastName"
-            :label="$t('staff.lastName')"
-            name="lastName"
-            required
-            state-icon
-          />
-        </div>
-        <div class="w-full">
-          <TextField
-            v-model="formModel.mobilePhone"
-            :label="$t('staff.mobilePhone')"
-            name="lastName"
-            required
-            state-icon
-          />
-        </div>
-        <div class="w-full">
-          <TextField
-            ref="email"
-            v-model="formModel.email"
-            :label="$t('staff.login')"
-            type="email"
-            name="email"
-            required
-            state-icon
-          />
-        </div>
-        <div class="w-full">
-          <TextField
-            v-model="formModel.password"
-            :label="$t('staff.password')"
-            name="password"
-            required
-            minlength="8"
-            state-icon
-          >
-          </TextField>
-        </div>
-        <v-menu
-          v-model="accessMenu"
-          bottom
-          left
-          offset-y
+  <v-dialog
+    v-model="dialog"
+    :adaptive="true"
+    :max-width="460"
+  >
+    <div class="relative bg-accent1">
+      <div class="modal__title">
+        <Icon size="30" class="mr-2">
+          {{ icons.ziUserPlus }}
+        </Icon>
+        <span>{{ $t('staff.addStaff') }}</span>
+      </div>
+      <div class="modal__form">
+        <Form
+          ref="form"
+          rounded
+          shadow
+          class="form--max-w-sm mx-auto m-0"
+          body-class="pt-8 md:pt-12 pb-10 px-0"
         >
-          <template v-slot:activator="{ on }">
-            <div class="access w-full text-gray-lighter" v-on="on">
-              <span class="block text-xs mt-5 mb-1">{{ $t('staff.access') }}</span>
-              <span class="flex items-center text-primary cursor-pointer">
-                {{ currentAccess }}
-                <Icon v-if="!accessMenu">{{ icons.mdiChevronUp }}</Icon>
-                <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-              </span>
-            </div>
-          </template>
-          <template>
-            <ul
-              class="lang-picker min-w-0"
-              role="menu"
+          <div class="w-full">
+            <TextField
+              v-model="formModel.invitationGivenName"
+              :label="$t('staff.firstName')"
+              name="firstName"
+              required
+              autofocus
+              state-icon
+            />
+          </div>
+          <div class="w-full">
+            <TextField
+              v-model="formModel.invitationFamilyName"
+              :label="$t('staff.lastName')"
+              name="lastName"
+              required
+              state-icon
+            />
+          </div>
+          <div class="w-full">
+            <TextField
+              ref="email"
+              v-model="formModel.invitationEmail"
+              :label="$t('staff.login')"
+              type="email"
+              name="email"
+              required
+              state-icon
+            />
+          </div>
+          <div class="w-full">
+            <Select
+              v-model="compRole"
+              :label="$t('staff.access')"
+              :nudge-bottom="23"
+              :items="roles"
+              colored
+              hide-details
+              class="text-sm mr-2 md:p-0 leading-normal max-w-sm"
             >
-              <li
-                v-for="acc in formModel.access"
-                :key="acc.text"
-                :value="acc.text"
-                :class="[
-                  'lang-picker__item',
-                  { 'lang-picker__item--selected': acc.text === currentAccess }
-                ]"
-                tabindex="0"
-                role="menuitem"
-                @click="changeAccess(acc.text)"
-              >
-                <span>{{ acc.text }}</span>
-              </li>
-            </ul>
-          </template>
-        </v-menu>
-        <Button
-          large
-          class="mt-10 mx-auto"
-        >
-          <span>{{ $t('action.save') }}</span>
-        </Button>
-      </Form>
+              <template v-slot:append="{ menu }">
+                <Icon v-if="menu">{{ icons.mdiChevronUp }}</Icon>
+                <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
+              </template>
+            </Select>
+          </div>
+          <Button
+            large
+            class="mt-10 mx-auto"
+            @click="submit"
+          >
+            <span>{{ $t('action.save') }}</span>
+          </Button>
+        </Form>
+      </div>
+      <span class="close-btn" @click="dialog = false">
+        <Icon>{{ icons.mdiClose }}</Icon>
+      </span>
     </div>
-    <span class="close-btn" @click="$emit('close')">
-      &times;
-    </span>
-  </div>
+  </v-dialog>
 </template>
 
 <script>
-import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
-import { ziUserPlus } from '@/assets/icons'
+import { mdiChevronUp, mdiChevronDown, mdiClose } from '@mdi/js'
+import { ziUserPlus } from '../assets/icons'
+import { Role } from '../graphql/enums'
+import { INVITE_USER_TO_ORG } from '../graphql/mutations'
 
 export default {
   name: 'StaffCreateModal',
+  props: {
+    value: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data () {
     return {
+      dialog: false,
       formModel: {
-        firstName: '',
-        lastName: '',
-        mobilePhone: '',
-        email: '',
-        password: '',
-        access: [
-          { text: this.$t('access.freelancer') },
-          { text: this.$t('access.manager') },
-          { text: this.$t('access.accountant') },
-          { text: this.$t('access.ceo') },
-        ],
+        invitationGivenName: '',
+        invitationFamilyName: '',
+        invitationEmail: '',
+        invitationRole: Role.FREELANCER,
       },
-      currentAccess: this.$t('access.freelancer'),
-      accessMenu: false,
+      roleMenu: false,
       icons: {
         ziUserPlus,
         mdiChevronUp,
         mdiChevronDown,
+        mdiClose,
       },
     }
   },
+  computed: {
+    orgId () {
+      return this.$route.params.orgId
+    },
+    compRole: {
+      get () {
+        return {
+          value: this.formModel.invitationRole,
+          text: this.$t(`role.${this.formModel.invitationRole}`),
+        }
+      },
+      set (val) {
+        this.formModel.invitationRole = val.value
+      },
+    },
+    roles () {
+      return [
+        { value: Role.MANAGER, text: this.$t(`role.${Role.MANAGER}`) },
+        { value: Role.ACCOUNTANT, text: this.$t(`role.${Role.ACCOUNTANT}`) },
+        { value: Role.WAREHOUSEMAN, text: this.$t(`role.${Role.WAREHOUSEMAN}`) },
+        { value: Role.FREELANCER, text: this.$t(`role.${Role.FREELANCER}`) },
+      ]
+    },
+  },
+  watch: {
+    value (val) {
+      this.dialog = val
+    },
+    dialog (val) {
+      this.$emit('input', val)
+    },
+  },
   methods: {
-    changeAccess (acc) {
-      localStorage.setItem('staff-access', acc)
-      this.currentAccess = acc
-      this.accessMenu = false
+    async submit (e) {
+      e.preventDefault()
+      try {
+        if (this.$refs.form.validate()) {
+          await this.$apollo.mutate({
+            mutation: INVITE_USER_TO_ORG,
+            variables: {
+              orgId: this.orgId,
+              input: this.formModel,
+            },
+            fetchPolicy: 'no-cache',
+          })
+          this.dialog = false
+          this.$emit('update', true)
+        }
+      } catch (error) {
+        throw new Error(error)
+      }
     },
   },
 }
 </script>
 
 <style scoped lang="postcss">
-  .modal {
-    position: relative;
-    @apply bg-accent1;
-  }
   .modal__title {
     padding: 25px;
     display: flex;
@@ -178,8 +187,5 @@ export default {
     right: 15px;
     color: #fff;
     cursor: pointer;
-  }
-  .access {
-    margin: 0;
   }
 </style>

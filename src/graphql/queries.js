@@ -266,3 +266,55 @@ export const LIST_ORG_CONTRACTS = gql`
   }
   ${ORG_CONTRACT_FRAGMENT}
 `
+
+export const CHECK_INVITATION = gql`
+  query CheckInvitation($id: ID!) {
+    checkInvitation(id: $id) {
+      orgId
+      owner {
+        givenName
+        familyName
+        picture
+      }
+    }
+  }
+`
+
+export const LIST_ORG_INVITATIONS = gql`
+  query ListOrgInvitations($orgId: ID!) {
+    listOrgInvitations(orgId: $orgId) {
+      id
+      invitationEmail
+      invitationGivenName
+      invitationFamilyName
+      invitationRole
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+export const LIST_STAFF = gql`
+  query ListStaff($orgId: ID!) {
+    listStaff(orgId: $orgId) {
+      items {
+        id
+        givenName
+        familyName
+        picture
+        role
+        inWorkCount
+        finalCost
+        finalObtainCost
+        profit
+        totalPrepay
+        totalClientDebt
+        specs {
+          ...SpecFragment
+        }
+      }
+    }
+  }
+  ${SPEC_FRAGMENT}
+`

@@ -12,6 +12,7 @@ import SupplierItem from '..//views/SupplierItem.vue'
 import SupplierList from '../views/SupplierList.vue'
 import Staff from '../views/Staff.vue'
 import Preview from '../views/Preview.vue'
+import Invitation from '../views/Invitation.vue'
 import SignIn from '../views/SignIn.vue'
 import SignUp from '../views/SignUp.vue'
 import Welcome from '../views/Welcome.vue'
@@ -21,7 +22,7 @@ import NotFound from '../views/NotFound.vue'
 
 import { Auth, i18n } from '../plugins'
 import { apolloClient } from '../plugins/apollo'
-import { GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
+import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
 
 import { CURRENT_ORG_STORE_KEY } from '../config/globals'
 
@@ -169,6 +170,34 @@ const routes = [
         meta: { requiresAuth: true },
       },
     ],
+  },
+  {
+    path: '/invitations/:invitationId',
+    name: 'invitation',
+    component: Invitation,
+    beforeEnter: async (to, from, next) => {
+      try {
+        const id = to.params.invitationId
+        if (!id) {
+          throw new Error('No valid link')
+        }
+
+        const { data: { checkInvitation } } = await apolloClient.query({
+          query: CHECK_INVITATION,
+          variables: { id },
+          fetchPolicy: 'network-only',
+        })
+
+        if (!checkInvitation) {
+          throw new Error('No valid link!')
+        }
+
+        next()
+      } catch (error) {
+        router.app.$notify({ color: 'red', text: error.message || '' })
+        next('/not-found')
+      }
+    },
   },
   {
     path: '/spec/:specId/preview',
