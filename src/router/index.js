@@ -183,6 +183,11 @@ const routes = [
           throw new Error('No valid link')
         }
 
+        const loggedIn = await Auth.checkAuth()
+        if (!loggedIn) {
+          return next({ name: 'signin', query: { redirect: `/invitations/${id}` } })
+        }
+
         const { data: { checkInvitation } } = await apolloClient.query({
           query: CHECK_INVITATION,
           variables: { id },
