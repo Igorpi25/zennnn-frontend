@@ -15,7 +15,7 @@
                 </span>
               </h1>
               <p class="text-white mb-0 md:mb-5" style="max-width:460px;">
-                <span>{{ $t('signup.register') }}</span>&nbsp;
+                <span>{{ $t('signup.compliteRegistration') }}</span>&nbsp;
                 <span class="text-gray-lightest">
                   {{ $t('signup.registerContent') }}
                 </span>
@@ -73,10 +73,11 @@
               <div class="w-full">
                 <TextField
                   ref="email"
-                  v-model="formModel.email"
+                  :value="formModel.email"
                   :label="$t('signup.login')"
                   type="email"
                   name="email"
+                  readonly
                   required
                   state-icon
                 />
@@ -156,17 +157,30 @@ import StatusBar from '@/components/StatusBar.vue'
 import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
 
+import { Auth } from '../plugins'
+
 export default {
-  name: 'SignUp',
+  name: 'Registration',
   components: {
     StatusBar,
     Social,
     Copyright,
   },
+  beforeRouteEnter: (to, from, next) => {
+    try {
+      Auth.currentSessionUser()
+      next()
+    } catch (error) {
+      // eslint-disable-next-line
+      console.log(error)
+      next('not-found')
+    }
+  },
   data () {
     return {
       loading: false,
       errorMessage: '',
+      showTempPassword: false,
       showPassword: false,
       formModel: {
         firstName: '',
@@ -180,6 +194,12 @@ export default {
       },
     }
   },
+  created () {
+    this.user = Auth.currentSessionUser()
+    this.formModel.firstName = this.user.given_name || ''
+    this.formModel.lastName = this.user.family_name || ''
+    this.formModel.email = this.user.email
+  },
   methods: {
     async onSubmit (e) {
       try {
@@ -189,21 +209,18 @@ export default {
         const isValid = this.$refs.form.validate()
         if (isValid) {
           const { firstName, lastName, email, password } = this.formModel
-          const response = await this.$Auth.signUp(
-            email,
-            password,
-            {
-              family_name: lastName,
-              given_name: firstName,
-              email,
-            },
-          )
-          this.$logger.info('Registered user', response.user)
-          const username = response.user && response.user.username
-          // set username to sessionStorage and check on Welcome page mounted
-          // moved from on apollo cache, removed on page reload
-          sessionStorage.setItem('Cognito-registered-username', username)
-          this.$router.push({ name: 'welcome' })
+          const attrs = {
+            given_name: firstName,
+            family_name: lastName,
+          }
+          const loggedUser = await this.$Auth.completeNewPassword(this.user, password, attrs)
+          this.$logger.info('Registered complite user', loggedUser)
+          await this.$Auth.signIn(email, password)
+          if (this.$route.query.redirect) {
+            this.$router.replace({ path: this.$route.query.redirect })
+          } else {
+            this.$router.replace({ name: 'home' })
+          }
         }
       } catch (error) {
         this.errorMessage = error.message || error

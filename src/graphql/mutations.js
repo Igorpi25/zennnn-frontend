@@ -24,6 +24,12 @@ export const LOGIN = gql`
   }
 `
 
+export const COMPLITE_REGISTRATION = gql`
+  mutation CompliteRegistration($givenName: String!, $familyName: String!) {
+    compliteRegistration(givenName: $givenName, familyName: $familyName)
+  }
+`
+
 export const CREATE_SPEC = gql`
   mutation CreateSpec($orgId: ID!) {
     createSpec(orgId: $orgId) {

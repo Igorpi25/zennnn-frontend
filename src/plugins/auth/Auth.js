@@ -31,6 +31,7 @@ export default class Auth {
       ClientId: userPoolWebClientId,
     }
     this.userPool = new CognitoUserPool(userPoolData)
+    this.user = null
   }
   /**
    * After signin tokens sets to Memory storage,
@@ -124,6 +125,39 @@ export default class Auth {
             })
         },
         onFailure: (err) => {
+          reject(err)
+        },
+        newPasswordRequired: (userAttributes, requiredAttributes) => {
+          logger.debug('signIn new password')
+          // User was signed up by an admin and must provide new
+          // password and required attributes, if any, to complete
+          // authentication.
+
+          // store userAttributes on global variable
+          cognitoUser['challengeName'] = 'NEW_PASSWORD_REQUIRED'
+          cognitoUser['challengeParam'] = {
+            userAttributes,
+            requiredAttributes,
+          }
+          this.user = cognitoUser
+          resolve(cognitoUser)
+        },
+      })
+    })
+  }
+  completeNewPassword (user, password, requiredAttributes) {
+    if (!password) { return Promise.reject(new Error('Password cannot be empty')) }
+
+    const that = this
+    return new Promise((resolve, reject) => {
+      user.completeNewPasswordChallenge(password, requiredAttributes, {
+        onSuccess: () => {
+          logger.debug('completeNewPassword success')
+          that.user = user
+          resolve(user)
+        },
+        onFailure: (err) => {
+          logger.debug('completeNewPassword failure', err)
           reject(err)
         },
       })

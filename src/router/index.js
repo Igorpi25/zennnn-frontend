@@ -14,6 +14,7 @@ import Staff from '../views/Staff.vue'
 import Preview from '../views/Preview.vue'
 import Invitation from '../views/Invitation.vue'
 import SignIn from '../views/SignIn.vue'
+import Registration from '../views/Registration.vue'
 import SignUp from '../views/SignUp.vue'
 import Welcome from '../views/Welcome.vue'
 import PasswordRestore from '../views/PasswordRestore.vue'
@@ -210,6 +211,12 @@ const routes = [
     name: 'signin',
     meta: { requiresNotAuth: true },
     component: SignIn,
+  },
+  {
+    path: '/registration',
+    name: 'registration',
+    meta: { requiresNotAuth: true },
+    component: Registration,
   },
   {
     path: '/signup',

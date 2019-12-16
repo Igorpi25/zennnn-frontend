@@ -112,6 +112,107 @@
     </section>
     <Copyright />
     <div class="content-background content-background--main" />
+    <v-dialog
+      v-model="compliteFormDialog"
+      max-width="360"
+      persistent
+    >
+      <Form
+        ref="compliteForm"
+        :title="$t('signup.registration')"
+        :error-message.sync="compliteErrorMessage"
+        rounded
+        shadow
+        class="form--max-w-sm mx-auto"
+        body-class="pt-6 pb-8 px-6"
+        header
+        header-icon="circle"
+        header-class="px-4"
+      >
+        <div class="w-full pb-4">
+          <p class="text-white">
+            <span>{{ $t('signup.compliteRegistration') }}</span>&nbsp;
+            <span class="text-gray-lightest">
+              {{ $t('signup.registerContent') }}
+            </span>
+          </p>
+        </div>
+        <div class="w-full">
+          <TextField
+            v-model="compliteFormModel.firstName"
+            :label="$t('signup.firstName')"
+            name="firstName"
+            required
+            autofocus
+            state-icon
+          />
+        </div>
+        <div class="w-full">
+          <TextField
+            v-model="compliteFormModel.lastName"
+            :label="$t('signup.lastName')"
+            name="lastName"
+            required
+            state-icon
+          />
+        </div>
+        <div class="w-full">
+          <TextField
+            v-model="compliteFormModel.password"
+            :label="$t('signup.password')"
+            :type="compliteShowPassword ? 'text' : 'password'"
+            name="password"
+            required
+            minlength="8"
+            state-icon
+          >
+            <template v-slot:append-outer>
+              <div
+                class="cursor-pointer select-none"
+                @click="compliteShowPassword = !compliteShowPassword"
+              >
+                <Icon
+                  v-if="compliteShowPassword"
+                  color="#9A9A9A"
+                  style="transform:rotateY(-180deg)"
+                >{{ icons.mdiEyeOffOutline }}</Icon>
+                <Icon
+                  v-else
+                  color="#9A9A9A"
+                >{{ icons.mdiEyeOutline }}</Icon>
+              </div>
+            </template>
+          </TextField>
+        </div>
+        <div class="relative mx-auto text-secondary">
+          <!-- TODO fix position -->
+          <Checkbox required secondary>
+            <span class="ml-3 float-left text-gray-light">
+              {{ $t('signup.acceptPolicyAndTerms') }}&nbsp;
+              <a class="text-secondary" href="#">{{ $t('signup.privacyPolicy') }}</a>
+              &nbsp;{{ $t('preposition.and') }}&nbsp;
+              <a class="text-secondary" href="#">{{ $t('signup.termsOfUse') }}</a>
+            </span>
+          </Checkbox>
+          <div class="flex justify-center">
+            <Button
+              large
+              secondary
+              :disabled="compliteLoading"
+              class="mt-5 flex justify-center"
+              @click="completeNewPassword"
+            >
+              <span v-if="compliteLoading">
+                {{ $t('action.loading') }}
+              </span>
+              <span v-else>
+                {{ $t('signup.submit') }}
+              </span>
+            </Button>
+          </div>
+        </div>
+      </Form>
+    </v-dialog>
   </div>
 </template>
 
@@ -122,6 +223,8 @@ import StatusBar from '@/components/StatusBar.vue'
 import SocialSignIn from '@/components/SocialSignIn.vue'
 import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
+
+import { COMPLITE_REGISTRATION } from '../graphql/mutations'
 
 export default {
   name: 'SignIn',
@@ -141,6 +244,16 @@ export default {
         login: '',
         password: '',
       },
+      compliteFormDialog: false,
+      compliteErrorMessage: '',
+      compliteLoading: false,
+      compliteFormModel: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+      },
+      compliteShowPassword: false,
       icons: {
         mdiEyeOutline,
         mdiEyeOffOutline,
@@ -156,11 +269,22 @@ export default {
         const isValid = this.$refs.form.validate()
         if (isValid) {
           const user = await this.$Auth.signIn(this.formModel.login, this.formModel.password)
-          this.$logger.info('Logged in user', user)
-          if (this.$route.query.redirect) {
-            this.$router.replace({ path: this.$route.query.redirect })
+          if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+            this.user = user
+            const attrs = user.challengeParam.userAttributes
+            this.compliteFormModel.firstName = attrs.given_name || ''
+            this.compliteFormModel.lastName = attrs.family_name || ''
+            this.compliteFormModel.email = attrs.email
+            this.compliteFormDialog = true
+            // TODO: save user to cache and redirect to Registration.vue view
+            // this.$router.push({ name: 'registration', query: this.$route.query })
           } else {
-            this.$router.replace({ name: 'home' })
+            this.$logger.info('Logged in user', user)
+            if (this.$route.query.redirect) {
+              this.$router.replace({ path: this.$route.query.redirect })
+            } else {
+              this.$router.replace({ name: 'home' })
+            }
           }
         }
       } catch (error) {
@@ -168,6 +292,41 @@ export default {
         this.$logger.warn('Error: ', error)
       } finally {
         this.loading = false
+      }
+    },
+    async completeNewPassword (e) {
+      try {
+        e.preventDefault()
+        this.compliteLoading = true
+        this.compliteErrorMessage = ''
+        const isValid = this.$refs.compliteForm.validate()
+        if (isValid) {
+          const { firstName, lastName, email, password } = this.compliteFormModel
+          const attrs = {
+            given_name: firstName,
+            family_name: lastName,
+          }
+          const loggedUser = await this.$Auth.completeNewPassword(this.user, password, attrs)
+          this.$logger.info('Registered complite user', loggedUser)
+          await this.$Auth.signIn(email, password)
+          await this.$apollo.mutate({
+            mutation: COMPLITE_REGISTRATION,
+            variables: {
+              givenName: firstName,
+              familyName: lastName,
+            },
+          })
+          if (this.$route.query.redirect) {
+            this.$router.replace({ path: this.$route.query.redirect })
+          } else {
+            this.$router.replace({ name: 'home' })
+          }
+        }
+      } catch (error) {
+        this.compliteErrorMessage = error.message || error
+        this.$logger.warn('Error: ', error)
+      } finally {
+        this.compliteLoading = false
       }
     },
   },
