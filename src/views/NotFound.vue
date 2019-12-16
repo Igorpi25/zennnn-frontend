@@ -44,7 +44,7 @@
               outline
               secondary
               class="mt-8 mx-auto"
-              @click="router.push({name: 'signup'})"
+              @click="$router.push({ name: 'home' })"
             >
               <span>{{ $t('action.toHome') }}</span>
             </Button>
