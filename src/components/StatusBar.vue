@@ -300,7 +300,7 @@ export default {
       return items
     },
     favoritesKeyStore () {
-      return `zFavorites.${this.getProfile.id}`
+      return `zFavorites.${this.profile.id}`
     },
     profileItems () {
       return [
