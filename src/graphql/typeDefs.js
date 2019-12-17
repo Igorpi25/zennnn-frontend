@@ -342,11 +342,18 @@ export const ORG_CONTRACT_FRAGMENT = gql`
   fragment OrgContractFragment on Contract {
     id
     name
-    docNo
+    title
     country
+    docHeader
+    useDefaultDocHeader
+    docNo
     items {
       title
-      subtitle
+      paragraphs
+    }
+    specItems {
+      title
+      paragraphs
     }
   }
 `

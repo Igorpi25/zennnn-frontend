@@ -7,11 +7,11 @@
     <div class="modal-body">
       <ul>
         <li
-          v-for="(li, index) in paperList" :key="index"
+          v-for="item in paperList" :key="item.id"
           class="flex py-3 px-10 hover:bg-accent1"
-          @click="$emit('editPaper', li.name)"
+          @click="$emit('editPaper', item.id)"
         >
-          <span class="flex-grow text-sm cursor-pointer">{{ li.name }}</span>
+          <span class="flex-grow text-sm cursor-pointer">{{ item.name }}</span>
           <span class="mr-6 cursor-pointer text-primary">
             <Icon size="24">
               {{ icons.ziGear }}
@@ -19,7 +19,7 @@
           </span>
           <span
             class="cursor-pointer text-primary"
-            @click.stop="$emit('removePaper', index, paperList)"
+            @click.stop="$emit('removePaper', item.id, paperList)"
           >
             <Icon size="24">
               {{ icons.ziTrash }}

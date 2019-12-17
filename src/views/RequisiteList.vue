@@ -100,7 +100,7 @@ export default {
   methods: {
     async deleteRequisite (id) {
       try {
-        const msg = this.$t('alert.removeClient')
+        const msg = this.$t('alert.removeRequisites')
         const confirm = await confirmDialog(msg)
         if (confirm === 'not_confirmed') {
           return

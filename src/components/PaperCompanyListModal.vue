@@ -2,8 +2,8 @@
   <div class="p-8 supplier-list-container">
     <ul class="ml-6 text-primary">
       <li
-        v-for="(supplier, index) in supplierList"
-        :key="index"
+        v-for="supplier in supplierList"
+        :key="supplier.id"
         @click="$emit('chooseSupplier', supplier.id)"
         class="supplier__company-name">
         <span>
@@ -30,21 +30,35 @@
 import { mdiPlusCircleOutline } from '@mdi/js'
 import { ziGear } from '@/assets/icons'
 
+import { LIST_ORG_REQUISITES } from '../graphql/queries'
+
 export default {
   name: 'PaperCompanyListModal',
+  apollo: {
+    listOrgRequisites: {
+      query: LIST_ORG_REQUISITES,
+      variables () {
+        return {
+          orgId: this.orgId,
+        }
+      },
+    },
+  },
   data () {
     return {
-      supplierList: [
-        { id: 1, name: 'Nowaday Union Limited' },
-        { id: 2, name: ' OOO «Рoга и Копыта»' },
-        { id: 3, name: 'ОАО «Лесспецстройгазмонтажпром»' },
-        { id: 4, name: 'ИП Васильев. И.П.' },
-      ],
       icons: {
         ziGear,
         mdiPlusCircleOutline,
       },
     }
+  },
+  computed: {
+    orgId () {
+      return this.$route.params.orgId
+    },
+    supplierList () {
+      return this.listOrgRequisites
+    },
   },
 }
 </script>

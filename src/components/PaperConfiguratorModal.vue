@@ -15,8 +15,8 @@
         {{ icons.ziPencil }}
       </Icon>
       <TextField
-        :placeholder="$t('paper.name')"
         v-model="blank.name"
+        :placeholder="$t('paper.name')"
         outlined
         hide-details
         class="w-5/6 ml-6"
@@ -29,8 +29,8 @@
           <div class="flex flex-col md:flex-row justify-between">
             <span class="paper-title__title mb-8 md:mt-0">
               <Editable
+                v-model="blank.title"
                 :placeholder="$t('paper.heading')"
-                v-model="blank.heading"
                 type="editable"
                 single-line
                 text-dark
@@ -49,8 +49,8 @@
           <div class="paper-title__info">
             <span>
               <TextField
+                v-model="blank.country"
                 :placeholder="$t('paper.location')"
-                v-model="blank.location"
                 single-line
                 text-dark
                 hide-details
@@ -67,13 +67,14 @@
           </div>
           <div class="paper-title__textfield mt-8">
             <TextArea
+              v-model="blank.docHeader"
+              :disabled="isStandardHeader"
               :placeholder="$t('paper.textField')"
               hide-details
               single-line
               text-dark
               transparent
-              :rows="blank.textFieldRows"
-              v-model="blank.textField"
+              rows="1"
             />
           </div>
           <Checkbox
@@ -86,9 +87,15 @@
           </Checkbox>
         </div>
 
-        <div class="paper-custom-paragraph mt-10" v-for="(item, index) in blank.items" :key="index">
+        <div
+          v-for="(item, index) in blank.items" :key="index"
+          class="paper-custom-paragraph mt-10"
+        >
           <div class="paper-custom-paragraph__title heading">
-            <span class="heading__number flex items-center cursor-pointer" @click="changePos(index, blank.items)">
+            <span
+              class="heading__number flex items-center cursor-pointer"
+              @click="changePos(index, blank.items)"
+            >
               <i v-if="index > 0" class="text-primary">
                 <Icon
                   size="24"
@@ -100,15 +107,16 @@
               <span>{{ index + 1 }}.</span>
             </span>
             <TextField
+              v-model="item.title"
               :placeholder="$t('paper.paragraphHeading')"
-              v-model="item.heading"
               single-line
               text-dark
               hide-details
             />
             <span
+              class="remove-item"
               @click="removeItem(blank.items, index)"
-              class="remove-item">
+            >
               <i>
                 <img src="@/assets/icons/delete-circle.svg" alt="Remove">
               </i>
@@ -116,8 +124,14 @@
             </span>
           </div>
           <div>
-            <div class="paragraph relative" v-for="(paragraph, idx) in item.paragraphs" :key="idx">
-              <span class="paragraph__number flex cursor-pointer" @click="changePos(idx, item.paragraphs)">
+            <div
+              v-for="(paragraph, idx) in item.paragraphs" :key="idx"
+              class="paragraph relative"
+            >
+              <span
+                class="paragraph__number flex cursor-pointer"
+                @click="changePos(idx, item.paragraphs)"
+              >
                 <i v-if="idx > 0" class="text-primary">
                   <Icon
                     size="24"
@@ -129,6 +143,7 @@
                 <span>{{ index + 1 }}.{{ idx + 1 }}.</span>
               </span>
               <TextArea
+                v-model="item.paragraphs[idx]"
                 :placeholder="$t('paper.paragraph')"
                 hide-details
                 single-line
@@ -136,11 +151,11 @@
                 transparent
                 rows="1"
                 auto-grow
-                v-model="paragraph.paragraph"
               />
               <span
+                class="remove-item"
                 @click="removeParagraph(blank.items, index, idx)"
-                class="remove-item">
+              >
                 <i>
                   <img src="@/assets/icons/delete-circle.svg" alt="Remove">
                 </i>
@@ -182,65 +197,65 @@
 
           <div class="paper-details mt-16 flex flex-col md:flex-row justify-around text-sm">
             <div class="w-full md:w-1/2 pl-4 md:pr-10 leading-none relative">
-              <ul v-for="(supplier, index) in currentSupplier" :key="index">
+              <ul v-for="supplier in currentSupplier" :key="supplier.id">
                 <li class="flex">
-                  <span class="-ml-4 mr-2">{{ $t('suppliers.supplier') }}:</span>
+                  <span class="-ml-4 mr-2">{{ $t('paper.requisites.supplier') }}</span>
                   <div
-                    @click="openSupplierList"
                     class="paper-details__supplier"
+                    @click="openSupplierList"
                   >
                     <Icon>
                       {{ icons.ziGear }}
                     </Icon>
-                    <span class="supplier__company-name">{{ supplier.companyName }}</span>
+                    <span class="supplier__company-name">{{ supplier.name }}</span>
                   </div>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('suppliers.address') }}:</span>
-                  <span class="w-2/3">{{ supplier.address }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.address') }}</span>
+                  <span class="w-2/3">{{ supplier.legalAddress }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">Индекс:</span>
-                  <span class="w-2/3">_ _ _ _ _ _</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.postcode') }}</span>
+                  <span class="w-2/3">{{ supplier.leagalAddressPostcode || '_ _ _ _ _ _' }}</span>
                 </li>
                 <li class="flex mt-4">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('suppliers.phone') }}:</span>
-                  <span class="w-2/3">0086 186 200 00 000</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.phone') }}</span>
+                  <span class="w-2/3">{{ supplier.phone }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">Факс:</span>
-                  <span class="w-2/3">0086 (20) 8421-7387</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.fax') }}</span>
+                  <span class="w-2/3">{{ supplier.fax }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">E-mail:</span>
-                  <span class="w-2/3">infonowadays@gmail.com</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.email') }}</span>
+                  <span class="w-2/3">{{ supplier.email }}</span>
                 </li>
                 <li class="flex mt-4">
-                  <span class="w-1/3 -ml-4 mr-2">Банк получателя:</span>
-                  <span class="w-2/3">HSBC</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.bank') }}</span>
+                  <span class="w-2/3">{{ supplier.bankName }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">Адрес банка:</span>
-                  <span class="w-2/3">4/F HSBC, Tsim Sha Tsui Branch, 82-84 Nathan Rd., Kowloon, Hong Kong</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.bankAddress') }}</span>
+                  <span class="w-2/3">{{ supplier.bankAddress }}</span>
                 </li>
                 <li class="flex mt-4">
-                  <span class="w-1/3 -ml-4 mr-2">Номер счета:</span>
-                  <span class="w-2/3">817 - 636210 - 838</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.accountNumber') }}</span>
+                  <span class="w-2/3">{{ supplier.bankAccountNumber }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">SWIFT:</span>
-                  <span class="w-2/3">HSBCHKHHHKH</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.swift') }}</span>
+                  <span class="w-2/3">{{ supplier.swift }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">ФИО:</span>
-                  <span class="w-2/3">{{ supplier.fullName }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.fullName') }}</span>
+                  <span class="w-2/3">{{ supplier.ownerFullName }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">Должность:</span>
-                  <span class="w-2/3">Директор</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.position') }}</span>
+                  <span class="w-2/3">{{ supplier.ownerJobPosition }}</span>
                 </li>
                 <li class="flex mt-4">
-                  <span class="w-1/3 -ml-4 mr-2">Подпись / Печать:</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.signatureStamp') }}</span>
                   <span class="w-2/3">_____________________</span>
                 </li>
               </ul>
@@ -258,14 +273,14 @@
           <div class="paper-title__title">
             <span>{{ $t('paper.specification') }} №A0000-26082020-1</span>
             <span class="block"> {{ $t('paper.to') }}
-              <span class="text-gray-lighter">{{ blank.heading }}</span>
+              <span class="text-gray-lighter">{{ blank.title }}</span>
             </span>
           </div>
           <div class="paper-title__info">
             <span>
                <TextField
+                v-model="blank.country"
                 :placeholder="$t('paper.location')"
-                v-model="blank.location"
                 single-line
                 text-dark
                 hide-details
@@ -288,8 +303,8 @@
               </span>
               <!-- SET VALUE {paper.deliveryItem} BY DEFAULT -->
             <TextField
+              v-model="blank.specItems[0].title"
               :placeholder="$t('paper.deliveryItem')"
-              v-model="blank.specItems[0].heading"
               single-line
               text-dark
               hide-details
@@ -301,11 +316,14 @@
 
         </div>
         <div
+          v-for="(item, index) in blank.specItems.slice(1)" :key="index"
           class="paper-custom-paragraph mt-10"
-         v-for="(item, index) in blank.specItems.slice(1)" :key="index"
         >
           <div class="paper-custom-paragraph__title heading">
-            <span class="heading__number flex items-center cursor-pointer" @click="changePos(index + 1, blank.specItems)">
+            <span
+              class="heading__number flex items-center cursor-pointer"
+              @click="changePos(index + 1, blank.specItems)"
+            >
               <i v-if="index > 0" class="text-primary">
                 <Icon
                   size="24"
@@ -317,27 +335,29 @@
               <span>{{ index + 2 }}.</span>
             </span>
             <TextField
+              v-model="item.title"
               :placeholder="$t('paper.paragraphHeading')"
-              v-model="item.heading"
               single-line
               text-dark
               hide-details
             />
             <span
-              @click="removeItem(blank.specItems, index + 1)"
               class="remove-item"
+              @click="removeItem(blank.specItems, index + 1)"
             >
               <i>
                 <img src="@/assets/icons/delete-circle.svg" alt="Remove">
               </i>
-              <!-- <Icon icon-name="delete-circle" /> -->
             </span>
           </div>
           <div
-            class="paragraph relative"
             v-for="(paragraph, idx) in item.paragraphs" :key="idx"
+            class="paragraph relative"
           >
-            <span class="paragraph__number flex cursor-pointer" @click="changePos(idx, item.paragraphs)">
+            <span
+              class="paragraph__number flex cursor-pointer"
+              @click="changePos(idx, item.paragraphs)"
+            >
               <i v-if="idx > 0" class="text-primary">
                 <Icon
                   size="24"
@@ -349,22 +369,21 @@
               <span>{{ index + 2 }}.{{ idx + 1 }}.</span>
             </span>
             <TextArea
+              v-model="item.paragraphs[idx]"
               :placeholder="$t('paper.paragraph')"
               hide-details
               single-line
               text-dark
               transparent
               rows="1"
-              v-model="paragraph.paragraph"
             />
             <span
-              @click="removeParagraph(blank.specItems, index + 1, idx)"
               class="remove-item"
+              @click="removeParagraph(blank.specItems, index + 1, idx)"
             >
               <i>
                 <img src="@/assets/icons/delete-circle.svg" alt="Remove">
               </i>
-              <!-- <Icon icon-name="delete-circle" /> -->
             </span>
           </div>
           <Button
@@ -402,7 +421,10 @@
         <span>{{ $t('action.save') }}</span>
       </Button>
     </div>
-    <span class="close-btn" @click="$emit('close')">
+    <span
+      class="close-btn"
+      @click="$emit('close')"
+    >
       <Icon>{{ icons.mdiClose }}</Icon>
     </span>
   </div>
@@ -411,6 +433,8 @@
 <script>
 import { mdiPlusCircleOutline, mdiClose } from '@mdi/js'
 import { ziGear, ziPencil, ziChevronUpCircle } from '@/assets/icons'
+
+import { GET_ORG_REQUISITE } from '../graphql/queries'
 
 import PaperCompanyListModal from '@/components/PaperCompanyListModal.vue'
 
@@ -425,6 +449,17 @@ export default {
       default: () => ({}),
     },
   },
+  apollo: {
+    getOrgRequisite: {
+      query: GET_ORG_REQUISITE,
+      variables () {
+        return {
+          id: this.reqId,
+        }
+      },
+      fetchPolicy: 'cache-and-network',
+    },
+  },
   data () {
     return {
       icons: {
@@ -436,53 +471,23 @@ export default {
       },
       isStandardHeader: false,
       supplierList: false,
-      suppliers: [
-        {
-          id: 1,
-          companyName: 'Nowaday Union Limited',
-          fullName: 'John Doe',
-          address: 'Unit 1010, 10/F Miramar Tower, 132 Nathan Road, Tsim Sha Tsui, Kowloon, Hong Kong',
-        },
-        {
-          id: 2,
-          companyName: ' OOO «Рoга и Копыта»',
-          fullName: 'Dow Johnes',
-          address: 'Unit 1020, 20/B Trump Tower, 345 Faggot Road, Zinq Zanq Tao, Beijing',
-        },
-        {
-          id: 3,
-          companyName: 'ОАО «Лесспецстройгазмонтажпром»',
-          fullName: 'Jow Dodge',
-          address: 'Ulitsa Petrovskogo, 19, Yakutsk, Sakha Republic, 677027',
-        },
-        {
-          id: 4,
-          companyName: 'ИП Васильев. И.П.',
-          fullName: 'Dog Von Staffordshire Terrier',
-          address: '221b Baker St, Marylebone, London NW1 6XE, United Kingdom',
-        },
-      ],
-      currentSupplier: [
-        {
-          id: 1,
-          companyName: 'Nowaday Union Limited',
-          fullName: 'John Doe',
-          address: 'Unit 1010, 10/F Miramar Tower, 132 Nathan Road, Tsim Sha Tsui, Kowloon, Hong Kong',
-        },
-      ],
+      reqId: '5def49752edff60026562dca',
     }
+  },
+  computed: {
+    currentSupplier () {
+      return [this.getOrgRequisite]
+    },
   },
   methods: {
     addHeading (blank) {
       blank.push({
-        heading: '',
-        paragraphs: [
-          { paragraph: '' },
-        ],
+        title: '',
+        paragraphs: [''],
       })
     },
     addParagraph (blank, index) {
-      blank[index].paragraphs.push({ paragraph: '' })
+      blank[index].paragraphs.push('')
     },
     removeItem (blank, index) {
       blank.splice(index, 1)
@@ -492,16 +497,7 @@ export default {
     },
     useStandardHeader () {
       this.isStandardHeader = !this.isStandardHeader
-      this.setStandardHeader()
-    },
-    setStandardHeader () {
-      if (this.isStandardHeader) {
-        this.blank.textFieldRows = 2
-        this.blank.textField = `${this.currentSupplier[0].companyName} именуемое в дальнейшем «Поставщик» в лице генерального директора ${this.currentSupplier[0].fullName} и так далее и бла бла бла`
-      } else {
-        this.blank.textFieldRows = 1
-        this.blank.textField = ''
-      }
+      if (this.isStandardHeader) this.blank.docHeader = ''
     },
     changePos (index, arr) {
       const curr = arr[index]
@@ -514,9 +510,8 @@ export default {
       this.supplierList = true
     },
     chooseSupplier (id) {
+      this.reqId = id
       this.supplierList = false
-      this.currentSupplier = this.suppliers.filter(supplier => supplier.id === id)
-      this.setStandardHeader()
     },
   },
 }
