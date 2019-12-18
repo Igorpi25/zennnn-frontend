@@ -24,20 +24,8 @@
       <PaperConfiguratorModal
         :blank="blank"
         :create="create"
-        @close="beforeClose"
-      />
-    </v-dialog>
-
-    <v-dialog
-      v-model="saveBeforeClose"
-      max-width="520"
-    >
-      <SaveBeforeCloseModal
-        :text=" `${$t('paper.saveChanges')} ${$t('paper.supplyContract')} ${$t('paper.beforeClosing')}`"
-        :postScriptum="$t('paper.ifNotSave')"
-        @dontSave="doNotSavePaperChanges"
-        @cancel="cancel"
-        @save="savePaperChanges"
+        @update="contractCreated"
+        @close="paperConfigurator = false"
       />
     </v-dialog>
 
@@ -340,28 +328,20 @@
 </template>
 
 <script>
-// import cloneDeep from 'clone-deep'
-import deepEqual from 'deep-equal'
-
 import { UPDATE_SPEC } from '@/graphql/mutations'
 
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
 import PaperListModal from '@/components/PaperListModal.vue'
 import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
-import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
 
 import { LIST_ORG_CONTRACTS } from '../graphql/queries'
-// import { CREATE_CONTRACT, UPDATE_СONTRACT, DELETE_СONTRACT } from '../graphql/mutations'
-
-// import { confirmDialog } from '@/util/helpers'
 
 export default {
   name: 'SpecSummary',
   components: {
     PaperListModal,
     PaperConfiguratorModal,
-    SaveBeforeCloseModal,
   },
   props: {
     spec: {
@@ -463,6 +443,7 @@ export default {
     },
     openContract (id) {
       if (id) {
+        this.create = false
         this.blank = this.papers.find(paper => paper.id === id)
       }
       this.paperList = false
@@ -488,24 +469,8 @@ export default {
       this.paperList = false
       this.paperConfigurator = true
     },
-    beforeClose () {
-      if (!deepEqual(this.blank, this.blankClone, true)) {
-        this.saveBeforeClose = true
-      } else {
-        this.paperConfigurator = false
-      }
-    },
-    doNotSavePaperChanges () {
-      this.saveBeforeClose = false
-      this.paperConfigurator = false
-    },
-    cancel () {
-      this.saveBeforeClose = false
-    },
-    savePaperChanges () {
-      this.updateContract()
-      this.saveBeforeClose = false
-      this.paperConfigurator = false
+    contractCreated () {
+      this.$apollo.queries.listOrgContracts.refetch()
     },
   },
 }

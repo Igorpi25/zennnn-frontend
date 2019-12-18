@@ -2,11 +2,24 @@
   <div class="modal">
 
     <v-dialog
-      v-model="supplierList"
+      v-model="requisiteList"
       max-width="400"
     >
       <PaperCompanyListModal
-        @chooseSupplier="chooseSupplier"
+        @chooseRequisite="chooseRequisite"
+      />
+    </v-dialog>
+
+    <v-dialog
+      v-model="saveBeforeClose"
+      max-width="520"
+    >
+      <SaveBeforeCloseModal
+        :text=" `${$t('paper.saveChanges')} ${$t('paper.supplyContract')} ${$t('paper.beforeClosing')}`"
+        :postScriptum="$t('paper.ifNotSave')"
+        @dontSave="doNotSaveContractChanges"
+        @cancel="cancel"
+        @save="saveContractChanges"
       />
     </v-dialog>
 
@@ -197,62 +210,62 @@
 
           <div class="paper-details mt-16 flex flex-col md:flex-row justify-around text-sm">
             <div class="w-full md:w-1/2 pl-4 md:pr-10 leading-none relative">
-              <ul v-for="supplier in currentSupplier" :key="supplier.id">
+              <ul>
                 <li class="flex">
                   <span class="-ml-4 mr-2">{{ $t('paper.requisites.supplier') }}</span>
                   <div
-                    class="paper-details__supplier"
-                    @click="openSupplierList"
+                    class="paper-details__requisite"
+                    @click="openRequisiteList"
                   >
                     <Icon>
                       {{ icons.ziGear }}
                     </Icon>
-                    <span class="supplier__company-name">{{ supplier.name }}</span>
+                    <span class="requisite__company-name">{{ requisite.name }}</span>
                   </div>
                 </li>
                 <li class="flex">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.address') }}</span>
-                  <span class="w-2/3">{{ supplier.legalAddress }}</span>
+                  <span class="w-2/3">{{ requisite.legalAddress }}</span>
                 </li>
                 <li class="flex">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.postcode') }}</span>
-                  <span class="w-2/3">{{ supplier.leagalAddressPostcode || '_ _ _ _ _ _' }}</span>
+                  <span class="w-2/3">{{ requisite.leagalAddressPostcode || '_ _ _ _ _ _' }}</span>
                 </li>
                 <li class="flex mt-4">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.phone') }}</span>
-                  <span class="w-2/3">{{ supplier.phone }}</span>
+                  <span class="w-2/3">{{ requisite.phone }}</span>
                 </li>
                 <li class="flex">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.fax') }}</span>
-                  <span class="w-2/3">{{ supplier.fax }}</span>
+                  <span class="w-2/3">{{ requisite.fax }}</span>
                 </li>
                 <li class="flex">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.email') }}</span>
-                  <span class="w-2/3">{{ supplier.email }}</span>
+                  <span class="w-2/3">{{ requisite.email }}</span>
                 </li>
                 <li class="flex mt-4">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.bank') }}</span>
-                  <span class="w-2/3">{{ supplier.bankName }}</span>
+                  <span class="w-2/3">{{ requisite.bankName }}</span>
                 </li>
                 <li class="flex">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.bankAddress') }}</span>
-                  <span class="w-2/3">{{ supplier.bankAddress }}</span>
+                  <span class="w-2/3">{{ requisite.bankAddress }}</span>
                 </li>
                 <li class="flex mt-4">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.accountNumber') }}</span>
-                  <span class="w-2/3">{{ supplier.bankAccountNumber }}</span>
+                  <span class="w-2/3">{{ requisite.bankAccountNumber }}</span>
                 </li>
                 <li class="flex">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.swift') }}</span>
-                  <span class="w-2/3">{{ supplier.swift }}</span>
+                  <span class="w-2/3">{{ requisite.swift }}</span>
                 </li>
                 <li class="flex">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.fullName') }}</span>
-                  <span class="w-2/3">{{ supplier.ownerFullName }}</span>
+                  <span class="w-2/3">{{ requisite.ownerFullName }}</span>
                 </li>
                 <li class="flex">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.position') }}</span>
-                  <span class="w-2/3">{{ supplier.ownerJobPosition }}</span>
+                  <span class="w-2/3">{{ requisite.ownerJobPosition }}</span>
                 </li>
                 <li class="flex mt-4">
                   <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.signatureStamp') }}</span>
@@ -416,14 +429,14 @@
       <Button
         large
         class="mr-8"
-        @click="update()"
+        @click="update"
       >
         <span>{{ $t('action.save') }}</span>
       </Button>
     </div>
     <span
       class="close-btn"
-      @click="$emit('close')"
+      @click="beforeClose"
     >
       <Icon>{{ icons.mdiClose }}</Icon>
     </span>
@@ -432,7 +445,7 @@
 
 <script>
 import cloneDeep from 'clone-deep'
-// import deepEqual from 'deep-equal'
+import deepEqual from 'deep-equal'
 
 import { mdiPlusCircleOutline, mdiClose } from '@mdi/js'
 import { ziGear, ziPencil, ziChevronUpCircle } from '@/assets/icons'
@@ -441,11 +454,13 @@ import { GET_ORG_REQUISITE } from '../graphql/queries'
 import { CREATE_CONTRACT, UPDATE_СONTRACT } from '../graphql/mutations'
 
 import PaperCompanyListModal from '@/components/PaperCompanyListModal.vue'
+import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
 
 export default {
   name: 'PaperConfiguratorModal',
   components: {
     PaperCompanyListModal,
+    SaveBeforeCloseModal,
   },
   props: {
     blank: {
@@ -487,7 +502,8 @@ export default {
       contract: {},
       contractClone: {},
       isStandardHeader: false,
-      supplierList: false,
+      saveBeforeClose: false,
+      requisiteList: false,
       reqId: '5def49752edff60026562dca',
     }
   },
@@ -495,8 +511,15 @@ export default {
     orgId () {
       return this.$route.params.orgId
     },
-    currentSupplier () {
-      return [this.getOrgRequisite]
+    requisite () {
+      return this.getOrgRequisite
+    },
+  },
+  watch: {
+    blank (newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.setData(newVal)
+      }
     },
   },
   methods: {
@@ -533,13 +556,13 @@ export default {
       try {
         let input = {}
 
-        if (this.create) input.id = this.contract.id
+        if (!this.create) input.id = this.contract.id
 
-        Object.keys(this.contractMetadata).forEach(key => {
+        for (const key in this.contractMetaData) {
           if (this.contract.hasOwnProperty(key)) {
             this.$set(input, key, this.contract[key])
           }
-        })
+        }
         const items = []
         const specItems = []
         this.contract.items.forEach(item => {
@@ -568,26 +591,52 @@ export default {
           variables,
         })
         if (response && response.data && response.data.createContract) {
-          this.contract = response.data.createContract
-          this.contractClone = cloneDeep(this.contract)
-          this.paperConfigurator = true
+          this.setData(response.data.createContract)
         }
+        if (response && response.data && response.data.updateContract) {
+          this.setData(response.data.updateContract)
+        }
+        this.$emit('update')
       } catch (error) {
         this.$logger.warn('Error: ', error)
         throw new Error(error)
       }
+      this.$emit('close')
     },
-
-    openSupplierList () {
-      this.supplierList = true
+    openRequisiteList () {
+      this.requisiteList = true
     },
-    chooseSupplier (id) {
+    chooseRequisite (id) {
       this.reqId = id
-      this.supplierList = false
+      this.requisiteList = false
+    },
+    beforeClose () {
+      if (!deepEqual(this.contract, this.contractClone, true)) {
+        this.saveBeforeClose = true
+      } else {
+        this.$emit('close')
+      }
+    },
+    doNotSaveContractChanges () {
+      this.saveBeforeClose = false
+      this.$emit('close')
+    },
+    cancel () {
+      this.saveBeforeClose = false
+    },
+    saveContractChanges () {
+      this.update()
+      this.saveBeforeClose = false
+      this.$emit('close')
+    },
+    setData (item) {
+      if (!item) return
+      this.contract = item
+      this.contractClone = cloneDeep(this.contract)
     },
   },
   created () {
-    this.contract = this.blank
+    this.setData(this.blank)
   },
 }
 </script>
@@ -709,16 +758,16 @@ export default {
     font-size: 16px;
     cursor: pointer;
   }
-  .paper-details__supplier {
+  .paper-details__requisite {
     @apply flex items-center text-primary cursor-pointer;
     position: absolute;
     top: -5px;
     left: 25%;
   }
-  .supplier__company-name {
+  .requisite__company-name {
     @apply ml-2;
   }
-  .supplier__company-name:hover {
+  .requisite__company-name:hover {
     color: #6996B2;
   }
   .paper-buyer-details {
@@ -756,7 +805,7 @@ export default {
     .modal-paper {
       padding: 50px 60px 60px 110px;
     }
-    /* .paper-details__supplier {
+    /* .paper-details__requisite {
       right: 80px;
     } */
     .paper-table {
