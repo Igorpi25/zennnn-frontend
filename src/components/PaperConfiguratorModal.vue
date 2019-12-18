@@ -15,7 +15,7 @@
         {{ icons.ziPencil }}
       </Icon>
       <TextField
-        v-model="blank.name"
+        v-model="contract.name"
         :placeholder="$t('paper.name')"
         outlined
         hide-details
@@ -29,7 +29,7 @@
           <div class="flex flex-col md:flex-row justify-between">
             <span class="paper-title__title mb-8 md:mt-0">
               <Editable
-                v-model="blank.title"
+                v-model="contract.title"
                 :placeholder="$t('paper.heading')"
                 type="editable"
                 single-line
@@ -49,7 +49,7 @@
           <div class="paper-title__info">
             <span>
               <TextField
-                v-model="blank.country"
+                v-model="contract.country"
                 :placeholder="$t('paper.location')"
                 single-line
                 text-dark
@@ -67,7 +67,7 @@
           </div>
           <div class="paper-title__textfield mt-8">
             <TextArea
-              v-model="blank.docHeader"
+              v-model="contract.docHeader"
               :disabled="isStandardHeader"
               :placeholder="$t('paper.textField')"
               hide-details
@@ -88,13 +88,13 @@
         </div>
 
         <div
-          v-for="(item, index) in blank.items" :key="index"
+          v-for="(item, index) in contract.items" :key="index"
           class="paper-custom-paragraph mt-10"
         >
           <div class="paper-custom-paragraph__title heading">
             <span
               class="heading__number flex items-center cursor-pointer"
-              @click="changePos(index, blank.items)"
+              @click="changePos(index, contract.items)"
             >
               <i v-if="index > 0" class="text-primary">
                 <Icon
@@ -115,7 +115,7 @@
             />
             <span
               class="remove-item"
-              @click="removeItem(blank.items, index)"
+              @click="removeItem(contract.items, index)"
             >
               <i>
                 <img src="@/assets/icons/delete-circle.svg" alt="Remove">
@@ -154,7 +154,7 @@
               />
               <span
                 class="remove-item"
-                @click="removeParagraph(blank.items, index, idx)"
+                @click="removeParagraph(contract.items, index, idx)"
               >
                 <i>
                   <img src="@/assets/icons/delete-circle.svg" alt="Remove">
@@ -167,7 +167,7 @@
             small
             outline
             class="mt-4"
-            @click="addParagraph(blank.items, index)"
+            @click="addParagraph(contract.items, index)"
           >
             <template v-slot:icon>
               <Icon size="16">{{ icons.mdiPlusCircleOutline }}</Icon>
@@ -179,7 +179,7 @@
         <Button
           outline
           class="mt-10"
-          @click="addHeading(blank.items)"
+          @click="addHeading(contract.items)"
         >
           <template v-slot:icon>
             <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
@@ -190,7 +190,7 @@
         <div class="paper-requisites mt-10">
           <div class="paper-requsites__title heading">
             <span class="heading__number flex items-center">
-                <span>{{ blank.items.length + 1 }}.</span>
+                <span>{{ contract.items.length + 1 }}.</span>
               </span>
             <span>{{ $t('paper.details') }}</span>
           </div>
@@ -273,13 +273,13 @@
           <div class="paper-title__title">
             <span>{{ $t('paper.specification') }} №A0000-26082020-1</span>
             <span class="block"> {{ $t('paper.to') }}
-              <span class="text-gray-lighter">{{ blank.title }}</span>
+              <span class="text-gray-lighter">{{ contract.title }}</span>
             </span>
           </div>
           <div class="paper-title__info">
             <span>
                <TextField
-                v-model="blank.country"
+                v-model="contract.country"
                 :placeholder="$t('paper.location')"
                 single-line
                 text-dark
@@ -303,7 +303,7 @@
               </span>
               <!-- SET VALUE {paper.deliveryItem} BY DEFAULT -->
             <TextField
-              v-model="blank.specItems[0].title"
+              v-model="contract.specItems[0].title"
               :placeholder="$t('paper.deliveryItem')"
               single-line
               text-dark
@@ -316,13 +316,13 @@
 
         </div>
         <div
-          v-for="(item, index) in blank.specItems.slice(1)" :key="index"
+          v-for="(item, index) in contract.specItems.slice(1)" :key="index"
           class="paper-custom-paragraph mt-10"
         >
           <div class="paper-custom-paragraph__title heading">
             <span
               class="heading__number flex items-center cursor-pointer"
-              @click="changePos(index + 1, blank.specItems)"
+              @click="changePos(index + 1, contract.specItems)"
             >
               <i v-if="index > 0" class="text-primary">
                 <Icon
@@ -343,7 +343,7 @@
             />
             <span
               class="remove-item"
-              @click="removeItem(blank.specItems, index + 1)"
+              @click="removeItem(contract.specItems, index + 1)"
             >
               <i>
                 <img src="@/assets/icons/delete-circle.svg" alt="Remove">
@@ -379,7 +379,7 @@
             />
             <span
               class="remove-item"
-              @click="removeParagraph(blank.specItems, index + 1, idx)"
+              @click="removeParagraph(contract.specItems, index + 1, idx)"
             >
               <i>
                 <img src="@/assets/icons/delete-circle.svg" alt="Remove">
@@ -390,7 +390,7 @@
             small
             outline
             class="mt-4"
-            @click="addParagraph(blank.specItems, index + 1)"
+            @click="addParagraph(contract.specItems, index + 1)"
           >
             <template v-slot:icon>
               <Icon size="16">{{ icons.mdiPlusCircleOutline }}</Icon>
@@ -402,7 +402,7 @@
         <Button
           outline
           class="mt-10"
-          @click="addHeading(blank.specItems)"
+          @click="addHeading(contract.specItems)"
         >
           <template v-slot:icon>
             <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
@@ -416,7 +416,7 @@
       <Button
         large
         class="mr-8"
-        @click="$emit('savePaper')"
+        @click="update()"
       >
         <span>{{ $t('action.save') }}</span>
       </Button>
@@ -431,10 +431,14 @@
 </template>
 
 <script>
+import cloneDeep from 'clone-deep'
+// import deepEqual from 'deep-equal'
+
 import { mdiPlusCircleOutline, mdiClose } from '@mdi/js'
 import { ziGear, ziPencil, ziChevronUpCircle } from '@/assets/icons'
 
 import { GET_ORG_REQUISITE } from '../graphql/queries'
+import { CREATE_CONTRACT, UPDATE_СONTRACT } from '../graphql/mutations'
 
 import PaperCompanyListModal from '@/components/PaperCompanyListModal.vue'
 
@@ -447,6 +451,10 @@ export default {
     blank: {
       type: Object,
       default: () => ({}),
+    },
+    create: {
+      type: Boolean,
+      default: false,
     },
   },
   apollo: {
@@ -469,37 +477,49 @@ export default {
         mdiPlusCircleOutline,
         mdiClose,
       },
+      contractMetaData: {
+        name: '',
+        title: '',
+        country: '',
+        docHeader: '',
+        useDefaultDocHeader: false,
+      },
+      contract: {},
+      contractClone: {},
       isStandardHeader: false,
       supplierList: false,
       reqId: '5def49752edff60026562dca',
     }
   },
   computed: {
+    orgId () {
+      return this.$route.params.orgId
+    },
     currentSupplier () {
       return [this.getOrgRequisite]
     },
   },
   methods: {
-    addHeading (blank) {
-      blank.push({
+    addHeading (contract) {
+      contract.push({
         title: '',
         paragraphs: [''],
       })
     },
-    addParagraph (blank, index) {
-      blank[index].paragraphs.push('')
+    addParagraph (contract, index) {
+      contract[index].paragraphs.push('')
     },
-    removeItem (blank, index) {
-      blank.splice(index, 1)
+    removeItem (contract, index) {
+      contract.splice(index, 1)
     },
-    removeParagraph (blank, index, idx) {
-      blank[index].paragraphs.splice(idx, 1)
+    removeParagraph (contract, index, idx) {
+      contract[index].paragraphs.splice(idx, 1)
     },
     useStandardHeader () {
       this.isStandardHeader = !this.isStandardHeader
       if (this.isStandardHeader) {
-        this.blank.docHeader = ''
-        this.blank.useDefaultDocHeader = true
+        this.contract.docHeader = ''
+        this.contract.useDefaultDocHeader = true
       }
     },
     changePos (index, arr) {
@@ -509,6 +529,55 @@ export default {
       arr.splice(index - 1, 1, curr)
       arr.splice(index, 1, prev)
     },
+    async update () {
+      try {
+        let input = {}
+
+        if (this.create) input.id = this.contract.id
+
+        Object.keys(this.contractMetadata).forEach(key => {
+          if (this.contract.hasOwnProperty(key)) {
+            this.$set(input, key, this.contract[key])
+          }
+        })
+        const items = []
+        const specItems = []
+        this.contract.items.forEach(item => {
+          items.push({
+            title: item.title,
+            paragraphs: item.paragraphs,
+          })
+        })
+        this.contract.specItems.forEach(specItem => {
+          specItems.push({
+            title: specItem.title,
+            paragraphs: specItem.paragraphs,
+          })
+        })
+        this.$set(input, 'items', items)
+        this.$set(input, 'specItems', specItems)
+
+        const query = this.create ? CREATE_CONTRACT : UPDATE_СONTRACT
+
+        const variables = this.create
+          ? { orgId: this.orgId, input }
+          : { id: this.contract.id, input }
+
+        const response = await this.$apollo.mutate({
+          mutation: query,
+          variables,
+        })
+        if (response && response.data && response.data.createContract) {
+          this.contract = response.data.createContract
+          this.contractClone = cloneDeep(this.contract)
+          this.paperConfigurator = true
+        }
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+        throw new Error(error)
+      }
+    },
+
     openSupplierList () {
       this.supplierList = true
     },
@@ -516,6 +585,9 @@ export default {
       this.reqId = id
       this.supplierList = false
     },
+  },
+  created () {
+    this.contract = this.blank
   },
 }
 </script>

@@ -5,12 +5,11 @@
       v-model="paperList"
       max-width="443"
     >
-       <PaperListModal
-        :paper-list="papers"
+      <PaperListModal
+        :items="papers"
         @close="paperList = false"
+        @openPaper="openContract"
         @createPaper="createContract"
-        @editPaper="editContract"
-        @removePaper="deleteContract"
       />
     </v-dialog>
 
@@ -23,10 +22,9 @@
       persistent
     >
       <PaperConfiguratorModal
-        ref="paper"
         :blank="blank"
+        :create="create"
         @close="beforeClose"
-        @savePaper="updateContract"
       />
     </v-dialog>
 
@@ -342,7 +340,7 @@
 </template>
 
 <script>
-import cloneDeep from 'clone-deep'
+// import cloneDeep from 'clone-deep'
 import deepEqual from 'deep-equal'
 
 import { UPDATE_SPEC } from '@/graphql/mutations'
@@ -354,9 +352,9 @@ import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
 import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
 
 import { LIST_ORG_CONTRACTS } from '../graphql/queries'
-import { CREATE_CONTRACT, UPDATE_СONTRACT, DELETE_СONTRACT } from '../graphql/mutations'
+// import { CREATE_CONTRACT, UPDATE_СONTRACT, DELETE_СONTRACT } from '../graphql/mutations'
 
-import { confirmDialog } from '@/util/helpers'
+// import { confirmDialog } from '@/util/helpers'
 
 export default {
   name: 'SpecSummary',
@@ -386,34 +384,15 @@ export default {
     return {
       blank: {},
       papers: [],
-      existing: [],
-      filledFields: [],
       paperList: false,
       paperConfigurator: false,
       saveBeforeClose: false,
-      editMode: false,
-      blankClone: {},
-      isSent: false,
+      create: false,
       icons: {
         ziSettings,
         ziPaperPlane,
         ziPrint,
         ziShare,
-      },
-      input: {
-        name: '',
-        title: '',
-        country: '',
-        docHeader: '',
-        useDefaultDocHeader: false,
-        items: [{
-          title: '',
-          paragraphs: [],
-        }],
-        specItems: [{
-          title: '',
-          paragraphs: [],
-        }],
       },
     }
   },
@@ -439,10 +418,6 @@ export default {
     // },
     orgId () {
       return this.$route.params.orgId
-    },
-    contractMetadataKeys () {
-      let meta = Object.keys(this.input).filter(key => key !== 'items' && key !== 'specItems')
-      return meta
     },
     containers () {
       return this.spec.containers || []
@@ -486,34 +461,32 @@ export default {
       this.papers = this.listOrgContracts
       this.paperList = true
     },
-    async createContract () {
-      try {
-        let input = this.input
-        const response = await this.$apollo.mutate({
-          mutation: CREATE_CONTRACT,
-          variables: { orgId: this.orgId, input },
-        })
-        if (response && response.data && response.data.createContract) {
-          this.blank = response.data.createContract
-          this.blankClone = cloneDeep(this.blank)
-          this.paperConfigurator = true
-          this.paperList = false
-          this.editMode = false
-          this.$apollo.queries.listOrgContracts.refetch()
-        }
-      } catch (error) {
-        this.$logger.warn('Error: ', error)
-        throw new Error(error)
-      }
-    },
-    editContract (id) {
+    openContract (id) {
       if (id) {
         this.blank = this.papers.find(paper => paper.id === id)
-        this.blankClone = cloneDeep(this.blank)
-        this.editMode = true
       }
-      this.paperConfigurator = true
       this.paperList = false
+      this.paperConfigurator = true
+    },
+    createContract () {
+      this.blank = {
+        name: '',
+        title: '',
+        country: '',
+        docHeader: '',
+        useDefaultDocHeader: false,
+        items: [{
+          title: '',
+          paragraphs: [],
+        }],
+        specItems: [{
+          title: '',
+          paragraphs: [],
+        }],
+      }
+      this.create = true
+      this.paperList = false
+      this.paperConfigurator = true
     },
     beforeClose () {
       if (!deepEqual(this.blank, this.blankClone, true)) {
@@ -533,85 +506,6 @@ export default {
       this.updateContract()
       this.saveBeforeClose = false
       this.paperConfigurator = false
-    },
-    async updateContract () {
-      try {
-        let input = {}
-        input.id = this.blank.id
-        this.contractMetadataKeys.forEach(key => {
-          if (this.blank.hasOwnProperty(key)) {
-            this.$set(input, key, this.blank[key])
-          }
-        })
-        const items = []
-        const specItems = []
-        this.blank.items.forEach(item => {
-          items.push({
-            title: item.title,
-            paragraphs: item.paragraphs,
-          })
-        })
-        this.blank.specItems.forEach(specItem => {
-          specItems.push({
-            title: specItem.title,
-            paragraphs: specItem.paragraphs,
-          })
-        })
-        this.$set(input, 'items', items)
-        this.$set(input, 'specItems', specItems)
-
-        const response = await this.$apollo.mutate({
-          mutation: UPDATE_СONTRACT,
-          variables: { id: input.id, input },
-        })
-        if (response && response.data && response.data.updateContract) {
-          this.blank = response.data.updateContract
-          this.blankClone = cloneDeep(this.blank)
-          this.paperConfigurator = false
-        }
-      } catch (error) {
-        this.$logger.warn('Error: ', error)
-        throw new Error(error)
-      }
-    },
-    async deleteContract (id) {
-      try {
-        const msg = this.$t('alert.removeContract')
-        const confirm = await confirmDialog(msg)
-        if (confirm === 'not_confirmed') {
-          return
-        }
-        const response = await this.$apollo.mutate({
-          mutation: DELETE_СONTRACT,
-          variables: { id },
-          update: (store) => {
-            const data = store.readQuery({
-              query: LIST_ORG_CONTRACTS,
-              variables: {
-                orgId: this.orgId,
-              },
-            })
-            const index = data.listOrgContracts.findIndex(item => item.id === id)
-            if (index !== -1) {
-              data.listOrgContracts.splice(index, 1)
-            }
-            store.writeQuery({
-              query: LIST_ORG_CONTRACTS,
-              variables: {
-                orgId: this.orgId,
-              },
-              data,
-            })
-          },
-        })
-        if (response && response.errors && response.errors.length > 0) {
-          throw response
-        }
-      } catch (error) {
-        if (error === 'not_confirmed') return
-        this.errors = error.errors || []
-        this.$logger.warn('Error: ', error)
-      }
     },
   },
 }
