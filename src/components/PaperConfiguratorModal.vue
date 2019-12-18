@@ -497,7 +497,10 @@ export default {
     },
     useStandardHeader () {
       this.isStandardHeader = !this.isStandardHeader
-      if (this.isStandardHeader) this.blank.docHeader = ''
+      if (this.isStandardHeader) {
+        this.blank.docHeader = ''
+        this.blank.useDefaultDocHeader = true
+      }
     },
     changePos (index, arr) {
       const curr = arr[index]

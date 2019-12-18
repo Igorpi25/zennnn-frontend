@@ -4,8 +4,9 @@
       <li
         v-for="supplier in supplierList"
         :key="supplier.id"
+        class="supplier__company-name"
         @click="$emit('chooseSupplier', supplier.id)"
-        class="supplier__company-name">
+      >
         <span>
             <Icon>
               {{ icons.ziGear }}
@@ -21,7 +22,7 @@
       <template>
         <Icon class="-ml-4 mr-2">{{ icons.mdiPlusCircleOutline }}</Icon>
       </template>
-      <span>{{ $t('paper.addParagraph') }}</span>
+      <span>{{ $t('requisites.addRequisites') }}</span>
     </Button>
   </div>
 </template>
@@ -64,21 +65,21 @@ export default {
 </script>
 
 <style scoped lang="postcss">
-  li:hover  span {
+  .supplier__company-name {
+    @apply relative cursor-pointer;
+  }
+  .supplier__company-name:hover {
+    color: #6996B2;
+  }
+  .supplier__company-name:hover  span {
     display: block;
   }
-  li > span {
+  .supplier__company-name > span {
     display: none;
     position: absolute;
     left: -28px;
   }
   .supplier-list-container {
     background-color: #dddddd;
-  }
-  .supplier__company-name {
-    @apply relative cursor-pointer;
-  }
-  .supplier__company-name {
-    color: #6996B2;
   }
 </style>

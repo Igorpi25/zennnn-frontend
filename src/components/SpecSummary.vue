@@ -9,7 +9,7 @@
         :paper-list="papers"
         @close="paperList = false"
         @createPaper="createContract"
-        @editPaper="editPaper"
+        @editPaper="editContract"
         @removePaper="deleteContract"
       />
     </v-dialog>
@@ -379,7 +379,7 @@ export default {
           orgId: this.orgId,
         }
       },
-      fetchpolicy: 'cache-only',
+      fetchPolicy: 'cache-and-network',
     },
   },
   data () {
@@ -499,13 +499,14 @@ export default {
           this.paperConfigurator = true
           this.paperList = false
           this.editMode = false
+          this.$apollo.queries.listOrgContracts.refetch()
         }
       } catch (error) {
         this.$logger.warn('Error: ', error)
         throw new Error(error)
       }
     },
-    editPaper (id) {
+    editContract (id) {
       if (id) {
         this.blank = this.papers.find(paper => paper.id === id)
         this.blankClone = cloneDeep(this.blank)
@@ -544,13 +545,17 @@ export default {
         })
         const items = []
         const specItems = []
-        items.push({
-          title: this.blank.items[0].title,
-          paragraphs: this.blank.items[0].paragraphs,
+        this.blank.items.forEach(item => {
+          items.push({
+            title: item.title,
+            paragraphs: item.paragraphs,
+          })
         })
-        specItems.push({
-          title: this.blank.specItems[0].title,
-          paragraphs: this.blank.specItems[0].paragraphs,
+        this.blank.specItems.forEach(specItem => {
+          specItems.push({
+            title: specItem.title,
+            paragraphs: specItem.paragraphs,
+          })
         })
         this.$set(input, 'items', items)
         this.$set(input, 'specItems', specItems)
