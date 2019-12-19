@@ -59,3 +59,7 @@ input[type=number]::-webkit-outer-spin-button {
 [type="date"]::-webkit-inner-spin-button {
   display: none;
 }
+
+img {
+  border-style: none;
+}

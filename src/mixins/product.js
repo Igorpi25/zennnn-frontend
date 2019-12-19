@@ -6,10 +6,13 @@ import {
   UPDATE_PRODUCT_LINK,
   DELETE_PRODUCT,
 } from '../graphql/mutations'
-
+import ProductImage from '../components/ProductImage.vue'
 import { confirmDialog } from '@/util/helpers'
 
 export default {
+  components: {
+    ProductImage,
+  },
   data () {
     return {
       updateLoading: null,
