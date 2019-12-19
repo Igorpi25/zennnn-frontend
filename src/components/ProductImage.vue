@@ -30,9 +30,7 @@
 </template>
 
 <script>
-import {
-  UPDATE_PRODUCT_INFO,
-} from '../graphql/mutations'
+import { UPDATE_PRODUCT_INFO } from '../graphql/mutations'
 
 import FileUploader from '../components/FileUploader.vue'
 import { delay } from '../util/helpers'

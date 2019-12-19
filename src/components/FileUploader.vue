@@ -230,13 +230,11 @@ export default {
         const { uploadUrl, downloadUrl } = uploadData
         this.$logger.info('Upload file', file, uploadData)
         if (!file) return
-        // const filename = window.btoa(unescape(encodeURIComponent(file.name)))
+        const filename = window.btoa(unescape(encodeURIComponent(file.name)))
         await this.axios.put(uploadUrl, file, {
-          // withCredentials: true,
           headers: {
             'Content-Type': file.type,
-            // 'Content-Disposition': `attachment; ${serializedFilename}`,
-            // 'x-amz-meta-file_name': filename,
+            'x-amz-meta-file_name': filename,
           },
           onUploadProgress: (progressEvent) => {
             this.uploadPercentage = Math.floor(progressEvent.loaded / progressEvent.total * 100)
