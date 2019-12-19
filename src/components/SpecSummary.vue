@@ -328,6 +328,8 @@
 </template>
 
 <script>
+import cloneDeep from 'clone-deep'
+
 import { UPDATE_SPEC } from '@/graphql/mutations'
 
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
@@ -359,6 +361,7 @@ export default {
       },
       fetchPolicy: 'cache-and-network',
     },
+
   },
   data () {
     return {
@@ -366,7 +369,6 @@ export default {
       papers: [],
       paperList: false,
       paperConfigurator: false,
-      saveBeforeClose: false,
       create: false,
       icons: {
         ziSettings,
@@ -444,7 +446,7 @@ export default {
     openContract (id) {
       if (id) {
         this.create = false
-        this.blank = this.papers.find(paper => paper.id === id)
+        this.blank = cloneDeep(this.papers.find(paper => paper.id === id))
       }
       this.paperList = false
       this.paperConfigurator = true
@@ -456,6 +458,7 @@ export default {
         country: '',
         docHeader: '',
         useDefaultDocHeader: false,
+        requisiteId: '',
         items: [{
           title: '',
           paragraphs: [],

@@ -346,6 +346,7 @@ export const ORG_CONTRACT_FRAGMENT = gql`
     country
     docHeader
     useDefaultDocHeader
+    requisiteId
     docNo
     items {
       title

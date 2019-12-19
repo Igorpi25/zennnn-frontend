@@ -220,7 +220,7 @@
                     <Icon>
                       {{ icons.ziGear }}
                     </Icon>
-                    <span class="requisite__company-name">{{ requisite.name }}</span>
+                    <span class="requisite__company-name">{{ requisite.name || '_ _ _ _ _ _' }}</span>
                   </div>
                 </li>
                 <li class="flex">
@@ -480,7 +480,10 @@ export default {
           id: this.reqId,
         }
       },
-      fetchPolicy: 'cache-and-network',
+      skip () {
+        return !this.reqId
+      },
+      fetchPolicy: 'network-only',
     },
   },
   data () {
@@ -504,15 +507,17 @@ export default {
       isStandardHeader: false,
       saveBeforeClose: false,
       requisiteList: false,
-      reqId: '5def49752edff60026562dca',
     }
   },
   computed: {
     orgId () {
       return this.$route.params.orgId
     },
+    reqId () {
+      return this.contract.requisiteId || ''
+    },
     requisite () {
-      return this.getOrgRequisite
+      return this.getOrgRequisite || {}
     },
   },
   watch: {
@@ -563,6 +568,7 @@ export default {
             this.$set(input, key, this.contract[key])
           }
         }
+
         const items = []
         const specItems = []
         this.contract.items.forEach(item => {
@@ -577,6 +583,9 @@ export default {
             paragraphs: specItem.paragraphs,
           })
         })
+
+        input.requisiteId = this.reqId
+
         this.$set(input, 'items', items)
         this.$set(input, 'specItems', specItems)
 
@@ -607,7 +616,7 @@ export default {
       this.requisiteList = true
     },
     chooseRequisite (id) {
-      this.reqId = id
+      this.contract.requisiteId = id
       this.requisiteList = false
     },
     beforeClose () {
