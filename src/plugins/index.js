@@ -1,6 +1,7 @@
 import './vue-meta'
 import './date-fns'
 import './notify'
+import './axios'
 export { default as Logger } from './logger'
 export { default as i18n } from './i18n'
 export { default as vuetify } from './vuetify'

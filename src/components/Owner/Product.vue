@@ -15,7 +15,10 @@
       {{ index + 1 }}
     </td>
     <td class="text-primary text-center">
-      <img style="width:35px;height:35px">
+      <ProductImage
+        :productId="item.id"
+        :images="info.images"
+      />
     </td>
     <td>
       <Editable
@@ -211,7 +214,7 @@ import { mdiClose } from '@mdi/js'
 import {
   ProductStatus,
   InvoiceProfitType,
-} from '@/graphql/enums'
+} from '../../graphql/enums'
 import product from '../../mixins/product'
 
 export default {

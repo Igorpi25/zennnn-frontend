@@ -30,6 +30,15 @@ export const COMPLITE_REGISTRATION = gql`
   }
 `
 
+export const GET_IMAGE_UPLOAD_URL = gql`
+  mutation GetImageUploadUrl($orgId: ID!, $filename: String!) {
+    getImageUploadUrl(orgId: $orgId, filename: $filename) {
+      uploadUrl
+      downloadUrl
+    }
+  }
+`
+
 export const CREATE_SPEC = gql`
   mutation CreateSpec($orgId: ID!) {
     createSpec(orgId: $orgId) {

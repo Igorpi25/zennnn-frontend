@@ -15,7 +15,10 @@
       {{ index + 1 }}
     </td>
     <td class="text-primary text-center">
-      <img style="width:35px;height:35px">
+      <ProductImage
+        :productId="item.id"
+        :images="info.images"
+      />
     </td>
     <td>
       <Editable
