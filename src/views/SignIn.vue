@@ -84,9 +84,9 @@
               </div>
               <template v-slot:append>
                 <Button
+                  :disabled="loading"
                   large
                   secondary
-                  :disabled="loading"
                   @click="onSubmit"
                 >
                   <span v-if="loading">
@@ -96,10 +96,10 @@
                     {{ $t('action.login') }}
                   </span>
                 </Button>
-                <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-no-wrap">
+                <!-- <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-no-wrap">
                   <span>{{ $t('preposition.or') }}</span>&nbsp;
                   <span>{{ $t('preposition.through') }}</span>
-                </div>
+                </div> -->
                 <SocialSignIn />
               </template>
             </Form>

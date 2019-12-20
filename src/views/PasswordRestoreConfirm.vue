@@ -81,9 +81,9 @@
                 </div>
                 <template v-slot:append>
                   <Button
-                    large
                     :disabled="loading"
-                    class="mt-10 mb-12 mx-auto"
+                    large
+                    secondary
                     @click="onSubmit"
                   >
                     <span v-if="loading">
@@ -129,6 +129,7 @@ export default {
       showPassword: false,
       showConfirmPassword: false,
       formModel: {
+        username: '',
         email: '',
         code: '',
         password: '',
@@ -144,6 +145,7 @@ export default {
     }
   },
   mounted () {
+    this.formModel.username = this.$route.query.username
     this.formModel.code = this.$route.query.code
     this.formModel.email = this.$route.query.email
   },
@@ -156,7 +158,7 @@ export default {
         const isValid = this.$refs.form.validate()
         if (isValid) {
           await this.$Auth.forgotPasswordConfirm(
-            this.formModel.email,
+            this.formModel.username,
             this.formModel.code,
             this.formModel.password,
           )
