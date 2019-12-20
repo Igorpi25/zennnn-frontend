@@ -100,11 +100,11 @@ export default {
     },
     checkTimeout: {
       type: Number,
-      default: 5000, // 2 min
+      default: 120000, // 2 min
     },
     checkDelay: {
       type: Number,
-      default: 500,
+      default: 1000,
     },
   },
   data () {
