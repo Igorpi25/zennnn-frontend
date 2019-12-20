@@ -66,6 +66,7 @@
             </Select>
           </div>
           <Button
+            :disabled="loading"
             large
             class="mt-10 mx-auto"
             @click="submit"
@@ -98,6 +99,7 @@ export default {
   data () {
     return {
       dialog: false,
+      loading: false,
       formModel: {
         invitationGivenName: '',
         invitationFamilyName: '',
@@ -149,6 +151,7 @@ export default {
     async submit (e) {
       e.preventDefault()
       try {
+        this.loading = true
         if (this.$refs.form.validate()) {
           await this.$apollo.mutate({
             mutation: INVITE_USER_TO_ORG,
@@ -163,6 +166,8 @@ export default {
         }
       } catch (error) {
         throw new Error(error)
+      } finally {
+        this.loading = false
       }
     },
   },

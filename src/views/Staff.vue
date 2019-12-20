@@ -80,18 +80,18 @@
                       <span>{{ item.inWorkCount }}</span>
                       <div class="icon" style="width:18px">
                         <div class="icon__item">
-                          <Icon v-if="expanded && expanded.length !== 0">{{ icons.mdiChevronUp }}</Icon>
+                          <Icon v-if="expanded.includes(index)">{{ icons.mdiChevronUp }}</Icon>
                           <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                         </div>
                       </div>
                     </span>
                   </td>
                   <td>{{ item.profit }}</td>
-                  <td>{{ item.percent }}</td>
+                  <td>{{ Math.ceil((item.profit * 100) / item.finalCost) }}%</td>
                   <td class="text-right">{{ item.finalObtainCost }}</td>
                   <td class="text-right">{{ item.finalCost }}</td>
                   <td class="text-left pl-10">{{ item.givenName }} {{ item.familyName }}</td>
-                  <td class="text-left">{{ item.role }}</td>
+                  <td class="text-left">{{ item.role | roleFilter }}</td>
                   <td class="text-right pointer-events-none" @click.prevent.stop>
                     <div
                       class="cursor-pointer pointer-events-auto"
@@ -102,39 +102,45 @@
                   </td>
                 </tr>
                 <template v-if="expanded.includes(index)" class="expanded">
-                  <tr class="items text-sm bg-chaos-black" :key="`expand-${index}`">
-                    <td :colspan="headers.length">
+                  <tr
+                    v-for="(specItem, specIndex) in item.specs"
+                    :key="`expand-${index}-${specItem.id}`"
+                    class="items text-sm bg-chaos-black"
+                  >
+                    <!-- <td :colspan="headers.length" class="bg-chaos-black">
                       <DataTable
                         :headers="headers"
                         :items="item.specs"
+                        hide-headers
                         table-width="100%"
                         table-class="table-fixed"
-                        thead-class="text-accent2 border-b border-accent2"
+                        items-row-class="bg-chaos-black"
+                        items-cell-class="bg-chaos-black"
                       />
-                    </td>
-                    <!-- <td class="text-right relative px-3" :colspan="headers.length">
+                    </td> -->
+                    <td class="text-right relative px-3">
                       <span
                         :class="[
                           'status-mini',
                           'status-indicator inline-block',
-                          item.status === 'ORANGE'
-                            ? 'status-indicator--orange' : item.status === SpecStatus.IN_STOCK
+                          specItem.status === 'ORANGE'
+                            ? 'status-indicator--orange' : specItem.status === SpecStatus.IN_STOCK
                               ? 'status-indicator--green' : 'status-indicator--pink'
                         ]"
                       >
                       </span>
                     </td>
                     <td class="text-center relative">
-                      <div class="staff__triangle"></div>
-                      <span>+$</span>&nbsp;&nbsp;<span>-$</span>
+                      <div v-if="specIndex == 0" class="staff__triangle"></div>
+                      <strong>+$</strong>&nbsp;&nbsp;<strong>-$</strong>
                     </td>
-                    <td>25 000</td>
-                    <td>55%</td>
-                    <td class="text-right">50 000</td>
-                    <td class="text-right">25 000</td>
-                    <td class="text-center">FF024-2019-03-13-2</td>
-                    <td class="text-center">Elton John</td>
-                    <td></td> -->
+                    <td>{{ specItem.profit || 0 }}</td>
+                    <td>{{ Math.ceil(((specItem.profit || 0) * 100) / (specItem.finalCost || 1)) }}</td>
+                    <td class="text-right">{{ specItem.finalCost || 0 }}</td>
+                    <td class="text-right">{{ specItem.finalObtainCost || 0 }}</td>
+                    <td class="text-center">{{ specItem.customNumber || specItem.specNo || '' }}</td>
+                    <td class="text-center">{{ getClientName(specItem.client) }}</td>
+                    <td></td>
                   </tr>
                 </template>
               </template>
@@ -149,7 +155,24 @@
             table-width="100%"
             table-class="table-fixed"
             thead-class="text-accent2 border-b border-accent2"
+            items-row-class="bg-transparent border-none"
+            items-cell-class="bg-transparent"
           >
+            <template v-slot:item.invitationRole="{ item }">
+              <td>
+                {{ item.invitationRole | roleFilter }}
+              </td>
+            </template>
+            <template v-slot:item.createdAt="{ item }">
+              <td>
+                {{ $d($parseDate(item.createdAt), 'short') }}
+              </td>
+            </template>
+            <template v-slot:item.updatedAt="{ item }">
+              <td>
+                {{ $d($parseDate(item.updatedAt), 'short') }}
+              </td>
+            </template>
             <template v-slot:item.actions="{ item }">
               <td>
                 <div
@@ -172,7 +195,7 @@
               {{ icons.mdiPlusCircleOutline }}
             </Icon>
           </template>
-          <span>{{ $t('staff.createStaff') }}</span>
+          <span>{{ $t('staff.addStaff') }}</span>
         </Button>
       </div>
     </div>
@@ -190,12 +213,19 @@ import {
 import StaffCreateModal from '../components/StaffCreateModal.vue'
 import { LIST_ORG_INVITATIONS, LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION } from '../graphql/mutations'
-import { SpecStatus } from '../graphql/enums'
+import { SpecStatus, ClientType } from '../graphql/enums'
+import { i18n } from '../plugins'
 
 export default {
   name: 'Staff',
   components: {
     StaffCreateModal,
+  },
+  filters: {
+    roleFilter: function (val) {
+      return i18n.te(`role.${val}`)
+        ? i18n.t(`role.${val}`) : val
+    },
   },
   apollo: {
     listStaff: {
@@ -270,18 +300,30 @@ export default {
     },
     invitationsHeaders () {
       return [
-        { text: 'Given Name', value: 'invitationGivenName' },
-        { text: 'Family name', value: 'invitationFamilyName' },
-        { text: 'Email', value: 'invitationEmail' },
-        { text: 'Role', value: 'invitationRole' },
-        { text: 'Status', value: 'status' },
-        { text: 'Created At', value: 'createdAt' },
-        { text: 'Updated At', value: 'updatedAt' },
-        { text: '', value: 'actions', width: 48 },
+        { text: 'Given Name', width: 100, bgcolor: 'tansparent', value: 'invitationGivenName' },
+        { text: 'Family name', width: 100, bgcolor: 'tansparent', value: 'invitationFamilyName' },
+        { text: 'Email', bgcolor: 'tansparent', value: 'invitationEmail' },
+        { text: 'Role', bgcolor: 'tansparent', value: 'invitationRole' },
+        { text: 'Status', bgcolor: 'tansparent', value: 'status' },
+        { text: 'Created At', width: 120, bgcolor: 'tansparent', value: 'createdAt' },
+        { text: 'Updated At', width: 120, bgcolor: 'tansparent', value: 'updatedAt' },
+        { text: '', value: 'actions', bgcolor: 'tansparent', width: 48 },
       ]
     },
   },
   methods: {
+    getClientName (item) {
+      if (!item) return ''
+      let name = ''
+      if (item.clientType === ClientType.LEGAL) {
+        name = item.companyNameSl || item.companyNameCl || ''
+      } else {
+        name = item.lastName || ''
+        name += item.firstName ? ` ${item.firstName}` : ''
+        name += item.middleName ? ` ${item.middleName}` : ''
+      }
+      return name
+    },
     // TODO: update on after mutation
     refetchInvitations () {
       this.$apollo.queries.listOrgInvitations.refetch()
@@ -299,8 +341,11 @@ export default {
     },
     toggle (index) {
       if (this.expanded.indexOf(index) > -1) {
-        this.expanded.splice(index, 1)
-      } else this.expanded.push(index)
+        const expIndex = this.expanded.indexOf(index)
+        this.expanded.splice(expIndex, 1)
+      } else {
+        this.expanded.push(index)
+      }
     },
   },
 }

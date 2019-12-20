@@ -9,7 +9,10 @@
       :width="tableWidth || null"
       class="tableClass"
     >
-      <thead :class="theadClass">
+      <thead
+        v-if="!hideHeaders"
+        :class="theadClass"
+      >
         <tr>
           <template
             v-for="(header, index) in headers"
@@ -28,6 +31,7 @@
                   minWidth: convertToUnit(header.minWidth) || null
                 }"
                 :class="[
+                  'whitespace-no-wrap',
                   `text-${header.align || 'center'}`,
                   `bg-${header.bgcolor || 'gradient'}`,
                   { 'sortable cursor-pointer': header.sortable },
@@ -57,8 +61,12 @@
       </thead>
       <tbody>
         <slot name="items" :items="computedItems">
-          <tr v-if="computedItems.length === 0">
-            <td :colspan="headers.length" class="text-center">
+          <tr v-if="computedItems.length === 0" :class="itemsRowClass">
+            <td
+              :colspan="headers.length"
+              :class="itemsCellClass"
+              class="text-center"
+            >
               <span v-if="items.length === 0">
                 {{ $t('dataTable.noData') }}
               </span>
@@ -71,7 +79,7 @@
             v-else
             v-for="(item, index) in items"
             :key="index"
-            class="items base-accent3"
+            :class="['items base-accent3', itemsRowClass]"
           >
             <template v-for="header in headers">
               <slot
@@ -81,7 +89,7 @@
               >
                 <td
                   :key="`${index}-${header.value}`"
-                  :class="`text-${header.align || 'center'}`"
+                  :class="[`text-${header.align || 'center'}`, itemsCellClass]"
                 >
                   {{ item[header.value] }}
                 </td>
@@ -129,6 +137,18 @@ function searchTableItems (
 export default {
   name: 'DataTable',
   props: {
+    hideHeaders: {
+      type: Boolean,
+      default: false,
+    },
+    itemsRowClass: {
+      type: String,
+      default: null,
+    },
+    itemsCellClass: {
+      type: String,
+      default: null,
+    },
     tableWidth: {
       type: [String, Number],
       default: '',
