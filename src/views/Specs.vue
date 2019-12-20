@@ -107,6 +107,7 @@
         </DataTable>
       </div>
       <Button
+        v-if="roleInOrg === 'OWNER' || roleInOrg === 'MANAGER' || roleInOrg === 'FREELANCER'"
         outline
         class="mt-6"
         @click="createSpec"
@@ -130,7 +131,7 @@ import {
   ClientType,
 } from '../graphql/enums'
 import { SPEC_FRAGMENT } from '../graphql/typeDefs'
-import { GET_SPECS } from '../graphql/queries'
+import { GET_SPECS, GET_ORGS } from '../graphql/queries'
 import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
 import { SPECS_DELTA } from '../graphql/subscriptions'
 
@@ -147,6 +148,10 @@ export default {
         }
       },
     },
+    getOrgs: {
+      query: GET_ORGS,
+      fetchPolicy: 'cache-only',
+    },
   },
   data () {
     return {
@@ -162,6 +167,11 @@ export default {
     }
   },
   computed: {
+    roleInOrg () {
+      const orgs = this.getOrgs || []
+      const org = orgs.find(el => el.id === this.orgId) || {}
+      return org.role || null
+    },
     orgId () {
       return this.$route.params.orgId
     },

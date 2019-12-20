@@ -66,6 +66,7 @@
       </div>
     </router-link>
     <router-link
+      v-if="roleInOrg === 'OWNER' || roleInOrg === 'MANAGER'"
       :to="{
         name: 'requisites',
       }"
