@@ -6,6 +6,7 @@ import VDialog from 'vuetify/lib/components/VDialog'
 import VDatePicker from 'vuetify/lib/components/VDatePicker'
 import VWindow from 'vuetify/lib/components/VWindow'
 import VProgressCircular from 'vuetify/lib/components/VProgressCircular'
+import VImg from 'vuetify/lib/components/VImg'
 import transitions from 'vuetify/lib/components/transitions'
 
 Vue.use(Vuetify, {
@@ -16,6 +17,7 @@ Vue.use(Vuetify, {
     VDatePicker,
     VWindow,
     VProgressCircular,
+    VImg,
     transitions,
   },
 })

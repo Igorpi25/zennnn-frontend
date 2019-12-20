@@ -16,7 +16,7 @@
     </td>
     <td class="text-primary text-center">
       <ProductImage
-        :productId="item.id"
+        :product-id="item.id"
         :images="info.images"
       />
     </td>
@@ -118,7 +118,10 @@
     <template v-else-if="activeTab === 2">
       <td class="text-right">
         <div v-if="info.images && info.images.length > 0">
-          {{ info.images }}
+          <ProductImagesList
+            :product-id="item.id"
+            :images="info.images"
+          />
         </div>
       </td>
       <td class="text-left">

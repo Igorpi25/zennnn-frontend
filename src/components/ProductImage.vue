@@ -1,8 +1,9 @@
 <template>
   <v-menu
     :close-on-content-click="false"
-    :nudge-width="432"
-    :max-width="432"
+    :nudge-width="380"
+    :max-width="380"
+    :disabled="!previewImage"
     open-on-hover
     offset-x
   >
@@ -10,20 +11,71 @@
       <div v-on="on">
         <FileUploader
           :loading="loading"
-          :src="mainImage"
+          :src="previewImage"
+          :show-preview="imagesList.length === 0"
+          check-download-url
           @update="updateImages"
-        />
+        >
+          <template v-slot:preview>
+            <v-img
+              :src="`${previewImage}${ICON_IMAGE_POSTFIX}`"
+              aspect-ratio="1"
+            >
+              <template v-slot:placeholder>
+                <div class="flex justify-center items-center w-full h-full">
+                  <Spinner />
+                </div>
+              </template>
+            </v-img>
+          </template>
+        </FileUploader>
       </div>
     </template>
     <div
-      v-if="mainImage"
       class="bg-gray-darker"
     >
-      <div class="text-accent2 truncate py-2 px-1">
-        {{ mainImage }}
+      <div class="text-accent2 truncate h-8 px-1 flex items-center">
+        <Spinner v-if="currentImageFilenameLoading" />
+        <span v-else>
+          {{ currentImageFilename || currentImage }}
+        </span>
       </div>
-      <div class="w-fill pa-1">
-        <img :src="`${mainImage}${PREVIEW_IMAGE_POSTFIX}`">
+      <div
+        v-if="imagesList.length > 1"
+        class="inline-flex px-1 overflow-x-auto"
+      >
+        <v-img
+          v-for="(img, i) in imagesList"
+          :key="img"
+          :src="`${img}${ICON_IMAGE_POSTFIX}`"
+          :class="[
+            'rounded-sm h-6 w-6',
+            { 'mr-1' : i + 1 < imagesList.length },
+            { 'border-2 border-solid border-primary': i === currentImageIndex },
+          ]"
+          aspect-ratio="1"
+          @click="setCurrentIndex(i)"
+        >
+          <template v-slot:placeholder>
+            <div class="flex justify-center items-center w-full h-full">
+              <Spinner />
+            </div>
+          </template>
+        </v-img>
+      </div>
+      <div class="w-full pa-1">
+        <v-img
+          :src="`${currentImage}${PREVIEW_IMAGE_POSTFIX}`"
+          :key="currentImage"
+          class="w-full"
+          aspect-ratio="1"
+        >
+          <template v-slot:placeholder>
+            <div class="flex justify-center items-center w-full h-full">
+              <Spinner />
+            </div>
+          </template>
+        </v-img>
       </div>
     </div>
   </v-menu>
@@ -33,11 +85,10 @@
 import { UPDATE_PRODUCT_INFO } from '../graphql/mutations'
 
 import FileUploader from '../components/FileUploader.vue'
-import { delay } from '../util/helpers'
-import { PREVIEW_IMAGE_POSTFIX } from '../config/globals'
+import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX, IMAGE_FILENAME_METADATA } from '../config/globals'
 
 export default {
-  name: 'ProductImages',
+  name: 'ProductImage',
   components: {
     FileUploader,
   },
@@ -53,31 +104,66 @@ export default {
   },
   data () {
     return {
+      ICON_IMAGE_POSTFIX,
       PREVIEW_IMAGE_POSTFIX,
       loading: false,
       menu: false,
+      currentImageFilenameLoading: false,
+      currentImageFilename: '',
+      currentImageIndex: 0,
     }
   },
   computed: {
-    mainImage () {
-      const images = this.images || []
-      return images[0]
+    imagesList () {
+      return this.images || []
+    },
+    previewImage () {
+      return this.imagesList[0]
+    },
+    currentImage () {
+      const index = this.currentImageIndex || 0
+      return this.imagesList[index]
+    },
+  },
+  watch: {
+    currentImage: {
+      handler (val) {
+        if (val) {
+          this.setMainImageName(val)
+        }
+      },
+      immediate: true,
     },
   },
   methods: {
-    async updateImages (src, d = 5000) {
+    setCurrentIndex (index) {
+      this.currentImageIndex = index
+    },
+    async setMainImageName (src) {
+      this.currentImageFilename = ''
+      try {
+        this.currentImageFilenameLoading = true
+        const response = await this.$axios.head(src)
+        if (response && response.statusText === 'OK') {
+          const filename = response.headers[IMAGE_FILENAME_METADATA]
+          this.currentImageFilename = filename
+            ? decodeURIComponent(escape(window.atob(filename)))
+            : ''
+        }
+      } catch (error) {
+        this.$logger.info('error to try get filename', error)
+      } finally {
+        this.currentImageFilenameLoading = false
+      }
+    },
+    async updateImages (src) {
       try {
         this.loading = true
-        const imgs = this.images || []
-        const images = [src, ...imgs]
+        const images = [...this.imagesList, src]
         const input = { images }
-        // time to create thumbnail on lambda
-        this.$logger.info('Delay for thumbnail lambda', d)
-        await delay(d)
         await this.$apollo.mutate({
           mutation: UPDATE_PRODUCT_INFO,
           variables: { id: this.productId, input },
-          fetchPolicy: 'no-cache',
         })
       } catch (error) {
         this.$logger.warn('Error: ', error)

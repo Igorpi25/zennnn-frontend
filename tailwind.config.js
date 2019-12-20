@@ -41,6 +41,9 @@ module.exports = {
       spacing: {
         '9': '2.25rem',
       },
+      opacity: {
+        '35': '.35',
+      },
     },
   },
   variants: {},

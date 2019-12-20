@@ -1,32 +1,9 @@
 <template>
   <div class="w-9 h-9 relative">
-    <template v-if="uploadLoading || loading">
-      <div
-        v-if="internalSrc"
-        key="preview"
-        class="absolute inset-0 flex justify-center items-center bg-black opacity-75 overflow-hidden rounded"
-      >
-        <img
-          class="w-full h-full rounded object-cover"
-          :src="internalSrc"
-        >
-      </div>
-      <div
-        key="loader"
-        class="absolute inset-0 flex justify-center items-center"
-      >
-        <v-progress-circular
-          :value="uploadPercentage"
-          :indeterminate="loading"
-          size="28"
-        />
-      </div>
-    </template>
     <div
-      v-else
       ref="drop"
       :class="[
-        'w-full h-full cursor-pointer overflow-hidden',
+        'w-full h-full cursor-pointer overflow-hidden rounded',
       ]"
       @click="$refs.input.click()"
     >
@@ -42,15 +19,45 @@
           {{ icons.mdiPlusThick }}
         </Icon>
       </div>
-      <img
+      <div
         v-else
-        :src="iconImage"
         :class="[
           'w-full h-full rounded',
-          { 'bg-black opacity-75': isDragOver },
+          { 'bg-black opacity-35': isDragOver },
         ]"
       >
+        <slot name="preview">
+          <div class="w-full h-full bg-gray-lighter"></div>
+        </slot>
+      </div>
     </div>
+    <template v-if="uploadLoading || checkLoading">
+      <div
+        v-if="showPreview && internalSrc"
+        key="preview"
+        class="absolute inset-0 flex justify-center items-center overflow-hidden rounded"
+      >
+        <img
+          class="w-full h-full rounded object-cover"
+          :src="internalSrc"
+        >
+      </div>
+      <div
+        v-if="internalSrc"
+        key="opacity"
+        class="absolute inset-0 bg-black opacity-35 overflow-hidden rounded cursor-wait"
+      />
+      <div
+        key="loader"
+        class="absolute inset-0 flex justify-center items-center"
+      >
+        <v-progress-circular
+          :value="uploadPercentage"
+          :indeterminate="checkLoading"
+          size="28"
+        />
+      </div>
+    </template>
     <input
       ref="input"
       type="file"
@@ -64,7 +71,13 @@
 <script>
 import { mdiPlusThick } from '@mdi/js'
 import { GET_IMAGE_UPLOAD_URL } from '../graphql/mutations'
-import { ICON_IMAGE_POSTFIX, UPLOAD_FILE_SIZE_MB } from '../config/globals'
+import {
+  ICON_IMAGE_POSTFIX,
+  UPLOAD_FILE_SIZE_MB,
+  IMAGE_FILENAME_METADATA,
+  IMAGE_DOWNLOAD_HOSTNAME,
+  S3_IMAGE_DOWNLOAD_HOSTNAME,
+} from '../config/globals'
 
 export default {
   name: 'FileUploader',
@@ -77,6 +90,22 @@ export default {
       type: String,
       default: '',
     },
+    showPreview: {
+      type: Boolean,
+      default: false,
+    },
+    checkDownloadUrl: {
+      type: Boolean,
+      default: false,
+    },
+    checkTimeout: {
+      type: Number,
+      default: 5000, // 2 min
+    },
+    checkDelay: {
+      type: Number,
+      default: 500,
+    },
   },
   data () {
     return {
@@ -84,6 +113,7 @@ export default {
       file: null,
       files: [],
       uploadLoading: false,
+      checkLoading: false,
       isDragOver: false,
       icons: {
         mdiPlusThick,
@@ -176,7 +206,6 @@ export default {
         are present that let us do drag and drop.
       */
       const div = document.createElement('div')
-
       /*
         Check to see if the `draggable` event is in the element
         or the `ondragstart` and `ondrop` events are in the element. If
@@ -234,15 +263,18 @@ export default {
         await this.axios.put(uploadUrl, file, {
           headers: {
             'Content-Type': file.type,
-            'x-amz-meta-file_name': filename,
+            [IMAGE_FILENAME_METADATA]: filename,
           },
           onUploadProgress: (progressEvent) => {
             this.uploadPercentage = Math.floor(progressEvent.loaded / progressEvent.total * 100)
           },
         })
-        // delay equal to file size in Kb multiply to coef 0.8
-        const sizeInKb = Math.max(Math.ceil(file.size * 0.8 / 1000), 1000)
-        this.$emit('update', downloadUrl, sizeInKb)
+        if (this.checkDownloadUrl) {
+          this.checkLoading = true
+          this.startSrcCheckTimer(downloadUrl)
+        } else {
+          this.$emit('update', downloadUrl)
+        }
         return downloadUrl
       } catch (error) {
         throw new Error(error)
@@ -250,6 +282,36 @@ export default {
         this.uploadPercentage = 0
         this.uploadLoading = false
       }
+    },
+    async checkImageExists (src) {
+      try {
+        const response = await this.$axios.head(src)
+        if (response && response.statusText === 'OK') {
+          this.clearSrcCheckTimer()
+          this.$emit('update', src)
+        }
+      } catch (error) {
+        this.$logger.info('Image head error', error)
+      }
+    },
+    startSrcCheckTimer (src) {
+      const s3Src = src.replace(IMAGE_DOWNLOAD_HOSTNAME, S3_IMAGE_DOWNLOAD_HOSTNAME)
+      this.clearSrcCheckTimer()
+      this.checkLoading = true
+      this.timerId = setInterval(() => {
+        this.checkImageExists(s3Src)
+        this.$logger.info('image src checking...')
+      }, this.checkDelay)
+      this.timeoutId = setTimeout(() => {
+        this.clearSrcCheckTimer()
+      }, this.checkTimeout)
+    },
+    clearSrcCheckTimer () {
+      this.checkLoading = false
+      clearInterval(this.timerId)
+      clearTimeout(this.timeoutId)
+      this.timerId = null
+      this.timeoutId = null
     },
   },
 }
