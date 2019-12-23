@@ -70,14 +70,15 @@
       :to="{
         name: 'requisites',
       }"
-      :class="{ active: $route.name == 'requisite' }"
+      :class="{ active: $route.name == 'requisite' || $route.name == 'requisite-create' }"
     >
       <div class="navbar__link">
         <Icon
-          v-if="$route.name == 'requisite'"
+          v-if="$route.name == 'requisite' ||
+          $route.name == 'requisite-create'"
           :class="[
             'mr-2',
-            {'-ml-2': $route.name == 'requisite'}
+            {'-ml-2': $route.name == 'requisite' || $route.name == 'requisite-create'}
           ]"
         >
           {{ icons.mdiArrowLeft }}

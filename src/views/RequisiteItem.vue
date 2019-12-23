@@ -74,13 +74,24 @@
                     :value="requisite[key]"
                     :placeholder="$t('placeholder.requisites.fillFields')"
                     squared
-                    colored
+                    colored-faded
                     hide-details
                     class="pt-0 text-left"
                     @input="updateRequisite(key, $event)"
                   />
                 </div>
               </div>
+            </div>
+          </template>
+          <template v-slot:apend>
+            <div class="text-center mt-32">
+              <Button
+                large
+                class="mb-4 mx-auto md:hidden"
+                @click="update()"
+              >
+                <span>{{ $t('action.save') }}</span>
+              </Button>
             </div>
           </template>
         </TemplateCard>
@@ -112,9 +123,9 @@
                     :value="requisite[key]"
                     :placeholder="$t('placeholder.requisites.fillFields')"
                     squared
-                    colored
+                    colored-faded
                     hide-details
-                    class="pt-0"
+                    class="pt-0 "
                     @input="updateRequisite(key, $event)"
                   />
                 </div>
@@ -370,6 +381,9 @@ export default {
     font-size: 16px;
     line-height: 135%;
     font-weight: 600;
+  }
+  .text-field--colored input::placeholder {
+    color: red;
   }
    @screen sm {
     .requisite-card__radio-group {
