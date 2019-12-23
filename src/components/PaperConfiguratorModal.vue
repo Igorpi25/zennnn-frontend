@@ -514,7 +514,7 @@ export default {
       return this.$route.params.orgId
     },
     reqId () {
-      return this.contract.requisiteId || ''
+      return this.contract.requisiteId
     },
     requisite () {
       return this.getOrgRequisite || {}
@@ -611,6 +611,7 @@ export default {
         throw new Error(error)
       }
       this.$emit('close')
+      this.getOrgRequisite = {}
     },
     openRequisiteList () {
       this.requisiteList = true
@@ -627,6 +628,7 @@ export default {
       }
     },
     doNotSaveContractChanges () {
+      this.getOrgRequisite = {}
       this.saveBeforeClose = false
       this.$emit('close')
     },

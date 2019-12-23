@@ -71,6 +71,7 @@ export default {
           orgId: this.orgId,
         }
       },
+      fetchPolicy: 'cache-and-network',
     },
   },
   data () {
