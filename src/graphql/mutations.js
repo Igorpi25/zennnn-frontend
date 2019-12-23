@@ -9,6 +9,7 @@ import {
   SUPPLIER_TEMPLATE_FRAGMENT,
   SUPPLIER_SHOP_FRAGMENT,
   SUPPLIER_SHOP_TEMPLATE_FRAGMENT,
+  ORG_CONTRACT_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
 } from './typeDefs'
 
@@ -311,6 +312,7 @@ export const DELETE_SUPPLIER_TEMPLATE = gql`
     deleteSupplierTemplate(id: $id)
   }
 `
+
 export const CREATE_REQUISITE = gql`
   mutation CreateRequisite($orgId: ID!, $input: RequisiteInput!) {
     createRequisite(orgId: $orgId, input: $input) {
@@ -319,6 +321,7 @@ export const CREATE_REQUISITE = gql`
   }
   ${ORG_REQUISITE_FRAGMENT}
 `
+
 export const UPDATE_REQUISITE = gql`
   mutation UpdateRequisite($id: ID!, $input: RequisiteInput!) {
     updateRequisite(id: $id, input: $input) {
@@ -331,6 +334,30 @@ export const UPDATE_REQUISITE = gql`
 export const DELETE_REQUISITE = gql`
   mutation DeleteRequisite($id: ID!) {
     deleteRequisite(id: $id)
+  }
+`
+
+export const CREATE_CONTRACT = gql`
+  mutation CreateContract($orgId: ID!, $input: CreateContractInput!) {
+    createContract(orgId: $orgId, input: $input) {
+      ...OrgContractFragment
+    }
+  }
+  ${ORG_CONTRACT_FRAGMENT}
+`
+
+export const UPDATE_СONTRACT = gql`
+  mutation UpdateContract($id: ID!, $input: UpdateContractInput!) {
+    updateContract(id: $id, input: $input) {
+      ...OrgContractFragment
+    }
+  }
+  ${ORG_CONTRACT_FRAGMENT}
+`
+
+export const DELETE_СONTRACT = gql`
+  mutation DeleteContract($id: ID!) {
+    deleteContract(id: $id)
   }
 `
 

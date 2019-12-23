@@ -1,17 +1,18 @@
 <template>
-  <div class="p-8 supplier-list-container">
+  <div class="p-8 requisite-list-container">
     <ul class="ml-6 text-primary">
       <li
-        v-for="(supplier, index) in supplierList"
-        :key="index"
-        @click="$emit('chooseSupplier', supplier.id)"
-        class="supplier__company-name">
+        v-for="requisite in requisiteList"
+        :key="requisite.id"
+        class="requisite__company-name"
+        @click="$emit('chooseRequisite', requisite.id)"
+      >
         <span>
             <Icon>
               {{ icons.ziGear }}
             </Icon>
           </span>
-        {{ supplier.name }}
+        {{ requisite.name }}
       </li>
     </ul>
     <Button
@@ -21,7 +22,7 @@
       <template>
         <Icon class="-ml-4 mr-2">{{ icons.mdiPlusCircleOutline }}</Icon>
       </template>
-      <span>{{ $t('paper.addParagraph') }}</span>
+      <span>{{ $t('requisites.addRequisites') }}</span>
     </Button>
   </div>
 </template>
@@ -30,41 +31,55 @@
 import { mdiPlusCircleOutline } from '@mdi/js'
 import { ziGear } from '@/assets/icons'
 
+import { LIST_ORG_REQUISITES } from '../graphql/queries'
+
 export default {
   name: 'PaperCompanyListModal',
+  apollo: {
+    listOrgRequisites: {
+      query: LIST_ORG_REQUISITES,
+      variables () {
+        return {
+          orgId: this.orgId,
+        }
+      },
+    },
+  },
   data () {
     return {
-      supplierList: [
-        { id: 1, name: 'Nowaday Union Limited' },
-        { id: 2, name: ' OOO «Рoга и Копыта»' },
-        { id: 3, name: 'ОАО «Лесспецстройгазмонтажпром»' },
-        { id: 4, name: 'ИП Васильев. И.П.' },
-      ],
       icons: {
         ziGear,
         mdiPlusCircleOutline,
       },
     }
   },
+  computed: {
+    orgId () {
+      return this.$route.params.orgId
+    },
+    requisiteList () {
+      return this.listOrgRequisites
+    },
+  },
 }
 </script>
 
 <style scoped lang="postcss">
-  li:hover  span {
+  .requisite__company-name {
+    @apply relative cursor-pointer;
+  }
+  .requisite__company-name:hover {
+    color: #6996B2;
+  }
+  .requisite__company-name:hover  span {
     display: block;
   }
-  li > span {
+  .requisite__company-name > span {
     display: none;
     position: absolute;
     left: -28px;
   }
-  .supplier-list-container {
+  .requisite-list-container {
     background-color: #dddddd;
-  }
-  .supplier__company-name {
-    @apply relative cursor-pointer;
-  }
-  .supplier__company-name {
-    color: #6996B2;
   }
 </style>

@@ -7,11 +7,11 @@
     <div class="modal-body">
       <ul>
         <li
-          v-for="(li, index) in paperList" :key="index"
+          v-for="item in items" :key="item.id"
           class="flex py-3 px-10 hover:bg-accent1"
-          @click="$emit('editPaper', li.name)"
+          @click="$emit('openPaper', item.id)"
         >
-          <span class="flex-grow text-sm cursor-pointer">{{ li.name }}</span>
+          <span class="flex-grow text-sm cursor-pointer">{{ item.name }}</span>
           <span class="mr-6 cursor-pointer text-primary">
             <Icon size="24">
               {{ icons.ziGear }}
@@ -19,7 +19,7 @@
           </span>
           <span
             class="cursor-pointer text-primary"
-            @click.stop="$emit('removePaper', index, paperList)"
+            @click.stop="deleteContract(item.id)"
           >
             <Icon size="24">
               {{ icons.ziTrash }}
@@ -50,10 +50,15 @@
 import { mdiPlusCircleOutline } from '@mdi/js'
 import { ziGear, ziTrash } from '@/assets/icons'
 
+import { LIST_ORG_CONTRACTS } from '../graphql/queries'
+import { DELETE_СONTRACT } from '../graphql/mutations'
+
+import { confirmDialog } from '@/util/helpers'
+
 export default {
   name: 'PaperListModal',
   props: {
-    paperList: {
+    items: {
       type: Array,
       default: () => ([]),
     },
@@ -66,6 +71,47 @@ export default {
         mdiPlusCircleOutline,
       },
     }
+  },
+  methods: {
+    async deleteContract (id) {
+      try {
+        const msg = this.$t('alert.removeContract')
+        const confirm = await confirmDialog(msg)
+        if (confirm === 'not_confirmed') {
+          return
+        }
+        const response = await this.$apollo.mutate({
+          mutation: DELETE_СONTRACT,
+          variables: { id },
+          update: (store) => {
+            const data = store.readQuery({
+              query: LIST_ORG_CONTRACTS,
+              variables: {
+                orgId: this.$route.params.orgId,
+              },
+            })
+            const index = data.listOrgContracts.findIndex(item => item.id === id)
+            if (index !== -1) {
+              data.listOrgContracts.splice(index, 1)
+            }
+            store.writeQuery({
+              query: LIST_ORG_CONTRACTS,
+              variables: {
+                orgId: this.$route.params.orgId,
+              },
+              data,
+            })
+          },
+        })
+        if (response && response.errors && response.errors.length > 0) {
+          throw response
+        }
+      } catch (error) {
+        if (error === 'not_confirmed') return
+        this.errors = error.errors || []
+        this.$logger.warn('Error: ', error)
+      }
+    },
   },
 }
 </script>

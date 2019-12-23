@@ -5,12 +5,11 @@
       v-model="paperList"
       max-width="443"
     >
-       <PaperListModal
-        :paper-list="papers"
+      <PaperListModal
+        :items="papers"
         @close="paperList = false"
-        @createPaper="createPaper"
-        @editPaper="editPaper"
-        @removePaper="removePaper"
+        @openPaper="openContract"
+        @createPaper="createContract"
       />
     </v-dialog>
 
@@ -23,23 +22,10 @@
       persistent
     >
       <PaperConfiguratorModal
-        ref="paper"
         :blank="blank"
-        @close="beforeClose"
-        @savePaper="savePaper"
-      />
-    </v-dialog>
-
-    <v-dialog
-      v-model="saveBeforeClose"
-      max-width="520"
-    >
-      <SaveBeforeCloseModal
-        :text=" `${$t('paper.saveChanges')} ${$t('paper.supplyContract')} ${$t('paper.beforeClosing')}`"
-        :postScriptum="$t('paper.ifNotSave')"
-        @dontSave="doNotSavePaperChanges"
-        @cancel="cancel"
-        @save="savePaperChanges"
+        :create="create"
+        @update="contractCreated"
+        @close="paperConfigurator = false"
       />
     </v-dialog>
 
@@ -343,7 +329,6 @@
 
 <script>
 import cloneDeep from 'clone-deep'
-import deepEqual from 'deep-equal'
 
 import { UPDATE_SPEC } from '@/graphql/mutations'
 
@@ -351,14 +336,14 @@ import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
 import PaperListModal from '@/components/PaperListModal.vue'
 import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
-import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
+
+import { LIST_ORG_CONTRACTS } from '../graphql/queries'
 
 export default {
   name: 'SpecSummary',
   components: {
     PaperListModal,
     PaperConfiguratorModal,
-    SaveBeforeCloseModal,
   },
   props: {
     spec: {
@@ -366,18 +351,25 @@ export default {
       default: () => ({}),
     },
   },
+  apollo: {
+    listOrgContracts: {
+      query: LIST_ORG_CONTRACTS,
+      variables () {
+        return {
+          orgId: this.orgId,
+        }
+      },
+      fetchPolicy: 'cache-and-network',
+    },
+
+  },
   data () {
     return {
       blank: {},
       papers: [],
-      existing: [],
-      filledFields: [],
       paperList: false,
       paperConfigurator: false,
-      saveBeforeClose: false,
-      editMode: false,
-      blankClone: {},
-      isSent: false,
+      create: false,
       icons: {
         ziSettings,
         ziPaperPlane,
@@ -406,6 +398,9 @@ export default {
     //     currencyRate: 9.256,
     //   }
     // },
+    orgId () {
+      return this.$route.params.orgId
+    },
     containers () {
       return this.spec.containers || []
     },
@@ -445,94 +440,40 @@ export default {
       }
     },
     openPaperList () {
-      this.papers = JSON.parse(localStorage.getItem('zennnn:papers'))
+      this.papers = this.listOrgContracts
       this.paperList = true
     },
-    createPaper () {
+    openContract (id) {
+      if (id) {
+        this.create = false
+        this.blank = cloneDeep(this.papers.find(paper => paper.id === id))
+      }
+      this.paperList = false
+      this.paperConfigurator = true
+    },
+    createContract () {
       this.blank = {
-        id: 0,
         name: '',
-        heading: '',
-        location: '',
-        textField: '',
-        textFieldRows: 1,
-        items: [
-          {
-            heading: '',
-            paragraphs: [
-              { paragraph: '' },
-            ],
-          },
-        ],
-        specItems: [
-          {
-            heading: '',
-            paragraphs: [
-              { paragraph: '' },
-            ],
-          },
-        ],
+        title: '',
+        country: '',
+        docHeader: '',
+        useDefaultDocHeader: false,
+        requisiteId: '',
+        items: [{
+          title: '',
+          paragraphs: [],
+        }],
+        specItems: [{
+          title: '',
+          paragraphs: [],
+        }],
       }
-      this.blankClone = cloneDeep(this.blank)
-      this.paperConfigurator = true
+      this.create = true
       this.paperList = false
-      this.editMode = false
-    },
-    editPaper (name) {
-      if (name !== null) {
-        this.existing = JSON.parse(localStorage.getItem('zennnn:papers'))
-        this.blank = this.existing.find(e => e.name === name)
-        this.blankClone = cloneDeep(this.blank)
-        this.editMode = true
-      }
       this.paperConfigurator = true
-      this.paperList = false
     },
-    removePaper (index, papers) {
-      papers.splice(index, 1)
-      localStorage.setItem('zennnn:papers', JSON.stringify(papers))
-    },
-    beforeClose () {
-      if (!deepEqual(this.blank, this.blankClone, true)) {
-        this.saveBeforeClose = true
-      } else {
-        this.paperConfigurator = false
-      }
-    },
-    doNotSavePaperChanges () {
-      this.saveBeforeClose = false
-      this.paperConfigurator = false
-    },
-    cancel () {
-      this.saveBeforeClose = false
-    },
-    savePaperChanges () {
-      this.existing = JSON.parse(localStorage.getItem('zennnn:papers'))
-      this.savePaper()
-      this.saveBeforeClose = false
-      this.paperConfigurator = false
-    },
-    savePaper () {
-      this.existing = JSON.parse(localStorage.getItem('zennnn:papers')) || []
-
-      if (this.blank.name === '') {
-        alert('Заполните поле с названием документа')
-      }
-      if (this.blank.heading === '') {
-        alert('Заполните поле с заголовком документа')
-      } else {
-        if (!this.editMode) {
-          this.blank.id = Math.floor(Math.random() * 1000)
-
-          this.existing.push(this.blank)
-          localStorage.setItem('zennnn:papers', JSON.stringify(this.existing))
-        } else {
-          const existingIndex = this.existing.findIndex(ex => ex.id === this.blank.id)
-          this.existing.splice(existingIndex, 1, this.blank)
-          localStorage.setItem('zennnn:papers', JSON.stringify(this.existing))
-        }
-        this.paperConfigurator = false
-      }
+    contractCreated () {
+      this.$apollo.queries.listOrgContracts.refetch()
     },
   },
 }
