@@ -18,6 +18,7 @@
     <Button
       outline
       class="mt-4"
+      @click="$emit('openRequisiteDialog')"
     >
       <template>
         <Icon class="-ml-4 mr-2">{{ icons.mdiPlusCircleOutline }}</Icon>
@@ -43,6 +44,7 @@ export default {
           orgId: this.orgId,
         }
       },
+      fetchPolicy: 'cache-and-network',
     },
   },
   data () {

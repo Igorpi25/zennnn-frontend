@@ -6,6 +6,7 @@
       max-width="400"
     >
       <PaperCompanyListModal
+        @openRequisiteDialog="openRequisiteDialog"
         @chooseRequisite="chooseRequisite"
       />
     </v-dialog>
@@ -20,6 +21,23 @@
         @dontSave="doNotSaveContractChanges"
         @cancel="cancel"
         @save="saveContractChanges"
+      />
+    </v-dialog>
+
+    <v-dialog
+      ref="requisiteDialog"
+      v-model="requisiteDialog"
+      scrollable
+      max-width="1024"
+      :fullscreen="$vuetify.breakpoint.xs"
+    >
+      <RequisiteCard
+        ref="requisiteCard"
+        :org-id="$route.params.orgId"
+        create
+        is-component
+        @close="requisiteDialog = false"
+        @create="setCreatedRequisite"
       />
     </v-dialog>
 
@@ -455,12 +473,14 @@ import { CREATE_CONTRACT, UPDATE_СONTRACT } from '../graphql/mutations'
 
 import PaperCompanyListModal from '@/components/PaperCompanyListModal.vue'
 import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
+import RequisiteCard from '@/components/RequisiteCard.vue'
 
 export default {
   name: 'PaperConfiguratorModal',
   components: {
     PaperCompanyListModal,
     SaveBeforeCloseModal,
+    RequisiteCard,
   },
   props: {
     blank: {
@@ -507,6 +527,7 @@ export default {
       isStandardHeader: false,
       saveBeforeClose: false,
       requisiteList: false,
+      requisiteDialog: false,
     }
   },
   computed: {
@@ -620,6 +641,16 @@ export default {
       this.contract.requisiteId = id
       this.requisiteList = false
     },
+    setCreatedRequisite (requisite) {
+      this.contract.requisiteId = requisite.id
+      this.requisiteDialog = false
+      this.requisiteList = false
+      setTimeout(() => {
+        if (this.$refs.requisiteDialog.$refs.dialog) {
+          this.$refs.requisiteDialog.$refs.dialog.scrollTop = 0
+        }
+      }, 200)
+    },
     beforeClose () {
       if (!deepEqual(this.contract, this.contractClone, true)) {
         this.saveBeforeClose = true
@@ -640,6 +671,10 @@ export default {
       this.saveBeforeClose = false
       this.$emit('close')
     },
+    openRequisiteDialog () {
+      this.requisiteDialog = true
+    },
+
     setData (item) {
       if (!item) return
       this.contract = item
