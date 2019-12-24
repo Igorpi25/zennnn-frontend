@@ -63,6 +63,11 @@ export default {
       return this.listOrgRequisites
     },
   },
+  methods: {
+    update () {
+      this.$apollo.queries.listOrgRequisites.refetch()
+    },
+  },
 }
 </script>
 

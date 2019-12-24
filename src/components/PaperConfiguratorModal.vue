@@ -6,6 +6,7 @@
       max-width="400"
     >
       <PaperCompanyListModal
+        ref="requisiteList"
         @openRequisiteDialog="openRequisiteDialog"
         @chooseRequisite="chooseRequisite"
       />
@@ -632,10 +633,13 @@ export default {
         throw new Error(error)
       }
       this.$emit('close')
-      this.getOrgRequisite = {}
+      this.$apollo.queries.getOrgRequisite.refetch()
     },
     openRequisiteList () {
       this.requisiteList = true
+      setTimeout(() => {
+        this.$refs.requisiteList.update()
+      }, 200)
     },
     chooseRequisite (id) {
       this.contract.requisiteId = id
@@ -646,6 +650,7 @@ export default {
       this.requisiteDialog = false
       this.requisiteList = false
       setTimeout(() => {
+        this.$refs.requisiteCard.reset()
         if (this.$refs.requisiteDialog.$refs.dialog) {
           this.$refs.requisiteDialog.$refs.dialog.scrollTop = 0
         }
@@ -674,7 +679,6 @@ export default {
     openRequisiteDialog () {
       this.requisiteDialog = true
     },
-
     setData (item) {
       if (!item) return
       this.contract = item

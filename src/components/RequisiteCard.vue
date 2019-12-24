@@ -184,6 +184,10 @@ export default {
     TemplateCard,
   },
   props: {
+    orgId: {
+      type: String,
+      required: true,
+    },
     create: {
       type: Boolean,
       default: false,
@@ -266,9 +270,6 @@ export default {
     reqId () {
       return this.$route.params.reqId
     },
-    orgId () {
-      return this.$route.params.orgId
-    },
     requisiteType () {
       return {
         ABOUT: 'ABOUT',
@@ -298,6 +299,11 @@ export default {
     saveBeforeCloseDialog (val) {
       !val && this.$off('confirm')
     },
+  },
+  created () {
+    if (this.create) {
+      this.reset()
+    }
   },
   methods: {
     async checkChangesBeforeLeave (next) {
@@ -380,6 +386,10 @@ export default {
       } else {
         this.requisite[key] = value
       }
+    },
+    reset () {
+      this.requisite = {}
+      this.requisiteClone = cloneDeep(this.requisite)
     },
   },
 }
