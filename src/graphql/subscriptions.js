@@ -28,6 +28,10 @@ export const SPEC_DELTA = gql`
       parentId
       payload {
         __typename
+        ... on PayloadFields {
+          id
+          fields
+        }
         ... on Product {
           ...ProductFragment
         }

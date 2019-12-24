@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import deepmerge from 'deepmerge'
+
 import OwnerSpec from '@/components/Owner/Spec.vue'
 import ManagerSpec from '@/components/Manager/Spec.vue'
 import AccountantSpec from '@/components/Accountant/Spec.vue'
@@ -117,11 +119,16 @@ export default {
         }
 
         if (operation === Operation.UPDATE_PRODUCT) {
-          apolloClient.writeFragment({
+          const cacheData = apolloClient.readFragment({
             id: `${Typename.PRODUCT}:${delta.payload.id}`,
             fragment: PRODUCT_FRAGMENT,
             fragmentName: 'ProductFragment',
-            data: delta.payload,
+          })
+          const data = deepmerge(cacheData, delta.payload.fields)
+          apolloClient.writeFragment({
+            id: `${Typename.PRODUCT}:${delta.payload.id}`,
+            fragment: PRODUCT_FRAGMENT,
+            data,
           })
         }
 
@@ -167,11 +174,17 @@ export default {
         }
 
         if (operation === Operation.UPDATE_INVOICE) {
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.INVOICE}:${delta.payload.id}`,
+            fragment: INVOICE_FRAGMENT,
+            fragmentName: 'InvoiceFragment',
+          })
+          const data = Object.assign({}, cacheData, delta.payload.fields)
           apolloClient.writeFragment({
             id: `${Typename.INVOICE}:${delta.payload.id}`,
             fragment: INVOICE_FRAGMENT,
             fragmentName: 'InvoiceFragment',
-            data: delta.payload,
+            data,
           })
         }
 
@@ -198,11 +211,17 @@ export default {
         // SPEC
 
         if (operation === Operation.UPDATE_SPEC) {
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.SPEC}:${delta.payload.id}`,
+            fragment: SPEC_FRAGMENT,
+            fragmentName: 'SpecFragment',
+          })
+          const data = Object.assign({}, cacheData, delta.payload.fields)
           apolloClient.writeFragment({
             id: `${Typename.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
             fragmentName: 'SpecFragment',
-            data: delta.payload,
+            data,
           })
         }
       },

@@ -32,6 +32,9 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
             {
               name: 'Product',
             },
+            {
+              name: 'PayloadFields',
+            },
           ],
         },
       ],
