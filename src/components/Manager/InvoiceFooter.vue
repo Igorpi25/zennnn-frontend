@@ -54,7 +54,7 @@
         small
         :value="item.profitForAll"
         @input="updateInvoice({
-          profitForAll: item.profitForAll
+          profitForAll: $event
         })"
       >
         <span>{{ $t('shipping.forAll') }}</span>
