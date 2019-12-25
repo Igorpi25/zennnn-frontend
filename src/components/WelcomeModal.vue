@@ -28,6 +28,7 @@
         <Button
           large
           class="mt-10 mb-4 mx-auto"
+          @click="$emit('close')"
         >
           <span>Заполнить реквизиты</span>
         </Button>

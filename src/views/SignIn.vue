@@ -279,11 +279,20 @@ export default {
             // TODO: save user to cache and redirect to Registration.vue view
             // this.$router.push({ name: 'registration', query: this.$route.query })
           } else {
+            const init = true
             this.$logger.info('Logged in user', user)
-            if (this.$route.query.redirect) {
-              this.$router.replace({ path: this.$route.query.redirect })
+            if (init) {
+              this.$router.replace({
+                name: 'requisite-create',
+                params: { orgId: '5dedff8c9c1ffa001dfccbc3' },
+                query: { q: 'welcome' },
+              })
             } else {
-              this.$router.replace({ name: 'home' })
+              if (this.$route.query.redirect) {
+                this.$router.replace({ path: this.$route.query.redirect })
+              } else {
+                this.$router.replace({ name: 'home' })
+              }
             }
           }
         }

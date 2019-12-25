@@ -100,7 +100,7 @@
           <div class="paper-title__textfield mt-8">
             <TextArea
               v-model="contract.docHeader"
-              :disabled="isStandardHeader"
+              :disabled="contract.useDefaultDocHeader"
               :placeholder="$t('paper.textField')"
               hide-details
               single-line
@@ -110,6 +110,7 @@
             />
           </div>
           <Checkbox
+            :value="contract.useDefaultDocHeader"
             class="-ml-6 text-primary"
             hide-details
             vertical-align
@@ -504,7 +505,7 @@ export default {
       skip () {
         return !this.reqId
       },
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-and-network',
     },
   },
   data () {
@@ -536,7 +537,7 @@ export default {
       return this.$route.params.orgId
     },
     reqId () {
-      return this.contract.requisiteId
+      return this.contract.requisiteId || ''
     },
     requisite () {
       return this.getOrgRequisite || {}
@@ -548,6 +549,9 @@ export default {
         this.setData(newVal)
       }
     },
+  },
+  created () {
+    this.setData(this.blank)
   },
   methods: {
     addHeading (contract) {
@@ -566,10 +570,9 @@ export default {
       contract[index].paragraphs.splice(idx, 1)
     },
     useStandardHeader () {
-      this.isStandardHeader = !this.isStandardHeader
-      if (this.isStandardHeader) {
+      this.contract.useDefaultDocHeader = !this.contract.useDefaultDocHeader
+      if (this.contract.useDefaultDocHeader) {
         this.contract.docHeader = ''
-        this.contract.useDefaultDocHeader = true
       }
     },
     changePos (index, arr) {
@@ -633,7 +636,6 @@ export default {
         throw new Error(error)
       }
       this.$emit('close')
-      this.$apollo.queries.getOrgRequisite.refetch()
     },
     openRequisiteList () {
       this.requisiteList = true
@@ -664,7 +666,6 @@ export default {
       }
     },
     doNotSaveContractChanges () {
-      this.getOrgRequisite = {}
       this.saveBeforeClose = false
       this.$emit('close')
     },
@@ -684,9 +685,6 @@ export default {
       this.contract = item
       this.contractClone = cloneDeep(this.contract)
     },
-  },
-  created () {
-    this.setData(this.blank)
   },
 }
 </script>

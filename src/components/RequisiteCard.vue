@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-dialog
-      v-model="welcomeDialog"
+      v-model="isWelcome"
       max-width="590"
       overlay-color="#0f0f0f"
       overlay-opacity="0.6"
     >
       <WelcomeModal
-        @close="welcomeDialog = false"
+        @close="$emit('update:isWelcome', false)"
       />
     </v-dialog>
 
@@ -35,9 +35,10 @@
       </span>
       <div :class="[ isComponent ? 'pt-5 px-4' : 'py-12' ]">
       <Button
-        v-if="!isComponent"
+        v-if="!isComponent && ($route.query.q && $route.query.q === 'welcome')"
         large
         class="mb-6 mx-auto md:mr-0 md:ml-auto"
+        @click="$router.push({ name: 'home' })"
       >
         <span>{{ $t('action.fillLater') }}</span>
       </Button>
@@ -177,7 +178,7 @@ import { GET_ORG_REQUISITE } from '../graphql/queries'
 import { CREATE_REQUISITE, UPDATE_REQUISITE } from '../graphql/mutations'
 
 export default {
-  name: 'RequisiteItem',
+  name: 'RequisiteCard',
   components: {
     WelcomeModal,
     SaveBeforeCloseModal,
@@ -193,6 +194,10 @@ export default {
       default: false,
     },
     isComponent: {
+      type: Boolean,
+      default: false,
+    },
+    isWelcome: {
       type: Boolean,
       default: false,
     },
@@ -217,7 +222,6 @@ export default {
   },
   data () {
     return {
-      welcomeDialog: false,
       saveBeforeCloseDialog: false,
       cardType: 'ABOUT',
       about: {
