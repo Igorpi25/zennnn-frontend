@@ -67,6 +67,7 @@ const wsLink = new WebSocketLink({
   uri: process.env.VUE_APP_GRAPHQL_WS_ENDPOINT,
   options: {
     reconnect: true,
+    lazy: true,
     connectionParams: async () => {
       const session = await Auth.currentSession()
       const token = session.getIdToken().getJwtToken()
