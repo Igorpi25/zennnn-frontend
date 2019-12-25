@@ -48,7 +48,7 @@
             <template v-slot:footer>
               <tr class="items base-accent3">
                 <td colspan="3"></td>
-                <td class="text-primary" colspan="2"></td>
+                <td class="text-primary" colspan="3"></td>
 
                 <template v-if="activeTab === 1">
                   <td class="text-gray-light text-right">{{ $t('shipping.total') }}</td>

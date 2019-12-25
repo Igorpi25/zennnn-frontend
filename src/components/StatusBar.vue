@@ -145,14 +145,14 @@
                 >
                   <li
                     v-if="username"
-                    class="text-gray-lighter text-sm px-2 py-1"
+                    class="text-gray-lighter text-sm px-2 py-1 focus:outline-none"
                     tabindex="0"
                     role="menuitem"
                   >
+                    <!-- username & email for debug -->
                     <div>
                       {{ username }}
                     </div>
-                    <!-- email for debug -->
                     <div class="text-xs">
                       {{ profile.email }}
                     </div>
@@ -195,9 +195,9 @@
             </li>
             <li
               v-else
-              :key="item.id"
+              :key="`${item.id}${i}`"
               class="px-3 py-2 text-sm cursor-pointer hover:bg-gray-dark"
-              @click="changeOrg(item.id)"
+              @click="changeOrg(item)"
             >
               <div class="flex items-center">
                 <div class="leading-tight">
@@ -323,7 +323,8 @@ export default {
     this.favorites = JSON.parse(localStorage.getItem(this.favoritesKeyStore)) || []
   },
   methods: {
-    changeOrg (orgId) {
+    changeOrg (org) {
+      const orgId = org.id
       if (orgId !== this.$route.params.orgId) {
         this.$router.push({ name: 'specs', params: { orgId } })
       }

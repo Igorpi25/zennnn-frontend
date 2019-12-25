@@ -150,7 +150,7 @@
 
     <div class="flex w-full sm:w-auto max-w-xs">
       <div class="flex flex-col items-end w-full pr-3 md:pr-0">
-        <label class="text-xs text-gray-light select-none">
+        <label class="text-xs text-gray-light select-none whitespace-no-wrap">
           {{ $t('shipping.obtainCost') }}
         </label>
         <div
@@ -195,7 +195,7 @@
         </v-menu>
       </div>
       <div class="flex flex-col items-end w-full pr-2 md:pr-0">
-        <label class="text-xs text-gray-light select-none">
+        <label class="text-xs text-gray-light select-none whitespace-no-wrap">
           {{ $t('shipping.clientDebt') }}
         </label>
         <div
