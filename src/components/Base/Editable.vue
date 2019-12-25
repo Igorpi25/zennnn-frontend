@@ -177,7 +177,8 @@ export default {
   created () {
     // debounce delay for different types
     const delay = this.debounce
-      ? this.debounce : 250
+      ? this.debounce : this.type === 'number'
+        ? 600 : 250
     this.debounceInput = debounce(this.emitChange, delay)
   },
 
@@ -217,12 +218,19 @@ export default {
       this.isFocused = false
       // stop edit mode and call emit
       this.editMode = false
+      // cancel debounced
+      if (this.debounce) {
+        this.debounceInput.cancel()
+      }
       // on esc blur without update
       if (this.blurWithoutUpdate) {
         this.blurWithoutUpdate = false
         return
       }
-      this.debounceInput()
+      // immediate call changes
+      if (this.internalValue !== this.value) {
+        this.emitChange()
+      }
     },
 
     onKeyDown (e) {

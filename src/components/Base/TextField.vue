@@ -320,15 +320,18 @@ export default {
       this.hasFocus = false
       // stop edit mode and call emit
       this.editMode = false
+      // cancel debounced
+      if (this.debounce) {
+        this.debounceInput.cancel()
+      }
       // on esc blur without update
       if (this.blurWithoutUpdate) {
         this.blurWithoutUpdate = false
         return
       }
-      if (this.debounce) {
-        this.debounceInput()
-      } else {
-        this.$emit('input', this.internalValue)
+      // immediate call changes
+      if (this.internalValue !== this.value) {
+        this.emitChange()
       }
     },
     focus () {
@@ -348,16 +351,12 @@ export default {
       if (e.key === 'Esc' || e.key === 'Escape') {
         this.internalValue = this.value
         this.blurWithoutUpdate = true
-        if (this.$refs.editable) {
-          this.$refs.editable.blur()
-        }
+        this.$refs.input.blur()
         e.preventDefault()
         return
       } else if (e.key === 'Enter') {
         // on enter blur normally
-        if (this.$refs.editable) {
-          this.$refs.editable.blur()
-        }
+        this.$refs.input.blur()
         e.preventDefault()
         return
       }

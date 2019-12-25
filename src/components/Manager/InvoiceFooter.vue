@@ -33,7 +33,7 @@
       <div class="w-16 mr-2">
         <TextField
           :value="item.profitPercent"
-          :debounce="250"
+          :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           type="number"
           inputmode="numeric"
@@ -68,7 +68,7 @@
         </label>
         <TextField
           :value="item.discount"
-          :debounce="250"
+          :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           type="number"
           inputmode="decimal"
@@ -93,7 +93,7 @@
         </label>
         <TextField
           :value="item.prepayment"
-          :debounce="250"
+          :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           type="number"
           inputmode="decimal"
