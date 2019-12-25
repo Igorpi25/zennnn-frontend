@@ -87,7 +87,7 @@
                     </span>
                   </td>
                   <td>{{ item.profit }}</td>
-                  <td>{{ Math.ceil((item.profit * 100) / item.finalCost) }}%</td>
+                  <td>{{ Math.ceil(((item.profit || 0) * 100) / (item.finalCost || 1)) }}%</td>
                   <td class="text-right">{{ item.finalObtainCost }}</td>
                   <td class="text-right">{{ item.finalCost }}</td>
                   <td class="text-left pl-10">{{ item.givenName }} {{ item.familyName }}</td>
@@ -135,7 +135,7 @@
                       <strong>+$</strong>&nbsp;&nbsp;<strong>-$</strong>
                     </td>
                     <td>{{ specItem.profit || 0 }}</td>
-                    <td>{{ Math.ceil(((specItem.profit || 0) * 100) / (specItem.finalCost || 1)) }}</td>
+                    <td>{{ Math.ceil(((specItem.profit || 0) * 100) / (specItem.finalCost || 1)) }}%</td>
                     <td class="text-right">{{ specItem.finalCost || 0 }}</td>
                     <td class="text-right">{{ specItem.finalObtainCost || 0 }}</td>
                     <td class="text-center">{{ specItem.customNumber || specItem.specNo || '' }}</td>
