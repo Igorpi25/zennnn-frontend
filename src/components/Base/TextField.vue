@@ -94,7 +94,6 @@ import debounce from 'lodash.debounce'
 
 import { mdiCloseCircle, mdiCheckCircle } from '@mdi/js'
 
-import focusable from '@/mixins/focusable'
 import validatable from '@/mixins/validatable'
 
 import { convertToUnit } from '@/util/helpers'
@@ -106,7 +105,7 @@ export default {
       default: null,
     },
   },
-  mixins: [focusable, validatable],
+  mixins: [validatable],
   props: {
     value: {
       type: [String, Number, Date],
@@ -218,6 +217,9 @@ export default {
   },
   data () {
     return {
+      blurWithoutUpdate: false,
+      hasFocus: false,
+      editMode: false,
       // TODO input registrator
       inputId: 'input' + Math.round(Math.random() * 100000),
       lazyValue: this.value,
@@ -286,6 +288,7 @@ export default {
   },
   watch: {
     value (val) {
+      if (this.editMode) return
       this.lazyValue = val
     },
   },
@@ -308,6 +311,26 @@ export default {
     }
   },
   methods: {
+    onFocus () {
+      // edit mode start on focus
+      this.editMode = true
+      this.hasFocus = true
+    },
+    onBlur () {
+      this.hasFocus = false
+      // stop edit mode and call emit
+      this.editMode = false
+      // on esc blur without update
+      if (this.blurWithoutUpdate) {
+        this.blurWithoutUpdate = false
+        return
+      }
+      if (this.debounce) {
+        this.debounceInput()
+      } else {
+        this.$emit('input', this.internalValue)
+      }
+    },
     focus () {
       this.$refs.input.focus()
     },
@@ -321,6 +344,23 @@ export default {
       this.checkField(e)
     },
     onKeyDown (e) {
+      // on esc set value from store
+      if (e.key === 'Esc' || e.key === 'Escape') {
+        this.internalValue = this.value
+        this.blurWithoutUpdate = true
+        if (this.$refs.editable) {
+          this.$refs.editable.blur()
+        }
+        e.preventDefault()
+        return
+      } else if (e.key === 'Enter') {
+        // on enter blur normally
+        if (this.$refs.editable) {
+          this.$refs.editable.blur()
+        }
+        e.preventDefault()
+        return
+      }
       // for ios inputtype="numberic" & pattern="[0-9]*"
       // and not exist e.key on ios, TODO with e.which
       if (this.type === 'number') {

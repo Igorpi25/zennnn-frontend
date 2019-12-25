@@ -117,6 +117,8 @@ export default {
 
   data () {
     return {
+      blurWithoutUpdate: false,
+      editMode: false,
       id: uuid(),
       lazyValue: this.value,
       isFocused: false,
@@ -164,6 +166,7 @@ export default {
 
   watch: {
     value (val) {
+      if (this.editMode) return
       this.internalValue = val
       if (this.type === 'editable') {
         this.setValue(val)
@@ -205,14 +208,41 @@ export default {
     },
 
     onFocus () {
+      // edit mode start on focus
+      this.editMode = true
       this.isFocused = true
     },
 
-    onBlur () {
+    onBlur (e) {
       this.isFocused = false
+      // stop edit mode and call emit
+      this.editMode = false
+      // on esc blur without update
+      if (this.blurWithoutUpdate) {
+        this.blurWithoutUpdate = false
+        return
+      }
+      this.debounceInput()
     },
 
     onKeyDown (e) {
+      // on esc set value from store
+      if (e.key === 'Esc' || e.key === 'Escape') {
+        this.internalValue = this.value
+        this.blurWithoutUpdate = true
+        if (this.$refs.editable) {
+          this.$refs.editable.blur()
+        }
+        e.preventDefault()
+        return
+      } else if (e.key === 'Enter') {
+        // on enter blur normally
+        if (this.$refs.editable) {
+          this.$refs.editable.blur()
+        }
+        e.preventDefault()
+        return
+      }
       // for ios inputtype="numberic" & pattern="[0-9]*"
       // and not exist e.key on ios, TODO with e.which
       if (this.type === 'number') {
