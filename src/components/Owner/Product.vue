@@ -47,10 +47,20 @@
     <template v-if="activeTab === 1">
       <td v-if="!profitForAll">
         <Editable
+          v-if="isInvoiceProfitTypeMargin && !cost.customPurchasePrice"
+          type="number"
+          inputmode="decimal"
+          :value="cost.purchasePrice"
+          :placeholder="$t('placeholder.emptyNumber')"
+          @input="updateProductCost({ purchasePrice: $event })"
+        />
+        <Editable
+          v-else
           type="number"
           inputmode="decimal"
           :value="cost.customPurchasePrice || cost.purchasePrice"
           :placeholder="$t('placeholder.emptyNumber')"
+          :text-color="cost.customPurchasePrice ? '#4C51BF': ''"
           @input="updateProductCost({ customPurchasePrice: $event })"
         />
       </td>
@@ -73,10 +83,20 @@
 
       <td v-if="!profitForAll">
         <Editable
+          v-if="isInvoiceProfitTypeCommission && !cost.customClientPrice"
+          type="number"
+          inputmode="decimal"
+          :value="cost.clientPrice"
+          :placeholder="$t('placeholder.emptyNumber')"
+          @input="updateProductCost({ clientPrice: $event })"
+        />
+        <Editable
+          v-else
           type="number"
           inputmode="decimal"
           :value="cost.customClientPrice || cost.clientPrice"
           :placeholder="$t('placeholder.emptyNumber')"
+          :text-color="cost.customClientPrice ? '#4C51BF': ''"
           @input="updateProductCost({ customClientPrice: $event })"
         />
       </td>

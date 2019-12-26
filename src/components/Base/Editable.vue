@@ -15,6 +15,7 @@
           'text-right': type === 'number'
         }
       ]"
+      :style="compStyle"
       contenteditable
       spellcheck
       v-on="listeners"
@@ -37,6 +38,7 @@
           'text-right': type === 'number'
         }
       ]"
+      :style="compStyle"
       :type="type"
       :min="type === 'number' ? min : null"
       :max="type === 'number'? max : null"
@@ -113,6 +115,10 @@ export default {
       type: String,
       default: '',
     },
+    textColor: {
+      type: String,
+      default: '',
+    },
   },
 
   data () {
@@ -131,6 +137,11 @@ export default {
   },
 
   computed: {
+    compStyle () {
+      return this.textColor
+        ? { color: this.textColor }
+        : null
+    },
     listeners () {
       return { ...this.$listeners, input: this.input }
     },
