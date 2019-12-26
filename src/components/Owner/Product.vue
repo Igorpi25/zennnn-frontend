@@ -64,11 +64,11 @@
         />
       </td>
       <td v-else class="text-right">
-        {{ cost.purchasePrice }}
+        {{ $n(cost.purchasePrice, 'formatted') }}
       </td>
 
       <td class="text-right">
-        {{ cost.purchaseAmount }}
+        {{ $n(cost.purchaseAmount, 'formatted') }}
       </td>
 
       <td v-if="!profitForAll">
@@ -93,11 +93,11 @@
         v-else
         class="text-right"
       >
-        {{ cost.clientPrice }}
+        {{ $n(cost.clientPrice, 'formatted') }}
       </td>
 
       <td class="text-right">
-        {{ cost.clientAmount }}
+        {{ $n(cost.clientAmount, 'formatted') }}
       </td>
     </template>
 

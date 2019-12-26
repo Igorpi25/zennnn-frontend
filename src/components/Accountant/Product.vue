@@ -33,25 +33,25 @@
     <template v-if="activeTab === 1">
       <td class="text-right">
         <span v-if="!profitForAll">
-          {{ cost.customPurchasePrice || cost.purchasePrice || $t('placeholder.emptyNumber') }}
+          {{ $n(cost.customPurchasePrice || cost.purchasePrice, 'formatted') || $t('placeholder.emptyNumber') }}
         </span>
         <span v-else>
-          {{ cost.purchasePrice || $t('placeholder.emptyNumber') }}
+          {{ $n(cost.purchasePrice, 'formatted') || $t('placeholder.emptyNumber') }}
         </span>
       </td>
       <td class="text-right">
-        {{ cost.purchaseAmount }}
+        {{ $n(cost.purchaseAmount, 'formatted') }}
       </td>
       <td class="text-right">
         <span v-if="!profitForAll">
-          {{ cost.customClientPrice || cost.clientPrice || $t('placeholder.emptyNumber') }}
+          {{ $n(cost.customClientPrice || cost.clientPrice, 'formatted') }}
         </span>
         <span v-else>
-          {{ cost.clientPrice || $t('placeholder.emptyNumber') }}
+          {{ $n(cost.clientPrice, 'formatted') || $t('placeholder.emptyNumber') }}
         </span>
       </td>
       <td class="text-right">
-        {{ cost.clientAmount }}
+        {{ $n(cost.clientAmount, 'formatted') }}
       </td>
     </template>
 
