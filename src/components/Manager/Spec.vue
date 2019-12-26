@@ -1,5 +1,14 @@
 <template>
   <div class="container container--sm">
+    <div
+      v-if="isSpecSync"
+      class="fixed opacity-50 simple-rotation-anim"
+      style="bottom: 26px; right: 16px;"
+    >
+      <Icon>
+        {{ icons.mdiSync }}
+      </Icon>
+    </div>
     <div class="pt-10">
       <div class="flex justify-between">
         <span class="mb-3">

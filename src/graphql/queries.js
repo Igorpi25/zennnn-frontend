@@ -45,6 +45,12 @@ export const GET_IS_LOGGED_IN = gql`
   }
 `
 
+export const GET_IS_SPEC_SYNC = gql`
+  query GetIsSpecSync {
+    isSpecSync @client
+  }
+`
+
 export const GET_PROFILE = gql`
   query GetProfile {
     getProfile {

@@ -130,6 +130,7 @@ export const apolloClient = new ApolloClient({
 
 const data = {
   isLoggedIn: false,
+  isSpecSync: false,
   loggedInUser: null,
 }
 

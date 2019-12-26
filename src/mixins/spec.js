@@ -6,14 +6,18 @@ import {
   mdiChevronRight,
   mdiMinus,
   mdiPlus,
+  mdiSync,
 } from '@mdi/js'
 
 import { ClientType, InvoiceStatus } from '@/graphql/enums'
-import { GET_SPEC, SEARCH_CLIENTS, SEARCH_SUPPLIERS } from '../graphql/queries'
+import { GET_SPEC, SEARCH_CLIENTS, SEARCH_SUPPLIERS, GET_IS_SPEC_SYNC } from '../graphql/queries'
 import { CREATE_INVOICE, UPDATE_INVOICE, UPDATE_SPEC, SET_SPEC_CLIENT, SET_INVOICE_SUPPLIER } from '../graphql/mutations'
 
 export default {
   apollo: {
+    isSpecSync: {
+      query: GET_IS_SPEC_SYNC,
+    },
     getSpec: {
       query: GET_SPEC,
       variables () {
@@ -72,6 +76,7 @@ export default {
         mdiChevronRight,
         mdiMinus,
         mdiPlus,
+        mdiSync,
       },
     }
   },
@@ -210,9 +215,33 @@ export default {
         this.menuPurchaseDate[invoiceId] = false
         this.menuShippingDate[invoiceId] = false
       } catch (error) {
+        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+          this.refetchSpec()
+        }
         throw new Error(error)
       } finally {
         this.updateLoading = false
+      }
+    },
+    async refetchSpec () {
+      const apolloClient = this.$apollo.provider.defaultClient
+      try {
+        apolloClient.cache.writeData({
+          data: { isSpecSync: true },
+        })
+        await this.$apollo.query({
+          query: GET_SPEC,
+          variables: {
+            id: this.$route.params.specId,
+          },
+          fetchPolicy: 'network-only',
+        })
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+      } finally {
+        apolloClient.cache.writeData({
+          data: { isSpecSync: false },
+        })
       }
     },
     async updateSpec (input) {

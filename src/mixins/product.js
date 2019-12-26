@@ -9,6 +9,7 @@ import {
 import ProductImagesList from '../components/ProductImagesList.vue'
 import ProductImage from '../components/ProductImage.vue'
 import { confirmDialog } from '@/util/helpers'
+import { GET_SPEC } from '../graphql/queries'
 
 export default {
   components: {
@@ -47,6 +48,9 @@ export default {
         })
       } catch (error) {
         this.$logger.warn('Error: ', error)
+        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+          this.refetchSpec()
+        }
         // Analytics.record({
         //   name: 'UpdateProductError',
         //   attributes: {
@@ -55,6 +59,27 @@ export default {
         // })
       } finally {
         this.updateLoading = null
+      }
+    },
+    async refetchSpec () {
+      const apolloClient = this.$apollo.provider.defaultClient
+      try {
+        apolloClient.cache.writeData({
+          data: { isSpecSync: true },
+        })
+        await this.$apollo.query({
+          query: GET_SPEC,
+          variables: {
+            id: this.$route.params.specId,
+          },
+          fetchPolicy: 'network-only',
+        })
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+      } finally {
+        apolloClient.cache.writeData({
+          data: { isSpecSync: false },
+        })
       }
     },
     async updateProductCost (input) {
