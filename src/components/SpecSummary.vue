@@ -107,7 +107,7 @@
               <li>
                 <span>{{ $t('shipping.estimateDate') }}</span>
                 <span class="leaders__num">
-                  {{ spec.estimateShippingDate ? $d($parseDate(spec.estimateShippingDate), 'short') : '' }}
+                  {{ spec.estimateShippingDate ? $d($parseDate(spec.estimateShippingDate), 'short') : '-' }}
                 </span>
               </li>
               <li>
