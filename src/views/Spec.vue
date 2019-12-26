@@ -179,7 +179,9 @@ export default {
             fragment: INVOICE_FRAGMENT,
             fragmentName: 'InvoiceFragment',
           })
-          const data = Object.assign({}, cacheData, delta.payload.fields)
+          const data = delta.payload.__typename === Typename.INVOICE
+            ? Object.assign({}, cacheData, delta.payload)
+            : Object.assign({}, cacheData, delta.payload.fields)
           apolloClient.writeFragment({
             id: `${Typename.INVOICE}:${delta.payload.id}`,
             fragment: INVOICE_FRAGMENT,

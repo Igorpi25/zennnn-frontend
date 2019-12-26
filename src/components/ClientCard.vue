@@ -529,6 +529,8 @@ export default {
         })
         if (response && response.data && response.data.createClient) {
           this.setData(response.data.createClient)
+          this.editMode = false
+          this.clientClone = cloneDeep(this.client)
           this.$router.push({
             name: 'client',
             params: {
@@ -537,8 +539,6 @@ export default {
             },
           })
         }
-        this.clientClone = cloneDeep(this.client)
-        this.editMode = false
       } catch (error) {
         this.$logger.warn('Error: ', error)
         throw new Error(error)

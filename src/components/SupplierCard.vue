@@ -615,6 +615,8 @@ export default {
           if (this.isComponent) {
             this.$emit('create', response.data.createSupplier)
           } else {
+            this.editMode = false
+            this.supplierClone = cloneDeep(this.supplier)
             this.$router.push({
               name: 'supplier',
               params: {
@@ -624,8 +626,6 @@ export default {
             })
           }
         }
-        this.supplierClone = cloneDeep(this.supplier)
-        this.editMode = false
       } catch (error) {
         this.$logger.warn('Error: ', error)
         throw new Error(error)
