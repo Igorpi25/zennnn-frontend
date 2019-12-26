@@ -48,7 +48,10 @@
             <template v-slot:footer>
               <tr class="items base-accent3">
                 <td colspan="3"></td>
-                <td class="text-primary" colspan="3">
+                <td
+                  class="text-primary"
+                  :colspan="activeTab === 2 ? 2 : 3"
+                >
                   <div class="flex">
                     <Button
                       text

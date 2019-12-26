@@ -109,14 +109,18 @@ export default {
       },
       set (val) {
         this.lazyValue = val
-        this.checked = !this.checked
+        this.checked = !!val
         this.$emit('input', val)
       },
     },
   },
   watch: {
-    value (val) {
-      this.lazyValue = val
+    value: {
+      handler (val) {
+        this.lazyValue = val
+        this.checked = !!val
+      },
+      immediate: true,
     },
   },
   created () {
