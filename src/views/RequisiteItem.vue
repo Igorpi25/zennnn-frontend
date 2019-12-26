@@ -4,11 +4,12 @@
     :org-id="$route.params.orgId"
     :create="create"
     :is-welcome.sync="showWelcomeDialog"
+    :is-user-init-key-store="isUserInitKeyStore"
   />
 </template>
 
 <script>
-import { GET_PROFILE } from '../graphql/queries'
+import { GET_IS_LOGGED_IN, GET_PROFILE } from '../graphql/queries'
 import RequisiteCard from '../components/RequisiteCard.vue'
 
 export default {
@@ -23,6 +24,9 @@ export default {
     },
   },
   apollo: {
+    isLoggedIn: {
+      query: GET_IS_LOGGED_IN,
+    },
     getProfile: {
       query: GET_PROFILE,
       fetchPolicy: 'cache-only',
@@ -51,7 +55,6 @@ export default {
     let isUserInit = localStorage.getItem(this.isUserInitKeyStore)
     if (this.$route.query.q && this.$route.query.q === 'welcome') {
       if (!isUserInit) {
-        localStorage.setItem(this.isUserInitKeyStore, 1)
         this.showWelcomeDialog = true
       }
     }

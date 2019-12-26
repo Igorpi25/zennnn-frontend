@@ -35,7 +35,7 @@
       </span>
       <div :class="[ isComponent ? 'pt-5 px-4' : 'py-12' ]">
       <Button
-        v-if="!isComponent && ($route.query.q && $route.query.q === 'welcome')"
+        v-if="!isComponent && !isUserInit"
         large
         class="mb-6 mx-auto md:mr-0 md:ml-auto"
         @click="$router.push({ name: 'home' })"
@@ -201,6 +201,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isUserInitKeyStore: {
+      type: String,
+      default: '',
+    },
   },
   apollo: {
     getOrgRequisite: {
@@ -271,6 +275,9 @@ export default {
     }
   },
   computed: {
+    isUserInit () {
+      return localStorage.getItem(this.isUserInitKeyStore)
+    },
     reqId () {
       return this.$route.params.reqId
     },
@@ -329,6 +336,9 @@ export default {
           return next(false)
         }
       } else {
+        if (!this.isUserInit) {
+          localStorage.setItem(this.isUserInitKeyStore, 1)
+        }
         return next()
       }
     },

@@ -224,6 +224,9 @@ import SocialSignIn from '@/components/SocialSignIn.vue'
 import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
 
+import { apolloClient } from '../plugins/apollo'
+
+import { GET_ORGS } from '../graphql/queries'
 import { COMPLITE_REGISTRATION } from '../graphql/mutations'
 
 export default {
@@ -282,9 +285,14 @@ export default {
             const init = true
             this.$logger.info('Logged in user', user)
             if (init) {
+              const { data: { getOrgs } } = await apolloClient.query({
+                query: GET_ORGS,
+                fetchPolicy: 'cache-first',
+              })
+              const [org] = getOrgs
               this.$router.replace({
                 name: 'requisite-create',
-                params: { orgId: '5dedff8c9c1ffa001dfccbc3' },
+                params: { orgId: org.id },
                 query: { q: 'welcome' },
               })
             } else {
