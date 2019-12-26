@@ -4,8 +4,8 @@
       <span
         :class="[
           'status-indicator__bordered',
-          item.status === ProductStatus.IN_PRODUCTION
-            ? 'status-indicator__bordered--orange' : item.status === ProductStatus.IN_STOCK
+          item.productStatus === ProductStatus.IN_PRODUCTION
+            ? 'status-indicator__bordered--orange' : item.productStatus === ProductStatus.IN_STOCK
               ? 'status-indicator__bordered--green' : 'status-indicator__bordered--pink'
         ]"
       >

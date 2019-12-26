@@ -65,7 +65,7 @@
                         <span class="text-gray-light">{{ item.model }}</span>
                         <span class="flex">
                           <img src="../assets/icons/factory-green.png" width="21px">
-                          <span class="ml-2 text-orange">{{ item.status }}</span>
+                          <span class="ml-2 text-orange">{{ item.productStatus }}</span>
                         </span>
                       </td>
                       <td class="text-right">{{ item.morePhoto }}</td>

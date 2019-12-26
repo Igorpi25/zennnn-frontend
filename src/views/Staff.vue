@@ -68,8 +68,8 @@
                     <span
                       :class="[
                         'status-indicator inline-block',
-                        item.status === 'ORANGE'
-                          ? 'status-indicator--orange' : item.status === SpecStatus.IN_STOCK
+                        item.specStatus === SpecStatus.IN_PRODUCTION
+                          ? 'status-indicator--orange' : item.specStatus === SpecStatus.IN_STOCK
                             ? 'status-indicator--green' : 'status-indicator--pink'
                       ]"
                     >
@@ -123,8 +123,8 @@
                         :class="[
                           'status-mini',
                           'status-indicator inline-block',
-                          specItem.status === 'ORANGE'
-                            ? 'status-indicator--orange' : specItem.status === SpecStatus.IN_STOCK
+                          specItem.specStatus === SpecStatus.IN_PRODUCTION
+                            ? 'status-indicator--orange' : specItem.specStatus === SpecStatus.IN_STOCK
                               ? 'status-indicator--green' : 'status-indicator--pink'
                         ]"
                       >
