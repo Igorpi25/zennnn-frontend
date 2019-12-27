@@ -226,7 +226,7 @@ import Copyright from '@/components/Copyright.vue'
 
 import { apolloClient } from '../plugins/apollo'
 
-import { GET_ORGS } from '../graphql/queries'
+import { GET_PROFILE, GET_ORGS } from '../graphql/queries'
 import { COMPLITE_REGISTRATION } from '../graphql/mutations'
 
 export default {
@@ -282,9 +282,12 @@ export default {
             // TODO: save user to cache and redirect to Registration.vue view
             // this.$router.push({ name: 'registration', query: this.$route.query })
           } else {
-            const init = true
             this.$logger.info('Logged in user', user)
-            if (init) {
+            const { data: { getProfile } } = await apolloClient.query({
+              query: GET_PROFILE,
+              fetchPolicy: 'cache-first',
+            })
+            if (getProfile.initialized) {
               const { data: { getOrgs } } = await apolloClient.query({
                 query: GET_ORGS,
                 fetchPolicy: 'cache-first',

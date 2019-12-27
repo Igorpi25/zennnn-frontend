@@ -269,15 +269,13 @@ export default {
       },
       requisite: {},
       requisiteClone: {},
+      isUserInit: null,
       icons: {
         mdiClose,
       },
     }
   },
   computed: {
-    isUserInit () {
-      return localStorage.getItem(this.isUserInitKeyStore)
-    },
     reqId () {
       return this.$route.params.reqId
     },
@@ -316,6 +314,9 @@ export default {
       this.reset()
     }
   },
+  mounted () {
+    this.isUserInit = localStorage.getItem(this.isUserInitKeyStore)
+  },
   methods: {
     async checkChangesBeforeLeave (next) {
       if (this.hasDeepChange) {
@@ -338,6 +339,7 @@ export default {
       } else {
         if (!this.isUserInit) {
           localStorage.setItem(this.isUserInitKeyStore, 1)
+          this.isUserInit = true
         }
         return next()
       }

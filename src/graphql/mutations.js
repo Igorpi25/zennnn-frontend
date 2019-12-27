@@ -21,6 +21,7 @@ export const LOGIN = gql`
       givenName
       familyName
       picture
+      initialized
     }
   }
 `

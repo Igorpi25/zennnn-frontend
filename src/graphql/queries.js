@@ -53,6 +53,7 @@ export const GET_PROFILE = gql`
       givenName
       familyName
       picture
+      initialized
     }
   }
 `
