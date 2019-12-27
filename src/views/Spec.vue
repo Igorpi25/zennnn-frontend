@@ -109,12 +109,14 @@ export default {
           if (!parentInvoice.products.some(el => el.id === delta.payload.id)) {
             parentInvoice.products.push(delta.payload)
 
-            apolloClient.writeFragment({
-              id: `${Typename.INVOICE}:${delta.parentId}`,
-              fragment: INVOICE_PRODUCTS_FRAGMENT,
-              fragmentName: 'InvoiceProductsFragment',
-              data: parentInvoice,
-            })
+            setTimeout(() => {
+              apolloClient.writeFragment({
+                id: `${Typename.INVOICE}:${delta.parentId}`,
+                fragment: INVOICE_PRODUCTS_FRAGMENT,
+                fragmentName: 'InvoiceProductsFragment',
+                data: parentInvoice,
+              })
+            }, 0)
           }
         }
 
