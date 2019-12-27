@@ -114,7 +114,7 @@
             class="-ml-6 text-primary"
             hide-details
             vertical-align
-            @input="useStandardHeader"
+            @input="useDefaultHeader"
           >
             <span class="ml-2 mb-2 text-sm text-black">{{ $t('paper.contractHeader') }}</span>
           </Checkbox>
@@ -470,6 +470,8 @@ import deepEqual from 'deep-equal'
 import { mdiPlusCircleOutline, mdiClose } from '@mdi/js'
 import { ziGear, ziPencil, ziChevronUpCircle } from '@/assets/icons'
 
+import { apolloClient } from '../plugins/apollo'
+
 import { GET_ORG_REQUISITE } from '../graphql/queries'
 import { CREATE_CONTRACT, UPDATE_СONTRACT } from '../graphql/mutations'
 
@@ -494,20 +496,6 @@ export default {
       default: false,
     },
   },
-  apollo: {
-    getOrgRequisite: {
-      query: GET_ORG_REQUISITE,
-      variables () {
-        return {
-          id: this.reqId,
-        }
-      },
-      skip () {
-        return !this.reqId
-      },
-      fetchPolicy: 'cache-and-network',
-    },
-  },
   data () {
     return {
       icons: {
@@ -530,6 +518,7 @@ export default {
       saveBeforeClose: false,
       requisiteList: false,
       requisiteDialog: false,
+      requisite: {},
     }
   },
   computed: {
@@ -539,19 +528,24 @@ export default {
     reqId () {
       return this.contract.requisiteId || ''
     },
-    requisite () {
-      return this.getOrgRequisite || {}
-    },
   },
   watch: {
     blank (newVal, oldVal) {
       if (newVal !== oldVal) {
         this.setData(newVal)
+        if (newVal.requisiteId) {
+          this.setCurrentRequisite(newVal.requisiteId)
+        } else {
+          this.requisite = {}
+        }
       }
     },
   },
   created () {
     this.setData(this.blank)
+    if (this.contract.requisiteId) {
+      this.setCurrentRequisite(this.contract.requisiteId)
+    }
   },
   methods: {
     addHeading (contract) {
@@ -569,7 +563,7 @@ export default {
     removeParagraph (contract, index, idx) {
       contract[index].paragraphs.splice(idx, 1)
     },
-    useStandardHeader () {
+    useDefaultHeader () {
       this.contract.useDefaultDocHeader = !this.contract.useDefaultDocHeader
       if (this.contract.useDefaultDocHeader) {
         this.contract.docHeader = ''
@@ -643,12 +637,22 @@ export default {
         this.$refs.requisiteList.update()
       }, 200)
     },
+    async setCurrentRequisite (id) {
+      const { data: { getOrgRequisite } } = await apolloClient.query({
+        query: GET_ORG_REQUISITE,
+        variables: { id },
+        fetchPolicy: 'cache-first',
+      })
+      this.requisite = getOrgRequisite || {}
+    },
     chooseRequisite (id) {
+      this.setCurrentRequisite(id)
       this.contract.requisiteId = id
       this.requisiteList = false
     },
     setCreatedRequisite (requisite) {
       this.contract.requisiteId = requisite.id
+      this.setCurrentRequisite(this.contract.requisiteId)
       this.requisiteDialog = false
       this.requisiteList = false
       setTimeout(() => {
