@@ -220,7 +220,9 @@ export default {
             fragment: SPEC_FRAGMENT,
             fragmentName: 'SpecFragment',
           })
-          const data = Object.assign({}, cacheData, delta.payload.fields)
+          const data = delta.payload.__typename === Typename.SPEC
+            ? Object.assign({}, cacheData, delta.payload)
+            : Object.assign({}, cacheData, delta.payload.fields)
           apolloClient.writeFragment({
             id: `${Typename.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
