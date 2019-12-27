@@ -347,18 +347,18 @@ export default {
       this.checkField(e)
     },
     onKeyDown (e) {
-      // on esc set value from store
-      if (e.key === 'Esc' || e.key === 'Escape') {
-        this.internalValue = this.value
-        this.blurWithoutUpdate = true
-        this.$refs.input.blur()
-        e.preventDefault()
-        return
-      } else if (e.key === 'Enter') {
-        // on enter blur normally
-        this.$refs.input.blur()
-        e.preventDefault()
-        return
+      if (this.debounce) {
+        // on esc set value from store
+        if (e.key === 'Esc' || e.key === 'Escape') {
+          this.internalValue = this.value
+          this.blurWithoutUpdate = true
+          this.$refs.input.blur()
+          e.preventDefault()
+        } else if (e.key === 'Enter') {
+          // on enter blur normally
+          this.$refs.input.blur()
+          e.preventDefault()
+        }
       }
       // for ios inputtype="numberic" & pattern="[0-9]*"
       // and not exist e.key on ios, TODO with e.which
