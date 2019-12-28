@@ -23,8 +23,19 @@
             </svg>
           </router-link>
         </div>
+        <div class="flex-grow" />
+        <div
+          v-if="isLoggedIn && roleInOrg !== 'OWNER'"
+          class="flex justify-end hidden sm:flex"
+        >
+          <div class="status-bar__items">
+            <div class="text-sm">
+              {{ currentOrgName }}
+            </div>
+          </div>
+        </div>
         <!-- Lang picker -->
-        <div class="flex flex-grow justify-end">
+        <div class="flex justify-end">
           <div class="status-bar__items">
             <v-menu
               v-model="langMenu"
@@ -266,6 +277,16 @@ export default {
     }
   },
   computed: {
+    currentOrg () {
+      const orgs = this.getOrgs || []
+      return orgs.find(el => el.id === this.$route.params.orgId) || {}
+    },
+    currentOrgName () {
+      return this.currentOrg.name || (this.currentOrg.owner && this.currentOrg.owner.email) || ''
+    },
+    roleInOrg () {
+      return this.currentOrg.role || null
+    },
     orgsByRole () {
       let orgs = this.getOrgs || []
       let groups = {}
