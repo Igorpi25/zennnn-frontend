@@ -4,10 +4,10 @@
     <div class="flex items-center">
       <div class="mr-2 flex flex-col items-start">
         <RadioButton
+          v-model="internalProfitType"
+          :label="InvoiceProfitType.MARGIN"
           name="profit-type"
           hide-details
-          :value="item.profitType"
-          :label="InvoiceProfitType.MARGIN"
           @input="updateInvoice({
             profitType: $event
           })"
@@ -17,10 +17,10 @@
           </span>
         </RadioButton>
         <RadioButton
+          v-model="internalProfitType"
+          :label="InvoiceProfitType.COMMISSION"
           name="profit-type"
           hide-details
-          :value="item.profitType"
-          :label="InvoiceProfitType.COMMISSION"
           @input="updateInvoice({
             profitType: $event
           })"
@@ -258,8 +258,27 @@ export default {
   },
   data () {
     return {
-      //
+      // TODO: need RadioButtonGroup component for control radio values
+      internalProfitType: '',
     }
+  },
+  computed: {
+    profitType: {
+      get () {
+        return this.internalProfitType
+      },
+      set (val) {
+        this.internalProfitType = val
+      },
+    },
+  },
+  watch: {
+    'item.profitType': {
+      handler (val) {
+        this.internalProfitType = val
+      },
+      immediate: true,
+    },
   },
 }
 </script>
