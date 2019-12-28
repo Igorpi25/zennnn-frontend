@@ -71,7 +71,7 @@
             class="mt-10 mx-auto"
             @click="submit"
           >
-            <span>{{ $t('action.save') }}</span>
+            <span>{{ $t('action.invite') }}</span>
           </Button>
         </Form>
       </div>
@@ -104,7 +104,7 @@ export default {
         invitationGivenName: '',
         invitationFamilyName: '',
         invitationEmail: '',
-        invitationRole: Role.FREELANCER,
+        invitationRole: Role.MANAGER,
       },
       roleMenu: false,
       icons: {
