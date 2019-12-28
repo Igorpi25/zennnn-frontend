@@ -158,6 +158,15 @@
         </div>
         <div class="w-full">
           <TextField
+            v-model="compliteFormModel.email"
+            :label="$t('signin.login')"
+            type="email"
+            name="email"
+            disabled
+          />
+        </div>
+        <div class="w-full">
+          <TextField
             v-model="compliteFormModel.password"
             :label="$t('signup.password')"
             :type="compliteShowPassword ? 'text' : 'password'"
