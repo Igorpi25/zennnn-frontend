@@ -205,7 +205,7 @@
                     <span v-if="item.picture">{{ item.picture }}</span>
                     <div v-else class="border border-gray-lightest rounded-full" style="width:35px; height:35px"></div>
                     <div class="ml-3">
-                      <div class="text-sm">{{ item.name || item.owner.email }}, {{ item.role }}</div>
+                      <div class="text-sm">{{ item.name || item.owner.email }}</div>
                       <div class="text-xs text-gray-lighter">{{ item.id }}</div>
                     </div>
                   </div>
