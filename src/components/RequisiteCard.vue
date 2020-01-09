@@ -103,7 +103,9 @@
                 class="mb-4 mx-auto md:hidden"
                 @click="update()"
               >
-                <span>{{ $t('action.save') }}</span>
+                <span>
+                  {{ $route.name === 'requisite-create' ? $t('action.create') : $t('action.save') }}
+                </span>
               </Button>
             </div>
           </template>
@@ -152,7 +154,9 @@
                 class="mb-4 mx-auto"
                 @click="update()"
               >
-                <span>{{ $t('action.save') }}</span>
+                <span>
+                  {{ $route.name === 'requisite-create' ? $t('action.create') : $t('action.save') }}
+                </span>
               </Button>
             </div>
           </template>
@@ -355,7 +359,6 @@ export default {
         this.fieldsKeys.forEach(key => {
           input[key] = this.requisite[key] || null
         })
-
         const query = this.create ? CREATE_REQUISITE : UPDATE_REQUISITE
 
         const variables = this.create
@@ -368,17 +371,17 @@ export default {
         })
         if (response && response.data && response.data.createRequisite) {
           this.setData(response.data.createRequisite)
-        }
-        if (this.isComponent) {
-          this.$emit('create', response.data.createRequisite)
-        } else {
-          this.$router.push({
-            name: 'requisite',
-            params: {
-              orgId: this.orgId,
-              reqId: response.data.createRequisite.id,
-            },
-          })
+          if (this.isComponent) {
+            this.$emit('create', response.data.createRequisite)
+          } else {
+            this.$router.push({
+              name: 'requisite',
+              params: {
+                orgId: this.orgId,
+                reqId: response.data.createRequisite.id,
+              },
+            })
+          }
         }
         this.requisiteClone = cloneDeep(this.requisite)
       } catch (error) {

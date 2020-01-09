@@ -285,7 +285,7 @@ export default {
             this.$logger.info('Logged in user', user)
             const { data: { getProfile } } = await apolloClient.query({
               query: GET_PROFILE,
-              fetchPolicy: 'cache-first',
+              fetchPolicy: 'cache-only',
             })
             if (getProfile.initialized) {
               const { data: { getOrgs } } = await apolloClient.query({
