@@ -35,7 +35,7 @@
       </span>
       <div :class="[ isComponent ? 'pt-5 px-4' : 'py-12' ]">
       <Button
-        v-if="!isComponent && !isUserInit"
+        v-if="!isComponent && showFillLaterButton"
         large
         class="mb-6 mx-auto md:mr-0 md:ml-auto"
         @click="$router.push({ name: 'home' })"
@@ -201,6 +201,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showFillLaterButton: {
+      type: Boolean,
+      default: false,
+    },
     isUserInitKeyStore: {
       type: String,
       default: '',
@@ -269,7 +273,6 @@ export default {
       },
       requisite: {},
       requisiteClone: {},
-      isUserInit: null,
       icons: {
         mdiClose,
       },
@@ -314,9 +317,6 @@ export default {
       this.reset()
     }
   },
-  mounted () {
-    this.isUserInit = localStorage.getItem(this.isUserInitKeyStore)
-  },
   methods: {
     async checkChangesBeforeLeave (next) {
       if (this.hasDeepChange) {
@@ -337,10 +337,7 @@ export default {
           return next(false)
         }
       } else {
-        if (!this.isUserInit) {
-          localStorage.setItem(this.isUserInitKeyStore, 1)
-          this.isUserInit = true
-        }
+        localStorage.setItem(this.isUserInitKeyStore, 1)
         return next()
       }
     },

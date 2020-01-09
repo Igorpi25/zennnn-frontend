@@ -641,7 +641,7 @@ export default {
       const { data: { getOrgRequisite } } = await apolloClient.query({
         query: GET_ORG_REQUISITE,
         variables: { id },
-        fetchPolicy: 'cache-first',
+        fetchPolicy: 'network-only',
       })
       this.requisite = getOrgRequisite || {}
     },

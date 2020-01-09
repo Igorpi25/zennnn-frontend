@@ -4,6 +4,7 @@
     :org-id="$route.params.orgId"
     :create="create"
     :is-welcome.sync="showWelcomeDialog"
+    :show-fill-later-button="showFillLaterButton"
     :is-user-init-key-store="isUserInitKeyStore"
   />
 </template>
@@ -41,6 +42,7 @@ export default {
   data () {
     return {
       showWelcomeDialog: false,
+      showFillLaterButton: false,
     }
   },
   computed: {
@@ -56,6 +58,8 @@ export default {
     if (this.$route.query.q && this.$route.query.q === 'welcome') {
       if (!isUserInit) {
         this.showWelcomeDialog = true
+        this.showFillLaterButton = true
+        localStorage.setItem(this.isUserInitKeyStore, 1)
       }
     }
   },
