@@ -233,6 +233,9 @@ import SocialSignIn from '@/components/SocialSignIn.vue'
 import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
 
+import { apolloClient } from '../plugins/apollo'
+
+import { GET_PROFILE, GET_ORGS } from '../graphql/queries'
 import { COMPLITE_REGISTRATION } from '../graphql/mutations'
 
 export default {
@@ -289,10 +292,27 @@ export default {
             // this.$router.push({ name: 'registration', query: this.$route.query })
           } else {
             this.$logger.info('Logged in user', user)
-            if (this.$route.query.redirect) {
-              this.$router.replace({ path: this.$route.query.redirect })
+            const { data: { getProfile } } = await apolloClient.query({
+              query: GET_PROFILE,
+              fetchPolicy: 'cache-only',
+            })
+            if (getProfile.initialized) {
+              const { data: { getOrgs } } = await apolloClient.query({
+                query: GET_ORGS,
+                fetchPolicy: 'cache-first',
+              })
+              const [org] = getOrgs
+              this.$router.replace({
+                name: 'requisite-create',
+                params: { orgId: org.id },
+                query: { q: 'welcome' },
+              })
             } else {
-              this.$router.replace({ name: 'home' })
+              if (this.$route.query.redirect) {
+                this.$router.replace({ path: this.$route.query.redirect })
+              } else {
+                this.$router.replace({ name: 'home' })
+              }
             }
           }
         }

@@ -15,6 +15,7 @@
         'text-field--single-line': singleLine,
         'text-field--solo': solo,
         'text-field--colored': colored,
+        'text-field--colored-faded': coloredFaded,
         'text-field--borderless': borderless,
         'text-field--focused': hasFocus,
         'text-field--text-dark': textDark,
@@ -195,6 +196,10 @@ export default {
       default: false,
     },
     colored: {
+      type: Boolean,
+      default: false,
+    },
+    coloredFaded: {
       type: Boolean,
       default: false,
     },

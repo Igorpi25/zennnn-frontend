@@ -6,6 +6,8 @@
       max-width="400"
     >
       <PaperCompanyListModal
+        ref="requisiteList"
+        @openRequisiteDialog="openRequisiteDialog"
         @chooseRequisite="chooseRequisite"
       />
     </v-dialog>
@@ -20,6 +22,23 @@
         @dontSave="doNotSaveContractChanges"
         @cancel="cancel"
         @save="saveContractChanges"
+      />
+    </v-dialog>
+
+    <v-dialog
+      ref="requisiteDialog"
+      v-model="requisiteDialog"
+      scrollable
+      max-width="1024"
+      :fullscreen="$vuetify.breakpoint.xs"
+    >
+      <RequisiteCard
+        ref="requisiteCard"
+        :org-id="$route.params.orgId"
+        create
+        is-component
+        @close="requisiteDialog = false"
+        @create="setCreatedRequisite"
       />
     </v-dialog>
 
@@ -81,7 +100,7 @@
           <div class="paper-title__textfield mt-8">
             <TextArea
               v-model="contract.docHeader"
-              :disabled="isStandardHeader"
+              :disabled="contract.useDefaultDocHeader"
               :placeholder="$t('paper.textField')"
               hide-details
               single-line
@@ -91,10 +110,11 @@
             />
           </div>
           <Checkbox
+            :value="contract.useDefaultDocHeader"
             class="-ml-6 text-primary"
             hide-details
             vertical-align
-            @input="useStandardHeader"
+            @input="useDefaultHeader"
           >
             <span class="ml-2 mb-2 text-sm text-black">{{ $t('paper.contractHeader') }}</span>
           </Checkbox>
@@ -450,17 +470,21 @@ import deepEqual from 'deep-equal'
 import { mdiPlusCircleOutline, mdiClose } from '@mdi/js'
 import { ziGear, ziPencil, ziChevronUpCircle } from '@/assets/icons'
 
+import { apolloClient } from '../plugins/apollo'
+
 import { GET_ORG_REQUISITE } from '../graphql/queries'
 import { CREATE_CONTRACT, UPDATE_СONTRACT } from '../graphql/mutations'
 
 import PaperCompanyListModal from '@/components/PaperCompanyListModal.vue'
 import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
+import RequisiteCard from '@/components/RequisiteCard.vue'
 
 export default {
   name: 'PaperConfiguratorModal',
   components: {
     PaperCompanyListModal,
     SaveBeforeCloseModal,
+    RequisiteCard,
   },
   props: {
     blank: {
@@ -470,20 +494,6 @@ export default {
     create: {
       type: Boolean,
       default: false,
-    },
-  },
-  apollo: {
-    getOrgRequisite: {
-      query: GET_ORG_REQUISITE,
-      variables () {
-        return {
-          id: this.reqId,
-        }
-      },
-      skip () {
-        return !this.reqId
-      },
-      fetchPolicy: 'network-only',
     },
   },
   data () {
@@ -507,6 +517,8 @@ export default {
       isStandardHeader: false,
       saveBeforeClose: false,
       requisiteList: false,
+      requisiteDialog: false,
+      requisite: {},
     }
   },
   computed: {
@@ -514,18 +526,26 @@ export default {
       return this.$route.params.orgId
     },
     reqId () {
-      return this.contract.requisiteId
-    },
-    requisite () {
-      return this.getOrgRequisite || {}
+      return this.contract.requisiteId || ''
     },
   },
   watch: {
     blank (newVal, oldVal) {
       if (newVal !== oldVal) {
         this.setData(newVal)
+        if (newVal.requisiteId) {
+          this.setCurrentRequisite(newVal.requisiteId)
+        } else {
+          this.requisite = {}
+        }
       }
     },
+  },
+  created () {
+    this.setData(this.blank)
+    if (this.contract.requisiteId) {
+      this.setCurrentRequisite(this.contract.requisiteId)
+    }
   },
   methods: {
     addHeading (contract) {
@@ -543,11 +563,10 @@ export default {
     removeParagraph (contract, index, idx) {
       contract[index].paragraphs.splice(idx, 1)
     },
-    useStandardHeader () {
-      this.isStandardHeader = !this.isStandardHeader
-      if (this.isStandardHeader) {
+    useDefaultHeader () {
+      this.contract.useDefaultDocHeader = !this.contract.useDefaultDocHeader
+      if (this.contract.useDefaultDocHeader) {
         this.contract.docHeader = ''
-        this.contract.useDefaultDocHeader = true
       }
     },
     changePos (index, arr) {
@@ -611,14 +630,37 @@ export default {
         throw new Error(error)
       }
       this.$emit('close')
-      this.getOrgRequisite = {}
     },
     openRequisiteList () {
       this.requisiteList = true
+      setTimeout(() => {
+        this.$refs.requisiteList.update()
+      }, 200)
+    },
+    async setCurrentRequisite (id) {
+      const { data: { getOrgRequisite } } = await apolloClient.query({
+        query: GET_ORG_REQUISITE,
+        variables: { id },
+        fetchPolicy: 'network-only',
+      })
+      this.requisite = getOrgRequisite || {}
     },
     chooseRequisite (id) {
+      this.setCurrentRequisite(id)
       this.contract.requisiteId = id
       this.requisiteList = false
+    },
+    setCreatedRequisite (requisite) {
+      this.contract.requisiteId = requisite.id
+      this.setCurrentRequisite(this.contract.requisiteId)
+      this.requisiteDialog = false
+      this.requisiteList = false
+      setTimeout(() => {
+        this.$refs.requisiteCard.reset()
+        if (this.$refs.requisiteDialog.$refs.dialog) {
+          this.$refs.requisiteDialog.$refs.dialog.scrollTop = 0
+        }
+      }, 200)
     },
     beforeClose () {
       if (!deepEqual(this.contract, this.contractClone, true)) {
@@ -628,7 +670,6 @@ export default {
       }
     },
     doNotSaveContractChanges () {
-      this.getOrgRequisite = {}
       this.saveBeforeClose = false
       this.$emit('close')
     },
@@ -640,14 +681,14 @@ export default {
       this.saveBeforeClose = false
       this.$emit('close')
     },
+    openRequisiteDialog () {
+      this.requisiteDialog = true
+    },
     setData (item) {
       if (!item) return
       this.contract = item
       this.contractClone = cloneDeep(this.contract)
     },
-  },
-  created () {
-    this.setData(this.blank)
   },
 }
 </script>

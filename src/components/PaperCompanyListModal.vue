@@ -1,5 +1,8 @@
 <template>
   <div class="p-8 requisite-list-container">
+    <div v-if="loading" class="flex justify-center items-center w-full h-full">
+      <Spinner />
+    </div>
     <ul class="ml-6 text-primary">
       <li
         v-for="requisite in requisiteList"
@@ -18,6 +21,7 @@
     <Button
       outline
       class="mt-4"
+      @click="$emit('openRequisiteDialog')"
     >
       <template>
         <Icon class="-ml-4 mr-2">{{ icons.mdiPlusCircleOutline }}</Icon>
@@ -43,10 +47,16 @@ export default {
           orgId: this.orgId,
         }
       },
+      result ({ data, loading }) {
+        if (loading) this.loading = true
+        if (data) this.loading = false
+      },
+      fetchPolicy: 'cache-and-network',
     },
   },
   data () {
     return {
+      loading: false,
       icons: {
         ziGear,
         mdiPlusCircleOutline,
@@ -59,6 +69,11 @@ export default {
     },
     requisiteList () {
       return this.listOrgRequisites
+    },
+  },
+  methods: {
+    update () {
+      this.$apollo.queries.listOrgRequisites.refetch()
     },
   },
 }
