@@ -46,7 +46,7 @@
           ref="input"
           v-model="internalValue"
           :id="inputId"
-          :type="type"
+          :type="type === 'number' ? 'text' : type"
           :name="name"
           :required="required"
           :readonly="readonly"
@@ -96,7 +96,13 @@ import { mdiCloseCircle, mdiCheckCircle } from '@mdi/js'
 
 import validatable from '@/mixins/validatable'
 
-import { convertToUnit } from '@/util/helpers'
+import {
+  convertToUnit,
+  formatNumber,
+  unformat,
+  setCursor,
+  event,
+} from '../../util/helpers'
 
 export default {
   name: 'TextField',
@@ -125,6 +131,10 @@ export default {
     inputmode: {
       type: String,
       default: 'text',
+    },
+    formatStyle: {
+      type: String,
+      default: 'decimal',
     },
     name: {
       type: String,
@@ -224,7 +234,7 @@ export default {
       inputId: 'input' + Math.round(Math.random() * 100000),
       lazyValue: this.value,
       integerPattern: '[0-9]*',
-      decimalPattern: '^[-+]?[0-9]+[,.][0-9]+$',
+      decimalPattern: '^[0-9]+[,.][0-9]+$',
       integerStep: '1',
       decimalStep: '0.01',
       icons: {
@@ -237,6 +247,14 @@ export default {
     compHeight () {
       return this.height ? convertToUnit(this.height) : null
     },
+    formatNumberOptions () {
+      return {
+        precision: this.inputmode === 'numeric' ? 0 : 2,
+        thousand: this.editMode ? '' : ' ',
+        decimal: ',',
+        fixed: !this.editMode && this.formatStyle === 'currency',
+      }
+    },
     internalValue: {
       get () {
         return this.lazyValue
@@ -244,19 +262,9 @@ export default {
       set (val) {
         let value = val || null
         if (this.type === 'number') {
-          // clear input leading zero and non-digits
-          // [type="number"] safari allow to input letters
-          // TODO detector non-support devices and clear only on them
-          if (value && !/\d+(,|\.)&/.test(value)) {
-            value = Number(value)
-          }
+          value = formatNumber(val, this.formatNumberOptions)
         }
         this.lazyValue = value
-        if (this.debounce) {
-          this.debounceInput()
-        } else {
-          this.$emit('input', value)
-        }
       },
     },
     isLabelActive () {
@@ -268,9 +276,9 @@ export default {
     pattern () {
       if (this.type === 'number') {
         if (this.inputmode === 'decimal') {
-          return this.integerPattern
-        } else {
           return this.decimalPattern
+        } else {
+          return this.integerPattern
         }
       }
       return null
@@ -278,18 +286,21 @@ export default {
     step () {
       if (this.type === 'number') {
         if (this.inputmode === 'decimal') {
-          return this.integerStep
-        } else {
           return this.decimalStep
+        } else {
+          return this.integerStep
         }
       }
       return null
     },
   },
   watch: {
-    value (val) {
-      if (this.editMode) return
-      this.lazyValue = val
+    value: {
+      handler (val) {
+        if (this.editMode) return
+        this.internalValue = val
+      },
+      immediate: true,
     },
   },
   created () {
@@ -315,11 +326,17 @@ export default {
       // edit mode start on focus
       this.editMode = true
       this.hasFocus = true
+      if (this.type === 'number') {
+        this.internalValue = formatNumber(this.internalValue, this.formatNumberOptions)
+      }
     },
     onBlur () {
       this.hasFocus = false
       // stop edit mode and call emit
       this.editMode = false
+      if (this.type === 'number') {
+        this.internalValue = formatNumber(this.internalValue, this.formatNumberOptions)
+      }
       // cancel debounced
       if (this.debounce) {
         this.debounceInput.cancel()
@@ -338,11 +355,28 @@ export default {
       this.$refs.input.focus()
     },
     emitChange () {
-      this.$emit('input', this.internalValue)
+      // on number type return internal value, without formatting
+      const val = this.type === 'number'
+        ? unformat(this.internalValue, this.formatNumberOptions.decimal)
+        : this.internalValue
+      this.$emit('input', val)
     },
     input (e) {
       if (this.type === 'number') {
+        const el = e.target
+        let positionFromEnd = el.value.length - el.selectionEnd
+        // update input value with formatted data
+        el.value = formatNumber(el.value, this.formatNumberOptions)
+        positionFromEnd = el.value.length - positionFromEnd
+        setCursor(el, positionFromEnd)
+        el.dispatchEvent(event('change'))
+
         this.hasError = e.target.validity.badInput
+      }
+      if (this.debounce) {
+        this.debounceInput()
+      } else {
+        this.emitChange()
       }
       this.checkField(e)
     },
@@ -357,26 +391,6 @@ export default {
         } else if (e.key === 'Enter') {
           // on enter blur normally
           this.$refs.input.blur()
-          e.preventDefault()
-        }
-      }
-      // for ios inputtype="numberic" & pattern="[0-9]*"
-      // and not exist e.key on ios, TODO with e.which
-      if (this.type === 'number') {
-        // prevent if e.key non-digit or [,.+-]
-        // on ios e.which
-        // 0-9 - 48-57
-        // +   - 187
-        // -   - 189
-        // ,   - 188
-        // .   - 190
-        if (
-          (e.key &&
-          e.key.length === 1 &&
-          !/\d|[,.+-]/.test(e.key)) ||
-          (!e.key && e.which &&
-            !((e.which >= 48 && e.which <= 57) || (e.which >= 187 && e.which <= 190)))
-        ) {
           e.preventDefault()
         }
       }
