@@ -50,6 +50,7 @@
           v-if="isInvoiceProfitTypeMargin && !cost.customPurchasePrice"
           type="number"
           inputmode="decimal"
+          format-style="currency"
           :value="cost.purchasePrice"
           :placeholder="$t('placeholder.emptyNumber')"
           @input="updateProductCost({ purchasePrice: $event })"
@@ -58,6 +59,7 @@
           v-else
           type="number"
           inputmode="decimal"
+          format-style="currency"
           :value="cost.customPurchasePrice || cost.purchasePrice"
           :placeholder="$t('placeholder.emptyNumber')"
           :text-color="cost.customPurchasePrice ? '#4C51BF': ''"
@@ -68,17 +70,18 @@
         <Editable
           type="number"
           inputmode="decimal"
+          format-style="currency"
           :value="cost.purchasePrice"
           :placeholder="$t('placeholder.emptyNumber')"
           @input="updateProductCost({ purchasePrice: $event })"
         />
       </td>
       <td v-else class="text-right">
-        {{ $n(cost.purchasePrice, 'formatted') }}
+        {{ $n(cost.purchasePrice, 'decimal') }}
       </td>
 
       <td class="text-right">
-        {{ $n(cost.purchaseAmount, 'formatted') }}
+        {{ $n(cost.purchaseAmount, 'decimal') }}
       </td>
 
       <td v-if="!profitForAll">
@@ -86,6 +89,7 @@
           v-if="isInvoiceProfitTypeCommission && !cost.customClientPrice"
           type="number"
           inputmode="decimal"
+          format-style="currency"
           :value="cost.clientPrice"
           :placeholder="$t('placeholder.emptyNumber')"
           @input="updateProductCost({ clientPrice: $event })"
@@ -94,6 +98,7 @@
           v-else
           type="number"
           inputmode="decimal"
+          format-style="currency"
           :value="cost.customClientPrice || cost.clientPrice"
           :placeholder="$t('placeholder.emptyNumber')"
           :text-color="cost.customClientPrice ? '#4C51BF': ''"
@@ -104,6 +109,7 @@
         <Editable
           type="number"
           inputmode="decimal"
+          format-style="currency"
           :value="cost.clientPrice"
           :placeholder="$t('placeholder.emptyNumber')"
           @input="updateProductCost({ clientPrice: $event })"
@@ -113,11 +119,11 @@
         v-else
         class="text-right"
       >
-        {{ $n(cost.clientPrice, 'formatted') }}
+        {{ $n(cost.clientPrice, 'decimal') }}
       </td>
 
       <td class="text-right">
-        {{ $n(cost.clientAmount, 'formatted') }}
+        {{ $n(cost.clientAmount, 'decimal') }}
       </td>
     </template>
 

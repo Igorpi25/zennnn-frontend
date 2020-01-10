@@ -5,13 +5,13 @@
         <label class="text-xs text-gray-light select-none pr-2">
           {{ $t('shipping.discount') }}
         </label>
-        <span class="mr-2 leading-none">{{ item.discount || $t('placeholder.emptyNumber') }} {{ $t('currency.CNY.symbol') }}</span>
+        <span class="mr-2 leading-none">{{ $n(item.discount, 'decimal') || $t('placeholder.emptyNumber') }} {{ $t('currency.CNY.symbol') }}</span>
       </div>
       <div class="flex flex-col items-end w-full sm:w-32 pl-1 md:pl-0 lg:pl-1">
         <label class="text-xs text-gray-light select-none pr-2">
           {{ $t('shipping.prepay') }}
         </label>
-        <span class="mr-2 leading-none">{{ item.prepayment || $t('placeholder.emptyNumber') }} {{ $t('currency.CNY.symbol') }}</span>
+        <span class="mr-2 leading-none">{{ $n(item.prepayment, 'decimal') || $t('placeholder.emptyNumber') }} {{ $t('currency.CNY.symbol') }}</span>
         <v-menu
           ref="menu"
           v-model="menuPrepaymentDate"
@@ -55,7 +55,7 @@
           {{ $t('shipping.obtainCost') }}
         </label>
         <span class="leading-none">
-          {{ $n(item.obtainCost, 'formatted') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.obtainCost, 'decimal') }} {{ $t('currency.CNY.symbol') }}
         </span>
         <v-menu
           ref="menu"
@@ -97,7 +97,7 @@
           {{ $t('shipping.clientDebt') }}
         </label>
         <span class="leading-none text-white">
-          {{ $n(item.clientDebt, 'formatted') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.clientDebt, 'decimal') }} {{ $t('currency.CNY.symbol') }}
         </span>
         <v-menu
           ref="menu"
