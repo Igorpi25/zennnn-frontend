@@ -270,16 +270,17 @@ export default {
         this.internalValue = formatNumber(this.internalValue, this.formatNumberOptions)
       }
       // cancel debounced
-      if (this.debounce) {
-        this.debounceInput.cancel()
-      }
+      this.debounceInput.cancel()
       // on esc blur without update
       if (this.blurWithoutUpdate) {
         this.blurWithoutUpdate = false
         return
       }
       // immediate call changes
-      if (this.internalValue !== this.value) {
+      const val = this.type === 'number'
+        ? unformat(this.internalValue, this.formatNumberOptions.decimal)
+        : this.internalValue
+      if (val !== this.value) {
         this.emitChange()
       }
     },
