@@ -431,30 +431,32 @@ export default {
       const dd = {
         content: [
           {
-            text: [
-              { text: 'Спецификация No. ' },
-              { text: 'A0097-2020-02-02', bold: true },
+            stack: [
+              {
+                text: [
+                  { text: 'Спецификация No. ' },
+                  { text: 'A0097-2020-02-02', bold: true },
+                ],
+              },
+              'к Договору поставки',
             ],
-            fontSize: 18,
-            margin: [40, 20, 40, 0],
+            fontSize: 16,
+            margin: [30, 20],
           },
-          { text: 'к Договору поставки', fontSize: 18, margin: [40, 0, 40, 0] },
           {
             columns: [
               { text: 'Новороссийск, Россия' },
               { text: '02 февраля 2020 г.', alignment: 'right' },
             ],
             alignment: 'justify',
-            margin: [40, 30, 0, 30],
+            margin: [30, 10],
           },
           {
             text: [
               { text: '1.   ' },
               { text: 'Предмет поставки' },
             ],
-            margin: [0, 0, 0, 10],
-            fontSize: 16,
-            bold: true,
+            style: 'item-heading',
           },
           {
             canvas: [
@@ -462,104 +464,108 @@ export default {
                 type: 'line',
                 x1: 0,
                 y1: 0,
-                x2: 548,
+                x2: 550,
                 y2: 0,
                 lineWidth: 1,
                 lineColor: 'lightgray',
               },
             ],
           },
-          {
-            alignment: 'justify',
-            margin: [0, 10],
-            columnGap: 10,
-            fontSize: 10,
-            columns: [
-              { text: '#', width: 10, alignment: 'center' },
-              { text: 'Наименование товара', width: 110, alignment: 'center' },
-              { text: 'Кол-во', width: 40, alignment: 'center' },
-              { text: 'Ед. изм.', width: 25, alignment: 'center' },
-              { text: 'Цена за ед. товара без НДС', width: 80, alignment: 'center' },
-              { text: 'НДС за ед. (20%)', width: 70, alignment: 'center' },
-              { text: 'Цена за ед. товара с НДС', width: 70, alignment: 'center' },
-              { text: 'Стоимость товара с НДС', width: 70, alignment: 'center' },
-            ],
-          },
-          {
-            canvas: [
-              {
-                type: 'line',
-                x1: 0,
-                y1: 0,
-                x2: 548,
-                y2: 0,
-                lineWidth: 3,
-              },
-            ],
-          },
+          // {
+          //   alignment: 'justify',
+          //   margin: [0, 10],
+          //   columnGap: 10,
+          //   fontSize: 10,
+          //   columns: [
+          //     { text: '#', width: 10, alignment: 'center' },
+          //     { text: 'Наименование товара', width: 110, alignment: 'center' },
+          //     { text: 'Кол-во', width: 40, alignment: 'center' },
+          //     { text: 'Ед. изм.', width: 25, alignment: 'center' },
+          //     { text: 'Цена за ед. товара без НДС', width: 80, alignment: 'center' },
+          //     { text: 'НДС за ед. (20%)', width: 70, alignment: 'center' },
+          //     { text: 'Цена за ед. товара с НДС', width: 70, alignment: 'center' },
+          //     { text: 'Стоимость товара с НДС', width: 70, alignment: 'center' },
+          //   ],
+          // },
+          // {
+          //   canvas: [
+          //     {
+          //       type: 'line',
+          //       x1: 0,
+          //       y1: 0,
+          //       x2: 548,
+          //       y2: 0,
+          //       lineWidth: 3,
+          //     },
+          //   ],
+          // },
           {
             table: {
               headerRows: 1,
-              widths: [10, 110, 40, 25, 80, 70, 70, 70],
+              alignment: 'left',
+              widths: [10, 100, 35, 25, 70, 60, 70, 70],
               body: [
                 [
-                  { text: '1', border: [false, false, false, true], style: 'tableItem' },
-                  {
-                    text: [
-                      { text: 'Chair\n', bold: true },
-                      { text: 'PL-G0988' },
-                    ],
-                    border: [false, false, false, true],
-                    fontSize: 10,
-                  },
-                  { text: '1 500', border: [false, false, false, true], style: 'tableItem' },
-                  { text: 'pc', border: [false, false, false, true], fontSize: 10 },
-                  { text: '440,00', border: [false, false, false, true], style: 'tableItem' },
-                  { text: '88,00', border: [false, false, false, true], style: 'tableItem' },
-                  { text: '528,00', border: [false, false, false, true], style: 'tableItem' },
-                  { text: '792 000,00 P', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '#', fontSize: 9, alignment: 'center', margin: [0, 2] },
+                  { text: 'Наименование товара', fontSize: 9, alignment: 'center', margin: [0, 2] },
+                  { text: 'Кол-во', fontSize: 9, alignment: 'center', margin: [0, 2] },
+                  { text: 'Ед. изм.', fontSize: 9, alignment: 'center', margin: [0, 2] },
+                  { text: 'Цена за ед. товара без НДС', fontSize: 9, alignment: 'center', margin: [0, 2] },
+                  { text: 'НДС за ед. (20%)', fontSize: 9, alignment: 'center', margin: [0, 2] },
+                  { text: 'Цена за ед. товара с НДС', fontSize: 9, alignment: 'center', margin: [0, 2] },
+                  { text: 'Стоимость товара с НДС', fontSize: 9, alignment: 'center', margin: [0, 2] },
                 ],
                 [
-                  { text: '2', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '1', fontSize: 10 },
                   {
                     text: [
                       { text: 'Chair\n', bold: true },
                       { text: 'PL-G0988' },
                     ],
-                    border: [false, false, false, true],
                     fontSize: 10,
                   },
-                  { text: '1 500', border: [false, false, false, true], style: 'tableItem' },
-                  { text: 'pc', border: [false, false, false, true], fontSize: 10 },
-                  { text: '440,00', border: [false, false, false, true], style: 'tableItem' },
-                  { text: '88,00', border: [false, false, false, true], style: 'tableItem' },
-                  { text: '528,00', border: [false, false, false, true], style: 'tableItem' },
-                  { text: '792 000,00 P', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '1 500', fontSize: 10, alignment: 'right' },
+                  { text: 'pc', fontSize: 10 },
+                  { text: '440,00', fontSize: 10, alignment: 'right' },
+                  { text: '88,00', fontSize: 10, alignment: 'right' },
+                  { text: '528,00', fontSize: 10, alignment: 'right' },
+                  { text: '792 000,00 P', fontSize: 10, alignment: 'right' },
                 ],
                 [
-                  { text: '3', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '2', fontSize: 10 },
                   {
                     text: [
                       { text: 'Chair\n', bold: true },
                       { text: 'PL-G0988' },
                     ],
-                    border: [false, false, false, true],
                     fontSize: 10,
                   },
-                  { text: '1 500', border: [false, false, false, true], style: 'tableItem' },
-                  { text: 'pc', border: [false, false, false, true], fontSize: 10 },
-                  { text: '440,00', border: [false, false, false, true], style: 'tableItem' },
-                  { text: '88,00', border: [false, false, false, true], style: 'tableItem' },
-                  { text: '528,00', border: [false, false, false, true], style: 'tableItem' },
-                  { text: '792 000,00 P', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '1 500', fontSize: 10, alignment: 'right' },
+                  { text: 'pc', fontSize: 10 },
+                  { text: '440,00', fontSize: 10, alignment: 'right' },
+                  { text: '88,00', fontSize: 10, alignment: 'right' },
+                  { text: '528,00', fontSize: 10, alignment: 'right' },
+                  { text: '792 000,00 P', fontSize: 10, alignment: 'right' },
+                ],
+                [
+                  { text: '3', fontSize: 10 },
+                  {
+                    text: [
+                      { text: 'Chair\n', bold: true },
+                      { text: 'PL-G0988' },
+                    ],
+                    fontSize: 10,
+                  },
+                  { text: '1 500', fontSize: 10, alignment: 'right' },
+                  { text: 'pc', fontSize: 10 },
+                  { text: '440,00', fontSize: 10, alignment: 'right' },
+                  { text: '88,00', fontSize: 10, alignment: 'right' },
+                  { text: '528,00', fontSize: 10, alignment: 'right' },
+                  { text: '792 000,00 P', fontSize: 10, alignment: 'right' },
                 ],
               ],
             },
-            layout: {
-              hLineColor: function (i, node) {
-                return 'lightgrey'
-              },
-            },
+            layout: 'lightHorizontalLines',
           },
           {
             canvas: [
@@ -567,7 +573,7 @@ export default {
                 type: 'line',
                 x1: 400,
                 y1: 0,
-                x2: 548,
+                x2: 550,
                 y2: 0,
                 lineWidth: 3,
               },
@@ -579,7 +585,7 @@ export default {
               { text: '2 620 446,00 P' },
             ],
             alignment: 'right',
-            margin: [0, 4, -10, 0],
+            margin: [0, 4, -25, 0],
             fontSize: 12,
             bold: true,
           },
@@ -595,13 +601,10 @@ export default {
               { text: '2.   ' },
               { text: 'Условия оплат' },
             ],
-            margin: [0, 20, 0, 10],
-            fontSize: 16,
-            bold: true,
+            style: 'item-heading',
           },
           {
-            columnGap: 10,
-            margin: [0, 0, 0, 10],
+            style: 'item-paragraph',
             columns: [
               '2.1.',
               {
@@ -611,8 +614,7 @@ export default {
             ],
           },
           {
-            columnGap: 10,
-            margin: [0, 0, 0, 10],
+            style: 'item-paragraph',
             columns: [
               '2.2.',
               {
@@ -626,11 +628,114 @@ export default {
               { text: '3.   ' },
               { text: 'Реквизиты сторон' },
             ],
-            margin: [0, 20, 0, 10],
-            fontSize: 16,
-            bold: true,
+            style: 'item-heading',
+          },
+          {
+            columns: [
+              {
+                type: 'none',
+                ul: [
+                  {
+                    columns: [
+                      {
+                        text: 'Supplier:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: 'Novaday Union Limeted',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                  {
+                    columns: [
+                      {
+                        text: 'Legal Address:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: 'Unit 1010, 10/F Miramax Tower, 132 Nathan Road, Tsim Sha Tsul, Kowloon, Hong Hong',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                  {
+                    columns: [
+                      {
+                        text: 'Postcode:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: '_____',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: 'none',
+                ul: [
+                  {
+                    columns: [
+                      {
+                        text: 'Client:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: 'Horns & Hooves LLC, Newrussian office',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                  {
+                    columns: [
+                      {
+                        text: 'Legal Address:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: 'Upperdock st. 41, office 15, Vladivostok, Russia',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                  {
+                    columns: [
+                      {
+                        text: 'Postcode:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: '690000',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
           },
         ],
+        styles: {
+          'item-table': {
+            fontSize: 10,
+            border: [false, false, false, true],
+          },
+          'item-heading': {
+            bold: true,
+            fontSize: 16,
+            margin: [0, 20, 0, 10],
+          },
+          'item-paragraph': {
+            columnGap: 10,
+            margin: [0, 0, 0, 10],
+          },
+          'requisite-columns': {
+            fontSize: 10,
+            margin: [0, 2],
+          },
+        },
       }
       pdfMake.createPdf(dd).open()
     },
