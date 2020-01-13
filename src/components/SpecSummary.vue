@@ -287,7 +287,7 @@
             </template>
             <span class="text-left">{{ $t('shipping.notifyClient') }}</span>
           </Button>
-          <Button text class="mb-4" @click.prevent>
+          <Button text class="mb-4" @click="printPDF">
             <template v-slot:icon>
               <Icon size="32" color="#aaaaaa">
                 {{ icons.ziPrint }}
@@ -329,6 +329,9 @@
 
 <script>
 import cloneDeep from 'clone-deep'
+
+import pdfMake from 'pdfmake/build/pdfmake'
+import pdfFonts from 'pdfmake/build/vfs_fonts'
 
 import { UPDATE_SPEC } from '@/graphql/mutations'
 
@@ -423,6 +426,214 @@ export default {
     },
   },
   methods: {
+    printPDF () {
+      pdfMake.vfs = pdfFonts.pdfMake.vfs
+      const dd = {
+        content: [
+          {
+            text: [
+              { text: 'Спецификация No. ' },
+              { text: 'A0097-2020-02-02', bold: true },
+            ],
+            fontSize: 18,
+            margin: [40, 20, 40, 0],
+          },
+          { text: 'к Договору поставки', fontSize: 18, margin: [40, 0, 40, 0] },
+          {
+            columns: [
+              { text: 'Новороссийск, Россия' },
+              { text: '02 февраля 2020 г.', alignment: 'right' },
+            ],
+            alignment: 'justify',
+            margin: [40, 30, 0, 30],
+          },
+          {
+            text: [
+              { text: '1.   ' },
+              { text: 'Предмет поставки' },
+            ],
+            margin: [0, 0, 0, 10],
+            fontSize: 16,
+            bold: true,
+          },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 0,
+                y1: 0,
+                x2: 548,
+                y2: 0,
+                lineWidth: 1,
+                lineColor: 'lightgray',
+              },
+            ],
+          },
+          {
+            alignment: 'justify',
+            margin: [0, 10],
+            columnGap: 10,
+            fontSize: 10,
+            columns: [
+              { text: '#', width: 10, alignment: 'center' },
+              { text: 'Наименование товара', width: 110, alignment: 'center' },
+              { text: 'Кол-во', width: 40, alignment: 'center' },
+              { text: 'Ед. изм.', width: 25, alignment: 'center' },
+              { text: 'Цена за ед. товара без НДС', width: 80, alignment: 'center' },
+              { text: 'НДС за ед. (20%)', width: 70, alignment: 'center' },
+              { text: 'Цена за ед. товара с НДС', width: 70, alignment: 'center' },
+              { text: 'Стоимость товара с НДС', width: 70, alignment: 'center' },
+            ],
+          },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 0,
+                y1: 0,
+                x2: 548,
+                y2: 0,
+                lineWidth: 3,
+              },
+            ],
+          },
+          {
+            table: {
+              headerRows: 1,
+              widths: [10, 110, 40, 25, 80, 70, 70, 70],
+              body: [
+                [
+                  { text: '1', border: [false, false, false, true], style: 'tableItem' },
+                  {
+                    text: [
+                      { text: 'Chair\n', bold: true },
+                      { text: 'PL-G0988' },
+                    ],
+                    border: [false, false, false, true],
+                    fontSize: 10,
+                  },
+                  { text: '1 500', border: [false, false, false, true], style: 'tableItem' },
+                  { text: 'pc', border: [false, false, false, true], fontSize: 10 },
+                  { text: '440,00', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '88,00', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '528,00', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '792 000,00 P', border: [false, false, false, true], style: 'tableItem' },
+                ],
+                [
+                  { text: '2', border: [false, false, false, true], style: 'tableItem' },
+                  {
+                    text: [
+                      { text: 'Chair\n', bold: true },
+                      { text: 'PL-G0988' },
+                    ],
+                    border: [false, false, false, true],
+                    fontSize: 10,
+                  },
+                  { text: '1 500', border: [false, false, false, true], style: 'tableItem' },
+                  { text: 'pc', border: [false, false, false, true], fontSize: 10 },
+                  { text: '440,00', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '88,00', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '528,00', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '792 000,00 P', border: [false, false, false, true], style: 'tableItem' },
+                ],
+                [
+                  { text: '3', border: [false, false, false, true], style: 'tableItem' },
+                  {
+                    text: [
+                      { text: 'Chair\n', bold: true },
+                      { text: 'PL-G0988' },
+                    ],
+                    border: [false, false, false, true],
+                    fontSize: 10,
+                  },
+                  { text: '1 500', border: [false, false, false, true], style: 'tableItem' },
+                  { text: 'pc', border: [false, false, false, true], fontSize: 10 },
+                  { text: '440,00', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '88,00', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '528,00', border: [false, false, false, true], style: 'tableItem' },
+                  { text: '792 000,00 P', border: [false, false, false, true], style: 'tableItem' },
+                ],
+              ],
+            },
+            layout: {
+              hLineColor: function (i, node) {
+                return 'lightgrey'
+              },
+            },
+          },
+          {
+            canvas: [
+              {
+                type: 'line',
+                x1: 400,
+                y1: 0,
+                x2: 548,
+                y2: 0,
+                lineWidth: 3,
+              },
+            ],
+          },
+          {
+            text: [
+              { text: 'Total:     ' },
+              { text: '2 620 446,00 P' },
+            ],
+            alignment: 'right',
+            margin: [0, 4, -10, 0],
+            fontSize: 12,
+            bold: true,
+          },
+          {
+            text: 'Сумма прописью: два миллиона шестьсот двадцать тысяч четыреста сорок шесть рублей 00 копеек.',
+            italics: true,
+            fontSize: 10,
+            alignment: 'right',
+            margin: [0, 15],
+          },
+          {
+            text: [
+              { text: '2.   ' },
+              { text: 'Условия оплат' },
+            ],
+            margin: [0, 20, 0, 10],
+            fontSize: 16,
+            bold: true,
+          },
+          {
+            columnGap: 10,
+            margin: [0, 0, 0, 10],
+            columns: [
+              '2.1.',
+              {
+                text: 'Cтоимость железнодорожного тарифв, а также иные расходы, связанные с доставкой «Товара» Покупателю включены в цену «Товара».',
+                width: 'auto',
+              },
+            ],
+          },
+          {
+            columnGap: 10,
+            margin: [0, 0, 0, 10],
+            columns: [
+              '2.2.',
+              {
+                text: 'Lorem ipsum dolor amet mustache knausgaard +1, blue bottle waistcoat tbh semiotics artisan synth stumptown gastropub cornhole celiac swag. Brunch raclette vexillologist post-ironic glossier ennui XOXO mlkshk godard pour-over blog tumblr humblebrag. Blue bottle put a bird on it twee prism biodiesel brooklyn. Blue bottle ennui tbh succulents.',
+                width: 'auto',
+              },
+            ],
+          },
+          {
+            text: [
+              { text: '3.   ' },
+              { text: 'Реквизиты сторон' },
+            ],
+            margin: [0, 20, 0, 10],
+            fontSize: 16,
+            bold: true,
+          },
+        ],
+      }
+      pdfMake.createPdf(dd).open()
+    },
     async updateSpec (input) {
       try {
         this.updateLoading = true
