@@ -36,7 +36,8 @@
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           type="number"
-          inputmode="numeric"
+          inputmode="decimal"
+          format-style="decimal"
           solo
           colored
           outlined

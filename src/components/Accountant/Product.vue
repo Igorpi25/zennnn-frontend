@@ -27,13 +27,13 @@
       <span>{{ item.article || $t('shipping.model') }}</span>
     </td>
     <td class="text-right">
-      <span>{{ item.qty || $t('placeholder.emptyNumber') }}</span>
+      <span>{{ $n(item.qty, 'formatted') || $t('placeholder.emptyNumber') }}</span>
     </td>
 
     <template v-if="activeTab === 1">
       <td class="text-right">
         <span v-if="!profitForAll">
-          {{ $n(cost.customPurchasePrice || cost.purchasePrice, 'decimal') || $t('placeholder.emptyNumber') }}
+          {{ $n(purchasePrice, 'decimal') || $t('placeholder.emptyNumber') }}
         </span>
         <span v-else>
           {{ $n(cost.purchasePrice, 'decimal') || $t('placeholder.emptyNumber') }}
@@ -44,7 +44,7 @@
       </td>
       <td class="text-right">
         <span v-if="!profitForAll">
-          {{ $n(cost.customClientPrice || cost.clientPrice, 'decimal') }}
+          {{ $n(clientPrice, 'decimal') }}
         </span>
         <span v-else>
           {{ $n(cost.clientPrice, 'decimal') || $t('placeholder.emptyNumber') }}

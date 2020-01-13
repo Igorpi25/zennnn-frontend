@@ -367,6 +367,7 @@ export const event = (name) => {
  * @returns {number}
  */
 export const unformat = (value) => {
+  if (value === null) return null
   // Fails silently (need decent errors):
   value = value || 0
 
@@ -400,7 +401,7 @@ export const unformat = (value) => {
  * @returns {string}
  */
 export const formatNumber = (number, options = {}) => {
-  if (!number) return null
+  if (number === null || number === '') return null
   // Build options object, extending defaults:
   const opts = {
     precision: options.precision || 0,

@@ -8,7 +8,7 @@ import {
 } from '../graphql/mutations'
 import ProductImagesList from '../components/ProductImagesList.vue'
 import ProductImage from '../components/ProductImage.vue'
-import { confirmDialog } from '@/util/helpers'
+import { confirmDialog, isNumber } from '@/util/helpers'
 import { GET_SPEC } from '../graphql/queries'
 
 export default {
@@ -23,6 +23,28 @@ export default {
     }
   },
   computed: {
+    hasCustomPurchasePrice () {
+      return !this.profitForAll && isNumber(this.cost.customPurchasePrice)
+    },
+    purchasePrice () {
+      if (this.profitForAll) {
+        return this.cost.purchasePrice
+      }
+      return isNumber(this.cost.customPurchasePrice)
+        ? this.cost.customPurchasePrice
+        : this.cost.purchasePrice
+    },
+    hasCustomClientPrice () {
+      return !this.profitForAll && isNumber(this.cost.customClientPrice)
+    },
+    clientPrice () {
+      if (this.profitForAll) {
+        return this.cost.clientPrice
+      }
+      return isNumber(this.cost.customClientPrice)
+        ? this.cost.customClientPrice
+        : this.cost.clientPrice
+    },
     cost () {
       return (this.item && this.item.cost) || {}
     },
