@@ -25,6 +25,7 @@
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "lodash.debounce": "^4.0.8",
+    "pdfmake": "^0.1.63",
     "subscriptions-transport-ws": "^0.9.16",
     "vue": "^2.6.10",
     "vue-apollo": "^3.0.0",
