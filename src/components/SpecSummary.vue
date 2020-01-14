@@ -429,6 +429,7 @@ export default {
     printPDF () {
       pdfMake.vfs = pdfFonts.pdfMake.vfs
       const dd = {
+        pageSize: 'A4',
         content: [
           {
             stack: [
@@ -458,78 +459,50 @@ export default {
             ],
             style: 'item-heading',
           },
-          {
-            canvas: [
-              {
-                type: 'line',
-                x1: 0,
-                y1: 0,
-                x2: 550,
-                y2: 0,
-                lineWidth: 1,
-                lineColor: 'lightgray',
-              },
-            ],
-          },
-          // {
-          //   alignment: 'justify',
-          //   margin: [0, 10],
-          //   columnGap: 10,
-          //   fontSize: 10,
-          //   columns: [
-          //     { text: '#', width: 10, alignment: 'center' },
-          //     { text: 'Наименование товара', width: 110, alignment: 'center' },
-          //     { text: 'Кол-во', width: 40, alignment: 'center' },
-          //     { text: 'Ед. изм.', width: 25, alignment: 'center' },
-          //     { text: 'Цена за ед. товара без НДС', width: 80, alignment: 'center' },
-          //     { text: 'НДС за ед. (20%)', width: 70, alignment: 'center' },
-          //     { text: 'Цена за ед. товара с НДС', width: 70, alignment: 'center' },
-          //     { text: 'Стоимость товара с НДС', width: 70, alignment: 'center' },
-          //   ],
-          // },
           // {
           //   canvas: [
           //     {
           //       type: 'line',
           //       x1: 0,
           //       y1: 0,
-          //       x2: 548,
+          //       x2: 500,
           //       y2: 0,
-          //       lineWidth: 3,
+          //       lineWidth: 1,
+          //       lineColor: 'lightgray',
           //     },
           //   ],
           // },
           {
             table: {
               headerRows: 1,
-              alignment: 'left',
-              widths: [10, 100, 35, 25, 70, 60, 70, 70],
+              alignment: 'center',
+              widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
               body: [
                 [
-                  { text: '#', fontSize: 9, alignment: 'center', margin: [0, 2] },
-                  { text: 'Наименование товара', fontSize: 9, alignment: 'center', margin: [0, 2] },
-                  { text: 'Кол-во', fontSize: 9, alignment: 'center', margin: [0, 2] },
-                  { text: 'Ед. изм.', fontSize: 9, alignment: 'center', margin: [0, 2] },
-                  { text: 'Цена за ед. товара без НДС', fontSize: 9, alignment: 'center', margin: [0, 2] },
-                  { text: 'НДС за ед. (20%)', fontSize: 9, alignment: 'center', margin: [0, 2] },
-                  { text: 'Цена за ед. товара с НДС', fontSize: 9, alignment: 'center', margin: [0, 2] },
-                  { text: 'Стоимость товара с НДС', fontSize: 9, alignment: 'center', margin: [0, 2] },
+                  { text: '#', style: 'item-table-header' },
+                  { text: 'Наименование товара', style: 'item-table-header' },
+                  { text: 'Кол-во', style: 'item-table-header' },
+                  { text: 'Ед.\n изм.', style: 'item-table-header' },
+                  { text: 'Цена за ед.\n товара без НДС', style: 'item-table-header' },
+                  { text: 'НДС за ед.\n (20%)', style: 'item-table-header' },
+                  { text: 'Цена за ед.\n товара с НДС', style: 'item-table-header' },
+                  { text: 'Стоимость товара\n с НДС', style: 'item-table-header' },
                 ],
                 [
                   { text: '1', fontSize: 10 },
                   {
                     text: [
                       { text: 'Chair\n', bold: true },
-                      { text: 'PL-G0988' },
+                      { text: 'PL-G0988-G0988-G0988 kfjgfd dfjgksdfjg' },
                     ],
                     fontSize: 10,
                   },
-                  { text: '1 500', fontSize: 10, alignment: 'right' },
+                  { text: '1 500', style: 'item-table' },
                   { text: 'pc', fontSize: 10 },
-                  { text: '440,00', fontSize: 10, alignment: 'right' },
-                  { text: '88,00', fontSize: 10, alignment: 'right' },
-                  { text: '528,00', fontSize: 10, alignment: 'right' },
-                  { text: '792 000,00 P', fontSize: 10, alignment: 'right' },
+                  { text: '440,00', style: 'item-table' },
+                  { text: '88,00', style: 'item-table' },
+                  { text: '528,00', style: 'item-table' },
+                  { text: '792 000,00 P', style: 'item-table' },
                 ],
                 [
                   { text: '2', fontSize: 10 },
@@ -540,12 +513,12 @@ export default {
                     ],
                     fontSize: 10,
                   },
-                  { text: '1 500', fontSize: 10, alignment: 'right' },
+                  { text: '1 500', style: 'item-table' },
                   { text: 'pc', fontSize: 10 },
-                  { text: '440,00', fontSize: 10, alignment: 'right' },
-                  { text: '88,00', fontSize: 10, alignment: 'right' },
-                  { text: '528,00', fontSize: 10, alignment: 'right' },
-                  { text: '792 000,00 P', fontSize: 10, alignment: 'right' },
+                  { text: '440,00', style: 'item-table' },
+                  { text: '88,00', style: 'item-table' },
+                  { text: '528,00', style: 'item-table' },
+                  { text: '792 000,00 P', style: 'item-table' },
                 ],
                 [
                   { text: '3', fontSize: 10 },
@@ -556,38 +529,22 @@ export default {
                     ],
                     fontSize: 10,
                   },
-                  { text: '1 500', fontSize: 10, alignment: 'right' },
+                  { text: '1 500', style: 'item-table' },
                   { text: 'pc', fontSize: 10 },
-                  { text: '440,00', fontSize: 10, alignment: 'right' },
-                  { text: '88,00', fontSize: 10, alignment: 'right' },
-                  { text: '528,00', fontSize: 10, alignment: 'right' },
-                  { text: '792 000,00 P', fontSize: 10, alignment: 'right' },
+                  { text: '440,00', style: 'item-table' },
+                  { text: '88,00', style: 'item-table' },
+                  { text: '528,00', style: 'item-table' },
+                  { text: '792 000,00 P', style: 'item-table' },
+                ],
+                [
+                  { text: '', colSpan: 5 },
+                  {}, {}, {}, {},
+                  { text: 'Total:', style: 'item-table', bold: true },
+                  { text: '2 620 446, 00 P', colSpan: 2, style: 'item-table', bold: true },
                 ],
               ],
             },
             layout: 'lightHorizontalLines',
-          },
-          {
-            canvas: [
-              {
-                type: 'line',
-                x1: 400,
-                y1: 0,
-                x2: 550,
-                y2: 0,
-                lineWidth: 3,
-              },
-            ],
-          },
-          {
-            text: [
-              { text: 'Total:     ' },
-              { text: '2 620 446,00 P' },
-            ],
-            alignment: 'right',
-            margin: [0, 4, -25, 0],
-            fontSize: 12,
-            bold: true,
           },
           {
             text: 'Сумма прописью: два миллиона шестьсот двадцать тысяч четыреста сорок шесть рублей 00 копеек.',
@@ -718,9 +675,14 @@ export default {
           },
         ],
         styles: {
+          'item-table-header': {
+            fontSize: 9,
+            alignment: 'center',
+            margin: [0, 2],
+          },
           'item-table': {
             fontSize: 10,
-            border: [false, false, false, true],
+            alignment: 'right',
           },
           'item-heading': {
             bold: true,
@@ -737,6 +699,7 @@ export default {
           },
         },
       }
+      console.log(dd.content)
       pdfMake.createPdf(dd).open()
     },
     async updateSpec (input) {
