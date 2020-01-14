@@ -1,23 +1,28 @@
 <template>
   <div class="copyright">
     <div>©2019 Zennnn Corp. All Rights Reserved. Privacy Policy</div>
-    <span>Frontend: {{ frontend }}</span>
-    &nbsp; | &nbsp;
-    <span>Backend: {{ backend }}</span>
+    <span>Frontend: {{ frontendVersion }}</span>
+    <template v-if="backendVersion">
+      &nbsp; | &nbsp;
+      <span>Backend: {{ backendVersion }}</span>
+    </template>
   </div>
 </template>
 
 <script>
+import { GET_BACKEND_VERSION } from '../graphql/queries'
+
 export default {
   name: 'Copyright',
+  apollo: {
+    backendVersion: {
+      query: GET_BACKEND_VERSION,
+    },
+  },
   data () {
     return {
-      frontend: 'ver 1.1.0-78 4c234a9',
-      backend: 'ver 1.1.12-80 8ac4cbc',
+      frontendVersion: process.env.FRONTEND_VERSION || '',
     }
-  },
-  mounted () {
-    // this.frontend = process.env.FRONTEND_VERSION
   },
 }
 </script>

@@ -362,6 +362,7 @@ export const ORG_CONTRACT_FRAGMENT = gql`
 const typeDefs = gql`
   extend type Query {
     isLoggedIn: Boolean
+    backendVersion: Boolean
     isSpecSync: Boolean
   }
 `

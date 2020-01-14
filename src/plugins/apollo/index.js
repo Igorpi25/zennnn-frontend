@@ -9,6 +9,8 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory'
 import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from '../../graphql'
+import { GET_BACKEND_VERSION } from '../../graphql/queries'
+import { BACKEND_VERSION_HEADER_KEY } from '../../config/globals'
 import { Auth, Logger } from '../index'
 import router from '../../router'
 
@@ -54,6 +56,27 @@ const authLink = setContext(async (request, { headers }) => {
       authorization: token ? `${token}` : '',
     },
   }
+})
+
+const reponseHeaders = new ApolloLink((operation, forward) => {
+  return forward(operation).map(response => {
+    const context = operation.getContext()
+    const {
+      response: { headers },
+    } = context
+    if (headers) {
+      const backendVersion = headers.get(BACKEND_VERSION_HEADER_KEY)
+      if (backendVersion) {
+        apolloClient.writeQuery({
+          query: GET_BACKEND_VERSION,
+          data: {
+            backendVersion,
+          },
+        })
+      }
+    }
+    return response
+  })
 })
 
 // HTTP connection to the API
@@ -120,7 +143,7 @@ const link = split(
       definition.operation === 'subscription'
   },
   wsLink,
-  authLink.concat(httpLink),
+  authLink.concat(reponseHeaders.concat(httpLink)),
 )
 
 export const apolloClient = new ApolloClient({
