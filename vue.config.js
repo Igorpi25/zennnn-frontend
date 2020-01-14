@@ -7,10 +7,10 @@ module.exports = {
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
-          'FRONT_VERSION': JSON.stringify(version)
-        }
-      })
-    ]
+          'FRONT_VERSION': JSON.stringify(version),
+        },
+      }),
+    ],
   },
   pluginOptions: {
     i18n: {
