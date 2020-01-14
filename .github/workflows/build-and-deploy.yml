@@ -1,0 +1,41 @@
+name: Build and deploy to s3
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+#     - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+    - name: Install Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Install Dependencies
+      run: npm install
+    - name: Build for production
+      run: npm run build
+    - uses: awact/s3-action@master
+      with:
+        args: --acl public-read --follow-symlinks --delete
+      env:
+        SOURCE_DIR: './dist'
+        AWS_REGION: 'ap-northeast-1'
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    - uses: actions/checkout@master
+    - uses: awact/cloudfront-action@master
+      env:
+        SOURCE_DIR: './public'
+        AWS_REGION: 'ap-northeast-1'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        DISTRIBUTION_ID: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+        SOURCE_PATH: '/*'
