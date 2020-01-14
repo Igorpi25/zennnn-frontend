@@ -429,7 +429,6 @@ export default {
     printPDF () {
       pdfMake.vfs = pdfFonts.pdfMake.vfs
       const dd = {
-        pageSize: 'A4',
         content: [
           {
             stack: [
@@ -459,6 +458,7 @@ export default {
             ],
             style: 'item-heading',
           },
+          // TODO: dynamicly width of line equals width of table
           // {
           //   canvas: [
           //     {
@@ -628,6 +628,42 @@ export default {
                       },
                     ],
                   },
+                  {
+                    columns: [
+                      {
+                        text: 'Phone:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: '0086 186 20 00 0 00',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                  {
+                    columns: [
+                      {
+                        text: 'Supplier\'s Bank:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: 'HSBC',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                  {
+                    columns: [
+                      {
+                        text: 'Bank Address:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: '4/F HSBC, Tsim Sha Tsui Branch, 82-84 Nathan Road, Kowloon, Hong Hong',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
                 ],
               },
               {
@@ -669,6 +705,68 @@ export default {
                       },
                     ],
                   },
+                  {
+                    columns: [
+                      {
+                        text: 'Mailing Address:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: 'Moscow city, Minskaya st. 1G, office 777',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                  {
+                    columns: [
+                      {
+                        text: 'Client\'s Bank:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: 'Clients Bank LLC',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                  {
+                    columns: [
+                      {
+                        text: 'Bank Address:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: 'Moscow',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                  {
+                    columns: [
+                      {
+                        text: 'Грузополучатель:',
+                        style: 'requisite-columns',
+                      },
+                      {
+                        text: 'ООО «Пупа и Лупа»',
+                        style: 'requisite-columns',
+                      },
+                    ],
+                  },
+                  {
+                    columns: [
+                      {
+                        text: 'Адрес доставки:',
+                        style: 'requisite-columns',
+                        pageBreak: 'before',
+                      },
+                      {
+                        text: '628380, Ханты-Мансийский Автономный округ - Югра, г. Пыть-Ях, Центральная промышленная зона',
+                        style: 'requisite-columns',
+                        pageBreak: 'before',
+                      },
+                    ],
+                  },
                 ],
               },
             ],
@@ -699,7 +797,6 @@ export default {
           },
         },
       }
-      console.log(dd.content)
       pdfMake.createPdf(dd).open()
     },
     async updateSpec (input) {
