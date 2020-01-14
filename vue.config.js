@@ -7,7 +7,7 @@ module.exports = {
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
-          'FRONT_VERSION': JSON.stringify(version),
+          'FRONTEND_VERSION': JSON.stringify(version),
         },
       }),
     ],
