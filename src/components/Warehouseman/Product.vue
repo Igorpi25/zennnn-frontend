@@ -37,7 +37,8 @@
     <td>
       <Editable
         type="number"
-        inputmode="numeric"
+        inputmode="decimal"
+        format-style="decimal"
         :value="item.qty"
         :placeholder="$t('placeholder.emptyNumber')"
         @input="updateProduct({ qty: $event })"

@@ -36,7 +36,8 @@
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           type="number"
-          inputmode="numeric"
+          inputmode="decimal"
+          format-style="decimal"
           solo
           colored
           outlined
@@ -72,6 +73,7 @@
           :placeholder="$t('placeholder.emptyNumber')"
           type="number"
           inputmode="decimal"
+          format-style="currency"
           solo
           outlined
           colored
@@ -97,6 +99,7 @@
           :placeholder="$t('placeholder.emptyNumber')"
           type="number"
           inputmode="decimal"
+          format-style="currency"
           solo
           colored
           outlined
@@ -157,7 +160,7 @@
           class="leading-none"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.obtainCost, 'formatted') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.obtainCost, 'decimal') }} {{ $t('currency.CNY.symbol') }}
         </div>
         <v-menu
           ref="menu"
@@ -202,7 +205,7 @@
           class="leading-none text-white"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.clientDebt, 'formatted') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.clientDebt, 'decimal') }} {{ $t('currency.CNY.symbol') }}
         </div>
         <v-menu
           ref="menu"

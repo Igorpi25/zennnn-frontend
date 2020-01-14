@@ -37,7 +37,8 @@
     <td>
       <Editable
         type="number"
-        inputmode="numeric"
+        inputmode="decimal"
+        format-style="decimal"
         :value="item.qty"
         :placeholder="$t('placeholder.emptyNumber')"
         @input="updateProduct({ qty: $event })"
@@ -45,67 +46,33 @@
     </td>
 
     <template v-if="activeTab === 1">
-      <td v-if="!profitForAll">
-        <Editable
-          v-if="isInvoiceProfitTypeMargin && !cost.customPurchasePrice"
-          type="number"
-          inputmode="decimal"
-          :value="cost.purchasePrice"
-          :placeholder="$t('placeholder.emptyNumber')"
-          @input="updateProductCost({ purchasePrice: $event })"
-        />
-        <Editable
-          v-else
-          type="number"
-          inputmode="decimal"
-          :value="cost.customPurchasePrice || cost.purchasePrice"
-          :placeholder="$t('placeholder.emptyNumber')"
-          :text-color="cost.customPurchasePrice ? '#4C51BF': ''"
-          @input="updateProductCost({ customPurchasePrice: $event })"
-        />
-      </td>
-      <td v-else-if="isInvoiceProfitTypeMargin">
+      <td v-if="isInvoiceProfitTypeMargin || !profitForAll">
         <Editable
           type="number"
           inputmode="decimal"
-          :value="cost.purchasePrice"
+          format-style="currency"
+          :value="purchasePrice"
           :placeholder="$t('placeholder.emptyNumber')"
+          :text-color="hasCustomPurchasePrice ? '#4C51BF': ''"
           @input="updateProductCost({ purchasePrice: $event })"
         />
       </td>
       <td v-else class="text-right">
-        {{ $n(cost.purchasePrice, 'formatted') }}
+        {{ $n(cost.purchasePrice, 'decimal') }}
       </td>
 
       <td class="text-right">
-        {{ $n(cost.purchaseAmount, 'formatted') }}
+        {{ $n(cost.purchaseAmount, 'decimal') }}
       </td>
 
-      <td v-if="!profitForAll">
-        <Editable
-          v-if="isInvoiceProfitTypeCommission && !cost.customClientPrice"
-          type="number"
-          inputmode="decimal"
-          :value="cost.clientPrice"
-          :placeholder="$t('placeholder.emptyNumber')"
-          @input="updateProductCost({ clientPrice: $event })"
-        />
-        <Editable
-          v-else
-          type="number"
-          inputmode="decimal"
-          :value="cost.customClientPrice || cost.clientPrice"
-          :placeholder="$t('placeholder.emptyNumber')"
-          :text-color="cost.customClientPrice ? '#4C51BF': ''"
-          @input="updateProductCost({ customClientPrice: $event })"
-        />
-      </td>
-      <td v-else-if="isInvoiceProfitTypeCommission">
+      <td v-if="isInvoiceProfitTypeCommission || !profitForAll">
         <Editable
           type="number"
           inputmode="decimal"
-          :value="cost.clientPrice"
+          format-style="currency"
+          :value="clientPrice"
           :placeholder="$t('placeholder.emptyNumber')"
+          :text-color="hasCustomClientPrice ? '#4C51BF': ''"
           @input="updateProductCost({ clientPrice: $event })"
         />
       </td>
@@ -113,11 +80,11 @@
         v-else
         class="text-right"
       >
-        {{ $n(cost.clientPrice, 'formatted') }}
+        {{ $n(cost.clientPrice, 'decimal') }}
       </td>
 
       <td class="text-right">
-        {{ $n(cost.clientAmount, 'formatted') }}
+        {{ $n(cost.clientAmount, 'decimal') }}
       </td>
     </template>
 
