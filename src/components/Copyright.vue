@@ -1,11 +1,13 @@
 <template>
   <div class="copyright">
     <div>©2019 Zennnn Corp. All Rights Reserved. Privacy Policy</div>
-    <span>Frontend: {{ frontendVersion }}</span>
-    <template v-if="backendVersion">
-      &nbsp; | &nbsp;
-      <span>Backend: {{ backendVersion }}</span>
-    </template>
+    <span class="text-gray-dark">
+      <span>Frontend: {{ frontendVersion }}</span>
+      <template v-if="backendVersion">
+        &nbsp; | &nbsp;
+        <span>Backend: {{ backendVersion }}</span>
+      </template>
+    </span>
   </div>
 </template>
 
