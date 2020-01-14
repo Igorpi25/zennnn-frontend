@@ -13,3 +13,5 @@ export const IMAGE_DOWNLOAD_HOSTNAME = 'https://images.zennnn-dev.com'
 export const S3_IMAGE_DOWNLOAD_HOSTNAME = 'https://s3.ap-northeast-1.amazonaws.com/images.zennnn-dev.com'
 
 export const IMAGE_FILENAME_METADATA = 'x-amz-meta-file_name'
+
+export const BACKEND_VERSION_HEADER_KEY = 'backend-version'
