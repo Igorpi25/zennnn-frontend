@@ -57,7 +57,11 @@
           @input="updateProductCost({ purchasePrice: $event })"
         />
       </td>
-      <td v-else class="text-right">
+      <td
+        v-else
+        class="text-right"
+        style="padding-left: 11px; padding-right: 11px;"
+      >
         {{ $n(cost.purchasePrice, 'decimal') }}
       </td>
 
@@ -79,6 +83,7 @@
       <td
         v-else
         class="text-right"
+        style="padding-left: 11px; padding-right: 11px;"
       >
         {{ $n(cost.clientPrice, 'decimal') }}
       </td>
