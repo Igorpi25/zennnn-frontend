@@ -266,12 +266,15 @@ export default {
       this.$emit('input', val)
     },
 
-    onFocus () {
+    onFocus (e) {
       // edit mode start on focus
       this.editMode = true
       this.isFocused = true
       if (this.type === 'number') {
         this.internalValue = formatNumber(this.internalValue, this.formatNumberOptions)
+        setTimeout(() => {
+          e.target.selectionStart = e.target.selectionEnd = e.target.value.length
+        })
       }
     },
 

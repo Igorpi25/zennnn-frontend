@@ -333,12 +333,15 @@ export default {
     }
   },
   methods: {
-    onFocus () {
+    onFocus (e) {
       // edit mode start on focus
       this.editMode = true
       this.hasFocus = true
       if (this.type === 'number') {
         this.internalValue = formatNumber(this.internalValue, this.formatNumberOptions)
+        setTimeout(() => {
+          e.target.selectionStart = e.target.selectionEnd = e.target.value.length
+        })
       }
     },
     onBlur () {
