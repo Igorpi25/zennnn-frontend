@@ -161,6 +161,7 @@ export default {
         thousand: this.editMode ? '' : ' ',
         decimal: ',',
         fixed: !this.editMode && this.formatStyle === 'currency',
+        fallback: !this.editMode ? 0 : null,
       }
     },
     listeners () {

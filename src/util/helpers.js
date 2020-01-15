@@ -401,13 +401,19 @@ export const unformat = (value) => {
  * @returns {string}
  */
 export const formatNumber = (number, options = {}) => {
-  if (number === null || number === '') return null
   // Build options object, extending defaults:
   const opts = {
     precision: options.precision || 0,
     thousand: options.thousand || '',
     decimal: options.decimal || ',',
     fixed: options.fixed || false,
+  }
+  if ((number === null || number === '')) {
+    if (isNumber(options.fallback)) {
+      number = options.fallback
+    } else {
+      return null
+    }
   }
   const stringVal = isString(number) ? number.replace('.', opts.decimal) : ''
   const hasDelemiter = stringVal.slice(-1) === opts.decimal && opts.precision > 0
