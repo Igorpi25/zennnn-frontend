@@ -35,6 +35,7 @@
           :value="item.profitPercent"
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
+          lazy
           type="number"
           inputmode="decimal"
           format-style="decimal"
@@ -71,6 +72,7 @@
           :value="item.discount"
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
+          lazy
           type="number"
           inputmode="decimal"
           format-style="currency"
@@ -97,6 +99,7 @@
           :value="item.prepayment"
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
+          lazy
           type="number"
           inputmode="decimal"
           format-style="currency"

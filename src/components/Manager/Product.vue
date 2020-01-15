@@ -36,6 +36,7 @@
     </td>
     <td>
       <Editable
+        lazy
         type="number"
         inputmode="decimal"
         format-style="decimal"
@@ -48,6 +49,7 @@
     <template v-if="activeTab === 1">
       <td v-if="isInvoiceProfitTypeMargin || !profitForAll">
         <Editable
+          lazy
           type="number"
           inputmode="decimal"
           format-style="currency"
@@ -71,6 +73,7 @@
 
       <td v-if="isInvoiceProfitTypeCommission || !profitForAll">
         <Editable
+          lazy
           type="number"
           inputmode="decimal"
           format-style="currency"
