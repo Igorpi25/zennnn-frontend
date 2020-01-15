@@ -61,6 +61,7 @@
           :pattern="pattern"
           :step="step"
           @input="input"
+          @change="change"
           @keydown="onKeyDown"
           @focus="onFocus"
           @blur="onBlur"
@@ -102,7 +103,7 @@ import {
   formatNumber,
   unformat,
   setCursor,
-  event,
+  // event,
 } from '../../util/helpers'
 
 export default {
@@ -117,6 +118,10 @@ export default {
     value: {
       type: [String, Number, Date],
       default: null,
+    },
+    lazy: {
+      type: Boolean,
+      default: false,
     },
     rules: {
       type: Array,
@@ -352,7 +357,7 @@ export default {
         return
       }
       // immediate call changes
-      if (this.internalValue !== this.value) {
+      if (this.internalValue !== this.value && !this.lazy) {
         this.emitChange()
       }
     },
@@ -374,17 +379,26 @@ export default {
         el.value = formatNumber(el.value, this.formatNumberOptions)
         positionFromEnd = el.value.length - positionFromEnd
         setCursor(el, positionFromEnd)
-        el.dispatchEvent(event('change'))
+        // el.dispatchEvent(event('change'))
 
         this.hasError = e.target.validity.badInput
       }
-      if (this.debounce) {
-        this.debounceInput()
-      } else {
-        this.emitChange()
+      if (!this.lazy) {
+        if (this.debounce) {
+          this.debounceInput()
+        } else {
+          this.emitChange()
+        }
       }
       this.checkField(e)
     },
+
+    change () {
+      if (this.lazy) {
+        this.emitChange()
+      }
+    },
+
     onKeyDown (e) {
       if (this.debounce) {
         // on esc set value from store

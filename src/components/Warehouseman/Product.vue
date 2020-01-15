@@ -36,6 +36,7 @@
     </td>
     <td>
       <Editable
+        lazy
         type="number"
         inputmode="decimal"
         format-style="decimal"

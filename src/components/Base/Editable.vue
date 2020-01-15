@@ -64,7 +64,7 @@ import {
   formatNumber,
   unformat,
   setCursor,
-  event,
+  // event,
 } from '../../util/helpers'
 
 export default {
@@ -74,6 +74,10 @@ export default {
     value: {
       type: [String, Number],
       default: '',
+    },
+    lazy: {
+      type: Boolean,
+      default: false,
     },
     type: {
       type: String,
@@ -160,7 +164,7 @@ export default {
       }
     },
     listeners () {
-      return { ...this.$listeners, input: this.input }
+      return { ...this.$listeners, input: this.input, change: this.change }
     },
     internalValue: {
       get () {
@@ -234,7 +238,7 @@ export default {
         el.value = formatNumber(el.value, this.formatNumberOptions)
         positionFromEnd = el.value.length - positionFromEnd
         setCursor(el, positionFromEnd)
-        el.dispatchEvent(event('change'))
+        // el.dispatchEvent(event('change'))
 
         this.hasError = e.target.validity.badInput
       }
@@ -242,7 +246,15 @@ export default {
       if (this.type === 'editable') {
         this.internalValue = val || null
       }
-      this.debounceInput()
+      if (!this.lazy) {
+        this.debounceInput()
+      }
+    },
+
+    change () {
+      if (this.lazy) {
+        this.emitChange()
+      }
     },
 
     emitChange () {
@@ -280,7 +292,7 @@ export default {
       const val = this.type === 'number'
         ? unformat(this.internalValue, this.formatNumberOptions.decimal)
         : this.internalValue
-      if (val !== this.value) {
+      if (val !== this.value && !this.lazy) {
         this.emitChange()
       }
     },
