@@ -55,7 +55,7 @@
           :minlength="minlength"
           :maxlength="maxlength"
           :autofocus="autofocus"
-          :placeholder="placeholder"
+          :placeholder="compPlaceholder"
           :class="{ 'text-right' : type === 'number' || right }"
           :inputmode="inputmode"
           :pattern="pattern"
@@ -254,6 +254,11 @@ export default {
     }
   },
   computed: {
+    compPlaceholder () {
+      // ignore placeholder on number
+      return this.type === 'number'
+        ? '' : this.placeholder
+    },
     compHeight () {
       return this.height ? convertToUnit(this.height) : null
     },
@@ -338,7 +343,9 @@ export default {
       this.editMode = true
       this.hasFocus = true
       if (this.type === 'number') {
-        this.internalValue = formatNumber(this.internalValue, this.formatNumberOptions)
+        this.internalValue = this.value
+          ? formatNumber(this.internalValue, this.formatNumberOptions)
+          : null
         setTimeout(() => {
           e.target.selectionStart = e.target.selectionEnd = e.target.value.length
         })

@@ -4,7 +4,7 @@
       v-if="type === 'editable'"
       ref="editable"
       :id="id"
-      :placeholder="placeholder"
+      :placeholder="compPlaceholder"
       :class="[
         'editable',
         {
@@ -29,7 +29,7 @@
       ref="editable"
       v-model="internalValue"
       :id="id"
-      :placeholder="placeholder"
+      :placeholder="compPlaceholder"
       :class="[
         'editable',
         {
@@ -150,6 +150,11 @@ export default {
   },
 
   computed: {
+    compPlaceholder () {
+      // ignore placeholder on number
+      return this.type === 'number'
+        ? '' : this.placeholder
+    },
     compStyle () {
       return this.textColor
         ? { color: this.textColor }
@@ -271,7 +276,9 @@ export default {
       this.editMode = true
       this.isFocused = true
       if (this.type === 'number') {
-        this.internalValue = formatNumber(this.internalValue, this.formatNumberOptions)
+        this.internalValue = this.value
+          ? formatNumber(this.internalValue, this.formatNumberOptions)
+          : null
         setTimeout(() => {
           e.target.selectionStart = e.target.selectionEnd = e.target.value.length
         })
