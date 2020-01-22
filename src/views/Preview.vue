@@ -30,14 +30,14 @@
             >
               <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto text-left">
                 <div>
-                  <span>{{ item.number }}</span>&nbsp;
-                  <span>{{ $t('preposition.from') }}</span>&nbsp;
-                  <span>{{ item.purchaseDate }}</span>&nbsp;
+                  <span>{{ item.invoiceNo }}</span>&nbsp;
+                  <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
+                  <span>{{ formatDate(item.purchaseDate) }}</span>&nbsp;
                 </div>
-                <span class="hidden md:block">//</span>&nbsp;
+                <span class="hidden md:block mx-1">//</span>&nbsp;
                 <div>
-                  <span>{{ $t('preview.expectedShipment') }}</span>&nbsp;
-                  <span>{{ item.shippingdate }}</span>
+                  <span class="text-sm">{{ $t('preview.expectedShipment').toLowerCase() }}</span>&nbsp;
+                  <span>{{ formatDate(item.shippingDate) }}</span>
                 </div>
               </div>
             </InvoiceHeader>
@@ -81,13 +81,25 @@
                           </span>
                         </span>
                       </td>
-                      <td class="text-right">{{ item.morePhoto }}</td>
+                      <td class="text-center">
+                        <div
+                          v-if="item.info.images.length > 1"
+                          class="flex justify-center items-center"
+                        >
+                          <span class="mr-1 text-sm text-gray-lightest">
+                           + {{ item.info.images.length - 1 }}
+                          </span>
+                          <img src="@/assets/icons/pre-image.svg">
+                        </div>
+                      </td>
                       <td class="text-right">{{ item.cost.clientPrice }}</td>
                       <td class="text-right">{{ item.qty }}</td>
                       <td class="text-right font-bold">{{ item.cost.clientAmount }}</td>
                       <td class="text-right">{{ item.store.pkgQty }}</td>
                       <td class="text-right">{{ item.store.pkgNo }}</td>
-                      <td class="text-right">{{ item.note }}</td>
+                      <td class="text-center">
+                        <img src="@/assets/icons/message.png" class="mx-auto">
+                      </td>
                     </tr>
                   </template>
                 </DataTable>
@@ -98,26 +110,26 @@
                   <ul class="leaders w-2/3">
                     <li>
                       <span class="bg-white font-black text-right">{{ $t('preview.total') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">7 210</span>
+                      <span class="bg-white font-bold">{{ item.totalClientAmount }}</span>
                     </li>
                     <li class="text-gray-lightest">
                       <span class="bg-white font-semibold">{{ $t('preview.discount') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">0</span>
+                      <span class="bg-white font-bold">{{ item.discount }}</span>
                     </li>
                     <li>
                       <span class="bg-white font-semibold">{{ $t('preview.prepay') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">2 000</span>
+                      <span class="bg-white font-bold">{{ item.prepayment }}</span>
                     </li>
                     <li>
                       <span class="bg-white font-semibold">{{ $t('preview.residue') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold" style="color:#ff0000">5 210</span>
+                      <span class="bg-white font-bold" style="color:#ff0000">{{ item.obtainCost }}</span>
                     </li>
                   </ul>
                   <ul class="ml-5 text-sm text-gray-light">
-                    <li class="mt-1">{{ $t('preview.noDiscount') }}</li>
+                    <li class="mt-1">({{ $t('preview.noDiscount') }})</li>
                     <br>
-                    <li class="mt-1">18.06.2019</li>
-                    <li class="mt-1">--.--.--</li>
+                    <li class="mt-1">{{ formatDate(item.prepaymentDate )|| '--.--.--' }}</li>
+                    <li class="mt-1">{{ formatDate(item.obtainCostDate) || '--.--.--' }}</li>
                   </ul>
                 </div>
               </div>
@@ -208,9 +220,9 @@
                         {{ $t('preview.totalPrepay') }} {{ $t('currency.CNY.symbol') }}
                       </span>
                       <span class="flex ">
-                        <div class="text-accent1">{{ $n(spec.finalObtainCost, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.finalObtainCost, 'decimal').slice(-2) }}</div>
+                        <div class="text-accent1">{{ $n(spec.totalPrepay, 'integer') }}</div>
+                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
+                        <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
                       </span>
                     </li>
                     <li class="pb-2">
@@ -218,9 +230,9 @@
                         {{ $t('preview.finalToPay') }}  {{ $t('currency.CNY.symbol') }}
                       </span>
                       <span class="flex font-bold" style="color: #ff0000;">
-                        <div>{{ $n(spec.profit, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.profit, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.profit, 'decimal').slice(-2) }}</div>
+                        <div>{{ $n(spec.totalClientDebt, 'integer') }}</div>
+                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
+                        <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
                       </span>
                     </li>
                   </ul>
@@ -282,6 +294,8 @@
 </template>
 
 <script>
+import format from 'date-fns/format'
+
 import {
   mdiChevronDown,
   mdiChevronUp,
@@ -347,16 +361,16 @@ export default {
   computed: {
     headers () {
       return [
-        { text: '#', value: 'number', align: 'right', width: 55 },
-        { text: this.$t('preview.photo'), value: 'name', align: 'left', width: 80 },
-        { text: this.$t('preview.name'), value: 'status', align: 'left', width: 360 },
-        { text: this.$t('preview.additionalImages'), value: 'status', align: 'left', width: 70 },
-        { text: `${this.$t('preview.price')}(¥)`, value: 'status', width: 80 },
-        { text: this.$t('preview.qty'), value: 'status', width: 70 },
-        { text: `${this.$t('preview.cost')}(¥)`, value: 'status', align: 'left', width: 100 },
-        { text: this.$t('preview.qtyOfPackages'), value: 'status', align: 'left', width: 70 },
-        { text: this.$t('preview.packageNo'), value: 'status', align: 'left', width: 70 },
-        { text: this.$t('preview.leaveNote'), value: 'status', align: 'left', width: 85 },
+        { text: '#', value: 'number', align: 'right', minWidth: 20 },
+        { text: this.$t('preview.photo'), value: 'photo', align: 'left', minWidth: 50 },
+        { text: this.$t('preview.name'), value: 'name', align: 'left', minWidth: 260 },
+        { text: this.$t('preview.additionalImages'), value: 'images', align: 'left', minWidth: 85 },
+        { text: `${this.$t('preview.price')}(¥)`, value: 'price', minWidth: 80 },
+        { text: this.$t('preview.qty'), value: 'qty', minWidth: 70 },
+        { text: `${this.$t('preview.cost')}(¥)`, value: 'cost', align: 'left', minWidth: 100 },
+        { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'left', minWidth: 65 },
+        { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'left', minWidth: 65 },
+        { text: this.$t('preview.leaveNote'), value: 'note', align: 'left', minWidth: 85 },
       ]
     },
     specId () {
@@ -373,6 +387,14 @@ export default {
     },
   },
   methods: {
+    formatDate (date) {
+      if (!date) return null
+      const parsedDate = this.$parseDate(date)
+      return format(parsedDate, this.$i18n.locale === 'zh'
+        ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
+          ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
+      )
+    },
     expand (id) {
       if (this.expanded.includes(id)) {
         const index = this.expanded.indexOf(id)
@@ -395,6 +417,7 @@ export default {
 
 <style scoped lang="postcss">
 .preview-invoice-wrapper {
+  margin-bottom: 20px;
   -webkit-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
   -moz-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
   box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
