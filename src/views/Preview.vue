@@ -59,21 +59,34 @@
                       <td class="text-gray-lighter text-right leading-none py-2 align-top">
                         {{ index + 1 }}
                       </td>
-                      <td>{{ item.photo }}</td>
+                      <td>
+                        <ProductImage
+                          :product-id="item.id"
+                          :images="item.info.images"
+                        />
+                      </td>
                       <td>
                         <span>{{ item.name }}</span> <br>
-                        <span class="text-gray-light">{{ item.model }}</span>
-                        <span class="flex">
-                          <img src="../assets/icons/factory-green.png" width="21px">
-                          <span class="ml-2 text-orange">{{ item.productStatus }}</span>
+                        <span class="text-gray-light">{{ item.article }}</span>
+                        <span class="flex items-bottom">
+                          <img src="../assets/icons/factory-green.png" width="18px">
+                          <span class="ml-2 text-orange text-xs">
+                            <span>
+                              {{
+                                item.productStatus === ProductStatus.IN_PRODUCTION
+                                  ? 'В производстве' : item.productStatus === ProductStatus.IN_STOCK
+                                    ? 'На складе' : 'Обрабатывается'
+                              }}
+                            </span>
+                          </span>
                         </span>
                       </td>
                       <td class="text-right">{{ item.morePhoto }}</td>
-                      <td class="text-right">{{ item.cost }}</td>
+                      <td class="text-right">{{ item.cost.clientPrice }}</td>
                       <td class="text-right">{{ item.qty }}</td>
-                      <td class="text-right font-bold">{{ item.cost }}</td>
-                      <td class="text-right">{{ item.cargoQty }}</td>
-                      <td class="text-right">{{ item.cargoNum }}</td>
+                      <td class="text-right font-bold">{{ item.cost.clientAmount }}</td>
+                      <td class="text-right">{{ item.store.pkgQty }}</td>
+                      <td class="text-right">{{ item.store.pkgNo }}</td>
                       <td class="text-right">{{ item.note }}</td>
                     </tr>
                   </template>
@@ -286,8 +299,9 @@ import {
 import StatusBar from '@/components/StatusBar'
 import Copyright from '@/components/Copyright'
 import InvoiceHeader from '../components/InvoiceHeader.vue'
+import ProductImage from '../components/ProductImage.vue'
 
-import { InvoiceStatus } from '@/graphql/enums'
+import { ProductStatus, InvoiceStatus } from '@/graphql/enums'
 import { GET_SPEC } from '../graphql/queries'
 
 export default {
@@ -296,6 +310,7 @@ export default {
     StatusBar,
     Copyright,
     InvoiceHeader,
+    ProductImage,
   },
   apollo: {
     getSpec: {
@@ -325,6 +340,7 @@ export default {
         ziShare,
       },
       menuCurrency: false,
+      ProductStatus,
       InvoiceStatus,
     }
   },
