@@ -1,5 +1,31 @@
 <template>
   <div>
+
+    <v-dialog
+      v-model="leaveNote"
+      max-width="443"
+    >
+      <PreviewMessageModal
+        :heading="$t('preview.leaveNote')"
+        :client="client"
+        is-note
+        @save="saveMessage"
+        @close="leaveNote = false"
+      />
+    </v-dialog>
+
+    <v-dialog
+      v-model="leaveComment"
+      max-width="443"
+    >
+      <PreviewMessageModal
+        :heading="$t('preview.leaveComment')"
+        :client="client"
+        @save="saveMessage"
+        @close="leaveComment= false"
+      />
+    </v-dialog>
+
     <div class="content view">
       <StatusBar />
       <div class="container container--sm">
@@ -7,13 +33,9 @@
           <div class="flex flex-col sm:flex-row justify-between">
             <span class="mb-3">
               <span>{{ $t('preview.shippingTitle') }}</span>&nbsp;
-              <span class="text-primary">
-                {{ spec.specNo }}
-              </span>&nbsp;
+              <span>{{ spec.specNo }}</span>&nbsp;
               <span>{{ $t('preposition.from') }}:</span>&nbsp;
-              <span>
-                {{ $d($parseDate(spec.createdAt), 'short') }}
-              </span>
+              <span>{{ $d($parseDate(spec.createdAt), 'short') }}</span>
             </span>
             <span
               class="mb-2 md:m-0 text-right text-primary text-sm cursor-pointer whitespace-no-wrap"
@@ -30,14 +52,14 @@
             >
               <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto text-left">
                 <div>
-                  <span>{{ item.number }}</span>&nbsp;
-                  <span>{{ $t('preposition.from') }}</span>&nbsp;
-                  <span>{{ item.purchaseDate }}</span>&nbsp;
+                  <span>{{ item.invoiceNo }}</span>&nbsp;
+                  <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
+                  <span>{{ formatDate(item.purchaseDate) }}</span>&nbsp;
                 </div>
-                <span class="hidden md:block">//</span>&nbsp;
+                <span class="hidden md:block mx-1">//</span>&nbsp;
                 <div>
-                  <span>{{ $t('preview.expectedShipment') }}</span>&nbsp;
-                  <span>{{ item.shippingdate }}</span>
+                  <span class="text-sm">{{ $t('preview.expectedShipment').toLowerCase() }}</span>&nbsp;
+                  <span>{{ formatDate(item.shippingDate) }}</span>
                 </div>
               </div>
             </InvoiceHeader>
@@ -49,6 +71,7 @@
                   table-width="100%"
                   table-class="table-fixed"
                   thead-class="text-accent2"
+                  headers-whitespace-normal
                 >
                   <template v-slot:items="{ items }">
                     <tr
@@ -59,22 +82,58 @@
                       <td class="text-gray-lighter text-right leading-none py-2 align-top">
                         {{ index + 1 }}
                       </td>
-                      <td>{{ item.photo }}</td>
                       <td>
-                        <span>{{ item.name }}</span> <br>
-                        <span class="text-gray-light">{{ item.model }}</span>
-                        <span class="flex">
-                          <img src="../assets/icons/factory-green.png" width="21px">
-                          <span class="ml-2 text-orange">{{ item.productStatus }}</span>
+                        <ProductImage
+                          :product-id="item.id"
+                          :images="item.info.images"
+                        />
+                      </td>
+                      <td>
+                        <span>{{ item.name }}</span>
+                        <p class="text-gray-light leading-none">{{ item.article }}</p>
+                        <span class="flex items-center mt-2">
+                          <img
+                            v-if="item.productStatus === ProductStatus.IN_PRODUCTION"
+                            src="../assets/icons/factory-yellow.png"
+                            class="mb-2"
+                          >
+                          <img
+                            v-else-if="item.productStatus === ProductStatus.IN_STOCK"
+                            src="../assets/icons/in-stock.png"
+                          >
+                          <img
+                            v-else
+                            src="../assets/icons/in-processing.png"
+                          >
+                          <span class="ml-2 text-orange text-xs">
+                            <span>
+                              {{ item.productStatus ? $t(`status.${item.productStatus}`) : '' }}
+                            </span>
+                          </span>
                         </span>
                       </td>
-                      <td class="text-right">{{ item.morePhoto }}</td>
-                      <td class="text-right">{{ item.cost }}</td>
-                      <td class="text-right">{{ item.qty }}</td>
-                      <td class="text-right font-bold">{{ item.cost }}</td>
-                      <td class="text-right">{{ item.cargoQty }}</td>
-                      <td class="text-right">{{ item.cargoNum }}</td>
-                      <td class="text-right">{{ item.note }}</td>
+                      <td class="text-center">
+                        <div
+                          v-if="item.info.images.length > 1"
+                          class="flex justify-center items-center"
+                        >
+                          <span class="mr-1 text-sm text-gray-lightest">
+                           + {{ item.info.images.length - 1 }}
+                          </span>
+                          <img src="@/assets/icons/pre-image.png">
+                        </div>
+                      </td>
+                      <td class="text-right">{{ $n(item.cost.clientPrice) }}</td>
+                      <td class="text-center">{{ item.qty }}</td>
+                      <td class="text-right font-bold">{{ $n(item.cost.clientAmount) }}</td>
+                      <td class="text-right">{{ item.store.pkgQty }}</td>
+                      <td class="text-right">{{ item.store.pkgNo }}</td>
+                      <td @click="leaveNote = true">
+                        <div class="notes-count-wrapper">
+                          <span v-if="notes.length > 0" class="notes-count-bubble">{{ notes.length }}</span>
+                          <img src="@/assets/icons/message.png" class="mx-auto">
+                        </div>
+                      </td>
                     </tr>
                   </template>
                 </DataTable>
@@ -85,26 +144,27 @@
                   <ul class="leaders w-2/3">
                     <li>
                       <span class="bg-white font-black text-right">{{ $t('preview.total') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">7 210</span>
+                      <span class="bg-white font-bold">{{ $n(item.totalClientAmount) }}</span>
                     </li>
                     <li class="text-gray-lightest">
                       <span class="bg-white font-semibold">{{ $t('preview.discount') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">0</span>
+                      <span class="bg-white font-bold">{{ $n(item.discount) }}</span>
                     </li>
                     <li>
                       <span class="bg-white font-semibold">{{ $t('preview.prepay') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">2 000</span>
+                      <span class="bg-white font-bold">{{ $n(item.prepayment) }}</span>
                     </li>
                     <li>
                       <span class="bg-white font-semibold">{{ $t('preview.residue') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold" style="color:#ff0000">5 210</span>
+                      <span class="bg-white font-bold" style="color:#ff0000">{{ $n(item.obtainCost) }}</span>
                     </li>
                   </ul>
                   <ul class="ml-5 text-sm text-gray-light">
-                    <li class="mt-1">{{ $t('preview.noDiscount') }}</li>
+                    <li v-if="!item.discount" class="mt-1">({{ $t('preview.noDiscount') }})</li>
+                    <br v-else>
                     <br>
-                    <li class="mt-1">18.06.2019</li>
-                    <li class="mt-1">--.--.--</li>
+                    <li class="mt-1">{{ formatDate(item.prepaymentDate )|| '--.--.--' }}</li>
+                    <li class="mt-1">{{ formatDate(item.obtainCostDate) || '--.--.--' }}</li>
                   </ul>
                 </div>
               </div>
@@ -118,21 +178,60 @@
             </h4>
             <div class="preview-summary__wrapper flex-col lg:flex-row">
               <div class="preview-summary__info">
-                <div class="relative">
+                <div v-if="spec.containers" class="relative">
                   <div
-                    class="preview-summary__container"
-                  >
+                    v-if="spec.shipped"
+                    class="spec-summary__container__image spec-summary__container__image--shipped w-full"
+                    style="left: -20px; width: 350px; background-size: auto; z-index: 1;"
+                  />
                     <div
-                      class="preview-summary__container__image preview-summary__container__image--full"
-                      :style="{
-                        width: 25 + '%',
-                        height: '85px'
-                      }"
-                    />
-                    <img width="210" height="85" src="/img/container-empty.svg" alt="">
+                      v-if="spec.containers.length === 1"
+                      class="spec-summary__container"
+                    >
+                      <div
+                        class="spec-summary__container__image spec-summary__container__image--full"
+                        :style="{
+                          width: (spec.containers[0].loaded || 0) + '%',
+                          height: '85px'
+                        }"
+                      />
+                      <img width="210" height="85" src="/img/container-empty.svg" alt="">
+                    </div>
+                    <div v-else>
+                      <div
+                        v-for="(c, i) in loadedContainers"
+                        :key="`loaded-${i}`"
+                        class="spec-summary__container"
+                      >
+                        <div
+                          class="spec-summary__container__image spec-summary__container__image--full-sm"
+                          :style="{
+                            width: '100%',
+                            height: '48px'
+                          }"
+                        />
+                        <div class="spec-summary__container__label">
+                          {{ loadedContainers.length }} x {{ c.type }}′
+                        </div>
+                        <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
+                      </div>
+                      <div
+                        v-for="(c, i) in unloadedContainers"
+                        :key="`unloaded-${i}`"
+                        class="spec-summary__container"
+                      >
+                        <div
+                          class="spec-summary__container__image spec-summary__container__image--full-sm"
+                          :style="{
+                            width: (c.loaded || 0) + '%',
+                            height: '48px'
+                          }"
+                        />
+                        <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div>
+                  <div>
                   <ul class="leaders">
                     <li
                       v-for="(c, i) in unloadedContainers"
@@ -195,9 +294,9 @@
                         {{ $t('preview.totalPrepay') }} {{ $t('currency.CNY.symbol') }}
                       </span>
                       <span class="flex ">
-                        <div class="text-accent1">{{ $n(spec.finalObtainCost, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.finalObtainCost, 'decimal').slice(-2) }}</div>
+                        <div class="text-accent1">{{ $n(spec.totalPrepay, 'integer') }}</div>
+                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
+                        <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
                       </span>
                     </li>
                     <li class="pb-2">
@@ -205,9 +304,9 @@
                         {{ $t('preview.finalToPay') }}  {{ $t('currency.CNY.symbol') }}
                       </span>
                       <span class="flex font-bold" style="color: #ff0000;">
-                        <div>{{ $n(spec.profit, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.profit, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.profit, 'decimal').slice(-2) }}</div>
+                        <div>{{ $n(spec.totalClientDebt, 'integer') }}</div>
+                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
+                        <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
                       </span>
                     </li>
                   </ul>
@@ -254,7 +353,7 @@
                   <img src="@/assets/icons/pdf.png" class="mr-3">
                   <span class="text-left">{{ $t('preview.downloadPDF') }}</span>
                 </div>
-                <div @click.prevent>
+                <div @click="leaveComment = true">
                   <img src="@/assets/icons/message.png" class="mr-3">
                   <span class="text-left">{{ $t('preview.comment') }}</span>
                </div>
@@ -269,6 +368,8 @@
 </template>
 
 <script>
+import format from 'date-fns/format'
+
 import {
   mdiChevronDown,
   mdiChevronUp,
@@ -283,19 +384,24 @@ import {
   ziShare,
 } from '@/assets/icons'
 
+import PreviewMessageModal from '@/components/PreviewMessageModal'
+
 import StatusBar from '@/components/StatusBar'
 import Copyright from '@/components/Copyright'
 import InvoiceHeader from '../components/InvoiceHeader.vue'
+import ProductImage from '../components/ProductImage.vue'
 
-import { InvoiceStatus } from '@/graphql/enums'
+import { ProductStatus, InvoiceStatus } from '@/graphql/enums'
 import { GET_SPEC } from '../graphql/queries'
 
 export default {
   name: 'Preview',
   components: {
+    PreviewMessageModal,
     StatusBar,
     Copyright,
     InvoiceHeader,
+    ProductImage,
   },
   apollo: {
     getSpec: {
@@ -309,6 +415,10 @@ export default {
   },
   data () {
     return {
+      leaveNote: false,
+      notes: [],
+      leaveComment: false,
+      comments: [],
       containers: [
         { type: '20', loaded: 100 },
         { type: '20', loaded: 28 },
@@ -325,22 +435,23 @@ export default {
         ziShare,
       },
       menuCurrency: false,
+      ProductStatus,
       InvoiceStatus,
     }
   },
   computed: {
     headers () {
       return [
-        { text: '#', value: 'number', align: 'right', width: 55 },
-        { text: this.$t('preview.photo'), value: 'name', align: 'left', width: 80 },
-        { text: this.$t('preview.name'), value: 'status', align: 'left', width: 360 },
-        { text: this.$t('preview.additionalImages'), value: 'status', align: 'left', width: 70 },
-        { text: `${this.$t('preview.price')}(¥)`, value: 'status', width: 80 },
-        { text: this.$t('preview.qty'), value: 'status', width: 70 },
-        { text: `${this.$t('preview.cost')}(¥)`, value: 'status', align: 'left', width: 100 },
-        { text: this.$t('preview.qtyOfPackages'), value: 'status', align: 'left', width: 70 },
-        { text: this.$t('preview.packageNo'), value: 'status', align: 'left', width: 70 },
-        { text: this.$t('preview.leaveNote'), value: 'status', align: 'left', width: 85 },
+        { text: '#', value: 'number', align: 'right', width: 20 },
+        { text: this.$t('preview.photo'), value: 'photo', align: 'left', width: 62 },
+        { text: this.$t('preview.name'), value: 'name', align: 'left', width: 260 },
+        { text: this.$t('preview.additionalImages'), value: 'images', align: 'left', width: 85 },
+        { text: `${this.$t('preview.price')}(¥)`, value: 'price', width: 80 },
+        { text: this.$t('preview.qty'), value: 'qty', width: 70 },
+        { text: `${this.$t('preview.cost')}(¥)`, value: 'cost', align: 'left', width: 90 },
+        { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'left', width: 62 },
+        { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'left', width: 62 },
+        { text: this.$t('preview.leaveNote'), value: 'note', align: 'left', width: 85 },
       ]
     },
     specId () {
@@ -348,6 +459,11 @@ export default {
     },
     spec () {
       return this.getSpec || {}
+    },
+    client () {
+      const firstName = (this.getSpec && this.getSpec.client && this.getSpec.client.firstName) || {}
+      const lastName = (this.getSpec && this.getSpec.client && this.getSpec.client.lastName) || {}
+      return firstName + ' ' + lastName || {}
     },
     items () {
       return this.getSpec && this.getSpec.invoices
@@ -357,6 +473,14 @@ export default {
     },
   },
   methods: {
+    formatDate (date) {
+      if (!date) return null
+      const parsedDate = this.$parseDate(date)
+      return format(parsedDate, this.$i18n.locale === 'zh'
+        ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
+          ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
+      )
+    },
     expand (id) {
       if (this.expanded.includes(id)) {
         const index = this.expanded.indexOf(id)
@@ -368,6 +492,21 @@ export default {
     collapseAll () {
       this.expanded = []
     },
+    saveMessage (message) {
+      if (this.leaveNote) {
+        this.notes.push(message)
+        localStorage.setItem('notes', JSON.stringify(this.notes))
+        this.leaveNote = false
+      } else {
+        this.comments.push(message)
+        localStorage.setItem('comments', JSON.stringify(this.comments))
+        this.leaveComment = false
+      }
+    },
+  },
+  created () {
+    this.notes = JSON.parse(localStorage.getItem('notes')) || []
+    this.comments = JSON.parse(localStorage.getItem('comments')) || []
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
@@ -379,9 +518,24 @@ export default {
 
 <style scoped lang="postcss">
 .preview-invoice-wrapper {
+  margin-bottom: 20px;
   -webkit-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
   -moz-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
   box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
+}
+.notes-count-wrapper {
+  position: relative;
+  width: 86px;
+}
+.notes-count-bubble {
+  position: absolute;
+  top: -7px;
+  right: 23px;
+  padding: 0 6px;
+  font-size: 12px;
+  color: #fff;
+  background-color: tomato;
+  border-radius: 50px;
 }
 .preview-summary {
   margin: 70px 0 50px;

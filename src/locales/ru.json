@@ -223,6 +223,11 @@
     "setShipped": "Отправлено",
     "overview": "Предпросмотр"
   },
+  "status": {
+    "IN_PROCESSING": "Обрабатывается",
+    "IN_PRODUCTION": "В производстве",
+    "IN_STOCK": "На складе"
+  },
   "preview": {
     "shippingTitle": "Спецификация №",
     "total": "Итого:",
@@ -235,9 +240,9 @@
     "estimateDate": "Готовность к отправке:",
     "totalVolume": "Объём:",
     "totalWeight": "Масса:",
-    "qtyOfPackages": "Кол-во гр. мест:",
-    "packageNo": "Номера гр. мест:",
-    "totalPrepay": "Необходимо к оплате",
+    "qtyOfPackages": "Кол-во гр. мест",
+    "packageNo": "Номера гр. мест",
+    "totalPrepay": "Предоплат итого:",
     "qty": "Кол-во",
     "photo": "Фото",
     "name": "Наименование",
@@ -247,6 +252,7 @@
     "costOfGood": "Стоимость товара",
     "additionalImages": "Доп. изобр.",
     "leaveNote": "Оставить заметку",
+    "leaveComment": "Оставить комментарий",
     "noDiscount": "без скидки",
     "residue": "Остаток",
     "finalToPay": "Необходимо к оплате:",

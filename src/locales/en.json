@@ -223,6 +223,11 @@
     "setShipped": "Shipped",
     "overview": "Overview"
   },
+  "status": {
+    "IN_PROCESSING": "In processing",
+    "IN_PRODUCTION": "In production",
+    "IN_STOCK": "In stock"
+  },
   "preview": {
     "shippingTitle": "Shipping №",
     "total": "Total:",
@@ -235,8 +240,8 @@
     "estimateDate": "Estimate Shipping Date:",
     "totalVolume": "Total Volume:",
     "totalWeight": "Total Weight:",
-    "qtyOfPackages": "Qty of Packages:",
-    "packageNo": "Numbers of Packages",
+    "qtyOfPackages": "Qty of packages:",
+    "packageNo": "Package numbers:",
     "totalPrepay": "Total Prepay:",
     "qty": "Qty",
     "photo": "Photo",
@@ -247,12 +252,13 @@
     "costOfGood": "Cost of good",
     "additionalImages": "More images",
     "leaveNote": "Leave a note",
+    "leaveComment": "Leave a comment",
     "noDiscount": "without discount",
     "residue": "Residue",
     "finalToPay": "Total to Pay:",
     "printThis": "Print",
     "downloadPDF": "Download PDF",
-    "comment": "comment"
+    "comment": "Comment"
   },
   "label": {
     "saveAsPattern": "Save as a pattern",

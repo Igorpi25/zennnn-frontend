@@ -31,7 +31,9 @@
                   minWidth: convertToUnit(header.minWidth) || null
                 }"
                 :class="[
-                  'whitespace-no-wrap',
+                  headersWhitespaceNormal
+                    ? 'whitespace-normal'
+                    : 'whitespace-no-wrap',
                   `text-${header.align || 'center'}`,
                   `bg-${header.bgcolor || 'gradient'}`,
                   { 'sortable cursor-pointer': header.sortable },
@@ -152,6 +154,10 @@ export default {
     tableWidth: {
       type: [String, Number],
       default: '',
+    },
+    headersWhitespaceNormal: {
+      type: Boolean,
+      default: false,
     },
     headers: {
       type: Array,
