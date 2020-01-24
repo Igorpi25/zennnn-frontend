@@ -91,15 +91,20 @@
                       <td>
                         <span>{{ item.name }}</span>
                         <p class="text-gray-light leading-none">{{ item.article }}</p>
-                        <span class="flex mt-2">
-                          <img :src="
-                              item.ProductStatus === ProductStatus.IN_PRODUCTION
-                                ? '../assets/icons/factory-yellow.png'
-                                  : item.ProductStatus === ProductStatus.IN_STOCK
-                                    ? '../assets/icons/in-stock.png'
-                                      : '../assets/icons/in-processing.png'
-                            "
-                            width="18px">
+                        <span class="flex items-center mt-2">
+                          <img
+                            v-if="item.productStatus === ProductStatus.IN_PRODUCTION"
+                            src="../assets/icons/factory-yellow.png"
+                            class="mb-2"
+                          >
+                          <img
+                            v-else-if="item.productStatus === ProductStatus.IN_STOCK"
+                            src="../assets/icons/in-stock.png"
+                          >
+                          <img
+                            v-else
+                            src="../assets/icons/in-processing.png"
+                          >
                           <span class="ml-2 text-orange text-xs">
                             <span>
                               {{
@@ -460,10 +465,9 @@ export default {
       return this.getSpec || {}
     },
     client () {
-      // const firstName = this.spec.client.firstName || {}
-      // const lastName = this.spec.client.lastName || {}
-      // return firstName + ' ' + lastName || {}
-      return 'German Gref'
+      const firstName = (this.getSpec && this.getSpec.client && this.getSpec.client.firstName) || {}
+      const lastName = (this.getSpec && this.getSpec.client && this.getSpec.client.lastName) || {}
+      return firstName + ' ' + lastName || {}
     },
     items () {
       return this.getSpec && this.getSpec.invoices
