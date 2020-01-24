@@ -224,9 +224,9 @@
     "overview": "Предпросмотр"
   },
   "status": {
-    "inProcessing": "Обрабатывается",
-    "inProduction": "В производстве",
-    "inStock": "На складе"
+    "IN_PROCESSING": "Обрабатывается",
+    "IN_PRODUCTION": "В производстве",
+    "IN_STOCK": "На складе"
   },
   "preview": {
     "shippingTitle": "Спецификация №",

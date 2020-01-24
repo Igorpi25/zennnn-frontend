@@ -3,8 +3,8 @@
     <span
       :class="[
         'status-indicator mr-2 md:mr-6 flex-shrink-0',
-        item.InvoiceStatus === InvoiceStatus.IN_PRODUCTION
-          ? 'status-indicator--orange' : item.InvoiceStatus === InvoiceStatus.IN_STOCK
+        item.invoiceStatus === InvoiceStatus.IN_PRODUCTION
+          ? 'status-indicator--orange' : item.invoiceStatus === InvoiceStatus.IN_STOCK
             ? 'status-indicator--green' : 'status-indicator--pink'
       ]"
     >

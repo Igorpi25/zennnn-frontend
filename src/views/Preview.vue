@@ -107,11 +107,7 @@
                           >
                           <span class="ml-2 text-orange text-xs">
                             <span>
-                              {{
-                                item.productStatus === ProductStatus.IN_PRODUCTION
-                                  ? $t('status.inProduction') : item.productStatus === ProductStatus.IN_STOCK
-                                    ? $t('status.inStock'): $t('status.inProcessing')
-                              }}
+                              {{ item.productStatus ? $t(`status.${item.productStatus}`) : '' }}
                             </span>
                           </span>
                         </span>
@@ -124,7 +120,7 @@
                           <span class="mr-1 text-sm text-gray-lightest">
                            + {{ item.info.images.length - 1 }}
                           </span>
-                          <img src="@/assets/icons/pre-image.svg">
+                          <img src="@/assets/icons/pre-image.png">
                         </div>
                       </td>
                       <td class="text-right">{{ $n(item.cost.clientPrice) }}</td>

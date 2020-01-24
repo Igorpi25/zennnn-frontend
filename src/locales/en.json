@@ -224,9 +224,9 @@
     "overview": "Overview"
   },
   "status": {
-    "inProcessing": "In processing",
-    "inProduction": "In production",
-    "inStock": "In stock"
+    "IN_PROCESSING": "In processing",
+    "IN_PRODUCTION": "In production",
+    "IN_STOCK": "In stock"
   },
   "preview": {
     "shippingTitle": "Shipping №",
@@ -240,8 +240,8 @@
     "estimateDate": "Estimate Shipping Date:",
     "totalVolume": "Total Volume:",
     "totalWeight": "Total Weight:",
-    "qtyOfPackages": "Qty of Packages:",
-    "packageNo": "Nor. of Packages:",
+    "qtyOfPackages": "Qty of packages:",
+    "packageNo": "Package numbers:",
     "totalPrepay": "Total Prepay:",
     "qty": "Qty",
     "photo": "Photo",
