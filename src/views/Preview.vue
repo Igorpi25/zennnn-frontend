@@ -1,5 +1,31 @@
 <template>
   <div>
+
+    <v-dialog
+      v-model="leaveNote"
+      max-width="443"
+    >
+      <PreviewMessageModal
+        :heading="$t('preview.leaveNote')"
+        :client="client"
+        is-note
+        @save="saveMessage"
+        @close="leaveNote = false"
+      />
+    </v-dialog>
+
+    <v-dialog
+      v-model="leaveComment"
+      max-width="443"
+    >
+      <PreviewMessageModal
+        :heading="$t('preview.leaveComment')"
+        :client="client"
+        @save="saveMessage"
+        @close="leaveComment= false"
+      />
+    </v-dialog>
+
     <div class="content view">
       <StatusBar />
       <div class="container container--sm">
@@ -7,13 +33,9 @@
           <div class="flex flex-col sm:flex-row justify-between">
             <span class="mb-3">
               <span>{{ $t('preview.shippingTitle') }}</span>&nbsp;
-              <span class="text-primary">
-                {{ spec.specNo }}
-              </span>&nbsp;
+              <span>{{ spec.specNo }}</span>&nbsp;
               <span>{{ $t('preposition.from') }}:</span>&nbsp;
-              <span>
-                {{ $d($parseDate(spec.createdAt), 'short') }}
-              </span>
+              <span>{{ $d($parseDate(spec.createdAt), 'short') }}</span>
             </span>
             <span
               class="mb-2 md:m-0 text-right text-primary text-sm cursor-pointer whitespace-no-wrap"
@@ -49,6 +71,7 @@
                   table-width="100%"
                   table-class="table-fixed"
                   thead-class="text-accent2"
+                  headers-whitespace-normal
                 >
                   <template v-slot:items="{ items }">
                     <tr
@@ -92,13 +115,16 @@
                           <img src="@/assets/icons/pre-image.svg">
                         </div>
                       </td>
-                      <td class="text-right">{{ item.cost.clientPrice }}</td>
-                      <td class="text-right">{{ item.qty }}</td>
-                      <td class="text-right font-bold">{{ item.cost.clientAmount }}</td>
+                      <td class="text-right">{{ $n(item.cost.clientPrice) }}</td>
+                      <td class="text-center">{{ item.qty }}</td>
+                      <td class="text-right font-bold">{{ $n(item.cost.clientAmount) }}</td>
                       <td class="text-right">{{ item.store.pkgQty }}</td>
                       <td class="text-right">{{ item.store.pkgNo }}</td>
-                      <td class="text-center">
-                        <img src="@/assets/icons/message.png" class="mx-auto">
+                      <td @click="leaveNote = true">
+                        <div class="notes-count-wrapper">
+                          <span v-if="notes.length > 0" class="notes-count-bubble">{{ notes.length }}</span>
+                          <img src="@/assets/icons/message.png" class="mx-auto">
+                        </div>
                       </td>
                     </tr>
                   </template>
@@ -110,19 +136,19 @@
                   <ul class="leaders w-2/3">
                     <li>
                       <span class="bg-white font-black text-right">{{ $t('preview.total') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ item.totalClientAmount }}</span>
+                      <span class="bg-white font-bold">{{ $n(item.totalClientAmount) }}</span>
                     </li>
                     <li class="text-gray-lightest">
                       <span class="bg-white font-semibold">{{ $t('preview.discount') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ item.discount }}</span>
+                      <span class="bg-white font-bold">{{ $n(item.discount) }}</span>
                     </li>
                     <li>
                       <span class="bg-white font-semibold">{{ $t('preview.prepay') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ item.prepayment }}</span>
+                      <span class="bg-white font-bold">{{ $n(item.prepayment) }}</span>
                     </li>
                     <li>
                       <span class="bg-white font-semibold">{{ $t('preview.residue') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold" style="color:#ff0000">{{ item.obtainCost }}</span>
+                      <span class="bg-white font-bold" style="color:#ff0000">{{ $n(item.obtainCost) }}</span>
                     </li>
                   </ul>
                   <ul class="ml-5 text-sm text-gray-light">
@@ -279,7 +305,7 @@
                   <img src="@/assets/icons/pdf.png" class="mr-3">
                   <span class="text-left">{{ $t('preview.downloadPDF') }}</span>
                 </div>
-                <div @click.prevent>
+                <div @click="leaveComment = true">
                   <img src="@/assets/icons/message.png" class="mr-3">
                   <span class="text-left">{{ $t('preview.comment') }}</span>
                </div>
@@ -310,6 +336,8 @@ import {
   ziShare,
 } from '@/assets/icons'
 
+import PreviewMessageModal from '@/components/PreviewMessageModal'
+
 import StatusBar from '@/components/StatusBar'
 import Copyright from '@/components/Copyright'
 import InvoiceHeader from '../components/InvoiceHeader.vue'
@@ -321,6 +349,7 @@ import { GET_SPEC } from '../graphql/queries'
 export default {
   name: 'Preview',
   components: {
+    PreviewMessageModal,
     StatusBar,
     Copyright,
     InvoiceHeader,
@@ -338,6 +367,10 @@ export default {
   },
   data () {
     return {
+      leaveNote: false,
+      notes: [],
+      leaveComment: false,
+      comments: [],
       containers: [
         { type: '20', loaded: 100 },
         { type: '20', loaded: 28 },
@@ -361,16 +394,16 @@ export default {
   computed: {
     headers () {
       return [
-        { text: '#', value: 'number', align: 'right', minWidth: 20 },
-        { text: this.$t('preview.photo'), value: 'photo', align: 'left', minWidth: 50 },
-        { text: this.$t('preview.name'), value: 'name', align: 'left', minWidth: 260 },
-        { text: this.$t('preview.additionalImages'), value: 'images', align: 'left', minWidth: 85 },
-        { text: `${this.$t('preview.price')}(¥)`, value: 'price', minWidth: 80 },
-        { text: this.$t('preview.qty'), value: 'qty', minWidth: 70 },
-        { text: `${this.$t('preview.cost')}(¥)`, value: 'cost', align: 'left', minWidth: 100 },
-        { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'left', minWidth: 65 },
-        { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'left', minWidth: 65 },
-        { text: this.$t('preview.leaveNote'), value: 'note', align: 'left', minWidth: 85 },
+        { text: '#', value: 'number', align: 'right', width: 20 },
+        { text: this.$t('preview.photo'), value: 'photo', align: 'left', width: 62 },
+        { text: this.$t('preview.name'), value: 'name', align: 'left', width: 260 },
+        { text: this.$t('preview.additionalImages'), value: 'images', align: 'left', width: 85 },
+        { text: `${this.$t('preview.price')}(¥)`, value: 'price', width: 80 },
+        { text: this.$t('preview.qty'), value: 'qty', width: 70 },
+        { text: `${this.$t('preview.cost')}(¥)`, value: 'cost', align: 'left', width: 90 },
+        { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'left', width: 62 },
+        { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'left', width: 62 },
+        { text: this.$t('preview.leaveNote'), value: 'note', align: 'left', width: 85 },
       ]
     },
     specId () {
@@ -378,6 +411,12 @@ export default {
     },
     spec () {
       return this.getSpec || {}
+    },
+    client () {
+      // const firstName = this.spec.client.firstName || {}
+      // const lastName = this.spec.client.lastName || {}
+      // return firstName + ' ' + lastName || {}
+      return 'German Gref'
     },
     items () {
       return this.getSpec && this.getSpec.invoices
@@ -406,6 +445,21 @@ export default {
     collapseAll () {
       this.expanded = []
     },
+    saveMessage (message) {
+      if (this.leaveNote) {
+        this.notes.push(message)
+        localStorage.setItem('notes', JSON.stringify(this.notes))
+        this.leaveNote = false
+      } else {
+        this.comments.push(message)
+        localStorage.setItem('comments', JSON.stringify(this.comments))
+        this.leaveComment = false
+      }
+    },
+  },
+  created () {
+    this.notes = JSON.parse(localStorage.getItem('notes')) || []
+    this.comments = JSON.parse(localStorage.getItem('comments')) || []
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
@@ -421,6 +475,20 @@ export default {
   -webkit-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
   -moz-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
   box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
+}
+.notes-count-wrapper {
+  position: relative;
+  width: 86px;
+}
+.notes-count-bubble {
+  position: absolute;
+  top: -7px;
+  right: 23px;
+  padding: 0 6px;
+  font-size: 12px;
+  color: #fff;
+  background-color: tomato;
+  border-radius: 50px;
 }
 .preview-summary {
   margin: 70px 0 50px;
