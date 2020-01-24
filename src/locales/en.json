@@ -223,6 +223,11 @@
     "setShipped": "Shipped",
     "overview": "Overview"
   },
+  "status": {
+    "inProcessing": "In processing",
+    "inProduction": "In production",
+    "inStock": "In stock"
+  },
   "preview": {
     "shippingTitle": "Shipping №",
     "total": "Total:",
@@ -236,7 +241,7 @@
     "totalVolume": "Total Volume:",
     "totalWeight": "Total Weight:",
     "qtyOfPackages": "Qty of Packages:",
-    "packageNo": "Numbers of Packages",
+    "packageNo": "Nor. of Packages:",
     "totalPrepay": "Total Prepay:",
     "qty": "Qty",
     "photo": "Photo",
@@ -252,7 +257,7 @@
     "finalToPay": "Total to Pay:",
     "printThis": "Print",
     "downloadPDF": "Download PDF",
-    "comment": "comment"
+    "comment": "Comment"
   },
   "label": {
     "saveAsPattern": "Save as a pattern",

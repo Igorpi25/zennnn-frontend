@@ -89,16 +89,23 @@
                         />
                       </td>
                       <td>
-                        <span>{{ item.name }}</span> <br>
-                        <span class="text-gray-light">{{ item.article }}</span>
-                        <span class="flex items-bottom">
-                          <img src="../assets/icons/factory-green.png" width="18px">
+                        <span>{{ item.name }}</span>
+                        <p class="text-gray-light leading-none">{{ item.article }}</p>
+                        <span class="flex mt-2">
+                          <img :src="
+                              item.ProductStatus === ProductStatus.IN_PRODUCTION
+                                ? '../assets/icons/factory-yellow.png'
+                                  : item.ProductStatus === ProductStatus.IN_STOCK
+                                    ? '../assets/icons/in-stock.png'
+                                      : '../assets/icons/in-processing.png'
+                            "
+                            width="18px">
                           <span class="ml-2 text-orange text-xs">
                             <span>
                               {{
                                 item.productStatus === ProductStatus.IN_PRODUCTION
-                                  ? 'В производстве' : item.productStatus === ProductStatus.IN_STOCK
-                                    ? 'На складе' : 'Обрабатывается'
+                                  ? $t('status.inProduction') : item.productStatus === ProductStatus.IN_STOCK
+                                    ? $t('status.inStock'): $t('status.inProcessing')
                               }}
                             </span>
                           </span>
@@ -152,7 +159,8 @@
                     </li>
                   </ul>
                   <ul class="ml-5 text-sm text-gray-light">
-                    <li class="mt-1">({{ $t('preview.noDiscount') }})</li>
+                    <li v-if="!item.discount" class="mt-1">({{ $t('preview.noDiscount') }})</li>
+                    <br v-else>
                     <br>
                     <li class="mt-1">{{ formatDate(item.prepaymentDate )|| '--.--.--' }}</li>
                     <li class="mt-1">{{ formatDate(item.obtainCostDate) || '--.--.--' }}</li>
@@ -169,21 +177,60 @@
             </h4>
             <div class="preview-summary__wrapper flex-col lg:flex-row">
               <div class="preview-summary__info">
-                <div class="relative">
+                <div v-if="spec.containers" class="relative">
                   <div
-                    class="preview-summary__container"
-                  >
+                    v-if="spec.shipped"
+                    class="spec-summary__container__image spec-summary__container__image--shipped w-full"
+                    style="left: -20px; width: 350px; background-size: auto; z-index: 1;"
+                  />
                     <div
-                      class="preview-summary__container__image preview-summary__container__image--full"
-                      :style="{
-                        width: 25 + '%',
-                        height: '85px'
-                      }"
-                    />
-                    <img width="210" height="85" src="/img/container-empty.svg" alt="">
+                      v-if="spec.containers.length === 1"
+                      class="spec-summary__container"
+                    >
+                      <div
+                        class="spec-summary__container__image spec-summary__container__image--full"
+                        :style="{
+                          width: (spec.containers[0].loaded || 0) + '%',
+                          height: '85px'
+                        }"
+                      />
+                      <img width="210" height="85" src="/img/container-empty.svg" alt="">
+                    </div>
+                    <div v-else>
+                      <div
+                        v-for="(c, i) in loadedContainers"
+                        :key="`loaded-${i}`"
+                        class="spec-summary__container"
+                      >
+                        <div
+                          class="spec-summary__container__image spec-summary__container__image--full-sm"
+                          :style="{
+                            width: '100%',
+                            height: '48px'
+                          }"
+                        />
+                        <div class="spec-summary__container__label">
+                          {{ loadedContainers.length }} x {{ c.type }}′
+                        </div>
+                        <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
+                      </div>
+                      <div
+                        v-for="(c, i) in unloadedContainers"
+                        :key="`unloaded-${i}`"
+                        class="spec-summary__container"
+                      >
+                        <div
+                          class="spec-summary__container__image spec-summary__container__image--full-sm"
+                          :style="{
+                            width: (c.loaded || 0) + '%',
+                            height: '48px'
+                          }"
+                        />
+                        <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div>
+                  <div>
                   <ul class="leaders">
                     <li
                       v-for="(c, i) in unloadedContainers"

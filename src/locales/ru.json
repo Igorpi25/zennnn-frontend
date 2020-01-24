@@ -223,6 +223,11 @@
     "setShipped": "Отправлено",
     "overview": "Предпросмотр"
   },
+  "status": {
+    "inProcessing": "Обрабатывается",
+    "inProduction": "В производстве",
+    "inStock": "На складе"
+  },
   "preview": {
     "shippingTitle": "Спецификация №",
     "total": "Итого:",
