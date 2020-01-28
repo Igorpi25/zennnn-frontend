@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve:paper": "vue-cli-service serve src/paper.js --mode paper.dev",
     "build": "vue-cli-service build",
+    "build:paper": "vue-cli-service build src/paper.js --dest dist_paper --mode paper",
     "lint": "vue-cli-service lint --mode production",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
