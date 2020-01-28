@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/:orgId/:specId',
     name: 'preview',
     meta: { requiresAuth: true },
     component: Preview,

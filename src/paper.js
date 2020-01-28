@@ -5,7 +5,7 @@ import {
   i18n,
   vuetify,
   apolloProvider,
-} from './plugins'
+} from './plugins/paper'
 
 // Base components
 import './components'
