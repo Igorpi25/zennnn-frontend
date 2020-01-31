@@ -133,6 +133,9 @@ export default {
     },
   },
   methods: {
+    openMenu () {
+      this.menu = true
+    },
     clear () {
       this.comment = ''
     },

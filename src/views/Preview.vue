@@ -316,7 +316,7 @@
                       </span>
                     </li>
                   </ul>
-                  <div class="mt-8 text-sm text-right">
+                  <!-- <div class="mt-8 text-sm text-right">
                     <v-menu
                       v-model="menuCurrency"
                       max-width="175"
@@ -347,7 +347,7 @@
                         </ul>
                       </template>
                     </v-menu>
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <div class="preview-summary__actions">
@@ -359,8 +359,9 @@
                   <img src="@/assets/icons/pdf.png" class="mr-3">
                   <span class="text-left">{{ $t('preview.downloadPDF') }}</span>
                 </div>
-                <div>
+                <div @click="$refs.specComments.openMenu()">
                   <Comments
+                    ref="specComments"
                     :items="spec.comments"
                     :spec-id="spec.id"
                     class="mr-3"
@@ -767,7 +768,7 @@ export default {
 }
 .preview-summary__cost__card {
   margin-top: 20px;
-  padding: 60px 20px 20px;
+  padding: 30px 20px 20px;
   background-color: #272727;
   border-radius: 4px;
   font-size: 14px;
