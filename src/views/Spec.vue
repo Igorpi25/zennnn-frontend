@@ -79,6 +79,19 @@ export default {
     },
   },
   mounted () {
+    const commentsMerge = (target, source) => {
+      const destination = target.slice()
+      source.forEach(s => {
+        const index = target.findIndex(el => el.id === s.id)
+        if (index === -1) {
+          destination.push(s)
+        } else {
+          destination.splice(index, 1, Object.assign(target[index], s))
+        }
+      })
+      return destination
+    }
+
     const observer = this.$apollo.subscribe({
       query: SPEC_DELTA,
       variables: {
@@ -121,15 +134,23 @@ export default {
         }
 
         if (operation === Operation.UPDATE_PRODUCT) {
+          const mergeOptions = {
+            customMerge: (key) => {
+              if (key === 'comments') {
+                return commentsMerge
+              }
+            },
+          }
           const cacheData = apolloClient.readFragment({
             id: `${Typename.PRODUCT}:${delta.payload.id}`,
             fragment: PRODUCT_FRAGMENT,
             fragmentName: 'ProductFragment',
           })
-          const data = deepmerge(cacheData, delta.payload.fields)
+          const data = deepmerge(cacheData, delta.payload.fields, mergeOptions)
           apolloClient.writeFragment({
             id: `${Typename.PRODUCT}:${delta.payload.id}`,
             fragment: PRODUCT_FRAGMENT,
+            fragmentName: 'ProductFragment',
             data,
           })
         }
@@ -215,14 +236,21 @@ export default {
         // SPEC
 
         if (operation === Operation.UPDATE_SPEC) {
+          const mergeOptions = {
+            customMerge: (key) => {
+              if (key === 'comments') {
+                return commentsMerge
+              }
+            },
+          }
           const cacheData = apolloClient.readFragment({
             id: `${Typename.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
             fragmentName: 'SpecFragment',
           })
           const data = delta.payload.__typename === Typename.SPEC
-            ? Object.assign({}, cacheData, delta.payload)
-            : Object.assign({}, cacheData, delta.payload.fields)
+            ? deepmerge(cacheData, delta.payload, mergeOptions)
+            : deepmerge(cacheData, delta.payload.fields, mergeOptions)
           apolloClient.writeFragment({
             id: `${Typename.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,

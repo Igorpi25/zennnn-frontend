@@ -230,6 +230,9 @@ export default {
     value (val) {
       this.lazyValue = val
     },
+    hasFocus (val) {
+      this.$emit('focus-change', val)
+    },
   },
   created () {
     if (this.debounce) {

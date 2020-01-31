@@ -256,7 +256,7 @@
           </div>
           <div class="flex justify-end items-center pt-2 pr-4">
             <span>{{ $t('shipping.documentRate') }}</span>
-            <span>&nbsp;=&nbsp;</span>
+            <span class="mx-2">=</span>
             <TextField
               :debounce="250"
               :placeholder="$t('placeholder.emptyNumber')"
@@ -295,7 +295,7 @@
             </template>
             <span class="text-left">{{ $t('shipping.print') }}</span>
           </Button>
-          <Button text @click.prevent>
+          <Button text @click="accessControlDialog = true">
             <template v-slot:icon>
               <Icon size="32" color="#aaaaaa">
                 {{ icons.ziShare }}
@@ -307,7 +307,7 @@
       </div>
     </div>
     <div>
-      <div style="max-width: 300px;">
+      <div style="max-width: 380px;">
         <Button
           large
           squared
@@ -324,6 +324,38 @@
       </div>
       <div></div>
     </div>
+    <v-dialog
+      v-model="accessControlDialog"
+      max-width="320px"
+    >
+      <div class="p-4 bg-gray" style="color: #aaa;">
+        <h3 class="pb-3 font-medium">Доступ</h3>
+        <Spinner v-if="linkAccessLoading" />
+        <template v-else>
+          <ToggleButton
+            :value="linkAccess"
+            class="mb-2"
+            @input="updateLinkAccess"
+          >
+            <span>Доступ по ссылке</span>
+          </ToggleButton>
+          <TextField
+            ref="linkInput"
+            :value="link"
+            hide-details
+            squared
+            readonly
+            solo
+            class="mb-1"
+          />
+          <Button
+            @click="copyLink"
+          >
+            Копировать ссылку
+          </Button>
+        </template>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
@@ -333,14 +365,13 @@ import cloneDeep from 'clone-deep'
 import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 
-import { UPDATE_SPEC } from '@/graphql/mutations'
-
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
 import PaperListModal from '@/components/PaperListModal.vue'
 import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
 
-import { LIST_ORG_CONTRACTS } from '../graphql/queries'
+import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS } from '../graphql/queries'
+import { UPDATE_SPEC, OPEN_LINK_ACCESS, CLOSE_LINK_ACCESS } from '../graphql/mutations'
 
 export default {
   name: 'SpecSummary',
@@ -368,6 +399,9 @@ export default {
   },
   data () {
     return {
+      accessControlDialog: false,
+      linkAccessLoading: false,
+      linkAccess: false,
       blank: {},
       papers: [],
       paperList: false,
@@ -382,27 +416,14 @@ export default {
     }
   },
   computed: {
-    // spec () {
-    //   return {
-    //     shipped: false,
-    //     containers: [
-    //       { type: '20', loaded: 100 },
-    //       { type: '20', loaded: 28 },
-    //     ],
-    //     estimateShippingDate: '2019-09-23T17:28:48.880Z',
-    //     totalVolume: 7.3,
-    //     totalWeight: 799,
-    //     qtyOfPackages: 27,
-    //     finalCost: 260906.20,
-    //     finalObtainCost: 101300,
-    //     profit: 37759.37,
-    //     totalPrepay: 101300,
-    //     totalClientDebt: 159606.2,
-    //     currencyRate: 9.256,
-    //   }
-    // },
+    link () {
+      return `${window.location.protocol}//${window.location.host}/paper/${this.specId}`
+    },
     orgId () {
       return this.$route.params.orgId
+    },
+    specId () {
+      return this.$route.params.specId
     },
     containers () {
       return this.spec.containers || []
@@ -416,6 +437,11 @@ export default {
     },
   },
   watch: {
+    accessControlDialog (val) {
+      if (val) {
+        this.getLinkAccess()
+      }
+    },
     paperConfigurator (val) {
       if (!val) {
         setTimeout(() => {
@@ -426,6 +452,99 @@ export default {
     },
   },
   methods: {
+    copyLink () {
+      let selection = null
+      try {
+        const input = this.$refs.linkInput
+        if (!input) {
+          throw new Error('Input not find.')
+        }
+        selection = document.getSelection().rangeCount > 0
+          ? document.getSelection().getRangeAt(0)
+          : false
+        input.$el.querySelector('input').select()
+        const successful = document.execCommand('copy')
+        if (successful) {
+          this.$notify({
+            color: 'green',
+            text: 'Ссылка скопирована в буфер обмена.',
+            timeout: 6000,
+          })
+        } else {
+          throw new Error('Unsuccessful.')
+        }
+      } catch (error) {
+        this.$logger.info('Copy link error: ', error)
+        this.$notify({
+          color: 'orange',
+          text: 'Не удалось скопировать ссылку в буфер обмена.',
+          timeout: 6000,
+        })
+      }
+      document.getSelection().removeAllRanges()
+      if (selection) {
+        document.getSelection().addRange(selection)
+      }
+    },
+    async getLinkAccess () {
+      try {
+        this.linkAccessLoading = true
+        const { data } = await this.$apollo.query({
+          query: GET_SPEC_LINK_ACCESS,
+          variables: {
+            id: this.specId,
+          },
+          fetchPolicy: 'network-only',
+        })
+        this.linkAccess = data.getSpecLinkAccess || null
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.linkAccessLoading = false
+      }
+    },
+    async updateLinkAccess (value) {
+      try {
+        if (value) {
+          await this.openLinkAccess()
+        } else {
+          await this.closeLinkAccess()
+        }
+        this.$notify({
+          color: 'primary',
+          text: 'Настройки доступа по ссылке обновлены.',
+          timeout: 6000,
+        })
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
+    async openLinkAccess () {
+      try {
+        const result = await this.$apollo.mutate({
+          mutation: OPEN_LINK_ACCESS,
+          variables: {
+            specId: this.specId,
+          },
+        })
+        return result
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
+    async closeLinkAccess () {
+      try {
+        const result = await this.$apollo.mutate({
+          mutation: CLOSE_LINK_ACCESS,
+          variables: {
+            specId: this.specId,
+          },
+        })
+        return result
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
     printPDF () {
       pdfMake.vfs = pdfFonts.pdfMake.vfs
       const dd = {
@@ -865,7 +984,7 @@ export default {
 }
 
 .spec-summary__info {
-  max-width: 340px;
+  max-width: 320px;
 }
 
 .spec-summary__cost {
@@ -873,15 +992,21 @@ export default {
   max-width: 490px;
 }
 .spec-summary__cost__card {
-  padding: 40px 60px;
+  padding: 18px 12px;
   background-color: #272727;
   border-radius: 4px;
-  font-size: 18px;
+  font-size: 16px;
+}
+@screen sm {
+  .spec-summary__cost__card {
+    font-size: 18px;
+    padding: 40px 60px;
+  }
 }
 
 .spec-summary__actions {
   width: 100%;
-  padding-top: 20px;
+  padding-top: 16px;
   padding-bottom: 20px;
 }
 .spec-summary__actions > button {
@@ -893,7 +1018,13 @@ export default {
 
 @screen lg {
   .spec-summary__actions {
-    width: 120px;
+    width: 180px;
+  }
+  .spec-summary__cost {
+    @apply mx-4;
+  }
+  .spec-summary__info {
+    width: 320px;
   }
 }
 .spec-summary__container {
@@ -934,7 +1065,7 @@ export default {
 }
 
 .spec-summary .leaders {
-  line-height: 1.5rem;
+  line-height: 1.625;
   padding: 0;
   overflow-x: hidden;
   list-style: none}

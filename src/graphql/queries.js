@@ -11,6 +11,9 @@ import {
   SUPPLIER_SHOP_TEMPLATE_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
   ORG_CONTRACT_FRAGMENT,
+  PAPER_SPEC_FRAGMENT,
+  PAPER_INVOICE_FRAGMENT,
+  PAPER_PRODUCT_FRAGMENT,
 } from './typeDefs'
 
 export const GET_ORGS = gql`
@@ -334,4 +337,27 @@ export const LIST_STAFF = gql`
     }
   }
   ${SPEC_FRAGMENT}
+`
+
+export const GET_SPEC_LINK_ACCESS = gql`
+  query GetSpecLinkAccess($id: ID!) {
+    getSpecLinkAccess(id: $id)
+  }
+`
+
+export const GET_PAPER_SPEC = gql`
+  query GetPaperSpec($id: ID!) {
+    getPaperSpec(id: $id) {
+      ...PaperSpecFragment
+      invoices {
+        ...PaperInvoiceFragment
+        products {
+          ...PaperProductFragment
+        }
+      }
+    }
+  }
+  ${PAPER_SPEC_FRAGMENT}
+  ${PAPER_INVOICE_FRAGMENT}
+  ${PAPER_PRODUCT_FRAGMENT}
 `

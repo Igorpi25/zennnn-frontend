@@ -3,6 +3,9 @@ import {
   SPEC_FRAGMENT,
   INVOICE_FRAGMENT,
   PRODUCT_FRAGMENT,
+  PAPER_SPEC_FRAGMENT,
+  PAPER_INVOICE_FRAGMENT,
+  PAPER_PRODUCT_FRAGMENT,
 } from './typeDefs'
 
 export const SPECS_DELTA = gql`
@@ -56,4 +59,41 @@ export const SPEC_DELTA = gql`
   ${SPEC_FRAGMENT}
   ${INVOICE_FRAGMENT}
   ${PRODUCT_FRAGMENT}
+`
+
+export const PAPER_SPEC_DELTA = gql`
+  subscription PaperSpecDelta ($specId: ID!) {
+    paperSpecDelta (specId: $specId) {
+      operation
+      parentId
+      payload {
+        __typename
+        ... on PayloadFields {
+          id
+          fields
+        }
+        ... on PaperProduct {
+          ...PaperProductFragment
+        }
+        ... on PaperInvoice {
+          ...PaperInvoiceFragment
+          products {
+            ...PaperProductFragment
+          }
+        }
+        ... on PaperSpec {
+          ...PaperSpecFragment
+          invoices {
+            ...PaperInvoiceFragment
+            products {
+              ...PaperProductFragment
+            }
+          }
+        }
+      }
+    }
+  }
+  ${PAPER_SPEC_FRAGMENT}
+  ${PAPER_INVOICE_FRAGMENT}
+  ${PAPER_PRODUCT_FRAGMENT}
 `

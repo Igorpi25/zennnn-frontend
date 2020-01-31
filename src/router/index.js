@@ -206,9 +206,8 @@ const routes = [
     },
   },
   {
-    path: '/spec/:specId/preview',
+    path: '/paper/:specId',
     name: 'preview',
-    meta: { requiresAuth: true },
     component: Preview,
   },
   {

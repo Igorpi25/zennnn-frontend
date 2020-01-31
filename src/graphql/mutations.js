@@ -385,3 +385,63 @@ export const CANCEL_INVITATION = gql`
     cancelInvitation(id: $id)
   }
 `
+
+export const OPEN_LINK_ACCESS = gql`
+  mutation OpenLinkAccess($specId: ID!) {
+    openLinkAccess(specId: $specId)
+  }
+`
+
+export const CLOSE_LINK_ACCESS = gql`
+  mutation CloseLinkAccess($specId: ID!) {
+    closeLinkAccess(specId: $specId)
+  }
+`
+
+export const ADD_COMMENT_TO_SPEC = gql`
+  mutation AddCommentToSpec($specId: ID!, $comment: String!) {
+    addCommentToSpec(specId: $specId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_SPEC_COMMENT = gql`
+  mutation ReplyToSpecComment($specId: ID!, $commentId: ID!, $comment: String!) {
+    replyToSpecComment(specId: $specId, commentId: $commentId, comment: $comment)
+  }
+`
+
+export const ADD_COMMENT_TO_PRODUCT = gql`
+  mutation AddCommentToProduct($productId: ID!, $comment: String!) {
+    addCommentToProduct(productId: $productId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_PRODUCT_COMMENT = gql`
+  mutation ReplyToProductComment($productId: ID!, $commentId: ID!, $comment: String!) {
+    replyToProductComment(productId: $productId, commentId: $commentId, comment: $comment)
+  }
+`
+
+export const ADD_COMMENT_TO_PAPER_SPEC = gql`
+  mutation AddCommentToPaperSpec($specId: ID!, $comment: String!) {
+    addCommentToPaperSpec(specId: $specId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_PAPER_SPEC_COMMENT = gql`
+  mutation ReplyToPaperSpecComment($specId: ID!, $commentId: ID!, $comment: String!) {
+    replyToPaperSpecComment(specId: $specId, commentId: $commentId, comment: $comment)
+  }
+`
+
+export const ADD_COMMENT_TO_PAPER_PRODUCT = gql`
+  mutation AddCommentToPaperProduct($productId: ID!, $comment: String!) {
+    addCommentToPaperProduct(productId: $productId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_PAPER_PRODUCT_COMMENT = gql`
+  mutation ReplyToPaperProductComment($productId: ID!, $commentId: ID!, $comment: String!) {
+    replyToPaperProductComment(productId: $productId, commentId: $commentId, comment: $comment)
+  }
+`

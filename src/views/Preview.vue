@@ -54,12 +54,12 @@
                 <div>
                   <span>{{ item.invoiceNo }}</span>&nbsp;
                   <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
-                  <span>{{ formatDate(item.purchaseDate) }}</span>&nbsp;
+                  <span>{{ item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : '-' }}</span>&nbsp;
                 </div>
                 <span class="hidden md:block mx-1">//</span>&nbsp;
                 <div>
                   <span class="text-sm">{{ $t('preview.expectedShipment').toLowerCase() }}</span>&nbsp;
-                  <span>{{ formatDate(item.shippingDate) }}</span>
+                  <span>{{ item.shippingDate ? $d($parseDate(item.shippingDate), 'short') : '-' }}</span>
                 </div>
               </div>
             </InvoiceHeader>
@@ -85,7 +85,7 @@
                       <td>
                         <ProductImage
                           :product-id="item.id"
-                          :images="item.info.images"
+                          :images="item.images"
                         />
                       </td>
                       <td>
@@ -114,25 +114,31 @@
                       </td>
                       <td class="text-center">
                         <div
-                          v-if="item.info.images.length > 1"
+                          v-if="item.images.length > 1"
                           class="flex justify-center items-center"
                         >
                           <span class="mr-1 text-sm text-gray-lightest">
-                           + {{ item.info.images.length - 1 }}
+                           + {{ item.images.length - 1 }}
                           </span>
                           <img src="@/assets/icons/pre-image.png">
                         </div>
                       </td>
-                      <td class="text-right">{{ $n(item.cost.clientPrice) }}</td>
+                      <td class="text-right">{{ $n(item.price) }}</td>
                       <td class="text-center">{{ item.qty }}</td>
-                      <td class="text-right font-bold">{{ $n(item.cost.clientAmount) }}</td>
-                      <td class="text-right">{{ item.store.pkgQty }}</td>
-                      <td class="text-right">{{ item.store.pkgNo }}</td>
-                      <td @click="leaveNote = true">
-                        <div class="notes-count-wrapper">
-                          <span v-if="notes.length > 0" class="notes-count-bubble">{{ notes.length }}</span>
-                          <img src="@/assets/icons/message.png" class="mx-auto">
-                        </div>
+                      <td class="text-right font-bold">{{ $n(item.amount) }}</td>
+                      <td class="text-right">{{ item.pkgQty }}</td>
+                      <td class="text-right">{{ item.pkgNo }}</td>
+                      <td class="text-center">
+                        <Comments
+                          :items="item.comments"
+                          :product-id="item.id"
+                          is-product
+                          is-paper
+                          icon-size="24"
+                          left
+                          class="inline-block"
+                          style="color:#5a8199"
+                        />
                       </td>
                     </tr>
                   </template>
@@ -156,15 +162,15 @@
                     </li>
                     <li>
                       <span class="bg-white font-semibold">{{ $t('preview.residue') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold" style="color:#ff0000">{{ $n(item.obtainCost) }}</span>
+                      <span class="bg-white font-bold" style="color:#ff0000">{{ $n(item.clientDebt) }}</span>
                     </li>
                   </ul>
                   <ul class="ml-5 text-sm text-gray-light">
                     <li v-if="!item.discount" class="mt-1">({{ $t('preview.noDiscount') }})</li>
                     <br v-else>
                     <br>
-                    <li class="mt-1">{{ formatDate(item.prepaymentDate )|| '--.--.--' }}</li>
-                    <li class="mt-1">{{ formatDate(item.obtainCostDate) || '--.--.--' }}</li>
+                    <li class="mt-1">{{ item.prepaymentDate ? $d($parseDate(item.prepaymentDate), 'short') : '--.--.--' }}</li>
+                    <li class="mt-1">{{ item.clientDebtDate ? $d($parseDate(item.clientDebtDate), 'short') : '--.--.--' }}</li>
                   </ul>
                 </div>
               </div>
@@ -184,54 +190,54 @@
                     class="spec-summary__container__image spec-summary__container__image--shipped w-full"
                     style="left: -20px; width: 350px; background-size: auto; z-index: 1;"
                   />
+                  <div
+                    v-if="spec.containers.length === 1"
+                    class="spec-summary__container"
+                  >
                     <div
-                      v-if="spec.containers.length === 1"
+                      class="spec-summary__container__image spec-summary__container__image--full"
+                      :style="{
+                        width: (spec.containers[0].loaded || 0) + '%',
+                        height: '85px'
+                      }"
+                    />
+                    <img width="210" height="85" src="/img/container-empty.svg" alt="">
+                  </div>
+                  <div v-else>
+                    <div
+                      v-for="(c, i) in loadedContainers"
+                      :key="`loaded-${i}`"
                       class="spec-summary__container"
                     >
                       <div
-                        class="spec-summary__container__image spec-summary__container__image--full"
+                        class="spec-summary__container__image spec-summary__container__image--full-sm"
                         :style="{
-                          width: (spec.containers[0].loaded || 0) + '%',
-                          height: '85px'
+                          width: '100%',
+                          height: '48px'
                         }"
                       />
-                      <img width="210" height="85" src="/img/container-empty.svg" alt="">
+                      <div class="spec-summary__container__label">
+                        {{ loadedContainers.length }} x {{ c.type }}′
+                      </div>
+                      <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
                     </div>
-                    <div v-else>
+                    <div
+                      v-for="(c, i) in unloadedContainers"
+                      :key="`unloaded-${i}`"
+                      class="spec-summary__container"
+                    >
                       <div
-                        v-for="(c, i) in loadedContainers"
-                        :key="`loaded-${i}`"
-                        class="spec-summary__container"
-                      >
-                        <div
-                          class="spec-summary__container__image spec-summary__container__image--full-sm"
-                          :style="{
-                            width: '100%',
-                            height: '48px'
-                          }"
-                        />
-                        <div class="spec-summary__container__label">
-                          {{ loadedContainers.length }} x {{ c.type }}′
-                        </div>
-                        <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
-                      </div>
-                      <div
-                        v-for="(c, i) in unloadedContainers"
-                        :key="`unloaded-${i}`"
-                        class="spec-summary__container"
-                      >
-                        <div
-                          class="spec-summary__container__image spec-summary__container__image--full-sm"
-                          :style="{
-                            width: (c.loaded || 0) + '%',
-                            height: '48px'
-                          }"
-                        />
-                        <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
-                      </div>
+                        class="spec-summary__container__image spec-summary__container__image--full-sm"
+                        :style="{
+                          width: (c.loaded || 0) + '%',
+                          height: '48px'
+                        }"
+                      />
+                      <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
                     </div>
                   </div>
-                  <div>
+                </div>
+                <div>
                   <ul class="leaders">
                     <li
                       v-for="(c, i) in unloadedContainers"
@@ -250,7 +256,7 @@
                     <li>
                       <span>{{ $t('preview.estimateDate') }}</span>
                       <span class="leaders__num">
-                        {{ $d($parseDate(spec.estimateShippingDate), 'short') }}
+                        {{ spec.estimateShippingDate ? $d($parseDate(spec.estimateShippingDate), 'short') : '-' }}
                       </span>
                     </li>
                     <li>
@@ -353,8 +359,15 @@
                   <img src="@/assets/icons/pdf.png" class="mr-3">
                   <span class="text-left">{{ $t('preview.downloadPDF') }}</span>
                 </div>
-                <div @click="leaveComment = true">
-                  <img src="@/assets/icons/message.png" class="mr-3">
+                <div>
+                  <Comments
+                    :items="spec.comments"
+                    :spec-id="spec.id"
+                    class="mr-3"
+                    is-paper
+                    icon-size="24"
+                    right
+                  />
                   <span class="text-left">{{ $t('preview.comment') }}</span>
                </div>
               </div>
@@ -368,6 +381,7 @@
 </template>
 
 <script>
+import deepmerge from 'deepmerge'
 import format from 'date-fns/format'
 
 import {
@@ -386,13 +400,22 @@ import {
 
 import PreviewMessageModal from '@/components/PreviewMessageModal'
 
-import StatusBar from '@/components/StatusBar'
-import Copyright from '@/components/Copyright'
+import StatusBar from '../components/StatusBar'
+import Copyright from '../components/Copyright'
 import InvoiceHeader from '../components/InvoiceHeader.vue'
 import ProductImage from '../components/ProductImage.vue'
+import Comments from '../components/Comments'
 
-import { ProductStatus, InvoiceStatus } from '@/graphql/enums'
-import { GET_SPEC } from '../graphql/queries'
+import { ProductStatus, InvoiceStatus, Typename, Operation } from '../graphql/enums'
+import { GET_PAPER_SPEC } from '../graphql/queries'
+import { PAPER_SPEC_DELTA } from '../graphql/subscriptions'
+import {
+  PAPER_SPEC_FRAGMENT,
+  PAPER_INVOICE_FRAGMENT,
+  PAPER_PRODUCT_FRAGMENT,
+  PAPER_SPEC_INVOICES_FRAGMENT,
+  PAPER_INVOICE_PRODUCTS_FRAGMENT,
+} from '../graphql/typeDefs'
 
 export default {
   name: 'Preview',
@@ -402,10 +425,11 @@ export default {
     Copyright,
     InvoiceHeader,
     ProductImage,
+    Comments,
   },
   apollo: {
-    getSpec: {
-      query: GET_SPEC,
+    getPaperSpec: {
+      query: GET_PAPER_SPEC,
       variables () {
         return {
           id: this.specId,
@@ -419,10 +443,6 @@ export default {
       notes: [],
       leaveComment: false,
       comments: [],
-      containers: [
-        { type: '20', loaded: 100 },
-        { type: '20', loaded: 28 },
-      ],
       expanded: [],
       icons: {
         mdiChevronDown,
@@ -458,19 +478,219 @@ export default {
       return this.$route.params.specId
     },
     spec () {
-      return this.getSpec || {}
+      return this.getPaperSpec || {}
     },
     client () {
-      const firstName = (this.getSpec && this.getSpec.client && this.getSpec.client.firstName) || {}
-      const lastName = (this.getSpec && this.getSpec.client && this.getSpec.client.lastName) || {}
+      const firstName = (this.spec.client && this.spec.client.firstName) || {}
+      const lastName = (this.spec.client && this.spec.client.lastName) || {}
       return firstName + ' ' + lastName || {}
     },
     items () {
-      return this.getSpec && this.getSpec.invoices
+      return this.spec.invoices
+    },
+    containers () {
+      return this.spec.containers || []
     },
     unloadedContainers () {
       return this.containers.filter(c => c.loaded !== 100)
     },
+  },
+  mounted () {
+    const commentsMerge = (target, source) => {
+      const destination = target.slice()
+      source.forEach(s => {
+        const index = target.findIndex(el => el.id === s.id)
+        if (index === -1) {
+          destination.push(s)
+        } else {
+          destination.splice(index, 1, Object.assign(target[index], s))
+        }
+      })
+      return destination
+    }
+
+    const observer = this.$apollo.subscribe({
+      query: PAPER_SPEC_DELTA,
+      variables: {
+        specId: this.specId,
+      },
+      fetchPolicy: 'no-cache',
+    })
+
+    const apolloClient = this.$apollo.provider.defaultClient
+
+    observer.subscribe({
+      next: ({ data }) => {
+        const delta = data.paperSpecDelta
+        const operation = delta.operation
+        const typename = delta.payload.__typename
+
+        this.$logger.info(`[${typename}]: ${JSON.stringify(data)}`)
+
+        // PRODUCT
+
+        if (operation === Operation.INSERT_PRODUCT) {
+          const parentInvoice = apolloClient.readFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+            fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+            fragmentName: 'PaperInvoiceProductsFragment',
+          })
+
+          if (!parentInvoice.products.some(el => el.id === delta.payload.id)) {
+            parentInvoice.products.push(delta.payload)
+
+            setTimeout(() => {
+              apolloClient.writeFragment({
+                id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+                fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+                fragmentName: 'PaperInvoiceProductsFragment',
+                data: parentInvoice,
+              })
+            }, 0)
+          }
+        }
+
+        if (operation === Operation.UPDATE_PRODUCT) {
+          const mergeOptions = {
+            customMerge: (key) => {
+              if (key === 'comments') {
+                return commentsMerge
+              }
+            },
+          }
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.PAPER_PRODUCT}:${delta.payload.id}`,
+            fragment: PAPER_PRODUCT_FRAGMENT,
+            fragmentName: 'PaperProductFragment',
+          })
+          const data = delta.payload.__typename === Typename.PAPER_PRODUCT
+            ? deepmerge(cacheData, delta.payload, mergeOptions)
+            : deepmerge(cacheData, delta.payload.fields, mergeOptions)
+          apolloClient.writeFragment({
+            id: `${Typename.PAPER_PRODUCT}:${delta.payload.id}`,
+            fragment: PAPER_PRODUCT_FRAGMENT,
+            fragmentName: 'PaperProductFragment',
+            data,
+          })
+        }
+
+        if (operation === Operation.DELETE_PRODUCT) {
+          let parentInvoice = apolloClient.readFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+            fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+            fragmentName: 'PaperInvoiceProductsFragment',
+          })
+
+          const index = parentInvoice.products.findIndex(p => p.id === delta.payload.id)
+
+          if (index !== -1) {
+            parentInvoice.products.splice(index, 1)
+            apolloClient.writeFragment({
+              id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+              fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+              fragmentName: 'PaperInvoiceProductsFragment',
+              data: parentInvoice,
+            })
+          }
+        }
+
+        // INVOICE
+
+        if (operation === Operation.INSERT_INVOICE) {
+          const parentSpec = apolloClient.readFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+            fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+            fragmentName: 'PaperSpecInvoicesFragment',
+          })
+
+          if (!parentSpec.invoices.some(el => el.id === delta.payload.id)) {
+            parentSpec.invoices.push(delta.payload)
+
+            apolloClient.writeFragment({
+              id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+              fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+              fragmentName: 'PaperSpecInvoicesFragment',
+              data: parentSpec,
+            })
+          }
+        }
+
+        if (operation === Operation.UPDATE_INVOICE) {
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.payload.id}`,
+            fragment: PAPER_INVOICE_FRAGMENT,
+            fragmentName: 'PaperInvoiceFragment',
+          })
+          const data = delta.payload.__typename === Typename.PAPER_INVOICE
+            ? Object.assign({}, cacheData, delta.payload)
+            : Object.assign({}, cacheData, delta.payload.fields)
+          apolloClient.writeFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.payload.id}`,
+            fragment: PAPER_INVOICE_FRAGMENT,
+            fragmentName: 'PaperInvoiceFragment',
+            data,
+          })
+        }
+
+        if (operation === Operation.DELETE_INVOICE) {
+          let parentSpec = apolloClient.readFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+            fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+            fragmentName: 'PaperSpecInvoicesFragment',
+          })
+
+          const index = parentSpec.invoices.findIndex(p => p.id === delta.payload.id)
+
+          if (index !== -1) {
+            parentSpec.invoices.splice(index, 1)
+            apolloClient.writeFragment({
+              id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+              fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+              fragmentName: 'PaperSpecInvoicesFragment',
+              data: parentSpec,
+            })
+          }
+        }
+
+        // SPEC
+
+        if (operation === Operation.UPDATE_SPEC) {
+          const mergeOptions = {
+            customMerge: (key) => {
+              if (key === 'comments') {
+                return commentsMerge
+              }
+            },
+          }
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.payload.id}`,
+            fragment: PAPER_SPEC_FRAGMENT,
+            fragmentName: 'PaperSpecFragment',
+          })
+          const data = delta.payload.__typename === Typename.PAPER_SPEC
+            ? deepmerge(cacheData, delta.payload, mergeOptions)
+            : deepmerge(cacheData, delta.payload.fields, mergeOptions)
+          apolloClient.writeFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.payload.id}`,
+            fragment: PAPER_SPEC_FRAGMENT,
+            fragmentName: 'PaperSpecFragment',
+            data,
+          })
+        }
+      },
+      error: (error) => {
+        this.$logger.warn('Error: ', error)
+      },
+    })
+  },
+  created () {
+    this.notes = JSON.parse(localStorage.getItem('notes')) || []
+    this.comments = JSON.parse(localStorage.getItem('comments')) || []
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$el.classList.add('light-theme')
+    })
   },
   methods: {
     formatDate (date) {
@@ -503,15 +723,6 @@ export default {
         this.leaveComment = false
       }
     },
-  },
-  created () {
-    this.notes = JSON.parse(localStorage.getItem('notes')) || []
-    this.comments = JSON.parse(localStorage.getItem('comments')) || []
-  },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      vm.$el.classList.add('light-theme')
-    })
   },
 }
 </script>

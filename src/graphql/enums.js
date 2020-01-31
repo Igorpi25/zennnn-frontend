@@ -38,6 +38,9 @@ export const Typename = {
   SPEC: 'Spec',
   INVOICE: 'Invoice',
   PRODUCT: 'Product',
+  PAPER_SPEC: 'PaperSpec',
+  PAPER_INVOICE: 'PaperInvoice',
+  PAPER_PRODUCT: 'PaperProduct',
 }
 
 export const Operation = {

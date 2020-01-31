@@ -39,6 +39,24 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
             },
           ],
         },
+        {
+          kind: 'UNION',
+          name: 'SpecPaperDeltaObject',
+          possibleTypes: [
+            {
+              name: 'PaperSpec',
+            },
+            {
+              name: 'PaperInvoice',
+            },
+            {
+              name: 'PaperProduct',
+            },
+            {
+              name: 'PayloadFields',
+            },
+          ],
+        },
       ],
     },
   },
@@ -47,8 +65,23 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 const cache = new InMemoryCache({ fragmentMatcher })
 
 const authLink = setContext(async (request, { headers }) => {
-  const session = await Auth.currentSession()
-  const token = session.getIdToken().getJwtToken()
+  const operationName = request.operationName
+  let token = null
+  if (
+    operationName === 'GetPaperSpec' ||
+    operationName === 'AddCommentToPaperSpec' ||
+    operationName === 'ReplyToPaperSpecComment' ||
+    operationName === 'AddCommentToPaperProduct' ||
+    operationName === 'ReplyToPaperProductComment'
+  ) {
+    try {
+      const session = await Auth.currentSession()
+      token = session.getIdToken().getJwtToken()
+    } catch (error) {} // eslint-disable-line
+  } else {
+    const session = await Auth.currentSession()
+    token = session.getIdToken().getJwtToken()
+  }
   // return the headers to the context so httpLink can read them
   return {
     headers: {

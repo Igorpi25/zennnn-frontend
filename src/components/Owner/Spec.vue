@@ -173,16 +173,23 @@
         />
       </div>
     </div>
-    <Button
-      outline
-      class="mt-6"
-      @click="createInvoice"
-    >
-      <template v-slot:icon>
-        <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
-      </template>
-      <span>{{ $t('shipping.addInvoice') }}</span>
-    </Button>
+    <div class="flex pt-5">
+      <Button
+        outline
+        @click="createInvoice"
+      >
+        <template v-slot:icon>
+          <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+        </template>
+        <span>{{ $t('shipping.addInvoice') }}</span>
+      </Button>
+      <div class="flex-grow" />
+      <Comments
+        :items="spec.comments"
+        :spec-id="spec.id"
+        left
+      />
+    </div>
 
     <div>
       <SpecSummary :spec="spec" />
@@ -210,8 +217,9 @@
 <script>
 import InvoiceHeader from './InvoiceHeader.vue'
 import Invoice from './Invoice.vue'
-import SpecSummary from '@/components/SpecSummary'
-import SupplierCard from '@/components/SupplierCard'
+import SpecSummary from '../SpecSummary'
+import SupplierCard from '../SupplierCard'
+import Comments from '../Comments'
 
 import spec from '../../mixins/spec'
 
@@ -222,6 +230,7 @@ export default {
     Invoice,
     SpecSummary,
     SupplierCard,
+    Comments,
   },
   mixins: [spec],
   data () {

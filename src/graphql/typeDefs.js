@@ -1,5 +1,17 @@
 import gql from 'graphql-tag'
 
+export const COMMENT_FRAGMENT = gql`
+  fragment CommentFragment on Comment {
+    id
+    replyTo
+    comment
+    sender
+    senderName
+    createdAt
+    updatedAt
+  }
+`
+
 export const PRODUCT_FRAGMENT = gql`
   fragment ProductFragment on Product {
     id
@@ -34,9 +46,13 @@ export const PRODUCT_FRAGMENT = gql`
     link {
       url
     }
+    comments {
+      ...CommentFragment
+    }
     createdAt
     updatedAt
   }
+  ${COMMENT_FRAGMENT}
 `
 
 export const SUPPLIER_FRAGMENT = gql`
@@ -184,10 +200,14 @@ export const SPEC_FRAGMENT = gql`
     currency
     currencyRate
     customCurrencyRate
+    comments {
+      ...CommentFragment
+    }
     createdAt
     updatedAt
   }
   ${CLIENT_FRAGMENT}
+  ${COMMENT_FRAGMENT}
 `
 
 export const CLIENT_TEMPLATE_FRAGMENT = gql`
@@ -357,6 +377,98 @@ export const ORG_CONTRACT_FRAGMENT = gql`
       paragraphs
     }
   }
+`
+
+export const PAPER_PRODUCT_FRAGMENT = gql`
+  fragment PaperProductFragment on PaperProduct {
+    id
+    productStatus
+    name
+    article
+    qty
+    comments {
+      ...CommentFragment
+    }
+    createdAt
+    updatedAt
+    # cost
+    price
+    amount
+    # store
+    pkgQty
+    pkgNo
+    # info
+    images
+    description
+    # link
+    url
+  }
+  ${COMMENT_FRAGMENT}
+`
+
+export const PAPER_INVOICE_FRAGMENT = gql`
+  fragment PaperInvoiceFragment on PaperInvoice {
+    id
+    invoiceStatus
+    invoiceNo
+    shippingDate
+    discount
+    prepayment
+    prepaymentDate
+    clientDebt
+    clientDebtDate
+    totalClientAmount
+    createdAt
+    updatedAt
+  }
+`
+
+export const PAPER_INVOICE_PRODUCTS_FRAGMENT = gql`
+  fragment PaperInvoiceProductsFragment on PaperInvoice {
+    id
+    products {
+      ...PaperProductFragment
+    }
+  }
+  ${PAPER_PRODUCT_FRAGMENT}
+`
+
+export const PAPER_SPEC_FRAGMENT = gql`
+  fragment PaperSpecFragment on PaperSpec {
+    id
+    specStatus
+    specNo
+    estimateShippingDate
+    totalVolume
+    totalWeight
+    qtyOfPackages
+    finalCost
+    totalPrepay
+    totalClientDebt
+    currency
+    currencyRate
+    customCurrencyRate
+    comments {
+      ...CommentFragment
+    }
+    createdAt
+    updatedAt
+  }
+  ${COMMENT_FRAGMENT}
+`
+
+export const PAPER_SPEC_INVOICES_FRAGMENT = gql`
+  fragment PaperSpecInvoicesFragment on PaperSpec {
+    id
+    invoices {
+      ...PaperInvoiceFragment
+      products {
+        ...PaperProductFragment
+      }
+    }
+  }
+  ${PAPER_INVOICE_FRAGMENT}
+  ${PAPER_PRODUCT_FRAGMENT}
 `
 
 const typeDefs = gql`
