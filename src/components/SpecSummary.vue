@@ -307,11 +307,12 @@
       </div>
     </div>
     <div>
-      <div style="max-width: 380px;">
+      <div class="flex justify-center sm:block">
         <Button
           large
           squared
           outline
+          style="max-width: 320px;"
           @click="$router.push({
             name: 'preview',
             params: {
@@ -322,7 +323,6 @@
           <span class="text-lg">{{ $t('shipping.overview') }}</span>
         </Button>
       </div>
-      <div></div>
     </div>
     <v-dialog
       v-model="accessControlDialog"
@@ -992,7 +992,7 @@ export default {
   max-width: 490px;
 }
 .spec-summary__cost__card {
-  padding: 18px 12px;
+  padding: 18px 14px;
   background-color: #272727;
   border-radius: 4px;
   font-size: 16px;
@@ -1065,7 +1065,7 @@ export default {
 }
 
 .spec-summary .leaders {
-  line-height: 1.625;
+  line-height: 1.625rem;
   padding: 0;
   overflow-x: hidden;
   list-style: none}

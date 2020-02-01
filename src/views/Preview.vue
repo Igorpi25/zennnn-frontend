@@ -299,7 +299,7 @@
                       <span>
                         {{ $t('preview.totalPrepay') }} {{ $t('currency.CNY.symbol') }}
                       </span>
-                      <span class="flex ">
+                      <span class="flex">
                         <div class="text-accent1">{{ $n(spec.totalPrepay, 'integer') }}</div>
                         <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
                         <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
@@ -351,15 +351,15 @@
                 </div>
               </div>
               <div class="preview-summary__actions">
-                <div @click.prevent>
+                <div class="select-none leading-tight" @click.prevent>
                   <img src="@/assets/icons/printer.png" class="mr-3">
                   <span class="text-left">{{ $t('preview.printThis') }}</span>
                 </div>
-                <div @click.prevent>
+                <div class="select-none leading-tight" @click.prevent>
                   <img src="@/assets/icons/pdf.png" class="mr-3">
                   <span class="text-left">{{ $t('preview.downloadPDF') }}</span>
                 </div>
-                <div @click="$refs.specComments.openMenu()">
+                <div class="select-none leading-tight" @click="$refs.specComments.openMenu()">
                   <Comments
                     ref="specComments"
                     :items="spec.comments"
@@ -367,7 +367,8 @@
                     class="mr-3"
                     is-paper
                     icon-size="24"
-                    right
+                    :right="$vuetify.breakpoint.lgAndDown"
+                    :left="!$vuetify.breakpoint.lgAndDown"
                   />
                   <span class="text-left">{{ $t('preview.comment') }}</span>
                </div>
@@ -759,7 +760,7 @@ export default {
 }
 
 .preview-summary__info {
-  max-width: 340px;
+  max-width: 320px;
 }
 
 .preview-summary__cost {
@@ -768,19 +769,22 @@ export default {
 }
 .preview-summary__cost__card {
   margin-top: 20px;
-  padding: 30px 20px 20px;
+  padding: 18px 14px;
   background-color: #272727;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 16px;
   background: linear-gradient(to top, #f4f4f4 70%, #e5e5e5 100%);
   @apply text-accent1;
 }
-@screen md {
+@screen sm {
+  .preview-summary__cost__card {
+    padding: 40px 60px;
+    font-size: 18px;
+  }
+}
+@screen lg {
   .preview-summary__cost__card {
     margin-top: 0;
-    padding-left: 60px;
-    padding-right: 60px;
-    font-size: 18px;
   }
 }
 
@@ -800,7 +804,13 @@ export default {
 }
 @screen lg {
   .preview-summary__actions {
-    width: 120px;
+    width: 180px;
+  }
+  .preview-summary__cost {
+    @apply mx-4;
+  }
+  .preview-summary__info {
+    width: 320px;
   }
 }
 
@@ -832,7 +842,7 @@ export default {
 
 .preview-footer .leaders,
 .preview-summary .leaders {
-  line-height: 1.5rem;
+  line-height: 1.625rem;
   padding: 0;
   overflow-x: hidden;
   list-style: none}
