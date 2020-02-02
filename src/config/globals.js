@@ -17,3 +17,5 @@ export const S3_IMAGE_DOWNLOAD_HOSTNAME = 'https://s3.ap-northeast-1.amazonaws.c
 export const IMAGE_FILENAME_METADATA = 'x-amz-meta-file_name'
 
 export const BACKEND_VERSION_HEADER_KEY = 'backend-version'
+
+export const PAPER_SID_STORE_KEY = 'psid'

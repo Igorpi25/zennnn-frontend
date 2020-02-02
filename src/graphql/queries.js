@@ -345,6 +345,14 @@ export const GET_SPEC_LINK_ACCESS = gql`
   }
 `
 
+export const GET_SPEC_EMAIL_ACCESS = gql`
+  query GetSpecEmailAccess($id: ID!) {
+    getSpecEmailAccess(id: $id) {
+      email
+    }
+  }
+`
+
 export const GET_PAPER_SPEC = gql`
   query GetPaperSpec($id: ID!) {
     getPaperSpec(id: $id) {

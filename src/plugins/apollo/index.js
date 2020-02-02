@@ -10,7 +10,7 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemo
 import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from '../../graphql'
 import { GET_BACKEND_VERSION } from '../../graphql/queries'
-import { BACKEND_VERSION_HEADER_KEY } from '../../config/globals'
+import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY } from '../../config/globals'
 import { Auth, Logger } from '../index'
 import router from '../../router'
 
@@ -67,6 +67,7 @@ const cache = new InMemoryCache({ fragmentMatcher })
 const authLink = setContext(async (request, { headers }) => {
   const operationName = request.operationName
   let token = null
+  let sid = null
   if (
     operationName === 'GetPaperSpec' ||
     operationName === 'AddCommentToPaperSpec' ||
@@ -74,6 +75,7 @@ const authLink = setContext(async (request, { headers }) => {
     operationName === 'AddCommentToPaperProduct' ||
     operationName === 'ReplyToPaperProductComment'
   ) {
+    sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
     try {
       const session = await Auth.currentSession()
       token = session.getIdToken().getJwtToken()
@@ -87,6 +89,7 @@ const authLink = setContext(async (request, { headers }) => {
     headers: {
       ...headers,
       authorization: token ? `${token}` : '',
+      sid,
     },
   }
 })
@@ -127,8 +130,10 @@ const wsLink = new WebSocketLink({
     connectionParams: async () => {
       const session = await Auth.currentSession()
       const token = session.getIdToken().getJwtToken()
+      const sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
       return {
         authToken: token || '',
+        sid,
       }
     },
   },

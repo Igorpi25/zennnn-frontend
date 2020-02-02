@@ -25,7 +25,7 @@ import { Auth, i18n } from '../plugins'
 import { apolloClient } from '../plugins/apollo'
 import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
 
-import { CURRENT_ORG_STORE_KEY } from '../config/globals'
+import { CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
 
 Vue.use(VueRouter)
 
@@ -209,6 +209,13 @@ const routes = [
     path: '/paper/:specId',
     name: 'preview',
     component: Preview,
+    beforeEnter: (to, from, next) => {
+      if (to.query.sid) {
+        localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid)
+        return next({ name: 'preview', params: { specId: to.params.specId }, query: {} })
+      }
+      next()
+    },
   },
   {
     path: '/signin',

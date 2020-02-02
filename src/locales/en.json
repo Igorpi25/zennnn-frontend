@@ -223,7 +223,9 @@
     "setShipped": "Shipped",
     "overview": "Overview",
     "access": "Access",
-    "linkAccess": "Access by link"
+    "linkAccess": "Access by link",
+    "sendAccessLink": "Send link to email",
+    "sendEmail": "Send"
   },
   "status": {
     "IN_PROCESSING": "In processing",

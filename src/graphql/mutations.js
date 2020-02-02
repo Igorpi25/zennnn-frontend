@@ -398,6 +398,24 @@ export const CLOSE_LINK_ACCESS = gql`
   }
 `
 
+export const ADD_EMAIL_ACCESS_TO_SPEC = gql`
+  mutation AddEmailAccessToSpec($specId: ID!, $email: String!) {
+    addEmailAccessToSpec(specId: $specId, email: $email)
+  }
+`
+
+export const REMOVE_EMAIL_ACCESS_TO_SPEC = gql`
+  mutation RemoveEmailAccessToSpec($specId: ID!, $email: String!) {
+    removeEmailAccessToSpec(specId: $specId, email: $email)
+  }
+`
+
+export const SEND_LINK_ACCESS_TO_EMAIL = gql`
+  mutation SendLinkAccessToEmail($specId: ID!, $email: String!) {
+    sendLinkAccessToEmail(specId: $specId, email: $email)
+  }
+`
+
 export const ADD_COMMENT_TO_SPEC = gql`
   mutation AddCommentToSpec($specId: ID!, $comment: String!) {
     addCommentToSpec(specId: $specId, comment: $comment)

@@ -329,16 +329,16 @@
       max-width="320px"
     >
       <div class="p-4 bg-gray" style="color: #aaa;">
-        <h3 class="pb-3 font-medium">{{ $t('shipping.access') }}</h3>
+        <h3 class="pb-3 font-semibold">{{ $t('shipping.access') }}</h3>
         <Spinner v-if="linkAccessLoading" />
         <template v-else>
-          <ToggleButton
+          <!-- <ToggleButton
             :value="linkAccess"
             class="mb-2"
             @input="updateLinkAccess"
           >
             <span>{{ $t('shipping.linkAccess') }}</span>
-          </ToggleButton>
+          </ToggleButton> -->
           <TextField
             ref="linkInput"
             :value="link"
@@ -354,6 +354,52 @@
             {{ $t('action.copyLink') }}
           </Button>
         </template>
+        <template>
+          <h4 class="pt-5">
+            {{ $t('shipping.sendAccessLink') }}
+          </h4>
+          <TextField
+            ref="emailAccessInput"
+            v-model="emailAccessInput"
+            :disabled="sendAccessLinkLoading"
+            label="Email"
+            type="email"
+            required
+          />
+          <Button
+            :disabled="sendAccessLinkLoading"
+            @click="sendLinkAccessToEmail(emailAccessInput)"
+          >
+            {{ $t('shipping.sendEmail') }}
+          </Button>
+        </template>
+        <Spinner v-if="emailAccessLoading" />
+        <div v-else class="py-4">
+          <h4 v-if="emailAccess.length > 0" class="font-semibold">Имеют доступ:</h4>
+          <div
+            v-for="a in emailAccess"
+            :key="a.email"
+            class="flex py-2"
+          >
+            <div class="flex-grow">
+              {{ a.email }}
+            </div>
+            <v-slide-x-transition mode="out-in">
+              <div v-if="removeEmailAccessLoading === a.email">
+                <Spinner />
+              </div>
+              <div
+                v-else
+                class="cursor-pointer"
+                @click="removeEmailAccess(a.email)"
+              >
+                <Icon size="18">
+                  {{ icons.mdiClose }}
+                </Icon>
+              </div>
+            </v-slide-x-transition>
+          </div>
+        </div>
       </div>
     </v-dialog>
   </div>
@@ -365,13 +411,21 @@ import cloneDeep from 'clone-deep'
 import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 
+import { mdiClose } from '@mdi/js'
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
 import PaperListModal from '@/components/PaperListModal.vue'
 import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
 
-import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS } from '../graphql/queries'
-import { UPDATE_SPEC, OPEN_LINK_ACCESS, CLOSE_LINK_ACCESS } from '../graphql/mutations'
+import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS, GET_SPEC_EMAIL_ACCESS } from '../graphql/queries'
+import {
+  UPDATE_SPEC,
+  OPEN_LINK_ACCESS,
+  CLOSE_LINK_ACCESS,
+  ADD_EMAIL_ACCESS_TO_SPEC,
+  REMOVE_EMAIL_ACCESS_TO_SPEC,
+  SEND_LINK_ACCESS_TO_EMAIL,
+} from '../graphql/mutations'
 
 export default {
   name: 'SpecSummary',
@@ -399,6 +453,12 @@ export default {
   },
   data () {
     return {
+      sendAccessLinkLoading: false,
+      addEmailAccessLoading: false,
+      removeEmailAccessLoading: null,
+      emailAccessLoading: false,
+      emailAccess: [],
+      emailAccessInput: '',
       accessControlDialog: false,
       linkAccessLoading: false,
       linkAccess: false,
@@ -408,6 +468,7 @@ export default {
       paperConfigurator: false,
       create: false,
       icons: {
+        mdiClose,
         ziSettings,
         ziPaperPlane,
         ziPrint,
@@ -439,7 +500,11 @@ export default {
   watch: {
     accessControlDialog (val) {
       if (val) {
-        this.getLinkAccess()
+        // this.getEmailAccess()
+      } else {
+        setTimeout(() => {
+          this.emailAccessInput = ''
+        }, 250)
       }
     },
     paperConfigurator (val) {
@@ -452,6 +517,92 @@ export default {
     },
   },
   methods: {
+    async getEmailAccess () {
+      try {
+        this.emailAccessLoading = true
+        const { data } = await this.$apollo.query({
+          query: GET_SPEC_EMAIL_ACCESS,
+          variables: {
+            id: this.specId,
+          },
+          fetchPolicy: 'network-only',
+        })
+        this.emailAccess = data.getSpecEmailAccess || []
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.emailAccessLoading = false
+      }
+    },
+    async addEmailAccess (email) {
+      try {
+        const errors = this.$refs.emailAccessInput.validate()
+        if (errors) return
+        this.addEmailAccessLoading = true
+        const result = await this.$apollo.mutate({
+          mutation: ADD_EMAIL_ACCESS_TO_SPEC,
+          variables: {
+            specId: this.specId,
+            email,
+          },
+        })
+        this.getEmailAccess()
+        this.emailAccessInput = ''
+        return result
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.addEmailAccessLoading = false
+      }
+    },
+    async removeEmailAccess (email) {
+      try {
+        this.removeEmailAccessLoading = email
+        const result = await this.$apollo.mutate({
+          mutation: REMOVE_EMAIL_ACCESS_TO_SPEC,
+          variables: {
+            specId: this.specId,
+            email,
+          },
+        })
+        this.getEmailAccess()
+        return result
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.removeEmailAccessLoading = false
+      }
+    },
+    async sendLinkAccessToEmail (email) {
+      try {
+        const errors = this.$refs.emailAccessInput.validate()
+        if (errors) return
+        this.sendAccessLinkLoading = true
+        const result = await this.$apollo.mutate({
+          mutation: SEND_LINK_ACCESS_TO_EMAIL,
+          variables: {
+            specId: this.specId,
+            email,
+          },
+        })
+        this.emailAccessInput = ''
+        this.$notify({
+          color: 'green',
+          text: this.$t('message.emailSent', { email }),
+          timeout: 6000,
+        })
+        return result
+      } catch (error) {
+        this.$notify({
+          color: 'red',
+          text: this.$t('message.failedToSent'),
+          timeout: 6000,
+        })
+        throw new Error(error)
+      } finally {
+        this.sendAccessLinkLoading = false
+      }
+    },
     copyLink () {
       let selection = null
       try {

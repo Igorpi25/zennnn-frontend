@@ -451,6 +451,11 @@ import {
 
 export default {
   name: 'Preview',
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$el.classList.add('light-theme')
+    })
+  },
   components: {
     StatusBar,
     Copyright,
@@ -714,11 +719,6 @@ export default {
       error: (error) => {
         this.$logger.warn('Error: ', error)
       },
-    })
-  },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      vm.$el.classList.add('light-theme')
     })
   },
   methods: {

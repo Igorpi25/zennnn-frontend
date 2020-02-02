@@ -223,7 +223,9 @@
     "setShipped": "Отправлено",
     "overview": "Предпросмотр",
     "access": "Доступ",
-    "linkAccess": "Доступ по ссылке"
+    "linkAccess": "Доступ по ссылке",
+    "sendAccessLink": "Отправить ссылку на email",
+    "sendEmail": "Отправить"
   },
   "status": {
     "IN_PROCESSING": "Обрабатывается",
@@ -403,7 +405,7 @@
     "shippingInfo": "Информация для отгрузки"
   },
   "comments": {
-    "addComment": "Введите комментарий...",
+    "enterComment": "Введите комментарий...",
     "enterReply": "Введите ответ..."
   },
   "roles": {
