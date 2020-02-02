@@ -23,7 +23,7 @@
         class="text-gray-lighter hover:text-gray-light"
         @click="blur"
       >
-        Отмена
+        {{ $t('action.cancel') }}
       </Button>
       <div class="flex-grow" />
       <Button
@@ -31,7 +31,7 @@
         text
         @click="submitComment"
       >
-        Отправить
+        {{ $t('action.post') }}
       </Button>
     </div>
   </div>

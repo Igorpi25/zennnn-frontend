@@ -123,6 +123,7 @@
                         <Comments
                           :items="item.comments"
                           :product-id="item.id"
+                          :spec-id="specId"
                           is-product
                           is-paper
                           icon-size="24"
@@ -395,7 +396,7 @@
                   <Comments
                     ref="specComments"
                     :items="spec.comments"
-                    :spec-id="spec.id"
+                    :spec-id="specId"
                     class="mr-3"
                     is-paper
                     icon-size="24"

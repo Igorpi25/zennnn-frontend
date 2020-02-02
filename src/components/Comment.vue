@@ -21,7 +21,7 @@
       <CommentInput
         v-model="comment"
         :loading="commentSubmitLoading"
-        label="Введите ответ..."
+        :label="$t('comments.enterReply')"
         class="mt-3"
         @submit="commentSubmit"
       />

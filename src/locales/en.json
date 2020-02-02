@@ -221,7 +221,9 @@
     "print": "Print",
     "share": "Share",
     "setShipped": "Shipped",
-    "overview": "Overview"
+    "overview": "Overview",
+    "access": "Access",
+    "linkAccess": "Access by link"
   },
   "status": {
     "IN_PROCESSING": "In processing",
@@ -400,6 +402,10 @@
     "note": "Note",
     "shippingInfo": "Shipping info"
   },
+  "comments": {
+    "enterComment": "Enter comment...",
+    "enterReply": "Enter reply..."
+  },
   "roles": {
     "owner": "Owner",
     "manager": "Manager",
@@ -427,6 +433,8 @@
     "unit": "unit"
   },
   "action": {
+    "copyLink": "Copy link",
+    "post": "Post",
     "invite": "Invite",
     "dontSave": "Don't save",
     "cancel": "Cancel",
@@ -450,6 +458,8 @@
     "fillLater": "Fill later"
   },
   "message": {
+    "linkCopied": "Link copied to clipboard.",
+    "linkNotCopied": "Failed to copy link to clipboard.",
     "emailResent": "Email sent again.",
     "failedToSent": "Failed to send.",
     "authByGoogle": "Authorization through google.",

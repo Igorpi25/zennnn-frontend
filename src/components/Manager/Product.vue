@@ -19,7 +19,9 @@
         <Comments
           :items="item.comments"
           :product-id="item.id"
+          :spec-id="specId"
           is-product
+          sm
           right
           icon-size="12"
           class="inline-block"

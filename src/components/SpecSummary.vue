@@ -329,7 +329,7 @@
       max-width="320px"
     >
       <div class="p-4 bg-gray" style="color: #aaa;">
-        <h3 class="pb-3 font-medium">Доступ</h3>
+        <h3 class="pb-3 font-medium">{{ $t('shipping.access') }}</h3>
         <Spinner v-if="linkAccessLoading" />
         <template v-else>
           <ToggleButton
@@ -337,7 +337,7 @@
             class="mb-2"
             @input="updateLinkAccess"
           >
-            <span>Доступ по ссылке</span>
+            <span>{{ $t('shipping.linkAccess') }}</span>
           </ToggleButton>
           <TextField
             ref="linkInput"
@@ -351,7 +351,7 @@
           <Button
             @click="copyLink"
           >
-            Копировать ссылку
+            {{ $t('action.copyLink') }}
           </Button>
         </template>
       </div>
@@ -467,7 +467,7 @@ export default {
         if (successful) {
           this.$notify({
             color: 'green',
-            text: 'Ссылка скопирована в буфер обмена.',
+            text: this.$t('message.linkCopied'),
             timeout: 6000,
           })
         } else {
@@ -477,7 +477,7 @@ export default {
         this.$logger.info('Copy link error: ', error)
         this.$notify({
           color: 'orange',
-          text: 'Не удалось скопировать ссылку в буфер обмена.',
+          text: this.$t('message.linkNotCopied'),
           timeout: 6000,
         })
       }

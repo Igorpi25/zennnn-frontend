@@ -186,7 +186,7 @@
       <div class="flex-grow" />
       <Comments
         :items="spec.comments"
-        :spec-id="spec.id"
+        :spec-id="specId"
         left
       />
     </div>
