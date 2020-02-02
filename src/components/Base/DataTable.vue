@@ -7,7 +7,7 @@
     <slot name="top"/>
     <table
       :width="tableWidth || null"
-      class="tableClass"
+      :class="tableClass"
     >
       <thead
         v-if="!hideHeaders"

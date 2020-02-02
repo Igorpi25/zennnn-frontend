@@ -1,31 +1,5 @@
 <template>
   <div>
-
-    <v-dialog
-      v-model="leaveNote"
-      max-width="443"
-    >
-      <PreviewMessageModal
-        :heading="$t('preview.leaveNote')"
-        :client="client"
-        is-note
-        @save="saveMessage"
-        @close="leaveNote = false"
-      />
-    </v-dialog>
-
-    <v-dialog
-      v-model="leaveComment"
-      max-width="443"
-    >
-      <PreviewMessageModal
-        :heading="$t('preview.leaveComment')"
-        :client="client"
-        @save="saveMessage"
-        @close="leaveComment= false"
-      />
-    </v-dialog>
-
     <div class="content view">
       <StatusBar />
       <div class="container container--sm">
@@ -70,7 +44,7 @@
                   :items="item.products"
                   table-width="100%"
                   table-class="table-fixed"
-                  thead-class="text-accent2"
+                  thead-class="text-accent2 text-xs leading-tight"
                   headers-whitespace-normal
                 >
                   <template v-slot:items="{ items }">
@@ -79,19 +53,22 @@
                       :key="item.id"
                       class="items base-accent3 border-none"
                     >
-                      <td class="text-gray-lighter text-right leading-none py-2 align-top">
-                        {{ index + 1 }}
+                      <td class="text-gray-lighter text-right align-top">
+                        <div class="leading-none py-3">
+                          {{ index + 1 }}
+                        </div>
                       </td>
                       <td>
                         <ProductImage
                           :product-id="item.id"
-                          :images="item.images"
+                          :images="getPreviewImage(item.images)"
+                          :upload="false"
                         />
                       </td>
                       <td>
                         <span>{{ item.name }}</span>
                         <p class="text-gray-light leading-none">{{ item.article }}</p>
-                        <span class="flex items-center mt-2">
+                        <span class="flex items-center mt-1">
                           <img
                             v-if="item.productStatus === ProductStatus.IN_PRODUCTION"
                             src="../assets/icons/factory-yellow.png"
@@ -105,7 +82,15 @@
                             v-else
                             src="../assets/icons/in-processing.png"
                           >
-                          <span class="ml-2 text-orange text-xs">
+                          <span
+                            class=" text-orange "
+                            :class="[
+                              'ml-2 text-sm',
+                              item.productStatus === ProductStatus.IN_STOCK
+                                ? 'status-stock' : item.productStatus === ProductStatus.IN_PRODUCTION
+                                  ? 'status-production' : 'status-processing'
+                            ]"
+                          >
                             <span>
                               {{ item.productStatus ? $t(`status.${item.productStatus}`) : '' }}
                             </span>
@@ -113,21 +98,27 @@
                         </span>
                       </td>
                       <td class="text-center">
-                        <div
+                        <ProductImage
                           v-if="item.images.length > 1"
-                          class="flex justify-center items-center"
+                          :product-id="item.id"
+                          :images="getAdditionImages(item.images)"
+                          :upload="false"
                         >
-                          <span class="mr-1 text-sm text-gray-lightest">
-                           + {{ item.images.length - 1 }}
-                          </span>
-                          <img src="@/assets/icons/pre-image.png">
-                        </div>
+                          <template v-slot:menu-activator>
+                            <div class="flex justify-center items-center">
+                              <span class="mr-1 text-sm text-gray-lightest">
+                              + {{ item.images.length - 1 }}
+                              </span>
+                              <img src="@/assets/icons/pre-image.png">
+                            </div>
+                          </template>
+                        </ProductImage>
                       </td>
-                      <td class="text-right">{{ $n(item.price) }}</td>
-                      <td class="text-center">{{ item.qty }}</td>
-                      <td class="text-right font-bold">{{ $n(item.amount) }}</td>
-                      <td class="text-right">{{ item.pkgQty }}</td>
-                      <td class="text-right">{{ item.pkgNo }}</td>
+                      <td class="text-right">{{ $n(item.price || 0, 'decimal') }}</td>
+                      <td class="text-right">{{ $n(item.qty || 0) }}</td>
+                      <td class="text-right font-bold">{{ $n(item.amount || 0, 'decimal') }}</td>
+                      <td class="text-right">{{ $n(item.pkgQty || 0) }}</td>
+                      <td class="text-right">{{ item.pkgNo || '-' }}</td>
                       <td class="text-center">
                         <Comments
                           :items="item.comments"
@@ -136,45 +127,82 @@
                           is-paper
                           icon-size="24"
                           left
-                          class="inline-block"
+                          class="inline-block align-middle"
                           style="color:#5a8199"
                         />
                       </td>
                     </tr>
                   </template>
+                  <template v-slot:footer>
+                    <tr class="bg-white">
+                      <td colspan="7">
+                        <div class="flex justify-end py-6">
+                          <div class="w-full max-w-xs">
+                            <div class="h-6 flex">
+                              <div class="w-32 flex-shrink-0 text-right font-bold">
+                                <span>{{ $t('preview.total') }}</span>&nbsp;
+                                <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                              </div>
+                              <div class="flex-grow dots" />
+                              <div class="font-bold">
+                                {{ $n(item.totalClientAmount || 0, 'decimal') }}
+                              </div>
+                            </div>
+                            <div class="h-6 flex text-gray-lightest">
+                              <div class="w-32 flex-shrink-0 text-right">
+                                <span>{{ $t('preview.discount') }}</span>&nbsp;
+                                <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                              </div>
+                              <div class="flex-grow dots" />
+                              <div class="font-bold">
+                                {{ $n(item.discount || 0, 'decimal') }}
+                              </div>
+                            </div>
+                            <div class="h-6 flex">
+                              <div class="w-32 flex-shrink-0 text-right">
+                                <span>{{ $t('preview.prepay') }}</span>&nbsp;
+                                <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                              </div>
+                              <div class="flex-grow dots" />
+                              <div class="font-bold">
+                                {{ $n(item.prepayment || 0, 'decimal') }}
+                              </div>
+                            </div>
+                            <div class="h-6 flex">
+                              <div class="w-32 flex-shrink-0 text-right">
+                                <span>{{ $t('preview.residue') }}</span>&nbsp;
+                                <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                              </div>
+                              <div class="flex-grow dots" />
+                              <div class="font-bold" style="color:#ff0000">
+                                {{ $n(item.clientDebt || 0, 'decimal') }}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td colspan="3">
+                        <div class="py-6 px-5">
+                          <div class="text-sm">
+                            <div class="h-6 flex items-end">
+                              <span v-if="!item.discount">
+                                ({{ $t('preview.noDiscount') }})
+                              </span>
+                            </div>
+                            <div class="h-6" />
+                            <div class="h-6 flex items-end">
+                             {{ item.prepaymentDate ? $d($parseDate(item.prepaymentDate), 'short') : '--.--.--' }}
+                            </div>
+                            <div class="h-6 flex items-end">
+                              {{ item.clientDebtDate ? $d($parseDate(item.clientDebtDate), 'short') : '--.--.--' }}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </template>
                 </DataTable>
               </div>
-              <!-- / INVOICE FOOTER -->
-              <div class="p-2 md:p-6 w-full flex justify-end bg-white">
-                <div class="preview-footer md:mr-12 w-full md:w-1/2 flex">
-                  <ul class="leaders w-2/3">
-                    <li>
-                      <span class="bg-white font-black text-right">{{ $t('preview.total') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ $n(item.totalClientAmount) }}</span>
-                    </li>
-                    <li class="text-gray-lightest">
-                      <span class="bg-white font-semibold">{{ $t('preview.discount') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ $n(item.discount) }}</span>
-                    </li>
-                    <li>
-                      <span class="bg-white font-semibold">{{ $t('preview.prepay') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ $n(item.prepayment) }}</span>
-                    </li>
-                    <li>
-                      <span class="bg-white font-semibold">{{ $t('preview.residue') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold" style="color:#ff0000">{{ $n(item.clientDebt) }}</span>
-                    </li>
-                  </ul>
-                  <ul class="ml-5 text-sm text-gray-light">
-                    <li v-if="!item.discount" class="mt-1">({{ $t('preview.noDiscount') }})</li>
-                    <br v-else>
-                    <br>
-                    <li class="mt-1">{{ item.prepaymentDate ? $d($parseDate(item.prepaymentDate), 'short') : '--.--.--' }}</li>
-                    <li class="mt-1">{{ item.clientDebtDate ? $d($parseDate(item.clientDebtDate), 'short') : '--.--.--' }}</li>
-                  </ul>
-                </div>
-              </div>
-              <!-- INVOICE FOOTER / -->
             </div>
           </div>
 
@@ -282,40 +310,44 @@
               </div>
               <div class="preview-summary__cost">
                 <div class="preview-summary__cost__card">
-                  <ul class="leaders">
-                    <li class="pb-2">
-                      <span class="font-bold">
-                        {{ $t('preview.costOfGood') }} {{ $t('currency.CNY.symbol') }}
-                      </span>
-                      <!-- TODO to custom component or Intl polyfill -->
-                      <!-- i18n-n has Error formatter.formatToParts is not a function. -->
-                      <span class="flex font-bold">
-                        <div class="text-accent1">{{ $n(spec.finalCost, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
-                      </span>
-                    </li>
-                    <li class="pb-2">
-                      <span>
-                        {{ $t('preview.totalPrepay') }} {{ $t('currency.CNY.symbol') }}
-                      </span>
-                      <span class="flex">
-                        <div class="text-accent1">{{ $n(spec.totalPrepay, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
-                      </span>
-                    </li>
-                    <li class="pb-2">
-                      <span>
-                        {{ $t('preview.finalToPay') }}  {{ $t('currency.CNY.symbol') }}
-                      </span>
-                      <span class="flex font-bold" style="color: #ff0000;">
-                        <div>{{ $n(spec.totalClientDebt, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
-                      </span>
-                    </li>
-                  </ul>
+                  <div class="flex pb-2">
+                    <span class="w-48 flex-shrink-0 text-right font-bold">
+                      <span>{{ $t('preview.costOfGood') }}</span>&nbsp;
+                      <span>{{ $t('currency.CNY.symbol') }}</span>
+                    </span>
+                    <!-- TODO to custom component or Intl polyfill -->
+                    <!-- i18n-n has Error formatter.formatToParts is not a function. -->
+                    <div class="flex-grow dots" />
+                    <span class="font-bold flex items-baseline">
+                      <div class="text-accent1">{{ $n(spec.finalCost, 'integer') }}</div>
+                      <div class="px-px" style="letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
+                      <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
+                    </span>
+                  </div>
+                  <div class="flex pb-2">
+                    <span class="w-48 flex-shrink-0 text-right">
+                      <span>{{ $t('preview.totalPrepay') }}</span>&nbsp;
+                      <span>{{ $t('currency.CNY.symbol') }}</span>
+                    </span>
+                    <div class="flex-grow dots" />
+                    <span class="flex items-baseline">
+                      <div class="text-accent1">{{ $n(spec.totalPrepay, 'integer') }}</div>
+                      <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
+                      <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
+                    </span>
+                  </div>
+                  <div class="flex pb-2">
+                    <span class="w-48 flex-shrink-0 text-right">
+                      <span>{{ $t('preview.finalToPay') }}</span>&nbsp;
+                      <span>{{ $t('currency.CNY.symbol') }}</span>
+                    </span>
+                    <div class="flex-grow dots" />
+                    <span class="flex items-baseline font-bold" style="color: #ff0000;">
+                      <div>{{ $n(spec.totalClientDebt, 'integer') }}</div>
+                      <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
+                      <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
+                    </span>
+                  </div>
                   <!-- <div class="mt-8 text-sm text-right">
                     <v-menu
                       v-model="menuCurrency"
@@ -384,7 +416,6 @@
 
 <script>
 import deepmerge from 'deepmerge'
-import format from 'date-fns/format'
 
 import {
   mdiChevronDown,
@@ -399,8 +430,6 @@ import {
   ziPrint,
   ziShare,
 } from '@/assets/icons'
-
-import PreviewMessageModal from '@/components/PreviewMessageModal'
 
 import StatusBar from '../components/StatusBar'
 import Copyright from '../components/Copyright'
@@ -422,7 +451,6 @@ import {
 export default {
   name: 'Preview',
   components: {
-    PreviewMessageModal,
     StatusBar,
     Copyright,
     InvoiceHeader,
@@ -441,10 +469,6 @@ export default {
   },
   data () {
     return {
-      leaveNote: false,
-      notes: [],
-      leaveComment: false,
-      comments: [],
       expanded: [],
       icons: {
         mdiChevronDown,
@@ -471,9 +495,9 @@ export default {
         { text: `${this.$t('preview.price')}(¥)`, value: 'price', width: 80 },
         { text: this.$t('preview.qty'), value: 'qty', width: 70 },
         { text: `${this.$t('preview.cost')}(¥)`, value: 'cost', align: 'left', width: 90 },
-        { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'left', width: 62 },
-        { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'left', width: 62 },
-        { text: this.$t('preview.leaveNote'), value: 'note', align: 'left', width: 85 },
+        { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'left', width: 78 },
+        { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'left', width: 78 },
+        { text: this.$t('preview.leaveNote'), value: 'note', align: 'left', width: 78 },
       ]
     },
     specId () {
@@ -557,6 +581,12 @@ export default {
             customMerge: (key) => {
               if (key === 'comments') {
                 return commentsMerge
+              }
+              if (key === 'images') {
+                const merge = (_, source) => {
+                  return source || []
+                }
+                return merge
               }
             },
           }
@@ -685,23 +715,17 @@ export default {
       },
     })
   },
-  created () {
-    this.notes = JSON.parse(localStorage.getItem('notes')) || []
-    this.comments = JSON.parse(localStorage.getItem('comments')) || []
-  },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm.$el.classList.add('light-theme')
     })
   },
   methods: {
-    formatDate (date) {
-      if (!date) return null
-      const parsedDate = this.$parseDate(date)
-      return format(parsedDate, this.$i18n.locale === 'zh'
-        ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
-          ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
-      )
+    getPreviewImage (images) {
+      return (images || []).slice(0, 1)
+    },
+    getAdditionImages (images) {
+      return (images || []).slice(1)
     },
     expand (id) {
       if (this.expanded.includes(id)) {
@@ -713,17 +737,6 @@ export default {
     },
     collapseAll () {
       this.expanded = []
-    },
-    saveMessage (message) {
-      if (this.leaveNote) {
-        this.notes.push(message)
-        localStorage.setItem('notes', JSON.stringify(this.notes))
-        this.leaveNote = false
-      } else {
-        this.comments.push(message)
-        localStorage.setItem('comments', JSON.stringify(this.comments))
-        this.leaveComment = false
-      }
     },
   },
 }

@@ -34,3 +34,30 @@
   --base-accent2: #7b7b7b;
   --base-accent3: #f4f4f4;
 } */
+
+.dots {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+  padding-left: 0.33em;
+  padding-right: 0.33em;
+}
+.dots::before {
+  display: block;
+  content:
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+  ;
+}
+
+.status-stock {
+  color: #00FF16;
+}
+.status-production {
+  color: #FFB700;
+}
+.status-processing {
+  color: #FF005E;
+}

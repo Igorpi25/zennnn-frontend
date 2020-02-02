@@ -9,15 +9,34 @@
   >
     <template v-slot:activator="{ on }">
       <div v-on="on">
-        <FileUploader
-          :loading="loading"
-          :src="previewImage"
-          :show-preview="imagesList.length === 0"
-          check-download-url
-          @update="updateImages"
-        >
-          <template v-slot:preview>
+        <slot name="menu-activator">
+          <FileUploader
+            v-if="upload"
+            :loading="loading"
+            :src="previewImage"
+            :show-preview="imagesList.length === 0"
+            check-download-url
+            @update="updateImages"
+          >
+            <template v-slot:preview>
+              <v-img
+                :src="`${previewImage}${ICON_IMAGE_POSTFIX}`"
+                aspect-ratio="1"
+              >
+                <template v-slot:placeholder>
+                  <div class="flex justify-center items-center w-full h-full">
+                    <Spinner />
+                  </div>
+                </template>
+              </v-img>
+            </template>
+          </FileUploader>
+          <div
+            v-else
+            class="w-10 h-10 rounded overflow-hidden"
+          >
             <v-img
+              v-if="previewImage"
               :src="`${previewImage}${ICON_IMAGE_POSTFIX}`"
               aspect-ratio="1"
             >
@@ -27,8 +46,8 @@
                 </div>
               </template>
             </v-img>
-          </template>
-        </FileUploader>
+          </div>
+        </slot>
       </div>
     </template>
     <div
@@ -100,6 +119,10 @@ export default {
     images: {
       type: Array,
       default: undefined,
+    },
+    upload: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
