@@ -113,12 +113,12 @@ export default {
     },
     productHeaders () {
       return [
-        { text: '', value: 'status', align: 'left', width: 14 },
-        { text: this.$t('shipping.productIndexNo'), value: 'index', align: 'left', width: 54 },
-        { text: this.$t('shipping.photo'), value: 'photo', width: 55 },
-        { text: this.$t('shipping.name'), value: 'name', width: 165 },
-        { text: this.$t('shipping.model'), value: 'model', width: 165 },
-        { text: this.$t('shipping.qty'), value: 'qty', width: 110 },
+        { text: '', value: 'status', align: 'left', width: 14, minWidth: 14 },
+        { text: this.$t('shipping.productIndexNo'), value: 'index', align: 'left', width: 54, minWidth: 54 },
+        { text: this.$t('shipping.photo'), value: 'photo', width: 54, minWidth: 54 },
+        { text: this.$t('shipping.name'), value: 'name', width: 164, minWidth: 164 },
+        { text: this.$t('shipping.model'), value: 'model', width: 164, minWidth: 164 },
+        { text: this.$t('shipping.qty'), value: 'qty', width: 90, minWidth: 90 },
       ]
     },
     storeHeaders () {
@@ -126,21 +126,21 @@ export default {
         { text: `${this.$t('shipping.net')}, ${this.$t('measure.kg')}`, value: 'net', width: 167, bgcolor: 'gray-darkest' },
         { text: `${this.$t('shipping.gross')}, ${this.$t('measure.kg')}`, value: 'gross', width: 167, bgcolor: 'gray-darkest' },
         { text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`, value: 'size', width: 169, bgcolor: 'gray-darkest' },
-        { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
+        { text: '', value: 'action', width: 24, bgcolor: 'gray-darkest' },
       ]
     },
     infoHeaders () {
       return [
         { text: this.$t('shipping.additionalPhoto'), value: 'images', width: 85, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.additionalInfo'), value: 'description', align: 'left', bgcolor: 'gray-darkest' },
-        { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.additionalInfo'), value: 'description', width: '100%', align: 'left', bgcolor: 'gray-darkest' },
+        { text: '', value: 'action', width: 24, bgcolor: 'gray-darkest' },
       ]
     },
     linkHeaders () {
       return [
-        { text: this.$t('shipping.linkField'), value: 'url', align: 'left', bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.linkField'), value: 'url', width: '100%', align: 'left', bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.openLink'), value: 'openLink', width: 70, bgcolor: 'gray-darkest' },
-        { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
+        { text: '', value: 'action', width: 24, bgcolor: 'gray-darkest' },
       ]
     },
   },
