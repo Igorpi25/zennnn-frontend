@@ -75,8 +75,6 @@ import {
   ICON_IMAGE_POSTFIX,
   UPLOAD_FILE_SIZE_MB,
   IMAGE_FILENAME_METADATA,
-  IMAGE_DOWNLOAD_HOSTNAME,
-  S3_IMAGE_DOWNLOAD_HOSTNAME,
 } from '../config/globals'
 
 export default {
@@ -295,7 +293,7 @@ export default {
       }
     },
     startSrcCheckTimer (src) {
-      const s3Src = src.replace(IMAGE_DOWNLOAD_HOSTNAME, S3_IMAGE_DOWNLOAD_HOSTNAME)
+      const s3Src = src.replace(process.env.VIE_APP_IMAGE_DOWNLOAD_HOSTNAME, process.env.VIE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME)
       this.clearSrcCheckTimer()
       this.checkLoading = true
       this.timerId = setInterval(() => {
