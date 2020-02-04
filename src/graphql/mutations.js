@@ -463,3 +463,27 @@ export const REPLY_TO_PAPER_PRODUCT_COMMENT = gql`
     replyToPaperProductComment(productId: $productId, commentId: $commentId, comment: $comment)
   }
 `
+
+export const MARK_SPEC_COMMENTS_AS_VIEWED = gql`
+  mutation MarkSpecCommentsAsViewed($specId: ID!, $commentsIds: [ID!]) {
+    markSpecCommentsAsViewed(specId: $specId, commentsIds: $commentsIds)
+  }
+`
+
+export const MARK_PRODUCT_COMMENTS_AS_VIEWED = gql`
+  mutation MarkProductCommentsAsViewed($productId: ID!, $commentsIds: [ID!]) {
+    markProductCommentsAsViewed(productId: $productId, commentsIds: $commentsIds)
+  }
+`
+
+export const MARK_PAPER_SPEC_COMMENTS_AS_VIEWED = gql`
+  mutation MarkPaperSpecCommentsAsViewed($specId: ID!, $commentsIds: [ID!]) {
+    markPaperSpecCommentsAsViewed(specId: $specId, commentsIds: $commentsIds)
+  }
+`
+
+export const MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED = gql`
+  mutation MarkPaperProductCommentsAsViewed($productId: ID!, $commentsIds: [ID!]) {
+    markPaperProductCommentsAsViewed(productId: $productId, commentsIds: $commentsIds)
+  }
+`

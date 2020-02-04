@@ -43,7 +43,7 @@
             :loading="addCommentLoading"
             :light="light"
             :label="$t('comments.enterComment')"
-            class="pb-4"
+            :class="{ 'pb-4': discussions.length > 0 }"
             @submit="addComment"
           />
         </div>
@@ -66,17 +66,20 @@
 
 <script>
 import { mdiMessageReplyText } from '@mdi/js'
+
+import Comment from './Comment'
+import CommentInput from './CommentInput'
+import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 import {
   ADD_COMMENT_TO_SPEC,
   ADD_COMMENT_TO_PRODUCT,
   ADD_COMMENT_TO_PAPER_SPEC,
   ADD_COMMENT_TO_PAPER_PRODUCT,
+  MARK_SPEC_COMMENTS_AS_VIEWED,
+  MARK_PRODUCT_COMMENTS_AS_VIEWED,
+  MARK_PAPER_SPEC_COMMENTS_AS_VIEWED,
+  MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED,
 } from '../graphql/mutations'
-
-import Comment from './Comment'
-import CommentInput from './CommentInput'
-import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
-import { VIEWED_COMMENTS_STORE_KEY_PREFIX } from '../config/globals'
 
 export default {
   name: 'Comments',
@@ -171,16 +174,18 @@ export default {
     },
     newCommentsCount () {
       let count = 0
-      this.commentsIds.forEach(el => {
-        if (!this.viewedComments.includes(el)) {
-          count++
+      this.items.forEach(item => {
+        if (this.isPaper) {
+          if (!item.clientViewed) {
+            count++
+          }
+        } else {
+          if (!item.viewed) {
+            count++
+          }
         }
       })
       return count
-    },
-    viewedStoreKey () {
-      const userId = this.getProfile ? this.getProfile.id : ''
-      return `${VIEWED_COMMENTS_STORE_KEY_PREFIX}.${userId}.${this.specId}:`
     },
     light () {
       return this.isPaper
@@ -210,47 +215,51 @@ export default {
         }, 250)
       }
     },
-    items: {
-      handler (val) {
-        const ids = (val || []).map(el => el.id)
-        if (ids.length > 0) {
-          this.commentsIds = ids
-          if (this.menu) {
-            this.viewedComments = ids
-            this.udpateStorageViewedComments(ids)
-          }
-        }
-      },
-      immediate: true,
-    },
-  },
-  mounted () {
-    this.viewedComments = JSON.parse(localStorage.getItem(this.viewedStoreKey)) || []
-  },
-  methods: {
-    updateViewedComments () {
-      if (this.commentsIds.length > 0) {
-        const newComments = []
-        this.commentsIds.forEach(el => {
-          if (!this.viewedComments.includes(el)) {
-            newComments.push(el)
+    items (val, oldVal) {
+      const valLength = (val && val.length) || 0
+      const oldValLength = (oldVal && oldVal.length) || 0
+      if (this.menu && valLength > oldValLength) {
+        const newIds = []
+        val.forEach(el => {
+          if (this.isPaper) {
+            if (!el.clientViewed) {
+              newIds.push(el.id)
+            }
+          } else {
+            if (!el.viewed) {
+              newIds.push(el.id)
+            }
           }
         })
-        if (newComments.length > 0) {
-          this.viewedComments = this.commentsIds
-          this.udpateStorageViewedComments(newComments)
-        }
+        this.updateViewedComments(newIds)
       }
     },
-    udpateStorageViewedComments (newComments) {
-      const viewedComments = JSON.parse(localStorage.getItem(this.viewedStoreKey)) || []
-      const storageNewComments = []
-      newComments.forEach(el => {
-        if (!viewedComments.includes(el)) {
-          storageNewComments.push(el)
+  },
+  methods: {
+    async updateViewedComments (commentsIds) {
+      try {
+        const variables = {}
+        if (this.isProduct) {
+          variables.productId = this.productId
+        } else {
+          variables.specId = this.specId
         }
-      })
-      localStorage.setItem(this.viewedStoreKey, JSON.stringify([...viewedComments, ...storageNewComments]))
+        if (commentsIds) {
+          variables.commentsIds = commentsIds
+        }
+        let mutation = null
+        if (this.isPaper) {
+          mutation = this.isProduct ? MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED : MARK_PAPER_SPEC_COMMENTS_AS_VIEWED
+        } else {
+          mutation = this.isProduct ? MARK_PRODUCT_COMMENTS_AS_VIEWED : MARK_SPEC_COMMENTS_AS_VIEWED
+        }
+        await this.$apollo.mutate({
+          mutation,
+          variables,
+        })
+      } catch (error) {
+        throw new Error(error)
+      }
     },
     openMenu () {
       this.menu = true

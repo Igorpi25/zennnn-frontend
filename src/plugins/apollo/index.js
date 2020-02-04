@@ -73,7 +73,9 @@ const authLink = setContext(async (request, { headers }) => {
     operationName === 'AddCommentToPaperSpec' ||
     operationName === 'ReplyToPaperSpecComment' ||
     operationName === 'AddCommentToPaperProduct' ||
-    operationName === 'ReplyToPaperProductComment'
+    operationName === 'ReplyToPaperProductComment' ||
+    operationName === 'MarkPaperSpecCommentsAsViewed' ||
+    operationName === 'MarkPaperProductCommentsAsViewed'
   ) {
     sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
     try {

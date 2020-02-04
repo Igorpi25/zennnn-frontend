@@ -3,6 +3,8 @@ import gql from 'graphql-tag'
 export const COMMENT_FRAGMENT = gql`
   fragment CommentFragment on Comment {
     id
+    viewed
+    clientViewed
     replyTo
     comment
     sender
