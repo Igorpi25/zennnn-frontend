@@ -293,7 +293,7 @@ export default {
       }
     },
     startSrcCheckTimer (src) {
-      const s3Src = src.replace(process.env.VIE_APP_IMAGE_DOWNLOAD_HOSTNAME, process.env.VIE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME)
+      const s3Src = src.replace(process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME, process.env.VUE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME)
       this.clearSrcCheckTimer()
       this.checkLoading = true
       this.timerId = setInterval(() => {
