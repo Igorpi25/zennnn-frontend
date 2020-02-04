@@ -1,4 +1,4 @@
-name: Build and deploy to s3
+name: Build and deploy MASTER to s3
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  build-and-deploy-master:
 
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'ci skip')"
