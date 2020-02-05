@@ -56,6 +56,7 @@ export default {
           id: this.specId,
         }
       },
+      fetchPolicy: 'cache-and-network',
     },
   },
   data () {
