@@ -256,7 +256,7 @@
           </div>
           <div class="flex justify-end items-center pt-2 pr-4">
             <span>{{ $t('shipping.documentRate') }}</span>
-            <span>&nbsp;=&nbsp;</span>
+            <span class="mx-2">=</span>
             <TextField
               :debounce="250"
               :placeholder="$t('placeholder.emptyNumber')"
@@ -295,7 +295,7 @@
             </template>
             <span class="text-left">{{ $t('shipping.print') }}</span>
           </Button>
-          <Button text @click.prevent>
+          <Button text @click="accessControlDialog = true">
             <template v-slot:icon>
               <Icon size="32" color="#aaaaaa">
                 {{ icons.ziShare }}
@@ -307,11 +307,12 @@
       </div>
     </div>
     <div>
-      <div style="max-width: 300px;">
+      <div class="flex justify-center sm:block">
         <Button
           large
           squared
           outline
+          style="max-width: 320px;"
           @click="$router.push({
             name: 'preview',
             params: {
@@ -322,8 +323,85 @@
           <span class="text-lg">{{ $t('shipping.overview') }}</span>
         </Button>
       </div>
-      <div></div>
     </div>
+    <v-dialog
+      v-model="accessControlDialog"
+      max-width="320px"
+    >
+      <div class="p-4 bg-gray" style="color: #aaa;">
+        <h3 class="pb-3 font-semibold">{{ $t('shipping.access') }}</h3>
+        <Spinner v-if="linkAccessLoading" />
+        <template v-else>
+          <!-- <ToggleButton
+            :value="linkAccess"
+            class="mb-2"
+            @input="updateLinkAccess"
+          >
+            <span>{{ $t('shipping.linkAccess') }}</span>
+          </ToggleButton> -->
+          <TextField
+            ref="linkInput"
+            :value="link"
+            hide-details
+            squared
+            readonly
+            solo
+            class="mb-1"
+          />
+          <Button
+            @click="copyLink"
+          >
+            {{ $t('action.copyLink') }}
+          </Button>
+        </template>
+        <template>
+          <h4 class="pt-5">
+            {{ $t('shipping.sendAccessLink') }}
+          </h4>
+          <TextField
+            ref="emailAccessInput"
+            v-model="emailAccessInput"
+            :disabled="sendAccessLinkLoading"
+            label="Email"
+            type="email"
+            required
+          />
+          <Button
+            :disabled="sendAccessLinkLoading"
+            @click="sendLinkAccessToEmail(emailAccessInput)"
+          >
+            {{ $t('shipping.sendEmail') }}
+          </Button>
+        </template>
+        <Spinner v-if="emailAccessLoading" />
+        <div v-else class="py-4">
+          <h4 v-if="emailAccess.length > 0" class="font-semibold">Имеют доступ:</h4>
+          <div
+            v-for="a in emailAccess"
+            :key="a.email"
+            class="flex py-2"
+          >
+            <div class="flex-grow">
+              {{ a.email }}
+            </div>
+            <v-slide-x-transition mode="out-in">
+              <div v-if="removeEmailAccessLoading === a.email">
+                <Spinner />
+              </div>
+              <div
+                v-else
+                class="cursor-pointer"
+                @click="removeEmailAccess(a.email)"
+              >
+                <Icon size="18">
+                  {{ icons.mdiClose }}
+                </Icon>
+              </div>
+            </v-slide-x-transition>
+          </div>
+        </div>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
@@ -333,14 +411,21 @@ import cloneDeep from 'clone-deep'
 import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 
-import { UPDATE_SPEC } from '@/graphql/mutations'
-
+import { mdiClose } from '@mdi/js'
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
 import PaperListModal from '@/components/PaperListModal.vue'
 import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
 
-import { LIST_ORG_CONTRACTS } from '../graphql/queries'
+import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS, GET_SPEC_EMAIL_ACCESS } from '../graphql/queries'
+import {
+  UPDATE_SPEC,
+  OPEN_LINK_ACCESS,
+  CLOSE_LINK_ACCESS,
+  ADD_EMAIL_ACCESS_TO_SPEC,
+  REMOVE_EMAIL_ACCESS_TO_SPEC,
+  SEND_LINK_ACCESS_TO_EMAIL,
+} from '../graphql/mutations'
 
 export default {
   name: 'SpecSummary',
@@ -368,12 +453,22 @@ export default {
   },
   data () {
     return {
+      sendAccessLinkLoading: false,
+      addEmailAccessLoading: false,
+      removeEmailAccessLoading: null,
+      emailAccessLoading: false,
+      emailAccess: [],
+      emailAccessInput: '',
+      accessControlDialog: false,
+      linkAccessLoading: false,
+      linkAccess: false,
       blank: {},
       papers: [],
       paperList: false,
       paperConfigurator: false,
       create: false,
       icons: {
+        mdiClose,
         ziSettings,
         ziPaperPlane,
         ziPrint,
@@ -382,27 +477,14 @@ export default {
     }
   },
   computed: {
-    // spec () {
-    //   return {
-    //     shipped: false,
-    //     containers: [
-    //       { type: '20', loaded: 100 },
-    //       { type: '20', loaded: 28 },
-    //     ],
-    //     estimateShippingDate: '2019-09-23T17:28:48.880Z',
-    //     totalVolume: 7.3,
-    //     totalWeight: 799,
-    //     qtyOfPackages: 27,
-    //     finalCost: 260906.20,
-    //     finalObtainCost: 101300,
-    //     profit: 37759.37,
-    //     totalPrepay: 101300,
-    //     totalClientDebt: 159606.2,
-    //     currencyRate: 9.256,
-    //   }
-    // },
+    link () {
+      return `${window.location.protocol}//${window.location.host}/paper/${this.specId}`
+    },
     orgId () {
       return this.$route.params.orgId
+    },
+    specId () {
+      return this.$route.params.specId
     },
     containers () {
       return this.spec.containers || []
@@ -416,6 +498,15 @@ export default {
     },
   },
   watch: {
+    accessControlDialog (val) {
+      if (val) {
+        // this.getEmailAccess()
+      } else {
+        setTimeout(() => {
+          this.emailAccessInput = ''
+        }, 250)
+      }
+    },
     paperConfigurator (val) {
       if (!val) {
         setTimeout(() => {
@@ -426,6 +517,185 @@ export default {
     },
   },
   methods: {
+    async getEmailAccess () {
+      try {
+        this.emailAccessLoading = true
+        const { data } = await this.$apollo.query({
+          query: GET_SPEC_EMAIL_ACCESS,
+          variables: {
+            id: this.specId,
+          },
+          fetchPolicy: 'network-only',
+        })
+        this.emailAccess = data.getSpecEmailAccess || []
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.emailAccessLoading = false
+      }
+    },
+    async addEmailAccess (email) {
+      try {
+        const errors = this.$refs.emailAccessInput.validate()
+        if (errors) return
+        this.addEmailAccessLoading = true
+        const result = await this.$apollo.mutate({
+          mutation: ADD_EMAIL_ACCESS_TO_SPEC,
+          variables: {
+            specId: this.specId,
+            email,
+          },
+        })
+        this.getEmailAccess()
+        this.emailAccessInput = ''
+        return result
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.addEmailAccessLoading = false
+      }
+    },
+    async removeEmailAccess (email) {
+      try {
+        this.removeEmailAccessLoading = email
+        const result = await this.$apollo.mutate({
+          mutation: REMOVE_EMAIL_ACCESS_TO_SPEC,
+          variables: {
+            specId: this.specId,
+            email,
+          },
+        })
+        this.getEmailAccess()
+        return result
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.removeEmailAccessLoading = false
+      }
+    },
+    async sendLinkAccessToEmail (email) {
+      try {
+        const errors = this.$refs.emailAccessInput.validate()
+        if (errors) return
+        this.sendAccessLinkLoading = true
+        const result = await this.$apollo.mutate({
+          mutation: SEND_LINK_ACCESS_TO_EMAIL,
+          variables: {
+            specId: this.specId,
+            email,
+          },
+        })
+        this.emailAccessInput = ''
+        this.$notify({
+          color: 'green',
+          text: this.$t('message.emailSent', { email }),
+          timeout: 6000,
+        })
+        return result
+      } catch (error) {
+        this.$notify({
+          color: 'red',
+          text: this.$t('message.failedToSent'),
+          timeout: 6000,
+        })
+        throw new Error(error)
+      } finally {
+        this.sendAccessLinkLoading = false
+      }
+    },
+    copyLink () {
+      let selection = null
+      try {
+        const input = this.$refs.linkInput
+        if (!input) {
+          throw new Error('Input not find.')
+        }
+        selection = document.getSelection().rangeCount > 0
+          ? document.getSelection().getRangeAt(0)
+          : false
+        input.$el.querySelector('input').select()
+        const successful = document.execCommand('copy')
+        if (successful) {
+          this.$notify({
+            color: 'green',
+            text: this.$t('message.linkCopied'),
+            timeout: 6000,
+          })
+        } else {
+          throw new Error('Unsuccessful.')
+        }
+      } catch (error) {
+        this.$logger.info('Copy link error: ', error)
+        this.$notify({
+          color: 'orange',
+          text: this.$t('message.linkNotCopied'),
+          timeout: 6000,
+        })
+      }
+      document.getSelection().removeAllRanges()
+      if (selection) {
+        document.getSelection().addRange(selection)
+      }
+    },
+    async getLinkAccess () {
+      try {
+        this.linkAccessLoading = true
+        const { data } = await this.$apollo.query({
+          query: GET_SPEC_LINK_ACCESS,
+          variables: {
+            id: this.specId,
+          },
+          fetchPolicy: 'network-only',
+        })
+        this.linkAccess = data.getSpecLinkAccess || null
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.linkAccessLoading = false
+      }
+    },
+    async updateLinkAccess (value) {
+      try {
+        if (value) {
+          await this.openLinkAccess()
+        } else {
+          await this.closeLinkAccess()
+        }
+        this.$notify({
+          color: 'primary',
+          text: 'Настройки доступа по ссылке обновлены.',
+          timeout: 6000,
+        })
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
+    async openLinkAccess () {
+      try {
+        const result = await this.$apollo.mutate({
+          mutation: OPEN_LINK_ACCESS,
+          variables: {
+            specId: this.specId,
+          },
+        })
+        return result
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
+    async closeLinkAccess () {
+      try {
+        const result = await this.$apollo.mutate({
+          mutation: CLOSE_LINK_ACCESS,
+          variables: {
+            specId: this.specId,
+          },
+        })
+        return result
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
     printPDF () {
       pdfMake.vfs = pdfFonts.pdfMake.vfs
       const dd = {
@@ -865,7 +1135,7 @@ export default {
 }
 
 .spec-summary__info {
-  max-width: 340px;
+  max-width: 320px;
 }
 
 .spec-summary__cost {
@@ -873,15 +1143,21 @@ export default {
   max-width: 490px;
 }
 .spec-summary__cost__card {
-  padding: 40px 60px;
+  padding: 18px 14px;
   background-color: #272727;
   border-radius: 4px;
-  font-size: 18px;
+  font-size: 16px;
+}
+@screen sm {
+  .spec-summary__cost__card {
+    font-size: 18px;
+    padding: 40px 60px;
+  }
 }
 
 .spec-summary__actions {
   width: 100%;
-  padding-top: 20px;
+  padding-top: 16px;
   padding-bottom: 20px;
 }
 .spec-summary__actions > button {
@@ -893,7 +1169,13 @@ export default {
 
 @screen lg {
   .spec-summary__actions {
-    width: 120px;
+    width: 180px;
+  }
+  .spec-summary__cost {
+    @apply mx-4;
+  }
+  .spec-summary__info {
+    width: 320px;
   }
 }
 .spec-summary__container {
@@ -934,7 +1216,7 @@ export default {
 }
 
 .spec-summary .leaders {
-  line-height: 1.5rem;
+  line-height: 1.625rem;
   padding: 0;
   overflow-x: hidden;
   list-style: none}

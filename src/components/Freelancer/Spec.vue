@@ -43,7 +43,7 @@
               outlined
               colored
               hide-details
-              class="text-sm w-40 mr-2 md:p-0 leading-normal"
+              class="text-sm w-48 mr-2 md:p-0 leading-normal"
               @input="updateInvoice({
                 invoiceNo: $event
               }, item.id)"
@@ -65,7 +65,7 @@
                     colored
                     readonly
                     hide-details
-                    class="text-sm w-40 mr-2 md:p-0 leading-normal"
+                    class="text-sm w-32 mr-2 md:p-0 leading-normal"
                   />
                 </div>
               </template>
@@ -126,7 +126,7 @@
                     colored
                     readonly
                     hide-details
-                    class="text-sm w-40 mr-2 md:p-0 leading-normal"
+                    class="text-sm w-32 mr-2 md:p-0 leading-normal"
                   />
                 </div>
               </template>

@@ -10,7 +10,7 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemo
 import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from '../../graphql'
 import { GET_BACKEND_VERSION } from '../../graphql/queries'
-import { BACKEND_VERSION_HEADER_KEY } from '../../config/globals'
+import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY } from '../../config/globals'
 import { Auth, Logger } from '../index'
 import router from '../../router'
 
@@ -39,6 +39,24 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
             },
           ],
         },
+        {
+          kind: 'UNION',
+          name: 'SpecPaperDeltaObject',
+          possibleTypes: [
+            {
+              name: 'PaperSpec',
+            },
+            {
+              name: 'PaperInvoice',
+            },
+            {
+              name: 'PaperProduct',
+            },
+            {
+              name: 'PayloadFields',
+            },
+          ],
+        },
       ],
     },
   },
@@ -47,13 +65,33 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 const cache = new InMemoryCache({ fragmentMatcher })
 
 const authLink = setContext(async (request, { headers }) => {
-  const session = await Auth.currentSession()
-  const token = session.getIdToken().getJwtToken()
+  const operationName = request.operationName
+  let token = null
+  let sid = null
+  if (
+    operationName === 'GetPaperSpec' ||
+    operationName === 'AddCommentToPaperSpec' ||
+    operationName === 'ReplyToPaperSpecComment' ||
+    operationName === 'AddCommentToPaperProduct' ||
+    operationName === 'ReplyToPaperProductComment' ||
+    operationName === 'MarkPaperSpecCommentsAsViewed' ||
+    operationName === 'MarkPaperProductCommentsAsViewed'
+  ) {
+    sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
+    try {
+      const session = await Auth.currentSession()
+      token = session.getIdToken().getJwtToken()
+    } catch (error) {} // eslint-disable-line
+  } else {
+    const session = await Auth.currentSession()
+    token = session.getIdToken().getJwtToken()
+  }
   // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
       authorization: token ? `${token}` : '',
+      sid,
     },
   }
 })
@@ -94,8 +132,10 @@ const wsLink = new WebSocketLink({
     connectionParams: async () => {
       const session = await Auth.currentSession()
       const token = session.getIdToken().getJwtToken()
+      const sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
       return {
         authToken: token || '',
+        sid,
       }
     },
   },

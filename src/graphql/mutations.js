@@ -385,3 +385,105 @@ export const CANCEL_INVITATION = gql`
     cancelInvitation(id: $id)
   }
 `
+
+export const OPEN_LINK_ACCESS = gql`
+  mutation OpenLinkAccess($specId: ID!) {
+    openLinkAccess(specId: $specId)
+  }
+`
+
+export const CLOSE_LINK_ACCESS = gql`
+  mutation CloseLinkAccess($specId: ID!) {
+    closeLinkAccess(specId: $specId)
+  }
+`
+
+export const ADD_EMAIL_ACCESS_TO_SPEC = gql`
+  mutation AddEmailAccessToSpec($specId: ID!, $email: String!) {
+    addEmailAccessToSpec(specId: $specId, email: $email)
+  }
+`
+
+export const REMOVE_EMAIL_ACCESS_TO_SPEC = gql`
+  mutation RemoveEmailAccessToSpec($specId: ID!, $email: String!) {
+    removeEmailAccessToSpec(specId: $specId, email: $email)
+  }
+`
+
+export const SEND_LINK_ACCESS_TO_EMAIL = gql`
+  mutation SendLinkAccessToEmail($specId: ID!, $email: String!) {
+    sendLinkAccessToEmail(specId: $specId, email: $email)
+  }
+`
+
+export const ADD_COMMENT_TO_SPEC = gql`
+  mutation AddCommentToSpec($specId: ID!, $comment: String!) {
+    addCommentToSpec(specId: $specId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_SPEC_COMMENT = gql`
+  mutation ReplyToSpecComment($specId: ID!, $commentId: ID!, $comment: String!) {
+    replyToSpecComment(specId: $specId, commentId: $commentId, comment: $comment)
+  }
+`
+
+export const ADD_COMMENT_TO_PRODUCT = gql`
+  mutation AddCommentToProduct($productId: ID!, $comment: String!) {
+    addCommentToProduct(productId: $productId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_PRODUCT_COMMENT = gql`
+  mutation ReplyToProductComment($productId: ID!, $commentId: ID!, $comment: String!) {
+    replyToProductComment(productId: $productId, commentId: $commentId, comment: $comment)
+  }
+`
+
+export const ADD_COMMENT_TO_PAPER_SPEC = gql`
+  mutation AddCommentToPaperSpec($specId: ID!, $comment: String!) {
+    addCommentToPaperSpec(specId: $specId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_PAPER_SPEC_COMMENT = gql`
+  mutation ReplyToPaperSpecComment($specId: ID!, $commentId: ID!, $comment: String!) {
+    replyToPaperSpecComment(specId: $specId, commentId: $commentId, comment: $comment)
+  }
+`
+
+export const ADD_COMMENT_TO_PAPER_PRODUCT = gql`
+  mutation AddCommentToPaperProduct($productId: ID!, $comment: String!) {
+    addCommentToPaperProduct(productId: $productId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_PAPER_PRODUCT_COMMENT = gql`
+  mutation ReplyToPaperProductComment($productId: ID!, $commentId: ID!, $comment: String!) {
+    replyToPaperProductComment(productId: $productId, commentId: $commentId, comment: $comment)
+  }
+`
+
+export const MARK_SPEC_COMMENTS_AS_VIEWED = gql`
+  mutation MarkSpecCommentsAsViewed($specId: ID!, $commentsIds: [ID!]) {
+    markSpecCommentsAsViewed(specId: $specId, commentsIds: $commentsIds)
+  }
+`
+
+export const MARK_PRODUCT_COMMENTS_AS_VIEWED = gql`
+  mutation MarkProductCommentsAsViewed($productId: ID!, $commentsIds: [ID!]) {
+    markProductCommentsAsViewed(productId: $productId, commentsIds: $commentsIds)
+  }
+`
+
+export const MARK_PAPER_SPEC_COMMENTS_AS_VIEWED = gql`
+  mutation MarkPaperSpecCommentsAsViewed($specId: ID!, $commentsIds: [ID!]) {
+    markPaperSpecCommentsAsViewed(specId: $specId, commentsIds: $commentsIds)
+  }
+`
+
+export const MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED = gql`
+  mutation MarkPaperProductCommentsAsViewed($productId: ID!, $commentsIds: [ID!]) {
+    markPaperProductCommentsAsViewed(productId: $productId, commentsIds: $commentsIds)
+  }
+`

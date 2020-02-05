@@ -23,6 +23,9 @@ export default {
     }
   },
   computed: {
+    specId () {
+      return this.$route.params.specId
+    },
     hasCustomPurchasePrice () {
       return !this.profitForAll && isNumber(this.cost.customPurchasePrice)
     },
@@ -92,7 +95,7 @@ export default {
         await this.$apollo.query({
           query: GET_SPEC,
           variables: {
-            id: this.$route.params.specId,
+            id: this.specId,
           },
           fetchPolicy: 'network-only',
         })

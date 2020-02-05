@@ -12,7 +12,21 @@
       </span>
     </td>
     <td class="text-gray-lighter text-xs leading-none py-2 align-top">
-      {{ index + 1 }}
+      <div class="pb-2">
+        {{ index + 1 }}
+      </div>
+      <div>
+        <Comments
+          :items="item.comments"
+          :product-id="item.id"
+          :spec-id="specId"
+          is-product
+          sm
+          right
+          icon-size="12"
+          class="inline-block"
+        />
+      </div>
     </td>
     <td class="text-primary text-center">
       <ProductImage
@@ -214,9 +228,13 @@ import {
   InvoiceProfitType,
 } from '@/graphql/enums'
 import product from '../../mixins/product'
+import Comments from '../Comments'
 
 export default {
   name: 'ManagerProduct',
+  components: {
+    Comments,
+  },
   mixins: [product],
   props: {
     item: {

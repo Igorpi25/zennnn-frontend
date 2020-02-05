@@ -35,7 +35,7 @@
           @click="expand"
         >
           <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto text-sm" style="color:#aaaaaa">
-            <span class="mr-2">{{ item.invoiceNo || 'A-123-666-8d' }} </span>
+            <span class="mr-2">{{ item.invoiceNo || '' }} </span>
           </div>
         </InvoiceHeader>
         <Invoice

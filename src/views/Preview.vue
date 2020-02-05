@@ -1,31 +1,5 @@
 <template>
   <div>
-
-    <v-dialog
-      v-model="leaveNote"
-      max-width="443"
-    >
-      <PreviewMessageModal
-        :heading="$t('preview.leaveNote')"
-        :client="client"
-        is-note
-        @save="saveMessage"
-        @close="leaveNote = false"
-      />
-    </v-dialog>
-
-    <v-dialog
-      v-model="leaveComment"
-      max-width="443"
-    >
-      <PreviewMessageModal
-        :heading="$t('preview.leaveComment')"
-        :client="client"
-        @save="saveMessage"
-        @close="leaveComment= false"
-      />
-    </v-dialog>
-
     <div class="content view">
       <StatusBar />
       <div class="container container--sm">
@@ -54,12 +28,12 @@
                 <div>
                   <span>{{ item.invoiceNo }}</span>&nbsp;
                   <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
-                  <span>{{ formatDate(item.purchaseDate) }}</span>&nbsp;
+                  <span>{{ item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : '-' }}</span>&nbsp;
                 </div>
                 <span class="hidden md:block mx-1">//</span>&nbsp;
                 <div>
                   <span class="text-sm">{{ $t('preview.expectedShipment').toLowerCase() }}</span>&nbsp;
-                  <span>{{ formatDate(item.shippingDate) }}</span>
+                  <span>{{ item.shippingDate ? $d($parseDate(item.shippingDate), 'short') : '-' }}</span>
                 </div>
               </div>
             </InvoiceHeader>
@@ -70,7 +44,7 @@
                   :items="item.products"
                   table-width="100%"
                   table-class="table-fixed"
-                  thead-class="text-accent2"
+                  thead-class="text-accent2 text-xs leading-tight"
                   headers-whitespace-normal
                 >
                   <template v-slot:items="{ items }">
@@ -79,19 +53,22 @@
                       :key="item.id"
                       class="items base-accent3 border-none"
                     >
-                      <td class="text-gray-lighter text-right leading-none py-2 align-top">
-                        {{ index + 1 }}
+                      <td class="text-gray-lighter text-right align-top">
+                        <div class="leading-none py-3">
+                          {{ index + 1 }}
+                        </div>
                       </td>
                       <td>
                         <ProductImage
                           :product-id="item.id"
-                          :images="item.info.images"
+                          :images="getPreviewImage(item.images)"
+                          :upload="false"
                         />
                       </td>
                       <td>
                         <span>{{ item.name }}</span>
                         <p class="text-gray-light leading-none">{{ item.article }}</p>
-                        <span class="flex items-center mt-2">
+                        <span class="flex items-center mt-1">
                           <img
                             v-if="item.productStatus === ProductStatus.IN_PRODUCTION"
                             src="../assets/icons/factory-yellow.png"
@@ -105,7 +82,15 @@
                             v-else
                             src="../assets/icons/in-processing.png"
                           >
-                          <span class="ml-2 text-orange text-xs">
+                          <span
+                            class=" text-orange "
+                            :class="[
+                              'ml-2 text-sm',
+                              item.productStatus === ProductStatus.IN_STOCK
+                                ? 'status-stock' : item.productStatus === ProductStatus.IN_PRODUCTION
+                                  ? 'status-production' : 'status-processing'
+                            ]"
+                          >
                             <span>
                               {{ item.productStatus ? $t(`status.${item.productStatus}`) : '' }}
                             </span>
@@ -113,62 +98,112 @@
                         </span>
                       </td>
                       <td class="text-center">
-                        <div
-                          v-if="item.info.images.length > 1"
-                          class="flex justify-center items-center"
+                        <ProductImage
+                          v-if="item.images.length > 1"
+                          :product-id="item.id"
+                          :images="getAdditionImages(item.images)"
+                          :upload="false"
                         >
-                          <span class="mr-1 text-sm text-gray-lightest">
-                           + {{ item.info.images.length - 1 }}
-                          </span>
-                          <img src="@/assets/icons/pre-image.png">
+                          <template v-slot:menu-activator>
+                            <div class="flex justify-center items-center">
+                              <span class="mr-1 text-sm text-gray-lightest">
+                              + {{ item.images.length - 1 }}
+                              </span>
+                              <img src="@/assets/icons/pre-image.png">
+                            </div>
+                          </template>
+                        </ProductImage>
+                      </td>
+                      <td class="text-right">{{ $n(item.price || 0, 'decimal') }}</td>
+                      <td class="text-right">{{ $n(item.qty || 0) }}</td>
+                      <td class="text-right font-bold">{{ $n(item.amount || 0, 'decimal') }}</td>
+                      <td class="text-right">{{ $n(item.pkgQty || 0) }}</td>
+                      <td class="text-right">{{ item.pkgNo || '-' }}</td>
+                      <td class="text-center">
+                        <Comments
+                          :items="item.comments"
+                          :product-id="item.id"
+                          :spec-id="specId"
+                          is-product
+                          is-paper
+                          icon-size="24"
+                          left
+                          class="inline-block align-middle"
+                          style="color:#5a8199"
+                        />
+                      </td>
+                    </tr>
+                  </template>
+                  <template v-slot:footer>
+                    <tr class="bg-white">
+                      <td colspan="7">
+                        <div class="flex justify-end py-6">
+                          <div class="w-full max-w-xs">
+                            <div class="h-6 flex">
+                              <div class="w-32 flex-shrink-0 text-right font-bold">
+                                <span>{{ $t('preview.total') }}</span>&nbsp;
+                                <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                              </div>
+                              <div class="flex-grow dots" />
+                              <div class="font-bold">
+                                {{ $n(item.totalClientAmount || 0, 'decimal') }}
+                              </div>
+                            </div>
+                            <div class="h-6 flex text-gray-lightest">
+                              <div class="w-32 flex-shrink-0 text-right">
+                                <span>{{ $t('preview.discount') }}</span>&nbsp;
+                                <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                              </div>
+                              <div class="flex-grow dots" />
+                              <div class="font-bold">
+                                {{ $n(item.discount || 0, 'decimal') }}
+                              </div>
+                            </div>
+                            <div class="h-6 flex">
+                              <div class="w-32 flex-shrink-0 text-right">
+                                <span>{{ $t('preview.prepay') }}</span>&nbsp;
+                                <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                              </div>
+                              <div class="flex-grow dots" />
+                              <div class="font-bold">
+                                {{ $n(item.prepayment || 0, 'decimal') }}
+                              </div>
+                            </div>
+                            <div class="h-6 flex">
+                              <div class="w-32 flex-shrink-0 text-right">
+                                <span>{{ $t('preview.residue') }}</span>&nbsp;
+                                <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                              </div>
+                              <div class="flex-grow dots" />
+                              <div class="font-bold" style="color:#ff0000">
+                                {{ $n(item.clientDebt || 0, 'decimal') }}
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </td>
-                      <td class="text-right">{{ $n(item.cost.clientPrice) }}</td>
-                      <td class="text-center">{{ item.qty }}</td>
-                      <td class="text-right font-bold">{{ $n(item.cost.clientAmount) }}</td>
-                      <td class="text-right">{{ item.store.pkgQty }}</td>
-                      <td class="text-right">{{ item.store.pkgNo }}</td>
-                      <td @click="leaveNote = true">
-                        <div class="notes-count-wrapper">
-                          <span v-if="notes.length > 0" class="notes-count-bubble">{{ notes.length }}</span>
-                          <img src="@/assets/icons/message.png" class="mx-auto">
+                      <td colspan="3">
+                        <div class="py-6 px-5">
+                          <div class="text-sm">
+                            <div class="h-6 flex items-end">
+                              <span v-if="!item.discount">
+                                ({{ $t('preview.noDiscount') }})
+                              </span>
+                            </div>
+                            <div class="h-6" />
+                            <div class="h-6 flex items-end">
+                             {{ item.prepaymentDate ? $d($parseDate(item.prepaymentDate), 'short') : '--.--.--' }}
+                            </div>
+                            <div class="h-6 flex items-end">
+                              {{ item.clientDebtDate ? $d($parseDate(item.clientDebtDate), 'short') : '--.--.--' }}
+                            </div>
+                          </div>
                         </div>
                       </td>
                     </tr>
                   </template>
                 </DataTable>
               </div>
-              <!-- / INVOICE FOOTER -->
-              <div class="p-2 md:p-6 w-full flex justify-end bg-white">
-                <div class="preview-footer md:mr-12 w-full md:w-1/2 flex">
-                  <ul class="leaders w-2/3">
-                    <li>
-                      <span class="bg-white font-black text-right">{{ $t('preview.total') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ $n(item.totalClientAmount) }}</span>
-                    </li>
-                    <li class="text-gray-lightest">
-                      <span class="bg-white font-semibold">{{ $t('preview.discount') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ $n(item.discount) }}</span>
-                    </li>
-                    <li>
-                      <span class="bg-white font-semibold">{{ $t('preview.prepay') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ $n(item.prepayment) }}</span>
-                    </li>
-                    <li>
-                      <span class="bg-white font-semibold">{{ $t('preview.residue') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold" style="color:#ff0000">{{ $n(item.obtainCost) }}</span>
-                    </li>
-                  </ul>
-                  <ul class="ml-5 text-sm text-gray-light">
-                    <li v-if="!item.discount" class="mt-1">({{ $t('preview.noDiscount') }})</li>
-                    <br v-else>
-                    <br>
-                    <li class="mt-1">{{ formatDate(item.prepaymentDate )|| '--.--.--' }}</li>
-                    <li class="mt-1">{{ formatDate(item.obtainCostDate) || '--.--.--' }}</li>
-                  </ul>
-                </div>
-              </div>
-              <!-- INVOICE FOOTER / -->
             </div>
           </div>
 
@@ -184,54 +219,54 @@
                     class="spec-summary__container__image spec-summary__container__image--shipped w-full"
                     style="left: -20px; width: 350px; background-size: auto; z-index: 1;"
                   />
+                  <div
+                    v-if="spec.containers.length === 1"
+                    class="spec-summary__container"
+                  >
                     <div
-                      v-if="spec.containers.length === 1"
+                      class="spec-summary__container__image spec-summary__container__image--full"
+                      :style="{
+                        width: (spec.containers[0].loaded || 0) + '%',
+                        height: '85px'
+                      }"
+                    />
+                    <img width="210" height="85" src="/img/container-empty.svg" alt="">
+                  </div>
+                  <div v-else>
+                    <div
+                      v-for="(c, i) in loadedContainers"
+                      :key="`loaded-${i}`"
                       class="spec-summary__container"
                     >
                       <div
-                        class="spec-summary__container__image spec-summary__container__image--full"
+                        class="spec-summary__container__image spec-summary__container__image--full-sm"
                         :style="{
-                          width: (spec.containers[0].loaded || 0) + '%',
-                          height: '85px'
+                          width: '100%',
+                          height: '48px'
                         }"
                       />
-                      <img width="210" height="85" src="/img/container-empty.svg" alt="">
+                      <div class="spec-summary__container__label">
+                        {{ loadedContainers.length }} x {{ c.type }}′
+                      </div>
+                      <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
                     </div>
-                    <div v-else>
+                    <div
+                      v-for="(c, i) in unloadedContainers"
+                      :key="`unloaded-${i}`"
+                      class="spec-summary__container"
+                    >
                       <div
-                        v-for="(c, i) in loadedContainers"
-                        :key="`loaded-${i}`"
-                        class="spec-summary__container"
-                      >
-                        <div
-                          class="spec-summary__container__image spec-summary__container__image--full-sm"
-                          :style="{
-                            width: '100%',
-                            height: '48px'
-                          }"
-                        />
-                        <div class="spec-summary__container__label">
-                          {{ loadedContainers.length }} x {{ c.type }}′
-                        </div>
-                        <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
-                      </div>
-                      <div
-                        v-for="(c, i) in unloadedContainers"
-                        :key="`unloaded-${i}`"
-                        class="spec-summary__container"
-                      >
-                        <div
-                          class="spec-summary__container__image spec-summary__container__image--full-sm"
-                          :style="{
-                            width: (c.loaded || 0) + '%',
-                            height: '48px'
-                          }"
-                        />
-                        <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
-                      </div>
+                        class="spec-summary__container__image spec-summary__container__image--full-sm"
+                        :style="{
+                          width: (c.loaded || 0) + '%',
+                          height: '48px'
+                        }"
+                      />
+                      <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
                     </div>
                   </div>
-                  <div>
+                </div>
+                <div>
                   <ul class="leaders">
                     <li
                       v-for="(c, i) in unloadedContainers"
@@ -250,7 +285,7 @@
                     <li>
                       <span>{{ $t('preview.estimateDate') }}</span>
                       <span class="leaders__num">
-                        {{ $d($parseDate(spec.estimateShippingDate), 'short') }}
+                        {{ spec.estimateShippingDate ? $d($parseDate(spec.estimateShippingDate), 'short') : '-' }}
                       </span>
                     </li>
                     <li>
@@ -276,41 +311,45 @@
               </div>
               <div class="preview-summary__cost">
                 <div class="preview-summary__cost__card">
-                  <ul class="leaders">
-                    <li class="pb-2">
-                      <span class="font-bold">
-                        {{ $t('preview.costOfGood') }} {{ $t('currency.CNY.symbol') }}
-                      </span>
-                      <!-- TODO to custom component or Intl polyfill -->
-                      <!-- i18n-n has Error formatter.formatToParts is not a function. -->
-                      <span class="flex font-bold">
-                        <div class="text-accent1">{{ $n(spec.finalCost, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
-                      </span>
-                    </li>
-                    <li class="pb-2">
-                      <span>
-                        {{ $t('preview.totalPrepay') }} {{ $t('currency.CNY.symbol') }}
-                      </span>
-                      <span class="flex ">
-                        <div class="text-accent1">{{ $n(spec.totalPrepay, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
-                      </span>
-                    </li>
-                    <li class="pb-2">
-                      <span>
-                        {{ $t('preview.finalToPay') }}  {{ $t('currency.CNY.symbol') }}
-                      </span>
-                      <span class="flex font-bold" style="color: #ff0000;">
-                        <div>{{ $n(spec.totalClientDebt, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
-                      </span>
-                    </li>
-                  </ul>
-                  <div class="mt-8 text-sm text-right">
+                  <div class="flex pb-2">
+                    <span class="w-48 flex-shrink-0 text-right font-bold">
+                      <span>{{ $t('preview.costOfGood') }}</span>&nbsp;
+                      <span>{{ $t('currency.CNY.symbol') }}</span>
+                    </span>
+                    <!-- TODO to custom component or Intl polyfill -->
+                    <!-- i18n-n has Error formatter.formatToParts is not a function. -->
+                    <div class="flex-grow dots" />
+                    <span class="font-bold flex items-baseline">
+                      <div class="text-accent1">{{ $n(spec.finalCost, 'integer') }}</div>
+                      <div class="px-px" style="letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
+                      <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
+                    </span>
+                  </div>
+                  <div class="flex pb-2">
+                    <span class="w-48 flex-shrink-0 text-right">
+                      <span>{{ $t('preview.totalPrepay') }}</span>&nbsp;
+                      <span>{{ $t('currency.CNY.symbol') }}</span>
+                    </span>
+                    <div class="flex-grow dots" />
+                    <span class="flex items-baseline">
+                      <div class="text-accent1">{{ $n(spec.totalPrepay, 'integer') }}</div>
+                      <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
+                      <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
+                    </span>
+                  </div>
+                  <div class="flex pb-2">
+                    <span class="w-48 flex-shrink-0 text-right">
+                      <span>{{ $t('preview.finalToPay') }}</span>&nbsp;
+                      <span>{{ $t('currency.CNY.symbol') }}</span>
+                    </span>
+                    <div class="flex-grow dots" />
+                    <span class="flex items-baseline font-bold" style="color: #ff0000;">
+                      <div>{{ $n(spec.totalClientDebt, 'integer') }}</div>
+                      <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
+                      <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
+                    </span>
+                  </div>
+                  <!-- <div class="mt-8 text-sm text-right">
                     <v-menu
                       v-model="menuCurrency"
                       max-width="175"
@@ -341,20 +380,29 @@
                         </ul>
                       </template>
                     </v-menu>
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <div class="preview-summary__actions">
-                <div @click.prevent>
+                <div class="select-none leading-tight" @click.prevent>
                   <img src="@/assets/icons/printer.png" class="mr-3">
                   <span class="text-left">{{ $t('preview.printThis') }}</span>
                 </div>
-                <div @click.prevent>
+                <div class="select-none leading-tight" @click.prevent>
                   <img src="@/assets/icons/pdf.png" class="mr-3">
                   <span class="text-left">{{ $t('preview.downloadPDF') }}</span>
                 </div>
-                <div @click="leaveComment = true">
-                  <img src="@/assets/icons/message.png" class="mr-3">
+                <div class="select-none leading-tight" @click="$refs.specComments.openMenu()">
+                  <Comments
+                    ref="specComments"
+                    :items="spec.comments"
+                    :spec-id="specId"
+                    class="mr-3"
+                    is-paper
+                    icon-size="24"
+                    :right="$vuetify.breakpoint.lgAndDown"
+                    :left="!$vuetify.breakpoint.lgAndDown"
+                  />
                   <span class="text-left">{{ $t('preview.comment') }}</span>
                </div>
               </div>
@@ -368,7 +416,7 @@
 </template>
 
 <script>
-import format from 'date-fns/format'
+import deepmerge from 'deepmerge'
 
 import {
   mdiChevronDown,
@@ -384,28 +432,40 @@ import {
   ziShare,
 } from '@/assets/icons'
 
-import PreviewMessageModal from '@/components/PreviewMessageModal'
-
-import StatusBar from '@/components/StatusBar'
-import Copyright from '@/components/Copyright'
+import StatusBar from '../components/StatusBar'
+import Copyright from '../components/Copyright'
 import InvoiceHeader from '../components/InvoiceHeader.vue'
 import ProductImage from '../components/ProductImage.vue'
+import Comments from '../components/Comments'
 
-import { ProductStatus, InvoiceStatus } from '@/graphql/enums'
-import { GET_SPEC } from '../graphql/queries'
+import { ProductStatus, InvoiceStatus, Typename, Operation } from '../graphql/enums'
+import { GET_PAPER_SPEC } from '../graphql/queries'
+import { PAPER_SPEC_DELTA } from '../graphql/subscriptions'
+import {
+  PAPER_SPEC_FRAGMENT,
+  PAPER_INVOICE_FRAGMENT,
+  PAPER_PRODUCT_FRAGMENT,
+  PAPER_SPEC_INVOICES_FRAGMENT,
+  PAPER_INVOICE_PRODUCTS_FRAGMENT,
+} from '../graphql/typeDefs'
 
 export default {
   name: 'Preview',
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$el.classList.add('light-theme')
+    })
+  },
   components: {
-    PreviewMessageModal,
     StatusBar,
     Copyright,
     InvoiceHeader,
     ProductImage,
+    Comments,
   },
   apollo: {
-    getSpec: {
-      query: GET_SPEC,
+    getPaperSpec: {
+      query: GET_PAPER_SPEC,
       variables () {
         return {
           id: this.specId,
@@ -415,14 +475,6 @@ export default {
   },
   data () {
     return {
-      leaveNote: false,
-      notes: [],
-      leaveComment: false,
-      comments: [],
-      containers: [
-        { type: '20', loaded: 100 },
-        { type: '20', loaded: 28 },
-      ],
       expanded: [],
       icons: {
         mdiChevronDown,
@@ -449,37 +501,232 @@ export default {
         { text: `${this.$t('preview.price')}(¥)`, value: 'price', width: 80 },
         { text: this.$t('preview.qty'), value: 'qty', width: 70 },
         { text: `${this.$t('preview.cost')}(¥)`, value: 'cost', align: 'left', width: 90 },
-        { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'left', width: 62 },
-        { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'left', width: 62 },
-        { text: this.$t('preview.leaveNote'), value: 'note', align: 'left', width: 85 },
+        { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'left', width: 78 },
+        { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'left', width: 78 },
+        { text: this.$t('preview.leaveNote'), value: 'note', align: 'left', width: 78 },
       ]
     },
     specId () {
       return this.$route.params.specId
     },
     spec () {
-      return this.getSpec || {}
+      return this.getPaperSpec || {}
     },
     client () {
-      const firstName = (this.getSpec && this.getSpec.client && this.getSpec.client.firstName) || {}
-      const lastName = (this.getSpec && this.getSpec.client && this.getSpec.client.lastName) || {}
+      const firstName = (this.spec.client && this.spec.client.firstName) || {}
+      const lastName = (this.spec.client && this.spec.client.lastName) || {}
       return firstName + ' ' + lastName || {}
     },
     items () {
-      return this.getSpec && this.getSpec.invoices
+      return this.spec.invoices
+    },
+    containers () {
+      return this.spec.containers || []
     },
     unloadedContainers () {
       return this.containers.filter(c => c.loaded !== 100)
     },
   },
+  mounted () {
+    const commentsMerge = (target, source) => {
+      const destination = target.slice()
+      source.forEach(s => {
+        const index = target.findIndex(el => el.id === s.id)
+        if (index === -1) {
+          destination.push(s)
+        } else {
+          destination.splice(index, 1, Object.assign(target[index], s))
+        }
+      })
+      return destination
+    }
+
+    const observer = this.$apollo.subscribe({
+      query: PAPER_SPEC_DELTA,
+      variables: {
+        specId: this.specId,
+      },
+      fetchPolicy: 'no-cache',
+    })
+
+    const apolloClient = this.$apollo.provider.defaultClient
+
+    observer.subscribe({
+      next: ({ data }) => {
+        const delta = data.paperSpecDelta
+        const operation = delta.operation
+        const typename = delta.payload.__typename
+
+        this.$logger.info(`[${typename}]: ${JSON.stringify(data)}`)
+
+        // PRODUCT
+
+        if (operation === Operation.INSERT_PRODUCT) {
+          const parentInvoice = apolloClient.readFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+            fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+            fragmentName: 'PaperInvoiceProductsFragment',
+          })
+
+          if (!parentInvoice.products.some(el => el.id === delta.payload.id)) {
+            parentInvoice.products.push(delta.payload)
+
+            setTimeout(() => {
+              apolloClient.writeFragment({
+                id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+                fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+                fragmentName: 'PaperInvoiceProductsFragment',
+                data: parentInvoice,
+              })
+            }, 0)
+          }
+        }
+
+        if (operation === Operation.UPDATE_PRODUCT) {
+          const mergeOptions = {
+            customMerge: (key) => {
+              if (key === 'comments') {
+                return commentsMerge
+              }
+              if (key === 'images') {
+                const merge = (_, source) => {
+                  return source || []
+                }
+                return merge
+              }
+            },
+          }
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.PAPER_PRODUCT}:${delta.payload.id}`,
+            fragment: PAPER_PRODUCT_FRAGMENT,
+            fragmentName: 'PaperProductFragment',
+          })
+          const data = delta.payload.__typename === Typename.PAPER_PRODUCT
+            ? deepmerge(cacheData, delta.payload, mergeOptions)
+            : deepmerge(cacheData, delta.payload.fields, mergeOptions)
+          apolloClient.writeFragment({
+            id: `${Typename.PAPER_PRODUCT}:${delta.payload.id}`,
+            fragment: PAPER_PRODUCT_FRAGMENT,
+            fragmentName: 'PaperProductFragment',
+            data,
+          })
+        }
+
+        if (operation === Operation.DELETE_PRODUCT) {
+          let parentInvoice = apolloClient.readFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+            fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+            fragmentName: 'PaperInvoiceProductsFragment',
+          })
+
+          const index = parentInvoice.products.findIndex(p => p.id === delta.payload.id)
+
+          if (index !== -1) {
+            parentInvoice.products.splice(index, 1)
+            apolloClient.writeFragment({
+              id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+              fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+              fragmentName: 'PaperInvoiceProductsFragment',
+              data: parentInvoice,
+            })
+          }
+        }
+
+        // INVOICE
+
+        if (operation === Operation.INSERT_INVOICE) {
+          const parentSpec = apolloClient.readFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+            fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+            fragmentName: 'PaperSpecInvoicesFragment',
+          })
+
+          if (!parentSpec.invoices.some(el => el.id === delta.payload.id)) {
+            parentSpec.invoices.push(delta.payload)
+
+            apolloClient.writeFragment({
+              id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+              fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+              fragmentName: 'PaperSpecInvoicesFragment',
+              data: parentSpec,
+            })
+          }
+        }
+
+        if (operation === Operation.UPDATE_INVOICE) {
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.payload.id}`,
+            fragment: PAPER_INVOICE_FRAGMENT,
+            fragmentName: 'PaperInvoiceFragment',
+          })
+          const data = delta.payload.__typename === Typename.PAPER_INVOICE
+            ? Object.assign({}, cacheData, delta.payload)
+            : Object.assign({}, cacheData, delta.payload.fields)
+          apolloClient.writeFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.payload.id}`,
+            fragment: PAPER_INVOICE_FRAGMENT,
+            fragmentName: 'PaperInvoiceFragment',
+            data,
+          })
+        }
+
+        if (operation === Operation.DELETE_INVOICE) {
+          let parentSpec = apolloClient.readFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+            fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+            fragmentName: 'PaperSpecInvoicesFragment',
+          })
+
+          const index = parentSpec.invoices.findIndex(p => p.id === delta.payload.id)
+
+          if (index !== -1) {
+            parentSpec.invoices.splice(index, 1)
+            apolloClient.writeFragment({
+              id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+              fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+              fragmentName: 'PaperSpecInvoicesFragment',
+              data: parentSpec,
+            })
+          }
+        }
+
+        // SPEC
+
+        if (operation === Operation.UPDATE_SPEC) {
+          const mergeOptions = {
+            customMerge: (key) => {
+              if (key === 'comments') {
+                return commentsMerge
+              }
+            },
+          }
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.payload.id}`,
+            fragment: PAPER_SPEC_FRAGMENT,
+            fragmentName: 'PaperSpecFragment',
+          })
+          const data = delta.payload.__typename === Typename.PAPER_SPEC
+            ? deepmerge(cacheData, delta.payload, mergeOptions)
+            : deepmerge(cacheData, delta.payload.fields, mergeOptions)
+          apolloClient.writeFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.payload.id}`,
+            fragment: PAPER_SPEC_FRAGMENT,
+            fragmentName: 'PaperSpecFragment',
+            data,
+          })
+        }
+      },
+      error: (error) => {
+        this.$logger.warn('Error: ', error)
+      },
+    })
+  },
   methods: {
-    formatDate (date) {
-      if (!date) return null
-      const parsedDate = this.$parseDate(date)
-      return format(parsedDate, this.$i18n.locale === 'zh'
-        ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
-          ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
-      )
+    getPreviewImage (images) {
+      return (images || []).slice(0, 1)
+    },
+    getAdditionImages (images) {
+      return (images || []).slice(1)
     },
     expand (id) {
       if (this.expanded.includes(id)) {
@@ -492,26 +739,6 @@ export default {
     collapseAll () {
       this.expanded = []
     },
-    saveMessage (message) {
-      if (this.leaveNote) {
-        this.notes.push(message)
-        localStorage.setItem('notes', JSON.stringify(this.notes))
-        this.leaveNote = false
-      } else {
-        this.comments.push(message)
-        localStorage.setItem('comments', JSON.stringify(this.comments))
-        this.leaveComment = false
-      }
-    },
-  },
-  created () {
-    this.notes = JSON.parse(localStorage.getItem('notes')) || []
-    this.comments = JSON.parse(localStorage.getItem('comments')) || []
-  },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      vm.$el.classList.add('light-theme')
-    })
   },
 }
 </script>
@@ -547,7 +774,7 @@ export default {
 }
 
 .preview-summary__info {
-  max-width: 340px;
+  max-width: 320px;
 }
 
 .preview-summary__cost {
@@ -556,19 +783,22 @@ export default {
 }
 .preview-summary__cost__card {
   margin-top: 20px;
-  padding: 60px 20px 20px;
+  padding: 18px 14px;
   background-color: #272727;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 16px;
   background: linear-gradient(to top, #f4f4f4 70%, #e5e5e5 100%);
   @apply text-accent1;
 }
-@screen md {
+@screen sm {
+  .preview-summary__cost__card {
+    padding: 40px 60px;
+    font-size: 18px;
+  }
+}
+@screen lg {
   .preview-summary__cost__card {
     margin-top: 0;
-    padding-left: 60px;
-    padding-right: 60px;
-    font-size: 18px;
   }
 }
 
@@ -588,7 +818,13 @@ export default {
 }
 @screen lg {
   .preview-summary__actions {
-    width: 120px;
+    width: 180px;
+  }
+  .preview-summary__cost {
+    @apply mx-4;
+  }
+  .preview-summary__info {
+    width: 320px;
   }
 }
 
@@ -620,7 +856,7 @@ export default {
 
 .preview-footer .leaders,
 .preview-summary .leaders {
-  line-height: 1.5rem;
+  line-height: 1.625rem;
   padding: 0;
   overflow-x: hidden;
   list-style: none}

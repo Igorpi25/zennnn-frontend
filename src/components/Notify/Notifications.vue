@@ -65,7 +65,7 @@ export default {
   display: flex;
   justify-content: center;
   pointer-events: none;
-  z-index: 100;
+  z-index: 999;
 }
 .notifications > div {
   max-width: 320px;
