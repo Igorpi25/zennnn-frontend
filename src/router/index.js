@@ -58,12 +58,14 @@ const routes = [
             localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
             next({ name: 'specs', params: { orgId: org.id } })
           } else {
+            localStorage.removeItem(CURRENT_ORG_STORE_KEY)
             throw new Error('Not found')
           }
         } else if (getOrgs.some(el => el.id === orgId)) {
           localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
           next()
         } else {
+          localStorage.removeItem(CURRENT_ORG_STORE_KEY)
           throw new Error('Not found')
         }
       } catch (error) {
