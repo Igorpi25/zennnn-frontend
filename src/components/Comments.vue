@@ -39,6 +39,7 @@
       >
         <div>
           <CommentInput
+            ref="commentInput"
             v-model="comment"
             :loading="addCommentLoading"
             :light="light"
@@ -48,8 +49,9 @@
           />
         </div>
         <div
-          v-for="item in discussions"
+          v-for="(item, index) in discussions"
           :key="item.id"
+          :class="{ 'pb-4': discussions.length - 1 > index }"
         >
           <Comment
             :item="item"
@@ -264,9 +266,6 @@ export default {
     openMenu () {
       this.menu = true
     },
-    clear () {
-      this.comment = ''
-    },
     async addComment () {
       try {
         if (!this.comment) return
@@ -291,7 +290,7 @@ export default {
           variables,
           fetchPolicy: 'no-cache',
         })
-        this.clear()
+        this.$refs.commentInput.blur()
       } catch (error) {
         throw new Error(error)
       } finally {

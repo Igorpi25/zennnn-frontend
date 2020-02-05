@@ -19,6 +19,7 @@
         :light="light"
       />
       <CommentInput
+        ref="commentInput"
         v-model="comment"
         :loading="commentSubmitLoading"
         :label="$t('comments.enterReply')"
@@ -79,9 +80,6 @@ export default {
     },
   },
   methods: {
-    clear () {
-      this.comment = ''
-    },
     async commentSubmit () {
       try {
         const comment = this.comment
@@ -109,7 +107,7 @@ export default {
           variables,
           fetchPolicy: 'no-cache',
         })
-        this.clear()
+        this.$refs.commentInput.blur()
       } catch (error) {
         throw new Error(error)
       } finally {

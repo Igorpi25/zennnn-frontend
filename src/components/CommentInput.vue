@@ -85,6 +85,10 @@ export default {
     onFocusChange (val) {
       if (val) {
         this.hasFocus = true
+      } else {
+        if (!this.comment) {
+          this.hasFocus = false
+        }
       }
     },
     blur () {
