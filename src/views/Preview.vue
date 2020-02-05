@@ -2,8 +2,8 @@
   <div>
     <div class="content view">
       <StatusBar />
-      <div class="container container--sm">
-        <div class="pt-10 md:pb-32">
+      <div class="container container--sm mb-12">
+        <div class="pt-10 md:pb-16">
           <div class="flex flex-col sm:flex-row justify-between">
             <span class="mb-3">
               <span>{{ $t('preview.shippingTitle') }}</span>&nbsp;
@@ -410,7 +410,9 @@
           </div>
         </div>
       </div>
-      <Copyright />
+      <div class="absolute bottom-0 w-full">
+        <Copyright />
+      </div>
     </div>
   </div>
 </template>
@@ -453,7 +455,7 @@ export default {
   name: 'Preview',
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      vm.$el.classList.add('light-theme')
+      vm.$el.classList.add('light-theme', 'h-full')
     })
   },
   components: {
