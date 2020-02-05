@@ -308,20 +308,20 @@
     </div>
     <div>
       <div class="flex justify-center sm:block">
-        <Button
-          large
-          squared
-          outline
-          style="max-width: 320px;"
-          @click="$router.push({
-            name: 'preview',
-            params: {
-              specId: $route.params.specId
-            }
-          })"
+        <a
+          :href="`/paper/${$route.params.specId}`"
+          target="_blank"
+          class="select-none"
         >
-          <span class="text-lg">{{ $t('shipping.overview') }}</span>
-        </Button>
+          <Button
+            large
+            squared
+            outline
+            style="max-width: 320px;"
+          >
+            <span class="text-lg">{{ $t('shipping.overview') }}</span>
+          </Button>
+        </a>
       </div>
     </div>
     <v-dialog
