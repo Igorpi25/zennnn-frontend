@@ -141,9 +141,29 @@
                 :key="i"
               >
                 <span>
-                  <span class="leaders__num" style="padding-right:0">
-                    {{ c.size.replace('_', '') }}{{ $t('shipping.containerMeasure') }}{{ c.mode.replace('_', '') }}
-                  </span>
+                  <select
+                    :value="`${c.size}${c.mode}`"
+                    :disabled="setContainerSizeLoading"
+                    name="container-size"
+                    style="background:transparent;"
+                    @change="setContainerSize(c.id, $event)"
+                  >
+                    <option value="_20_DC">
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        20{{ $t('shipping.containerMeasure') }}DC
+                      </span>
+                    </option>
+                    <option value="_40_HC">
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        40{{ $t('shipping.containerMeasure') }}HC
+                      </span>
+                    </option>
+                    <option value="_45_HC">
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        45{{ $t('shipping.containerMeasure') }}HC
+                      </span>
+                    </option>
+                  </select>
                   {{ ` ${$t('shipping.container')} ${$t('shipping.containerLoaded')}` }}
                 </span>
                 <span class="leaders__num">
@@ -471,6 +491,8 @@ import {
   ADD_EMAIL_ACCESS_TO_SPEC,
   REMOVE_EMAIL_ACCESS_TO_SPEC,
   SEND_LINK_ACCESS_TO_EMAIL,
+  SET_SPEC_CONTAINER_SIZE,
+  SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
 } from '../graphql/mutations'
 
 export default {
@@ -499,6 +521,8 @@ export default {
   },
   data () {
     return {
+      setContainerSizeLoading: false,
+      setContainerCustomCapacityLoading: false,
       sendAccessLinkLoading: false,
       addEmailAccessLoading: false,
       removeEmailAccessLoading: null,
@@ -556,6 +580,48 @@ export default {
     },
   },
   methods: {
+    async setContainerSize (containerId, e) {
+      try {
+        const val = e.target.value || ''
+        const split = val.split('_')
+        const inputSize = `_${split[1]}`
+        const inputMode = `_${split[2]}`
+        if (!containerId) return
+        this.setContainerSizeLoading = true
+        await this.$apollo.mutate({
+          mutation: SET_SPEC_CONTAINER_SIZE,
+          variables: {
+            specId: this.specId,
+            containerId,
+            inputSize,
+            inputMode,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.setContainerSizeLoading = false
+      }
+    },
+    async setContainerCustomCapacity (containerId, inputCapacity, inputShrink) {
+      try {
+        if (!containerId) return
+        this.setContainerCustomCapacityLoading = true
+        await this.$apollo.mutate({
+          mutation: SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
+          variables: {
+            specId: this.specId,
+            containerId,
+            inputCapacity,
+            inputShrink,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.setContainerCustomCapacityLoading = false
+      }
+    },
     async getEmailAccess () {
       try {
         this.emailAccessLoading = true
