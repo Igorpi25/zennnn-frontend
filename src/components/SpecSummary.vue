@@ -35,69 +35,135 @@
       </h4>
       <div class="spec-summary__wrapper flex-col lg:flex-row">
         <div class="spec-summary__info">
-          <div v-if="spec.containers" class="relative">
+          <div v-if="containers.length > 0" class="relative">
             <div
               v-if="spec.shipped"
               class="spec-summary__container__image spec-summary__container__image--shipped w-full"
               style="left: -20px; width: 350px; background-size: auto; z-index: 1;"
             />
-            <div
-              v-if="spec.containers.length === 1"
-              class="spec-summary__container"
+            <template
+              v-for="(container, i) of containers"
             >
               <div
-                class="spec-summary__container__image spec-summary__container__image--full"
-                :style="{
-                  width: (spec.containers[0].loaded || 0) + '%',
-                  height: '85px'
-                }"
-              />
-              <img width="210" height="85" src="/img/container-empty.svg" alt="">
-            </div>
-            <div v-else>
-              <div
-                v-for="(c, i) in loadedContainers"
-                :key="`loaded-${i}`"
-                class="spec-summary__container"
-              >
-                <div
-                  class="spec-summary__container__image spec-summary__container__image--full-sm"
-                  :style="{
-                    width: '100%',
-                    height: '48px'
-                  }"
-                />
-                <div class="spec-summary__container__label">
-                  {{ loadedContainers.length }} x {{ c.type }}′
-                </div>
-                <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
-              </div>
-              <div
-                v-for="(c, i) in unloadedContainers"
+                v-if="!container.full"
                 :key="`unloaded-${i}`"
                 class="spec-summary__container"
               >
                 <div
-                  class="spec-summary__container__image spec-summary__container__image--full-sm"
+                  class="spec-summary__container__image"
+                  :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
                   :style="{
-                    width: (c.loaded || 0) + '%',
-                    height: '48px'
+                    width: (container.loaded || 0) + '%',
+                    height: container.size === '_20' ? '85px' : '48px'
                   }"
                 />
-                <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
+                <img
+                  v-if="container.size === '_20'"
+                  width="210"
+                  height="85"
+                  src="/img/container-empty.svg"
+                  alt="Container"
+                >
+                <img
+                  v-else
+                  width="210"
+                  height="48"
+                  src="/img/container-empty-sm.svg"
+                  alt="Container"
+                >
               </div>
-            </div>
+              <div
+                v-else
+                :key="`loaded-${i}`"
+              >
+                <div
+                  class="spec-summary__container"
+                >
+                  <div
+                    class="spec-summary__container__image"
+                    :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
+                    :style="{
+                      width: '100%',
+                      height: container.size === '_20' ? '85px' : '48px'
+                    }"
+                  />
+                  <div class="spec-summary__container__label">
+                    {{ container.full }} x {{ container.size.replace('_', '') }}′{{ container.mode.replace('_', '') }}
+                  </div>
+                  <img
+                    v-if="container.size === '_20'"
+                    width="210"
+                    height="85"
+                    src="/img/container-empty.svg"
+                    alt="Container"
+                  >
+                  <img
+                    v-else
+                    width="210"
+                    height="48"
+                    src="/img/container-empty-sm.svg"
+                    alt="Container"
+                  >
+                </div>
+                <div
+                  class="spec-summary__container"
+                >
+                  <div
+                    class="spec-summary__container__image"
+                    :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
+                    :style="{
+                      width: (container.loaded || 0) + '%',
+                      height: container.size === '_20' ? '85px' : '48px'
+                    }"
+                  />
+                  <img
+                    v-if="container.size === '_20'"
+                    width="210"
+                    height="85"
+                    src="/img/container-empty.svg"
+                    alt="Container"
+                  >
+                  <img
+                    v-else
+                    width="210"
+                    height="48"
+                    src="/img/container-empty-sm.svg"
+                    alt="Container"
+                  >
+                </div>
+              </div>
+            </template>
           </div>
           <div>
             <ul class="leaders">
               <li
-                v-for="(c, i) in unloadedContainers"
+                v-for="(c, i) in containers"
                 :key="i"
               >
                 <span>
-                  <span class="leaders__num">
-                    {{ c.type || '20' }}{{ $t('shipping.containerMeasure') }}
-                  </span>
+                  <select
+                    :value="`${c.size}${c.mode}`"
+                    :disabled="setContainerSizeLoading"
+                    name="container-size"
+                    style="background:transparent;"
+                    @change="setContainerSize(c.id, $event)"
+                  >
+                    <option value="_20_DC">
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        20{{ $t('shipping.containerMeasure') }}DC
+                      </span>
+                    </option>
+                    <option value="_40_HC">
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        40{{ $t('shipping.containerMeasure') }}HC
+                      </span>
+                    </option>
+                    <option value="_45_HC">
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        45{{ $t('shipping.containerMeasure') }}HC
+                      </span>
+                    </option>
+                  </select>
                   {{ ` ${$t('shipping.container')} ${$t('shipping.containerLoaded')}` }}
                 </span>
                 <span class="leaders__num">
@@ -425,6 +491,8 @@ import {
   ADD_EMAIL_ACCESS_TO_SPEC,
   REMOVE_EMAIL_ACCESS_TO_SPEC,
   SEND_LINK_ACCESS_TO_EMAIL,
+  SET_SPEC_CONTAINER_SIZE,
+  SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
 } from '../graphql/mutations'
 
 export default {
@@ -453,6 +521,8 @@ export default {
   },
   data () {
     return {
+      setContainerSizeLoading: false,
+      setContainerCustomCapacityLoading: false,
       sendAccessLinkLoading: false,
       addEmailAccessLoading: false,
       removeEmailAccessLoading: null,
@@ -489,13 +559,6 @@ export default {
     containers () {
       return this.spec.containers || []
     },
-    // TODO group by type and laoded
-    loadedContainers () {
-      return this.containers.filter(c => c.loaded === 100)
-    },
-    unloadedContainers () {
-      return this.containers.filter(c => c.loaded !== 100)
-    },
   },
   watch: {
     accessControlDialog (val) {
@@ -517,6 +580,48 @@ export default {
     },
   },
   methods: {
+    async setContainerSize (containerId, e) {
+      try {
+        const val = e.target.value || ''
+        const split = val.split('_')
+        const inputSize = `_${split[1]}`
+        const inputMode = `_${split[2]}`
+        if (!containerId) return
+        this.setContainerSizeLoading = true
+        await this.$apollo.mutate({
+          mutation: SET_SPEC_CONTAINER_SIZE,
+          variables: {
+            specId: this.specId,
+            containerId,
+            inputSize,
+            inputMode,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.setContainerSizeLoading = false
+      }
+    },
+    async setContainerCustomCapacity (containerId, inputCapacity, inputShrink) {
+      try {
+        if (!containerId) return
+        this.setContainerCustomCapacityLoading = true
+        await this.$apollo.mutate({
+          mutation: SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
+          variables: {
+            specId: this.specId,
+            containerId,
+            inputCapacity,
+            inputShrink,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.setContainerCustomCapacityLoading = false
+      }
+    },
     async getEmailAccess () {
       try {
         this.emailAccessLoading = true

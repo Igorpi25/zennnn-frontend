@@ -487,3 +487,15 @@ export const MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED = gql`
     markPaperProductCommentsAsViewed(productId: $productId, commentsIds: $commentsIds)
   }
 `
+
+export const SET_SPEC_CONTAINER_SIZE = gql`
+  mutation SetSpecContainerSize($specId: ID!, $containerId: ID!, $inputSize: ContainerSize!, $inputMode: ContainerMode) {
+    setSpecContainerSize(specId: $specId, containerId: $containerId, inputSize: $inputSize, inputMode: $inputMode)
+  }
+`
+
+export const SET_SPEC_CONTAINER_CUSTOM_CAPACITY = gql`
+  mutation SetSpecContainerCustomCapacity($specId: ID!, $containerId: ID!, $capacity: Float, $shrink: Float) {
+    setSpecContainerCustomCapacity(specId: $specId, containerId: $containerId, capacity: $capacity, shrink: $shrink)
+  }
+`
