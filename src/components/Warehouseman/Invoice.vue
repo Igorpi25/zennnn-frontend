@@ -127,8 +127,8 @@ export default {
     storeHeaders () {
       return [
         { text: `${this.$t('shipping.net')}, ${this.$t('measure.kg')}`, value: 'net', width: 75, bgcolor: 'gray-darkest' },
-        { text: `${this.$t('shipping.gross')}, ${this.$t('measure.kg')}`, value: 'gross', width: 80, bgcolor: 'gray-darkest' },
-        { text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`, value: 'size', width: 148, bgcolor: 'gray-darkest' },
+        { text: `${this.$t('shipping.gross')}, ${this.$t('measure.kg')}`, value: 'gross', width: 75, bgcolor: 'gray-darkest' },
+        { text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`, value: 'size', width: 168, bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.packageQty'), value: 'pkgQty', width: 65, bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.packageNo'), value: 'pkgNo', width: 65, bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.atWhouse'), value: 'atWhouse', minWidth: 75, bgcolor: 'gray-darkest' },

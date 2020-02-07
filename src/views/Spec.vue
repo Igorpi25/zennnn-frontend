@@ -242,6 +242,12 @@ export default {
               if (key === 'comments') {
                 return commentsMerge
               }
+              if (key === 'containers') {
+                const merge = (_, source) => {
+                  return source || []
+                }
+                return merge
+              }
             },
           }
           const cacheData = apolloClient.readFragment({

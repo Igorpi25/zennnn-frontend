@@ -39,8 +39,6 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: clip;
-  padding-left: 0.33em;
-  padding-right: 0.33em;
 }
 .dots::before {
   display: block;

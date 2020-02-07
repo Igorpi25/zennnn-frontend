@@ -35,68 +35,114 @@
       </h4>
       <div class="spec-summary__wrapper flex-col lg:flex-row">
         <div class="spec-summary__info">
-          <div v-if="spec.containers" class="relative">
+          <div v-if="containers.length > 0" class="relative">
             <div
               v-if="spec.shipped"
               class="spec-summary__container__image spec-summary__container__image--shipped w-full"
               style="left: -20px; width: 350px; background-size: auto; z-index: 1;"
             />
-            <div
-              v-if="spec.containers.length === 1"
-              class="spec-summary__container"
+            <template
+              v-for="(container, i) of containers"
             >
               <div
-                class="spec-summary__container__image spec-summary__container__image--full"
-                :style="{
-                  width: (spec.containers[0].loaded || 0) + '%',
-                  height: '85px'
-                }"
-              />
-              <img width="210" height="85" src="/img/container-empty.svg" alt="">
-            </div>
-            <div v-else>
-              <div
-                v-for="(c, i) in loadedContainers"
-                :key="`loaded-${i}`"
-                class="spec-summary__container"
-              >
-                <div
-                  class="spec-summary__container__image spec-summary__container__image--full-sm"
-                  :style="{
-                    width: '100%',
-                    height: '48px'
-                  }"
-                />
-                <div class="spec-summary__container__label">
-                  {{ loadedContainers.length }} x {{ c.type }}′
-                </div>
-                <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
-              </div>
-              <div
-                v-for="(c, i) in unloadedContainers"
+                v-if="!container.full"
                 :key="`unloaded-${i}`"
                 class="spec-summary__container"
               >
                 <div
-                  class="spec-summary__container__image spec-summary__container__image--full-sm"
+                  class="spec-summary__container__image"
+                  :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
                   :style="{
-                    width: (c.loaded || 0) + '%',
-                    height: '48px'
+                    width: (container.loaded || 0) + '%',
+                    height: container.size === '_20' ? '85px' : '48px'
                   }"
                 />
-                <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
+                <img
+                  v-if="container.size === '_20'"
+                  width="210"
+                  height="85"
+                  src="/img/container-empty.svg"
+                  alt="Container"
+                >
+                <img
+                  v-else
+                  width="210"
+                  height="48"
+                  src="/img/container-empty-sm.svg"
+                  alt="Container"
+                >
               </div>
-            </div>
+              <div
+                v-else
+                :key="`loaded-${i}`"
+              >
+                <div
+                  class="spec-summary__container"
+                >
+                  <div
+                    class="spec-summary__container__image"
+                    :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
+                    :style="{
+                      width: '100%',
+                      height: container.size === '_20' ? '85px' : '48px'
+                    }"
+                  />
+                  <div class="spec-summary__container__label">
+                    {{ container.full }} x {{ container.size.replace('_', '') }}′{{ container.mode.replace('_', '') }}
+                  </div>
+                  <img
+                    v-if="container.size === '_20'"
+                    width="210"
+                    height="85"
+                    src="/img/container-empty.svg"
+                    alt="Container"
+                  >
+                  <img
+                    v-else
+                    width="210"
+                    height="48"
+                    src="/img/container-empty-sm.svg"
+                    alt="Container"
+                  >
+                </div>
+                <div
+                  class="spec-summary__container"
+                >
+                  <div
+                    class="spec-summary__container__image"
+                    :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
+                    :style="{
+                      width: (container.loaded || 0) + '%',
+                      height: container.size === '_20' ? '85px' : '48px'
+                    }"
+                  />
+                  <img
+                    v-if="container.size === '_20'"
+                    width="210"
+                    height="85"
+                    src="/img/container-empty.svg"
+                    alt="Container"
+                  >
+                  <img
+                    v-else
+                    width="210"
+                    height="48"
+                    src="/img/container-empty-sm.svg"
+                    alt="Container"
+                  >
+                </div>
+              </div>
+            </template>
           </div>
           <div>
             <ul class="leaders">
               <li
-                v-for="(c, i) in unloadedContainers"
+                v-for="(c, i) in containers"
                 :key="i"
               >
                 <span>
-                  <span class="leaders__num">
-                    {{ c.type || '20' }}{{ $t('shipping.containerMeasure') }}
+                  <span class="leaders__num" style="padding-right:0">
+                    {{ c.size.replace('_', '') }}{{ $t('shipping.containerMeasure') }}{{ c.mode.replace('_', '') }}
                   </span>
                   {{ ` ${$t('shipping.container')} ${$t('shipping.containerLoaded')}` }}
                 </span>
@@ -488,13 +534,6 @@ export default {
     },
     containers () {
       return this.spec.containers || []
-    },
-    // TODO group by type and laoded
-    loadedContainers () {
-      return this.containers.filter(c => c.loaded === 100)
-    },
-    unloadedContainers () {
-      return this.containers.filter(c => c.loaded !== 100)
     },
   },
   watch: {

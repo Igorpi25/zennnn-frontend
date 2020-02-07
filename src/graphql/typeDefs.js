@@ -14,6 +14,18 @@ export const COMMENT_FRAGMENT = gql`
   }
 `
 
+export const CONTAINER_FRAGMENT = gql`
+  fragment ContainerFragment on Container {
+    id
+    size
+    mode
+    capacity
+    shrink
+    full
+    loaded
+  }
+`
+
 export const PRODUCT_FRAGMENT = gql`
   fragment ProductFragment on Product {
     id
@@ -205,11 +217,15 @@ export const SPEC_FRAGMENT = gql`
     comments {
       ...CommentFragment
     }
+    containers {
+      ...ContainerFragment
+    }
     createdAt
     updatedAt
   }
   ${CLIENT_FRAGMENT}
   ${COMMENT_FRAGMENT}
+  ${CONTAINER_FRAGMENT}
 `
 
 export const CLIENT_TEMPLATE_FRAGMENT = gql`
@@ -441,6 +457,7 @@ export const PAPER_SPEC_FRAGMENT = gql`
     specStatus
     specNo
     estimateShippingDate
+    shipped
     totalVolume
     totalWeight
     qtyOfPackages
@@ -453,10 +470,14 @@ export const PAPER_SPEC_FRAGMENT = gql`
     comments {
       ...CommentFragment
     }
+    containers {
+      ...ContainerFragment
+    }
     createdAt
     updatedAt
   }
   ${COMMENT_FRAGMENT}
+  ${CONTAINER_FRAGMENT}
 `
 
 export const PAPER_SPEC_INVOICES_FRAGMENT = gql`

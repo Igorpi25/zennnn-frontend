@@ -213,98 +213,150 @@
             </h4>
             <div class="preview-summary__wrapper flex-col lg:flex-row">
               <div class="preview-summary__info">
-                <div v-if="spec.containers" class="relative">
+                <div v-if="containers.length > 0" class="relative">
                   <div
                     v-if="spec.shipped"
-                    class="spec-summary__container__image spec-summary__container__image--shipped w-full"
+                    class="preview-summary__container__image preview-summary__container__image--shipped w-full"
                     style="left: -20px; width: 350px; background-size: auto; z-index: 1;"
                   />
-                  <div
-                    v-if="spec.containers.length === 1"
-                    class="spec-summary__container"
+                  <template
+                    v-for="(container, i) of containers"
                   >
                     <div
-                      class="spec-summary__container__image spec-summary__container__image--full"
-                      :style="{
-                        width: (spec.containers[0].loaded || 0) + '%',
-                        height: '85px'
-                      }"
-                    />
-                    <img width="210" height="85" src="/img/container-empty.svg" alt="">
-                  </div>
-                  <div v-else>
-                    <div
-                      v-for="(c, i) in loadedContainers"
-                      :key="`loaded-${i}`"
-                      class="spec-summary__container"
-                    >
-                      <div
-                        class="spec-summary__container__image spec-summary__container__image--full-sm"
-                        :style="{
-                          width: '100%',
-                          height: '48px'
-                        }"
-                      />
-                      <div class="spec-summary__container__label">
-                        {{ loadedContainers.length }} x {{ c.type }}′
-                      </div>
-                      <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
-                    </div>
-                    <div
-                      v-for="(c, i) in unloadedContainers"
+                      v-if="!container.full"
                       :key="`unloaded-${i}`"
-                      class="spec-summary__container"
+                      class="preview-summary__container"
                     >
                       <div
-                        class="spec-summary__container__image spec-summary__container__image--full-sm"
+                        class="preview-summary__container__image"
+                        :class="[ container.size === '_20' ? 'preview-summary__container__image--full' : 'preview-summary__container__image--full-sm']"
                         :style="{
-                          width: (c.loaded || 0) + '%',
-                          height: '48px'
+                          width: (container.loaded || 0) + '%',
+                          height: container.size === '_20' ? '85px' : '48px'
                         }"
                       />
-                      <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
+                      <img
+                        v-if="container.size === '_20'"
+                        width="210"
+                        height="85"
+                        src="/img/container-empty.svg"
+                        alt="Container"
+                      >
+                      <img
+                        v-else
+                        width="210"
+                        height="48"
+                        src="/img/container-empty-sm.svg"
+                        alt="Container"
+                      >
                     </div>
-                  </div>
+                    <div
+                      v-else
+                      :key="`loaded-${i}`"
+                    >
+                      <div
+                        class="preview-summary__container"
+                      >
+                        <div
+                          class="preview-summary__container__image"
+                          :class="[container.size === '_20' ? 'preview-summary__container__image--full' : 'preview-summary__container__image--full-sm']"
+                          :style="{
+                            width: '100%',
+                            height: container.size === '_20' ? '85px' : '48px'
+                          }"
+                        />
+                        <div class="preview-summary__container__label">
+                          {{ container.full }} x {{ container.size.replace('_', '') }}′{{ container.mode.replace('_', '') }}
+                        </div>
+                        <img
+                          v-if="container.size === '_20'"
+                          width="210"
+                          height="85"
+                          src="/img/container-empty.svg"
+                          alt="Container"
+                        >
+                        <img
+                          v-else
+                          width="210"
+                          height="48"
+                          src="/img/container-empty-sm.svg"
+                          alt="Container"
+                        >
+                      </div>
+                      <div
+                        class="preview-summary__container"
+                      >
+                        <div
+                          class="preview-summary__container__image"
+                          :class="[container.size === '_20' ? 'preview-summary__container__image--full' : 'preview-summary__container__image--full-sm']"
+                          :style="{
+                            width: (container.loaded || 0) + '%',
+                            height: container.size === '_20' ? '85px' : '48px'
+                          }"
+                        />
+                        <img
+                          v-if="container.size === '_20'"
+                          width="210"
+                          height="85"
+                          src="/img/container-empty.svg"
+                          alt="Container"
+                        >
+                        <img
+                          v-else
+                          width="210"
+                          height="48"
+                          src="/img/container-empty-sm.svg"
+                          alt="Container"
+                        >
+                      </div>
+                    </div>
+                  </template>
                 </div>
                 <div>
-                  <ul class="leaders">
+                  <ul style="line-height:1.625rem">
                     <li
-                      v-for="(c, i) in unloadedContainers"
+                      v-for="(c, i) in containers"
                       :key="i"
+                      class="flex"
                     >
-                      <span>
-                        <span class="leaders__num">
-                          {{ c.type || '20' }}{{ $t('preview.containerMeasure') }}
+                      <div class="flex-shrink-0">
+                        <span class="leaders__num" style="padding-right:0">
+                          {{ c.size.replace('_', '') }}{{ $t('shipping.containerMeasure') }}{{ c.mode.replace('_', '') }}
                         </span>
-                        {{ ` ${$t('preview.container')} ${$t('preview.containerLoaded')}` }}
-                      </span>
-                      <span class="leaders__num">
+                        {{ ` ${$t('shipping.container')} ${$t('shipping.containerLoaded')}` }}
+                      </div>
+                      <div class="flex-grow dots" />
+                      <div class="leaders__num flex-shrink-0">
                         {{ c.loaded }}%
-                      </span>
+                      </div>
                     </li>
-                    <li>
-                      <span>{{ $t('preview.estimateDate') }}</span>
-                      <span class="leaders__num">
+                    <li class="flex">
+                      <div class="flex-shrink-0">{{ $t('preview.estimateDate') }}</div>
+                      <div class="flex-grow dots" />
+                      <div class="leaders__num flex-shrink-0">
                         {{ spec.estimateShippingDate ? $d($parseDate(spec.estimateShippingDate), 'short') : '-' }}
-                      </span>
+                      </div>
                     </li>
-                    <li>
-                      <span>{{ $t('preview.totalVolume') }}</span>
-                      <span class="leaders__num">
+                    <li class="flex">
+                      <div class="flex-shrink-0">{{ $t('preview.totalVolume') }}</div>
+                      <div class="flex-grow dots" />
+                      <div class="leaders__num flex-shrink-0">
                         {{ $n(spec.totalVolume, 'formatted') }} {{ $t('measure.m') }}<sup>3</sup>
-                      </span>
+                      </div>
                     </li>
-                    <li>
-                      <span>{{ $t('preview.totalWeight') }}</span>
-                      <span class="leaders__num">
+                    <li class="flex">
+                      <div class="flex-shrink-0">{{ $t('preview.totalWeight') }}</div>
+                      <div class="flex-grow dots" />
+                      <div class="leaders__num flex-shrink-0">
                         {{ $n(spec.totalWeight, 'formatted') }} {{ $t('measure.kg') }}
-                      </span>
+                      </div>
                     </li>
-                    <li>
-                      <span>{{ $t('preview.qtyOfPackages') }}</span>
-                      <span class="leaders__num">
+                    <li class="flex">
+                      <div class="flex-shrink-0">{{ $t('preview.qtyOfPackages') }}</div>
+                      <div class="flex-grow dots" />
+                      <div class="leaders__num flex-shrink-0">
                         {{ $n(spec.qtyOfPackages, 'formatted') }}
-                      </span>
+                      </div>
                     </li>
                   </ul>
                 </div>
@@ -525,9 +577,6 @@ export default {
     containers () {
       return this.spec.containers || []
     },
-    unloadedContainers () {
-      return this.containers.filter(c => c.loaded !== 100)
-    },
   },
   mounted () {
     const commentsMerge = (target, source) => {
@@ -700,6 +749,12 @@ export default {
               if (key === 'comments') {
                 return commentsMerge
               }
+              if (key === 'containers') {
+                const merge = (_, source) => {
+                  return source || []
+                }
+                return merge
+              }
             },
           }
           const cacheData = apolloClient.readFragment({
@@ -834,6 +889,11 @@ export default {
   width: 210px;
   @apply mb-4 relative;
 }
+.preview-summary__container__label {
+  @apply absolute inset-0 w-full h-full font-bold text-2xl text-white;
+  @apply flex items-center justify-center;
+}
+/* TODO image import on component */
 .preview-summary__container__image {
   @apply absolute inset-0 w-full h-full bg-cover bg-left bg-no-repeat;
 }
