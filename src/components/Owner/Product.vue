@@ -32,6 +32,7 @@
       <ProductImage
         :product-id="item.id"
         :images="info.images"
+        sortable
       />
     </td>
     <td>
@@ -183,7 +184,7 @@
 
     <template v-else-if="activeTab === 3">
       <td class="text-right">
-        <div v-if="info.images && info.images.length > 0">
+        <div v-if="info.images">
           <ProductImagesList
             :product-id="item.id"
             :images="info.images"

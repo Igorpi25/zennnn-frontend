@@ -63,6 +63,8 @@
                           :product-id="item.id"
                           :images="getPreviewImage(item.images)"
                           :upload="false"
+                          :removable="false"
+                          light
                         />
                       </td>
                       <td>
@@ -103,6 +105,8 @@
                           :product-id="item.id"
                           :images="getAdditionImages(item.images)"
                           :upload="false"
+                          :removable="false"
+                          light
                         >
                           <template v-slot:menu-activator>
                             <div class="flex justify-center items-center">

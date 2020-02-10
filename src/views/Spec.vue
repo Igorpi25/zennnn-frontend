@@ -140,6 +140,12 @@ export default {
               if (key === 'comments') {
                 return commentsMerge
               }
+              if (key === 'images') {
+                const merge = (_, source) => {
+                  return source || []
+                }
+                return merge
+              }
             },
           }
           const cacheData = apolloClient.readFragment({

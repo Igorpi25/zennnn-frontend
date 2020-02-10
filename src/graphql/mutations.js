@@ -140,6 +140,16 @@ export const UPDATE_PRODUCT_INFO = gql`
     }
   }
 `
+export const ADD_PRODUCT_IMAGE = gql`
+  mutation AddProductImage($id: ID!, $inputImages: [String!]!, $unshift: Boolean) {
+    addProductImage(id: $id, inputImages: $inputImages, unshift: $unshift)
+  }
+`
+export const REMOVE_PRODUCT_IMAGE = gql`
+  mutation RemoveProductImage($id: ID!, $inputImages: [String!]!) {
+    removeProductImage(id: $id, inputImages: $inputImages)
+  }
+`
 export const UPDATE_PRODUCT_LINK = gql`
   mutation UpdateProductLink($id: ID!, $input: ProductLinkInput!) {
     updateProductLink(id: $id, input: $input) {
