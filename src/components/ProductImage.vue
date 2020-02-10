@@ -13,7 +13,7 @@
         <slot name="menu-activator">
           <FileUploader
             v-if="upload"
-            :loading="loading"
+            :loading="addLoading"
             :uploading.sync="uploading"
             :hovered="menu"
             :src="previewImage"
@@ -51,17 +51,19 @@
           </span>
         </div>
       </div>
-      <div
+      <Sortable
         v-if="imagesList.length > 1"
+        :disabled="!sortable"
+        draggable=".sortable-source"
         class="inline-flex px-1 overflow-x-auto"
+        @input="sortImages"
       >
         <v-img
           v-for="(img, i) in imagesList"
           :key="img"
           :src="`${img}${ICON_IMAGE_POSTFIX}`"
           :class="[
-            'rounded-sm h-8 w-8',
-            { 'mr-1' : i + 1 < imagesList.length },
+            'rounded-sm h-8 w-8 mr-1 sortable-source focus:outline-none',
             { 'border border-solid border-white': i === currentImageIndex },
           ]"
           :gradient="i !== currentImageIndex ? '0deg, rgba(0,0,0,.3), rgba(0,0,0,.3)' : ''"
@@ -74,7 +76,7 @@
             </div>
           </template>
         </v-img>
-      </div>
+      </Sortable>
       <div class="w-full p-1 relative">
         <div class="w-full rounded overflow-hidden">
           <v-img
@@ -110,14 +112,16 @@
 
 <script>
 import { mdiTrashCanOutline } from '@mdi/js'
-import { ADD_PRODUCT_IMAGE, REMOVE_PRODUCT_IMAGE } from '../graphql/mutations'
-
-import FileUploader from '../components/FileUploader.vue'
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX, IMAGE_FILENAME_METADATA } from '../config/globals'
+import { ADD_PRODUCT_IMAGE, REMOVE_PRODUCT_IMAGE, UPDATE_PRODUCT_INFO } from '../graphql/mutations'
+
+import Sortable from '../plugins/draggable/Sortable'
+import FileUploader from '../components/FileUploader.vue'
 
 export default {
   name: 'ProductImage',
   components: {
+    Sortable,
     FileUploader,
   },
   props: {
@@ -137,6 +141,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    sortable: {
+      type: Boolean,
+      default: false,
+    },
     light: {
       type: Boolean,
       default: false,
@@ -146,7 +154,8 @@ export default {
     return {
       ICON_IMAGE_POSTFIX,
       uploading: false,
-      loading: false,
+      addLoading: false,
+      updateImagesLoading: false,
       removeLoading: null,
       menu: false,
       currentImageFilenameLoading: false,
@@ -188,6 +197,15 @@ export default {
     },
   },
   methods: {
+    sortImages (data) {
+      if (data.oldContainer.id !== data.newContainer.id) return
+      const oldIndex = data.oldIndex
+      const newIndex = data.newIndex
+      if (oldIndex === newIndex) return
+      let newValue = this.imagesList.slice()
+      newValue.splice(newIndex, 0, newValue.splice(oldIndex, 1)[0])
+      this.updateImages(newValue)
+    },
     setCurrentIndex (index) {
       if (!this.imagesList[index]) {
         index = 0
@@ -210,6 +228,26 @@ export default {
         this.$logger.info('error to try get filename', error)
       } finally {
         this.currentImageFilenameLoading = false
+      }
+    },
+    async updateImages (images) {
+      try {
+        this.updateImagesLoading = true
+        const input = { images }
+        await this.$apollo.mutate({
+          mutation: UPDATE_PRODUCT_INFO,
+          variables: { id: this.productId, input },
+        })
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+        // Analytics.record({
+        //   name: 'UpdateProductError',
+        //   attributes: {
+        //     error: error
+        //   }
+        // })
+      } finally {
+        this.updateImagesLoading = false
       }
     },
     async removeImage (src) {
@@ -236,7 +274,7 @@ export default {
     },
     async addImage (src) {
       try {
-        this.loading = true
+        this.addLoading = true
         const inputImages = [src]
         await this.$apollo.mutate({
           mutation: ADD_PRODUCT_IMAGE,
@@ -251,7 +289,7 @@ export default {
         //   }
         // })
       } finally {
-        this.loading = false
+        this.addLoading = false
       }
     },
   },
@@ -261,5 +299,8 @@ export default {
 <style>
 .bg-paper {
   background-color: #f4f4f4;
+}
+.draggable-mirror {
+  z-index: 500!important;
 }
 </style>

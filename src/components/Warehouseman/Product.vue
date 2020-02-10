@@ -18,6 +18,7 @@
       <ProductImage
         :product-id="item.id"
         :images="info.images"
+        sortable
       />
     </td>
     <td>
