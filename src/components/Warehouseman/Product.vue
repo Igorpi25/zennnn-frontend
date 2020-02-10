@@ -119,7 +119,7 @@
 
     <template v-else-if="activeTab === 2">
       <td class="text-right">
-        <div v-if="info.images && info.images.length > 0">
+        <div v-if="info.images">
           <ProductImagesList
             :product-id="item.id"
             :images="info.images"

@@ -141,7 +141,7 @@ export default {
     },
     infoHeaders () {
       return [
-        { text: this.$t('shipping.additionalPhoto'), value: 'images', width: 85, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.additionalPhoto'), value: 'images', width: 175, bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.additionalInfo'), value: 'description', align: 'left', bgcolor: 'gray-darkest' },
         { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
       ]

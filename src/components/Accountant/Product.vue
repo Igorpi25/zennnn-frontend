@@ -18,6 +18,8 @@
       <ProductImage
         :product-id="item.id"
         :images="info.images"
+        :upload="false"
+        :removable="false"
       />
     </td>
     <td>
@@ -61,6 +63,8 @@
           <ProductImagesList
             :product-id="item.id"
             :images="info.images"
+            :upload="false"
+            :removable="false"
           />
         </div>
       </td>
