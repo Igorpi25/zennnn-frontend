@@ -25,7 +25,7 @@ import { Auth, i18n } from '../plugins'
 import { apolloClient } from '../plugins/apollo'
 import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
 
-import { CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
+import { CURRENT_LANG_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
 
 Vue.use(VueRouter)
 
@@ -294,6 +294,29 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+  // browser language detect
+  const localLang = localStorage.getItem(CURRENT_LANG_STORE_KEY)
+  if (!localLang) {
+    const userLang = navigator.language || navigator.userLanguage || ''
+    // is not default lang
+    if (!userLang.startsWith('ru')) {
+      const supportedLangs = ['ru', 'en']
+      let lang = userLang.split('-')[0] || ''
+      if (!supportedLangs.includes(lang)) {
+        // default for not supported langs
+        lang = 'en'
+        const langs = navigator.languages || []
+        for (const sLang of supportedLangs) {
+          if (langs.some(el => (el || '').startsWith(sLang))) {
+            lang = sLang
+            break
+          }
+        }
+      }
+      localStorage.setItem(CURRENT_LANG_STORE_KEY, lang)
+      i18n.locale = lang
+    }
+  }
   // check auth
   const loggedIn = await Auth.checkAuth()
   if (to.matched.some(record => record.meta.requiresAuth)) {
