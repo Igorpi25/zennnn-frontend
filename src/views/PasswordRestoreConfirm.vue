@@ -42,11 +42,11 @@
                         v-if="showPassword"
                         color="#9A9A9A"
                         style="transform:rotateY(-180deg)"
-                      >{{ icons.mdiEyeOffOutline }}</Icon>
+                      >{{ icons.mdiEyeOutline }}</Icon>
                       <Icon
                         v-else
                         color="#9A9A9A"
-                      >{{ icons.mdiEyeOutline }}</Icon>
+                      >{{ icons.mdiEyeOffOutline }}</Icon>
                       </div>
                     </template>
                   </TextField>
@@ -67,14 +67,14 @@
                         @click="showConfirmPassword = !showConfirmPassword"
                       >
                         <Icon
-                          v-if="showPassword"
+                          v-if="showConfirmPassword"
                           color="#9A9A9A"
                           style="transform:rotateY(-180deg)"
-                        >{{ icons.mdiEyeOffOutline }}</Icon>
+                        >{{ icons.mdiEyeOutline }}</Icon>
                         <Icon
                           v-else
                           color="#9A9A9A"
-                        >{{ icons.mdiEyeOutline }}</Icon>
+                        >{{ icons.mdiEyeOffOutline }}</Icon>
                       </div>
                     </template>
                   </TextField>
