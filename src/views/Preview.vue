@@ -217,11 +217,11 @@
             </h4>
             <div class="preview-summary__wrapper flex-col lg:flex-row">
               <div class="preview-summary__info">
-                <div v-if="containers.length > 0" class="relative">
+                <div v-if="containers.length > 0" class="relative pb-5">
                   <div
                     v-if="spec.shipped"
                     class="preview-summary__container__image preview-summary__container__image--shipped w-full"
-                    style="left: -20px; width: 350px; background-size: auto; z-index: 1;"
+                    style="top: -16px; left: -20px; width: 350px; background-size: contain; height: auto; z-index: 1;"
                   />
                   <template
                     v-for="(container, i) of containers"
@@ -286,6 +286,9 @@
                           src="/img/container-empty-sm.svg"
                           alt="Container"
                         >
+                      </div>
+                      <div class="preview-summary__container py-2 flex justify-center">
+                        <Icon>{{ icons.mdiPlusThick }}</Icon>
                       </div>
                       <div
                         class="preview-summary__container"
@@ -481,6 +484,7 @@ import {
   mdiChevronUp,
   mdiMinus,
   mdiPlus,
+  mdiPlusThick,
 } from '@mdi/js'
 
 import {
@@ -539,6 +543,7 @@ export default {
         mdiChevronUp,
         mdiMinus,
         mdiPlus,
+        mdiPlusThick,
         ziSettings,
         ziPaperPlane,
         ziPrint,
@@ -891,7 +896,7 @@ export default {
 
 .preview-summary__container {
   width: 210px;
-  @apply mb-4 relative;
+  @apply relative;
 }
 .preview-summary__container__label {
   @apply absolute inset-0 w-full h-full font-bold text-2xl text-white;

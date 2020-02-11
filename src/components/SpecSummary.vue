@@ -35,11 +35,11 @@
       </h4>
       <div class="spec-summary__wrapper flex-col lg:flex-row">
         <div class="spec-summary__info">
-          <div v-if="containers.length > 0" class="relative">
+          <div v-if="containers.length > 0" class="relative pb-5">
             <div
               v-if="spec.shipped"
               class="spec-summary__container__image spec-summary__container__image--shipped w-full"
-              style="left: -20px; width: 350px; background-size: auto; z-index: 1;"
+              style="top: -16px; left: -20px; width: 350px; background-size: contain; height: auto; z-index: 1;"
             />
             <template
               v-for="(container, i) of containers"
@@ -104,6 +104,9 @@
                     src="/img/container-empty-sm.svg"
                     alt="Container"
                   >
+                </div>
+                <div class="spec-summary__container py-2 flex justify-center text-white">
+                  <Icon>{{ icons.mdiPlusThick }}</Icon>
                 </div>
                 <div
                   class="spec-summary__container"
@@ -477,7 +480,7 @@ import cloneDeep from 'clone-deep'
 import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 
-import { mdiClose } from '@mdi/js'
+import { mdiClose, mdiPlusThick } from '@mdi/js'
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
 import PaperListModal from '@/components/PaperListModal.vue'
@@ -539,6 +542,7 @@ export default {
       create: false,
       icons: {
         mdiClose,
+        mdiPlusThick,
         ziSettings,
         ziPaperPlane,
         ziPrint,
@@ -1285,7 +1289,7 @@ export default {
 }
 .spec-summary__container {
   width: 210px;
-  @apply mb-4 relative;
+  @apply relative;
 }
 .spec-summary__container__label {
   @apply absolute inset-0 w-full h-full font-bold text-2xl text-white;
