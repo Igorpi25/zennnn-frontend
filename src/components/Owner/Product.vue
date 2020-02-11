@@ -130,28 +130,30 @@
           @input="updateProductStore({ gross: $event })"
         />
       </td>
-      <td class="flex items-center" style="line-height:35px">
-        <Editable
-          type="number"
-          inputmode="decimal"
-          :placeholder="$t('placeholder.emptyNumber')"
-          :value="store.width"
-          @input="updateProductStore({ width: $event })"
-        />
-        <Editable
-          type="number"
-          inputmode="decimal"
-          :placeholder="$t('placeholder.emptyNumber')"
-          :value="store.height"
-          @input="updateProductStore({ height: $event })"
-        />
-        <Editable
-          type="number"
-          inputmode="decimal"
-          :placeholder="$t('placeholder.emptyNumber')"
-          :value="store.length"
-          @input="updateProductStore({ length: $event })"
-        />
+      <td>
+        <div class="flex items-center">
+          <Editable
+            type="number"
+            inputmode="decimal"
+            :placeholder="$t('placeholder.emptyNumber')"
+            :value="store.width"
+            @input="updateProductStore({ width: $event })"
+          />
+          <Editable
+            type="number"
+            inputmode="decimal"
+            :placeholder="$t('placeholder.emptyNumber')"
+            :value="store.height"
+            @input="updateProductStore({ height: $event })"
+          />
+          <Editable
+            type="number"
+            inputmode="decimal"
+            :placeholder="$t('placeholder.emptyNumber')"
+            :value="store.length"
+            @input="updateProductStore({ length: $event })"
+          />
+        </div>
       </td>
       <td>
         <Editable
