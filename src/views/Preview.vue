@@ -905,7 +905,7 @@ export default {
   background-image: url("/img/container-full.png");
 }
 .preview-summary__container__image--full-sm {
-  background-image: url("/img/container-full-sm.png");
+  background-image: url("/img/container-full-40.png");
 }
 .preview-summary__container__image--shipped {
   background-image: url("/img/container-shipped.png");
