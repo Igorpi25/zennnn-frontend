@@ -253,7 +253,7 @@ export default {
   bacground-color: #252525;
 }
 .tab-item:not(:first-child) {
-  margin-left:  1px;
+  padding-left:  1px;
 }
 .tab-item--active {
   @apply bg-gray-darkest;
