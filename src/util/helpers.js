@@ -420,8 +420,13 @@ export const formatNumber = (number, options = {}) => {
 
   // Clean up number:
   number = unformat(number, opts.decimal)
-  const numberDecimal = number.toString().split('.')[1] || ''
-  const numberPrecision = numberDecimal.length > opts.precision || opts.fixed
+  // for check zero input after decimal
+  const stringDecimal = stringVal.split(opts.decimal)[1] || ''
+  let numberDecimal = number.toString().split('.')[1] || ''
+  if (!opts.fixed && numberDecimal.length === 0 && stringDecimal.split('').every(el => el === '0')) {
+    numberDecimal = stringDecimal
+  }
+  const numberPrecision = (numberDecimal.length > opts.precision) || opts.fixed
     ? opts.precision : numberDecimal.length
 
   // Clean up precision

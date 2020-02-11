@@ -83,10 +83,12 @@ export default {
       type: String,
       default: 'text',
     },
+    // text, numeric, decimal
     inputmode: {
       type: String,
       default: 'text',
     },
+    // decimal, currency
     formatStyle: {
       type: String,
       default: 'decimal',
@@ -161,8 +163,12 @@ export default {
         : null
     },
     formatNumberOptions () {
+      // precision numbers digits must be between 0 and 20
+      const precision = this.inputmode === 'numeric'
+        ? 0 : this.formatStyle === 'currency'
+          ? 2 : 20
       return {
-        precision: this.inputmode === 'numeric' ? 0 : 2,
+        precision,
         thousand: this.editMode ? '' : ' ',
         decimal: ',',
         fixed: !this.editMode && this.formatStyle === 'currency',
@@ -276,8 +282,9 @@ export default {
       this.editMode = true
       this.isFocused = true
       if (this.type === 'number') {
+        const number = unformat(this.internalValue, this.formatNumberOptions.decimal)
         this.internalValue = this.value
-          ? formatNumber(this.internalValue, this.formatNumberOptions)
+          ? formatNumber(number, this.formatNumberOptions)
           : null
         setTimeout(() => {
           e.target.selectionStart = e.target.selectionEnd = e.target.value.length
