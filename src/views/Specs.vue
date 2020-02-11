@@ -264,11 +264,12 @@ export default {
       if (!item) return ''
       let name = ''
       if (item.clientType === ClientType.LEGAL) {
-        name = item.companyNameSl || item.companyNameCl || ''
+        name = item.companyName || ''
       } else {
-        name = item.lastName || ''
-        name += item.firstName ? ` ${item.firstName}` : ''
-        name += item.middleName ? ` ${item.middleName}` : ''
+        name = item.firstName || ''
+        name += name && item.lastName
+          ? ` ${item.lastName}`
+          : (item.lastName || '')
       }
       return name
     },
