@@ -460,6 +460,7 @@
     "fillLater": "Fill later"
   },
   "message": {
+    "userNotConfirmed": "The user is not confirmed, a confirmation link is on your email.",
     "linkCopied": "Link copied to clipboard.",
     "linkNotCopied": "Failed to copy link to clipboard.",
     "emailResent": "Email sent again.",

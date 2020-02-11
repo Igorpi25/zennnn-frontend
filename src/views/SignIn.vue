@@ -317,7 +317,11 @@ export default {
           }
         }
       } catch (error) {
-        this.errorMessage = error.message || error
+        let message = error.message || error
+        if (error.code === 'UserNotConfirmedException') {
+          message = this.$t('message.userNotConfirmed')
+        }
+        this.errorMessage = message
         this.$logger.warn('Error: ', error)
       } finally {
         this.loading = false
