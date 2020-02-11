@@ -59,3 +59,13 @@
 .status-processing {
   color: #FF005E;
 }
+
+.min-h-4 {
+  min-height: 1rem;
+}
+.min-h-5 {
+  min-height: 1.25rem;
+}
+.min-h-6 {
+  min-height: 1.5rem;
+}

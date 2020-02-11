@@ -68,9 +68,11 @@
                         />
                       </td>
                       <td>
-                        <span>{{ item.name }}</span>
-                        <p class="text-gray-light leading-none">{{ item.article }}</p>
-                        <span class="flex items-center mt-1">
+                        <div class="min-h-6">{{ item.name }} {{ item.article }}</div>
+                        <p class="text-gray-light leading-none min-h-4">
+                          {{ item.description }}
+                        </p>
+                        <div class="flex items-center">
                           <img
                             v-if="item.productStatus === ProductStatus.IN_PRODUCTION"
                             src="../assets/icons/factory-yellow.png"
@@ -85,7 +87,7 @@
                             src="../assets/icons/in-processing.png"
                           >
                           <span
-                            class=" text-orange "
+                            class="text-orange"
                             :class="[
                               'ml-2 text-sm',
                               item.productStatus === ProductStatus.IN_STOCK
@@ -97,7 +99,7 @@
                               {{ item.productStatus ? $t(`status.${item.productStatus}`) : '' }}
                             </span>
                           </span>
-                        </span>
+                        </div>
                       </td>
                       <td class="text-center">
                         <ProductImage
