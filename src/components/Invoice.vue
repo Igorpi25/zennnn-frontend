@@ -20,14 +20,13 @@
                 ></div>
                 <ul
                   class="tabs"
-                  @click="switchTab"
                 >
                   <li
                     v-for="tab in tabs"
                     :key="tab.value"
-                    :value="tab.value"
                     :style="{ width: tab.width + 'px' }"
                     :class="['tab-item', {'tab-item--active': activeTab === tab.value}]"
+                    @click="switchTab(tab.value)"
                   >{{ tab.text }}</li>
                 </ul>
               </div>

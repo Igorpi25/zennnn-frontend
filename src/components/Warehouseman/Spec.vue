@@ -22,9 +22,19 @@
           </span>
         </span>
         <span
-          class="text-gray text-sm cursor-pointer whitespace-no-wrap"
+          v-if="expanded.length === 0"
+          class="text-gray text-sm cursor-pointer whitespace-no-wrap select-none"
+          @click="expandAll"
+        >
+          {{ $t('action.expandAll') }}
+        </span>
+        <span
+          v-else
+          class="text-gray text-sm cursor-pointer whitespace-no-wrap select-none"
           @click="collapseAll"
-        >{{ $t('action.collapseAll') }}</span>
+        >
+          {{ $t('action.collapseAll') }}
+        </span>
       </div>
 
       <div v-for="(item) in items" :key="item.id" class="mb-6">
@@ -40,8 +50,10 @@
         </InvoiceHeader>
         <Invoice
           v-if="expanded.includes(item.id)"
-          style="margin-top: 1px"
           :invoice="item"
+          :active-tab="invoiceActiveTab"
+          style="margin-top: 1px"
+          @change:tab="setInvoiceActiveTab"
         />
       </div>
     </div>

@@ -509,3 +509,27 @@ export const SET_SPEC_CONTAINER_CUSTOM_CAPACITY = gql`
     setSpecContainerCustomCapacity(specId: $specId, containerId: $containerId, capacity: $capacity, shrink: $shrink)
   }
 `
+
+export const SET_SPEC_ACTIVE_TAB = gql`
+  mutation SetSpecActiveTab($specId: ID!, $tab: Int!) {
+    setSpecActiveTab(specId: $specId, tab: $tab) @client
+  }
+`
+
+export const SET_SPEC_EXPANDED_INVOICES = gql`
+  mutation SetSpecExpandedInvoices($specId: ID!, $ids: [ID!]!, $prefix: String) {
+    setSpecExpandedInvoices(specId: $specId, ids: $ids, prefix: $prefix) @client
+  }
+`
+
+export const ADD_SPEC_EXPANDED_INVOICES = gql`
+  mutation AddSpecExpandedInvoices($specId: ID!, $ids: [ID!]!, $prefix: String) {
+    addSpecExpandedInvoices(specId: $specId, ids: $ids, prefix: $prefix) @client
+  }
+`
+
+export const REMOVE_SPEC_EXPANDED_INVOICES = gql`
+  mutation RemoveSpecExpandedInvoices($specId: ID!, $ids: [ID!]!, $prefix: String) {
+    removeSpecExpandedInvoices(specId: $specId, ids: $ids, prefix: $prefix) @client
+  }
+`

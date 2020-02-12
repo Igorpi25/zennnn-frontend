@@ -12,9 +12,19 @@
               <span>{{ $d($parseDate(spec.createdAt), 'short') }}</span>
             </span>
             <span
-              class="mb-2 md:m-0 text-right text-primary text-sm cursor-pointer whitespace-no-wrap"
+              v-if="expanded.length === 0"
+              class="mb-2 md:m-0 text-right text-primary text-sm cursor-pointer whitespace-no-wrap select-none"
+              @click="expandAll"
+            >
+              {{ $t('action.expandAll') }}
+            </span>
+            <span
+              v-else
+              class="mb-2 md:m-0 text-right text-primary text-sm cursor-pointer whitespace-no-wrap select-none"
               @click="collapseAll"
-            >{{ $t('action.collapseAll') }}</span>
+            >
+              {{ $t('action.collapseAll') }}
+            </span>
           </div>
 
           <div v-for="(item) in items" :key="item.id" class="preview-invoice-wrapper">
@@ -504,6 +514,11 @@ import Comments from '../components/Comments'
 
 import { ProductStatus, InvoiceStatus, Typename, Operation } from '../graphql/enums'
 import { GET_PAPER_SPEC } from '../graphql/queries'
+import {
+  SET_SPEC_EXPANDED_INVOICES,
+  ADD_SPEC_EXPANDED_INVOICES,
+  REMOVE_SPEC_EXPANDED_INVOICES,
+} from '../graphql/mutations'
 import { PAPER_SPEC_DELTA } from '../graphql/subscriptions'
 import {
   PAPER_SPEC_FRAGMENT,
@@ -512,6 +527,8 @@ import {
   PAPER_SPEC_INVOICES_FRAGMENT,
   PAPER_INVOICE_PRODUCTS_FRAGMENT,
 } from '../graphql/typeDefs'
+import { PAPER_STORE_KEY_PREFIX } from '../config/globals'
+import { getSpecExpandedInvoices } from '../graphql/resolvers'
 
 export default {
   name: 'Preview',
@@ -535,10 +552,17 @@ export default {
           id: this.specId,
         }
       },
+      result ({ data, loading }) {
+        if (!loading) {
+          const spec = data.getPaperSpec || {}
+          this.updateExpanded(spec)
+        }
+      },
     },
   },
   data () {
     return {
+      isBooted: false,
       expanded: [],
       icons: {
         mdiChevronDown,
@@ -583,10 +607,26 @@ export default {
       return firstName + ' ' + lastName || {}
     },
     items () {
-      return this.spec.invoices
+      return this.spec.invoices || []
     },
     containers () {
       return this.spec.containers || []
+    },
+  },
+  watch: {
+    items (val, oldVal) {
+      const value = val || []
+      const oldValue = oldVal || []
+      // on invoice removed clear from expanded
+      if (oldValue.length > value.length) {
+        const removedIds = []
+        oldValue.forEach(v => {
+          if (!value.some(el => el.id === v.id)) {
+            removedIds.push(v.id)
+          }
+        })
+        this.removeExpandedInvoices(removedIds)
+      }
     },
   },
   mounted () {
@@ -790,6 +830,53 @@ export default {
     })
   },
   methods: {
+    async updateExpanded (spec) {
+      const specId = spec && spec.id
+      if (!specId) return
+      const expanded = spec.expandedInvoices || await getSpecExpandedInvoices(specId, PAPER_STORE_KEY_PREFIX)
+      if (!this.isBooted) {
+        if (!expanded && !this.isBooted) {
+          const [invoice] = spec.invoices || []
+          if (invoice && invoice.id) {
+            this.expanded = [invoice.id]
+            await this.setExpandedInvoices(this.expanded)
+          }
+        } else {
+          this.expanded = expanded || []
+        }
+        this.isBooted = true
+      }
+    },
+    async setExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: SET_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+          prefix: PAPER_STORE_KEY_PREFIX,
+        },
+      })
+    },
+    async addExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: ADD_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+          prefix: PAPER_STORE_KEY_PREFIX,
+        },
+      })
+    },
+    async removeExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: REMOVE_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+          prefix: PAPER_STORE_KEY_PREFIX,
+        },
+      })
+    },
     getPreviewImage (images) {
       return (images || []).slice(0, 1)
     },
@@ -800,12 +887,23 @@ export default {
       if (this.expanded.includes(id)) {
         const index = this.expanded.indexOf(id)
         this.expanded.splice(index, 1)
+        this.removeExpandedInvoices([id])
       } else {
         this.expanded.push(id)
+        this.addExpandedInvoices([id])
       }
     },
     collapseAll () {
       this.expanded = []
+      this.setExpandedInvoices([])
+    },
+    expandAll () {
+      const invoices = this.items
+      const ids = invoices.reduce((acc, curr) => {
+        return [...acc, curr.id]
+      }, [])
+      this.expanded = ids
+      this.setExpandedInvoices(ids)
     },
   },
 }

@@ -15,6 +15,12 @@ import {
 } from '../graphql/enums'
 
 export default {
+  props: {
+    activeTab: {
+      type: Number,
+      default: 1,
+    },
+  },
   data () {
     return {
       ProductStatus,
@@ -23,7 +29,6 @@ export default {
       createLoading: null,
       updateLoading: null,
       deleteLoading: null,
-      activeTab: 1,
       errors: [],
       icons: {
         mdiClose,
@@ -40,6 +45,9 @@ export default {
     }
   },
   computed: {
+    specId () {
+      return this.$route.params.specId
+    },
     fixedHeadersWidth () {
       return this.productHeaders.reduce((acc, curr) => {
         return acc + (curr.width || 0)
@@ -99,8 +107,8 @@ export default {
           ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
       )
     },
-    switchTab (event) {
-      this.activeTab = event.target.value
+    switchTab (value) {
+      this.$emit('change:tab', value)
     },
     async updateInvoice (input) {
       try {
@@ -140,7 +148,7 @@ export default {
         await this.$apollo.query({
           query: GET_SPEC,
           variables: {
-            id: this.$route.params.specId,
+            id: this.specId,
           },
           fetchPolicy: 'network-only',
         })

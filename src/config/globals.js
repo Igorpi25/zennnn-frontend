@@ -15,3 +15,7 @@ export const IMAGE_FILENAME_METADATA = 'x-amz-meta-file_name'
 export const BACKEND_VERSION_HEADER_KEY = 'backend-version'
 
 export const PAPER_SID_STORE_KEY = 'psid'
+
+export const SPEC_ACTIVE_TAB_STORE_KEY = 'active-tab'
+export const SPEC_EXPANDED_INVOICES_STORE_KEY = 'expanded-invoices'
+export const PAPER_STORE_KEY_PREFIX = 'paper'

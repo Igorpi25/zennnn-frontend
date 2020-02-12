@@ -500,6 +500,12 @@ const typeDefs = gql`
     backendVersion: Boolean
     isSpecSync: Boolean
   }
+  extend type Mutation {
+    setSpecActiveTab(specId: ID!, tab: Int!): Boolean
+    setSpecExpandedInvoices(specId: ID!, ids: [ID!]!): Boolean
+    addSpecExpandedInvoices(specId: ID!, ids: [ID!]!): Boolean
+    removeSpecExpandedInvoices(specId: ID!, ids: [ID!]!): Boolean
+  }
 `
 
 export default typeDefs

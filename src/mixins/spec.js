@@ -10,8 +10,24 @@ import {
 } from '@mdi/js'
 
 import { ClientType, InvoiceStatus } from '@/graphql/enums'
-import { GET_SPEC, SEARCH_CLIENTS, SEARCH_SUPPLIERS, GET_IS_SPEC_SYNC } from '../graphql/queries'
-import { CREATE_INVOICE, UPDATE_INVOICE, UPDATE_SPEC, SET_SPEC_CLIENT, SET_INVOICE_SUPPLIER } from '../graphql/mutations'
+import {
+  GET_SPEC,
+  SEARCH_CLIENTS,
+  SEARCH_SUPPLIERS,
+  GET_IS_SPEC_SYNC,
+} from '../graphql/queries'
+import {
+  CREATE_INVOICE,
+  UPDATE_INVOICE,
+  UPDATE_SPEC,
+  SET_SPEC_CLIENT,
+  SET_INVOICE_SUPPLIER,
+  SET_SPEC_ACTIVE_TAB,
+  SET_SPEC_EXPANDED_INVOICES,
+  ADD_SPEC_EXPANDED_INVOICES,
+  REMOVE_SPEC_EXPANDED_INVOICES,
+} from '../graphql/mutations'
+import { getSpecExpandedInvoices } from '../graphql/resolvers'
 
 export default {
   apollo: {
@@ -26,6 +42,13 @@ export default {
         }
       },
       fetchPolicy: 'cache-only',
+      result ({ data, loading }) {
+        if (!loading) {
+          const spec = data.getSpec || {}
+          this.invoiceActiveTab = spec.activeTab || 1
+          this.updateExpanded(spec)
+        }
+      },
     },
     searchClients: {
       query: SEARCH_CLIENTS,
@@ -78,6 +101,7 @@ export default {
         mdiPlus,
         mdiSync,
       },
+      invoiceActiveTab: 1,
     }
   },
   computed: {
@@ -91,7 +115,7 @@ export default {
       return this.getSpec || {}
     },
     items () {
-      return this.getSpec && this.getSpec.invoices
+      return (this.getSpec && this.getSpec.invoices) || []
     },
     specClient () {
       const client = this.spec.client || {}
@@ -119,7 +143,77 @@ export default {
       })
     },
   },
+  watch: {
+    items (val, oldVal) {
+      const value = val || []
+      const oldValue = oldVal || []
+      // on invoice removed clear from expanded
+      if (oldValue.length > value.length) {
+        const removedIds = []
+        oldValue.forEach(v => {
+          if (!value.some(el => el.id === v.id)) {
+            removedIds.push(v.id)
+          }
+        })
+        this.removeExpandedInvoices(removedIds)
+      }
+    },
+  },
   methods: {
+    async updateExpanded (spec) {
+      const specId = spec && spec.id
+      if (!specId) return
+      const expanded = spec.expandedInvoices || await getSpecExpandedInvoices(specId)
+      if (!this.isBooted) {
+        if (!expanded && !this.isBooted) {
+          const [invoice] = spec.invoices || []
+          if (invoice && invoice.id) {
+            this.expanded = [invoice.id]
+            await this.setExpandedInvoices(this.expanded)
+          }
+        } else {
+          this.expanded = expanded || []
+        }
+        this.isBooted = true
+      }
+    },
+    async setExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: SET_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+        },
+      })
+    },
+    async addExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: ADD_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+        },
+      })
+    },
+    async removeExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: REMOVE_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+        },
+      })
+    },
+    async setInvoiceActiveTab (value) {
+      this.invoiceActiveTab = value
+      await this.$apollo.mutate({
+        mutation: SET_SPEC_ACTIVE_TAB,
+        variables: {
+          specId: this.specId,
+          tab: value,
+        },
+      })
+    },
     formatDate (date) {
       if (!date) return ''
       return format(
@@ -170,32 +264,41 @@ export default {
       return item.companyNameSl || item.companyNameCl || ''
     },
     expand (id) {
-      // this.$apollo.mutate({
-      //   mutation: TOGGLE_SPEC_EXPANDED_INVOICES,
-      //   variables: {
-      //     specId: this.specId,
-      //     invoiceId: id
-      //   }
-      // })
       if (this.expanded.includes(id)) {
         const index = this.expanded.indexOf(id)
         this.expanded.splice(index, 1)
+        this.removeExpandedInvoices([id])
       } else {
         this.expanded.push(id)
+        this.addExpandedInvoices([id])
       }
     },
     collapseAll () {
       this.expanded = []
+      this.setExpandedInvoices([])
+    },
+    expandAll () {
+      const invoices = this.items
+      const ids = invoices.reduce((acc, curr) => {
+        return [...acc, curr.id]
+      }, [])
+      this.expanded = ids
+      this.setExpandedInvoices(ids)
     },
     async createInvoice () {
       try {
         this.createLoading = true
-        await this.$apollo.mutate({
+        const { data } = await this.$apollo.mutate({
           mutation: CREATE_INVOICE,
           variables: {
             specId: this.specId,
           },
         })
+        const id = data && data.createInvoice && data.createInvoice.id
+        if (id) {
+          this.expanded.push(id)
+          await this.addExpandedInvoices([id])
+        }
       } catch (error) {
         throw new Error(error)
       } finally {

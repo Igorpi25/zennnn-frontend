@@ -104,6 +104,8 @@ export const GET_SPECS = gql`
 export const GET_SPEC = gql`
   query GetSpec($id: ID!) {
     getSpec(id: $id) {
+      activeTab @client
+      expandedInvoices @client
       ...SpecFragment
       invoices {
         ...InvoiceFragment
@@ -356,6 +358,7 @@ export const GET_SPEC_EMAIL_ACCESS = gql`
 export const GET_PAPER_SPEC = gql`
   query GetPaperSpec($id: ID!) {
     getPaperSpec(id: $id) {
+      expandedInvoices @client
       ...PaperSpecFragment
       invoices {
         ...PaperInvoiceFragment
