@@ -140,6 +140,7 @@ export default {
   display: flex;
   padding-top: 40px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .navbar__link {
   white-space: nowrap;
