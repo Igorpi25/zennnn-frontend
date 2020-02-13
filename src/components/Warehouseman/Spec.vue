@@ -52,8 +52,10 @@
           v-if="expanded.includes(item.id)"
           :invoice="item"
           :active-tab="invoiceActiveTab"
+          :scroll-left="invoiceScrollLeft"
           style="margin-top: 1px"
           @change:tab="setInvoiceActiveTab"
+          @change:scrollLeft="v => invoiceScrollLeft = v"
         />
       </div>
     </div>

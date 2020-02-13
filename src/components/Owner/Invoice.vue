@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <div class="data-table-wrapper">
+  <div id="content">
+    <div
+      v-scroll="onScroll"
+      ref="productsTable"
+      class="data-table-wrapper"
+    >
       <div>
         <div class="flex">
           <DataTable

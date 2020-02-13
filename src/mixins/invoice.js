@@ -14,11 +14,20 @@ import {
   InvoiceProfitType,
 } from '../graphql/enums'
 
+import Scroll from '../directives/Scroll'
+
 export default {
+  directives: {
+    Scroll,
+  },
   props: {
     activeTab: {
       type: Number,
       default: 1,
+    },
+    scrollLeft: {
+      type: Number,
+      default: 0,
     },
   },
   data () {
@@ -74,7 +83,28 @@ export default {
       return this.invoiceItem.profitType === InvoiceProfitType.COMMISSION
     },
   },
+  watch: {
+    scrollLeft (val) {
+      const target = this.$refs.productsTable
+      if (target) {
+        target.scrollLeft = val || 0
+      }
+    },
+  },
+  mounted () {
+    if (this.scrollLeft) {
+      const target = this.$refs.productsTable
+      if (target) {
+        target.scrollLeft = this.scrollLeft
+      }
+    }
+  },
   methods: {
+    onScroll (e) {
+      const target = e.target
+      const scrollLeft = target ? target.scrollLeft : 0
+      this.$emit('change:scrollLeft', scrollLeft || 0)
+    },
     async createProduct () {
       try {
         this.createLoading = true

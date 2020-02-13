@@ -101,6 +101,7 @@ export default {
         mdiPlus,
         mdiSync,
       },
+      invoiceScrollLeft: 0,
       invoiceActiveTab: 1,
     }
   },
