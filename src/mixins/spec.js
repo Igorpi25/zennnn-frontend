@@ -100,6 +100,7 @@ export default {
         mdiPlus,
         mdiSync,
       },
+      invoiceScrollId: '',
       invoiceScrollLeft: 0,
       invoiceActiveTab: 1,
     }
@@ -160,6 +161,10 @@ export default {
     },
   },
   methods: {
+    setScrollLeft (scrollLeft, invoiceId) {
+      this.invoiceScrollId = invoiceId
+      this.invoiceScrollLeft = scrollLeft
+    },
     async updateExpandedAndActiveTab (spec) {
       const specId = spec && spec.id
       if (!specId || this.isBooted) return

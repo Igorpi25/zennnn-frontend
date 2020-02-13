@@ -4,6 +4,8 @@
       v-scroll="onScroll"
       ref="productsTable"
       class="data-table-wrapper"
+      @mouseenter="isMouseOver = true"
+      @mouseleave="isMouseOver = false"
     >
       <div>
         <div class="flex">

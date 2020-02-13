@@ -53,9 +53,10 @@
           :invoice="item"
           :active-tab="invoiceActiveTab"
           :scroll-left="invoiceScrollLeft"
+          :scroll-invoice-id="invoiceScrollId"
           style="margin-top: 1px"
           @change:tab="setInvoiceActiveTab"
-          @change:scrollLeft="v => invoiceScrollLeft = v"
+          @change:scrollLeft="setScrollLeft"
         />
       </div>
     </div>

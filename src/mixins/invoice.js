@@ -1,4 +1,5 @@
 import format from 'date-fns/format'
+import debounce from 'lodash.debounce'
 
 import {
   mdiClose,
@@ -25,6 +26,10 @@ export default {
       type: Number,
       default: 1,
     },
+    scrollInvoiceId: {
+      type: String,
+      default: '',
+    },
     scrollLeft: {
       type: Number,
       default: 0,
@@ -32,6 +37,10 @@ export default {
   },
   data () {
     return {
+      isMouseOver: false,
+      lazyScrollLeft: 0,
+      scrollLeftDelay: 75,
+      scrollAnimationDuration: 10,
       ProductStatus,
       InvoiceProfitType,
       isBooted: false,
@@ -84,26 +93,64 @@ export default {
     },
   },
   watch: {
-    scrollLeft (val) {
-      const target = this.$refs.productsTable
-      if (target) {
-        target.scrollLeft = val || 0
-      }
+    scrollLeft () {
+      if (this.invoiceItem.id === this.scrollInvoiceId) return
+      if (this.isMouseOver) return
+      this.setScrollLeft()
     },
   },
   mounted () {
+    this.debounceEmitScrollLeftChange = debounce(this.emitScrollLeftChange, this.scrollLeftDelay)
     if (this.scrollLeft) {
-      const target = this.$refs.productsTable
-      if (target) {
-        target.scrollLeft = this.scrollLeft
-      }
+      this.setScrollLeft(false)
     }
   },
   methods: {
+    emitScrollLeftChange () {
+      this.$emit('change:scrollLeft', this.lazyScrollLeft, this.invoiceItem.id)
+    },
+    setScrollLeft (animate = true) {
+      const target = this.$refs.productsTable
+      if (target) {
+        const scrollLeft = this.scrollLeft || 0
+        if (animate) {
+          target.scrollLeft = scrollLeft
+          // this.scrollLeftWithAnimation(scrollLeft)
+        } else {
+          target.scrollLeft = scrollLeft
+        }
+      }
+    },
+    scrollLeftWithAnimation (scrollLeft) {
+      const container = this.$refs.productsTable
+      if (!container) return
+      const targetLocation = scrollLeft
+      const startLocation = container.scrollLeft
+      if (targetLocation === startLocation) return
+      const startTime = performance.now()
+      const duration = this.scrollAnimationDuration
+      const ease = (t) => t
+      return new Promise(resolve => requestAnimationFrame(function step (currentTime) {
+        const timeElapsed = currentTime - startTime
+        const progress = Math.abs(duration ? Math.min(timeElapsed / duration, 1) : 1)
+
+        container.scrollLeft = Math.floor(startLocation + (targetLocation - startLocation) * ease(progress))
+
+        const clientWidth = container.clientWidth
+        if (progress === 1 || clientWidth + container.scrollLeft === container.scrollWidth) {
+          return resolve(targetLocation)
+        }
+
+        requestAnimationFrame(step)
+      }))
+    },
     onScroll (e) {
       const target = e.target
       const scrollLeft = target ? target.scrollLeft : 0
-      this.$emit('change:scrollLeft', scrollLeft || 0)
+      this.lazyScrollLeft = scrollLeft < 0 ? 0 : scrollLeft
+      if (!this.isMouseOver) return
+      this.emitScrollLeftChange()
+      // this.debounceEmitScrollLeftChange()
     },
     async createProduct () {
       try {
