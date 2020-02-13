@@ -36,6 +36,7 @@
           <v-date-picker
             :value="$toISOString($parseDate(item.prepaymentDate))"
             :locale="$i18n.locale"
+            :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"
@@ -81,6 +82,7 @@
           <v-date-picker
             :value="$toISOString($parseDate(item.obtainCostDate))"
             :locale="$i18n.locale"
+            :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"
@@ -123,6 +125,7 @@
           <v-date-picker
             :value="$toISOString($parseDate(item.clientDebtDate))"
             :locale="$i18n.locale"
+            :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"

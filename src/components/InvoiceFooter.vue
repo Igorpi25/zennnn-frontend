@@ -138,13 +138,14 @@
           </template>
           <v-date-picker
             v-model="prepaymentDate"
-            @change="menuPrepaymentDate = false"
             :locale="$i18n.locale"
+            :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"
             no-title
             dark
+            @change="menuPrepaymentDate = false"
           ></v-date-picker>
         </v-menu>
       </div>
@@ -187,13 +188,14 @@
           </template>
           <v-date-picker
             v-model="residueDate"
-            @change="menuResidueDate = false"
             :locale="$i18n.locale"
+            :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"
             no-title
             dark
+            @change="menuResidueDate = false"
           ></v-date-picker>
         </v-menu>
       </div>
@@ -233,13 +235,14 @@
           </template>
           <v-date-picker
             v-model="clientDebtDate"
-            @change="menuClientDebtDate = false"
             :locale="$i18n.locale"
+            :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"
             no-title
             dark
+            @change="menuClientDebtDate = false"
           ></v-date-picker>
         </v-menu>
       </div>
