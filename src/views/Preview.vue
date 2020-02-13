@@ -13,14 +13,14 @@
             </span>
             <span
               v-if="expanded.length === 0"
-              class="mb-2 md:m-0 text-right text-primary text-sm cursor-pointer whitespace-no-wrap select-none"
+              class="mb-2 md:m-0 text-right text-primary hover:text-primary-accent text-sm cursor-pointer whitespace-no-wrap select-none"
               @click="expandAll"
             >
               {{ $t('action.expandAll') }}
             </span>
             <span
               v-else
-              class="mb-2 md:m-0 text-right text-primary text-sm cursor-pointer whitespace-no-wrap select-none"
+              class="mb-2 md:m-0 text-right text-primary hover:text-primary-accent text-sm cursor-pointer whitespace-no-wrap select-none"
               @click="collapseAll"
             >
               {{ $t('action.collapseAll') }}

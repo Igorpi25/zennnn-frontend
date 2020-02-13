@@ -1,5 +1,8 @@
 <template>
-  <div class="invoice-header">
+  <div
+    class="invoice-header"
+    @click="onHeaderClick"
+  >
     <span
       :class="[
         'status-indicator mr-2 md:mr-6 flex-shrink-0',
@@ -15,7 +18,7 @@
       @click="$emit('click', item.id)"
       :class="[
         'invoice-header__expand',
-        {'text-primary': iconColorPrimary}
+        {'text-primary hover:text-primary-accent': iconColorPrimary}
       ]"
     >
       <template v-if="expanded.includes(item.id)">
@@ -77,6 +80,12 @@ export default {
       },
     }
   },
+  methods: {
+    onHeaderClick (e) {
+      if (e.target !== this.$el) return
+      this.$emit('click', this.item.id)
+    },
+  },
 }
 </script>
 
@@ -94,7 +103,7 @@ export default {
 
 .invoice-header__expand {
   @apply ml-auto flex justify-end flex-grow;
-  @apply text-sm cursor-pointer;
+  @apply text-sm cursor-pointer select-none;
 }
 .invoice-header__expand__icon {
   @apply w-5 h-5;

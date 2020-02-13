@@ -5,6 +5,7 @@ module.exports = {
     },
     colors: {
       primary: '#5a8199',
+      'primary-accent': '#6996B2',
       secondary: '#16a0ce',
       accent1: 'var(--base-accent1)',
       accent2: 'var(--base-accent2)',
