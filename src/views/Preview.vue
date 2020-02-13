@@ -553,7 +553,7 @@ export default {
         }
       },
       result ({ data, loading }) {
-        if (!loading) {
+        if (!loading && !this.isBooted) {
           const spec = data.getPaperSpec || {}
           this.updateExpanded(spec)
         }
@@ -832,19 +832,17 @@ export default {
   methods: {
     async updateExpanded (spec) {
       const specId = spec && spec.id
-      if (!specId) return
-      const expanded = spec.expandedInvoices || await getSpecExpandedInvoices(specId, PAPER_STORE_KEY_PREFIX)
-      if (!this.isBooted) {
-        if (!expanded && !this.isBooted) {
-          const [invoice] = spec.invoices || []
-          if (invoice && invoice.id) {
-            this.expanded = [invoice.id]
-            await this.setExpandedInvoices(this.expanded)
-          }
-        } else {
-          this.expanded = expanded || []
+      if (!specId || this.isBooted) return
+      this.isBooted = true
+      const expanded = await getSpecExpandedInvoices(specId, PAPER_STORE_KEY_PREFIX)
+      if (!expanded) {
+        const [invoice] = spec.invoices || []
+        if (invoice && invoice.id) {
+          this.expanded = [invoice.id]
+          await this.setExpandedInvoices(this.expanded)
         }
-        this.isBooted = true
+      } else {
+        this.expanded = expanded || []
       }
     },
     async setExpandedInvoices (ids) {

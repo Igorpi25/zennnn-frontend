@@ -28,15 +28,21 @@ export const getSpecExpandedInvoices = async (specId, prefix) => {
   return ids === null ? null : (ids || [])
 }
 
+export const getSpecActiveTab = async (specId, prefix) => {
+  const username = await getUsername()
+  let key = prefix ? `${prefix}.` : ''
+  key += `${username}.${specId}.${SPEC_ACTIVE_TAB_STORE_KEY}`
+  const activeTab = await store.getItem(key)
+  return activeTab || 0
+}
+
 const resolvers = {
   Query: {
     getSpec: async (data) => {
       const spec = data.getSpec
       if (!spec) return spec
       const specId = spec.id
-      const username = await getUsername()
-      const activeTabKey = `${username}.${specId}.${SPEC_ACTIVE_TAB_STORE_KEY}`
-      const activeTab = await store.getItem(activeTabKey) || 1
+      const activeTab = await getSpecActiveTab(specId)
       const expandedInvoices = await getSpecExpandedInvoices(specId)
       return { ...spec, activeTab, expandedInvoices }
     },

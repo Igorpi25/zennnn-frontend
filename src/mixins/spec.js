@@ -27,7 +27,7 @@ import {
   ADD_SPEC_EXPANDED_INVOICES,
   REMOVE_SPEC_EXPANDED_INVOICES,
 } from '../graphql/mutations'
-import { getSpecExpandedInvoices } from '../graphql/resolvers'
+import { getSpecExpandedInvoices, getSpecActiveTab } from '../graphql/resolvers'
 
 export default {
   apollo: {
@@ -43,10 +43,9 @@ export default {
       },
       fetchPolicy: 'cache-only',
       result ({ data, loading }) {
-        if (!loading) {
+        if (!loading && !this.isBooted) {
           const spec = data.getSpec || {}
-          this.invoiceActiveTab = spec.activeTab || 1
-          this.updateExpanded(spec)
+          this.updateExpandedAndActiveTab(spec)
         }
       },
     },
@@ -161,21 +160,21 @@ export default {
     },
   },
   methods: {
-    async updateExpanded (spec) {
+    async updateExpandedAndActiveTab (spec) {
       const specId = spec && spec.id
-      if (!specId) return
-      const expanded = spec.expandedInvoices || await getSpecExpandedInvoices(specId)
-      if (!this.isBooted) {
-        if (!expanded && !this.isBooted) {
-          const [invoice] = spec.invoices || []
-          if (invoice && invoice.id) {
-            this.expanded = [invoice.id]
-            await this.setExpandedInvoices(this.expanded)
-          }
-        } else {
-          this.expanded = expanded || []
+      if (!specId || this.isBooted) return
+      this.isBooted = true
+      const activeTab = await getSpecActiveTab(specId)
+      this.invoiceActiveTab = activeTab || 1
+      const expanded = await getSpecExpandedInvoices(specId)
+      if (!expanded) {
+        const [invoice] = spec.invoices || []
+        if (invoice && invoice.id) {
+          this.expanded = [invoice.id]
+          await this.setExpandedInvoices(this.expanded)
         }
-        this.isBooted = true
+      } else {
+        this.expanded = expanded || []
       }
     },
     async setExpandedInvoices (ids) {
