@@ -112,7 +112,7 @@
       </div>
     </div>
     <InvoiceFooter
-      v-if="items && activeTab === 1"
+      v-if="items"
       :item="invoiceItem"
     />
   </div>
