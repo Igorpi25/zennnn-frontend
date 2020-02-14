@@ -86,7 +86,7 @@ const routes = [
       {
         path: 'spec/:specId',
         name: 'spec',
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, scrollToTop: true },
         component: Spec,
         beforeEnter: async (to, from, next) => {
           try {
@@ -118,14 +118,14 @@ const routes = [
       {
         path: 'clients/create',
         name: 'client-create',
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, scrollToTop: true },
         props: { create: true },
         component: ClientItem,
       },
       {
         path: 'clients/:clientId',
         name: 'client',
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, scrollToTop: true },
         component: ClientItem,
       },
       {
@@ -137,14 +137,14 @@ const routes = [
       {
         path: 'suppliers/create',
         name: 'supplier-create',
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, scrollToTop: true },
         props: { create: true },
         component: SupplierItem,
       },
       {
         path: 'suppliers/:supplierId',
         name: 'supplier',
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, scrollToTop: true },
         component: SupplierItem,
       },
       {
@@ -156,8 +156,8 @@ const routes = [
       {
         path: 'requisites',
         name: 'requisites',
-        component: RequisiteList,
         meta: { requiresAuth: true },
+        component: RequisiteList,
       },
       {
         path: 'requisites/create',
@@ -169,8 +169,8 @@ const routes = [
       {
         path: 'requisites/:reqId',
         name: 'requisite',
+        meta: { requiresAuth: true, scrollToTop: true },
         component: RequisiteItem,
-        meta: { requiresAuth: true },
       },
     ],
   },
@@ -211,6 +211,7 @@ const routes = [
     path: '/paper/:specId',
     name: 'preview',
     component: Preview,
+    meta: { scrollToTop: true },
     beforeEnter: (to, from, next) => {
       if (to.query.sid) {
         localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid)
@@ -290,6 +291,16 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
+  scrollBehavior (to, from, savedPosition) {
+    if (to.matched.some((m) => m.meta.scrollToTop)) {
+      return { x: 0, y: 0 }
+    }
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  },
   routes,
 })
 
