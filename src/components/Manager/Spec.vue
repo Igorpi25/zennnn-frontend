@@ -87,17 +87,19 @@
               offset-y
             >
               <template v-slot:activator="{ on }">
-                <div v-on="on">
-                  <TextField
-                    :value="formatDate(item.purchaseDate)"
-                    :placeholder="$t('shipping.purchaseDate')"
-                    solo
-                    outlined
-                    colored
-                    readonly
-                    hide-details
-                    class="text-sm w-32 mr-2 md:p-0 leading-normal"
-                  />
+                <div class="text-left">
+                 <div v-on="on" class="inline-block">
+                    <TextField
+                      :value="formatDate(item.purchaseDate)"
+                      :placeholder="$t('shipping.purchaseDate')"
+                      solo
+                      outlined
+                      colored
+                      readonly
+                      hide-details
+                      class="text-sm w-32 mr-2 md:p-0 leading-normal"
+                    />
+                 </div>
                 </div>
               </template>
               <v-date-picker
@@ -149,17 +151,19 @@
               offset-y
             >
               <template v-slot:activator="{ on }">
-                <div v-on="on">
-                  <TextField
-                    :value="formatDate(item.shippingDate)"
-                    :placeholder="$t('shipping.shippingDate')"
-                    solo
-                    outlined
-                    colored
-                    readonly
-                    hide-details
-                    class="text-sm w-32 mr-2 md:p-0 leading-normal"
-                  />
+                <div class="text-left">
+                  <div v-on="on" class="inline-block">
+                    <TextField
+                      :value="formatDate(item.shippingDate)"
+                      :placeholder="$t('shipping.shippingDate')"
+                      solo
+                      outlined
+                      colored
+                      readonly
+                      hide-details
+                      class="text-sm w-32 md:p-0 leading-normal"
+                    />
+                  </div>
                 </div>
               </template>
               <v-date-picker

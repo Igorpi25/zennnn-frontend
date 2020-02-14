@@ -13,6 +13,7 @@
     >
     </span>
     <slot />
+    <div class="flex-grow" />
     <div
       v-if="expanded"
       @click="$emit('click', item.id)"
@@ -92,7 +93,7 @@ export default {
 <style lang="postcss">
 .invoice-header {
   padding: 5px 10px;
-  @apply relative flex items-center mx-auto w-full;
+  @apply relative flex items-center mx-auto w-full select-none;
   @apply rounded-sm bg-accent1 text-right;
   color: #252525;
 }
@@ -102,7 +103,7 @@ export default {
 }
 
 .invoice-header__expand {
-  @apply ml-auto flex justify-end flex-grow;
+  @apply ml-auto flex justify-end;
   @apply text-sm cursor-pointer select-none;
 }
 .invoice-header__expand__icon {
