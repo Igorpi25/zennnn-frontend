@@ -1,5 +1,5 @@
 import format from 'date-fns/format'
-import debounce from 'lodash.debounce'
+// import throttle from 'lodash.throttle'
 
 import {
   mdiClose,
@@ -37,10 +37,12 @@ export default {
   },
   data () {
     return {
+      isScrollStart: false,
+      scrollEndTimer: null,
       isMouseOver: false,
       lazyScrollLeft: 0,
       scrollLeftDelay: 75,
-      scrollAnimationDuration: 10,
+      scrollAnimationDuration: 75,
       ProductStatus,
       InvoiceProfitType,
       isBooted: false,
@@ -95,12 +97,12 @@ export default {
   watch: {
     scrollLeft () {
       if (this.invoiceItem.id === this.scrollInvoiceId) return
-      if (this.isMouseOver) return
+      if (this.isMouseOver || this.isScrollStart) return
       this.setScrollLeft()
     },
   },
   mounted () {
-    this.debounceEmitScrollLeftChange = debounce(this.emitScrollLeftChange, this.scrollLeftDelay)
+    // this.debounceEmitScrollLeftChange = throttle(this.emitScrollLeftChange, this.scrollLeftDelay, { leading: true })
     if (this.scrollLeft) {
       this.setScrollLeft(false)
     }
@@ -148,9 +150,18 @@ export default {
       const target = e.target
       const scrollLeft = target ? target.scrollLeft : 0
       this.lazyScrollLeft = scrollLeft < 0 ? 0 : scrollLeft
-      if (!this.isMouseOver) return
+      if (!this.isMouseOver && !this.isScrollStart) return
+      if (this.isScrollStart) {
+        this.clearScrollEndTimer()
+      }
       this.emitScrollLeftChange()
       // this.debounceEmitScrollLeftChange()
+    },
+    clearScrollEndTimer () {
+      clearTimeout(this.scrollEndTimer)
+      this.scrollEndTimer = setTimeout(() => {
+        this.isScrollStart = false
+      }, 300)
     },
     async createProduct () {
       try {

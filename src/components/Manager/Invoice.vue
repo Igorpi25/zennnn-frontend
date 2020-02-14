@@ -6,6 +6,8 @@
       class="data-table-wrapper"
       @mouseenter="isMouseOver = true"
       @mouseleave="isMouseOver = false"
+      @touchstart="isScrollStart = true"
+      @touchend="clearScrollEndTimer"
     >
       <div>
         <div class="flex">

@@ -1,6 +1,6 @@
 {
   "name": "zennnn-frontend",
-  "version": "0.6.17",
+  "version": "0.6.18",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -30,6 +30,7 @@
     "graphql-tag": "^2.10.1",
     "localforage": "^1.7.3",
     "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "pdfmake": "^0.1.63",
     "subscriptions-transport-ws": "^0.9.16",
     "vue": "^2.6.10",
