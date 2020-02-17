@@ -1,82 +1,98 @@
 <template>
   <div class="card">
-    <span class="card__title">
+    <span class="hidden text-center pb-8 md:block">
       {{ title }}
-      <slot name="prepand" />
+      <slot name="prepend" />
     </span>
     <slot name="items" :items="fields">
       <div
         :class="[
-          'card__section',
-          { 'card__section--faded': isDisabled }
+          'pb-16',
+          { 'card__section--faded': isNotActive }
         ]"
       >
-        <div
-          class="card__row"
+        <template
           v-for="(field, key) in fields"
-          :key="key"
         >
-
-          <slot
-            :name="`${key}-row`"
-            :item="field"
+          <div
+            v-if="field.section"
+            class="flex justify-center pt-16"
+            :key="`section-${key}`"
           >
             <div
-              class="card__col-left"
-              :class="{ 'card__col-left--section': field.section }"
+              v-if="field.subtitle"
+              class="text-gray-lightest px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
             >
-              <label
-                class="truncate"
-                :class="{ 'visibility-hidden opacity-0': isDisabled }"
-                :title="$t(`label.${templateName}.${field.label || key}`)"
-              >
-                {{ $t(`label.${templateName}.${field.label || key}`) }}
-              </label>
-              <TextField
-                :disabled="isDisabled"
-                :value="item.template && item.template[key]"
-                :placeholder="(item.template && item.template[key]) || $t(`placeholder.${templateName}.${field.placeholder || key}`)"
-                squared
-                right
-                hide-details
-                class="pt-0 template-card__label"
-                @input="$emit('update-template', key, $event)"
-              />
+              {{ $t(`${templateName}.${field.subtitle}`) }}
             </div>
+          </div>
+          <div
+            class="flex flex-col justify-between pb-8 lg:flex-row lg:flex-wrap lg:pb-0"
+            :key="key"
+          >
+
             <slot
-              :name="key"
-              :field="item[key]"
+              :name="`${key}-row`"
+              :item="field"
             >
               <div
-                class="card__col-right relative"
-                :class="{ 'card__col-right--section': field.section }"
+                class="card__col-left"
+                :class="{ 'card__col-left--section': field.section }"
               >
-                <span class="card__subtitle">
-                  {{ field.subtitle ? $t(`${templateName}.${field.subtitle}`) : '' }}
-                </span>
-                <label :class="{ 'visibility-hidden opacity-0': isDisabled }">
-                  <span
-                    v-if="field.label"
-                    v-html="$t(`label.${templateName}.${field.label}`)"
+                <div v-if="field.labelReadonly" class="text-gray-dark text-left lg:text-right">
+                  {{ $t(`placeholder.${templateName}.${field.label || key}`) }}
+                </div>
+                <div v-else>
+                  <label
+                    class="truncate"
+                    :class="{ 'visibility-hidden opacity-0': isDisabled }"
+                    :title="$t(`label.${templateName}.${field.label || key}`)"
+                  >
+                    {{ $t(`label.${templateName}.${field.label || key}`) }}
+                  </label>
+                  <TextField
+                    :disabled="isDisabled"
+                    :value="item.template && item.template[key]"
+                    :placeholder="(item.template && item.template[key]) || $t(`placeholder.${templateName}.${field.placeholder || key}`)"
+                    squared
+                    hide-details
+                    class="pt-0 template-card__label"
+                    @input="$emit('update-template', key, $event)"
                   />
-                </label>
-                <TextArea
-                  :rows="field.rows || 1"
-                  :disabled="isDisabled"
-                  :value="item[field.defaultValueKey] || item[key]"
-                  squared
-                  hide-details
-                  class="template-card__input"
-                  @input="(v) => $emit('update-value', key, v)"
-                />
+                </div>
               </div>
+              <slot
+                :name="key"
+                :field="item[key]"
+              >
+                <div
+                  class="card__col-right relative"
+                >
+                  <label :class="{ 'visibility-hidden opacity-0': isDisabled }">
+                    <span
+                      v-if="field.label"
+                      v-html="$t(`label.${templateName}.${field.label}`)"
+                    />
+                  </label>
+                  <TextArea
+                    :rows="field.rows || 1"
+                    :disabled="isDisabled"
+                    :value="item[field.defaultValueKey] || item[key]"
+                    :placeholder="isDisabled ? '-' : null"
+                    squared
+                    hide-details
+                    class="template-card__input"
+                    @input="(v) => $emit('update-value', key, v)"
+                  />
+                </div>
+              </slot>
             </slot>
-          </slot>
 
-        </div>
+          </div>
+        </template>
       </div>
     </slot>
-    <slot name="apend" />
+    <slot name="append" />
   </div>
 </template>
 
@@ -104,131 +120,77 @@ export default {
       type: Boolean,
       default: false,
     },
+    isNotActive: {
+      type: Boolean,
+      default: false,
+    },
   },
 }
 </script>
 
 <style lang="postcss" scoped>
 .card {
-  width: 100%;
-  @apply bg-chaos-black;
+  @apply w-full bg-chaos-black;
   padding: 20px 0 25px;
 }
-.card__title {
-  display: none;
-}
-.card__subtitle {
-  position: absolute;
-  top: -55px;
-  left: 0;
-  color: #9F9F9F;
-  letter-spacing: 0.03em;
-  font-size: 16px;
-  line-height: 135%;
-  font-weight: 600;
-}
-.card__section {
-  margin-bottom: 60px;
-}
 .card__section--faded {
-  /* opacity: 0.4; */
-}
-.card__row {
- display: flex;
- flex-direction: column;
- justify-content: space-between;
-
+  transition: opacity .15s cubic-bezier(.25,.8,.5,1);
+  opacity: 0.4;
 }
 .card__col-left  label, .card__col-right  label {
-  display: none
+  @apply hidden;
 }
 .card__col-left  input, .card__col-right  input {
-  width: 100%;
-  display: block;
-  @apply px-2 border border-gray;
+  @apply block px-2 w-full border border-gray;
 }
 .card__col-left {
-  margin-bottom: 3px;
-  text-align: right;
-  white-space: nowrap;
+  @apply mb-1 text-right whitespace-no-wrap;
 }
 .card__col-right {
-  width: 100%;
-  margin-bottom: 30px;
+  @apply w-full;
 }
 .card__col-left.card__col-left--full-width label {
-  display: block;
-  height: 20px;
   color: #2E2E2E;
-  @apply px-2 text-sm;
-}
-.card__col-left--shops {
-
-}
-.card__col-left--section {
-  margin-top: 60px;
-}
-.card__col-right--section {
-  margin-top: 0;
+  @apply block px-2 text-sm h-5;
 }
 @screen sm {
   .card {
     padding: 20px 30px 25px;
   }
 }
-@screen md {
-  .card__title {
-    display: block;
-    text-align: center;
-    margin-bottom: 30px;
-  }
-}
 
 @screen lg {
   .card {
     width: calc(50% - 2px);
-    padding-top: 60px;
-  }
-  .card__subtitle {
-    top: -30px;
-  }
-  .card__row {
-    flex-direction: row;
-    flex-wrap: wrap;
+    @apply pb-16;
   }
   .card__col-left  label, .card__col-right  label {
-    display: block;
-    height: 20px;
     color: #2E2E2E;
-    @apply px-2 text-sm;
+    @apply block px-2 text-sm h-5;
   }
   .card__col-left {
     width: calc(45% - 2px);
-    margin-bottom: 0;
+    @apply mb-0;
   }
   .card__col-right {
     width: calc(55% - 2px);
-    margin-bottom: 0;
   }
   .card__col-left--shops {
-    width: 40%;
-    padding-right: 4px;
-    margin-left: auto;
-    text-align: right;
+    @apply text-right ml-auto pr-1 w-2/5;
   }
   .card__col-left.card__col-left--full-width {
-    width: 100%;
-  }
-  .card__col-left--section {
-    margin-top: 60px;
-  }
-  .card__col-right--section {
-    margin-top: 60px;
+    @apply w-full;
   }
 }
 </style>
 
-<style>
+<style lang="postcss">
+@screen lg {
+  .template-card__label input {
+    @apply text-right;
+  }
+}
+
 .template-card__label.text-field--focused input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #2A2B2D!important;
 }
@@ -245,6 +207,6 @@ export default {
 .template-card__label.text-area.is-disabled .text-area__slot,
 .template-card__input.text-field.is-disabled .text-field__slot,
 .template-card__input.text-area.is-disabled .text-area__slot {
-  border: none!important;
+  border-color: transparent!important;
 }
 </style>

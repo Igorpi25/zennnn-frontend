@@ -74,6 +74,7 @@ export const SUPPLIER_FRAGMENT = gql`
     id
     createdAt
     updatedAt
+    language
     companyNameSl
     companyNameCl
     website
@@ -154,6 +155,7 @@ export const CLIENT_FRAGMENT = gql`
     clientType
     createdAt
     updatedAt
+    language
     # legal
     companyName
     legalAddress
