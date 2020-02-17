@@ -2,7 +2,6 @@
   <div>
     <div
       class="card__col-left"
-      :class="{ 'card__col-left--section': field.section }"
     >
       <label
         class="truncate"

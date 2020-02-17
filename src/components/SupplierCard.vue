@@ -458,6 +458,7 @@ export default {
           labelReadonly: true,
           section: true,
           subtitle: 'language',
+          labelHint: 'languageDescription',
         },
       },
       supplier: {

@@ -412,6 +412,7 @@ export default {
           labelReadonly: true,
           section: true,
           subtitle: 'language',
+          labelHint: 'languageDescription',
         },
       },
       naturalFieldsSettings: {
@@ -443,6 +444,7 @@ export default {
           labelReadonly: true,
           section: true,
           subtitle: 'language',
+          labelHint: 'languageDescription',
         },
       },
       client: {

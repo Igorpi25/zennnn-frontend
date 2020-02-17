@@ -387,7 +387,8 @@
     "addAddress": "Add address",
     "storage": "Storage",
     "language": "Language",
-    "languageAndRegion": "Language & Region"
+    "languageAndRegion": "Language & Region",
+    "languageDescription": "Language used to send sms and email"
   },
   "clients": {
     "createClient": "Create a client",
@@ -408,7 +409,8 @@
     "note": "Note",
     "shippingInfo": "Shipping info",
     "language": "Language",
-    "languageAndRegion": "Language & Region"
+    "languageAndRegion": "Language & Region",
+    "languageDescription": "Language used to send sms and email"
   },
   "comments": {
     "enterComment": "Enter comment...",

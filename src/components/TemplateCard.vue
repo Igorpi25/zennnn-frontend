@@ -37,7 +37,6 @@
             >
               <div
                 class="card__col-left"
-                :class="{ 'card__col-left--section': field.section }"
               >
                 <div v-if="field.labelReadonly" class="text-gray-dark text-left lg:text-right px-2">
                   {{ $t(`placeholder.${templateName}.${field.label || key}`) }}
@@ -86,6 +85,17 @@
                   />
                 </div>
               </slot>
+              <div
+                v-if="field.labelHint"
+                class="card__col-left pt-1 lg:pt-0"
+              >
+                <div
+                  class="text-sm text-left lg:text-right leading-none whitespace-normal px-2"
+                  style="color: #2E2E2E;"
+                >
+                  {{ $t(`${templateName}.${field.labelHint}`) }}
+                </div>
+              </div>
             </slot>
 
           </div>

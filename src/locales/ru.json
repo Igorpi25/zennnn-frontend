@@ -387,7 +387,8 @@
     "addAddress": "Добавить доп. адрес",
     "storage": "Склад",
     "language": "Язык",
-    "languageAndRegion": "Язык и регион"
+    "languageAndRegion": "Язык и регион",
+    "languageDescription": "Язык используемый для отправки sms и  email"
   },
   "clients": {
     "createClient": "Создать клиента",
@@ -408,7 +409,8 @@
     "note": "Примечание",
     "shippingInfo": "Информация для отгрузки",
     "language": "Язык",
-    "languageAndRegion": "Язык и регион"
+    "languageAndRegion": "Язык и регион",
+    "languageDescription": "Язык используемый для отправки sms и  email"
   },
   "comments": {
     "enterComment": "Введите комментарий...",

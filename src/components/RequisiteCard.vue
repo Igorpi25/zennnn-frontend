@@ -152,7 +152,6 @@
                   :class="[
                     'card__col-left',
                     'card__col-left--full-width',
-                    {'card__col-left--section': item.section}
                   ]"
                 >
                   <label
