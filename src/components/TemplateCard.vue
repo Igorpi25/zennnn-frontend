@@ -39,7 +39,7 @@
                 class="card__col-left"
                 :class="{ 'card__col-left--section': field.section }"
               >
-                <div v-if="field.labelReadonly" class="text-gray-dark text-left lg:text-right">
+                <div v-if="field.labelReadonly" class="text-gray-dark text-left lg:text-right px-2">
                   {{ $t(`placeholder.${templateName}.${field.label || key}`) }}
                 </div>
                 <div v-else>

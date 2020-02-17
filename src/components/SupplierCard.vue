@@ -117,6 +117,7 @@
                   <select
                     :value="supplier.language || $i18n.fallbackLocale"
                     :disabled="!editMode || !!updateLoading"
+                    :class="{ 'appearance-none mx-2': !editMode || !!updateLoading }"
                     name="language-select"
                     style="background:transparent;"
                     @change="updateValue('language', $event.target.value)"
@@ -456,7 +457,7 @@ export default {
         language: {
           labelReadonly: true,
           section: true,
-          subtitle: 'languageAndRegion',
+          subtitle: 'language',
         },
       },
       supplier: {
