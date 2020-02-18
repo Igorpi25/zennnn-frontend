@@ -196,6 +196,7 @@ export default {
               family_name: lastName,
               given_name: firstName,
               email,
+              locale: this.$i18n.locale,
             },
           )
           this.$logger.info('Registered user', response.user)

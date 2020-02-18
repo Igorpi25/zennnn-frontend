@@ -212,6 +212,7 @@ export default {
           const attrs = {
             given_name: firstName,
             family_name: lastName,
+            locale: this.$i18n.locale,
           }
           const loggedUser = await this.$Auth.completeNewPassword(this.user, password, attrs)
           this.$logger.info('Registered complite user', loggedUser)
