@@ -295,7 +295,8 @@
       "seller": "Продавец",
       "wechat": "Wechat",
       "shopName": "Наименование магазина",
-      "shopAddress": "Адрес магазина"
+      "shopAddress": "Адрес магазина",
+      "language": "Язык"
     },
     "client": {
       "uid": "Уникальный номер клиента(УНК)",
@@ -334,7 +335,8 @@
       "additionalPhone": "Дополнительный номер",
       "address": "Адрес прописки",
       "note": "Примечание",
-      "password": "Пароль"
+      "password": "Пароль",
+      "language": "Язык"
     },
     "requisites": {
       "companyName": "Название компании",
@@ -383,7 +385,10 @@
     "saveAsPattern": "Сохранить как шаблон",
     "backToSuppliersList": "Обратно к списку поставщиков",
     "addAddress": "Добавить доп. адрес",
-    "storage": "Склад"
+    "storage": "Склад",
+    "language": "Язык",
+    "languageAndRegion": "Язык и регион",
+    "languageDescription": "Язык используемый для отправки sms и  email"
   },
   "clients": {
     "createClient": "Создать клиента",
@@ -402,7 +407,10 @@
     "legalPersonAbr": "Юр. лицо",
     "naturalPersonAbr": "Физ. лицо",
     "note": "Примечание",
-    "shippingInfo": "Информация для отгрузки"
+    "shippingInfo": "Информация для отгрузки",
+    "language": "Язык",
+    "languageAndRegion": "Язык и регион",
+    "languageDescription": "Язык используемый для отправки sms и  email"
   },
   "comments": {
     "enterComment": "Введите комментарий...",
@@ -522,7 +530,8 @@
       "seller": "Продавец:",
       "wechat": "Wechat:",
       "shopName": "Наименование магазина:",
-      "shopAddress": "Адрес магазина:"
+      "shopAddress": "Адрес магазина:",
+      "language": "Язык:"
     },
     "client": {
       "uid": "Уникальный номер клиента:",
@@ -562,7 +571,8 @@
       "middleName": "Отчество:",
       "passportId": "Номер паспорта:",
       "additionalPhone": "Дополнительный номер:",
-      "address": "Адрес прописки:"
+      "address": "Адрес прописки:",
+      "language": "Язык:"
     },
     "requisites": {
       "fillFields": "Заполните поле"

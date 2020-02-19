@@ -295,7 +295,8 @@
       "seller": "Seller",
       "wechat": "Wechat",
       "shopName": "Shop Name",
-      "shopAddress": "Shop Address"
+      "shopAddress": "Shop Address",
+      "language": "Language"
     },
     "client": {
       "uid": "Unique client number",
@@ -334,7 +335,8 @@
       "additionalPhone": "Additional phone number",
       "address": "Place of residence",
       "note": "Note",
-      "password": "Password"
+      "password": "Password",
+      "language": "Language"
     },
     "requisites": {
       "companyName": "Company name",
@@ -383,7 +385,10 @@
     "saveAsPattern": "Save as a pattern",
     "backToSuppliersList": "Back to suppliers list",
     "addAddress": "Add address",
-    "storage": "Storage"
+    "storage": "Storage",
+    "language": "Language",
+    "languageAndRegion": "Language & Region",
+    "languageDescription": "Language used to send sms and email"
   },
   "clients": {
     "createClient": "Create a client",
@@ -394,7 +399,7 @@
     "save": "Save",
     "saveAsPattern": "Save as a pattern",
     "backToClientsList": "Back to clients list",
-    "clientCard": "client's card",
+    "clientCard": "Client's card",
     "edit": "Edit",
     "clientCardPatterns": "Client's card patterns",
     "legalPerson": "Legal person",
@@ -402,7 +407,10 @@
     "legalPersonAbr": "Legal person",
     "naturalPersonAbr": "Natural person",
     "note": "Note",
-    "shippingInfo": "Shipping info"
+    "shippingInfo": "Shipping info",
+    "language": "Language",
+    "languageAndRegion": "Language & Region",
+    "languageDescription": "Language used to send sms and email"
   },
   "comments": {
     "enterComment": "Enter comment...",
@@ -522,7 +530,8 @@
       "seller": "Seller:",
       "wechat": "Wechat:",
       "shopName": "Name:",
-      "shopAddress": "Shop address:"
+      "shopAddress": "Shop address:",
+      "language": "Language:"
     },
     "client": {
       "uid": "Unique client number:",
@@ -562,7 +571,8 @@
       "middleName": "Middle name:",
       "passportId": "Passport ID:",
       "additionalPhone": "Additional phone number:",
-      "address": "Place of residence:"
+      "address": "Place of residence:",
+      "language": "Language:"
     },
     "requisites": {
       "fillFields": "Fill in the field"

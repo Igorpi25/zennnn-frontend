@@ -97,7 +97,7 @@ const numberFormats = {
 }
 
 export default new VueI18n({
-  locale: localStorage.getItem(CURRENT_LANG_STORE_KEY) || process.env.VUE_APP_I18N_LOCALE || 'ru',
+  locale: localStorage.getItem(CURRENT_LANG_STORE_KEY) || process.env.VUE_APP_I18N_LOCALE || 'en',
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
   messages: loadLocaleMessages(),
   dateTimeFormats,

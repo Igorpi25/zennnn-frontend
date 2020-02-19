@@ -55,7 +55,7 @@
                 :value="editMode"
                 small
                 class="mr-2"
-                @input="editMode=!editMode"
+                @input="toggleEditMode"
               >
                 <span>{{ $t('client.edit') }}</span>
               </ToggleButton>
@@ -72,7 +72,7 @@
             <RadioButton
               :value="clientType"
               :label="legalType"
-              :disables="!editMode"
+              :disabled="!editMode"
               name="person-type"
               class="mr-6"
               @input="switchPersonType(legalType)"
@@ -95,11 +95,34 @@
               :fields="legalFieldsSettings"
               :item="client"
               :is-disabled="!editMode"
-              :class="{'template-card': isNaturalPerson}"
+              :is-not-active="isNaturalPerson"
+              :class="{ 'template-card': isNaturalPerson }"
               @update-template="updateTemplate"
               @update-value="updateValue"
             >
-              <template v-slot:prepand>
+              <template v-slot:language>
+                <div class="card__col-right">
+                  <select
+                    :value="client.language || $i18n.fallbackLocale"
+                    :disabled="!editMode || !!updateLoading"
+                    :class="{ 'appearance-none mx-2': !editMode || !!updateLoading }"
+                    name="language-select"
+                    style="background:transparent;"
+                    @change="updateValue('language', $event.target.value)"
+                  >
+                    <option
+                      v-for="opt of langs"
+                      :key="opt.value"
+                      :value="opt.value"
+                    >
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        {{ opt.text }}
+                      </span>
+                    </option>
+                  </select>
+                </div>
+              </template>
+              <template v-slot:prepend>
                 <RadioButton
                   :value="clientType"
                   :label="legalType"
@@ -111,19 +134,29 @@
                   <span>{{ $t('client.legalPerson') }}</span>
                 </RadioButton>
               </template>
-              <template v-slot:apend>
+              <template v-slot:append>
                 <div :class="['text-center', { 'card__section--faded': isNaturalPerson }]">
                   <Button
-                    large
+                    v-if="!editMode"
                     :disabled="isNaturalPerson || !!updateLoading"
+                    large
+                    class="mb-4 mx-auto"
+                    @click="edit"
+                  >
+                    <span>{{ $t('client.edit') }}</span>
+                  </Button>
+                  <Button
+                    v-else
+                    :disabled="isNaturalPerson || !!updateLoading"
+                    large
                     class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
                     <span>{{ $t('client.save') }}</span>
                   </Button>
                   <Button
-                    text
                     :disabled="isNaturalPerson"
+                    text
                     class="mx-auto"
                     @click="saveAsTemplate"
                   >
@@ -137,11 +170,34 @@
               :fields="naturalFieldsSettings"
               :item="client"
               :is-disabled="!editMode"
+              :is-not-active="!isNaturalPerson"
               :class="{ 'template-card': !isNaturalPerson }"
               @update-template="updateTemplate"
               @update-value="updateValue"
             >
-              <template v-slot:prepand>
+              <template v-slot:language>
+                <div class="card__col-right">
+                  <select
+                    :value="client.language || $i18n.fallbackLocale"
+                    :disabled="!editMode || !!updateLoading"
+                    :class="{ 'appearance-none mx-2': !editMode || !!updateLoading }"
+                    name="language-select"
+                    style="background:transparent;"
+                    @change="updateValue('language', $event.target.value)"
+                  >
+                    <option
+                      v-for="opt of langs"
+                      :key="opt.value"
+                      :value="opt.value"
+                    >
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        {{ opt.text }}
+                      </span>
+                    </option>
+                  </select>
+                </div>
+              </template>
+              <template v-slot:prepend>
                 <RadioButton
                   :value="clientType"
                   :label="naturalType"
@@ -153,19 +209,29 @@
                   <span>{{ $t('client.naturalPerson') }}</span>
                 </RadioButton>
               </template>
-              <template v-slot:apend>
+              <template v-slot:append>
                 <div :class="['text-center', { 'card__section--faded': !isNaturalPerson }]">
                   <Button
-                    large
+                    v-if="!editMode"
                     :disabled="!isNaturalPerson || !!updateLoading"
+                    large
+                    class="mb-4 mx-auto"
+                    @click="edit"
+                  >
+                    <span>{{ $t('client.edit') }}</span>
+                  </Button>
+                  <Button
+                    v-else
+                    :disabled="!isNaturalPerson || !!updateLoading"
+                    large
                     class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
                     <span>{{ $t('client.save') }}</span>
                   </Button>
                   <Button
-                    text
                     :disabled="!isNaturalPerson"
+                    text
                     class="mx-auto"
                     @click="saveAsTemplate"
                   >
@@ -263,6 +329,10 @@ export default {
   },
   data () {
     return {
+      langs: [
+        { value: 'en', text: 'English' },
+        { value: 'ru', text: 'Русский' },
+      ],
       saveBeforeCloseDialog: false,
       templateChanged: false,
       createTemplateLoading: false,
@@ -338,6 +408,12 @@ export default {
           subtitle: 'note',
           rows: 3,
         },
+        language: {
+          labelReadonly: true,
+          section: true,
+          subtitle: 'language',
+          labelHint: 'languageDescription',
+        },
       },
       naturalFieldsSettings: {
         customUid: {
@@ -364,6 +440,12 @@ export default {
           subtitle: 'note',
           rows: 3,
         },
+        language: {
+          labelReadonly: true,
+          section: true,
+          subtitle: 'language',
+          labelHint: 'languageDescription',
+        },
       },
       client: {
         id: null,
@@ -385,8 +467,9 @@ export default {
       ]
     },
     templateFieldsKeys () {
+      const fields = this.fieldsKeys.filter(k => k !== 'language')
       return [
-        ...this.fieldsKeys,
+        ...fields,
         'templateName',
       ]
     },
@@ -472,6 +555,9 @@ export default {
     }
   },
   methods: {
+    async toggleEditMode () {
+      this.editMode = !this.editMode
+    },
     async checkChangesBeforeLeave (next) {
       if (this.hasDeepChange) {
         const r = await this.openConfirmDialog()
@@ -527,17 +613,23 @@ export default {
           mutation: query,
           variables,
         })
-        if (response && response.data && response.data.createClient) {
-          this.setData(response.data.createClient)
+        if (response && response.data) {
+          const data = this.create
+            ? response.data.createClient
+            : response.data.updateClient
+          this.setData(data)
           this.editMode = false
-          this.clientClone = cloneDeep(this.client)
-          this.$router.push({
-            name: 'client',
-            params: {
-              orgId: this.orgId,
-              clientId: response.data.createClient.id,
-            },
-          })
+          if (this.create) {
+            this.$router.push({
+              name: 'client',
+              params: {
+                orgId: this.orgId,
+                clientId: data.id,
+              },
+            })
+          } else {
+            this.$vuetify.goTo('#container')
+          }
         }
       } catch (error) {
         this.$logger.warn('Error: ', error)
@@ -598,7 +690,7 @@ export default {
     },
     edit () {
       this.editMode = true
-      this.$vuetify.goTo('#container')
+      // this.$vuetify.goTo('#container')
     },
     switchPersonType (type) {
       this.clientType = type

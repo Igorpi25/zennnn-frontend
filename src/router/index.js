@@ -308,14 +308,15 @@ router.beforeEach(async (to, from, next) => {
   // browser language detect
   const localLang = localStorage.getItem(CURRENT_LANG_STORE_KEY)
   if (!localLang) {
+    const defaultLang = process.env.VUE_APP_I18N_LOCALE || 'en'
     const userLang = navigator.language || navigator.userLanguage || ''
     // is not default lang
-    if (!userLang.startsWith('ru')) {
-      const supportedLangs = ['ru', 'en']
+    if (!userLang.startsWith(defaultLang)) {
+      const supportedLangs = i18n.availableLocales
       let lang = userLang.split('-')[0] || ''
       if (!supportedLangs.includes(lang)) {
         // default for not supported langs
-        lang = 'en'
+        lang = defaultLang
         const langs = navigator.languages || []
         for (const sLang of supportedLangs) {
           if (langs.some(el => (el || '').startsWith(sLang))) {

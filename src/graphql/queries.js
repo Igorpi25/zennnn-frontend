@@ -26,6 +26,7 @@ export const GET_ORGS = gql`
         givenName
         familyName
         picture
+        language
       }
       role
       name
@@ -69,6 +70,7 @@ export const GET_PROFILE = gql`
       familyName
       picture
       initialized
+      language
     }
   }
 `

@@ -74,8 +74,23 @@
           :class="{ 'requisite-template-card': isBank }"
         >
           <template v-slot:items>
-            <div v-for="(item, key) in about" :key="key">
-              <div class="card__row relative lg:pt-5">
+            <template v-for="(item, key) in about">
+              <div
+                v-if="item.section"
+                class="flex justify-center pt-16"
+                :key="`section-${key}`"
+              >
+                <div
+                  v-if="item.subtitle"
+                  class="text-gray-lightest px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
+                >
+                  {{ $t(`requisites.${item.subtitle}`) }}
+                </div>
+              </div>
+              <div
+                :key="key"
+                class="flex flex-col justify-between pb-8 relative lg:flex-row lg:flex-wrap lg:pb-0 lg:pt-5"
+              >
                 <div class="card__col-left card__col-left--full-width">
                   <label
                     class="truncate text-left"
@@ -94,9 +109,9 @@
                   />
                 </div>
               </div>
-            </div>
+            </template>
           </template>
-          <template v-slot:apend>
+          <template v-slot:append>
             <div class="text-center mt-32">
               <Button
                 large
@@ -116,18 +131,29 @@
           :class="{ 'requisite-template-card': !isBank }"
         >
           <template v-slot:items>
-            <div v-for="(item, key) in bank" :key="key">
-              <div class="card__row relative lg:pt-5">
+            <template v-for="(item, key) in bank">
+              <div
+                v-if="item.section"
+                class="flex justify-center pt-16"
+                :key="`section-${key}`"
+              >
+                <div
+                  v-if="item.subtitle"
+                  class="text-gray-lightest px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
+                >
+                  {{ $t(`requisites.${item.subtitle}`) }}
+                </div>
+              </div>
+              <div
+                :key="key"
+                class="flex flex-col justify-between pb-8 relative lg:flex-row lg:flex-wrap lg:pb-0 lg:pt-5"
+              >
                 <div
                   :class="[
                     'card__col-left',
                     'card__col-left--full-width',
-                    {'card__col-left--section': item.section}
                   ]"
                 >
-                  <span class="requisite-card__subtitle">
-                    {{ item.subtitle ? $t(`requisites.${item.subtitle}`) : '' }}
-                  </span>
                   <label
                     class="truncate text-left"
                     :title="$t(`label.requisites.${item.label || key}`)"
@@ -145,9 +171,9 @@
                   />
                 </div>
               </div>
-            </div>
+            </template>
           </template>
-          <template v-slot:apend>
+          <template v-slot:append>
             <div class="text-center mt-32">
               <Button
                 large
@@ -369,21 +395,28 @@ export default {
           mutation: query,
           variables,
         })
-        if (response && response.data && response.data.createRequisite) {
-          this.setData(response.data.createRequisite)
+        if (response && response.data) {
+          const data = this.create
+            ? response.data.createRequisite
+            : response.data.updateRequisite
+          this.setData(data)
           if (this.isComponent) {
-            this.$emit('create', response.data.createRequisite)
+            const action = this.create ? 'create' : 'update'
+            this.$emit(action, data)
           } else {
-            this.$router.push({
-              name: 'requisite',
-              params: {
-                orgId: this.orgId,
-                reqId: response.data.createRequisite.id,
-              },
-            })
+            if (this.create) {
+              this.$router.push({
+                name: 'requisite',
+                params: {
+                  orgId: this.orgId,
+                  reqId: data.id,
+                },
+              })
+            } else {
+              this.$vuetify.goTo('#container')
+            }
           }
         }
-        this.requisiteClone = cloneDeep(this.requisite)
       } catch (error) {
         this.$logger.warn('Error: ', error)
         throw new Error(error)

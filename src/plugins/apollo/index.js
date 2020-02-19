@@ -11,7 +11,7 @@ import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from '../../graphql'
 import { GET_BACKEND_VERSION } from '../../graphql/queries'
 import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY } from '../../config/globals'
-import { Auth, Logger } from '../index'
+import { Auth, Logger, i18n } from '../index'
 import router from '../../router'
 
 const logger = new Logger('Apollo')
@@ -92,6 +92,7 @@ const authLink = setContext(async (request, { headers }) => {
       ...headers,
       authorization: token ? `${token}` : '',
       sid,
+      lang: i18n.locale,
     },
   }
 })

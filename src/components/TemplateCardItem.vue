@@ -2,7 +2,6 @@
   <div>
     <div
       class="card__col-left"
-      :class="{ 'card__col-left--section': field.section }"
     >
       <label
         class="truncate"
@@ -28,7 +27,6 @@
     >
       <div
         class="card__col-right relative"
-        :class="{ 'card__col-right--section': field.section }"
       >
         <span class="card__subtitle">
           {{ field.subtitle ? $t(`${templateName}.${field.subtitle}`) : '' }}

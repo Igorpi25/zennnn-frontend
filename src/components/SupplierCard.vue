@@ -66,7 +66,7 @@
                 :value="editMode"
                 small
                 class="mr-2"
-                @input="editMode=!editMode"
+                @input="toggleEditMode"
               >
                 <span>{{ $t('supplier.edit') }}</span>
               </ToggleButton>
@@ -81,8 +81,9 @@
           </header>
           <div class="card__radio-group">
             <RadioButton
-              :value="editCardTypes.SUPPLIER"
-              :input-value="editCard"
+              :value="editCard"
+              :label="editCardTypes.SUPPLIER"
+              :disabled="!editMode"
               name="card-type"
               class="mr-6"
               @input="editCard = editCardTypes.SUPPLIER"
@@ -90,8 +91,9 @@
               <span>{{ $t('supplier.legalPersonAbr') }}</span>
             </RadioButton>
             <RadioButton
-              :value="editCardTypes.SHOPS"
-              :input-value="editCard"
+              :value="editCard"
+              :label="editCardTypes.SHOPS"
+              :disabled="!editMode"
               name="card-type"
               @input="editCard = editCardTypes.SHOPS"
             >
@@ -110,11 +112,43 @@
               @update-template="updateTemplate"
               @update-value="updateValue"
             >
-              <template v-slot:apend>
+              <template v-slot:language>
+                <div class="card__col-right">
+                  <select
+                    :value="supplier.language || $i18n.fallbackLocale"
+                    :disabled="!editMode || !!updateLoading"
+                    :class="{ 'appearance-none mx-2': !editMode || !!updateLoading }"
+                    name="language-select"
+                    style="background:transparent;"
+                    @change="updateValue('language', $event.target.value)"
+                  >
+                    <option
+                      v-for="opt of langs"
+                      :key="opt.value"
+                      :value="opt.value"
+                    >
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        {{ opt.text }}
+                      </span>
+                    </option>
+                  </select>
+                </div>
+              </template>
+              <template v-slot:append>
                 <div class="text-center">
                   <Button
+                    v-if="!editMode"
+                    :disabled="!!updateLoading"
                     large
+                    class="mb-4 mx-auto"
+                    @click="edit"
+                  >
+                    <span>{{ $t('client.edit') }}</span>
+                  </Button>
+                  <Button
+                    v-else
                     :disabled="!editMode"
+                    large
                     class="mb-4 mx-auto"
                     @click="update"
                   >
@@ -138,7 +172,7 @@
             >
               <template v-slot:items>
                 <div v-for="(shop, index) in supplier.shops" :key="index">
-                  <div class="card__row relative lg:pt-5">
+                  <div class="flex flex-col justify-between pb-8 relative lg:flex-row lg:flex-wrap lg:pb-0 lg:pt-5">
                     <div class="card__col-left card__col-left--shops">
                       <div
                         class="card__expand-btn"
@@ -164,7 +198,6 @@
                         :placeholder="(shop.template && shop.template['name']) || `${$t('placeholder.supplier.shopName')}`"
                         :disabled="!expanded.includes(index)"
                         squared
-                        right
                         hide-details
                         class="pt-0 template-card__label"
                         @input="updateShopTemplate(index, 'name', $event)"
@@ -184,9 +217,9 @@
                   </div>
                   <div
                     v-if="expanded.includes(index)"
-                    class="card__section"
+                    class="pb-16"
                   >
-                    <div class="card__row">
+                    <div class="flex flex-col justify-between pb-8 lg:flex-row lg:flex-wrap lg:pb-0">
                       <template
                         v-for="([key, f]) in Object.entries(shopFieldsSettings).slice(1)"
                       >
@@ -198,7 +231,6 @@
                           <TextField
                             :value="shop.template && shop.template[key]"
                             :placeholder="(shop.template && shop.template[key]) || $t(`placeholder.supplier.${f.label || key}`)"
-                            right
                             squared
                             hide-details
                             class="pt-0 template-card__label"
@@ -224,7 +256,7 @@
                       <Button
                         v-if="!create"
                         large
-                        :disabled="updateLoading"
+                        :disabled="!!updateLoading"
                         class="mb-4 mx-auto"
                         @click="updateShop(shop.id, index)"
                       >
@@ -234,7 +266,7 @@
                   </div>
                 </div>
               </template>
-              <template v-slot:apend>
+              <template v-slot:append>
                 <Button
                   outline
                   white
@@ -348,6 +380,10 @@ export default {
   },
   data () {
     return {
+      langs: [
+        { value: 'en', text: 'English' },
+        { value: 'ru', text: 'Русский' },
+      ],
       saveBeforeCloseDialog: false,
       templateChanged: false,
       createTemplateLoading: false,
@@ -418,6 +454,12 @@ export default {
           section: true,
           subtitle: 'note',
         },
+        language: {
+          labelReadonly: true,
+          section: true,
+          subtitle: 'language',
+          labelHint: 'languageDescription',
+        },
       },
       supplier: {
         id: null,
@@ -442,8 +484,9 @@ export default {
       return Object.keys(this.shopFieldsSettings)
     },
     templateFieldsKeys () {
+      const fields = this.fieldsKeys.filter(k => k !== 'language')
       return [
-        ...this.fieldsKeys,
+        ...fields,
         'templateName',
       ]
     },
@@ -528,6 +571,9 @@ export default {
     }
   },
   methods: {
+    async toggleEditMode () {
+      this.editMode = !this.editMode
+    },
     async checkChangesBeforeLeave (next) {
       if (this.hasDeepChange) {
         const r = await this.openConfirmDialog()
@@ -609,21 +655,28 @@ export default {
           mutation: query,
           variables,
         })
-        if (response && response.data && response.data.createSupplier) {
-          this.setData(response.data.createSupplier)
+        if (response && response.data) {
+          const data = this.create
+            ? response.data.createSupplier
+            : response.data.updateSupplier
+          this.setData(data)
           this.expanded = []
           if (this.isComponent) {
-            this.$emit('create', response.data.createSupplier)
+            const action = this.create ? 'create' : 'update'
+            this.$emit(action, data)
           } else {
             this.editMode = false
-            this.supplierClone = cloneDeep(this.supplier)
-            this.$router.push({
-              name: 'supplier',
-              params: {
-                orgId: this.orgId,
-                supplierId: response.data.createSupplier.id,
-              },
-            })
+            if (this.create) {
+              this.$router.push({
+                name: 'supplier',
+                params: {
+                  orgId: this.orgId,
+                  supplierId: data.id,
+                },
+              })
+            } else {
+              this.$vuetify.goTo('#container')
+            }
           }
         }
       } catch (error) {
@@ -684,7 +737,7 @@ export default {
     },
     edit () {
       this.editMode = true
-      this.$vuetify.goTo('#container')
+      // this.$vuetify.goTo('#container')
     },
     updateTemplate (key, value) {
       if (!this.supplier.template.hasOwnProperty(key)) {
@@ -753,6 +806,7 @@ export default {
         })
         if (response && response.data && response.data.updateSupplierShop) {
           this.supplier.shops.splice(index, 1, response.data.updateSupplierShop)
+          this.expandShop(index)
         }
       } catch (error) {
         throw new Error(error)
