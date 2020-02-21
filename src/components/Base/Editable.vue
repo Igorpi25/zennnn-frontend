@@ -501,7 +501,7 @@ div[contenteditable=true]:empty::before {
   background-color: #522b2d;
 }
 
- .editable::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+.editable::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   @apply text-primary;
 }
  .editable::-moz-placeholder { /* Firefox 19+ */
@@ -514,7 +514,7 @@ div[contenteditable=true]:empty::before {
   @apply text-primary;
 }
 
- .editable:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+.editable:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   @apply text-gray-lighter;
 }
  .editable:focus::-moz-placeholder { /* Firefox 19+ */

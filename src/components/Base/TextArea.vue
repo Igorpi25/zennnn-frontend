@@ -51,6 +51,7 @@
           :minlength="minlength"
           :autofocus="autofocus"
           :placeholder="placeholder"
+          :class="inputClass"
           @input="calculateHeight"
           @focus="onFocus"
           @blur="onBlur"
@@ -191,6 +192,10 @@ export default {
     debounce: {
       type: Number,
       default: 0,
+    },
+    inputClass: {
+      type: [String, Object],
+      default: '',
     },
   },
   data () {

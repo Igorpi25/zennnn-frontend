@@ -26,6 +26,16 @@ export const ClientType = {
   NATURAL: 'NATURAL',
 }
 
+export const ShipmentType = {
+  UNDEFINED: 'UNDEFINED',
+  MARINE: 'MARINE',
+  AIR: 'AIR',
+  RAILWAY: 'RAILWAY',
+  CAR: 'CAR',
+  MIXED: 'MIXED',
+  EXPRESS: 'EXPRESS',
+}
+
 export const Role = {
   OWNER: 'OWNER',
   MANAGER: 'MANAGER',

@@ -339,7 +339,7 @@
             />
           </div>
         </div>
-        <div class="spec-summary__actions">
+        <!-- <div class="spec-summary__actions">
           <Button text class="mb-4" @click="openPaperList">
             <template v-slot:icon>
               <Icon size="32" color="#aaaaaa">
@@ -372,10 +372,10 @@
             </template>
             <span class="text-left">{{ $t('shipping.share') }}</span>
           </Button>
-        </div>
+        </div> -->
       </div>
     </div>
-    <div>
+    <!-- <div>
       <div class="flex justify-center sm:block">
         <a
           :href="`/paper/${$route.params.specId}`"
@@ -392,7 +392,839 @@
           </Button>
         </a>
       </div>
+    </div> -->
+
+    <div class="py-10">
+      <div class="flex flex-wrap">
+        <!-- Delivery -->
+        <div class="w-full pb-4 md:w-1/2 lg:w-4/6 md:pr-3">
+          <h4 class="text-xl font-semibold leading-6 mb-4">
+            {{ $t('shipping.forDeliver') }}
+          </h4>
+          <div class="bg-accent3 rounded-t-md mb-1 py-1 px-2 flex flex-wrap items-center">
+            <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
+              <TextField
+                v-model="shipment.sentFrom"
+                :placeholder="$t('shipping.sentFrom')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+            </div>
+            <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
+              <TextField
+                v-model="shipment.sentThrough"
+                :placeholder="$t('shipping.sentThrough')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+            </div>
+            <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
+              <TextField
+                v-model="shipment.destination"
+                :placeholder="$t('shipping.destination')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+            </div>
+          </div>
+          <div class="bg-accent3 rounded-b-md py-1 px-2 flex flex-wrap">
+            <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
+              <Select
+                v-model="shipment.type"
+                :placeholder="$t('shipping.shipmentType')"
+                :nudge-bottom="32"
+                :items="shipmentTypes"
+                solo
+                squared
+                hide-details
+                class="text-sm select_nd"
+                input-class="h-8 text-primary"
+              >
+                <template v-slot:append="{ isMenuOpen }">
+                  <div class="text-primary">
+                    <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
+                    <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
+                  </div>
+                </template>
+              </Select>
+            </div>
+            <div class="w-full sm:w-2/3 md:w-full lg:w-2/3 px-1">
+              <div class="h-8" />
+            </div>
+            <!-- MARINE -->
+            <div
+              v-if="shipment.type.value === ShipmentType.MARINE"
+              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
+            >
+              <TextField
+                v-model="shipment.marine.billOfLadingNo"
+                :placeholder="$t('shipping.billOfLadingNo')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+              <TextField
+                v-model="shipment.marine.ship"
+                :placeholder="$t('shipping.ship')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+            </div>
+            <div
+              v-if="shipment.type.value === ShipmentType.MARINE"
+              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
+            >
+              <div class="flex items-center">
+                <div class="w-1/2 text-right px-1">
+                  {{ $t('shipping.containersCount') }}
+                </div>
+                <div class="w-1/2 px-1">
+                  <TextField
+                    v-model="shipment.marine.containersCount"
+                    :placeholder="$t('placeholder.emptyNumber')"
+                    type="number"
+                    inputmode="decimal"
+                    format-style="decimal"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary"
+                  />
+                </div>
+              </div>
+              <div class="px-1">
+                <TextField
+                  v-model="shipment.marine.containersNo"
+                  :placeholder="$t('shipping.containersNo')"
+                  solo
+                  squared
+                  hide-details
+                  class="text-sm text-field_nd"
+                  input-class="h-8 text-primary"
+                />
+              </div>
+              <div class="flex items-center">
+                <div class="w-1/2 text-right px-1">
+                  {{ $t('shipping.exportDate') }}
+                </div>
+                <div class="w-1/2 px-1">
+                  <v-menu
+                    ref="menu"
+                    transition="scale-transition"
+                    min-width="290px"
+                    offset-y
+                  >
+                    <template v-slot:activator="{ on }">
+                      <div v-on="on">
+                        <TextField
+                          :value="shipment.marine.exportDate ? $d($parseDate(shipment.marine.exportDate), 'short'): ''"
+                          :placeholder="$t('placeholder.emptyDate')"
+                          solo
+                          squared
+                          readonly
+                          hide-details
+                          class="text-sm text-field_nd"
+                          input-class="h-8 text-primary"
+                        />
+                      </div>
+                    </template>
+                    <v-date-picker
+                      :value="$toISOString($parseDate(shipment.marine.exportDate))"
+                      :locale="$i18n.locale"
+                      :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
+                      :next-icon="icons.mdiChevronRight"
+                      :prev-icon="icons.mdiChevronLeft"
+                      color="#5a8199"
+                      no-title
+                      dark
+                      @change="shipment.marine.exportDate = $event || null"
+                    ></v-date-picker>
+                  </v-menu>
+                </div>
+              </div>
+            </div>
+            <!-- AIR -->
+            <div
+              v-if="shipment.type.value === ShipmentType.AIR"
+              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
+            >
+              <TextField
+                v-model="shipment.air.airWaybillNo"
+                :placeholder="$t('shipping.airWaybillNo')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+              <TextField
+                v-model="shipment.marine.flight"
+                :placeholder="$t('shipping.flight')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+            </div>
+            <div
+              v-if="shipment.type.value === ShipmentType.AIR"
+              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
+            >
+              <div class="flex items-center">
+                <div class="w-1/2 text-right px-1">
+                  {{ $t('shipping.numbersOfPkg') }}
+                </div>
+                <div class="w-1/2 px-1">
+                  <TextField
+                    v-model="shipment.air.numbersOfPkg"
+                    :placeholder="$t('placeholder.emptyNumber')"
+                    type="number"
+                    inputmode="decimal"
+                    format-style="decimal"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- RAILWAY -->
+            <div
+              v-if="shipment.type.value === ShipmentType.RAILWAY"
+              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
+            >
+              <TextField
+                v-model="shipment.railway.internationalWaybillNo"
+                :placeholder="$t('shipping.internationalWaybillNo')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+              <TextField
+                v-model="shipment.railway.train"
+                :placeholder="$t('shipping.train')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+            </div>
+            <div
+              v-if="shipment.type.value === ShipmentType.RAILWAY"
+              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
+            >
+              <div class="flex items-center">
+                <div class="w-1/2 text-right px-1">
+                  {{ $t('shipping.trainContainersCount') }}
+                </div>
+                <div class="w-1/2 px-1">
+                  <TextField
+                    v-model="shipment.railway.trainContainersCount"
+                    :placeholder="$t('placeholder.notIndicated')"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary"
+                  />
+                </div>
+              </div>
+              <div class="px-1">
+                <TextField
+                  v-model="shipment.railway.trainContainersNo"
+                  :placeholder="$t('shipping.trainContainersNo')"
+                  solo
+                  squared
+                  hide-details
+                  class="text-sm text-field_nd"
+                  input-class="h-8 text-primary"
+                />
+              </div>
+              <div class="flex items-center">
+                <div class="w-1/2 text-right px-1">
+                  {{ $t('shipping.exportDate') }}
+                </div>
+                <div class="w-1/2 px-1">
+                  <v-menu
+                    ref="menu"
+                    transition="scale-transition"
+                    min-width="290px"
+                    offset-y
+                  >
+                    <template v-slot:activator="{ on }">
+                      <div v-on="on">
+                        <TextField
+                          :value="shipment.railway.exportDate ? $d($parseDate(shipment.railway.exportDate), 'short'): ''"
+                          :placeholder="$t('placeholder.emptyDate')"
+                          solo
+                          squared
+                          readonly
+                          hide-details
+                          class="text-sm text-field_nd"
+                          input-class="h-8 text-primary"
+                        />
+                      </div>
+                    </template>
+                    <v-date-picker
+                      :value="$toISOString($parseDate(shipment.railway.exportDate))"
+                      :locale="$i18n.locale"
+                      :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
+                      :next-icon="icons.mdiChevronRight"
+                      :prev-icon="icons.mdiChevronLeft"
+                      color="#5a8199"
+                      no-title
+                      dark
+                      @change="shipment.railway.exportDate = $event || null"
+                    ></v-date-picker>
+                  </v-menu>
+                </div>
+              </div>
+            </div>
+            <!-- CAR -->
+            <div
+              v-if="shipment.type.value === ShipmentType.CAR"
+              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
+            >
+              <TextField
+                v-model="shipment.car.internationalWaybillNo"
+                :placeholder="$t('shipping.internationalWaybillNo')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+              <TextField
+                v-model="shipment.car.vehicleNo"
+                :placeholder="$t('shipping.vehicleNo')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+            </div>
+            <div
+              v-if="shipment.type.value === ShipmentType.CAR"
+              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
+            >
+              <div class="flex items-center">
+                <div class="w-1/2 text-right px-1">
+                  {{ $t('shipping.semitrailerNo') }}
+                </div>
+                <div class="w-1/2 px-1">
+                  <TextField
+                    v-model="shipment.car.semitrailerNo"
+                    :placeholder="$t('placeholder.notIndicated')"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary"
+                  />
+                </div>
+              </div>
+              <div class="flex items-center">
+                <div class="w-1/2 text-right px-1">
+                  {{ $t('shipping.exportDate') }}
+                </div>
+                <div class="w-1/2 px-1">
+                  <v-menu
+                    ref="menu"
+                    transition="scale-transition"
+                    min-width="290px"
+                    offset-y
+                  >
+                    <template v-slot:activator="{ on }">
+                      <div v-on="on">
+                        <TextField
+                          :value="shipment.car.exportDate ? $d($parseDate(shipment.car.exportDate), 'short'): ''"
+                          :placeholder="$t('placeholder.emptyDate')"
+                          solo
+                          squared
+                          readonly
+                          hide-details
+                          class="text-sm text-field_nd"
+                          input-class="h-8 text-primary"
+                        />
+                      </div>
+                    </template>
+                    <v-date-picker
+                      :value="$toISOString($parseDate(shipment.car.exportDate))"
+                      :locale="$i18n.locale"
+                      :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
+                      :next-icon="icons.mdiChevronRight"
+                      :prev-icon="icons.mdiChevronLeft"
+                      color="#5a8199"
+                      no-title
+                      dark
+                      @change="shipment.car.exportDate = $event || null"
+                    ></v-date-picker>
+                  </v-menu>
+                </div>
+              </div>
+            </div>
+            <!-- MIXED -->
+            <div
+              v-if="shipment.type.value === ShipmentType.MIXED"
+              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
+            >
+              <TextField
+                v-model="shipment.mixed.internationalWaybillNo"
+                :placeholder="$t('shipping.internationalWaybillNo')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+              <TextField
+                v-model="shipment.mixed.ship"
+                :placeholder="$t('shipping.ship')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+              <TextField
+                v-model="shipment.mixed.train"
+                :placeholder="$t('shipping.train')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+              <TextField
+                v-model="shipment.mixed.flight"
+                :placeholder="$t('shipping.flight')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+            </div>
+            <div
+              v-if="shipment.type.value === ShipmentType.MIXED"
+              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
+            >
+              <div class="flex items-center">
+                <div class="w-1/2 text-right px-1">
+                  {{ $t('shipping.containersCount') }}
+                </div>
+                <div class="w-1/2 px-1">
+                  <TextField
+                    v-model="shipment.mixed.containersCount"
+                    :placeholder="$t('placeholder.emptyNumber')"
+                    type="number"
+                    inputmode="decimal"
+                    format-style="decimal"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary"
+                  />
+                </div>
+              </div>
+              <div class="px-1">
+                <TextField
+                  v-model="shipment.mixed.containersNo"
+                  :placeholder="$t('shipping.containersNo')"
+                  solo
+                  squared
+                  hide-details
+                  class="text-sm text-field_nd"
+                  input-class="h-8 text-primary"
+                />
+              </div>
+              <div class="flex items-center">
+                <div class="w-1/2 text-right px-1">
+                  {{ $t('shipping.exportDate') }}
+                </div>
+                <div class="w-1/2 px-1">
+                  <v-menu
+                    ref="menu"
+                    transition="scale-transition"
+                    min-width="290px"
+                    offset-y
+                  >
+                    <template v-slot:activator="{ on }">
+                      <div v-on="on">
+                        <TextField
+                          :value="shipment.mixed.exportDate ? $d($parseDate(shipment.mixed.exportDate), 'short'): ''"
+                          :placeholder="$t('placeholder.emptyDate')"
+                          solo
+                          squared
+                          readonly
+                          hide-details
+                          class="text-sm text-field_nd"
+                          input-class="h-8 text-primary"
+                        />
+                      </div>
+                    </template>
+                    <v-date-picker
+                      :value="$toISOString($parseDate(shipment.mixed.exportDate))"
+                      :locale="$i18n.locale"
+                      :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
+                      :next-icon="icons.mdiChevronRight"
+                      :prev-icon="icons.mdiChevronLeft"
+                      color="#5a8199"
+                      no-title
+                      dark
+                      @change="shipment.mixed.exportDate = $event || null"
+                    ></v-date-picker>
+                  </v-menu>
+                </div>
+              </div>
+            </div>
+            <!-- EXPRESS -->
+            <div
+              v-if="shipment.type.value === ShipmentType.EXPRESS"
+              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
+            >
+              <TextField
+                v-model="shipment.express.postalNo"
+                :placeholder="$t('shipping.postalNo')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+              <TextField
+                v-model="shipment.express.deliveryService"
+                :placeholder="$t('shipping.deliveryService')"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary"
+              />
+            </div>
+            <div
+              v-if="shipment.type.value === ShipmentType.EXPRESS"
+              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
+            >
+              <div class="flex items-center">
+                <div class="w-1/2 text-right px-1">
+                  {{ $t('shipping.numbersOfPkg') }}
+                </div>
+                <div class="w-1/2 px-1">
+                  <TextField
+                    v-model="shipment.express.numbersOfPkg"
+                    :placeholder="$t('placeholder.emptyNumber')"
+                    type="number"
+                    inputmode="decimal"
+                    format-style="decimal"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Customs -->
+        <div class="w-full pb-4 md:w-1/2 lg:w-2/6 md:pl-3 md:max-w-sm">
+          <h4 class="text-xl font-semibold leading-6 mb-4">
+            {{ $t('shipping.customsAndTaxes') }}
+          </h4>
+          <div class="bg-accent3 rounded-md py-1 px-2">
+            <div class="px-1 pb-1">
+              <Select
+                v-model="delivery.countryOfOrigin"
+                :placeholder="$t('shipping.countryOfOrigin')"
+                :nudge-bottom="32"
+                :items="deliveryCountries"
+                solo
+                squared
+                hide-details
+                class="text-sm select_nd"
+                input-class="h-8 text-primary"
+              >
+                <template v-slot:append="{ isMenuOpen }">
+                  <div class="text-primary">
+                    <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
+                    <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
+                  </div>
+                </template>
+              </Select>
+            </div>
+            <div class="flex items-center pb-1">
+              <div class="pl-2 pr-1 w-3/5 truncate">
+                {{ $t('shipping.termsLabel') }}
+              </div>
+              <div class="px-1 w-2/5">
+                <Select
+                  v-model="delivery.terms"
+                  :placeholder="$t('placeholder.notChosen')"
+                  :nudge-bottom="32"
+                  :items="deliveryTerms"
+                  solo
+                  squared
+                  hide-details
+                  class="text-sm select_nd"
+                  input-class="h-8 text-primary"
+                >
+                  <template v-slot:append="{ isMenuOpen }">
+                    <div class="text-primary">
+                      <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
+                      <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
+                    </div>
+                  </template>
+                </Select>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <div class="pl-2 pr-1 w-3/5 truncate">
+                {{ $t('shipping.costLabel') }}
+              </div>
+              <div class="px-1 w-2/5">
+                <TextField
+                  v-model="delivery.cost"
+                  :placeholder="$t('placeholder.emptyNumber')"
+                  type="number"
+                  inputmode="decimal"
+                  format-style="decimal"
+                  solo
+                  squared
+                  hide-details
+                  class="text-sm text-field_nd"
+                  input-class="h-8 text-primary"
+                />
+              </div>
+            </div>
+            <div class="border-t border-background my-3 mx-2" />
+            <div class="flex items-center pb-1">
+              <div class="pl-2 pr-1 w-3/5 truncate">
+                {{ $t('shipping.discountLabel') }}
+              </div>
+              <div class="px-1 w-2/5">
+                <TextField
+                  v-model="delivery.discount"
+                  :placeholder="$t('placeholder.emptyNumber')"
+                  type="number"
+                  inputmode="decimal"
+                  format-style="decimal"
+                  solo
+                  squared
+                  hide-details
+                  class="text-sm text-field_nd"
+                  input-class="h-8 text-primary"
+                />
+              </div>
+            </div>
+            <div class="flex items-center pb-1">
+              <div class="pl-2 pr-1 w-3/5 truncate">
+                {{ $t('shipping.vatLabel') }}
+              </div>
+              <div class="px-1 w-2/5">
+                <Select
+                  v-model="delivery.vat"
+                  :placeholder="$t('placeholder.notChosen')"
+                  :nudge-bottom="32"
+                  :items="[]"
+                  disabled
+                  solo
+                  squared
+                  hide-details
+                  class="text-sm select_nd"
+                  input-class="h-8 text-primary"
+                >
+                  <template v-slot:append="{ isMenuOpen }">
+                    <div class="text-primary">
+                      <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
+                      <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
+                    </div>
+                  </template>
+                </Select>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <div class="pl-2 pr-1 w-3/5 truncate">
+                {{ $t('shipping.incomeTaxLabel') }}
+              </div>
+              <div class="px-1 w-2/5">
+                <Select
+                  v-model="delivery.incomeTax"
+                  :placeholder="$t('placeholder.notChosen')"
+                  :nudge-bottom="32"
+                  :items="[]"
+                  disabled
+                  solo
+                  squared
+                  hide-details
+                  class="text-sm select_nd"
+                  input-class="h-8 text-primary"
+                >
+                  <template v-slot:append="{ isMenuOpen }">
+                    <div class="text-primary">
+                      <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
+                      <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
+                    </div>
+                  </template>
+                </Select>
+              </div>
+            </div>
+          </div>
+          <!-- Cost -->
+          <h4 class="text-xl font-semibold leading-6 mb-4 mt-8">
+            {{ $t('shipping.amount') }}
+          </h4>
+          <div class="bg-accent3 rounded-md py-1 px-2">
+            <div class="px-1 py-3 mb-1 text-lg text-center">
+              {{ delivery.amount }}
+            </div>
+            <div class="px-1 pb-1">
+              <TextArea
+                v-model="delivery.amountInWords"
+                :placeholder="$t('shipping.amountInWords')"
+                rows="2"
+                squared
+                hide-details
+                class="text-sm text-area_nd"
+                input-class="text-primary"
+              />
+            </div>
+            <div class="px-1">
+              <TextArea
+                v-model="delivery.amountInWordsClientLang"
+                :placeholder="$t('shipping.amountInWordsClientLang')"
+                rows="2"
+                squared
+                hide-details
+                class="text-sm text-area_nd"
+                input-class="text-primary"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="pb-10">
+      <h4 class="text-xl font-semibold leading-6 mb-4">
+        {{ $t('shipping.actions') }}
+      </h4>
+      <div class="bg-accent3 rounded-md p-3 select-none">
+        <div class="flex flex-wrap lg:justify-between">
+          <div class="w-full md:w-auto p-2">
+            <a
+              :href="`/paper/${$route.params.specId}`"
+              target="_blank"
+              class="w-full inline-block rounded-md border hover:border-primary"
+            >
+              <div class="h-12 flex items-center px-2">
+                <svg class="mr-2" width="26" height="16" viewBox="0 0 26 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.0396 0.000244141C7.45667 0.000244141 2.61757 3.25129 0.239624 8.00024C2.61757 12.7492 7.45667 16.0002 13.0396 16.0002C18.6224 16.0002 23.4616 12.7492 25.8396 8.00024C23.4617 3.25129 18.6224 0.000244141 13.0396 0.000244141ZM19.3509 4.24284C20.855 5.20219 22.1295 6.48719 23.0868 8.00024C22.1295 9.51329 20.8549 10.7983 19.3509 11.7576C17.461 12.9631 15.2786 13.6002 13.0396 13.6002C10.8006 13.6002 8.61822 12.9631 6.72837 11.7576C5.22437 10.7982 3.94987 9.51324 2.99252 8.00024C3.94982 6.48714 5.22437 5.20214 6.72837 4.24284C6.82632 4.18034 6.92527 4.11979 7.02482 4.06034C6.77587 4.74354 6.63962 5.48089 6.63962 6.25024C6.63962 9.78479 9.50502 12.6502 13.0396 12.6502C16.5742 12.6502 19.4396 9.78479 19.4396 6.25024C19.4396 5.48089 19.3034 4.74354 19.0545 4.06029C19.1539 4.11974 19.2529 4.18034 19.3509 4.24284ZM13.0396 5.45024C13.0396 6.77574 11.9651 7.85024 10.6396 7.85024C9.31412 7.85024 8.23962 6.77574 8.23962 5.45024C8.23962 4.12474 9.31412 3.05024 10.6396 3.05024C11.9651 3.05024 13.0396 4.12474 13.0396 5.45024Z" fill="#AAAAAA"/>
+                </svg>
+                <span class="text-primary whitespace-nowrap">
+                  {{ $t('shipping.previewAsCustomer') }}
+                </span>
+              </div>
+            </a>
+          </div>
+          <div class="w-full md:w-auto p-2">
+            <a
+              href="#"
+              class="w-full inline-block rounded-md border border-transparent hover:border-primary"
+              @click.prevent="openPaperList"
+            >
+              <div class="h-12 flex items-center px-2">
+                <svg class="mr-2" width="23" height="21" viewBox="0 0 23 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21.9891 3.84607L19.059 6.7762C18.788 7.04751 18.4137 7.21499 18.0004 7.21499C17.5867 7.21499 17.2115 7.04751 16.9404 6.7762L16.2342 6.07027C15.9631 5.79895 15.796 5.42445 15.796 5.01073C15.796 4.59701 15.9631 4.22272 16.2342 3.95162L19.1643 1.02149C17.3729 0.319629 15.2574 0.691561 13.8098 2.13921C11.8596 4.0891 11.8596 7.25089 13.8098 9.20067C15.7601 11.151 18.9215 11.151 20.8713 9.20067C22.3194 7.75323 22.6911 5.6379 21.9891 3.84607Z" fill="#AAAAAA"/>
+                  <path d="M6.26881 12.8812L3.22821 15.7005C2.69073 16.1991 2.34901 16.9073 2.33401 17.6983C2.31901 18.4893 2.63372 19.2096 3.15235 19.7282L3.28297 19.8587C3.80116 20.3771 4.52145 20.692 5.31246 20.677C6.1039 20.6622 6.81134 20.3205 7.31024 19.7826L10.1295 16.742L6.26881 12.8812ZM6.13605 18.64C5.64914 19.1279 4.85856 19.1279 4.37079 18.64C3.88346 18.1527 3.88346 17.3621 4.37079 16.8748C4.85856 16.3869 5.64914 16.3869 6.13605 16.8748C6.62339 17.3621 6.62339 18.1527 6.13605 18.64Z" fill="#AAAAAA"/>
+                  <path d="M11.0237 8.07837C10.8306 8.07837 10.6558 8.15627 10.5295 8.28282L7.2812 11.5314C7.15444 11.6579 7.07654 11.8327 7.07654 12.0256C7.07654 12.2188 7.15444 12.3936 7.2812 12.5198L14.5543 19.7934C15.7252 20.9636 17.6215 20.9632 18.7914 19.7934C19.9618 18.6233 19.9618 16.7266 18.7914 15.5563L11.5179 8.28282C11.3915 8.15627 11.2169 8.07837 11.0237 8.07837ZM16.0022 17.922C16.1962 18.1162 16.1962 18.434 16.0022 18.628C15.8081 18.8224 15.49 18.8224 15.2959 18.628L8.94059 12.2727C8.74621 12.0786 8.74621 11.7609 8.94059 11.5664C9.13465 11.3724 9.45236 11.3724 9.64674 11.5664L16.0022 17.922ZM17.6265 16.2978C17.8206 16.4921 17.8206 16.8098 17.6265 17.0041C17.4324 17.1984 17.1143 17.1984 16.9202 17.0041L10.5649 10.6485C10.3701 10.4542 10.3701 10.1365 10.5649 9.94231C10.7586 9.74804 11.0767 9.74804 11.2707 9.94253L17.6265 16.2978Z" fill="#AAAAAA"/>
+                  <path d="M2.9327 5.81556L3.72714 5.78791L7.88161 9.94217L8.94061 8.88284L4.78668 4.72891L4.81411 3.93425C4.81625 3.86685 4.80168 3.79763 4.76782 3.73355C4.73407 3.66937 4.68435 3.61858 4.62691 3.58236L1.96188 1.90454L0.902344 2.96344L2.58113 5.62911C2.6167 5.68654 2.66814 5.7353 2.73189 5.76937C2.79608 5.80324 2.86509 5.81792 2.9327 5.81556Z" fill="#AAAAAA"/>
+                </svg>
+                <span class="text-primary whitespace-nowrap">
+                  {{ $t('shipping.paperConfigurator') }}
+                </span>
+              </div>
+            </a>
+          </div>
+          <div class="w-full md:w-auto p-2">
+            <a
+              href="#"
+              class="w-full inline-block rounded-md border border-transparent hover:border-primary"
+              @click.prevent="printPDF"
+            >
+              <div class="h-12 flex items-center px-2">
+                <svg class="mr-2" width="23" height="21" viewBox="0 0 23 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21.6397 9.39158C21.149 8.90095 20.5609 8.65577 19.8752 8.65577H19.042V5.32245C19.042 4.97534 18.9549 4.5932 18.7812 4.17673C18.6076 3.76007 18.3994 3.43024 18.1564 3.18716L16.177 1.20794C15.934 0.965088 15.6042 0.756667 15.1877 0.582953C14.771 0.409421 14.3892 0.322632 14.0418 0.322632H5.29168C4.94444 0.322632 4.64923 0.444081 4.40615 0.687163C4.1632 0.930108 4.04157 1.22527 4.04157 1.57256V8.65577H3.2083C2.52252 8.65577 1.93442 8.90108 1.44388 9.39158C0.953431 9.88194 0.708252 10.4701 0.708252 11.1559V16.5727C0.708252 16.6857 0.749526 16.7829 0.831936 16.8658C0.914438 16.948 1.01213 16.9892 1.12487 16.9892H4.04157V19.0725C4.04157 19.4199 4.16307 19.7151 4.40615 19.9581C4.64923 20.2009 4.94444 20.3226 5.29168 20.3226H17.7916C18.1387 20.3226 18.4343 20.2009 18.6772 19.9581C18.9202 19.7149 19.0418 19.4199 19.0418 19.0725V16.9892H21.9584C22.0711 16.9892 22.1688 16.948 22.2512 16.8658C22.3336 16.7829 22.3748 16.6857 22.3748 16.5727V11.1559C22.375 10.4701 22.1299 9.88194 21.6397 9.39158ZM17.375 18.6559H5.70834V15.3227H17.375V18.6559ZM17.375 10.3225H5.70834V1.98931H14.0418V4.07256C14.0418 4.41981 14.1635 4.71484 14.4062 4.95796C14.6492 5.20105 14.9443 5.32249 15.2918 5.32249H17.375V10.3225ZM20.4611 11.7418C20.2962 11.9066 20.1009 11.9893 19.8752 11.9893C19.6495 11.9893 19.4541 11.9066 19.2892 11.7418C19.1244 11.5771 19.042 11.3816 19.042 11.1559C19.042 10.9302 19.1244 10.7348 19.2892 10.57C19.454 10.405 19.6494 10.3225 19.8752 10.3225C20.1008 10.3225 20.2962 10.405 20.4611 10.57C20.6258 10.7348 20.7086 10.9302 20.7086 11.1559C20.7086 11.3816 20.626 11.5771 20.4611 11.7418Z" fill="#AAAAAA"/>
+                </svg>
+                <span class="text-primary whitespace-nowrap">
+                  {{ $t('shipping.print') }}
+                </span>
+              </div>
+            </a>
+          </div>
+          <div class="w-full md:w-auto p-2">
+            <a
+              href="#"
+              class="w-full inline-block rounded-md border border-transparent hover:border-primary"
+              @click.prevent="accessControlDialog = true"
+            >
+              <div class="h-12 flex items-center px-2">
+                <svg class="mr-2" width="26" height="21" viewBox="0 0 26 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.6798 13.5357C16.6926 12.4949 15.5064 11.7377 14.2571 11.3254C15.5018 10.2028 16.2856 8.57835 16.2856 6.77417C16.2856 3.39462 13.5361 0.645142 10.1565 0.645142C6.77699 0.645142 4.02746 3.39462 4.02746 6.77417C4.02746 8.57835 4.81119 10.2028 6.05592 11.3254C4.80656 11.7378 3.62042 12.495 2.63321 13.5358C1.03609 15.2196 0.156494 17.4008 0.156494 19.6774V20.6451H20.1565V19.6774C20.1565 17.4008 19.2769 15.2196 17.6798 13.5357ZM5.96295 6.77417C5.96295 4.46186 7.84418 2.58063 10.1565 2.58063C12.4688 2.58063 14.35 4.46186 14.35 6.77417C14.35 9.08649 12.4688 10.9677 10.1565 10.9677C7.84418 10.9677 5.96295 9.08649 5.96295 6.77417ZM2.16017 18.7097C2.64048 15.3281 5.57417 12.9032 8.22101 12.9032H12.092C14.7388 12.9032 17.6725 15.3281 18.1528 18.7097H2.16017Z" fill="#AAAAAA"/>
+                  <path d="M22.7371 9.03225V6.12903H20.8017V9.03225H17.8984V10.9677H20.8017V13.871H22.7371V10.9677H25.6404V9.03225H22.7371Z" fill="#AAAAAA"/>
+                </svg>
+
+                <span class="text-primary whitespace-nowrap">
+                  {{ $t('shipping.inviteCustomer') }}
+                </span>
+              </div>
+            </a>
+          </div>
+          <div class="w-full md:w-auto p-2">
+            <a
+              class="w-full inline-block rounded-md border border-transparent hover:border-primary pointer-events-none"
+              @click.prevent
+            >
+              <div class="h-12 flex items-center px-2 text-accent1">
+                <svg class="mr-2" width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9985 11.6316L16.9985 11.6316C17.2638 11.5129 17.54 11.3893 17.828 11.2609C18.188 11.2609 18.4802 10.9687 18.4802 10.6087V2.3913C18.4802 1.07304 17.408 0 16.0889 0H5.21931C3.90018 0 2.828 1.07304 2.828 2.3913V10.6087C2.828 10.9687 3.12018 11.2609 3.48018 11.2609C3.81999 11.4155 4.1428 11.5631 4.45018 11.7037C7.45631 13.0783 8.98732 13.7783 10.5259 13.7954C12.1227 13.8131 13.7277 13.095 16.9985 11.6316ZM6.95845 10H14.3497C14.7097 10 15.0019 9.70785 15.0019 9.34785C15.0019 8.98785 14.7097 8.69568 14.3497 8.69568H6.95845C6.59845 8.69568 6.30627 8.98785 6.30627 9.34785C6.30627 9.70785 6.59845 10 6.95845 10ZM14.3497 7.39138H6.95845C6.59845 7.39138 6.30627 7.09921 6.30627 6.73921C6.30627 6.37921 6.59845 6.08704 6.95845 6.08704H14.3497C14.7097 6.08704 15.0019 6.37921 15.0019 6.73921C15.0019 7.09921 14.7097 7.39138 14.3497 7.39138ZM6.95845 4.78262H10.8715C11.2315 4.78262 11.5237 4.49044 11.5237 4.13045C11.5237 3.77045 11.2315 3.47827 10.8715 3.47827H6.95845C6.59845 3.47827 6.30627 3.77045 6.30627 4.13045C6.30627 4.49044 6.59845 4.78262 6.95845 4.78262Z" fill="currentColor"/>
+                  <path d="M19.1323 20H2.17576C1.09663 20 0.219238 19.1226 0.219238 18.0435V7.52172C0.219238 6.80346 0.613151 6.14346 1.24793 5.79998L3.17228 4.77215C3.49141 4.60259 3.88532 4.72259 4.05489 5.03998C4.22445 5.35824 4.10445 5.75302 3.78706 5.92259L1.86532 6.94867C1.65924 7.06085 1.52359 7.28607 1.52359 7.52172V18.0435C1.52359 18.4035 1.81576 18.6956 2.17576 18.6956H19.1323C19.4923 18.6956 19.7844 18.4035 19.7844 18.0435V7.52172C19.7844 7.28607 19.6488 7.06085 19.4392 6.9478L17.5201 5.92346C17.2027 5.75389 17.0827 5.35911 17.2523 5.04085C17.4218 4.72346 17.8158 4.60259 18.1349 4.77302L20.0566 5.79911C20.6949 6.14346 21.0888 6.80346 21.0888 7.52172V18.0435C21.0888 19.1226 20.2114 20 19.1323 20Z" fill="currentColor"/>
+                  <path d="M10.6531 14.7791C10.2723 14.7791 9.89227 14.6896 9.54618 14.5104L0.569663 9.82088C0.250533 9.65479 0.127055 9.26001 0.294011 8.94088C0.461837 8.62175 0.85575 8.49914 1.17401 8.66523L10.1479 13.3522C10.4592 13.5131 10.8505 13.5131 11.1644 13.3504L20.1357 8.66523C20.454 8.49827 20.8488 8.62175 21.0157 8.94088C21.1827 9.26001 21.0592 9.65392 20.7401 9.82088L11.7662 14.5078C11.4157 14.6887 11.0349 14.7791 10.6531 14.7791Z" fill="currentColor"/>
+                </svg>
+                <span class="whitespace-nowrap">
+                  {{ $t('shipping.notifyCustomer') }}
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <v-dialog
       v-model="accessControlDialog"
       max-width="320px"
@@ -480,12 +1312,13 @@ import cloneDeep from 'clone-deep'
 import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 
-import { mdiClose, mdiPlusThick } from '@mdi/js'
+import { mdiClose, mdiPlusThick, mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
 import PaperListModal from '@/components/PaperListModal.vue'
 import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
 
+import { ShipmentType } from '../graphql/enums'
 import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS, GET_SPEC_EMAIL_ACCESS } from '../graphql/queries'
 import {
   UPDATE_SPEC,
@@ -524,6 +1357,65 @@ export default {
   },
   data () {
     return {
+      ShipmentType,
+      shipment: {
+        type: {},
+        sentFrom: '',
+        sentThrough: '',
+        destination: '',
+        marine: {
+          billOfLadingNo: '',
+          ship: '',
+          containersCount: 0,
+          containersNo: '',
+          exportDate: '',
+        },
+        air: {
+          airWaybillNo: '',
+          flight: '',
+          numbersOfPkg: 0,
+          exportDate: '',
+        },
+        railway: {
+          internationalWaybillNo: '',
+          train: '',
+          trainContainersCount: 0,
+          trainContainersNo: '',
+          exportDate: '',
+        },
+        car: {
+          internationalWaybillNo: '',
+          vehicleNo: '',
+          semitrailerNo: 0,
+          exportDate: '',
+        },
+        mixed: {
+          internationalWaybillNo: '',
+          ship: '',
+          flight: '',
+          train: '',
+          vehicleNo: '',
+          semitrailerNo: 0,
+          exportDate: '',
+        },
+        express: {
+          postalNo: '',
+          deliveryService: '',
+          numbersOfPkg: 0,
+          exportDate: '',
+        },
+      },
+      delivery: {
+        countryOfOrigin: {},
+        terms: {},
+        cost: 0,
+        discount: 0,
+        vat: {},
+        incomeTax: {},
+        amount: 0,
+        amountInWords: '',
+        amountInWordsClientLang: '',
+      },
       setContainerSizeLoading: false,
       setContainerCustomCapacityLoading: false,
       sendAccessLinkLoading: false,
@@ -543,6 +1435,8 @@ export default {
       icons: {
         mdiClose,
         mdiPlusThick,
+        mdiChevronUp,
+        mdiChevronDown,
         ziSettings,
         ziPaperPlane,
         ziPrint,
@@ -551,6 +1445,30 @@ export default {
     }
   },
   computed: {
+    deliveryCountries () {
+      return [
+        {
+          text: 'CHN',
+          value: 'CN',
+        },
+      ]
+    },
+    deliveryTerms () {
+      return [
+        {
+          text: 'CFR',
+          value: 'CFR',
+        },
+      ]
+    },
+    shipmentTypes () {
+      return Object.values(ShipmentType).filter(el => el !== ShipmentType.UNDEFINED).map(el => {
+        return {
+          text: this.$t(`shipmentType.${el}`),
+          value: el,
+        }
+      })
+    },
     link () {
       return `${window.location.protocol}//${window.location.host}/paper/${this.specId}`
     },
@@ -1233,6 +2151,50 @@ export default {
   },
 }
 </script>
+
+<style lang="postcss">
+.text-area_nd textarea {
+  padding-top: 4px!important;
+  padding-bottom: 4px!important;
+}
+.text-field_nd .text-field__slot,
+.text-area_nd .text-area__slot {
+  @apply border-0 rounded;
+}
+.select_nd .select__slot {
+  @apply border-0 rounded;
+}
+.text-field_nd input,
+.text-area_nd textarea,
+.select_nd input {
+  color: #5a8199!important;
+}
+.text-field_nd input:focus,
+.text-area_nd textarea:focus,
+.select_nd input:focus {
+  color: #ffffff!important;
+}
+.text-field_nd input::-webkit-input-placeholder,
+.text-area_nd textarea::-webkit-input-placeholder,
+.select_nd input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #646464!important;
+}
+.text-field_nd input::-moz-placeholder,
+.text-area_nd textarea::-moz-placeholder,
+.select_nd input::-moz-placeholder { /* Firefox 19+ */
+   color: #646464!important;
+}
+.text-field_nd input:-ms-input-placeholder,
+.text-area_nd textarea:-ms-input-placeholder,
+.select_nd input:-ms-input-placeholder { /* IE 10+ */
+   color: #646464!important;
+}
+.text-field_nd input:-moz-placeholder,
+.text-area_nd textarea:-moz-placeholder,
+.select_nd input:-moz-placeholder { /* Firefox 18- */
+   color: #646464!important;
+}
+</style>
 
 <style lang="postcss" scoped>
 .spec-summary {

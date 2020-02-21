@@ -56,7 +56,7 @@
           :maxlength="maxlength"
           :autofocus="autofocus"
           :placeholder="compPlaceholder"
-          :class="{ 'text-right' : type === 'number' || right }"
+          :class="[inputClass, { 'text-right' : type === 'number' || right }]"
           :inputmode="inputmode"
           :pattern="pattern"
           :step="step"
@@ -235,6 +235,10 @@ export default {
     debounce: {
       type: Number,
       default: 0,
+    },
+    inputClass: {
+      type: [String, Object],
+      default: '',
     },
   },
   data () {

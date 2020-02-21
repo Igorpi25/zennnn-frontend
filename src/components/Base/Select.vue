@@ -60,7 +60,7 @@
           @blur="onBlur"
         >
         <div
-          v-if="$slots.append"
+          v-if="$slots.append || $scopedSlots.append"
           class="select__append"
         >
           <slot name="append" :isMenuOpen="menu" />
