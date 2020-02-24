@@ -13,15 +13,17 @@
         'select--borderless': borderless,
         'select--solo': solo,
         'select--colored': colored,
-        'select--focused': hasFocus && searchable
+        'select--focused': hasFocus && searchable,
+        'select--active': hasFocus || menu,
+        'select--disabled': disabled,
       }
     ]"
   >
     <div
+      ref="slot"
       class="select__controls"
     >
       <div
-        ref="slot"
         class="select__slot"
       >
         <label
@@ -63,7 +65,7 @@
           v-if="$slots.append || $scopedSlots.append"
           class="select__append"
         >
-          <slot name="append" :isMenuOpen="menu" />
+          <slot name="append" :isMenuOpen="menu" :toggle="toggleMenu" />
         </div>
       </div>
       <div class="select__append-outer">
@@ -303,6 +305,13 @@ export default {
     }
   },
   methods: {
+    toggleMenu () {
+      if (this.menu) {
+        this.closeMenu()
+      } else {
+        this.openMenu()
+      }
+    },
     openMenu () {
       this.menu = true
       document.addEventListener('click', this.closeConditional, false)

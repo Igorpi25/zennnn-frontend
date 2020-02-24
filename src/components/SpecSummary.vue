@@ -449,8 +449,8 @@
                 class="text-sm select_nd"
                 input-class="h-8 text-primary"
               >
-                <template v-slot:append="{ isMenuOpen }">
-                  <div class="text-primary">
+                <template v-slot:append="{ isMenuOpen, toggle }">
+                  <div class="text-primary cursor-pointer select-none" @click="toggle">
                     <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
                     <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                   </div>
@@ -489,7 +489,7 @@
               class="w-full sm:w-2/3 md:w-full lg:w-2/3"
             >
               <div class="flex items-center">
-                <div class="w-1/2 text-right px-1">
+                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.containersCount')">
                   {{ $t('shipping.containersCount') }}
                 </div>
                 <div class="w-1/2 px-1">
@@ -519,7 +519,7 @@
                 />
               </div>
               <div class="flex items-center">
-                <div class="w-1/2 text-right px-1">
+                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
                   {{ $t('shipping.exportDate') }}
                 </div>
                 <div class="w-1/2 px-1">
@@ -587,7 +587,7 @@
               class="w-full sm:w-2/3 md:w-full lg:w-2/3"
             >
               <div class="flex items-center">
-                <div class="w-1/2 text-right px-1">
+                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.numbersOfPkg')">
                   {{ $t('shipping.numbersOfPkg') }}
                 </div>
                 <div class="w-1/2 px-1">
@@ -635,7 +635,7 @@
               class="w-full sm:w-2/3 md:w-full lg:w-2/3"
             >
               <div class="flex items-center">
-                <div class="w-1/2 text-right px-1">
+                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.trainContainersCount')">
                   {{ $t('shipping.trainContainersCount') }}
                 </div>
                 <div class="w-1/2 px-1">
@@ -662,7 +662,7 @@
                 />
               </div>
               <div class="flex items-center">
-                <div class="w-1/2 text-right px-1">
+                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
                   {{ $t('shipping.exportDate') }}
                 </div>
                 <div class="w-1/2 px-1">
@@ -730,7 +730,7 @@
               class="w-full sm:w-2/3 md:w-full lg:w-2/3"
             >
               <div class="flex items-center">
-                <div class="w-1/2 text-right px-1">
+                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.semitrailerNo')">
                   {{ $t('shipping.semitrailerNo') }}
                 </div>
                 <div class="w-1/2 px-1">
@@ -746,7 +746,7 @@
                 </div>
               </div>
               <div class="flex items-center">
-                <div class="w-1/2 text-right px-1">
+                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
                   {{ $t('shipping.exportDate') }}
                 </div>
                 <div class="w-1/2 px-1">
@@ -832,7 +832,7 @@
               class="w-full sm:w-2/3 md:w-full lg:w-2/3"
             >
               <div class="flex items-center">
-                <div class="w-1/2 text-right px-1">
+                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.containersCount')">
                   {{ $t('shipping.containersCount') }}
                 </div>
                 <div class="w-1/2 px-1">
@@ -862,7 +862,7 @@
                 />
               </div>
               <div class="flex items-center">
-                <div class="w-1/2 text-right px-1">
+                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
                   {{ $t('shipping.exportDate') }}
                 </div>
                 <div class="w-1/2 px-1">
@@ -930,7 +930,7 @@
               class="w-full sm:w-2/3 md:w-full lg:w-2/3"
             >
               <div class="flex items-center">
-                <div class="w-1/2 text-right px-1">
+                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.numbersOfPkg')">
                   {{ $t('shipping.numbersOfPkg') }}
                 </div>
                 <div class="w-1/2 px-1">
@@ -969,8 +969,8 @@
                 class="text-sm select_nd"
                 input-class="h-8 text-primary"
               >
-                <template v-slot:append="{ isMenuOpen }">
-                  <div class="text-primary">
+                <template v-slot:append="{ isMenuOpen, toggle }">
+                  <div class="text-primary cursor-pointer select-none" @click="toggle">
                     <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
                     <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                   </div>
@@ -978,7 +978,7 @@
               </Select>
             </div>
             <div class="flex items-center pb-1">
-              <div class="pl-2 pr-1 w-3/5 truncate">
+              <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.termsLabel')">
                 {{ $t('shipping.termsLabel') }}
               </div>
               <div class="px-1 w-2/5">
@@ -993,8 +993,8 @@
                   class="text-sm select_nd"
                   input-class="h-8 text-primary"
                 >
-                  <template v-slot:append="{ isMenuOpen }">
-                    <div class="text-primary">
+                  <template v-slot:append="{ isMenuOpen, toggle }">
+                    <div class="text-primary cursor-pointer select-none" @click="toggle">
                       <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
                       <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                     </div>
@@ -1003,7 +1003,7 @@
               </div>
             </div>
             <div class="flex items-center">
-              <div class="pl-2 pr-1 w-3/5 truncate">
+              <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.costLabel')">
                 {{ $t('shipping.costLabel') }}
               </div>
               <div class="px-1 w-2/5">
@@ -1023,7 +1023,7 @@
             </div>
             <div class="border-t border-background my-3 mx-2" />
             <div class="flex items-center pb-1">
-              <div class="pl-2 pr-1 w-3/5 truncate">
+              <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.discountLabel')">
                 {{ $t('shipping.discountLabel') }}
               </div>
               <div class="px-1 w-2/5">
@@ -1042,7 +1042,7 @@
               </div>
             </div>
             <div class="flex items-center pb-1">
-              <div class="pl-2 pr-1 w-3/5 truncate">
+              <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.vatLabel')">
                 {{ $t('shipping.vatLabel') }}
               </div>
               <div class="px-1 w-2/5">
@@ -1059,7 +1059,7 @@
                   input-class="h-8 text-primary"
                 >
                   <template v-slot:append="{ isMenuOpen }">
-                    <div class="text-primary">
+                    <div class="text-gray-darkest cursor-not-allowed">
                       <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
                       <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                     </div>
@@ -1068,7 +1068,7 @@
               </div>
             </div>
             <div class="flex items-center">
-              <div class="pl-2 pr-1 w-3/5 truncate">
+              <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.incomeTaxLabel')">
                 {{ $t('shipping.incomeTaxLabel') }}
               </div>
               <div class="px-1 w-2/5">
@@ -1085,7 +1085,7 @@
                   input-class="h-8 text-primary"
                 >
                   <template v-slot:append="{ isMenuOpen }">
-                    <div class="text-primary">
+                    <div class="text-gray-darkest cursor-not-allowed">
                       <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
                       <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                     </div>
@@ -1139,7 +1139,7 @@
             <a
               :href="`/paper/${$route.params.specId}`"
               target="_blank"
-              class="w-full inline-block rounded-md border hover:border-primary"
+              class="w-full inline-block rounded-md border border-accent1 hover:border-primary"
             >
               <div class="h-12 flex items-center px-2">
                 <svg class="mr-2" width="26" height="16" viewBox="0 0 26 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2159,10 +2159,41 @@ export default {
 }
 .text-field_nd .text-field__slot,
 .text-area_nd .text-area__slot {
-  @apply border-0 rounded;
+  border: none!important;
+  border-radius: 4px;
+  background-color: #222222;
 }
 .select_nd .select__slot {
-  @apply border-0 rounded;
+  background-color: #222222;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent!important;
+}
+.text-field_nd.text-field--focused .text-field__slot,
+.text-area_nd.text-area--focused .text-area__slot {
+  background-color: #1e1e1e!important;
+  box-shadow: 0 0 0 1px #5a8199;
+}
+.select_nd.select--active .select__slot {
+  background-color: #1e1e1e!important;
+  border-color: #5a8199!important;
+  border-bottom-left-radius: 0!important;
+  border-bottom-right-radius: 0!important;
+}
+.select_nd .v-menu__content {
+  border: 1px solid #5a8199;
+}
+.select_nd .select-picker {
+  padding-top: 0!important;
+  padding-bottom: 0!important;
+}
+.select_nd .select-picker__item {
+  background-color: #1e1e1e!important;
+  height: 32px;
+}
+.select_nd .select-picker__item:not(.select-picker__item--disabled):hover {
+  background-color: #353535!important;
 }
 .text-field_nd input,
 .text-area_nd textarea,
@@ -2193,6 +2224,26 @@ export default {
 .text-area_nd textarea:-moz-placeholder,
 .select_nd input:-moz-placeholder { /* Firefox 18- */
    color: #646464!important;
+}
+.text-field_nd input:disabled::-webkit-input-placeholder,
+.text-area_nd textarea:disabled::-webkit-input-placeholder,
+.select_nd input:disabled::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #2f2f2f!important;
+}
+.text-field_nd input:disabled::-moz-placeholder,
+.text-area_nd textarea:disabled::-moz-placeholder,
+.select_nd input:disabled::-moz-placeholder { /* Firefox 19+ */
+   color: #2f2f2f!important;
+}
+.text-field_nd input:disabled:-ms-input-placeholder,
+.text-area_nd textarea:disabled:-ms-input-placeholder,
+.select_nd input:disabled:-ms-input-placeholder { /* IE 10+ */
+   color: #2f2f2f!important;
+}
+.text-field_nd input:disabled:-moz-placeholder,
+.text-area_nd textarea:disabled:-moz-placeholder,
+.select_nd input:disabled:-moz-placeholder { /* Firefox 18- */
+   color: #2f2f2f!important;
 }
 </style>
 

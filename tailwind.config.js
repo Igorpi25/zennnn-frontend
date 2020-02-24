@@ -39,6 +39,9 @@ module.exports = {
       lg: '0px 4px 10px rgba(0, 0, 0, 0.25)',
     },
     extend: {
+      boxShadow: {
+        primary: '0 0 0 1px #5a8199',
+      },
       spacing: {
         '9': '2.25rem',
       },
