@@ -56,6 +56,7 @@
                     squared
                     hide-details
                     class="pt-0 template-card__label"
+                    input-class="text-gray-300 focus:text-white placeholder-gray-300"
                     @input="$emit('update-template', key, $event)"
                   />
                 </div>
@@ -201,18 +202,13 @@ export default {
   }
 }
 
-.template-card__label.text-field--focused input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #2A2B2D!important;
+.template-card__label.text-field input {
+  color: #585858!important;
 }
-.template-card__label.text-field--focused input::-moz-placeholder { /* Firefox 19+ */
-  color: #2A2B2D!important;
+.template-card__label.text-field--focused input {
+  color: #ffffff!important;
 }
-.template-card__label.text-field--focused input:-ms-input-placeholder { /* IE 10+ */
-  color: #2A2B2D!important;
-}
-.template-card__label.text-field--focused input:-moz-placeholder { /* Firefox 18- */
-  color: #2A2B2D!important;
-}
+
 .template-card__label.text-field.is-disabled .text-field__slot,
 .template-card__label.text-area.is-disabled .text-area__slot,
 .template-card__input.text-field.is-disabled .text-field__slot,

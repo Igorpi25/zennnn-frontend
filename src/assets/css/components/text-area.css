@@ -35,9 +35,6 @@
   @apply appearance-none outline-none w-full;
   @apply bg-accent1 text-white;
 }
-.text-area textarea::placeholder {
-  @apply text-gray-lighter;
-}
 
 .text-area--single-line textarea {
   @apply appearance-none outline-none w-full;
@@ -71,31 +68,6 @@
 .text-area--outlined input {
   background: transparent;
 } */
-.text-area--outlined input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  @apply text-gray-lighter;
-}
-.text-area--outlined input::-moz-placeholder { /* Firefox 19+ */
-  @apply text-gray-lighter;
-}
-.text-area--outlined input:-ms-input-placeholder { /* IE 10+ */
-  @apply text-gray-lighter;
-}
-.text-area--outlined input:-moz-placeholder { /* Firefox 18- */
-  @apply text-gray-lighter;
-}
-
-.text-area--outlined input:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  @apply text-gray-lighter;
-}
-.text-area--outlined input:focus::-moz-placeholder { /* Firefox 19+ */
-  @apply text-gray-lighter;
-}
-.text-area--outlined input:focus:-ms-input-placeholder { /* IE 10+ */
-  @apply text-gray-lighter;
-}
-.text-area--outlined input:focus:-moz-placeholder { /* Firefox 18- */
-  @apply text-gray-lighter;
-}
 
 /* TEXTAREA SQUARED */
 .text-area--outlined,
@@ -124,30 +96,6 @@
 .text-area--outlined textarea:focus,
 .text-area--square textarea:focus {
   outline: none;
-}
-.text-area--squared textarea::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  @apply text-white;
-}
-.text-area--squared textarea::-moz-placeholder { /* Firefox 19+ */
-  @apply text-white;
-}
-.text-area--squared textarea:-ms-input-placeholder { /* IE 10+ */
-  @apply text-white;
-}
-.text-area--squared textarea:-moz-placeholder { /* Firefox 18- */
-  @apply text-white;
-}
-.text-area--squared textarea:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  @apply text-gray-lighter;
-}
-.text-area--squared textarea:focus::-moz-placeholder { /* Firefox 19+ */
-  @apply text-gray-lighter;
-}
-.text-area--squared textarea:focus:-ms-input-placeholder { /* IE 10+ */
-  @apply text-gray-lighter;
-}
-.text-area--squared textarea:focus:-moz-placeholder { /* Firefox 18- */
-  @apply text-gray-lighter;
 }
 
 /* TEXTAREA FOCUSED */

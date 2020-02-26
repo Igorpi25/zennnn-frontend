@@ -51,7 +51,7 @@
           :minlength="minlength"
           :autofocus="autofocus"
           :placeholder="placeholder"
-          :class="inputClass"
+          :class="[placeholderClass, inputClass]"
           @input="calculateHeight"
           @focus="onFocus"
           @blur="onBlur"
@@ -210,6 +210,11 @@ export default {
     }
   },
   computed: {
+    placeholderClass () {
+      return this.squared
+        ? 'placeholder-white focus:placeholder-gray-lighter'
+        : 'placeholder-gray-lighter'
+    },
     internalValue: {
       get () {
         return this.lazyValue

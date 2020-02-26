@@ -28,6 +28,20 @@ module.exports = {
       green: '#48BB78',
       orange: '#fb8c00',
       transparent: 'transparent',
+      'gray-100': '#AAAAAA',
+      'gray-200': '#676767',
+      'gray-300': '#585858',
+      'gray-400': '#404040',
+      'gray-500': '#353535',
+      'gray-600': '#2F2F2F',
+      'gray-700': '#282828',
+      'gray-800': '#222222',
+      'gray-900': '#1E1E1E',
+      'blue-500': '#7E99D0', // primary color
+      'blue-600': '#5C78B1', // primary hover color
+      'pink-500': '#FF005E', // error
+      'green-500': '#08DC1B', // success
+      'yellow-500': '#FDB600', // warning
     },
     fontFamily: {
       'myriad': ['MyriadPro', 'sans-serif'],

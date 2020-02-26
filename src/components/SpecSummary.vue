@@ -16,7 +16,7 @@
     <v-dialog
       v-model="paperConfigurator"
       :fullscreen="$vuetify.breakpoint.xs || $vuetify.breakpoint.sm"
-      content-class="dialog-full-height paper-configurator-dialog"
+      content-class="dialog-full-height rounded-none paper-configurator-dialog"
       max-width="906"
       scrollable
       persistent
@@ -26,6 +26,21 @@
         :create="create"
         @update="contractCreated"
         @close="paperConfigurator = false"
+      />
+    </v-dialog>
+
+    <v-dialog
+      v-model="printDialog"
+      :fullscreen="$vuetify.breakpoint.smAndDown"
+      content-class="dialog-full-height bg-gray-800"
+      max-width="900"
+      scrollable
+      persistent
+    >
+      <PrintSettings
+        :shipment="shipment"
+        :customs="customs"
+        @close="printDialog = false"
       />
     </v-dialog>
 
@@ -397,735 +412,13 @@
     <div class="py-10">
       <div class="flex flex-wrap">
         <!-- Delivery -->
-        <div class="w-full pb-4 md:w-1/2 lg:w-4/6 md:pr-3">
-          <h4 class="text-xl font-semibold leading-6 mb-4">
-            {{ $t('shipping.forDeliver') }}
-          </h4>
-          <div class="bg-accent3 rounded-t-md mb-1 py-1 px-2 flex flex-wrap items-center">
-            <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
-              <TextField
-                v-model="shipment.sentFrom"
-                :placeholder="$t('shipping.sentFrom')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-            </div>
-            <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
-              <TextField
-                v-model="shipment.sentThrough"
-                :placeholder="$t('shipping.sentThrough')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-            </div>
-            <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
-              <TextField
-                v-model="shipment.destination"
-                :placeholder="$t('shipping.destination')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-            </div>
-          </div>
-          <div class="bg-accent3 rounded-b-md py-1 px-2 flex flex-wrap">
-            <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
-              <Select
-                v-model="shipment.type"
-                :placeholder="$t('shipping.shipmentType')"
-                :nudge-bottom="32"
-                :items="shipmentTypes"
-                solo
-                squared
-                hide-details
-                class="text-sm select_nd"
-                input-class="h-8 text-primary"
-              >
-                <template v-slot:append="{ isMenuOpen, toggle }">
-                  <div class="text-primary cursor-pointer select-none" @click="toggle">
-                    <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-                    <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-                  </div>
-                </template>
-              </Select>
-            </div>
-            <div class="w-full sm:w-2/3 md:w-full lg:w-2/3 px-1">
-              <div class="h-8" />
-            </div>
-            <!-- MARINE -->
-            <div
-              v-if="shipment.type.value === ShipmentType.MARINE"
-              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
-            >
-              <TextField
-                v-model="shipment.marine.billOfLadingNo"
-                :placeholder="$t('shipping.billOfLadingNo')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-              <TextField
-                v-model="shipment.marine.ship"
-                :placeholder="$t('shipping.ship')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-            </div>
-            <div
-              v-if="shipment.type.value === ShipmentType.MARINE"
-              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
-            >
-              <div class="flex items-center">
-                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.containersCount')">
-                  {{ $t('shipping.containersCount') }}
-                </div>
-                <div class="w-1/2 px-1">
-                  <TextField
-                    v-model="shipment.marine.containersCount"
-                    :placeholder="$t('placeholder.emptyNumber')"
-                    type="number"
-                    inputmode="decimal"
-                    format-style="decimal"
-                    solo
-                    squared
-                    hide-details
-                    class="text-sm text-field_nd"
-                    input-class="h-8 text-primary"
-                  />
-                </div>
-              </div>
-              <div class="px-1">
-                <TextField
-                  v-model="shipment.marine.containersNo"
-                  :placeholder="$t('shipping.containersNo')"
-                  solo
-                  squared
-                  hide-details
-                  class="text-sm text-field_nd"
-                  input-class="h-8 text-primary"
-                />
-              </div>
-              <div class="flex items-center">
-                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
-                  {{ $t('shipping.exportDate') }}
-                </div>
-                <div class="w-1/2 px-1">
-                  <v-menu
-                    ref="menu"
-                    transition="scale-transition"
-                    min-width="290px"
-                    offset-y
-                  >
-                    <template v-slot:activator="{ on }">
-                      <div v-on="on">
-                        <TextField
-                          :value="shipment.marine.exportDate ? $d($parseDate(shipment.marine.exportDate), 'short'): ''"
-                          :placeholder="$t('placeholder.emptyDate')"
-                          solo
-                          squared
-                          readonly
-                          hide-details
-                          class="text-sm text-field_nd"
-                          input-class="h-8 text-primary"
-                        />
-                      </div>
-                    </template>
-                    <v-date-picker
-                      :value="$toISOString($parseDate(shipment.marine.exportDate))"
-                      :locale="$i18n.locale"
-                      :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
-                      :next-icon="icons.mdiChevronRight"
-                      :prev-icon="icons.mdiChevronLeft"
-                      color="#5a8199"
-                      no-title
-                      dark
-                      @change="shipment.marine.exportDate = $event || null"
-                    ></v-date-picker>
-                  </v-menu>
-                </div>
-              </div>
-            </div>
-            <!-- AIR -->
-            <div
-              v-if="shipment.type.value === ShipmentType.AIR"
-              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
-            >
-              <TextField
-                v-model="shipment.air.airWaybillNo"
-                :placeholder="$t('shipping.airWaybillNo')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-              <TextField
-                v-model="shipment.marine.flight"
-                :placeholder="$t('shipping.flight')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-            </div>
-            <div
-              v-if="shipment.type.value === ShipmentType.AIR"
-              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
-            >
-              <div class="flex items-center">
-                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.numbersOfPkg')">
-                  {{ $t('shipping.numbersOfPkg') }}
-                </div>
-                <div class="w-1/2 px-1">
-                  <TextField
-                    v-model="shipment.air.numbersOfPkg"
-                    :placeholder="$t('placeholder.emptyNumber')"
-                    type="number"
-                    inputmode="decimal"
-                    format-style="decimal"
-                    solo
-                    squared
-                    hide-details
-                    class="text-sm text-field_nd"
-                    input-class="h-8 text-primary"
-                  />
-                </div>
-              </div>
-            </div>
-            <!-- RAILWAY -->
-            <div
-              v-if="shipment.type.value === ShipmentType.RAILWAY"
-              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
-            >
-              <TextField
-                v-model="shipment.railway.internationalWaybillNo"
-                :placeholder="$t('shipping.internationalWaybillNo')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-              <TextField
-                v-model="shipment.railway.train"
-                :placeholder="$t('shipping.train')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-            </div>
-            <div
-              v-if="shipment.type.value === ShipmentType.RAILWAY"
-              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
-            >
-              <div class="flex items-center">
-                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.trainContainersCount')">
-                  {{ $t('shipping.trainContainersCount') }}
-                </div>
-                <div class="w-1/2 px-1">
-                  <TextField
-                    v-model="shipment.railway.trainContainersCount"
-                    :placeholder="$t('placeholder.notIndicated')"
-                    solo
-                    squared
-                    hide-details
-                    class="text-sm text-field_nd"
-                    input-class="h-8 text-primary"
-                  />
-                </div>
-              </div>
-              <div class="px-1">
-                <TextField
-                  v-model="shipment.railway.trainContainersNo"
-                  :placeholder="$t('shipping.trainContainersNo')"
-                  solo
-                  squared
-                  hide-details
-                  class="text-sm text-field_nd"
-                  input-class="h-8 text-primary"
-                />
-              </div>
-              <div class="flex items-center">
-                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
-                  {{ $t('shipping.exportDate') }}
-                </div>
-                <div class="w-1/2 px-1">
-                  <v-menu
-                    ref="menu"
-                    transition="scale-transition"
-                    min-width="290px"
-                    offset-y
-                  >
-                    <template v-slot:activator="{ on }">
-                      <div v-on="on">
-                        <TextField
-                          :value="shipment.railway.exportDate ? $d($parseDate(shipment.railway.exportDate), 'short'): ''"
-                          :placeholder="$t('placeholder.emptyDate')"
-                          solo
-                          squared
-                          readonly
-                          hide-details
-                          class="text-sm text-field_nd"
-                          input-class="h-8 text-primary"
-                        />
-                      </div>
-                    </template>
-                    <v-date-picker
-                      :value="$toISOString($parseDate(shipment.railway.exportDate))"
-                      :locale="$i18n.locale"
-                      :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
-                      :next-icon="icons.mdiChevronRight"
-                      :prev-icon="icons.mdiChevronLeft"
-                      color="#5a8199"
-                      no-title
-                      dark
-                      @change="shipment.railway.exportDate = $event || null"
-                    ></v-date-picker>
-                  </v-menu>
-                </div>
-              </div>
-            </div>
-            <!-- CAR -->
-            <div
-              v-if="shipment.type.value === ShipmentType.CAR"
-              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
-            >
-              <TextField
-                v-model="shipment.car.internationalWaybillNo"
-                :placeholder="$t('shipping.internationalWaybillNo')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-              <TextField
-                v-model="shipment.car.vehicleNo"
-                :placeholder="$t('shipping.vehicleNo')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-            </div>
-            <div
-              v-if="shipment.type.value === ShipmentType.CAR"
-              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
-            >
-              <div class="flex items-center">
-                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.semitrailerNo')">
-                  {{ $t('shipping.semitrailerNo') }}
-                </div>
-                <div class="w-1/2 px-1">
-                  <TextField
-                    v-model="shipment.car.semitrailerNo"
-                    :placeholder="$t('placeholder.notIndicated')"
-                    solo
-                    squared
-                    hide-details
-                    class="text-sm text-field_nd"
-                    input-class="h-8 text-primary"
-                  />
-                </div>
-              </div>
-              <div class="flex items-center">
-                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
-                  {{ $t('shipping.exportDate') }}
-                </div>
-                <div class="w-1/2 px-1">
-                  <v-menu
-                    ref="menu"
-                    transition="scale-transition"
-                    min-width="290px"
-                    offset-y
-                  >
-                    <template v-slot:activator="{ on }">
-                      <div v-on="on">
-                        <TextField
-                          :value="shipment.car.exportDate ? $d($parseDate(shipment.car.exportDate), 'short'): ''"
-                          :placeholder="$t('placeholder.emptyDate')"
-                          solo
-                          squared
-                          readonly
-                          hide-details
-                          class="text-sm text-field_nd"
-                          input-class="h-8 text-primary"
-                        />
-                      </div>
-                    </template>
-                    <v-date-picker
-                      :value="$toISOString($parseDate(shipment.car.exportDate))"
-                      :locale="$i18n.locale"
-                      :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
-                      :next-icon="icons.mdiChevronRight"
-                      :prev-icon="icons.mdiChevronLeft"
-                      color="#5a8199"
-                      no-title
-                      dark
-                      @change="shipment.car.exportDate = $event || null"
-                    ></v-date-picker>
-                  </v-menu>
-                </div>
-              </div>
-            </div>
-            <!-- MIXED -->
-            <div
-              v-if="shipment.type.value === ShipmentType.MIXED"
-              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
-            >
-              <TextField
-                v-model="shipment.mixed.internationalWaybillNo"
-                :placeholder="$t('shipping.internationalWaybillNo')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-              <TextField
-                v-model="shipment.mixed.ship"
-                :placeholder="$t('shipping.ship')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-              <TextField
-                v-model="shipment.mixed.train"
-                :placeholder="$t('shipping.train')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-              <TextField
-                v-model="shipment.mixed.flight"
-                :placeholder="$t('shipping.flight')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-            </div>
-            <div
-              v-if="shipment.type.value === ShipmentType.MIXED"
-              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
-            >
-              <div class="flex items-center">
-                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.containersCount')">
-                  {{ $t('shipping.containersCount') }}
-                </div>
-                <div class="w-1/2 px-1">
-                  <TextField
-                    v-model="shipment.mixed.containersCount"
-                    :placeholder="$t('placeholder.emptyNumber')"
-                    type="number"
-                    inputmode="decimal"
-                    format-style="decimal"
-                    solo
-                    squared
-                    hide-details
-                    class="text-sm text-field_nd"
-                    input-class="h-8 text-primary"
-                  />
-                </div>
-              </div>
-              <div class="px-1">
-                <TextField
-                  v-model="shipment.mixed.containersNo"
-                  :placeholder="$t('shipping.containersNo')"
-                  solo
-                  squared
-                  hide-details
-                  class="text-sm text-field_nd"
-                  input-class="h-8 text-primary"
-                />
-              </div>
-              <div class="flex items-center">
-                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
-                  {{ $t('shipping.exportDate') }}
-                </div>
-                <div class="w-1/2 px-1">
-                  <v-menu
-                    ref="menu"
-                    transition="scale-transition"
-                    min-width="290px"
-                    offset-y
-                  >
-                    <template v-slot:activator="{ on }">
-                      <div v-on="on">
-                        <TextField
-                          :value="shipment.mixed.exportDate ? $d($parseDate(shipment.mixed.exportDate), 'short'): ''"
-                          :placeholder="$t('placeholder.emptyDate')"
-                          solo
-                          squared
-                          readonly
-                          hide-details
-                          class="text-sm text-field_nd"
-                          input-class="h-8 text-primary"
-                        />
-                      </div>
-                    </template>
-                    <v-date-picker
-                      :value="$toISOString($parseDate(shipment.mixed.exportDate))"
-                      :locale="$i18n.locale"
-                      :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
-                      :next-icon="icons.mdiChevronRight"
-                      :prev-icon="icons.mdiChevronLeft"
-                      color="#5a8199"
-                      no-title
-                      dark
-                      @change="shipment.mixed.exportDate = $event || null"
-                    ></v-date-picker>
-                  </v-menu>
-                </div>
-              </div>
-            </div>
-            <!-- EXPRESS -->
-            <div
-              v-if="shipment.type.value === ShipmentType.EXPRESS"
-              class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
-            >
-              <TextField
-                v-model="shipment.express.postalNo"
-                :placeholder="$t('shipping.postalNo')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-              <TextField
-                v-model="shipment.express.deliveryService"
-                :placeholder="$t('shipping.deliveryService')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary"
-              />
-            </div>
-            <div
-              v-if="shipment.type.value === ShipmentType.EXPRESS"
-              class="w-full sm:w-2/3 md:w-full lg:w-2/3"
-            >
-              <div class="flex items-center">
-                <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.numbersOfPkg')">
-                  {{ $t('shipping.numbersOfPkg') }}
-                </div>
-                <div class="w-1/2 px-1">
-                  <TextField
-                    v-model="shipment.express.numbersOfPkg"
-                    :placeholder="$t('placeholder.emptyNumber')"
-                    type="number"
-                    inputmode="decimal"
-                    format-style="decimal"
-                    solo
-                    squared
-                    hide-details
-                    class="text-sm text-field_nd"
-                    input-class="h-8 text-primary"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SpecDelivery
+          :item.sync="shipment"
+        />
         <!-- Customs -->
-        <div class="w-full pb-4 md:w-1/2 lg:w-2/6 md:pl-3 md:max-w-sm">
-          <h4 class="text-xl font-semibold leading-6 mb-4">
-            {{ $t('shipping.customsAndTaxes') }}
-          </h4>
-          <div class="bg-accent3 rounded-md py-1 px-2">
-            <div class="px-1 pb-1">
-              <Select
-                v-model="delivery.countryOfOrigin"
-                :placeholder="$t('shipping.countryOfOrigin')"
-                :nudge-bottom="32"
-                :items="deliveryCountries"
-                solo
-                squared
-                hide-details
-                class="text-sm select_nd"
-                input-class="h-8 text-primary"
-              >
-                <template v-slot:append="{ isMenuOpen, toggle }">
-                  <div class="text-primary cursor-pointer select-none" @click="toggle">
-                    <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-                    <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-                  </div>
-                </template>
-              </Select>
-            </div>
-            <div class="flex items-center pb-1">
-              <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.termsLabel')">
-                {{ $t('shipping.termsLabel') }}
-              </div>
-              <div class="px-1 w-2/5">
-                <Select
-                  v-model="delivery.terms"
-                  :placeholder="$t('placeholder.notChosen')"
-                  :nudge-bottom="32"
-                  :items="deliveryTerms"
-                  solo
-                  squared
-                  hide-details
-                  class="text-sm select_nd"
-                  input-class="h-8 text-primary"
-                >
-                  <template v-slot:append="{ isMenuOpen, toggle }">
-                    <div class="text-primary cursor-pointer select-none" @click="toggle">
-                      <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-                      <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-                    </div>
-                  </template>
-                </Select>
-              </div>
-            </div>
-            <div class="flex items-center">
-              <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.costLabel')">
-                {{ $t('shipping.costLabel') }}
-              </div>
-              <div class="px-1 w-2/5">
-                <TextField
-                  v-model="delivery.cost"
-                  :placeholder="$t('placeholder.emptyNumber')"
-                  type="number"
-                  inputmode="decimal"
-                  format-style="decimal"
-                  solo
-                  squared
-                  hide-details
-                  class="text-sm text-field_nd"
-                  input-class="h-8 text-primary"
-                />
-              </div>
-            </div>
-            <div class="border-t border-background my-3 mx-2" />
-            <div class="flex items-center pb-1">
-              <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.discountLabel')">
-                {{ $t('shipping.discountLabel') }}
-              </div>
-              <div class="px-1 w-2/5">
-                <TextField
-                  v-model="delivery.discount"
-                  :placeholder="$t('placeholder.emptyNumber')"
-                  type="number"
-                  inputmode="decimal"
-                  format-style="decimal"
-                  solo
-                  squared
-                  hide-details
-                  class="text-sm text-field_nd"
-                  input-class="h-8 text-primary"
-                />
-              </div>
-            </div>
-            <div class="flex items-center pb-1">
-              <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.vatLabel')">
-                {{ $t('shipping.vatLabel') }}
-              </div>
-              <div class="px-1 w-2/5">
-                <Select
-                  v-model="delivery.vat"
-                  :placeholder="$t('placeholder.notChosen')"
-                  :nudge-bottom="32"
-                  :items="[]"
-                  disabled
-                  solo
-                  squared
-                  hide-details
-                  class="text-sm select_nd"
-                  input-class="h-8 text-primary"
-                >
-                  <template v-slot:append="{ isMenuOpen }">
-                    <div class="text-gray-darkest cursor-not-allowed">
-                      <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-                      <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-                    </div>
-                  </template>
-                </Select>
-              </div>
-            </div>
-            <div class="flex items-center">
-              <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.incomeTaxLabel')">
-                {{ $t('shipping.incomeTaxLabel') }}
-              </div>
-              <div class="px-1 w-2/5">
-                <Select
-                  v-model="delivery.incomeTax"
-                  :placeholder="$t('placeholder.notChosen')"
-                  :nudge-bottom="32"
-                  :items="[]"
-                  disabled
-                  solo
-                  squared
-                  hide-details
-                  class="text-sm select_nd"
-                  input-class="h-8 text-primary"
-                >
-                  <template v-slot:append="{ isMenuOpen }">
-                    <div class="text-gray-darkest cursor-not-allowed">
-                      <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-                      <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-                    </div>
-                  </template>
-                </Select>
-              </div>
-            </div>
-          </div>
-          <!-- Cost -->
-          <h4 class="text-xl font-semibold leading-6 mb-4 mt-8">
-            {{ $t('shipping.amount') }}
-          </h4>
-          <div class="bg-accent3 rounded-md py-1 px-2">
-            <div class="px-1 py-3 mb-1 text-lg text-center">
-              {{ delivery.amount }}
-            </div>
-            <div class="px-1 pb-1">
-              <TextArea
-                v-model="delivery.amountInWords"
-                :placeholder="$t('shipping.amountInWords')"
-                rows="2"
-                squared
-                hide-details
-                class="text-sm text-area_nd"
-                input-class="text-primary"
-              />
-            </div>
-            <div class="px-1">
-              <TextArea
-                v-model="delivery.amountInWordsClientLang"
-                :placeholder="$t('shipping.amountInWordsClientLang')"
-                rows="2"
-                squared
-                hide-details
-                class="text-sm text-area_nd"
-                input-class="text-primary"
-              />
-            </div>
-          </div>
-        </div>
+        <SpecCustoms
+          :item.sync="customs"
+        />
       </div>
     </div>
 
@@ -1133,13 +426,13 @@
       <h4 class="text-xl font-semibold leading-6 mb-4">
         {{ $t('shipping.actions') }}
       </h4>
-      <div class="bg-accent3 rounded-md p-3 select-none">
+      <div class="bg-gray-700 rounded-md p-3 select-none">
         <div class="flex flex-wrap lg:justify-between">
           <div class="w-full md:w-auto p-2">
             <a
               :href="`/paper/${$route.params.specId}`"
               target="_blank"
-              class="w-full inline-block rounded-md border border-accent1 hover:border-primary"
+              class="w-full inline-block rounded-md border border-gray-400 hover:border-primary"
             >
               <div class="h-12 flex items-center px-2">
                 <svg class="mr-2" width="26" height="16" viewBox="0 0 26 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1209,7 +502,7 @@
               class="w-full inline-block rounded-md border border-transparent hover:border-primary pointer-events-none"
               @click.prevent
             >
-              <div class="h-12 flex items-center px-2 text-accent1">
+              <div class="h-12 flex items-center px-2 text-gray-400">
                 <svg class="mr-2" width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9985 11.6316L16.9985 11.6316C17.2638 11.5129 17.54 11.3893 17.828 11.2609C18.188 11.2609 18.4802 10.9687 18.4802 10.6087V2.3913C18.4802 1.07304 17.408 0 16.0889 0H5.21931C3.90018 0 2.828 1.07304 2.828 2.3913V10.6087C2.828 10.9687 3.12018 11.2609 3.48018 11.2609C3.81999 11.4155 4.1428 11.5631 4.45018 11.7037C7.45631 13.0783 8.98732 13.7783 10.5259 13.7954C12.1227 13.8131 13.7277 13.095 16.9985 11.6316ZM6.95845 10H14.3497C14.7097 10 15.0019 9.70785 15.0019 9.34785C15.0019 8.98785 14.7097 8.69568 14.3497 8.69568H6.95845C6.59845 8.69568 6.30627 8.98785 6.30627 9.34785C6.30627 9.70785 6.59845 10 6.95845 10ZM14.3497 7.39138H6.95845C6.59845 7.39138 6.30627 7.09921 6.30627 6.73921C6.30627 6.37921 6.59845 6.08704 6.95845 6.08704H14.3497C14.7097 6.08704 15.0019 6.37921 15.0019 6.73921C15.0019 7.09921 14.7097 7.39138 14.3497 7.39138ZM6.95845 4.78262H10.8715C11.2315 4.78262 11.5237 4.49044 11.5237 4.13045C11.5237 3.77045 11.2315 3.47827 10.8715 3.47827H6.95845C6.59845 3.47827 6.30627 3.77045 6.30627 4.13045C6.30627 4.49044 6.59845 4.78262 6.95845 4.78262Z" fill="currentColor"/>
                   <path d="M19.1323 20H2.17576C1.09663 20 0.219238 19.1226 0.219238 18.0435V7.52172C0.219238 6.80346 0.613151 6.14346 1.24793 5.79998L3.17228 4.77215C3.49141 4.60259 3.88532 4.72259 4.05489 5.03998C4.22445 5.35824 4.10445 5.75302 3.78706 5.92259L1.86532 6.94867C1.65924 7.06085 1.52359 7.28607 1.52359 7.52172V18.0435C1.52359 18.4035 1.81576 18.6956 2.17576 18.6956H19.1323C19.4923 18.6956 19.7844 18.4035 19.7844 18.0435V7.52172C19.7844 7.28607 19.6488 7.06085 19.4392 6.9478L17.5201 5.92346C17.2027 5.75389 17.0827 5.35911 17.2523 5.04085C17.4218 4.72346 17.8158 4.60259 18.1349 4.77302L20.0566 5.79911C20.6949 6.14346 21.0888 6.80346 21.0888 7.52172V18.0435C21.0888 19.1226 20.2114 20 19.1323 20Z" fill="currentColor"/>
@@ -1312,13 +605,15 @@ import cloneDeep from 'clone-deep'
 import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 
-import { mdiClose, mdiPlusThick, mdiChevronUp, mdiChevronDown } from '@mdi/js'
+import { mdiClose, mdiPlusThick } from '@mdi/js'
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
 import PaperListModal from '@/components/PaperListModal.vue'
 import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
+import PrintSettings from '../components/PrintSettings.vue'
+import SpecDelivery from '../components/SpecDelivery.vue'
+import SpecCustoms from '../components/SpecCustoms.vue'
 
-import { ShipmentType } from '../graphql/enums'
 import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS, GET_SPEC_EMAIL_ACCESS } from '../graphql/queries'
 import {
   UPDATE_SPEC,
@@ -1336,6 +631,9 @@ export default {
   components: {
     PaperListModal,
     PaperConfiguratorModal,
+    PrintSettings,
+    SpecDelivery,
+    SpecCustoms,
   },
   props: {
     spec: {
@@ -1357,9 +655,9 @@ export default {
   },
   data () {
     return {
-      ShipmentType,
+      printDialog: false,
       shipment: {
-        type: {},
+        type: null,
         sentFrom: '',
         sentThrough: '',
         destination: '',
@@ -1405,7 +703,7 @@ export default {
           exportDate: '',
         },
       },
-      delivery: {
+      customs: {
         countryOfOrigin: {},
         terms: {},
         cost: 0,
@@ -1435,8 +733,6 @@ export default {
       icons: {
         mdiClose,
         mdiPlusThick,
-        mdiChevronUp,
-        mdiChevronDown,
         ziSettings,
         ziPaperPlane,
         ziPrint,
@@ -1445,30 +741,6 @@ export default {
     }
   },
   computed: {
-    deliveryCountries () {
-      return [
-        {
-          text: 'CHN',
-          value: 'CN',
-        },
-      ]
-    },
-    deliveryTerms () {
-      return [
-        {
-          text: 'CFR',
-          value: 'CFR',
-        },
-      ]
-    },
-    shipmentTypes () {
-      return Object.values(ShipmentType).filter(el => el !== ShipmentType.UNDEFINED).map(el => {
-        return {
-          text: this.$t(`shipmentType.${el}`),
-          value: el,
-        }
-      })
-    },
     link () {
       return `${window.location.protocol}//${window.location.host}/paper/${this.specId}`
     },
@@ -1724,6 +996,10 @@ export default {
       }
     },
     printPDF () {
+      if (true) { // eslint-disable-line
+        this.printDialog = true
+        return
+      }
       pdfMake.vfs = pdfFonts.pdfMake.vfs
       const dd = {
         content: [
@@ -2153,6 +1429,9 @@ export default {
 </script>
 
 <style lang="postcss">
+.text-field_nd {
+  min-width: unset!important;
+}
 .text-area_nd textarea {
   padding-top: 4px!important;
   padding-bottom: 4px!important;
@@ -2205,45 +1484,10 @@ export default {
 .select_nd input:focus {
   color: #ffffff!important;
 }
-.text-field_nd input::-webkit-input-placeholder,
-.text-area_nd textarea::-webkit-input-placeholder,
-.select_nd input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #646464!important;
-}
-.text-field_nd input::-moz-placeholder,
-.text-area_nd textarea::-moz-placeholder,
-.select_nd input::-moz-placeholder { /* Firefox 19+ */
-   color: #646464!important;
-}
-.text-field_nd input:-ms-input-placeholder,
-.text-area_nd textarea:-ms-input-placeholder,
-.select_nd input:-ms-input-placeholder { /* IE 10+ */
-   color: #646464!important;
-}
-.text-field_nd input:-moz-placeholder,
-.text-area_nd textarea:-moz-placeholder,
-.select_nd input:-moz-placeholder { /* Firefox 18- */
-   color: #646464!important;
-}
-.text-field_nd input:disabled::-webkit-input-placeholder,
-.text-area_nd textarea:disabled::-webkit-input-placeholder,
-.select_nd input:disabled::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+
+.text-area_nd textarea:disabled::placeholder,
+.select_nd input:disabled::placeholder {
   color: #2f2f2f!important;
-}
-.text-field_nd input:disabled::-moz-placeholder,
-.text-area_nd textarea:disabled::-moz-placeholder,
-.select_nd input:disabled::-moz-placeholder { /* Firefox 19+ */
-   color: #2f2f2f!important;
-}
-.text-field_nd input:disabled:-ms-input-placeholder,
-.text-area_nd textarea:disabled:-ms-input-placeholder,
-.select_nd input:disabled:-ms-input-placeholder { /* IE 10+ */
-   color: #2f2f2f!important;
-}
-.text-field_nd input:disabled:-moz-placeholder,
-.text-area_nd textarea:disabled:-moz-placeholder,
-.select_nd input:disabled:-moz-placeholder { /* Firefox 18- */
-   color: #2f2f2f!important;
 }
 </style>
 

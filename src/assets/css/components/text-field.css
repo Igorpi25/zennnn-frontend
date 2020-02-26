@@ -39,9 +39,6 @@
   @apply appearance-none outline-none w-full;
   @apply bg-accent1 text-white;
 }
-.text-field input::placeholder {
-  color: #E0E0E0;
-}
 
 /* TEXTFIELD HAS ERROR STATE */
 .text-field.has-error .text-field__label {
@@ -69,18 +66,6 @@
 .text-field--outlined input {
   background: transparent;
 }
-.text-field--outlined input:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #7e7e7e;
-}
-.text-field--outlined input:focus::-moz-placeholder { /* Firefox 19+ */
-  color: #7e7e7e;
-}
-.text-field--outlined input:focus:-ms-input-placeholder { /* IE 10+ */
-  color: #7e7e7e;
-}
-.text-field--outlined input:focus:-moz-placeholder { /* Firefox 18- */
-  color: #7e7e7e;
-}
 
 /* TEXTFIELD SQUARED */
 .text-field--squared {
@@ -100,22 +85,6 @@
 .text-field--squared input {
   background: transparent;
 }
-.text-field--squared input::-webkit-input-placeholder,
-.text-field--squared input:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #646464;
-}
-.text-field--squared input::-moz-placeholder,
-.text-field--squared input:focus::-moz-placeholder { /* Firefox 19+ */
-  color: #646464;
-}
-.text-field--squared input:-ms-input-placeholder,
-.text-field--squared input:focus:-ms-input-placeholder { /* IE 10+ */
-  color: #646464;
-}
-.text-field--squared input:-moz-placeholder,
-.text-field--squared input:focus:-moz-placeholder { /* Firefox 18- */
-  color: #646464;
-}
 
 /* TEXTFIELD SINGLE LINE */
 .text-field--single-line,
@@ -125,9 +94,6 @@
 .text-field--single-line input {
   background-color: transparent;
 }
-.text-field--single-line input::placeholder {
-  color: #888888;
-}
 
 /* TEXTFIELD COLORED */
 .text-field--colored input {
@@ -136,36 +102,12 @@
 .text-field--colored input {
   @apply text-primary;
 }
-.text-field--colored input::-webkit-input-placeholder  { /* Chrome/Opera/Safari */
-  @apply text-primary;
-}
-.text-field--colored input::-moz-placeholder { /* Firefox 19+ */
-  @apply text-primary;
-}
-.text-field--colored input:-ms-input-placeholder { /* IE 10+ */
-  @apply text-primary;
-}
-.text-field--colored input:-moz-placeholder { /* Firefox 18- */
-  @apply text-primary;
-}
 
 .text-field--colored-faded input {
   background: transparent;
 }
 .text-field--colored-faded input {
   @apply text-primary;
-}
-.text-field--colored-faded input::-webkit-input-placeholder  { /* Chrome/Opera/Safari */
-  color: #2F404B;
-}
-.text-field--colored-faded input::-moz-placeholder { /* Firefox 19+ */
-  color: #2F404B;
-}
-.text-field--colored-faded input:-ms-input-placeholder { /* IE 10+ */
-  color: #2F404B;
-}
-.text-field--colored-faded input:-moz-placeholder { /* Firefox 18- */
-  color: #2F404B;
 }
 
 /* TEXTFIELD BORDERLESS */

@@ -200,6 +200,7 @@
                         squared
                         hide-details
                         class="pt-0 template-card__label"
+                        input-class="text-gray-300 focus:text-white placeholder-gray-300"
                         @input="updateShopTemplate(index, 'name', $event)"
                       />
                     </div>
@@ -234,6 +235,7 @@
                             squared
                             hide-details
                             class="pt-0 template-card__label"
+                            input-class="text-gray-300 focus:text-white placeholder-gray-300"
                             @input="updateShopTemplate(index, key, $event)"
                           />
                         </div>

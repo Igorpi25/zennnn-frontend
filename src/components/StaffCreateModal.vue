@@ -55,6 +55,7 @@
               :label="$t('staff.access')"
               :nudge-bottom="23"
               :items="roles"
+              return-object
               colored
               hide-details
               class="text-sm mr-2 md:p-0 leading-normal max-w-sm"
