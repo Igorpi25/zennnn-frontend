@@ -423,6 +423,10 @@
         <div class="border-t border-gray-900 m-3" />
         <!-- IMPORTER -->
         <h5 class="uppercase mb-3 px-3 pt-4">
+          <label class="switch align-middle">
+            <input type="checkbox" v-model="importerActive" />
+            <span class="switch-slider" />
+          </label>
           <span class="inline-block font-bold">{{ $t('shipping.importerTitle') }}</span>&nbsp;<span class="inline-block font-bold text-gray-light">{{ $t('shipping.importerSubtitle') }}</span>
         </h5>
         <div class="flex flex-wrap">
@@ -434,6 +438,7 @@
               <TextField
                 v-model="client.importerCompanyName"
                 :placeholder="$t('placeholder.notIndicated')"
+                :disabled="!importerActive"
                 solo
                 squared
                 hide-details
@@ -456,6 +461,7 @@
               <TextField
                 v-model="client.importerAddress"
                 :placeholder="$t('placeholder.notIndicated')"
+                :disabled="!importerActive"
                 solo
                 squared
                 hide-details
@@ -477,6 +483,7 @@
               <TextField
                 v-model="client.importerContactPerson"
                 :placeholder="$t('placeholder.notIndicated')"
+                :disabled="!importerActive"
                 solo
                 squared
                 hide-details
@@ -501,6 +508,7 @@
                 <TextField
                   v-model="client.importerPhone"
                   :placeholder="'000 - 00 - 00'"
+                  :disabled="!importerActive"
                   solo
                   squared
                   hide-details
@@ -524,6 +532,7 @@
                 <TextField
                   v-model="client.importerFax"
                   :placeholder="'000 - 00 - 00'"
+                  :disabled="!importerActive"
                   solo
                   squared
                   hide-details
@@ -540,6 +549,7 @@
                 <TextField
                   v-model="client.importerEmail"
                   :placeholder="$t('placeholder.notIndicated')"
+                  :disabled="!importerActive"
                   solo
                   squared
                   hide-details
@@ -1424,6 +1434,7 @@ export default {
       ShipmentType,
       supplier: {},
       client: {},
+      importerActive: false,
       shipment: {
         type: null,
         marine: {},
@@ -1492,6 +1503,11 @@ export default {
       },
       deep: true,
     },
+    importerActive () {
+      this.$nextTick(() => {
+        this.validate()
+      })
+    },
   },
   mounted () {
     this.validate()
@@ -1506,7 +1522,7 @@ export default {
       const form = this.$refs.form
       const elements = form.elements
       for (const el of elements) {
-        if (el.willValidate === true && !el.validity.valid) {
+        if (!el.disabled && el.willValidate === true && !el.validity.valid) {
           if (el.validity.valueMissing) {
             errorsCount++
           }

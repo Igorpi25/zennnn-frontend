@@ -1485,10 +1485,64 @@ export default {
   color: #ffffff!important;
 }
 
+.text-field_nd input:disabled::placeholder,
 .text-area_nd textarea:disabled::placeholder,
 .select_nd input:disabled::placeholder {
   color: #2f2f2f!important;
 }
+
+/* <-- SWITCH */
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch {
+  display: inline-block;
+  position: relative;
+  font-size: 18px;
+  height: 24px;
+  width: 45px;
+  user-select: none;
+  margin-right: 8px;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #222222;
+  border-radius: 50px;
+  transition: all 300ms;
+}
+.switch-slider::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  border-radius: 50px;
+  background-color: #676767;
+  transition: all 300ms;
+}
+
+.switch input:checked + .switch-slider {
+  background-color: #7E99D0;
+}
+.switch input:checked + .switch-slider::before {
+  background-color: #ffffff;
+  transform: translateX(21px);
+}
+
+/* SWITCH --> */
+
 </style>
 
 <style lang="postcss" scoped>
