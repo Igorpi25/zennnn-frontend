@@ -94,7 +94,6 @@
         </div>
         <div class="px-1 w-2/5">
           <Select
-            v-model="item.vat"
             :placeholder="$t('placeholder.notChosen')"
             :nudge-bottom="32"
             :items="[]"
@@ -120,7 +119,6 @@
         </div>
         <div class="px-1 w-2/5">
           <Select
-            v-model="item.incomeTax"
             :placeholder="$t('placeholder.notChosen')"
             :nudge-bottom="32"
             :items="[]"
@@ -147,11 +145,11 @@
     </h4>
     <div class="bg-gray-700 rounded-md py-1 px-2">
       <div class="px-1 py-3 mb-1 text-lg text-center">
-        {{ $n(item.amount || 0, 'decimal') }}
+        {{ $n(amount || 0, 'decimal') }}
       </div>
       <div class="px-1 pb-1">
         <TextArea
-          v-model="item.amountInWords"
+          v-model="amountInWords"
           :placeholder="$t('shipping.amountInWords')"
           rows="2"
           squared
@@ -162,7 +160,7 @@
       </div>
       <div class="px-1">
         <TextArea
-          v-model="item.amountInWordsClientLang"
+          v-model="amountInWordsClientLang"
           :placeholder="$t('shipping.amountInWordsClientLang')"
           rows="2"
           squared
@@ -185,6 +183,12 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    amount: {
+      type: Number,
+      default: 0,
+    },
+    amountInWords: String,
+    amountInWordsClientLang: String,
   },
   data () {
     return {

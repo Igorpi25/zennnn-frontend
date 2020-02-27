@@ -245,6 +245,7 @@
     "trainContainersNo": "№ конт. / Платформы / Вагона",
     "vehicleNo": "Рег. номер ТС",
     "semitrailerNo": "Рег. номер полуприцепа",
+    "vehicleAndSemitrailerNo": "Рег. номер ТС и полуприцепа",
     "postalNo": "№ отправления",
     "deliveryService": "Служба доставки",
     "customsAndTaxes": "Таможня и налоги",

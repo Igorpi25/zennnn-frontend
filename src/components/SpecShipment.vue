@@ -28,7 +28,7 @@
       </div>
       <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
         <TextField
-          v-model="item.destination"
+          v-model="item.sentDestination"
           :placeholder="$t('shipping.destination')"
           solo
           squared
@@ -41,7 +41,7 @@
     <div class="bg-gray-700 rounded-b-md py-1 px-2 flex flex-wrap">
       <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
         <Select
-          v-model="item.type"
+          v-model="item.activeType"
           :placeholder="$t('shipping.shipmentType')"
           :nudge-bottom="32"
           :items="shipmentTypes"
@@ -64,7 +64,7 @@
       </div>
       <!-- MARINE -->
       <div
-        v-if="item.type === ShipmentType.MARINE"
+        v-if="item.activeType === ShipmentType.MARINE"
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
@@ -87,7 +87,7 @@
         />
       </div>
       <div
-        v-if="item.type === ShipmentType.MARINE"
+        v-if="item.activeType === ShipmentType.MARINE"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
         <div class="flex items-center">
@@ -97,10 +97,7 @@
           <div class="w-1/2 px-1">
             <TextField
               v-model="item.marine.containersCount"
-              :placeholder="$t('placeholder.emptyNumber')"
-              type="number"
-              inputmode="decimal"
-              format-style="decimal"
+              :placeholder="$t('placeholder.notIndicated')"
               solo
               squared
               hide-details
@@ -135,7 +132,7 @@
                 <div v-on="on">
                   <TextField
                     :value="item.marine.exportDate ? $d($parseDate(item.marine.exportDate), 'short'): ''"
-                    :placeholder="$t('placeholder.emptyDate')"
+                    :placeholder="$t('placeholder.notIndicated')"
                     solo
                     squared
                     readonly
@@ -162,7 +159,7 @@
       </div>
       <!-- AIR -->
       <div
-        v-if="item.type === ShipmentType.AIR"
+        v-if="item.activeType === ShipmentType.AIR"
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
@@ -185,7 +182,7 @@
         />
       </div>
       <div
-        v-if="item.type === ShipmentType.AIR"
+        v-if="item.activeType === ShipmentType.AIR"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
         <div class="flex items-center">
@@ -195,10 +192,7 @@
           <div class="w-1/2 px-1">
             <TextField
               v-model="item.air.numbersOfPkg"
-              :placeholder="$t('placeholder.emptyNumber')"
-              type="number"
-              inputmode="decimal"
-              format-style="decimal"
+              :placeholder="$t('placeholder.notIndicated')"
               solo
               squared
               hide-details
@@ -210,7 +204,7 @@
       </div>
       <!-- RAILWAY -->
       <div
-        v-if="item.type === ShipmentType.RAILWAY"
+        v-if="item.activeType === ShipmentType.RAILWAY"
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
@@ -233,7 +227,7 @@
         />
       </div>
       <div
-        v-if="item.type === ShipmentType.RAILWAY"
+        v-if="item.activeType === ShipmentType.RAILWAY"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
         <div class="flex items-center">
@@ -242,7 +236,7 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              v-model="item.railway.trainContainersCount"
+              v-model="item.railway.containersCount"
               :placeholder="$t('placeholder.notIndicated')"
               solo
               squared
@@ -254,7 +248,7 @@
         </div>
         <div class="px-1">
           <TextField
-            v-model="item.railway.trainContainersNo"
+            v-model="item.railway.containersNo"
             :placeholder="$t('shipping.trainContainersNo')"
             solo
             squared
@@ -278,7 +272,7 @@
                 <div v-on="on">
                   <TextField
                     :value="item.railway.exportDate ? $d($parseDate(item.railway.exportDate), 'short'): ''"
-                    :placeholder="$t('placeholder.emptyDate')"
+                    :placeholder="$t('placeholder.notIndicated')"
                     solo
                     squared
                     readonly
@@ -305,7 +299,7 @@
       </div>
       <!-- CAR -->
       <div
-        v-if="item.type === ShipmentType.CAR"
+        v-if="item.activeType === ShipmentType.CAR"
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
@@ -328,7 +322,7 @@
         />
       </div>
       <div
-        v-if="item.type === ShipmentType.CAR"
+        v-if="item.activeType === ShipmentType.CAR"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
         <div class="flex items-center">
@@ -362,7 +356,7 @@
                 <div v-on="on">
                   <TextField
                     :value="item.car.exportDate ? $d($parseDate(item.car.exportDate), 'short'): ''"
-                    :placeholder="$t('placeholder.emptyDate')"
+                    :placeholder="$t('placeholder.notIndicated')"
                     solo
                     squared
                     readonly
@@ -389,7 +383,7 @@
       </div>
       <!-- MIXED -->
       <div
-        v-if="item.type === ShipmentType.MIXED"
+        v-if="item.activeType === ShipmentType.MIXED"
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
@@ -430,20 +424,17 @@
         />
       </div>
       <div
-        v-if="item.type === ShipmentType.MIXED"
+        v-if="item.activeType === ShipmentType.MIXED"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
         <div class="flex items-center">
-          <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.containersCount')">
-            {{ $t('shipping.containersCount') }}:
+          <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.vehicleAndSemitrailerNo')">
+            {{ $t('shipping.vehicleAndSemitrailerNo') }}:
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              v-model="item.mixed.containersCount"
-              :placeholder="$t('placeholder.emptyNumber')"
-              type="number"
-              inputmode="decimal"
-              format-style="decimal"
+              v-model="item.mixed.vehicleNo"
+              :placeholder="$t('placeholder.notIndicated')"
               solo
               squared
               hide-details
@@ -478,7 +469,7 @@
                 <div v-on="on">
                   <TextField
                     :value="item.mixed.exportDate ? $d($parseDate(item.mixed.exportDate), 'short'): ''"
-                    :placeholder="$t('placeholder.emptyDate')"
+                    :placeholder="$t('placeholder.notIndicated')"
                     solo
                     squared
                     readonly
@@ -505,7 +496,7 @@
       </div>
       <!-- EXPRESS -->
       <div
-        v-if="item.type === ShipmentType.EXPRESS"
+        v-if="item.activeType === ShipmentType.EXPRESS"
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
@@ -528,7 +519,7 @@
         />
       </div>
       <div
-        v-if="item.type === ShipmentType.EXPRESS"
+        v-if="item.activeType === ShipmentType.EXPRESS"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
         <div class="flex items-center">
@@ -538,10 +529,7 @@
           <div class="w-1/2 px-1">
             <TextField
               v-model="item.express.numbersOfPkg"
-              :placeholder="$t('placeholder.emptyNumber')"
-              type="number"
-              inputmode="decimal"
-              format-style="decimal"
+              :placeholder="$t('placeholder.notIndicated')"
               solo
               squared
               hide-details
@@ -560,7 +548,7 @@ import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import { ShipmentType } from '../graphql/enums'
 
 export default {
-  name: 'SpecDelivery',
+  name: 'SpecShipment',
   props: {
     item: {
       type: Object,

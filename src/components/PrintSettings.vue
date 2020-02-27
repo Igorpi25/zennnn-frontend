@@ -38,7 +38,7 @@
                 <span>{{ $t('suppliers.companyName') }}</span>
               </label>
               <TextField
-                v-model="supplier.companyNameCl"
+                v-model="requisite.companyName"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -48,7 +48,7 @@
                 required
               >
                 <template v-slot:append>
-                  <span v-if="supplier.companyNameCl" class="text-green-500">
+                  <span v-if="requisite.companyName" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -60,7 +60,7 @@
                 <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
-                v-model="supplier.legalAddress"
+                v-model="requisite.legalAddress"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -70,7 +70,7 @@
                 required
               >
                 <template v-slot:append>
-                  <span v-if="supplier.legalAddress" class="text-green-500">
+                  <span v-if="requisite.legalAddress" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -82,7 +82,7 @@
                   <span>{{ $t('suppliers.phone') }}</span>
                 </label>
                 <TextField
-                  v-model="supplier.workPhone"
+                  v-model="requisite.phone"
                   :placeholder="'000 - 00 - 00'"
                   solo
                   squared
@@ -92,7 +92,7 @@
                   required
                 >
                   <template v-slot:append>
-                    <span v-if="supplier.workPhone" class="text-green-500">
+                    <span v-if="requisite.phone" class="text-green-500">
                       <Icon size="14">{{ icons.mdiCheck }}</Icon>
                     </span>
                   </template>
@@ -105,7 +105,7 @@
                   <span>{{ $t('label.client.fax') }}</span>
                 </label>
                 <TextField
-                  v-model="supplier.fax"
+                  v-model="requisite.fax"
                   :placeholder="'000 - 00 - 00'"
                   solo
                   squared
@@ -120,7 +120,7 @@
                 <span>{{ $t('label.supplier.email') }}</span>
               </label>
               <TextField
-                v-model="supplier.email"
+                v-model="requisite.email"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -130,7 +130,7 @@
                 required
               >
                 <template v-slot:append>
-                  <span v-if="supplier.email" class="text-green-500">
+                  <span v-if="requisite.email" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -141,7 +141,7 @@
                 <span>{{ $t('label.supplier.website') }}</span>
               </label>
               <TextField
-                v-model="supplier.website"
+                v-model="requisite.website"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -157,7 +157,7 @@
                 <span>{{ $t('label.client.bankName') }}</span>
               </label>
               <TextField
-                v-model="supplier.bankName"
+                v-model="requisite.bankName"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -167,7 +167,7 @@
                 required
               >
                 <template v-slot:append>
-                  <span v-if="supplier.bankName" class="text-green-500">
+                  <span v-if="requisite.bankName" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -179,7 +179,7 @@
                 <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
-                v-model="supplier.bankAddress"
+                v-model="requisite.bankAddress"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -189,7 +189,7 @@
                 required
               >
                 <template v-slot:append>
-                  <span v-if="supplier.bankAddress" class="text-green-500">
+                  <span v-if="requisite.bankAddress" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -200,7 +200,7 @@
                 <span>{{ $t('label.supplier.accountNumber') }}</span>
               </label>
               <TextField
-                v-model="supplier.accountNumber"
+                v-model="requisite.bankAccountNumber"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -210,7 +210,7 @@
                 required
               >
                 <template v-slot:append>
-                  <span v-if="supplier.accountNumber" class="text-green-500">
+                  <span v-if="requisite.bankAccountNumber" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -221,7 +221,7 @@
                 <span>{{ $t('label.client.swift') }}</span>
               </label>
               <TextField
-                v-model="supplier.swift"
+                v-model="requisite.swift"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -231,7 +231,7 @@
                 required
               >
                 <template v-slot:append>
-                  <span v-if="supplier.swift" class="text-green-500">
+                  <span v-if="requisite.swift" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -242,7 +242,7 @@
                 <span>{{ $t('label.client.itn') }} / {{ $t('shipping.vat') }}</span>
               </label>
               <TextField
-                v-model="supplier.inn"
+                v-model="requisite.itn"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -257,7 +257,7 @@
                   <span>{{ $t('label.client.bic') }}</span>
                 </label>
                 <TextField
-                  v-model="supplier.bic"
+                  v-model="requisite.bic"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
@@ -271,7 +271,7 @@
                   <span>{{ $t('label.client.okpo') }}</span>
                 </label>
                 <TextField
-                  v-model="supplier.okpo"
+                  v-model="requisite.okpo"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
@@ -614,7 +614,7 @@
                 <span>{{ $t('shipping.destination') }}</span>
               </label>
               <TextField
-                v-model="shipment.destination"
+                v-model="shipment.sentDestination"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -631,7 +631,7 @@
               </TextField>
             </div>
             <div
-              v-if="shipment.type === ShipmentType.MARINE"
+              v-if="shipment.activeType === ShipmentType.MARINE"
               class="pb-4 flex"
             >
               <div class="w-1/2 pr-2">
@@ -647,7 +647,7 @@
                     <div v-on="on">
                       <TextField
                         :value="shipment.marine.exportDate ? $d($parseDate(shipment.marine.exportDate), 'short'): ''"
-                        :placeholder="$t('placeholder.emptyDate')"
+                        :placeholder="$t('placeholder.notIndicated')"
                         solo
                         squared
                         readonly
@@ -676,10 +676,7 @@
                 </label>
                 <TextField
                   v-model="shipment.marine.containersCount"
-                  :placeholder="$t('placeholder.emptyNumber')"
-                  type="number"
-                  inputmode="decimal"
-                  format-style="decimal"
+                  :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
@@ -702,7 +699,7 @@
                 <span>{{ $t('shipping.shipmentType') }}</span>
               </label>
               <Select
-                v-model="shipment.type"
+                v-model="shipment.activeType"
                 :placeholder="$t('placeholder.notIndicated')"
                 :nudge-bottom="32"
                 :items="shipmentTypes"
@@ -722,7 +719,7 @@
               </Select>
             </div>
             <!-- MARINE -->
-            <div v-if="shipment.type === ShipmentType.MARINE">
+            <div v-if="shipment.activeType === ShipmentType.MARINE">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.billOfLadingNo') }}</span>
@@ -781,7 +778,7 @@
               </div>
             </div>
             <!-- AIR -->
-            <div v-else-if="shipment.type === ShipmentType.AIR">
+            <div v-else-if="shipment.activeType === ShipmentType.AIR">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.airWaybillNo') }}</span>
@@ -816,10 +813,7 @@
                 </label>
                 <TextField
                   v-model="shipment.air.numbersOfPkg"
-                  :placeholder="$t('placeholder.emptyNumber')"
-                  type="number"
-                  inputmode="decimal"
-                  format-style="decimal"
+                  :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
@@ -829,7 +823,7 @@
               </div>
             </div>
             <!-- RAILWAY -->
-            <div v-else-if="shipment.type === ShipmentType.RAILWAY">
+            <div v-else-if="shipment.activeType === ShipmentType.RAILWAY">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.internationalWaybillNo') }}</span>
@@ -863,11 +857,8 @@
                   <span>{{ $t('shipping.trainContainersCount') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.railway.trainContainersCount"
+                  v-model="shipment.railway.containersCount"
                   :placeholder="$t('placeholder.notIndicated')"
-                  type="number"
-                  inputmode="decimal"
-                  format-style="decimal"
                   solo
                   squared
                   hide-details
@@ -880,7 +871,7 @@
                   <span>{{ $t('shipping.trainContainersNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.railway.trainContainersNo"
+                  v-model="shipment.railway.containersNo"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
@@ -902,7 +893,7 @@
                     <div v-on="on">
                       <TextField
                         :value="shipment.railway.exportDate ? $d($parseDate(shipment.railway.exportDate), 'short'): ''"
-                        :placeholder="$t('placeholder.emptyDate')"
+                        :placeholder="$t('placeholder.notIndicated')"
                         solo
                         squared
                         readonly
@@ -927,7 +918,7 @@
               </div>
             </div>
             <!-- CAR -->
-            <div v-else-if="shipment.type === ShipmentType.CAR">
+            <div v-else-if="shipment.activeType === ShipmentType.CAR">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.internationalWaybillNo') }}</span>
@@ -983,7 +974,7 @@
                     <div v-on="on">
                       <TextField
                         :value="shipment.car.exportDate ? $d($parseDate(shipment.car.exportDate), 'short'): ''"
-                        :placeholder="$t('placeholder.emptyDate')"
+                        :placeholder="$t('placeholder.notIndicated')"
                         solo
                         squared
                         readonly
@@ -1008,7 +999,7 @@
               </div>
             </div>
             <!-- MIXED -->
-            <div v-else-if="shipment.type === ShipmentType.MIXED">
+            <div v-else-if="shipment.activeType === ShipmentType.MIXED">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.internationalWaybillNo') }}</span>
@@ -1067,14 +1058,11 @@
               </div>
               <div class="pb-4">
                 <label class="text-sm">
-                  <span>{{ $t('shipping.containersCount') }}</span>
+                  <span>{{ $t('shipping.vehicleAndSemitrailerNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.mixed.containersCount"
+                  v-model="shipment.mixed.vehicleNo"
                   :placeholder="$t('placeholder.notIndicated')"
-                  type="number"
-                  inputmode="decimal"
-                  format-style="decimal"
                   solo
                   squared
                   hide-details
@@ -1109,7 +1097,7 @@
                     <div v-on="on">
                       <TextField
                         :value="shipment.mixed.exportDate ? $d($parseDate(shipment.mixed.exportDate), 'short'): ''"
-                        :placeholder="$t('placeholder.emptyDate')"
+                        :placeholder="$t('placeholder.notIndicated')"
                         solo
                         squared
                         readonly
@@ -1134,7 +1122,7 @@
               </div>
             </div>
             <!-- EXPRESS -->
-            <div v-else-if="shipment.type === ShipmentType.EXPRESS">
+            <div v-else-if="shipment.activeType === ShipmentType.EXPRESS">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.postalNo') }}</span>
@@ -1432,11 +1420,11 @@ export default {
     return {
       isValid: false,
       ShipmentType,
-      supplier: {},
+      requisite: {},
       client: {},
       importerActive: false,
       shipment: {
-        type: null,
+        activeType: null,
         marine: {},
         air: {},
         railway: {},
@@ -1479,7 +1467,7 @@ export default {
     },
   },
   watch: {
-    supplier: {
+    requisite: {
       handler () {
         this.validate()
       },

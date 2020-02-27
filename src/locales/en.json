@@ -245,6 +245,7 @@
     "trainContainersNo": "Cont. No. / Platform / Wagon",
     "vehicleNo": "Reg. number of the vehicle",
     "semitrailerNo": "Reg. number of the semi-trailer",
+    "vehicleAndSemitrailerNo": "Reg. number of the vehicle & semi-trailer",
     "postalNo": "Postal No.",
     "deliveryService": "Delivery service",
     "customsAndTaxes": "Customs and Taxes",

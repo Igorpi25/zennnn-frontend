@@ -412,7 +412,7 @@
     <div class="py-10">
       <div class="flex flex-wrap">
         <!-- Delivery -->
-        <SpecDelivery
+        <SpecShipment
           :item.sync="shipment"
         />
         <!-- Customs -->
@@ -611,7 +611,7 @@ import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 import PaperListModal from '@/components/PaperListModal.vue'
 import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
 import PrintSettings from '../components/PrintSettings.vue'
-import SpecDelivery from '../components/SpecDelivery.vue'
+import SpecShipment from '../components/SpecShipment.vue'
 import SpecCustoms from '../components/SpecCustoms.vue'
 
 import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS, GET_SPEC_EMAIL_ACCESS } from '../graphql/queries'
@@ -632,7 +632,7 @@ export default {
     PaperListModal,
     PaperConfiguratorModal,
     PrintSettings,
-    SpecDelivery,
+    SpecShipment,
     SpecCustoms,
   },
   props: {
@@ -657,34 +657,34 @@ export default {
     return {
       printDialog: false,
       shipment: {
-        type: null,
+        activeType: null,
         sentFrom: '',
         sentThrough: '',
-        destination: '',
+        sentDestination: '',
         marine: {
           billOfLadingNo: '',
           ship: '',
-          containersCount: 0,
+          containersCount: '',
           containersNo: '',
           exportDate: '',
         },
         air: {
           airWaybillNo: '',
           flight: '',
-          numbersOfPkg: 0,
+          numbersOfPkg: '',
           exportDate: '',
         },
         railway: {
           internationalWaybillNo: '',
           train: '',
-          trainContainersCount: 0,
-          trainContainersNo: '',
+          containersCount: '',
+          containersNo: '',
           exportDate: '',
         },
         car: {
           internationalWaybillNo: '',
           vehicleNo: '',
-          semitrailerNo: 0,
+          semitrailerNo: '',
           exportDate: '',
         },
         mixed: {
@@ -693,26 +693,24 @@ export default {
           flight: '',
           train: '',
           vehicleNo: '',
-          semitrailerNo: 0,
+          containersNo: '',
           exportDate: '',
         },
         express: {
           postalNo: '',
           deliveryService: '',
-          numbersOfPkg: 0,
+          numbersOfPkg: '',
           exportDate: '',
         },
       },
+      amount: 0,
+      amountInWords: '',
+      amountInWordsClientLang: '',
       customs: {
         countryOfOrigin: {},
         terms: {},
         cost: 0,
         discount: 0,
-        vat: {},
-        incomeTax: {},
-        amount: 0,
-        amountInWords: '',
-        amountInWordsClientLang: '',
       },
       setContainerSizeLoading: false,
       setContainerCustomCapacityLoading: false,
