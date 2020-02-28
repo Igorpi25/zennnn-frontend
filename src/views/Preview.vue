@@ -224,11 +224,22 @@
                     <!-- TODO to custom component or Intl polyfill -->
                     <!-- i18n-n has Error formatter.formatToParts is not a function. -->
                     <div class="flex-grow dots" />
-                    <span class="font-bold flex items-baseline">
+                    <!-- <span class="font-bold flex items-baseline">
                       <div class="text-accent1">{{ $n(spec.finalCost, 'integer') }}</div>
                       <div class="px-px" style="letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
                       <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
-                    </span>
+                    </span> -->
+                    <i18n-n :value="spec.finalCost || 0" format="decimal" class="font-bold flex items-baseline">
+                      <template v-slot:integer="slotProps">
+                        <div class="text-accent1">{{ slotProps.integer }}</div>
+                      </template>
+                      <template v-slot:group="slotProps">
+                        <div class="text-sm">{{ slotProps.group }}</div>
+                      </template>
+                      <template v-slot:fraction="slotProps">
+                        <div class="text-sm">{{ slotProps.fraction }}</div>
+                      </template>
+                    </i18n-n>
                   </div>
                   <div class="flex pb-2">
                     <span class="w-48 flex-shrink-0 text-right">
@@ -236,11 +247,22 @@
                       <span>{{ $t('currency.CNY.symbol') }}</span>
                     </span>
                     <div class="flex-grow dots" />
-                    <span class="flex items-baseline">
+                    <!-- <span class="flex items-baseline">
                       <div class="text-accent1">{{ $n(spec.totalPrepay, 'integer') }}</div>
                       <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
                       <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
-                    </span>
+                    </span> -->
+                    <i18n-n :value="spec.totalPrepay || 0" format="decimal" class="flex items-baseline">
+                      <template v-slot:integer="slotProps">
+                        <div class="text-accent1">{{ slotProps.integer }}</div>
+                      </template>
+                      <template v-slot:group="slotProps">
+                        <div class="text-sm">{{ slotProps.group }}</div>
+                      </template>
+                      <template v-slot:fraction="slotProps">
+                        <div class="text-sm">{{ slotProps.fraction }}</div>
+                      </template>
+                    </i18n-n>
                   </div>
                   <div class="flex pb-2">
                     <span class="w-48 flex-shrink-0 text-right">
@@ -248,11 +270,24 @@
                       <span>{{ $t('currency.CNY.symbol') }}</span>
                     </span>
                     <div class="flex-grow dots" />
-                    <span class="flex items-baseline font-bold" style="color: #ff0000;">
+                    <!-- <span class="flex items-baseline font-bold" style="color: #ff0000;">
                       <div>{{ $n(spec.totalClientDebt, 'integer') }}</div>
                       <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
                       <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
-                    </span>
+                    </span> -->
+                    <div style="color: #ff0000;">
+                      <i18n-n :value="spec.totalClientDebt || 0" format="decimal" class="font-bold flex items-baseline">
+                        <template v-slot:integer="slotProps">
+                          <div>{{ slotProps.integer }}</div>
+                        </template>
+                        <template v-slot:group="slotProps">
+                          <div class="text-sm">{{ slotProps.group }}</div>
+                        </template>
+                        <template v-slot:fraction="slotProps">
+                          <div class="text-sm">{{ slotProps.fraction }}</div>
+                        </template>
+                      </i18n-n>
+                    </div>
                   </div>
                   <!-- <div class="mt-8 text-sm text-right">
                     <v-menu

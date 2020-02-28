@@ -224,19 +224,20 @@
         </div>
         <div class="spec-summary__cost">
           <div class="spec-summary__cost__card">
-            <ul class="leaders">
-              <li>
-                <span>
+            <ul>
+              <li class="flex">
+                <span class="flex-shrink-0">
                   {{ $t('shipping.finalCost') }} {{ $t('currency.CNY.symbol') }}
                 </span>
+                <div class="flex-grow dots" />
                 <!-- TODO to custom component or Intl polyfill -->
                 <!-- i18n-n has Error formatter.formatToParts is not a function. -->
-                <span class="flex">
+                <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.finalCost, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
-                </span>
-                <!-- <i18n-n :value="spec.finalCost" format="decimal" class="flex">
+                </span> -->
+                <i18n-n :value="spec.finalCost || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
                     <div class="text-white">{{ slotProps.integer }}</div>
                   </template>
@@ -246,18 +247,19 @@
                   <template v-slot:fraction="slotProps">
                     <div class="text-sm">{{ slotProps.fraction }}</div>
                   </template>
-                </i18n-n> -->
+                </i18n-n>
               </li>
-              <li>
-                <span>
+              <li class="flex">
+                <span class="flex-shrink-0">
                   {{ $t('shipping.finalObtainCost') }} {{ $t('currency.CNY.symbol') }}
                 </span>
-                <span class="flex">
+                <div class="flex-grow dots" />
+                <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.finalObtainCost, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.finalObtainCost, 'decimal').slice(-2) }}</div>
-                </span>
-                <!-- <i18n-n :value="spec.finalObtainCost" format="decimal" class="flex">
+                </span> -->
+                <i18n-n :value="spec.finalObtainCost || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
                     <div class="text-white">{{ slotProps.integer }}</div>
                   </template>
@@ -267,18 +269,19 @@
                   <template v-slot:fraction="slotProps">
                     <div class="text-sm">{{ slotProps.fraction }}</div>
                   </template>
-                </i18n-n> -->
+                </i18n-n>
               </li>
-              <li>
-                <span>
+              <li class="flex">
+                <span class="flex-shrink-0">
                   {{ $t('shipping.profit') }}  {{ $t('currency.CNY.symbol') }}
                 </span>
-                <span class="flex">
+                <div class="flex-grow dots" />
+                <!-- <span class="flex">
                   <div style="color: #00ff16;">{{ $n(spec.profit, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.profit, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.profit, 'decimal').slice(-2) }}</div>
-                </span>
-                <!-- <i18n-n :value="spec.profit" format="decimal" class="flex">
+                </span> -->
+                <i18n-n :value="spec.profit || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
                     <div style="color: #00ff16;">{{ slotProps.integer }}</div>
                   </template>
@@ -288,22 +291,23 @@
                   <template v-slot:fraction="slotProps">
                     <div class="text-sm">{{ slotProps.fraction }}</div>
                   </template>
-                </i18n-n> -->
+                </i18n-n>
               </li>
             </ul>
           </div>
           <div class="spec-summary__cost__card" style="background-image: linear-gradient(to top, #272727 0%, #272727 80%, #1d1d1b 95%, #1d1d1b 100%);">
-            <ul class="leaders">
-              <li>
-                <span>
+            <ul>
+              <li class="flex">
+                <span class="flex-shrink-0">
                   {{ $t('shipping.totalPrepay') }} {{ $t('currency.CNY.symbol') }}
                 </span>
-                <span class="flex">
+                <div class="flex-grow dots" />
+                <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.totalPrepay, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
-                </span>
-                <!-- <i18n-n :value="spec.totalPrepay" format="decimal" class="flex">
+                </span> -->
+                <i18n-n :value="spec.totalPrepay || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
                     <div class="text-white">{{ slotProps.integer }}</div>
                   </template>
@@ -313,18 +317,19 @@
                   <template v-slot:fraction="slotProps">
                     <div class="text-sm">{{ slotProps.fraction }}</div>
                   </template>
-                </i18n-n> -->
+                </i18n-n>
               </li>
-              <li>
-                <span>
+              <li class="flex">
+                <span class="flex-shrink-0">
                   {{ $t('shipping.totalClientDebt') }} {{ $t('currency.CNY.symbol') }}
                 </span>
-                <span class="flex">
+                <div class="flex-grow dots" />
+                <!-- <span class="flex">
                   <div style="color: #ff2900;">{{ $n(spec.totalClientDebt, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
-                </span>
-                <!-- <i18n-n :value="spec.totalClientDebt" format="decimal" class="flex">
+                </span> -->
+                <i18n-n :value="spec.totalClientDebt || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
                     <div style="color: #ff2900;">{{ slotProps.integer }}</div>
                   </template>
@@ -334,7 +339,7 @@
                   <template v-slot:fraction="slotProps">
                     <div class="text-sm">{{ slotProps.fraction }}</div>
                   </template>
-                </i18n-n> -->
+                </i18n-n>
               </li>
             </ul>
           </div>
