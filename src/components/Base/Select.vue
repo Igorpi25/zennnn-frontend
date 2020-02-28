@@ -1,6 +1,6 @@
 <template>
   <InputBase
-    :is-dirty="!!internalValue"
+    :is-dirty="!!internalInput"
     :has-error="hasError"
     :hide-details="hideDetails"
     :detail-text="errorText"
@@ -13,15 +13,17 @@
         'select--borderless': borderless,
         'select--solo': solo,
         'select--colored': colored,
-        'select--focused': hasFocus && searchable
+        'select--focused': hasFocus && searchable,
+        'select--active': hasFocus || menu,
+        'select--disabled': disabled,
       }
     ]"
   >
     <div
+      ref="slot"
       class="select__controls"
     >
       <div
-        ref="slot"
         class="select__slot"
       >
         <label
@@ -42,7 +44,7 @@
         </div>
         <input
           ref="input"
-          v-model="internalValue"
+          v-model="internalInput"
           :id="inputId"
           :type="type"
           :name="name"
@@ -53,17 +55,17 @@
           :maxlength="maxlength"
           :autofocus="autofocus"
           :placeholder="placeholder"
-          :class="[inputClass, 'select-input']"
+          :class="[placeholderClass, inputClass, 'select-input']"
           autocomplete="off"
           @input="input"
           @focus="onFocus"
           @blur="onBlur"
         >
         <div
-          v-if="$slots.append"
+          v-if="$slots.append || $scopedSlots.append"
           class="select__append"
         >
-          <slot name="append" :isMenuOpen="menu" />
+          <slot name="append" :isMenuOpen="menu" :toggle="toggleMenu" />
         </div>
       </div>
       <div class="select__append-outer">
@@ -105,7 +107,7 @@
             :value="item[itemValue]"
             :class="[
               'select-picker__item',
-              { 'select-picker__item--selected': item[itemValue] === value[itemValue] }
+              { 'select-picker__item--selected': item[itemValue] === internalValue[itemValue] }
             ]"
             tabindex="0"
             role="menuitem"
@@ -122,6 +124,7 @@
 <script>
 import focusable from '@/mixins/focusable'
 import validatable from '@/mixins/validatable'
+import { isObject } from '../../util/helpers'
 
 export default {
   name: 'Select',
@@ -133,8 +136,12 @@ export default {
   mixins: [focusable, validatable],
   props: {
     value: {
-      type: Object,
+      type: [String, Number, Object],
       default: () => ({}),
+    },
+    returnObject: {
+      type: Boolean,
+      default: false,
     },
     search: {
       type: String,
@@ -252,32 +259,66 @@ export default {
     return {
       // TODO input registrator
       inputId: 'input' + Math.round(Math.random() * 100000),
-      lazyValue: '',
+      lazyInput: '',
+      lazyValue: this.value,
       menu: false,
       content: null,
       isActive: false,
     }
   },
   computed: {
+    placeholderClass () {
+      let c = this.colored
+        ? 'placeholder-primary' : this.squared
+          ? 'placeholder-gray-200' : this.outlined
+            ? 'placeholder-primary' : 'placeholder-gray-100'
+      if (this.outlined || this.squared) {
+        c += ' focus:placeholder-gray-light'
+      }
+      return c
+    },
     internalValue: {
       get () {
-        const val = this.value || {}
-        const v = val[this.itemText]
-        return this.hasFocus && this.searchable ? this.lazyValue : v
+        if (isObject(this.lazyValue)) {
+          return this.lazyValue
+        } else {
+          const item = this.items.find(el => el[this.itemValue] === this.lazyValue)
+          return item || {}
+        }
       },
       set (val) {
-        let value = val || null
-        this.lazyValue = value
+        this.lazyValue = val
+      },
+    },
+    internalInput: {
+      get () {
+        let v = ''
+        if (isObject(this.value)) {
+          v = this.value[this.itemText]
+        } else {
+          const item = this.items.find(el => el[this.itemValue] === this.value)
+          v = item ? item[this.itemText] : ''
+        }
+        return this.hasFocus && this.searchable ? this.lazyInput : v
+      },
+      set (val) {
+        this.lazyInput = val || null
       },
     },
     isLabelActive () {
-      return this.hasFocus || this.internalValue || this.placeholder
+      return this.hasFocus || this.internalInput || this.placeholder
     },
   },
   watch: {
+    value: {
+      handler (val) {
+        this.lazyValue = val
+      },
+      immediate: true,
+    },
     hasFocus (val) {
       if (this.searchable) {
-        this.internalValue = (this.value && this.value[this.itemText]) || ''
+        this.internalInput = (this.value && this.value[this.itemText]) || ''
       }
       if (val) {
         this.openMenu()
@@ -303,6 +344,13 @@ export default {
     }
   },
   methods: {
+    toggleMenu () {
+      if (this.menu) {
+        this.closeMenu()
+      } else {
+        this.openMenu()
+      }
+    },
     openMenu () {
       this.menu = true
       document.addEventListener('click', this.closeConditional, false)
@@ -312,12 +360,14 @@ export default {
       document.removeEventListener('click', this.closeConditional, false)
     },
     select (value) {
-      this.$emit('input', value)
+      this.internalValue = value
+      const val = this.returnObject ? value : value[this.itemValue]
+      this.$emit('input', val)
       this.closeMenu()
     },
     input (e) {
       if (this.searchable) {
-        this.$emit('update:search', this.internalValue)
+        this.$emit('update:search', this.internalInput)
       }
       this.checkField(e)
     },

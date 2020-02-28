@@ -26,6 +26,67 @@ export const CONTAINER_FRAGMENT = gql`
   }
 `
 
+export const SHIPMENT_FRAGMENT = gql`
+  fragment ShipmentFragment on Shipment {
+    id
+    sentFrom
+    sentThrough
+    sentDestination
+    activeType
+    marine {
+      billOfLadingNo
+      ship
+      containersCount
+      containersNo
+      exportDate
+    }
+    air {
+      airWaybillNo
+      flight
+      numbersOfPkg
+      exportDate
+    }
+    railway {
+      internationalWaybillNo
+      train
+      containersCount
+      containersNo
+      exportDate
+    }
+    car {
+      internationalWaybillNo
+      vehicleNo
+      semitrailerNo
+      exportDate
+    }
+    mixed {
+      internationalWaybillNo
+      ship
+      flight
+      train
+      vehicleNo
+      containersNo
+      exportDate
+    }
+    express {
+      postalNo
+      deliveryService
+      numbersOfPkg
+      exportDate
+    }
+  }
+`
+
+export const CUSTOMS_FRAGMENT = gql`
+  fragment CustomsFragment on Customs {
+    id
+    countryOfOrigin
+    terms
+    cost
+    discount
+  }
+`
+
 export const PRODUCT_FRAGMENT = gql`
   fragment ProductFragment on Product {
     id
@@ -222,12 +283,23 @@ export const SPEC_FRAGMENT = gql`
     containers {
       ...ContainerFragment
     }
+    shipment {
+      ...ShipmentFragment
+    }
+    customs {
+      ...CustomsFragment
+    }
+    amount
+    amountInWords
+    amountInWordsClientLang
     createdAt
     updatedAt
   }
   ${CLIENT_FRAGMENT}
   ${COMMENT_FRAGMENT}
   ${CONTAINER_FRAGMENT}
+  ${SHIPMENT_FRAGMENT}
+  ${CUSTOMS_FRAGMENT}
 `
 
 export const CLIENT_TEMPLATE_FRAGMENT = gql`

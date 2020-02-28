@@ -102,6 +102,7 @@
               :nudge-bottom="23"
               :search.sync="supplierSearch"
               :items="suppliers"
+              return-object
               searchable
               item-value="id"
               item-text="name"

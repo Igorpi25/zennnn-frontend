@@ -29,6 +29,7 @@
               :nudge-bottom="28"
               :search.sync="clientSearch"
               :items="clients"
+              return-object
               searchable
               item-value="id"
               item-text="name"
@@ -123,6 +124,7 @@
               :nudge-bottom="23"
               :search.sync="supplierSearch"
               :items="suppliers"
+              return-object
               searchable
               item-value="id"
               item-text="name"

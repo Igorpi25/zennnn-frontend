@@ -56,7 +56,11 @@
           :maxlength="maxlength"
           :autofocus="autofocus"
           :placeholder="compPlaceholder"
-          :class="{ 'text-right' : type === 'number' || right }"
+          :class="[
+            placeholderClass,
+            { 'text-right' : type === 'number' || right },
+            inputClass,
+          ]"
           :inputmode="inputmode"
           :pattern="pattern"
           :step="step"
@@ -236,6 +240,10 @@ export default {
       type: Number,
       default: 0,
     },
+    inputClass: {
+      type: [String, Object],
+      default: '',
+    },
   },
   data () {
     return {
@@ -256,6 +264,16 @@ export default {
     }
   },
   computed: {
+    placeholderClass () {
+      let c = this.coloredFaded
+        ? 'placeholder-gray-200' : this.squared || this.colored
+          ? 'placeholder-primary' : this.singleLine
+            ? 'placeholder-gray-lighter' : 'placeholder-gray-100'
+      if (this.outlined) {
+        c += ' focus:placeholder-gray-light'
+      }
+      return c
+    },
     compPlaceholder () {
       // ignore placeholder on number
       return this.type === 'number'

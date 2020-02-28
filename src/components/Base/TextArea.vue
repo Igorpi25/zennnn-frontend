@@ -51,6 +51,7 @@
           :minlength="minlength"
           :autofocus="autofocus"
           :placeholder="placeholder"
+          :class="[placeholderClass, inputClass]"
           @input="calculateHeight"
           @focus="onFocus"
           @blur="onBlur"
@@ -192,6 +193,10 @@ export default {
       type: Number,
       default: 0,
     },
+    inputClass: {
+      type: [String, Object],
+      default: '',
+    },
   },
   data () {
     return {
@@ -205,6 +210,11 @@ export default {
     }
   },
   computed: {
+    placeholderClass () {
+      return this.squared
+        ? 'placeholder-white focus:placeholder-gray-lighter'
+        : 'placeholder-gray-lighter'
+    },
     internalValue: {
       get () {
         return this.lazyValue
