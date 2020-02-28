@@ -9,7 +9,7 @@
           :value="item.countryOfOrigin"
           :placeholder="$t('shipping.countryOfOrigin')"
           :nudge-bottom="32"
-          :items="deliveryCountries"
+          :items="shipmentCountries"
           solo
           squared
           hide-details
@@ -34,7 +34,7 @@
             :value="item.terms"
             :placeholder="$t('placeholder.notChosen')"
             :nudge-bottom="32"
-            :items="deliveryTerms"
+            :items="customsTerms"
             solo
             squared
             hide-details
@@ -185,6 +185,8 @@
 
 <script>
 import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
+import { CustomsTerms } from '../graphql/enums'
+import Countries from '../config/countries-iso3.json'
 
 export default {
   name: 'SpecCustoms',
@@ -209,21 +211,21 @@ export default {
     }
   },
   computed: {
-    deliveryCountries () {
-      return [
-        {
-          text: 'CHN',
-          value: 'CN',
-        },
-      ]
+    shipmentCountries () {
+      return Object.entries(Countries).map(([k, v]) => {
+        return {
+          text: v,
+          value: k,
+        }
+      })
     },
-    deliveryTerms () {
-      return [
-        {
-          text: 'CFR',
-          value: 'CFR',
-        },
-      ]
+    customsTerms () {
+      return Object.values(CustomsTerms).map(el => {
+        return {
+          text: this.$t(`customsTerms.${el}`),
+          value: el,
+        }
+      })
     },
   },
 }

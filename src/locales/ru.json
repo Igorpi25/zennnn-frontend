@@ -286,6 +286,9 @@
     "MIXED": "Смешанная",
     "EXPRESS": "Экспресс / Почтовое отправление"
   },
+  "customsTerms": {
+    "CFR": "CFR"
+  },
   "status": {
     "IN_PROCESSING": "Обрабатывается",
     "IN_PRODUCTION": "В производстве",

@@ -286,6 +286,9 @@
     "MIXED": "Mixed",
     "EXPRESS": "Express / Mailing"
   },
+  "customsTerms": {
+    "CFR": "CFR"
+  },
   "status": {
     "IN_PROCESSING": "In processing",
     "IN_PRODUCTION": "In production",

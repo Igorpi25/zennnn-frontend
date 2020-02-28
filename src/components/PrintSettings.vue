@@ -1187,7 +1187,7 @@
                   v-model="customs.countryOfOrigin"
                   :placeholder="$t('placeholder.notChosen')"
                   :nudge-bottom="32"
-                  :items="deliveryCountries"
+                  :items="shipmentCountries"
                   solo
                   squared
                   hide-details
@@ -1211,7 +1211,7 @@
                   v-model="customs.terms"
                   :placeholder="$t('placeholder.notChosen')"
                   :nudge-bottom="32"
-                  :items="deliveryTerms"
+                  :items="customsTerms"
                   solo
                   squared
                   hide-details
@@ -1412,7 +1412,8 @@
 
 <script>
 import { mdiChevronUp, mdiChevronDown, mdiCheck } from '@mdi/js'
-import { ShipmentType } from '../graphql/enums'
+import { ShipmentType, CustomsTerms } from '../graphql/enums'
+import Countries from '../config/countries-iso3.json'
 
 export default {
   name: 'PrintSettings',
@@ -1449,21 +1450,21 @@ export default {
         }
       })
     },
-    deliveryCountries () {
-      return [
-        {
-          text: 'CHN',
-          value: 'CN',
-        },
-      ]
+    shipmentCountries () {
+      return Object.entries(Countries).map(([k, v]) => {
+        return {
+          text: v,
+          value: k,
+        }
+      })
     },
-    deliveryTerms () {
-      return [
-        {
-          text: 'CFR',
-          value: 'CFR',
-        },
-      ]
+    customsTerms () {
+      return Object.values(CustomsTerms).map(el => {
+        return {
+          text: this.$t(`customsTerms.${el}`),
+          value: el,
+        }
+      })
     },
   },
   watch: {

@@ -36,6 +36,10 @@ export const ShipmentType = {
   EXPRESS: 'EXPRESS',
 }
 
+export const CustomsTerms = {
+  CFR: 'CFR',
+}
+
 export const Role = {
   OWNER: 'OWNER',
   MANAGER: 'MANAGER',
