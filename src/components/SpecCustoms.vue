@@ -6,7 +6,7 @@
     <div class="bg-gray-700 rounded-md py-1 px-2">
       <div class="px-1 pb-1">
         <Select
-          v-model="item.countryOfOrigin"
+          :value="item.countryOfOrigin"
           :placeholder="$t('shipping.countryOfOrigin')"
           :nudge-bottom="32"
           :items="deliveryCountries"
@@ -15,6 +15,7 @@
           hide-details
           class="text-sm select_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { customs: { countryOfOrigin: $event } })"
         >
           <template v-slot:append="{ isMenuOpen, toggle }">
             <div class="text-primary cursor-pointer select-none" @click="toggle">
@@ -30,7 +31,7 @@
         </div>
         <div class="px-1 w-2/5">
           <Select
-            v-model="item.terms"
+            :value="item.terms"
             :placeholder="$t('placeholder.notChosen')"
             :nudge-bottom="32"
             :items="deliveryTerms"
@@ -39,6 +40,7 @@
             hide-details
             class="text-sm select_nd"
             input-class="h-8 text-primary placeholder-gray-200"
+            @input="$emit('update', { customs: { terms: $event } })"
           >
             <template v-slot:append="{ isMenuOpen, toggle }">
               <div class="text-primary cursor-pointer select-none" @click="toggle">
@@ -55,16 +57,18 @@
         </div>
         <div class="px-1 w-2/5">
           <TextField
-            v-model="item.cost"
+            :value="item.cost"
             :placeholder="$t('placeholder.emptyNumber')"
+            lazy
             type="number"
             inputmode="decimal"
-            format-style="decimal"
+            format-style="currency"
             solo
             squared
             hide-details
             class="text-sm text-field_nd"
             input-class="h-8 text-primary placeholder-gray-200"
+            @input="$emit('update', { customs: { cost: $event } })"
           />
         </div>
       </div>
@@ -75,16 +79,18 @@
         </div>
         <div class="px-1 w-2/5">
           <TextField
-            v-model="item.discount"
+            :value="item.discount"
             :placeholder="$t('placeholder.emptyNumber')"
+            lazy
             type="number"
             inputmode="decimal"
-            format-style="decimal"
+            format-style="currency"
             solo
             squared
             hide-details
             class="text-sm text-field_nd"
             input-class="h-8 text-primary placeholder-gray-200"
+            @input="$emit('update', { customs: { discount: $event } })"
           />
         </div>
       </div>
@@ -149,24 +155,28 @@
       </div>
       <div class="px-1 pb-1">
         <TextArea
-          v-model="amountInWords"
+          :value="amountInWords"
+          :debounce="250"
           :placeholder="$t('shipping.amountInWords')"
           rows="2"
           squared
           hide-details
           class="text-sm text-area_nd"
           input-class="text-primary placeholder-gray-200"
+          @input="$emit('update', { amountInWords: $event })"
         />
       </div>
       <div class="px-1">
         <TextArea
-          v-model="amountInWordsClientLang"
+          :value="amountInWordsClientLang"
+          :debounce="250"
           :placeholder="$t('shipping.amountInWordsClientLang')"
           rows="2"
           squared
           hide-details
           class="text-sm text-area_nd"
           input-class="text-primary placeholder-gray-200"
+          @input="$emit('update', { amountInWordsClientLang: $event })"
         />
       </div>
     </div>

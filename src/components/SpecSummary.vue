@@ -413,11 +413,16 @@
       <div class="flex flex-wrap">
         <!-- Delivery -->
         <SpecShipment
-          :item.sync="shipment"
+          :item="spec.shipment"
+          @update="v => updateSpec(v)"
         />
         <!-- Customs -->
         <SpecCustoms
-          :item.sync="customs"
+          :item="spec.customs"
+          :amount="spec.amount"
+          :amount-in-words="spec.amountInWords"
+          :amount-in-words-client-lang="spec.amountInWordsClientLang"
+          @update="v => updateSpec(v)"
         />
       </div>
     </div>

@@ -297,7 +297,7 @@ export default {
           v = this.value[this.itemText]
         } else {
           const item = this.items.find(el => el[this.itemValue] === this.value)
-          v = item ? item[this.itemText] : this.value
+          v = item ? item[this.itemText] : ''
         }
         return this.hasFocus && this.searchable ? this.lazyInput : v
       },
@@ -310,6 +310,12 @@ export default {
     },
   },
   watch: {
+    value: {
+      handler (val) {
+        this.lazyValue = val
+      },
+      immediate: true,
+    },
     hasFocus (val) {
       if (this.searchable) {
         this.internalInput = (this.value && this.value[this.itemText]) || ''

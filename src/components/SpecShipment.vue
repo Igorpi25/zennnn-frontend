@@ -6,42 +6,48 @@
     <div class="bg-gray-700 rounded-t-md mb-1 py-1 px-2 flex flex-wrap items-center">
       <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
         <TextField
-          v-model="item.sentFrom"
+          :value="item.sentFrom"
+          :debounce="250"
           :placeholder="$t('shipping.sentFrom')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { sentFrom: $event } })"
         />
       </div>
       <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
         <TextField
-          v-model="item.sentThrough"
+          :value="item.sentThrough"
+          :debounce="250"
           :placeholder="$t('shipping.sentThrough')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { sentThrough: $event } })"
         />
       </div>
       <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
         <TextField
-          v-model="item.sentDestination"
+          :value="item.sentDestination"
+          :debounce="250"
           :placeholder="$t('shipping.destination')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { sentDestination: $event } })"
         />
       </div>
     </div>
     <div class="bg-gray-700 rounded-b-md py-1 px-2 flex flex-wrap">
       <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
         <Select
-          v-model="item.activeType"
+          :value="item.activeType"
           :placeholder="$t('shipping.shipmentType')"
           :nudge-bottom="32"
           :items="shipmentTypes"
@@ -50,6 +56,7 @@
           hide-details
           class="text-sm select_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { activeType: $event } })"
         >
           <template v-slot:append="{ isMenuOpen, toggle }">
             <div class="text-primary cursor-pointer select-none" @click="toggle">
@@ -68,22 +75,26 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          v-model="item.marine.billOfLadingNo"
+          :value="item.marine.billOfLadingNo"
+          :debounce="250"
           :placeholder="$t('shipping.billOfLadingNo')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { marine: { billOfLadingNo: $event } } })"
         />
         <TextField
-          v-model="item.marine.ship"
+          :value="item.marine.ship"
+          :debounce="250"
           :placeholder="$t('shipping.ship')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { marine: { ship: $event } } })"
         />
       </div>
       <div
@@ -96,25 +107,29 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              v-model="item.marine.containersCount"
+              :value="item.marine.containersCount"
+              :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               solo
               squared
               hide-details
               class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
+              @input="$emit('update', { shipment: { marine: { containersCount: $event } } })"
             />
           </div>
         </div>
         <div class="px-1">
           <TextField
-            v-model="item.marine.containersNo"
+            :value="item.marine.containersNo"
+            :debounce="250"
             :placeholder="$t('shipping.containersNo')"
             solo
             squared
             hide-details
             class="text-sm text-field_nd"
             input-class="h-8 text-primary placeholder-gray-200"
+            @input="$emit('update', { shipment: { marine: { containersNo: $event } } })"
           />
         </div>
         <div class="flex items-center">
@@ -151,7 +166,7 @@
                 color="#5a8199"
                 no-title
                 dark
-                @change="item.marine.exportDate = $event || null"
+                @change="$emit('update', { shipment: { marine: { exportDate: $event || null } } })"
               ></v-date-picker>
             </v-menu>
           </div>
@@ -163,22 +178,26 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          v-model="item.air.airWaybillNo"
+          :value="item.air.airWaybillNo"
+          :debounce="250"
           :placeholder="$t('shipping.airWaybillNo')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { air: { airWaybillNo: $event } } })"
         />
         <TextField
-          v-model="item.air.flight"
+          :value="item.air.flight"
+          :debounce="250"
           :placeholder="$t('shipping.flight')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { air: { flight: $event } } })"
         />
       </div>
       <div
@@ -191,13 +210,15 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              v-model="item.air.numbersOfPkg"
+              :value="item.air.numbersOfPkg"
+              :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               solo
               squared
               hide-details
               class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
+              @input="$emit('update', { shipment: { air: { numbersOfPkg: $event } } })"
             />
           </div>
         </div>
@@ -208,22 +229,26 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          v-model="item.railway.internationalWaybillNo"
+          :value="item.railway.internationalWaybillNo"
+          :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { railway: { internationalWaybillNo: $event } } })"
         />
         <TextField
-          v-model="item.railway.train"
+          :value="item.railway.train"
+          :debounce="250"
           :placeholder="$t('shipping.train')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { railway: { train: $event } } })"
         />
       </div>
       <div
@@ -236,25 +261,29 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              v-model="item.railway.containersCount"
+              :value="item.railway.containersCount"
+              :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               solo
               squared
               hide-details
               class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
+              @input="$emit('update', { shipment: { railway: { containersCount: $event } } })"
             />
           </div>
         </div>
         <div class="px-1">
           <TextField
-            v-model="item.railway.containersNo"
+            :value="item.railway.containersNo"
+            :debounce="250"
             :placeholder="$t('shipping.trainContainersNo')"
             solo
             squared
             hide-details
             class="text-sm text-field_nd"
             input-class="h-8 text-primary placeholder-gray-200"
+            @input="$emit('update', { shipment: { railway: { containersNo: $event } } })"
           />
         </div>
         <div class="flex items-center">
@@ -291,7 +320,7 @@
                 color="#5a8199"
                 no-title
                 dark
-                @change="item.railway.exportDate = $event || null"
+                @change="$emit('update', { shipment: { railway: { exportDate: $event || null } } })"
               ></v-date-picker>
             </v-menu>
           </div>
@@ -303,22 +332,26 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          v-model="item.car.internationalWaybillNo"
+          :value="item.car.internationalWaybillNo"
+          :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { car: { internationalWaybillNo: $event } } })"
         />
         <TextField
-          v-model="item.car.vehicleNo"
+          :value="item.car.vehicleNo"
+          :debounce="250"
           :placeholder="$t('shipping.vehicleNo')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { car: { vehicleNo: $event } } })"
         />
       </div>
       <div
@@ -331,13 +364,15 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              v-model="item.car.semitrailerNo"
+              :value="item.car.semitrailerNo"
+              :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               solo
               squared
               hide-details
               class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
+              @input="$emit('update', { shipment: { car: { semitrailerNo: $event } } })"
             />
           </div>
         </div>
@@ -375,7 +410,7 @@
                 color="#5a8199"
                 no-title
                 dark
-                @change="item.car.exportDate = $event || null"
+                @change="$emit('update', { shipment: { car: { exportDate: $event || null } } })"
               ></v-date-picker>
             </v-menu>
           </div>
@@ -387,40 +422,48 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          v-model="item.mixed.internationalWaybillNo"
+          :value="item.mixed.internationalWaybillNo"
+          :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { mixed: { internationalWaybillNo: $event } } })"
         />
         <TextField
-          v-model="item.mixed.ship"
+          :value="item.mixed.ship"
+          :debounce="250"
           :placeholder="$t('shipping.ship')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { mixed: { ship: $event } } })"
         />
         <TextField
-          v-model="item.mixed.train"
+          :value="item.mixed.train"
+          :debounce="250"
           :placeholder="$t('shipping.train')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { mixed: { train: $event } } })"
         />
         <TextField
-          v-model="item.mixed.flight"
+          :value="item.mixed.flight"
+          :debounce="250"
           :placeholder="$t('shipping.flight')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { mixed: { flight: $event } } })"
         />
       </div>
       <div
@@ -433,25 +476,29 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              v-model="item.mixed.vehicleNo"
+              :value="item.mixed.vehicleNo"
+              :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               solo
               squared
               hide-details
               class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
+              @input="$emit('update', { shipment: { mixed: { vehicleNo: $event } } })"
             />
           </div>
         </div>
         <div class="px-1">
           <TextField
-            v-model="item.mixed.containersNo"
+            :value="item.mixed.containersNo"
+            :debounce="250"
             :placeholder="$t('shipping.containersNo')"
             solo
             squared
             hide-details
             class="text-sm text-field_nd"
             input-class="h-8 text-primary placeholder-gray-200"
+            @input="$emit('update', { shipment: { mixed: { containersNo: $event } } })"
           />
         </div>
         <div class="flex items-center">
@@ -488,7 +535,7 @@
                 color="#5a8199"
                 no-title
                 dark
-                @change="item.mixed.exportDate = $event || null"
+                @change="$emit('update', { shipment: { mixed: { exportDate: $event || null } } })"
               ></v-date-picker>
             </v-menu>
           </div>
@@ -500,22 +547,26 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          v-model="item.express.postalNo"
+          :value="item.express.postalNo"
+          :debounce="250"
           :placeholder="$t('shipping.postalNo')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { express: { postalNo: $event } } })"
         />
         <TextField
-          v-model="item.express.deliveryService"
+          :value="item.express.deliveryService"
+          :debounce="250"
           :placeholder="$t('shipping.deliveryService')"
           solo
           squared
           hide-details
           class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
+          @input="$emit('update', { shipment: { express: { deliveryService: $event } } })"
         />
       </div>
       <div
@@ -528,13 +579,15 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              v-model="item.express.numbersOfPkg"
+              :value="item.express.numbersOfPkg"
+              :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               solo
               squared
               hide-details
               class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
+              @input="$emit('update', { shipment: { express: { numbersOfPkg: $event } } })"
             />
           </div>
         </div>
