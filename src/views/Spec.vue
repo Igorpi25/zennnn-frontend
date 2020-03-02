@@ -291,38 +291,46 @@ export default {
           })
         }
 
+        // REQUISITE
+
         if (operation === Operation.SET_REQUISITES || Operation.UPDATE_REQUISITES) {
-          const { listOrgRequisites } = apolloClient.readQuery({
-            query: LIST_ORG_REQUISITES,
-            variables: {
-              orgId: this.$route.params.orgId,
-            },
-          })
-          const items = delta.payload.items || []
-          let cacheItems = listOrgRequisites || []
-          if (operation === Operation.SET_REQUISITES) {
-            cacheItems = items
-          }
-          if (operation === Operation.UPDATE_REQUISITES) {
-            items.forEach(item => {
-              const index = cacheItems.findIndex(el => el.id === item.id)
-              if (index === -1) {
-                cacheItems.push(item)
-              } else {
-                cacheItems.splice(index, 1, item)
-              }
+          let listOrgRequisites = null
+          try {
+            const data = apolloClient.readQuery({
+              query: LIST_ORG_REQUISITES,
+              variables: {
+                orgId: this.$route.params.orgId,
+              },
+            })
+            listOrgRequisites = data.listOrgRequisites
+          } catch (error) {} // eslint-disable-line
+          if (listOrgRequisites) {
+            const items = delta.payload.items || []
+            let cacheItems = listOrgRequisites
+            if (operation === Operation.SET_REQUISITES) {
+              cacheItems = items
+            }
+            if (operation === Operation.UPDATE_REQUISITES) {
+              items.forEach(item => {
+                const index = cacheItems.findIndex(el => el.id === item.id)
+                if (index === -1) {
+                  cacheItems.push(item)
+                } else {
+                  cacheItems.splice(index, 1, item)
+                }
+              })
+            }
+            const data = {
+              listOrgRequisites: cacheItems,
+            }
+            apolloClient.writeQuery({
+              query: LIST_ORG_REQUISITES,
+              variables: {
+                orgId: this.$route.params.orgId,
+              },
+              data,
             })
           }
-          const data = {
-            listOrgRequisites: cacheItems,
-          }
-          apolloClient.writeQuery({
-            query: LIST_ORG_REQUISITES,
-            variables: {
-              orgId: this.$route.params.orgId,
-            },
-            data,
-          })
         }
       },
       error: (error) => {

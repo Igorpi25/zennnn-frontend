@@ -38,7 +38,7 @@
       persistent
     >
       <PrintSettings
-        :client="spec.client"
+        :client="spec.client || {}"
         :shipment="spec.shipment"
         :customs="spec.customs"
         :amount="spec.amount"

@@ -1735,6 +1735,12 @@ export default {
           },
         })
       } catch (error) {
+        const message = !this.client || !this.client.id ? 'Покупатель не установлен.' : error.message
+        this.$notify({
+          color: 'red',
+          text: message,
+          timeout: 10000,
+        })
         throw new Error(error)
       }
     },
@@ -1748,6 +1754,12 @@ export default {
           },
         })
       } catch (error) {
+        const message = !this.selectedRequisite || !this.selectedRequisite.id ? 'Продавец / Поставщик не установлен.' : error.message
+        this.$notify({
+          color: 'red',
+          text: message,
+          timeout: 10000,
+        })
         throw new Error(error)
       }
     },
