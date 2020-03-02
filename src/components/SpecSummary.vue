@@ -38,8 +38,13 @@
       persistent
     >
       <PrintSettings
-        :shipment="shipment"
-        :customs="customs"
+        :client="spec.client"
+        :shipment="spec.shipment"
+        :customs="spec.customs"
+        :amount="spec.amount"
+        :amount-in-words="spec.amountInWords"
+        :amount-in-words-client-lang="spec.amountInWordsClientLang"
+        @update="v => updateSpec(v)"
         @close="printDialog = false"
       />
     </v-dialog>
@@ -666,62 +671,6 @@ export default {
   data () {
     return {
       printDialog: false,
-      shipment: {
-        activeType: null,
-        sentFrom: '',
-        sentThrough: '',
-        sentDestination: '',
-        marine: {
-          billOfLadingNo: '',
-          ship: '',
-          containersCount: '',
-          containersNo: '',
-          exportDate: '',
-        },
-        air: {
-          airWaybillNo: '',
-          flight: '',
-          numbersOfPkg: '',
-          exportDate: '',
-        },
-        railway: {
-          internationalWaybillNo: '',
-          train: '',
-          containersCount: '',
-          containersNo: '',
-          exportDate: '',
-        },
-        car: {
-          internationalWaybillNo: '',
-          vehicleNo: '',
-          semitrailerNo: '',
-          exportDate: '',
-        },
-        mixed: {
-          internationalWaybillNo: '',
-          ship: '',
-          flight: '',
-          train: '',
-          vehicleNo: '',
-          containersNo: '',
-          exportDate: '',
-        },
-        express: {
-          postalNo: '',
-          deliveryService: '',
-          numbersOfPkg: '',
-          exportDate: '',
-        },
-      },
-      amount: 0,
-      amountInWords: '',
-      amountInWordsClientLang: '',
-      customs: {
-        countryOfOrigin: {},
-        terms: {},
-        cost: 0,
-        discount: 0,
-      },
       setContainerSizeLoading: false,
       setContainerCustomCapacityLoading: false,
       sendAccessLinkLoading: false,
@@ -1493,6 +1442,9 @@ export default {
   color: #ffffff!important;
 }
 
+.text-field_nd input:disabled,
+.text-area_nd textarea:disabled,
+.select_nd input:disabled,
 .text-field_nd input:disabled::placeholder,
 .text-area_nd textarea:disabled::placeholder,
 .select_nd input:disabled::placeholder {

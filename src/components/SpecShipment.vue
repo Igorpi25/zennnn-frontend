@@ -605,7 +605,15 @@ export default {
   props: {
     item: {
       type: Object,
-      default: () => ({}),
+      default: () => ({
+        activeType: null,
+        marine: {},
+        air: {},
+        railway: {},
+        car: {},
+        mixed: {},
+        express: {},
+      }),
     },
   },
   data () {

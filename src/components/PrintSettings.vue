@@ -37,22 +37,28 @@
               <label class="text-sm">
                 <span>{{ $t('suppliers.companyName') }}</span>
               </label>
-              <TextField
-                v-model="requisite.companyName"
+              <Select
+                :value="requisite"
                 :placeholder="$t('placeholder.notIndicated')"
+                :nudge-bottom="32"
+                :items="listOrgRequisites || []"
+                return-object
+                item-value="id"
+                item-text="name"
                 solo
                 squared
                 hide-details
-                class="text-sm text-field_nd"
+                class="text-sm select_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
-                required
+                @input="setRequisite"
               >
-                <template v-slot:append>
-                  <span v-if="requisite.companyName" class="text-green-500">
-                    <Icon size="14">{{ icons.mdiCheck }}</Icon>
-                  </span>
+                <template v-slot:append="{ isMenuOpen, toggle }">
+                  <div class="text-primary cursor-pointer select-none" @click="toggle">
+                    <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
+                    <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
+                  </div>
                 </template>
-              </TextField>
+              </Select>
             </div>
             <div class="pb-4">
               <label class="text-sm">
@@ -60,7 +66,8 @@
                 <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
-                v-model="requisite.legalAddress"
+                :value="requisite.legalAddress"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -68,6 +75,7 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="updateRequisite({ legalAddress: $event })"
               >
                 <template v-slot:append>
                   <span v-if="requisite.legalAddress" class="text-green-500">
@@ -82,7 +90,8 @@
                   <span>{{ $t('suppliers.phone') }}</span>
                 </label>
                 <TextField
-                  v-model="requisite.phone"
+                  :value="requisite.phone"
+                  :debounce="250"
                   :placeholder="'000 - 00 - 00'"
                   solo
                   squared
@@ -90,6 +99,7 @@
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-pink-500"
                   required
+                  @input="updateRequisite({ phone: $event })"
                 >
                   <template v-slot:append>
                     <span v-if="requisite.phone" class="text-green-500">
@@ -105,13 +115,15 @@
                   <span>{{ $t('label.client.fax') }}</span>
                 </label>
                 <TextField
-                  v-model="requisite.fax"
+                  :value="requisite.fax"
+                  :debounce="250"
                   :placeholder="'000 - 00 - 00'"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-gray-200"
+                  @input="updateRequisite({ fax: $event })"
                 />
               </div>
             </div>
@@ -120,7 +132,8 @@
                 <span>{{ $t('label.supplier.email') }}</span>
               </label>
               <TextField
-                v-model="requisite.email"
+                :value="requisite.email"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -128,6 +141,7 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="updateRequisite({ email: $event })"
               >
                 <template v-slot:append>
                   <span v-if="requisite.email" class="text-green-500">
@@ -141,13 +155,16 @@
                 <span>{{ $t('label.supplier.website') }}</span>
               </label>
               <TextField
-                v-model="requisite.website"
+                :value="requisite.website"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
+                disabled
                 solo
                 squared
                 hide-details
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-gray-200"
+                @input="updateRequisite({ website: $event })"
               />
             </div>
           </div>
@@ -157,7 +174,8 @@
                 <span>{{ $t('label.client.bankName') }}</span>
               </label>
               <TextField
-                v-model="requisite.bankName"
+                :value="requisite.bankName"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -165,6 +183,7 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="updateRequisite({ bankName: $event })"
               >
                 <template v-slot:append>
                   <span v-if="requisite.bankName" class="text-green-500">
@@ -179,7 +198,8 @@
                 <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
-                v-model="requisite.bankAddress"
+                :value="requisite.bankAddress"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -187,6 +207,7 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="updateRequisite({ bankAddress: $event })"
               >
                 <template v-slot:append>
                   <span v-if="requisite.bankAddress" class="text-green-500">
@@ -200,7 +221,8 @@
                 <span>{{ $t('label.supplier.accountNumber') }}</span>
               </label>
               <TextField
-                v-model="requisite.bankAccountNumber"
+                :value="requisite.bankAccountNumber"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -208,6 +230,7 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="updateRequisite({ bankAccountNumber: $event })"
               >
                 <template v-slot:append>
                   <span v-if="requisite.bankAccountNumber" class="text-green-500">
@@ -221,7 +244,8 @@
                 <span>{{ $t('label.client.swift') }}</span>
               </label>
               <TextField
-                v-model="requisite.swift"
+                :value="requisite.swift"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -229,6 +253,7 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="updateRequisite({ swift: $event })"
               >
                 <template v-slot:append>
                   <span v-if="requisite.swift" class="text-green-500">
@@ -242,13 +267,15 @@
                 <span>{{ $t('label.client.itn') }} / {{ $t('shipping.vat') }}</span>
               </label>
               <TextField
-                v-model="requisite.itn"
+                :value="requisite.itn"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
                 hide-details
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-yellow-500"
+                @input="updateRequisite({ itn: $event })"
               />
             </div>
             <div class="pb-4 flex">
@@ -257,13 +284,15 @@
                   <span>{{ $t('label.client.bic') }}</span>
                 </label>
                 <TextField
-                  v-model="requisite.bic"
+                  :value="requisite.bic"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-gray-200"
+                  @input="updateRequisite({ bic: $event })"
                 />
               </div>
               <div class="w-3/5">
@@ -271,13 +300,15 @@
                   <span>{{ $t('label.client.okpo') }}</span>
                 </label>
                 <TextField
-                  v-model="requisite.okpo"
+                  :value="requisite.okpo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-gray-200"
+                  @input="updateRequisite({ okpo: $event })"
                 />
               </div>
             </div>
@@ -295,7 +326,8 @@
                 <span>{{ $t('suppliers.companyName') }}</span>
               </label>
               <TextField
-                v-model="client.companyName"
+                :value="client.companyName"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -303,6 +335,7 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="updateClient({ companyName: $event })"
               >
                 <template v-slot:append>
                   <span v-if="client.companyName" class="text-green-500">
@@ -317,7 +350,8 @@
                 <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
-                v-model="client.legalAddress"
+                :value="client.legalAddress"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -325,6 +359,7 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="updateClient({ legalAddress: $event })"
               >
                 <template v-slot:append>
                   <span v-if="client.legalAddress" class="text-green-500">
@@ -338,7 +373,8 @@
                 <span>{{ $t('label.client.contactPerson') }}</span>
               </label>
               <TextField
-                v-model="client.contactPerson"
+                :value="client.contactPerson"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -346,6 +382,7 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 requried
+                @input="updateClient({ contactPerson: $event })"
               >
                 <template v-slot:append>
                   <span v-if="client.contactPerson" class="text-green-500">
@@ -362,7 +399,8 @@
                   <span>{{ $t('suppliers.phone') }}</span>
                 </label>
                 <TextField
-                  v-model="client.phone"
+                  :value="client.phone"
+                  :debounce="250"
                   :placeholder="'000 - 00 - 00'"
                   solo
                   squared
@@ -370,6 +408,7 @@
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-pink-500"
                   required
+                  @input="updateClient({ phone: $event })"
                 >
                   <template v-slot:append>
                     <span v-if="client.phone" class="text-green-500">
@@ -385,13 +424,15 @@
                   <span>{{ $t('label.client.fax') }}</span>
                 </label>
                 <TextField
-                  v-model="client.fax"
+                  :value="client.fax"
+                  :debounce="250"
                   :placeholder="'000 - 00 - 00'"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-gray-200"
+                  @input="updateClient({ fax: $event })"
                 />
               </div>
             </div>
@@ -401,7 +442,8 @@
                   <span>{{ $t('label.supplier.email') }}</span>
                 </label>
                 <TextField
-                  v-model="client.email"
+                  :value="client.email"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
@@ -409,6 +451,7 @@
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-pink-500"
                   required
+                  @input="updateClient({ email: $event })"
                 >
                   <template v-slot:append>
                     <span v-if="client.email" class="text-green-500">
@@ -436,7 +479,8 @@
                 <span>{{ $t('suppliers.companyName') }}</span>
               </label>
               <TextField
-                v-model="client.importerCompanyName"
+                :value="client.consignee"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!importerActive"
                 solo
@@ -445,9 +489,10 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="updateClient({ consignee: $event })"
               >
                 <template v-slot:append>
-                  <span v-if="client.importerCompanyName" class="text-green-500">
+                  <span v-if="client.consignee" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -459,7 +504,8 @@
                 <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
-                v-model="client.importerAddress"
+                :value="client.shippingAddress"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!importerActive"
                 solo
@@ -468,9 +514,10 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="updateClient({ shippingAddress: $event })"
               >
                 <template v-slot:append>
-                  <span v-if="client.importerAddress" class="text-green-500">
+                  <span v-if="client.shippingAddress" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -481,7 +528,8 @@
                 <span>{{ $t('label.client.contactPerson') }}</span>
               </label>
               <TextField
-                v-model="client.importerContactPerson"
+                :value="client.contactPerson"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!importerActive"
                 solo
@@ -490,9 +538,10 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="updateClient({ contactPerson: $event })"
               >
                 <template v-slot:append>
-                  <span v-if="client.importerContactPerson" class="text-green-500">
+                  <span v-if="client.contactPerson" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -506,7 +555,8 @@
                   <span>{{ $t('suppliers.phone') }}</span>
                 </label>
                 <TextField
-                  v-model="client.importerPhone"
+                  :value="client.contactMobilePhone"
+                  :debounce="250"
                   :placeholder="'000 - 00 - 00'"
                   :disabled="!importerActive"
                   solo
@@ -515,9 +565,10 @@
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-pink-500"
                   required
+                  @input="updateClient({ contactMobilePhone: $event })"
                 >
                   <template v-slot:append>
-                    <span v-if="client.importerPhone" class="text-green-500">
+                    <span v-if="client.contactMobilePhone" class="text-green-500">
                       <Icon size="14">{{ icons.mdiCheck }}</Icon>
                     </span>
                   </template>
@@ -530,14 +581,16 @@
                   <span>{{ $t('label.client.fax') }}</span>
                 </label>
                 <TextField
-                  v-model="client.importerFax"
+                  :value="client.importerFax"
+                  :debounce="250"
                   :placeholder="'000 - 00 - 00'"
-                  :disabled="!importerActive"
+                  disabled
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-gray-200"
+                  @input="updateClient({ importerFax: $event })"
                 />
               </div>
             </div>
@@ -547,15 +600,17 @@
                   <span>{{ $t('label.supplier.email') }}</span>
                 </label>
                 <TextField
-                  v-model="client.importerEmail"
+                  :value="client.importerEmail"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  :disabled="!importerActive"
+                  disabled
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-pink-500"
                   required
+                  @input="updateClient({ importerEmail: $event })"
                 >
                   <template v-slot:append>
                     <span v-if="client.importerEmail" class="text-green-500">
@@ -579,7 +634,8 @@
                 <span>{{ $t('shipping.sentFrom') }}</span>
               </label>
               <TextField
-                v-model="shipment.sentFrom"
+                :value="shipment.sentFrom"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -587,6 +643,7 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="$emit('update', { shipment: { sentFrom: $event } })"
               >
                 <template v-slot:append>
                   <span v-if="shipment.sentFrom" class="text-green-500">
@@ -600,13 +657,15 @@
                 <span>{{ $t('shipping.sentThrough') }}</span>
               </label>
               <TextField
-                v-model="shipment.sentThrough"
+                :value="shipment.sentThrough"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
                 hide-details
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-yellow-500"
+                @input="$emit('update', { shipment: { sentThrough: $event } })"
               />
             </div>
             <div class="pb-4">
@@ -614,7 +673,8 @@
                 <span>{{ $t('shipping.destination') }}</span>
               </label>
               <TextField
-                v-model="shipment.sentDestination"
+                :value="shipment.sentDestination"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 solo
                 squared
@@ -622,9 +682,10 @@
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="$emit('update', { shipment: { sentDestination: $event } })"
               >
                 <template v-slot:append>
-                  <span v-if="shipment.destination" class="text-green-500">
+                  <span v-if="shipment.sentDestination" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -666,7 +727,7 @@
                     color="#5a8199"
                     no-title
                     dark
-                    @change="shipment.marine.exportDate = $event || null"
+                    @change="$emit('update', { shipment: { marine: { exportDate: $event || null } } })"
                   ></v-date-picker>
                 </v-menu>
               </div>
@@ -675,7 +736,8 @@
                   <span>{{ $t('shipping.containersCount') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.marine.containersCount"
+                  :value="shipment.marine.containersCount"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
@@ -683,6 +745,7 @@
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-pink-500"
                   required
+                  @input="$emit('update', { shipment: { marine: { containersCount: $event } } })"
                 >
                   <template v-slot:append>
                     <span v-if="shipment.marine && shipment.marine.containersCount" class="text-green-500">
@@ -699,7 +762,7 @@
                 <span>{{ $t('shipping.shipmentType') }}</span>
               </label>
               <Select
-                v-model="shipment.activeType"
+                :value="shipment.activeType"
                 :placeholder="$t('placeholder.notIndicated')"
                 :nudge-bottom="32"
                 :items="shipmentTypes"
@@ -709,6 +772,7 @@
                 class="text-sm select_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
+                @input="$emit('update', { shipment: { activeType: $event } })"
               >
                 <template v-slot:append="{ isMenuOpen, toggle }">
                   <div class="text-primary cursor-pointer select-none" @click="toggle">
@@ -719,13 +783,14 @@
               </Select>
             </div>
             <!-- MARINE -->
-            <div v-if="shipment.activeType === ShipmentType.MARINE">
+            <div v-if="shipment.activeType === ShipmentType.MARINE" key="marine">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.billOfLadingNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.marine.billOfLadingNo"
+                  :value="shipment.marine.billOfLadingNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
@@ -733,6 +798,7 @@
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-pink-500"
                   required
+                  @input="$emit('update', { shipment: { marine: { billOfLadingNo: $event } } })"
                 >
                   <template v-slot:append>
                     <span v-if="shipment.marine && shipment.marine.billOfLadingNo" class="text-green-500">
@@ -746,13 +812,15 @@
                   <span>{{ $t('shipping.ship') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.marine.ship"
+                  :value="shipment.marine.ship"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { marine: { ship: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -760,7 +828,8 @@
                   <span>{{ $t('shipping.containersNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.marine.containersNo"
+                  :value="shipment.marine.containersNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
@@ -768,43 +837,49 @@
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-yellow-500"
                   required
-                >
-                  <template v-slot:append>
-                    <span v-if="shipment.marine && shipment.marine.containersNo" class="text-green-500">
-                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
-                    </span>
-                  </template>
-                </TextField>
+                  @input="$emit('update', { shipment: { marine: { containersNo: $event } } })"
+                />
               </div>
             </div>
             <!-- AIR -->
-            <div v-else-if="shipment.activeType === ShipmentType.AIR">
+            <div v-else-if="shipment.activeType === ShipmentType.AIR" key="air">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.airWaybillNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.air.airWaybillNo"
+                  :value="shipment.air.airWaybillNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
-                />
+                  input-class="h-8 text-primary placeholder-pink-500"
+                  required
+                  @input="$emit('update', { shipment: { air: { airWaybillNo: $event } } })"
+                >
+                  <template v-slot:append>
+                    <span v-if="shipment.air && shipment.air.airWaybillNo" class="text-green-500">
+                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                    </span>
+                  </template>
+                </TextField>
               </div>
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.flight') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.air.flight"
+                  :value="shipment.air.flight"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { air: { flight: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -812,44 +887,64 @@
                   <span>{{ $t('shipping.numbersOfPkg') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.air.numbersOfPkg"
+                  :value="shipment.air.numbersOfPkg"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
-                />
+                  input-class="h-8 text-primary placeholder-pink-500"
+                  required
+                  @input="$emit('update', { shipment: { air: { numbersOfPkg: $event } } })"
+                >
+                  <template v-slot:append>
+                    <span v-if="shipment.air && shipment.air.numbersOfPkg" class="text-green-500">
+                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                    </span>
+                  </template>
+                </TextField>
               </div>
             </div>
             <!-- RAILWAY -->
-            <div v-else-if="shipment.activeType === ShipmentType.RAILWAY">
+            <div v-else-if="shipment.activeType === ShipmentType.RAILWAY" key="railway">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.internationalWaybillNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.railway.internationalWaybillNo"
+                  :value="shipment.railway.internationalWaybillNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
-                />
+                  input-class="h-8 text-primary placeholder-pink-500"
+                  required
+                  @input="$emit('update', { shipment: { railway: { internationalWaybillNo: $event } } })"
+                >
+                  <template v-slot:append>
+                    <span v-if="shipment.railway && shipment.railway.internationalWaybillNo" class="text-green-500">
+                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                    </span>
+                  </template>
+                </TextField>
               </div>
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.train') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.railway.train"
+                  :value="shipment.railway.train"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { railway: { train: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -857,27 +952,38 @@
                   <span>{{ $t('shipping.trainContainersCount') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.railway.containersCount"
+                  :value="shipment.railway.containersCount"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
-                />
+                  input-class="h-8 text-primary placeholder-pink-500"
+                  required
+                  @input="$emit('update', { shipment: { railway: { containersCount: $event } } })"
+                >
+                  <template v-slot:append>
+                    <span v-if="shipment.railway && shipment.railway.containersCount" class="text-green-500">
+                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                    </span>
+                  </template>
+                </TextField>
               </div>
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.trainContainersNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.railway.containersNo"
+                  :value="shipment.railway.containersNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { railway: { containersNo: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -899,7 +1005,7 @@
                         readonly
                         hide-details
                         class="text-sm text-field_nd"
-                        input-class="h-8 text-primary placeholder-gray-200"
+                        input-class="h-8 text-primary placeholder-yellow-500"
                       />
                     </div>
                   </template>
@@ -912,39 +1018,50 @@
                     color="#5a8199"
                     no-title
                     dark
-                    @change="shipment.railway.exportDate = $event || null"
+                    @change="$emit('update', { shipment: { railway: { exportDate: $event || null } } })"
                   ></v-date-picker>
                 </v-menu>
               </div>
             </div>
             <!-- CAR -->
-            <div v-else-if="shipment.activeType === ShipmentType.CAR">
+            <div v-else-if="shipment.activeType === ShipmentType.CAR" key="car">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.internationalWaybillNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.car.internationalWaybillNo"
+                  :value="shipment.car.internationalWaybillNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
-                />
+                  input-class="h-8 text-primary placeholder-pink-500"
+                  required
+                  @input="$emit('update', { shipment: { car: { internationalWaybillNo: $event } } })"
+                >
+                  <template v-slot:append>
+                    <span v-if="shipment.car && shipment.car.internationalWaybillNo" class="text-green-500">
+                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                    </span>
+                  </template>
+                </TextField>
               </div>
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.vehicleNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.car.vehicleNo"
+                  :value="shipment.car.vehicleNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { car: { vehicleNo: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -952,13 +1069,15 @@
                   <span>{{ $t('shipping.semitrailerNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.car.semitrailerNo"
+                  :value="shipment.car.semitrailerNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { car: { semitrailerNo: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -980,7 +1099,7 @@
                         readonly
                         hide-details
                         class="text-sm text-field_nd"
-                        input-class="h-8 text-primary placeholder-gray-200"
+                        input-class="h-8 text-primary placeholder-yellow-500"
                       />
                     </div>
                   </template>
@@ -993,39 +1112,50 @@
                     color="#5a8199"
                     no-title
                     dark
-                    @change="shipment.car.exportDate = $event || null"
+                    @change="$emit('update', { shipment: { car: { exportDate: $event } } })"
                   ></v-date-picker>
                 </v-menu>
               </div>
             </div>
             <!-- MIXED -->
-            <div v-else-if="shipment.activeType === ShipmentType.MIXED">
+            <div v-else-if="shipment.activeType === ShipmentType.MIXED" key="mixed">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.internationalWaybillNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.mixed.internationalWaybillNo"
+                  :value="shipment.mixed.internationalWaybillNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
-                />
+                  input-class="h-8 text-primary placeholder-pink-500"
+                  required
+                  @input="$emit('update', { shipment: { mixed: { internationalWaybillNo: $event } } })"
+                >
+                  <template v-slot:append>
+                    <span v-if="shipment.mixed && shipment.mixed.internationalWaybillNo" class="text-green-500">
+                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                    </span>
+                  </template>
+                </TextField>
               </div>
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.ship') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.mixed.ship"
+                  :value="shipment.mixed.ship"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { mixed: { ship: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -1033,13 +1163,15 @@
                   <span>{{ $t('shipping.train') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.mixed.train"
+                  :value="shipment.mixed.train"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { mixed: { train: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -1047,13 +1179,15 @@
                   <span>{{ $t('shipping.flight') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.mixed.flight"
+                  :value="shipment.mixed.flight"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { mixed: { flight: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -1061,13 +1195,15 @@
                   <span>{{ $t('shipping.vehicleAndSemitrailerNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.mixed.vehicleNo"
+                  :value="shipment.mixed.vehicleNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { mixed: { vehicleNo: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -1075,13 +1211,15 @@
                   <span>{{ $t('shipping.containersNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.mixed.containersNo"
+                  :value="shipment.mixed.containersNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { mixed: { containersNo: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -1103,7 +1241,7 @@
                         readonly
                         hide-details
                         class="text-sm text-field_nd"
-                        input-class="h-8 text-primary placeholder-gray-200"
+                        input-class="h-8 text-primary placeholder-yellow-500"
                       />
                     </div>
                   </template>
@@ -1116,39 +1254,50 @@
                     color="#5a8199"
                     no-title
                     dark
-                    @change="shipment.mixed.exportDate = $event || null"
+                    @change="$emit('update', { shipment: { mixed: { exportDate: $event || null } } })"
                   ></v-date-picker>
                 </v-menu>
               </div>
             </div>
             <!-- EXPRESS -->
-            <div v-else-if="shipment.activeType === ShipmentType.EXPRESS">
+            <div v-else-if="shipment.activeType === ShipmentType.EXPRESS" key="express">
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.postalNo') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.express.postalNo"
+                  :value="shipment.express.postalNo"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
-                />
+                  input-class="h-8 text-primary placeholder-pink-500"
+                  required
+                  @input="$emit('update', { shipment: { express: { postalNo: $event } } })"
+                >
+                  <template v-slot:append>
+                    <span v-if="shipment.express && shipment.express.postalNo" class="text-green-500">
+                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                    </span>
+                  </template>
+                </TextField>
               </div>
               <div class="pb-4">
                 <label class="text-sm">
                   <span>{{ $t('shipping.deliveryService') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.express.deliveryService"
+                  :value="shipment.express.deliveryService"
+                  :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { shipment: { express: { deliveryService: $event } } })"
                 />
               </div>
               <div class="pb-4">
@@ -1156,17 +1305,23 @@
                   <span>{{ $t('shipping.numbersOfPkg') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.express.numbersOfPkg"
-                  :placeholder="$t('placeholder.emptyNumber')"
-                  type="number"
-                  inputmode="decimal"
-                  format-style="decimal"
+                  :value="shipment.express.numbersOfPkg"
+                  :debounce="250"
+                  :placeholder="$t('placeholder.notChosen')"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
-                />
+                  input-class="h-8 text-primary placeholder-pink-500"
+                  required
+                  @input="$emit('update', { shipment: { express: { numbersOfPkg: $event } } })"
+                >
+                  <template v-slot:append>
+                    <span v-if="shipment.express && shipment.express.numbersOfPkg" class="text-green-500">
+                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                    </span>
+                  </template>
+                </TextField>
               </div>
             </div>
           </div>
@@ -1184,7 +1339,7 @@
                   <span>{{ $t('shipping.countryOfOrigin') }}</span>
                 </label>
                 <Select
-                  v-model="customs.countryOfOrigin"
+                  :value="customs.countryOfOrigin"
                   :placeholder="$t('placeholder.notChosen')"
                   :nudge-bottom="32"
                   :items="shipmentCountries"
@@ -1194,6 +1349,7 @@
                   class="text-sm select_nd"
                   input-class="h-8 text-primary placeholder-pink-500"
                   required
+                  @input="$emit('update', { customs: { countryOfOrigin: $event } })"
                 >
                   <template v-slot:append="{ isMenuOpen, toggle }">
                     <div class="text-primary cursor-pointer select-none" @click="toggle">
@@ -1208,7 +1364,7 @@
                   <span>{{ $t('shipping.termsLabel') }}</span>
                 </label>
                 <Select
-                  v-model="customs.terms"
+                  :value="customs.terms"
                   :placeholder="$t('placeholder.notChosen')"
                   :nudge-bottom="32"
                   :items="customsTerms"
@@ -1218,6 +1374,7 @@
                   class="text-sm select_nd"
                   input-class="h-8 text-primary placeholder-pink-500"
                   required
+                  @input="$emit('update', { customs: { terms: $event } })"
                 >
                   <template v-slot:append="{ isMenuOpen, toggle }">
                     <div class="text-primary cursor-pointer select-none" @click="toggle">
@@ -1234,16 +1391,18 @@
                   <span>{{ $t('shipping.costLabel') }}</span>
                 </label>
                 <TextField
-                  v-model="customs.cost"
-                  :placeholder="$t('placeholder.emptyNumber')"
+                  :value="customs.cost"
+                  :placeholder="$t('placeholder.notChosen')"
+                  lazy
                   type="number"
                   inputmode="decimal"
-                  format-style="decimal"
+                  format-style="currency"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-yellow-500"
+                  @input="$emit('update', { customs: { cost: $event } })"
                 />
               </div>
               <div class="w-1/2 pl-1">
@@ -1251,15 +1410,17 @@
                   <span>{{ $t('shipping.invoiceCurrency') }}</span>
                 </label>
                 <Select
-                  v-model="customs.currency"
+                  :value="customs.currency"
                   :placeholder="$t('placeholder.notChosen')"
                   :nudge-bottom="32"
                   :items="[]"
+                  disabled
                   solo
                   squared
                   hide-details
                   class="text-sm select_nd"
                   input-class="h-8 text-primary placeholder-gray-200"
+                  @input="$emit('update', { customs: { currency: $event } })"
                 >
                   <template v-slot:append="{ isMenuOpen, toggle }">
                     <div class="text-primary cursor-pointer select-none" @click="toggle">
@@ -1278,16 +1439,18 @@
                   <span>{{ $t('shipping.discountLabel') }}</span>
                 </label>
                 <TextField
-                  v-model="shipment.discount"
-                  :placeholder="$t('placeholder.emptyNumber')"
+                  :value="customs.discount"
+                  :placeholder="$t('placeholder.notChosen')"
+                  lazy
                   type="number"
                   inputmode="decimal"
-                  format-style="decimal"
+                  format-style="currency"
                   solo
                   squared
                   hide-details
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-gray-200"
+                  @input="$emit('update', { customs: { discount: $event } })"
                 />
               </div>
               <div class="w-1/3 px-1">
@@ -1295,7 +1458,6 @@
                   <span>{{ $t('shipping.vatLabel') }}</span>
                 </label>
                 <Select
-                  v-model="shipment.vat"
                   :placeholder="$t('placeholder.notChosen')"
                   :nudge-bottom="32"
                   :items="[]"
@@ -1319,7 +1481,6 @@
                   <span>{{ $t('shipping.incomeTaxLabel') }}</span>
                 </label>
                 <Select
-                  v-model="shipment.incomeTax"
                   :placeholder="$t('placeholder.notChosen')"
                   :nudge-bottom="32"
                   :items="[]"
@@ -1351,7 +1512,7 @@
             <div class="w-full flex pb-4 px-3 sm:w-1/2 text-xl">
               <div class="whitespace-no-wrap">{{ $t('shipping.invoiceAmount') }}</div>
               <div class="flex-grow dots" />
-              <div class="text-white whitespace-no-wrap">{{ $n(customs.amount || 0, 'decimal') }}</div>
+              <div class="text-white whitespace-no-wrap">{{ $n(amount || 0, 'decimal') }}</div>
             </div>
           </div>
           <div class="w-full sm:w-1/2 px-3">
@@ -1360,13 +1521,15 @@
                 <span>{{ $t('shipping.amountInWords') }}</span>
               </label>
               <TextArea
-                v-model="customs.amountInWords"
+                :value="amountInWords"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 rows="2"
                 squared
                 hide-details
                 class="text-sm text-area_nd"
                 input-class="text-primary placeholder-yellow-500"
+                @input="$emit('update', { amountInWords: $event })"
               />
             </div>
           </div>
@@ -1376,13 +1539,15 @@
                 <span>{{ $t('shipping.amountInWordsClientLang') }}</span>
               </label>
               <TextArea
-                v-model="customs.amountInWordsClientLang"
+                :value="amountInWordsClientLang"
+                :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 rows="2"
                 squared
                 hide-details
                 class="text-sm text-area_nd"
                 input-class="text-primary placeholder-yellow-500"
+                @input="$emit('update', { amountInWordsClientLang: $event })"
               />
             </div>
           </div>
@@ -1415,16 +1580,35 @@ import { mdiChevronUp, mdiChevronDown, mdiCheck } from '@mdi/js'
 import { ShipmentType, CustomsTerms } from '../graphql/enums'
 import Countries from '../config/countries-iso3.json'
 
+import { UPDATE_CLIENT, UPDATE_REQUISITE } from '../graphql/mutations'
+
+import { LIST_ORG_REQUISITES } from '../graphql/queries'
+
 export default {
   name: 'PrintSettings',
-  data () {
-    return {
-      isValid: false,
-      ShipmentType,
-      requisite: {},
-      client: {},
-      importerActive: false,
-      shipment: {
+  apollo: {
+    listOrgRequisites: {
+      query: LIST_ORG_REQUISITES,
+      variables () {
+        return {
+          orgId: this.$route.params.orgId,
+        }
+      },
+      result ({ data, loading }) {
+        if (loading) this.requisiteLoading = true
+        if (data) this.requisiteLoading = false
+      },
+      fetchPolicy: 'cache-and-network',
+    },
+  },
+  props: {
+    client: {
+      type: Object,
+      default: () => ({}),
+    },
+    shipment: {
+      type: Object,
+      default: () => ({
         activeType: null,
         marine: {},
         air: {},
@@ -1432,8 +1616,26 @@ export default {
         car: {},
         mixed: {},
         express: {},
-      },
-      customs: {},
+      }),
+    },
+    customs: {
+      type: Object,
+      default: () => ({}),
+    },
+    amount: {
+      type: Number,
+      default: 0,
+    },
+    amountInWords: String,
+    amountInWordsClientLang: String,
+  },
+  data () {
+    return {
+      requisiteLoading: false,
+      isValid: false,
+      ShipmentType,
+      selectedRequisite: {},
+      importerActive: false,
       icons: {
         mdiChevronUp,
         mdiChevronDown,
@@ -1442,6 +1644,9 @@ export default {
     }
   },
   computed: {
+    requisite () {
+      return (this.listOrgRequisites || []).find(el => el.id === this.selectedRequisite.id) || {}
+    },
     shipmentTypes () {
       return Object.values(ShipmentType).filter(el => el !== ShipmentType.UNDEFINED).map(el => {
         return {
@@ -1519,6 +1724,35 @@ export default {
       }
       this.isValid = !errorsCount
       return errorsCount
+    },
+    async updateClient (input) {
+      try {
+        await this.$apollo.mutate({
+          mutation: UPDATE_CLIENT,
+          variables: {
+            id: this.client.id,
+            input,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
+    async updateRequisite (input) {
+      try {
+        await this.$apollo.mutate({
+          mutation: UPDATE_REQUISITE,
+          variables: {
+            id: this.selectedRequisite.id,
+            input,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
+    setRequisite (val) {
+      this.selectedRequisite = val || {}
     },
   },
 }
