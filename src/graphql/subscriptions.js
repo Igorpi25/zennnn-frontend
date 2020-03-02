@@ -6,6 +6,8 @@ import {
   PAPER_SPEC_FRAGMENT,
   PAPER_INVOICE_FRAGMENT,
   PAPER_PRODUCT_FRAGMENT,
+  CLIENT_FRAGMENT,
+  ORG_REQUISITE_FRAGMENT,
 } from './typeDefs'
 
 export const SPECS_DELTA = gql`
@@ -35,6 +37,14 @@ export const SPEC_DELTA = gql`
           id
           fields
         }
+        ... on RequisiteItems {
+          items {
+            ...OrgRequisiteFragment
+          }
+        }
+        ... on Client {
+          ...ClientFragment
+        }
         ... on Product {
           ...ProductFragment
         }
@@ -59,6 +69,8 @@ export const SPEC_DELTA = gql`
   ${SPEC_FRAGMENT}
   ${INVOICE_FRAGMENT}
   ${PRODUCT_FRAGMENT}
+  ${CLIENT_FRAGMENT}
+  ${ORG_REQUISITE_FRAGMENT}
 `
 
 export const PAPER_SPEC_DELTA = gql`

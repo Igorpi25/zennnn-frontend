@@ -23,10 +23,12 @@ import {
   PRODUCT_FRAGMENT,
   SPEC_INVOICES_FRAGMENT,
   INVOICE_PRODUCTS_FRAGMENT,
+  CLIENT_FRAGMENT,
 } from '../graphql/typeDefs'
 import {
   GET_SPEC,
   GET_ROLE_IN_PROJECT,
+  LIST_ORG_REQUISITES,
 } from '../graphql/queries'
 import { SPEC_DELTA } from '../graphql/subscriptions'
 
@@ -268,6 +270,57 @@ export default {
             id: `${Typename.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
             fragmentName: 'SpecFragment',
+            data,
+          })
+        }
+
+        // CLIENT
+
+        if (operation === Operation.UPDATE_CLIENT) {
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.CLIENT}:${delta.payload.id}`,
+            fragment: CLIENT_FRAGMENT,
+            fragmentName: 'ClientFragment',
+          })
+          const data = deepmerge(cacheData, delta.payload)
+          apolloClient.writeFragment({
+            id: `${Typename.CLIENT}:${delta.payload.id}`,
+            fragment: CLIENT_FRAGMENT,
+            fragmentName: 'ClientFragment',
+            data,
+          })
+        }
+
+        if (operation === Operation.SET_REQUISITES || Operation.UPDATE_REQUISITES) {
+          const { listOrgRequisites } = apolloClient.readQuery({
+            query: LIST_ORG_REQUISITES,
+            variables: {
+              orgId: this.$route.params.orgId,
+            },
+          })
+          const items = delta.payload.items || []
+          let cacheItems = listOrgRequisites || []
+          if (operation === Operation.SET_REQUISITES) {
+            cacheItems = items
+          }
+          if (operation === Operation.UPDATE_REQUISITES) {
+            items.forEach(item => {
+              const index = cacheItems.findIndex(el => el.id === item.id)
+              if (index === -1) {
+                cacheItems.push(item)
+              } else {
+                cacheItems.splice(index, 1, item)
+              }
+            })
+          }
+          const data = {
+            listOrgRequisites: cacheItems,
+          }
+          apolloClient.writeQuery({
+            query: LIST_ORG_REQUISITES,
+            variables: {
+              orgId: this.$route.params.orgId,
+            },
             data,
           })
         }

@@ -55,6 +55,10 @@ export const Typename = {
   PAPER_SPEC: 'PaperSpec',
   PAPER_INVOICE: 'PaperInvoice',
   PAPER_PRODUCT: 'PaperProduct',
+  CLIENT: 'Client',
+  SUPPLIER: 'Supplier',
+  REQUISITE: 'Requisite',
+  REQUISITE_ITEMS: 'RequisiteItems',
 }
 
 export const Operation = {
@@ -69,4 +73,9 @@ export const Operation = {
   DELETE_PRODUCT: 'DELETE_PRODUCT',
   DELETE_INVOICE: 'DELETE_INVOICE',
   DELETE_SPEC: 'DELETE_SPEC',
+  INSERT_CLIENT: 'INSERT_CLIENT',
+  UPDATE_CLIENT: 'UPDATE_CLIENT',
+  DELETE_CLIENT: 'DELETE_CLIENT',
+  SET_REQUISITES: 'SET_REQUISITES',
+  UPDATE_REQUISITES: 'UPDATE_REQUISITES',
 }
