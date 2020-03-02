@@ -1,15 +1,16 @@
 {
   "name": "zennnn-frontend",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "serve:paper": "vue-cli-service serve src/paper.js --mode paper.dev",
     "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint --mode production",
     "build:paper": "vue-cli-service build src/paper.js --dest dist_paper --mode paper",
     "build:stable": "vue-cli-service build --mode stable",
-    "lint": "vue-cli-service lint --mode production",
-    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
+    "serve:paper": "vue-cli-service serve src/paper.js --mode paper.dev"
   },
   "dependencies": {
     "@mdi/js": "^4.5.95",
@@ -43,8 +44,10 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.5",
     "@vue/cli-plugin-eslint": "^4.0.5",
+    "@vue/cli-plugin-unit-jest": "^4.2.3",
     "@vue/cli-service": "^4.0.5",
     "@vue/eslint-config-standard": "^4.0.0",
+    "@vue/test-utils": "1.0.0-beta.31",
     "axios": "^0.18.0",
     "babel-eslint": "^10.0.3",
     "deepmerge": "^4.2.2",
