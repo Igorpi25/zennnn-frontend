@@ -37,8 +37,8 @@
           <div class="m-auto text-center">
             <div class="text-404">404</div>
             <p class="font-light">
-              <span class="inline">{{ $t('message.notFoundStart') }}</span>&nbsp;
-              <span class="block md:inline">{{ $t('message.notFoundEnd') }}</span>
+              <span class="inline">{{ $t('notFound.title') }}</span>&nbsp;
+              <span class="block md:inline">{{ $t('notFound.subtitle') }}</span>
             </p>
             <Button
               outline
@@ -46,7 +46,7 @@
               class="mt-8 mx-auto"
               @click="$router.push({ name: 'home' })"
             >
-              <span>{{ $t('action.toHome') }}</span>
+              <span>{{ $t('notFound.toHome') }}</span>
             </Button>
           </div>
         </div>

@@ -31,7 +31,7 @@
                 <template v-slot:text>
                   <span>{{ $t('signup.hasAccount') }}</span>
                 </template>
-                <span>{{ $t('action.login') }}</span>
+                <span>{{ $t('signup.signin') }}</span>
               </Button>
             </div>
             <div class="hidden md:flex">

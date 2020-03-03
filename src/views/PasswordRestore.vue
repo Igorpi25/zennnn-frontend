@@ -8,11 +8,11 @@
             <div class="w-full">
               <h1 class="text-center md:text-left mb-12 pt-10 md:pt-12">
                 <span class="text-white md:text-gray-lightest">
-                  {{ $t('passwordRestore.accessRecoveryStart') }}
+                  {{ $t('passwordRestore.accessRecoveryHead') }}
                 </span>
                 <br />
                 <span class="text-gray-lightest md:text-white">
-                  {{ $t('passwordRestore.accessRecoveryEnd') }}
+                  {{ $t('passwordRestore.accessRecoverySubhead') }}
                 </span>
               </h1>
               <Form
@@ -47,9 +47,9 @@
                     />
                   </div>
                   <div class="text-gray-lighter text-sm">
-                    <p>{{ $t('passwordRestore.notRecieveEmailStart') }}&nbsp;
+                    <p>{{ $t('passwordRestore.notRecieveEmailHead') }}&nbsp;
                       <span>
-                        {{ $t('passwordRestore.notRecieveEmailEnd') }}
+                        {{ $t('passwordRestore.notRecieveEmailSubhead') }}
                       </span>
                       <!-- <router-link
                         :to="{ name: 'login-restore' }"
@@ -71,7 +71,7 @@
                       {{ $t('action.loading') }}
                     </span>
                     <span v-else>
-                      {{ $t('action.getLink') }}
+                      {{ $t('passwordRestore.submit') }}
                     </span>
                   </Button>
                 </template>

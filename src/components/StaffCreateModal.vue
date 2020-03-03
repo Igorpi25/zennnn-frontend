@@ -72,7 +72,7 @@
             class="mt-10 mx-auto"
             @click="submit"
           >
-            <span>{{ $t('action.invite') }}</span>
+            <span>{{ $t('staff.invite') }}</span>
           </Button>
         </Form>
       </div>

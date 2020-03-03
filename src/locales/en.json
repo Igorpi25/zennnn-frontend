@@ -1,38 +1,50 @@
 {
   "passwordRestore": {
-    "accessRecoveryStart": "Access recovery,",
-    "accessRecoveryEnd": "enter the data and get a link to change password",
+    "accessRecoveryHead": "Access recovery,",
+    "accessRecoverySubhead": "enter the data and get a link to change password",
     "recoveryByEmail": "Recovery by email",
     "email": "Email",
-    "notRecieveEmailStart": "If you didn’t receive the message, check the \"Spam\" folder or",
-    "notRecieveEmailEnd": "try again.",
-    "changePasswordStart": "Password Change,",
-    "changePasswordEnd": "enter new password",
+    "notRecieveEmailHead": "If you didn’t receive the message, check the \"Spam\" folder or",
+    "notRecieveEmailSubhead": "try again.",
+    "restoreBySms": "Restore by SMS",
+    "submit": "Get link"
+  },
+  "passwordRestoreConfirm": {
+    "changePasswordHead": "Password Change,",
+    "changePasswordSubhead": "enter new password",
     "newPassword": "New password",
     "newPasswordConfirm": "Confirm password",
-    "passwordsDoNotMatch": "The entered passwords do not match.",
-    "restoreBySms": "Restore by SMS"
+    "submit": "Change"
   },
   "loginRestore": {
-    "accessRecoveryStart": "Access recovery,",
-    "accessRecoveryEnd": "enter the data and get a link to change login",
+    "accessRecoveryHead": "Access recovery,",
+    "accessRecoverySubhead": "enter the data and get a link to change login",
     "recoveryByPhone": "Recovery by phone",
     "phoneNumber": "Phone number",
-    "smsCode": "SMS code"
+    "smsCode": "SMS code",
+    "resendCode": "Resend code",
+    "signin": "Log In",
+    "submit": "Get link"
   },
   "signin": {
     "noAccount": "No account?",
-    "welcome": "Welcome back to Zennnn,",
-    "welcomeMiddle": "log in,",
+    "signup": "Sign up",
+    "welcomeHead": "Welcome back to Zennnn,",
+    "welcomeSubhead": "log in,",
     "welcomeContent": "to continue",
     "login": "Login (email)",
     "password": "Password",
     "forgotPassword": "Forgot password",
+    "doNotRememberLogin": "Do not remember the login",
+    "rememberMe": "Remember me",
+    "submit": "Log In"
+  },
+  "signinByPhone": {
+    "loginByPhone": "Login by phone number",
     "phoneNumber": "Phone number",
     "smsCode": "SMS code",
-    "loginByPhone": "Login by phone number",
-    "doNotRememberLogin": "Do not remember the login",
-    "rememberMe": "Remember me"
+    "resendCode": "Resend code",
+    "submit": "Log In"
   },
   "signup": {
     "registration": "Registration",
@@ -42,6 +54,7 @@
     "compliteRegistration": "Complite registration,",
     "registerContent": "to have access to zennnn's awesome features.",
     "hasAccount": "I have an account.",
+    "signin": "Log In",
     "firstName": "Given name",
     "lastName": "Family name",
     "login": "Email (zennnn login)",
@@ -58,19 +71,9 @@
     "confirmRegistration": "Confirm Registration",
     "followTheLink": "follow the link in the email",
     "emailNotRecieved": "Not received a email.",
-    "hasAccount": "I have an account."
-  },
-  "navbar": {
-    "deals": "My Deals",
-    "clients": "My Clients",
-    "suppliers": "My Suppliers",
-    "staff": "My Staff"
-  },
-  "projects": {
-    "myCompanies": "My companies",
-    "ownerName": "First name / Last name",
-    "ownerEmail": "Email",
-    "ownerPhone": "Phone"
+    "hasAccount": "I have an account.",
+    "signin": "Log In",
+    "resend": "Resend"
   },
   "deals": {
     "createDeal": "Create a deal",
@@ -81,60 +84,6 @@
     "createdAt": "Created at",
     "moneyRecieved": "Money received from customer",
     "expensesPaid": "Expenses paid"
-  },
-  "paper": {
-    "supplyContract": "«Supply Contract»",
-    "paperConfigurator": "Paper configurator (list)",
-    "createPaper": "Create paper",
-    "name": "Paper name",
-    "heading": "Paper heading",
-    "date": "Date (automatically)",
-    "location": "City/Country",
-    "textField": "Text field",
-    "contractHeader": "Use standard contract header",
-    "paragraph": "Paragraph",
-    "paragraphHeading": "Paragraph heading",
-    "addParagraph": "Add paragraph",
-    "addHeading": "Add Heading",
-    "details": "Requisites of the parties",
-    "deliveryItem": "Delivery item",
-    "specification": "Specification",
-    "to": "to",
-    "saveChanges": "Save changes to the",
-    "beforeClosing": "document before closing?",
-    "ifNotSave": "If not, the changes will be lost",
-    "specNumber": "The document number is affixed automatically when printed and consists of a customer number (Example: A0097) and creation date specifications. If in one day several specifications were created, for the same customer, a serial number is added. (For example: 1, 2, 3 ... n).",
-    "paperDate": "The date of the document is stamped automatically when printing and corresponds to the date creating specifications in the \"My Deals\" section.",
-    "table": "In this area, a table with a list will be automatically generated list table goods, their quantity and final cost, calculated in accordance with with the established exchange rate for financial documents.",
-    "buyerDetails": "Buyer requisites will be substituted automatically when printing documents and will match the customer specified in the current specification.",
-    "requisites": {
-      "supplier": "Supplier:",
-      "address": "Address:",
-      "postcode": "Postcode:",
-      "phone": "Phone:",
-      "fax": "Fax:",
-      "email": "E-mail:",
-      "bank": "Payee's bank",
-      "bankAddress": "Bank address:",
-      "accountNumber": "Account number:",
-      "swift": "SWIFT:",
-      "fullName": "Full name:",
-      "position": "Position:",
-      "signatureStamp": "Signature / Stamp:"
-    }
-  },
-  "access": {
-    "freelancer": "Freelancer",
-    "manager": "Manager",
-    "accountant": "Accountant",
-    "ceo": "CEO"
-  },
-  "role": {
-    "OWNER": "CEO",
-    "MANAGER": "Manager",
-    "ACCOUNTANT": "Accountant",
-    "WAREHOUSEMAN": "Warehouseman",
-    "FREELANCER": "Freelancer"
   },
   "staff": {
     "createStaff": "Create a staff",
@@ -147,20 +96,57 @@
     "password": "Password",
     "inWork": "In work",
     "diff": "Difference",
+    "percent": "%",
     "revenue": "Revenue",
     "costOfGoods": "Cost of goods",
-    "access": "Access"
+    "access": "Access",
+    "invite": "Invite",
+    "inviteGivenName": "Given Name",
+    "inviteFamilyName": "Family name",
+    "inviteEmail": "Email",
+    "inviteRole": "Role",
+    "inviteStatus": "Status",
+    "inviteCreatedAt": "Created At",
+    "inviteUpdatedAt": "Updated At"
   },
   "requisites": {
-    "requisites": "Requisites",
-    "requisitesOfMyCompany": "Requisites of my company",
-    "about": "About",
-    "bankDetails": "Bank requisites",
-    "directorOfCompany": "Director of company",
     "companyName": "Company name",
     "companyNameEng": "Company name in English",
     "fullName":"Owner's full name",
     "addRequisites": "Add requisites"
+  },
+  "requisite": {
+    "requisitesOfMyCompany": "Requisites of my company",
+    "about": "About",
+    "bankDetails": "Bank requisites",
+    "directorOfCompany": "Director of company",
+    "fillLater": "Fill later",
+    "label": {
+      "companyName": "Company name",
+      "companyNameEng": "Company name in English",
+      "legalAddress":"Legal address",
+      "legalAddressPostCode":"Legal address postcode",
+      "mailingAddress": "Mailing Address",
+      "mailingAddressPostCode": "Mailing address postcode",
+      "phone": "Phone",
+      "fax": "Fax",
+      "email": "Email",
+      "itn": "ITN",
+      "iec": "IEC",
+      "psrn": "PSRN",
+      "bankName":"Bank name",
+      "bankAddress": "Bank address",
+      "bankAccountNumber": "Bank account number",
+      "correspondentAccountNumber": "Correspondent account number",
+      "bic": "BIC",
+      "okpo": "OKPO",
+      "swift": "SWIFT",
+      "fullName":"Full name (indicated in all documents)",
+      "position": "Position (indicated in all documents)"
+    },
+    "placeholder": {
+      "fillFields": "Fill in the field"
+    }
   },
   "shipping": {
     "shippingTitle": "Shipping №",
@@ -275,24 +261,8 @@
     "importerTitle": "IMPORTER",
     "importerSubtitle": "(IF DIFFERENT FROM CLIENT)",
     "inEnglish": "(in English)",
-    "vat": "VAT"
-  },
-  "shipmentType": {
-    "UNDEFINED": "undefined",
-    "MARINE": "Marine",
-    "AIR": "Air",
-    "RAILWAY": "Railway",
-    "CAR": "Car",
-    "MIXED": "Mixed",
-    "EXPRESS": "Express / Mailing"
-  },
-  "customsTerms": {
-    "CFR": "CFR"
-  },
-  "status": {
-    "IN_PROCESSING": "In processing",
-    "IN_PRODUCTION": "In production",
-    "IN_STOCK": "In stock"
+    "vat": "VAT",
+    "copyLink": "Copy link"
   },
   "preview": {
     "shippingTitle": "Shipping №",
@@ -326,11 +296,34 @@
     "downloadPDF": "Download PDF",
     "comment": "Comment"
   },
-  "label": {
+  "suppliers": {
+    "supplier": "Supplier",
+    "createSupplier": "Create a supplier",
+    "companyName": "Company name",
+    "phone": "Phone",
+    "address": "Address",
+    "contactPerson": "Contact Person",
+    "inn": "INN",
+    "suppliersDebt": "Your debt to the company",
+    "currentDealsAmount": "Current deals amount"
+  },
+  "supplier": {
+    "supplierCard": "Supplier's card",
+    "edit": "Edit",
+    "supplierCardPatterns": "Supplier's card patterns",
+    "legalPerson": "Legal person",
+    "legalPersonAbr": "Legal person",
+    "shops": "Shops",
+    "note": "Note",
+    "save":"Save",
     "saveAsPattern": "Save as a pattern",
-    "template": "Template",
-    "defaultTemplateName": "Template (default)",
-    "supplier": {
+    "backToSuppliersList": "Back to suppliers list",
+    "addAddress": "Add address",
+    "storage": "Storage",
+    "language": "Language",
+    "languageAndRegion": "Language & Region",
+    "languageDescription": "Language used to send sms and email",
+    "label": {
       "sl": "selected language",
       "companyName": "Company name",
       "companyNameSl": "Company name (selected lang.)",
@@ -360,7 +353,62 @@
       "shopAddress": "Shop Address",
       "language": "Language"
     },
-    "client": {
+    "placeholder": {
+      "companyName": "Company name:",
+      "companyNameSl": "Company name(sl.):*",
+      "companyNameCl": "Company name(cl.):*",
+      "website": "Website:*",
+      "companyType": "Company type:*",
+      "fieldOfActivity": "Field of activity:*",
+      "manufacturersAddress": "Manufacturer's address:",
+      "manager": "Manager:",
+      "workPhone": "Work phone:",
+      "mobilePhone": "Mobile phone:",
+      "email": "Email:",
+      "skype": "Skype:",
+      "qq": "QQ:",
+      "bankName": "Bank name:",
+      "payeesBankName": "Payee's bank name:",
+      "bankAddress": "Bank address:",
+      "accountNumber": "Account number:",
+      "swift": "SWIFT:",
+      "responsiblePerson": "Responsible person:",
+      "deliveryAddress": "Delivery address:",
+      "contactNumber": "Contact Number:",
+      "note": "Note:",
+      "seller": "Seller:",
+      "wechat": "Wechat:",
+      "shopName": "Name:",
+      "shopAddress": "Shop address:",
+      "language": "Language:"
+    }
+  },
+  "clients": {
+    "createClient": "Create a client",
+    "clientsDebt": "Client's debt",
+    "currentDealsAmount": "Current deals amount",
+    "companyName": "Company name",
+    "phone": "Phone",
+    "contactPerson": "Contact person",
+    "uid": "UCN"
+  },
+  "client": {
+    "save": "Save",
+    "saveAsPattern": "Save as a pattern",
+    "backToClientsList": "Back to clients list",
+    "clientCard": "Client's card",
+    "edit": "Edit",
+    "clientCardPatterns": "Client's card patterns",
+    "legalPerson": "Legal person",
+    "naturalPerson": "Natural person",
+    "legalPersonAbr": "Legal person",
+    "naturalPersonAbr": "Natural person",
+    "note": "Note",
+    "shippingInfo": "Shipping info",
+    "language": "Language",
+    "languageAndRegion": "Language & Region",
+    "languageDescription": "Language used to send sms and email",
+    "label": {
       "uid": "Unique client number",
       "uidAbr": "UCN",
       "firstName": "First name",
@@ -400,204 +448,7 @@
       "password": "Password",
       "language": "Language"
     },
-    "requisites": {
-      "companyName": "Company name",
-      "companyNameEng": "Company name in English",
-      "legalAddress":"Legal address",
-      "legalAddressPostCode":"Legal address postcode",
-      "mailingAddress": "Mailing Address",
-      "mailingAddressPostCode": "Mailing address postcode",
-      "phone": "Phone",
-      "fax": "Fax",
-      "email": "Email",
-      "itn": "ITN",
-      "iec": "IEC",
-      "psrn": "PSRN",
-      "bankName":"Bank name",
-      "bankAddress": "Bank address",
-      "bankAccountNumber": "Bank account number",
-      "correspondentAccountNumber": "Correspondent account number",
-      "bic": "BIC",
-      "okpo": "OKPO",
-      "swift": "SWIFT",
-      "fullName":"Full name (indicated in all documents)",
-      "position": "Position (indicated in all documents)"
-    }
-  },
-  "suppliers": {
-    "supplier": "Supplier",
-    "createSupplier": "Create a supplier",
-    "companyName": "Company name",
-    "phone": "Phone",
-    "address": "Address",
-    "contactPerson": "Contact Person",
-    "inn": "INN",
-    "suppliersDebt": "Your debt to the company",
-    "currentDealsAmount": "Current deals amount"
-  },
-  "supplier": {
-    "supplierCard": "Supplier's card",
-    "edit": "Edit",
-    "supplierCardPatterns": "Supplier's card patterns",
-    "legalPerson": "Legal person",
-    "legalPersonAbr": "Legal person",
-    "shops": "Shops",
-    "note": "Note",
-    "save":"Save",
-    "saveAsPattern": "Save as a pattern",
-    "backToSuppliersList": "Back to suppliers list",
-    "addAddress": "Add address",
-    "storage": "Storage",
-    "language": "Language",
-    "languageAndRegion": "Language & Region",
-    "languageDescription": "Language used to send sms and email"
-  },
-  "clients": {
-    "createClient": "Create a client",
-    "clientsDebt": "Client's debt",
-    "currentDealsAmount": "Current deals amount"
-  },
-  "client": {
-    "save": "Save",
-    "saveAsPattern": "Save as a pattern",
-    "backToClientsList": "Back to clients list",
-    "clientCard": "Client's card",
-    "edit": "Edit",
-    "clientCardPatterns": "Client's card patterns",
-    "legalPerson": "Legal person",
-    "naturalPerson": "Natural person",
-    "legalPersonAbr": "Legal person",
-    "naturalPersonAbr": "Natural person",
-    "note": "Note",
-    "shippingInfo": "Shipping info",
-    "language": "Language",
-    "languageAndRegion": "Language & Region",
-    "languageDescription": "Language used to send sms and email"
-  },
-  "comments": {
-    "enterComment": "Enter comment...",
-    "enterReply": "Enter reply..."
-  },
-  "roles": {
-    "owner": "Owner",
-    "manager": "Manager",
-    "accountant": "Accountant",
-    "freelancer": "Freelancer",
-    "warehouseman": "Warehouseman"
-  },
-  "currency": {
-    "CNY": {
-      "label": "Chinese Yuan Renminbi",
-      "iso-4217": "CNY",
-      "symbol": "¥"
-    },
-    "RUB": {
-      "label": "Russian ruble",
-      "iso-4217": "RUB",
-      "symbol": "₽"
-    }
-  },
-  "measure": {
-    "kg": "kg",
-    "m": "m",
-    "mm": "mm",
-    "pkg": "Total Pkg Qty",
-    "unit": "unit"
-  },
-  "action": {
-    "copyLink": "Copy link",
-    "post": "Post",
-    "invite": "Invite",
-    "dontSave": "Don't save",
-    "cancel": "Cancel",
-    "apply": "Apply",
-    "save": "Save",
-    "create": "Create",
-    "loading": "Loading",
-    "collapse": "Hide",
-    "collapseAll": "Hide all",
-    "expand": "Unhide",
-    "expandAll": "Unhide all",
-    "resend": "Resend",
-    "register": "Sign up",
-    "login": "Log In",
-    "logout": "Log Out",
-    "resendCode": "Resend code",
-    "toHome": "To Home",
-    "getLink": "Get link",
-    "change": "Change",
-    "createPatternName": "Create a name for your template",
-    "fillLater": "Fill later"
-  },
-  "message": {
-    "userNotConfirmed": "The user is not confirmed, a confirmation link is on your email.",
-    "linkCopied": "Link copied to clipboard.",
-    "linkNotCopied": "Failed to copy link to clipboard.",
-    "emailResent": "Email sent again.",
-    "failedToSent": "Failed to send.",
-    "authByGoogle": "Authorization through google.",
-    "authByGoogleError": "Failed to get profile data from google.",
-    "notFoundStart": "Sorry,",
-    "notFoundEnd": "the page you are looking for was not found.",
-    "emailSent": "An email has been sent to the {email} email address.",
-    "passwordChanged": "Password changed",
-    "emailConfirmed": "Email confirmed.",
-    "emailAlreadyConfirmed": "Email already confirmed.",
-    "incorrectRestorePassword": "Incorrect request to restore password."
-  },
-  "alert": {
-    "attention": "Attention!",
-    "removeDeal": "Are you sure you want to delete the Deal?",
-    "removeInvoice": "Are you sure you want to delete the Invoice?",
-    "removeProduct": "Are you sure you want to delete the Item?",
-    "removeClient": "Are you sure you want to delete the Client?",
-    "removeSupplier": "Are you sure you want to delete the Supplier?",
-    "removeRequisites": "Are you sure you want to delete the Requisites?",
-    "removeContract": "Are you sure you want to delete the Contract?"
-  },
-  "preposition": {
-    "from": "from",
-    "and": "and",
-    "or": "or",
-    "through": "through"
-  },
-  "placeholder": {
-    "notIndicated": "not indicated",
-    "notChosen": "not chosen",
-    "emptyDate": "--/--/----",
-    "emptyText": "----",
-    "emptyNumber": "-",
-    "pageSearch": "quick page search",
-    "supplier": {
-      "companyName": "Company name:",
-      "companyNameSl": "Company name(sl.):*",
-      "companyNameCl": "Company name(cl.):*",
-      "website": "Website:*",
-      "companyType": "Company type:*",
-      "fieldOfActivity": "Field of activity:*",
-      "manufacturersAddress": "Manufacturer's address:",
-      "manager": "Manager:",
-      "workPhone": "Work phone:",
-      "mobilePhone": "Mobile phone:",
-      "email": "Email:",
-      "skype": "Skype:",
-      "qq": "QQ:",
-      "bankName": "Bank name:",
-      "payeesBankName": "Payee's bank name:",
-      "bankAddress": "Bank address:",
-      "accountNumber": "Account number:",
-      "swift": "SWIFT:",
-      "responsiblePerson": "Responsible person:",
-      "deliveryAddress": "Delivery address:",
-      "contactNumber": "Contact Number:",
-      "note": "Note:",
-      "seller": "Seller:",
-      "wechat": "Wechat:",
-      "shopName": "Name:",
-      "shopAddress": "Shop address:",
-      "language": "Language:"
-    },
-    "client": {
+    "placeholder": {
       "uid": "Unique client number:",
       "uidAbr": "UCN:",
       "companyName": "Company name:",
@@ -637,10 +488,85 @@
       "additionalPhone": "Additional phone number:",
       "address": "Place of residence:",
       "language": "Language:"
-    },
-    "requisites": {
-      "fillFields": "Fill in the field"
     }
+  },
+  "notFound": {
+    "title": "Sorry,",
+    "subtitle": "the page you are looking for was not found.",
+    "toHome": "To Home"
+  },
+  "paper": {
+    "supplyContract": "«Supply Contract»",
+    "paperConfigurator": "Paper configurator (list)",
+    "createPaper": "Create paper",
+    "name": "Paper name",
+    "heading": "Paper heading",
+    "date": "Date (automatically)",
+    "location": "City/Country",
+    "textField": "Text field",
+    "contractHeader": "Use standard contract header",
+    "paragraph": "Paragraph",
+    "paragraphHeading": "Paragraph heading",
+    "addParagraph": "Add paragraph",
+    "addHeading": "Add Heading",
+    "details": "Requisites of the parties",
+    "deliveryItem": "Delivery item",
+    "specification": "Specification",
+    "to": "to",
+    "specNumber": "The document number is affixed automatically when printed and consists of a customer number (Example: A0097) and creation date specifications. If in one day several specifications were created, for the same customer, a serial number is added. (For example: 1, 2, 3 ... n).",
+    "paperDate": "The date of the document is stamped automatically when printing and corresponds to the date creating specifications in the \"My Deals\" section.",
+    "table": "In this area, a table with a list will be automatically generated list table goods, their quantity and final cost, calculated in accordance with with the established exchange rate for financial documents.",
+    "buyerDetails": "Buyer requisites will be substituted automatically when printing documents and will match the customer specified in the current specification.",
+    "addRequisites": "Add requisites",
+    "requisites": {
+      "supplier": "Supplier:",
+      "address": "Address:",
+      "postcode": "Postcode:",
+      "phone": "Phone:",
+      "fax": "Fax:",
+      "email": "E-mail:",
+      "bank": "Payee's bank",
+      "bankAddress": "Bank address:",
+      "accountNumber": "Account number:",
+      "swift": "SWIFT:",
+      "fullName": "Full name:",
+      "position": "Position:",
+      "signatureStamp": "Signature / Stamp:"
+    }
+  },
+  "print": {},
+  "welcomeModal": {
+    "head": "Welcome to zennnn",
+    "title": "Cool that you registered with zennnn!",
+    "content": "To continue, we recommend filling out the details of your company, they will come in handy when you need to automatically prepare any documents.",
+    "footer": "You can skip this step. In the future, the details of the company can be filled in the section",
+    "footerInMenu": "in the main menu.",
+    "myCompanies": "«My companies»",
+    "fillRequisites": "Fill requisites"
+  },
+  "comments": {
+    "enterComment": "Enter comment...",
+    "enterReply": "Enter reply...",
+    "post": "Post"
+  },
+  "statusBar": {
+    "requisites": "Requisites",
+    "myCompanies": "My companies",
+    "signout": "Log Out",
+    "role": {
+      "OWNER": "CEO",
+      "MANAGER": "Manager",
+      "ACCOUNTANT": "Accountant",
+      "WAREHOUSEMAN": "Warehouseman",
+      "FREELANCER": "Freelancer"
+    }
+  },
+  "navbar": {
+    "deals": "My Deals",
+    "clients": "My Clients",
+    "suppliers": "My Suppliers",
+    "staff": "My Staff",
+    "goods": "Товары"
   },
   "dataTable": {
     "noData": "No data available",
@@ -655,5 +581,137 @@
     "noData": "No data available",
     "noResult": "No matching records found"
   },
-  "error": {}
+  "currency": {
+    "CNY": {
+      "label": "Chinese Yuan Renminbi",
+      "iso-4217": "CNY",
+      "symbol": "¥"
+    },
+    "RUB": {
+      "label": "Russian ruble",
+      "iso-4217": "RUB",
+      "symbol": "₽"
+    }
+  },
+  "measure": {
+    "kg": "kg",
+    "m": "m",
+    "mm": "mm",
+    "pkg": "Total Pkg Qty",
+    "unit": "unit"
+  },
+  "action": {
+    "cancel": "Cancel",
+    "apply": "Apply",
+    "save": "Save",
+    "create": "Create",
+    "loading": "Loading",
+    "collapse": "Hide",
+    "collapseAll": "Hide all",
+    "expand": "Unhide",
+    "expandAll": "Unhide all",
+    "dontSave": "Don't save",
+    "createPatternName": "Create a name for your template"
+  },
+  "message": {
+    "userNotConfirmed": "The user is not confirmed, a confirmation link is on your email.",
+    "linkCopied": "Link copied to clipboard.",
+    "linkNotCopied": "Failed to copy link to clipboard.",
+    "emailResent": "Email sent again.",
+    "failedToSent": "Failed to send.",
+    "authByGoogle": "Authorization through google.",
+    "authByGoogleError": "Failed to get profile data from google.",
+    "emailSent": "An email has been sent to the {email} email address.",
+    "passwordChanged": "Password changed",
+    "emailConfirmed": "Email confirmed.",
+    "emailAlreadyConfirmed": "Email already confirmed.",
+    "incorrectRestorePassword": "Incorrect request to restore password."
+  },
+  "alert": {
+    "attention": "Attention!",
+    "removeDeal": "Are you sure you want to delete the Deal?",
+    "removeInvoice": "Are you sure you want to delete the Invoice?",
+    "removeProduct": "Are you sure you want to delete the Item?",
+    "removeClient": "Are you sure you want to delete the Client?",
+    "removeSupplier": "Are you sure you want to delete the Supplier?",
+    "removeRequisites": "Are you sure you want to delete the Requisites?",
+    "removeContract": "Are you sure you want to delete the Contract?"
+  },
+  "rule": {
+    "passwordsDoNotMatch": "The entered passwords do not match."
+  },
+  "preposition": {
+    "from": "from",
+    "and": "and",
+    "or": "or",
+    "through": "through"
+  },
+  "label": {
+    "saveAsPattern": "Save as a pattern",
+    "template": "Template",
+    "defaultTemplateName": "Template (default)",
+    "saveChangesBeforeClose": "Save changes to the document before closing?",
+    "saveDocChangesBeforeClose": "Save changes to the {doc} document before closing?",
+    "saveChangesHint": "If not, the changes will be lost"
+  },
+  "placeholder": {
+    "notIndicated": "not indicated",
+    "notChosen": "not chosen",
+    "emptyDate": "--/--/----",
+    "emptyText": "----",
+    "emptyNumber": "-",
+    "pageSearch": "quick page search"
+  },
+  "role": {
+    "OWNER": "CEO",
+    "MANAGER": "Manager",
+    "ACCOUNTANT": "Accountant",
+    "WAREHOUSEMAN": "Warehouseman",
+    "FREELANCER": "Freelancer"
+  },
+  "shipmentType": {
+    "UNDEFINED": "undefined",
+    "MARINE": "Marine",
+    "AIR": "Air",
+    "RAILWAY": "Railway",
+    "CAR": "Car",
+    "MIXED": "Mixed",
+    "EXPRESS": "Express / Mailing"
+  },
+  "customsTerms": {
+    "EXW": "EXW",
+    "FCA": "FCA",
+    "CPT": "CPT",
+    "CIP": "CIP",
+    "DAT": "DAT",
+    "DAP": "DAP",
+    "DDP": "DDP",
+    "FAS": "FAS",
+    "FOB": "FOB",
+    "CFR": "CFR",
+    "CIF": "CIF"
+  },
+  "productStatus": {
+    "IN_PROCESSING": "In processing",
+    "IN_PRODUCTION": "In production",
+    "IN_STOCK": "In stock"
+  },
+  "countries": {
+    "RU": {
+      "name": "Russia",
+      "iso-3": "RUS"
+    },
+    "UA": {
+      "name": "Ukraine",
+      "iso-3": "UKR"
+    },
+    "CN": {
+      "name": "China",
+      "iso-3": "CHN"
+    },
+    "US": {
+      "name": "United States",
+      "iso-3": "USA"
+    }
+  }
 }

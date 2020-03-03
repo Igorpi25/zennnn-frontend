@@ -17,8 +17,8 @@
       max-width="520"
     >
       <SaveBeforeCloseModal
-        :text=" `${$t('paper.saveChanges')} ${$t('paper.supplyContract')} ${$t('paper.beforeClosing')}`"
-        :postScriptum="$t('paper.ifNotSave')"
+        :text="`${$t('label.saveDocChangesBeforeClose', { doc: $t('paper.supplyContract') })}`"
+        :postScriptum="$t('label.saveChangesHint')"
         @dontSave="doNotSaveContractChanges"
         @cancel="cancel"
         @save="saveContractChanges"

@@ -12,13 +12,13 @@
           <template v-slot:text>
             <span>{{ $t('signin.noAccount') }}</span>
           </template>
-          <span>{{ $t('action.register') }}</span>
+          <span>{{ $t('signin.signup') }}</span>
         </Button>
         <div class="mb-8">
           <div class="w-full">
             <h1 class="headline">
-              <span>{{ $t('signin.welcome') }}</span>
-              <span>{{ $t('signin.welcomeMiddle') }}&nbsp;
+              <span>{{ $t('signin.welcomeHead') }}</span>
+              <span>{{ $t('signin.welcomeSubhead') }}&nbsp;
                 <span class="block sm:inline">{{ $t('signin.welcomeContent') }}</span>
               </span>
             </h1>
@@ -93,7 +93,7 @@
                     {{ $t('action.loading') }}
                   </span>
                   <span v-else>
-                    {{ $t('action.login') }}
+                    {{ $t('signin.submit') }}
                   </span>
                 </Button>
                 <!-- <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-no-wrap">

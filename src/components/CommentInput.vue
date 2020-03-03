@@ -31,7 +31,7 @@
         text
         @click="submitComment"
       >
-        {{ $t('action.post') }}
+        {{ $t('comments.post') }}
       </Button>
     </div>
   </div>

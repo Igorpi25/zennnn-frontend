@@ -193,7 +193,7 @@
       <div class="bg-gray">
         <div class="p-6 flex items-center bg-gray-darkest">
           <div style="width:28px; height:28px; background-color:#aaa;"></div>
-          <span class="ml-3" style="color:#aaa">{{ $t('projects.myCompanies') }}</span>
+          <span class="ml-3" style="color:#aaa">{{ $t('statusBar.myCompanies') }}</span>
         </div>
         <ul class="list-none text-white overflow-y-auto" style="max-height:520px;">
           <template v-for="(item, i) in orgsByRole">
@@ -314,7 +314,7 @@ export default {
       Object.keys(Role).forEach(role => {
         const orgs = groups[role]
         if (orgs) {
-          items.push({ header: true, text: this.$t(`roles.${role.toLowerCase()}`) })
+          items.push({ header: true, text: this.$t(`statusBar.role.${role}`) })
           items.push(...groups[role])
         }
       })
@@ -325,8 +325,8 @@ export default {
     },
     profileItems () {
       return [
-        { value: 'orgsList', text: this.$t('projects.myCompanies') },
-        { value: 'logout', text: this.$t('action.logout') },
+        { value: 'orgsList', text: this.$t('statusBar.myCompanies') },
+        { value: 'logout', text: this.$t('statusBar.signout') },
       ]
     },
     profile () {

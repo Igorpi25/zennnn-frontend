@@ -1,38 +1,50 @@
 {
   "passwordRestore": {
-    "accessRecoveryStart": "Восстановление доступа,",
-    "accessRecoveryEnd": "укажите данные, и получите ссылку для смены пароля",
+    "accessRecoveryHead": "Восстановление доступа,",
+    "accessRecoverySubhead": "укажите данные, и получите ссылку для смены пароля",
     "recoveryByEmail": "Восстановление по почте",
     "email": "Почта",
-    "notRecieveEmailStart": "Если вы не получили письмо, проверьте папку \"Спам\" или",
-    "notRecieveEmailEnd": "повторите запрос.",
-    "changePasswordStart": "Смена пароля,",
-    "changePasswordEnd": "введите новый пароль",
+    "notRecieveEmailHead": "Если вы не получили письмо, проверьте папку \"Спам\" или",
+    "notRecieveEmailSubhead": "повторите запрос.",
+    "restoreBySms": "восстановите данные по смс",
+    "submit": "Получить ссылку"
+  },
+  "passwordRestoreConfirm": {
+    "changePasswordHead": "Смена пароля,",
+    "changePasswordSubhead": "введите новый пароль",
     "newPassword": "Новый пароль",
     "newPasswordConfirm": "Повторите пароль",
-    "passwordsDoNotMatch": "Введенные пароли не совпадают.",
-    "restoreBySms": "восстановите данные по смс"
+    "submit": "Сменить"
   },
   "loginRestore": {
-    "accessRecoveryStart": "Восстановление доступа,",
-    "accessRecoveryEnd": "укажите данные, и получите ссылку для смены логина",
+    "accessRecoveryHead": "Восстановление доступа,",
+    "accessRecoverySubhead": "укажите данные, и получите ссылку для смены логина",
     "recoveryByPhone": "Восстановление по телефону",
     "phoneNumber": "Номер телефона",
-    "smsCode": "Код из смс"
+    "smsCode": "Код из смс",
+    "resendCode": "Отправить код еще раз",
+    "signin": "Войти",
+    "submit": "Получить ссылку"
   },
   "signin": {
     "noAccount": "Нет аккаунта?",
-    "welcome": "С возвращением в zennnn,",
-    "welcomeMiddle": "войдите,",
+    "signup": "Зарегистрируйтесь",
+    "welcomeHead": "С возвращением в zennnn,",
+    "welcomeSubhead": "войдите,",
     "welcomeContent": "чтобы продолжить работу",
     "login": "Логин (эл. почта)",
     "password": "Пароль",
     "forgotPassword": "Забыли пароль",
+    "doNotRememberLogin": "Не помню логин",
+    "rememberMe": "Запомнить меня",
+    "submit": "Войти"
+  },
+  "signinByPhone": {
+    "loginByPhone": "Вход по номеру телефона",
     "phoneNumber": "Номер телефона",
     "smsCode": "Код из смс",
-    "loginByPhone": "Вход по номеру телефона",
-    "doNotRememberLogin": "Не помню логин",
-    "rememberMe": "Запомнить меня"
+    "resendCode": "Отправить код еще раз",
+    "submit": "Войти"
   },
   "signup": {
     "registration": "Регистрация в системе",
@@ -42,6 +54,7 @@
     "compliteRegistration": "Завершите регистрацию,",
     "registerContent": "чтобы иметь доступ к потрясающим функциям zennnn.",
     "hasAccount": "У меня есть аккаунт.",
+    "signin": "Войти",
     "firstName": "Имя",
     "lastName": "Фамилия",
     "login": "Эл. почта (логин zennnn)",
@@ -58,19 +71,9 @@
     "confirmRegistration": "Подтвердите регистрацию",
     "followTheLink": "пройдите по ссылке в письме",
     "emailNotRecieved": "Не пришло письмо.",
-    "hasAccount": "У меня есть аккаунт."
-  },
-  "navbar": {
-    "deals": "Мои сделки",
-    "clients": "Клиенты",
-    "suppliers": "Поставщики",
-    "staff": "Сотрудники"
-  },
-  "projects": {
-    "myCompanies": "Мои компании",
-    "ownerName": "Имя / Фамилия",
-    "ownerEmail": "Email",
-    "ownerPhone": "Телефон"
+    "hasAccount": "У меня есть аккаунт.",
+    "signin": "Войти",
+    "resend": "Отправить повторно"
   },
   "deals": {
     "createDeal": "Создать сделку",
@@ -81,60 +84,6 @@
     "createdAt": "Документ создан",
     "moneyRecieved": "Деньги от клиента получены",
     "expensesPaid": "Расходы оплачены"
-  },
-  "paper": {
-    "supplyContract": "«Договор Поставки»",
-    "paperConfigurator": "Конструктор документов (список)",
-    "createPaper": "Создать документ",
-    "name": "Название документа",
-    "heading": "Заголовок документа",
-    "date": "Дата (автоматически)",
-    "location": "Город/Страна",
-    "textField": "Текстовое поле",
-    "contractHeader": "Использовать страндартную шапку документа",
-    "paragraph": "Абзац",
-    "paragraphHeading": "Заголовок абзаца",
-    "addParagraph": "Добавить абзац",
-    "addHeading": "Добавить заголовок",
-    "details": "Реквизиты сторон",
-    "deliveryItem": "Предмет поставки",
-    "specification": "Спецификация",
-    "to": "к",
-    "saveChanges": "Сохранить изменения в документе ",
-    "beforeClosing": "перед закрытием?",
-    "ifNotSave": "Если не сохранить, изменения будут утрачены.",
-    "specNumber": "Номер документа проставляется автоматически при выводе на печать и состоит из номера клиента (Например: A0097) и даты создания спецификации. Если в один день было создано несколько спецификаций для одного и того же клиента добавляется порядковый номер (Например: 1, 2, 3 ... n).",
-    "paperDate": "Дата документа проставляется автоматически при выводе на печать и соответсвует дате создания спецификации в разделе «Мои сделки».",
-    "table": "В этой области будет автоматически сгенерированна таблица с перечнем \nтоваров, их количество и окончательная стоимость, рассчитанная в соответствии \nс установленным курсом валют для финансовых документов." ,
-    "buyerDetails": "Реквизиты покупателя будут подставлены автоматически при выводе документов на печать и будут соответствовать клиенту, указанному в текщей спецификации." ,
-    "requisites": {
-      "supplier": "Поставщик:",
-      "address": "Адрес:",
-      "postcode": "Индекс:",
-      "phone": "Телефон:",
-      "fax": "Факс:",
-      "email": "E-mail:",
-      "bank": "Банк получателя",
-      "bankAddress": "Адрес банка:",
-      "accountNumber": "Номер счета:",
-      "swift": "SWIFT:",
-      "fullName": "ФИО:",
-      "position": "Должность:",
-      "signatureStamp": "Подпись / Печать:"
-    }
-  },
-  "access": {
-    "freelancer": "Фрилансер",
-    "manager": "Менеджер",
-    "accountant": "Бухгалтер",
-    "ceo": "Директор"
-  },
-  "role": {
-    "OWNER": "Директор",
-    "MANAGER": "Менеджер",
-    "ACCOUNTANT": "Бухгалтер",
-    "WAREHOUSEMAN": "Склад",
-    "FREELANCER": "Фрилансер"
   },
   "staff": {
     "createStaff": "Создать сотрудника",
@@ -147,20 +96,57 @@
     "password": "Пароль",
     "inWork": "В работе",
     "diff": "Разница",
+    "percent": "%",
     "revenue": "Выручка",
     "costOfGoods": "Стоимость тов.",
-    "access": "Права доступа"
+    "access": "Права доступа",
+    "invite": "Пригласить",
+    "inviteGivenName": "Имя",
+    "inviteFamilyName": "Фамилия",
+    "inviteEmail": "Email",
+    "inviteRole": "Роль",
+    "inviteStatus": "Статус",
+    "inviteCreatedAt": "Создан",
+    "inviteUpdatedAt": "Обновлен"
   },
   "requisites": {
-    "requisites": "Реквизиты",
-    "requisitesOfMyCompany": "Реквизиты моей компании",
-    "about": "О компании",
-    "bankDetails": "Банковские реквизиты",
-    "directorOfCompany": "Руководитель компании",
     "companyName": "Название компании",
     "companyNameEng": "Название компании на английском",
     "fullName":"ФИО директора",
     "addRequisites": "Добавить реквизиты"
+  },
+  "requisite": {
+    "requisitesOfMyCompany": "Реквизиты моей компании",
+    "about": "О компании",
+    "bankDetails": "Банковские реквизиты",
+    "directorOfCompany": "Руководитель компании",
+    "fillLater": "Заполнить позже",
+    "label": {
+      "companyName": "Название компании",
+      "companyNameEng": "Название компании на английском",
+      "legalAddress":"Юридический адрес",
+      "legalAddressPostCode":"Индекс юридического адреса",
+      "mailingAddress": "Почтовый адрес",
+      "mailingAddressPostCode": "Индекс почтового адреса",
+      "phone": "Телефон",
+      "fax": "Факс",
+      "email": "Электронная почта",
+      "itn": "ИНН",
+      "iec": "КПП",
+      "psrn": "ОГРН",
+      "bankName":"Наименование банка",
+      "bankAddress": "Адрес банка",
+      "bankAccountNumber": "Номер расчетного счета",
+      "correspondentAccountNumber": "Номер корреспондентского счета",
+      "bic": "БИК",
+      "okpo": "ОКПО",
+      "swift": "SWIFT",
+      "fullName": "ФИО (указывается во всех документах)",
+      "position": "Должность (указывается во всех документах)"
+    },
+    "placeholder": {
+      "fillFields": "Заполните поле"
+    }
   },
   "shipping": {
     "shippingTitle": "Спецификация №",
@@ -275,24 +261,8 @@
     "importerTitle": "ИМПОРТЕР",
     "importerSubtitle": "(ЕСЛИ ОТЛИЧАЕТСЯ ОТ КЛИЕНТА)",
     "inEnglish": "(на английском)",
-    "vat": "VAT"
-  },
-  "shipmentType": {
-    "UNDEFINED": "не определено",
-    "MARINE": "Морская",
-    "AIR": "Авиа",
-    "RAILWAY": "Железнодорожная",
-    "CAR": "Автомобильная",
-    "MIXED": "Смешанная",
-    "EXPRESS": "Экспресс / Почтовое отправление"
-  },
-  "customsTerms": {
-    "CFR": "CFR"
-  },
-  "status": {
-    "IN_PROCESSING": "Обрабатывается",
-    "IN_PRODUCTION": "В производстве",
-    "IN_STOCK": "На складе"
+    "vat": "VAT",
+    "copyLink": "Копировать ссылку"
   },
   "preview": {
     "shippingTitle": "Спецификация №",
@@ -326,11 +296,34 @@
     "downloadPDF": "Скачать PDF",
     "comment": "Оставить комментарий"
   },
-  "label": {
+  "suppliers": {
+    "supplier": "Поставщик",
+    "createSupplier": "Создать поставщика",
+    "companyName": "Название компании",
+    "phone": "Телефон",
+    "address": "Адрес",
+    "contactPerson": "Контактное лицо",
+    "inn": "ИНН",
+    "suppliersDebt": "Ваш долг перед компанией",
+    "currentDealsAmount": "Количество текущих сделок"
+  },
+  "supplier": {
+    "supplierCard": "Карточка поставщика",
+    "edit": "Редактировать",
+    "supplierCardPatterns": "Шаблон карточки поставщика",
+    "legalPerson": "Юридическое лицо",
+    "legalPersonAbr": "Юр. лицо",
+    "shops": "Магазины",
+    "note": "Примечание",
+    "save":"Сохранить",
     "saveAsPattern": "Сохранить как шаблон",
-    "template": "Шаблоны",
-    "defaultTemplateName": "Шаблон (по умолчанию)",
-    "supplier": {
+    "backToSuppliersList": "Обратно к списку поставщиков",
+    "addAddress": "Добавить доп. адрес",
+    "storage": "Склад",
+    "language": "Язык",
+    "languageAndRegion": "Язык и регион",
+    "languageDescription": "Язык используемый для отправки sms и  email",
+    "label": {
       "sl": "selected language",
       "companyName": "Название компании",
       "companyNameSl": "Название компании (selectrd lang.)",
@@ -360,7 +353,62 @@
       "shopAddress": "Адрес магазина",
       "language": "Язык"
     },
-    "client": {
+    "placeholder": {
+      "companyName": "Название компании:",
+      "companyNameSl": "Название компании(sl.):*",
+      "companyNameCl": "Название компании(cl.):*",
+      "website": "Web-сайт:*",
+      "companyType": "Тип компании:*",
+      "fieldOfActivity": "Сфера деятельности:*",
+      "manufacturersAddress": "Адрес производства:",
+      "manager": "Менеджер:",
+      "workPhone": "Рабочий телефон:",
+      "mobilePhone": "Мобильный телефон:",
+      "email": "Электронная почта:",
+      "skype": "Skype:",
+      "qq": "QQ:",
+      "bankName": "Наименование банка:",
+      "payeesBankName": "Наименование банка получателя:",
+      "bankAddress": "Адрес банка:",
+      "accountNumber": "Номер счета:",
+      "swift": "SWIFT:",
+      "responsiblePerson": "Ответственное лицо:",
+      "deliveryAddress": "Адрес выдачи товара:",
+      "contactNumber": "Контактный телефон:",
+      "note": "Примечание:",
+      "seller": "Продавец:",
+      "wechat": "Wechat:",
+      "shopName": "Наименование магазина:",
+      "shopAddress": "Адрес магазина:",
+      "language": "Язык:"
+    }
+  },
+  "clients": {
+    "createClient": "Создать клиента",
+    "clientsDebt": "Долг клиента",
+    "currentDealsAmount": "Количество текущих сделок",
+    "companyName": "Название компании",
+    "phone": "Телефон",
+    "contactPerson": "Контактное лицо",
+    "uid": "УНК"
+  },
+  "client": {
+    "save": "Сохранить",
+    "saveAsPattern": "Сохранить как шаблон",
+    "backToClientsList": "Обратно к списку клиентов",
+    "clientCard": "Карточка клиента",
+    "edit": "Редактировать",
+    "clientCardPatterns": "Шаблон карточки клиента",
+    "legalPerson": "Юридическое лицо",
+    "naturalPerson": "Физическое лицо",
+    "legalPersonAbr": "Юр. лицо",
+    "naturalPersonAbr": "Физ. лицо",
+    "note": "Примечание",
+    "shippingInfo": "Информация для отгрузки",
+    "language": "Язык",
+    "languageAndRegion": "Язык и регион",
+    "languageDescription": "Язык используемый для отправки sms и  email",
+    "label": {
       "uid": "Уникальный номер клиента(УНК)",
       "uidAbr": "УНК",
       "firstName": "Имя",
@@ -400,204 +448,7 @@
       "password": "Пароль",
       "language": "Язык"
     },
-    "requisites": {
-      "companyName": "Название компании",
-      "companyNameEng": "Название компании на английском",
-      "legalAddress":"Юридический адрес",
-      "legalAddressPostCode":"Индекс юридического адреса",
-      "mailingAddress": "Почтовый адрес",
-      "mailingAddressPostCode": "Индекс почтового адреса",
-      "phone": "Телефон",
-      "fax": "Факс",
-      "email": "Электронная почта",
-      "itn": "ИНН",
-      "iec": "КПП",
-      "psrn": "ОГРН",
-      "bankName":"Наименование банка",
-      "bankAddress": "Адрес банка",
-      "bankAccountNumber": "Номер расчетного счета",
-      "correspondentAccountNumber": "Номер корреспондентского счета",
-      "bic": "БИК",
-      "okpo": "ОКПО",
-      "swift": "SWIFT",
-      "fullName": "ФИО (указывается во всех документах)",
-      "position": "Должность (указывается во всех документах)"
-    }
-  },
-  "suppliers": {
-    "supplier": "Поставщик",
-    "createSupplier": "Создать поставщика",
-    "companyName": "Название компании",
-    "phone": "Телефон",
-    "address": "Адрес",
-    "contactPerson": "Контактное лицо",
-    "inn": "ИНН",
-    "suppliersDebt": "Ваш долг перед компанией",
-    "currentDealsAmount": "Количество текущих сделок"
-  },
-  "supplier": {
-    "supplierCard": "Карточка поставщика",
-    "edit": "Редактировать",
-    "supplierCardPatterns": "Шаблон карточки поставщика",
-    "legalPerson": "Юридическое лицо",
-    "legalPersonAbr": "Юр. лицо",
-    "shops": "Магазины",
-    "note": "Примечание",
-    "save":"Сохранить",
-    "saveAsPattern": "Сохранить как шаблон",
-    "backToSuppliersList": "Обратно к списку поставщиков",
-    "addAddress": "Добавить доп. адрес",
-    "storage": "Склад",
-    "language": "Язык",
-    "languageAndRegion": "Язык и регион",
-    "languageDescription": "Язык используемый для отправки sms и  email"
-  },
-  "clients": {
-    "createClient": "Создать клиента",
-    "clientsDebt": "Долг клиента",
-    "currentDealsAmount": "Количество текущих сделок"
-  },
-  "client": {
-    "save": "Сохранить",
-    "saveAsPattern": "Сохранить как шаблон",
-    "backToClientsList": "Обратно к списку клиентов",
-    "clientCard": "Карточка клиента",
-    "edit": "Редактировать",
-    "clientCardPatterns": "Шаблон карточки клиента",
-    "legalPerson": "Юридическое лицо",
-    "naturalPerson": "Физическое лицо",
-    "legalPersonAbr": "Юр. лицо",
-    "naturalPersonAbr": "Физ. лицо",
-    "note": "Примечание",
-    "shippingInfo": "Информация для отгрузки",
-    "language": "Язык",
-    "languageAndRegion": "Язык и регион",
-    "languageDescription": "Язык используемый для отправки sms и  email"
-  },
-  "comments": {
-    "enterComment": "Введите комментарий...",
-    "enterReply": "Введите ответ..."
-  },
-  "roles": {
-    "owner": "Руководитель",
-    "manager": "Менеджер",
-    "accountant": "Бухгалтер",
-    "freelancer": "Фрилансер",
-    "warehouseman": "Складчик"
-  },
-  "currency": {
-    "CNY": {
-      "label": "Chinese Yuan Renminbi",
-      "iso-4217": "CNY",
-      "symbol": "¥"
-    },
-    "RUB": {
-      "label": "Russian ruble",
-      "iso-4217": "RUB",
-      "symbol": "₽"
-    }
-  },
-  "measure": {
-    "kg": "кг",
-    "m": "м",
-    "mm": "мм",
-    "pkg": "грузовых мест",
-    "unit": "ед."
-  },
-  "action": {
-    "copyLink": "Копировать ссылку",
-    "post": "Отправить",
-    "invite": "Пригласить",
-    "dontSave": "Не сохранять",
-    "cancel": "Отмена",
-    "apply": "Применить",
-    "save": "Сохранить",
-    "create": "Создать",
-    "loading": "Загрузка",
-    "collapse": "Свернуть",
-    "collapseAll": "Свернуть все",
-    "expand": "Развернуть",
-    "expandAll": "Развернуть все",
-    "resend": "Отправить повторно",
-    "register": "Зарегистрируйтесь",
-    "login": "Войти",
-    "logout": "Выйти",
-    "resendCode": "Отправить код еще раз",
-    "toHome": "На главную",
-    "getLink": "Получить ссылку",
-    "change": "Сменить",
-    "createPatternName": "Придумайте название шаблону",
-    "fillLater": "Заполнить позже"
-  },
-  "message": {
-    "userNotConfirmed": "Пользователь не подтвержден, ссылка с подтверждением у Вас на email.",
-    "linkCopied": "Ссылка скопирована в буфер обмена.",
-    "linkNotCopied": "Не удалось скопировать ссылку в буфер обмена.",
-    "emailResent": "Письмо отправлено повторно.",
-    "failedToSent": "Не удалось отправить.",
-    "authByGoogle": "Идет авторизация через google.",
-    "authByGoogleError": "Не удалось получить данные профиля с google.",
-    "notFoundStart": "Извините, страница,",
-    "notFoundEnd": "которую вы ищите, не была найдена.",
-    "emailSent": "На адрес электронной почты {email} направлена письмо.",
-    "passwordChanged": "Пароль изменен.",
-    "emailConfirmed": "Email подтвержден.",
-    "emailAlreadyConfirmed": "Email был подтвержден ранее.",
-    "incorrectRestorePassword": "Не корректный запрос смены пароля."
-  },
-  "alert": {
-    "attention": "Внимание!",
-    "removeDeal": "Вы действительно хотите удалить сделку?",
-    "removeInvoice": "Вы действительно хотите удалить накладную?",
-    "removeProduct": "Вы действительно хотите удалить товар?",
-    "removeClient": "Вы действительно хотите удалить клиента?",
-    "removeSupplier": "Вы действительно хотите удалить поставщика?",
-    "removeRequisites": "Вы действительно хотите удалить реквизиты?",
-    "removeContract": "Вы действительно хотите удалить документ?"
-  },
-  "preposition": {
-    "from": "от",
-    "and": "и",
-    "or": "или",
-    "through": "через"
-  },
-  "placeholder": {
-    "notIndicated": "не указано",
-    "notChosen": "не выбрано",
-    "emptyDate": "--.--.----",
-    "emptyText": "----",
-    "emptyNumber": "-",
-    "pageSearch": "быстрый поиск по странице",
-    "supplier": {
-      "companyName": "Название компании:",
-      "companyNameSl": "Название компании(sl.):*",
-      "companyNameCl": "Название компании(cl.):*",
-      "website": "Web-сайт:*",
-      "companyType": "Тип компании:*",
-      "fieldOfActivity": "Сфера деятельности:*",
-      "manufacturersAddress": "Адрес производства:",
-      "manager": "Менеджер:",
-      "workPhone": "Рабочий телефон:",
-      "mobilePhone": "Мобильный телефон:",
-      "email": "Электронная почта:",
-      "skype": "Skype:",
-      "qq": "QQ:",
-      "bankName": "Наименование банка:",
-      "payeesBankName": "Наименование банка получателя:",
-      "bankAddress": "Адрес банка:",
-      "accountNumber": "Номер счета:",
-      "swift": "SWIFT:",
-      "responsiblePerson": "Ответственное лицо:",
-      "deliveryAddress": "Адрес выдачи товара:",
-      "contactNumber": "Контактный телефон:",
-      "note": "Примечание:",
-      "seller": "Продавец:",
-      "wechat": "Wechat:",
-      "shopName": "Наименование магазина:",
-      "shopAddress": "Адрес магазина:",
-      "language": "Язык:"
-    },
-    "client": {
+    "placeholder": {
       "uid": "Уникальный номер клиента:",
       "uidAbr": "УНК:",
       "companyName": "Наименование компании:",
@@ -637,10 +488,85 @@
       "additionalPhone": "Дополнительный номер:",
       "address": "Адрес прописки:",
       "language": "Язык:"
-    },
-    "requisites": {
-      "fillFields": "Заполните поле"
     }
+  },
+  "notFound": {
+    "title": "Извините, страница,",
+    "subtitle": "которую вы ищите, не была найдена.",
+    "toHome": "На главную"
+  },
+  "paper": {
+    "supplyContract": "«Договор Поставки»",
+    "paperConfigurator": "Конструктор документов (список)",
+    "createPaper": "Создать документ",
+    "name": "Название документа",
+    "heading": "Заголовок документа",
+    "date": "Дата (автоматически)",
+    "location": "Город/Страна",
+    "textField": "Текстовое поле",
+    "contractHeader": "Использовать страндартную шапку документа",
+    "paragraph": "Абзац",
+    "paragraphHeading": "Заголовок абзаца",
+    "addParagraph": "Добавить абзац",
+    "addHeading": "Добавить заголовок",
+    "details": "Реквизиты сторон",
+    "deliveryItem": "Предмет поставки",
+    "specification": "Спецификация",
+    "to": "к",
+    "specNumber": "Номер документа проставляется автоматически при выводе на печать и состоит из номера клиента (Например: A0097) и даты создания спецификации. Если в один день было создано несколько спецификаций для одного и того же клиента добавляется порядковый номер (Например: 1, 2, 3 ... n).",
+    "paperDate": "Дата документа проставляется автоматически при выводе на печать и соответсвует дате создания спецификации в разделе «Мои сделки».",
+    "table": "В этой области будет автоматически сгенерированна таблица с перечнем \nтоваров, их количество и окончательная стоимость, рассчитанная в соответствии \nс установленным курсом валют для финансовых документов." ,
+    "buyerDetails": "Реквизиты покупателя будут подставлены автоматически при выводе документов на печать и будут соответствовать клиенту, указанному в текщей спецификации." ,
+    "addRequisites": "Добавить реквизиты",
+    "requisites": {
+      "supplier": "Поставщик:",
+      "address": "Адрес:",
+      "postcode": "Индекс:",
+      "phone": "Телефон:",
+      "fax": "Факс:",
+      "email": "E-mail:",
+      "bank": "Банк получателя",
+      "bankAddress": "Адрес банка:",
+      "accountNumber": "Номер счета:",
+      "swift": "SWIFT:",
+      "fullName": "ФИО:",
+      "position": "Должность:",
+      "signatureStamp": "Подпись / Печать:"
+    }
+  },
+  "print": {},
+  "welcomeModal": {
+    "head": "Добро пожаловать в zennnn",
+    "title": "Круто, что ты зарегистрировался в zennnn!",
+    "content": "Для продолжения работы мы рекомендуем заполнить реквизиты твоей компании, они пригодятся, когда нужно будет автоматически подготовить какие-либо документы.",
+    "footer": "Этот шаг можно пропустить. В будущем реквизиты компании можно будет заполнить в разделе",
+    "footerInMenu": "в главном меню.",
+    "myCompanies": "«Мои компании»",
+    "fillRequisites": "Заполнить реквизиты"
+  },
+  "comments": {
+    "enterComment": "Введите комментарий...",
+    "enterReply": "Введите ответ...",
+    "post": "Отправить"
+  },
+  "statusBar": {
+    "requisites": "Реквизиты",
+    "myCompanies": "Мои компании",
+    "signout": "Выйти",
+    "role": {
+      "OWNER": "Руководитель",
+      "MANAGER": "Менеджер",
+      "ACCOUNTANT": "Бухгалтер",
+      "WAREHOUSEMAN": "Складчик",
+      "FREELANCER": "Фрилансер"
+    }
+  },
+  "navbar": {
+    "deals": "Мои сделки",
+    "clients": "Клиенты",
+    "suppliers": "Поставщики",
+    "staff": "Сотрудники",
+    "goods": "Товары"
   },
   "dataTable": {
     "noData": "Отсутствуют данные",
@@ -655,5 +581,137 @@
     "noData": "Отсутствуют данные",
     "noResult": "Не найдено подходящих записей"
   },
-  "error": {}
+  "currency": {
+    "CNY": {
+      "label": "Chinese Yuan Renminbi",
+      "iso-4217": "CNY",
+      "symbol": "¥"
+    },
+    "RUB": {
+      "label": "Russian ruble",
+      "iso-4217": "RUB",
+      "symbol": "₽"
+    }
+  },
+  "measure": {
+    "kg": "кг",
+    "m": "м",
+    "mm": "мм",
+    "pkg": "грузовых мест",
+    "unit": "ед."
+  },
+  "action": {
+    "cancel": "Отмена",
+    "apply": "Применить",
+    "save": "Сохранить",
+    "create": "Создать",
+    "loading": "Загрузка",
+    "collapse": "Свернуть",
+    "collapseAll": "Свернуть все",
+    "expand": "Развернуть",
+    "expandAll": "Развернуть все",
+    "dontSave": "Не сохранять",
+    "createPatternName": "Придумайте название шаблону"
+  },
+  "message": {
+    "userNotConfirmed": "Пользователь не подтвержден, ссылка с подтверждением у Вас на email.",
+    "linkCopied": "Ссылка скопирована в буфер обмена.",
+    "linkNotCopied": "Не удалось скопировать ссылку в буфер обмена.",
+    "emailResent": "Письмо отправлено повторно.",
+    "failedToSent": "Не удалось отправить.",
+    "authByGoogle": "Идет авторизация через google.",
+    "authByGoogleError": "Не удалось получить данные профиля с google.",
+    "emailSent": "На адрес электронной почты {email} направлена письмо.",
+    "passwordChanged": "Пароль изменен.",
+    "emailConfirmed": "Email подтвержден.",
+    "emailAlreadyConfirmed": "Email был подтвержден ранее.",
+    "incorrectRestorePassword": "Не корректный запрос смены пароля."
+  },
+  "alert": {
+    "attention": "Внимание!",
+    "removeDeal": "Вы действительно хотите удалить сделку?",
+    "removeInvoice": "Вы действительно хотите удалить накладную?",
+    "removeProduct": "Вы действительно хотите удалить товар?",
+    "removeClient": "Вы действительно хотите удалить клиента?",
+    "removeSupplier": "Вы действительно хотите удалить поставщика?",
+    "removeRequisites": "Вы действительно хотите удалить реквизиты?",
+    "removeContract": "Вы действительно хотите удалить документ?"
+  },
+  "rule": {
+    "passwordsDoNotMatch": "Введенные пароли не совпадают."
+  },
+  "preposition": {
+    "from": "от",
+    "and": "и",
+    "or": "или",
+    "through": "через"
+  },
+  "label": {
+    "saveAsPattern": "Сохранить как шаблон",
+    "template": "Шаблоны",
+    "defaultTemplateName": "Шаблон (по умолчанию)",
+    "saveChangesBeforeClose": "Сохранить изменения в документе перед закрытием?",
+    "saveDocChangesBeforeClose": "Сохранить изменения в документе {doc} перед закрытием?",
+    "saveChangesHint": "Если не сохранить, изменения будут утрачены."
+  },
+  "placeholder": {
+    "notIndicated": "не указано",
+    "notChosen": "не выбрано",
+    "emptyDate": "--.--.----",
+    "emptyText": "----",
+    "emptyNumber": "-",
+    "pageSearch": "быстрый поиск по странице"
+  },
+  "role": {
+    "OWNER": "Директор",
+    "MANAGER": "Менеджер",
+    "ACCOUNTANT": "Бухгалтер",
+    "WAREHOUSEMAN": "Склад",
+    "FREELANCER": "Фрилансер"
+  },
+  "shipmentType": {
+    "UNDEFINED": "не определено",
+    "MARINE": "Морская",
+    "AIR": "Авиа",
+    "RAILWAY": "Железнодорожная",
+    "CAR": "Автомобильная",
+    "MIXED": "Смешанная",
+    "EXPRESS": "Экспресс / Почтовое отправление"
+  },
+  "customsTerms": {
+    "EXW": "EXW",
+    "FCA": "FCA",
+    "CPT": "CPT",
+    "CIP": "CIP",
+    "DAT": "DAT",
+    "DAP": "DAP",
+    "DDP": "DDP",
+    "FAS": "FAS",
+    "FOB": "FOB",
+    "CFR": "CFR",
+    "CIF": "CIF"
+  },
+  "productStatus": {
+    "IN_PROCESSING": "Обрабатывается",
+    "IN_PRODUCTION": "В производстве",
+    "IN_STOCK": "На складе"
+  },
+  "countries": {
+    "RU": {
+      "name": "Россия",
+      "iso-3": "RUS"
+    },
+    "UA": {
+      "name": "Украина",
+      "iso-3": "UKR"
+    },
+    "CN": {
+      "name": "Китай",
+      "iso-3": "CHN"
+    },
+    "US": {
+      "name": "США",
+      "iso-3": "USA"
+    }
+  }
 }

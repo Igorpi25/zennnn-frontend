@@ -12,19 +12,19 @@
           <template v-slot:text>
             <span>{{ $t('signin.noAccount') }}</span>
           </template>
-          <span>{{ $t('action.register') }}</span>
+          <span>{{ $t('signin.signup') }}</span>
         </Button>
         <div class="mb-8">
           <div class="w-full">
             <h1 class="headline">
-              <span>{{ $t('signin.welcome') }}</span>
-              <span>{{ $t('signin.welcomeMiddle') }}&nbsp;
+              <span>{{ $t('signin.welcomeHead') }}</span>
+              <span>{{ $t('signin.welcomeSubhead') }}&nbsp;
                 <span class="block sm:inline">{{ $t('signin.welcomeContent') }}</span>
               </span>
             </h1>
             <Form
               ref="form"
-              :title="$t('signin.loginByPhone')"
+              :title="$t('signinByPhone.loginByPhone')"
               :error-message.sync="errorMessage"
               rounded
               shadow
@@ -38,7 +38,7 @@
               <div class="w-full sm:w-1/2 sm:pr-2">
                 <TextField
                   v-model="formModel.phone"
-                  :label="$t('signin.phoneNumber')"
+                  :label="$t('signinByPhone.phoneNumber')"
                   name="phone"
                   autofocus
                   required
@@ -47,7 +47,7 @@
               <div class="w-full sm:w-1/2 sm:pl-2">
                 <TextField
                   v-model="formModel.smsCode"
-                  :label="$t('signin.smsCode')"
+                  :label="$t('signinByPhone.smsCode')"
                   type="tel"
                   name="smsCode"
                   required
@@ -59,7 +59,7 @@
                   secondary
                   @click.prevent
                 >
-                  <span>{{ $t('action.resendCode') }}</span>
+                  <span>{{ $t('signinByPhone.resendCode') }}</span>
                 </Button>
               </div>
               <template v-slot:append>
@@ -73,7 +73,7 @@
                     {{ $t('action.loading') }}
                   </span>
                   <span v-else>
-                    {{ $t('action.login') }}
+                    {{ $t('signinByPhone.submit') }}
                   </span>
                 </Button>
                 <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-no-wrap">

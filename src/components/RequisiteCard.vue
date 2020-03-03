@@ -16,8 +16,8 @@
       max-width="520"
     >
       <SaveBeforeCloseModal
-        :text=" `${$t('paper.saveChanges')}${$t('paper.beforeClosing')}`"
-        :postScriptum="$t('paper.ifNotSave')"
+        :text="$t('label.saveChangesBeforeClose')"
+        :postScriptum="$t('label.saveChangesHint')"
         @dontSave="$emit('confirm', 1)"
         @cancel="saveBeforeCloseDialog = false"
         @save="$emit('confirm', 2)"
@@ -40,10 +40,10 @@
         class="mb-6 mx-auto md:mr-0 md:ml-auto"
         @click="$router.push({ name: 'home' })"
       >
-        <span>{{ $t('action.fillLater') }}</span>
+        <span>{{ $t('requisite.fillLater') }}</span>
       </Button>
       <header class="requisite-header">
-        <span class="requisite-header__title">{{ $t('requisites.requisitesOfMyCompany') }}</span>
+        <span class="requisite-header__title">{{ $t('requisite.requisitesOfMyCompany') }}</span>
       </header>
       <div class="requisite-card__radio-group">
         <RadioButton
@@ -54,7 +54,7 @@
           class="w-1/2 mr-2 text-sm"
           @input="cardType = requisiteType.ABOUT"
         >
-          <span>{{ $t('requisites.about') }}</span>
+          <span>{{ $t('requisite.about') }}</span>
         </RadioButton>
         <RadioButton
           :value="cardType"
@@ -64,13 +64,13 @@
           class="w-4/5 text-sm"
           @input="cardType = requisiteType.BANK"
         >
-          <span>{{ $t('requisites.bankDetails') }}</span>
+          <span>{{ $t('requisite.bankDetails') }}</span>
         </RadioButton>
       </div>
       <div class="flex justify-between">
         <TemplateCard
           template-name="requisite"
-          :title="$t('requisites.about')"
+          :title="$t('requisite.about')"
           :class="{ 'requisite-template-card': isBank }"
         >
           <template v-slot:items>
@@ -84,7 +84,7 @@
                   v-if="item.subtitle"
                   class="text-gray-lightest px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
                 >
-                  {{ $t(`requisites.${item.subtitle}`) }}
+                  {{ $t(`requisite.${item.subtitle}`) }}
                 </div>
               </div>
               <div
@@ -94,13 +94,13 @@
                 <div class="card__col-left card__col-left--full-width">
                   <label
                     class="truncate text-left"
-                    :title="$t(`label.requisites.${item.label || key}`)"
+                    :title="$t(`requisite.label.${item.label || key}`)"
                   >
-                    {{ $t(`label.requisites.${item.label || key}`) }}
+                    {{ $t(`requisite.label.${item.label || key}`) }}
                   </label>
                   <TextField
                     :value="requisite[key]"
-                    :placeholder="$t('placeholder.requisites.fillFields')"
+                    :placeholder="$t('requisite.placeholder.fillFields')"
                     squared
                     colored-faded
                     hide-details
@@ -127,7 +127,7 @@
         </TemplateCard>
         <TemplateCard
           template-name="requisite"
-          :title="$t('requisites.bankDetails')"
+          :title="$t('requisite.bankDetails')"
           :class="{ 'requisite-template-card': !isBank }"
         >
           <template v-slot:items>
@@ -141,7 +141,7 @@
                   v-if="item.subtitle"
                   class="text-gray-lightest px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
                 >
-                  {{ $t(`requisites.${item.subtitle}`) }}
+                  {{ $t(`requisite.${item.subtitle}`) }}
                 </div>
               </div>
               <div
@@ -156,13 +156,13 @@
                 >
                   <label
                     class="truncate text-left"
-                    :title="$t(`label.requisites.${item.label || key}`)"
+                    :title="$t(`requisite.label.${item.label || key}`)"
                   >
-                    {{ $t(`label.requisites.${item.label || key}`) }}
+                    {{ $t(`requisite.label.${item.label || key}`) }}
                   </label>
                   <TextField
                     :value="requisite[key]"
-                    :placeholder="$t('placeholder.requisites.fillFields')"
+                    :placeholder="$t('requisite.placeholder.fillFields')"
                     squared
                     colored-faded
                     hide-details

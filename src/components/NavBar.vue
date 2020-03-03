@@ -83,7 +83,7 @@
         >
           {{ icons.mdiArrowLeft }}
         </Icon>
-        {{ $t('requisites.requisites') }}
+        {{ $t('statusBar.requisites') }}
       </div>
     </router-link>
     <router-link

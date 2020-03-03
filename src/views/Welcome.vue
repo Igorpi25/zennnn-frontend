@@ -13,7 +13,7 @@
             <template v-slot:text>
               <span>{{ $t('welcome.hasAccount') }}</span>
             </template>
-            <span>{{ $t('action.login') }}</span>
+            <span>{{ $t('welcome.signin') }}</span>
           </Button>
           <div class="mb-8 md:mb-32">
             <div class="w-full flex-grow">
@@ -42,7 +42,7 @@
                     class="inline-block"
                     @click.prevent="resendSignUp"
                   >
-                    <span>{{ $t('action.resend') }}</span>
+                    <span>{{ $t('welcome.resend') }}</span>
                   </Button>
                 </p>
               </div>

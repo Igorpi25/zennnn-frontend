@@ -560,7 +560,7 @@
           <Button
             @click="copyLink"
           >
-            {{ $t('action.copyLink') }}
+            {{ $t('shipping.copyLink') }}
           </Button>
         </template>
         <template>

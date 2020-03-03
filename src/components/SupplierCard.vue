@@ -36,8 +36,8 @@
       max-width="520"
     >
       <SaveBeforeCloseModal
-        :text=" `${$t('paper.saveChanges')}${$t('paper.beforeClosing')}`"
-        :postScriptum="$t('paper.ifNotSave')"
+        :text="$t('label.saveChangesBeforeClose')"
+        :postScriptum="$t('label.saveChangesHint')"
         @dontSave="$emit('confirm', 1)"
         @cancel="saveBeforeCloseDialog = false"
         @save="$emit('confirm', 2)"
@@ -143,7 +143,7 @@
                     class="mb-4 mx-auto"
                     @click="edit"
                   >
-                    <span>{{ $t('client.edit') }}</span>
+                    <span>{{ $t('supplier.edit') }}</span>
                   </Button>
                   <Button
                     v-else
@@ -152,7 +152,7 @@
                     class="mb-4 mx-auto"
                     @click="update"
                   >
-                    <span>{{ $t('client.save') }}</span>
+                    <span>{{ $t('supplier.save') }}</span>
                   </Button>
                   <Button
                     text
@@ -195,7 +195,7 @@
                       </div>
                       <TextField
                         :value="shop.template && shop.template['name']"
-                        :placeholder="(shop.template && shop.template['name']) || `${$t('placeholder.supplier.shopName')}`"
+                        :placeholder="(shop.template && shop.template['name']) || `${$t('supplier.placeholder.shopName')}`"
                         :disabled="!expanded.includes(index)"
                         squared
                         hide-details
@@ -228,10 +228,10 @@
                           class="card__col-left card__col-left--shops"
                           :key="key"
                         >
-                          <label>{{ $t(`label.supplier.${f.label || key}`) }}</label>
+                          <label>{{ $t(`supplier.label.${f.label || key}`) }}</label>
                           <TextField
                             :value="shop.template && shop.template[key]"
-                            :placeholder="(shop.template && shop.template[key]) || $t(`placeholder.supplier.${f.label || key}`)"
+                            :placeholder="(shop.template && shop.template[key]) || $t(`supplier.placeholder.${f.label || key}`)"
                             squared
                             hide-details
                             class="pt-0 template-card__label"

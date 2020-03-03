@@ -4,33 +4,34 @@
       <!-- <Icon size="28">{{ icons.ziAlert }}</Icon> -->
       <div style="width:28px; height:28px; background-color:#aaa; color:#000"></div>
       <span class="ml-3">
-        Добро пожаловать в zennnn
+        {{ $t('welcomeModal.head') }}
       </span>
     </div>
     <div class="modal-body text-center text-sm sm:text-left sm:text-base">
-        <p>Круто, что ты зарегистрировался в zennnn!</p>
+        <p>{{ $t('welcomeModal.title') }}</p>
         <br>
         <p>
-          Для продолжения работы мы рекомендуем заполнить реквизиты
-          твоей компании, они пригодятся, когда нужно будет автоматически
-          подготовить какие-либо документы.
+          {{ $t('welcomeModal.content') }}
         </p>
         <br>
         <p>
-          Этот шаг можно пропустить. В будущем реквизиты компании можно
-          будет заполнить в разделе
-          «<router-link
-            :to="{name: 'home'}"
+          {{ $t('welcomeModal.footer') }}
+          &nbsp;
+          <router-link
+            :to="{ name: 'home' }"
             class="text-primary"
-            >Мои компании</router-link>»
-           в главном меню.
+          >
+            {{ $t('welcomeModal.myCompanies') }}
+          </router-link>
+          &nbsp;
+          {{ $t('welcomeModal.footerInMenu') }}
         </p>
         <Button
           large
           class="mt-10 mb-4 mx-auto"
           @click="$emit('close')"
         >
-          <span>Заполнить реквизиты</span>
+          <span>{{ $t('welcomeModal.fillRequisites') }}</span>
         </Button>
       </div>
       <span class="close-btn" @click="$emit('close')">

@@ -112,7 +112,7 @@
             <div class="pb-4">
               <div class="w-4/6 pr-2">
                 <label class="text-sm">
-                  <span>{{ $t('label.client.fax') }}</span>
+                  <span>{{ $t('client.label.fax') }}</span>
                 </label>
                 <TextField
                   :value="requisite.fax"
@@ -129,7 +129,7 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('label.supplier.email') }}</span>
+                <span>{{ $t('supplier.label.email') }}</span>
               </label>
               <TextField
                 :value="requisite.email"
@@ -152,7 +152,7 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('label.supplier.website') }}</span>
+                <span>{{ $t('supplier.label.website') }}</span>
               </label>
               <TextField
                 :value="requisite.website"
@@ -171,7 +171,7 @@
           <div class="w-full sm:w-1/2 px-3">
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('label.client.bankName') }}</span>
+                <span>{{ $t('client.label.bankName') }}</span>
               </label>
               <TextField
                 :value="requisite.bankName"
@@ -194,7 +194,7 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('label.client.bankAddress') }}</span>&nbsp;
+                <span>{{ $t('client.label.bankAddress') }}</span>&nbsp;
                 <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
@@ -218,7 +218,7 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('label.supplier.accountNumber') }}</span>
+                <span>{{ $t('supplier.label.accountNumber') }}</span>
               </label>
               <TextField
                 :value="requisite.bankAccountNumber"
@@ -241,7 +241,7 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('label.client.swift') }}</span>
+                <span>{{ $t('client.label.swift') }}</span>
               </label>
               <TextField
                 :value="requisite.swift"
@@ -264,7 +264,7 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('label.client.itn') }} / {{ $t('shipping.vat') }}</span>
+                <span>{{ $t('client.label.itn') }} / {{ $t('shipping.vat') }}</span>
               </label>
               <TextField
                 :value="requisite.itn"
@@ -281,7 +281,7 @@
             <div class="pb-4 flex">
               <div class="w-2/5 pr-2">
                 <label class="text-sm">
-                  <span>{{ $t('label.client.bic') }}</span>
+                  <span>{{ $t('client.label.bic') }}</span>
                 </label>
                 <TextField
                   :value="requisite.bic"
@@ -297,7 +297,7 @@
               </div>
               <div class="w-3/5">
                 <label class="text-sm">
-                  <span>{{ $t('label.client.okpo') }}</span>
+                  <span>{{ $t('client.label.okpo') }}</span>
                 </label>
                 <TextField
                   :value="requisite.okpo"
@@ -370,7 +370,7 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('label.client.contactPerson') }}</span>
+                <span>{{ $t('client.label.contactPerson') }}</span>
               </label>
               <TextField
                 :value="client.contactPerson"
@@ -421,7 +421,7 @@
             <div class="pb-4">
               <div class="w-4/6 pr-2">
                 <label class="text-sm">
-                  <span>{{ $t('label.client.fax') }}</span>
+                  <span>{{ $t('client.label.fax') }}</span>
                 </label>
                 <TextField
                   :value="client.fax"
@@ -439,7 +439,7 @@
             <div class="pb-4">
               <div>
                 <label class="text-sm">
-                  <span>{{ $t('label.supplier.email') }}</span>
+                  <span>{{ $t('supplier.label.email') }}</span>
                 </label>
                 <TextField
                   :value="client.email"
@@ -525,7 +525,7 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('label.client.contactPerson') }}</span>
+                <span>{{ $t('client.label.contactPerson') }}</span>
               </label>
               <TextField
                 :value="client.contactPerson"
@@ -578,7 +578,7 @@
             <div class="pb-4">
               <div class="w-4/6 pr-2">
                 <label class="text-sm">
-                  <span>{{ $t('label.client.fax') }}</span>
+                  <span>{{ $t('client.label.fax') }}</span>
                 </label>
                 <TextField
                   :value="client.importerFax"
@@ -597,7 +597,7 @@
             <div class="pb-4">
               <div>
                 <label class="text-sm">
-                  <span>{{ $t('label.supplier.email') }}</span>
+                  <span>{{ $t('supplier.label.email') }}</span>
                 </label>
                 <TextField
                   :value="client.importerEmail"

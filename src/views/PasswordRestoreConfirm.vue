@@ -8,11 +8,11 @@
             <div class="w-full">
               <h1 class="text-center md:text-left mb-0 md:mb-8 pt-10 md:pt-12">
                 <span class="text-white md:text-gray-lightest">
-                  {{ $t('passwordRestore.changePasswordStart') }}
+                  {{ $t('passwordRestoreConfirm.changePasswordHead') }}
                 </span>
                 <br />
                 <span class="text-gray-lightest md:text-white">
-                  {{ $t('passwordRestore.changePasswordEnd') }}
+                  {{ $t('passwordRestoreConfirm.changePasswordSubhead') }}
                 </span>
               </h1>
               <Form
@@ -26,7 +26,7 @@
                 <div class="w-full sm:w-1/2 sm:pr-2">
                   <TextField
                     v-model="formModel.password"
-                    :label="$t('passwordRestore.newPassword')"
+                    :label="$t('passwordRestoreConfirm.newPassword')"
                     :type="showPassword ? 'text' : 'password'"
                     name="password"
                     required
@@ -54,7 +54,7 @@
                 <div class="w-full sm:w-1/2 sm:pl-2">
                   <TextField
                     v-model="formModel.passwordConfirm"
-                    :label="$t('passwordRestore.newPasswordConfirm')"
+                    :label="$t('passwordRestoreConfirm.newPasswordConfirm')"
                     :type="showConfirmPassword ? 'text' : 'password'"
                     :rules="confirmRules"
                     name="password"
@@ -90,7 +90,7 @@
                       {{ $t('action.loading') }}
                     </span>
                     <span v-else>
-                      {{ $t('action.change') }}
+                      {{ $t('passwordRestoreConfirm.submit') }}
                     </span>
                   </Button>
                 </template>
@@ -140,7 +140,7 @@ export default {
         mdiEyeOffOutline,
       },
       confirmRules: [
-        v => (v && v === this.formModel.password) || this.$t('passwordRestore.passwordsDoNotMatch'),
+        v => (v && v === this.formModel.password) || this.$t('rule.passwordsDoNotMatch'),
       ],
     }
   },

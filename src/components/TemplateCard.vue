@@ -39,20 +39,20 @@
                 class="card__col-left"
               >
                 <div v-if="field.labelReadonly" class="text-gray-dark text-left lg:text-right px-2">
-                  {{ $t(`placeholder.${templateName}.${field.label || key}`) }}
+                  {{ $t(`${templateName}.placeholder.${field.label || key}`) }}
                 </div>
                 <div v-else>
                   <label
                     class="truncate"
                     :class="{ 'visibility-hidden opacity-0': isDisabled }"
-                    :title="$t(`label.${templateName}.${field.label || key}`)"
+                    :title="$t(`${templateName}.label.${field.label || key}`)"
                   >
-                    {{ $t(`label.${templateName}.${field.label || key}`) }}
+                    {{ $t(`${templateName}.label.${field.label || key}`) }}
                   </label>
                   <TextField
                     :disabled="isDisabled"
                     :value="item.template && item.template[key]"
-                    :placeholder="(item.template && item.template[key]) || $t(`placeholder.${templateName}.${field.placeholder || key}`)"
+                    :placeholder="(item.template && item.template[key]) || $t(`${templateName}.placeholder.${field.placeholder || key}`)"
                     squared
                     hide-details
                     class="pt-0 template-card__label"
@@ -71,7 +71,7 @@
                   <label :class="{ 'visibility-hidden opacity-0': isDisabled }">
                     <span
                       v-if="field.label"
-                      v-html="$t(`label.${templateName}.${field.label}`)"
+                      v-html="$t(`${templateName}.label.${field.label}`)"
                     />
                   </label>
                   <TextArea

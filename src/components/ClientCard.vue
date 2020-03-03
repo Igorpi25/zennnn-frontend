@@ -36,8 +36,8 @@
       max-width="520"
     >
       <SaveBeforeCloseModal
-        :text=" `${$t('paper.saveChanges')}${$t('paper.beforeClosing')}`"
-        :postScriptum="$t('paper.ifNotSave')"
+        :text="$t('label.saveChangesBeforeClose')"
+        :postScriptum="$t('label.saveChangesHint')"
         @dontSave="$emit('confirm', 1)"
         @cancel="saveBeforeCloseDialog = false"
         @save="$emit('confirm', 2)"

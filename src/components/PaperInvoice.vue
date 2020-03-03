@@ -65,7 +65,7 @@
                 ]"
               >
                 <span>
-                  {{ item.productStatus ? $t(`status.${item.productStatus}`) : '' }}
+                  {{ item.productStatus ? $t(`productStatus.${item.productStatus}`) : '' }}
                 </span>
               </span>
             </div>
