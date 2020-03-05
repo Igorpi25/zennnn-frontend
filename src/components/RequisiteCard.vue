@@ -280,6 +280,7 @@ export default {
         phone: {},
         fax: {},
         email: {},
+        website: {},
         itn: {},
         iec: {},
         psrn: {},

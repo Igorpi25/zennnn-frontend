@@ -38,6 +38,9 @@
       persistent
     >
       <PrintSettings
+        :org-id="orgId"
+        :spec-id="spec.id"
+        :requisite-id="spec.requisite"
         :client="spec.client || {}"
         :shipment="spec.shipment"
         :customs="spec.customs"

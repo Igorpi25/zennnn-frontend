@@ -238,10 +238,14 @@ export const CLIENT_FRAGMENT = gql`
     swift
     ownerFullName
     ownerJobPosition
+    importerActive
     consignee
     shippingAddress
     contactPerson
     contactMobilePhone
+    importerContactPerson
+    importerFax
+    importerEmail
     legalTypeNote
     # natural
     firstName
@@ -250,6 +254,7 @@ export const CLIENT_FRAGMENT = gql`
     passportId
     mobilePhone
     additionalPhone
+    naturalEmail
     address
     deliveryAddress
     naturalTypeNote
@@ -259,6 +264,7 @@ export const CLIENT_FRAGMENT = gql`
 export const SPEC_FRAGMENT = gql`
   fragment SpecFragment on Spec {
     id
+    requisite
     client {
       ...ClientFragment
     }
@@ -435,6 +441,7 @@ export const ORG_REQUISITE_FRAGMENT = gql`
     phone
     fax
     email
+    website
     itn
     iec
     psrn

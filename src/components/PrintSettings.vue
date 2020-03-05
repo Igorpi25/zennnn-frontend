@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-full px-2 py-6 text-gray-100"
+    class="flex flex-col relative w-full overflow-y-auto max-h-screen px-2 py-6 text-gray-100"
   >
     <!-- Header -->
     <div class="flex flex-col sm:flex-row px-3">
@@ -27,7 +27,7 @@
     <!-- Body -->
     <div class="py-6">
       <form ref="form" class="bg-gray-600 rounded py-6">
-        <!-- SUPPLIER -->
+        <!-- REQUISITE -->
         <h5 class="uppercase mb-3 px-3">
           <span class="inline-block font-bold">{{ $t('shipping.supplierTitle') }}</span>&nbsp;<span class="inline-block font-bold text-gray-light">{{ $t('shipping.supplierSubtitle') }}</span>
         </h5>
@@ -35,13 +35,15 @@
           <div class="w-full sm:w-1/2 px-3">
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('suppliers.companyName') }}</span>
+                <span>{{ $t('requisite.label.companyName') }}</span>
               </label>
               <Select
                 :value="requisite"
                 :placeholder="$t('placeholder.notIndicated')"
                 :nudge-bottom="32"
-                :items="listOrgRequisites || []"
+                :search.sync="requisiteSearch"
+                :items="requisites"
+                searchable
                 return-object
                 item-value="id"
                 item-text="name"
@@ -51,7 +53,14 @@
                 class="text-sm select_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 @input="setRequisite"
+                @click:append-item="createRequisite"
               >
+                <template v-slot:append-item>
+                  <span class="flex jusitfy-center">
+                    <Icon class="mr-1">{{ icons.mdiPlusCircleOutline }}</Icon>
+                    <span>{{ $t('action.create') }}</span>
+                  </span>
+                </template>
                 <template v-slot:append="{ isMenuOpen, toggle }">
                   <div class="text-primary cursor-pointer select-none" @click="toggle">
                     <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
@@ -62,13 +71,14 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('suppliers.address') }}</span>&nbsp;
+                <span>{{ $t('requisite.label.address') }}</span>&nbsp;
                 <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
                 :value="requisite.legalAddress"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
+                :disabled="!hasRequisite"
                 solo
                 squared
                 hide-details
@@ -87,12 +97,13 @@
             <div class="pb-4 flex">
               <div class="w-4/6 pr-2">
                 <label class="text-sm">
-                  <span>{{ $t('suppliers.phone') }}</span>
+                  <span>{{ $t('requisite.label.phone') }}</span>
                 </label>
                 <TextField
                   :value="requisite.phone"
                   :debounce="250"
                   :placeholder="'000 - 00 - 00'"
+                  :disabled="!hasRequisite"
                   solo
                   squared
                   hide-details
@@ -112,12 +123,13 @@
             <div class="pb-4">
               <div class="w-4/6 pr-2">
                 <label class="text-sm">
-                  <span>{{ $t('client.label.fax') }}</span>
+                  <span>{{ $t('requisite.label.fax') }}</span>
                 </label>
                 <TextField
                   :value="requisite.fax"
                   :debounce="250"
                   :placeholder="'000 - 00 - 00'"
+                  :disabled="!hasRequisite"
                   solo
                   squared
                   hide-details
@@ -129,12 +141,13 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('supplier.label.email') }}</span>
+                <span>{{ $t('requisite.label.email') }}</span>
               </label>
               <TextField
                 :value="requisite.email"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
+                :disabled="!hasRequisite"
                 solo
                 squared
                 hide-details
@@ -152,13 +165,13 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('supplier.label.website') }}</span>
+                <span>{{ $t('requisite.label.website') }}</span>
               </label>
               <TextField
                 :value="requisite.website"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
-                disabled
+                :disabled="!hasRequisite"
                 solo
                 squared
                 hide-details
@@ -171,12 +184,13 @@
           <div class="w-full sm:w-1/2 px-3">
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('client.label.bankName') }}</span>
+                <span>{{ $t('requisite.label.bankName') }}</span>
               </label>
               <TextField
                 :value="requisite.bankName"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
+                :disabled="!hasRequisite"
                 solo
                 squared
                 hide-details
@@ -194,13 +208,14 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('client.label.bankAddress') }}</span>&nbsp;
+                <span>{{ $t('requisite.label.bankAddress') }}</span>&nbsp;
                 <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
                 :value="requisite.bankAddress"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
+                :disabled="!hasRequisite"
                 solo
                 squared
                 hide-details
@@ -218,12 +233,13 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('supplier.label.accountNumber') }}</span>
+                <span>{{ $t('requisite.label.accountNumber') }}</span>
               </label>
               <TextField
                 :value="requisite.bankAccountNumber"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
+                :disabled="!hasRequisite"
                 solo
                 squared
                 hide-details
@@ -241,12 +257,13 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('client.label.swift') }}</span>
+                <span>{{ $t('requisite.label.swift') }}</span>
               </label>
               <TextField
                 :value="requisite.swift"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
+                :disabled="!hasRequisite"
                 solo
                 squared
                 hide-details
@@ -264,12 +281,13 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('client.label.itn') }} / {{ $t('shipping.vat') }}</span>
+                <span>{{ $t('requisite.label.itn') }} / {{ $t('shipping.vat') }}</span>
               </label>
               <TextField
                 :value="requisite.itn"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
+                :disabled="!hasRequisite"
                 solo
                 squared
                 hide-details
@@ -281,12 +299,13 @@
             <div class="pb-4 flex">
               <div class="w-2/5 pr-2">
                 <label class="text-sm">
-                  <span>{{ $t('client.label.bic') }}</span>
+                  <span>{{ $t('requisite.label.bic') }}</span>
                 </label>
                 <TextField
                   :value="requisite.bic"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
+                  :disabled="!hasRequisite"
                   solo
                   squared
                   hide-details
@@ -297,12 +316,13 @@
               </div>
               <div class="w-3/5">
                 <label class="text-sm">
-                  <span>{{ $t('client.label.okpo') }}</span>
+                  <span>{{ $t('requisite.label.okpo') }}</span>
                 </label>
                 <TextField
                   :value="requisite.okpo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
+                  :disabled="!hasRequisite"
                   solo
                   squared
                   hide-details
@@ -323,126 +343,50 @@
           <div class="w-full sm:w-1/2 px-3">
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('suppliers.companyName') }}</span>
+                <span>{{ $t('client.label.companyName') }}</span>
               </label>
-              <TextField
-                :value="client.companyName"
-                :debounce="250"
+              <Select
+                :value="specClient"
                 :placeholder="$t('placeholder.notIndicated')"
+                :nudge-bottom="32"
+                :search.sync="clientSearch"
+                :items="clients"
+                searchable
+                return-object
+                item-value="id"
+                item-text="name"
                 solo
                 squared
                 hide-details
-                class="text-sm text-field_nd"
+                class="text-sm select_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
-                required
-                @input="updateClient({ companyName: $event })"
+                @input="setSpecClient($event && $event.id)"
+                @click:append-item="createClient"
               >
-                <template v-slot:append>
-                  <span v-if="client.companyName" class="text-green-500">
-                    <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                <template v-slot:append-item>
+                  <span class="flex jusitfy-center">
+                    <Icon class="mr-1">{{ icons.mdiPlusCircleOutline }}</Icon>
+                    <span>{{ $t('action.create') }}</span>
                   </span>
                 </template>
-              </TextField>
-            </div>
-            <div class="pb-4">
-              <label class="text-sm">
-                <span>{{ $t('suppliers.address') }}</span>&nbsp;
-                <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
-              </label>
-              <TextField
-                :value="client.legalAddress"
-                :debounce="250"
-                :placeholder="$t('placeholder.notIndicated')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary placeholder-pink-500"
-                required
-                @input="updateClient({ legalAddress: $event })"
-              >
-                <template v-slot:append>
-                  <span v-if="client.legalAddress" class="text-green-500">
-                    <Icon size="14">{{ icons.mdiCheck }}</Icon>
-                  </span>
+                <template v-slot:append="{ isMenuOpen, toggle }">
+                  <div class="text-primary cursor-pointer select-none" @click="toggle">
+                    <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
+                    <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
+                  </div>
                 </template>
-              </TextField>
+              </Select>
             </div>
-            <div class="pb-4">
-              <label class="text-sm">
-                <span>{{ $t('client.label.contactPerson') }}</span>
-              </label>
-              <TextField
-                :value="client.contactPerson"
-                :debounce="250"
-                :placeholder="$t('placeholder.notIndicated')"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary placeholder-pink-500"
-                requried
-                @input="updateClient({ contactPerson: $event })"
-              >
-                <template v-slot:append>
-                  <span v-if="client.contactPerson" class="text-green-500">
-                    <Icon size="14">{{ icons.mdiCheck }}</Icon>
-                  </span>
-                </template>
-              </TextField>
-            </div>
-          </div>
-          <div class="w-full sm:w-1/2 px-3">
-            <div class="pb-4 flex">
-              <div class="w-4/6 pr-2">
+            <template v-if="hasClient">
+              <div class="pb-4">
                 <label class="text-sm">
-                  <span>{{ $t('suppliers.phone') }}</span>
+                  <!-- TODO: in Client type change address to placeOfResidence -->
+                  <span>{{ $t('requisite.label.address') }}</span>&nbsp;
+                  <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
                 </label>
                 <TextField
-                  :value="client.phone"
-                  :debounce="250"
-                  :placeholder="'000 - 00 - 00'"
-                  solo
-                  squared
-                  hide-details
-                  class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-pink-500"
-                  required
-                  @input="updateClient({ phone: $event })"
-                >
-                  <template v-slot:append>
-                    <span v-if="client.phone" class="text-green-500">
-                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
-                    </span>
-                  </template>
-                </TextField>
-              </div>
-            </div>
-            <div class="pb-4">
-              <div class="w-4/6 pr-2">
-                <label class="text-sm">
-                  <span>{{ $t('client.label.fax') }}</span>
-                </label>
-                <TextField
-                  :value="client.fax"
-                  :debounce="250"
-                  :placeholder="'000 - 00 - 00'"
-                  solo
-                  squared
-                  hide-details
-                  class="text-sm text-field_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
-                  @input="updateClient({ fax: $event })"
-                />
-              </div>
-            </div>
-            <div class="pb-4">
-              <div>
-                <label class="text-sm">
-                  <span>{{ $t('supplier.label.email') }}</span>
-                </label>
-                <TextField
-                  :value="client.email"
+                  v-if="isClientTypeNatural"
+                  :value="client.deliveryAddress"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   solo
@@ -451,23 +395,258 @@
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-pink-500"
                   required
-                  @input="updateClient({ email: $event })"
+                  @input="updateClient({ deliveryAddress: $event })"
                 >
                   <template v-slot:append>
-                    <span v-if="client.email" class="text-green-500">
+                    <span v-if="client.deliveryAddress" class="text-green-500">
+                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                    </span>
+                  </template>
+                </TextField>
+                <TextField
+                  v-else
+                  :value="client.legalAddress"
+                  :debounce="250"
+                  :placeholder="$t('placeholder.notIndicated')"
+                  solo
+                  squared
+                  hide-details
+                  class="text-sm text-field_nd"
+                  input-class="h-8 text-primary placeholder-pink-500"
+                  required
+                  @input="updateClient({ legalAddress: $event })"
+                >
+                  <template v-slot:append>
+                    <span v-if="client.legalAddress" class="text-green-500">
                       <Icon size="14">{{ icons.mdiCheck }}</Icon>
                     </span>
                   </template>
                 </TextField>
               </div>
-            </div>
+              <template v-if="isClientTypeNatural">
+                <div key="client-natural-firstName" class="pb-4">
+                  <label class="text-sm">
+                    <span>{{ $t('client.label.firstName') }}</span>
+                  </label>
+                  <TextField
+                    :value="client.firstName"
+                    :debounce="250"
+                    :placeholder="$t('placeholder.notIndicated')"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary placeholder-pink-500"
+                    requried
+                    @input="updateClient({ firstName: $event })"
+                  >
+                    <template v-slot:append>
+                      <span v-if="client.firstName" class="text-green-500">
+                        <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                      </span>
+                    </template>
+                  </TextField>
+                </div>
+                <div key="client-natural-lastName" class="pb-4">
+                  <label class="text-sm">
+                    <span>{{ $t('client.label.lastName') }}</span>
+                  </label>
+                  <TextField
+                    :value="client.lastName"
+                    :debounce="250"
+                    :placeholder="$t('placeholder.notIndicated')"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary placeholder-pink-500"
+                    requried
+                    @input="updateClient({ lastName: $event })"
+                  >
+                    <template v-slot:append>
+                      <span v-if="client.lastName" class="text-green-500">
+                        <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                      </span>
+                    </template>
+                  </TextField>
+                </div>
+                <div key="client-natural-middleName" class="pb-4">
+                  <label class="text-sm">
+                    <span>{{ $t('client.label.middleName') }}</span>
+                  </label>
+                  <TextField
+                    :value="client.middleName"
+                    :debounce="250"
+                    :placeholder="$t('placeholder.notIndicated')"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary placeholder-gray-200"
+                    @input="updateClient({ middleName: $event })"
+                  />
+                </div>
+              </template>
+              <div v-else key="client-contact-person" class="pb-4">
+                <label class="text-sm">
+                  <span>{{ $t('client.label.contactPerson') }}</span>
+                </label>
+                <TextField
+                  :value="client.contactPerson"
+                  :debounce="250"
+                  :placeholder="$t('placeholder.notIndicated')"
+                  solo
+                  squared
+                  hide-details
+                  class="text-sm text-field_nd"
+                  input-class="h-8 text-primary placeholder-pink-500"
+                  requried
+                  @input="updateClient({ contactPerson: $event })"
+                >
+                  <template v-slot:append>
+                    <span v-if="client.contactPerson" class="text-green-500">
+                      <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                    </span>
+                  </template>
+                </TextField>
+              </div>
+            </template>
+          </div>
+          <div class="w-full sm:w-1/2 px-3">
+            <template v-if="hasClient">
+              <div class="pb-4 flex">
+                <div class="w-4/6 pr-2">
+                  <label class="text-sm">
+                    <span>{{ $t('client.label.phone') }}</span>
+                  </label>
+                  <TextField
+                    v-if="isClientTypeNatural"
+                    :value="client.mobilePhone"
+                    :debounce="250"
+                    :placeholder="'000 - 00 - 00'"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary placeholder-pink-500"
+                    required
+                    @input="updateClient({ mobilePhone: $event })"
+                  >
+                    <template v-slot:append>
+                      <span v-if="client.mobilePhone" class="text-green-500">
+                        <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                      </span>
+                    </template>
+                  </TextField>
+                  <TextField
+                    v-else
+                    :value="client.phone"
+                    :debounce="250"
+                    :placeholder="'000 - 00 - 00'"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary placeholder-pink-500"
+                    required
+                    @input="updateClient({ phone: $event })"
+                  >
+                    <template v-slot:append>
+                      <span v-if="client.phone" class="text-green-500">
+                        <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                      </span>
+                    </template>
+                  </TextField>
+                </div>
+              </div>
+              <div class="pb-4">
+                <div class="w-4/6 pr-2">
+                  <label class="text-sm">
+                    <span v-if="isClientTypeNatural">{{ $t('client.label.additionalPhone') }}</span>
+                    <span v-else>{{ $t('client.label.fax') }}</span>
+                  </label>
+                  <TextField
+                    v-if="isClientTypeNatural"
+                    :value="client.additionalPhone"
+                    :debounce="250"
+                    :placeholder="'000 - 00 - 00'"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary placeholder-gray-200"
+                    @input="updateClient({ additionalPhone: $event })"
+                  />
+                  <TextField
+                    v-else
+                    :value="client.fax"
+                    :debounce="250"
+                    :placeholder="'000 - 00 - 00'"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary placeholder-gray-200"
+                    @input="updateClient({ fax: $event })"
+                  />
+                </div>
+              </div>
+              <div class="pb-4">
+                <div>
+                  <label class="text-sm">
+                    <span>{{ $t('client.label.email') }}</span>
+                  </label>
+                  <TextField
+                    v-if="isClientTypeNatural"
+                    :value="client.naturalEmail"
+                    :debounce="250"
+                    :placeholder="$t('placeholder.notIndicated')"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary placeholder-pink-500"
+                    required
+                    @input="updateClient({ naturalEmail: $event })"
+                  >
+                    <template v-slot:append>
+                      <span v-if="client.naturalEmail" class="text-green-500">
+                        <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                      </span>
+                    </template>
+                  </TextField>
+                  <TextField
+                    v-else
+                    :value="client.email"
+                    :debounce="250"
+                    :placeholder="$t('placeholder.notIndicated')"
+                    solo
+                    squared
+                    hide-details
+                    class="text-sm text-field_nd"
+                    input-class="h-8 text-primary placeholder-pink-500"
+                    required
+                    @input="updateClient({ email: $event })"
+                  >
+                    <template v-slot:append>
+                      <span v-if="client.email" class="text-green-500">
+                        <Icon size="14">{{ icons.mdiCheck }}</Icon>
+                      </span>
+                    </template>
+                  </TextField>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
         <div class="border-t border-gray-900 m-3" />
         <!-- IMPORTER -->
         <h5 class="uppercase mb-3 px-3 pt-4">
           <label class="switch align-middle">
-            <input type="checkbox" v-model="importerActive" />
+            <input
+              v-model="isImporterActive"
+              type="checkbox"
+            />
             <span class="switch-slider" />
           </label>
           <span class="inline-block font-bold">{{ $t('shipping.importerTitle') }}</span>&nbsp;<span class="inline-block font-bold text-gray-light">{{ $t('shipping.importerSubtitle') }}</span>
@@ -476,13 +655,13 @@
           <div class="w-full sm:w-1/2 px-3">
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('suppliers.companyName') }}</span>
+                <span>{{ $t('client.label.companyName') }}</span>
               </label>
               <TextField
-                :value="client.consignee"
+                :value="importer.consignee"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
-                :disabled="!importerActive"
+                :disabled="!isImporterActive"
                 solo
                 squared
                 hide-details
@@ -492,7 +671,7 @@
                 @input="updateClient({ consignee: $event })"
               >
                 <template v-slot:append>
-                  <span v-if="client.consignee" class="text-green-500">
+                  <span v-if="importer.consignee" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -500,14 +679,15 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('suppliers.address') }}</span>&nbsp;
+                <!-- TODO: in Client type change address to placeOfResidence -->
+                <span>{{ $t('requisite.label.address') }}</span>&nbsp;
                 <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
-                :value="client.shippingAddress"
+                :value="importer.shippingAddress"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
-                :disabled="!importerActive"
+                :disabled="!isImporterActive"
                 solo
                 squared
                 hide-details
@@ -517,7 +697,7 @@
                 @input="updateClient({ shippingAddress: $event })"
               >
                 <template v-slot:append>
-                  <span v-if="client.shippingAddress" class="text-green-500">
+                  <span v-if="importer.shippingAddress" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -528,20 +708,20 @@
                 <span>{{ $t('client.label.contactPerson') }}</span>
               </label>
               <TextField
-                :value="client.contactPerson"
+                :value="importer.importerContactPerson"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
-                :disabled="!importerActive"
+                :disabled="!isImporterActive"
                 solo
                 squared
                 hide-details
                 class="text-sm text-field_nd"
                 input-class="h-8 text-primary placeholder-pink-500"
                 required
-                @input="updateClient({ contactPerson: $event })"
+                @input="updateClient({ importerContactPerson: $event })"
               >
                 <template v-slot:append>
-                  <span v-if="client.contactPerson" class="text-green-500">
+                  <span v-if="importer.importerContactPerson" class="text-green-500">
                     <Icon size="14">{{ icons.mdiCheck }}</Icon>
                   </span>
                 </template>
@@ -552,13 +732,13 @@
             <div class="pb-4 flex">
               <div class="w-4/6 pr-2">
                 <label class="text-sm">
-                  <span>{{ $t('suppliers.phone') }}</span>
+                  <span>{{ $t('client.label.phone') }}</span>
                 </label>
                 <TextField
-                  :value="client.contactMobilePhone"
+                  :value="importer.contactMobilePhone"
                   :debounce="250"
                   :placeholder="'000 - 00 - 00'"
-                  :disabled="!importerActive"
+                  :disabled="!isImporterActive"
                   solo
                   squared
                   hide-details
@@ -568,7 +748,7 @@
                   @input="updateClient({ contactMobilePhone: $event })"
                 >
                   <template v-slot:append>
-                    <span v-if="client.contactMobilePhone" class="text-green-500">
+                    <span v-if="importer.contactMobilePhone" class="text-green-500">
                       <Icon size="14">{{ icons.mdiCheck }}</Icon>
                     </span>
                   </template>
@@ -581,10 +761,10 @@
                   <span>{{ $t('client.label.fax') }}</span>
                 </label>
                 <TextField
-                  :value="client.importerFax"
+                  :value="importer.importerFax"
                   :debounce="250"
                   :placeholder="'000 - 00 - 00'"
-                  disabled
+                  :disabled="!isImporterActive"
                   solo
                   squared
                   hide-details
@@ -597,13 +777,13 @@
             <div class="pb-4">
               <div>
                 <label class="text-sm">
-                  <span>{{ $t('supplier.label.email') }}</span>
+                  <span>{{ $t('client.label.email') }}</span>
                 </label>
                 <TextField
-                  :value="client.importerEmail"
+                  :value="importer.importerEmail"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  disabled
+                  :disabled="!isImporterActive"
                   solo
                   squared
                   hide-details
@@ -613,7 +793,7 @@
                   @input="updateClient({ importerEmail: $event })"
                 >
                   <template v-slot:append>
-                    <span v-if="client.importerEmail" class="text-green-500">
+                    <span v-if="importer.importerEmail" class="text-green-500">
                       <Icon size="14">{{ icons.mdiCheck }}</Icon>
                     </span>
                   </template>
@@ -1335,8 +1515,8 @@
           <div class="w-full sm:w-1/2 px-3">
             <div class="pb-4 flex">
               <div class="w-1/2 pr-1">
-                <label class="text-sm truncate">
-                  <span>{{ $t('shipping.countryOfOrigin') }}</span>
+                <label class="text-sm">
+                  <span class="block truncate">{{ $t('shipping.countryOfOrigin') }}</span>
                 </label>
                 <Select
                   :value="customs.countryOfOrigin"
@@ -1360,8 +1540,8 @@
                 </Select>
               </div>
               <div class="w-1/2 pl-1">
-                <label class="text-sm truncate">
-                  <span>{{ $t('shipping.termsLabel') }}</span>
+                <label class="text-sm">
+                  <span class="block truncate">{{ $t('shipping.termsLabel') }}</span>
                 </label>
                 <Select
                   :value="customs.terms"
@@ -1387,8 +1567,8 @@
             </div>
             <div class="pb-4 flex">
               <div class="w-1/2 pr-1">
-                <label class="text-sm truncate">
-                  <span>{{ $t('shipping.costLabel') }}</span>
+                <label class="text-sm">
+                  <span class="block truncate">{{ $t('shipping.costLabel') }}</span>
                 </label>
                 <TextField
                   :value="customs.cost"
@@ -1406,8 +1586,8 @@
                 />
               </div>
               <div class="w-1/2 pl-1">
-                <label class="text-sm truncate w-1/2 pl-1">
-                  <span>{{ $t('shipping.invoiceCurrency') }}</span>
+                <label class="text-sm">
+                  <span class="block truncate">{{ $t('shipping.invoiceCurrency') }}</span>
                 </label>
                 <Select
                   :value="customs.currency"
@@ -1435,8 +1615,8 @@
           <div class="w-full sm:w-1/2 px-3">
             <div class="pb-4 flex">
               <div class="w-1/3 pr-1">
-                <label class="text-sm truncate">
-                  <span>{{ $t('shipping.discountLabel') }}</span>
+                <label class="text-sm">
+                  <span class="block truncate">{{ $t('shipping.discountLabel') }}</span>
                 </label>
                 <TextField
                   :value="customs.discount"
@@ -1454,8 +1634,8 @@
                 />
               </div>
               <div class="w-1/3 px-1">
-                <label class="text-sm truncate">
-                  <span>{{ $t('shipping.vatLabel') }}</span>
+                <label class="text-sm">
+                  <span class="block truncate">{{ $t('shipping.vatLabel') }}</span>
                 </label>
                 <Select
                   :placeholder="$t('placeholder.notChosen')"
@@ -1477,8 +1657,8 @@
                 </Select>
               </div>
               <div class="w-1/3 pl-1">
-                <label class="text-sm truncate">
-                  <span>{{ $t('shipping.incomeTaxLabel') }}</span>
+                <label class="text-sm">
+                  <span class="block truncate">{{ $t('shipping.incomeTaxLabel') }}</span>
                 </label>
                 <Select
                   :placeholder="$t('placeholder.notChosen')"
@@ -1508,7 +1688,7 @@
           <span class="font-bold">{{ $t('shipping.amount') }}</span>
         </h5>
         <div class="flex flex-wrap">
-          <div>
+          <div class="w-full">
             <div class="w-full flex pb-4 px-3 sm:w-1/2 text-xl">
               <div class="whitespace-no-wrap">{{ $t('shipping.invoiceAmount') }}</div>
               <div class="flex-grow dots" />
@@ -1517,8 +1697,8 @@
           </div>
           <div class="w-full sm:w-1/2 px-3">
             <div class="pb-4">
-              <label class="text-sm truncate">
-                <span>{{ $t('shipping.amountInWords') }}</span>
+              <label class="text-sm">
+                <span class="block truncate">{{ $t('shipping.amountInWords') }}</span>
               </label>
               <TextArea
                 :value="amountInWords"
@@ -1535,8 +1715,8 @@
           </div>
           <div class="w-full sm:w-1/2 px-3">
             <div class="pb-4">
-              <label class="text-sm truncate">
-                <span>{{ $t('shipping.amountInWordsClientLang') }}</span>
+              <label class="text-sm">
+                <span class="block truncate">{{ $t('shipping.amountInWordsClientLang') }}</span>
               </label>
               <TextArea
                 :value="amountInWordsClientLang"
@@ -1572,26 +1752,82 @@
         {{ $t('shipping.doPrint') }}
       </button>
     </div>
+    <v-dialog
+      ref="requisiteDialog"
+      v-model="requisiteDialog"
+      :fullscreen="$vuetify.breakpoint.xs"
+      scrollable
+      max-width="1024"
+      content-class="text-gray-100"
+    >
+      <RequisiteCard
+        ref="requisiteCard"
+        :org-id="orgId"
+        create
+        is-component
+        @close="requisiteDialog = false"
+        @create="setCreatedRequisite"
+      />
+    </v-dialog>
+    <v-dialog
+      ref="clientDialog"
+      v-model="clientDialog"
+      :fullscreen="$vuetify.breakpoint.xs"
+      scrollable
+      max-width="1024"
+      content-class="text-gray-100"
+    >
+      <ClientCard
+        ref="clientCard"
+        :org-id="orgId"
+        create
+        is-component
+        @close="clientDialog = false"
+        @create="setSpecClient($event && $event.id)"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
-import { mdiChevronUp, mdiChevronDown, mdiCheck } from '@mdi/js'
-import { ShipmentType, CustomsTerms } from '../graphql/enums'
+import { mdiCheck, mdiChevronUp, mdiChevronDown, mdiPlusCircleOutline } from '@mdi/js'
 import Countries from '../config/countries-iso3.json'
 
-import { UPDATE_CLIENT, UPDATE_REQUISITE } from '../graphql/mutations'
+import RequisiteCard from './RequisiteCard.vue'
+import ClientCard from './ClientCard.vue'
 
-import { LIST_ORG_REQUISITES } from '../graphql/queries'
+import { UPDATE_CLIENT, UPDATE_REQUISITE, SET_SPEC_CLIENT } from '../graphql/mutations'
+import { LIST_ORG_REQUISITES, SEARCH_CLIENTS } from '../graphql/queries'
+import { ClientType, ShipmentType, CustomsTerms } from '../graphql/enums'
+
+import { defaultFilter } from '../util/helpers'
 
 export default {
   name: 'PrintSettings',
+  components: {
+    RequisiteCard,
+    ClientCard,
+  },
   apollo: {
+    searchClients: {
+      query: SEARCH_CLIENTS,
+      variables () {
+        return {
+          orgId: this.orgId,
+          search: this.clientSearch,
+        }
+      },
+      fetchPolicy: 'cache-and-network',
+      skip () {
+        return !this.clientSearch
+      },
+      debounce: 300,
+    },
     listOrgRequisites: {
       query: LIST_ORG_REQUISITES,
       variables () {
         return {
-          orgId: this.$route.params.orgId,
+          orgId: this.orgId,
         }
       },
       result ({ data, loading }) {
@@ -1602,6 +1838,9 @@ export default {
     },
   },
   props: {
+    orgId: String,
+    specId: String,
+    requisiteId: String,
     client: {
       type: Object,
       default: () => ({}),
@@ -1631,21 +1870,68 @@ export default {
   },
   data () {
     return {
+      clientDialog: false,
+      clientSearch: '',
+      updateClientLoading: false,
+      requisiteSearch: '',
+      requisiteDialog: false,
       requisiteLoading: false,
       isValid: false,
       ShipmentType,
-      selectedRequisite: {},
-      importerActive: false,
       icons: {
+        mdiCheck,
         mdiChevronUp,
         mdiChevronDown,
-        mdiCheck,
+        mdiPlusCircleOutline,
       },
     }
   },
   computed: {
+    isImporterActive: {
+      get () {
+        return !!this.importer.importerActive
+      },
+      set (val) {
+        this.updateClient({ importerActive: !!val })
+      },
+    },
+    importer () {
+      return this.client || {}
+    },
+    hasClient () {
+      return this.client && this.client.id
+    },
+    isClientTypeNatural () {
+      return this.client && this.client.clientType === ClientType.NATURAL
+    },
+    hasRequisite () {
+      return this.requisiteId
+    },
+    specClient () {
+      const client = this.client || {}
+      return {
+        ...client,
+        name: this.getClientName(client),
+      }
+    },
+    clients () {
+      const items = (this.searchClients && this.searchClients.items) || []
+      return items.map(item => {
+        return {
+          ...item,
+          name: this.getClientName(item),
+        }
+      })
+    },
+    requisites () {
+      let items = this.listOrgRequisites || []
+      if (this.requisiteSearch) {
+        items = items.filter(item => defaultFilter(item.name, this.requisiteSearch))
+      }
+      return items
+    },
     requisite () {
-      return (this.listOrgRequisites || []).find(el => el.id === this.selectedRequisite.id) || {}
+      return (this.listOrgRequisites || []).find(el => el.id === this.requisiteId) || {}
     },
     shipmentTypes () {
       return Object.values(ShipmentType).filter(el => el !== ShipmentType.UNDEFINED).map(el => {
@@ -1675,29 +1961,37 @@ export default {
   watch: {
     requisite: {
       handler () {
-        this.validate()
+        this.$nextTick(() => {
+          this.validate()
+        })
       },
       deep: true,
     },
     client: {
       handler () {
-        this.validate()
+        this.$nextTick(() => {
+          this.validate()
+        })
       },
       deep: true,
     },
     shipment: {
       handler () {
-        this.validate()
+        this.$nextTick(() => {
+          this.validate()
+        })
       },
       deep: true,
     },
     customs: {
       handler () {
-        this.validate()
+        this.$nextTick(() => {
+          this.validate()
+        })
       },
       deep: true,
     },
-    importerActive () {
+    isImporterActive () {
       this.$nextTick(() => {
         this.validate()
       })
@@ -1707,6 +2001,19 @@ export default {
     this.validate()
   },
   methods: {
+    getClientName (item) {
+      if (!item) return ''
+      let name = ''
+      if (item.clientType === ClientType.LEGAL) {
+        name = item.companyName || ''
+      } else {
+        name = item.firstName || ''
+        name += name && item.lastName
+          ? ` ${item.lastName}`
+          : (item.lastName || '')
+      }
+      return name
+    },
     print () {
       this.$logger.log('submit form', this.validate())
       this.$emit('close')
@@ -1749,12 +2056,12 @@ export default {
         await this.$apollo.mutate({
           mutation: UPDATE_REQUISITE,
           variables: {
-            id: this.selectedRequisite.id,
+            id: this.requisiteId,
             input,
           },
         })
       } catch (error) {
-        const message = !this.selectedRequisite || !this.selectedRequisite.id ? 'Продавец / Поставщик не установлен.' : error.message
+        const message = !this.requisiteId ? 'Продавец / Поставщик не установлен.' : error.message
         this.$notify({
           color: 'red',
           text: message,
@@ -1764,7 +2071,51 @@ export default {
       }
     },
     setRequisite (val) {
-      this.selectedRequisite = val || {}
+      this.$emit('update', { requisite: val.id })
+    },
+    createRequisite () {
+      this.requisiteDialog = true
+      this.$nextTick(() => {
+        if (this.$refs.requisiteCard) {
+          this.$refs.requisiteCard.reset()
+          if (this.$refs.requisiteDialog.$refs.dialog) {
+            this.$refs.requisiteDialog.$refs.dialog.scrollTop = 0
+          }
+        }
+      })
+    },
+    setCreatedRequisite (item) {
+      this.$emit('update', { requisite: item.id })
+      this.requisiteDialog = false
+    },
+    createClient () {
+      this.clientDialog = true
+      this.$nextTick(() => {
+        if (this.$refs.clientCard) {
+          this.$refs.clientCard.reset()
+          if (this.$refs.clientDialog.$refs.dialog) {
+            this.$refs.clientDialog.$refs.dialog.scrollTop = 0
+          }
+        }
+      })
+    },
+    async setSpecClient (clientId) {
+      if (!clientId) return
+      try {
+        this.updateClientLoading = true
+        await this.$apollo.mutate({
+          mutation: SET_SPEC_CLIENT,
+          variables: {
+            specId: this.specId,
+            clientId,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.updateClientLoading = false
+        this.clientDialog = false
+      }
     },
   },
 }

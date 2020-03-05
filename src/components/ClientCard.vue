@@ -406,6 +406,7 @@ export default {
         swift: {},
         ownerFullName: {},
         ownerJobPosition: {},
+        contactPerson: {},
         consignee: {
           section: true,
           subtitle: 'shippingInfo',
@@ -415,10 +416,21 @@ export default {
           placeholder: 'deliveryAddress',
           rows: 2,
         },
-        contactPerson: {},
+        importerContactPerson: {
+          label: 'contactPerson',
+          placeholder: 'contactPerson',
+        },
         contactMobilePhone: {
           label: 'mobilePhone',
           placeholder: 'mobilePhone',
+        },
+        importerFax: {
+          label: 'fax',
+          placeholder: 'fax',
+        },
+        importerEmail: {
+          label: 'email',
+          placeholder: 'email',
         },
         legalTypeNote: {
           label: 'note',
@@ -446,6 +458,10 @@ export default {
         passportId: {},
         mobilePhone: {},
         additionalPhone: {},
+        naturalEmail: {
+          label: 'email',
+          placeholder: 'email',
+        },
         address: {
           rows: 2,
         },
