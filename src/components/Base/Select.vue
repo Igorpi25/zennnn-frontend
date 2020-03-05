@@ -14,7 +14,7 @@
         'select--solo': solo,
         'select--colored': colored,
         'select--focused': hasFocus && searchable,
-        'select--active': hasFocus || menu,
+        'select--active': isActive,
         'select--disabled': disabled,
       }
     ]"
@@ -273,10 +273,12 @@ export default {
       lazyValue: this.value,
       menu: false,
       content: null,
-      isActive: false,
     }
   },
   computed: {
+    isActive () {
+      return this.hasFocus || this.menu
+    },
     placeholderClass () {
       let c = this.colored
         ? 'placeholder-primary' : this.squared
@@ -309,7 +311,7 @@ export default {
           const item = this.items.find(el => el[this.itemValue] === this.value)
           v = item ? item[this.itemText] : ''
         }
-        return this.hasFocus && this.searchable ? this.lazyInput : v
+        return this.isActive && this.searchable ? this.lazyInput : v
       },
       set (val) {
         this.lazyInput = val || null
@@ -332,9 +334,10 @@ export default {
       }
       if (val) {
         this.openMenu()
-      } else {
-        this.$emit('update:search', '')
       }
+    },
+    isActive (val) {
+      !val && this.$emit('update:search', '')
     },
   },
   created () {
