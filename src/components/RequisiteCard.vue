@@ -119,7 +119,7 @@
                 @click="update()"
               >
                 <span>
-                  {{ $route.name === 'requisite-create' ? $t('action.create') : $t('action.save') }}
+                  {{ create ? $t('action.create') : $t('action.save') }}
                 </span>
               </Button>
             </div>
@@ -181,7 +181,7 @@
                 @click="update()"
               >
                 <span>
-                  {{ $route.name === 'requisite-create' ? $t('action.create') : $t('action.save') }}
+                  {{ create ? $t('action.create') : $t('action.save') }}
                 </span>
               </Button>
             </div>
