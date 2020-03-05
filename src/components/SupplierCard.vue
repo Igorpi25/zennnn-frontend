@@ -465,6 +465,7 @@ export default {
       },
       supplier: {
         id: null,
+        language: this.$i18n.fallbackLocale,
         template: {},
         shops: [],
       },
@@ -610,6 +611,7 @@ export default {
       const id = uuid()
       this.supplier = {
         id,
+        language: this.$i18n.fallbackLocale,
         template: { id },
         shops: [],
       }

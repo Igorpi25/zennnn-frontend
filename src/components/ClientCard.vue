@@ -44,12 +44,26 @@
       />
     </v-dialog>
 
-    <div id="container" class="container">
-      <div class="py-12">
+    <div id="container" :class="[ isComponent ? 'bg-chaos-black rounded-lg relative' : 'container' ]">
+      <span
+        v-if="isComponent"
+        class="absolute cursor-pointer"
+        :style="{ top: '12px', right: '12px', zIndex: '10' }"
+        @click="$emit('close')"
+      >
+        <svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0.780869" y1="1.3753" x2="8.78087" y2="11.3753" stroke="#9F9F9F" stroke-width="2"/>
+          <line x1="8.78087" y1="1.6247" x2="0.780869" y2="11.6247" stroke="#9F9F9F" stroke-width="2"/>
+        </svg>
+      </span>
+      <div :class="[ isComponent ? 'pt-5 px-4' : 'py-12' ]">
         <div>
           <header class="header">
             <span class="header__title">{{ $t('client.clientCard') }}</span>
-            <div class="header__actions">
+            <div
+              v-if="!isComponent"
+              class="header__actions"
+            >
               <ToggleButton
                 v-if="!create"
                 :value="editMode"
@@ -242,6 +256,7 @@
             </TemplateCard>
           </div>
           <button
+            v-if="!isComponent"
             class="back-to-list-btn"
             @click="$router.push({
               name: 'clients',
@@ -296,6 +311,10 @@ export default {
       required: true,
     },
     create: {
+      type: Boolean,
+      default: false,
+    },
+    isComponent: {
       type: Boolean,
       default: false,
     },
@@ -451,6 +470,7 @@ export default {
         id: null,
         uid: null,
         clientType: null,
+        language: this.$i18n.fallbackLocale,
         template: {},
       },
       clientClone: {},
@@ -550,8 +570,7 @@ export default {
   created () {
     this.editMode = this.create
     if (this.create) {
-      this.clientType = this.naturalType
-      this.clientClone = cloneDeep(this.client)
+      this.reset()
     }
   },
   methods: {
@@ -588,6 +607,17 @@ export default {
         })
       })
     },
+    reset () {
+      this.clientType = this.naturalType
+      this.client = {
+        id: null,
+        uid: null,
+        clientType: null,
+        language: this.$i18n.fallbackLocale,
+        template: {},
+      }
+      this.clientClone = cloneDeep(this.client)
+    },
     async update (type) {
       try {
         let input = {
@@ -619,16 +649,21 @@ export default {
             : response.data.updateClient
           this.setData(data)
           this.editMode = false
-          if (this.create) {
-            this.$router.push({
-              name: 'client',
-              params: {
-                orgId: this.orgId,
-                clientId: data.id,
-              },
-            })
+          if (this.isComponent) {
+            const action = this.create ? 'create' : 'update'
+            this.$emit(action, data)
           } else {
-            this.$vuetify.goTo('#container')
+            if (this.create) {
+              this.$router.push({
+                name: 'client',
+                params: {
+                  orgId: this.orgId,
+                  clientId: data.id,
+                },
+              })
+            } else {
+              this.$vuetify.goTo('#container')
+            }
           }
         }
       } catch (error) {
