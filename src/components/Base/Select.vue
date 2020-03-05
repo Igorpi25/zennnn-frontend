@@ -115,6 +115,16 @@
           >
             <span>{{ item[itemText] }}</span>
           </li>
+          <li
+            v-if="$slots['append-item']"
+            key="select-append-item"
+            class="select-picker__item"
+            tabindex="0"
+            role="menuitem"
+            @click="appendItemClick"
+          >
+            <slot name="append-item" />
+          </li>
         </ul>
       </v-menu>
     </div>
@@ -358,6 +368,10 @@ export default {
     closeMenu () {
       this.menu = false
       document.removeEventListener('click', this.closeConditional, false)
+    },
+    appendItemClick (e) {
+      this.$emit('click:append-item', e)
+      this.closeMenu()
     },
     select (value) {
       this.internalValue = value
