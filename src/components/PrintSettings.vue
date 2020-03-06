@@ -1522,7 +1522,9 @@
                   :value="customs.countryOfOrigin"
                   :placeholder="$t('placeholder.notChosen')"
                   :nudge-bottom="32"
+                  :search.sync="countriesSearch"
                   :items="shipmentCountries"
+                  searchable
                   solo
                   squared
                   hide-details
@@ -1792,13 +1794,14 @@
 <script>
 import { mdiCheck, mdiChevronUp, mdiChevronDown, mdiPlusCircleOutline } from '@mdi/js'
 import Countries from '../config/countries-iso3.json'
+import CountriesNames from '../config/countries-names.json'
 
 import RequisiteCard from './RequisiteCard.vue'
 import ClientCard from './ClientCard.vue'
 
 import { UPDATE_CLIENT, UPDATE_REQUISITE, SET_SPEC_CLIENT } from '../graphql/mutations'
 import { LIST_ORG_REQUISITES, SEARCH_CLIENTS } from '../graphql/queries'
-import { ClientType, ShipmentType, CustomsTerms } from '../graphql/enums'
+import { ClientType, ShipmentType, CustomsTerms, CustomsTermsMore } from '../graphql/enums'
 
 import { defaultFilter } from '../util/helpers'
 
@@ -1870,6 +1873,7 @@ export default {
   },
   data () {
     return {
+      countriesSearch: '',
       clientDialog: false,
       clientSearch: '',
       updateClientLoading: false,
@@ -1941,21 +1945,46 @@ export default {
         }
       })
     },
-    shipmentCountries () {
+    countries () {
       return Object.entries(Countries).map(([k, v]) => {
         return {
           text: v,
           value: k,
+          name: CountriesNames[k] || null,
         }
       })
     },
-    customsTerms () {
+    shipmentCountries () {
+      if (this.countriesSearch) {
+        return this.countries.filter(item => Object.values(item).some(el => defaultFilter(el, this.countriesSearch)))
+      }
+      return this.countries
+    },
+    customsTermsItems () {
       return Object.values(CustomsTerms).map(el => {
         return {
           text: this.$t(`customsTerms.${el}`),
           value: el,
         }
       })
+    },
+    customsTermsMoreItems () {
+      return Object.values(CustomsTermsMore).map(el => {
+        return {
+          text: this.$t(`customsTerms.${el}`),
+          value: el,
+        }
+      })
+    },
+    customsTerms () {
+      const shipmentType = this.shipment.activeType
+      if (shipmentType === ShipmentType.RAILWAY || shipmentType === ShipmentType.CAR) {
+        return this.customsTermsItems
+      }
+      if (shipmentType === ShipmentType.MARINE || shipmentType === ShipmentType.MIXED) {
+        return [...this.customsTermsItems, { divider: true }, ...this.customsTermsMoreItems]
+      }
+      return []
     },
   },
   watch: {

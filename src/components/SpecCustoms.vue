@@ -9,7 +9,9 @@
           :value="item.countryOfOrigin"
           :placeholder="$t('shipping.countryOfOrigin')"
           :nudge-bottom="32"
+          :search.sync="countriesSearch"
           :items="shipmentCountries"
+          searchable
           solo
           squared
           hide-details
@@ -185,12 +187,18 @@
 
 <script>
 import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
-import { CustomsTerms } from '../graphql/enums'
+import { CustomsTerms, CustomsTermsMore, ShipmentType } from '../graphql/enums'
 import Countries from '../config/countries-iso3.json'
+import CountriesNames from '../config/countries-names.json'
+import { defaultFilter } from '../util/helpers'
 
 export default {
   name: 'SpecCustoms',
   props: {
+    shipmentType: {
+      type: String,
+      default: '',
+    },
     item: {
       type: Object,
       default: () => ({}),
@@ -204,6 +212,7 @@ export default {
   },
   data () {
     return {
+      countriesSearch: '',
       icons: {
         mdiChevronUp,
         mdiChevronDown,
@@ -211,21 +220,45 @@ export default {
     }
   },
   computed: {
-    shipmentCountries () {
+    countries () {
       return Object.entries(Countries).map(([k, v]) => {
         return {
           text: v,
           value: k,
+          name: CountriesNames[k] || null,
         }
       })
     },
-    customsTerms () {
+    shipmentCountries () {
+      if (this.countriesSearch) {
+        return this.countries.filter(item => Object.values(item).some(el => defaultFilter(el, this.countriesSearch)))
+      }
+      return this.countries
+    },
+    customsTermsItems () {
       return Object.values(CustomsTerms).map(el => {
         return {
           text: this.$t(`customsTerms.${el}`),
           value: el,
         }
       })
+    },
+    customsTermsMoreItems () {
+      return Object.values(CustomsTermsMore).map(el => {
+        return {
+          text: this.$t(`customsTerms.${el}`),
+          value: el,
+        }
+      })
+    },
+    customsTerms () {
+      if (this.shipmentType === ShipmentType.RAILWAY || this.shipmentType === ShipmentType.CAR) {
+        return this.customsTermsItems
+      }
+      if (this.shipmentType === ShipmentType.MARINE || this.shipmentType === ShipmentType.MIXED) {
+        return [...this.customsTermsItems, { divider: true }, ...this.customsTermsMoreItems]
+      }
+      return []
     },
   },
 }

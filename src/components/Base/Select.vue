@@ -93,28 +93,37 @@
             v-if="items.length === 0"
             class="select-picker__item select-picker__item--disabled"
           >
-            <span v-if="searchable && search">
+            <span v-if="searchable && search" class="truncate">
               {{ $t('select.noResult') }}
             </span>
-            <span v-else>
+            <span v-else class="truncate">
               {{ $t('select.noData') }}
             </span>
           </li>
-          <li
+          <template
             v-else
-            v-for="item in items"
-            :key="item[itemValue]"
-            :value="item[itemValue]"
-            :class="[
-              'select-picker__item',
-              { 'select-picker__item--selected': item[itemValue] === internalValue[itemValue] }
-            ]"
-            tabindex="0"
-            role="menuitem"
-            @click="select(item)"
+            v-for="(item, i) in items"
           >
-            <span>{{ item[itemText] }}</span>
-          </li>
+            <div
+              v-if="item.divider"
+              :key="`divider-${i}`"
+              class="border-b border-primary"
+            />
+            <li
+              v-else
+              :key="item[itemValue]"
+              :value="item[itemValue]"
+              :class="[
+                'select-picker__item',
+                { 'select-picker__item--selected': item[itemValue] === internalValue[itemValue] }
+              ]"
+              tabindex="0"
+              role="menuitem"
+              @click="select(item)"
+            >
+              <span>{{ item[itemText] }}</span>
+            </li>
+          </template>
           <li
             v-if="$slots['append-item']"
             key="select-append-item"
@@ -330,14 +339,25 @@ export default {
     },
     hasFocus (val) {
       if (this.searchable) {
-        this.internalInput = (this.value && this.value[this.itemText]) || ''
+        let v = ''
+        if (isObject(this.value)) {
+          v = this.value[this.itemText]
+        } else {
+          const item = this.items.find(el => el[this.itemValue] === this.value)
+          v = item ? item[this.itemText] : ''
+        }
+        this.internalInput = v
       }
       if (val) {
         this.openMenu()
       }
     },
     isActive (val) {
-      !val && this.$emit('update:search', '')
+      if (!val) {
+        setTimeout(() => {
+          this.$emit('update:search', '')
+        }, 150)
+      }
     },
   },
   created () {

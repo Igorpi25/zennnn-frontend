@@ -37,7 +37,20 @@ export const ShipmentType = {
 }
 
 export const CustomsTerms = {
+  EXW: 'EXW',
+  FCA: 'FCA',
+  CPT: 'CPT',
+  CIP: 'CIP',
+  DAT: 'DAT',
+  DAP: 'DAP',
+  DDP: 'DDP',
+}
+
+export const CustomsTermsMore = {
+  FAS: 'FAS',
+  FOB: 'FOB',
   CFR: 'CFR',
+  CIF: 'CIF',
 }
 
 export const Role = {

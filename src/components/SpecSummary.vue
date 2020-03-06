@@ -431,6 +431,7 @@
         />
         <!-- Customs -->
         <SpecCustoms
+          :shipment-type="(spec.shipment && spec.shipment.activeType) || ''"
           :item="spec.customs"
           :amount="spec.amount"
           :amount-in-words="spec.amountInWords"
