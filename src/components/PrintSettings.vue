@@ -2,6 +2,14 @@
   <div
     class="flex flex-col relative w-full overflow-y-auto overflow-scroll-touch max-h-screen px-2 py-6 text-gray-100"
   >
+    <div class="absolute cursor-pointer top-0 right-0">
+      <div
+        class="mr-2 mt-2"
+        @click="$emit('close')"
+      >
+        <Icon size="12">{{ icons.mdiClose }}</Icon>
+      </div>
+    </div>
     <!-- Header -->
     <div class="px-3">
       <div class="flex flex-col sm:flex-row">
@@ -1796,7 +1804,7 @@
 </template>
 
 <script>
-import { mdiCheck, mdiChevronUp, mdiChevronDown, mdiPlusCircleOutline } from '@mdi/js'
+import { mdiCheck, mdiChevronUp, mdiChevronDown, mdiPlusCircleOutline, mdiClose } from '@mdi/js'
 import Countries from '../config/countries-iso3.json'
 import CountriesNames from '../config/countries-names.json'
 
@@ -1891,6 +1899,7 @@ export default {
         mdiChevronUp,
         mdiChevronDown,
         mdiPlusCircleOutline,
+        mdiClose,
       },
     }
   },
