@@ -338,22 +338,23 @@ export default {
       immediate: true,
     },
     hasFocus (val) {
-      if (this.searchable) {
-        let v = ''
-        if (isObject(this.value)) {
-          v = this.value[this.itemText]
-        } else {
-          const item = this.items.find(el => el[this.itemValue] === this.value)
-          v = item ? item[this.itemText] : ''
-        }
-        this.internalInput = v
-      }
       if (val) {
         this.openMenu()
       }
     },
     isActive (val) {
-      if (!val) {
+      if (val) {
+        if (this.searchable) {
+          let v = ''
+          if (isObject(this.value)) {
+            v = this.value[this.itemText]
+          } else {
+            const item = this.items.find(el => el[this.itemValue] === this.value)
+            v = item ? item[this.itemText] : ''
+          }
+          this.internalInput = v
+        }
+      } else {
         setTimeout(() => {
           this.$emit('update:search', '')
         }, 150)
