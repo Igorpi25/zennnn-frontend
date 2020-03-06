@@ -537,7 +537,10 @@
       "signatureStamp": "Signature / Stamp:"
     }
   },
-  "print": {},
+  "print": {
+    "required": "necessarily",
+    "warning": "preferably"
+  },
   "welcomeModal": {
     "head": "Welcome to zennnn",
     "title": "Cool that you registered with zennnn!",

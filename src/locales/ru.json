@@ -537,7 +537,10 @@
       "signatureStamp": "Подпись / Печать:"
     }
   },
-  "print": {},
+  "print": {
+    "required": "обязательно",
+    "warning": "желательно"
+  },
   "welcomeModal": {
     "head": "Добро пожаловать в zennnn",
     "title": "Круто, что ты зарегистрировался в zennnn!",

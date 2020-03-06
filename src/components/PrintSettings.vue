@@ -21,8 +21,17 @@
             {{ $t('shipping.toPrintInvoiceSubtitle') }}
           </p>
         </div>
-        <div class="flex-grow" />
-        <div>
+        <div class="flex flex-wrap items-center justify-center sm:justify-end flex-grow pr-4 order-last sm:order-none">
+          <div v-if="errorFieldsCount" class="text-sm text-pink-500 pt-3 sm:pt-0 pr-4 whitespace-no-wrap">
+            <Icon class="inline mr-1">{{ icons.mdiAlertOutline }}</Icon>
+            <span>{{ $t('print.required') }}</span>
+          </div>
+          <div v-if="warningFieldsCount" class="text-sm text-yellow-500 pt-3 sm:pt-0 pr-4 whitespace-no-wrap">
+            <Icon class="inline mr-1">{{ icons.mdiInformationOutline }}</Icon>
+            <span>{{ $t('print.warning') }}</span>
+          </div>
+        </div>
+        <div class="flex items-center">
           <button
             :disabled="!isValid"
             :class="[ isValid ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
@@ -1026,7 +1035,6 @@
                   hide-details
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-yellow-500"
-                  required
                   @input="$emit('update', { shipment: { marine: { containersNo: $event } } })"
                 />
               </div>
@@ -1755,7 +1763,16 @@
         >
           {{ $t('shipping.cancelPrint') }}
         </button>
-        <div class="flex-grow" />
+        <div class="flex flex-wrap items-center justify-center sm:justify-end flex-grow pr-4 order-first sm:order-none">
+          <div v-if="errorFieldsCount" class="text-sm text-pink-500 pb-3 sm:pb-0 pr-4 whitespace-no-wrap">
+            <Icon class="inline mr-1">{{ icons.mdiAlertOutline }}</Icon>
+            <span>{{ $t('print.required') }}</span>
+          </div>
+          <div v-if="warningFieldsCount" class="text-sm text-yellow-500 pb-3 sm:pb-0 pr-4 whitespace-no-wrap">
+            <Icon class="inline mr-1">{{ icons.mdiInformationOutline }}</Icon>
+            <span>{{ $t('print.warning') }}</span>
+          </div>
+        </div>
         <button
           :disabled="!isValid"
           :class="[ isValid ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
@@ -1804,7 +1821,7 @@
 </template>
 
 <script>
-import { mdiCheck, mdiChevronUp, mdiChevronDown, mdiPlusCircleOutline, mdiClose } from '@mdi/js'
+import { mdiCheck, mdiChevronUp, mdiChevronDown, mdiPlusCircleOutline, mdiClose, mdiInformationOutline, mdiAlertOutline } from '@mdi/js'
 import Countries from '../config/countries-iso3.json'
 import CountriesNames from '../config/countries-names.json'
 
@@ -1885,6 +1902,8 @@ export default {
   },
   data () {
     return {
+      errorFieldsCount: 0,
+      warningFieldsCount: 0,
       countriesSearch: '',
       clientDialog: false,
       clientSearch: '',
@@ -1900,6 +1919,8 @@ export default {
         mdiChevronDown,
         mdiPlusCircleOutline,
         mdiClose,
+        mdiInformationOutline,
+        mdiAlertOutline,
       },
     }
   },
@@ -2062,9 +2083,13 @@ export default {
     },
     validate () {
       let errorsCount = 0
+      let warningsCount = 0
       const form = this.$refs.form
       const elements = form.elements
       for (const el of elements) {
+        if (!el.disabled && el.classList.contains('placeholder-yellow-500') && !el.value) {
+          warningsCount++
+        }
         if (!el.disabled && el.willValidate === true && !el.validity.valid) {
           if (el.validity.valueMissing) {
             errorsCount++
@@ -2072,6 +2097,8 @@ export default {
         }
       }
       this.isValid = !errorsCount
+      this.errorFieldsCount = errorsCount
+      this.warningFieldsCount = warningsCount
       return errorsCount
     },
     async updateClient (input) {
