@@ -1,27 +1,29 @@
 <template>
   <div
-    class="flex flex-col relative w-full overflow-y-auto max-h-screen px-2 py-6 text-gray-100"
+    class="flex flex-col relative w-full overflow-y-auto overflow-scroll-touch max-h-screen px-2 py-6 text-gray-100"
   >
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row px-3">
-      <div class="mb-3 sm:mb-0">
-        <h4 class="text-xl font-semibold leading-6">
-          {{ $t('shipping.toPrintInvoiceTitle') }}
-        </h4>
-        <p>
-          {{ $t('shipping.toPrintInvoiceSubtitle') }}
-        </p>
-      </div>
-      <div class="flex-grow" />
-      <div>
-        <button
-          :disabled="!isValid"
-          :class="[ isValid ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
-          class="h-12 w-full sm:w-48 px-4 rounded-md focus:outline-none text-white focus:bg-primary-accent"
-          @click="print"
-        >
-          {{ $t('shipping.doPrint') }}
-        </button>
+    <div class="px-3">
+      <div class="flex flex-col sm:flex-row">
+        <div class="mb-3 sm:mb-0">
+          <h4 class="text-xl font-semibold leading-6">
+            {{ $t('shipping.toPrintInvoiceTitle') }}
+          </h4>
+          <p>
+            {{ $t('shipping.toPrintInvoiceSubtitle') }}
+          </p>
+        </div>
+        <div class="flex-grow" />
+        <div>
+          <button
+            :disabled="!isValid"
+            :class="[ isValid ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
+            class="h-12 w-full sm:w-48 px-4 rounded-md focus:outline-none text-white focus:bg-primary-accent"
+            @click="print"
+          >
+            {{ $t('shipping.doPrint') }}
+          </button>
+        </div>
       </div>
     </div>
     <!-- Body -->
@@ -1737,22 +1739,24 @@
       </form>
     </div>
     <!-- Footer -->
-    <div class="flex flex-col sm:flex-row px-3 pb-3">
-      <button
-        class="h-12 w-full mb-3 sm:mb-0 sm:w-48 px-4 rounded-md focus:outline-none border border-gray-400 hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
-        @click="$emit('close')"
-      >
-        {{ $t('shipping.cancelPrint') }}
-      </button>
-      <div class="flex-grow" />
-      <button
-        :disabled="!isValid"
-        :class="[ isValid ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
-        class="h-12 w-full sm:w-48 px-4 rounded-md focus:outline-none text-white focus:bg-primary-accent"
-        @click="print"
-      >
-        {{ $t('shipping.doPrint') }}
-      </button>
+    <div class="px-3 pb-3">
+      <div class="flex flex-col sm:flex-row">
+        <button
+          class="h-12 w-full mb-3 sm:mb-0 sm:w-48 px-4 rounded-md focus:outline-none border border-gray-400 hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
+          @click="$emit('close')"
+        >
+          {{ $t('shipping.cancelPrint') }}
+        </button>
+        <div class="flex-grow" />
+        <button
+          :disabled="!isValid"
+          :class="[ isValid ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
+          class="h-12 w-full sm:w-48 px-4 rounded-md focus:outline-none text-white focus:bg-primary-accent"
+          @click="print"
+        >
+          {{ $t('shipping.doPrint') }}
+        </button>
+      </div>
     </div>
     <v-dialog
       ref="requisiteDialog"
