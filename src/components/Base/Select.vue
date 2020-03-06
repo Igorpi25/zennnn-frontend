@@ -386,11 +386,11 @@ export default {
     },
     openMenu () {
       this.menu = true
-      document.addEventListener('click', this.closeConditional, false)
+      document.addEventListener('click', this.closeConditional, true)
     },
     closeMenu () {
       this.menu = false
-      document.removeEventListener('click', this.closeConditional, false)
+      document.removeEventListener('click', this.closeConditional, true)
     },
     appendItemClick (e) {
       this.$emit('click:append-item', e)
