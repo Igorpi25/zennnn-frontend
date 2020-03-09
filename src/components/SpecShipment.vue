@@ -50,7 +50,9 @@
           :value="item.activeType"
           :placeholder="$t('shipping.shipmentType')"
           :nudge-bottom="32"
+          :search.sync="shipmentTypeSearch"
           :items="shipmentTypes"
+          searchable
           solo
           squared
           hide-details
@@ -599,6 +601,7 @@
 <script>
 import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import { ShipmentType } from '../graphql/enums'
+import { defaultFilter } from '../util/helpers'
 
 export default {
   name: 'SpecShipment',
@@ -618,6 +621,7 @@ export default {
   },
   data () {
     return {
+      shipmentTypeSearch: '',
       ShipmentType,
       icons: {
         mdiChevronUp,
@@ -627,12 +631,16 @@ export default {
   },
   computed: {
     shipmentTypes () {
-      return Object.values(ShipmentType).filter(el => el !== ShipmentType.UNDEFINED).map(el => {
+      const items = Object.values(ShipmentType).filter(el => el !== ShipmentType.UNDEFINED).map(el => {
         return {
           text: this.$t(`shipmentType.${el}`),
           value: el,
         }
       })
+      if (this.shipmentTypeSearch) {
+        return items.filter(item => Object.values(item).some(el => defaultFilter(el, this.shipmentTypeSearch)))
+      }
+      return items
     },
   },
 }

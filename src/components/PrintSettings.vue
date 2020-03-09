@@ -964,7 +964,9 @@
                 :value="shipment.activeType"
                 :placeholder="$t('placeholder.notIndicated')"
                 :nudge-bottom="32"
+                :search.sync="shipmentTypeSearch"
                 :items="shipmentTypes"
+                searchable
                 solo
                 squared
                 hide-details
@@ -1905,6 +1907,7 @@ export default {
   },
   data () {
     return {
+      shipmentTypeSearch: '',
       termsSearch: '',
       errorFieldsCount: 0,
       warningFieldsCount: 0,
@@ -1980,12 +1983,16 @@ export default {
       return (this.listOrgRequisites || []).find(el => el.id === this.requisiteId) || {}
     },
     shipmentTypes () {
-      return Object.values(ShipmentType).filter(el => el !== ShipmentType.UNDEFINED).map(el => {
+      const items = Object.values(ShipmentType).filter(el => el !== ShipmentType.UNDEFINED).map(el => {
         return {
           text: this.$t(`shipmentType.${el}`),
           value: el,
         }
       })
+      if (this.shipmentTypeSearch) {
+        return items.filter(item => Object.values(item).some(el => defaultFilter(el, this.shipmentTypeSearch)))
+      }
+      return items
     },
     countries () {
       return Object.entries(Countries).map(([k, v]) => {
@@ -2028,7 +2035,7 @@ export default {
         items = [...this.customsTermsItems, { divider: true }, ...this.customsTermsMoreItems]
       }
       if (this.termsSearch) {
-        items = items.filter(item => Object.values(item).some(el => defaultFilter(el, this.termsSearch)))
+        return items.filter(item => Object.values(item).some(el => defaultFilter(el, this.termsSearch)))
       }
       return items
     },

@@ -36,8 +36,10 @@
             :value="item.terms"
             :placeholder="$t('placeholder.notChosen')"
             :nudge-bottom="32"
+            :search.sync="termsSearch"
             :items="customsTerms"
             :disabled="isTermsDisabled"
+            searchable
             solo
             squared
             hide-details
@@ -213,6 +215,7 @@ export default {
   },
   data () {
     return {
+      termsSearch: '',
       countriesSearch: '',
       icons: {
         mdiChevronUp,
@@ -256,13 +259,17 @@ export default {
       })
     },
     customsTerms () {
+      let items = []
       if (this.shipmentType === ShipmentType.RAILWAY || this.shipmentType === ShipmentType.CAR) {
-        return this.customsTermsItems
+        items = this.customsTermsItems
       }
       if (this.shipmentType === ShipmentType.MARINE || this.shipmentType === ShipmentType.MIXED) {
-        return [...this.customsTermsItems, { divider: true }, ...this.customsTermsMoreItems]
+        items = [...this.customsTermsItems, { divider: true }, ...this.customsTermsMoreItems]
       }
-      return []
+      if (this.termsSearch) {
+        return items.filter(item => Object.values(item).some(el => defaultFilter(el, this.termsSearch)))
+      }
+      return items
     },
   },
 }
