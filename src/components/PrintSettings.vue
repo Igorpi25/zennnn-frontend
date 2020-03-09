@@ -2078,8 +2078,7 @@ export default {
       return name
     },
     print () {
-      this.$logger.log('submit form', this.validate())
-      this.$emit('close')
+      this.$emit('print', this.requisite, this.client, this.shipment, this.customs)
     },
     validate () {
       let errorsCount = 0

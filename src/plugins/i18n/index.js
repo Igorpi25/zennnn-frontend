@@ -25,7 +25,7 @@ const dateTimeFormats = {
     },
     short: {
       year: 'numeric',
-      month: 'short',
+      month: 'numeric',
       day: 'numeric',
     },
     long: {

@@ -49,6 +49,7 @@
         :amount-in-words-client-lang="spec.amountInWordsClientLang"
         @update="v => updateSpec(v)"
         @close="printDialog = false"
+        @print="doPrint"
       />
     </v-dialog>
 
@@ -486,7 +487,7 @@
             <a
               href="#"
               class="w-full inline-block rounded-md border border-transparent hover:border-primary"
-              @click.prevent="printPDF"
+              @click.prevent="printDialog = true"
             >
               <div class="h-12 flex items-center px-2">
                 <svg class="mr-2" width="23" height="21" viewBox="0 0 23 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -633,6 +634,9 @@ import PrintSettings from '../components/PrintSettings.vue'
 import SpecShipment from '../components/SpecShipment.vue'
 import SpecCustoms from '../components/SpecCustoms.vue'
 
+import Countries from '../config/countries-iso3.json'
+
+import { ClientType, ShipmentType } from '../graphql/enums'
 import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS, GET_SPEC_EMAIL_ACCESS } from '../graphql/queries'
 import {
   UPDATE_SPEC,
@@ -735,6 +739,1248 @@ export default {
     },
   },
   methods: {
+    getClientName (item) {
+      if (!item) return ''
+      let name = ''
+      if (item.clientType === ClientType.LEGAL) {
+        name = item.companyName || ''
+      } else {
+        name = item.firstName || ''
+        name += name && item.lastName
+          ? ` ${item.lastName}`
+          : (item.lastName || '')
+      }
+      return name
+    },
+    getLastPrepaymentDate () {
+      let prepaymentDate = null
+      const invoices = this.spec.invoices || []
+      invoices.forEach(el => {
+        if (el.prepaymentDate) {
+          const d = this.$parseDate(el.prepaymentDate)
+          if (!prepaymentDate || d > prepaymentDate) {
+            prepaymentDate = d
+          }
+        }
+      })
+      return prepaymentDate
+    },
+    genLabel (path, clientLang, opt = {}) {
+      const flat = opt.flat
+      const secondary = opt.secondary
+      const value = opt.value
+      const fallback = opt.fallback
+      const args = opt.args || {}
+      const defaultLang = this.$i18n.fallbackLocale
+      const isDefaultLang = clientLang === defaultLang
+      const title = this.$te(path, defaultLang)
+        ? this.$t(path, defaultLang, args)
+        : fallback
+      const subtitle = this.$te(path, clientLang)
+        ? this.$t(path, clientLang, args)
+        : ''
+      if (flat) {
+        const v = subtitle && !isDefaultLang ? `${title} / ${subtitle}` : `${title}`
+        return secondary ? v : `${v}:`
+      }
+      const stack = []
+      if (secondary) {
+        stack.push({
+          text: title,
+        })
+      } else if (value) {
+        stack.push({
+          text: [
+            {
+              text: `${title}:`,
+              bold: true,
+            },
+            {
+              text: value,
+            },
+          ],
+        })
+      } else {
+        stack.push({
+          text: `${title}:`,
+          bold: true,
+        })
+      }
+      if (subtitle && !isDefaultLang) {
+        stack.push({
+          text: subtitle,
+          fontSize: 8,
+          italics: true,
+        })
+      }
+      return stack
+    },
+    genBillToBody (client, clientLang) {
+      const items = [
+        [
+          {
+            stack: this.genLabel('print.billTo', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: this.getClientName(client),
+              },
+            ],
+          },
+        ],
+        [
+          {
+            stack: this.genLabel('print.addressTelFax', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: `${client.legalAddress} / ${client.phone} / ${client.fax}`,
+              },
+            ],
+          },
+        ],
+      ]
+      if (client.importerActive) {
+        items.push([
+          {
+            stack: this.genLabel('print.importer', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: client.consignee,
+              },
+            ],
+          },
+        ])
+        items.push([
+          {
+            stack: this.genLabel('print.addressTelFax', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: `${client.shippingAddress} / ${client.contactMobilePhone} / ${client.importerFax}`,
+              },
+            ],
+          },
+        ])
+        items.push([
+          {
+            stack: this.genLabel('print.contactPersonEmail', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: `${client.contactPerson} / ${client.importerEmail}`,
+              },
+            ],
+          },
+        ])
+      }
+      return items
+    },
+    genDeliveryInfoTable (shipment, clientLang) {
+      const widths = shipment.sentThrough
+        ? ['auto', '*', 'auto', '*', 'auto', '*']
+        : ['auto', '*', '50%']
+      const row1 = [
+        {
+          stack: this.genLabel('print.from', clientLang),
+        },
+        {
+          fit: ['*', 3],
+          margin: [0, 12, 0, 0],
+          svg: `<svg viewBox="0 0 100 3" width="100" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="100" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="100" y2="2" stroke="black" stroke-width="1"/></svg>`,
+        },
+        {
+          stack: this.genLabel('print.via', clientLang),
+        },
+        {
+          fit: ['*', 3],
+          margin: [0, 12, 0, 0],
+          svg: `<svg viewBox="0 0 100 3" width="100" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="100" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="100" y2="2" stroke="black" stroke-width="1"/></svg>`,
+        },
+        {
+          stack: this.genLabel('print.to', clientLang),
+        },
+        '',
+      ]
+      const row2 = [
+        {
+          stack: this.genLabel('print.from', clientLang),
+        },
+        {
+          fit: ['*', 3],
+          margin: [0, 12, 0, 0],
+          svg: `<svg viewBox="0 0 180 3" width="180" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="180" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="180" y2="2" stroke="black" stroke-width="1"/></svg>`,
+        },
+        {
+          stack: this.genLabel('print.to', clientLang),
+        },
+      ]
+      const row = shipment.sentThrough
+        ? [
+          {
+            colSpan: 2,
+            text: shipment.sentFrom,
+          },
+          '',
+          {
+            colSpan: 2,
+            text: shipment.sentThrough,
+          },
+          '',
+          {
+            colSpan: 2,
+            text: shipment.sentDestination,
+          },
+        ]
+        : [
+          {
+            colSpan: 2,
+            text: shipment.sentFrom,
+          },
+          '',
+          {
+            text: shipment.sentDestination,
+          },
+        ]
+      return {
+        widths,
+        body: [
+          shipment.sentThrough ? row1 : row2,
+          row,
+        ],
+      }
+    },
+    genShipmentBody (shipment, customs, clientLang) {
+      const result = []
+      if (shipment.activeType === ShipmentType.MARINE) {
+        result.push([
+          {
+            stack: this.genLabel('print.methodOfDespatch', clientLang),
+          },
+          {
+            stack: this.genLabel(`shipmentType.${shipment.activeType}`, clientLang, { secondary: true }),
+          },
+          {
+            stack: this.genLabel('print.quanitiyOfContainers', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.marine.containersCount,
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.billOfLadingNo', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.marine.billOfLadingNo,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.containersAndSealsNo', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.marine.containersNo,
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.vessel', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.marine.ship,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.exportDate', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: this.$d(this.$parseDate(shipment.marine.exportDate), 'short', clientLang),
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.incoterms', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: customs.terms,
+              },
+            ],
+          },
+          '',
+          '',
+        ])
+      } else if (shipment.activeType === ShipmentType.AIR) {
+        result.push([
+          {
+            stack: this.genLabel('print.methodOfDespatch', clientLang),
+          },
+          {
+            stack: this.genLabel(`shipmentType.${shipment.activeType}`, clientLang),
+          },
+          {
+            stack: this.genLabel('print.quanitiyOfCartons', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.air.numbersOfPkg,
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.airWaybillNo', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.air.airWaybillNo,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.flight', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.air.flight,
+              },
+            ],
+          },
+        ])
+      } else if (shipment.activeType === ShipmentType.RAILWAY) {
+        result.push([
+          {
+            stack: this.genLabel('print.methodOfDespatch', clientLang),
+          },
+          {
+            stack: this.genLabel(`shipmentType.${shipment.activeType}`, clientLang, { secondary: true }),
+          },
+          {
+            stack: this.genLabel('print.qtyOfContainersPlatforms', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.railway.containersCount,
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.crmNo', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.railway.internationalWaybillNo,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.carriageNo', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.railway.containersNo,
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.train', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.railway.train,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.exportDate', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: this.$d(this.$parseDate(shipment.railway.exportDate), 'short', clientLang),
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.incoterms', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: customs.terms,
+              },
+            ],
+          },
+          '',
+          '',
+        ])
+      } else if (shipment.activeType === ShipmentType.CAR) {
+        result.push([
+          {
+            stack: this.genLabel('print.methodOfDespatch', clientLang),
+          },
+          {
+            stack: this.genLabel(`shipmentType.${shipment.activeType}`, clientLang, { secondary: true }),
+          },
+          {
+            stack: this.genLabel('print.vehicle', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.car.vehicleNo,
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.crmNo', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.car.internationalWaybillNo,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.trailer', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.car.semitrailerNo,
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.incoterms', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: customs.terms,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.exportDate', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: this.$d(this.$parseDate(shipment.car.exportDate), 'short', clientLang),
+              },
+            ],
+          },
+        ])
+      } else if (shipment.activeType === ShipmentType.MIXED) {
+        result.push([
+          {
+            stack: this.genLabel('print.methodOfDespatch', clientLang),
+          },
+          {
+            stack: this.genLabel(`shipmentType.${shipment.activeType}`, clientLang, { secondary: true }),
+          },
+          '',
+          '',
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.fblNo', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.mixed.internationalWaybillNo,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.vehicleTrailerFlight', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.mixed.containersNo,
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.vessel', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.mixed.ship,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.flight', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.mixed.flight,
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.train', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.mixed.train,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.vehicle', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.mixed.vehicleNo,
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.incoterms', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: customs.terms,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.exportDate', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: this.$d(this.$parseDate(shipment.mixed.exportDate), 'short', clientLang),
+              },
+            ],
+          },
+        ])
+      } else if (shipment.activeType === ShipmentType.EXPRESS) {
+        result.push([
+          {
+            stack: this.genLabel('print.methodOfDespatch', clientLang),
+          },
+          {
+            stack: this.genLabel(`shipmentType.${shipment.activeType}`, clientLang, { secondary: true }),
+          },
+          {
+            stack: this.genLabel('print.quanitiyOfCartons', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.express.numbersOfPkg,
+              },
+            ],
+          },
+        ])
+        result.push([
+          {
+            stack: this.genLabel('print.trackingNo', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.express.postalNo,
+              },
+            ],
+          },
+          {
+            stack: this.genLabel('print.deliveryCompany', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: shipment.express.deliveryService,
+              },
+            ],
+          },
+        ])
+      }
+      // Static
+      result.push([
+        {
+          stack: this.genLabel('print.shippingMarks', clientLang),
+        },
+        {
+          stack: this.genLabel('print.accordingToContract', clientLang, { secondary: true }),
+        },
+        {
+          stack: this.genLabel('print.exportReference', clientLang),
+        },
+        {
+          stack: this.genLabel('print.accordingToContract', clientLang, { secondary: true }),
+        },
+      ])
+      return result
+    },
+    genItemBody () {
+      let index = 0
+      const items = []
+      const invoices = this.spec.invoices || []
+      invoices.forEach(invoice => {
+        const products = invoice.products || []
+        products.forEach(product => {
+          index++
+          const clientPrice = (product.cost && product.cost.clientPrice) || 0
+          const clientAmount = (product.cost && product.cost.clientAmount) || 0
+          let name = product.name
+          if (product.article) {
+            name += ` / ${product.article}`
+          }
+          if (product.info && product.info.description) {
+            name += `\n${product.info.description}`
+          }
+          const item = [
+            { text: `${index}`, alignment: 'center' },
+            name,
+            // TODO: dynamic product unit
+            { text: `${product.qty} pcs / шт`, alignment: 'right' },
+            { text: this.$n(clientPrice, 'currency', 'en'), alignment: 'right' },
+            { text: this.$n(clientAmount, 'currency', 'en'), alignment: 'right' },
+          ]
+          items.push(item)
+        })
+      })
+      return items
+    },
+    genAmountBody (clientLang) {
+      const lastPrepaymentDate = this.getLastPrepaymentDate()
+      const border = lastPrepaymentDate
+        ? [false, false, false, true]
+        : [false, false, false, false]
+      const result = [
+        [
+          '',
+          {
+            border,
+            text: this.genLabel('print.balanceDue', clientLang, { flat: true }),
+            alignment: 'right',
+            fontSize: 14,
+          },
+          {
+            border,
+            text: this.$n(this.spec.totalClientDebt || 0, 'currency', 'en'),
+            alignment: 'right',
+            fontSize: 14,
+          },
+        ],
+      ]
+      if (lastPrepaymentDate) {
+        result.push([
+          '',
+          {
+            text: this.genLabel('print.depositeDue', clientLang, { flat: true, args: { date: lastPrepaymentDate } }),
+            alignment: 'right',
+          },
+          {
+            text: this.$n(this.spec.totalPrepay, 'currency', 'en'),
+            alignment: 'right',
+          },
+        ])
+      }
+      return result
+    },
+    genAmountInWords (clientLang) {
+      const defaultLang = this.$i18n.fallbackLocale
+      const isDefaultLang = clientLang === defaultLang
+      const result = []
+      if (this.spec.amountInWords) {
+        result.push([
+          {
+            text: `${this.$t('print.amountInWords', defaultLang)}: ${this.spec.amountInWords.toUpperCase()}`,
+            alignment: 'right',
+          },
+        ])
+      }
+      if (!isDefaultLang && this.spec.amountInWordsClientLang) {
+        result.push([
+          {
+            text: `${this.$t('print.amountInWords', clientLang)}}: ${this.spec.amountInWordsClientLang}`,
+            alignment: 'right',
+          },
+        ])
+      }
+      return result.length > 0
+        ? {
+          table: {
+            widths: ['*'],
+            body: result,
+          },
+          layout: {
+            defaultBorder: false,
+          },
+          margin: [0, 0, 0, 30],
+        }
+        : null
+    },
+    doPrint (requisite, client, shipment, customs) {
+      pdfMake.vfs = pdfFonts.pdfMake.vfs
+      const defaultLang = this.$i18n.fallbackLocale
+      const clientLang = client.language || defaultLang
+      const specCreatedAt = this.$parseDate(this.spec.createdAt)
+      const specDueDate = this.$parseDate(this.spec.createdAt)
+      specDueDate.setTime(specDueDate.getTime() + 7 * 86400000)
+      const dd = {
+        header: (currentPage, pageCount, pageSize) => {
+          return [
+            {
+              columns: [
+                {
+                  width: '50%',
+                  text: clientLang === 'ru' ? '04021' : '',
+                  margin: [4, 0, 4, 0],
+                },
+                {
+                  width: '50%',
+                  text: '', // 'Logotype / Логотип',
+                  alignment: 'right',
+                  margin: [4, 0, 4, 0],
+                },
+              ],
+              margin: [40, 20, 40, 0],
+            },
+          ]
+        },
+        footer: (currentPage, pageCount) => {
+          return [
+            {
+              columns: [
+                {
+                  width: '50%',
+                  margin: [4, 0, 4, 0],
+                  text: 'This document created automtically by zennnn.com',
+                },
+                {
+                  width: '50%',
+                  margin: [4, 0, 4, 0],
+                  text: this.genLabel('print.sheet', clientLang, {
+                    flat: true,
+                    secondary: true,
+                    args: {
+                      p: currentPage,
+                      t: pageCount,
+                    },
+                  }),
+                  alignment: 'right',
+                },
+              ],
+              fontSize: 9,
+              italics: true,
+              color: '#5e5e5e',
+              margin: [40, 10, 40, 0],
+            },
+          ]
+        },
+        content: [
+          // Requisite block
+          {
+            table: {
+              widths: [110, '*'],
+              body: [
+                [
+                  {
+                    stack: this.genLabel('print.seller', clientLang),
+                  },
+                  requisite.name,
+                ],
+                [
+                  {
+                    stack: this.genLabel('print.addressTelFax', clientLang),
+                  },
+                  `${requisite.legalAddress} / ${requisite.phone} / ${requisite.fax}`,
+                ],
+                [
+                  {
+                    stack: this.genLabel('print.emailWeb', clientLang),
+                  },
+                  `${requisite.email} / ${requisite.website}`,
+                ],
+                [
+                  {
+                    stack: this.genLabel('print.vatNo', clientLang),
+                  },
+                  requisite.itn || '',
+                ],
+                [
+                  {
+                    stack: this.genLabel('print.beneficiyBank', clientLang),
+                  },
+                  requisite.bankName,
+                ],
+                [
+                  {
+                    stack: this.genLabel('print.bankAddress', clientLang),
+                  },
+                  requisite.bankAddress,
+                ],
+                [
+                  {
+                    stack: this.genLabel('print.accountNumberSwift', clientLang),
+                  },
+                  `${requisite.bankAccountNumber} / ${requisite.swift}`,
+                ],
+              ],
+            },
+            layout: {
+              defaultBorder: false,
+            },
+            margin: [0, 0, 0, 20],
+          },
+          // Spec info block
+          {
+            table: {
+              widths: [110, '*', 85, 85],
+              body: [
+                [
+                  {
+                    fontSize: 22,
+                    text: 'INVOICE',
+                    bold: true,
+                  },
+                  {
+                    stack: this.genLabel('print.invoiceNo', clientLang, { value: this.spec.specNo }),
+                  },
+                  {
+                    alignment: 'right',
+                    stack: this.genLabel('print.invoiceDate', clientLang),
+                  },
+                  {
+                    alignment: 'right',
+                    text: this.$d(this.getLastPrepaymentDate() || new Date(), 'short', clientLang),
+                  },
+                ],
+              ],
+            },
+            layout: {
+              defaultBorder: false,
+            },
+            margin: [0, 0, 0, 8],
+          },
+          // Bill to block
+          {
+            table: {
+              widths: [110, '*'],
+              body: this.genBillToBody(client, clientLang),
+            },
+            layout: {
+              hLineWidth: function (i, node) {
+                return (i === 0 || i === 2 || i === node.table.body.length) ? 1 : 0
+              },
+              vLineWidth: function (i, node) {
+                return 0
+              },
+            },
+            margin: [0, 0, 0, 20],
+          },
+          // Shipment delivery info
+          {
+            table: this.genDeliveryInfoTable(shipment, clientLang),
+            layout: {
+              defaultBorder: false,
+            },
+            margin: [0, 0, 0, 20],
+          },
+          // Shipment
+          {
+            table: {
+              widths: [110, '*', 110, '*'],
+              body: this.genShipmentBody(shipment, customs, clientLang),
+            },
+            layout: {
+              defaultBorder: false,
+            },
+            margin: [0, 0, 0, 8],
+          },
+          // Shipment Country of Origin
+          {
+            table: {
+              widths: [110, '*', 110, '*'],
+              body: [
+                [
+                  {
+                    stack: this.genLabel('print.countryOfOrigin', clientLang),
+                  },
+                  {
+                    stack: this.genLabel(`countries.${customs.countryOfOrigin}.iso-3`, clientLang, { fallback: Countries[customs.countryOfOrigin], secondary: true }),
+                  },
+                  {
+                    stack: this.genLabel('print.pkgListNo', clientLang),
+                  },
+                  {
+                    stack: [
+                      {
+                        text: this.spec.specNo,
+                      },
+                    ],
+                  },
+                ],
+              ],
+              margin: [0, 0, 0, 20],
+            },
+            layout: {
+              hLineWidth: function (i, node) {
+                return (i === 0) ? 1 : 0
+              },
+              vLineWidth: function (i, node) {
+                return 0
+              },
+            },
+            margin: [0, 0, 0, 20],
+          },
+          // Items
+          {
+            table: {
+              widths: [40, '*', 90, 90, 90],
+              body: [
+                [
+                  {
+                    stack: this.genLabel('print.itemNo', clientLang, { secondary: true }),
+                  },
+                  {
+                    stack: this.genLabel('print.itemDescription', clientLang, { secondary: true }),
+                  },
+                  {
+                    stack: this.genLabel('print.itemQuantityUnit', clientLang, { secondary: true }),
+                    alignment: 'right',
+                  },
+                  {
+                    stack: this.genLabel('print.itemRatePrice', clientLang, { secondary: true }),
+                    alignment: 'right',
+                  },
+                  {
+                    stack: this.genLabel('print.itemAmount', clientLang, { secondary: true }),
+                    alignment: 'right',
+                  },
+                ],
+                ...this.genItemBody(),
+              ],
+            },
+            headerRows: 1,
+            layout: {
+              hLineWidth: function (i, node) {
+                return (i === 1 || i === node.table.body.length) ? 1 : 0
+              },
+              vLineWidth: function (i, node) {
+                return 0
+              },
+            },
+          },
+          // Items Amounts
+          {
+            table: {
+              widths: [80, 80, '*', 220, 90],
+              body: [
+                [
+                  '',
+                  '',
+                  '',
+                  {
+                    text: this.genLabel('print.subtotal', clientLang, { flat: true }),
+                    alignment: 'right',
+                  },
+                  {
+                    text: this.$n(this.spec.finalCost || 0, 'currency', 'en'),
+                    alignment: 'right',
+                  },
+                ],
+                [
+                  '',
+                  '',
+                  '',
+                  {
+                    text: this.genLabel('print.discount', clientLang, { flat: true }),
+                    alignment: 'right',
+                  },
+                  {
+                    text: this.$n(customs.discount || 0, 'currency', 'en'),
+                    alignment: 'right',
+                  },
+                ],
+                [
+                  {
+                    rowSpan: 2,
+                    stack: this.genLabel('print.invoiceCurrency', clientLang),
+                  },
+                  {
+                    rowSpan: 2,
+                    stack: this.genLabel('print.currency.usd', clientLang),
+                  },
+                  '',
+                  {
+                    text: this.genLabel('print.vat', clientLang, { flat: true }),
+                    alignment: 'right',
+                  },
+                  {
+                    text: this.$n(0, 'currency', 'en'),
+                    alignment: 'right',
+                  },
+                ],
+                [
+                  '',
+                  '',
+                  '',
+                  {
+                    text: this.genLabel('print.shipping', clientLang, { flat: true }),
+                    alignment: 'right',
+                  },
+                  {
+                    text: this.$n(customs.cost || 0, 'currency', 'en'),
+                    alignment: 'right',
+                  },
+                ],
+                [
+                  '',
+                  '',
+                  '',
+                  {
+                    text: this.genLabel('print.total', clientLang, { flat: true }),
+                    alignment: 'right',
+                  },
+                  {
+                    text: this.$n(this.spec.amount || 0, 'currency', 'en'),
+                    alignment: 'right',
+                  },
+                ],
+                [
+                  '',
+                  '',
+                  '',
+                  {
+                    text: this.genLabel('print.withholdingTax', clientLang, { flat: true }),
+                    alignment: 'right',
+                  },
+                  {
+                    text: this.$n(0, 'currency', 'en'),
+                    alignment: 'right',
+                  },
+                ],
+                [
+                  '',
+                  '',
+                  '',
+                  {
+                    text: this.genLabel('print.paid', clientLang, { flat: true }),
+                    alignment: 'right',
+                  },
+                  {
+                    text: this.$n(0, 'currency', 'en'),
+                    alignment: 'right',
+                  },
+                ],
+              ],
+            },
+            layout: {
+              defaultBorder: false,
+            },
+            margin: [0, 0, 0, 20],
+          },
+          // Amount
+          {
+            table: {
+              widths: ['*', '55%', 90],
+              body: this.genAmountBody(clientLang),
+            },
+            layout: {
+              defaultBorder: false,
+            },
+            margin: [0, 0, 0, 20],
+          },
+          // Amount in Words
+          this.genAmountInWords(clientLang),
+          // Contract
+          {
+            table: {
+              widths: [110, '*', 110, '*'],
+              body: [
+                [
+                  {
+                    stack: this.genLabel('print.contractNo', clientLang),
+                  },
+                  {
+                    stack: [
+                      {
+                        text: this.spec.specNo,
+                      },
+                    ],
+                  },
+                  {
+                    stack: this.genLabel('print.contractDate', clientLang),
+                  },
+                  {
+                    stack: [
+                      {
+                        text: this.$d(specCreatedAt, 'short', clientLang),
+                      },
+                    ],
+                  },
+                ],
+                [
+                  {
+                    stack: this.genLabel('print.terms', clientLang),
+                  },
+                  {
+                    stack: this.genLabel('print.NET7', clientLang, { secondary: true }),
+                  },
+                  {
+                    stack: this.genLabel('print.dateDue', clientLang),
+                  },
+                  {
+                    stack: [
+                      {
+                        text: this.$d(specDueDate, 'short', clientLang),
+                      },
+                    ],
+                  },
+                ],
+                [
+                  {
+                    stack: this.genLabel('print.paymentMethods', clientLang),
+                  },
+                  {
+                    stack: this.genLabel('print.TTaccordingToContract', clientLang, { secondary: true }),
+                  },
+                  '',
+                  '',
+                ],
+              ],
+            },
+            layout: {
+              hLineWidth: function (i, node) {
+                return (i === 0 || i === node.table.body.length) ? 1 : 0
+              },
+              vLineWidth: function (i, node) {
+                return 0
+              },
+            },
+            margin: [0, 0, 0, 10],
+          },
+          // Contract confirmation text
+          {
+            stack: this.genLabel('print.confirmation', clientLang),
+            margin: [4, 0, 4, 20],
+          },
+          // Sign
+          // TODO: manager name transcript
+          {
+            table: {
+              widths: [110, '*'],
+              body: [
+                [
+                  {
+                    stack: this.genLabel('print.manager', clientLang),
+                  },
+                  {
+                    stack: [
+                      {
+                        text: client.ownerFullName,
+                      },
+                    ],
+                  },
+                ],
+                [
+                  {
+                    stack: this.genLabel('print.sign', clientLang),
+                  },
+                  '',
+                ],
+              ],
+            },
+            layout: {
+              defaultBorder: false,
+            },
+          },
+        ],
+        styles: {
+          'item-table-header': {
+            fontSize: 9,
+            alignment: 'center',
+            margin: [0, 2],
+          },
+          'item-table': {
+            fontSize: 10,
+            alignment: 'right',
+          },
+          'item-heading': {
+            bold: true,
+            fontSize: 16,
+            margin: [0, 20, 0, 10],
+          },
+          'item-paragraph': {
+            columnGap: 10,
+            margin: [0, 0, 0, 10],
+          },
+          'requisite-columns': {
+            fontSize: 10,
+            margin: [0, 2],
+          },
+        },
+        defaultStyle: {
+          fontSize: 10,
+        },
+      }
+      pdfMake.createPdf(dd).open()
+    },
     async setContainerSize (containerId, e) {
       try {
         const val = e.target.value || ''
@@ -957,10 +2203,6 @@ export default {
       }
     },
     printPDF () {
-      if (true) { // eslint-disable-line
-        this.printDialog = true
-        return
-      }
       pdfMake.vfs = pdfFonts.pdfMake.vfs
       const dd = {
         content: [
