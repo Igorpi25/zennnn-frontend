@@ -37,6 +37,7 @@
             :placeholder="$t('placeholder.notChosen')"
             :nudge-bottom="32"
             :items="customsTerms"
+            :disabled="isTermsDisabled"
             solo
             squared
             hide-details
@@ -220,6 +221,9 @@ export default {
     }
   },
   computed: {
+    isTermsDisabled () {
+      return this.shipmentType === ShipmentType.AIR || this.shipmentType === ShipmentType.EXPRESS
+    },
     countries () {
       return Object.entries(Countries).map(([k, v]) => {
         return {

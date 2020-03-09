@@ -1567,7 +1567,10 @@
                   :value="customs.terms"
                   :placeholder="$t('placeholder.notChosen')"
                   :nudge-bottom="32"
+                  :search.sync="termsSearch"
                   :items="customsTerms"
+                  :disabled="isTermsDisabled"
+                  searchable
                   solo
                   squared
                   hide-details
@@ -1902,6 +1905,7 @@ export default {
   },
   data () {
     return {
+      termsSearch: '',
       errorFieldsCount: 0,
       warningFieldsCount: 0,
       countriesSearch: '',
@@ -1925,6 +1929,10 @@ export default {
     }
   },
   computed: {
+    isTermsDisabled () {
+      const shipmentType = this.shipment.activeType
+      return shipmentType === ShipmentType.AIR || shipmentType === ShipmentType.EXPRESS
+    },
     isImporterActive: {
       get () {
         return !!this.importer.importerActive
@@ -2012,13 +2020,17 @@ export default {
     },
     customsTerms () {
       const shipmentType = this.shipment.activeType
+      let items = []
       if (shipmentType === ShipmentType.RAILWAY || shipmentType === ShipmentType.CAR) {
-        return this.customsTermsItems
+        items = this.customsTermsItems
       }
       if (shipmentType === ShipmentType.MARINE || shipmentType === ShipmentType.MIXED) {
-        return [...this.customsTermsItems, { divider: true }, ...this.customsTermsMoreItems]
+        items = [...this.customsTermsItems, { divider: true }, ...this.customsTermsMoreItems]
       }
-      return []
+      if (this.termsSearch) {
+        items = items.filter(item => Object.values(item).some(el => defaultFilter(el, this.termsSearch)))
+      }
+      return items
     },
   },
   watch: {
