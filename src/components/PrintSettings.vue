@@ -287,16 +287,9 @@
                 squared
                 hide-details
                 class="text-sm text-field_nd"
-                input-class="h-8 text-primary placeholder-pink-500"
-                required
+                input-class="h-8 text-primary placeholder-yellow-500"
                 @input="updateRequisite({ swift: $event })"
-              >
-                <template v-slot:append>
-                  <span v-if="requisite.swift" class="text-green-500">
-                    <Icon size="14">{{ icons.mdiCheck }}</Icon>
-                  </span>
-                </template>
-              </TextField>
+              />
             </div>
             <div class="pb-4">
               <label class="text-sm">
