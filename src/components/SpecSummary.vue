@@ -815,6 +815,16 @@ export default {
       }
       return stack
     },
+    genValues (...args) {
+      let result = ''
+      if (args.length > 0) {
+        args.forEach(v => {
+          const val = v || ''
+          result += result ? ` / ${val}` : val
+        })
+      }
+      return result
+    },
     genBillToBody (client, clientLang) {
       const items = [
         [
@@ -836,7 +846,7 @@ export default {
           {
             stack: [
               {
-                text: `${client.legalAddress} / ${client.phone} / ${client.fax}`,
+                text: this.genValues(client.legalAddress, client.phone, client.fax),
               },
             ],
           },
@@ -862,7 +872,7 @@ export default {
           {
             stack: [
               {
-                text: `${client.shippingAddress} / ${client.contactMobilePhone} / ${client.importerFax}`,
+                text: this.genValues(client.shippingAddress, client.contactMobilePhone, client.importerFax),
               },
             ],
           },
@@ -874,7 +884,7 @@ export default {
           {
             stack: [
               {
-                text: `${client.contactPerson} / ${client.importerEmail}`,
+                text: this.genValues(client.contactPerson, client.importerEmail),
               },
             ],
           },
@@ -994,7 +1004,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.marine.containersNo,
+                text: shipment.marine.containersNo || '',
               },
             ],
           },
@@ -1006,7 +1016,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.marine.ship,
+                text: shipment.marine.ship || '',
               },
             ],
           },
@@ -1016,7 +1026,7 @@ export default {
           {
             stack: [
               {
-                text: this.$d(this.$parseDate(shipment.marine.exportDate), 'short', clientLang),
+                text: shipment.marine.exportDate ? this.$d(this.$parseDate(shipment.marine.exportDate), 'short', clientLang) : '',
               },
             ],
           },
@@ -1028,7 +1038,7 @@ export default {
           {
             stack: [
               {
-                text: customs.terms,
+                text: customs.terms || '',
               },
             ],
           },
@@ -1071,7 +1081,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.air.flight,
+                text: shipment.air.flight || '',
               },
             ],
           },
@@ -1112,7 +1122,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.railway.containersNo,
+                text: shipment.railway.containersNo || '',
               },
             ],
           },
@@ -1124,7 +1134,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.railway.train,
+                text: shipment.railway.train || '',
               },
             ],
           },
@@ -1134,7 +1144,7 @@ export default {
           {
             stack: [
               {
-                text: this.$d(this.$parseDate(shipment.railway.exportDate), 'short', clientLang),
+                text: shipment.railway.exportDate ? this.$d(this.$parseDate(shipment.railway.exportDate), 'short', clientLang) : '',
               },
             ],
           },
@@ -1146,7 +1156,7 @@ export default {
           {
             stack: [
               {
-                text: customs.terms,
+                text: customs.terms || '',
               },
             ],
           },
@@ -1167,7 +1177,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.car.vehicleNo,
+                text: shipment.car.vehicleNo || '',
               },
             ],
           },
@@ -1189,7 +1199,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.car.semitrailerNo,
+                text: shipment.car.semitrailerNo || '',
               },
             ],
           },
@@ -1201,7 +1211,7 @@ export default {
           {
             stack: [
               {
-                text: customs.terms,
+                text: customs.terms || '',
               },
             ],
           },
@@ -1211,7 +1221,7 @@ export default {
           {
             stack: [
               {
-                text: this.$d(this.$parseDate(shipment.car.exportDate), 'short', clientLang),
+                text: shipment.car.exportDate ? this.$d(this.$parseDate(shipment.car.exportDate), 'short', clientLang) : '',
               },
             ],
           },
@@ -1244,7 +1254,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.mixed.containersNo,
+                text: shipment.mixed.containersNo || '',
               },
             ],
           },
@@ -1256,7 +1266,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.mixed.ship,
+                text: shipment.mixed.ship || '',
               },
             ],
           },
@@ -1266,7 +1276,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.mixed.flight,
+                text: shipment.mixed.flight || '',
               },
             ],
           },
@@ -1278,7 +1288,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.mixed.train,
+                text: shipment.mixed.train || '',
               },
             ],
           },
@@ -1288,7 +1298,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.mixed.vehicleNo,
+                text: shipment.mixed.vehicleNo || '',
               },
             ],
           },
@@ -1300,7 +1310,7 @@ export default {
           {
             stack: [
               {
-                text: customs.terms,
+                text: customs.terms || '',
               },
             ],
           },
@@ -1310,7 +1320,7 @@ export default {
           {
             stack: [
               {
-                text: this.$d(this.$parseDate(shipment.mixed.exportDate), 'short', clientLang),
+                text: shipment.mixed.exportDate ? this.$d(this.$parseDate(shipment.mixed.exportDate), 'short', clientLang) : '',
               },
             ],
           },
@@ -1329,7 +1339,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.express.numbersOfPkg,
+                text: shipment.express.numbersOfPkg || '',
               },
             ],
           },
@@ -1351,7 +1361,7 @@ export default {
           {
             stack: [
               {
-                text: shipment.express.deliveryService,
+                text: shipment.express.deliveryService || '',
               },
             ],
           },
@@ -1384,7 +1394,7 @@ export default {
           index++
           const clientPrice = (product.cost && product.cost.clientPrice) || 0
           const clientAmount = (product.cost && product.cost.clientAmount) || 0
-          let name = product.name
+          let name = product.name || ''
           if (product.article) {
             name += ` / ${product.article}`
           }
@@ -1395,7 +1405,7 @@ export default {
             { text: `${index}`, alignment: 'center' },
             name,
             // TODO: dynamic product unit
-            { text: `${product.qty} pcs / шт`, alignment: 'right' },
+            { text: `${product.qty || 0} pcs / шт`, alignment: 'right' },
             { text: this.$n(clientPrice, 'currency', 'en'), alignment: 'right' },
             { text: this.$n(clientAmount, 'currency', 'en'), alignment: 'right' },
           ]
@@ -1548,13 +1558,13 @@ export default {
                   {
                     stack: this.genLabel('print.addressTelFax', clientLang),
                   },
-                  `${requisite.legalAddress} / ${requisite.phone} / ${requisite.fax}`,
+                  this.genValues(requisite.legalAddress, requisite.phone, requisite.fax),
                 ],
                 [
                   {
                     stack: this.genLabel('print.emailWeb', clientLang),
                   },
-                  `${requisite.email} / ${requisite.website}`,
+                  this.genValues(requisite.email, requisite.website),
                 ],
                 [
                   {
@@ -1578,7 +1588,7 @@ export default {
                   {
                     stack: this.genLabel('print.accountNumberSwift', clientLang),
                   },
-                  `${requisite.bankAccountNumber} / ${requisite.swift}`,
+                  this.genValues(requisite.bankAccountNumber, requisite.swift),
                 ],
               ],
             },
@@ -1951,30 +1961,6 @@ export default {
             },
           },
         ],
-        styles: {
-          'item-table-header': {
-            fontSize: 9,
-            alignment: 'center',
-            margin: [0, 2],
-          },
-          'item-table': {
-            fontSize: 10,
-            alignment: 'right',
-          },
-          'item-heading': {
-            bold: true,
-            fontSize: 16,
-            margin: [0, 20, 0, 10],
-          },
-          'item-paragraph': {
-            columnGap: 10,
-            margin: [0, 0, 0, 10],
-          },
-          'requisite-columns': {
-            fontSize: 10,
-            margin: [0, 2],
-          },
-        },
         defaultStyle: {
           fontSize: 10,
         },
