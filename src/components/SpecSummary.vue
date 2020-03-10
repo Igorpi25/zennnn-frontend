@@ -1450,10 +1450,11 @@ export default {
         ],
       ]
       if (lastPrepaymentDate) {
+        const date = this.$d(this.$parseDate(lastPrepaymentDate), 'short', clientLang)
         result.push([
           '',
           {
-            text: this.genLabel('print.depositeDue', clientLang, { flat: true, args: { date: lastPrepaymentDate } }),
+            text: this.genLabel('print.depositeDue', clientLang, { flat: true, args: { date } }),
             alignment: 'right',
           },
           {

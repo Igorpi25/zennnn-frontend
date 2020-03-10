@@ -592,7 +592,7 @@
     "withholdingTax": "Подоходный налог",
     "paid": "Оплачено",
     "balanceDue": "Остаток к оплате",
-    "depositeDue": "Предоплата от { date }",
+    "depositeDue": "Предоплата от {date}",
     "invoiceCurrency": "Валюта инвойса",
     "currency": {
       "usd": "Доллар США"
