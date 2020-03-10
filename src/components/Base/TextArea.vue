@@ -38,7 +38,7 @@
           <slot name="prepend" />
         </div>
         <textarea
-          ref="textarea"
+          ref="input"
           v-model="internalValue"
           :id="inputId"
           :name="name"
@@ -268,7 +268,7 @@ export default {
       this.$emit('input', this.internalValue)
     },
     calculateHeight () {
-      const textArea = this.$refs.textarea
+      const textArea = this.$refs.input
       textArea.style.height = '0'
 
       const height = textArea.scrollHeight

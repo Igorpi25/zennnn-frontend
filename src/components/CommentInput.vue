@@ -93,7 +93,7 @@ export default {
     },
     blur () {
       this.clear()
-      this.$refs.input.$refs.textarea.blur()
+      this.$refs.input.$refs.input.blur()
       this.hasFocus = false
     },
     submitComment () {
