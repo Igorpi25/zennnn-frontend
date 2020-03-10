@@ -839,18 +839,31 @@ export default {
             ],
           },
         ],
-        [
-          {
-            stack: this.genLabel('print.addressTelFax', clientLang),
-          },
-          {
-            stack: [
-              {
-                text: this.genValues(client.legalAddress, client.phone, client.fax),
-              },
-            ],
-          },
-        ],
+        client.clientType === ClientType.LEGAL
+          ? [
+            {
+              stack: this.genLabel('print.addressTelFax', clientLang),
+            },
+            {
+              stack: [
+                {
+                  text: this.genValues(client.legalAddress, client.phone, client.fax),
+                },
+              ],
+            },
+          ]
+          : [
+            {
+              stack: this.genLabel('print.addressTelFax', clientLang),
+            },
+            {
+              stack: [
+                {
+                  text: this.genValues(client.deliveryAddress, client.mobilePhone, client.additionalPhone),
+                },
+              ],
+            },
+          ],
       ]
       if (client.importerActive) {
         items.push([
