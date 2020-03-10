@@ -1,5 +1,3 @@
-import format from 'date-fns/format'
-
 import {
   mdiPlusCircleOutline,
   mdiChevronLeft,
@@ -218,15 +216,6 @@ export default {
           tab: value,
         },
       })
-    },
-    formatDate (date) {
-      if (!date) return ''
-      return format(
-        this.$parseDate(date),
-        this.$i18n.locale === 'zh'
-          ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
-            ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
-      )
     },
     getInvoiceSupplier (item) {
       const supplier = item.supplier || {}

@@ -122,7 +122,7 @@
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(prepaymentDate)"
+                :value="prepaymentDate ? $d($parseDate(prepaymentDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -172,7 +172,7 @@
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(residueDate)"
+                :value="residueDate ? $d($parseDate(residueDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -219,7 +219,7 @@
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(clientDebtDate)"
+                :value="clientDebtDate ? $d($parseDate(clientDebtDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -253,7 +253,6 @@
 
 <script>
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js'
-import format from 'date-fns/format'
 
 import { InvoiceProfitType } from '@/graphql/enums'
 import { UPDATE_INVOICE } from '@/graphql/mutations'
@@ -283,12 +282,6 @@ export default {
     }
   },
   methods: {
-    formatDate (date) {
-      return format(this.$parseDate(date), this.$i18n.locale === 'zh'
-        ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
-          ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
-      )
-    },
     async updateInvoice (input) {
       try {
         this.updateLoading = input.id

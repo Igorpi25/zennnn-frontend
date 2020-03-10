@@ -1,4 +1,3 @@
-import format from 'date-fns/format'
 // import throttle from 'lodash.throttle'
 
 import {
@@ -186,14 +185,6 @@ export default {
       } finally {
         this.createLoading = false
       }
-    },
-    formatDate (date) {
-      if (!date) return null
-      const parsedDate = this.$parseDate(date)
-      return format(parsedDate, this.$i18n.locale === 'zh'
-        ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
-          ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
-      )
     },
     switchTab (value) {
       this.$emit('change:tab', value)

@@ -80,18 +80,15 @@
                 invoiceNo: $event
               }, item.id)"
             />
-            <v-menu
-              ref="menu"
-              v-model="menuPurchaseDate[item.id]"
-              transition="scale-transition"
-              min-width="290px"
-              offset-y
+            <DatePicker
+              :value="item.purchaseDate"
+              @input="updateInvoice({ purchaseDate: $event }, item.id)"
             >
               <template v-slot:activator="{ on }">
                 <div class="text-left">
                   <div v-on="on" class="inline-block">
                     <TextField
-                      :value="formatDate(item.purchaseDate)"
+                      :value="item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : null"
                       :placeholder="$t('shipping.purchaseDate')"
                       solo
                       outlined
@@ -103,20 +100,7 @@
                   </div>
                 </div>
               </template>
-              <v-date-picker
-                :value="$toISOString($parseDate(item.purchaseDate))"
-                :locale="$i18n.locale"
-                :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
-                :next-icon="icons.mdiChevronRight"
-                :prev-icon="icons.mdiChevronLeft"
-                color="#5a8199"
-                no-title
-                dark
-                @change="updateInvoice({
-                  purchaseDate: $event || null
-                }, item.id)"
-              ></v-date-picker>
-            </v-menu>
+            </DatePicker>
             <!-- TODO on real api, need send id -->
             <Select
               :value="getInvoiceSupplier(item)"
@@ -145,18 +129,15 @@
                 </a>
               </template>
             </Select>
-            <v-menu
-              ref="menu"
-              v-model="menuShippingDate[item.id]"
-              transition="scale-transition"
-              min-width="290px"
-              offset-y
+            <DatePicker
+              :value="item.shippingDate"
+              @input="updateInvoice({ shippingDate: $event }, item.id)"
             >
               <template v-slot:activator="{ on }">
                 <div class="text-left">
                   <div v-on="on" class="inline-block">
                     <TextField
-                      :value="formatDate(item.shippingDate)"
+                      :value="item.shippingDate ? $d($parseDate(item.shippingDate), 'short') : null"
                       :placeholder="$t('shipping.shippingDate')"
                       solo
                       outlined
@@ -168,20 +149,7 @@
                   </div>
                 </div>
               </template>
-              <v-date-picker
-                :value="$toISOString($parseDate(item.shippingDate))"
-                :locale="$i18n.locale"
-                :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
-                :next-icon="icons.mdiChevronRight"
-                :prev-icon="icons.mdiChevronLeft"
-                color="#5a8199"
-                no-title
-                dark
-                @change="updateInvoice({
-                  shippingDate: $event || null
-                }, item.id)"
-              ></v-date-picker>
-            </v-menu>
+            </DatePicker>
           </div>
         </InvoiceHeader>
         <Invoice

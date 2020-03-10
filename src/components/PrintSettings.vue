@@ -898,10 +898,9 @@
                 <label class="text-sm">
                   <span>{{ $t('shipping.exportDate') }}</span>
                 </label>
-                <v-menu
-                  transition="scale-transition"
-                  min-width="290px"
-                  offset-y
+                <DatePicker
+                  :value="shipment.marine.exportDate"
+                  @input="$emit('update', { shipment: { marine: { exportDate: $event } } })"
                 >
                   <template v-slot:activator="{ on }">
                     <div v-on="on">
@@ -917,18 +916,7 @@
                       />
                     </div>
                   </template>
-                  <v-date-picker
-                    :value="$toISOString($parseDate(shipment.marine.exportDate))"
-                    :locale="$i18n.locale"
-                    :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
-                    :next-icon="icons.mdiChevronRight"
-                    :prev-icon="icons.mdiChevronLeft"
-                    color="#5a8199"
-                    no-title
-                    dark
-                    @change="$emit('update', { shipment: { marine: { exportDate: $event || null } } })"
-                  ></v-date-picker>
-                </v-menu>
+                </DatePicker>
               </div>
               <div class="w-1/2">
                 <label class="text-sm">
@@ -1190,10 +1178,9 @@
                 <label class="text-sm">
                   <span>{{ $t('shipping.exportDate') }}</span>
                 </label>
-                <v-menu
-                  transition="scale-transition"
-                  min-width="290px"
-                  offset-y
+                <DatePicker
+                  :value="shipment.railway.exportDate"
+                  @input="$emit('update', { shipment: { railway: { exportDate: $event } } })"
                 >
                   <template v-slot:activator="{ on }">
                     <div v-on="on">
@@ -1209,18 +1196,7 @@
                       />
                     </div>
                   </template>
-                  <v-date-picker
-                    :value="$toISOString($parseDate(shipment.railway.exportDate))"
-                    :locale="$i18n.locale"
-                    :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
-                    :next-icon="icons.mdiChevronRight"
-                    :prev-icon="icons.mdiChevronLeft"
-                    color="#5a8199"
-                    no-title
-                    dark
-                    @change="$emit('update', { shipment: { railway: { exportDate: $event || null } } })"
-                  ></v-date-picker>
-                </v-menu>
+                </DatePicker>
               </div>
             </div>
             <!-- CAR -->
@@ -1284,10 +1260,9 @@
                 <label class="text-sm">
                   <span>{{ $t('shipping.exportDate') }}</span>
                 </label>
-                <v-menu
-                  transition="scale-transition"
-                  min-width="290px"
-                  offset-y
+                <DatePicker
+                  :value="shipment.car.exportDate"
+                  @input="$emit('update', { shipment: { car: { exportDate: $event } } })"
                 >
                   <template v-slot:activator="{ on }">
                     <div v-on="on">
@@ -1303,18 +1278,7 @@
                       />
                     </div>
                   </template>
-                  <v-date-picker
-                    :value="$toISOString($parseDate(shipment.car.exportDate))"
-                    :locale="$i18n.locale"
-                    :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
-                    :next-icon="icons.mdiChevronRight"
-                    :prev-icon="icons.mdiChevronLeft"
-                    color="#5a8199"
-                    no-title
-                    dark
-                    @change="$emit('update', { shipment: { car: { exportDate: $event } } })"
-                  ></v-date-picker>
-                </v-menu>
+                </DatePicker>
               </div>
             </div>
             <!-- MIXED -->
@@ -1426,10 +1390,9 @@
                 <label class="text-sm">
                   <span>{{ $t('shipping.exportDate') }}</span>
                 </label>
-                <v-menu
-                  transition="scale-transition"
-                  min-width="290px"
-                  offset-y
+                <DatePicker
+                  :value="shipment.mixed.exportDate"
+                  @input="$emit('update', { shipment: { mixed: { exportDate: $event } } })"
                 >
                   <template v-slot:activator="{ on }">
                     <div v-on="on">
@@ -1445,18 +1408,7 @@
                       />
                     </div>
                   </template>
-                  <v-date-picker
-                    :value="$toISOString($parseDate(shipment.mixed.exportDate))"
-                    :locale="$i18n.locale"
-                    :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
-                    :next-icon="icons.mdiChevronRight"
-                    :prev-icon="icons.mdiChevronLeft"
-                    color="#5a8199"
-                    no-title
-                    dark
-                    @change="$emit('update', { shipment: { mixed: { exportDate: $event || null } } })"
-                  ></v-date-picker>
-                </v-menu>
+                </DatePicker>
               </div>
             </div>
             <!-- EXPRESS -->
