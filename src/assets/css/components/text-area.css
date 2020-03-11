@@ -47,6 +47,9 @@
 .text-area.has-error .text-area__slot:before {
   @apply border-error;
 }
+.text-area.has-error.text-area--squared .text-area__slot {
+  @apply border-red;
+}
 
 .text-area--transparent textarea {
   background-color: transparent;

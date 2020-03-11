@@ -75,10 +75,12 @@
                     />
                   </label>
                   <TextArea
+                    :ref="field.ref || null"
                     :rows="field.rows || 1"
                     :disabled="isDisabled"
                     :value="item[field.defaultValueKey] || item[key]"
                     :placeholder="isDisabled ? '-' : null"
+                    :rules="field.rules"
                     squared
                     hide-details
                     class="template-card__input"

@@ -105,6 +105,7 @@
           </div>
           <div class="flex justify-between relative">
             <TemplateCard
+              ref="LEGAL"
               template-name="client"
               :fields="legalFieldsSettings"
               :item="client"
@@ -180,6 +181,7 @@
               </template>
             </TemplateCard>
             <TemplateCard
+              ref="NATURAL"
               template-name="client"
               :fields="naturalFieldsSettings"
               :item="client"
@@ -263,7 +265,7 @@
               params: {
                 orgId,
               }
-            })"
+            }).catch(err => {})"
           >
             <Icon class="mr-2">
               {{ icons.mdiArrowLeft }}
@@ -348,6 +350,7 @@ export default {
   },
   data () {
     return {
+      wasValidate: false,
       langs: [
         { value: 'en', text: 'English' },
         { value: 'ru', text: 'Русский' },
@@ -371,6 +374,8 @@ export default {
           placeholder: 'uid',
         },
         companyName: {
+          ref: 'legalCompanyNameInput',
+          rules: [v => !!v || this.$t('rule.required')],
           rows: 2,
         },
         legalAddress: {
@@ -452,8 +457,14 @@ export default {
           label: 'uid',
           placeholder: 'uidAbr',
         },
-        firstName: {},
-        lastName: {},
+        firstName: {
+          ref: 'naturalFirstNameInput',
+          rules: [v => !!v || this.$t('rule.required')],
+        },
+        lastName: {
+          ref: 'naturalLastNameInput',
+          rules: [v => !!v || this.$t('rule.required')],
+        },
         middleName: {},
         passportId: {},
         mobilePhone: {},
@@ -598,8 +609,15 @@ export default {
         const r = await this.openConfirmDialog()
         if (r) {
           if (r === 2) {
+            this.wasValidate = true
+            const isValid = this.validate(true)
+            if (!isValid) {
+              this.saveBeforeCloseDialog = false
+              this.$vuetify.goTo('#container')
+              return next(false)
+            }
             try {
-              await this.update()
+              await this.update(this.clientType, false)
               return next()
             } catch (error) {
               this.$logger.warn('Error: ', error)
@@ -634,7 +652,50 @@ export default {
       }
       this.clientClone = cloneDeep(this.client)
     },
-    async update (type) {
+    validate (focus) {
+      if (!this.wasValidate) return
+      const type = this.clientType
+      const validateFields = []
+      let errorsCount = 0
+      let fields = []
+      const refs = this.$refs[type].$refs
+      if (type === this.naturalType) {
+        fields = this.naturalFieldsSettings
+      } else {
+        fields = this.legalFieldsSettings
+      }
+      for (const [, v] of Object.entries(fields)) {
+        if (v.rules) {
+          const field = refs[v.ref][0]
+          if (field) {
+            validateFields.push(field)
+          }
+        }
+      }
+      let firstNotValidInput = null
+      validateFields.forEach(el => {
+        const errCount = el.validate()
+        if (errCount && !firstNotValidInput) {
+          firstNotValidInput = el.$refs.input
+        }
+        errorsCount += errCount
+      })
+      if (focus && errorsCount && firstNotValidInput) {
+        const delay = this.isComponent ? 0 : 200
+        setTimeout(() => {
+          firstNotValidInput.focus()
+        }, delay)
+      }
+      return !errorsCount
+    },
+    async update (type, redirectAfterCreate = true) {
+      this.wasValidate = true
+      // TODO: validate input Uniq number
+      const isValid = this.validate(true)
+      if (!isValid) {
+        this.$vuetify.goTo('#container')
+        return
+      }
       try {
         let input = {
           clientType: this.clientType,
@@ -669,7 +730,7 @@ export default {
             const action = this.create ? 'create' : 'update'
             this.$emit(action, data)
           } else {
-            if (this.create) {
+            if (this.create && redirectAfterCreate) {
               this.$router.push({
                 name: 'client',
                 params: {
@@ -754,6 +815,7 @@ export default {
       }
     },
     updateValue (key, value) {
+      this.validate()
       if (!this.client.hasOwnProperty(key)) {
         this.$set(this.client, key, value)
       } else {

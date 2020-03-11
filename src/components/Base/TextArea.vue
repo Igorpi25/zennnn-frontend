@@ -55,7 +55,7 @@
           @input="calculateHeight"
           @focus="onFocus"
           @blur="onBlur"
-        ></textarea>
+        />
         <div
           v-if="$slots.append"
           class="text-area__append"
@@ -76,6 +76,13 @@
             {{ icons.mdiCheckCircle }}
           </Icon>
         </div>
+      </div>
+      <div
+        v-if="hideDetails && hasError"
+        class="absolute text-red text-xs"
+        style="bottom:-18px;"
+      >
+        <span>{{ errorText }}</span>
       </div>
     </div>
   </InputBase>
@@ -201,7 +208,7 @@ export default {
   data () {
     return {
       // TODO input registrator
-      inputId: 'input' + Math.round(Math.random() * 100000),
+      inputId: 'textarea' + Math.round(Math.random() * 100000),
       lazyValue: this.value,
       icons: {
         mdiCloseCircle,

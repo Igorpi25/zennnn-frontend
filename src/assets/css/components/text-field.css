@@ -50,6 +50,9 @@
 .text-field.has-error.text-field--outlined .text-field__slot {
   @apply border-red;
 }
+.text-field.has-error.text-field--squared .text-field__slot {
+  @apply border-red;
+}
 
 /* TEXTFIELD OUTLINED */
 .text-field--outlined {

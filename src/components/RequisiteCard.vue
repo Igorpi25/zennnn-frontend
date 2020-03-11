@@ -99,8 +99,10 @@
                     {{ $t(`requisite.label.${item.label || key}`) }}
                   </label>
                   <TextField
+                    :ref="item.ref || null"
                     :value="requisite[key]"
                     :placeholder="$t('requisite.placeholder.fillFields')"
+                    :rules="item.rules"
                     squared
                     colored-faded
                     hide-details
@@ -260,10 +262,13 @@ export default {
   },
   data () {
     return {
+      wasValidate: false,
       saveBeforeCloseDialog: false,
       cardType: 'ABOUT',
       about: {
         name: {
+          ref: 'companyNameInput',
+          rules: [v => !!v || this.$t('rule.required')],
           label: 'companyName',
         },
         nameEng: {
@@ -354,8 +359,16 @@ export default {
         const r = await this.openConfirmDialog()
         if (r) {
           if (r === 2) {
+            this.wasValidate = true
+            const isValid = this.validate(true)
+            if (!isValid) {
+              this.cardType = 'ABOUT'
+              this.saveBeforeCloseDialog = false
+              this.$vuetify.goTo('#container')
+              return next(false)
+            }
             try {
-              await this.update()
+              await this.update(false)
               return next()
             } catch (error) {
               this.$logger.warn('Error: ', error)
@@ -380,7 +393,44 @@ export default {
         })
       })
     },
-    async update () {
+    validate () {
+      if (!this.wasValidate) return
+      const validateFields = []
+      let errorsCount = 0
+      const fields = this.about
+      for (const [, v] of Object.entries(fields)) {
+        if (v.rules) {
+          const field = this.$refs[v.ref] && this.$refs[v.ref][0]
+          if (field) {
+            validateFields.push(field)
+          }
+        }
+      }
+      let firstNotValidInput = null
+      validateFields.forEach(el => {
+        const errCount = el.validate()
+        if (errCount && !firstNotValidInput) {
+          firstNotValidInput = el.$refs.input
+        }
+        errorsCount += errCount
+      })
+      if (focus && errorsCount && firstNotValidInput) {
+        const delay = this.isComponent ? 0 : 200
+        setTimeout(() => {
+          firstNotValidInput.focus()
+        }, delay)
+      }
+      return !errorsCount
+    },
+    async update (redirectAfterCreate = true) {
+      this.wasValidate = true
+      // TODO: validate input Uniq number
+      const isValid = this.validate(true)
+      if (!isValid) {
+        this.cardType = 'ABOUT'
+        this.$vuetify.goTo('#container')
+        return
+      }
       try {
         let input = {}
         this.fieldsKeys.forEach(key => {
@@ -405,7 +455,7 @@ export default {
             const action = this.create ? 'create' : 'update'
             this.$emit(action, data)
           } else {
-            if (this.create) {
+            if (this.create && redirectAfterCreate) {
               this.$router.push({
                 name: 'requisite',
                 params: {
@@ -431,6 +481,7 @@ export default {
       this.requisiteClone = cloneDeep(this.requisite)
     },
     updateRequisite (key, value) {
+      this.validate()
       if (!this.requisite.hasOwnProperty(key)) {
         this.$set(this.requisite, key, value)
       } else {

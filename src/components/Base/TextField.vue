@@ -24,7 +24,8 @@
     ]"
   >
     <div class="text-field__controls">
-      <div class="text-field__slot"
+      <div
+        class="text-field__slot"
         :style="compHeight"
       >
         <label

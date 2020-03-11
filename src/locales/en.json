@@ -714,6 +714,7 @@
     "removeContract": "Are you sure you want to delete the Contract?"
   },
   "rule": {
+    "required": "Please fill in this field.",
     "passwordsDoNotMatch": "The entered passwords do not match."
   },
   "preposition": {

@@ -103,6 +103,7 @@
           <div class="flex justify-between relative">
             <!-- <div class="partner-card__triangle"></div> -->
             <TemplateCard
+              ref="supplier"
               template-name="supplier"
               :fields="fieldsSettings"
               :item="supplier"
@@ -150,7 +151,7 @@
                     :disabled="!editMode"
                     large
                     class="mb-4 mx-auto"
-                    @click="update"
+                    @click="update()"
                   >
                     <span>{{ $t('supplier.save') }}</span>
                   </Button>
@@ -290,7 +291,7 @@
               params: {
                 orgId,
               }
-            })"
+            }).catch(err => {})"
           >
             <Icon class="mr-2">
               {{ icons.mdiArrowLeft }}
@@ -382,6 +383,7 @@ export default {
   },
   data () {
     return {
+      wasValidate: false,
       langs: [
         { value: 'en', text: 'English' },
         { value: 'ru', text: 'Русский' },
@@ -416,6 +418,8 @@ export default {
       },
       fieldsSettings: {
         companyNameSl: {
+          ref: 'companyNameSlInput',
+          rules: [v => !!v || this.$t('rule.required')],
           rows: 2,
           label: 'sl',
         },
@@ -582,8 +586,16 @@ export default {
         const r = await this.openConfirmDialog()
         if (r) {
           if (r === 2) {
+            this.wasValidate = true
+            const isValid = this.validate(true)
+            if (!isValid) {
+              this.editCard = this.editCardTypes.SUPPLIER
+              this.saveBeforeCloseDialog = false
+              this.$vuetify.goTo('#container')
+              return next(false)
+            }
             try {
-              await this.update()
+              await this.update(false)
               return next()
             } catch (error) {
               this.$logger.warn('Error: ', error)
@@ -619,7 +631,44 @@ export default {
       // clone supplier for detect changes
       this.supplierClone = cloneDeep(this.supplier)
     },
-    async update () {
+    validate (focus) {
+      if (!this.wasValidate) return
+      const validateFields = []
+      let errorsCount = 0
+      const fields = this.fieldsSettings
+      const refs = this.$refs['supplier'].$refs
+      for (const [, v] of Object.entries(fields)) {
+        if (v.rules) {
+          const field = refs[v.ref][0]
+          if (field) {
+            validateFields.push(field)
+          }
+        }
+      }
+      let firstNotValidInput = null
+      validateFields.forEach(el => {
+        const errCount = el.validate()
+        if (errCount && !firstNotValidInput) {
+          firstNotValidInput = el.$refs.input
+        }
+        errorsCount += errCount
+      })
+      if (focus && errorsCount && firstNotValidInput) {
+        const delay = this.isComponent ? 0 : 200
+        setTimeout(() => {
+          firstNotValidInput.focus()
+        }, delay)
+      }
+      return !errorsCount
+    },
+    async update (redirectAfterCreate = true) {
+      this.wasValidate = true
+      // TODO: validate input Uniq number
+      const isValid = this.validate(true)
+      if (!isValid) {
+        this.$vuetify.goTo('#container')
+        return
+      }
       try {
         let input = {
           template: {},
@@ -670,7 +719,7 @@ export default {
             this.$emit(action, data)
           } else {
             this.editMode = false
-            if (this.create) {
+            if (this.create && redirectAfterCreate) {
               this.$router.push({
                 name: 'supplier',
                 params: {
@@ -751,6 +800,7 @@ export default {
       }
     },
     updateValue (key, value) {
+      this.validate()
       if (!this.supplier.hasOwnProperty(key)) {
         this.$set(this.supplier, key, value)
       } else {
