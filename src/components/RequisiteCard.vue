@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog
-      v-model="isWelcome"
+      :value="isWelcome"
       max-width="590"
       overlay-color="#0f0f0f"
       overlay-opacity="0.6"
