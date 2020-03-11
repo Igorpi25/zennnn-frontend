@@ -120,9 +120,8 @@
                   <select
                     :value="client.language || $i18n.fallbackLocale"
                     :disabled="!editMode || !!updateLoading"
-                    :class="{ 'appearance-none mx-2': !editMode || !!updateLoading }"
+                    class="simple-select mx-1"
                     name="language-select"
-                    style="background:transparent;"
                     @change="updateValue('language', $event.target.value)"
                   >
                     <option
@@ -196,9 +195,8 @@
                   <select
                     :value="client.language || $i18n.fallbackLocale"
                     :disabled="!editMode || !!updateLoading"
-                    :class="{ 'appearance-none mx-2': !editMode || !!updateLoading }"
+                    class="simple-select mx-1"
                     name="language-select"
-                    style="background:transparent;"
                     @change="updateValue('language', $event.target.value)"
                   >
                     <option

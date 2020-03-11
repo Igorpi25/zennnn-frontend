@@ -773,6 +773,16 @@
     "IN_PRODUCTION": "In production",
     "IN_STOCK": "In stock"
   },
+  "unit": {
+    "pcs": "pcs",
+    "roll": "roll",
+    "size": "size",
+    "pm": "p.m",
+    "l": "l",
+    "m3": "m3",
+    "set": "set",
+    "m2": "m2"
+  },
   "countries": {
     "RU": {
       "name": "Russia",

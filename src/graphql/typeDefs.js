@@ -94,6 +94,7 @@ export const PRODUCT_FRAGMENT = gql`
     name
     article
     qty
+    unit
     cost {
       clientPrice
       customClientPrice

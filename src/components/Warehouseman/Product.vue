@@ -36,15 +36,30 @@
       />
     </td>
     <td>
-      <Editable
-        lazy
-        type="number"
-        inputmode="decimal"
-        format-style="decimal"
-        :value="item.qty"
-        :placeholder="$t('placeholder.emptyNumber')"
-        @input="updateProduct({ qty: $event })"
-      />
+      <div class="flex items-center">
+        <Editable
+          lazy
+          type="number"
+          inputmode="decimal"
+          format-style="decimal"
+          :value="item.qty"
+          :placeholder="$t('placeholder.emptyNumber')"
+          @input="updateProduct({ qty: $event })"
+        />
+        <select
+          :value="item.unit || 'pcs'"
+          class="simple-select text-primary text-xs"
+          @change="updateProduct({ unit: $event.target.value })"
+        >
+          <option
+            v-for="unit of unitsItems"
+            :key="unit.value"
+            :value="unit.value"
+          >
+            {{ unit.text }}
+          </option>
+        </select>
+      </div>
     </td>
 
     <template v-if="activeTab === 1">
@@ -155,7 +170,6 @@
 </template>
 
 <script>
-import { mdiClose } from '@mdi/js'
 import { ProductStatus } from '@/graphql/enums'
 import product from '../../mixins/product'
 
@@ -187,9 +201,6 @@ export default {
   data () {
     return {
       ProductStatus,
-      icons: {
-        mdiClose,
-      },
     }
   },
 }

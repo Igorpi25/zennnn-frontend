@@ -29,7 +29,8 @@
       <span>{{ item.article || $t('shipping.model') }}</span>
     </td>
     <td class="text-right">
-      <span>{{ $n(item.qty, 'formatted') || $t('placeholder.emptyNumber') }}</span>
+      <span class="mr-1">{{ $n(item.qty, 'formatted') || $t('placeholder.emptyNumber') }}</span>
+      <span>{{ $t(`unit.${item.unit || 'pcs'}`) }}</span>
     </td>
 
     <template v-if="activeTab === 1">
@@ -87,7 +88,6 @@
 </template>
 
 <script>
-import { mdiClose } from '@mdi/js'
 import {
   ProductStatus,
 } from '@/graphql/enums'
@@ -121,9 +121,6 @@ export default {
   data () {
     return {
       ProductStatus,
-      icons: {
-        mdiClose,
-      },
     }
   },
 }

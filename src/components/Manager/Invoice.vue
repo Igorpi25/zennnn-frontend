@@ -154,9 +154,9 @@ export default {
         { text: '', value: 'status', align: 'left', width: 14, minWidth: 14 },
         { text: this.$t('shipping.productIndexNo'), value: 'index', align: 'left', width: 54, minWidth: 54 },
         { text: this.$t('shipping.photo'), value: 'photo', width: 54, minWidth: 54 },
-        { text: this.$t('shipping.name'), value: 'name', width: 164, minWidth: 164 },
-        { text: this.$t('shipping.model'), value: 'model', width: 164, minWidth: 164 },
-        { text: this.$t('shipping.qty'), value: 'qty', width: 90, minWidth: 90 },
+        { text: this.$t('shipping.name'), value: 'name', width: 154, minWidth: 154 },
+        { text: this.$t('shipping.model'), value: 'model', width: 154, minWidth: 154 },
+        { text: this.$t('shipping.qty'), value: 'qty', width: 110, minWidth: 110 },
       ]
     },
     costHeaders () {

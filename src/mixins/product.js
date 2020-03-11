@@ -1,3 +1,4 @@
+import { mdiChevronUp, mdiChevronDown, mdiClose } from '@mdi/js'
 import {
   UPDATE_PRODUCT,
   UPDATE_PRODUCT_COST,
@@ -20,9 +21,23 @@ export default {
     return {
       updateLoading: null,
       deleteLoading: false,
+      icons: [
+        mdiClose,
+        mdiChevronUp,
+        mdiChevronDown,
+      ],
     }
   },
   computed: {
+    unitsItems () {
+      const units = ['pcs', 'roll', 'size', 'pm', 'l', 'm3', 'set', 'm2']
+      return units.map(el => {
+        return {
+          value: el,
+          text: this.$t(`unit.${el}`),
+        }
+      })
+    },
     specId () {
       return this.$route.params.specId
     },

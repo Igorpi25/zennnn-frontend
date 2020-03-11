@@ -172,7 +172,7 @@
                     :value="`${c.size}${c.mode}`"
                     :disabled="setContainerSizeLoading"
                     name="container-size"
-                    style="background:transparent;"
+                    class="simple-select"
                     @change="setContainerSize(c.id, $event)"
                   >
                     <option value="_20_DC">
@@ -1397,7 +1397,7 @@ export default {
       ])
       return result
     },
-    genItemBody () {
+    genItemBody (clientLang) {
       let index = 0
       const items = []
       const invoices = this.spec.invoices || []
@@ -1414,11 +1414,13 @@ export default {
           if (product.info && product.info.description) {
             name += `\n${product.info.description}`
           }
+          const unit = product.unit || 'pcs'
+          const unitText = this.genLabel(`unit.${unit}`, clientLang, { flat: true, secondary: true })
           const item = [
             { text: `${index}`, alignment: 'center' },
             name,
             // TODO: dynamic product unit
-            { text: `${product.qty || 0} pcs / шт`, alignment: 'right' },
+            { text: `${product.qty || 0} ${unitText}`, alignment: 'right' },
             { text: this.$n(clientPrice, 'currency', 'en'), alignment: 'right' },
             { text: this.$n(clientAmount, 'currency', 'en'), alignment: 'right' },
           ]
@@ -1737,7 +1739,7 @@ export default {
                     alignment: 'right',
                   },
                 ],
-                ...this.genItemBody(),
+                ...this.genItemBody(clientLang),
               ],
             },
             headerRows: 1,
