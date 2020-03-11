@@ -776,12 +776,13 @@
   "unit": {
     "pcs": "pcs",
     "roll": "roll",
-    "size": "size",
-    "pm": "p.m",
+    "time": "time",
+    "m": "m",
     "l": "l",
     "m3": "m3",
     "set": "set",
-    "m2": "m2"
+    "m2": "m2",
+    "kg": "kg"
   },
   "countries": {
     "RU": {

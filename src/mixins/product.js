@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     unitsItems () {
-      const units = ['pcs', 'roll', 'size', 'pm', 'l', 'm3', 'set', 'm2']
+      const units = ['pcs', 'roll', 'time', 'm', 'l', 'm3', 'set', 'm2', 'kg']
       return units.map(el => {
         return {
           value: el,
