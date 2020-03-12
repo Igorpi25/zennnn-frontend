@@ -64,7 +64,7 @@
               })"
             >
               <td></td>
-              <td>{{ getClientName(item) }}</td>
+              <td>{{ item.fullName }}</td>
               <td>{{ item.phone || item.mobilePhone }}</td>
               <td>{{ item.contactPerson }}</td>
               <td></td>
@@ -102,7 +102,6 @@
 <script>
 import { mdiPlusCircleOutline, mdiMagnify } from '@mdi/js'
 
-import { ClientType } from '@/graphql/enums'
 import { LIST_CLIENTS } from '@/graphql/queries'
 import { DELETE_CLIENT } from '@/graphql/mutations'
 
@@ -152,19 +151,6 @@ export default {
     },
   },
   methods: {
-    getClientName (item) {
-      if (!item) return ''
-      let name = ''
-      if (item.clientType === ClientType.LEGAL) {
-        name = item.companyName || ''
-      } else {
-        name = item.firstName || ''
-        name += name && item.lastName
-          ? ` ${item.lastName}`
-          : (item.lastName || '')
-      }
-      return name
-    },
     async deleteClient (id) {
       try {
         const msg = this.$t('alert.removeClient')

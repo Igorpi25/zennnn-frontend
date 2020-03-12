@@ -259,6 +259,8 @@ export const CLIENT_FRAGMENT = gql`
     address
     deliveryAddress
     naturalTypeNote
+    # computed value
+    fullName
   }
 `
 

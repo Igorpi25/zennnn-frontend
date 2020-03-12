@@ -7,7 +7,7 @@ import {
   mdiSync,
 } from '@mdi/js'
 
-import { ClientType, InvoiceStatus } from '@/graphql/enums'
+import { InvoiceStatus } from '@/graphql/enums'
 import {
   GET_SPEC,
   SEARCH_CLIENTS,
@@ -241,21 +241,10 @@ export default {
       }, 200)
     },
     getClientName (item) {
-      if (!item) return ''
-      let name = ''
-      if (item.clientType === ClientType.LEGAL) {
-        name = item.companyName || ''
-      } else {
-        name = item.firstName || ''
-        name += name && item.lastName
-          ? ` ${item.lastName}`
-          : (item.lastName || '')
-      }
-      return name
+      return item.fullName || ''
     },
     getSupplierName (item) {
-      if (!item) return ''
-      return item.companyNameSl || item.companyNameCl || ''
+      return item.companyNameSl || ''
     },
     expand (id) {
       if (this.expanded.includes(id)) {

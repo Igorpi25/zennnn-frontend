@@ -139,7 +139,7 @@
                     <td class="text-right">{{ specItem.finalCost || 0 }}</td>
                     <td class="text-right">{{ specItem.finalObtainCost || 0 }}</td>
                     <td class="text-center">{{ specItem.customNumber || specItem.specNo || '' }}</td>
-                    <td class="text-center">{{ getClientName(specItem.client) }}</td>
+                    <td class="text-center">{{ specItem.client && specItem.client.fullName }}</td>
                     <td></td>
                   </tr>
                 </template>
@@ -213,7 +213,7 @@ import {
 import StaffCreateModal from '../components/StaffCreateModal.vue'
 import { LIST_ORG_INVITATIONS, LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION } from '../graphql/mutations'
-import { SpecStatus, ClientType } from '../graphql/enums'
+import { SpecStatus } from '../graphql/enums'
 import { i18n } from '../plugins'
 
 export default {
@@ -312,19 +312,6 @@ export default {
     },
   },
   methods: {
-    getClientName (item) {
-      if (!item) return ''
-      let name = ''
-      if (item.clientType === ClientType.LEGAL) {
-        name = item.companyName || ''
-      } else {
-        name = item.firstName || ''
-        name += name && item.lastName
-          ? ` ${item.lastName}`
-          : (item.lastName || '')
-      }
-      return name
-    },
     // TODO: update on after mutation
     refetchInvitations () {
       this.$apollo.queries.listOrgInvitations.refetch()

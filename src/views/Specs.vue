@@ -88,7 +88,7 @@
               <td></td>
               <td></td>
               <td>{{ (item.client && item.client.uid) || '-' }}</td>
-              <td>{{ getClientName(item.client) }}</td>
+              <td>{{ item.client && item.client.fullName }}</td>
               <td>{{ ((item.client && item.client.phone) || (item.client && item.client.mobilePhone)) || '-' }}</td>
               <td>{{ item.customNumber || item.specNo || '-' }}</td>
               <td class="text-center">
@@ -128,7 +128,6 @@ import {
   Typename,
   Operation,
   SpecStatus,
-  ClientType,
 } from '../graphql/enums'
 import { SPEC_FRAGMENT } from '../graphql/typeDefs'
 import { GET_SPECS, GET_ORGS } from '../graphql/queries'
@@ -260,19 +259,6 @@ export default {
     })
   },
   methods: {
-    getClientName (item) {
-      if (!item) return ''
-      let name = ''
-      if (item.clientType === ClientType.LEGAL) {
-        name = item.companyName || ''
-      } else {
-        name = item.firstName || ''
-        name += name && item.lastName
-          ? ` ${item.lastName}`
-          : (item.lastName || '')
-      }
-      return name
-    },
     async createSpec () {
       try {
         this.createLoading = true

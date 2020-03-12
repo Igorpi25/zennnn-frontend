@@ -739,19 +739,6 @@ export default {
     },
   },
   methods: {
-    getClientName (item) {
-      if (!item) return ''
-      let name = ''
-      if (item.clientType === ClientType.LEGAL) {
-        name = item.companyName || ''
-      } else {
-        name = item.firstName || ''
-        name += name && item.lastName
-          ? ` ${item.lastName}`
-          : (item.lastName || '')
-      }
-      return name
-    },
     getLastPrepaymentDate () {
       let prepaymentDate = null
       const invoices = this.spec.invoices || []
@@ -834,7 +821,7 @@ export default {
           {
             stack: [
               {
-                text: this.getClientName(client),
+                text: client.fullName,
               },
             ],
           },

@@ -1905,7 +1905,7 @@ export default {
       const client = this.client || {}
       return {
         ...client,
-        name: this.getClientName(client),
+        name: client.fullName,
       }
     },
     clients () {
@@ -1913,7 +1913,7 @@ export default {
       return items.map(item => {
         return {
           ...item,
-          name: this.getClientName(item),
+          name: item.fullName,
         }
       })
     },
@@ -2028,19 +2028,6 @@ export default {
     this.validate()
   },
   methods: {
-    getClientName (item) {
-      if (!item) return ''
-      let name = ''
-      if (item.clientType === ClientType.LEGAL) {
-        name = item.companyName || ''
-      } else {
-        name = item.firstName || ''
-        name += name && item.lastName
-          ? ` ${item.lastName}`
-          : (item.lastName || '')
-      }
-      return name
-    },
     print () {
       this.$emit('print', this.requisite, this.client, this.shipment, this.customs)
     },
