@@ -208,8 +208,7 @@
             <li
               v-else
               :key="`${item.id}${i}`"
-              class="px-3 py-2 text-sm cursor-pointer hover:bg-gray-dark relative"
-              @click="changeOrg(item)"
+              class="px-3 py-2 text-sm hover:bg-gray-dark relative"
             >
               <div
                 v-if="item.id === orgId"
@@ -217,20 +216,46 @@
                 style="width: 2px"
               />
               <div class="flex items-center">
-                <div class="leading-tight">
-                  <div class="flex items-center">
-                    <span v-if="item.picture">{{ item.picture }}</span>
-                    <div v-else class="border border-gray-lightest rounded-full" style="width:35px; height:35px"></div>
-                    <div class="ml-3">
-                      <div class="text-sm">{{ item.name }}</div>
-                      <div
-                        v-text="`${item.owner.givenName} ${item.owner.familyName}`"
-                        class="text-xs text-gray-lighter"
-                      />
-                    </div>
+                <div class="flex-shrink-0 w-9">
+                  <FileUploader
+                    v-if="item.role === Role.OWNER"
+                    :loading="updateOrgImageLoading[item.id]"
+                    :uploading.sync="updateOrgImageUploading[item.id]"
+                    :src="item.picture"
+                    rounded
+                    show-preview
+                    check-download-url
+                    style="width:32px; height:32px"
+                    @update="updateOrgImage($event, item.id)"
+                  />
+                  <div
+                    v-else-if="item.picture"
+                    class="flex justify-center items-center overflow-hidden rounded-full w-8 h-8"
+                  >
+                    <img
+                      :src="item.picture"
+                      alt="avatar"
+                      class="w-full h-full object-cover rounded-full"
+                    >
+                  </div>
+                  <div
+                    v-else
+                    class="border border-gray-lightest rounded-full w-8 h-8"
+                  />
+                </div>
+                <div
+                  class="leading-tight flex-grow flex items-center cursor-pointer"
+                  @click="changeOrg(item)"
+                >
+                  <div class="ml-3">
+                    <div class="text-sm">{{ item.name }}</div>
+                    <div
+                      v-text="`${item.owner.givenName} ${item.owner.familyName}`"
+                      class="text-xs text-gray-lighter"
+                    />
                   </div>
                 </div>
-                <div class="ml-auto" @click.prevent.stop="addFavorites(item.id)">
+                <div class="flex-shrink-0 w-6 cursor-pointer" @click.prevent.stop="addFavorites(item.id)">
                   <Icon size="24">
                     {{ favorites.includes(item.id) ? icons.mdiStar : icons.mdiStarOutline }}
                   </Icon>
@@ -250,9 +275,15 @@ import { mdiStar, mdiStarOutline, mdiAccountCircle } from '@mdi/js'
 import { CURRENT_LANG_STORE_KEY } from '../config/globals'
 import { Role } from '../graphql/enums'
 import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
+import { SET_ORG_AVATAR } from '../graphql/mutations'
+
+import FileUploader from './FileUploader.vue'
 
 export default {
   name: 'StatusBar',
+  components: {
+    FileUploader,
+  },
   apollo: {
     isLoggedIn: {
       query: GET_IS_LOGGED_IN,
@@ -271,6 +302,9 @@ export default {
   },
   data () {
     return {
+      Role,
+      updateOrgImageLoading: {},
+      updateOrgImageUploading: {},
       favorites: [],
       orgDialog: false,
       profileMenu: false,
@@ -351,6 +385,20 @@ export default {
     this.favorites = JSON.parse(localStorage.getItem(this.favoritesKeyStore)) || []
   },
   methods: {
+    async updateOrgImage (src, orgId) {
+      try {
+        await this.$apollo.mutate({
+          mutation: SET_ORG_AVATAR,
+          variables: { orgId, avatar: src },
+        })
+        await this.$apollo.query({
+          query: GET_ORGS,
+          fetchPolicy: 'network-only',
+        })
+      } catch (error) {
+        this.$logger.warn('Error: ', 'on setting org avatar', error)
+      }
+    },
     changeOrg (org) {
       const orgId = org.id
       if (orgId !== this.orgId) {

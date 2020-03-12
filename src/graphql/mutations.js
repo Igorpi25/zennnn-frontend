@@ -354,6 +354,12 @@ export const SET_DEFAULT_REQUISITE = gql`
   }
 `
 
+export const SET_ORG_AVATAR = gql`
+  mutation SetOrgAvatar($orgId: ID!, $avatar: String!) {
+    setOrgAvatar(orgId: $orgId, avatar: $avatar)
+  }
+`
+
 export const CREATE_CONTRACT = gql`
   mutation CreateContract($orgId: ID!, $input: CreateContractInput!) {
     createContract(orgId: $orgId, input: $input) {
