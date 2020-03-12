@@ -3,15 +3,17 @@
     <div
       ref="drop"
       :class="[
-        'w-full h-full cursor-pointer overflow-hidden rounded',
+        'w-full h-full cursor-pointer overflow-hidden',
+        rounded ? 'rounded-full' : 'rounded'
       ]"
       @click="$refs.input.click()"
     >
       <div
         v-if="!internalSrc"
         :class="[
-          'w-full h-full border rounded flex justify-center items-center',
+          'w-full h-full border flex justify-center items-center',
           'hover:border-gray-lighter hover:text-gray-lighter',
+          rounded ? 'rounded-full' : 'rounded',
           isDragOver ? 'border-gray-lighter border-solid text-gray-lighter' : 'border-dashed'
         ]"
       >
@@ -22,7 +24,8 @@
       <div
         v-else
         :class="[
-          'w-full h-full rounded',
+          'w-full h-full',
+          rounded ? 'rounded-full' : 'rounded'
         ]"
       >
         <slot name="preview">
@@ -55,17 +58,23 @@
       <div
         v-if="showPreview && filePreview"
         key="preview"
-        class="absolute inset-0 flex justify-center items-center overflow-hidden rounded"
+        :class="[
+          'absolute inset-0 flex justify-center items-center overflow-hidden',
+          rounded ? 'rounded-full' : 'rounded'
+        ]"
       >
         <img
-          class="w-full h-full rounded object-cover"
+          :class="['w-full h-full object-cover', rounded ? 'rounded-full' : 'rounded']"
           :src="filePreview"
         >
       </div>
       <div
         v-if="filePreview"
         key="opacity"
-        class="absolute inset-0 bg-black opacity-35 overflow-hidden rounded cursor-wait"
+        :class="[
+          'absolute inset-0 bg-black opacity-35 overflow-hidden cursor-wait',
+          rounded ? 'rounded-full' : 'rounded'
+        ]"
       />
       <div
         key="loader"
@@ -98,7 +107,7 @@
       ref="input"
       type="file"
       accept="image/jpeg,image/png"
-      style="position:absolute;clip: rect(0,0,0,0);"
+      style="position:absolute; clip:rect(0,0,0,0); width:0; height:0;"
       @change="onChange"
     >
   </div>
@@ -134,6 +143,10 @@ export default {
       default: '',
     },
     showPreview: {
+      type: Boolean,
+      default: false,
+    },
+    rounded: {
       type: Boolean,
       default: false,
     },
@@ -299,6 +312,10 @@ export default {
       this.$emit('update:uploading', false)
     },
     emitSrc (src) {
+      // set filePreview to internalSrc, on src update will be replced
+      if (this.filePreview) {
+        this.internalSrc = this.filePreview
+      }
       this.$emit('update', src)
       this.clear()
     },
