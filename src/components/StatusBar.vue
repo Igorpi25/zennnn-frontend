@@ -24,16 +24,6 @@
           </router-link>
         </div>
         <div class="flex-grow" />
-        <div
-          v-if="isLoggedIn && roleInOrg !== 'OWNER'"
-          class="flex justify-end hidden sm:flex"
-        >
-          <div class="status-bar__items">
-            <div class="text-sm">
-              {{ currentOrgName }}
-            </div>
-          </div>
-        </div>
         <!-- Lang picker -->
         <div class="flex justify-end">
           <div class="status-bar__items">
@@ -120,32 +110,31 @@
               offset-y
             >
               <template v-slot:activator="{ on }">
-                <div
-                  :class="[
-                    'lang-picker__flag lang-picker__flag--hoverable',
-                    { 'lang-picker__flag--active': profileMenu }
-                  ]"
-                  style="width:23px;height:23px;"
-                  v-on="on"
-                >
-                  <div class="avatar">
-                    <img
-                      v-if="profile.picture"
-                      :src="profile.picture"
-                      alt="Profile"
-                    >
-                    <svg
-                      v-else
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      role="image"
-                    >
-                      <path
-                        d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,6A2,2 0 0,0 10,8A2,2 0 0,0 12,10A2,2 0 0,0 14,8A2,2 0 0,0 12,6M12,13C14.67,13 20,14.33 20,17V20H4V17C4,14.33 9.33,13 12,13M12,14.9C9.03,14.9 5.9,16.36 5.9,17V18.1H18.1V17C18.1,16.36 14.97,14.9 12,14.9Z"
-                      />
-                    </svg>
+                <div v-on="on" class="flex cursor-pointer">
+                  <div v-if="currentOrg" class="leading-none text-right pr-2">
+                    <div class="text-sm text-white">{{ currentOrg.name }}</div>
+                    <div class="text-xs text-gray-100">{{ $t(`statusBar.role.${currentOrg.role}`) }}</div>
+                  </div>
+                  <div
+                    :class="[
+                      'lang-picker__flag lang-picker__flag--hoverable',
+                      { 'lang-picker__flag--active': profileMenu }
+                    ]"
+                    style="width:23px;height:23px;"
+                  >
+                    <div class="avatar">
+                      <img
+                        v-if="profile.picture"
+                        :src="profile.picture"
+                        alt="Profile"
+                      >
+                      <Icon
+                        v-else
+                        size="24"
+                      >
+                        {{ icons.mdiAccountCircle }}
+                      </Icon>
+                    </div>
                   </div>
                 </div>
               </template>
@@ -207,17 +196,25 @@
             <li
               v-else
               :key="`${item.id}${i}`"
-              class="px-3 py-2 text-sm cursor-pointer hover:bg-gray-dark"
+              class="px-3 py-2 text-sm cursor-pointer hover:bg-gray-dark relative"
               @click="changeOrg(item)"
             >
+              <div
+                v-if="item.id === orgId"
+                class="absolute top-0 left-0 h-full bg-gray-100"
+                style="width: 2px"
+              />
               <div class="flex items-center">
                 <div class="leading-tight">
                   <div class="flex items-center">
                     <span v-if="item.picture">{{ item.picture }}</span>
                     <div v-else class="border border-gray-lightest rounded-full" style="width:35px; height:35px"></div>
                     <div class="ml-3">
-                      <div class="text-sm">{{ item.name || item.owner.email }}</div>
-                      <div class="text-xs text-gray-lighter">{{ item.id }}</div>
+                      <div class="text-sm">{{ item.name }}</div>
+                      <div
+                        v-text="`${item.owner.givenName} ${item.owner.familyName}`"
+                        class="text-xs text-gray-lighter"
+                      />
                     </div>
                   </div>
                 </div>
@@ -236,7 +233,7 @@
 </template>
 
 <script>
-import { mdiStar, mdiStarOutline } from '@mdi/js'
+import { mdiStar, mdiStarOutline, mdiAccountCircle } from '@mdi/js'
 
 import { CURRENT_LANG_STORE_KEY } from '../config/globals'
 import { Role } from '../graphql/enums'
@@ -273,19 +270,17 @@ export default {
       icons: {
         mdiStar,
         mdiStarOutline,
+        mdiAccountCircle,
       },
     }
   },
   computed: {
+    orgId () {
+      return this.$route.params.orgId
+    },
     currentOrg () {
       const orgs = this.getOrgs || []
-      return orgs.find(el => el.id === this.$route.params.orgId) || {}
-    },
-    currentOrgName () {
-      return this.currentOrg.name || (this.currentOrg.owner && this.currentOrg.owner.email) || ''
-    },
-    roleInOrg () {
-      return this.currentOrg.role || null
+      return orgs.find(el => el.id === this.orgId) || {}
     },
     orgsByRole () {
       let orgs = this.getOrgs || []
@@ -346,7 +341,7 @@ export default {
   methods: {
     changeOrg (org) {
       const orgId = org.id
-      if (orgId !== this.$route.params.orgId) {
+      if (orgId !== this.orgId) {
         this.$router.push({ name: 'specs', params: { orgId } })
       }
       this.orgDialog = false
@@ -418,7 +413,6 @@ export default {
   filter: brightness(100%);
 }
 .avatar {
-  @apply bg-background border border-gray-darker;
   width: 23px;
   height: 23px;
   border-radius: 50%;

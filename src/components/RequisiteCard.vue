@@ -206,7 +206,7 @@ import SaveBeforeCloseModal from '../components/SaveBeforeCloseModal.vue'
 
 import TemplateCard from '../components/TemplateCard.vue'
 
-import { GET_ORG_REQUISITE } from '../graphql/queries'
+import { GET_ORG_REQUISITE, GET_ORGS } from '../graphql/queries'
 import { CREATE_REQUISITE, UPDATE_REQUISITE } from '../graphql/mutations'
 
 export default {
@@ -468,6 +468,11 @@ export default {
             }
           }
         }
+        // update orgs query
+        await this.$apollo.query({
+          query: GET_ORGS,
+          fetchPolicy: 'network-only',
+        })
       } catch (error) {
         this.$logger.warn('Error: ', error)
         throw new Error(error)

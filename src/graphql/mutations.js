@@ -348,6 +348,12 @@ export const DELETE_REQUISITE = gql`
   }
 `
 
+export const SET_DEFAULT_REQUISITE = gql`
+  mutation SetDefaultReqisite($orgId: ID!, $id: ID!) {
+    setDefaultReqisite(orgId: $orgId, id: $id)
+  }
+`
+
 export const CREATE_CONTRACT = gql`
   mutation CreateContract($orgId: ID!, $input: CreateContractInput!) {
     createContract(orgId: $orgId, input: $input) {

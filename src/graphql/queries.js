@@ -29,6 +29,7 @@ export const GET_ORGS = gql`
         language
       }
       role
+      defaultRequisite
       name
       nameEng
       location
