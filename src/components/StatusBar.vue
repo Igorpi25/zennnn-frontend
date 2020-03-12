@@ -111,9 +111,21 @@
             >
               <template v-slot:activator="{ on }">
                 <div v-on="on" class="flex cursor-pointer">
-                  <div v-if="currentOrg" class="leading-none text-right pr-2">
-                    <div class="text-sm text-white">{{ currentOrg.name }}</div>
-                    <div class="text-xs text-gray-100">{{ $t(`statusBar.role.${currentOrg.role}`) }}</div>
+                  <div
+                    v-if="currentOrg"
+                    class="text-xs leading-none text-right pr-2 max-w-xs"
+                  >
+                    <div
+                      class="text-white truncate"
+                    >
+                      {{ currentOrg.name }}
+                    </div>
+                    <div
+                      class="text-gray-100"
+                      style="font-size:10px;"
+                    >
+                      {{ $t(`statusBar.role.${currentOrg.role}`) }}
+                    </div>
                   </div>
                   <div
                     :class="[
