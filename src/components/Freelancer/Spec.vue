@@ -101,9 +101,7 @@
                   href="#"
                   @click.prevent.stop="openCreateSupplierDialog(item)"
                 >
-                  <Icon color="#5a8199">
-                    {{ icons.mdiPlusCircleOutline }}
-                  </Icon>
+                  <i class="icon-add text-lg text-primary block align-middle" />
                 </a>
               </template>
             </Select>
@@ -147,7 +145,7 @@
       class="mt-6"
     >
       <template v-slot:icon>
-        <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+        <i class="icon-add text-lg block align-middle" />
       </template>
       <span>{{ $t('shipping.addInvoice') }}</span>
     </Button>

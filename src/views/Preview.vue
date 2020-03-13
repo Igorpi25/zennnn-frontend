@@ -325,11 +325,11 @@
               </div>
               <div class="preview-summary__actions">
                 <div class="select-none leading-tight" @click.prevent>
-                  <img src="@/assets/icons/printer.png" class="mr-3">
+                  <i class="icon-printer text-2xl mr-3" />
                   <span class="text-left">{{ $t('preview.printThis') }}</span>
                 </div>
                 <div class="select-none leading-tight" @click.prevent>
-                  <img src="@/assets/icons/pdf.png" class="mr-3">
+                  <i class="icon-doc text-2xl mr-3" />
                   <span class="text-left">{{ $t('preview.downloadPDF') }}</span>
                 </div>
                 <div class="select-none leading-tight" @click="$refs.specComments.openMenu()">
