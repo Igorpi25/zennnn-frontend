@@ -179,8 +179,8 @@ export default {
         { text: '', value: 'status', align: 'left', width: 45, bgcolor: 'tansparent', sortable: true },
         { text: '', value: 'coming', align: 'left', width: 45, bgcolor: 'tansparent', sortable: true },
         { text: '', value: 'spending', align: 'left', width: 45, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('deals.clientUid'), value: 'clientUid', align: 'left', width: 80, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('deals.clientName'), value: 'clientName', align: 'left', width: 200, minWidth: 200, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('deals.clientUid'), value: 'client.uid', align: 'left', width: 80, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('deals.clientName'), value: 'clientFillName', align: 'left', width: 200, minWidth: 200, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('deals.clientPhone'), value: 'clientPhone', align: 'left', width: 165, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('deals.specNo'), value: 'specNo', align: 'left', width: 220, minWidth: 220, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('deals.createdAt'), value: 'createdAt', width: 120, minWidth: 120, bgcolor: 'tansparent' },
@@ -188,7 +188,16 @@ export default {
       ]
     },
     items () {
-      return this.getSpecs || []
+      const items = this.getSpecs || []
+      return items.map(item => {
+        const client = item.client || {}
+        return {
+          ...item,
+          // for search
+          clientFillName: client.fullName,
+          clientPhone: client.phone || client.mobilePhone,
+        }
+      })
     },
   },
   mounted () {

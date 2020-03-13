@@ -253,18 +253,6 @@ export default {
       createLoading: false,
       deleteLoading: null,
       createStaffDialog: false,
-      // items: [
-      //   {
-      //     status: 'ORANGE',
-      //     inWork: 3,
-      //     diff: '150 005',
-      //     diffPercent: '50%',
-      //     revenue: '300 000',
-      //     costOfGoods: '150 000',
-      //     fullName: 'Игорь Иванов',
-      //     access: 'Директор',
-      //   },
-      // ],
       expanded: [],
       errors: [],
       icons: {
@@ -277,7 +265,14 @@ export default {
   },
   computed: {
     items () {
-      return (this.listStaff && this.listStaff.items) || []
+      const items = (this.listStaff && this.listStaff.items) || []
+      return items.map(item => {
+        return {
+          ...item,
+          // for search
+          fullName: `${item.givenName} ${item.familyName}`,
+        }
+      })
     },
     orgId () {
       return this.$route.params.orgId

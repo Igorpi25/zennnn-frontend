@@ -137,8 +137,8 @@ export default {
     headers () {
       return [
         { text: '', value: 'debt', align: 'left', width: 60, bgcolor: 'tansparent', sortable: true, tooltip: this.$t('clients.clientsDebt') },
-        { text: this.$t('clients.companyName'), value: 'name', align: 'left', width: 220, minWidth: 220, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('clients.phone'), value: 'phone', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('clients.companyName'), value: 'fullName', align: 'left', width: 220, minWidth: 220, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('clients.phone'), value: 'clientPhone', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('clients.contactPerson'), value: 'contactPerson', align: 'left', width: 165, bgcolor: 'tansparent', sortable: true },
         { text: '', value: 'coming', align: 'left', width: 45, bgcolor: 'tansparent' },
         { text: this.$t('clients.uid'), value: 'uid', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent', sortable: true },
@@ -147,7 +147,14 @@ export default {
       ]
     },
     items () {
-      return (this.listClients && this.listClients.items) || []
+      const items = (this.listClients && this.listClients.items) || []
+      return items.map(item => {
+        return {
+          ...item,
+          // for search
+          clientPhone: item.phone || item.mobilePhone,
+        }
+      })
     },
   },
   methods: {
