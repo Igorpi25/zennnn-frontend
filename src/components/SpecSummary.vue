@@ -368,60 +368,8 @@
             />
           </div>
         </div>
-        <!-- <div class="spec-summary__actions">
-          <Button text class="mb-4" @click="openPaperList">
-            <template v-slot:icon>
-              <Icon size="32" color="#aaaaaa">
-                {{ icons.ziSettings }}
-              </Icon>
-            </template>
-            <span class="text-left">{{ $t('shipping.paperConfigurator') }}</span>
-          </Button>
-          <Button text class="mb-4" @click.prevent>
-            <template v-slot:icon>
-              <Icon size="32" color="#aaaaaa">
-                {{ icons.ziPaperPlane }}
-              </Icon>
-            </template>
-            <span class="text-left">{{ $t('shipping.notifyClient') }}</span>
-          </Button>
-          <Button text class="mb-4" @click="printPDF">
-            <template v-slot:icon>
-              <Icon size="32" color="#aaaaaa">
-                {{ icons.ziPrint }}
-              </Icon>
-            </template>
-            <span class="text-left">{{ $t('shipping.print') }}</span>
-          </Button>
-          <Button text @click="accessControlDialog = true">
-            <template v-slot:icon>
-              <Icon size="32" color="#aaaaaa">
-                {{ icons.ziShare }}
-              </Icon>
-            </template>
-            <span class="text-left">{{ $t('shipping.share') }}</span>
-          </Button>
-        </div> -->
       </div>
     </div>
-    <!-- <div>
-      <div class="flex justify-center sm:block">
-        <a
-          :href="`/paper/${$route.params.specId}`"
-          target="_blank"
-          class="select-none"
-        >
-          <Button
-            large
-            squared
-            outline
-            style="max-width: 320px;"
-          >
-            <span class="text-lg">{{ $t('shipping.overview') }}</span>
-          </Button>
-        </a>
-      </div>
-    </div> -->
 
     <div class="py-10">
       <div class="flex flex-wrap">
@@ -623,7 +571,7 @@
 import cloneDeep from 'clone-deep'
 
 import pdfMake from 'pdfmake/build/pdfmake'
-import pdfFonts from 'pdfmake/build/vfs_fonts'
+import pdfFonts from '../plugins/pdfmake/vfs_fonts'
 
 import { mdiClose, mdiPlusThick } from '@mdi/js'
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
@@ -779,7 +727,7 @@ export default {
         stack.push({
           text: [
             {
-              text: `${title}:`,
+              text: `${title}: `,
               bold: true,
             },
             {
@@ -903,16 +851,16 @@ export default {
         },
         {
           fit: ['*', 3],
-          margin: [0, 12, 0, 0],
-          svg: `<svg viewBox="0 0 100 3" width="100" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="100" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="100" y2="2" stroke="black" stroke-width="1"/></svg>`,
+          margin: [0, 10, 0, 0],
+          svg: `<svg viewBox="0 0 110 3" width="110" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="110" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="110" y2="2" stroke="black" stroke-width="1"/></svg>`,
         },
         {
           stack: this.genLabel('print.via', clientLang),
         },
         {
           fit: ['*', 3],
-          margin: [0, 12, 0, 0],
-          svg: `<svg viewBox="0 0 100 3" width="100" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="100" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="100" y2="2" stroke="black" stroke-width="1"/></svg>`,
+          margin: [0, 10, 0, 0],
+          svg: `<svg viewBox="0 0 110 3" width="110" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="110" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="110" y2="2" stroke="black" stroke-width="1"/></svg>`,
         },
         {
           stack: this.genLabel('print.to', clientLang),
@@ -925,7 +873,7 @@ export default {
         },
         {
           fit: ['*', 3],
-          margin: [0, 12, 0, 0],
+          margin: [0, 10, 0, 0],
           svg: `<svg viewBox="0 0 180 3" width="180" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="180" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="180" y2="2" stroke="black" stroke-width="1"/></svg>`,
         },
         {
@@ -1484,12 +1432,23 @@ export default {
           layout: {
             defaultBorder: false,
           },
-          margin: [0, 0, 0, 30],
+          margin: [0, 12, 0, 0],
         }
         : null
     },
     doPrint (requisite, client, shipment, customs) {
-      pdfMake.vfs = pdfFonts.pdfMake.vfs
+      // const pdfMake = (await import(/* webpackChunkName: "pdfMake" */ 'pdfmake/build/custom_fonts/pdfmake')).default
+      // const pdfFonts = (await import(/* webpackChunkName: "pdfFonts" */ 'pdfmake/build/custom_fonts/vfs_fonts')).default
+      const vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs
+      pdfMake.vfs = vfs
+      pdfMake.fonts = {
+        MyriadPro: {
+          normal: 'MyriadPro-Regular.ttf',
+          bold: 'MyriadPro-Bold.ttf',
+          italics: 'MyriadPro-It.ttf',
+          bolditalics: 'MyriadPro-BoldIt.ttf',
+        },
+      }
       const defaultLang = this.$i18n.fallbackLocale
       const clientLang = client.language || defaultLang
       const specCreatedAt = this.$parseDate(this.spec.createdAt)
@@ -1630,7 +1589,7 @@ export default {
             layout: {
               defaultBorder: false,
             },
-            margin: [0, 0, 0, 8],
+            margin: [0, 0, 0, 0],
           },
           // Bill to block
           {
@@ -1646,7 +1605,7 @@ export default {
                 return 0
               },
             },
-            margin: [0, 0, 0, 20],
+            margin: [0, 0, 0, 16],
           },
           // Shipment delivery info
           {
@@ -1654,7 +1613,7 @@ export default {
             layout: {
               defaultBorder: false,
             },
-            margin: [0, 0, 0, 20],
+            margin: [0, 0, 0, 16],
           },
           // Shipment
           {
@@ -1701,7 +1660,7 @@ export default {
                 return 0
               },
             },
-            margin: [0, 0, 0, 20],
+            margin: [0, 0, 0, 16],
           },
           // Items
           {
@@ -1853,13 +1812,13 @@ export default {
           // Amount
           {
             table: {
-              widths: ['*', '55%', 90],
+              widths: ['*', '40%', 90],
               body: this.genAmountBody(clientLang),
             },
             layout: {
               defaultBorder: false,
             },
-            margin: [0, 0, 0, 20],
+            margin: [0, 0, 0, 0],
           },
           // Amount in Words
           this.genAmountInWords(clientLang),
@@ -1928,7 +1887,7 @@ export default {
                 return 0
               },
             },
-            margin: [0, 0, 0, 10],
+            margin: [0, 32, 0, 10],
           },
           // Contract confirmation text
           {
@@ -1967,6 +1926,7 @@ export default {
           },
         ],
         defaultStyle: {
+          font: 'MyriadPro',
           fontSize: 8.3,
         },
       }
@@ -2192,379 +2152,6 @@ export default {
       } catch (error) {
         throw new Error(error)
       }
-    },
-    printPDF () {
-      pdfMake.vfs = pdfFonts.pdfMake.vfs
-      const dd = {
-        content: [
-          {
-            stack: [
-              {
-                text: [
-                  { text: 'Спецификация No. ' },
-                  { text: 'A0097-2020-02-02', bold: true },
-                ],
-              },
-              'к Договору поставки',
-            ],
-            fontSize: 16,
-            margin: [30, 20],
-          },
-          {
-            columns: [
-              { text: 'Новороссийск, Россия' },
-              { text: '02 февраля 2020 г.', alignment: 'right' },
-            ],
-            alignment: 'justify',
-            margin: [30, 10],
-          },
-          {
-            text: [
-              { text: '1.   ' },
-              { text: 'Предмет поставки' },
-            ],
-            style: 'item-heading',
-          },
-          // TODO: dynamicly width of line equals width of table
-          // {
-          //   canvas: [
-          //     {
-          //       type: 'line',
-          //       x1: 0,
-          //       y1: 0,
-          //       x2: 500,
-          //       y2: 0,
-          //       lineWidth: 1,
-          //       lineColor: 'lightgray',
-          //     },
-          //   ],
-          // },
-          {
-            table: {
-              headerRows: 1,
-              alignment: 'center',
-              widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
-              body: [
-                [
-                  { text: '#', style: 'item-table-header' },
-                  { text: 'Наименование товара', style: 'item-table-header' },
-                  { text: 'Кол-во', style: 'item-table-header' },
-                  { text: 'Ед.\n изм.', style: 'item-table-header' },
-                  { text: 'Цена за ед.\n товара без НДС', style: 'item-table-header' },
-                  { text: 'НДС за ед.\n (20%)', style: 'item-table-header' },
-                  { text: 'Цена за ед.\n товара с НДС', style: 'item-table-header' },
-                  { text: 'Стоимость товара\n с НДС', style: 'item-table-header' },
-                ],
-                [
-                  { text: '1', fontSize: 10 },
-                  {
-                    text: [
-                      { text: 'Chair\n', bold: true },
-                      { text: 'PL-G0988-G0988-G0988 kfjgfd dfjgksdfjg' },
-                    ],
-                    fontSize: 10,
-                  },
-                  { text: '1 500', style: 'item-table' },
-                  { text: 'pc', fontSize: 10 },
-                  { text: '440,00', style: 'item-table' },
-                  { text: '88,00', style: 'item-table' },
-                  { text: '528,00', style: 'item-table' },
-                  { text: '792 000,00 P', style: 'item-table' },
-                ],
-                [
-                  { text: '2', fontSize: 10 },
-                  {
-                    text: [
-                      { text: 'Chair\n', bold: true },
-                      { text: 'PL-G0988' },
-                    ],
-                    fontSize: 10,
-                  },
-                  { text: '1 500', style: 'item-table' },
-                  { text: 'pc', fontSize: 10 },
-                  { text: '440,00', style: 'item-table' },
-                  { text: '88,00', style: 'item-table' },
-                  { text: '528,00', style: 'item-table' },
-                  { text: '792 000,00 P', style: 'item-table' },
-                ],
-                [
-                  { text: '3', fontSize: 10 },
-                  {
-                    text: [
-                      { text: 'Chair\n', bold: true },
-                      { text: 'PL-G0988' },
-                    ],
-                    fontSize: 10,
-                  },
-                  { text: '1 500', style: 'item-table' },
-                  { text: 'pc', fontSize: 10 },
-                  { text: '440,00', style: 'item-table' },
-                  { text: '88,00', style: 'item-table' },
-                  { text: '528,00', style: 'item-table' },
-                  { text: '792 000,00 P', style: 'item-table' },
-                ],
-                [
-                  { text: '', colSpan: 5 },
-                  {}, {}, {}, {},
-                  { text: 'Total:', style: 'item-table', bold: true },
-                  { text: '2 620 446, 00 P', colSpan: 2, style: 'item-table', bold: true },
-                ],
-              ],
-            },
-            layout: 'lightHorizontalLines',
-          },
-          {
-            text: 'Сумма прописью: два миллиона шестьсот двадцать тысяч четыреста сорок шесть рублей 00 копеек.',
-            italics: true,
-            fontSize: 10,
-            alignment: 'right',
-            margin: [0, 15],
-          },
-          {
-            text: [
-              { text: '2.   ' },
-              { text: 'Условия оплат' },
-            ],
-            style: 'item-heading',
-          },
-          {
-            style: 'item-paragraph',
-            columns: [
-              '2.1.',
-              {
-                text: 'Cтоимость железнодорожного тарифв, а также иные расходы, связанные с доставкой «Товара» Покупателю включены в цену «Товара».',
-                width: 'auto',
-              },
-            ],
-          },
-          {
-            style: 'item-paragraph',
-            columns: [
-              '2.2.',
-              {
-                text: 'Lorem ipsum dolor amet mustache knausgaard +1, blue bottle waistcoat tbh semiotics artisan synth stumptown gastropub cornhole celiac swag. Brunch raclette vexillologist post-ironic glossier ennui XOXO mlkshk godard pour-over blog tumblr humblebrag. Blue bottle put a bird on it twee prism biodiesel brooklyn. Blue bottle ennui tbh succulents.',
-                width: 'auto',
-              },
-            ],
-          },
-          {
-            text: [
-              { text: '3.   ' },
-              { text: 'Реквизиты сторон' },
-            ],
-            style: 'item-heading',
-          },
-          {
-            columns: [
-              {
-                type: 'none',
-                ul: [
-                  {
-                    columns: [
-                      {
-                        text: 'Supplier:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Novaday Union Limeted',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Legal Address:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Unit 1010, 10/F Miramax Tower, 132 Nathan Road, Tsim Sha Tsul, Kowloon, Hong Hong',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Postcode:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: '_____',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Phone:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: '0086 186 20 00 0 00',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Supplier\'s Bank:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'HSBC',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Bank Address:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: '4/F HSBC, Tsim Sha Tsui Branch, 82-84 Nathan Road, Kowloon, Hong Hong',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                ],
-              },
-              {
-                type: 'none',
-                ul: [
-                  {
-                    columns: [
-                      {
-                        text: 'Client:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Horns & Hooves LLC, Newrussian office',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Legal Address:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Upperdock st. 41, office 15, Vladivostok, Russia',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Postcode:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: '690000',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Mailing Address:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Moscow city, Minskaya st. 1G, office 777',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Client\'s Bank:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Clients Bank LLC',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Bank Address:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Moscow',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Грузополучатель:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'ООО «Пупа и Лупа»',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Адрес доставки:',
-                        style: 'requisite-columns',
-                        pageBreak: 'before',
-                      },
-                      {
-                        text: '628380, Ханты-Мансийский Автономный округ - Югра, г. Пыть-Ях, Центральная промышленная зона',
-                        style: 'requisite-columns',
-                        pageBreak: 'before',
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-        styles: {
-          'item-table-header': {
-            fontSize: 9,
-            alignment: 'center',
-            margin: [0, 2],
-          },
-          'item-table': {
-            fontSize: 10,
-            alignment: 'right',
-          },
-          'item-heading': {
-            bold: true,
-            fontSize: 16,
-            margin: [0, 20, 0, 10],
-          },
-          'item-paragraph': {
-            columnGap: 10,
-            margin: [0, 0, 0, 10],
-          },
-          'requisite-columns': {
-            fontSize: 10,
-            margin: [0, 2],
-          },
-        },
-      }
-      pdfMake.createPdf(dd).open()
     },
     async updateSpec (input) {
       try {

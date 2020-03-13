@@ -53,3 +53,13 @@ See [Docs](https://cli.vuejs.org/guide/mode-and-env.html).
 
 ### Date parse on safari
 Parsing ISO 8601 or format like YYYY-MM-DD return Invalid Date on safari. Solved by using `date-fns/parseISO` for safely parse ISO 8601.
+
+### pdfMake plugin custom fonts
+Used [v0.1](https://github.com/bpampuch/pdfmake/tree/0.1).
+```
+git clone --branch 0.1 https://github.com/bpampuch/pdfmake.git
+cd pdfmake
+npm install
+```
+For build `vfs_fonts.js` with custom fonts, see [docs](https://pdfmake.github.io/docs/fonts/custom-fonts-client-side/).
+`vfs_fonts.js` copied to `src/plugins/pdfmake/vfs_fonts.js`
