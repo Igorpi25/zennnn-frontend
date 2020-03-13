@@ -29,7 +29,7 @@ const sortableComponent = {
     },
     delay: {
       type: Number,
-      default: 100,
+      default: 150,
     },
   },
   data () {
