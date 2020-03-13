@@ -1401,7 +1401,7 @@ export default {
       if (!isDefaultLang && this.spec.amountInWordsClientLang) {
         result.push([
           {
-            text: `${this.$t('print.amountInWords', clientLang)}}: ${this.spec.amountInWordsClientLang}`,
+            text: `${this.$t('print.amountInWords', clientLang)}: ${this.spec.amountInWordsClientLang}`,
             alignment: 'right',
           },
         ])
