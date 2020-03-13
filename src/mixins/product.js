@@ -21,11 +21,11 @@ export default {
     return {
       updateLoading: null,
       deleteLoading: false,
-      icons: [
+      icons: {
         mdiClose,
         mdiChevronUp,
         mdiChevronDown,
-      ],
+      },
     }
   },
   computed: {

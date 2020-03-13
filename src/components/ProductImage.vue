@@ -9,7 +9,7 @@
     offset-x
   >
     <template v-slot:activator="{ on }">
-      <div v-on="on" class="inline-block pr-2">
+      <div v-on="on" class="inline-block align-middle pr-2">
         <slot name="menu-activator">
           <FileUploader
             v-if="upload"
