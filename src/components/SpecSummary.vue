@@ -756,7 +756,7 @@ export default {
       const flat = opt.flat
       const secondary = opt.secondary
       const value = opt.value
-      const fallback = opt.fallback
+      const fallback = opt.fallback || ''
       const args = opt.args || {}
       const defaultLang = this.$i18n.fallbackLocale
       const isDefaultLang = clientLang === defaultLang
@@ -796,7 +796,8 @@ export default {
       if (subtitle && !isDefaultLang) {
         stack.push({
           text: subtitle,
-          fontSize: 8,
+          color: '#595959',
+          fontSize: 6.7,
           italics: true,
         })
       }
@@ -1428,13 +1429,13 @@ export default {
             border,
             text: this.genLabel('print.balanceDue', clientLang, { flat: true }),
             alignment: 'right',
-            fontSize: 14,
+            fontSize: 13.3,
           },
           {
             border,
             text: this.$n(this.spec.totalClientDebt || 0, 'currency', 'en'),
             alignment: 'right',
-            fontSize: 14,
+            fontSize: 13.3,
           },
         ],
       ]
@@ -1511,6 +1512,7 @@ export default {
                   margin: [4, 0, 4, 0],
                 },
               ],
+              fontSize: 10,
               margin: [40, 20, 40, 0],
             },
           ]
@@ -1538,9 +1540,9 @@ export default {
                   alignment: 'right',
                 },
               ],
-              fontSize: 9,
+              fontSize: 8.3,
               italics: true,
-              color: '#5e5e5e',
+              color: '#7b7b7b',
               margin: [40, 10, 40, 0],
             },
           ]
@@ -1607,7 +1609,7 @@ export default {
               body: [
                 [
                   {
-                    fontSize: 22,
+                    fontSize: 17.4,
                     text: 'INVOICE',
                     bold: true,
                   },
@@ -1965,7 +1967,7 @@ export default {
           },
         ],
         defaultStyle: {
-          fontSize: 10,
+          fontSize: 8.3,
         },
       }
       pdfMake.createPdf(dd).open()
