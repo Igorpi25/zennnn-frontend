@@ -6,6 +6,13 @@
         'w-full h-full cursor-pointer overflow-hidden',
         rounded ? 'rounded-full' : 'rounded'
       ]"
+      @drag.prevent.stop
+      @dragstart.prevent.stop
+      @dragover.prevent.stop
+      @dragenter.prevent.stop="isDragOver = true"
+      @dragleave.prevent.stop="dragLeave"
+      @dragend.prevent.stop="isDragOver = false"
+      @drop.prevent.stop="drop"
       @click="$refs.input.click()"
     >
       <div
@@ -42,14 +49,18 @@
         </slot>
         <div
           v-if="isDragOver || hovered"
-          class="absolute inset-0 w-full h-full bg-black opacity-35"
+          :class="[
+            'absolute inset-0 w-full h-full bg-black opacity-35',
+            rounded ? 'rounded-full' : 'rounded',
+            { 'border border-white border-dashed' : isDragOver }
+          ]"
         />
         <div
-          v-if="(hovered) && !(getUploadUrlLoading || uploadLoading || checkLoading)"
+          v-if="(isDragOver || hovered) && !(getUploadUrlLoading || uploadLoading || checkLoading)"
           class="absolute inset-0 flex justify-center items-center text-white"
         >
-          <Icon size="28">
-            {{ icons.mdiMagnifyPlusOutline }}
+          <Icon :size="isDragOver ? 18 : 28">
+            {{ isDragOver ? icons.mdiPlusThick : icons.mdiMagnifyPlusOutline }}
           </Icon>
         </div>
       </div>
@@ -207,64 +218,30 @@ export default {
       Determine if drag and drop functionality is capable in the browser
     */
     this.dragAndDropCapable = this.determineDragAndDropCapable()
-
-    /*
-      If drag and drop capable, then we continue to bind events to our elements.
-    */
-    if (this.dragAndDropCapable) {
-      this.$refs.drop.addEventListener('drag', (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      }, false)
-      this.$refs.drop.addEventListener('dragstart', (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      }, false)
-      this.$refs.drop.addEventListener('dragover', (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        this.isDragOver = true
-      }, false)
-      this.$refs.drop.addEventListener('dragenter', (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        this.isDragOver = true
-      }, false)
-      this.$refs.drop.addEventListener('dragleave', (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        this.isDragOver = false
-      }, false)
-      this.$refs.drop.addEventListener('dragend', (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        this.isDragOver = false
-      }, false)
-
-      /*
-        Add an event listener for drop to the form
-      */
-      this.$refs.drop.addEventListener('drop', (e) => {
-        /*
-          Capture the files from the drop event and add them to our local files
-          array.
-        */
-        e.preventDefault()
-        e.stopPropagation()
-        let files = []
-        for (let i = 0; i < e.dataTransfer.files.length; i++) {
-          files.push(e.dataTransfer.files[i])
-        }
-        this.isDragOver = false
-        if (files && files.length > 0) {
-          this.file = files[0]
-          this.readAndUploadFile(this.file)
-        }
-      })
-    }
   },
 
   methods: {
+    drop (e) {
+      let files = []
+      for (let i = 0; i < e.dataTransfer.files.length; i++) {
+        files.push(e.dataTransfer.files[i])
+      }
+      this.isDragOver = false
+      if (files && files.length > 0) {
+        this.file = files[0]
+        this.readAndUploadFile(this.file)
+      }
+    },
+    dragLeave (e) {
+      const target = e.target
+      const rect = target.getBoundingClientRect()
+      if (
+        !(e.clientX > rect.left && e.clientX < rect.right &&
+        e.clientY > rect.top && e.clientY < rect.bottom)
+      ) {
+        this.isDragOver = false
+      }
+    },
     async setImageSrc (src) {
       try {
         if (src && this.filePreview) {
