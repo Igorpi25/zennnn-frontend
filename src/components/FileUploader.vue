@@ -59,8 +59,8 @@
           v-if="(isDragOver || hovered) && !(getUploadUrlLoading || uploadLoading || checkLoading)"
           class="absolute inset-0 flex justify-center items-center text-white"
         >
-          <Icon :size="isDragOver ? 18 : 28">
-            {{ isDragOver ? icons.mdiPlusThick : icons.mdiMagnifyPlusOutline }}
+          <Icon :size="isDragOver ? 18 : hoveredIconSize">
+            {{ isDragOver ? icons.mdiPlusThick : icons[hoveredIcon] }}
           </Icon>
         </div>
       </div>
@@ -144,6 +144,14 @@ export default {
     hovered: {
       type: Boolean,
       default: false,
+    },
+    hoveredIcon: {
+      type: String,
+      default: 'mdiMagnifyPlusOutline',
+    },
+    hoveredIconSize: {
+      type: [String, Number],
+      default: 28,
     },
     loading: {
       type: Boolean,

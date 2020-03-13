@@ -217,17 +217,25 @@
               />
               <div class="flex items-center">
                 <div class="flex-shrink-0 w-9">
-                  <FileUploader
+                  <div
                     v-if="item.role === Role.OWNER"
-                    :loading="updateOrgImageLoading[item.id]"
-                    :uploading.sync="updateOrgImageUploading[item.id]"
-                    :src="item.picture"
-                    rounded
-                    show-preview
-                    check-download-url
-                    style="width:32px; height:32px"
-                    @update="updateOrgImage($event, item.id)"
-                  />
+                    @mouseenter="$set(updateOrgImageHovered, item.id, true)"
+                    @mouseleave="$set(updateOrgImageHovered, item.id, false)"
+                  >
+                    <FileUploader
+                      :loading="updateOrgImageLoading[item.id]"
+                      :uploading.sync="updateOrgImageUploading[item.id]"
+                      :src="item.picture"
+                      :hovered="updateOrgImageHovered[item.id]"
+                      hoveredIcon="mdiPlusThick"
+                      hoveredIconSize="18"
+                      rounded
+                      show-preview
+                      check-download-url
+                      style="width:32px; height:32px"
+                      @update="updateOrgImage($event, item.id)"
+                    />
+                  </div>
                   <div
                     v-else-if="item.picture"
                     class="flex justify-center items-center overflow-hidden rounded-full w-8 h-8"
@@ -305,6 +313,7 @@ export default {
       Role,
       updateOrgImageLoading: {},
       updateOrgImageUploading: {},
+      updateOrgImageHovered: {},
       favorites: [],
       orgDialog: false,
       profileMenu: false,
