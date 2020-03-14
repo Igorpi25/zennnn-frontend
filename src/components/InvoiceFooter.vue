@@ -84,7 +84,7 @@
           })"
         >
           <template v-slot:append>
-            {{ $t('currency.CNY.symbol') }}
+            {{ $t(`currency.${currency}.symbol`) }}
           </template>
         </TextField>
       </div>
@@ -109,7 +109,7 @@
           })"
         >
           <template v-slot:append>
-            {{ $t('currency.CNY.symbol') }}
+            {{ $t(`currency.${currency}.symbol`) }}
           </template>
         </TextField>
         <v-menu
@@ -160,7 +160,7 @@
           class="leading-none"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.obtainCost, 'formatted') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.obtainCost, 'formatted') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
         <v-menu
           ref="menu"
@@ -207,7 +207,7 @@
           class="leading-none text-white"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.clientDebt, 'formatted') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.clientDebt, 'formatted') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
         <v-menu
           ref="menu"
@@ -256,10 +256,15 @@ import { mdiChevronLeft, mdiChevronRight } from '@mdi/js'
 
 import { InvoiceProfitType } from '@/graphql/enums'
 import { UPDATE_INVOICE } from '@/graphql/mutations'
+import { DEFAULT_CURRENCY } from '../config/globals'
 
 export default {
   name: 'InvoiceFooter',
   props: {
+    currency: {
+      type: String,
+      default: DEFAULT_CURRENCY,
+    },
     item: {
       type: Object,
       default: () => ({}),

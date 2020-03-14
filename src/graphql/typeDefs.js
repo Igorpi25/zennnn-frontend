@@ -102,6 +102,8 @@ export const PRODUCT_FRAGMENT = gql`
       purchasePrice
       customPurchasePrice
       purchaseAmount
+      price
+      amount
     }
     store {
       net
@@ -180,11 +182,14 @@ export const INVOICE_FRAGMENT = gql`
     profitPercent
     profitForAll
     discount
+    discountInCurrency
     prepayment
+    prepaymentInCurrency
     prepaymentDate
     obtainCost
     obtainCostDate
     clientDebt
+    clientDebtInCurrency
     clientDebtDate
     totalClientAmount
     totalPurchaseAmount
@@ -285,7 +290,6 @@ export const SPEC_FRAGMENT = gql`
     totalClientDebt
     currency
     currencyRate
-    customCurrencyRate
     comments {
       ...CommentFragment
     }
@@ -298,6 +302,12 @@ export const SPEC_FRAGMENT = gql`
     customs {
       ...CustomsFragment
     }
+    subtotal
+    paid
+    depositDue
+    depositDueDate
+    balanceDue
+    total
     amount
     amountInWords
     amountInWordsClientLang
@@ -550,7 +560,6 @@ export const PAPER_SPEC_FRAGMENT = gql`
     totalClientDebt
     currency
     currencyRate
-    customCurrencyRate
     comments {
       ...CommentFragment
     }

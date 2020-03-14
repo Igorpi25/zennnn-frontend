@@ -117,7 +117,7 @@
                 <div class="h-6 flex">
                   <div class="w-32 flex-shrink-0 text-right font-bold">
                     <span>{{ $t('preview.total') }}</span>&nbsp;
-                    <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                    <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}</span>
                   </div>
                   <div class="flex-grow dots" />
                   <div class="font-bold">
@@ -127,7 +127,7 @@
                 <div class="h-6 flex text-gray-lightest">
                   <div class="w-32 flex-shrink-0 text-right">
                     <span>{{ $t('preview.discount') }}</span>&nbsp;
-                    <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                    <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}</span>
                   </div>
                   <div class="flex-grow dots" />
                   <div class="font-bold">
@@ -137,7 +137,7 @@
                 <div class="h-6 flex">
                   <div class="w-32 flex-shrink-0 text-right">
                     <span>{{ $t('preview.prepay') }}</span>&nbsp;
-                    <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                    <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}</span>
                   </div>
                   <div class="flex-grow dots" />
                   <div class="font-bold">
@@ -147,7 +147,7 @@
                 <div class="h-6 flex">
                   <div class="w-32 flex-shrink-0 text-right">
                     <span>{{ $t('preview.residue') }}</span>&nbsp;
-                    <span class="pl-1">{{ $t('currency.CNY.symbol') }}</span>
+                    <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}</span>
                   </div>
                   <div class="flex-grow dots" />
                   <div class="font-bold" style="color:#ff0000">
@@ -188,6 +188,7 @@ import Comments from '../components/Comments'
 import Scroll from '../directives/Scroll'
 
 import { ProductStatus } from '../graphql/enums'
+import { DEFAULT_CURRENCY } from '../config/globals'
 
 export default {
   name: 'PaperInvoice',
@@ -206,6 +207,10 @@ export default {
     invoice: {
       type: Object,
       default: () => ({}),
+    },
+    currency: {
+      type: String,
+      default: DEFAULT_CURRENCY,
     },
     scrollInvoiceId: {
       type: String,
@@ -234,9 +239,9 @@ export default {
         { text: this.$t('preview.photo'), value: 'photo', align: 'left', width: 62 },
         { text: this.$t('preview.name'), value: 'name', align: 'left', width: 260 },
         { text: this.$t('preview.additionalImages'), value: 'images', align: 'left', width: 85 },
-        { text: `${this.$t('preview.price')}(¥)`, value: 'price', width: 80 },
+        { text: `${this.$t('preview.price')}(${this.$t(`currency.${this.currency}.symbol`)})`, value: 'price', width: 80 },
         { text: this.$t('preview.qty'), value: 'qty', width: 70 },
-        { text: `${this.$t('preview.cost')}(¥)`, value: 'cost', align: 'left', width: 90 },
+        { text: `${this.$t('preview.cost')}(${this.$t(`currency.${this.currency}.symbol`)})`, value: 'cost', align: 'left', width: 90 },
         { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'left', width: 78 },
         { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'left', width: 78 },
         { text: this.$t('preview.leaveNote'), value: 'note', align: 'left', width: 78 },

@@ -103,6 +103,7 @@
     </div>
     <InvoiceFooter
       v-if="items"
+      :currency="currency"
       :item="invoiceItem"
     />
   </div>

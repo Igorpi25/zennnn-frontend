@@ -44,7 +44,7 @@
         :client="spec.client || {}"
         :shipment="spec.shipment"
         :customs="spec.customs"
-        :amount="spec.amount"
+        :amount="spec.total"
         :amount-in-words="spec.amountInWords"
         :amount-in-words-client-lang="spec.amountInWordsClientLang"
         @update="v => updateSpec(v)"
@@ -236,7 +236,7 @@
             <ul>
               <li class="flex">
                 <span class="flex-shrink-0">
-                  {{ $t('shipping.finalCost') }} {{ $t('currency.CNY.symbol') }}
+                  {{ $t('shipping.finalCost') }} {{ $t(`currency.${currency}.symbol`) }}
                 </span>
                 <div class="flex-grow dots" />
                 <!-- TODO to custom component or Intl polyfill -->
@@ -260,7 +260,7 @@
               </li>
               <li class="flex">
                 <span class="flex-shrink-0">
-                  {{ $t('shipping.finalObtainCost') }} {{ $t('currency.CNY.symbol') }}
+                  {{ $t('shipping.finalObtainCost') }} {{ $t(`currency.${currency}.symbol`) }}
                 </span>
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
@@ -282,7 +282,7 @@
               </li>
               <li class="flex">
                 <span class="flex-shrink-0">
-                  {{ $t('shipping.profit') }}  {{ $t('currency.CNY.symbol') }}
+                  {{ $t('shipping.profit') }}  {{ $t(`currency.${currency}.symbol`) }}
                 </span>
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
@@ -308,7 +308,7 @@
             <ul>
               <li class="flex">
                 <span class="flex-shrink-0">
-                  {{ $t('shipping.totalPrepay') }} {{ $t('currency.CNY.symbol') }}
+                  {{ $t('shipping.totalPrepay') }} {{ $t(`currency.${currency}.symbol`) }}
                 </span>
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
@@ -330,7 +330,7 @@
               </li>
               <li class="flex">
                 <span class="flex-shrink-0">
-                  {{ $t('shipping.totalClientDebt') }} {{ $t('currency.CNY.symbol') }}
+                  {{ $t('shipping.totalClientDebt') }} {{ $t(`currency.${currency}.symbol`) }}
                 </span>
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
@@ -352,20 +352,45 @@
               </li>
             </ul>
           </div>
-          <div class="flex justify-end items-center pt-2 pr-4">
-            <span>{{ $t('shipping.documentRate') }}</span>
-            <span class="mx-2">=</span>
-            <TextField
-              :debounce="250"
-              :placeholder="$t('placeholder.emptyNumber')"
-              type="number"
-              inputmode="decimal"
-              solo
-              colored
-              outlined
-              hide-details
-              class="text-sm text-right w-16 mr-2 sm:p-0 leading-normal"
-            />
+          <div class="flex items-center bg-gray-700 rounded-md p-5 mt-4">
+            <div class="flex-grow text-gray-100">
+              <span>{{ $t('shipping.documentRate') }}</span>
+              <select
+                :value="currency"
+                :class="[
+                  'simple-select text-sm ml-px'
+                ]"
+                @change="updateSpec({ currency: $event.target.value })"
+              >
+                <option
+                  v-for="curr of currencies"
+                  :key="curr.value"
+                  :value="curr.value"
+                >
+                  {{ curr.text }}
+                </option>
+              </select>
+            </div>
+            <div class="w-20 mr-2">
+              <TextField
+                :value="spec.currencyRate"
+                :placeholder="$t('placeholder.emptyNumber')"
+                :disabled="isCurrencyDisabled"
+                lazy
+                type="number"
+                inputmode="decimal"
+                format-style="decimal"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary placeholder-gray-200"
+                @input="updateSpec({ currencyRate: $event })"
+              />
+            </div>
+            <div class="text-gray-200">
+              {{ $t(`currency.USD.iso-4217`) }}
+            </div>
           </div>
         </div>
       </div>
@@ -382,7 +407,7 @@
         <SpecCustoms
           :shipment-type="(spec.shipment && spec.shipment.activeType) || ''"
           :item="spec.customs"
-          :amount="spec.amount"
+          :amount="spec.total"
           :amount-in-words="spec.amountInWords"
           :amount-in-words-client-lang="spec.amountInWordsClientLang"
           @update="v => updateSpec(v)"
@@ -567,7 +592,7 @@ import SpecCustoms from '../components/SpecCustoms.vue'
 
 import Countries from '../config/countries-iso3.json'
 
-import { ClientType, ShipmentType } from '../graphql/enums'
+import { ClientType, ShipmentType, SpecCurrency } from '../graphql/enums'
 import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS, GET_SPEC_EMAIL_ACCESS } from '../graphql/queries'
 import {
   UPDATE_SPEC,
@@ -579,6 +604,7 @@ import {
   SET_SPEC_CONTAINER_SIZE,
   SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
 } from '../graphql/mutations'
+import { DEFAULT_CURRENCY } from '../config/globals'
 
 export default {
   name: 'SpecSummary',
@@ -637,6 +663,20 @@ export default {
     }
   },
   computed: {
+    isCurrencyDisabled () {
+      return this.currency === SpecCurrency.USD
+    },
+    currencies () {
+      return Object.values(SpecCurrency).map(el => {
+        return {
+          text: el,
+          value: el,
+        }
+      })
+    },
+    currency () {
+      return this.spec.currency || DEFAULT_CURRENCY
+    },
     link () {
       return `${window.location.protocol}//${window.location.host}/paper/${this.specId}`
     },
@@ -670,19 +710,6 @@ export default {
     },
   },
   methods: {
-    getLastPrepaymentDate () {
-      let prepaymentDate = null
-      const invoices = this.spec.invoices || []
-      invoices.forEach(el => {
-        if (el.prepaymentDate) {
-          const d = this.$parseDate(el.prepaymentDate)
-          if (!prepaymentDate || d > prepaymentDate) {
-            prepaymentDate = d
-          }
-        }
-      })
-      return prepaymentDate
-    },
     genLabel (path, clientLang, opt = {}) {
       const flat = opt.flat
       const secondary = opt.secondary
@@ -1324,8 +1351,8 @@ export default {
         const products = invoice.products || []
         products.forEach(product => {
           index++
-          const clientPrice = (product.cost && product.cost.clientPrice) || 0
-          const clientAmount = (product.cost && product.cost.clientAmount) || 0
+          const price = (product.cost && product.cost.price) || 0
+          const amount = (product.cost && product.cost.amount) || 0
           let name = product.name || ''
           if (product.article) {
             name += ` / ${product.article}`
@@ -1338,19 +1365,148 @@ export default {
           const item = [
             { text: `${index}`, alignment: 'center' },
             name,
-            // TODO: dynamic product unit
             { text: `${product.qty || 0} ${unitText}`, alignment: 'right' },
-            { text: this.$n(clientPrice, 'currency', 'en'), alignment: 'right' },
-            { text: this.$n(clientAmount, 'currency', 'en'), alignment: 'right' },
+            { text: this.$n(price, 'currency', 'en'), alignment: 'right' },
+            { text: this.$n(amount, 'currency', 'en'), alignment: 'right' },
           ]
           items.push(item)
         })
+        if (invoice.discountInCurrency) {
+          const item = [
+            '',
+            {
+              text: this.genLabel('print.supplierDiscount', clientLang, { flat: true, secondary: true }),
+              colSpan: 3,
+            },
+            '',
+            '',
+            { text: `-${this.$n(invoice.discountInCurrency, 'currency', 'en')}`, alignment: 'right' },
+          ]
+          items.push(item)
+        }
       })
       return items
     },
-    genAmountBody (clientLang) {
-      const lastPrepaymentDate = this.getLastPrepaymentDate()
-      const border = lastPrepaymentDate
+    genItemsAmounts (customs, clientLang) {
+      const body = [
+        [
+          '',
+          '',
+          '',
+          {
+            text: this.genLabel('print.subtotal', clientLang, { flat: true }),
+            alignment: 'right',
+          },
+          {
+            text: this.$n(this.spec.subtotal || 0, 'currency', 'en'),
+            alignment: 'right',
+          },
+        ],
+      ]
+      if (customs.discount) {
+        body.push([
+          '',
+          '',
+          '',
+          {
+            text: this.genLabel('print.discount', clientLang, { flat: true }),
+            alignment: 'right',
+          },
+          {
+            text: this.$n(customs.discount, 'currency', 'en'),
+            alignment: 'right',
+          },
+        ])
+      }
+      // body.push([
+      //   '',
+      //   '',
+      //   '',
+      //   {
+      //     text: this.genLabel('print.vat', clientLang, { flat: true }),
+      //     alignment: 'right',
+      //   },
+      //   {
+      //     text: this.$n(0, 'currency', 'en'),
+      //     alignment: 'right',
+      //   },
+      // ])
+      if (customs.cost) {
+        body.push([
+          '',
+          '',
+          '',
+          {
+            text: this.genLabel('print.shipping', clientLang, { flat: true }),
+            alignment: 'right',
+          },
+          {
+            text: this.$n(customs.cost, 'currency', 'en'),
+            alignment: 'right',
+          },
+        ])
+      }
+      body.push([
+        '',
+        '',
+        '',
+        {
+          text: this.genLabel('print.total', clientLang, { flat: true }),
+          alignment: 'right',
+        },
+        {
+          text: this.$n(this.spec.total || 0, 'currency', 'en'),
+          alignment: 'right',
+        },
+      ])
+      // body.push([
+      //   '',
+      //   '',
+      //   '',
+      //   {
+      //     text: this.genLabel('print.withholdingTax', clientLang, { flat: true }),
+      //     alignment: 'right',
+      //   },
+      //   {
+      //     text: this.$n(0, 'currency', 'en'),
+      //     alignment: 'right',
+      //   },
+      // ])
+      body.push([
+        '',
+        '',
+        '',
+        {
+          text: this.genLabel('print.paid', clientLang, { flat: true }),
+          alignment: 'right',
+        },
+        {
+          text: this.$n(this.spec.paid || 0, 'currency', 'en'),
+          alignment: 'right',
+        },
+      ])
+      const rowIndex = body.length > 3 ? 2 : 1
+      body[rowIndex][0] = {
+        rowSpan: 2,
+        stack: this.genLabel('print.invoiceCurrency', clientLang),
+      }
+      body[rowIndex][1] = {
+        rowSpan: 2,
+        stack: this.genLabel('print.currency.usd', clientLang),
+      }
+      return {
+        table: {
+          widths: [80, 80, '*', 220, 90],
+          body,
+        },
+        layout: {
+          defaultBorder: false,
+        },
+        margin: [0, 0, 0, 20],
+      }
+    },
+    genAmountBody (depositDueDate, clientLang) {
+      const border = depositDueDate
         ? [false, false, false, true]
         : [false, false, false, false]
       const result = [
@@ -1364,14 +1520,14 @@ export default {
           },
           {
             border,
-            text: this.$n(this.spec.totalClientDebt || 0, 'currency', 'en'),
+            text: this.$n(this.spec.balanceDue || 0, 'currency', 'en'),
             alignment: 'right',
             fontSize: 13.3,
           },
         ],
       ]
-      if (lastPrepaymentDate) {
-        const date = this.$d(this.$parseDate(lastPrepaymentDate), 'short', clientLang)
+      if (depositDueDate) {
+        const date = this.$d(depositDueDate, 'short', clientLang)
         result.push([
           '',
           {
@@ -1379,7 +1535,7 @@ export default {
             alignment: 'right',
           },
           {
-            text: this.$n(this.spec.totalPrepay, 'currency', 'en'),
+            text: this.$n(this.spec.depositDue, 'currency', 'en'),
             alignment: 'right',
           },
         ])
@@ -1436,6 +1592,7 @@ export default {
       const clientLang = client.language || defaultLang
       const specCreatedAt = this.$parseDate(this.spec.createdAt)
       const specDueDate = this.$parseDate(this.spec.createdAt)
+      const specDepositDueDate = this.spec.depositDueDate ? this.$parseDate(this.spec.depositDueDate) : null
       specDueDate.setTime(specDueDate.getTime() + 7 * 86400000)
       const dd = {
         header: (currentPage, pageCount, pageSize) => {
@@ -1564,7 +1721,7 @@ export default {
                   },
                   {
                     alignment: 'right',
-                    text: this.$d(this.getLastPrepaymentDate() || new Date(), 'short', clientLang),
+                    text: this.$d(specDepositDueDate || new Date(), 'short', clientLang),
                   },
                 ],
               ],
@@ -1684,119 +1841,12 @@ export default {
             },
           },
           // Items Amounts
-          {
-            table: {
-              widths: [80, 80, '*', 220, 90],
-              body: [
-                [
-                  '',
-                  '',
-                  '',
-                  {
-                    text: this.genLabel('print.subtotal', clientLang, { flat: true }),
-                    alignment: 'right',
-                  },
-                  {
-                    text: this.$n(this.spec.finalCost || 0, 'currency', 'en'),
-                    alignment: 'right',
-                  },
-                ],
-                [
-                  '',
-                  '',
-                  '',
-                  {
-                    text: this.genLabel('print.discount', clientLang, { flat: true }),
-                    alignment: 'right',
-                  },
-                  {
-                    text: this.$n(customs.discount || 0, 'currency', 'en'),
-                    alignment: 'right',
-                  },
-                ],
-                [
-                  {
-                    rowSpan: 2,
-                    stack: this.genLabel('print.invoiceCurrency', clientLang),
-                  },
-                  {
-                    rowSpan: 2,
-                    stack: this.genLabel('print.currency.usd', clientLang),
-                  },
-                  '',
-                  {
-                    text: this.genLabel('print.vat', clientLang, { flat: true }),
-                    alignment: 'right',
-                  },
-                  {
-                    text: this.$n(0, 'currency', 'en'),
-                    alignment: 'right',
-                  },
-                ],
-                [
-                  '',
-                  '',
-                  '',
-                  {
-                    text: this.genLabel('print.shipping', clientLang, { flat: true }),
-                    alignment: 'right',
-                  },
-                  {
-                    text: this.$n(customs.cost || 0, 'currency', 'en'),
-                    alignment: 'right',
-                  },
-                ],
-                [
-                  '',
-                  '',
-                  '',
-                  {
-                    text: this.genLabel('print.total', clientLang, { flat: true }),
-                    alignment: 'right',
-                  },
-                  {
-                    text: this.$n(this.spec.amount || 0, 'currency', 'en'),
-                    alignment: 'right',
-                  },
-                ],
-                [
-                  '',
-                  '',
-                  '',
-                  {
-                    text: this.genLabel('print.withholdingTax', clientLang, { flat: true }),
-                    alignment: 'right',
-                  },
-                  {
-                    text: this.$n(0, 'currency', 'en'),
-                    alignment: 'right',
-                  },
-                ],
-                [
-                  '',
-                  '',
-                  '',
-                  {
-                    text: this.genLabel('print.paid', clientLang, { flat: true }),
-                    alignment: 'right',
-                  },
-                  {
-                    text: this.$n(0, 'currency', 'en'),
-                    alignment: 'right',
-                  },
-                ],
-              ],
-            },
-            layout: {
-              defaultBorder: false,
-            },
-            margin: [0, 0, 0, 20],
-          },
+          this.genItemsAmounts(customs, clientLang),
           // Amount
           {
             table: {
               widths: ['*', '40%', 90],
-              body: this.genAmountBody(clientLang),
+              body: this.genAmountBody(specDepositDueDate, clientLang),
             },
             layout: {
               defaultBorder: false,

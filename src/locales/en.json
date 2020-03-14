@@ -204,7 +204,8 @@
     "profit": "Gap (Proft):",
     "totalPrepay": "Total Prepay:",
     "totalClientDebt": "Total Client’s Debt:",
-    "documentRate": "Financial Documents using Rate",
+    "documentRate": "Financial Documents using Rate: 1",
+    "documentRateTooltip": "According to this course, all documents submitted to the client will calculate the final amount of payment.",
     "paperConfigurator": "Papers Confgurator",
     "notifyClient": "Notify My Client",
     "print": "Print",
@@ -538,6 +539,7 @@
     }
   },
   "print": {
+    "supplierDiscount": "Discount from supplier",
     "sheet": "Sheet No.: {p} of {t}",
     "seller": "Seller (Shipper)",
     "addressTelFax": "Address / Tel. / Fax",
@@ -658,8 +660,13 @@
     "noResult": "No matching records found"
   },
   "currency": {
+    "USD": {
+      "label": "US Dollar",
+      "iso-4217": "USD",
+      "symbol": "$"
+    },
     "CNY": {
-      "label": "Chinese Yuan Renminbi",
+      "label": "Yuan Renminbi",
       "iso-4217": "CNY",
       "symbol": "¥"
     },
@@ -667,6 +674,16 @@
       "label": "Russian ruble",
       "iso-4217": "RUB",
       "symbol": "₽"
+    },
+    "EUR": {
+      "label": "Euro",
+      "iso-4217": "EUR",
+      "symbol": "€"
+    },
+    "UAH": {
+      "label": "Hryvnia",
+      "iso-4217": "UAH",
+      "symbol": "₴"
     }
   },
   "measure": {

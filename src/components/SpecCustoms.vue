@@ -74,7 +74,11 @@
             class="text-sm text-field_nd"
             input-class="h-8 text-primary placeholder-gray-200"
             @input="$emit('update', { customs: { cost: $event } })"
-          />
+          >
+            <template v-slot:append>
+              {{ $t(`currency.USD.symbol`) }}
+            </template>
+          </TextField>
         </div>
       </div>
       <div class="border-t border-background my-3 mx-2" />
@@ -96,7 +100,11 @@
             class="text-sm text-field_nd"
             input-class="h-8 text-primary placeholder-gray-200"
             @input="$emit('update', { customs: { discount: $event } })"
-          />
+          >
+            <template v-slot:append>
+              {{ $t(`currency.USD.symbol`) }}
+            </template>
+          </TextField>
         </div>
       </div>
       <div class="flex items-center pb-1">
@@ -156,7 +164,7 @@
     </h4>
     <div class="bg-gray-700 rounded-md py-1 px-2">
       <div class="px-1 py-3 mb-1 text-lg text-center">
-        {{ $n(amount || 0, 'decimal') }}
+        {{ $n(amount || 0, 'decimal') }} {{ $t(`currency.USD.symbol`) }}
       </div>
       <div class="px-1 pb-1">
         <TextArea

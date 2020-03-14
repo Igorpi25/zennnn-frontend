@@ -152,6 +152,7 @@
         </InvoiceHeader>
         <Invoice
           v-if="expanded.includes(item.id)"
+          :currency="spec.currency"
           :invoice="item"
           :active-tab="invoiceActiveTab"
           :scroll-left="invoiceScrollLeft"
@@ -159,6 +160,7 @@
           style="margin-top: 1px"
           @change:tab="setInvoiceActiveTab"
           @change:scrollLeft="setScrollLeft"
+          @update:currency="updateSpec({ currency: $event })"
         />
       </div>
     </div>

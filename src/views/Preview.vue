@@ -51,6 +51,7 @@
               v-if="expanded.includes(item.id)"
               :spec-id="specId"
               :invoice="item"
+              :currency="currency"
               :scroll-left="invoiceScrollLeft"
               :scroll-invoice-id="invoiceScrollId"
               @change:scrollLeft="setScrollLeft"
@@ -219,7 +220,7 @@
                   <div class="flex pb-2">
                     <span class="w-48 flex-shrink-0 text-right font-bold">
                       <span>{{ $t('preview.costOfGood') }}</span>&nbsp;
-                      <span>{{ $t('currency.CNY.symbol') }}</span>
+                      <span>{{ $t(`currency.${currency}.symbol`) }}</span>
                     </span>
                     <!-- TODO to custom component or Intl polyfill -->
                     <!-- i18n-n has Error formatter.formatToParts is not a function. -->
@@ -244,7 +245,7 @@
                   <div class="flex pb-2">
                     <span class="w-48 flex-shrink-0 text-right">
                       <span>{{ $t('preview.totalPrepay') }}</span>&nbsp;
-                      <span>{{ $t('currency.CNY.symbol') }}</span>
+                      <span>{{ $t(`currency.${currency}.symbol`) }}</span>
                     </span>
                     <div class="flex-grow dots" />
                     <!-- <span class="flex items-baseline">
@@ -267,7 +268,7 @@
                   <div class="flex pb-2">
                     <span class="w-48 flex-shrink-0 text-right">
                       <span>{{ $t('preview.finalToPay') }}</span>&nbsp;
-                      <span>{{ $t('currency.CNY.symbol') }}</span>
+                      <span>{{ $t(`currency.${currency}.symbol`) }}</span>
                     </span>
                     <div class="flex-grow dots" />
                     <!-- <span class="flex items-baseline font-bold" style="color: #ff0000;">
@@ -300,7 +301,7 @@
                         <div class="w-full flex justify-end items-center" v-on="on">
                           <span style="padding-top:2px; padding-right:3px; font-style:italic">Валюта:</span>
                           <span class="flex items-center font-bold cursor-pointer">
-                            Китайский Юань CNY ({{ $t('currency.CNY.symbol') }})
+                            Китайский Юань CNY ({{ $t(`currency.${currency}.symbol`) }})
                             <Icon v-if="!menuCurrency">{{ icons.mdiChevronDown }}</Icon>
                             <Icon v-else>{{ icons.mdiChevronUp }}</Icon>
                           </span>
@@ -396,7 +397,7 @@ import {
   PAPER_SPEC_INVOICES_FRAGMENT,
   PAPER_INVOICE_PRODUCTS_FRAGMENT,
 } from '../graphql/typeDefs'
-import { PAPER_STORE_KEY_PREFIX } from '../config/globals'
+import { PAPER_STORE_KEY_PREFIX, DEFAULT_CURRENCY } from '../config/globals'
 import { getSpecExpandedInvoices } from '../graphql/resolvers'
 
 export default {
@@ -456,6 +457,9 @@ export default {
     },
     spec () {
       return this.getPaperSpec || {}
+    },
+    currency () {
+      return this.spec.currency || DEFAULT_CURRENCY
     },
     client () {
       const firstName = (this.spec.client && this.spec.client.firstName) || {}

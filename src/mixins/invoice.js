@@ -12,7 +12,10 @@ import { UPDATE_INVOICE, CREATE_PRODUCT } from '../graphql/mutations'
 import {
   ProductStatus,
   InvoiceProfitType,
+  SpecCurrency,
 } from '../graphql/enums'
+
+import { DEFAULT_CURRENCY } from '../config/globals'
 
 import Scroll from '../directives/Scroll'
 
@@ -21,6 +24,10 @@ export default {
     Scroll,
   },
   props: {
+    currency: {
+      type: String,
+      default: DEFAULT_CURRENCY,
+    },
     activeTab: {
       type: Number,
       default: 1,
@@ -71,6 +78,14 @@ export default {
       return this.productHeaders.reduce((acc, curr) => {
         return acc + (curr.width || 0)
       }, 0)
+    },
+    currencies () {
+      return Object.values(SpecCurrency).map(el => {
+        return {
+          text: el,
+          value: el,
+        }
+      })
     },
     tabs () {
       return [
@@ -208,6 +223,7 @@ export default {
           this.refetchSpec()
         }
         this.$logger.warn('Error: ', error)
+        throw new Error(error)
         // this.$Amplify.Analytics.record({
         //   name: 'UpdateInvoiceError',
         //   attributes: {

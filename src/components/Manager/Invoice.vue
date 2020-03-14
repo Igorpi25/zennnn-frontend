@@ -33,9 +33,30 @@
                     v-for="tab in tabs"
                     :key="tab.value"
                     :style="{ width: tab.width + 'px' }"
-                    :class="['tab-item', {'tab-item--active': activeTab === tab.value}]"
+                    :class="['tab-item', { 'tab-item--active': activeTab === tab.value }]"
                     @click="switchTab(tab.value)"
-                  >{{ tab.text }}</li>
+                  >
+                    <span>{{ tab.text }}</span>
+                    <select
+                      v-if="tab.value === 1"
+                      :value="currency"
+                      :disabled="activeTab !== tab.value"
+                      :class="[
+                        'simple-select text-sm ml-px',
+                        { 'text-gray-100': activeTab === tab.value },
+                        { 'pointer-events-none': activeTab !== tab.value }
+                      ]"
+                      @change="$emit('update:currency', $event.target.value)"
+                    >
+                      <option
+                        v-for="curr of currencies"
+                        :key="curr.value"
+                        :value="curr.value"
+                      >
+                        {{ curr.text }}
+                      </option>
+                    </select>
+                  </li>
                 </ul>
               </div>
             </template>
@@ -115,6 +136,7 @@
     </div>
     <InvoiceFooter
       v-if="items"
+      :currency="currency"
       :item="invoiceItem"
     />
   </div>

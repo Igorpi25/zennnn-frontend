@@ -1553,15 +1553,19 @@
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-yellow-500"
                   @input="$emit('update', { customs: { cost: $event } })"
-                />
+                >
+                  <template v-slot:append>
+                    {{ $t(`currency.USD.symbol`) }}
+                  </template>
+                </TextField>
               </div>
               <div class="w-1/2 pl-1">
                 <label class="text-sm">
                   <span class="block truncate">{{ $t('shipping.invoiceCurrency') }}</span>
                 </label>
                 <Select
-                  :value="customs.currency"
-                  :placeholder="$t('placeholder.notChosen')"
+                  :value="$t('currency.USD.iso-4217')"
+                  :placeholder="$t('currency.USD.iso-4217')"
                   :nudge-bottom="32"
                   :items="[]"
                   disabled
@@ -1572,8 +1576,8 @@
                   input-class="h-8 text-primary placeholder-gray-200"
                   @input="$emit('update', { customs: { currency: $event } })"
                 >
-                  <template v-slot:append="{ isMenuOpen, toggle }">
-                    <div class="text-primary cursor-pointer select-none" @click="toggle">
+                  <template v-slot:append="{ isMenuOpen }">
+                    <div class="text-gray-darkest cursor-not-allowed">
                       <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
                       <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                     </div>
@@ -1601,7 +1605,11 @@
                   class="text-sm text-field_nd"
                   input-class="h-8 text-primary placeholder-gray-200"
                   @input="$emit('update', { customs: { discount: $event } })"
-                />
+                >
+                  <template v-slot:append>
+                    {{ $t(`currency.USD.symbol`) }}
+                  </template>
+                </TextField>
               </div>
               <div class="w-1/3 px-1">
                 <label class="text-sm">
@@ -1662,7 +1670,7 @@
             <div class="w-full flex pb-4 px-3 sm:w-1/2 text-xl">
               <div class="whitespace-no-wrap">{{ $t('shipping.invoiceAmount') }}</div>
               <div class="flex-grow dots" />
-              <div class="text-white whitespace-no-wrap">{{ $n(amount || 0, 'decimal') }}</div>
+              <div class="text-white whitespace-no-wrap">{{ $n(amount || 0, 'decimal') }} {{ $t(`currency.USD.symbol`) }}</div>
             </div>
           </div>
           <div class="w-full sm:w-1/2 px-3">

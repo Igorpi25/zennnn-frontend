@@ -87,7 +87,7 @@
           })"
         >
           <template v-slot:append>
-            {{ $t('currency.CNY.symbol') }}
+            {{ $t(`currency.${currency}.symbol`) }}
           </template>
         </TextField>
       </div>
@@ -114,7 +114,7 @@
           })"
         >
           <template v-slot:append>
-            {{ $t('currency.CNY.symbol') }}
+            {{ $t(`currency.${currency}.symbol`) }}
           </template>
         </TextField>
         <DatePicker
@@ -148,7 +148,7 @@
           class="leading-none"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.obtainCost, 'decimal') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.obtainCost, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
         <DatePicker
           :value="item.obtainCostDate"
@@ -178,7 +178,7 @@
           class="leading-none text-white"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.clientDebt, 'decimal') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.clientDebt, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
         <DatePicker
           :value="item.clientDebtDate"

@@ -305,6 +305,7 @@ export default {
         if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
           this.refetchSpec()
         }
+        this.$logger.warn('Error: ', error)
         throw new Error(error)
       } finally {
         this.updateLoading = false
@@ -342,6 +343,10 @@ export default {
           },
         })
       } catch (error) {
+        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+          this.refetchSpec()
+        }
+        this.$logger.warn('Error: ', error)
         throw new Error(error)
       } finally {
         this.updateLoading = false
@@ -358,6 +363,10 @@ export default {
           },
         })
       } catch (error) {
+        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+          this.refetchSpec()
+        }
+        this.$logger.warn('Error: ', error)
         throw new Error(error)
       } finally {
         this.updateLoading = false

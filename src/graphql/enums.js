@@ -26,6 +26,14 @@ export const ClientType = {
   NATURAL: 'NATURAL',
 }
 
+export const SpecCurrency = {
+  USD: 'USD',
+  CNY: 'CNY',
+  RUB: 'RUB',
+  EUR: 'EUR',
+  UAH: 'UAH',
+}
+
 export const ShipmentType = {
   UNDEFINED: 'UNDEFINED',
   MARINE: 'MARINE',

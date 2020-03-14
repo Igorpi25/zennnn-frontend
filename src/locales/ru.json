@@ -204,7 +204,8 @@
     "profit": "Разница (Прибыль):",
     "totalPrepay": "Предоплат итого:",
     "totalClientDebt": "Общий долг клиента:",
-    "documentRate": "Курс для финансовых документов 1 CNY",
+    "documentRate": "Курс для финансовых документов 1",
+    "documentRateTooltip": "Согласно этому курсу во всех документах, выставленных клиенту, будут рассчитаны окончательные суммы оплат.",
     "paperConfigurator": "Конструктор документов",
     "notifyClient": "Отправить уведомление",
     "print": "Распечатать документы",
@@ -538,6 +539,7 @@
     }
   },
   "print": {
+    "supplierDiscount": "Скидка от поставщика",
     "sheet": "Лист {p} из {t}",
     "seller": "Продавец (Поставщик)",
     "addressTelFax": "Адрес / Телефон / Факс",
@@ -658,15 +660,30 @@
     "noResult": "Не найдено подходящих записей"
   },
   "currency": {
+    "USD": {
+      "label": "Доллар США",
+      "iso-4217": "USD",
+      "symbol": "$"
+    },
     "CNY": {
-      "label": "Chinese Yuan Renminbi",
+      "label": "Юань",
       "iso-4217": "CNY",
       "symbol": "¥"
     },
     "RUB": {
-      "label": "Russian ruble",
+      "label": "Российский рубль",
       "iso-4217": "RUB",
       "symbol": "₽"
+    },
+    "EUR": {
+      "label": "Евро",
+      "iso-4217": "EUR",
+      "symbol": "€"
+    },
+    "UAH": {
+      "label": "Гривна",
+      "iso-4217": "UAH",
+      "symbol": "₴"
     }
   },
   "measure": {

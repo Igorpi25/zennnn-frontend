@@ -79,6 +79,7 @@
         :close-on-content-click="false"
         :open-on-click="false"
         :disable-keys="true"
+        :disabled="disabled"
         :max-height="maxHeight"
         :min-width="minWidth"
         :max-width="maxWidth"
@@ -379,6 +380,7 @@ export default {
   },
   methods: {
     toggleMenu () {
+      if (this.disabled) return
       if (this.menu) {
         this.closeMenu()
       } else {
