@@ -76,7 +76,7 @@
           <div class="status-bar__items">
             <!-- Lock -->
             <router-link
-              v-if="!isLoggedIn"
+              v-if="!loggedIn"
               :to="{ name: 'signin' }"
               class="hidden md:block"
             >
@@ -85,7 +85,7 @@
               </svg>
             </router-link>
             <!-- Menu -->
-            <template v-if="isLoggedIn">
+            <template v-if="loggedIn">
               <a href="#" class="text-logo-mobile block md:hidden" @click.prevent>
                 <svg width="23" height="20" viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect x="0.000244141" width="22.9998" height="3.20623" fill="currentColor"/>
@@ -99,7 +99,7 @@
             </template>
           </div>
           <div
-            v-if="isLoggedIn"
+            v-if="loggedIn"
             class="status-bar__items"
           >
             <v-menu
@@ -330,6 +330,9 @@ export default {
     }
   },
   computed: {
+    loggedIn () {
+      return this.isLoggedIn && this.orgId
+    },
     orgId () {
       return this.$route.params.orgId
     },
