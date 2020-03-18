@@ -17,11 +17,12 @@
               </h1>
               <Form
                 ref="form"
+                :error-message.sync="errorMessage"
+                lazy-validation
                 rounded
                 shadow
                 class="form--max-w-md"
                 body-class="px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8"
-                :error-message.sync="errorMessage"
               >
                 <div class="w-full sm:w-1/2 sm:pr-2">
                   <TextField

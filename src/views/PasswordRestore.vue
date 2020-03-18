@@ -19,6 +19,7 @@
                 ref="form"
                 :title="$t('passwordRestore.recoveryByEmail')"
                 :error-message.sync="errorMessage"
+                lazy-validation
                 rounded
                 shadow
                 class="form--max-w-md"

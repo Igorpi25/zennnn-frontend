@@ -43,6 +43,7 @@
               ref="form"
               :title="$t('signup.registration')"
               :error-message.sync="errorMessage"
+              lazy-validation
               rounded
               shadow
               class="form--max-w-sm mx-auto m-0"

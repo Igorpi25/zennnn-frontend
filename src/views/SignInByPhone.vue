@@ -26,6 +26,7 @@
               ref="form"
               :title="$t('signinByPhone.loginByPhone')"
               :error-message.sync="errorMessage"
+              lazy-validation
               rounded
               shadow
               class="form--max-w-md"

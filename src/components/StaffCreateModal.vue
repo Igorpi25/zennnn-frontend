@@ -14,6 +14,7 @@
       <div class="modal__form">
         <Form
           ref="form"
+          lazy-validation
           rounded
           shadow
           class="form--max-w-sm mx-auto m-0"

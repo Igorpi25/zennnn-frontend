@@ -1,16 +1,23 @@
 export default {
   data () {
     return {
-      hasError: false,
+      shouldValidate: false,
+      hasError: null,
       errorText: '',
     }
   },
+  watch: {
+    'form.wasValidated': {
+      handler () {
+        this.shouldValidate = true
+      },
+    },
+  },
   methods: {
     checkField (e) {
-      if (this.form) {
-        if (!this.form.wasValidated) return
-        this.validate(e.target)
-      }
+      this.shouldValidate = true
+      if (this.form && this.form.lazyValidation && !this.form.wasValidated) return
+      this.validate(e.target)
     },
     validate (el) {
       let errorsCount = 0

@@ -312,7 +312,10 @@ export default {
       return this.hasFocus || this.internalValue || this.placeholder
     },
     hasStateIcon () {
-      return this.form && this.form.wasValidated && this.stateIcon
+      if (this.form && this.form.lazyValidation) {
+        return this.form.wasValidated && this.stateIcon
+      }
+      return this.shouldValidate && this.stateIcon
     },
     pattern () {
       if (this.type === 'number') {

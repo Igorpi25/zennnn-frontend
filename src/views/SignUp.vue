@@ -41,6 +41,7 @@
           <div class="flex-shrink-0">
             <Form
               ref="form"
+              v-model="isValid"
               :title="$t('signup.registration')"
               :error-message.sync="errorMessage"
               rounded
@@ -123,7 +124,7 @@
                   <Button
                     large
                     secondary
-                    :disabled="loading"
+                    :disabled="isValid || loading"
                     class="mt-5 flex justify-center"
                     @click="onSubmit"
                   >
@@ -165,6 +166,7 @@ export default {
   },
   data () {
     return {
+      isValid: false,
       loading: false,
       errorMessage: '',
       showPassword: false,

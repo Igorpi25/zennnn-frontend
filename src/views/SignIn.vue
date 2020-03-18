@@ -24,12 +24,13 @@
             </h1>
             <Form
               ref="form"
+              :error-message.sync="errorMessage"
+              lazy-validation
               rounded
               shadow
               class="form--max-w-md"
               body-class="px-0 md:p-8 pt-8 py-1 md:py-8"
               append-class="flex-col sm:flex-row items-center"
-              :error-message.sync="errorMessage"
             >
               <template v-slot:alert>
                 <Alert
@@ -121,6 +122,7 @@
         ref="compliteForm"
         :title="$t('signup.registration')"
         :error-message.sync="compliteErrorMessage"
+        lazy-validation
         rounded
         shadow
         class="form--max-w-sm mx-auto"
