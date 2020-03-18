@@ -68,12 +68,13 @@
   "welcome": {
     "congrats": "Поздравляем,",
     "successRegister": "вы успешно зарегистрировались!",
+    "confirmRegistrationEmail": "На вашу почту {email} отправлено письмо.",
     "confirmRegistration": "Подтвердите регистрацию",
-    "followTheLink": "пройдите по ссылке в письме",
-    "emailNotRecieved": "Не пришло письмо.",
+    "followTheLink": "пройдите по ссылке в письме.",
+    "emailNotRecieved": "Не пришло письмо?",
     "hasAccount": "У меня есть аккаунт.",
     "signin": "Войти",
-    "resend": "Отправить повторно"
+    "resend": "Отправить повторно."
   },
   "deals": {
     "createDeal": "Создать сделку",

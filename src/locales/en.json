@@ -68,12 +68,13 @@
   "welcome": {
     "congrats": "Congratulations,",
     "successRegister": "You have successfully registered!",
+    "confirmRegistrationEmail": "We sent letter to mail {email}.",
     "confirmRegistration": "Confirm Registration",
-    "followTheLink": "follow the link in the email",
-    "emailNotRecieved": "Not received a email.",
+    "followTheLink": "follow the link in the email.",
+    "emailNotRecieved": "Not received a email?",
     "hasAccount": "I have an account.",
     "signin": "Log In",
-    "resend": "Resend"
+    "resend": "Resend."
   },
   "deals": {
     "createDeal": "Create a deal",
