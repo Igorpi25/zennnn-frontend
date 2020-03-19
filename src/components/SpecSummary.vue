@@ -1709,6 +1709,7 @@ export default {
                 [
                   {
                     fontSize: 17.4,
+                    characterSpacing: 4,
                     text: 'INVOICE',
                     bold: true,
                   },
