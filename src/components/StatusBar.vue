@@ -86,15 +86,8 @@
             </router-link>
             <!-- Menu -->
             <template v-if="loggedIn">
-              <a href="#" class="text-logo-mobile block md:hidden" @click.prevent>
-                <svg width="23" height="20" viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="0.000244141" width="22.9998" height="3.20623" fill="currentColor"/>
-                  <rect y="8.01367" width="22.9998" height="3.20623" fill="currentColor"/>
-                  <rect y="16.0312" width="22.9998" height="3.20623" fill="currentColor"/>
-                </svg>
-              </a>
-              <a href="#" class="hidden md:block" @click.prevent>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12"><g><g><path fill="#1e1e1e" d="M15.614 2H.628V0h14.986z"/></g><g><path fill="#1e1e1e" d="M15.614 7H.628V5h14.986z"/></g><g><path fill="#1e1e1e" d="M15.614 12H.628v-2h14.986z"/></g></g></svg>
+              <a href="#" class="block text-lg text-gray-100" @click.prevent="toggleMenu">
+                <i class="icon-burger align-middle" />
               </a>
             </template>
           </div>
@@ -397,6 +390,9 @@ export default {
     this.favorites = JSON.parse(localStorage.getItem(this.favoritesKeyStore)) || []
   },
   methods: {
+    toggleMenu () {
+      this.profileMenu = !this.profileMenu
+    },
     async updateOrgImage (src, orgId) {
       try {
         await this.$apollo.mutate({
