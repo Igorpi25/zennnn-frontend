@@ -24,8 +24,8 @@
             <TextField
               v-model="formModel.invitationGivenName"
               :label="$t('staff.firstName')"
+              :rules="[rules.required]"
               name="firstName"
-              required
               autofocus
               state-icon
             />
@@ -34,8 +34,8 @@
             <TextField
               v-model="formModel.invitationFamilyName"
               :label="$t('staff.lastName')"
+              :rules="[rules.required]"
               name="lastName"
-              required
               state-icon
             />
           </div>
@@ -44,9 +44,9 @@
               ref="email"
               v-model="formModel.invitationEmail"
               :label="$t('staff.login')"
+              :rules="[rules.required, rules.email]"
               type="email"
               name="email"
-              required
               state-icon
             />
           </div>
@@ -114,6 +114,10 @@ export default {
         mdiChevronUp,
         mdiChevronDown,
         mdiClose,
+      },
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
       },
     }
   },

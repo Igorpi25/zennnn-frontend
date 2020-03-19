@@ -732,8 +732,10 @@
     "removeContract": "Are you sure you want to delete the Contract?"
   },
   "rule": {
-    "required": "Please fill in this field.",
-    "passwordsDoNotMatch": "The entered passwords do not match."
+    "required": "Fill out this field.",
+    "email": "Enter an email address.",
+    "passwordsDoNotMatch": "The entered passwords do not match.",
+    "minLength": "Use at least {n} characters."
   },
   "preposition": {
     "from": "from",

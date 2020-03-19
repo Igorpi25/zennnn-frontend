@@ -13,6 +13,13 @@ export default {
       },
     },
   },
+  mounted () {
+    const form = this.form || {}
+    if (!form.lazyValidation && this.value) {
+      this.shouldValidate = true
+      this.validate()
+    }
+  },
   methods: {
     checkField (e) {
       this.shouldValidate = true
@@ -22,10 +29,7 @@ export default {
     validate (el) {
       let errorsCount = 0
       const element = el || this.$refs.input
-      if (element.willValidate === true && !element.validity.valid) {
-        this.setError(element.validationMessage)
-        errorsCount++
-      } else if (this.rules && this.rules.length > 0) {
+      if (this.rules && this.rules.length > 0) {
         for (let rule of this.rules) {
           const result = rule(this.internalValue)
           if (result !== true) {
@@ -34,6 +38,9 @@ export default {
             break
           }
         }
+      } else if (element.willValidate === true && !element.validity.valid) {
+        this.setError(element.validationMessage)
+        errorsCount++
       }
       if (errorsCount === 0) {
         this.clearError()

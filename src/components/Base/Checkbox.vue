@@ -22,7 +22,7 @@
           :required="required"
           :readonly="readonly"
           :disabled="disabled"
-          @input="checkField"
+          @change="checkField"
         >
         <i class="checkbox__icon">
           <div class="icon__item">

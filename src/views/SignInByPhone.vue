@@ -40,18 +40,18 @@
                 <TextField
                   v-model="formModel.phone"
                   :label="$t('signinByPhone.phoneNumber')"
+                  :rules="[rules.required]"
                   name="phone"
                   autofocus
-                  required
                 />
               </div>
               <div class="w-full sm:w-1/2 sm:pl-2">
                 <TextField
                   v-model="formModel.smsCode"
                   :label="$t('signinByPhone.smsCode')"
+                  :rules="[rules.required, rules.codeMinLength]"
                   type="tel"
                   name="smsCode"
-                  required
                   minlength="6"
                   maxlength="6"
                 />
@@ -118,6 +118,10 @@ export default {
       formModel: {
         phone: '',
         smsCode: '',
+      },
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        codeMinLength: v => (v && v.length > 5) || this.$t('rule.minLength', { n: 6 }),
       },
     }
   },

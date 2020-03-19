@@ -43,10 +43,10 @@
                 <TextField
                   v-model="formModel.login"
                   :label="$t('signin.login')"
+                  :rules="[rules.required, rules.email]"
                   type="email"
                   name="login"
                   autofocus
-                  required
                 />
               </div>
               <div class="w-full sm:w-1/2 sm:pl-2">
@@ -54,8 +54,8 @@
                   v-model="formModel.password"
                   :label="$t('signin.password')"
                   :type="showPassword ? 'text' : 'password'"
+                  :rules="[rules.required, rules.passwordMinLength]"
                   name="password"
-                  required
                   minlength="8"
                 >
                   <template v-slot:append-outer>
@@ -120,9 +120,9 @@
     >
       <Form
         ref="compliteForm"
+        v-model="compliteFormValidity"
         :title="$t('signup.registration')"
         :error-message.sync="compliteErrorMessage"
-        lazy-validation
         rounded
         shadow
         class="form--max-w-sm mx-auto"
@@ -143,8 +143,8 @@
           <TextField
             v-model="compliteFormModel.firstName"
             :label="$t('signup.firstName')"
+            :rules="[rules.required]"
             name="firstName"
-            required
             autofocus
             state-icon
           />
@@ -153,18 +153,20 @@
           <TextField
             v-model="compliteFormModel.lastName"
             :label="$t('signup.lastName')"
+            :rules="[rules.required]"
             name="lastName"
-            required
             state-icon
           />
         </div>
         <div class="w-full">
           <TextField
-            v-model="compliteFormModel.email"
+            :value="compliteFormModel.email"
             :label="$t('signin.login')"
+            :rules="[rules.required]"
             type="email"
             name="email"
             disabled
+            state-icon
           />
         </div>
         <div class="w-full">
@@ -172,8 +174,8 @@
             v-model="compliteFormModel.password"
             :label="$t('signup.password')"
             :type="compliteShowPassword ? 'text' : 'password'"
+            :rules="[rules.required, rules.passwordMinLength]"
             name="password"
-            required
             minlength="8"
             state-icon
           >
@@ -197,7 +199,10 @@
         </div>
         <div class="relative mx-auto text-secondary">
           <!-- TODO fix position -->
-          <Checkbox required secondary>
+          <Checkbox
+            :rules="[rules.required]"
+            secondary
+          >
             <span class="ml-3 float-left text-gray-light">
               {{ $t('signup.acceptPolicyAndTerms') }}&nbsp;
               <a class="text-secondary" href="#">{{ $t('signup.privacyPolicy') }}</a>
@@ -207,9 +212,9 @@
           </Checkbox>
           <div class="flex justify-center">
             <Button
+              :disabled="compliteFormValidity || compliteLoading"
               large
               secondary
-              :disabled="compliteLoading"
               class="mt-5 flex justify-center"
               @click="completeNewPassword"
             >
@@ -250,6 +255,7 @@ export default {
   },
   data () {
     return {
+      compliteFormValidity: false,
       loading: false,
       infoMessage: '',
       errorMessage: '',
@@ -271,6 +277,11 @@ export default {
       icons: {
         mdiEyeOutline,
         mdiEyeOffOutline,
+      },
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
+        passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
       },
     }
   },

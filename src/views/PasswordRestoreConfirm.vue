@@ -29,8 +29,8 @@
                     v-model="formModel.password"
                     :label="$t('passwordRestoreConfirm.newPassword')"
                     :type="showPassword ? 'text' : 'password'"
+                    :rules="[rules.required, rules.passwordMinLength]"
                     name="password"
-                    required
                     autofocus
                     minlength="8"
                   >
@@ -57,9 +57,8 @@
                     v-model="formModel.passwordConfirm"
                     :label="$t('passwordRestoreConfirm.newPasswordConfirm')"
                     :type="showConfirmPassword ? 'text' : 'password'"
-                    :rules="confirmRules"
+                    :rules="[rules.required, rules.passwordMinLength, rules.passwordConfirmRules]"
                     name="password"
-                    required
                     minlength="8"
                   >
                     <template v-slot:append-outer>
@@ -140,9 +139,11 @@ export default {
         mdiEyeOutline,
         mdiEyeOffOutline,
       },
-      confirmRules: [
-        v => (v && v === this.formModel.password) || this.$t('rule.passwordsDoNotMatch'),
-      ],
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
+        passwordConfirmRules: v => (v && v === this.formModel.password) || this.$t('rule.passwordsDoNotMatch'),
+      },
     }
   },
   mounted () {

@@ -41,10 +41,10 @@
                     <TextField
                       v-model="formModel.email"
                       :label="$t('passwordRestore.email')"
+                      :rules="[rules.required, rules.email]"
                       type="email"
                       name="email"
                       autofocus
-                      required
                     />
                   </div>
                   <div class="text-gray-lighter text-sm">
@@ -111,6 +111,10 @@ export default {
       formModel: {
         email: '',
       },
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
+      },
     }
   },
   methods: {
@@ -125,8 +129,7 @@ export default {
           const response = await this.$Auth.forgotPassword(this.formModel.email)
           this.$logger.info('Password restore response', response)
           if (response) {
-            const email = response.CodeDeliveryDetails.Destination
-            this.successMessage = this.$t('message.emailSent', { email })
+            this.successMessage = this.$t('message.emailSent', { email: this.formModel.email })
           }
         }
       } catch (error) {

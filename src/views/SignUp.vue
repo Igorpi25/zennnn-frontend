@@ -41,7 +41,7 @@
           <div class="flex-shrink-0">
             <Form
               ref="form"
-              v-model="isValid"
+              v-model="formValidity"
               :title="$t('signup.registration')"
               :error-message.sync="errorMessage"
               rounded
@@ -56,8 +56,8 @@
                 <TextField
                   v-model="formModel.firstName"
                   :label="$t('signup.firstName')"
+                  :rules="[rules.required]"
                   name="firstName"
-                  required
                   autofocus
                   state-icon
                 />
@@ -66,8 +66,8 @@
                 <TextField
                   v-model="formModel.lastName"
                   :label="$t('signup.lastName')"
+                  :rules="[rules.required]"
                   name="lastName"
-                  required
                   state-icon
                 />
               </div>
@@ -76,9 +76,9 @@
                   ref="email"
                   v-model="formModel.email"
                   :label="$t('signup.login')"
+                  :rules="[rules.required, rules.email]"
                   type="email"
                   name="email"
-                  required
                   state-icon
                 />
               </div>
@@ -87,8 +87,8 @@
                   v-model="formModel.password"
                   :label="$t('signup.password')"
                   :type="showPassword ? 'text' : 'password'"
+                  :rules="[rules.required, rules.passwordMinLength]"
                   name="password"
-                  required
                   minlength="8"
                   state-icon
                 >
@@ -112,7 +112,10 @@
               </div>
               <div class="relative mx-auto text-secondary">
                 <!-- TODO fix position -->
-                <Checkbox required secondary>
+                <Checkbox
+                  :rules="[rules.required]"
+                  secondary
+                >
                   <span class="ml-3 float-left text-gray-light">
                     {{ $t('signup.acceptPolicyAndTerms') }}&nbsp;
                     <a class="text-secondary" href="#">{{ $t('signup.privacyPolicy') }}</a>
@@ -122,9 +125,9 @@
                 </Checkbox>
                 <div class="flex justify-center">
                   <Button
+                    :disabled="formValidity || loading"
                     large
                     secondary
-                    :disabled="isValid || loading"
                     class="mt-5 flex justify-center"
                     @click="onSubmit"
                   >
@@ -166,7 +169,7 @@ export default {
   },
   data () {
     return {
-      isValid: false,
+      formValidity: false,
       loading: false,
       errorMessage: '',
       showPassword: false,
@@ -179,6 +182,11 @@ export default {
       icons: {
         mdiEyeOutline,
         mdiEyeOffOutline,
+      },
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
+        passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
       },
     }
   },
