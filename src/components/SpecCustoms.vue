@@ -163,7 +163,7 @@
       {{ $t('shipping.amount') }}
     </h4>
     <div class="bg-gray-700 rounded-md py-1 px-2">
-      <div class="px-1 py-3 mb-1 text-lg text-center">
+      <div class="px-1 py-3 mb-1 text-lg text-center font-bold">
         {{ $n(amount || 0, 'decimal') }} {{ $t(`currency.USD.symbol`) }}
       </div>
       <div class="px-1 pb-1">
