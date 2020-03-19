@@ -201,7 +201,7 @@
             <li
               v-if="item.header"
               :key="`header${i}`"
-              class="px-3 pt-2 text-sm text-gray-lighter font-bold tracking-widest"
+              class="px-3 pt-2 text-sm text-gray-lighter font-bold"
             >
               {{ item.text }}
             </li>
