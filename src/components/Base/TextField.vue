@@ -255,7 +255,7 @@ export default {
       inputId: 'input' + Math.round(Math.random() * 100000),
       lazyValue: this.value,
       integerPattern: '[0-9]*',
-      decimalPattern: '^[0-9]+[,.][0-9]+$',
+      decimalPattern: '^[0-9, ]+([,.][0-9]+)?$',
       integerStep: '1',
       decimalStep: '0.01',
       icons: {
