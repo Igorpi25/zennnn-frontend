@@ -114,6 +114,7 @@
     "companyName": "Company name",
     "companyNameEng": "Company name in English",
     "fullName":"Owner's full name",
+    "position": "Position",
     "addRequisites": "Add requisites"
   },
   "requisite": {

@@ -113,7 +113,8 @@
   "requisites": {
     "companyName": "Название компании",
     "companyNameEng": "Название компании на английском",
-    "fullName":"ФИО директора",
+    "fullName":"ФИО",
+    "position": "Должность",
     "addRequisites": "Добавить реквизиты"
   },
   "requisite": {

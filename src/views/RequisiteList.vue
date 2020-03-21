@@ -31,6 +31,7 @@
               <td @click="goToRequisite(item)">{{ item.name }}</td>
               <td @click="goToRequisite(item)">{{ item.nameEng }}</td>
               <td @click="goToRequisite(item)">{{ item.ownerFullName }}</td>
+              <td @click="goToRequisite(item)">{{ item.ownerJobPosition }}</td>
               <td
                 class="text-center align-middle"
               >
@@ -108,8 +109,9 @@ export default {
       return [
         { text: '', value: 'current', bgcolor: 'tansparent', align: 'center', width: 36, minWidth: 36 },
         { text: this.$t('requisites.companyName'), value: 'name', bgcolor: 'tansparent', align: 'left', width: 200, minWidth: 200 },
-        { text: this.$t('requisites.companyNameEng'), value: 'nameEng', bgcolor: 'tansparent', align: 'left', width: 220, minWidth: 220 },
-        { text: this.$t('requisites.fullName'), value: 'ownerFullName', bgcolor: 'tansparent', align: 'left', width: 100, minWidth: 100 },
+        { text: this.$t('requisites.companyNameEng'), value: 'nameEng', bgcolor: 'tansparent', align: 'left', width: 240, minWidth: 240 },
+        { text: this.$t('requisites.fullName'), value: 'ownerFullName', bgcolor: 'tansparent', align: 'left', width: 160, minWidth: 160 },
+        { text: this.$t('requisites.position'), value: 'ownerJobPosition', bgcolor: 'tansparent', align: 'left', width: 120, minWidth: 120 },
         { text: '', value: 'action', bgcolor: 'tansparent', width: 48, minWidth: 48 },
       ]
     },
