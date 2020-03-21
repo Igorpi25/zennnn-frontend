@@ -79,7 +79,7 @@
   "deals": {
     "createDeal": "Создать сделку",
     "clientUid": "УНК",
-    "clientName": "Имя / Фамилия клиента",
+    "clientName": "Наименование клиента",
     "clientPhone": "Телефон",
     "specNo": "Номер договора (специф.)",
     "createdAt": "Документ создан",
@@ -393,7 +393,7 @@
     "createClient": "Создать клиента",
     "clientsDebt": "Долг клиента",
     "currentDealsAmount": "Количество текущих сделок",
-    "companyName": "Название компании",
+    "companyName": "Наименование клиента",
     "phone": "Телефон",
     "contactPerson": "Контактное лицо",
     "uid": "УНК"

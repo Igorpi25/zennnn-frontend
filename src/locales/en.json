@@ -79,7 +79,7 @@
   "deals": {
     "createDeal": "Create a deal",
     "clientUid": "Uniq",
-    "clientName": "First name / Last name",
+    "clientName": "Customer",
     "clientPhone": "Phone",
     "specNo": "Contract number (Shipping No.)",
     "createdAt": "Created at",
@@ -393,7 +393,7 @@
     "createClient": "Create a client",
     "clientsDebt": "Client's debt",
     "currentDealsAmount": "Current deals amount",
-    "companyName": "Company name",
+    "companyName": "Customer",
     "phone": "Phone",
     "contactPerson": "Contact person",
     "uid": "UCN"
