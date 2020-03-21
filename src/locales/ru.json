@@ -794,6 +794,13 @@
     "IN_PRODUCTION": "В производстве",
     "IN_STOCK": "На складе"
   },
+  "invitationStatus": {
+    "PENDING": "В ожидании",
+    "ACCEPTED": "Принято",
+    "DECLINED": "Отклонено",
+    "CANCELED": "Отменено",
+    "EXPIRED": "Истек"
+  },
   "unit": {
     "pcs": "шт",
     "roll": "рул",

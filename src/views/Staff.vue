@@ -158,9 +158,19 @@
             items-row-class="bg-transparent border-none"
             items-cell-class="bg-transparent"
           >
+            <template v-slot:item.invitationEmail="{ item }">
+              <td class="truncate">
+                <span>{{ item.invitationEmail }}</span>
+              </td>
+            </template>
             <template v-slot:item.invitationRole="{ item }">
               <td>
                 {{ item.invitationRole | roleFilter }}
+              </td>
+            </template>
+            <template v-slot:item.status="{ item }">
+              <td>
+                {{ item.status | statusFilter }}
               </td>
             </template>
             <template v-slot:item.createdAt="{ item }">
@@ -225,6 +235,10 @@ export default {
     roleFilter: function (val) {
       return i18n.te(`role.${val}`)
         ? i18n.t(`role.${val}`) : val
+    },
+    statusFilter: function (val) {
+      return i18n.te(`invitationStatus.${val}`)
+        ? i18n.t(`invitationStatus.${val}`) : val
     },
   },
   apollo: {
@@ -295,13 +309,13 @@ export default {
     },
     invitationsHeaders () {
       return [
-        { text: this.$t('staff.inviteGivenName'), width: 100, bgcolor: 'tansparent', value: 'invitationGivenName' },
-        { text: this.$t('staff.inviteFamilyName'), width: 100, bgcolor: 'tansparent', value: 'invitationFamilyName' },
-        { text: this.$t('staff.inviteEmail'), bgcolor: 'tansparent', value: 'invitationEmail' },
-        { text: this.$t('staff.inviteRole'), bgcolor: 'tansparent', value: 'invitationRole' },
-        { text: this.$t('staff.inviteStatus'), bgcolor: 'tansparent', value: 'status' },
-        { text: this.$t('staff.inviteCreatedAt'), width: 120, bgcolor: 'tansparent', value: 'createdAt' },
-        { text: this.$t('staff.inviteUpdatedAt'), width: 120, bgcolor: 'tansparent', value: 'updatedAt' },
+        { text: this.$t('staff.inviteGivenName'), width: 160, align: 'left', bgcolor: 'tansparent', value: 'invitationGivenName' },
+        { text: this.$t('staff.inviteFamilyName'), width: 160, align: 'left', bgcolor: 'tansparent', value: 'invitationFamilyName' },
+        { text: this.$t('staff.inviteEmail'), width: 200, align: 'left', bgcolor: 'tansparent', value: 'invitationEmail' },
+        { text: this.$t('staff.inviteRole'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'invitationRole' },
+        { text: this.$t('staff.inviteStatus'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'status' },
+        { text: this.$t('staff.inviteCreatedAt'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'createdAt' },
+        { text: this.$t('staff.inviteUpdatedAt'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'updatedAt' },
         { text: '', value: 'actions', bgcolor: 'tansparent', width: 48 },
       ]
     },

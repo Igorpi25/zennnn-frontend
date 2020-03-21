@@ -794,6 +794,13 @@
     "IN_PRODUCTION": "In production",
     "IN_STOCK": "In stock"
   },
+  "invitationStatus": {
+    "PENDING": "Pending",
+    "ACCEPTED": "Accepted",
+    "DECLINED": "Declined",
+    "CANCELED": "Canceled",
+    "EXPIRED": "Expired"
+  },
   "unit": {
     "pcs": "pcs",
     "roll": "roll",
