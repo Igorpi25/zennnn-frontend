@@ -4,8 +4,10 @@
 
       <div class="pt-12 pb-6">
         <div class="text-center text-white pb-8">
-          <p><strong>{{ ownerName }}</strong> has invited you to Company.</p>
-          <p>You can accept or decline this invitation.</p>
+          <p>
+            {{ $t('invitation.text', { company: ownerName }) }}
+          </p>
+          <p>{{ $t('invitation.hint') }}</p>
         </div>
         <div class="flex items-center justify-center">
           <Button
@@ -16,7 +18,7 @@
             class="mx-1"
             @click="declineInvitation"
           >
-            Decline
+            {{ $t('invitation.decline') }}
           </Button>
           <Button
             :loading="acceptLoading"
@@ -26,7 +28,7 @@
             class="mx-1"
             @click="acceptInvitation"
           >
-            Accept
+            {{ $t('invitation.accept') }}
           </Button>
         </div>
       </div>

@@ -496,6 +496,12 @@
       "language": "Language:"
     }
   },
+  "invitation": {
+    "text": "You have received an invitation from {company}.",
+    "hint": "You can accept or decline this invitation.",
+    "accept": "Accept",
+    "decline": "Decline"
+  },
   "notFound": {
     "title": "Sorry,",
     "subtitle": "the page you are looking for was not found.",
