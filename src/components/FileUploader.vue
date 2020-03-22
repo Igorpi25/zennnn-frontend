@@ -332,7 +332,6 @@ export default {
         this.$notify({
           color: 'orange',
           text: `Large file size. Please upload a file size less than ${UPLOAD_FILE_SIZE_MB}Mb.`,
-          timeout: 10000,
         })
         return
       }

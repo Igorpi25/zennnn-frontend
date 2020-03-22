@@ -2073,7 +2073,6 @@ export default {
         this.$notify({
           color: 'red',
           text: message,
-          timeout: 10000,
         })
         throw new Error(error)
       }
@@ -2092,7 +2091,6 @@ export default {
         this.$notify({
           color: 'red',
           text: message,
-          timeout: 10000,
         })
         throw new Error(error)
       }

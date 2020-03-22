@@ -164,7 +164,7 @@ export default {
             this.formModel.code,
             this.formModel.password,
           )
-          this.$notify({ color: 'primary', text: this.$t('message.passwordChanged'), timeout: 10000 })
+          this.$notify({ color: 'primary', text: this.$t('message.passwordChanged') })
           this.$router.push({ name: 'signin' })
         }
       } catch (error) {

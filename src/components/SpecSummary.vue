@@ -2082,14 +2082,12 @@ export default {
         this.$notify({
           color: 'green',
           text: this.$t('message.emailSent', { email }),
-          timeout: 6000,
         })
         return result
       } catch (error) {
         this.$notify({
           color: 'red',
           text: this.$t('message.failedToSent'),
-          timeout: 6000,
         })
         throw new Error(error)
       } finally {
@@ -2112,7 +2110,6 @@ export default {
           this.$notify({
             color: 'green',
             text: this.$t('message.linkCopied'),
-            timeout: 6000,
           })
         } else {
           throw new Error('Unsuccessful.')
@@ -2122,7 +2119,6 @@ export default {
         this.$notify({
           color: 'orange',
           text: this.$t('message.linkNotCopied'),
-          timeout: 6000,
         })
       }
       document.getSelection().removeAllRanges()
@@ -2157,7 +2153,6 @@ export default {
         this.$notify({
           color: 'primary',
           text: this.$t('shipping.linkAccessUpdated'),
-          timeout: 6000,
         })
       } catch (error) {
         throw new Error(error)

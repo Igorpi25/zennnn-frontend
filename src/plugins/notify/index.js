@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Notifications from '@/components/Notify/Notifications.vue'
 
+const DEFAULT_TIMEOUT = 6000
 let id = 0
 
 const Notify = {
@@ -16,7 +17,11 @@ const Notify = {
       const isString = typeof payload === 'string' || payload instanceof String
       if (isString) {
         notification.text = payload
+        notification.timeout = DEFAULT_TIMEOUT
       } else {
+        if (!payload.hasOwnProperty('timeout')) {
+          payload.timeout = DEFAULT_TIMEOUT
+        }
         notification = Object.assign(notification, payload)
       }
       _instance.add(notification)

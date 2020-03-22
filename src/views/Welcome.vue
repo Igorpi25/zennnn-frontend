@@ -91,9 +91,9 @@ export default {
       try {
         if (!this.username) return
         await this.$Auth.resendSignUp(this.username)
-        this.$notify({ color: 'green', text: this.$t('message.emailResent'), timeout: 10000 })
+        this.$notify({ color: 'green', text: this.$t('message.emailResent') })
       } catch (error) {
-        this.$notify({ color: 'orange', text: this.$t('message.failedToSent'), timeout: 10000 })
+        this.$notify({ color: 'orange', text: this.$t('message.failedToSent') })
         this.$logger.warn('Error: ', error)
       }
     },
