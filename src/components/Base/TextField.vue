@@ -92,6 +92,13 @@
           </Icon>
         </div>
       </div>
+      <div
+        v-if="hideDetails && hasError"
+        class="absolute text-red text-xs"
+        style="bottom:-18px;"
+      >
+        <span>{{ errorText }}</span>
+      </div>
     </div>
   </InputBase>
 </template>

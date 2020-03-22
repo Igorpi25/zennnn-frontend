@@ -42,9 +42,21 @@
       >
         <span>{{ $t('requisite.fillLater') }}</span>
       </Button>
-      <header class="requisite-header">
-        <span class="requisite-header__title">{{ $t('requisite.requisitesOfMyCompany') }}</span>
-      </header>
+      <div class="md:flex md:items-center text-sm mb-3">
+        <span class="block md:inline-block font-bold md:font-normal text-2xl md:text-base mb-6 md:mb-0 md:mr-2 text-center text-gray-lighter">
+          {{ $t('requisite.requisitesOfMyCompany') }}
+        </span>
+        <div class="flex flex-col md:flex-row items-center">
+          <ToggleButton
+            v-if="!create"
+            :value="editMode"
+            small
+            @input="toggleEditMode"
+          >
+            <span>{{ $t('requisite.edit') }}</span>
+          </ToggleButton>
+        </div>
+      </div>
       <div class="requisite-card__radio-group">
         <RadioButton
           :value="cardType"
@@ -89,7 +101,7 @@
               </div>
               <div
                 :key="key"
-                class="flex flex-col justify-between pb-8 relative lg:flex-row lg:flex-wrap lg:pb-0 lg:pt-5"
+                class="flex flex-col justify-between pb-8 relative lg:flex-row lg:flex-wrap lg:pb-2"
               >
                 <div class="card__col-left card__col-left--full-width">
                   <label
@@ -101,12 +113,13 @@
                   <TextField
                     :ref="item.ref || null"
                     :value="requisite[key]"
-                    :placeholder="$t('requisite.placeholder.fillFields')"
+                    :placeholder="editMode ? $t('requisite.placeholder.fillFields') : '-'"
                     :rules="item.rules"
+                    :disabled="!editMode"
                     squared
-                    colored-faded
                     hide-details
-                    class="pt-0 text-left"
+                    class="template-card__input pt-1"
+                    input-class="text-gray-300 focus:text-white placeholder-gray-300"
                     @input="updateRequisite(key, $event)"
                   />
                 </div>
@@ -148,7 +161,7 @@
               </div>
               <div
                 :key="key"
-                class="flex flex-col justify-between pb-8 relative lg:flex-row lg:flex-wrap lg:pb-0 lg:pt-5"
+                class="flex flex-col justify-between pb-8 relative lg:flex-row lg:flex-wrap lg:pb-2"
               >
                 <div
                   :class="[
@@ -164,11 +177,12 @@
                   </label>
                   <TextField
                     :value="requisite[key]"
-                    :placeholder="$t('requisite.placeholder.fillFields')"
+                    :placeholder="editMode ? $t('requisite.placeholder.fillFields') : '-'"
+                    :disabled="!editMode"
                     squared
-                    colored-faded
                     hide-details
-                    class="pt-0 "
+                    class="template-card__input pt-1"
+                    input-class="text-gray-300 focus:text-white placeholder-gray-300"
                     @input="updateRequisite(key, $event)"
                   />
                 </div>
@@ -178,6 +192,19 @@
           <template v-slot:append>
             <div class="text-center mt-32">
               <Button
+                v-if="!editMode"
+                :disabled="updateLoading"
+                large
+                class="mb-4 mx-auto"
+                @click="edit"
+              >
+                <span>
+                  {{ $t('requisite.edit') }}
+                </span>
+              </Button>
+              <Button
+                v-else
+                :disabled="updateLoading"
                 large
                 class="mb-4 mx-auto"
                 @click="update()"
@@ -262,6 +289,8 @@ export default {
   },
   data () {
     return {
+      updateLoading: false,
+      editMode: false,
       wasValidate: false,
       saveBeforeCloseDialog: false,
       cardType: 'ABOUT',
@@ -349,11 +378,18 @@ export default {
     },
   },
   created () {
+    this.editMode = this.create
     if (this.create) {
       this.reset()
     }
   },
   methods: {
+    edit () {
+      this.editMode = true
+    },
+    toggleEditMode () {
+      this.editMode = !this.editMode
+    },
     async checkChangesBeforeLeave (next) {
       if (this.hasDeepChange) {
         const r = await this.openConfirmDialog()
@@ -431,6 +467,7 @@ export default {
         this.$vuetify.goTo('#container')
         return
       }
+      this.updateLoading = true
       try {
         let input = {}
         this.fieldsKeys.forEach(key => {
@@ -455,6 +492,7 @@ export default {
             const action = this.create ? 'create' : 'update'
             this.$emit(action, data)
           } else {
+            this.editMode = false
             if (this.create && redirectAfterCreate) {
               this.$router.push({
                 name: 'requisite',
@@ -477,7 +515,7 @@ export default {
         this.$logger.warn('Error: ', error)
         throw new Error(error)
       } finally {
-        this.updateLoading = null
+        this.updateLoading = false
       }
     },
     setData (item) {

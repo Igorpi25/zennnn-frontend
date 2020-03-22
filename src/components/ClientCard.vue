@@ -599,7 +599,7 @@ export default {
     }
   },
   methods: {
-    async toggleEditMode () {
+    toggleEditMode () {
       this.editMode = !this.editMode
     },
     async checkChangesBeforeLeave (next) {

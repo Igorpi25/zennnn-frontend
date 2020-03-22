@@ -148,7 +148,7 @@
                   </Button>
                   <Button
                     v-else
-                    :disabled="!editMode"
+                    :disabled="!!updateLoading"
                     large
                     class="mb-4 mx-auto"
                     @click="update()"
@@ -578,7 +578,7 @@ export default {
     }
   },
   methods: {
-    async toggleEditMode () {
+    toggleEditMode () {
       this.editMode = !this.editMode
     },
     async checkChangesBeforeLeave (next) {
