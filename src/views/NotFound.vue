@@ -36,7 +36,7 @@
         <div>
           <div class="m-auto text-center">
             <div class="text-404">404</div>
-            <p class="font-light">
+            <p class="font-light text-gray-100">
               <span class="inline">{{ $t('notFound.title') }}</span>&nbsp;
               <span class="block md:inline">{{ $t('notFound.subtitle') }}</span>
             </p>
