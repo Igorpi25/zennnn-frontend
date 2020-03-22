@@ -215,7 +215,9 @@
     "setShipped": "Shipped",
     "overview": "Overview",
     "access": "Access",
+    "hasAccess": "Has access:",
     "linkAccess": "Access by link",
+    "linkAccessUpdated": "Link access settings updated.",
     "sendAccessLink": "Send link to email",
     "sendEmail": "Send",
     "forDeliver": "For delivery",
@@ -652,7 +654,7 @@
     "clients": "My Clients",
     "suppliers": "My Suppliers",
     "staff": "My Staff",
-    "goods": "Товары"
+    "goods": "Goods"
   },
   "dataTable": {
     "noData": "No data available",

@@ -369,7 +369,7 @@ export const CREATE_CONTRACT = gql`
   ${ORG_CONTRACT_FRAGMENT}
 `
 
-export const UPDATE_СONTRACT = gql`
+export const UPDATE_CONTRACT = gql`
   mutation UpdateContract($id: ID!, $input: UpdateContractInput!) {
     updateContract(id: $id, input: $input) {
       ...OrgContractFragment
@@ -378,7 +378,7 @@ export const UPDATE_СONTRACT = gql`
   ${ORG_CONTRACT_FRAGMENT}
 `
 
-export const DELETE_СONTRACT = gql`
+export const DELETE_CONTRACT = gql`
   mutation DeleteContract($id: ID!) {
     deleteContract(id: $id)
   }

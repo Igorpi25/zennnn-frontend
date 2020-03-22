@@ -545,7 +545,9 @@
         </template>
         <Spinner v-if="emailAccessLoading" />
         <div v-else class="py-4">
-          <h4 v-if="emailAccess.length > 0" class="font-semibold">Имеют доступ:</h4>
+          <h4 v-if="emailAccess.length > 0" class="font-semibold">
+            {{ $t('shipping.hasAccess') }}
+          </h4>
           <div
             v-for="a in emailAccess"
             :key="a.email"
@@ -2154,7 +2156,7 @@ export default {
         }
         this.$notify({
           color: 'primary',
-          text: 'Настройки доступа по ссылке обновлены.',
+          text: this.$t('shipping.linkAccessUpdated'),
           timeout: 6000,
         })
       } catch (error) {
