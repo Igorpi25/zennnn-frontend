@@ -702,7 +702,7 @@
     "m": "m",
     "mm": "mm",
     "pkg": "Total Pkg Qty",
-    "unit": "unit"
+    "unit": "u"
   },
   "action": {
     "cancel": "Cancel",

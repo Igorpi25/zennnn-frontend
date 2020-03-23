@@ -130,8 +130,8 @@ export default {
     },
     storeHeaders () {
       return [
-        { text: `${this.$t('shipping.net')}, ${this.$t('measure.kg')}`, value: 'net', width: 167, bgcolor: 'gray-darkest' },
-        { text: `${this.$t('shipping.gross')}, ${this.$t('measure.kg')}`, value: 'gross', width: 167, bgcolor: 'gray-darkest' },
+        { text: `${this.$t('shipping.net')} ${this.$t('measure.unit')} ${this.$t('measure.kg')}`, value: 'net', width: 167, bgcolor: 'gray-darkest' },
+        { text: `${this.$t('shipping.gross')} ${this.$t('measure.unit')} ${this.$t('measure.kg')}`, value: 'gross', width: 167, bgcolor: 'gray-darkest' },
         { text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`, value: 'size', width: 169, bgcolor: 'gray-darkest' },
         { text: '', value: 'action', width: 24, bgcolor: 'gray-darkest' },
       ]
