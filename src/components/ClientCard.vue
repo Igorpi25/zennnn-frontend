@@ -39,7 +39,7 @@
         :text="$t('label.saveChangesBeforeClose')"
         :postScriptum="$t('label.saveChangesHint')"
         @dontSave="$emit('confirm', 1)"
-        @cancel="saveBeforeCloseDialog = false"
+        @cancel="$emit('confirm', 0)"
         @save="$emit('confirm', 2)"
       />
     </v-dialog>
@@ -576,7 +576,10 @@ export default {
   },
   watch: {
     saveBeforeCloseDialog (val) {
-      !val && this.$off('confirm')
+      if (!val) {
+        this.$emit('confirm', 0)
+        this.$off('confirm')
+      }
     },
     templateListDialog (val) {
       if (!this.create && !val && this.templateChanged) {
@@ -599,8 +602,44 @@ export default {
     }
   },
   methods: {
-    toggleEditMode () {
-      this.editMode = !this.editMode
+    async toggleEditMode () {
+      if (this.editMode && this.hasDeepChange) {
+        const r = await this.openConfirmDialog()
+        if (r) {
+          if (r === 2) {
+            this.wasValidate = true
+            const isValid = this.validate(true)
+            if (!isValid) {
+              this.saveBeforeCloseDialog = false
+              this.$vuetify.goTo('#container')
+              this.editMode = false
+              this.$nextTick(() => {
+                this.editMode = true
+              })
+              return
+            }
+            try {
+              await this.update(this.clientType, false)
+              this.saveBeforeCloseDialog = false
+            } catch (error) {
+              this.$logger.warn('Error: ', error)
+            }
+          } else {
+            this.setData(this.clientClone)
+            this.resetValidation()
+            this.editMode = false
+            this.saveBeforeCloseDialog = false
+          }
+        } else {
+          this.editMode = false
+          this.$nextTick(() => {
+            this.editMode = true
+          })
+          this.saveBeforeCloseDialog = false
+        }
+      } else {
+        this.editMode = !this.editMode
+      }
     },
     async checkChangesBeforeLeave (next) {
       if (this.hasDeepChange) {
@@ -625,6 +664,7 @@ export default {
             return next()
           }
         } else {
+          this.saveBeforeCloseDialog = false
           return next(false)
         }
       } else {
@@ -685,6 +725,28 @@ export default {
         }, delay)
       }
       return !errorsCount
+    },
+    resetValidation () {
+      const type = this.clientType
+      const validateFields = []
+      let fields = []
+      const refs = this.$refs[type].$refs
+      if (type === this.naturalType) {
+        fields = this.naturalFieldsSettings
+      } else {
+        fields = this.legalFieldsSettings
+      }
+      for (const [, v] of Object.entries(fields)) {
+        if (v.rules) {
+          const field = refs[v.ref][0]
+          if (field) {
+            validateFields.push(field)
+          }
+        }
+      }
+      validateFields.forEach(el => {
+        el.resetValidation()
+      })
     },
     async update (type, redirectAfterCreate = true) {
       this.wasValidate = true

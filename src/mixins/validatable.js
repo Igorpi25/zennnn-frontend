@@ -51,6 +51,9 @@ export default {
       this.internalValue = ''
       this.clearError()
     },
+    resetValidation () {
+      this.clearError()
+    },
     setError (errorMessage) {
       this.errorText = errorMessage
       this.hasError = true
