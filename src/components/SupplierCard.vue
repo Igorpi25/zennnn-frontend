@@ -525,7 +525,7 @@ export default {
           this.supplier.template.templateName === null ||
           this.supplier.template.templateName === 'default'
         ) &&
-        this.fieldsKeys.every(el => this.supplier.template[el] === null)
+        this.templateFieldsKeys.filter(el => el !== 'templateName').every(el => !this.supplier.template[el])
       ) {
         const shops = this.supplier.shops || []
         if (shops.every(s => {
@@ -1009,6 +1009,7 @@ export default {
         this.supplier.template = { id: this.supplier.id }
       }
       this.templateChanged = true
+      this.templateListDialog = false
     },
   },
 }

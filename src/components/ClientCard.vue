@@ -567,7 +567,7 @@ export default {
           template.templateName === null ||
           template.templateName === 'default'
         ) &&
-        this.fieldsKeys.every(k => template[k] === null)
+        this.templateFieldsKeys.filter(el => el !== 'templateName').every(k => !template[k])
       ) {
         return 'default'
       }
@@ -962,6 +962,7 @@ export default {
         this.client.template = { id: this.client.id }
       }
       this.templateChanged = true
+      this.templateListDialog = false
     },
   },
 }
