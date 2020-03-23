@@ -743,6 +743,7 @@
   },
   "rule": {
     "required": "Fill out this field.",
+    "requiredSelect": "Select an item in the list.",
     "email": "Enter an email address.",
     "passwordsDoNotMatch": "The entered passwords do not match.",
     "minLength": "Use at least {n} characters."

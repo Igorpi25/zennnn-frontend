@@ -118,12 +118,20 @@
               <template v-slot:language>
                 <div class="card__col-right">
                   <select
-                    :value="client.language || $i18n.fallbackLocale"
+                    :ref="`${legalType}-languageInput`"
+                    :value="client.language"
                     :disabled="!editMode || !!updateLoading"
+                    required
                     class="simple-select mx-1"
                     name="language-select"
-                    @change="updateValue('language', $event.target.value)"
+                    @change="updateLanguageInput"
                   >
+                    <option
+                      v-if="create && !client.language"
+                      value=""
+                    >
+                      {{ $t('placeholder.notChosen') }}
+                    </option>
                     <option
                       v-for="opt of langs"
                       :key="opt.value"
@@ -134,6 +142,12 @@
                       </span>
                     </option>
                   </select>
+                  <div
+                    v-if="languageInputError[clientType]"
+                    class="text-xs text-red leading-none mx-2"
+                  >
+                    {{ languageInputError[clientType] }}
+                  </div>
                 </div>
               </template>
               <template v-slot:prepend>
@@ -193,12 +207,20 @@
               <template v-slot:language>
                 <div class="card__col-right">
                   <select
-                    :value="client.language || $i18n.fallbackLocale"
+                    :ref="`${naturalType}-languageInput`"
+                    :value="client.language"
                     :disabled="!editMode || !!updateLoading"
+                    required
                     class="simple-select mx-1"
                     name="language-select"
-                    @change="updateValue('language', $event.target.value)"
+                    @change="updateLanguageInput"
                   >
+                    <option
+                      v-if="create && !client.language"
+                      value=""
+                    >
+                      {{ $t('placeholder.notChosen') }}
+                    </option>
                     <option
                       v-for="opt of langs"
                       :key="opt.value"
@@ -209,6 +231,12 @@
                       </span>
                     </option>
                   </select>
+                  <div
+                    v-if="languageInputError[clientType]"
+                    class="text-xs text-red leading-none mx-2"
+                  >
+                    {{ languageInputError[clientType] }}
+                  </div>
                 </div>
               </template>
               <template v-slot:prepend>
@@ -348,6 +376,7 @@ export default {
   },
   data () {
     return {
+      languageInputError: {},
       wasValidate: false,
       langs: [
         { value: 'en', text: 'English' },
@@ -495,7 +524,7 @@ export default {
         id: null,
         uid: null,
         clientType: null,
-        language: this.$i18n.fallbackLocale,
+        language: '',
         template: {},
       },
       clientClone: {},
@@ -685,9 +714,10 @@ export default {
         id: null,
         uid: null,
         clientType: null,
-        language: this.$i18n.fallbackLocale,
+        language: '',
         template: {},
       }
+      this.languageInputError = {}
       this.clientClone = cloneDeep(this.client)
     },
     validate (focus) {
@@ -718,13 +748,34 @@ export default {
         }
         errorsCount += errCount
       })
+      // validate language input separately
+      const languageInputValidity = this.validateLanguageInput()
+      if (!languageInputValidity.valid) {
+        errorsCount += 1
+        if (!firstNotValidInput) {
+          firstNotValidInput = languageInputValidity.el
+        }
+      }
       if (focus && errorsCount && firstNotValidInput) {
+        this.$vuetify.goTo(firstNotValidInput)
         const delay = this.isComponent ? 0 : 200
         setTimeout(() => {
           firstNotValidInput.focus()
         }, delay)
       }
       return !errorsCount
+    },
+    validateLanguageInput () {
+      const type = this.clientType
+      const el = this.$refs[`${type}-languageInput`]
+      if (!el.validity.valid) {
+        const message = this.$t('rule.requiredSelect')
+        this.$set(this.languageInputError, type, message)
+        return { message, el, valid: false }
+      } else {
+        this.$set(this.languageInputError, type, '')
+        return { valid: true }
+      }
     },
     resetValidation () {
       const type = this.clientType
@@ -748,12 +799,18 @@ export default {
         el.resetValidation()
       })
     },
+    updateLanguageInput (e) {
+      const v = e.target.value
+      const validity = this.validateLanguageInput()
+      if (validity.valid) {
+        this.updateValue('language', v)
+      }
+    },
     async update (type, redirectAfterCreate = true) {
       this.wasValidate = true
       // TODO: validate input Uniq number
       const isValid = this.validate(true)
       if (!isValid) {
-        this.$vuetify.goTo('#container')
         return
       }
       try {

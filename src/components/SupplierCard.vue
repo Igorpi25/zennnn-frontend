@@ -116,13 +116,20 @@
               <template v-slot:language>
                 <div class="card__col-right">
                   <select
-                    :value="supplier.language || $i18n.fallbackLocale"
+                    ref="languageInput"
+                    :value="supplier.language"
                     :disabled="!editMode || !!updateLoading"
+                    required
                     class="simple-select mx-1"
                     name="language-select"
-                    style="background:transparent;"
-                    @change="updateValue('language', $event.target.value)"
+                    @change="updateLanguageInput"
                   >
+                    <option
+                      v-if="create && !supplier.language"
+                      value=""
+                    >
+                      {{ $t('placeholder.notChosen') }}
+                    </option>
                     <option
                       v-for="opt of langs"
                       :key="opt.value"
@@ -133,6 +140,12 @@
                       </span>
                     </option>
                   </select>
+                  <div
+                    v-if="languageInputError"
+                    class="text-xs text-red leading-none mx-2"
+                  >
+                    {{ languageInputError }}
+                  </div>
                 </div>
               </template>
               <template v-slot:append>
@@ -383,6 +396,7 @@ export default {
   },
   data () {
     return {
+      languageInputError: '',
       wasValidate: false,
       langs: [
         { value: 'en', text: 'English' },
@@ -469,7 +483,7 @@ export default {
       },
       supplier: {
         id: null,
-        language: this.$i18n.fallbackLocale,
+        language: '',
         template: {},
         shops: [],
       },
@@ -664,7 +678,7 @@ export default {
       const id = uuid()
       this.supplier = {
         id,
-        language: this.$i18n.fallbackLocale,
+        language: '',
         template: { id },
         shops: [],
       }
@@ -694,13 +708,33 @@ export default {
         }
         errorsCount += errCount
       })
+      // validate language input separately
+      const languageInputValidity = this.validateLanguageInput()
+      if (!languageInputValidity.valid) {
+        errorsCount += 1
+        if (!firstNotValidInput) {
+          firstNotValidInput = languageInputValidity.el
+        }
+      }
       if (focus && errorsCount && firstNotValidInput) {
+        this.$vuetify.goTo(firstNotValidInput)
         const delay = this.isComponent ? 0 : 200
         setTimeout(() => {
           firstNotValidInput.focus()
         }, delay)
       }
       return !errorsCount
+    },
+    validateLanguageInput () {
+      const el = this.$refs.languageInput
+      if (!el.validity.valid) {
+        const message = this.$t('rule.requiredSelect')
+        this.languageInputError = message
+        return { message, el, valid: false }
+      } else {
+        this.languageInputError = ''
+        return { valid: true }
+      }
     },
     resetValidation () {
       const validateFields = []
@@ -718,12 +752,18 @@ export default {
         el.resetValidation()
       })
     },
+    updateLanguageInput (e) {
+      const v = e.target.value
+      const validity = this.validateLanguageInput()
+      if (validity.valid) {
+        this.updateValue('language', v)
+      }
+    },
     async update (redirectAfterCreate = true) {
       this.wasValidate = true
       // TODO: validate input Uniq number
       const isValid = this.validate(true)
       if (!isValid) {
-        this.$vuetify.goTo('#container')
         return
       }
       try {
