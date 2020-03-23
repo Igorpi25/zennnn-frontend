@@ -83,7 +83,6 @@
             <RadioButton
               :value="editCard"
               :label="editCardTypes.SUPPLIER"
-              :disabled="!editMode"
               name="card-type"
               class="mr-6"
               @input="editCard = editCardTypes.SUPPLIER"
@@ -93,7 +92,6 @@
             <RadioButton
               :value="editCard"
               :label="editCardTypes.SHOPS"
-              :disabled="!editMode"
               name="card-type"
               @input="editCard = editCardTypes.SHOPS"
             >
@@ -186,14 +184,14 @@
             >
               <template v-slot:items>
                 <div v-for="(shop, index) in supplier.shops" :key="index">
-                  <div class="flex flex-col justify-between pb-8 relative lg:flex-row lg:flex-wrap lg:pb-0 lg:pt-5">
+                  <div class="flex flex-col justify-between relative pb-4 lg:flex-row lg:flex-wrap lg:pt-5">
                     <div class="card__col-left card__col-left--shops">
                       <div
                         class="card__expand-btn"
-                        @click="expandShop(index)"
+                        @click="expandShop(shop.id)"
                       >
                         {{ index + 1 }}
-                        <Icon v-if="expanded.includes(index)">{{ icons.mdiChevronUp }}</Icon>
+                        <Icon v-if="shop.expanded">{{ icons.mdiChevronUp }}</Icon>
                         <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                       </div>
                       <div
@@ -210,7 +208,7 @@
                       <TextField
                         :value="shop.template && shop.template['name']"
                         :placeholder="(shop.template && shop.template['name']) || `${$t('supplier.placeholder.shopName')}`"
-                        :disabled="!expanded.includes(index)"
+                        :disabled="!shop.editMode"
                         squared
                         hide-details
                         class="pt-0 template-card__label"
@@ -221,7 +219,8 @@
                     <div class="card__col-right">
                       <TextArea
                         :value="shop.name"
-                        :disabled="!expanded.includes(index)"
+                        :disabled="!shop.editMode"
+                        :placeholder="!shop.editMode ? '-' : null"
                         squared
                         rows="2"
                         hide-details
@@ -231,7 +230,7 @@
                     </div>
                   </div>
                   <div
-                    v-if="expanded.includes(index)"
+                    v-if="shop.expanded"
                     class="pb-16"
                   >
                     <div class="flex flex-col justify-between pb-8 lg:flex-row lg:flex-wrap lg:pb-0">
@@ -246,6 +245,7 @@
                           <TextField
                             :value="shop.template && shop.template[key]"
                             :placeholder="(shop.template && shop.template[key]) || $t(`supplier.placeholder.${f.label || key}`)"
+                            :disabled="!shop.editMode"
                             squared
                             hide-details
                             class="pt-0 template-card__label"
@@ -260,24 +260,38 @@
                           <label></label>
                           <TextArea
                             :value="shop[key]"
+                            :disabled="!shop.editMode"
+                            :placeholder="!shop.editMode ? '-' : null"
                             squared
                             rows="1"
                             hide-details
+                            class="template-card__input pb-4"
                             @input="updateShopValue(index, key, $event)"
                           />
                         </div>
                       </template>
                     </div>
                     <div class="text-center mt-16">
-                      <Button
-                        v-if="!create"
-                        large
-                        :disabled="!!updateLoading"
-                        class="mb-4 mx-auto"
-                        @click="updateShop(shop.id, index)"
-                      >
-                        <span>{{ $t('supplier.save') }}</span>
-                      </Button>
+                      <template v-if="!create">
+                        <Button
+                          v-if="shop.editMode"
+                          :disabled="!!updateLoading"
+                          large
+                          class="mb-4 mx-auto"
+                          @click="updateShop(shop.id)"
+                        >
+                          <span>{{ $t('supplier.save') }}</span>
+                        </Button>
+                        <Button
+                          v-else
+                          :disabled="!!updateLoading"
+                          large
+                          class="mb-4 mx-auto"
+                          @click="editShop(shop)"
+                        >
+                          <span>{{ $t('supplier.edit') }}</span>
+                        </Button>
+                      </template>
                     </div>
                   </div>
                 </div>
@@ -412,7 +426,6 @@ export default {
       templateSaveDialog: false,
       editCard: 'SUPPLIER',
       editMode: false,
-      expanded: [],
       shopFieldsSettings: {
         name: {
           label: 'shopName',
@@ -515,7 +528,17 @@ export default {
       return Object.keys(this.fieldsSettings)
     },
     hasDeepChange () {
-      return !deepEqual(this.supplier, this.supplierClone)
+      const supplierWithoutShops = { id: this.supplier.id }
+      const supplierCloneWithoutShops = { id: this.supplierClone.id }
+      this.fieldsKeys.forEach(k => {
+        supplierWithoutShops[k] = this.supplier[k]
+        supplierCloneWithoutShops[k] = this.supplierClone[k]
+      })
+      return !deepEqual(supplierWithoutShops, supplierCloneWithoutShops)
+    },
+    hasShopsInEditMode () {
+      const shops = this.supplier.shops || []
+      return shops.some(el => el.editMode)
     },
     currentTemplate () {
       let result = null
@@ -636,7 +659,7 @@ export default {
       }
     },
     async checkChangesBeforeLeave (next) {
-      if (this.hasDeepChange) {
+      if (this.hasDeepChange || this.hasShopsInEditMode) {
         const r = await this.openConfirmDialog()
         if (r) {
           if (r === 2) {
@@ -649,7 +672,7 @@ export default {
               return next(false)
             }
             try {
-              await this.update(false)
+              await this.update(false, true)
               return next()
             } catch (error) {
               this.$logger.warn('Error: ', error)
@@ -759,7 +782,7 @@ export default {
         this.updateValue('language', v)
       }
     },
-    async update (redirectAfterCreate = true) {
+    async update (redirectAfterCreate = true, fullUpdate) {
       this.wasValidate = true
       // TODO: validate input Uniq number
       const isValid = this.validate(true)
@@ -777,7 +800,7 @@ export default {
         this.templateFieldsKeys.forEach(key => {
           input.template[key] = template[key] || null
         })
-        if (this.create) {
+        if (this.create || fullUpdate) {
           const supplierShops = this.supplier.shops || []
           input.shops = supplierShops.map(s => {
             let shop = {}
@@ -810,7 +833,6 @@ export default {
             ? response.data.createSupplier
             : response.data.updateSupplier
           this.setData(data)
-          this.expanded = []
           if (this.isComponent) {
             const action = this.create ? 'create' : 'update'
             this.$emit(action, data)
@@ -838,8 +860,19 @@ export default {
     },
     setData (item) {
       if (!item) return
-      this.supplier = cloneDeep(item)
-      this.supplierClone = cloneDeep(item)
+      const shopsOld = this.supplier.shops || []
+      const shops = (item.shops || []).slice().map(shop => {
+        const old = shopsOld.find(el => el.id === shop.id) || {}
+        const oldValues = old.editMode ? old : {}
+        return {
+          ...shop,
+          ...oldValues,
+          expanded: !!old.expanded,
+          editMode: !!old.editMode,
+        }
+      })
+      this.supplier = cloneDeep(Object.assign({}, item, { shops }))
+      this.supplierClone = cloneDeep(this.supplier)
     },
     async createSupplierTemplate (templateName) {
       try {
@@ -905,6 +938,9 @@ export default {
       }
     },
     updateShopTemplate (index, key, value) {
+      if (!this.supplier.shops[index].template) {
+        this.$set(this.supplier.shops[index], 'template', {})
+      }
       if (!this.supplier.shops[index].template.hasOwnProperty(key)) {
         this.$set(this.supplier.shops[index].template, key, value)
       } else {
@@ -927,37 +963,54 @@ export default {
             template: {
               id,
             },
+            expanded: true,
+            editMode: true,
           }
-          const index = this.supplier.shops.push(shop)
-          this.expanded.push(index - 1)
+          this.supplier.shops.push(shop)
         } else {
           const response = await this.$apollo.mutate({
             mutation: CREATE_SUPPLIER_SHOP,
             variables: { supplierId: this.supplierId, input: {} },
           })
           if (response && response.data && response.data.createSupplierShop) {
-            const index = this.supplier.shops.push(response.data.createSupplierShop)
-            this.expanded.push(index - 1)
+            this.supplier.shops
+              .push(Object.assign(response.data.createSupplierShop, {
+                editMode: true,
+                expanded: true,
+              }))
           }
         }
       } catch (error) {
         throw new Error(error)
       }
     },
-    async updateShop (shopId, index) {
+    editShop (shop) {
+      this.$set(shop, 'editMode', true)
+    },
+    async updateShop (shopId) {
       try {
-        const shop = this.supplier.shops[index] || {}
-        let input = {}
+        const shops = this.supplier.shops || []
+        const shop = shops.find(el => el.id === shopId) || {}
+        const expanded = shop.expanded
+        const shopTemplate = shop.template || {}
+        const input = {}
+        const template = {}
         this.shopFieldsKeys.forEach(key => {
           input[key] = shop[key]
+          template[key] = shopTemplate[key]
         })
+        input.template = template
         const response = await this.$apollo.mutate({
           mutation: UPDATE_SUPPLIER_SHOP,
           variables: { id: shopId, input },
         })
         if (response && response.data && response.data.updateSupplierShop) {
-          this.supplier.shops.splice(index, 1, response.data.updateSupplierShop)
-          this.expandShop(index)
+          const index = this.supplier.shops.findIndex(el => el.id === shopId)
+          const updatedItem = Object.assign(response.data.updateSupplierShop, {
+            editMode: false,
+            expanded,
+          })
+          this.supplier.shops.splice(index, 1, updatedItem)
         }
       } catch (error) {
         throw new Error(error)
@@ -970,20 +1023,18 @@ export default {
           variables: { id },
         })
         if (response && response.data && response.data.deleteSupplierShop) {
-          const index = this.supplier.shops.findIndex(el => el.id === id)
-          this.supplier.shops.splice(index, 1)
+          this.supplier.shops = this.supplier.shops.filter(el => el.id !== id)
           // TODO remove from cache
         }
       } catch (error) {
         throw new Error(error)
       }
     },
-    expandShop (val) {
-      const index = this.expanded.indexOf(val)
-      if (index !== -1) {
-        this.expanded.splice(index, 1)
-      } else {
-        this.expanded.push(val)
+    expandShop (shopId) {
+      const shops = this.supplier.shops || []
+      const shop = shops.find(el => el.id === shopId)
+      if (shop) {
+        this.$set(shop, 'expanded', !shop.expanded)
       }
     },
     saveAsTemplate () {
