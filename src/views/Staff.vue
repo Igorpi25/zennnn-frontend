@@ -147,8 +147,10 @@
             </template>
           </DataTable>
         </div>
+        <h4 class="text-xl font-semibold text-white">
+          {{ $t('staff.invitations') }}
+        </h4>
         <div class="overflow-x-auto">
-          <h4>Invitations</h4>
           <DataTable
             :headers="invitationsHeaders"
             :items="invitations"
