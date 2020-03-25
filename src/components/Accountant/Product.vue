@@ -29,7 +29,7 @@
       <span>{{ item.article || $t('shipping.model') }}</span>
     </td>
     <td class="text-right">
-      <span class="mr-1">{{ $n(item.qty, 'formatted') || $t('placeholder.emptyNumber') }}</span>
+      <span class="mr-1">{{ $n(item.qty) || $t('placeholder.emptyNumber') }}</span>
       <span>{{ $t(`unit.${item.unit || 'pcs'}`) }}</span>
     </td>
 

@@ -60,13 +60,13 @@
                 <template v-if="activeTab === 1">
                   <td class="text-gray-dark">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalNet, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
+                    {{ $n(invoiceItem.totalNet) }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
                   </td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalGross, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
+                    {{ $n(invoiceItem.totalGross) }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
                   </td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalCapacity, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.m') }}<sup>3</sup></span>
+                    {{ $n(invoiceItem.totalCapacity) }} <span class="text-gray-dark">{{ $t('measure.m') }}<sup>3</sup></span>
                   </td>
                   <td></td>
                 </template>

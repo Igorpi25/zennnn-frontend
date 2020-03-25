@@ -206,19 +206,19 @@
               <li>
                 <span>{{ $t('shipping.totalVolume') }}</span>
                 <span class="leaders__num">
-                  {{ $n(spec.totalVolume, 'formatted') }} {{ $t('measure.m') }}<sup>3</sup>
+                  {{ $n(spec.totalVolume) }} {{ $t('measure.m') }}<sup>3</sup>
                 </span>
               </li>
               <li>
                 <span>{{ $t('shipping.totalWeight') }}</span>
                 <span class="leaders__num">
-                  {{ $n(spec.totalWeight, 'formatted') }} {{ $t('measure.kg') }}
+                  {{ $n(spec.totalWeight) }} {{ $t('measure.kg') }}
                 </span>
               </li>
               <li>
                 <span>{{ $t('shipping.qtyOfPackages') }}</span>
                 <span class="leaders__num">
-                  {{ $n(spec.qtyOfPackages, 'formatted') }}
+                  {{ $n(spec.qtyOfPackages) }}
                 </span>
               </li>
             </ul>

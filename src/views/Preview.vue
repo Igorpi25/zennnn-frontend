@@ -195,21 +195,21 @@
                       <div class="flex-shrink-0">{{ $t('preview.totalVolume') }}</div>
                       <div class="flex-grow dots" />
                       <div class="leaders__num flex-shrink-0">
-                        {{ $n(spec.totalVolume, 'formatted') }} {{ $t('measure.m') }}<sup>3</sup>
+                        {{ $n(spec.totalVolume) }} {{ $t('measure.m') }}<sup>3</sup>
                       </div>
                     </li>
                     <li class="flex">
                       <div class="flex-shrink-0">{{ $t('preview.totalWeight') }}</div>
                       <div class="flex-grow dots" />
                       <div class="leaders__num flex-shrink-0">
-                        {{ $n(spec.totalWeight, 'formatted') }} {{ $t('measure.kg') }}
+                        {{ $n(spec.totalWeight) }} {{ $t('measure.kg') }}
                       </div>
                     </li>
                     <li class="flex">
                       <div class="flex-shrink-0">{{ $t('preview.qtyOfPackages') }}</div>
                       <div class="flex-grow dots" />
                       <div class="leaders__num flex-shrink-0">
-                        {{ $n(spec.qtyOfPackages, 'formatted') }}
+                        {{ $n(spec.qtyOfPackages) }}
                       </div>
                     </li>
                   </ul>
