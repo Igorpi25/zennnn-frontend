@@ -301,6 +301,7 @@ export const CHECK_INVITATION = gql`
         familyName
         picture
       }
+      orgName
     }
   }
 `

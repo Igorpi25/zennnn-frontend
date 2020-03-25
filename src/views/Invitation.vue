@@ -5,7 +5,7 @@
       <div class="pt-12 pb-6">
         <div class="text-center text-white pb-8">
           <p>
-            {{ $t('invitation.text', { company: ownerName }) }}
+            {{ $t('invitation.text', { company }) }}
           </p>
           <p>{{ $t('invitation.hint') }}</p>
         </div>
@@ -64,13 +64,9 @@ export default {
     invitationId () {
       return this.$route.params.invitationId
     },
-    ownerName () {
+    company () {
       if (!this.checkInvitation) return ''
-      let name = ''
-      const owner = this.checkInvitation.owner || {}
-      name = owner.givenName || ''
-      name += owner.familyname ? ` ${owner.familyname}` : ''
-      return name
+      return this.checkInvitation.orgName
     },
   },
   methods: {
