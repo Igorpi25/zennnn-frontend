@@ -86,10 +86,10 @@
                       </div>
                     </span>
                   </td>
-                  <td>{{ item.profit }}</td>
-                  <td>{{ Math.ceil(((item.profit || 0) * 100) / (item.finalCost || 1)) }}%</td>
-                  <td class="text-right">{{ item.finalObtainCost }}</td>
-                  <td class="text-right">{{ item.finalCost }}</td>
+                  <td class="text-right">{{ $n(item.profit || 0, 'decimal') }}</td>
+                  <td class="text-right">{{ Math.ceil(((item.profit || 0) * 100) / (item.finalCost || 1)) }}%</td>
+                  <td class="text-right">{{ $n(item.finalObtainCost || 0, 'decimal') }}</td>
+                  <td class="text-right">{{ $n(item.finalCost || 0, 'decimal') }}</td>
                   <td class="text-left pl-10">{{ item.givenName }} {{ item.familyName }}</td>
                   <td class="text-left">{{ item.role | roleFilter }}</td>
                   <td class="text-right pointer-events-none" @click.prevent.stop>
@@ -134,10 +134,10 @@
                       <div v-if="specIndex == 0" class="staff__triangle"></div>
                       <strong>+$</strong>&nbsp;&nbsp;<strong>-$</strong>
                     </td>
-                    <td>{{ specItem.profit || 0 }}</td>
-                    <td>{{ Math.ceil(((specItem.profit || 0) * 100) / (specItem.finalCost || 1)) }}%</td>
-                    <td class="text-right">{{ specItem.finalCost || 0 }}</td>
-                    <td class="text-right">{{ specItem.finalObtainCost || 0 }}</td>
+                    <td class="text-right">{{ $n(specItem.profit || 0, 'decimal') }}</td>
+                    <td class="text-right">{{ Math.ceil(((specItem.profit || 0) * 100) / (specItem.finalCost || 1)) }}%</td>
+                    <td class="text-right">{{ $n(specItem.finalCost || 0, 'decimal') }}</td>
+                    <td class="text-right">{{ $n(specItem.finalObtainCost || 0, 'decimal') }}</td>
                     <td class="text-center">{{ specItem.customNumber || specItem.specNo || '' }}</td>
                     <td class="text-center">{{ specItem.client && specItem.client.fullName }}</td>
                     <td></td>
