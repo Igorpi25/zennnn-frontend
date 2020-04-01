@@ -292,7 +292,7 @@
                 </span> -->
                 <i18n-n :value="spec.profit || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
-                    <div style="color: #00ff16;">{{ slotProps.integer }}</div>
+                    <div :style="{ color: spec.profit > 0 ? '#00ff16' : '#ffffff' }">{{ slotProps.integer }}</div>
                   </template>
                   <template v-slot:group="slotProps">
                     <div class="text-sm">{{ slotProps.group }}</div>
@@ -340,7 +340,7 @@
                 </span> -->
                 <i18n-n :value="spec.totalClientDebt || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
-                    <div style="color: #ff2900;">{{ slotProps.integer }}</div>
+                    <div :style="{ color: spec.totalClientDebt > 0 ? '#ff2900' : '#ffffff' }">{{ slotProps.integer }}</div>
                   </template>
                   <template v-slot:group="slotProps">
                     <div class="text-sm">{{ slotProps.group }}</div>
