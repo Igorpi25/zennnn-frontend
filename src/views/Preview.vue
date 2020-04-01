@@ -181,7 +181,7 @@
                       </div>
                       <div class="flex-grow dots" />
                       <div class="leaders__num flex-shrink-0">
-                        {{ c.loaded }}%
+                        {{ c.loaded || 0 }}%
                       </div>
                     </li>
                     <li class="flex">
@@ -195,21 +195,21 @@
                       <div class="flex-shrink-0">{{ $t('preview.totalVolume') }}</div>
                       <div class="flex-grow dots" />
                       <div class="leaders__num flex-shrink-0">
-                        {{ $n(spec.totalVolume) }} {{ $t('measure.m') }}<sup>3</sup>
+                        {{ $n(spec.totalVolume || 0) }} {{ $t('measure.m') }}<sup>3</sup>
                       </div>
                     </li>
                     <li class="flex">
                       <div class="flex-shrink-0">{{ $t('preview.totalWeight') }}</div>
                       <div class="flex-grow dots" />
                       <div class="leaders__num flex-shrink-0">
-                        {{ $n(spec.totalWeight) }} {{ $t('measure.kg') }}
+                        {{ $n(spec.totalWeight || 0) }} {{ $t('measure.kg') }}
                       </div>
                     </li>
                     <li class="flex">
                       <div class="flex-shrink-0">{{ $t('preview.qtyOfPackages') }}</div>
                       <div class="flex-grow dots" />
                       <div class="leaders__num flex-shrink-0">
-                        {{ $n(spec.qtyOfPackages) }}
+                        {{ $n(spec.qtyOfPackages || 0) }}
                       </div>
                     </li>
                   </ul>

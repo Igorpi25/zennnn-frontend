@@ -194,7 +194,7 @@
                   {{ ` ${$t('shipping.container')} ${$t('shipping.containerLoaded')}` }}
                 </span>
                 <span class="leaders__num">
-                  {{ c.loaded }}%
+                  {{ c.loaded || 0 }}%
                 </span>
               </li>
               <li>
@@ -206,19 +206,19 @@
               <li>
                 <span>{{ $t('shipping.totalVolume') }}</span>
                 <span class="leaders__num">
-                  {{ $n(spec.totalVolume) }} {{ $t('measure.m') }}<sup>3</sup>
+                  {{ $n(spec.totalVolume || 0) }} {{ $t('measure.m') }}<sup>3</sup>
                 </span>
               </li>
               <li>
                 <span>{{ $t('shipping.totalWeight') }}</span>
                 <span class="leaders__num">
-                  {{ $n(spec.totalWeight) }} {{ $t('measure.kg') }}
+                  {{ $n(spec.totalWeight || 0) }} {{ $t('measure.kg') }}
                 </span>
               </li>
               <li>
                 <span>{{ $t('shipping.qtyOfPackages') }}</span>
                 <span class="leaders__num">
-                  {{ $n(spec.qtyOfPackages) }}
+                  {{ $n(spec.qtyOfPackages || 0) }}
                 </span>
               </li>
             </ul>
