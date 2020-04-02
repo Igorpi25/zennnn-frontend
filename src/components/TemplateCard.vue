@@ -77,7 +77,7 @@
                   <TextArea
                     :ref="field.ref || null"
                     :rows="field.rows || 1"
-                    :disabled="isDisabled"
+                    :disabled="field.disabled || isDisabled"
                     :value="item[field.defaultValueKey] || item[key]"
                     :placeholder="isDisabled ? '-' : null"
                     :rules="field.rules"

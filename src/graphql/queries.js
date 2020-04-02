@@ -142,6 +142,12 @@ export const GET_SPEC = gql`
   ${PRODUCT_FRAGMENT}
 `
 
+export const GET_ORG_NEXT_CLIENT_UID = gql`
+  query GetOrgNextClientUid($orgId: ID!) {
+    getOrgNextClientUid(orgId: $orgId)
+  }
+`
+
 export const GET_CLIENT = gql`
   query GetClient($id: ID!) {
     getClient(id: $id) {

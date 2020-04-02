@@ -312,7 +312,7 @@ import deepEqual from 'deep-equal'
 import { mdiArrowLeft } from '@mdi/js'
 
 import { ClientType } from '@/graphql/enums'
-import { GET_CLIENT, LIST_CLIENT_TEMPLATES } from '@/graphql/queries'
+import { GET_CLIENT, GET_ORG_NEXT_CLIENT_UID, LIST_CLIENT_TEMPLATES } from '@/graphql/queries'
 import {
   CREATE_CLIENT,
   UPDATE_CLIENT,
@@ -357,6 +357,25 @@ export default {
       },
       fetchPolicy: 'cache-and-network',
     },
+    getOrgNextClientUid: {
+      query: GET_ORG_NEXT_CLIENT_UID,
+      variables () {
+        return {
+          orgId: this.orgId,
+        }
+      },
+      result ({ data, loading }) {
+        if (loading) return
+        if (data) {
+          this.client.uid = data.getOrgNextClientUid
+          this.clientClone.uid = data.getOrgNextClientUid
+        }
+      },
+      skip () {
+        return !this.create
+      },
+      fetchPolicy: 'network-only',
+    },
     getClient: {
       query: GET_CLIENT,
       variables () {
@@ -396,6 +415,7 @@ export default {
       expanded: [],
       legalFieldsSettings: {
         customUid: {
+          disabled: true,
           defaultValueKey: 'uid',
           label: 'uid',
           placeholder: 'uid',
@@ -480,9 +500,10 @@ export default {
       },
       naturalFieldsSettings: {
         customUid: {
+          disabled: true,
           defaultValueKey: 'uid',
           label: 'uid',
-          placeholder: 'uidAbr',
+          placeholder: 'uid',
         },
         firstName: {
           ref: 'naturalFirstNameInput',
