@@ -2,20 +2,6 @@
   @apply flex;
   height: 56px;
 }
-@screen md {
-  .status-bar {
-    height: 32px;
-  }
-}
-
-.status-bar__logo {
-  display: flex;
-  align-items: center;
-}
-
-.status-bar__logo svg {
-  height: 16px;
-}
 
 .status-bar__items {
   @apply flex items-center;
@@ -23,5 +9,5 @@
 }
 
 .status-bar__items > a:not(:last-child) {
-  margin-right: 6px; 
+  margin-right: 6px;
 }
