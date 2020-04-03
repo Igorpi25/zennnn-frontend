@@ -382,7 +382,7 @@ import InvoiceHeader from '../components/InvoiceHeader.vue'
 import Comments from '../components/Comments'
 import PaperInvoice from '../components/PaperInvoice'
 
-import { InvoiceStatus, Typename, Operation } from '../graphql/enums'
+import { Typename, Operation } from '../graphql/enums'
 import { GET_PAPER_SPEC } from '../graphql/queries'
 import {
   SET_SPEC_EXPANDED_INVOICES,
@@ -448,7 +448,6 @@ export default {
         ziShare,
       },
       menuCurrency: false,
-      InvoiceStatus,
     }
   },
   computed: {

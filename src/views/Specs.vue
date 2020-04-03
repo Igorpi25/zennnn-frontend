@@ -78,9 +78,10 @@
                 <span
                   :class="[
                     'status-indicator inline-block',
-                    item.specStatus === SpecStatus.IN_PRODUCTION
-                      ? 'status-indicator--orange' : item.specStatus === SpecStatus.IN_STOCK
-                        ? 'status-indicator--green' : 'status-indicator--pink'
+                    item.specStatus === SpecStatus.IN_STOCK
+                      ? 'status-indicator--green' : item.specStatus === SpecStatus.IN_PRODUCTION
+                        ? 'status-indicator--orange' : item.specStatus === SpecStatus.IN_PROCESSING
+                          ? 'status-indicator--pink' : 'bg-transparent'
                   ]"
                 >
                 </span>

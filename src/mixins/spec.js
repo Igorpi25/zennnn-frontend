@@ -7,7 +7,6 @@ import {
   mdiSync,
 } from '@mdi/js'
 
-import { InvoiceStatus } from '@/graphql/enums'
 import {
   GET_SPEC,
   SEARCH_CLIENTS,
@@ -78,7 +77,6 @@ export default {
   },
   data () {
     return {
-      InvoiceStatus,
       createLoading: null,
       updateLoading: null,
       deleteLoading: null,

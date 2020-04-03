@@ -10,7 +10,6 @@ import {
 import { GET_SPEC } from '../graphql/queries'
 import { UPDATE_INVOICE, CREATE_PRODUCT } from '../graphql/mutations'
 import {
-  ProductStatus,
   InvoiceProfitType,
   SpecCurrency,
 } from '../graphql/enums'
@@ -49,7 +48,6 @@ export default {
       lazyScrollLeft: 0,
       scrollLeftDelay: 75,
       scrollAnimationDuration: 75,
-      ProductStatus,
       InvoiceProfitType,
       isBooted: false,
       createLoading: null,

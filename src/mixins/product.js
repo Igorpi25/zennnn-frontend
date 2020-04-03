@@ -9,8 +9,9 @@ import {
 } from '../graphql/mutations'
 import ProductImagesList from '../components/ProductImagesList.vue'
 import ProductImage from '../components/ProductImage.vue'
-import { confirmDialog, isNumber } from '@/util/helpers'
+import { confirmDialog, isNumber } from '../util/helpers'
 import { GET_SPEC } from '../graphql/queries'
+import { ProductStatus } from '../graphql/enums'
 
 export default {
   components: {
@@ -29,6 +30,12 @@ export default {
     }
   },
   computed: {
+    productStatus () {
+      return this.item.productStatus === ProductStatus.IN_STOCK
+        ? 'status-indicator__bordered--green' : this.item.productStatus === ProductStatus.IN_PRODUCTION
+          ? 'status-indicator__bordered--orange' : this.item.productStatus === ProductStatus.IN_PROCESSING
+            ? 'status-indicator__bordered--pink' : 'bg-transparent'
+    },
     unitsItems () {
       const units = ['pcs', 'roll', 'time', 'm', 'l', 'm3', 'set', 'm2', 'kg']
       return units.map(el => {

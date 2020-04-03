@@ -6,9 +6,7 @@
     <span
       :class="[
         'status-indicator mr-2 md:mr-6 flex-shrink-0',
-        item.invoiceStatus === InvoiceStatus.IN_PRODUCTION
-          ? 'status-indicator--orange' : item.invoiceStatus === InvoiceStatus.IN_STOCK
-            ? 'status-indicator--green' : 'status-indicator--pink'
+        invoiceStatus,
       ]"
     >
     </span>
@@ -50,7 +48,7 @@
 
 <script>
 import { mdiMinus, mdiPlus } from '@mdi/js'
-import { InvoiceStatus } from '@/graphql/enums'
+import { InvoiceStatus } from '../graphql/enums'
 
 export default {
   name: 'InvoiceHeader',
@@ -74,12 +72,19 @@ export default {
   },
   data () {
     return {
-      InvoiceStatus,
       icons: {
         mdiMinus,
         mdiPlus,
       },
     }
+  },
+  computed: {
+    invoiceStatus () {
+      return this.item.invoiceStatus === InvoiceStatus.IN_STOCK
+        ? 'status-indicator--green' : this.item.invoiceStatus === InvoiceStatus.IN_PRODUCTION
+          ? 'status-indicator--orange' : this.item.invoiceStatus === InvoiceStatus.IN_PROCESSING
+            ? 'status-indicator--pink' : 'bg-transparent'
+    },
   },
   methods: {
     onHeaderClick (e) {

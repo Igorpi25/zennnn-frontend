@@ -4,18 +4,21 @@ export const InvoiceProfitType = {
 }
 
 export const SpecStatus = {
+  IN_DRAFT: 'IN_DRAFT',
   IN_PROCESSING: 'IN_PROCESSING',
   IN_PRODUCTION: 'IN_PRODUCTION',
   IN_STOCK: 'IN_STOCK',
 }
 
 export const InvoiceStatus = {
+  IN_DRAFT: 'IN_DRAFT',
   IN_PROCESSING: 'IN_PROCESSING',
   IN_PRODUCTION: 'IN_PRODUCTION',
   IN_STOCK: 'IN_STOCK',
 }
 
 export const ProductStatus = {
+  IN_DRAFT: 'IN_DRAFT',
   IN_PROCESSING: 'IN_PROCESSING',
   IN_PRODUCTION: 'IN_PRODUCTION',
   IN_STOCK: 'IN_STOCK',

@@ -43,16 +43,16 @@
             </p>
             <div class="flex items-center">
               <img
-                v-if="item.productStatus === ProductStatus.IN_PRODUCTION"
+                v-if="item.productStatus === ProductStatus.IN_STOCK"
+                src="../assets/icons/in-stock.png"
+              >
+              <img
+                v-else-if="item.productStatus === ProductStatus.IN_PRODUCTION"
                 src="../assets/icons/factory-yellow.png"
                 class="mb-2"
               >
               <img
-                v-else-if="item.productStatus === ProductStatus.IN_STOCK"
-                src="../assets/icons/in-stock.png"
-              >
-              <img
-                v-else
+                v-else-if="item.productStatus === ProductStatus.IN_PROCESSING"
                 src="../assets/icons/in-processing.png"
               >
               <span
@@ -61,11 +61,12 @@
                   'ml-2 text-sm',
                   item.productStatus === ProductStatus.IN_STOCK
                     ? 'status-stock' : item.productStatus === ProductStatus.IN_PRODUCTION
-                      ? 'status-production' : 'status-processing'
+                      ? 'status-production' : item.productStatus === ProductStatus.IN_PROCESSING
+                        ? 'status-processing' : ''
                 ]"
               >
                 <span>
-                  {{ item.productStatus ? $t(`productStatus.${item.productStatus}`) : '' }}
+                  {{ $te(`productStatus.${item.productStatus}`) ? $t(`productStatus.${item.productStatus}`) : '' }}
                 </span>
               </span>
             </div>

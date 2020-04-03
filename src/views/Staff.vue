@@ -68,9 +68,10 @@
                     <span
                       :class="[
                         'status-indicator inline-block',
-                        item.specStatus === SpecStatus.IN_PRODUCTION
-                          ? 'status-indicator--orange' : item.specStatus === SpecStatus.IN_STOCK
-                            ? 'status-indicator--green' : 'status-indicator--pink'
+                        item.specStatus === SpecStatus.IN_STOCK
+                          ? 'status-indicator--green' : item.specStatus === SpecStatus.IN_PRODUCTION
+                            ? 'status-indicator--orange' : item.specStatus === SpecStatus.IN_PROCESSING
+                              ? 'status-indicator--pink' : 'bg-transparent'
                       ]"
                     >
                     </span>
@@ -123,9 +124,10 @@
                         :class="[
                           'status-mini',
                           'status-indicator inline-block',
-                          specItem.specStatus === SpecStatus.IN_PRODUCTION
-                            ? 'status-indicator--orange' : specItem.specStatus === SpecStatus.IN_STOCK
-                              ? 'status-indicator--green' : 'status-indicator--pink'
+                          specItem.specStatus === SpecStatus.IN_STOCK
+                            ? 'status-indicator--green' : specItem.specStatus === SpecStatus.IN_PRODUCTION
+                              ? 'status-indicator--orange' : specItem.specStatus === SpecStatus.IN_PROCESSING
+                                ? 'status-indicator--pink' : 'bg-transparent'
                         ]"
                       >
                       </span>

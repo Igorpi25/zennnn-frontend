@@ -4,9 +4,7 @@
       <span
         :class="[
           'status-indicator__bordered',
-          item.productStatus === ProductStatus.IN_PRODUCTION
-            ? 'status-indicator__bordered--orange' : item.productStatus === ProductStatus.IN_STOCK
-              ? 'status-indicator__bordered--green' : 'status-indicator__bordered--pink'
+          productStatus,
         ]"
       >
       </span>
@@ -143,7 +141,6 @@
 </template>
 
 <script>
-import { ProductStatus } from '@/graphql/enums'
 import product from '../../mixins/product'
 
 export default {
@@ -170,11 +167,6 @@ export default {
       type: Boolean,
       default: true,
     },
-  },
-  data () {
-    return {
-      ProductStatus,
-    }
   },
 }
 </script>

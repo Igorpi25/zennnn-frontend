@@ -113,7 +113,6 @@
 import { mdiClose, mdiPlusCircleOutline } from '@mdi/js'
 
 import {
-  ProductStatus,
   InvoiceProfitType,
 } from '@/graphql/enums'
 
@@ -137,7 +136,6 @@ export default {
   },
   data () {
     return {
-      ProductStatus,
       isBooted: false,
       createLoading: null,
       updateLoading: null,
