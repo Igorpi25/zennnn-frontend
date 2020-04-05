@@ -2,7 +2,7 @@
   <div>
     <v-dialog
       :value="isWelcome"
-      max-width="590"
+      max-width="500"
       overlay-color="#0f0f0f"
       overlay-opacity="0.6"
     >
