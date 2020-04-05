@@ -642,6 +642,7 @@
   "statusBar": {
     "requisites": "Реквизиты",
     "myCompanies": "Мои компании",
+    "signin": "Войти",
     "signout": "Выйти",
     "role": {
       "OWNER": "Директор",

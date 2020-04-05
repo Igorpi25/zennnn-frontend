@@ -551,6 +551,7 @@
   "statusBar": {
     "requisites": "公司资料",
     "myCompanies": "我的账户",
+    "signin": "登录",
     "signout": "登出",
     "role": {
       "OWNER": "总经理",

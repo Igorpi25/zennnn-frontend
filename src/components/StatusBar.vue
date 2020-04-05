@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-accent1">
+  <div class="bg-gray-400">
     <div class="container">
-      <div class="status-bar">
+      <div class="status-bar flex">
         <!-- Logo -->
         <div class="flex items-center">
           <router-link to="/" class="text-gray-100">
@@ -12,29 +12,32 @@
           </router-link>
         </div>
         <div class="flex-grow" />
-        <!-- Lang picker -->
         <div class="flex justify-end">
-          <div class="status-bar__items">
+          <!-- Lang picker -->
+          <div class="flex items-center">
             <v-menu
               v-model="langMenu"
-              :nudge-width="100"
+              :nudge-bottom="40"
               bottom
               left
-              offset-y
             >
               <template v-slot:activator="{ on }">
-                <img
-                  :src="`/img/flags/${$i18n.locale}.svg`"
-                  :class="[
-                    'lang-picker__flag lang-picker__flag--hoverable',
-                    { 'lang-picker__flag--active': langMenu }
-                  ]"
+                <div
+                  class="flex items-center cursor-pointer pr-2"
                   v-on="on"
                 >
+                  <img
+                    :src="`/img/flags/${$i18n.locale}.svg`"
+                    :class="[
+                      'h-6 w-6 rounded-full mr-2',
+                    ]"
+                  >
+                  <i class="text-xs text-primary icon-arroe-bottom-1 cursor-pointer" />
+                </div>
               </template>
               <template>
                 <ul
-                  class="lang-picker"
+                  class="status-bar-lang-menu border-gray-400 text-sm text-gray-100 bg-gray-400 py-2"
                   role="menu"
                 >
                   <li
@@ -42,8 +45,9 @@
                     :key="lang.value"
                     :value="lang.value"
                     :class="[
-                      'lang-picker__item',
-                      { 'lang-picker__item--selected': lang.value === $i18n.locale }
+                      'flex items-center h-9 px-2 cursor-pointer hover:bg-gray-300 focus:outline-none focus:bg-gray-300',
+                      'transition-colors duration-100 ease-out',
+                      { 'text-white': lang.value === $i18n.locale }
                     ]"
                     tabindex="0"
                     role="menuitem"
@@ -52,7 +56,7 @@
                     <img
                       :src="`/img/flags/${lang.value}.svg`"
                       :alt="lang.text"
-                      class="lang-picker__flag mr-2"
+                      class="h-6 w-6 rounded-full mr-2"
                     >
                     <span>{{ lang.text }}</span>
                   </li>
@@ -60,44 +64,54 @@
               </template>
             </v-menu>
           </div>
-          <!-- Menu and lock -->
-          <div class="status-bar__items">
-            <!-- Lock -->
+          <!-- Menu -->
+          <div
+            v-if="!loggedIn"
+            class="flex items-center"
+          >
             <router-link
               v-if="!loggedIn"
               :to="{ name: 'signin' }"
-              class="hidden md:block"
+              class="hidden md:block h-full"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="21" viewBox="0 0 17 21">
-                <g><g><path fill="#1e1e1e" d="M3.728 7V5c0-2.8 2.197-5 4.995-5 2.797 0 4.995 2.2 4.995 5v2h1c1.098 0 1.998.9 1.998 2v10c0 1.1-.9 2-1.998 2H2.728a2.004 2.004 0 0 1-1.997-2V9c0-1.1.899-2 1.998-2zm4.995 9a2.004 2.004 0 0 0 1.997-2c0-1.1-.899-2-1.998-2-1.098 0-1.997.9-1.997 2s.899 2 1.998 2zm3.096-9V5c0-1.7-1.398-3.1-3.097-3.1A3.115 3.115 0 0 0 5.627 5v2z"/></g></g>
-              </svg>
+              <div class="flex items-center h-full text-gray-100">
+                <div class="w-px h-5 bg-gray-300 mr-3 ml-3" />
+                <div class="flex items-center h-full pl-2 hover:bg-gray-200 transition-colors duration-100 ease-out">
+                  <span>{{ $t('statusBar.signin') }}</span>
+                  <Icon
+                    size="32"
+                    class="ml-2"
+                  >
+                    {{ icons.mdiAccountCircle }}
+                  </Icon>
+                </div>
+              </div>
             </router-link>
-            <!-- Menu -->
-            <template v-if="loggedIn">
-              <a
-                href="#"
-                class="block text-lg text-gray-100"
-                style="margin: 0"
-                @click.prevent="toggleMenu"
-              >
-                <i class="icon-burger align-middle" />
-              </a>
-              <div class="w-px h-5 bg-gray-300 ml-5 mr-2" />
-            </template>
           </div>
           <div
-            v-if="loggedIn"
-            class="status-bar__items"
+            v-else
+            class="flex items-center"
           >
             <v-menu
               v-model="profileMenu"
-              :nudge-width="100"
+              :nudge-bottom="56"
+              content-class="status-bar-profile-menu"
               bottom
               left
-              offset-y
             >
               <template v-slot:activator="{ on }">
-                <div v-on="on" class="flex cursor-pointer">
+                <div
+                  :class="[
+                    'flex items-center h-full cursor-pointer hover:bg-gray-200',
+                    'transition-colors duration-100 ease-out',
+                    { 'bg-gray-500 hover:bg-gray-500': profileMenu }
+                  ]"
+                  v-on="on"
+                >
+                  <template>
+                    <i class="text-lg text-gray-100 icon-burger align-middle pl-3" />
+                    <div class="w-px h-5 bg-gray-300 mx-5" />
+                  </template>
                   <div
                     v-if="currentOrg"
                     class="text-sm text-right pr-2 max-w-xs"
@@ -113,48 +127,41 @@
                       {{ $t(`statusBar.role.${currentOrg.role}`) }}
                     </div>
                   </div>
-                  <div
-                    :class="[
-                      'cursor-pointer',
-                      { 'lang-picker__flag--active': profileMenu }
-                    ]"
-                  >
-                    <div class="avatar">
-                      <img
-                        v-if="profile.picture"
-                        :src="profile.picture"
-                        alt="Profile"
-                      >
-                      <Icon
-                        v-else
-                        size="32"
-                      >
-                        {{ icons.mdiAccountCircle }}
-                      </Icon>
-                    </div>
+                  <div class="avatar">
+                    <img
+                      v-if="profile.picture"
+                      :src="profile.picture"
+                      alt="Profile"
+                    >
+                    <Icon
+                      v-else
+                      size="32"
+                    >
+                      {{ icons.mdiAccountCircle }}
+                    </Icon>
                   </div>
                 </div>
               </template>
               <template>
                 <ul
-                  class="lang-picker"
+                  class="text-white bg-gray-500"
                   role="menu"
                 >
                   <li
                     v-if="username"
-                    class="text-gray-lighter text-sm px-2 py-1 focus:outline-none"
+                    class="flex items-center h-10 px-3 text-xs text-gray-100 focus:outline-none"
                     tabindex="0"
                     role="menuitem"
                   >
-                    <div class="text-xs text-gray-100">
+                    <span>
                       {{ username }}
-                    </div>
+                    </span>
                   </li>
                   <li
                     v-for="item in profileItems"
                     :key="item.value"
                     :value="item.value"
-                    class="lang-picker__item"
+                    class="flex items-center h-10 px-3 cursor-pointer hover:bg-gray-300 focus:outline-none focus:bg-gray-300 transition-colors duration-100 ease-out"
                     tabindex="0"
                     role="menuitem"
                     @click="profileAction(item.value)"
@@ -298,10 +305,6 @@ export default {
       orgDialog: false,
       profileMenu: false,
       langMenu: false,
-      langs: [
-        { value: 'en', text: 'English' },
-        { value: 'ru', text: 'Русский' },
-      ],
       icons: {
         mdiStar,
         mdiStarOutline,
@@ -310,6 +313,16 @@ export default {
     }
   },
   computed: {
+    langs () {
+      return [
+        { value: 'en', text: 'English' },
+        { value: 'zh-Hans', text: '简体' },
+        { value: 'zh-Hant', text: '繁体' },
+        { value: 'fr', text: 'Français' },
+        { value: 'ru', text: 'Русский' },
+        { value: 'uk', text: 'Український' },
+      ]
+    },
     loggedIn () {
       return this.isLoggedIn && this.orgId
     },
@@ -441,32 +454,6 @@ export default {
 </script>
 
 <style lang="postcss">
-.lang-picker {
-  color: #aaaaaa;
-  @apply py-1 bg-gray;
-}
-.lang-picker__item {
-  @apply flex cursor-pointer py-1 px-2 outline-none;
-}
-.lang-picker__item--selected {
-  @apply text-primary;
-}
-.lang-picker__item:hover {
-  @apply bg-gray-darker;
-}
-.lang-picker__flag {
-  width: 22px;
-  height: 22px;
-  @apply cursor-pointer;
-}
-.lang-picker__flag--hoverable {
-  filter: brightness(75%);
-  transition: filter .1s cubic-bezier(0.445, 0.05, 0.55, 0.95);
-}
-.lang-picker__flag--active,
-.lang-picker__flag--hoverable:hover {
-  filter: brightness(100%);
-}
 .avatar {
   width: 32px;
   height: 32px;

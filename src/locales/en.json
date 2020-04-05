@@ -642,6 +642,7 @@
   "statusBar": {
     "requisites": "Requisites",
     "myCompanies": "My companies",
+    "signin": "Log In",
     "signout": "Log Out",
     "role": {
       "OWNER": "CEO",

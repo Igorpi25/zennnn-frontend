@@ -551,6 +551,7 @@
   "statusBar": {
     "requisites": "Реквізити",
     "myCompanies": "Мої компанії",
+    "signin": "Увійти",
     "signout": "Вийти",
     "role": {
       "OWNER": "Керівник",

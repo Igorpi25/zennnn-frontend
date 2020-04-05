@@ -551,6 +551,7 @@
   "statusBar": {
     "requisites": "Conditions requises",
     "myCompanies": "Mes entreprises",
+    "signin": "S'identifier",
     "signout": "Se déconnecter",
     "role": {
       "OWNER": "PDG",
