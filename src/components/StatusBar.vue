@@ -370,10 +370,14 @@ export default {
       return `zFavorites.${this.profile.id}`
     },
     profileItems () {
-      return [
+      const items = [
         { value: 'orgsList', text: this.$t('statusBar.myCompanies') },
         { value: 'logout', text: this.$t('statusBar.signout') },
       ]
+      if (this.currentOrg.role === Role.OWNER || this.currentOrg.role === Role.MANAGER) {
+        items.splice(1, 0, { value: 'requisites', text: this.$t('statusBar.requisites') })
+      }
+      return items
     },
     profile () {
       return this.getProfile || {}
@@ -427,9 +431,15 @@ export default {
         case 'orgsList':
           this.orgDialog = true
           break
+        case 'requisites': return this.gotToRequisites()
         case 'logout': return this.onSignOut()
         default: return false
       }
+    },
+    gotToRequisites () {
+      // prevent NavigationDuplicated error
+      if (this.$route.name === 'requisites') return
+      this.$router.push({ name: 'requisites', params: { orgId: this.orgId } })
     },
     onSignOut () {
       const profile = this.profile

@@ -640,8 +640,8 @@
     "post": "Отправить"
   },
   "statusBar": {
-    "requisites": "Реквизиты",
-    "myCompanies": "Мои компании",
+    "requisites": "Реквизиты компаний",
+    "myCompanies": "Мои аккаунты",
     "signin": "Войти",
     "signout": "Выйти",
     "role": {
