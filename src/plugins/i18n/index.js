@@ -37,7 +37,43 @@ const dateTimeFormats = {
       minute: 'numeric',
     },
   },
+  'fr': {
+    time: {
+      hour: 'numeric',
+      minute: 'numeric',
+    },
+    short: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    },
+    long: {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    },
+  },
   'ru': {
+    time: {
+      hour: 'numeric',
+      minute: 'numeric',
+    },
+    short: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    },
+    long: {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    },
+  },
+  'uk': {
     time: {
       hour: 'numeric',
       minute: 'numeric',
@@ -76,10 +112,46 @@ const numberFormats = {
       maximumFractionDigits: 2,
     },
   },
+  'fr': {
+    currency: {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 2,
+    },
+    decimal: {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    },
+    integer: {
+      maximumFractionDigits: 0,
+    },
+    formatted: {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    },
+  },
   'ru': {
     currency: {
       style: 'currency',
       currency: 'RUB',
+      maximumFractionDigits: 2,
+    },
+    decimal: {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    },
+    integer: {
+      maximumFractionDigits: 0,
+    },
+    formatted: {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    },
+  },
+  'uk': {
+    currency: {
+      style: 'currency',
+      currency: 'EUR',
       maximumFractionDigits: 2,
     },
     decimal: {
