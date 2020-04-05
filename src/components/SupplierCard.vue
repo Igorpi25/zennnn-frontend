@@ -412,10 +412,6 @@ export default {
     return {
       languageInputError: '',
       wasValidate: false,
-      langs: [
-        { value: 'en', text: 'English' },
-        { value: 'ru', text: 'Русский' },
-      ],
       saveBeforeCloseDialog: false,
       templateChanged: false,
       createTemplateLoading: false,
@@ -511,6 +507,16 @@ export default {
     }
   },
   computed: {
+    langs () {
+      return [
+        { value: 'en', text: 'English' },
+        { value: 'zh-Hans', text: '简体' },
+        { value: 'zh-Hant', text: '繁体' },
+        { value: 'fr', text: 'Français' },
+        { value: 'ru', text: 'Русский' },
+        { value: 'uk', text: 'Український' },
+      ]
+    },
     supplierId () {
       return this.$route.params.supplierId
     },
