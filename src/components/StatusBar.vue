@@ -271,6 +271,7 @@ import { CURRENT_LANG_STORE_KEY } from '../config/globals'
 import { Role } from '../graphql/enums'
 import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 import { SET_ORG_AVATAR } from '../graphql/mutations'
+import { wsLink } from '../plugins/apollo'
 
 import FileUploader from './FileUploader.vue'
 
@@ -453,6 +454,8 @@ export default {
       if (!isGoogleUser) {
         this.$router.replace({ name: 'signin' })
       }
+      // close ws client on logout for update connectionParams
+      wsLink.subscriptionClient.close(true)
     },
     changeLang (lang) {
       localStorage.setItem(CURRENT_LANG_STORE_KEY, lang)

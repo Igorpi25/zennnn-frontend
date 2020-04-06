@@ -131,7 +131,7 @@ const httpLink = createHttpLink({
 })
 
 // Create the subscription websocket link
-const wsLink = new WebSocketLink({
+export const wsLink = new WebSocketLink({
   uri: process.env.VUE_APP_GRAPHQL_WS_ENDPOINT,
   options: {
     reconnect: true,
