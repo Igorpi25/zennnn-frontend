@@ -36,9 +36,9 @@
             >
               <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto text-left">
                 <div>
-                  <span>{{ item.invoiceNo }}</span>&nbsp;
+                  <span>{{ item.invoiceNo || '-' }}</span>&nbsp;
                   <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
-                  <span>{{ item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : '-' }}</span>&nbsp;
+                  <span>{{ item.createdAt ? $d($parseDate(item.createdAt), 'short') : '-' }}</span>&nbsp;
                 </div>
                 <span class="hidden md:block mx-1">//</span>&nbsp;
                 <div>
