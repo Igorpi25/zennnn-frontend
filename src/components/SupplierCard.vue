@@ -444,7 +444,8 @@ export default {
           ref: 'companyNameSlInput',
           rules: [v => !!v || this.$t('rule.required')],
           rows: 2,
-          label: 'sl',
+          label: 'companyNameSl',
+          inputLabel: 'selectedLanguage',
         },
         companyNameCl: {
           rows: 2,

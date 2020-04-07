@@ -68,12 +68,13 @@
   "welcome": {
     "congrats": "您已完成注册，",
     "successRegister": "剩下最后一步！",
+    "confirmRegistrationEmail": "邮件已发送到 {email}。",
     "confirmRegistration": "请前往电子邮箱",
     "followTheLink": "点击验证电子邮箱地址。",
     "emailNotRecieved": "未收到电子邮件？",
     "hasAccount": "用户已注册。",
     "signin": "登录",
-    "resend": "重新发电子邮件"
+    "resend": "重新发电子邮件。"
   },
   "deals": {
     "createDeal": "创建新交易",
@@ -100,6 +101,7 @@
     "revenue": "进款（收入）",
     "costOfGoods": "货款",
     "access": "职位",
+    "invitations": "邀请函",
     "invite": "添加员工",
     "inviteGivenName": "名",
     "inviteFamilyName": "姓",
@@ -113,6 +115,7 @@
     "companyName": "公司名称",
     "companyNameEng": "公司英文名称",
     "fullName": "总经理姓名",
+    "position": "法人职位",
     "addRequisites": "添加公司资料"
   },
   "requisite": {
@@ -121,9 +124,11 @@
     "bankDetails": "银行资料",
     "directorOfCompany": "总经理",
     "fillLater": "稍后添加",
+    "edit": "编辑",
     "label": {
       "companyName": "公司名称",
       "companyNameEng": "公司英文名称",
+      "address": "公司地址",
       "legalAddress": "注册地址",
       "legalAddressPostCode": "注册地址邮政编码",
       "mailingAddress": "邮政地址",
@@ -131,12 +136,14 @@
       "phone": "手机号码",
       "fax": "传真号码",
       "email": "电子邮箱",
+      "website": "网站",
       "itn": "纳税人识别号",
       "iec": "纳税人登记原因代码",
       "psrn": "基本国家注册号",
       "bankName": "银行名称",
       "bankAddress": "银行地址",
       "bankAccountNumber": "账号",
+      "accountNumber": "账号",
       "correspondentAccountNumber": "代理账户",
       "bic": "银行统一代码",
       "okpo": "全国企业与组织机构分类码",
@@ -201,7 +208,7 @@
     "profit": "差距（利润）：",
     "totalPrepay": "总共定金：",
     "totalClientDebt": "总共客户尾款：",
-    "documentRate": "货币汇率 1 CNY",
+    "documentRate": "货币汇率 1",
     "paperConfigurator": "创建文件",
     "notifyClient": "发出通知",
     "print": "打印文件",
@@ -209,7 +216,9 @@
     "setShipped": "已发货",
     "overview": "查看明细表",
     "access": "访问权限",
+    "hasAccess": "有访问权：",
     "linkAccess": "访问权限链接",
+    "linkAccessUpdated": "链接共享的设置已更新。",
     "sendAccessLink": "发送电子邮件链接",
     "sendEmail": "发送",
     "forDeliver": "运输明细",
@@ -303,7 +312,7 @@
     "phone": "联系电话",
     "address": "注册地址",
     "contactPerson": "联系人",
-    "inn": "VAT（纳税人识别号）",
+    "inn": "纳税人识别号(VAT)",
     "suppliersDebt": "我司债务 （往供应商）",
     "currentDealsAmount": "交易中"
   },
@@ -422,7 +431,7 @@
       "phone": "电话",
       "fax": "传真",
       "email": "电子邮箱",
-      "itn": "纳税人识别号",
+      "itn": "纳税人识别号 (VAT)",
       "iec": "纳税人登记原因代码",
       "psrn": "基本国家注册号",
       "bankName": "银行名称",
@@ -460,7 +469,7 @@
       "phone": "电话：",
       "fax": "传真：",
       "email": "电子邮箱：",
-      "itn": "纳税人识别号：",
+      "itn": "纳税人识别号 (VAT)：",
       "iec": "纳税人登记原因代码：",
       "psrn": "基本国家注册号：",
       "bankName": "银行名称：",
@@ -488,6 +497,12 @@
       "address": "本人登记地址：",
       "language": "语言："
     }
+  },
+  "invitation": {
+    "text": " {company}邀请您注册ZENNNN账户。",
+    "hint": "您可以接收邀请函或拒收。",
+    "accept": "接受邀请",
+    "decline": "拒收"
   },
   "notFound": {
     "title": "抱歉",
@@ -533,7 +548,36 @@
       "signatureStamp": "签字 / 盖章："
     }
   },
-  "print": {},
+  "print": {
+    "vatNo": "纳税人识别号 (VAT)",
+    "beneficiyBank": "银行名称",
+    "bankAddress": "银行地址",
+    "from": "发货地点",
+    "via": "中间站",
+    "to": "目的地",
+    "methodOfDespatch": "发货方式",
+    "billOfLadingNo": "提单号",
+    "vessel": "船名称",
+    "exportDate": "交货日期",
+    "quanitiyOfCartons": "货件总数",
+    "airWaybillNo": "空运单号码",
+    "flight": "航班",
+    "qtyOfContainersPlatforms": "集装箱 / 平车 / 车厢总数",
+    "crmNo": "运输货单号",
+    "carriageNo": "集装箱 / 平车 / 车厢号吗",
+    "train": "火车行程",
+    "vehicle": "车牌",
+    "trailer": "半挂车车牌",
+    "trackingNo": "快递单号",
+    "deliveryCompany": "快递公司",
+    "countryOfOrigin": "原产国",
+    "itemAmount": "总价",
+    "discount": "折扣",
+    "vat": "增值税",
+    "withholdingTax": "所得税",
+    "invoiceCurrency": "发票外币",
+    "amountInWords": "总金额大写"
+  },
   "welcomeModal": {
     "head": "欢迎来到ZENNNN数码办公室系统",
     "title": "恭喜，注册成功了！",
@@ -570,18 +614,17 @@
   },
   "dataTable": {
     "noData": "无数据显示",
-    "noResult": "无匹配结果",
-    "ariaLabel": {
-      "sortDescending": "",
-      "sortAscending": "",
-      "sortNone": ""
-    }
+    "noResult": "无匹配结果"
   },
   "select": {
     "noData": "无数据显示",
     "noResult": "无匹配结果"
   },
   "currency": {
+    "USD": {
+      "iso-4217": "USD",
+      "symbol": "$"
+    },
     "CNY": {
       "label": "人民币",
       "iso-4217": "CNY",
@@ -591,6 +634,14 @@
       "label": "卢布",
       "iso-4217": "RUB",
       "symbol": "₽"
+    },
+    "EUR": {
+      "iso-4217": "EUR",
+      "symbol": "€"
+    },
+    "UAH": {
+      "iso-4217": "UAH",
+      "symbol": "₴"
     }
   },
   "measure": {
@@ -695,6 +746,24 @@
     "IN_PROCESSING": "咨询当中",
     "IN_PRODUCTION": "生产中",
     "IN_STOCK": "已到仓库"
+  },
+  "invitationStatus": {
+    "PENDING": "等待中",
+    "ACCEPTED": "已接收",
+    "DECLINED": "已拒收",
+    "CANCELED": "已取消",
+    "EXPIRED": "已过期"
+  },
+  "unit": {
+    "pcs": "个",
+    "roll": "卷",
+    "time": "次",
+    "m": "米",
+    "l": "公升",
+    "m3": "立方",
+    "set": "套",
+    "m2": "平方",
+    "kg": "公斤"
   },
   "countries": {
     "RU": {

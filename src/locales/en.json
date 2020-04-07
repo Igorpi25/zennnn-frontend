@@ -68,10 +68,10 @@
   "welcome": {
     "congrats": "Congratulations,",
     "successRegister": "you have successfully registered!",
-    "confirmRegistrationEmail": "We sent letter to mail {email}.",
+    "confirmRegistrationEmail": "The email was sent to {email}.",
     "confirmRegistration": "Confirm Registration",
-    "followTheLink": "follow the link in the email.",
-    "emailNotRecieved": "Didn’t receive an email.",
+    "followTheLink": "follow the link in the email",
+    "emailNotRecieved": "Didn’t receive an email?",
     "hasAccount": "I have an account.",
     "signin": "Log In",
     "resend": "Resend."
@@ -79,7 +79,7 @@
   "deals": {
     "createDeal": "Create a deal",
     "clientUid": "UCN",
-    "clientName": "Customer",
+    "clientName": "First name / Last name",
     "clientPhone": "Phone number",
     "specNo": "Contract number (Shipping No.)",
     "createdAt": "Created on",
@@ -136,7 +136,7 @@
       "phone": "Phone number",
       "fax": "Fax",
       "email": "Email",
-      "website": "Website",
+      "website": "Web",
       "itn": "VAT number",
       "iec": "IEC",
       "psrn": "PSRN",
@@ -197,7 +197,7 @@
     "clientDebt": "Client Debt",
     "summaryTitle": "Shipping Summary",
     "container": "container",
-    "containerMeasure": "′",
+    "containerMeasure": "`",
     "containerLoaded": "loaded:",
     "estimateDate": "Estimated Shipping Date:",
     "totalVolume": "Total Volume:",
@@ -209,7 +209,6 @@
     "totalPrepay": "Total Prepay:",
     "totalClientDebt": "Total Client’s Debt:",
     "documentRate": "Rate for Financial Documents 1",
-    "documentRateTooltip": "According to this course, all documents submitted to the client will calculate the final amount of payment.",
     "paperConfigurator": "Document Configurator",
     "notifyClient": "Notify My Client",
     "print": "Print",
@@ -217,9 +216,9 @@
     "setShipped": "Shipped",
     "overview": "View as customer",
     "access": "Access",
-    "hasAccess": "Has access:",
+    "hasAccess": "Have access:",
     "linkAccess": "Access by link",
-    "linkAccessUpdated": "Link access settings updated.",
+    "linkAccessUpdated": "Settings of link sharing are updated.",
     "sendAccessLink": "Send link to email",
     "sendEmail": "Send",
     "forDeliver": "For delivery",
@@ -313,7 +312,7 @@
     "phone": "Phone number",
     "address": "Address",
     "contactPerson": "Contact Person",
-    "inn": "INN (Taxpayer Identity Number)",
+    "inn": "VAT",
     "suppliersDebt": "Your debt to the company",
     "currentDealsAmount": "Current deals amount"
   },
@@ -334,7 +333,7 @@
     "languageAndRegion": "Language & Region",
     "languageDescription": "Language used to send sms and email",
     "label": {
-      "sl": "selected language",
+      "selectedLanguage": "selected language",
       "companyName": "Company name",
       "companyNameSl": "Company name (selected lang.)",
       "companyNameCl": "Company name (country lang.)",
@@ -433,7 +432,7 @@
       "phone": "Phone number",
       "fax": "Fax",
       "email": "Email",
-      "itn": "ITN",
+      "itn": "VAT",
       "iec": "IEC",
       "psrn": "PSRN",
       "bankName": "Payee's bank",
@@ -471,7 +470,7 @@
       "phone": "Phone number:",
       "fax": "Fax:",
       "email": "Email:",
-      "itn": "ITN:",
+      "itn": "VAT:",
       "iec": "IEC:",
       "psrn": "PSRN:",
       "bankName": "Payee's bank:",
@@ -501,7 +500,7 @@
     }
   },
   "invitation": {
-    "text": "You have received an invitation from {company}.",
+    "text": "You have received an invitation to the system from {company}.",
     "hint": "You can accept or decline this invitation.",
     "accept": "Accept",
     "decline": "Decline"
@@ -608,9 +607,7 @@
     "balanceDue": "Balance Due",
     "depositeDue": "Deposite Due {date}",
     "invoiceCurrency": "Invoice currency",
-    "currency": {
-      "usd": "USD (840)"
-    },
+    "currencyUSD": "USD (840)",
     "amountInWords": "SAY IN US. DOLLARS",
     "contractNo": "Contract No.",
     "contractDate": "Contract Date",
@@ -663,9 +660,9 @@
     "noData": "No data available",
     "noResult": "No matching records found",
     "ariaLabel": {
-      "sortDescending": ": Sorted descending. Activate to remove sorting.",
-      "sortAscending": ": Sorted ascending. Activate to sort descending.",
-      "sortNone": ": Not sorted. Activate to sort ascending."
+      "sortDescending": "Sorted descending. Activate to remove sorting.",
+      "sortAscending": "Sorted ascending. Activate to sort descending.",
+      "sortNone": "Not sorted. Activate to sort ascending."
     }
   },
   "select": {
@@ -674,7 +671,7 @@
   },
   "currency": {
     "USD": {
-      "label": "US Dollar",
+      "label": "U.S. dollar",
       "iso-4217": "USD",
       "symbol": "$"
     },
@@ -781,12 +778,12 @@
   },
   "shipmentType": {
     "UNDEFINED": "undefined",
-    "MARINE": "Sea",
-    "AIR": "Air Cargo",
+    "MARINE": "Marine",
+    "AIR": "Air",
     "RAILWAY": "Railway",
-    "CAR": "Road",
-    "MIXED": "Multimodal",
-    "EXPRESS": "Express delivery / Postal"
+    "CAR": "Car",
+    "MIXED": "Mixed",
+    "EXPRESS": "Express / Mailing"
   },
   "customsTerms": {
     "EXW": "EXW",
@@ -808,7 +805,7 @@
   },
   "invitationStatus": {
     "PENDING": "Pending",
-    "ACCEPTED": "Accepted",
+    "ACCEPTED": "Received",
     "DECLINED": "Declined",
     "CANCELED": "Canceled",
     "EXPIRED": "Expired"
@@ -822,7 +819,8 @@
     "m3": "m3",
     "set": "set",
     "m2": "m2",
-    "kg": "kg"
+    "kg": "kg",
+    "pack": "pack."
   },
   "countries": {
     "RU": {

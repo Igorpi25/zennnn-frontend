@@ -68,12 +68,13 @@
   "welcome": {
     "congrats": "Toutes nos félicitations,",
     "successRegister": "vous vous êtes inscrit avec succès!",
+    "confirmRegistrationEmail": "L'e-mail a été envoyé à {email}.",
     "confirmRegistration": "Confirmer l'inscription",
     "followTheLink": "suivez le lien dans l'e-mail",
-    "emailNotRecieved": "N'a pas reçu d'e-mail.",
+    "emailNotRecieved": "N'a pas reçu d'e-mail?",
     "hasAccount": "J'ai un compte.",
     "signin": "S'identifier",
-    "resend": "Renvoyer"
+    "resend": "Renvoyer."
   },
   "deals": {
     "createDeal": "Créer un accord",
@@ -100,6 +101,7 @@
     "revenue": "Revenu",
     "costOfGoods": "Coût des biens",
     "access": "Autorisations d'accès",
+    "invitations": "Des invitations",
     "invite": "Inviter",
     "inviteGivenName": "Prénom",
     "inviteFamilyName": "Nom de famille",
@@ -113,6 +115,7 @@
     "companyName": "Nom de la compagnie",
     "companyNameEng": "Nom de l'entreprise en anglais",
     "fullName": "Nom complet du propriétaire",
+    "position": "Position",
     "addRequisites": "Ajouter des exigences"
   },
   "requisite": {
@@ -121,9 +124,11 @@
     "bankDetails": "Exigences bancaires",
     "directorOfCompany": "Directeur d'entreprise",
     "fillLater": "Remplissez plus tard",
+    "edit": "Éditer",
     "label": {
       "companyName": "Nom de la compagnie",
       "companyNameEng": "Nom de l'entreprise en anglais",
+      "address": "Adresse",
       "legalAddress": "Bureau d'inscription",
       "legalAddressPostCode": "Code postal du siège social",
       "mailingAddress": "Adresse postale",
@@ -131,12 +136,14 @@
       "phone": "Numéro de téléphone",
       "fax": "Fax",
       "email": "Email",
+      "website": "Web",
       "itn": "TVA (numéro d'identification du contribuable)",
       "iec": "IEC",
       "psrn": "PSRN",
       "bankName": "Nom de banque",
       "bankAddress": "adresse de la banque",
       "bankAccountNumber": "numéro de compte bancaire",
+      "accountNumber": "Numéro de compte",
       "correspondentAccountNumber": "Numéro de compte correspondant",
       "bic": "BIC",
       "okpo": "OKPO",
@@ -190,7 +197,7 @@
     "clientDebt": "Dette du client",
     "summaryTitle": "Résumé d'expédition",
     "container": "récipient",
-    "containerMeasure": "",
+    "containerMeasure": "`",
     "containerLoaded": "Chargée le :",
     "estimateDate": "Date d'envoi estimée:",
     "totalVolume": "Volume total:",
@@ -209,7 +216,9 @@
     "setShipped": "Expédié",
     "overview": "Voir en tant que client",
     "access": "Accès",
+    "hasAccess": "Avoir accès:",
     "linkAccess": "Accès par lien",
+    "linkAccessUpdated": "Les paramètres du partage de liens sont mis à jour.",
     "sendAccessLink": "Envoyer le lien vers l'e-mail",
     "sendEmail": "Envoyer",
     "forDeliver": "Pour livraison",
@@ -271,7 +280,6 @@
     "prepay": "Prépayer",
     "summaryTitle": "Résumé d'expédition",
     "container": "récipient",
-    "containerMeasure": "",
     "containerLoaded": "chargé:",
     "estimateDate": "Date d'expédition estimée:",
     "totalVolume": "Volume total:",
@@ -303,7 +311,7 @@
     "phone": "Numéro de téléphone",
     "address": "Adresse",
     "contactPerson": "Contact",
-    "inn": "INN (numéro d'identification du contribuable)",
+    "inn": "VAT",
     "suppliersDebt": "Votre dette envers l'entreprise",
     "currentDealsAmount": "Montant actuel des transactions"
   },
@@ -422,7 +430,7 @@
       "phone": "Numéro de téléphone",
       "fax": "Fax",
       "email": "Email",
-      "itn": "ITN",
+      "itn": "VAT",
       "iec": "IEC",
       "psrn": "PSRN",
       "bankName": "Banque du bénéficiaire",
@@ -460,7 +468,7 @@
       "phone": "Numéro de téléphone:",
       "fax": "Fax:",
       "email": "Email:",
-      "itn": "ITN:",
+      "itn": "VAT:",
       "iec": "CEI:",
       "psrn": "PSRN:",
       "bankName": "Banque du bénéficiaire:",
@@ -488,6 +496,11 @@
       "address": "Lieu de résidence:",
       "language": "Langue:"
     }
+  },
+  "invitation": {
+    "text": "Vous avez reçu une invitation au système de {company}.",
+    "accept": "J'accepte",
+    "decline": "Déclin"
   },
   "notFound": {
     "title": "Pardon,",
@@ -533,7 +546,39 @@
       "signatureStamp": "Signature / cachet:"
     }
   },
-  "print": {},
+  "print": {
+    "addressTelFax": "Adresse / Numéro de téléphone / Fax",
+    "vatNo": "VAT",
+    "beneficiyBank": "Banque du bénéficiaire",
+    "bankAddress": "adresse de la banque",
+    "accountNumberSwift": "Numéro de compte:",
+    "from": "Envoyé de",
+    "via": "Par",
+    "to": "Destination",
+    "methodOfDespatch": "Type d'envoi",
+    "billOfLadingNo": "Connaissement non.",
+    "vessel": "Navire",
+    "exportDate": "Date d'expédition",
+    "quanitiyOfCartons": "Nombre de colis",
+    "airWaybillNo": "Numéro de lettre de transport aérien",
+    "flight": "Vol",
+    "qtyOfContainersPlatforms": "Nombre de cont. / Plateformes / Chariots",
+    "crmNo": "Lettre de voiture internationale No.",
+    "carriageNo": "Cont. No. / Plate-forme / Chariots",
+    "train": "Train",
+    "vehicle": "Reg. numéro du véhicule",
+    "trailer": "Reg. numéro de la semi-remorque",
+    "trackingNo": "N ° postal",
+    "deliveryCompany": "Service de livraison",
+    "countryOfOrigin": "Pays d'origine",
+    "itemAmount": "Coût",
+    "discount": "Remise",
+    "vat": "T.V.A.",
+    "withholdingTax": "Impôt sur le revenu",
+    "invoiceCurrency": "Devise de facturation",
+    "amountInWords": "Montant du paiement et en mots",
+    "sign": "Signature"
+  },
   "welcomeModal": {
     "head": "Bienvenue sur Zennnn",
     "title": "C'est super que vous vous soyez inscrit sur zennnn!",
@@ -581,6 +626,11 @@
     "noResult": "Aucun enregistrements correspondants trouvés"
   },
   "currency": {
+    "USD": {
+      "label": "Dollar américain",
+      "iso-4217": "USD",
+      "symbol": "$"
+    },
     "CNY": {
       "label": "Yuan Renminbi chinois",
       "iso-4217": "CNY",
@@ -590,6 +640,16 @@
       "label": "Rouble russe",
       "iso-4217": "RUB",
       "symbol": "₽"
+    },
+    "EUR": {
+      "label": "Euro",
+      "iso-4217": "EUR",
+      "symbol": "€"
+    },
+    "UAH": {
+      "label": "Hryvnia",
+      "iso-4217": "UAH",
+      "symbol": "₴"
     }
   },
   "measure": {
@@ -694,6 +754,17 @@
     "IN_PROCESSING": "En traitement",
     "IN_PRODUCTION": "En production",
     "IN_STOCK": "En stock"
+  },
+  "unit": {
+    "pcs": "pcs",
+    "roll": "bobine",
+    "time": "un",
+    "m": "m",
+    "l": "l",
+    "m3": "m3",
+    "set": "kit",
+    "m2": "m2",
+    "kg": "kg"
   },
   "countries": {
     "RU": {

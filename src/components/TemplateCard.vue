@@ -70,8 +70,8 @@
                 >
                   <label :class="{ 'visibility-hidden opacity-0': isDisabled }">
                     <span
-                      v-if="field.label"
-                      v-html="$t(`${templateName}.label.${field.label}`)"
+                      v-if="field.inputLabel"
+                      v-html="$t(`${templateName}.label.${field.inputLabel}`)"
                     />
                   </label>
                   <TextArea

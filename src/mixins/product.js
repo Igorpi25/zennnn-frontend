@@ -37,7 +37,7 @@ export default {
             ? 'status-indicator__bordered--pink' : 'bg-transparent'
     },
     unitsItems () {
-      const units = ['pcs', 'roll', 'time', 'm', 'l', 'm3', 'set', 'm2', 'kg']
+      const units = ['pcs', 'roll', 'time', 'm', 'l', 'm3', 'set', 'm2', 'kg', 'pack']
       return units.map(el => {
         return {
           value: el,

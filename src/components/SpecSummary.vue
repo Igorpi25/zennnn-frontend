@@ -1494,7 +1494,7 @@ export default {
       }
       body[rowIndex][1] = {
         rowSpan: 2,
-        stack: this.genLabel('print.currency.usd', clientLang),
+        stack: this.genLabel('print.currencyUSD', clientLang),
       }
       return {
         table: {
