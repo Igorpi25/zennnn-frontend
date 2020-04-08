@@ -15,6 +15,7 @@
         'select--colored': colored,
         'select--focused': hasFocus && searchable,
         'select--active': isActive,
+        'select--menu-active': isMenuActive,
         'select--disabled': disabled,
       }
     ]"
@@ -60,91 +61,105 @@
           @input="input"
           @focus="onFocus"
           @blur="onBlur"
+          @keydown="onKeyDown"
         >
         <div
           v-if="$slots.append || $scopedSlots.append"
           class="select__append"
         >
-          <slot name="append" :isMenuOpen="menu" :toggle="toggleMenu" />
+          <slot name="append" :isMenuOpen="isMenuActive" :toggle="toggleMenu" />
         </div>
       </div>
       <div class="select__append-outer">
-        <slot name="append-outer" :isMenuOpen="menu" />
+        <slot name="append-outer" :isMenuOpen="isMenuActive" />
       </div>
-      <v-menu
-        ref="menu"
-        v-model="menu"
-        :attach="$refs.slot"
-        :close-on-click="false"
-        :close-on-content-click="false"
-        :open-on-click="false"
-        :disable-keys="true"
-        :disabled="disabled"
-        :max-height="maxHeight"
-        :min-width="minWidth"
-        :max-width="maxWidth"
-        :nudge-bottom="nudgeBottom"
-        offset-y
+    </div>
+    <v-menu
+      ref="menu"
+      v-model="isMenuActive"
+      :activator="$refs.slot"
+      :attach="menuAttach"
+      :close-on-click="false"
+      :close-on-content-click="false"
+      :open-on-click="false"
+      :disable-keys="true"
+      :disabled="disabled"
+      :max-height="maxHeight"
+      :min-width="minWidth"
+      :max-width="maxWidth"
+      :nudge-bottom="menuNudgeBottom"
+      :content-class="menuContentClass"
+      allow-overflow
+      offset-y
+    >
+      <ul
+        class="select-picker text-sm"
+        role="menu"
       >
-        <ul
-          class="select-picker"
-          role="menu"
+        <li
+          v-if="$slots['prepend-item']"
+          key="select-prepend-item"
+          class="select-picker__item v-list-item"
+          tabindex="0"
+          role="menuitem"
+          @click="prependItemClick"
         >
+          <slot name="prepend-item" />
+        </li>
+        <li
+          v-if="filteredItems.length === 0"
+          class="select-picker__item select-picker__item--disabled"
+        >
+          <span v-if="searchable && search" class="truncate">
+            {{ $t('select.noResult') }}
+          </span>
+          <span v-else class="truncate">
+            {{ $t('select.noData') }}
+          </span>
+        </li>
+        <template
+          v-else
+          v-for="(item, i) in filteredItems"
+        >
+          <div
+            v-if="item.divider"
+            :key="`divider-${i}`"
+            class="border-b border-primary"
+          />
           <li
-            v-if="items.length === 0"
-            class="select-picker__item select-picker__item--disabled"
-          >
-            <span v-if="searchable && search" class="truncate">
-              {{ $t('select.noResult') }}
-            </span>
-            <span v-else class="truncate">
-              {{ $t('select.noData') }}
-            </span>
-          </li>
-          <template
             v-else
-            v-for="(item, i) in items"
-          >
-            <div
-              v-if="item.divider"
-              :key="`divider-${i}`"
-              class="border-b border-primary"
-            />
-            <li
-              v-else
-              :key="item[itemValue]"
-              :value="item[itemValue]"
-              :class="[
-                'select-picker__item',
-                { 'select-picker__item--selected': item[itemValue] === internalValue[itemValue] }
-              ]"
-              tabindex="0"
-              role="menuitem"
-              @click="select(item)"
-            >
-              <span>{{ item[itemText] }}</span>
-            </li>
-          </template>
-          <li
-            v-if="$slots['append-item']"
-            key="select-append-item"
-            class="select-picker__item"
+            :key="item[itemValue]"
+            :value="item[itemValue]"
+            :class="[
+              'select-picker__item v-list-item',
+              { 'select-picker__item--selected': item[itemValue] === internalValue[itemValue] }
+            ]"
             tabindex="0"
             role="menuitem"
-            @click="appendItemClick"
+            @click="select(item)"
           >
-            <slot name="append-item" />
+            <span>{{ item[itemText] }}</span>
           </li>
-        </ul>
-      </v-menu>
-    </div>
+        </template>
+        <li
+          v-if="$slots['append-item']"
+          key="select-append-item"
+          class="select-picker__item v-list-item"
+          tabindex="0"
+          role="menuitem"
+          @click="appendItemClick"
+        >
+          <slot name="append-item" />
+        </li>
+      </ul>
+    </v-menu>
   </InputBase>
 </template>
 
 <script>
 import focusable from '@/mixins/focusable'
 import validatable from '@/mixins/validatable'
-import { isObject } from '../../util/helpers'
+import { isObject, defaultFilter } from '../../util/helpers'
 
 export default {
   name: 'Select',
@@ -185,11 +200,11 @@ export default {
     },
     minWidth: {
       type: [Number, String],
-      default: '100%',
+      default: undefined,
     },
     maxWidth: {
       type: [Number, String],
-      default: '100%',
+      default: undefined,
     },
     maxHeight: {
       type: [Number, String],
@@ -274,6 +289,9 @@ export default {
       type: [String, Array, Object],
       default: '',
     },
+    flat: Boolean,
+    menuAttach: undefined,
+    noFilter: Boolean,
   },
   data () {
     return {
@@ -281,13 +299,29 @@ export default {
       inputId: 'input' + Math.round(Math.random() * 100000),
       lazyInput: '',
       lazyValue: this.value,
-      menu: false,
+      isMenuActive: false,
       content: null,
     }
   },
   computed: {
+    filteredItems () {
+      if (!this.noFilter && this.searchable && this.search) {
+        return this.items.filter(item => Object.values(item).some(el => defaultFilter(el, this.search)))
+      }
+      return this.items
+    },
+    menuNudgeBottom () {
+      return !this.flat ? -1 : null
+    },
+    menuContentClass () {
+      let result = 'select-menu'
+      if (this.flat) {
+        result += ' select-menu--flat'
+      }
+      return result
+    },
     isActive () {
-      return this.hasFocus || this.menu
+      return this.hasFocus || this.isMenuActive
     },
     placeholderClass () {
       let c = this.colored
@@ -335,6 +369,9 @@ export default {
     value: {
       handler (val) {
         this.lazyValue = val
+        if (this.searchable && !this.isMenuActive) {
+          this.internalInput = this.getSearchableInputText()
+        }
       },
       immediate: true,
     },
@@ -346,19 +383,15 @@ export default {
     isActive (val) {
       if (val) {
         if (this.searchable) {
-          let v = ''
-          if (isObject(this.value)) {
-            v = this.value[this.itemText]
-          } else {
-            const item = this.items.find(el => el[this.itemValue] === this.value)
-            v = item ? item[this.itemText] : ''
+          this.internalInput = this.getSearchableInputText()
+          if (this.noFilter) {
+            this.$emit('update:search', this.internalInput)
           }
-          this.internalInput = v
         }
       } else {
         setTimeout(() => {
           this.$emit('update:search', '')
-        }, 150)
+        }, 250)
       }
     },
   },
@@ -379,24 +412,141 @@ export default {
     }
   },
   methods: {
+    onKeyDown (e) {
+      const menu = this.$refs.menu
+
+      // If enter, space, open menu
+      if (
+        e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'
+      ) {
+        if (!this.isMenuActive) {
+          this.openMenu()
+          e.preventDefault()
+        }
+      }
+
+      this.$emit('keydown', e)
+
+      if (!menu) return
+
+      // If menu is active, allow default
+      // listIndex change from menu
+      if (this.isMenuActive && e.key !== 'Tab') {
+        this.$nextTick(() => {
+          menu.changeListIndex(e)
+          this.$emit('update:list-index', menu.listIndex)
+        })
+      }
+
+      // If menu is not active, up and down can do
+      // one of 2 things. If multiple, opens the
+      // menu, if not, will cycle through all
+      // available options
+      if (
+        !this.isMenuActive &&
+        (e.key === 'ArrowUp' || e.key === 'Up' || e.key === 'ArrowDown' || e.key === 'Down')
+      ) {
+        return this.onUpDown(e)
+      }
+
+      // If escape deactivate the menu
+      if (e.key === 'Esc' || e.key === 'Escape') return this.onEscDown(e)
+
+      // If tab - select item or close menu
+      if (e.key === 'Tab') return this.onTabDown(e)
+    },
+    onEscDown (e) {
+      e.preventDefault()
+      if (this.searchable) {
+        this.internalInput = this.getSearchableInputText()
+      }
+      setTimeout(() => {
+        this.$emit('update:search', '')
+      }, 250)
+      if (this.isMenuActive) {
+        e.stopPropagation()
+        this.isMenuActive = false
+      }
+    },
+    onTabDown (e) {
+      const menu = this.$refs.menu
+
+      if (!menu) return
+
+      const activeTile = menu.activeTile
+
+      // An item that is selected by
+      // menu-index should toggled
+      if (
+        activeTile &&
+        this.isMenuActive
+      ) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        activeTile.click()
+      } else {
+        // If we make it here,
+        // the user has no selected indexes
+        // and is probably tabbing out
+        this.onBlur(e)
+        this.isMenuActive = false
+      }
+    },
+    onSpaceDown (e) {
+      e.preventDefault()
+    },
+    onUpDown (e) {
+      const menu = this.$refs.menu
+
+      if (!menu) return
+
+      e.preventDefault()
+
+      // Cycle through available values to achieve
+      // select native behavior
+      menu.isBooted = true
+
+      window.requestAnimationFrame(() => {
+        menu.getTiles()
+        e.key === 'ArrowUp' || e.key === 'Up' ? menu.prevTile() : menu.nextTile()
+        menu.activeTile && menu.activeTile.click()
+      })
+    },
+    getSearchableInputText () {
+      let v = ''
+      if (this.searchable) {
+        if (isObject(this.value)) {
+          v = this.value[this.itemText]
+        } else {
+          const item = this.items.find(el => el[this.itemValue] === this.value)
+          v = item ? item[this.itemText] : ''
+        }
+      }
+      return v
+    },
     toggleMenu () {
       if (this.disabled) return
-      if (this.menu) {
+      if (this.isMenuActive) {
         this.closeMenu()
       } else {
         this.openMenu()
       }
     },
     openMenu () {
-      this.menu = true
+      this.isMenuActive = true
       document.addEventListener('click', this.closeConditional, true)
     },
     closeMenu () {
-      this.menu = false
+      this.isMenuActive = false
       document.removeEventListener('click', this.closeConditional, true)
     },
     appendItemClick (e) {
       this.$emit('click:append-item', e)
+      this.closeMenu()
+    },
+    prependItemClick (e) {
+      this.$emit('click:prepend-item', e)
       this.closeMenu()
     },
     select (value) {
@@ -407,7 +557,7 @@ export default {
     },
     input (e) {
       if (this.searchable) {
-        this.$emit('update:search', this.internalInput)
+        this.$emit('update:search', e.target.value || '')
       }
       this.checkField(e)
     },

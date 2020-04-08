@@ -130,3 +130,31 @@
 .text-area__state-icon {
   margin-left: 8px;
 }
+
+/* nd */
+
+.text-area_nd textarea {
+  padding-top: 4px!important;
+  padding-bottom: 4px!important;
+}
+.text-area_nd .text-area__slot {
+  border: none!important;
+  border-radius: 4px;
+  background-color: #222222;
+}
+.text-area_nd.text-area--focused .text-area__slot {
+  background-color: #1e1e1e!important;
+  box-shadow: 0 0 0 1px #5a8199;
+}
+.text-area_nd textarea {
+  color: #5a8199!important;
+}
+.text-area_nd textarea:focus {
+  color: #ffffff!important;
+}
+.text-area_nd textarea:disabled,
+.text-area_nd textarea:disabled::placeholder {
+  color: #2f2f2f!important;
+}
+
+/* nd */

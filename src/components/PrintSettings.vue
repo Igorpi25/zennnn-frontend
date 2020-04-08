@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="container"
     class="flex flex-col relative w-full overflow-y-auto overflow-scroll-touch max-h-screen px-2 py-6 text-gray-100"
   >
     <div class="absolute cursor-pointer top-0 right-0">
@@ -58,8 +59,8 @@
               </label>
               <Select
                 :value="requisite"
+                :menu-attach="$refs.container"
                 :placeholder="$t('placeholder.notIndicated')"
-                :nudge-bottom="32"
                 :search.sync="requisiteSearch"
                 :items="requisites"
                 searchable
@@ -359,12 +360,13 @@
               </label>
               <Select
                 :value="specClient"
+                :menu-attach="$refs.container"
                 :placeholder="$t('placeholder.notIndicated')"
-                :nudge-bottom="32"
                 :search.sync="clientSearch"
                 :items="clients"
                 searchable
                 return-object
+                no-filter
                 item-value="id"
                 item-text="name"
                 solo
@@ -943,8 +945,8 @@
               </label>
               <Select
                 :value="shipment.activeType"
+                :menu-attach="$refs.container"
                 :placeholder="$t('placeholder.notIndicated')"
-                :nudge-bottom="32"
                 :search.sync="shipmentTypeSearch"
                 :items="shipmentTypes"
                 searchable
@@ -1485,8 +1487,8 @@
                 </label>
                 <Select
                   :value="customs.countryOfOrigin"
+                  :menu-attach="$refs.container"
                   :placeholder="$t('placeholder.notChosen')"
-                  :nudge-bottom="32"
                   :search.sync="countriesSearch"
                   :items="shipmentCountries"
                   searchable
@@ -1512,8 +1514,8 @@
                 </label>
                 <Select
                   :value="customs.terms"
+                  :menu-attach="$refs.container"
                   :placeholder="$t('placeholder.notChosen')"
-                  :nudge-bottom="32"
                   :search.sync="termsSearch"
                   :items="customsTerms"
                   :disabled="isTermsDisabled"
@@ -1565,8 +1567,8 @@
                 </label>
                 <Select
                   :value="$t('currency.USD.iso-4217')"
+                  :menu-attach="$refs.container"
                   :placeholder="$t('currency.USD.iso-4217')"
-                  :nudge-bottom="32"
                   :items="[]"
                   disabled
                   solo
@@ -1616,8 +1618,8 @@
                   <span class="block truncate">{{ $t('shipping.vatLabel') }}</span>
                 </label>
                 <Select
+                  :menu-attach="$refs.container"
                   :placeholder="$t('placeholder.notChosen')"
-                  :nudge-bottom="32"
                   :items="[]"
                   disabled
                   solo
@@ -1639,8 +1641,8 @@
                   <span class="block truncate">{{ $t('shipping.incomeTaxLabel') }}</span>
                 </label>
                 <Select
+                  :menu-attach="$refs.container"
                   :placeholder="$t('placeholder.notChosen')"
-                  :nudge-bottom="32"
                   :items="[]"
                   disabled
                   solo
@@ -1790,8 +1792,6 @@ import { UPDATE_CLIENT, UPDATE_REQUISITE, SET_SPEC_CLIENT } from '../graphql/mut
 import { LIST_ORG_REQUISITES, SEARCH_CLIENTS } from '../graphql/queries'
 import { ClientType, ShipmentType, CustomsTerms, CustomsTermsMore } from '../graphql/enums'
 
-import { defaultFilter } from '../util/helpers'
-
 export default {
   name: 'PrintSettings',
   components: {
@@ -1927,9 +1927,6 @@ export default {
     },
     requisites () {
       let items = this.listOrgRequisites || []
-      if (this.requisiteSearch) {
-        items = items.filter(item => defaultFilter(item.name, this.requisiteSearch))
-      }
       return items
     },
     requisite () {
@@ -1942,9 +1939,6 @@ export default {
           value: el,
         }
       })
-      if (this.shipmentTypeSearch) {
-        return items.filter(item => Object.values(item).some(el => defaultFilter(el, this.shipmentTypeSearch)))
-      }
       return items
     },
     countries () {
@@ -1957,9 +1951,6 @@ export default {
       })
     },
     shipmentCountries () {
-      if (this.countriesSearch) {
-        return this.countries.filter(item => Object.values(item).some(el => defaultFilter(el, this.countriesSearch)))
-      }
       return this.countries
     },
     customsTermsItems () {
@@ -1986,9 +1977,6 @@ export default {
       }
       if (shipmentType === ShipmentType.MARINE || shipmentType === ShipmentType.MIXED) {
         items = [...this.customsTermsItems, { divider: true }, ...this.customsTermsMoreItems]
-      }
-      if (this.termsSearch) {
-        return items.filter(item => Object.values(item).some(el => defaultFilter(el, this.termsSearch)))
       }
       return items
     },

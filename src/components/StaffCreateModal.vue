@@ -54,8 +54,8 @@
             <Select
               v-model="compRole"
               :label="$t('staff.access')"
-              :nudge-bottom="23"
               :items="roles"
+              flat
               return-object
               colored
               hide-details

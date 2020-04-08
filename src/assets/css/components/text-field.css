@@ -161,3 +161,30 @@
 .heading input {
   font-weight: 700;
 }
+
+/* nd */
+
+.text-field_nd {
+  min-width: unset!important;
+}
+.text-field_nd .text-field__slot {
+  border: none!important;
+  border-radius: 4px;
+  background-color: #222222;
+}
+.text-field_nd.text-field--focused .text-field__slot {
+  background-color: #1e1e1e!important;
+  box-shadow: 0 0 0 1px #5a8199;
+}
+.text-field_nd input {
+  color: #5a8199!important;
+}
+.text-field_nd input:focus {
+  color: #ffffff!important;
+}
+.text-field_nd input:disabled,
+.text-field_nd input:disabled::placeholder {
+  color: #2f2f2f!important;
+}
+
+/* nd */

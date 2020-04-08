@@ -26,10 +26,11 @@
             <Select
               :value="specClient"
               :placeholder="$t('placeholder.emptyText')"
-              :nudge-bottom="28"
               :search.sync="clientSearch"
               :items="clients"
+              flat
               return-object
+              no-filter
               searchable
               item-value="id"
               item-text="name"
@@ -105,10 +106,11 @@
             <Select
               :value="getInvoiceSupplier(item)"
               :placeholder="$t('shipping.supplierName')"
-              :nudge-bottom="23"
               :search.sync="supplierSearch"
               :items="suppliers"
+              flat
               return-object
+              no-filter
               searchable
               item-value="id"
               item-text="name"

@@ -8,7 +8,6 @@
         <Select
           :value="item.countryOfOrigin"
           :placeholder="$t('shipping.countryOfOrigin')"
-          :nudge-bottom="32"
           :search.sync="countriesSearch"
           :items="shipmentCountries"
           searchable
@@ -35,7 +34,6 @@
           <Select
             :value="item.terms"
             :placeholder="$t('placeholder.notChosen')"
-            :nudge-bottom="32"
             :search.sync="termsSearch"
             :items="customsTerms"
             :disabled="isTermsDisabled"
@@ -114,7 +112,6 @@
         <div class="px-1 w-2/5">
           <Select
             :placeholder="$t('placeholder.notChosen')"
-            :nudge-bottom="32"
             :items="[]"
             disabled
             solo
@@ -139,7 +136,6 @@
         <div class="px-1 w-2/5">
           <Select
             :placeholder="$t('placeholder.notChosen')"
-            :nudge-bottom="32"
             :items="[]"
             disabled
             solo
@@ -201,7 +197,6 @@ import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import { CustomsTerms, CustomsTermsMore, ShipmentType } from '../graphql/enums'
 import Countries from '../config/countries-iso3.json'
 import CountriesNames from '../config/countries-names.json'
-import { defaultFilter } from '../util/helpers'
 
 export default {
   name: 'SpecCustoms',
@@ -245,9 +240,6 @@ export default {
       })
     },
     shipmentCountries () {
-      if (this.countriesSearch) {
-        return this.countries.filter(item => Object.values(item).some(el => defaultFilter(el, this.countriesSearch)))
-      }
       return this.countries
     },
     customsTermsItems () {
@@ -273,9 +265,6 @@ export default {
       }
       if (this.shipmentType === ShipmentType.MARINE || this.shipmentType === ShipmentType.MIXED) {
         items = [...this.customsTermsItems, { divider: true }, ...this.customsTermsMoreItems]
-      }
-      if (this.termsSearch) {
-        return items.filter(item => Object.values(item).some(el => defaultFilter(el, this.termsSearch)))
       }
       return items
     },

@@ -83,10 +83,11 @@
             <Select
               :value="getInvoiceSupplier(item)"
               :placeholder="$t('shipping.supplierName')"
-              :nudge-bottom="23"
               :search.sync="supplierSearch"
               :items="suppliers"
+              flat
               return-object
+              no-filter
               searchable
               item-value="id"
               item-text="name"

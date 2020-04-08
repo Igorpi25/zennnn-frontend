@@ -49,7 +49,6 @@
         <Select
           :value="item.activeType"
           :placeholder="$t('shipping.shipmentType')"
-          :nudge-bottom="32"
           :search.sync="shipmentTypeSearch"
           :items="shipmentTypes"
           searchable
@@ -549,7 +548,6 @@
 <script>
 import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import { ShipmentType } from '../graphql/enums'
-import { defaultFilter } from '../util/helpers'
 
 export default {
   name: 'SpecShipment',
@@ -585,9 +583,6 @@ export default {
           value: el,
         }
       })
-      if (this.shipmentTypeSearch) {
-        return items.filter(item => Object.values(item).some(el => defaultFilter(el, this.shipmentTypeSearch)))
-      }
       return items
     },
   },
