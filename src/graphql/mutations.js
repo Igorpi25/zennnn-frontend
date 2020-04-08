@@ -42,8 +42,8 @@ export const GET_IMAGE_UPLOAD_URL = gql`
 `
 
 export const CREATE_SPEC = gql`
-  mutation CreateSpec($orgId: ID!) {
-    createSpec(orgId: $orgId) {
+  mutation CreateSpec($orgId: ID!, $clientId: ID) {
+    createSpec(orgId: $orgId, clientId: $clientId) {
       ...SpecFragment
     }
   }

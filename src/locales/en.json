@@ -77,6 +77,11 @@
     "resend": "Resend."
   },
   "deals": {
+    "createSpecDialogHeader": "Add customer to deal to continue.",
+    "createSpecDialogSearchPlaceholder": "First or last name",
+    "createSpecDialogAddClient": "Add new customer",
+    "createSpecDialogWithoutClient": "Continue without client",
+    "createSpecDialogAdd": "Add",
     "createDeal": "Create a deal",
     "clientUid": "UCN",
     "clientName": "First name / Last name",

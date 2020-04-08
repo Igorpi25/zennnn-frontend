@@ -549,6 +549,9 @@ export default {
       this.$emit('click:prepend-item', e)
       this.closeMenu()
     },
+    focus () {
+      this.$refs.input.focus()
+    },
     select (value) {
       this.internalValue = value
       const val = this.returnObject ? value : value[this.itemValue]

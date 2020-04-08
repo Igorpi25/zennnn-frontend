@@ -77,6 +77,11 @@
     "resend": "Отправить повторно."
   },
   "deals": {
+    "createSpecDialogHeader": "Добавьте клиента в сделку, чтобы продолжить",
+    "createSpecDialogSearchPlaceholder": "Имя или фамилия",
+    "createSpecDialogAddClient": "Добавить нового клиента",
+    "createSpecDialogWithoutClient": "Продолжить без клиента",
+    "createSpecDialogAdd": "Добавить",
     "createDeal": "Создать сделку",
     "clientUid": "УНК",
     "clientName": "Наименование клиента",
