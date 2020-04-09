@@ -76,7 +76,7 @@
             >
               <div class="flex items-center h-full text-gray-100">
                 <div class="w-px h-5 bg-gray-300 mr-3 ml-3" />
-                <div class="flex items-center h-full pl-2 hover:bg-gray-200 transition-colors duration-100 ease-out">
+                <div class="flex items-center h-full px-2 hover:bg-gray-200 transition-colors duration-100 ease-out">
                   <span>{{ $t('statusBar.signin') }}</span>
                   <Icon
                     size="32"
@@ -102,7 +102,7 @@
               <template v-slot:activator="{ on }">
                 <div
                   :class="[
-                    'flex items-center h-full cursor-pointer hover:bg-gray-200',
+                    'flex items-center h-full cursor-pointer hover:bg-gray-200 pr-2',
                     'transition-colors duration-100 ease-out',
                     { 'bg-gray-500 hover:bg-gray-500': profileMenu }
                   ]"
@@ -129,8 +129,8 @@
                   </div>
                   <div class="avatar">
                     <img
-                      v-if="profile.picture"
-                      :src="profile.picture"
+                      v-if="currentOrg.picture"
+                      :src="currentOrg.picture"
                       alt="Profile"
                     >
                     <Icon
