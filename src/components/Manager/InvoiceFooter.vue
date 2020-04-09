@@ -64,7 +64,10 @@
     </div>
 
     <div class="flex sm:flex-wrap w-full sm:w-auto md:px-3 max-w-xs">
-      <div class="flex flex-col items-end w-full sm:w-32 pr-1 md:pr-0 lg:pr-1">
+      <div
+        :class="{ 'opacity-0': isInvoiceProfitTypeMargin }"
+        class="flex flex-col items-end w-full sm:w-32 pr-1 md:pr-0 lg:pr-1 transition-opacity duration-75 ease-in-out"
+      >
         <label class="text-xs text-gray-light select-none pr-2">
           {{ $t('shipping.discount') }}
         </label>
