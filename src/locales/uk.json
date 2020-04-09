@@ -77,9 +77,14 @@
     "resend": "Надіслати повторно."
   },
   "deals": {
+    "createSpecDialogHeader": "Додайте клієнта в угоду для продовження",
+    "createSpecDialogSearchPlaceholder": "Ім'я або прізвище",
+    "createSpecDialogAddClient": "Додати нового клієнта",
+    "createSpecDialogWithoutClient": "Продовжити без клієнта",
+    "createSpecDialogAdd": "Додати ",
     "createDeal": "Створити угоду",
     "clientUid": "УНК",
-    "clientName": "Ім'я / Прізвище клієнта",
+    "clientName": "Найменування клієнта",
     "clientPhone": "Телефон",
     "specNo": "Номер договора (специф.)",
     "createdAt": "Документ створений",
@@ -581,14 +586,16 @@
     "train": "Потяг",
     "vehicle": "Реєстр. номер ТЗ",
     "trailer": "Реєстр. номер напівпричепа",
+    "fblNo": "№ МТК",
     "vehicleTrailerFlight": "Реєстр. номер ТЗ і напівпричепа / Рейс",
     "trackingNo": "№ відправлення",
     "deliveryCompany": "Служба доставки",
     "shippingMarks": "Маркування вантажу",
     "accordingToContract": "Відповідно до контракту",
-    "exportReference": "\nДата відправки",
+    "exportReference": "Дата відправки",
     "countryOfOrigin": "Страна походження",
     "pkgListNo": "№ пакувального листа",
+    "itemNo": "№ З/п",
     "itemDescription": "Опис",
     "itemQuantityUnit": "Кількість / од. вим.",
     "itemRatePrice": "Ціна за од.",
@@ -603,6 +610,7 @@
     "balanceDue": "Залишок до сплати",
     "depositeDue": "Передоплата від {date}",
     "invoiceCurrency": "Валюта інвойсу",
+    "currencyUSD": "USD (840)",
     "amountInWords": "Сума прописом",
     "contractNo": "Номер контракту",
     "contractDate": "Дата контракту",
@@ -614,8 +622,8 @@
     "confirmation": "Підтверджую, що все вищевказане вірно!",
     "manager": "Менеджер компанії",
     "sign": "Підпис",
-    "required": "обов'язково",
-    "warning": "бажано"
+    "required": "Обов'язково",
+    "warning": "Бажано"
   },
   "welcomeModal": {
     "head": "Ласкаво просимо в zennnn",
@@ -653,12 +661,7 @@
   },
   "dataTable": {
     "noData": "Відсутні дані",
-    "noResult": "Не знайдено відповідних записів",
-    "ariaLabel": {
-      "sortDescending": "Впорядковано по низхідній. Активуйте, щоб прибрати сортування",
-      "sortAscending": "Впорядковано у висхідній. Активуйте для упорядкування по низхідній.",
-      "sortNone": "Не впорядковано. Активуйте для упорядкування по висхідній."
-    }
+    "noResult": "Не знайдено відповідних записів"
   },
   "select": {
     "noData": "Відсутні дані",
@@ -736,7 +739,11 @@
     "removeContract": "Ви дійсно хочете видалити документ?"
   },
   "rule": {
-    "passwordsDoNotMatch": "Введені паролі не співпадають"
+    "required": "Заповніть це поле.",
+    "requiredSelect": "оберіть зі списку",
+    "email": "Введіть адресу електронної пошти.",
+    "passwordsDoNotMatch": "Введені паролі не співпадають",
+    "minLength": "Використовуйте не менше {n} символів."
   },
   "preposition": {
     "from": "від",
@@ -773,7 +780,7 @@
     "AIR": "Авіа",
     "RAILWAY": "Залізнична",
     "CAR": "Автомобільна",
-    "MIXED": "Змішана",
+    "MIXED": "Мультимодальна",
     "EXPRESS": "Експрес / Поштове відправлення"
   },
   "customsTerms": {
@@ -810,7 +817,8 @@
     "m3": "куб. м",
     "set": "набір",
     "m2": "кв. м",
-    "kg": "кг"
+    "kg": "кг",
+    "pack": "упак."
   },
   "countries": {
     "RU": {

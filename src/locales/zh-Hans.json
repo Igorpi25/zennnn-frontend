@@ -77,9 +77,14 @@
     "resend": "重新发电子邮件。"
   },
   "deals": {
+    "createSpecDialogHeader": "请选客户与继续",
+    "createSpecDialogSearchPlaceholder": "姓名",
+    "createSpecDialogAddClient": "创建新客户",
+    "createSpecDialogWithoutClient": "不加客户可继续",
+    "createSpecDialogAdd": "加客户",
     "createDeal": "创建新交易",
     "clientUid": "客户编码",
-    "clientName": "客户姓名",
+    "clientName": "客户名称",
     "clientPhone": "联系电话",
     "specNo": "合同编码",
     "createdAt": "创建日期",
@@ -549,16 +554,30 @@
     }
   },
   "print": {
+    "supplierDiscount": "供应商折扣",
+    "sheet": "第{p}页，共{t}页",
+    "seller": "卖家（供应商）",
+    "addressTelFax": "地址 / 电话 / 传真",
+    "emailWeb": "邮件 / 网站",
     "vatNo": "纳税人识别号 (VAT)",
     "beneficiyBank": "银行名称",
     "bankAddress": "银行地址",
+    "accountNumberSwift": "银行账户 / SWIFT",
+    "invoiceNo": "发票号",
+    "invoiceDate": "发票日期",
+    "billTo": "买家",
+    "importer": "进口商",
+    "contactPersonEmail": "联系人 / 邮件",
     "from": "发货地点",
     "via": "中间站",
     "to": "目的地",
     "methodOfDespatch": "发货方式",
+    "quanitiyOfContainers": "集装箱号码",
     "billOfLadingNo": "提单号",
+    "containersAndSealsNo": "集装箱与封条号码",
     "vessel": "船名称",
     "exportDate": "交货日期",
+    "incoterms": "交货条件",
     "quanitiyOfCartons": "货件总数",
     "airWaybillNo": "空运单号码",
     "flight": "航班",
@@ -568,15 +587,44 @@
     "train": "火车行程",
     "vehicle": "车牌",
     "trailer": "半挂车车牌",
+    "fblNo": "多式联运提单号",
+    "vehicleTrailerFlight": "车牌与半挂车车牌",
     "trackingNo": "快递单号",
     "deliveryCompany": "快递公司",
+    "shippingMarks": "唛头",
+    "accordingToContract": "按照合同条件",
+    "exportReference": "出口描述",
     "countryOfOrigin": "原产国",
+    "pkgListNo": "包装单号",
+    "itemNo": "件号",
+    "itemDescription": "描述",
+    "itemQuantityUnit": "数量 / 件",
+    "itemRatePrice": "价格",
     "itemAmount": "总价",
+    "subtotal": "合计",
     "discount": "折扣",
     "vat": "增值税",
+    "shipping": "运输费",
+    "total": "总计",
     "withholdingTax": "所得税",
+    "paid": "已支付",
+    "balanceDue": "其余应支付",
+    "depositeDue": "支付日期 {date}",
     "invoiceCurrency": "发票外币",
-    "amountInWords": "总金额大写"
+    "currencyUSD": "USD (840)",
+    "amountInWords": "总金额大写",
+    "contractNo": "合同号",
+    "contractDate": "合同日期",
+    "terms": "合同条件",
+    "NET7": "7天内支付",
+    "dateDue": "支付条件",
+    "paymentMethods": "支付方式",
+    "TTaccordingToContract": "按照合同银行汇款支付方式",
+    "confirmation": "我保证此信息准确与没有错误",
+    "manager": "职位",
+    "sign": "签字",
+    "required": "必须填",
+    "warning": "建议填"
   },
   "welcomeModal": {
     "head": "欢迎来到ZENNNN数码办公室系统",
@@ -622,6 +670,7 @@
   },
   "currency": {
     "USD": {
+      "label": "美元",
       "iso-4217": "USD",
       "symbol": "$"
     },
@@ -636,10 +685,12 @@
       "symbol": "₽"
     },
     "EUR": {
+      "label": "欧元",
       "iso-4217": "EUR",
       "symbol": "€"
     },
     "UAH": {
+      "label": "格里",
       "iso-4217": "UAH",
       "symbol": "₴"
     }
@@ -689,7 +740,11 @@
     "removeContract": "是否删除此文件？"
   },
   "rule": {
-    "passwordsDoNotMatch": "输入的密码不符"
+    "required": "请填写",
+    "requiredSelect": "请选",
+    "email": "请输入邮件地址",
+    "passwordsDoNotMatch": "输入的密码不符",
+    "minLength": "密码至少应为{n}个字符。"
   },
   "preposition": {
     "from": "从",
@@ -763,7 +818,8 @@
     "m3": "立方",
     "set": "套",
     "m2": "平方",
-    "kg": "公斤"
+    "kg": "公斤",
+    "pack": "包"
   },
   "countries": {
     "RU": {

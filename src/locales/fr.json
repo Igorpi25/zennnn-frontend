@@ -77,13 +77,18 @@
     "resend": "Renvoyer."
   },
   "deals": {
-    "createDeal": "Créer un accord",
+    "createSpecDialogHeader": "Veuillez lier le Client au Contrat et continuer",
+    "createSpecDialogSearchPlaceholder": "Prénom ou nom",
+    "createSpecDialogAddClient": "Créer un nouveau Client",
+    "createSpecDialogWithoutClient": "Continuer sans lier le Client",
+    "createSpecDialogAdd": "Lien Client",
+    "createDeal": "Créer l'accord",
     "clientUid": "UCN",
-    "clientName": "Prénom nom de famille",
+    "clientName": "Client",
     "clientPhone": "Numéro de téléphone",
-    "specNo": "Numéro de contrat (n ° d'expédition)",
-    "createdAt": "Créé sur",
-    "moneyRecieved": "Argent reçu du client",
+    "specNo": "Numéro de contrat (N ° d'expédition)",
+    "createdAt": "Créé",
+    "moneyRecieved": "Client payé",
     "expensesPaid": "Dépenses payées"
   },
   "staff": {
@@ -225,7 +230,7 @@
     "sentFrom": "Envoyé de…",
     "sentThrough": "Par…",
     "destination": "Destination",
-    "shipmentType": "Type d'envoi",
+    "shipmentType": "Méthode d'envoi",
     "billOfLadingNo": "Connaissement non.",
     "ship": "Navire",
     "containersNo": "Numéro du conteneur (Seal No.)",
@@ -280,6 +285,7 @@
     "prepay": "Prépayer",
     "summaryTitle": "Résumé d'expédition",
     "container": "récipient",
+    "containerMeasure": "`",
     "containerLoaded": "chargé:",
     "estimateDate": "Date d'expédition estimée:",
     "totalVolume": "Volume total:",
@@ -499,6 +505,7 @@
   },
   "invitation": {
     "text": "Vous avez reçu une invitation au système de {company}.",
+    "hint": "Vous pouvez accepter ou refuser cette invitation.",
     "accept": "J'accepte",
     "decline": "Déclin"
   },
@@ -528,37 +535,49 @@
     "specNumber": "Le numéro de document est rempli automatiquement lors de l'impression et se compose d'un numéro de client (exemple: A0097) et de la date de création d'une spécification. Si plusieurs spécifications ont été créées le même jour pour le même client, un numéro de série est ajouté. (Par exemple: 1, 2, 3 ... n).",
     "paperDate": "La date du document est renseignée automatiquement lors de l'impression et correspond à la date de création d'une spécification dans la section \"Mes Offres\".",
     "table": "Dans cette zone, il y aura un tableau généré automatiquement avec une liste des marchandises, leur quantité et leur coût final, calculé selon le taux de change établi pour les documents financiers.",
-    "buyerDetails": "Les exigences de l'acheteur seront remplies automatiquement lors de l'impression des documents et correspondront au client spécifié dans la spécification actuelle.",
+    "buyerDetails": "Les coordonnées de l'entreprise cliente seront remplies automatiquement lors de l'impression des documents.",
     "addRequisites": "Ajouter des exigences",
     "requisites": {
       "supplier": "Fournisseur:",
       "address": "Adresse:",
       "postcode": "Code postal:",
-      "phone": "Numéro de téléphone:",
+      "phone": "Tél.:",
       "fax": "Fax:",
       "email": "Email:",
-      "bank": "Banque du bénéficiaire",
+      "bank": "Banque du bénéficiaire:",
       "bankAddress": "Adresse de la banque:",
-      "accountNumber": "Numéro de compte:",
+      "accountNumber": "A/C No.:",
       "swift": "SWIFT:",
       "fullName": "Nom complet:",
       "position": "Position:",
-      "signatureStamp": "Signature / cachet:"
+      "signatureStamp": "Signature / Cachet:"
     }
   },
   "print": {
-    "addressTelFax": "Adresse / Numéro de téléphone / Fax",
-    "vatNo": "VAT",
+    "supplierDiscount": "Remise fournisseur",
+    "sheet": "Feuille {p} de {t}",
+    "seller": "Vendeur (Fournisseur)",
+    "addressTelFax": "Adresse / Tél./ Fax",
+    "emailWeb": "Courriel / Web",
+    "vatNo": "VAT No.",
     "beneficiyBank": "Banque du bénéficiaire",
-    "bankAddress": "adresse de la banque",
-    "accountNumberSwift": "Numéro de compte:",
+    "bankAddress": "Adresse de la banque",
+    "accountNumberSwift": "Numéro de compte",
+    "invoiceNo": "№ Facture",
+    "invoiceDate": "Date de facturation",
+    "billTo": "Client",
+    "importer": "Importateur",
+    "contactPersonEmail": "Personne de contact / Email",
     "from": "Envoyé de",
     "via": "Par",
     "to": "Destination",
     "methodOfDespatch": "Type d'envoi",
+    "quanitiyOfContainers": "Nombre de conteneurs",
     "billOfLadingNo": "Connaissement non.",
+    "containersAndSealsNo": "Numéro et sceau du conteneur",
     "vessel": "Navire",
     "exportDate": "Date d'expédition",
+    "incoterms": "Conditions de livraison",
     "quanitiyOfCartons": "Nombre de colis",
     "airWaybillNo": "Numéro de lettre de transport aérien",
     "flight": "Vol",
@@ -568,25 +587,53 @@
     "train": "Train",
     "vehicle": "Reg. numéro du véhicule",
     "trailer": "Reg. numéro de la semi-remorque",
+    "fblNo": "FBL No.",
+    "vehicleTrailerFlight": "Véhicule et remorque No.",
     "trackingNo": "N ° postal",
     "deliveryCompany": "Service de livraison",
+    "shippingMarks": "Marques d'expédition",
+    "accordingToContract": "Selon le contrat",
+    "exportReference": "Exporter la référence",
     "countryOfOrigin": "Pays d'origine",
+    "pkgListNo": "N ° de la liste d'emballage",
+    "itemNo": "Numéro d'article",
+    "itemDescription": "La description",
+    "itemQuantityUnit": "Unité de quantité",
+    "itemRatePrice": "Prix unitaire",
     "itemAmount": "Coût",
+    "subtotal": "Somme",
     "discount": "Remise",
     "vat": "T.V.A.",
+    "shipping": "Livraison",
+    "total": "Total",
     "withholdingTax": "Impôt sur le revenu",
+    "paid": "Payé",
+    "balanceDue": "Le reste à payer",
+    "depositeDue": "Prépaiement à partir du {date}",
     "invoiceCurrency": "Devise de facturation",
+    "currencyUSD": "USD (840)",
     "amountInWords": "Montant du paiement et en mots",
-    "sign": "Signature"
+    "contractNo": "N ° de contrat",
+    "contractDate": "Date du contrat",
+    "terms": "Clauses du contrat",
+    "NET7": "Payez dans les 7 jours",
+    "dateDue": "Payez à",
+    "paymentMethods": "Mode de paiement",
+    "TTaccordingToContract": "Transfert télégraphique selon contrat",
+    "confirmation": "Je confirme que tout ce qui précède est vrai!",
+    "manager": "Position",
+    "sign": "Signature",
+    "required": "nécessairement",
+    "warning": "de préférence"
   },
   "welcomeModal": {
     "head": "Bienvenue sur Zennnn",
     "title": "C'est super que vous vous soyez inscrit sur zennnn!",
-    "content": "Pour continuer, nous vous recommandons de remplir les conditions requises de votre entreprise, elles vous seront utiles lorsque vous devrez préparer automatiquement des documents.",
-    "footer": "Vous pouvez ignorer cette étape. À l'avenir, les exigences de l'entreprise peuvent être remplies dans la section",
+    "content": "Tout d'abord, nous vous recommandons d'ajouter les détails de l'entreprise, ces données nécessaires pour générer automatiquement des documents.",
+    "footer": "Vous pouvez ignorer cette étape. À l'avenir, tous les détails de l'entreprise pourront être ajoutés sur la page",
     "footerInMenu": "dans le menu principal.",
-    "myCompanies": "«Mes entreprises»",
-    "fillRequisites": "Remplissez les conditions requises"
+    "myCompanies": "Mes entreprises",
+    "fillRequisites": "Données de l'entreprise"
   },
   "comments": {
     "enterComment": "Entrez un commentaire…",
@@ -594,7 +641,7 @@
     "post": "Publier"
   },
   "statusBar": {
-    "requisites": "Conditions requises",
+    "requisites": "Données d'entreprise",
     "myCompanies": "Mes entreprises",
     "signin": "S'identifier",
     "signout": "Se déconnecter",
@@ -607,19 +654,15 @@
     }
   },
   "navbar": {
-    "deals": "Mes offres",
-    "clients": "Mes clients",
-    "suppliers": "Mes fournisseurs",
-    "staff": "Mon équipe"
+    "deals": "Offres",
+    "clients": "Clients",
+    "suppliers": "Fournisseurs",
+    "staff": "Équipe",
+    "goods": "Marchandises"
   },
   "dataTable": {
     "noData": "Pas de données disponibles",
-    "noResult": "Aucun enregistrements correspondants trouvés",
-    "ariaLabel": {
-      "sortDescending": "Tri décroissant. Activez pour supprimer le tri.",
-      "sortAscending": "Tri croissant. Activez pour trier par ordre décroissant.",
-      "sortNone": "Pas trié. Activez pour trier par ordre croissant."
-    }
+    "noResult": "Aucun enregistrements correspondants trouvés"
   },
   "select": {
     "noData": "Pas de données disponibles",
@@ -697,7 +740,11 @@
     "removeContract": "Voulez-vous vraiment supprimer le contrat?"
   },
   "rule": {
-    "passwordsDoNotMatch": "Les mots de passe saisis ne correspondent pas."
+    "required": "Remplissez ce champ.",
+    "requiredSelect": "veuillez sélectionner",
+    "email": "Entrer votre Email.",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas.",
+    "minLength": "Le mot de passe doit contenir au moins {n} caractères."
   },
   "preposition": {
     "from": "de",
@@ -730,11 +777,11 @@
   },
   "shipmentType": {
     "UNDEFINED": "indéfini",
-    "MARINE": "Maritime",
-    "AIR": "Air",
+    "MARINE": "Mer",
+    "AIR": "Fret aérien",
     "RAILWAY": "Chemin de fer",
-    "CAR": "Voiture",
-    "MIXED": "Mixte",
+    "CAR": "Route",
+    "MIXED": "Multimodal",
     "EXPRESS": "Express / Mailing"
   },
   "customsTerms": {
@@ -755,6 +802,13 @@
     "IN_PRODUCTION": "En production",
     "IN_STOCK": "En stock"
   },
+  "invitationStatus": {
+    "PENDING": "En attente",
+    "ACCEPTED": "Admis",
+    "DECLINED": "Diminué",
+    "CANCELED": "Annulé",
+    "EXPIRED": "Expiré"
+  },
   "unit": {
     "pcs": "pcs",
     "roll": "bobine",
@@ -764,7 +818,8 @@
     "m3": "m3",
     "set": "kit",
     "m2": "m2",
-    "kg": "kg"
+    "kg": "kg",
+    "pack": "paq."
   },
   "countries": {
     "RU": {
