@@ -397,7 +397,7 @@
     }
   },
   "clients": {
-    "createClient": "Créer un client",
+    "createClient": "Créer un nouveau client",
     "clientsDebt": "Dette du client",
     "currentDealsAmount": "Montant actuel des transactions",
     "companyName": "Nom de la compagnie",
@@ -713,7 +713,7 @@
     "expand": "Afficher",
     "expandAll": "Tout révéler",
     "dontSave": "Ne pas sauvegarder",
-    "createPatternName": "Créez un nom pour votre modèle"
+    "createPatternName": "Définir le nom du modèle"
   },
   "message": {
     "userNotConfirmed": "L'utilisateur n'est pas confirmé, un lien de confirmation se trouve dans votre boite email.",

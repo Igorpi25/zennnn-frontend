@@ -398,7 +398,7 @@
     }
   },
   "clients": {
-    "createClient": "Create a client",
+    "createClient": "Create new Client",
     "clientsDebt": "Client's debt",
     "currentDealsAmount": "Current deals amount",
     "companyName": "Company name",
@@ -714,7 +714,7 @@
     "expand": "Unhide",
     "expandAll": "Unhide all",
     "dontSave": "Don't save",
-    "createPatternName": "Create a name for your template"
+    "createPatternName": "Set template name"
   },
   "message": {
     "userNotConfirmed": "The user is not confirmed, a confirmation link is in your email.",

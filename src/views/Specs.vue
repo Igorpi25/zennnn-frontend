@@ -155,7 +155,7 @@
               <template v-slot:prepend-item>
                 <span class="flex items-center jusitfy-center text-primary">
                   <i class="icon-add mr-1" />
-                  <span>{{ $t('action.create') }}</span>
+                  <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
                 </span>
               </template>
               <template v-slot:append>
