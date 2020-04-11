@@ -25,6 +25,7 @@
       class="select__controls"
     >
       <div
+        :style="{ paddingTop: !solo ? '10px' : null }"
         class="select__slot"
       >
         <label
@@ -132,7 +133,7 @@
             :value="item[itemValue]"
             :class="[
               'select-picker__item v-list-item',
-              { 'select-picker__item--selected': item[itemValue] === internalValue[itemValue] }
+              { 'select-picker__item--selected': item[itemValue] === internalValueObject[itemValue] }
             ]"
             tabindex="0"
             role="menuitem"
@@ -334,6 +335,14 @@ export default {
       return c
     },
     internalValue: {
+      get () {
+        return this.internalValueObject[this.itemValue]
+      },
+      set () {
+        //
+      },
+    },
+    internalValueObject: {
       get () {
         if (isObject(this.lazyValue)) {
           return this.lazyValue
@@ -553,7 +562,8 @@ export default {
       this.$refs.input.focus()
     },
     select (value) {
-      this.internalValue = value
+      this.internalValueObject = value
+      this.checkField({})
       const val = this.returnObject ? value : value[this.itemValue]
       this.$emit('input', val)
       this.closeMenu()

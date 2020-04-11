@@ -12,7 +12,7 @@
 }
 .select__slot:before {
   @apply absolute left-0 right-auto w-full;
-  /* @apply border-t border-solid border-gray-light; */
+  @apply border-t border-solid border-gray-light;
   content: "";
   bottom: -1px;
 }
