@@ -27,7 +27,7 @@
           </TextField>
         </div>
 
-        <div class="overflow-x-auto pb-16">
+        <div class="overflow-x-auto pb-4">
           <DataTable
             :headers="headers"
             :items="items"
@@ -93,10 +93,21 @@
                   <td class="text-right">{{ $n(item.finalCost || 0, 'decimal') }}</td>
                   <td class="text-left pl-10">{{ item.givenName }} {{ item.familyName }}</td>
                   <td class="text-left">{{ item.role | roleFilter }}</td>
-                  <td class="text-right pointer-events-none" @click.prevent.stop>
+                  <td class="text-center pointer-events-none" @click.prevent.stop>
                     <div
-                      class="cursor-pointer pointer-events-auto"
-                      @click="deleteProject(item.id)"
+                      v-if="deleteUserLoading === item.id"
+                      class="flex items-center justify-center"
+                    >
+                      <v-progress-circular
+                        indeterminate
+                        size="18"
+                        width="2"
+                      />
+                    </div>
+                    <div
+                      v-else
+                      class="cursor-pointer pointer-events-auto flex items-center justify-center"
+                      @click="deleteUser(item.id)"
                     >
                       <i class="icon-delete text-lg text-gray-200" />
                     </div>
@@ -140,8 +151,8 @@
                     <td class="text-right">{{ Math.ceil(((specItem.profit || 0) * 100) / (specItem.finalCost || 1)) }}%</td>
                     <td class="text-right">{{ $n(specItem.finalCost || 0, 'decimal') }}</td>
                     <td class="text-right">{{ $n(specItem.finalObtainCost || 0, 'decimal') }}</td>
-                    <td class="text-center">{{ specItem.customNumber || specItem.specNo || '' }}</td>
-                    <td class="text-center">{{ specItem.client && specItem.client.fullName }}</td>
+                    <td class="text-left">{{ specItem.customNumber || specItem.specNo || '' }}</td>
+                    <td class="text-left">{{ specItem.client && specItem.client.fullName }}</td>
                     <td></td>
                   </tr>
                 </template>
@@ -149,17 +160,17 @@
             </template>
           </DataTable>
         </div>
-        <h4 class="text-xl font-semibold text-white">
+        <h4 class="text-xl font-semibold text-white mt-12">
           {{ $t('staff.invitations') }}
         </h4>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto pb-4">
           <DataTable
             :headers="invitationsHeaders"
             :items="invitations"
             table-width="100%"
             table-class="table-fixed"
             thead-class="text-accent2 border-b border-accent2"
-            items-row-class="bg-transparent border-none"
+            items-row-class="border-none bg-background hover:bg-accent3"
             items-cell-class="bg-transparent"
           >
             <template v-slot:item.invitationEmail="{ item }">
@@ -168,7 +179,7 @@
               </td>
             </template>
             <template v-slot:item.invitationRole="{ item }">
-              <td>
+              <td class="leading-tight">
                 {{ item.invitationRole | roleFilter }}
               </td>
             </template>
@@ -190,7 +201,7 @@
             <template v-slot:item.actions="{ item }">
               <td>
                 <div
-                  class="cursor-pointer pointer-events-auto"
+                  class="cursor-pointer pointer-events-auto flex items-center justify-center"
                   @click="cancelInvitation(item.id)"
                 >
                   <i class="icon-delete text-lg text-gray-200" />
@@ -226,9 +237,10 @@ import {
 
 import StaffCreateModal from '../components/StaffCreateModal.vue'
 import { LIST_ORG_INVITATIONS, LIST_STAFF } from '../graphql/queries'
-import { CANCEL_INVITATION } from '../graphql/mutations'
+import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
 import { SpecStatus } from '../graphql/enums'
 import { i18n } from '../plugins'
+import { confirmDialog } from '../util/helpers'
 
 export default {
   name: 'Staff',
@@ -266,6 +278,7 @@ export default {
   data () {
     return {
       SpecStatus,
+      deleteUserLoading: null,
       search: '',
       loading: false,
       createLoading: false,
@@ -301,10 +314,10 @@ export default {
     headers () {
       return [
         { text: '', value: 'status', align: 'left', width: 45, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.inWork'), value: 'inWork', align: 'left', width: 80, minWidth: 80, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.diff'), value: 'profit', align: 'left', width: 60, minWidth: 60, bgcolor: 'tansparent' },
-        { text: this.$t('staff.percent'), value: 'diffPercent', align: 'left', width: 40, minWidth: 40, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.revenue'), value: 'finalObtainCost', align: 'right', width: 80, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('staff.inWork'), value: 'inWorkCount', align: 'left', width: 80, minWidth: 80, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('staff.diff'), value: 'profit', align: 'right', width: 120, minWidth: 120, bgcolor: 'tansparent' },
+        { text: this.$t('staff.percent'), value: 'diffPercent', align: 'right', width: 80, minWidth: 80, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('staff.revenue'), value: 'finalObtainCost', align: 'right', width: 120, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('staff.costOfGoods'), value: 'finalCost', align: 'right', width: 120, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('staff.fullName'), value: 'fullName', align: 'left', width: 180, minWidth: 180, bgcolor: 'tansparent' },
         { text: this.$t('staff.access'), value: 'access', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent' },
@@ -316,7 +329,7 @@ export default {
         { text: this.$t('staff.inviteGivenName'), width: 160, align: 'left', bgcolor: 'tansparent', value: 'invitationGivenName' },
         { text: this.$t('staff.inviteFamilyName'), width: 160, align: 'left', bgcolor: 'tansparent', value: 'invitationFamilyName' },
         { text: this.$t('staff.inviteEmail'), width: 200, align: 'left', bgcolor: 'tansparent', value: 'invitationEmail' },
-        { text: this.$t('staff.inviteRole'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'invitationRole' },
+        { text: this.$t('staff.inviteRole'), width: 120, align: 'left', bgcolor: 'tansparent', value: 'invitationRole' },
         { text: this.$t('staff.inviteStatus'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'status' },
         { text: this.$t('staff.inviteCreatedAt'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'createdAt' },
         { text: this.$t('staff.inviteUpdatedAt'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'updatedAt' },
@@ -338,6 +351,46 @@ export default {
         this.refetchInvitations()
       } catch (error) {
         throw new Error(error)
+      }
+    },
+    async deleteUser (userId) {
+      try {
+        const msg = this.$t('alert.removeEmployee')
+        const confirm = await confirmDialog(msg)
+        if (confirm === 'not_confirmed') {
+          return
+        }
+        this.deleteUserLoading = userId
+        await this.$apollo.mutate({
+          mutation: REMOVE_USER_FROM_ORG,
+          variables: {
+            orgId: this.orgId,
+            userId,
+          },
+        })
+        const { listStaff } = this.$apollo.provider.defaultClient.readQuery({
+          query: LIST_STAFF,
+          variables: { orgId: this.orgId },
+        })
+
+        const index = listStaff.items.findIndex(el => el.id === userId)
+
+        if (index !== -1) {
+          listStaff.items.splice(index, 1)
+          this.$apollo.provider.defaultClient.writeQuery({
+            query: LIST_STAFF,
+            variables: { orgId: this.orgId },
+            data: {
+              listStaff,
+            },
+          })
+        }
+      } catch (error) {
+        if (error === 'not_confirmed') return
+        if (error.message !== 'ForbiddenError: Owner cannot be deleted.') return
+        throw new Error(error)
+      } finally {
+        this.deleteUserLoading = null
       }
     },
     toggle (index) {

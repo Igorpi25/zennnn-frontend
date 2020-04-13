@@ -408,6 +408,12 @@ export const CANCEL_INVITATION = gql`
   }
 `
 
+export const REMOVE_USER_FROM_ORG = gql`
+  mutation RemoveUserFromOrg($orgId: ID!, $userId: ID!) {
+    removeUserFromOrg(orgId: $orgId, userId: $userId)
+  }
+`
+
 export const OPEN_LINK_ACCESS = gql`
   mutation OpenLinkAccess($specId: ID!) {
     openLinkAccess(specId: $specId)

@@ -742,7 +742,8 @@
     "removeClient": "Are you sure you want to delete the Client?",
     "removeSupplier": "Are you sure you want to delete the Supplier?",
     "removeRequisites": "Are you sure you want to delete the Company Details?",
-    "removeContract": "Are you sure you want to delete the Contract?"
+    "removeContract": "Are you sure you want to delete the Contract?",
+    "removeEmployee": "Are you sure you want to delete the Employee?"
   },
   "rule": {
     "required": "Fill in this field.",
