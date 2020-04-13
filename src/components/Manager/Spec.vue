@@ -41,7 +41,15 @@
               class="leading-normal max-w-sm w-auto inline-flex spec-search-input"
               style="min-width: 220px"
               @input="setSpecClient($event && $event.id)"
-            />
+              @click:prepend-item="createClient"
+            >
+              <template v-slot:prepend-item>
+                <span class="flex items-center jusitfy-center text-primary">
+                  <i class="icon-add mr-1" />
+                  <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
+                </span>
+              </template>
+            </Select>
           </span>
         </span>
         <span
@@ -207,6 +215,23 @@
         @create="setCreatedSupplier"
       />
     </v-dialog>
+    <v-dialog
+      ref="clientDialog"
+      v-model="clientDialog"
+      :fullscreen="$vuetify.breakpoint.xs"
+      scrollable
+      max-width="1024"
+      content-class="text-gray-100"
+    >
+      <ClientCard
+        ref="clientCard"
+        :org-id="orgId"
+        create
+        is-component
+        @close="clientDialog = false"
+        @create="setCreateSpecClient"
+      />
+    </v-dialog>
   </div>
 </template>
 
@@ -215,6 +240,7 @@ import InvoiceHeader from './InvoiceHeader.vue'
 import Invoice from './Invoice.vue'
 import SpecSummary from '../SpecSummary'
 import SupplierCard from '../SupplierCard'
+import ClientCard from '../ClientCard'
 import Comments from '../Comments'
 
 import spec from '../../mixins/spec'
@@ -226,6 +252,7 @@ export default {
     Invoice,
     SpecSummary,
     SupplierCard,
+    ClientCard,
     Comments,
   },
   mixins: [spec],

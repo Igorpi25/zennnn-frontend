@@ -78,6 +78,7 @@ export default {
   data () {
     return {
       Role,
+      clientDialog: false,
       createLoading: null,
       updateLoading: null,
       deleteLoading: null,
@@ -226,6 +227,22 @@ export default {
     openCreateSupplierDialog (item) {
       this.createSupplierInvoice = item
       this.supplierDialog = true
+    },
+    createClient () {
+      this.clientDialog = true
+      this.$nextTick(() => {
+        if (this.$refs.clientCard) {
+          this.$refs.clientCard.reset()
+          if (this.$refs.clientDialog.$refs.dialog) {
+            this.$refs.clientDialog.$refs.dialog.scrollTop = 0
+          }
+        }
+      })
+    },
+    setCreateSpecClient (client) {
+      this.setSpecClient(client.id)
+      this.clientDialog = false
+      this.$apollo.queries.searchClients.refetch()
     },
     setCreatedSupplier (supplier) {
       this.setInvoiceSupplier(this.createSupplierInvoice.id, (supplier && supplier.id))

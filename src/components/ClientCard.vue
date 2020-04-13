@@ -746,6 +746,7 @@ export default {
       }
       this.languageInputError = {}
       this.clientClone = cloneDeep(this.client)
+      this.$apollo.queries.getOrgNextClientUid.refetch()
     },
     validate (focus) {
       if (!this.wasValidate) return
@@ -869,11 +870,11 @@ export default {
             ? response.data.createClient
             : response.data.updateClient
           this.setData(data)
-          this.editMode = false
           if (this.isComponent) {
             const action = this.create ? 'create' : 'update'
             this.$emit(action, data)
           } else {
+            this.editMode = false
             if (this.create && redirectAfterCreate) {
               this.$router.push({
                 name: 'client',
