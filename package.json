@@ -1,6 +1,6 @@
 {
   "name": "zennnn-frontend",
-  "version": "0.16.16",
+  "version": "0.16.17",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -29,6 +29,7 @@
     "date-fns": "^2.8.1",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
+    "intl": "^1.2.5",
     "localforage": "^1.7.3",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
@@ -64,6 +65,8 @@
   },
   "browserslist": [
     "> 1%",
-    "last 2 versions"
+    "last 2 versions",
+    "iOS >= 9",
+    "Safari >= 9"
   ]
 }
