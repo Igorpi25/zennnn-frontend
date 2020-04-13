@@ -352,15 +352,24 @@ export const LIST_STAFF = gql`
         finalCost
         finalObtainCost
         profit
+        percent
         totalPrepay
         totalClientDebt
         specs {
-          ...SpecFragment
+          id
+          specStatus
+          moneyPaid
+          moneyReceived
+          profit
+          percent
+          finalCost
+          finalObtainCost
+          specNo
+          clientFullName
         }
       }
     }
   }
-  ${SPEC_FRAGMENT}
 `
 
 export const GET_SPEC_LINK_ACCESS = gql`
