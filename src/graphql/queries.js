@@ -16,6 +16,18 @@ import {
   PAPER_PRODUCT_FRAGMENT,
 } from './typeDefs'
 
+export const GET_INVITE_USER_TO_ORG = gql`
+  query GetInviteUserToOrg($orgId: ID!, $email: String!) {
+    getInviteUserToOrg(orgId: $orgId, email: $email) {
+      id
+      email
+      givenName
+      familyName
+      language
+    }
+  }
+`
+
 export const GET_ORGS = gql`
   query GetOrgs {
     getOrgs {
