@@ -185,7 +185,10 @@
     </div>
 
     <div>
-      <SpecSummary :spec="spec" />
+      <SpecSummary
+        :spec="spec"
+        :role="Role.OWNER"
+      />
     </div>
 
     <v-dialog

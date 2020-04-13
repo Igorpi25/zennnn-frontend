@@ -58,7 +58,7 @@
         {{ $t('shipping.summaryTitle') }}
       </h4>
       <div class="spec-summary__wrapper flex-col lg:flex-row">
-        <div class="spec-summary__info">
+        <div class="spec-summary__info" v-if="isOwnerOrManager || isWarehouseman">
           <div v-if="containers.length > 0" class="relative pb-5">
             <div
               v-if="spec.shipped"
@@ -169,6 +169,7 @@
               >
                 <span>
                   <select
+                    v-if="isOwnerOrManager"
                     :value="`${c.size}${c.mode}`"
                     :disabled="setContainerSizeLoading"
                     name="container-size"
@@ -191,6 +192,9 @@
                       </span>
                     </option>
                   </select>
+                  <span v-else>
+                    {{ `${c.size ? c.size.slice(1) : ''}${$t('shipping.containerMeasure')}${c.mode ? c.mode.slice(1) : ''}` }}
+                  </span>
                   {{ ` ${$t('shipping.container')} ${$t('shipping.containerLoaded')}` }}
                 </span>
                 <span class="leaders__num">
@@ -223,6 +227,7 @@
               </li>
             </ul>
             <ToggleButton
+              v-if="isOwnerOrManager"
               :value="spec.shipped"
               class="my-6"
               @input="updateSpec({ shipped: $event })"
@@ -231,7 +236,7 @@
             </ToggleButton>
           </div>
         </div>
-        <div class="spec-summary__cost">
+        <div class="spec-summary__cost" v-if="isOwnerOrManager || isAccountant">
           <div class="spec-summary__cost__card">
             <ul>
               <li class="flex">
@@ -352,7 +357,7 @@
               </li>
             </ul>
           </div>
-          <div class="flex items-center bg-gray-700 rounded-md p-5 mt-4">
+          <div class="flex items-center bg-gray-700 rounded-md p-5 mt-4" v-if="isOwnerOrManager">
             <div class="flex-grow text-gray-100">
               <span>{{ $t('shipping.documentRate') }}</span>
               <select
@@ -396,7 +401,7 @@
       </div>
     </div>
 
-    <div class="py-10">
+    <div class="py-10" v-if="isOwnerOrManager">
       <div class="flex flex-wrap">
         <!-- Delivery -->
         <SpecShipment
@@ -415,7 +420,7 @@
       </div>
     </div>
 
-    <div class="pb-10">
+    <div class="pb-10" v-if="isOwnerOrManager">
       <h4 class="text-xl font-semibold leading-6 mb-4">
         {{ $t('shipping.actions') }}
       </h4>
@@ -594,7 +599,7 @@ import SpecCustoms from '../components/SpecCustoms.vue'
 
 import Countries from '../config/countries-iso3.json'
 
-import { ClientType, ShipmentType, SpecCurrency } from '../graphql/enums'
+import { ClientType, ShipmentType, SpecCurrency, Role } from '../graphql/enums'
 import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS, GET_SPEC_EMAIL_ACCESS } from '../graphql/queries'
 import {
   UPDATE_SPEC,
@@ -621,6 +626,10 @@ export default {
     spec: {
       type: Object,
       default: () => ({}),
+    },
+    role: {
+      type: String,
+      required: true,
     },
   },
   apollo: {
@@ -665,6 +674,15 @@ export default {
     }
   },
   computed: {
+    isOwnerOrManager () {
+      return this.role === Role.OWNER || this.role === Role.MANAGER
+    },
+    isAccountant () {
+      return this.role === Role.ACCOUNTANT
+    },
+    isWarehouseman () {
+      return this.role === Role.WAREHOUSEMAN
+    },
     isCurrencyDisabled () {
       return this.currency === SpecCurrency.USD
     },

@@ -142,21 +142,21 @@ export default {
           width: 138,
           bgcolor: 'gray-darkest',
         },
-        { text: this.$t('shipping.obtainAmount'), value: 'purchaseAmount', minWidth: 100, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.obtainAmount'), value: 'purchaseAmount', minWidth: 100, width: '100%', bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.clientCost'), value: 'clientPrice', width: 138, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.obtainAmount'), value: 'clientAmount', minWidth: 100, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.obtainAmount'), value: 'clientAmount', minWidth: 100, width: '100%', bgcolor: 'gray-darkest' },
       ]
     },
     infoHeaders () {
       return [
         { text: this.$t('shipping.additionalPhoto'), value: 'images', width: 175, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.additionalInfo'), value: 'description', align: 'left', bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.additionalInfo'), value: 'description', width: '100%', align: 'left', bgcolor: 'gray-darkest' },
         { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
       ]
     },
     linkHeaders () {
       return [
-        { text: this.$t('shipping.linkField'), value: 'url', align: 'left', bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.linkField'), value: 'url', width: '100%', align: 'left', bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.openLink'), value: 'openLink', width: 70, bgcolor: 'gray-darkest' },
       ]
     },

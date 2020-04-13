@@ -20,44 +20,14 @@
       />
     </td>
     <td>
-      <Editable
-        :value="item.name"
-        :placeholder="$t('shipping.name')"
-        @input="updateProduct({ name: $event })"
-      />
+      <span>{{ item.name || $t('shipping.name') }}</span>
     </td>
     <td>
-      <Editable
-        :value="item.article"
-        :placeholder="$t('shipping.model')"
-        @input="updateProduct({ article: $event })"
-      />
+      <span>{{ item.article || $t('shipping.model') }}</span>
     </td>
-    <td>
-      <div class="flex items-center">
-        <Editable
-          lazy
-          type="number"
-          inputmode="decimal"
-          format-style="decimal"
-          :value="item.qty"
-          :placeholder="$t('placeholder.emptyNumber')"
-          @input="updateProduct({ qty: $event })"
-        />
-        <select
-          :value="item.unit || 'pcs'"
-          class="simple-select text-primary text-xs"
-          @change="updateProduct({ unit: $event.target.value })"
-        >
-          <option
-            v-for="unit of unitsItems"
-            :key="unit.value"
-            :value="unit.value"
-          >
-            {{ unit.text }}
-          </option>
-        </select>
-      </div>
+    <td class="text-right">
+      <span class="mr-1">{{ $n(item.qty) || $t('placeholder.emptyNumber') }}</span>
+      <span>{{ $t(`unit.${item.unit || 'pcs'}`) }}</span>
     </td>
 
     <template v-if="activeTab === 1">

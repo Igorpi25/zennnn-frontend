@@ -115,7 +115,7 @@
                     {{ $n(invoiceItem.totalGross) }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
                   </td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalCapacity) }} <span class="text-gray-dark">{{ $t('measure.m') }}<sup>3</sup></span>
+                    {{ $n(invoiceItem.totalVolume) }} <span class="text-gray-dark">{{ $t('measure.m') }}<sup>3</sup></span>
                   </td>
                   <td class="text-gray-dark text-center" colspan="3">
                     {{ $n(invoiceItem.totalPkgQty) }} <span class="text-gray-dark">{{ $t('measure.pkg') }}</span>

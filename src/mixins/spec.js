@@ -6,7 +6,7 @@ import {
   mdiPlus,
   mdiSync,
 } from '@mdi/js'
-
+import { Role } from '../graphql/enums'
 import {
   GET_SPEC,
   SEARCH_CLIENTS,
@@ -77,6 +77,7 @@ export default {
   },
   data () {
     return {
+      Role,
       createLoading: null,
       updateLoading: null,
       deleteLoading: null,

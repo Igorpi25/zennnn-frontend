@@ -20,6 +20,10 @@
           <span>
             {{ $d($parseDate(spec.createdAt), 'short') }}
           </span>
+          <template v-if="spec.client">
+            <span> / </span>
+            <span>{{ spec.client.fullName }}</span>
+          </template>
         </span>
         <span
           v-if="expanded.length === 0"
@@ -44,8 +48,14 @@
           has-icon-text
           @click="expand"
         >
-          <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto text-sm" style="color:#aaaaaa">
-            <span class="mr-2">{{ item.invoiceNo || 'A-123-666-8d' }} </span>
+          <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto text-sm text-gray-100">
+            <span class="mr-1">{{ item.invoiceNo || '-' }}</span>
+            <span class="mr-1">{{ $t('preposition.from') }}</span>&nbsp;
+            <span class="mr-1">{{ item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : '-' }}</span>&nbsp;
+            <span v-if="item.supplier">
+              <span> / </span>
+              {{ item.supplier.companyNameSl || '' }}
+            </span>
           </div>
         </InvoiceHeader>
         <Invoice
@@ -60,12 +70,20 @@
         />
       </div>
     </div>
+
+    <div>
+      <SpecSummary
+        :spec="spec"
+        :role="Role.ACCOUNTANT"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import InvoiceHeader from './InvoiceHeader.vue'
 import Invoice from './Invoice.vue'
+import SpecSummary from '../SpecSummary'
 
 import spec from '../../mixins/spec'
 
@@ -74,6 +92,7 @@ export default {
   components: {
     InvoiceHeader,
     Invoice,
+    SpecSummary,
   },
   mixins: [spec],
   data () {

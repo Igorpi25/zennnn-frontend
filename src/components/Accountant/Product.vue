@@ -68,14 +68,14 @@
         </div>
       </td>
       <td class="text-left">
-        <span>{{ info.description || $t('placeholder.emptyText') }}</span>
+        <span>{{ info.description || '-' }}</span>
       </td>
       <td></td>
     </template>
 
     <template v-else-if="activeTab === 3">
-      <td class="text-left text-primary">
-        <span>{{ link.url || $t('placeholder.emptyText') }}</span>
+      <td class="text-left">
+        <span>{{ link.url || '-' }}</span>
       </td>
       <td class="text-right">
         <i><a href="#"></a></i>
