@@ -108,6 +108,7 @@
     "access": "Access permissions",
     "invitations": "Invitations",
     "userAlreadyExistInOrg": "An employee has already been added to the company.",
+    "userNotActive": "User not available. Please try later.",
     "next": "Next",
     "back": "Back",
     "invite": "Invite",

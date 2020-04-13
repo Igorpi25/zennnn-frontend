@@ -15,7 +15,7 @@
           <v-window-item :value="1">
             <Form
               ref="emailForm"
-              :error-message.sync="errorMessage"
+              :error-message.sync="emailErrorMessage"
               lazy-validation
               rounded
               shadow
@@ -29,7 +29,7 @@
                   :rules="[rules.required, rules.email]"
                   type="email"
                   name="email"
-                  @input="errorMessage = ''"
+                  @input="emailErrorMessage = ''"
                 />
               </div>
               <Button
@@ -45,6 +45,7 @@
           <v-window-item :value="2">
             <Form
               ref="inviteForm"
+              :error-message.sync="inviteErrorMessage"
               lazy-validation
               rounded
               shadow
@@ -155,7 +156,8 @@ export default {
   },
   data () {
     return {
-      errorMessage: '',
+      emailErrorMessage: '',
+      inviteErrorMessage: '',
       dialog: false,
       loading: false,
       invitationStep: 1,
@@ -226,10 +228,13 @@ export default {
       if (this.$refs.emailForm) {
         this.$refs.emailForm.reset()
       }
+      this.emailErrorMessage = ''
+      this.inviteErrorMessage = ''
       this.resetInviteForm()
     },
     resetInviteForm () {
       this.inviteUser = null
+      this.inviteErrorMessage = ''
       if (this.$refs.inviteForm) {
         this.$refs.inviteForm.reset()
       }
@@ -270,7 +275,7 @@ export default {
         }
       } catch (error) {
         if (error.message === 'GraphQL error: Error: User already exist in org.') {
-          this.errorMessage = this.$t('staff.userAlreadyExistInOrg')
+          this.emailErrorMessage = this.$t('staff.userAlreadyExistInOrg')
         } else {
           this.$notify({
             color: 'red',
@@ -308,11 +313,15 @@ export default {
           this.$emit('update', true)
         }
       } catch (error) {
-        this.$notify({
-          color: 'red',
-          text: error.message,
-        })
-        throw new Error(error)
+        if (error.message === 'GraphQL error: UsernameExistsException: An account with the given email already exists.') {
+          this.inviteErrorMessage = this.$t('staff.userNotActive')
+        } else {
+          this.$notify({
+            color: 'red',
+            text: error.message,
+          })
+          throw new Error(error)
+        }
       } finally {
         this.inviteFormLoading = false
       }
