@@ -29,7 +29,7 @@
   "signin": {
     "noAccount": "Pas de compte?",
     "signup": "S'inscrire",
-    "welcomeHead": "Bienvenue à Zennnn,",
+    "welcomeHead": "Bienvenue à ZENNNN,",
     "welcomeSubhead": "s'identifier,",
     "welcomeContent": "continuer",
     "login": "Pseudo (email)",
@@ -49,15 +49,15 @@
   "signup": {
     "registration": "Enregistrement",
     "hello": "Bonjour,",
-    "helloContent": "c'est Zennnn - le premier back office numérique pour le commerce international.",
+    "helloContent": "c'est ZENNNN — le premier back office numérique pour le commerce international.",
     "register": "S'inscrire,",
     "compliteRegistration": "Compléter l’inscription",
-    "registerContent": "pour avoir accès aux super fonctionnalités de zennnn.",
+    "registerContent": "pour avoir accès aux super fonctionnalités de ZENNNN.",
     "hasAccount": "J'ai un compte.",
     "signin": "S'identifier",
     "firstName": "Prénom",
     "lastName": "Nom de famille",
-    "login": "Courriel (connexion zennnn)",
+    "login": "Courriel (connexion ZENNNN)",
     "password": "Mot de passe",
     "temporaryPassword": "Mot de passe temporaire",
     "acceptPolicyAndTerms": "je suis d'accord avec",
@@ -98,7 +98,7 @@
     "lastName": "Nom de famille",
     "fullName": "Prénom / nom d'un employé",
     "mobilePhone": "Numéro de téléphone",
-    "login": "Courriel (connexion zennnn)",
+    "login": "Courriel (connexion ZENNNN)",
     "password": "Mot de passe",
     "inWork": "En traitement",
     "diff": "Différence",
@@ -142,7 +142,7 @@
       "fax": "Fax",
       "email": "Email",
       "website": "Web",
-      "itn": "TVA (numéro d'identification du contribuable)",
+      "itn": "TVA (numéro d'identification du contribuable) / T.V.A.",
       "iec": "IEC",
       "psrn": "PSRN",
       "bankName": "Nom de banque",
@@ -227,10 +227,10 @@
     "sendAccessLink": "Envoyer le lien vers l'e-mail",
     "sendEmail": "Envoyer",
     "forDeliver": "Pour livraison",
-    "sentFrom": "Envoyé de…",
-    "sentThrough": "Par…",
+    "sentFrom": "De",
+    "sentThrough": "Via",
     "destination": "Destination",
-    "shipmentType": "Méthode d'envoi",
+    "shipmentType": "Méthode d'expédition",
     "billOfLadingNo": "Connaissement non.",
     "ship": "Navire",
     "containersNo": "Numéro du conteneur (Seal No.)",
@@ -270,8 +270,8 @@
     "cancelPrint": "Annuler",
     "supplierTitle": "VENDEUR / FOURNISSEUR",
     "supplierSubtitle": "(VOTRE ENTREPRISE)",
-    "clientTitle": "CLIENT",
-    "clientSubtitle": "(VOTRE CLIENT)",
+    "clientTitle": "ACHETEUR",
+    "clientSubtitle": "(VOTRE ENTREPRISE CLIENT)",
     "importerTitle": "IMPORTATEUR",
     "importerSubtitle": "(SI DIFFÉRENT DU CLIENT)",
     "inEnglish": "(en anglais)",
@@ -436,7 +436,7 @@
       "phone": "Numéro de téléphone",
       "fax": "Fax",
       "email": "Email",
-      "itn": "VAT",
+      "itn": "TVA (numéro d'identification du contribuable) / T.V.A.",
       "iec": "IEC",
       "psrn": "PSRN",
       "bankName": "Banque du bénéficiaire",
@@ -474,7 +474,7 @@
       "phone": "Numéro de téléphone:",
       "fax": "Fax:",
       "email": "Email:",
-      "itn": "VAT:",
+      "itn": "TVA:",
       "iec": "CEI:",
       "psrn": "PSRN:",
       "bankName": "Banque du bénéficiaire:",
@@ -627,13 +627,13 @@
     "warning": "de préférence"
   },
   "welcomeModal": {
-    "head": "Bienvenue sur Zennnn",
-    "title": "C'est super que vous vous soyez inscrit sur zennnn!",
+    "head": "Bienvenue sur ZENNNN",
+    "title": "C'est super que vous vous soyez inscrit sur Z!",
     "content": "Tout d'abord, nous vous recommandons d'ajouter les détails de l'entreprise, ces données nécessaires pour générer automatiquement des documents.",
-    "footer": "Vous pouvez ignorer cette étape. À l'avenir, tous les détails de l'entreprise pourront être ajoutés sur la page",
+    "footer": "Vous pouvez ignorer cette étape. Plus tard, tous les détails de l'entreprise peuvent être ajoutés sur la page ",
     "footerInMenu": "dans le menu principal.",
-    "myCompanies": "Mes entreprises",
-    "fillRequisites": "Données de l'entreprise"
+    "myCompanies": "page Détails de l'entreprise",
+    "fillRequisites": "Ajouter les Détails"
   },
   "comments": {
     "enterComment": "Entrez un commentaire…",
@@ -641,8 +641,8 @@
     "post": "Publier"
   },
   "statusBar": {
-    "requisites": "Données d'entreprise",
-    "myCompanies": "Mes entreprises",
+    "requisites": "Détails de l'entreprise",
+    "myCompanies": "Mes comptes",
     "signin": "S'identifier",
     "signout": "Se déconnecter",
     "role": {
@@ -662,7 +662,8 @@
   },
   "dataTable": {
     "noData": "Pas de données disponibles",
-    "noResult": "Aucun enregistrements correspondants trouvés"
+    "noResult": "Aucun enregistrements correspondants trouvés",
+    "ariaLabel": {}
   },
   "select": {
     "noData": "Pas de données disponibles",
