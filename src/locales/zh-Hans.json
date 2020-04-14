@@ -81,7 +81,7 @@
     "createSpecDialogSearchPlaceholder": "姓名",
     "createSpecDialogAddClient": "创建新客户",
     "createSpecDialogWithoutClient": "不加客户可继续",
-    "createSpecDialogAdd": "加客户",
+    "createSpecDialogAdd": "添加客户",
     "createDeal": "创建新交易",
     "clientUid": "客户编码",
     "clientName": "客户名称",
@@ -142,7 +142,7 @@
       "fax": "传真号码",
       "email": "电子邮箱",
       "website": "网站",
-      "itn": "纳税人识别号",
+      "itn": "纳税人识别号（TIN）",
       "iec": "纳税人登记原因代码",
       "psrn": "基本国家注册号",
       "bankName": "银行名称",
@@ -271,7 +271,7 @@
     "supplierTitle": "卖家 / 供应商",
     "supplierSubtitle": "（我司）",
     "clientTitle": "买家",
-    "clientSubtitle": "（客户）",
+    "clientSubtitle": "（你的客户公司）",
     "importerTitle": "进口商 / 代理",
     "importerSubtitle": "（如跟客户不同）",
     "inEnglish": "（英文）",
@@ -436,7 +436,7 @@
       "phone": "电话",
       "fax": "传真",
       "email": "电子邮箱",
-      "itn": "纳税人识别号 (VAT)",
+      "itn": "纳税人识别号 (TIN)",
       "iec": "纳税人登记原因代码",
       "psrn": "基本国家注册号",
       "bankName": "银行名称",
@@ -474,7 +474,7 @@
       "phone": "电话：",
       "fax": "传真：",
       "email": "电子邮箱：",
-      "itn": "纳税人识别号 (VAT)：",
+      "itn": "纳税人识别号 (TIN)：",
       "iec": "纳税人登记原因代码：",
       "psrn": "基本国家注册号：",
       "bankName": "银行名称：",
@@ -516,7 +516,7 @@
   },
   "paper": {
     "supplyContract": "供应合同",
-    "paperConfigurator": "文件收藏  （文件清单）/（文件库）",
+    "paperConfigurator": "文件库",
     "createPaper": "创建新文件",
     "name": "文件名称",
     "heading": "文件标题",
@@ -662,7 +662,8 @@
   },
   "dataTable": {
     "noData": "无数据显示",
-    "noResult": "无匹配结果"
+    "noResult": "无匹配结果",
+    "ariaLabel": {}
   },
   "select": {
     "noData": "无数据显示",
