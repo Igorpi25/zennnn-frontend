@@ -142,7 +142,7 @@
       "fax": "傳真號碼",
       "email": "電子郵箱",
       "website": "網站",
-      "itn": "納稅人識別號",
+      "itn": "納稅人識別號（TIN）",
       "iec": "納稅人登記原因代碼",
       "psrn": "基本國家註冊號",
       "bankName": "銀行名稱",
@@ -271,7 +271,7 @@
     "supplierTitle": "賣家 / 供應商",
     "supplierSubtitle": "（我司）",
     "clientTitle": "買家",
-    "clientSubtitle": "（客户）",
+    "clientSubtitle": "（你的客戶公司）",
     "importerTitle": "進口商 / 代理",
     "importerSubtitle": "（如跟客戶不同）",
     "inEnglish": "（英文）",
@@ -436,7 +436,7 @@
       "phone": "電話",
       "fax": "傳真",
       "email": "電子郵箱",
-      "itn": "納稅人識別號 (VAT)",
+      "itn": "納稅人識別號 (TIN)",
       "iec": "納稅人登記原因代碼",
       "psrn": "基本國家註冊號",
       "bankName": "銀行名稱",
@@ -474,7 +474,7 @@
       "phone": "電話：",
       "fax": "傳真：",
       "email": "電子郵箱：",
-      "itn": "納稅人識別號 (VAT)：",
+      "itn": "納稅人識別號 (TIN)：",
       "iec": "納稅人登記原因代碼",
       "psrn": "基本國家註冊號：",
       "bankName": "銀行名稱：",
@@ -516,7 +516,7 @@
   },
   "paper": {
     "supplyContract": "供應合同",
-    "paperConfigurator": "文件收藏  （文件清單）/（文件庫）",
+    "paperConfigurator": "文件庫",
     "createPaper": "創建新文件",
     "name": "文件名稱",
     "heading": "文件標題",
@@ -662,7 +662,8 @@
   },
   "dataTable": {
     "noData": "無數據顯示",
-    "noResult": "無匹配結果"
+    "noResult": "無匹配結果",
+    "ariaLabel": {}
   },
   "select": {
     "noData": "無數據顯示",
