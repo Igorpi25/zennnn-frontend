@@ -1797,7 +1797,7 @@ export default {
                     stack: this.genLabel('print.countryOfOrigin', clientLang),
                   },
                   {
-                    stack: this.genLabel(`countries.${customs.countryOfOrigin}.iso-3`, clientLang, { fallback: Countries[customs.countryOfOrigin], secondary: true }),
+                    stack: this.genLabel(`countries.${customs.countryOfOrigin}`, clientLang, { fallback: Countries[customs.countryOfOrigin], secondary: true }),
                   },
                   {
                     stack: this.genLabel('print.pkgListNo', clientLang),

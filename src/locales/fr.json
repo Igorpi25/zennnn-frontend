@@ -823,21 +823,9 @@
     "pack": "paq."
   },
   "countries": {
-    "RU": {
-      "name": "Russie",
-      "iso-3": "RUS"
-    },
-    "UA": {
-      "name": "Ukraine",
-      "iso-3": "UKR"
-    },
-    "CN": {
-      "name": "Chine",
-      "iso-3": "CHN"
-    },
-    "US": {
-      "name": "États Unis",
-      "iso-3": "USA"
-    }
+    "CN": "Chine",
+    "RU": "Russie",
+    "US": "États Unis",
+    "UA": "Ukraine"
   }
 }

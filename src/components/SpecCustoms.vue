@@ -196,7 +196,6 @@
 import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import { CustomsTerms, CustomsTermsMore, ShipmentType } from '../graphql/enums'
 import Countries from '../config/countries-iso3.json'
-import CountriesNames from '../config/countries-names.json'
 
 export default {
   name: 'SpecCustoms',
@@ -232,10 +231,11 @@ export default {
     },
     countries () {
       return Object.entries(Countries).map(([k, v]) => {
+        const name = this.$te(`countries.${k}`, 'en') ? this.$t(`countries.${k}`, 'en') : v
         return {
-          text: v,
+          text: this.$te(`countries.${k}`) ? this.$t(`countries.${k}`) : name,
           value: k,
-          name: CountriesNames[k] || null,
+          name,
         }
       })
     },
