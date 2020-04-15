@@ -1621,7 +1621,7 @@ export default {
               columns: [
                 {
                   width: '50%',
-                  text: clientLang === 'ru' ? '04021' : '',
+                  text: '04021',
                   margin: [4, 0, 4, 0],
                 },
                 {
