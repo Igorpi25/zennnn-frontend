@@ -107,6 +107,10 @@
     "costOfGoods": "貨款",
     "access": "職位",
     "invitations": "邀請函",
+    "userAlreadyExistInOrg": "此賬戶已存在。",
+    "userNotActive": "請稍後此賬戶正在確認註冊。",
+    "next": "繼續",
+    "back": "返回",
     "invite": "加入員工",
     "inviteGivenName": "名",
     "inviteFamilyName": "姓",
@@ -299,7 +303,7 @@
     "cost": "總價",
     "price": "價格",
     "expectedShipment": "預計發貨日期：",
-    "costOfGood": "產品總價",
+    "costOfGood": "產品總價:",
     "additionalImages": "其它圖片",
     "leaveNote": "留下筆記",
     "leaveComment": "留下評論",
@@ -554,6 +558,9 @@
     }
   },
   "print": {
+    "supplierAddress": "地址（英文）",
+    "cleintAddress": "地址（目的地國家語言）",
+    "importerAddress": "地址（目的地國家語言）",
     "supplierDiscount": "供應商折扣",
     "sheet": "第{p}頁，共{t}頁",
     "seller": "賣家（供應商）",
@@ -738,7 +745,8 @@
     "removeClient": "是否刪除客戶信息？",
     "removeSupplier": "是否刪除供應商信息？",
     "removeRequisites": "是否刪除公司資料？",
-    "removeContract": "是否刪除此文件？"
+    "removeContract": "是否刪除此文件？",
+    "removeEmployee": "是否刪除此員工？"
   },
   "rule": {
     "required": "請填寫",
@@ -823,21 +831,40 @@
     "pack": "包"
   },
   "countries": {
-    "RU": {
-      "name": "俄羅斯",
-      "iso-3": "RUS"
-    },
-    "UA": {
-      "name": "烏克蘭",
-      "iso-3": "UKR"
-    },
-    "CN": {
-      "name": "中國",
-      "iso-3": "CHN"
-    },
-    "US": {
-      "name": "美國",
-      "iso-3": "USA"
-    }
+    "AF": "阿富汗",
+    "AW": "阿魯巴島",
+    "AM": "亞美尼亞",
+    "AR": "阿根廷",
+    "AG": "安提瓜和巴布達",
+    "AD": "安道爾",
+    "AO": "安哥拉",
+    "AI": "安圭拉島",
+    "AS": "美屬薩摩亞",
+    "DZ": "阿爾及利亞",
+    "AL": "阿爾巴尼亞",
+    "AX": "奧蘭群島",
+    "AZ": "阿塞拜疆",
+    "AT": "奧地利",
+    "AU": "澳大利亞",
+    "BT": "不丹",
+    "BI": "布隆迪",
+    "BF": "布基納法索",
+    "BN": "文萊",
+    "IO": "英屬印度洋領地",
+    "BR": "巴西",
+    "BW": "博茨瓦納",
+    "BA": "波斯尼亞和黑塞哥維那",
+    "BQ": "加勒比荷蘭",
+    "BO": "玻利维亚",
+    "BG": "保加利亚",
+    "BM": "百慕大",
+    "BJ": "貝寧",
+    "BE": "比利時",
+    "BZ": "伯利兹",
+    "BY": "白俄羅斯共和國",
+    "CN": "中華人民共和國",
+    "RU": "俄羅斯聯邦",
+    "US": "美國",
+    "UA": "烏克蘭"
   }
 }
