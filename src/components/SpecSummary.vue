@@ -47,6 +47,7 @@
         :amount="spec.total"
         :amount-in-words="spec.amountInWords"
         :amount-in-words-client-lang="spec.amountInWordsClientLang"
+        :loading="printLoading"
         @update="v => updateSpec(v)"
         @close="printDialog = false"
         @print="doPrint"
@@ -585,9 +586,6 @@
 <script>
 import cloneDeep from 'clone-deep'
 
-import pdfMake from 'pdfmake/build/pdfmake'
-import pdfFonts from '../plugins/pdfmake/vfs_fonts'
-
 import { mdiClose, mdiPlusThick } from '@mdi/js'
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
@@ -646,6 +644,7 @@ export default {
   },
   data () {
     return {
+      printLoading: false,
       printDialog: false,
       setContainerSizeLoading: false,
       setContainerCustomCapacityLoading: false,
@@ -1595,396 +1594,445 @@ export default {
         }
         : null
     },
-    doPrint (requisite, client, shipment, customs) {
-      // const pdfMake = (await import(/* webpackChunkName: "pdfMake" */ 'pdfmake/build/custom_fonts/pdfmake')).default
-      // const pdfFonts = (await import(/* webpackChunkName: "pdfFonts" */ 'pdfmake/build/custom_fonts/vfs_fonts')).default
-      const vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs
-      pdfMake.vfs = vfs
-      pdfMake.fonts = {
-        MyriadPro: {
-          normal: 'MyriadPro-Regular.ttf',
-          bold: 'MyriadPro-Bold.ttf',
-          italics: 'MyriadPro-It.ttf',
-          bolditalics: 'MyriadPro-BoldIt.ttf',
-        },
-      }
-      const defaultLang = this.$i18n.fallbackLocale
-      const clientLang = client.language || defaultLang
-      const specCreatedAt = this.$parseDate(this.spec.createdAt)
-      const specDueDate = this.$parseDate(this.spec.createdAt)
-      const specDepositDueDate = this.spec.depositDueDate ? this.$parseDate(this.spec.depositDueDate) : null
-      specDueDate.setTime(specDueDate.getTime() + 7 * 86400000)
-      const dd = {
-        header: (currentPage, pageCount, pageSize) => {
-          return [
-            {
-              columns: [
-                {
-                  width: '50%',
-                  text: '04021',
-                  margin: [4, 0, 4, 0],
-                },
-                {
-                  width: '50%',
-                  text: '', // 'Logotype / Логотип',
-                  alignment: 'right',
-                  margin: [4, 0, 4, 0],
-                },
-              ],
-              fontSize: 10,
-              margin: [40, 20, 40, 0],
+    async doPrint (requisite, client, shipment, customs) {
+      try {
+        this.printLoading = true
+        const defaultLang = this.$i18n.fallbackLocale
+        const clientLang = client.language || defaultLang
+        const pdfMake = (await import(/* webpackChunkName: "pdfMake" */ 'pdfmake/build/pdfmake')).default
+        let font
+        let pdfFonts
+        if (clientLang === 'zh-Hans') {
+          font = 'NotoSansCJKsc'
+          const response = await this.$axios.get(`${process.env.VUE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKsc.json`)
+          pdfFonts = {
+            vfs: response.data,
+          }
+          pdfMake.fonts = {
+            NotoSansCJKsc: {
+              normal: 'NotoSansCJKsc-Regular.ttf',
+              bold: 'NotoSansCJKsc-Medium.ttf',
+              italics: 'NotoSansCJKsc-Regular.ttf',
+              bolditalics: 'NotoSansCJKsc-Medium.ttf',
             },
-          ]
-        },
-        footer: (currentPage, pageCount) => {
-          return [
-            {
-              columns: [
-                {
-                  width: '50%',
-                  margin: [4, 0, 4, 0],
-                  text: 'This document created automtically by zennnn.com',
-                },
-                {
-                  width: '50%',
-                  margin: [4, 0, 4, 0],
-                  text: this.genLabel('print.sheet', clientLang, {
-                    flat: true,
-                    secondary: true,
-                    args: {
-                      p: currentPage,
-                      t: pageCount,
-                    },
-                  }),
-                  alignment: 'right',
-                },
-              ],
-              fontSize: 8.3,
-              italics: true,
-              color: '#7b7b7b',
-              margin: [40, 10, 40, 0],
+          }
+        } else if (clientLang === 'zh-Hant') {
+          font = 'NotoSansCJKtc'
+          const response = await this.$axios.get(`${process.env.VUE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKtc.json`)
+          pdfFonts = {
+            vfs: response.data,
+          }
+          pdfMake.fonts = {
+            NotoSansCJKtc: {
+              normal: 'NotoSansCJKtc-Regular.ttf',
+              bold: 'NotoSansCJKtc-Medium.ttf',
+              italics: 'NotoSansCJKtc-Regular.ttf',
+              bolditalics: 'NotoSansCJKtc-Medium.ttf',
             },
-          ]
-        },
-        content: [
-          // Requisite block
-          {
-            table: {
-              widths: [110, '*'],
-              body: [
-                [
-                  {
-                    stack: this.genLabel('print.seller', clientLang),
-                  },
-                  requisite.name,
-                ],
-                [
-                  {
-                    stack: this.genLabel('print.addressTelFax', clientLang),
-                  },
-                  this.genValues(requisite.legalAddress, requisite.phone, requisite.fax),
-                ],
-                [
-                  {
-                    stack: this.genLabel('print.emailWeb', clientLang),
-                  },
-                  this.genValues(requisite.email, requisite.website),
-                ],
-                [
-                  {
-                    stack: this.genLabel('print.vatNo', clientLang),
-                  },
-                  requisite.itn || '',
-                ],
-                [
-                  {
-                    stack: this.genLabel('print.beneficiyBank', clientLang),
-                  },
-                  requisite.bankName,
-                ],
-                [
-                  {
-                    stack: this.genLabel('print.bankAddress', clientLang),
-                  },
-                  requisite.bankAddress,
-                ],
-                [
-                  {
-                    stack: this.genLabel('print.accountNumberSwift', clientLang),
-                  },
-                  this.genValues(requisite.bankAccountNumber, requisite.swift),
-                ],
-              ],
+          }
+        } else {
+          font = 'MyriadPro'
+          pdfFonts = (await import(/* webpackChunkName: "pdfFonts" */ '../plugins/pdfmake/vfs_fonts')).default
+          pdfMake.fonts = {
+            MyriadPro: {
+              normal: 'MyriadPro-Regular.ttf',
+              bold: 'MyriadPro-Bold.ttf',
+              italics: 'MyriadPro-It.ttf',
+              bolditalics: 'MyriadPro-BoldIt.ttf',
             },
-            layout: {
-              defaultBorder: false,
-            },
-            margin: [0, 0, 0, 20],
+          }
+        }
+        const vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs
+        pdfMake.vfs = vfs
+        const specCreatedAt = this.$parseDate(this.spec.createdAt)
+        const specDueDate = this.$parseDate(this.spec.createdAt)
+        const specDepositDueDate = this.spec.depositDueDate ? this.$parseDate(this.spec.depositDueDate) : null
+        specDueDate.setTime(specDueDate.getTime() + 7 * 86400000)
+        const dd = {
+          info: {
+            title: this.spec.specNo,
+            creator: window.location.hostname,
+            producer: window.location.hostname,
           },
-          // Spec info block
-          {
-            table: {
-              widths: [110, '*', 85, 85],
-              body: [
-                [
+          header: (currentPage, pageCount, pageSize) => {
+            return [
+              {
+                columns: [
                   {
-                    fontSize: 17.4,
-                    characterSpacing: 4,
-                    text: 'INVOICE',
-                    bold: true,
+                    width: '50%',
+                    text: '04021',
+                    margin: [4, 0, 4, 0],
                   },
                   {
-                    stack: this.genLabel('print.invoiceNo', clientLang, { value: this.spec.specNo }),
-                  },
-                  {
+                    width: '50%',
+                    text: '', // 'Logotype / Логотип',
                     alignment: 'right',
-                    stack: this.genLabel('print.invoiceDate', clientLang),
-                  },
-                  {
-                    alignment: 'right',
-                    text: this.$d(specDepositDueDate || new Date(), 'short', clientLang),
+                    margin: [4, 0, 4, 0],
                   },
                 ],
-              ],
-            },
-            layout: {
-              defaultBorder: false,
-            },
-            margin: [0, 0, 0, 0],
-          },
-          // Bill to block
-          {
-            table: {
-              widths: [110, '*'],
-              body: this.genBillToBody(client, clientLang),
-            },
-            layout: {
-              hLineWidth: function (i, node) {
-                return (i === 0 || i === 2 || i === node.table.body.length) ? 1 : 0
+                fontSize: 10,
+                margin: [40, 20, 40, 0],
               },
-              vLineWidth: function (i, node) {
-                return 0
-              },
-            },
-            margin: [0, 0, 0, 16],
+            ]
           },
-          // Shipment delivery info
-          {
-            table: this.genDeliveryInfoTable(shipment, clientLang),
-            layout: {
-              defaultBorder: false,
-            },
-            margin: [0, 0, 0, 16],
-          },
-          // Shipment
-          {
-            table: {
-              widths: [110, '*', 110, '*'],
-              body: this.genShipmentBody(shipment, customs, clientLang),
-            },
-            layout: {
-              defaultBorder: false,
-            },
-            margin: [0, 0, 0, 8],
-          },
-          // Shipment Country of Origin
-          {
-            table: {
-              widths: [110, '*', 110, '*'],
-              body: [
-                [
+          footer: (currentPage, pageCount) => {
+            return [
+              {
+                columns: [
                   {
-                    stack: this.genLabel('print.countryOfOrigin', clientLang),
+                    width: '50%',
+                    margin: [4, 0, 4, 0],
+                    text: 'This document created automtically by zennnn.com',
                   },
                   {
-                    stack: this.genLabel(`countries.${customs.countryOfOrigin}`, clientLang, { fallback: Countries[customs.countryOfOrigin], secondary: true }),
-                  },
-                  {
-                    stack: this.genLabel('print.pkgListNo', clientLang),
-                  },
-                  {
-                    stack: [
-                      {
-                        text: this.spec.specNo,
+                    width: '50%',
+                    margin: [4, 0, 4, 0],
+                    text: this.genLabel('print.sheet', clientLang, {
+                      flat: true,
+                      secondary: true,
+                      args: {
+                        p: currentPage,
+                        t: pageCount,
                       },
-                    ],
+                    }),
+                    alignment: 'right',
                   },
                 ],
-              ],
+                fontSize: 8.3,
+                italics: true,
+                color: '#7b7b7b',
+                margin: [40, 10, 40, 0],
+              },
+            ]
+          },
+          content: [
+            // Requisite block
+            {
+              table: {
+                widths: [110, '*'],
+                body: [
+                  [
+                    {
+                      stack: this.genLabel('print.seller', clientLang),
+                    },
+                    requisite.name,
+                  ],
+                  [
+                    {
+                      stack: this.genLabel('print.addressTelFax', clientLang),
+                    },
+                    this.genValues(requisite.legalAddress, requisite.phone, requisite.fax),
+                  ],
+                  [
+                    {
+                      stack: this.genLabel('print.emailWeb', clientLang),
+                    },
+                    this.genValues(requisite.email, requisite.website),
+                  ],
+                  [
+                    {
+                      stack: this.genLabel('print.vatNo', clientLang),
+                    },
+                    requisite.itn || '',
+                  ],
+                  [
+                    {
+                      stack: this.genLabel('print.beneficiyBank', clientLang),
+                    },
+                    requisite.bankName,
+                  ],
+                  [
+                    {
+                      stack: this.genLabel('print.bankAddress', clientLang),
+                    },
+                    requisite.bankAddress,
+                  ],
+                  [
+                    {
+                      stack: this.genLabel('print.accountNumberSwift', clientLang),
+                    },
+                    this.genValues(requisite.bankAccountNumber, requisite.swift),
+                  ],
+                ],
+              },
+              layout: {
+                defaultBorder: false,
+              },
               margin: [0, 0, 0, 20],
             },
-            layout: {
-              hLineWidth: function (i, node) {
-                return (i === 0) ? 1 : 0
-              },
-              vLineWidth: function (i, node) {
-                return 0
-              },
-            },
-            margin: [0, 0, 0, 16],
-          },
-          // Items
-          {
-            table: {
-              widths: [40, '*', 90, 90, 90],
-              body: [
-                [
-                  {
-                    stack: this.genLabel('print.itemNo', clientLang, { secondary: true }),
-                  },
-                  {
-                    stack: this.genLabel('print.itemDescription', clientLang, { secondary: true }),
-                  },
-                  {
-                    stack: this.genLabel('print.itemQuantityUnit', clientLang, { secondary: true }),
-                    alignment: 'right',
-                  },
-                  {
-                    stack: this.genLabel('print.itemRatePrice', clientLang, { secondary: true }),
-                    alignment: 'right',
-                  },
-                  {
-                    stack: this.genLabel('print.itemAmount', clientLang, { secondary: true }),
-                    alignment: 'right',
-                  },
+            // Spec info block
+            {
+              table: {
+                widths: [110, '*', 85, 85],
+                body: [
+                  [
+                    {
+                      fontSize: 17.4,
+                      characterSpacing: 4,
+                      text: 'INVOICE',
+                      bold: true,
+                    },
+                    {
+                      stack: this.genLabel('print.invoiceNo', clientLang, { value: this.spec.specNo }),
+                    },
+                    {
+                      alignment: 'right',
+                      stack: this.genLabel('print.invoiceDate', clientLang),
+                    },
+                    {
+                      alignment: 'right',
+                      text: this.$d(specDepositDueDate || new Date(), 'short', clientLang),
+                    },
+                  ],
                 ],
-                ...this.genItemBody(clientLang),
-              ],
-            },
-            headerRows: 1,
-            layout: {
-              hLineWidth: function (i, node) {
-                return (i === 1 || i === node.table.body.length) ? 1 : 0
               },
-              vLineWidth: function (i, node) {
-                return 0
+              layout: {
+                defaultBorder: false,
+              },
+              margin: [0, 0, 0, 0],
+            },
+            // Bill to block
+            {
+              table: {
+                widths: [110, '*'],
+                body: this.genBillToBody(client, clientLang),
+              },
+              layout: {
+                hLineWidth: function (i, node) {
+                  return (i === 0 || i === 2 || i === node.table.body.length) ? 1 : 0
+                },
+                vLineWidth: function (i, node) {
+                  return 0
+                },
+              },
+              margin: [0, 0, 0, 16],
+            },
+            // Shipment delivery info
+            {
+              table: this.genDeliveryInfoTable(shipment, clientLang),
+              layout: {
+                defaultBorder: false,
+              },
+              margin: [0, 0, 0, 16],
+            },
+            // Shipment
+            {
+              table: {
+                widths: [110, '*', 110, '*'],
+                body: this.genShipmentBody(shipment, customs, clientLang),
+              },
+              layout: {
+                defaultBorder: false,
+              },
+              margin: [0, 0, 0, 8],
+            },
+            // Shipment Country of Origin
+            {
+              table: {
+                widths: [110, '*', 110, '*'],
+                body: [
+                  [
+                    {
+                      stack: this.genLabel('print.countryOfOrigin', clientLang),
+                    },
+                    {
+                      stack: this.genLabel(`countries.${customs.countryOfOrigin}`, clientLang, { fallback: Countries[customs.countryOfOrigin], secondary: true }),
+                    },
+                    {
+                      stack: this.genLabel('print.pkgListNo', clientLang),
+                    },
+                    {
+                      stack: [
+                        {
+                          text: this.spec.specNo,
+                        },
+                      ],
+                    },
+                  ],
+                ],
+                margin: [0, 0, 0, 20],
+              },
+              layout: {
+                hLineWidth: function (i, node) {
+                  return (i === 0) ? 1 : 0
+                },
+                vLineWidth: function (i, node) {
+                  return 0
+                },
+              },
+              margin: [0, 0, 0, 16],
+            },
+            // Items
+            {
+              table: {
+                widths: [40, '*', 90, 90, 90],
+                body: [
+                  [
+                    {
+                      stack: this.genLabel('print.itemNo', clientLang, { secondary: true }),
+                    },
+                    {
+                      stack: this.genLabel('print.itemDescription', clientLang, { secondary: true }),
+                    },
+                    {
+                      stack: this.genLabel('print.itemQuantityUnit', clientLang, { secondary: true }),
+                      alignment: 'right',
+                    },
+                    {
+                      stack: this.genLabel('print.itemRatePrice', clientLang, { secondary: true }),
+                      alignment: 'right',
+                    },
+                    {
+                      stack: this.genLabel('print.itemAmount', clientLang, { secondary: true }),
+                      alignment: 'right',
+                    },
+                  ],
+                  ...this.genItemBody(clientLang),
+                ],
+              },
+              headerRows: 1,
+              layout: {
+                hLineWidth: function (i, node) {
+                  return (i === 1 || i === node.table.body.length) ? 1 : 0
+                },
+                vLineWidth: function (i, node) {
+                  return 0
+                },
               },
             },
-          },
-          // Items Amounts
-          this.genItemsAmounts(customs, clientLang),
-          // Amount
-          {
-            table: {
-              widths: ['*', '40%', 90],
-              body: this.genAmountBody(specDepositDueDate, clientLang),
-            },
-            layout: {
-              defaultBorder: false,
-            },
-            margin: [0, 0, 0, 0],
-          },
-          // Amount in Words
-          this.genAmountInWords(clientLang),
-          // Contract
-          {
-            table: {
-              widths: [110, '*', 110, '*'],
-              body: [
-                [
-                  {
-                    stack: this.genLabel('print.contractNo', clientLang),
-                  },
-                  {
-                    stack: [
-                      {
-                        text: this.spec.specNo,
-                      },
-                    ],
-                  },
-                  {
-                    stack: this.genLabel('print.contractDate', clientLang),
-                  },
-                  {
-                    stack: [
-                      {
-                        text: this.$d(specCreatedAt, 'short', clientLang),
-                      },
-                    ],
-                  },
-                ],
-                [
-                  {
-                    stack: this.genLabel('print.terms', clientLang),
-                  },
-                  {
-                    stack: this.genLabel('print.NET7', clientLang, { secondary: true }),
-                  },
-                  {
-                    stack: this.genLabel('print.dateDue', clientLang),
-                  },
-                  {
-                    stack: [
-                      {
-                        text: this.$d(specDueDate, 'short', clientLang),
-                      },
-                    ],
-                  },
-                ],
-                [
-                  {
-                    stack: this.genLabel('print.paymentMethods', clientLang),
-                  },
-                  {
-                    stack: this.genLabel('print.TTaccordingToContract', clientLang, { secondary: true }),
-                  },
-                  '',
-                  '',
-                ],
-              ],
-            },
-            layout: {
-              hLineWidth: function (i, node) {
-                return (i === 0 || i === node.table.body.length) ? 1 : 0
+            // Items Amounts
+            this.genItemsAmounts(customs, clientLang),
+            // Amount
+            {
+              table: {
+                widths: ['*', '40%', 90],
+                body: this.genAmountBody(specDepositDueDate, clientLang),
               },
-              vLineWidth: function (i, node) {
-                return 0
+              layout: {
+                defaultBorder: false,
+              },
+              margin: [0, 0, 0, 0],
+            },
+            // Amount in Words
+            this.genAmountInWords(clientLang),
+            // Contract
+            {
+              table: {
+                widths: [110, '*', 110, '*'],
+                body: [
+                  [
+                    {
+                      stack: this.genLabel('print.contractNo', clientLang),
+                    },
+                    {
+                      stack: [
+                        {
+                          text: this.spec.specNo,
+                        },
+                      ],
+                    },
+                    {
+                      stack: this.genLabel('print.contractDate', clientLang),
+                    },
+                    {
+                      stack: [
+                        {
+                          text: this.$d(specCreatedAt, 'short', clientLang),
+                        },
+                      ],
+                    },
+                  ],
+                  [
+                    {
+                      stack: this.genLabel('print.terms', clientLang),
+                    },
+                    {
+                      stack: this.genLabel('print.NET7', clientLang, { secondary: true }),
+                    },
+                    {
+                      stack: this.genLabel('print.dateDue', clientLang),
+                    },
+                    {
+                      stack: [
+                        {
+                          text: this.$d(specDueDate, 'short', clientLang),
+                        },
+                      ],
+                    },
+                  ],
+                  [
+                    {
+                      stack: this.genLabel('print.paymentMethods', clientLang),
+                    },
+                    {
+                      stack: this.genLabel('print.TTaccordingToContract', clientLang, { secondary: true }),
+                    },
+                    '',
+                    '',
+                  ],
+                ],
+              },
+              layout: {
+                hLineWidth: function (i, node) {
+                  return (i === 0 || i === node.table.body.length) ? 1 : 0
+                },
+                vLineWidth: function (i, node) {
+                  return 0
+                },
+              },
+              margin: [0, 32, 0, 10],
+            },
+            // Contract confirmation text
+            {
+              stack: this.genLabel('print.confirmation', clientLang),
+              margin: [4, 0, 4, 20],
+            },
+            // Sign
+            // TODO: manager name transcript
+            {
+              table: {
+                widths: [110, '*'],
+                body: [
+                  [
+                    {
+                      stack: this.genLabel('print.manager', clientLang),
+                    },
+                    {
+                      stack: [
+                        {
+                          text: client.ownerFullName,
+                        },
+                      ],
+                    },
+                  ],
+                  [
+                    {
+                      stack: this.genLabel('print.sign', clientLang),
+                    },
+                    '',
+                  ],
+                ],
+              },
+              layout: {
+                defaultBorder: false,
               },
             },
-            margin: [0, 32, 0, 10],
+          ],
+          defaultStyle: {
+            font,
+            fontSize: 8.3,
           },
-          // Contract confirmation text
-          {
-            stack: this.genLabel('print.confirmation', clientLang),
-            margin: [4, 0, 4, 20],
-          },
-          // Sign
-          // TODO: manager name transcript
-          {
-            table: {
-              widths: [110, '*'],
-              body: [
-                [
-                  {
-                    stack: this.genLabel('print.manager', clientLang),
-                  },
-                  {
-                    stack: [
-                      {
-                        text: client.ownerFullName,
-                      },
-                    ],
-                  },
-                ],
-                [
-                  {
-                    stack: this.genLabel('print.sign', clientLang),
-                  },
-                  '',
-                ],
-              ],
-            },
-            layout: {
-              defaultBorder: false,
-            },
-          },
-        ],
-        defaultStyle: {
-          font: 'MyriadPro',
-          fontSize: 8.3,
-        },
+        }
+        if (clientLang === 'zh-Hans' || clientLang === 'zh-Hant') {
+          pdfMake.createPdf(dd).download(this.spec.specNo)
+        } else {
+          pdfMake.createPdf(dd).open()
+        }
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.printLoading = false
       }
-      pdfMake.createPdf(dd).open()
     },
     async setContainerSize (containerId, e) {
       try {

@@ -34,12 +34,27 @@
         </div>
         <div class="flex items-center">
           <button
-            :disabled="!isValid"
-            :class="[ isValid ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
-            class="h-12 w-full sm:w-48 px-4 rounded-md focus:outline-none text-white focus:bg-primary-accent"
+            :disabled="!isValid || loading"
+            :class="[ isValid && !loading ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
+            class="relative h-12 w-full sm:w-48 px-4 rounded-md focus:outline-none text-white focus:bg-primary-accent transition-colors duration-100 ease-out"
             @click="print"
           >
-            {{ $t('shipping.doPrint') }}
+            <div
+              v-if="loading"
+              class="absolute inset-0 flex items-center justify-center"
+            >
+              <v-progress-circular
+                indeterminate
+                size="24"
+                width="2"
+              />
+            </div>
+            <span
+              :class="{ 'opacity-0': loading }"
+              class="transition-opacity duration-75 ease-in-out"
+            >
+              {{ $t('shipping.doPrint') }}
+            </span>
           </button>
         </div>
       </div>
@@ -1734,12 +1749,27 @@
           </div>
         </div>
         <button
-          :disabled="!isValid"
-          :class="[ isValid ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
-          class="h-12 w-full sm:w-48 px-4 rounded-md focus:outline-none text-white focus:bg-primary-accent"
+          :disabled="!isValid || loading"
+          :class="[ isValid && !loading ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
+          class="relative h-12 w-full sm:w-48 px-4 rounded-md focus:outline-none text-white focus:bg-primary-accent transition-colors duration-100 ease-out"
           @click="print"
         >
-          {{ $t('shipping.doPrint') }}
+          <div
+            v-if="loading"
+            class="absolute inset-0 flex items-center justify-center"
+          >
+            <v-progress-circular
+              indeterminate
+              size="24"
+              width="2"
+            />
+          </div>
+          <span
+            :class="{ 'opacity-0': loading }"
+            class="transition-opacity duration-75 ease-in-out"
+          >
+            {{ $t('shipping.doPrint') }}
+          </span>
         </button>
       </div>
     </div>
@@ -1830,6 +1860,7 @@ export default {
     orgId: String,
     specId: String,
     requisiteId: String,
+    loading: Boolean,
     client: {
       type: Object,
       default: () => ({}),

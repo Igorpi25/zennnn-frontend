@@ -63,3 +63,7 @@ npm install
 ```
 For build `vfs_fonts.js` with custom fonts, see [docs](https://pdfmake.github.io/docs/fonts/custom-fonts-client-side/).
 `vfs_fonts.js` copied to `src/plugins/pdfmake/vfs_fonts.js`
+
+For print in `zh-Hans` used custom font `NotoSansCJKsc`, for `zh-Hant` used `NotoSansCJKtc`, others used `MyriadPro`.
+Builded by `gulp buildFonts` custom fonts files for Noto can't import from `.js` files (perhaps due to file size ~44MB). Custom fonts for Noto generated with custom script, to `.json` file and loaded from s3, path to files `<process.env.VUE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME>/pdf/vfs/vfs_fonts_<FONT NAME>.json`.
+TODO: not work `.open()` method with Noto font, blocked by browser.

@@ -1,6 +1,6 @@
 {
   "name": "zennnn-frontend",
-  "version": "0.16.22",
+  "version": "0.16.23",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
