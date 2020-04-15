@@ -290,6 +290,57 @@
                       </i18n-n>
                     </div>
                   </div>
+                  <div class="flex pb-2">
+                    <span class="w-48 flex-shrink-0 text-right">
+                      <span>{{ $t('preview.exchangeRate', { currency: $t(`currency.${currency}.iso-4217`), exchange: $t(`currency.USD.iso-4217`) }) }}</span>&nbsp;
+                      <span>{{ $t(`currency.USD.symbol`) }}</span>
+                    </span>
+                    <div class="flex-grow dots" />
+                    <div>
+                      <i18n-n :value="spec.currencyRate || 0" format="decimal" class="flex items-baseline">
+                        <template v-slot:integer="slotProps">
+                          <div>{{ slotProps.integer }}</div>
+                        </template>
+                        <template v-slot:group="slotProps">
+                          <div class="text-sm">{{ slotProps.group }}</div>
+                        </template>
+                        <template v-slot:fraction="slotProps">
+                          <div class="text-sm">{{ slotProps.fraction }}</div>
+                        </template>
+                      </i18n-n>
+                    </div>
+                  </div>
+                  <div class="flex pb-2">
+                    <span class="w-48 flex-shrink-0 text-right">
+                      <span>{{ $t('preview.totalToPay', { currency: $t('currency.USD.iso-4217') }) }}</span>&nbsp;
+                      <span>{{ $t(`currency.USD.symbol`) }}</span>
+                    </span>
+                    <div class="flex-grow dots" />
+                    <div>
+                      <i18n-n :value="spec.total || 0" format="decimal" class="flex items-baseline">
+                        <template v-slot:integer="slotProps">
+                          <div>{{ slotProps.integer }}</div>
+                        </template>
+                        <template v-slot:group="slotProps">
+                          <div class="text-sm">{{ slotProps.group }}</div>
+                        </template>
+                        <template v-slot:fraction="slotProps">
+                          <div class="text-sm">{{ slotProps.fraction }}</div>
+                        </template>
+                      </i18n-n>
+                    </div>
+                  </div>
+                  <div
+                    v-if="spec.terms || spec.sentFrom"
+                    class="text-center py-2"
+                  >
+                    <span v-if="spec.terms">
+                      {{ spec.terms }}&nbsp;
+                    </span>
+                    <span>
+                      {{ spec.sentFrom || '' }}
+                    </span>
+                  </div>
                   <!-- <div class="mt-8 text-sm text-right">
                     <v-menu
                       v-model="menuCurrency"

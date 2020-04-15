@@ -310,6 +310,8 @@
     "noDiscount": "without discount",
     "residue": "Remain",
     "finalToPay": "Total to Pay:",
+    "totalToPay": "Total to Pay in {currency}:",
+    "exchangeRate": "1 {currency} to {exchange} exchange rate:",
     "printThis": "Print",
     "downloadPDF": "Download PDF",
     "comment": "Comment"

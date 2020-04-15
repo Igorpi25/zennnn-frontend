@@ -558,8 +558,13 @@ export const PAPER_SPEC_FRAGMENT = gql`
     finalCost
     totalPrepay
     totalClientDebt
+    total
     currency
     currencyRate
+    terms
+    sentFrom
+    sentThrough
+    sentDestination
     comments {
       ...CommentFragment
     }

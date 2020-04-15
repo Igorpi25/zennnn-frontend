@@ -310,7 +310,9 @@
     "leaveComment": "Оставить комментарий",
     "noDiscount": "без скидки",
     "residue": "Остаток",
-    "finalToPay": "Необходимо к оплате:",
+    "finalToPay": "Остаток к оплате:",
+    "totalToPay": "Остаток к оплате в {currency}:",
+    "exchangeRate": "Курс 1 {currency} к {exchange}:",
     "printThis": "Распечатать",
     "downloadPDF": "Скачать PDF",
     "comment": "Оставить комментарий"
