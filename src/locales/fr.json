@@ -107,6 +107,10 @@
     "costOfGoods": "Coût des biens",
     "access": "Autorisations d'accès",
     "invitations": "Des invitations",
+    "userAlreadyExistInOrg": "L'utilisateur existe déjà.",
+    "userNotActive": "Veuillez attendre que l'utilisateur confirme son inscription.",
+    "next": "Procéder",
+    "back": "Retour",
     "invite": "Inviter",
     "inviteGivenName": "Prénom",
     "inviteFamilyName": "Nom de famille",
@@ -299,7 +303,7 @@
     "cost": "Coût",
     "price": "Prix",
     "expectedShipment": "Expédition prévue:",
-    "costOfGood": "Coût des biens",
+    "costOfGood": "Coût des biens:",
     "additionalImages": "Plus d'images",
     "leaveNote": "Laisser une note",
     "leaveComment": "laissez un commentaire",
@@ -554,6 +558,9 @@
     }
   },
   "print": {
+    "supplierAddress": "Adresse (en anglais)",
+    "cleintAddress": "Adresse (dans la langue du client)",
+    "importerAddress": "Adresse (dans la langue du client)",
     "supplierDiscount": "Remise fournisseur",
     "sheet": "Feuille {p} de {t}",
     "seller": "Vendeur (Fournisseur)",
@@ -738,7 +745,8 @@
     "removeClient": "Voulez-vous vraiment supprimer le client?",
     "removeSupplier": "Voulez-vous vraiment supprimer le fournisseur?",
     "removeRequisites": "Voulez-vous vraiment supprimer les éléments requis?",
-    "removeContract": "Voulez-vous vraiment supprimer le contrat?"
+    "removeContract": "Voulez-vous vraiment supprimer le contrat?",
+    "removeEmployee": "Voulez-vous vraiment supprimer l'employé?"
   },
   "rule": {
     "required": "Remplissez ce champ.",
@@ -823,9 +831,10 @@
     "pack": "paq."
   },
   "countries": {
-    "CN": "Chine",
-    "RU": "Russie",
-    "US": "États Unis",
+    "BY": "République du Bélarus",
+    "CN": "République populaire de Chine",
+    "RU": "Fédération Russe",
+    "US": "États-Unis d'Amérique",
     "UA": "Ukraine"
   }
 }
