@@ -2383,13 +2383,7 @@ export default {
 
 .spec-summary__info ul.leaders span:first-child,
 .spec-summary__info ul.leaders span + span {
-  @apply bg-chaos-black;
-}
-@screen md {
-  .spec-summary__info ul.leaders span:first-child,
-  .spec-summary__info ul.leaders span + span {
-    background: #1e1e1e;
-  }
+  @apply bg-gray-900;
 }
 .spec-summary__cost ul.leaders span:first-child,
 .spec-summary__cost ul.leaders span + span {

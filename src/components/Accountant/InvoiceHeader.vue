@@ -102,7 +102,7 @@ export default {
   @apply rounded-sm bg-accent1 text-right;
   color: #252525;
 }
-.light-theme .invoice-header {
+[data-theme="light"] .invoice-header {
   --base-accent1: #d6d6d6;
   color: #797979;
 }

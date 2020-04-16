@@ -79,7 +79,7 @@
           </TextField>
         </div>
       </div>
-      <div class="border-t border-background my-3 mx-2" />
+      <div class="border-t border-gray-900 my-3 mx-2" />
       <div class="flex items-center pb-1">
         <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.discountLabel')">
           {{ $t('shipping.discountLabel') }}:

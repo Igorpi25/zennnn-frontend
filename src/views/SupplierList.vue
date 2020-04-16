@@ -65,7 +65,7 @@
 
             <template v-slot:items="{ items }">
              <tr
-              class="items bg-background hover:bg-accent3 border-none"
+              class="items bg-gray-900 hover:bg-accent3 border-none"
               v-for="(item, index) in items"
               :key="index"
               @click="$router.push({

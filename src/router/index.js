@@ -329,6 +329,12 @@ router.beforeEach(async (to, from, next) => {
       i18n.locale = lang
     }
   }
+  // set theme attribute
+  if (to.name === 'preview') {
+    document.body.dataset.theme = 'light'
+  } else {
+    document.body.dataset.theme = 'dark'
+  }
   // check auth
   const loggedIn = await Auth.checkAuth()
   if (to.matched.some(record => record.meta.requiresAuth)) {

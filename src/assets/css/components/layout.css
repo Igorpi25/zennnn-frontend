@@ -17,28 +17,16 @@
 @screen xl {
   .container,
   .container--sm {
-    padding-left: 86px;
-    padding-right: 86px;
+    padding-left: 75px;
+    padding-right: 75px;
   }
 }
 
-html {
-  @apply bg-background;
+body {
+  @apply bg-gray-900 text-gray-100;
 }
-/* TODO light theme for html */
-.view {
-  @apply bg-background;
-  color: #aaaaaa;
-}
-.light-theme .view {
-  --base-background: #d6d6d6;
-  color: #494949;
-}
-@screen md {
-  html,
-  .view {
-   --base-background: #1e1e1e;
-  }
+[data-theme="light"] {
+  @apply bg-white text-gray-900;
 }
 
 .content {

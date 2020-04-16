@@ -26,14 +26,7 @@
   --base-accent1: #404040;    /* spec invoice-header */
   --base-accent2: #616161;    /* table header text */
   --base-accent3: #252525;    /* table tr items */
-  --base-background: #0F0F0F; /* view */
 }
-
-/* .light-theme {
-  --base-accent1: #ffffff;
-  --base-accent2: #7b7b7b;
-  --base-accent3: #f4f4f4;
-} */
 
 .dots {
   overflow: hidden;

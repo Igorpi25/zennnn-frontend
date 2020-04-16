@@ -66,7 +66,7 @@
             <tr
               v-for="(item) in items"
               :key="item.id"
-              class="items bg-background hover:bg-accent3 border-none"
+              class="items bg-gray-900 hover:bg-accent3 border-none"
               @click="$router.push({
                 name: 'spec',
                 params: {

@@ -10,7 +10,6 @@ module.exports = {
       accent1: 'var(--base-accent1)',
       accent2: 'var(--base-accent2)',
       accent3: 'var(--base-accent3)',
-      background: 'var(--base-background)',
       black: '#000000',
       'chaos-black': '#0F0F0F',
       white: '#ffffff',
@@ -28,6 +27,7 @@ module.exports = {
       green: '#48BB78',
       orange: '#fb8c00',
       transparent: 'transparent',
+      'gray-50': '#F7F7F7',
       'gray-100': '#AAAAAA',
       'gray-200': '#676767',
       'gray-300': '#585858',
@@ -42,6 +42,7 @@ module.exports = {
       'pink-500': '#FF005E', // error
       'green-500': '#08DC1B', // success
       'yellow-500': '#FDB600', // warning
+      'red-500': '#FF212D',
     },
     fontFamily: {
       'myriad': ['MyriadPro', 'sans-serif'],

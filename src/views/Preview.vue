@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-full">
     <div class="content view">
       <StatusBar />
       <div class="container container--sm mb-12">
@@ -453,11 +453,6 @@ import { getSpecExpandedInvoices } from '../graphql/resolvers'
 
 export default {
   name: 'Preview',
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      vm.$el.classList.add('light-theme', 'h-full')
-    })
-  },
   components: {
     StatusBar,
     Copyright,
@@ -838,7 +833,6 @@ export default {
 }
 .preview-summary {
   margin: 70px 0 50px;
-  @apply bg-background;
 }
 
 .preview-summary__wrapper {
@@ -922,10 +916,6 @@ export default {
   background-image: url("/img/container-shipped.png");
 }
 
-.preview-summary__info ul.leaders span:first-child,
-.preview-summary__info ul.leaders span + span {
-  @apply bg-background;
-}
 .preview-summary__cost ul.leaders span:first-child,
 .preview-summary__cost ul.leaders span + span {
   background-color: #f4f4f4;
