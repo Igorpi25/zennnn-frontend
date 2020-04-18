@@ -122,8 +122,9 @@
               class="pb-1"
             >
               <div
-                class="h-12 flex items-center px-3 sm:px-5 bg-gray-50 rounded-t-md select-none cursor-pointer"
                 :class="{ 'rounded-b-md': !expanded.includes(item.id) }"
+                style="background: #F0F0F0;"
+                class="h-12 flex items-center px-3 sm:px-5 rounded-t-md select-none cursor-pointer"
                 @click="expand(item.id)"
               >
                 <div
@@ -136,7 +137,7 @@
                   ]"
                 />
                 <div class="select-text">
-                  <div class="text-gray-400">
+                  <div class="text-gray-400 font-semibold">
                     <span>{{ item.invoiceNo || '-' }}</span>&nbsp;
                     <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
                     <span>{{ item.createdAt ? $d($parseDate(item.createdAt), 'short') : '-' }}</span>&nbsp;
