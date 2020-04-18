@@ -1,7 +1,7 @@
 <template>
   <div class="h-full">
     <div class="content view">
-      <StatusBar />
+      <StatusBar :paper-org-name="spec.orgName" />
       <div class="container container--sm mb-12">
         <div class="pt-8 pb-16">
           <div class="flex flex-col sm:flex-row items-center justify-between pb-6">
