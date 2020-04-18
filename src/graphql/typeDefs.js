@@ -517,6 +517,9 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
     description
     # link
     url
+    # print
+    costPrice
+    costAmount
   }
   ${COMMENT_FRAGMENT}
 `
@@ -535,6 +538,8 @@ export const PAPER_INVOICE_FRAGMENT = gql`
     totalClientAmount
     createdAt
     updatedAt
+    # print
+    discountInCurrency
   }
 `
 
@@ -579,9 +584,32 @@ export const PAPER_SPEC_FRAGMENT = gql`
     orgName
     createdAt
     updatedAt
+    requisite {
+      ...OrgRequisiteFragment
+    }
+    client {
+      ...ClientFragment
+    }
+    shipment {
+      ...ShipmentFragment
+    }
+    customs {
+      ...CustomsFragment
+    }
+    subtotal
+    paid
+    depositDue
+    depositDueDate
+    balanceDue
+    amountInWords
+    amountInWordsClientLang
   }
   ${COMMENT_FRAGMENT}
   ${CONTAINER_FRAGMENT}
+  ${ORG_REQUISITE_FRAGMENT}
+  ${SHIPMENT_FRAGMENT}
+  ${CUSTOMS_FRAGMENT}
+  ${CLIENT_FRAGMENT}
 `
 
 export const PAPER_SPEC_INVOICES_FRAGMENT = gql`

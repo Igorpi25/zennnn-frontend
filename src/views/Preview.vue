@@ -34,20 +34,44 @@
               </div>
               <div class="pr-2">
                 <button
-                  class="w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
-                  @click.prevent
+                  :disabled="printLoading"
+                  :class="{ 'hover:border-blue-500': !printLoading }"
+                  class="relative w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                  @click="printPdf"
                 >
-                  <div class="h-10 w-10 flex items-center justify-center">
+                  <div
+                    v-if="printLoading"
+                    class="absolute inset-0 flex items-center justify-center text-blue-500"
+                  >
+                    <v-progress-circular
+                      indeterminate
+                      size="20"
+                      width="2"
+                    />
+                  </div>
+                  <div :class="['h-10 w-10 flex items-center justify-center', { 'opacity-0': printLoading }]">
                     <i class="icon-printer text-blue-500 text-2xl" />
                   </div>
                 </button>
               </div>
               <div class="pr-2">
                 <button
-                  class="w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
-                  @click.prevent
+                  :disabled="downloadLoading"
+                  :class="{ 'hover:border-blue-500': !downloadLoading }"
+                  class="relative w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                  @click="downloadPdf"
                 >
-                  <div class="h-10 w-10 flex items-center justify-center">
+                  <div
+                    v-if="downloadLoading"
+                    class="absolute inset-0 flex items-center justify-center text-blue-500"
+                  >
+                    <v-progress-circular
+                      indeterminate
+                      size="20"
+                      width="2"
+                    />
+                  </div>
+                  <div :class="['h-10 w-10 flex items-center justify-center', { 'opacity-0': downloadLoading }]">
                     <i class="text-blue-500 text-2xl">
                       <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M3.1665 3.29161C3.1665 1.82275 4.37687 0.618042 5.84452 0.618042H12.95C13.1533 0.618042 13.3405 0.707819 13.473 0.847343L17.9666 5.56129C18.0758 5.68341 18.1665 5.85823 18.1665 6.05898V16.7281C18.1665 18.1971 16.9561 19.4018 15.4885 19.4018H5.84452C4.37686 19.4018 3.1665 18.1971 3.1665 16.7281V3.29161ZM5.84452 2.06718C5.17403 2.06718 4.61564 2.62666 4.61564 3.29161V16.7281C4.61564 17.3966 5.17741 17.9527 5.84452 17.9527H15.4885C16.1595 17.9527 16.7174 17.3971 16.7174 16.7281V6.7748H14.4458C13.2204 6.7748 12.2297 5.79025 12.2297 4.56315V2.06718H5.84452ZM13.1097 2.06718L16.7174 5.89486H14.4458C13.7095 5.89486 13.1097 5.30264 13.1097 4.56315V2.06718ZM9.94184 6.49025C9.94184 6.09093 10.2673 5.76568 10.6664 5.76568C11.0655 5.76568 11.391 6.09093 11.391 6.49025V10.572L12.7145 9.15242C12.9823 8.86313 13.4449 8.83872 13.7384 9.11593C14.0266 9.38382 14.0505 9.84554 13.7733 10.1388L13.7722 10.1399L11.194 12.9073C11.0603 13.048 10.8728 13.1367 10.6664 13.1367C10.46 13.1367 10.2727 13.048 10.139 12.9075L10.1368 12.9052L7.56515 10.14L7.56399 10.1388C7.28478 9.8436 7.31324 9.38731 7.59738 9.11732C7.89252 8.83686 8.34971 8.86501 8.62008 9.14954L8.62218 9.15175L9.94184 10.5707V6.49025ZM6.32103 14.7308C6.32103 14.3315 6.64653 14.0062 7.0456 14.0062H14.2874C14.6891 14.0062 15.0164 14.3296 15.0164 14.7308C15.0164 15.1299 14.691 15.4554 14.2919 15.4554H7.0456C6.64648 15.4554 6.32103 15.1299 6.32103 14.7308Z" fill="currentColor"/>
@@ -381,11 +405,23 @@
                 </div>
                 <div class="w-full md:w-auto p-2">
                   <button
+                    :disabled="printLoading"
+                    :class="{ 'hover:border-blue-500': !printLoading }"
                     style="min-width: 85px"
-                    class="w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
-                    @click.prevent
+                    class="relative w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                    @click="printPdf"
                   >
-                    <div class="h-12 flex items-center px-3">
+                    <div
+                      v-if="printLoading"
+                      class="absolute inset-0 flex items-center justify-center text-blue-500"
+                    >
+                      <v-progress-circular
+                        indeterminate
+                        size="24"
+                        width="2"
+                      />
+                    </div>
+                    <div :class="['h-12 flex items-center px-3', { 'opacity-0': printLoading }]">
                       <i class="icon-printer text-gray-100 text-xl mr-2" />
                       <span class="text-blue-500 whitespace-nowrap leading-tight">
                         {{ $t('preview.print') }}
@@ -395,11 +431,23 @@
                 </div>
                 <div class="w-full md:w-auto p-2">
                   <button
+                    :disabled="downloadLoading"
+                    :class="{ 'hover:border-blue-500': !downloadLoading }"
                     style="min-width: 85px"
-                    class="w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
-                    @click.prevent
+                    class="relative w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                    @click="downloadPdf"
                   >
-                    <div class="h-12 flex items-center px-3">
+                    <div
+                      v-if="downloadLoading"
+                      class="absolute inset-0 flex items-center justify-center text-blue-500"
+                    >
+                      <v-progress-circular
+                        indeterminate
+                        size="24"
+                        width="2"
+                      />
+                    </div>
+                    <div :class="['h-12 flex items-center px-3', { 'opacity-0': downloadLoading }]">
                       <i class="text-gray-100 text-xl mr-2">
                         <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M3.1665 3.29161C3.1665 1.82275 4.37687 0.618042 5.84452 0.618042H12.95C13.1533 0.618042 13.3405 0.707819 13.473 0.847343L17.9666 5.56129C18.0758 5.68341 18.1665 5.85823 18.1665 6.05898V16.7281C18.1665 18.1971 16.9561 19.4018 15.4885 19.4018H5.84452C4.37686 19.4018 3.1665 18.1971 3.1665 16.7281V3.29161ZM5.84452 2.06718C5.17403 2.06718 4.61564 2.62666 4.61564 3.29161V16.7281C4.61564 17.3966 5.17741 17.9527 5.84452 17.9527H15.4885C16.1595 17.9527 16.7174 17.3971 16.7174 16.7281V6.7748H14.4458C13.2204 6.7748 12.2297 5.79025 12.2297 4.56315V2.06718H5.84452ZM13.1097 2.06718L16.7174 5.89486H14.4458C13.7095 5.89486 13.1097 5.30264 13.1097 4.56315V2.06718ZM9.94184 6.49025C9.94184 6.09093 10.2673 5.76568 10.6664 5.76568C11.0655 5.76568 11.391 6.09093 11.391 6.49025V10.572L12.7145 9.15242C12.9823 8.86313 13.4449 8.83872 13.7384 9.11593C14.0266 9.38382 14.0505 9.84554 13.7733 10.1388L13.7722 10.1399L11.194 12.9073C11.0603 13.048 10.8728 13.1367 10.6664 13.1367C10.46 13.1367 10.2727 13.048 10.139 12.9075L10.1368 12.9052L7.56515 10.14L7.56399 10.1388C7.28478 9.8436 7.31324 9.38731 7.59738 9.11732C7.89252 8.83686 8.34971 8.86501 8.62008 9.14954L8.62218 9.15175L9.94184 10.5707V6.49025ZM6.32103 14.7308C6.32103 14.3315 6.64653 14.0062 7.0456 14.0062H14.2874C14.6891 14.0062 15.0164 14.3296 15.0164 14.7308C15.0164 15.1299 14.691 15.4554 14.2919 15.4554H7.0456C6.64648 15.4554 6.32103 15.1299 6.32103 14.7308Z" fill="currentColor"/>
@@ -489,6 +537,7 @@ import {
 } from '../graphql/typeDefs'
 import { PAPER_STORE_KEY_PREFIX, DEFAULT_CURRENCY } from '../config/globals'
 import { getSpecExpandedInvoices } from '../graphql/resolvers'
+import specPdf from '../components/specPdf'
 
 export default {
   name: 'Preview',
@@ -516,6 +565,8 @@ export default {
   },
   data () {
     return {
+      printLoading: false,
+      downloadLoading: false,
       InvoiceStatus,
       invoiceScrollId: '',
       invoiceScrollLeft: 0,
@@ -774,6 +825,44 @@ export default {
     })
   },
   methods: {
+    async downloadPdf () {
+      try {
+        this.downloadLoading = true
+        const requisite = this.spec.requisite || {}
+        const client = this.spec.client || {}
+        const shipment = this.spec.shipment || {}
+        const customs = this.spec.customs || {}
+        const isDraft = !this.spec.readyToPrint
+        await specPdf(this.spec, requisite, client, shipment, customs, 'download', isDraft)
+      } catch (error) {
+        this.$notify({
+          color: 'red',
+          text: `Error creating PDF: ${error.message}`,
+        })
+        throw new Error(error)
+      } finally {
+        this.downloadLoading = false
+      }
+    },
+    async printPdf () {
+      try {
+        this.printLoading = true
+        const requisite = this.spec.requisite || {}
+        const client = this.spec.client || {}
+        const shipment = this.spec.shipment || {}
+        const customs = this.spec.customs || {}
+        const isDraft = !this.spec.readyToPrint
+        await specPdf(this.spec, requisite, client, shipment, customs, 'print', isDraft)
+      } catch (error) {
+        this.$notify({
+          color: 'red',
+          text: `Error creating PDF: ${error.message}`,
+        })
+        throw new Error(error)
+      } finally {
+        this.printLoading = false
+      }
+    },
     setScrollLeft (scrollLeft, invoiceId) {
       this.invoiceScrollId = invoiceId
       this.invoiceScrollLeft = scrollLeft
