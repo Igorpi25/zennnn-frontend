@@ -277,7 +277,7 @@
                     </div>
                   </div>
                   <div v-if="spec.shipped" class="spec-shipped flex-shrink-0 relative bg-gray-75">
-                    <div class="absolute inset-0 flex h-full items-center border-gray-50">
+                    <div class="absolute inset-0 flex h-full items-center border-gray-50 pointer-events-none">
                       <div class="spec-shipped__arrow"></div>
                     </div>
                     <div class="h-full flex items-center justify-center">
