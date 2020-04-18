@@ -47,6 +47,7 @@
     </ProductImage>
     <FileUploader
       v-if="upload"
+      ref="fileUploader"
       :loading="loading"
       :uploading.sync="uploading"
       show-preview
@@ -115,6 +116,10 @@ export default {
         await this.$apollo.mutate({
           mutation: ADD_PRODUCT_IMAGE,
           variables: { id: this.productId, inputImages },
+        })
+        this.$nextTick(() => {
+          this.$refs.fileUploader.internalSrc = null
+          this.$refs.fileUploader.filePreview = null
         })
       } catch (error) {
         this.$logger.warn('Error: ', error)
