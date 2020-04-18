@@ -283,8 +283,8 @@
     "copyLink": "Copy link"
   },
   "preview": {
-    "cargoInfo": "Cargo Info",
-    "financialInfo": "Financial Info",
+    "cargoInfo": "Shipping Info",
+    "financialInfo": "Final Cost Info",
     "draft": "DRAFT",
     "shippingTitle": "Deal №",
     "total": "Total",
@@ -292,7 +292,6 @@
     "prepay": "Prepay",
     "summaryTitle": "Shipping Summary",
     "container": "0 сontainers | {n} сontainer | {n} сontainers",
-    "containerFullCount": "{count} containers {container}",
     "containerLoaded": "Container loaded:",
     "estimateDate": "Estimate Shipping Date",
     "totalVolume": "Volume",
@@ -301,7 +300,7 @@
     "shipped": "Shipped",
     "qtyOfPackages": "Qty of packages",
     "packageNo": "Package numbers",
-    "itemNo": "#",
+    "itemNo": "No.",
     "qty": "Qty",
     "unit": "Unit",
     "photo": "Photo",
@@ -311,6 +310,7 @@
     "price": "Price",
     "notes": "Notes",
     "expectedShipment": "Expected shipment:",
+    "additionalImages": "More images",
     "leaveNote": "Leave a note",
     "leaveComment": "Leave a comment",
     "noDiscount": "without discount",
@@ -319,7 +319,7 @@
     "totalPrepay": "Total Prepay:",
     "finalToPay": "Total to Pay:",
     "totalToPay": "Total to Pay in {currency}:",
-    "exchangeRate": "1 {currency} to {exchange} exchange rate:",
+    "exchangeRate": "Rate of 1 {currency} to {exchange}:",
     "share": "Share",
     "print": "Print",
     "download": "Download",
@@ -718,7 +718,7 @@
   "measure": {
     "kg": "kg",
     "m": "m",
-    "m3": "m3",
+    "m3": "m³",
     "mm": "mm",
     "pkg": "Total Pkg Qty",
     "unit": "item"
@@ -820,7 +820,7 @@
     "CIF": "CIF"
   },
   "productStatus": {
-    "IN_DRAFT": "Draft",
+    "IN_DRAFT": "Expecting",
     "IN_PROCESSING": "Processing",
     "IN_PRODUCTION": "In production",
     "IN_STOCK": "In stock"
