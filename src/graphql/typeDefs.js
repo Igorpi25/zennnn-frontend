@@ -278,6 +278,7 @@ export const SPEC_FRAGMENT = gql`
     }
     specStatus
     specNo
+    shippingDate
     estimateShippingDate
     shipped
     totalVolume
@@ -311,6 +312,7 @@ export const SPEC_FRAGMENT = gql`
     amount
     amountInWords
     amountInWordsClientLang
+    readyToPrint
     createdAt
     updatedAt
   }
@@ -498,6 +500,7 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
     name
     article
     qty
+    unit
     comments {
       ...CommentFragment
     }
@@ -550,6 +553,7 @@ export const PAPER_SPEC_FRAGMENT = gql`
     id
     specStatus
     specNo
+    shippingDate
     estimateShippingDate
     shipped
     totalVolume
@@ -571,6 +575,8 @@ export const PAPER_SPEC_FRAGMENT = gql`
     containers {
       ...ContainerFragment
     }
+    readyToPrint
+    orgName
     createdAt
     updatedAt
   }
