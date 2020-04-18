@@ -220,12 +220,7 @@
                         class="text-sm text-gray-200"
                       >
                         <div>
-                          {{
-                            $t('preview.containerFullCount', {
-                              count: container.full,
-                              container: `${container.size.replace('_', '')}'${container.mode.replace('_', '')}`,
-                            })
-                          }}
+                          {{ `${$tc('preview.container', container.full, { n: container.full })} ${container.size.replace('_', '')}'${container.mode.replace('_', '')}` }}
                         </div>
                         <div :class="['spec-container relative my-2', { 'spec-container--lg': container.size === '_40' || container.size === '_45' }]">
                           <div class="spec-container__progress w-full h-full">

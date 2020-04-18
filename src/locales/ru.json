@@ -291,7 +291,7 @@
     "discount": "Скидка",
     "prepay": "Предоплата",
     "summaryTitle": "Общие сведения по спецификации",
-    "container": "контейнер",
+    "container": "0 контейнеров | {n} контейнер | {n} контейнера | {n} контейнеров",
     "containerFullCount": "{count} контейнера {container}",
     "containerLoaded": "Контейнер заполнен:",
     "estimateDate": "Готовность",

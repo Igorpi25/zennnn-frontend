@@ -291,7 +291,7 @@
     "discount": "Discount",
     "prepay": "Prepay",
     "summaryTitle": "Shipping Summary",
-    "container": "container",
+    "container": "0 сontainers | {n} сontainer | {n} сontainers",
     "containerFullCount": "{count} containers {container}",
     "containerLoaded": "Container loaded:",
     "estimateDate": "Estimate Shipping Date",

@@ -288,7 +288,7 @@
     "discount": "折扣",
     "prepay": "定金",
     "summaryTitle": "明细表总述",
-    "container": "集装箱",
+    "container": "{n}个集装箱",
     "containerLoaded": "集装箱装载：",
     "estimateDate": "预计发货日期：",
     "totalVolume": "总容积：",

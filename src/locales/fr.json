@@ -288,7 +288,7 @@
     "discount": "Remise",
     "prepay": "Prépayer",
     "summaryTitle": "Résumé d'expédition",
-    "container": "récipient",
+    "container": "0 conteneurs | {n} contenant | {n} conteneurs",
     "containerLoaded": "chargé:",
     "estimateDate": "Date d'expédition estimée",
     "totalVolume": "Volume total",
