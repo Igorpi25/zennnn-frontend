@@ -283,8 +283,8 @@
     "copyLink": "Copy link"
   },
   "preview": {
-    "cargoInfo ": "Shipping Info",
-    "financialInfo ": "Final Cost Info",
+    "cargoInfo": "Shipping Info",
+    "financialInfo": "Final Cost Info",
     "draft": "DRAFT",
     "shippingTitle": "Deal №",
     "total": "Total",

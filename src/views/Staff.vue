@@ -63,7 +63,7 @@
 
              <template v-slot:items="{ items }">
               <template v-for="(item, index) in items">
-                <tr :key="item.id" class="items bg-background hover:bg-accent3 border-none">
+                <tr :key="item.id" class="items bg-gray-900 hover:bg-accent3 border-none">
                   <td class="relative px-3">
                     <span
                       :class="[
@@ -180,7 +180,7 @@
             table-width="100%"
             table-class="table-fixed"
             thead-class="text-accent2 border-b border-accent2"
-            items-row-class="border-none bg-background hover:bg-accent3"
+            items-row-class="border-none bg-gray-900 hover:bg-accent3"
             items-cell-class="bg-transparent"
           >
             <template v-slot:item.invitationEmail="{ item }">

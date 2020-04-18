@@ -8,13 +8,13 @@
           :items="items"
           table-width="100%"
           table-class="table-fixed"
-          thead-class="text-accent2 border-b border-accent2 bg-background"
+          thead-class="text-accent2 border-b border-accent2 bg-gray-900"
         >
           <template v-slot:items="{ items }">
             <tr
               v-for="(item) in items"
               :key="item.id"
-              class="items bg-background hover:bg-accent3 border-none"
+              class="items bg-gray-900 hover:bg-accent3 border-none"
             >
               <td
                 class="text-center align-middle"

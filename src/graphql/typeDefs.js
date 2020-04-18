@@ -278,6 +278,7 @@ export const SPEC_FRAGMENT = gql`
     }
     specStatus
     specNo
+    shippingDate
     estimateShippingDate
     shipped
     totalVolume
@@ -311,6 +312,7 @@ export const SPEC_FRAGMENT = gql`
     amount
     amountInWords
     amountInWordsClientLang
+    readyToPrint
     createdAt
     updatedAt
   }
@@ -498,6 +500,7 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
     name
     article
     qty
+    unit
     comments {
       ...CommentFragment
     }
@@ -514,6 +517,9 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
     description
     # link
     url
+    # print
+    costPrice
+    costAmount
   }
   ${COMMENT_FRAGMENT}
 `
@@ -532,6 +538,8 @@ export const PAPER_INVOICE_FRAGMENT = gql`
     totalClientAmount
     createdAt
     updatedAt
+    # print
+    discountInCurrency
   }
 `
 
@@ -550,6 +558,7 @@ export const PAPER_SPEC_FRAGMENT = gql`
     id
     specStatus
     specNo
+    shippingDate
     estimateShippingDate
     shipped
     totalVolume
@@ -571,11 +580,36 @@ export const PAPER_SPEC_FRAGMENT = gql`
     containers {
       ...ContainerFragment
     }
+    readyToPrint
+    orgName
     createdAt
     updatedAt
+    requisite {
+      ...OrgRequisiteFragment
+    }
+    client {
+      ...ClientFragment
+    }
+    shipment {
+      ...ShipmentFragment
+    }
+    customs {
+      ...CustomsFragment
+    }
+    subtotal
+    paid
+    depositDue
+    depositDueDate
+    balanceDue
+    amountInWords
+    amountInWordsClientLang
   }
   ${COMMENT_FRAGMENT}
   ${CONTAINER_FRAGMENT}
+  ${ORG_REQUISITE_FRAGMENT}
+  ${SHIPMENT_FRAGMENT}
+  ${CUSTOMS_FRAGMENT}
+  ${CLIENT_FRAGMENT}
 `
 
 export const PAPER_SPEC_INVOICES_FRAGMENT = gql`

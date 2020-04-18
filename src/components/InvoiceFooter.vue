@@ -367,7 +367,7 @@ export default {
   @apply bg-accent1;
   border-radius: 2px;
 }
-.light-theme .invoice-footer {
+[data-theme="light"] .invoice-footer {
   @apply bg-white;
 }
 .invoice-footer > div {

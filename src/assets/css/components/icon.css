@@ -120,7 +120,7 @@
 }
 .icon-kg:before {
   content: "\e918";
-  color: #585858;
+  color: currentColor;
 }
 .icon-language:before {
   content: "\e919";
