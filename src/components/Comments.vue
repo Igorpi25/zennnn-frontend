@@ -1,39 +1,38 @@
 <template>
   <div>
+    <div
+      ref="defaultActivator"
+      class="relative flex items-center"
+      @click="toggleMenu"
+    >
+      <v-scale-transition>
+        <div
+          v-if="newCommentsCount > 0"
+          :style="badgeStyles"
+          style="background-color: #ff4800"
+          class="absolute rounded-full flex justify-center items-center text-xs text-white"
+        >
+          <span v-if="!sm">
+            {{ newCommentsCount > 99 ? '99+' : newCommentsCount }}
+          </span>
+        </div>
+      </v-scale-transition>
+      <i :class="['icon-message cursor-pointer select-none', sm ? 'text-sm' : 'text-xl']" />
+    </div>
     <v-menu
-      v-model="menu"
+      v-model="isMenuActive"
+      :activator="activator || $refs.defaultActivator"
       :close-on-content-click="false"
+      :open-on-click="false"
       :left="left"
+      :top="top"
       :right="right"
+      :bottom="bottom"
+      :offset-x="offsetX"
+      :offset-y="offsetY"
       min-width="320px"
       max-height="420px"
-      offset-x
     >
-      <template v-slot:activator="{ on }">
-        <div v-on="on">
-          <div class="relative">
-            <v-scale-transition>
-              <div
-                v-if="newCommentsCount > 0"
-                :style="badgeStyles"
-                style="background-color: #ff4800"
-                class="absolute rounded-full flex justify-center items-center text-xs text-white"
-              >
-                <span v-if="!sm">
-                  {{ newCommentsCount > 99 ? '99+' : newCommentsCount }}
-                </span>
-              </div>
-            </v-scale-transition>
-            <Icon
-              :size="iconSize"
-              class="cursor-pointer select-none"
-              role="button"
-            >
-              {{ icons.mdiMessageReplyText }}
-            </Icon>
-          </div>
-        </div>
-      </template>
       <div
         :class="['px-4 py-5', light ? 'paper-theme' : 'bg-gray']"
       >
@@ -67,8 +66,6 @@
 </template>
 
 <script>
-import { mdiMessageReplyText } from '@mdi/js'
-
 import Comment from './Comment'
 import CommentInput from './CommentInput'
 import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
@@ -90,6 +87,7 @@ export default {
     CommentInput,
   },
   props: {
+    activator: undefined,
     items: {
       type: Array,
       default: () => ([]),
@@ -119,13 +117,25 @@ export default {
       type: Boolean,
       default: false,
     },
+    top: {
+      type: Boolean,
+      default: false,
+    },
     right: {
       type: Boolean,
       default: false,
     },
-    iconSize: {
-      type: [Number, String],
-      default: 24,
+    bottom: {
+      type: Boolean,
+      default: false,
+    },
+    offsetX: {
+      type: Boolean,
+      default: true,
+    },
+    offsetY: {
+      type: Boolean,
+      default: false,
     },
     sm: {
       type: Boolean,
@@ -148,12 +158,9 @@ export default {
     return {
       commentsIds: [],
       viewedComments: [],
-      menu: false,
+      isMenuActive: false,
       addCommentLoading: false,
       comment: '',
-      icons: {
-        mdiMessageReplyText,
-      },
     }
   },
   computed: {
@@ -210,7 +217,7 @@ export default {
     },
   },
   watch: {
-    menu (val) {
+    isMenuActive (val) {
       if (val) {
         setTimeout(() => {
           this.updateViewedComments()
@@ -220,7 +227,7 @@ export default {
     items (val, oldVal) {
       const valLength = (val && val.length) || 0
       const oldValLength = (oldVal && oldVal.length) || 0
-      if (this.menu && valLength > oldValLength) {
+      if (this.isMenuActive && valLength > oldValLength) {
         const newIds = []
         val.forEach(el => {
           if (this.isPaper) {
@@ -264,7 +271,13 @@ export default {
       }
     },
     openMenu () {
-      this.menu = true
+      this.isMenuActive = true
+    },
+    closeMenu () {
+      this.isMenuActive = false
+    },
+    toggleMenu () {
+      this.isMenuActive = !this.isMenuActive
     },
     async addComment () {
       try {

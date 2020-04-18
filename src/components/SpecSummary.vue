@@ -430,8 +430,9 @@
           <div class="w-full md:w-auto p-2">
             <a
               :href="`/paper/${$route.params.specId}`"
+              style="min-width: 85px"
               target="_blank"
-              class="w-full inline-block rounded-md border border-gray-400 hover:border-primary"
+              class="w-full inline-block rounded-md border border-gray-400 select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
             >
               <div class="h-12 flex items-center px-2">
                 <i class="icon-eay text-2xl mr-2" />
@@ -444,7 +445,8 @@
           <div class="w-full md:w-auto p-2">
             <a
               href="#"
-              class="w-full inline-block rounded-md border border-transparent hover:border-primary"
+              style="min-width: 85px"
+              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
               @click.prevent="openPaperList"
             >
               <div class="h-12 flex items-center px-2">
@@ -458,7 +460,8 @@
           <div class="w-full md:w-auto p-2">
             <a
               href="#"
-              class="w-full inline-block rounded-md border border-transparent hover:border-primary"
+              style="min-width: 85px"
+              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
               @click.prevent="printDialog = true"
             >
               <div class="h-12 flex items-center px-2">
@@ -472,7 +475,8 @@
           <div class="w-full md:w-auto p-2">
             <a
               href="#"
-              class="w-full inline-block rounded-md border border-transparent hover:border-primary"
+              style="min-width: 85px"
+              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
               @click.prevent="accessControlDialog = true"
             >
               <div class="h-12 flex items-center px-2">
@@ -484,9 +488,10 @@
             </a>
           </div>
           <div class="w-full md:w-auto p-2">
-            <a
-              class="w-full inline-block rounded-md border border-transparent hover:border-primary pointer-events-none"
-              @click.prevent
+            <button
+              disabled
+              style="min-width: 85px"
+              class="w-full inline-block rounded-md border border-transparent pointer-events-none"
             >
               <div class="h-12 flex items-center px-2 text-gray-400">
                 <i class="icon-mail text-2xl mr-2" />
@@ -494,7 +499,7 @@
                   {{ $t('shipping.notifyCustomer') }}
                 </span>
               </div>
-            </a>
+            </button>
           </div>
         </div>
       </div>
