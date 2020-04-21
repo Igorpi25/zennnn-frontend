@@ -30,6 +30,8 @@ module.exports = {
       'gray-50': '#F7F7F7',
       'gray-75': '#E4E4E4',
       'gray-100': '#AAAAAA',
+      'gray-140': '#828282', // used in landing
+      'gray-150': '#878787', // used in landing
       'gray-200': '#676767', // IN_DRAFT
       'gray-300': '#585858',
       'gray-400': '#404040',
@@ -41,6 +43,8 @@ module.exports = {
       'blue-400': '#2F80ED',
       'blue-500': '#7E99D0', // primary color
       'blue-600': '#5C78B1', // primary hover color
+      'blue-700': '#345DEE', // landing color
+      'blue-800': '#2F52D4', // landing hover color
       'pink-500': '#FF005E', // error, IN_PROCESSING
       'green-500': '#08DC1B', // success, IN_STOCK
       'yellow-500': '#FDB600', // warning, IN_PRODUCTION
@@ -49,6 +53,7 @@ module.exports = {
     fontFamily: {
       'myriad': ['MyriadPro', 'sans-serif'],
       'myriad-cond': ['MyriadPro-Cond', 'sans-serif'],
+      'montserrat': ['Montserrat', 'sans-serif'],
     },
     boxShadow: {
       primary: '0 0 0 1px #5a8199',

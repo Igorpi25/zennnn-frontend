@@ -9,6 +9,10 @@
 .container--sm {
   @apply px-4;
 }
+.container--xs {
+  padding-left: 16px;
+  padding-right: 16px;
+}
 @screen sm {
   .container--sm {
     @apply px-6;
@@ -19,6 +23,10 @@
   .container--sm {
     padding-left: 75px;
     padding-right: 75px;
+  }
+  .container--xs {
+    padding-left: 40px;
+    padding-right: 40px;
   }
 }
 

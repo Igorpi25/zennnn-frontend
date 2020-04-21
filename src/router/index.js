@@ -33,9 +33,19 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    redirect: () => {
-      const orgId = localStorage.getItem(CURRENT_ORG_STORE_KEY) || ''
-      return { name: 'specs', params: { orgId } }
+    beforeEnter: async (to, from, next) => {
+      try {
+        const loggedIn = await Auth.checkAuth()
+        if (!loggedIn) {
+          return next({ name: 'about' })
+        }
+        const orgId = localStorage.getItem(CURRENT_ORG_STORE_KEY) || ''
+        return next({ name: 'specs', params: { orgId } })
+      } catch (error) {
+        // eslint-disable-next-line
+        console.warn('Error on / before route enter')
+        next()
+      }
     },
   },
   {
@@ -208,6 +218,11 @@ const routes = [
     },
   },
   {
+    path: '/about',
+    name: 'about',
+    component: () => import(/* webpackChunkName: "home" */ '../views/About.vue'),
+  },
+  {
     path: '/paper/:specId',
     name: 'preview',
     component: Preview,
@@ -330,7 +345,7 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   // set theme attribute
-  if (to.name === 'preview') {
+  if (to.name === 'preview' || to.name === 'about') {
     document.body.dataset.theme = 'light'
   } else {
     document.body.dataset.theme = 'dark'
@@ -356,6 +371,9 @@ router.beforeEach(async (to, from, next) => {
       next()
     }
   } else {
+    if (!loggedIn && to.path === '/') {
+      return next({ name: 'about' })
+    }
     next() // make sure to always call next()!
   }
 })
