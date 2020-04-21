@@ -284,15 +284,15 @@
     "copyLink": "Копировать ссылку"
   },
   "preview": {
-    "cargoInfo": "Общая грузовая информация",
-    "financialInfo": "Общая финансовая информация",
+    "cargoInfo ": "Общая грузовая информация",
+    "financialInfo ": "Общая финансовая информация",
+    "draft": "DRAFT",
     "shippingTitle": "Сделка №",
     "total": "Итого",
     "discount": "Скидка",
     "prepay": "Предоплата",
     "summaryTitle": "Общие сведения по спецификации",
     "container": "0 контейнеров | {n} контейнер | {n} контейнера | {n} контейнеров",
-    "containerFullCount": "{count} контейнера {container}",
     "containerLoaded": "Контейнер заполнен:",
     "estimateDate": "Готовность",
     "totalVolume": "Объём",
@@ -311,6 +311,7 @@
     "price": "Цена",
     "notes": "Заметки",
     "expectedShipment": "Ожидаемая готовность:",
+    "additionalImages": "Доп. изобр.",
     "leaveNote": "Оставить заметку",
     "leaveComment": "Оставить комментарий",
     "noDiscount": "без скидки",
@@ -321,7 +322,7 @@
     "totalToPay": "Остаток к оплате в {currency}:",
     "exchangeRate": "Курс 1 {currency} к {exchange}:",
     "share": "Поделиться",
-    "print": "Распечатать документы",
+    "print": "Распечатать",
     "download": "Скачать",
     "comment": "Оставить комментарий"
   },
@@ -819,7 +820,7 @@
     "CIF": "CIF"
   },
   "productStatus": {
-    "IN_DRAFT": "В планах",
+    "IN_DRAFT": "В ожидании",
     "IN_PROCESSING": "Обрабатывается",
     "IN_PRODUCTION": "В производстве",
     "IN_STOCK": "На складе"
