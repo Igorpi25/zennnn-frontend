@@ -1,7 +1,7 @@
 {
   "passwordRestore": {
     "accessRecoveryHead": "Відновлення доступу,",
-    "accessRecoverySubhead": "вкажіть дані, і отримаєте посилання для зміни пароля",
+    "accessRecoverySubhead": "вкажіть дані, і отримаєте посилання для зміни пароля.",
     "recoveryByEmail": "Відновлення поштою",
     "email": "Пошта",
     "notRecieveEmailHead": "Якщо ви не отримали листа, перевірте папку \"Спам\" або",
@@ -18,7 +18,7 @@
   },
   "loginRestore": {
     "accessRecoveryHead": "Відновлення доступу,",
-    "accessRecoverySubhead": "вкажіть дані, і отримаєте посилання для зміни пароля",
+    "accessRecoverySubhead": "вкажіть дані, і отримаєте посилання для зміни пароля.",
     "recoveryByPhone": "Відновлення по телефону",
     "phoneNumber": "Номер телефона",
     "smsCode": "Код з смс",
@@ -208,10 +208,10 @@
     "container": "контейнер",
     "containerMeasure": "`",
     "containerLoaded": "заповнений на:",
-    "estimateDate": "Готовність до відправки:",
-    "totalVolume": "Об'єм:",
-    "totalWeight": "Маса:",
-    "qtyOfPackages": "Разом вантажних місць:",
+    "estimateDate": "Готовність до відправки",
+    "totalVolume": "Об'єм",
+    "totalWeight": "Маса",
+    "qtyOfPackages": "Разом вантажних місць",
     "finalCost": "Вартість для клієнта:",
     "finalObtainCost": "Необхідно для закупівлі:",
     "profit": "Різниця (Прибуток):",
@@ -284,8 +284,8 @@
     "copyLink": "Копіювати посилання"
   },
   "preview": {
-    "cargoInfo ": "Загальна вантажна інформація",
-    "financialInfo ": "Загальна фінансова інформація",
+    "cargoInfo": "Загальна вантажна інформація",
+    "financialInfo": "Загальна фінансова інформація",
     "draft": "DRAFT",
     "shippingTitle": "Сделка №",
     "total": "Разом",

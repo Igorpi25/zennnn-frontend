@@ -10,7 +10,7 @@
     "submit": "找回密码"
   },
   "passwordRestoreConfirm": {
-    "changePasswordHead": "重置密码",
+    "changePasswordHead": "重置密码，",
     "changePasswordSubhead": "请输入新密码",
     "newPassword": "输入新密码",
     "newPasswordConfirm": "確认新密码",
@@ -37,7 +37,7 @@
     "forgotPassword": "忘记密码？",
     "doNotRememberLogin": "忘记用户名",
     "rememberMe": "保存",
-    "submit": "登录"
+    "submit": "登陆"
   },
   "signinByPhone": {
     "loginByPhone": "通过手机号码登录",
@@ -61,7 +61,7 @@
     "password": "密码",
     "temporaryPassword": "临时密码",
     "acceptPolicyAndTerms": "同意",
-    "privacyPolicy": "隐私政策／条款",
+    "privacyPolicy": "隐私政策",
     "termsOfUse": "使用条款",
     "submit": "注册"
   },
@@ -208,16 +208,17 @@
     "container": "集装箱",
     "containerMeasure": "`",
     "containerLoaded": "集装箱装载：",
-    "estimateDate": "预计发货日期：",
-    "totalVolume": "总容积：",
-    "totalWeight": "总重量：",
-    "qtyOfPackages": "总件数：",
+    "estimateDate": "预计发货日期",
+    "totalVolume": "总容积",
+    "totalWeight": "总重量",
+    "qtyOfPackages": "总件数",
     "finalCost": "客户总价：",
     "finalObtainCost": "采购金额：",
     "profit": "差距（利润）：",
     "totalPrepay": "总共定金：",
     "totalClientDebt": "总共客户尾款：",
     "documentRate": "货币汇率 1",
+    "documentRateTooltip": "发票与其它文件会按照此汇率准备。",
     "paperConfigurator": "创建文件",
     "notifyClient": "发出通知",
     "print": "打印文件",
@@ -283,8 +284,8 @@
     "copyLink": "拷贝链接"
   },
   "preview": {
-    "cargoInfo ": "货物信息",
-    "financialInfo ": "最终付款信息",
+    "cargoInfo": "货物信息",
+    "financialInfo": "最终付款信息",
     "draft": "DRAFT",
     "shippingTitle": "交易编号",
     "total": "合计",
@@ -293,9 +294,9 @@
     "summaryTitle": "明细表总述",
     "container": "{n}个集装箱",
     "containerLoaded": "集装箱装载：",
-    "estimateDate": "预计发货日期：",
-    "totalVolume": "总容积：",
-    "totalWeight": "总重量：",
+    "estimateDate": "预计发货日期",
+    "totalVolume": "总容积",
+    "totalWeight": "总重量",
     "totalPackages": "件数",
     "shipped": "已发货",
     "qtyOfPackages": "件数",
