@@ -853,7 +853,7 @@
                   <path d="M0.768555 4.56836L5.14355 8.81836L11.6436 1.44336" stroke="#345DEE" stroke-width="2"/>
                 </svg>
               </span>
-              <span class="font-bold">Темный интерфейс бережет зрение</span>
+              <span>Темный интерфейс бережет зрение</span>
             </div>
             <div class="flex mb-5 leading-6">
               <span class="inline-flex items-center h-6 mr-4">
@@ -861,7 +861,7 @@
                   <path d="M0.768555 4.56836L5.14355 8.81836L11.6436 1.44336" stroke="#345DEE" stroke-width="2"/>
                 </svg>
               </span>
-              <span class="font-bold">Простое управление — эффективность и продуктивность при минимуме действий</span>
+              <span>Простое управление — эффективность и продуктивность при минимуме действий</span>
             </div>
             <div class="flex mb-5 leading-6">
               <span class="inline-flex items-center h-6 mr-4">
@@ -869,7 +869,7 @@
                   <path d="M0.768555 4.56836L5.14355 8.81836L11.6436 1.44336" stroke="#345DEE" stroke-width="2"/>
                 </svg>
               </span>
-              <span class="font-bold">Показывает KPI сотрудников в режиме реального времени</span>
+              <span>Показывает KPI сотрудников в режиме реального времени</span>
             </div>
             <div class="flex mb-5 leading-6">
               <span class="inline-flex items-center h-6 mr-4">
@@ -877,7 +877,7 @@
                   <path d="M0.768555 4.56836L5.14355 8.81836L11.6436 1.44336" stroke="#345DEE" stroke-width="2"/>
                 </svg>
               </span>
-              <span class="font-bold">Полное вовлечение клиентов в работу над заказами</span>
+              <span>Полное вовлечение клиентов в работу над заказами</span>
             </div>
             <div class="flex mb-5 leading-6">
               <span class="inline-flex items-center h-6 mr-4">
@@ -885,7 +885,7 @@
                   <path d="M0.768555 4.56836L5.14355 8.81836L11.6436 1.44336" stroke="#345DEE" stroke-width="2"/>
                 </svg>
               </span>
-              <span class="font-bold">Революционный принцип «one page» — все данные и функции на одном экране</span>
+              <span>Революционный принцип «one page» — все данные и функции на одном экране</span>
             </div>
             <div class="flex mb-5 leading-6">
               <span class="inline-flex items-center h-6 mr-4">
@@ -893,7 +893,15 @@
                   <path d="M0.768555 4.56836L5.14355 8.81836L11.6436 1.44336" stroke="#345DEE" stroke-width="2"/>
                 </svg>
               </span>
-              <span class="font-bold">Функция автозаполнения документов — избавит от рутины повторяющихся действий</span>
+              <span>Функция автозаполнения документов — избавит от рутины повторяющихся действий</span>
+            </div>
+            <div class="flex mb-5 leading-6">
+              <span class="inline-flex items-center h-6 mr-4">
+                <svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.768555 4.56836L5.14355 8.81836L11.6436 1.44336" stroke="#345DEE" stroke-width="2"/>
+                </svg>
+              </span>
+              <span>На разных языках интерфейс выглядит одинаково</span>
             </div>
           </div>
         </div>
