@@ -164,7 +164,7 @@
       <!-- / VIDEO -->
       <div>
         <h3 class="section-title font-bold text-center mx-auto mt-10" style="max-width: 772px;">
-          <span class="font-extrabold">ZENNNN</span><span v-html="' уже рассказал о&nbsp;себе за&nbsp;четыре минуты'" />
+          <span v-html="'ZENNNN уже рассказал о&nbsp;себе за&nbsp;четыре минуты'" />
         </h3>
         <div class="w-15 h-px py-xs my-6 mx-auto bg-blue-700" />
         <div class="h-0 sm:h-64 relative">
@@ -396,7 +396,7 @@
         <div class="flex flex-col xl:flex-row py-1">
           <div class="w-full flex-shrink-0" style="max-width: 849px;">
             <h3 class="section-title font-bold">
-              <span class="font-extrabold">ZENNNN</span> знает частые проблемы и помогает их решать
+              ZENNNN знает частые проблемы и помогает их решать
             </h3>
             <div class="w-15 h-px py-xs my-6 bg-blue-700" />
           </div>
