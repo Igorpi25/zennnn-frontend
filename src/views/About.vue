@@ -1255,9 +1255,14 @@ export default {
           country: 'cn',
         },
         {
-          name: 'Алан Сноу',
+          name: 'Тино Картер',
           position: 'переводчик, английский',
           country: 'us',
+        },
+        {
+          name: 'Бенуар Ожэ',
+          position: 'переводчик, французский',
+          country: 'fr',
         },
       ],
     }
