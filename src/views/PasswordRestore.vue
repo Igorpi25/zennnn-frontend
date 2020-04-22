@@ -8,17 +8,18 @@
             <div class="w-full">
               <h1 class="text-center md:text-left mb-12 pt-10 md:pt-12">
                 <span class="text-white md:text-gray-lightest">
-                  {{ $t('passwordRestore.accessRecoveryStart') }}
+                  {{ $t('passwordRestore.accessRecoveryHead') }}
                 </span>
                 <br />
                 <span class="text-gray-lightest md:text-white">
-                  {{ $t('passwordRestore.accessRecoveryEnd') }}
+                  {{ $t('passwordRestore.accessRecoverySubhead') }}
                 </span>
               </h1>
               <Form
                 ref="form"
                 :title="$t('passwordRestore.recoveryByEmail')"
                 :error-message.sync="errorMessage"
+                lazy-validation
                 rounded
                 shadow
                 class="form--max-w-md"
@@ -40,16 +41,16 @@
                     <TextField
                       v-model="formModel.email"
                       :label="$t('passwordRestore.email')"
+                      :rules="[rules.required, rules.email]"
                       type="email"
                       name="email"
                       autofocus
-                      required
                     />
                   </div>
                   <div class="text-gray-lighter text-sm">
-                    <p>{{ $t('passwordRestore.notRecieveEmailStart') }}&nbsp;
+                    <p>{{ $t('passwordRestore.notRecieveEmailHead') }}&nbsp;
                       <span>
-                        {{ $t('passwordRestore.notRecieveEmailEnd') }}
+                        {{ $t('passwordRestore.notRecieveEmailSubhead') }}
                       </span>
                       <!-- <router-link
                         :to="{ name: 'login-restore' }"
@@ -71,7 +72,7 @@
                       {{ $t('action.loading') }}
                     </span>
                     <span v-else>
-                      {{ $t('action.getLink') }}
+                      {{ $t('passwordRestore.submit') }}
                     </span>
                   </Button>
                 </template>
@@ -110,6 +111,10 @@ export default {
       formModel: {
         email: '',
       },
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
+      },
     }
   },
   methods: {
@@ -124,8 +129,7 @@ export default {
           const response = await this.$Auth.forgotPassword(this.formModel.email)
           this.$logger.info('Password restore response', response)
           if (response) {
-            const email = response.CodeDeliveryDetails.Destination
-            this.successMessage = this.$t('message.emailSent', { email })
+            this.successMessage = this.$t('message.emailSent', { email: this.formModel.email })
           }
         }
       } catch (error) {

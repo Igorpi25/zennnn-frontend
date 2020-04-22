@@ -16,7 +16,7 @@
     <v-dialog
       v-model="paperConfigurator"
       :fullscreen="$vuetify.breakpoint.xs || $vuetify.breakpoint.sm"
-      content-class="dialog-full-height paper-configurator-dialog"
+      content-class="dialog-full-height rounded-none paper-configurator-dialog"
       max-width="906"
       scrollable
       persistent
@@ -29,79 +29,177 @@
       />
     </v-dialog>
 
+    <v-dialog
+      v-model="printDialog"
+      :fullscreen="$vuetify.breakpoint.smAndDown"
+      content-class="dialog-full-height bg-gray-800"
+      max-width="900"
+      scrollable
+      persistent
+    >
+      <PrintSettings
+        :org-id="orgId"
+        :spec-id="spec.id"
+        :requisite-id="spec.requisite"
+        :client="spec.client || {}"
+        :shipment="spec.shipment"
+        :customs="spec.customs"
+        :amount="spec.total"
+        :amount-in-words="spec.amountInWords"
+        :amount-in-words-client-lang="spec.amountInWordsClientLang"
+        :loading="printLoading"
+        @update="v => updateSpec(v)"
+        @close="printDialog = false"
+        @print="doPrint"
+      />
+    </v-dialog>
+
     <div>
       <h4 class="text-lg mb-4">
         {{ $t('shipping.summaryTitle') }}
       </h4>
       <div class="spec-summary__wrapper flex-col lg:flex-row">
-        <div class="spec-summary__info">
-          <div v-if="spec.containers" class="relative">
+        <div class="spec-summary__info" v-if="isOwnerOrManager || isWarehouseman">
+          <div v-if="containers.length > 0" class="relative pb-5">
             <div
               v-if="spec.shipped"
               class="spec-summary__container__image spec-summary__container__image--shipped w-full"
-              style="left: -20px; width: 350px; background-size: auto; z-index: 1;"
+              style="top: -16px; left: -20px; width: 350px; background-size: contain; height: auto; z-index: 1;"
             />
-            <div
-              v-if="spec.containers.length === 1"
-              class="spec-summary__container"
+            <template
+              v-for="(container, i) of containers"
             >
               <div
-                class="spec-summary__container__image spec-summary__container__image--full"
-                :style="{
-                  width: (spec.containers[0].loaded || 0) + '%',
-                  height: '85px'
-                }"
-              />
-              <img width="210" height="85" src="/img/container-empty.svg" alt="">
-            </div>
-            <div v-else>
-              <div
-                v-for="(c, i) in loadedContainers"
-                :key="`loaded-${i}`"
-                class="spec-summary__container"
-              >
-                <div
-                  class="spec-summary__container__image spec-summary__container__image--full-sm"
-                  :style="{
-                    width: '100%',
-                    height: '48px'
-                  }"
-                />
-                <div class="spec-summary__container__label">
-                  {{ loadedContainers.length }} x {{ c.type }}′
-                </div>
-                <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
-              </div>
-              <div
-                v-for="(c, i) in unloadedContainers"
+                v-if="!container.full"
                 :key="`unloaded-${i}`"
                 class="spec-summary__container"
               >
                 <div
-                  class="spec-summary__container__image spec-summary__container__image--full-sm"
+                  class="spec-summary__container__image"
+                  :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
                   :style="{
-                    width: (c.loaded || 0) + '%',
-                    height: '48px'
+                    width: (container.loaded || 0) + '%',
+                    height: container.size === '_20' ? '85px' : '48px'
                   }"
                 />
-                <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
+                <img
+                  v-if="container.size === '_20'"
+                  width="210"
+                  height="85"
+                  src="/img/container-empty.svg"
+                  alt="Container"
+                >
+                <img
+                  v-else
+                  width="210"
+                  height="48"
+                  src="/img/container-empty-sm.svg"
+                  alt="Container"
+                >
               </div>
-            </div>
+              <div
+                v-else
+                :key="`loaded-${i}`"
+              >
+                <div
+                  class="spec-summary__container"
+                >
+                  <div
+                    class="spec-summary__container__image"
+                    :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
+                    :style="{
+                      width: '100%',
+                      height: container.size === '_20' ? '85px' : '48px'
+                    }"
+                  />
+                  <div class="spec-summary__container__label">
+                    {{ container.full }} x {{ container.size.replace('_', '') }}′{{ container.mode.replace('_', '') }}
+                  </div>
+                  <img
+                    v-if="container.size === '_20'"
+                    width="210"
+                    height="85"
+                    src="/img/container-empty.svg"
+                    alt="Container"
+                  >
+                  <img
+                    v-else
+                    width="210"
+                    height="48"
+                    src="/img/container-empty-sm.svg"
+                    alt="Container"
+                  >
+                </div>
+                <div class="spec-summary__container py-2 flex justify-center text-white">
+                  <Icon>{{ icons.mdiPlusThick }}</Icon>
+                </div>
+                <div
+                  class="spec-summary__container"
+                >
+                  <div
+                    class="spec-summary__container__image"
+                    :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
+                    :style="{
+                      width: (container.loaded || 0) + '%',
+                      height: container.size === '_20' ? '85px' : '48px'
+                    }"
+                  />
+                  <img
+                    v-if="container.size === '_20'"
+                    width="210"
+                    height="85"
+                    src="/img/container-empty.svg"
+                    alt="Container"
+                  >
+                  <img
+                    v-else
+                    width="210"
+                    height="48"
+                    src="/img/container-empty-sm.svg"
+                    alt="Container"
+                  >
+                </div>
+              </div>
+            </template>
           </div>
           <div>
             <ul class="leaders">
               <li
-                v-for="(c, i) in unloadedContainers"
+                v-for="(c, i) in containers"
                 :key="i"
               >
                 <span>
-                  <span class="leaders__num">
-                    {{ c.type || '20' }}{{ $t('shipping.containerMeasure') }}
+                  <select
+                    v-if="isOwnerOrManager"
+                    :value="`${c.size}${c.mode}`"
+                    :disabled="setContainerSizeLoading"
+                    name="container-size"
+                    class="simple-select"
+                    @change="setContainerSize(c.id, $event)"
+                  >
+                    <option value="_20_DC">
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        20{{ $t('shipping.containerMeasure') }}DC
+                      </span>
+                    </option>
+                    <option value="_40_HC">
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        40{{ $t('shipping.containerMeasure') }}HC
+                      </span>
+                    </option>
+                    <option value="_45_HC">
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        45{{ $t('shipping.containerMeasure') }}HC
+                      </span>
+                    </option>
+                  </select>
+                  <span v-else>
+                    {{ `${c.size ? c.size.slice(1) : ''}${$t('shipping.containerMeasure')}${c.mode ? c.mode.slice(1) : ''}` }}
                   </span>
                   {{ ` ${$t('shipping.container')} ${$t('shipping.containerLoaded')}` }}
                 </span>
                 <span class="leaders__num">
-                  {{ c.loaded }}%
+                  {{ c.loaded || 0 }}%
                 </span>
               </li>
               <li>
@@ -113,23 +211,24 @@
               <li>
                 <span>{{ $t('shipping.totalVolume') }}</span>
                 <span class="leaders__num">
-                  {{ $n(spec.totalVolume, 'formatted') }} {{ $t('measure.m') }}<sup>3</sup>
+                  {{ $n(spec.totalVolume || 0) }} {{ $t('measure.m') }}<sup>3</sup>
                 </span>
               </li>
               <li>
                 <span>{{ $t('shipping.totalWeight') }}</span>
                 <span class="leaders__num">
-                  {{ $n(spec.totalWeight, 'formatted') }} {{ $t('measure.kg') }}
+                  {{ $n(spec.totalWeight || 0) }} {{ $t('measure.kg') }}
                 </span>
               </li>
               <li>
                 <span>{{ $t('shipping.qtyOfPackages') }}</span>
                 <span class="leaders__num">
-                  {{ $n(spec.qtyOfPackages, 'formatted') }}
+                  {{ $n(spec.qtyOfPackages || 0) }}
                 </span>
               </li>
             </ul>
             <ToggleButton
+              v-if="isOwnerOrManager"
               :value="spec.shipped"
               class="my-6"
               @input="updateSpec({ shipped: $event })"
@@ -138,21 +237,22 @@
             </ToggleButton>
           </div>
         </div>
-        <div class="spec-summary__cost">
+        <div class="spec-summary__cost" v-if="isOwnerOrManager || isAccountant">
           <div class="spec-summary__cost__card">
-            <ul class="leaders">
-              <li>
-                <span>
-                  {{ $t('shipping.finalCost') }} {{ $t('currency.CNY.symbol') }}
+            <ul>
+              <li class="flex">
+                <span class="flex-shrink-0">
+                  {{ $t('shipping.finalCost') }} {{ $t(`currency.${currency}.symbol`) }}
                 </span>
+                <div class="flex-grow dots" />
                 <!-- TODO to custom component or Intl polyfill -->
                 <!-- i18n-n has Error formatter.formatToParts is not a function. -->
-                <span class="flex">
+                <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.finalCost, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
-                </span>
-                <!-- <i18n-n :value="spec.finalCost" format="decimal" class="flex">
+                </span> -->
+                <i18n-n :value="spec.finalCost || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
                     <div class="text-white">{{ slotProps.integer }}</div>
                   </template>
@@ -162,18 +262,19 @@
                   <template v-slot:fraction="slotProps">
                     <div class="text-sm">{{ slotProps.fraction }}</div>
                   </template>
-                </i18n-n> -->
+                </i18n-n>
               </li>
-              <li>
-                <span>
-                  {{ $t('shipping.finalObtainCost') }} {{ $t('currency.CNY.symbol') }}
+              <li class="flex">
+                <span class="flex-shrink-0">
+                  {{ $t('shipping.finalObtainCost') }} {{ $t(`currency.${currency}.symbol`) }}
                 </span>
-                <span class="flex">
+                <div class="flex-grow dots" />
+                <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.finalObtainCost, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.finalObtainCost, 'decimal').slice(-2) }}</div>
-                </span>
-                <!-- <i18n-n :value="spec.finalObtainCost" format="decimal" class="flex">
+                </span> -->
+                <i18n-n :value="spec.finalObtainCost || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
                     <div class="text-white">{{ slotProps.integer }}</div>
                   </template>
@@ -183,20 +284,21 @@
                   <template v-slot:fraction="slotProps">
                     <div class="text-sm">{{ slotProps.fraction }}</div>
                   </template>
-                </i18n-n> -->
+                </i18n-n>
               </li>
-              <li>
-                <span>
-                  {{ $t('shipping.profit') }}  {{ $t('currency.CNY.symbol') }}
+              <li class="flex">
+                <span class="flex-shrink-0">
+                  {{ $t('shipping.profit') }}  {{ $t(`currency.${currency}.symbol`) }}
                 </span>
-                <span class="flex">
+                <div class="flex-grow dots" />
+                <!-- <span class="flex">
                   <div style="color: #00ff16;">{{ $n(spec.profit, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.profit, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.profit, 'decimal').slice(-2) }}</div>
-                </span>
-                <!-- <i18n-n :value="spec.profit" format="decimal" class="flex">
+                </span> -->
+                <i18n-n :value="spec.profit || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
-                    <div style="color: #00ff16;">{{ slotProps.integer }}</div>
+                    <div :style="{ color: spec.profit > 0 ? '#00ff16' : '#ffffff' }">{{ slotProps.integer }}</div>
                   </template>
                   <template v-slot:group="slotProps">
                     <div class="text-sm">{{ slotProps.group }}</div>
@@ -204,22 +306,23 @@
                   <template v-slot:fraction="slotProps">
                     <div class="text-sm">{{ slotProps.fraction }}</div>
                   </template>
-                </i18n-n> -->
+                </i18n-n>
               </li>
             </ul>
           </div>
           <div class="spec-summary__cost__card" style="background-image: linear-gradient(to top, #272727 0%, #272727 80%, #1d1d1b 95%, #1d1d1b 100%);">
-            <ul class="leaders">
-              <li>
-                <span>
-                  {{ $t('shipping.totalPrepay') }} {{ $t('currency.CNY.symbol') }}
+            <ul>
+              <li class="flex">
+                <span class="flex-shrink-0">
+                  {{ $t('shipping.totalPrepay') }} {{ $t(`currency.${currency}.symbol`) }}
                 </span>
-                <span class="flex">
+                <div class="flex-grow dots" />
+                <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.totalPrepay, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
-                </span>
-                <!-- <i18n-n :value="spec.totalPrepay" format="decimal" class="flex">
+                </span> -->
+                <i18n-n :value="spec.totalPrepay || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
                     <div class="text-white">{{ slotProps.integer }}</div>
                   </template>
@@ -229,20 +332,21 @@
                   <template v-slot:fraction="slotProps">
                     <div class="text-sm">{{ slotProps.fraction }}</div>
                   </template>
-                </i18n-n> -->
+                </i18n-n>
               </li>
-              <li>
-                <span>
-                  {{ $t('shipping.totalClientDebt') }} {{ $t('currency.CNY.symbol') }}
+              <li class="flex">
+                <span class="flex-shrink-0">
+                  {{ $t('shipping.totalClientDebt') }} {{ $t(`currency.${currency}.symbol`) }}
                 </span>
-                <span class="flex">
+                <div class="flex-grow dots" />
+                <!-- <span class="flex">
                   <div style="color: #ff2900;">{{ $n(spec.totalClientDebt, 'integer') }}</div>
                   <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
                   <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
-                </span>
-                <!-- <i18n-n :value="spec.totalClientDebt" format="decimal" class="flex">
+                </span> -->
+                <i18n-n :value="spec.totalClientDebt || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
-                    <div style="color: #ff2900;">{{ slotProps.integer }}</div>
+                    <div :style="{ color: spec.totalClientDebt > 0 ? '#ff2900' : '#ffffff' }">{{ slotProps.integer }}</div>
                   </template>
                   <template v-slot:group="slotProps">
                     <div class="text-sm">{{ slotProps.group }}</div>
@@ -250,108 +354,285 @@
                   <template v-slot:fraction="slotProps">
                     <div class="text-sm">{{ slotProps.fraction }}</div>
                   </template>
-                </i18n-n> -->
+                </i18n-n>
               </li>
             </ul>
           </div>
-          <div class="flex justify-end items-center pt-2 pr-4">
-            <span>{{ $t('shipping.documentRate') }}</span>
-            <span>&nbsp;=&nbsp;</span>
-            <TextField
-              :debounce="250"
-              :placeholder="$t('placeholder.emptyNumber')"
-              type="number"
-              inputmode="decimal"
-              solo
-              colored
-              outlined
-              hide-details
-              class="text-sm text-right w-16 mr-2 sm:p-0 leading-normal"
-            />
+          <div class="flex items-center bg-gray-700 rounded-md p-5 mt-4" v-if="isOwnerOrManager">
+            <div class="flex-grow text-gray-100">
+              <span>{{ $t('shipping.documentRate') }}</span>
+              <select
+                :value="currency"
+                :class="[
+                  'simple-select text-sm ml-px'
+                ]"
+                @change="updateSpec({ currency: $event.target.value })"
+              >
+                <option
+                  v-for="curr of currencies"
+                  :key="curr.value"
+                  :value="curr.value"
+                >
+                  {{ curr.text }}
+                </option>
+              </select>
+            </div>
+            <div class="w-20 mr-2">
+              <TextField
+                :value="spec.currencyRate"
+                :placeholder="$t('placeholder.emptyNumber')"
+                :disabled="isCurrencyDisabled"
+                lazy
+                type="number"
+                inputmode="decimal"
+                format-style="decimal"
+                solo
+                squared
+                hide-details
+                class="text-sm text-field_nd"
+                input-class="h-8 text-primary placeholder-gray-200"
+                @input="updateSpec({ currencyRate: $event })"
+              />
+            </div>
+            <div class="text-gray-200">
+              {{ $t(`currency.USD.iso-4217`) }}
+            </div>
           </div>
         </div>
-        <div class="spec-summary__actions">
-          <Button text class="mb-4" @click="openPaperList">
-            <template v-slot:icon>
-              <Icon size="32" color="#aaaaaa">
-                {{ icons.ziSettings }}
-              </Icon>
-            </template>
-            <span class="text-left">{{ $t('shipping.paperConfigurator') }}</span>
-          </Button>
-          <Button text class="mb-4" @click.prevent>
-            <template v-slot:icon>
-              <Icon size="32" color="#aaaaaa">
-                {{ icons.ziPaperPlane }}
-              </Icon>
-            </template>
-            <span class="text-left">{{ $t('shipping.notifyClient') }}</span>
-          </Button>
-          <Button text class="mb-4" @click="printPDF">
-            <template v-slot:icon>
-              <Icon size="32" color="#aaaaaa">
-                {{ icons.ziPrint }}
-              </Icon>
-            </template>
-            <span class="text-left">{{ $t('shipping.print') }}</span>
-          </Button>
-          <Button text @click.prevent>
-            <template v-slot:icon>
-              <Icon size="32" color="#aaaaaa">
-                {{ icons.ziShare }}
-              </Icon>
-            </template>
-            <span class="text-left">{{ $t('shipping.share') }}</span>
-          </Button>
+      </div>
+    </div>
+
+    <div class="py-10" v-if="isOwnerOrManager">
+      <div class="flex flex-wrap">
+        <!-- Delivery -->
+        <SpecShipment
+          :item="spec.shipment"
+          @update="v => updateSpec(v)"
+        />
+        <!-- Customs -->
+        <SpecCustoms
+          :shipment-type="(spec.shipment && spec.shipment.activeType) || ''"
+          :item="spec.customs"
+          :amount="spec.total"
+          :amount-in-words="spec.amountInWords"
+          :amount-in-words-client-lang="spec.amountInWordsClientLang"
+          @update="v => updateSpec(v)"
+        />
+      </div>
+    </div>
+
+    <div class="pb-10" v-if="isOwnerOrManager">
+      <h4 class="text-xl font-semibold leading-6 mb-4">
+        {{ $t('shipping.actions') }}
+      </h4>
+      <div class="bg-gray-700 rounded-md p-3 select-none">
+        <div class="flex flex-wrap lg:justify-between">
+          <div class="w-full md:w-auto p-2">
+            <a
+              :href="`/paper/${$route.params.specId}`"
+              style="min-width: 85px"
+              target="_blank"
+              class="w-full inline-block rounded-md border border-gray-400 select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
+            >
+              <div class="h-12 flex items-center px-2">
+                <i class="icon-eay text-2xl mr-2" />
+                <span class="text-primary whitespace-nowrap">
+                  {{ $t('shipping.previewAsCustomer') }}
+                </span>
+              </div>
+            </a>
+          </div>
+          <div class="w-full md:w-auto p-2">
+            <a
+              href="#"
+              style="min-width: 85px"
+              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
+              @click.prevent="openPaperList"
+            >
+              <div class="h-12 flex items-center px-2">
+                <i class="icon-settings text-2xl mr-2" />
+                <span class="text-primary whitespace-nowrap">
+                  {{ $t('shipping.paperConfigurator') }}
+                </span>
+              </div>
+            </a>
+          </div>
+          <div class="w-full md:w-auto p-2">
+            <a
+              href="#"
+              style="min-width: 85px"
+              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
+              @click.prevent="printDialog = true"
+            >
+              <div class="h-12 flex items-center px-2">
+                <i class="icon-printer text-2xl mr-2" />
+                <span class="text-primary whitespace-nowrap">
+                  {{ $t('shipping.print') }}
+                </span>
+              </div>
+            </a>
+          </div>
+          <div class="w-full md:w-auto p-2">
+            <a
+              href="#"
+              style="min-width: 85px"
+              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
+              @click.prevent="accessControlDialog = true"
+            >
+              <div class="h-12 flex items-center px-2">
+                <i class="icon-add-user text-2xl mr-2" />
+                <span class="text-primary whitespace-nowrap">
+                  {{ $t('shipping.inviteCustomer') }}
+                </span>
+              </div>
+            </a>
+          </div>
+          <div class="w-full md:w-auto p-2">
+            <button
+              disabled
+              style="min-width: 85px"
+              class="w-full inline-block rounded-md border border-transparent pointer-events-none"
+            >
+              <div class="h-12 flex items-center px-2 text-gray-400">
+                <i class="icon-mail text-2xl mr-2" />
+                <span class="whitespace-nowrap">
+                  {{ $t('shipping.notifyCustomer') }}
+                </span>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-    <div>
-      <div style="max-width: 300px;">
-        <Button
-          large
-          squared
-          outline
-          @click="$router.push({
-            name: 'preview',
-            params: {
-              specId: $route.params.specId
-            }
-          })"
-        >
-          <span class="text-lg">{{ $t('shipping.overview') }}</span>
-        </Button>
+
+    <v-dialog
+      v-model="accessControlDialog"
+      max-width="320px"
+    >
+      <div class="p-4 bg-gray" style="color: #aaa;">
+        <h3 class="pb-3 font-semibold">{{ $t('shipping.access') }}</h3>
+        <Spinner v-if="linkAccessLoading" />
+        <template v-else>
+          <!-- <ToggleButton
+            :value="linkAccess"
+            class="mb-2"
+            @input="updateLinkAccess"
+          >
+            <span>{{ $t('shipping.linkAccess') }}</span>
+          </ToggleButton> -->
+          <TextField
+            ref="linkInput"
+            :value="link"
+            hide-details
+            squared
+            readonly
+            solo
+            class="mb-1"
+          />
+          <Button
+            @click="copyLink"
+          >
+            {{ $t('shipping.copyLink') }}
+          </Button>
+        </template>
+        <template>
+          <h4 class="pt-5">
+            {{ $t('shipping.sendAccessLink') }}
+          </h4>
+          <TextField
+            ref="emailAccessInput"
+            v-model="emailAccessInput"
+            :disabled="sendAccessLinkLoading"
+            label="Email"
+            type="email"
+            required
+          />
+          <Button
+            :disabled="sendAccessLinkLoading"
+            @click="sendLinkAccessToEmail(emailAccessInput)"
+          >
+            {{ $t('shipping.sendEmail') }}
+          </Button>
+        </template>
+        <Spinner v-if="emailAccessLoading" />
+        <div v-else class="py-4">
+          <h4 v-if="emailAccess.length > 0" class="font-semibold">
+            {{ $t('shipping.hasAccess') }}
+          </h4>
+          <div
+            v-for="a in emailAccess"
+            :key="a.email"
+            class="flex py-2"
+          >
+            <div class="flex-grow">
+              {{ a.email }}
+            </div>
+            <v-slide-x-transition mode="out-in">
+              <div v-if="removeEmailAccessLoading === a.email">
+                <Spinner />
+              </div>
+              <div
+                v-else
+                class="cursor-pointer"
+                @click="removeEmailAccess(a.email)"
+              >
+                <Icon size="18">
+                  {{ icons.mdiClose }}
+                </Icon>
+              </div>
+            </v-slide-x-transition>
+          </div>
+        </div>
       </div>
-      <div></div>
-    </div>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import cloneDeep from 'clone-deep'
 
-import pdfMake from 'pdfmake/build/pdfmake'
-import pdfFonts from 'pdfmake/build/vfs_fonts'
-
-import { UPDATE_SPEC } from '@/graphql/mutations'
-
+import { mdiClose, mdiPlusThick } from '@mdi/js'
 import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
 import PaperListModal from '@/components/PaperListModal.vue'
 import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
+import PrintSettings from '../components/PrintSettings.vue'
+import SpecShipment from '../components/SpecShipment.vue'
+import SpecCustoms from '../components/SpecCustoms.vue'
 
-import { LIST_ORG_CONTRACTS } from '../graphql/queries'
+import { SpecCurrency, Role } from '../graphql/enums'
+import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS, GET_SPEC_EMAIL_ACCESS } from '../graphql/queries'
+import {
+  UPDATE_SPEC,
+  OPEN_LINK_ACCESS,
+  CLOSE_LINK_ACCESS,
+  ADD_EMAIL_ACCESS_TO_SPEC,
+  REMOVE_EMAIL_ACCESS_TO_SPEC,
+  SEND_LINK_ACCESS_TO_EMAIL,
+  SET_SPEC_CONTAINER_SIZE,
+  SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
+} from '../graphql/mutations'
+import { DEFAULT_CURRENCY } from '../config/globals'
+
+import specPdf from '../components/specPdf'
 
 export default {
   name: 'SpecSummary',
   components: {
     PaperListModal,
     PaperConfiguratorModal,
+    PrintSettings,
+    SpecShipment,
+    SpecCustoms,
   },
   props: {
     spec: {
       type: Object,
       default: () => ({}),
+    },
+    role: {
+      type: String,
+      required: true,
     },
   },
   apollo: {
@@ -368,12 +649,27 @@ export default {
   },
   data () {
     return {
+      printLoading: false,
+      printDialog: false,
+      setContainerSizeLoading: false,
+      setContainerCustomCapacityLoading: false,
+      sendAccessLinkLoading: false,
+      addEmailAccessLoading: false,
+      removeEmailAccessLoading: null,
+      emailAccessLoading: false,
+      emailAccess: [],
+      emailAccessInput: '',
+      accessControlDialog: false,
+      linkAccessLoading: false,
+      linkAccess: false,
       blank: {},
       papers: [],
       paperList: false,
       paperConfigurator: false,
       create: false,
       icons: {
+        mdiClose,
+        mdiPlusThick,
         ziSettings,
         ziPaperPlane,
         ziPrint,
@@ -382,40 +678,52 @@ export default {
     }
   },
   computed: {
-    // spec () {
-    //   return {
-    //     shipped: false,
-    //     containers: [
-    //       { type: '20', loaded: 100 },
-    //       { type: '20', loaded: 28 },
-    //     ],
-    //     estimateShippingDate: '2019-09-23T17:28:48.880Z',
-    //     totalVolume: 7.3,
-    //     totalWeight: 799,
-    //     qtyOfPackages: 27,
-    //     finalCost: 260906.20,
-    //     finalObtainCost: 101300,
-    //     profit: 37759.37,
-    //     totalPrepay: 101300,
-    //     totalClientDebt: 159606.2,
-    //     currencyRate: 9.256,
-    //   }
-    // },
+    isOwnerOrManager () {
+      return this.role === Role.OWNER || this.role === Role.MANAGER
+    },
+    isAccountant () {
+      return this.role === Role.ACCOUNTANT
+    },
+    isWarehouseman () {
+      return this.role === Role.WAREHOUSEMAN
+    },
+    isCurrencyDisabled () {
+      return this.currency === SpecCurrency.USD
+    },
+    currencies () {
+      return Object.values(SpecCurrency).map(el => {
+        return {
+          text: el,
+          value: el,
+        }
+      })
+    },
+    currency () {
+      return this.spec.currency || DEFAULT_CURRENCY
+    },
+    link () {
+      return `${window.location.protocol}//${window.location.host}/paper/${this.specId}`
+    },
     orgId () {
       return this.$route.params.orgId
+    },
+    specId () {
+      return this.$route.params.specId
     },
     containers () {
       return this.spec.containers || []
     },
-    // TODO group by type and laoded
-    loadedContainers () {
-      return this.containers.filter(c => c.loaded === 100)
-    },
-    unloadedContainers () {
-      return this.containers.filter(c => c.loaded !== 100)
-    },
   },
   watch: {
+    accessControlDialog (val) {
+      if (val) {
+        // this.getEmailAccess()
+      } else {
+        setTimeout(() => {
+          this.emailAccessInput = ''
+        }, 250)
+      }
+    },
     paperConfigurator (val) {
       if (!val) {
         setTimeout(() => {
@@ -426,378 +734,238 @@ export default {
     },
   },
   methods: {
-    printPDF () {
-      pdfMake.vfs = pdfFonts.pdfMake.vfs
-      const dd = {
-        content: [
-          {
-            stack: [
-              {
-                text: [
-                  { text: 'Спецификация No. ' },
-                  { text: 'A0097-2020-02-02', bold: true },
-                ],
-              },
-              'к Договору поставки',
-            ],
-            fontSize: 16,
-            margin: [30, 20],
-          },
-          {
-            columns: [
-              { text: 'Новороссийск, Россия' },
-              { text: '02 февраля 2020 г.', alignment: 'right' },
-            ],
-            alignment: 'justify',
-            margin: [30, 10],
-          },
-          {
-            text: [
-              { text: '1.   ' },
-              { text: 'Предмет поставки' },
-            ],
-            style: 'item-heading',
-          },
-          // TODO: dynamicly width of line equals width of table
-          // {
-          //   canvas: [
-          //     {
-          //       type: 'line',
-          //       x1: 0,
-          //       y1: 0,
-          //       x2: 500,
-          //       y2: 0,
-          //       lineWidth: 1,
-          //       lineColor: 'lightgray',
-          //     },
-          //   ],
-          // },
-          {
-            table: {
-              headerRows: 1,
-              alignment: 'center',
-              widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
-              body: [
-                [
-                  { text: '#', style: 'item-table-header' },
-                  { text: 'Наименование товара', style: 'item-table-header' },
-                  { text: 'Кол-во', style: 'item-table-header' },
-                  { text: 'Ед.\n изм.', style: 'item-table-header' },
-                  { text: 'Цена за ед.\n товара без НДС', style: 'item-table-header' },
-                  { text: 'НДС за ед.\n (20%)', style: 'item-table-header' },
-                  { text: 'Цена за ед.\n товара с НДС', style: 'item-table-header' },
-                  { text: 'Стоимость товара\n с НДС', style: 'item-table-header' },
-                ],
-                [
-                  { text: '1', fontSize: 10 },
-                  {
-                    text: [
-                      { text: 'Chair\n', bold: true },
-                      { text: 'PL-G0988-G0988-G0988 kfjgfd dfjgksdfjg' },
-                    ],
-                    fontSize: 10,
-                  },
-                  { text: '1 500', style: 'item-table' },
-                  { text: 'pc', fontSize: 10 },
-                  { text: '440,00', style: 'item-table' },
-                  { text: '88,00', style: 'item-table' },
-                  { text: '528,00', style: 'item-table' },
-                  { text: '792 000,00 P', style: 'item-table' },
-                ],
-                [
-                  { text: '2', fontSize: 10 },
-                  {
-                    text: [
-                      { text: 'Chair\n', bold: true },
-                      { text: 'PL-G0988' },
-                    ],
-                    fontSize: 10,
-                  },
-                  { text: '1 500', style: 'item-table' },
-                  { text: 'pc', fontSize: 10 },
-                  { text: '440,00', style: 'item-table' },
-                  { text: '88,00', style: 'item-table' },
-                  { text: '528,00', style: 'item-table' },
-                  { text: '792 000,00 P', style: 'item-table' },
-                ],
-                [
-                  { text: '3', fontSize: 10 },
-                  {
-                    text: [
-                      { text: 'Chair\n', bold: true },
-                      { text: 'PL-G0988' },
-                    ],
-                    fontSize: 10,
-                  },
-                  { text: '1 500', style: 'item-table' },
-                  { text: 'pc', fontSize: 10 },
-                  { text: '440,00', style: 'item-table' },
-                  { text: '88,00', style: 'item-table' },
-                  { text: '528,00', style: 'item-table' },
-                  { text: '792 000,00 P', style: 'item-table' },
-                ],
-                [
-                  { text: '', colSpan: 5 },
-                  {}, {}, {}, {},
-                  { text: 'Total:', style: 'item-table', bold: true },
-                  { text: '2 620 446, 00 P', colSpan: 2, style: 'item-table', bold: true },
-                ],
-              ],
-            },
-            layout: 'lightHorizontalLines',
-          },
-          {
-            text: 'Сумма прописью: два миллиона шестьсот двадцать тысяч четыреста сорок шесть рублей 00 копеек.',
-            italics: true,
-            fontSize: 10,
-            alignment: 'right',
-            margin: [0, 15],
-          },
-          {
-            text: [
-              { text: '2.   ' },
-              { text: 'Условия оплат' },
-            ],
-            style: 'item-heading',
-          },
-          {
-            style: 'item-paragraph',
-            columns: [
-              '2.1.',
-              {
-                text: 'Cтоимость железнодорожного тарифв, а также иные расходы, связанные с доставкой «Товара» Покупателю включены в цену «Товара».',
-                width: 'auto',
-              },
-            ],
-          },
-          {
-            style: 'item-paragraph',
-            columns: [
-              '2.2.',
-              {
-                text: 'Lorem ipsum dolor amet mustache knausgaard +1, blue bottle waistcoat tbh semiotics artisan synth stumptown gastropub cornhole celiac swag. Brunch raclette vexillologist post-ironic glossier ennui XOXO mlkshk godard pour-over blog tumblr humblebrag. Blue bottle put a bird on it twee prism biodiesel brooklyn. Blue bottle ennui tbh succulents.',
-                width: 'auto',
-              },
-            ],
-          },
-          {
-            text: [
-              { text: '3.   ' },
-              { text: 'Реквизиты сторон' },
-            ],
-            style: 'item-heading',
-          },
-          {
-            columns: [
-              {
-                type: 'none',
-                ul: [
-                  {
-                    columns: [
-                      {
-                        text: 'Supplier:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Novaday Union Limeted',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Legal Address:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Unit 1010, 10/F Miramax Tower, 132 Nathan Road, Tsim Sha Tsul, Kowloon, Hong Hong',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Postcode:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: '_____',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Phone:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: '0086 186 20 00 0 00',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Supplier\'s Bank:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'HSBC',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Bank Address:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: '4/F HSBC, Tsim Sha Tsui Branch, 82-84 Nathan Road, Kowloon, Hong Hong',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                ],
-              },
-              {
-                type: 'none',
-                ul: [
-                  {
-                    columns: [
-                      {
-                        text: 'Client:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Horns & Hooves LLC, Newrussian office',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Legal Address:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Upperdock st. 41, office 15, Vladivostok, Russia',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Postcode:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: '690000',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Mailing Address:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Moscow city, Minskaya st. 1G, office 777',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Client\'s Bank:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Clients Bank LLC',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Bank Address:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'Moscow',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Грузополучатель:',
-                        style: 'requisite-columns',
-                      },
-                      {
-                        text: 'ООО «Пупа и Лупа»',
-                        style: 'requisite-columns',
-                      },
-                    ],
-                  },
-                  {
-                    columns: [
-                      {
-                        text: 'Адрес доставки:',
-                        style: 'requisite-columns',
-                        pageBreak: 'before',
-                      },
-                      {
-                        text: '628380, Ханты-Мансийский Автономный округ - Югра, г. Пыть-Ях, Центральная промышленная зона',
-                        style: 'requisite-columns',
-                        pageBreak: 'before',
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-        styles: {
-          'item-table-header': {
-            fontSize: 9,
-            alignment: 'center',
-            margin: [0, 2],
-          },
-          'item-table': {
-            fontSize: 10,
-            alignment: 'right',
-          },
-          'item-heading': {
-            bold: true,
-            fontSize: 16,
-            margin: [0, 20, 0, 10],
-          },
-          'item-paragraph': {
-            columnGap: 10,
-            margin: [0, 0, 0, 10],
-          },
-          'requisite-columns': {
-            fontSize: 10,
-            margin: [0, 2],
-          },
-        },
+    async doPrint (requisite, client, shipment, customs) {
+      try {
+        this.printLoading = true
+        const defaultLang = this.$i18n.fallbackLocale
+        const clientLang = client.language || defaultLang
+        const method = clientLang === 'zh-Hans' || clientLang === 'zh-Hant' ? 'download' : 'open'
+        await specPdf(this.spec, requisite, client, shipment, customs, method, false)
+      } catch (error) {
+        this.$notify({
+          color: 'red',
+          text: `Error creating PDF: ${error.message}`,
+        })
+        throw new Error(error)
+      } finally {
+        this.printLoading = false
       }
-      pdfMake.createPdf(dd).open()
+    },
+    async setContainerSize (containerId, e) {
+      try {
+        const val = e.target.value || ''
+        const split = val.split('_')
+        const inputSize = `_${split[1]}`
+        const inputMode = `_${split[2]}`
+        if (!containerId) return
+        this.setContainerSizeLoading = true
+        await this.$apollo.mutate({
+          mutation: SET_SPEC_CONTAINER_SIZE,
+          variables: {
+            specId: this.specId,
+            containerId,
+            inputSize,
+            inputMode,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.setContainerSizeLoading = false
+      }
+    },
+    async setContainerCustomCapacity (containerId, inputCapacity, inputShrink) {
+      try {
+        if (!containerId) return
+        this.setContainerCustomCapacityLoading = true
+        await this.$apollo.mutate({
+          mutation: SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
+          variables: {
+            specId: this.specId,
+            containerId,
+            inputCapacity,
+            inputShrink,
+          },
+        })
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.setContainerCustomCapacityLoading = false
+      }
+    },
+    async getEmailAccess () {
+      try {
+        this.emailAccessLoading = true
+        const { data } = await this.$apollo.query({
+          query: GET_SPEC_EMAIL_ACCESS,
+          variables: {
+            id: this.specId,
+          },
+          fetchPolicy: 'network-only',
+        })
+        this.emailAccess = data.getSpecEmailAccess || []
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.emailAccessLoading = false
+      }
+    },
+    async addEmailAccess (email) {
+      try {
+        const errors = this.$refs.emailAccessInput.validate()
+        if (errors) return
+        this.addEmailAccessLoading = true
+        const result = await this.$apollo.mutate({
+          mutation: ADD_EMAIL_ACCESS_TO_SPEC,
+          variables: {
+            specId: this.specId,
+            email,
+          },
+        })
+        this.getEmailAccess()
+        this.emailAccessInput = ''
+        return result
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.addEmailAccessLoading = false
+      }
+    },
+    async removeEmailAccess (email) {
+      try {
+        this.removeEmailAccessLoading = email
+        const result = await this.$apollo.mutate({
+          mutation: REMOVE_EMAIL_ACCESS_TO_SPEC,
+          variables: {
+            specId: this.specId,
+            email,
+          },
+        })
+        this.getEmailAccess()
+        return result
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.removeEmailAccessLoading = false
+      }
+    },
+    async sendLinkAccessToEmail (email) {
+      try {
+        const errors = this.$refs.emailAccessInput.validate()
+        if (errors) return
+        this.sendAccessLinkLoading = true
+        const result = await this.$apollo.mutate({
+          mutation: SEND_LINK_ACCESS_TO_EMAIL,
+          variables: {
+            specId: this.specId,
+            email,
+          },
+        })
+        this.emailAccessInput = ''
+        this.$notify({
+          color: 'green',
+          text: this.$t('message.emailSent', { email }),
+        })
+        return result
+      } catch (error) {
+        this.$notify({
+          color: 'red',
+          text: this.$t('message.failedToSent'),
+        })
+        throw new Error(error)
+      } finally {
+        this.sendAccessLinkLoading = false
+      }
+    },
+    copyLink () {
+      let selection = null
+      try {
+        const input = this.$refs.linkInput
+        if (!input) {
+          throw new Error('Input not find.')
+        }
+        selection = document.getSelection().rangeCount > 0
+          ? document.getSelection().getRangeAt(0)
+          : false
+        input.$el.querySelector('input').select()
+        const successful = document.execCommand('copy')
+        if (successful) {
+          this.$notify({
+            color: 'green',
+            text: this.$t('message.linkCopied'),
+          })
+        } else {
+          throw new Error('Unsuccessful.')
+        }
+      } catch (error) {
+        this.$logger.info('Copy link error: ', error)
+        this.$notify({
+          color: 'orange',
+          text: this.$t('message.linkNotCopied'),
+        })
+      }
+      document.getSelection().removeAllRanges()
+      if (selection) {
+        document.getSelection().addRange(selection)
+      }
+    },
+    async getLinkAccess () {
+      try {
+        this.linkAccessLoading = true
+        const { data } = await this.$apollo.query({
+          query: GET_SPEC_LINK_ACCESS,
+          variables: {
+            id: this.specId,
+          },
+          fetchPolicy: 'network-only',
+        })
+        this.linkAccess = data.getSpecLinkAccess || null
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.linkAccessLoading = false
+      }
+    },
+    async updateLinkAccess (value) {
+      try {
+        if (value) {
+          await this.openLinkAccess()
+        } else {
+          await this.closeLinkAccess()
+        }
+        this.$notify({
+          color: 'primary',
+          text: this.$t('shipping.linkAccessUpdated'),
+        })
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
+    async openLinkAccess () {
+      try {
+        const result = await this.$apollo.mutate({
+          mutation: OPEN_LINK_ACCESS,
+          variables: {
+            specId: this.specId,
+          },
+        })
+        return result
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
+    async closeLinkAccess () {
+      try {
+        const result = await this.$apollo.mutate({
+          mutation: CLOSE_LINK_ACCESS,
+          variables: {
+            specId: this.specId,
+          },
+        })
+        return result
+      } catch (error) {
+        throw new Error(error)
+      }
     },
     async updateSpec (input) {
       try {
@@ -865,7 +1033,7 @@ export default {
 }
 
 .spec-summary__info {
-  max-width: 340px;
+  max-width: 320px;
 }
 
 .spec-summary__cost {
@@ -873,15 +1041,21 @@ export default {
   max-width: 490px;
 }
 .spec-summary__cost__card {
-  padding: 40px 60px;
+  padding: 18px 14px;
   background-color: #272727;
   border-radius: 4px;
-  font-size: 18px;
+  font-size: 16px;
+}
+@screen sm {
+  .spec-summary__cost__card {
+    font-size: 18px;
+    padding: 40px 60px;
+  }
 }
 
 .spec-summary__actions {
   width: 100%;
-  padding-top: 20px;
+  padding-top: 16px;
   padding-bottom: 20px;
 }
 .spec-summary__actions > button {
@@ -893,12 +1067,18 @@ export default {
 
 @screen lg {
   .spec-summary__actions {
-    width: 120px;
+    width: 180px;
+  }
+  .spec-summary__cost {
+    @apply mx-4;
+  }
+  .spec-summary__info {
+    width: 320px;
   }
 }
 .spec-summary__container {
   width: 210px;
-  @apply mb-4 relative;
+  @apply relative;
 }
 .spec-summary__container__label {
   @apply absolute inset-0 w-full h-full font-bold text-2xl text-white;
@@ -912,7 +1092,7 @@ export default {
   background-image: url("/img/container-full.png");
 }
 .spec-summary__container__image--full-sm {
-  background-image: url("/img/container-full-sm.png");
+  background-image: url("/img/container-full-40.png");
 }
 .spec-summary__container__image--shipped {
   background-image: url("/img/container-shipped.png");
@@ -920,13 +1100,7 @@ export default {
 
 .spec-summary__info ul.leaders span:first-child,
 .spec-summary__info ul.leaders span + span {
-  @apply bg-chaos-black;
-}
-@screen md {
-  .spec-summary__info ul.leaders span:first-child,
-  .spec-summary__info ul.leaders span + span {
-    background: #1e1e1e;
-  }
+  @apply bg-gray-900;
 }
 .spec-summary__cost ul.leaders span:first-child,
 .spec-summary__cost ul.leaders span + span {
@@ -934,7 +1108,7 @@ export default {
 }
 
 .spec-summary .leaders {
-  line-height: 1.5rem;
+  line-height: 1.625rem;
   padding: 0;
   overflow-x: hidden;
   list-style: none}

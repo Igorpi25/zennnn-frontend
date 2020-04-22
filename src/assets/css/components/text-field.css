@@ -39,9 +39,6 @@
   @apply appearance-none outline-none w-full;
   @apply bg-accent1 text-white;
 }
-.text-field input::placeholder {
-  color: #E0E0E0;
-}
 
 /* TEXTFIELD HAS ERROR STATE */
 .text-field.has-error .text-field__label {
@@ -51,6 +48,9 @@
   @apply border-error;
 }
 .text-field.has-error.text-field--outlined .text-field__slot {
+  @apply border-red;
+}
+.text-field.has-error.text-field--squared .text-field__slot {
   @apply border-red;
 }
 
@@ -68,18 +68,6 @@
 }
 .text-field--outlined input {
   background: transparent;
-}
-.text-field--outlined input:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #7e7e7e;
-}
-.text-field--outlined input:focus::-moz-placeholder { /* Firefox 19+ */
-  color: #7e7e7e;
-}
-.text-field--outlined input:focus:-ms-input-placeholder { /* IE 10+ */
-  color: #7e7e7e;
-}
-.text-field--outlined input:focus:-moz-placeholder { /* Firefox 18- */
-  color: #7e7e7e;
 }
 
 /* TEXTFIELD SQUARED */
@@ -100,22 +88,6 @@
 .text-field--squared input {
   background: transparent;
 }
-.text-field--squared input::-webkit-input-placeholder,
-.text-field--squared input:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #646464;
-}
-.text-field--squared input::-moz-placeholder,
-.text-field--squared input:focus::-moz-placeholder { /* Firefox 19+ */
-  color: #646464;
-}
-.text-field--squared input:-ms-input-placeholder,
-.text-field--squared input:focus:-ms-input-placeholder { /* IE 10+ */
-  color: #646464;
-}
-.text-field--squared input:-moz-placeholder,
-.text-field--squared input:focus:-moz-placeholder { /* Firefox 18- */
-  color: #646464;
-}
 
 /* TEXTFIELD SINGLE LINE */
 .text-field--single-line,
@@ -125,9 +97,6 @@
 .text-field--single-line input {
   background-color: transparent;
 }
-.text-field--single-line input::placeholder {
-  color: #888888;
-}
 
 /* TEXTFIELD COLORED */
 .text-field--colored input {
@@ -136,36 +105,12 @@
 .text-field--colored input {
   @apply text-primary;
 }
-.text-field--colored input::-webkit-input-placeholder  { /* Chrome/Opera/Safari */
-  @apply text-primary;
-}
-.text-field--colored input::-moz-placeholder { /* Firefox 19+ */
-  @apply text-primary;
-}
-.text-field--colored input:-ms-input-placeholder { /* IE 10+ */
-  @apply text-primary;
-}
-.text-field--colored input:-moz-placeholder { /* Firefox 18- */
-  @apply text-primary;
-}
 
 .text-field--colored-faded input {
   background: transparent;
 }
 .text-field--colored-faded input {
   @apply text-primary;
-}
-.text-field--colored-faded input::-webkit-input-placeholder  { /* Chrome/Opera/Safari */
-  color: #2F404B;
-}
-.text-field--colored-faded input::-moz-placeholder { /* Firefox 19+ */
-  color: #2F404B;
-}
-.text-field--colored-faded input:-ms-input-placeholder { /* IE 10+ */
-  color: #2F404B;
-}
-.text-field--colored-faded input:-moz-placeholder { /* Firefox 18- */
-  color: #2F404B;
 }
 
 /* TEXTFIELD BORDERLESS */
@@ -216,3 +161,30 @@
 .heading input {
   font-weight: 700;
 }
+
+/* nd */
+
+.text-field_nd {
+  min-width: unset!important;
+}
+.text-field_nd .text-field__slot {
+  border: none!important;
+  border-radius: 4px;
+  background-color: #222222;
+}
+.text-field_nd.text-field--focused .text-field__slot {
+  background-color: #1e1e1e!important;
+  box-shadow: 0 0 0 1px #5a8199;
+}
+.text-field_nd input {
+  color: #5a8199!important;
+}
+.text-field_nd input:focus {
+  color: #ffffff!important;
+}
+.text-field_nd input:disabled,
+.text-field_nd input:disabled::placeholder {
+  color: #2f2f2f!important;
+}
+
+/* nd */

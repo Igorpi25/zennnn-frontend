@@ -38,7 +38,7 @@
           <slot name="prepend" />
         </div>
         <textarea
-          ref="textarea"
+          ref="input"
           v-model="internalValue"
           :id="inputId"
           :name="name"
@@ -51,10 +51,11 @@
           :minlength="minlength"
           :autofocus="autofocus"
           :placeholder="placeholder"
+          :class="[placeholderClass, inputClass]"
           @input="calculateHeight"
           @focus="onFocus"
           @blur="onBlur"
-        ></textarea>
+        />
         <div
           v-if="$slots.append"
           class="text-area__append"
@@ -75,6 +76,13 @@
             {{ icons.mdiCheckCircle }}
           </Icon>
         </div>
+      </div>
+      <div
+        v-if="hideDetails && hasError"
+        class="absolute text-red text-xs"
+        style="bottom:-18px;"
+      >
+        <span>{{ errorText }}</span>
       </div>
     </div>
   </InputBase>
@@ -192,11 +200,15 @@ export default {
       type: Number,
       default: 0,
     },
+    inputClass: {
+      type: [String, Object],
+      default: '',
+    },
   },
   data () {
     return {
       // TODO input registrator
-      inputId: 'input' + Math.round(Math.random() * 100000),
+      inputId: 'textarea' + Math.round(Math.random() * 100000),
       lazyValue: this.value,
       icons: {
         mdiCloseCircle,
@@ -205,6 +217,11 @@ export default {
     }
   },
   computed: {
+    placeholderClass () {
+      return this.squared
+        ? 'placeholder-white focus:placeholder-gray-lighter'
+        : 'placeholder-gray-lighter'
+    },
     internalValue: {
       get () {
         return this.lazyValue
@@ -229,6 +246,9 @@ export default {
   watch: {
     value (val) {
       this.lazyValue = val
+    },
+    hasFocus (val) {
+      this.$emit('focus-change', val)
     },
   },
   created () {
@@ -255,7 +275,7 @@ export default {
       this.$emit('input', this.internalValue)
     },
     calculateHeight () {
-      const textArea = this.$refs.textarea
+      const textArea = this.$refs.input
       textArea.style.height = '0'
 
       const height = textArea.scrollHeight

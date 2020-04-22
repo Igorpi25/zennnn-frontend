@@ -8,29 +8,38 @@
           :items="items"
           table-width="100%"
           table-class="table-fixed"
-          thead-class="text-accent2 border-b border-accent2 bg-background"
+          thead-class="text-accent2 border-b border-accent2 bg-gray-900"
         >
           <template v-slot:items="{ items }">
             <tr
               v-for="(item) in items"
               :key="item.id"
-              class="items bg-background hover:bg-accent3 border-none"
-              @click="$router.push({
-                name: 'requisite',
-                params: {
-                  reqId: item.id
-                }
-              })"
+              class="items bg-gray-900 hover:bg-accent3 border-none"
             >
-              <td>{{ item.name }}</td>
-              <td>{{ item.nameEng }}</td>
-              <td>{{ item.ownerFullName }}</td>
-              <td class="text-right pointer-events-none" @click.prevent.stop>
+              <td
+                class="text-center align-middle"
+              >
                 <div
-                  class="cursor-pointer pointer-events-auto"
+                  class="cursor-pointer select-none inline-block align-middle"
+                  @click="setDefaultRequisite(item.id)"
+                >
+                  <Icon size="24">
+                    {{ item.id === currentOrg.defaultRequisite ? icons.mdiStar : icons.mdiStarOutline }}
+                  </Icon>
+                </div>
+              </td>
+              <td @click="goToRequisite(item)">{{ item.name }}</td>
+              <td @click="goToRequisite(item)">{{ item.nameEng }}</td>
+              <td @click="goToRequisite(item)">{{ item.ownerFullName }}</td>
+              <td @click="goToRequisite(item)">{{ item.ownerJobPosition }}</td>
+              <td
+                class="text-center align-middle"
+              >
+                <div
+                  class="cursor-pointer inline-block align-middle"
                   @click="deleteRequisite(item.id)"
                 >
-                  <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 13 16"><defs></defs><g><g><title>Delete</title><image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQCAYAAADNo/U5AAAAU0lEQVQ4T2NkQANBQUH/0cXWrVvHiCyGwgFJgDQhK0Lng9QwYjMZ3SZ0PoZNhDSQbxM2N+OzDaQe7CeQx0mhSVIMM3xUEzSUKQsIYpIPLEGTlWAB2MDtgmErnM4AAAAASUVORK5CYII=" width="13" height="16" transform="matrix(1,0,0,1,0,0)" ></image></g></g></svg>
+                  <i class="icon-delete text-lg text-gray-200" />
                 </div>
               </td>
             </tr>
@@ -54,16 +63,20 @@
 </template>
 
 <script>
-import { mdiPlusCircleOutline } from '@mdi/js'
+import { mdiPlusCircleOutline, mdiStar, mdiStarOutline } from '@mdi/js'
 
-import { LIST_ORG_REQUISITES } from '../graphql/queries'
-import { DELETE_REQUISITE } from '../graphql/mutations'
+import { LIST_ORG_REQUISITES, GET_ORGS } from '../graphql/queries'
+import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '../graphql/mutations'
 
 import { confirmDialog } from '@/util/helpers'
 
 export default {
   name: 'RequisiteList',
   apollo: {
+    getOrgs: {
+      query: GET_ORGS,
+      fetchPolicy: 'cache-only',
+    },
     listOrgRequisites: {
       query: LIST_ORG_REQUISITES,
       variables () {
@@ -78,6 +91,8 @@ export default {
     return {
       icons: {
         mdiPlusCircleOutline,
+        mdiStar,
+        mdiStarOutline,
       },
       deleteLoading: null,
     }
@@ -86,12 +101,18 @@ export default {
     orgId () {
       return this.$route.params.orgId
     },
+    currentOrg () {
+      const orgs = this.getOrgs || []
+      return orgs.find(el => el.id === this.orgId) || {}
+    },
     headers () {
       return [
-        { text: this.$t('requisites.companyName'), value: 'name', bgcolor: 'tansparent', align: 'left' },
-        { text: this.$t('requisites.companyNameEng'), value: 'nameEng', bgcolor: 'tansparent', align: 'left' },
-        { text: this.$t('requisites.fullName'), value: 'ownerFullName', bgcolor: 'tansparent', align: 'left' },
-        { text: '', value: 'action', bgcolor: 'tansparent' },
+        { text: '', value: 'current', bgcolor: 'tansparent', align: 'center', width: 36, minWidth: 36 },
+        { text: this.$t('requisites.companyName'), value: 'name', bgcolor: 'tansparent', align: 'left', width: 200, minWidth: 200 },
+        { text: this.$t('requisites.companyNameEng'), value: 'nameEng', bgcolor: 'tansparent', align: 'left', width: 240, minWidth: 240 },
+        { text: this.$t('requisites.fullName'), value: 'ownerFullName', bgcolor: 'tansparent', align: 'left', width: 160, minWidth: 160 },
+        { text: this.$t('requisites.position'), value: 'ownerJobPosition', bgcolor: 'tansparent', align: 'left', width: 120, minWidth: 120 },
+        { text: '', value: 'action', bgcolor: 'tansparent', width: 48, minWidth: 48 },
       ]
     },
     items () {
@@ -99,6 +120,14 @@ export default {
     },
   },
   methods: {
+    goToRequisite (item) {
+      this.$router.push({
+        name: 'requisite',
+        params: {
+          reqId: item.id,
+        },
+      })
+    },
     async deleteRequisite (id) {
       try {
         const msg = this.$t('alert.removeRequisites')
@@ -141,10 +170,21 @@ export default {
         this.deleteLoading = null
       }
     },
+    async setDefaultRequisite (id) {
+      try {
+        await this.$apollo.mutate({
+          mutation: SET_DEFAULT_REQUISITE,
+          variables: { orgId: this.orgId, id },
+        })
+        // update orgs query
+        await this.$apollo.query({
+          query: GET_ORGS,
+          fetchPolicy: 'network-only',
+        })
+      } catch (error) {
+        this.$logger.warn('Error: ', 'SET_DEFAULT_REQUISITE', error)
+      }
+    },
   },
 }
 </script>
-
-<style>
-
-</style>

@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-dialog
-      v-model="isWelcome"
-      max-width="590"
+      :value="isWelcome"
+      max-width="500"
       overlay-color="#0f0f0f"
       overlay-opacity="0.6"
     >
@@ -16,10 +16,10 @@
       max-width="520"
     >
       <SaveBeforeCloseModal
-        :text=" `${$t('paper.saveChanges')}${$t('paper.beforeClosing')}`"
-        :postScriptum="$t('paper.ifNotSave')"
+        :text="$t('label.saveChangesBeforeClose')"
+        :postScriptum="$t('label.saveChangesHint')"
         @dontSave="$emit('confirm', 1)"
-        @cancel="saveBeforeCloseDialog = false"
+        @cancel="$emit('confirm', 0)"
         @save="$emit('confirm', 2)"
       />
     </v-dialog>
@@ -40,11 +40,23 @@
         class="mb-6 mx-auto md:mr-0 md:ml-auto"
         @click="$router.push({ name: 'home' })"
       >
-        <span>{{ $t('action.fillLater') }}</span>
+        <span>{{ $t('requisite.fillLater') }}</span>
       </Button>
-      <header class="requisite-header">
-        <span class="requisite-header__title">{{ $t('requisites.requisitesOfMyCompany') }}</span>
-      </header>
+      <div class="md:flex md:items-center text-sm mb-3">
+        <span class="block md:inline-block font-bold md:font-normal text-2xl md:text-base mb-6 md:mb-0 md:mr-2 text-center text-gray-lighter">
+          {{ $t('requisite.requisitesOfMyCompany') }}
+        </span>
+        <div class="flex flex-col md:flex-row items-center">
+          <ToggleButton
+            v-if="!create"
+            :value="editMode"
+            small
+            @input="toggleEditMode"
+          >
+            <span>{{ $t('requisite.edit') }}</span>
+          </ToggleButton>
+        </div>
+      </div>
       <div class="requisite-card__radio-group">
         <RadioButton
           :value="cardType"
@@ -54,7 +66,7 @@
           class="w-1/2 mr-2 text-sm"
           @input="cardType = requisiteType.ABOUT"
         >
-          <span>{{ $t('requisites.about') }}</span>
+          <span>{{ $t('requisite.about') }}</span>
         </RadioButton>
         <RadioButton
           :value="cardType"
@@ -64,39 +76,57 @@
           class="w-4/5 text-sm"
           @input="cardType = requisiteType.BANK"
         >
-          <span>{{ $t('requisites.bankDetails') }}</span>
+          <span>{{ $t('requisite.bankDetails') }}</span>
         </RadioButton>
       </div>
       <div class="flex justify-between">
         <TemplateCard
           template-name="requisite"
-          :title="$t('requisites.about')"
+          :title="$t('requisite.about')"
           :class="{ 'requisite-template-card': isBank }"
         >
           <template v-slot:items>
-            <div v-for="(item, key) in about" :key="key">
-              <div class="card__row relative lg:pt-5">
+            <template v-for="(item, key) in about">
+              <div
+                v-if="item.section"
+                class="flex justify-center pt-16"
+                :key="`section-${key}`"
+              >
+                <div
+                  v-if="item.subtitle"
+                  class="text-gray-lightest px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
+                >
+                  {{ $t(`requisite.${item.subtitle}`) }}
+                </div>
+              </div>
+              <div
+                :key="key"
+                class="flex flex-col justify-between pb-8 relative lg:flex-row lg:flex-wrap lg:pb-2"
+              >
                 <div class="card__col-left card__col-left--full-width">
                   <label
                     class="truncate text-left"
-                    :title="$t(`label.requisites.${item.label || key}`)"
+                    :title="$t(`requisite.label.${item.label || key}`)"
                   >
-                    {{ $t(`label.requisites.${item.label || key}`) }}
+                    {{ $t(`requisite.label.${item.label || key}`) }}
                   </label>
                   <TextField
+                    :ref="item.ref || null"
                     :value="requisite[key]"
-                    :placeholder="$t('placeholder.requisites.fillFields')"
+                    :placeholder="editMode ? $t('requisite.placeholder.fillFields') : '-'"
+                    :rules="item.rules"
+                    :disabled="!editMode"
                     squared
-                    colored-faded
                     hide-details
-                    class="pt-0 text-left"
+                    class="template-card__input pt-1"
+                    input-class="text-gray-300 focus:text-white placeholder-gray-300"
                     @input="updateRequisite(key, $event)"
                   />
                 </div>
               </div>
-            </div>
+            </template>
           </template>
-          <template v-slot:apend>
+          <template v-slot:append>
             <div class="text-center mt-32">
               <Button
                 large
@@ -104,7 +134,7 @@
                 @click="update()"
               >
                 <span>
-                  {{ $route.name === 'requisite-create' ? $t('action.create') : $t('action.save') }}
+                  {{ create ? $t('action.create') : $t('action.save') }}
                 </span>
               </Button>
             </div>
@@ -112,50 +142,75 @@
         </TemplateCard>
         <TemplateCard
           template-name="requisite"
-          :title="$t('requisites.bankDetails')"
+          :title="$t('requisite.bankDetails')"
           :class="{ 'requisite-template-card': !isBank }"
         >
           <template v-slot:items>
-            <div v-for="(item, key) in bank" :key="key">
-              <div class="card__row relative lg:pt-5">
+            <template v-for="(item, key) in bank">
+              <div
+                v-if="item.section"
+                class="flex justify-center pt-16"
+                :key="`section-${key}`"
+              >
+                <div
+                  v-if="item.subtitle"
+                  class="text-gray-lightest px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
+                >
+                  {{ $t(`requisite.${item.subtitle}`) }}
+                </div>
+              </div>
+              <div
+                :key="key"
+                class="flex flex-col justify-between pb-8 relative lg:flex-row lg:flex-wrap lg:pb-2"
+              >
                 <div
                   :class="[
                     'card__col-left',
                     'card__col-left--full-width',
-                    {'card__col-left--section': item.section}
                   ]"
                 >
-                  <span class="requisite-card__subtitle">
-                    {{ item.subtitle ? $t(`requisites.${item.subtitle}`) : '' }}
-                  </span>
                   <label
                     class="truncate text-left"
-                    :title="$t(`label.requisites.${item.label || key}`)"
+                    :title="$t(`requisite.label.${item.label || key}`)"
                   >
-                    {{ $t(`label.requisites.${item.label || key}`) }}
+                    {{ $t(`requisite.label.${item.label || key}`) }}
                   </label>
                   <TextField
                     :value="requisite[key]"
-                    :placeholder="$t('placeholder.requisites.fillFields')"
+                    :placeholder="editMode ? $t('requisite.placeholder.fillFields') : '-'"
+                    :disabled="!editMode"
                     squared
-                    colored-faded
                     hide-details
-                    class="pt-0 "
+                    class="template-card__input pt-1"
+                    input-class="text-gray-300 focus:text-white placeholder-gray-300"
                     @input="updateRequisite(key, $event)"
                   />
                 </div>
               </div>
-            </div>
+            </template>
           </template>
-          <template v-slot:apend>
+          <template v-slot:append>
             <div class="text-center mt-32">
               <Button
+                v-if="!editMode"
+                :disabled="updateLoading"
+                large
+                class="mb-4 mx-auto"
+                @click="edit"
+              >
+                <span>
+                  {{ $t('requisite.edit') }}
+                </span>
+              </Button>
+              <Button
+                v-else
+                :disabled="updateLoading"
                 large
                 class="mb-4 mx-auto"
                 @click="update()"
               >
                 <span>
-                  {{ $route.name === 'requisite-create' ? $t('action.create') : $t('action.save') }}
+                  {{ create ? $t('action.create') : $t('action.save') }}
                 </span>
               </Button>
             </div>
@@ -178,7 +233,7 @@ import SaveBeforeCloseModal from '../components/SaveBeforeCloseModal.vue'
 
 import TemplateCard from '../components/TemplateCard.vue'
 
-import { GET_ORG_REQUISITE } from '../graphql/queries'
+import { GET_ORG_REQUISITE, GET_ORGS } from '../graphql/queries'
 import { CREATE_REQUISITE, UPDATE_REQUISITE } from '../graphql/mutations'
 
 export default {
@@ -234,10 +289,15 @@ export default {
   },
   data () {
     return {
+      updateLoading: false,
+      editMode: false,
+      wasValidate: false,
       saveBeforeCloseDialog: false,
       cardType: 'ABOUT',
       about: {
         name: {
+          ref: 'companyNameInput',
+          rules: [v => !!v || this.$t('rule.required')],
           label: 'companyName',
         },
         nameEng: {
@@ -254,6 +314,7 @@ export default {
         phone: {},
         fax: {},
         email: {},
+        website: {},
         itn: {},
         iec: {},
         psrn: {},
@@ -313,22 +374,77 @@ export default {
   },
   watch: {
     saveBeforeCloseDialog (val) {
-      !val && this.$off('confirm')
+      if (!val) {
+        this.$emit('confirm', 0)
+        this.$off('confirm')
+      }
     },
   },
   created () {
+    this.editMode = this.create
     if (this.create) {
       this.reset()
     }
   },
   methods: {
+    edit () {
+      this.editMode = true
+    },
+    async toggleEditMode () {
+      if (this.editMode && this.hasDeepChange) {
+        const r = await this.openConfirmDialog()
+        if (r) {
+          if (r === 2) {
+            this.wasValidate = true
+            const isValid = this.validate(true)
+            if (!isValid) {
+              this.cardType = 'ABOUT'
+              this.saveBeforeCloseDialog = false
+              this.$vuetify.goTo('#container')
+              this.editMode = false
+              this.$nextTick(() => {
+                this.editMode = true
+              })
+              return
+            }
+            try {
+              await this.update(false)
+              this.saveBeforeCloseDialog = false
+            } catch (error) {
+              this.$logger.warn('Error: ', error)
+            }
+          } else {
+            this.setData(this.requisiteClone)
+            this.resetValidation()
+            this.editMode = false
+            this.saveBeforeCloseDialog = false
+          }
+        } else {
+          this.editMode = false
+          this.$nextTick(() => {
+            this.editMode = true
+          })
+          this.saveBeforeCloseDialog = false
+        }
+      } else {
+        this.editMode = !this.editMode
+      }
+    },
     async checkChangesBeforeLeave (next) {
       if (this.hasDeepChange) {
         const r = await this.openConfirmDialog()
         if (r) {
           if (r === 2) {
+            this.wasValidate = true
+            const isValid = this.validate(true)
+            if (!isValid) {
+              this.cardType = 'ABOUT'
+              this.saveBeforeCloseDialog = false
+              this.$vuetify.goTo('#container')
+              return next(false)
+            }
             try {
-              await this.update()
+              await this.update(false)
               return next()
             } catch (error) {
               this.$logger.warn('Error: ', error)
@@ -338,6 +454,7 @@ export default {
             return next()
           }
         } else {
+          this.saveBeforeCloseDialog = false
           return next(false)
         }
       } else {
@@ -353,7 +470,60 @@ export default {
         })
       })
     },
-    async update () {
+    validate () {
+      if (!this.wasValidate) return
+      const validateFields = []
+      let errorsCount = 0
+      const fields = this.about
+      for (const [, v] of Object.entries(fields)) {
+        if (v.rules) {
+          const field = this.$refs[v.ref] && this.$refs[v.ref][0]
+          if (field) {
+            validateFields.push(field)
+          }
+        }
+      }
+      let firstNotValidInput = null
+      validateFields.forEach(el => {
+        const errCount = el.validate()
+        if (errCount && !firstNotValidInput) {
+          firstNotValidInput = el.$refs.input
+        }
+        errorsCount += errCount
+      })
+      if (focus && errorsCount && firstNotValidInput) {
+        const delay = this.isComponent ? 0 : 200
+        setTimeout(() => {
+          firstNotValidInput.focus()
+        }, delay)
+      }
+      return !errorsCount
+    },
+    resetValidation () {
+      const validateFields = []
+      const fields = this.about
+      for (const [, v] of Object.entries(fields)) {
+        if (v.rules) {
+          const field = this.$refs[v.ref] && this.$refs[v.ref][0]
+          if (field) {
+            validateFields.push(field)
+          }
+        }
+      }
+      validateFields.forEach(el => {
+        el.resetValidation()
+      })
+    },
+    async update (redirectAfterCreate = true) {
+      this.wasValidate = true
+      // TODO: validate input Uniq number
+      const isValid = this.validate(true)
+      if (!isValid) {
+        this.cardType = 'ABOUT'
+        this.$vuetify.goTo('#container')
+        return
+      }
+      this.updateLoading = true
       try {
         let input = {}
         this.fieldsKeys.forEach(key => {
@@ -369,26 +539,39 @@ export default {
           mutation: query,
           variables,
         })
-        if (response && response.data && response.data.createRequisite) {
-          this.setData(response.data.createRequisite)
+        if (response && response.data) {
+          const data = this.create
+            ? response.data.createRequisite
+            : response.data.updateRequisite
+          this.setData(data)
           if (this.isComponent) {
-            this.$emit('create', response.data.createRequisite)
+            const action = this.create ? 'create' : 'update'
+            this.$emit(action, data)
           } else {
-            this.$router.push({
-              name: 'requisite',
-              params: {
-                orgId: this.orgId,
-                reqId: response.data.createRequisite.id,
-              },
-            })
+            this.editMode = false
+            if (this.create && redirectAfterCreate) {
+              this.$router.push({
+                name: 'requisite',
+                params: {
+                  orgId: this.orgId,
+                  reqId: data.id,
+                },
+              })
+            } else {
+              this.$vuetify.goTo('#container')
+            }
           }
         }
-        this.requisiteClone = cloneDeep(this.requisite)
+        // update orgs query
+        await this.$apollo.query({
+          query: GET_ORGS,
+          fetchPolicy: 'network-only',
+        })
       } catch (error) {
         this.$logger.warn('Error: ', error)
         throw new Error(error)
       } finally {
-        this.updateLoading = null
+        this.updateLoading = false
       }
     },
     setData (item) {
@@ -397,6 +580,7 @@ export default {
       this.requisiteClone = cloneDeep(this.requisite)
     },
     updateRequisite (key, value) {
+      this.validate()
       if (!this.requisite.hasOwnProperty(key)) {
         this.$set(this.requisite, key, value)
       } else {

@@ -37,10 +37,10 @@
     <div class="modal__footer">
       <Button
         large
-        gray
-        @click="$emit('cancel')"
+        primary
+        @click="$emit('set-template', internalValue)"
       >
-        <span>{{ $t('action.cancel') }}</span>
+        <span>{{ $t('action.apply') }}</span>
       </Button>
     </div>
     <span class="close-btn" @click="$emit('close')">
@@ -98,7 +98,6 @@ export default {
   methods: {
     change (v) {
       this.internalValue = v
-      this.$emit('set-template', v)
     },
   },
 }

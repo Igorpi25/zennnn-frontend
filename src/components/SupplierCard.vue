@@ -36,10 +36,10 @@
       max-width="520"
     >
       <SaveBeforeCloseModal
-        :text=" `${$t('paper.saveChanges')}${$t('paper.beforeClosing')}`"
-        :postScriptum="$t('paper.ifNotSave')"
+        :text="$t('label.saveChangesBeforeClose')"
+        :postScriptum="$t('label.saveChangesHint')"
         @dontSave="$emit('confirm', 1)"
-        @cancel="saveBeforeCloseDialog = false"
+        @cancel="$emit('confirm', 0)"
         @save="$emit('confirm', 2)"
       />
     </v-dialog>
@@ -66,7 +66,7 @@
                 :value="editMode"
                 small
                 class="mr-2"
-                @input="editMode=!editMode"
+                @input="toggleEditMode"
               >
                 <span>{{ $t('supplier.edit') }}</span>
               </ToggleButton>
@@ -81,8 +81,8 @@
           </header>
           <div class="card__radio-group">
             <RadioButton
-              :value="editCardTypes.SUPPLIER"
-              :input-value="editCard"
+              :value="editCard"
+              :label="editCardTypes.SUPPLIER"
               name="card-type"
               class="mr-6"
               @input="editCard = editCardTypes.SUPPLIER"
@@ -90,8 +90,8 @@
               <span>{{ $t('supplier.legalPersonAbr') }}</span>
             </RadioButton>
             <RadioButton
-              :value="editCardTypes.SHOPS"
-              :input-value="editCard"
+              :value="editCard"
+              :label="editCardTypes.SHOPS"
               name="card-type"
               @input="editCard = editCardTypes.SHOPS"
             >
@@ -101,6 +101,7 @@
           <div class="flex justify-between relative">
             <!-- <div class="partner-card__triangle"></div> -->
             <TemplateCard
+              ref="supplier"
               template-name="supplier"
               :fields="fieldsSettings"
               :item="supplier"
@@ -110,15 +111,60 @@
               @update-template="updateTemplate"
               @update-value="updateValue"
             >
-              <template v-slot:apend>
+              <template v-slot:language>
+                <div class="card__col-right">
+                  <select
+                    ref="languageInput"
+                    :value="supplier.language"
+                    :disabled="!editMode || !!updateLoading"
+                    required
+                    class="simple-select mx-1"
+                    name="language-select"
+                    @change="updateLanguageInput"
+                  >
+                    <option
+                      v-if="create && !supplier.language"
+                      value=""
+                    >
+                      {{ $t('placeholder.notChosen') }}
+                    </option>
+                    <option
+                      v-for="opt of langs"
+                      :key="opt.value"
+                      :value="opt.value"
+                    >
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        {{ opt.text }}
+                      </span>
+                    </option>
+                  </select>
+                  <div
+                    v-if="languageInputError"
+                    class="text-xs text-red leading-none mx-2"
+                  >
+                    {{ languageInputError }}
+                  </div>
+                </div>
+              </template>
+              <template v-slot:append>
                 <div class="text-center">
                   <Button
+                    v-if="!editMode"
+                    :disabled="!!updateLoading"
                     large
-                    :disabled="!editMode"
                     class="mb-4 mx-auto"
-                    @click="update"
+                    @click="edit"
                   >
-                    <span>{{ $t('client.save') }}</span>
+                    <span>{{ $t('supplier.edit') }}</span>
+                  </Button>
+                  <Button
+                    v-else
+                    :disabled="!!updateLoading"
+                    large
+                    class="mb-4 mx-auto"
+                    @click="update()"
+                  >
+                    <span>{{ $t('supplier.save') }}</span>
                   </Button>
                   <Button
                     text
@@ -138,14 +184,14 @@
             >
               <template v-slot:items>
                 <div v-for="(shop, index) in supplier.shops" :key="index">
-                  <div class="card__row relative lg:pt-5">
+                  <div class="flex flex-col justify-between relative pb-4 lg:flex-row lg:flex-wrap lg:pt-5">
                     <div class="card__col-left card__col-left--shops">
                       <div
                         class="card__expand-btn"
-                        @click="expandShop(index)"
+                        @click="expandShop(shop.id)"
                       >
                         {{ index + 1 }}
-                        <Icon v-if="expanded.includes(index)">{{ icons.mdiChevronUp }}</Icon>
+                        <Icon v-if="shop.expanded">{{ icons.mdiChevronUp }}</Icon>
                         <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                       </div>
                       <div
@@ -161,19 +207,20 @@
                       </div>
                       <TextField
                         :value="shop.template && shop.template['name']"
-                        :placeholder="(shop.template && shop.template['name']) || `${$t('placeholder.supplier.shopName')}`"
-                        :disabled="!expanded.includes(index)"
+                        :placeholder="(shop.template && shop.template['name']) || `${$t('supplier.placeholder.shopName')}`"
+                        :disabled="!shop.editMode"
                         squared
-                        right
                         hide-details
                         class="pt-0 template-card__label"
+                        input-class="text-gray-300 focus:text-white placeholder-gray-300"
                         @input="updateShopTemplate(index, 'name', $event)"
                       />
                     </div>
                     <div class="card__col-right">
                       <TextArea
                         :value="shop.name"
-                        :disabled="!expanded.includes(index)"
+                        :disabled="!shop.editMode"
+                        :placeholder="!shop.editMode ? '-' : null"
                         squared
                         rows="2"
                         hide-details
@@ -183,10 +230,10 @@
                     </div>
                   </div>
                   <div
-                    v-if="expanded.includes(index)"
-                    class="card__section"
+                    v-if="shop.expanded"
+                    class="pb-16"
                   >
-                    <div class="card__row">
+                    <div class="flex flex-col justify-between pb-8 lg:flex-row lg:flex-wrap lg:pb-0">
                       <template
                         v-for="([key, f]) in Object.entries(shopFieldsSettings).slice(1)"
                       >
@@ -194,14 +241,15 @@
                           class="card__col-left card__col-left--shops"
                           :key="key"
                         >
-                          <label>{{ $t(`label.supplier.${f.label || key}`) }}</label>
+                          <label>{{ $t(`supplier.label.${f.label || key}`) }}</label>
                           <TextField
                             :value="shop.template && shop.template[key]"
-                            :placeholder="(shop.template && shop.template[key]) || $t(`placeholder.supplier.${f.label || key}`)"
-                            right
+                            :placeholder="(shop.template && shop.template[key]) || $t(`supplier.placeholder.${f.label || key}`)"
+                            :disabled="!shop.editMode"
                             squared
                             hide-details
                             class="pt-0 template-card__label"
+                            input-class="text-gray-300 focus:text-white placeholder-gray-300"
                             @input="updateShopTemplate(index, key, $event)"
                           />
                         </div>
@@ -212,29 +260,43 @@
                           <label></label>
                           <TextArea
                             :value="shop[key]"
+                            :disabled="!shop.editMode"
+                            :placeholder="!shop.editMode ? '-' : null"
                             squared
                             rows="1"
                             hide-details
+                            class="template-card__input pb-4"
                             @input="updateShopValue(index, key, $event)"
                           />
                         </div>
                       </template>
                     </div>
                     <div class="text-center mt-16">
-                      <Button
-                        v-if="!create"
-                        large
-                        :disabled="updateLoading"
-                        class="mb-4 mx-auto"
-                        @click="updateShop(shop.id, index)"
-                      >
-                        <span>{{ $t('supplier.save') }}</span>
-                      </Button>
+                      <template v-if="!create">
+                        <Button
+                          v-if="shop.editMode"
+                          :disabled="!!updateLoading"
+                          large
+                          class="mb-4 mx-auto"
+                          @click="updateShop(shop.id)"
+                        >
+                          <span>{{ $t('supplier.save') }}</span>
+                        </Button>
+                        <Button
+                          v-else
+                          :disabled="!!updateLoading"
+                          large
+                          class="mb-4 mx-auto"
+                          @click="editShop(shop)"
+                        >
+                          <span>{{ $t('supplier.edit') }}</span>
+                        </Button>
+                      </template>
                     </div>
                   </div>
                 </div>
               </template>
-              <template v-slot:apend>
+              <template v-slot:append>
                 <Button
                   outline
                   white
@@ -256,7 +318,7 @@
               params: {
                 orgId,
               }
-            })"
+            }).catch(err => {})"
           >
             <Icon class="mr-2">
               {{ icons.mdiArrowLeft }}
@@ -348,6 +410,8 @@ export default {
   },
   data () {
     return {
+      languageInputError: '',
+      wasValidate: false,
       saveBeforeCloseDialog: false,
       templateChanged: false,
       createTemplateLoading: false,
@@ -358,7 +422,6 @@ export default {
       templateSaveDialog: false,
       editCard: 'SUPPLIER',
       editMode: false,
-      expanded: [],
       shopFieldsSettings: {
         name: {
           label: 'shopName',
@@ -378,8 +441,11 @@ export default {
       },
       fieldsSettings: {
         companyNameSl: {
+          ref: 'companyNameSlInput',
+          rules: [v => !!v || this.$t('rule.required')],
           rows: 2,
-          label: 'sl',
+          label: 'companyNameSl',
+          inputLabel: 'selectedLanguage',
         },
         companyNameCl: {
           rows: 2,
@@ -418,9 +484,16 @@ export default {
           section: true,
           subtitle: 'note',
         },
+        language: {
+          labelReadonly: true,
+          section: true,
+          subtitle: 'language',
+          labelHint: 'languageDescription',
+        },
       },
       supplier: {
         id: null,
+        language: '',
         template: {},
         shops: [],
       },
@@ -435,6 +508,16 @@ export default {
     }
   },
   computed: {
+    langs () {
+      return [
+        { value: 'en', text: 'English' },
+        { value: 'zh-Hans', text: '简体' },
+        { value: 'zh-Hant', text: '繁体' },
+        { value: 'fr', text: 'Français' },
+        { value: 'ru', text: 'Русский' },
+        { value: 'uk', text: 'Український' },
+      ]
+    },
     supplierId () {
       return this.$route.params.supplierId
     },
@@ -442,8 +525,9 @@ export default {
       return Object.keys(this.shopFieldsSettings)
     },
     templateFieldsKeys () {
+      const fields = this.fieldsKeys.filter(k => k !== 'language')
       return [
-        ...this.fieldsKeys,
+        ...fields,
         'templateName',
       ]
     },
@@ -451,7 +535,17 @@ export default {
       return Object.keys(this.fieldsSettings)
     },
     hasDeepChange () {
-      return !deepEqual(this.supplier, this.supplierClone)
+      const supplierWithoutShops = { id: this.supplier.id }
+      const supplierCloneWithoutShops = { id: this.supplierClone.id }
+      this.fieldsKeys.forEach(k => {
+        supplierWithoutShops[k] = this.supplier[k]
+        supplierCloneWithoutShops[k] = this.supplierClone[k]
+      })
+      return !deepEqual(supplierWithoutShops, supplierCloneWithoutShops)
+    },
+    hasShopsInEditMode () {
+      const shops = this.supplier.shops || []
+      return shops.some(el => el.editMode)
     },
     currentTemplate () {
       let result = null
@@ -461,7 +555,7 @@ export default {
           this.supplier.template.templateName === null ||
           this.supplier.template.templateName === 'default'
         ) &&
-        this.fieldsKeys.every(el => this.supplier.template[el] === null)
+        this.templateFieldsKeys.filter(el => el !== 'templateName').every(el => !this.supplier.template[el])
       ) {
         const shops = this.supplier.shops || []
         if (shops.every(s => {
@@ -505,7 +599,10 @@ export default {
   },
   watch: {
     saveBeforeCloseDialog (val) {
-      !val && this.$off('confirm')
+      if (!val) {
+        this.$emit('confirm', 0)
+        this.$off('confirm')
+      }
     },
     templateListDialog (val) {
       if (!this.create && !val && this.templateChanged) {
@@ -528,13 +625,61 @@ export default {
     }
   },
   methods: {
-    async checkChangesBeforeLeave (next) {
-      if (this.hasDeepChange) {
+    async toggleEditMode () {
+      if (this.editMode && this.hasDeepChange) {
         const r = await this.openConfirmDialog()
         if (r) {
           if (r === 2) {
+            this.wasValidate = true
+            const isValid = this.validate(true)
+            if (!isValid) {
+              this.editCard = this.editCardTypes.SUPPLIER
+              this.saveBeforeCloseDialog = false
+              this.$vuetify.goTo('#container')
+              this.editMode = false
+              this.$nextTick(() => {
+                this.editMode = true
+              })
+              return
+            }
             try {
-              await this.update()
+              await this.update(false)
+              this.saveBeforeCloseDialog = false
+            } catch (error) {
+              this.$logger.warn('Error: ', error)
+            }
+          } else {
+            this.setData(this.supplierClone)
+            this.resetValidation()
+            this.editMode = false
+            this.saveBeforeCloseDialog = false
+          }
+        } else {
+          this.editMode = false
+          this.$nextTick(() => {
+            this.editMode = true
+          })
+          this.saveBeforeCloseDialog = false
+        }
+      } else {
+        this.editMode = !this.editMode
+      }
+    },
+    async checkChangesBeforeLeave (next) {
+      if (this.hasDeepChange || this.hasShopsInEditMode) {
+        const r = await this.openConfirmDialog()
+        if (r) {
+          if (r === 2) {
+            this.wasValidate = true
+            const isValid = this.validate(true)
+            if (!isValid) {
+              this.editCard = this.editCardTypes.SUPPLIER
+              this.saveBeforeCloseDialog = false
+              this.$vuetify.goTo('#container')
+              return next(false)
+            }
+            try {
+              await this.update(false, true)
               return next()
             } catch (error) {
               this.$logger.warn('Error: ', error)
@@ -544,6 +689,7 @@ export default {
             return next()
           }
         } else {
+          this.saveBeforeCloseDialog = false
           return next(false)
         }
       } else {
@@ -562,6 +708,7 @@ export default {
       const id = uuid()
       this.supplier = {
         id,
+        language: '',
         template: { id },
         shops: [],
       }
@@ -569,7 +716,86 @@ export default {
       // clone supplier for detect changes
       this.supplierClone = cloneDeep(this.supplier)
     },
-    async update () {
+    validate (focus) {
+      if (!this.wasValidate) return
+      const validateFields = []
+      let errorsCount = 0
+      const fields = this.fieldsSettings
+      const refs = this.$refs['supplier'].$refs
+      for (const [, v] of Object.entries(fields)) {
+        if (v.rules) {
+          const field = refs[v.ref][0]
+          if (field) {
+            validateFields.push(field)
+          }
+        }
+      }
+      let firstNotValidInput = null
+      validateFields.forEach(el => {
+        const errCount = el.validate()
+        if (errCount && !firstNotValidInput) {
+          firstNotValidInput = el.$refs.input
+        }
+        errorsCount += errCount
+      })
+      // validate language input separately
+      const languageInputValidity = this.validateLanguageInput()
+      if (!languageInputValidity.valid) {
+        errorsCount += 1
+        if (!firstNotValidInput) {
+          firstNotValidInput = languageInputValidity.el
+        }
+      }
+      if (focus && errorsCount && firstNotValidInput) {
+        this.$vuetify.goTo(firstNotValidInput)
+        const delay = this.isComponent ? 0 : 200
+        setTimeout(() => {
+          firstNotValidInput.focus()
+        }, delay)
+      }
+      return !errorsCount
+    },
+    validateLanguageInput () {
+      const el = this.$refs.languageInput
+      if (!el.validity.valid) {
+        const message = this.$t('rule.requiredSelect')
+        this.languageInputError = message
+        return { message, el, valid: false }
+      } else {
+        this.languageInputError = ''
+        return { valid: true }
+      }
+    },
+    resetValidation () {
+      const validateFields = []
+      const fields = this.fieldsSettings
+      const refs = this.$refs['supplier'].$refs
+      for (const [, v] of Object.entries(fields)) {
+        if (v.rules) {
+          const field = refs[v.ref][0]
+          if (field) {
+            validateFields.push(field)
+          }
+        }
+      }
+      validateFields.forEach(el => {
+        el.resetValidation()
+      })
+    },
+    updateLanguageInput (e) {
+      const v = e.target.value
+      const validity = this.validateLanguageInput()
+      if (validity.valid) {
+        this.updateValue('language', v)
+      }
+    },
+    async update (redirectAfterCreate = true, fullUpdate) {
+      this.wasValidate = true
+      // TODO: validate input Uniq number
+      const isValid = this.validate(true)
+      if (!isValid) {
+        return
+      }
       try {
         let input = {
           template: {},
@@ -581,7 +807,7 @@ export default {
         this.templateFieldsKeys.forEach(key => {
           input.template[key] = template[key] || null
         })
-        if (this.create) {
+        if (this.create || fullUpdate) {
           const supplierShops = this.supplier.shops || []
           input.shops = supplierShops.map(s => {
             let shop = {}
@@ -609,21 +835,27 @@ export default {
           mutation: query,
           variables,
         })
-        if (response && response.data && response.data.createSupplier) {
-          this.setData(response.data.createSupplier)
-          this.expanded = []
+        if (response && response.data) {
+          const data = this.create
+            ? response.data.createSupplier
+            : response.data.updateSupplier
+          this.setData(data)
           if (this.isComponent) {
-            this.$emit('create', response.data.createSupplier)
+            const action = this.create ? 'create' : 'update'
+            this.$emit(action, data)
           } else {
             this.editMode = false
-            this.supplierClone = cloneDeep(this.supplier)
-            this.$router.push({
-              name: 'supplier',
-              params: {
-                orgId: this.orgId,
-                supplierId: response.data.createSupplier.id,
-              },
-            })
+            if (this.create && redirectAfterCreate) {
+              this.$router.push({
+                name: 'supplier',
+                params: {
+                  orgId: this.orgId,
+                  supplierId: data.id,
+                },
+              })
+            } else {
+              this.$vuetify.goTo('#container')
+            }
           }
         }
       } catch (error) {
@@ -635,8 +867,19 @@ export default {
     },
     setData (item) {
       if (!item) return
-      this.supplier = cloneDeep(item)
-      this.supplierClone = cloneDeep(item)
+      const shopsOld = this.supplier.shops || []
+      const shops = (item.shops || []).slice().map(shop => {
+        const old = shopsOld.find(el => el.id === shop.id) || {}
+        const oldValues = old.editMode ? old : {}
+        return {
+          ...shop,
+          ...oldValues,
+          expanded: !!old.expanded,
+          editMode: !!old.editMode,
+        }
+      })
+      this.supplier = cloneDeep(Object.assign({}, item, { shops }))
+      this.supplierClone = cloneDeep(this.supplier)
     },
     async createSupplierTemplate (templateName) {
       try {
@@ -684,7 +927,7 @@ export default {
     },
     edit () {
       this.editMode = true
-      this.$vuetify.goTo('#container')
+      // this.$vuetify.goTo('#container')
     },
     updateTemplate (key, value) {
       if (!this.supplier.template.hasOwnProperty(key)) {
@@ -694,6 +937,7 @@ export default {
       }
     },
     updateValue (key, value) {
+      this.validate()
       if (!this.supplier.hasOwnProperty(key)) {
         this.$set(this.supplier, key, value)
       } else {
@@ -701,6 +945,9 @@ export default {
       }
     },
     updateShopTemplate (index, key, value) {
+      if (!this.supplier.shops[index].template) {
+        this.$set(this.supplier.shops[index], 'template', {})
+      }
       if (!this.supplier.shops[index].template.hasOwnProperty(key)) {
         this.$set(this.supplier.shops[index].template, key, value)
       } else {
@@ -723,36 +970,54 @@ export default {
             template: {
               id,
             },
+            expanded: true,
+            editMode: true,
           }
-          const index = this.supplier.shops.push(shop)
-          this.expanded.push(index - 1)
+          this.supplier.shops.push(shop)
         } else {
           const response = await this.$apollo.mutate({
             mutation: CREATE_SUPPLIER_SHOP,
             variables: { supplierId: this.supplierId, input: {} },
           })
           if (response && response.data && response.data.createSupplierShop) {
-            const index = this.supplier.shops.push(response.data.createSupplierShop)
-            this.expanded.push(index - 1)
+            this.supplier.shops
+              .push(Object.assign(response.data.createSupplierShop, {
+                editMode: true,
+                expanded: true,
+              }))
           }
         }
       } catch (error) {
         throw new Error(error)
       }
     },
-    async updateShop (shopId, index) {
+    editShop (shop) {
+      this.$set(shop, 'editMode', true)
+    },
+    async updateShop (shopId) {
       try {
-        const shop = this.supplier.shops[index] || {}
-        let input = {}
+        const shops = this.supplier.shops || []
+        const shop = shops.find(el => el.id === shopId) || {}
+        const expanded = shop.expanded
+        const shopTemplate = shop.template || {}
+        const input = {}
+        const template = {}
         this.shopFieldsKeys.forEach(key => {
           input[key] = shop[key]
+          template[key] = shopTemplate[key]
         })
+        input.template = template
         const response = await this.$apollo.mutate({
           mutation: UPDATE_SUPPLIER_SHOP,
           variables: { id: shopId, input },
         })
         if (response && response.data && response.data.updateSupplierShop) {
-          this.supplier.shops.splice(index, 1, response.data.updateSupplierShop)
+          const index = this.supplier.shops.findIndex(el => el.id === shopId)
+          const updatedItem = Object.assign(response.data.updateSupplierShop, {
+            editMode: false,
+            expanded,
+          })
+          this.supplier.shops.splice(index, 1, updatedItem)
         }
       } catch (error) {
         throw new Error(error)
@@ -765,20 +1030,18 @@ export default {
           variables: { id },
         })
         if (response && response.data && response.data.deleteSupplierShop) {
-          const index = this.supplier.shops.findIndex(el => el.id === id)
-          this.supplier.shops.splice(index, 1)
+          this.supplier.shops = this.supplier.shops.filter(el => el.id !== id)
           // TODO remove from cache
         }
       } catch (error) {
         throw new Error(error)
       }
     },
-    expandShop (val) {
-      const index = this.expanded.indexOf(val)
-      if (index !== -1) {
-        this.expanded.splice(index, 1)
-      } else {
-        this.expanded.push(val)
+    expandShop (shopId) {
+      const shops = this.supplier.shops || []
+      const shop = shops.find(el => el.id === shopId)
+      if (shop) {
+        this.$set(shop, 'expanded', !shop.expanded)
       }
     },
     saveAsTemplate () {
@@ -804,6 +1067,7 @@ export default {
         this.supplier.template = { id: this.supplier.id }
       }
       this.templateChanged = true
+      this.templateListDialog = false
     },
   },
 }

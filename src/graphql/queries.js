@@ -11,7 +11,22 @@ import {
   SUPPLIER_SHOP_TEMPLATE_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
   ORG_CONTRACT_FRAGMENT,
+  PAPER_SPEC_FRAGMENT,
+  PAPER_INVOICE_FRAGMENT,
+  PAPER_PRODUCT_FRAGMENT,
 } from './typeDefs'
+
+export const GET_INVITE_USER_TO_ORG = gql`
+  query GetInviteUserToOrg($orgId: ID!, $email: String!) {
+    getInviteUserToOrg(orgId: $orgId, email: $email) {
+      id
+      email
+      givenName
+      familyName
+      language
+    }
+  }
+`
 
 export const GET_ORGS = gql`
   query GetOrgs {
@@ -23,8 +38,10 @@ export const GET_ORGS = gql`
         givenName
         familyName
         picture
+        language
       }
       role
+      defaultRequisite
       name
       nameEng
       location
@@ -66,6 +83,7 @@ export const GET_PROFILE = gql`
       familyName
       picture
       initialized
+      language
     }
   }
 `
@@ -101,6 +119,8 @@ export const GET_SPECS = gql`
 export const GET_SPEC = gql`
   query GetSpec($id: ID!) {
     getSpec(id: $id) {
+      activeTab @client
+      expandedInvoices @client
       ...SpecFragment
       invoices {
         ...InvoiceFragment
@@ -132,6 +152,12 @@ export const GET_SPEC = gql`
   ${SPEC_FRAGMENT}
   ${INVOICE_FRAGMENT}
   ${PRODUCT_FRAGMENT}
+`
+
+export const GET_ORG_NEXT_CLIENT_UID = gql`
+  query GetOrgNextClientUid($orgId: ID!) {
+    getOrgNextClientUid(orgId: $orgId)
+  }
 `
 
 export const GET_CLIENT = gql`
@@ -293,6 +319,7 @@ export const CHECK_INVITATION = gql`
         familyName
         picture
       }
+      orgName
     }
   }
 `
@@ -325,13 +352,54 @@ export const LIST_STAFF = gql`
         finalCost
         finalObtainCost
         profit
+        percent
         totalPrepay
         totalClientDebt
         specs {
-          ...SpecFragment
+          id
+          specStatus
+          moneyPaid
+          moneyReceived
+          profit
+          percent
+          finalCost
+          finalObtainCost
+          specNo
+          clientFullName
         }
       }
     }
   }
-  ${SPEC_FRAGMENT}
+`
+
+export const GET_SPEC_LINK_ACCESS = gql`
+  query GetSpecLinkAccess($id: ID!) {
+    getSpecLinkAccess(id: $id)
+  }
+`
+
+export const GET_SPEC_EMAIL_ACCESS = gql`
+  query GetSpecEmailAccess($id: ID!) {
+    getSpecEmailAccess(id: $id) {
+      email
+    }
+  }
+`
+
+export const GET_PAPER_SPEC = gql`
+  query GetPaperSpec($id: ID!) {
+    getPaperSpec(id: $id) {
+      expandedInvoices @client
+      ...PaperSpecFragment
+      invoices {
+        ...PaperInvoiceFragment
+        products {
+          ...PaperProductFragment
+        }
+      }
+    }
+  }
+  ${PAPER_SPEC_FRAGMENT}
+  ${PAPER_INVOICE_FRAGMENT}
+  ${PAPER_PRODUCT_FRAGMENT}
 `

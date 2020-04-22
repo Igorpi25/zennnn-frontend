@@ -23,10 +23,12 @@ import {
   PRODUCT_FRAGMENT,
   SPEC_INVOICES_FRAGMENT,
   INVOICE_PRODUCTS_FRAGMENT,
+  CLIENT_FRAGMENT,
 } from '../graphql/typeDefs'
 import {
   GET_SPEC,
   GET_ROLE_IN_PROJECT,
+  LIST_ORG_REQUISITES,
 } from '../graphql/queries'
 import { SPEC_DELTA } from '../graphql/subscriptions'
 
@@ -56,6 +58,7 @@ export default {
           id: this.specId,
         }
       },
+      fetchPolicy: 'cache-and-network',
     },
   },
   data () {
@@ -79,6 +82,19 @@ export default {
     },
   },
   mounted () {
+    const commentsMerge = (target, source) => {
+      const destination = target.slice()
+      source.forEach(s => {
+        const index = target.findIndex(el => el.id === s.id)
+        if (index === -1) {
+          destination.push(s)
+        } else {
+          destination.splice(index, 1, Object.assign(target[index], s))
+        }
+      })
+      return destination
+    }
+
     const observer = this.$apollo.subscribe({
       query: SPEC_DELTA,
       variables: {
@@ -121,15 +137,29 @@ export default {
         }
 
         if (operation === Operation.UPDATE_PRODUCT) {
+          const mergeOptions = {
+            customMerge: (key) => {
+              if (key === 'comments') {
+                return commentsMerge
+              }
+              if (key === 'images') {
+                const merge = (_, source) => {
+                  return source || []
+                }
+                return merge
+              }
+            },
+          }
           const cacheData = apolloClient.readFragment({
             id: `${Typename.PRODUCT}:${delta.payload.id}`,
             fragment: PRODUCT_FRAGMENT,
             fragmentName: 'ProductFragment',
           })
-          const data = deepmerge(cacheData, delta.payload.fields)
+          const data = deepmerge(cacheData, delta.payload.fields, mergeOptions)
           apolloClient.writeFragment({
             id: `${Typename.PRODUCT}:${delta.payload.id}`,
             fragment: PRODUCT_FRAGMENT,
+            fragmentName: 'ProductFragment',
             data,
           })
         }
@@ -215,20 +245,92 @@ export default {
         // SPEC
 
         if (operation === Operation.UPDATE_SPEC) {
+          const mergeOptions = {
+            customMerge: (key) => {
+              if (key === 'comments') {
+                return commentsMerge
+              }
+              if (key === 'containers') {
+                const merge = (_, source) => {
+                  return source || []
+                }
+                return merge
+              }
+            },
+          }
           const cacheData = apolloClient.readFragment({
             id: `${Typename.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
             fragmentName: 'SpecFragment',
           })
           const data = delta.payload.__typename === Typename.SPEC
-            ? Object.assign({}, cacheData, delta.payload)
-            : Object.assign({}, cacheData, delta.payload.fields)
+            ? deepmerge(cacheData, delta.payload, mergeOptions)
+            : deepmerge(cacheData, delta.payload.fields, mergeOptions)
           apolloClient.writeFragment({
             id: `${Typename.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
             fragmentName: 'SpecFragment',
             data,
           })
+        }
+
+        // CLIENT
+
+        if (operation === Operation.UPDATE_CLIENT) {
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.CLIENT}:${delta.payload.id}`,
+            fragment: CLIENT_FRAGMENT,
+            fragmentName: 'ClientFragment',
+          })
+          const data = deepmerge(cacheData, delta.payload)
+          apolloClient.writeFragment({
+            id: `${Typename.CLIENT}:${delta.payload.id}`,
+            fragment: CLIENT_FRAGMENT,
+            fragmentName: 'ClientFragment',
+            data,
+          })
+        }
+
+        // REQUISITE
+
+        if (operation === Operation.SET_REQUISITES || Operation.UPDATE_REQUISITES) {
+          let listOrgRequisites = null
+          try {
+            const data = apolloClient.readQuery({
+              query: LIST_ORG_REQUISITES,
+              variables: {
+                orgId: this.$route.params.orgId,
+              },
+            })
+            listOrgRequisites = data.listOrgRequisites
+          } catch (error) {} // eslint-disable-line
+          if (listOrgRequisites) {
+            const items = delta.payload.items || []
+            let cacheItems = listOrgRequisites
+            if (operation === Operation.SET_REQUISITES) {
+              cacheItems = items
+            }
+            if (operation === Operation.UPDATE_REQUISITES) {
+              items.forEach(item => {
+                const index = cacheItems.findIndex(el => el.id === item.id)
+                if (index === -1) {
+                  cacheItems.push(item)
+                } else {
+                  cacheItems.splice(index, 1, item)
+                }
+              })
+            }
+            const data = {
+              listOrgRequisites: cacheItems,
+            }
+            apolloClient.writeQuery({
+              query: LIST_ORG_REQUISITES,
+              variables: {
+                orgId: this.$route.params.orgId,
+              },
+              data,
+            })
+          }
         }
       },
       error: (error) => {

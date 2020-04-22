@@ -8,17 +8,18 @@
             <div class="w-full">
               <h1 class="text-center md:text-left mb-12 pt-10 md:pt-12">
                 <span class="text-white md:text-gary0-lightest">
-                  {{ $t('loginRestore.accessRecoveryStart') }}
+                  {{ $t('loginRestore.accessRecoveryHead') }}
                 </span>
                 <br />
                 <span class="text-gary0-lightest md:text-white">
-                  {{ $t('loginRestore.accessRecoveryEnd') }}
+                  {{ $t('loginRestore.accessRecoverySubhead') }}
                 </span>
               </h1>
               <Form
                 ref="form"
                 :title="$t('loginRestore.recoveryByPhone')"
                 :error-message.sync="errorMessage"
+                lazy-validation
                 rounded
                 shadow
                 class="form--max-w-md"
@@ -32,18 +33,18 @@
                   <TextField
                     v-model="formModel.phone"
                     :label="$t('loginRestore.phoneNumber')"
+                    :rules="[rules.required]"
                     name="phone"
                     autofocus
-                    required
                   />
                 </div>
                 <div class="w-full sm:w-1/2 sm:pl-2">
                   <TextField
                     v-model="formModel.smsCode"
                     :label="$t('loginRestore.smsCode')"
+                    :rules="[rules.required, rules.codeMinLength]"
                     type="tel"
                     name="smsCode"
-                    required
                     minlength="6"
                     maxlength="6"
                   />
@@ -52,7 +53,7 @@
                     secondary
                     @click.prevent
                   >
-                    <span>{{ $t('action.resendCode') }}</span>
+                    <span>{{ $t('loginRestore.resendCode') }}</span>
                   </Button>
                 </div>
                 <template v-slot:append>
@@ -66,12 +67,12 @@
                       {{ $t('action.loading') }}
                     </span>
                     <span v-else>
-                      {{ $t('action.getLink') }}
+                      {{ $t('loginRestore.submit') }}
                     </span>
                   </Button>
                   <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-no-wrap">
                     <span>{{ $t('preposition.or') }}</span>&nbsp;
-                    <span class="lowercase">{{ $t('action.login') }}</span>&nbsp;
+                    <span class="lowercase">{{ $t('loginRestore.signin') }}</span>&nbsp;
                     <span>{{ $t('preposition.through') }}</span>
                   </div>
                   <SocialSignIn />
@@ -112,6 +113,10 @@ export default {
       formModel: {
         phone: '',
         smsCode: '',
+      },
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        codeMinLength: v => (v && v.length > 5) || this.$t('rule.minLength', { n: 6 }),
       },
     }
   },

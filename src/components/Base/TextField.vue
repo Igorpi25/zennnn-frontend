@@ -24,7 +24,8 @@
     ]"
   >
     <div class="text-field__controls">
-      <div class="text-field__slot"
+      <div
+        class="text-field__slot"
         :style="compHeight"
       >
         <label
@@ -56,7 +57,11 @@
           :maxlength="maxlength"
           :autofocus="autofocus"
           :placeholder="compPlaceholder"
-          :class="{ 'text-right' : type === 'number' || right }"
+          :class="[
+            placeholderClass,
+            { 'text-right' : type === 'number' || right },
+            inputClass,
+          ]"
           :inputmode="inputmode"
           :pattern="pattern"
           :step="step"
@@ -86,6 +91,13 @@
             {{ icons.mdiCheckCircle }}
           </Icon>
         </div>
+      </div>
+      <div
+        v-if="hideDetails && hasError"
+        class="absolute text-red text-xs"
+        style="bottom:-18px;"
+      >
+        <span>{{ errorText }}</span>
       </div>
     </div>
   </InputBase>
@@ -134,10 +146,12 @@ export default {
       type: String,
       default: 'text',
     },
+    // text, numeric, decimal
     inputmode: {
       type: String,
       default: 'text',
     },
+    // decimal, currency
     formatStyle: {
       type: String,
       default: 'decimal',
@@ -234,6 +248,10 @@ export default {
       type: Number,
       default: 0,
     },
+    inputClass: {
+      type: [String, Object],
+      default: '',
+    },
   },
   data () {
     return {
@@ -244,7 +262,7 @@ export default {
       inputId: 'input' + Math.round(Math.random() * 100000),
       lazyValue: this.value,
       integerPattern: '[0-9]*',
-      decimalPattern: '^[0-9]+[,.][0-9]+$',
+      decimalPattern: '^[0-9, ]+([,.][0-9]+)?$',
       integerStep: '1',
       decimalStep: '0.01',
       icons: {
@@ -254,6 +272,16 @@ export default {
     }
   },
   computed: {
+    placeholderClass () {
+      let c = this.coloredFaded
+        ? 'placeholder-gray-200' : this.squared || this.colored
+          ? 'placeholder-primary' : this.singleLine
+            ? 'placeholder-gray-lighter' : 'placeholder-gray-100'
+      if (this.outlined) {
+        c += ' focus:placeholder-gray-light'
+      }
+      return c
+    },
     compPlaceholder () {
       // ignore placeholder on number
       return this.type === 'number'
@@ -263,8 +291,12 @@ export default {
       return this.height ? convertToUnit(this.height) : null
     },
     formatNumberOptions () {
+      // precision numbers digits must be between 0 and 20
+      const precision = this.inputmode === 'numeric'
+        ? 0 : this.formatStyle === 'currency'
+          ? 2 : 20
       return {
-        precision: this.inputmode === 'numeric' ? 0 : 2,
+        precision,
         thousand: this.editMode ? '' : ' ',
         decimal: ',',
         fixed: !this.editMode && this.formatStyle === 'currency',
@@ -287,7 +319,10 @@ export default {
       return this.hasFocus || this.internalValue || this.placeholder
     },
     hasStateIcon () {
-      return this.form && this.form.wasValidated && this.stateIcon
+      if (this.form && this.form.lazyValidation) {
+        return this.form.wasValidated && this.stateIcon
+      }
+      return this.shouldValidate && this.stateIcon
     },
     pattern () {
       if (this.type === 'number') {
@@ -343,8 +378,9 @@ export default {
       this.editMode = true
       this.hasFocus = true
       if (this.type === 'number') {
+        const number = unformat(this.internalValue, this.formatNumberOptions.decimal)
         this.internalValue = this.value
-          ? formatNumber(this.internalValue, this.formatNumberOptions)
+          ? formatNumber(number, this.formatNumberOptions)
           : null
         setTimeout(() => {
           e.target.selectionStart = e.target.selectionEnd = e.target.value.length

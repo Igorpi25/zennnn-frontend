@@ -1,3 +1,4 @@
+import { mdiChevronUp, mdiChevronDown, mdiClose } from '@mdi/js'
 import {
   UPDATE_PRODUCT,
   UPDATE_PRODUCT_COST,
@@ -8,8 +9,9 @@ import {
 } from '../graphql/mutations'
 import ProductImagesList from '../components/ProductImagesList.vue'
 import ProductImage from '../components/ProductImage.vue'
-import { confirmDialog, isNumber } from '@/util/helpers'
+import { confirmDialog, isNumber } from '../util/helpers'
 import { GET_SPEC } from '../graphql/queries'
+import { ProductStatus } from '../graphql/enums'
 
 export default {
   components: {
@@ -20,9 +22,32 @@ export default {
     return {
       updateLoading: null,
       deleteLoading: false,
+      icons: {
+        mdiClose,
+        mdiChevronUp,
+        mdiChevronDown,
+      },
     }
   },
   computed: {
+    productStatus () {
+      return this.item.productStatus === ProductStatus.IN_STOCK
+        ? 'status-indicator__bordered--green' : this.item.productStatus === ProductStatus.IN_PRODUCTION
+          ? 'status-indicator__bordered--orange' : this.item.productStatus === ProductStatus.IN_PROCESSING
+            ? 'status-indicator__bordered--pink' : 'bg-transparent'
+    },
+    unitsItems () {
+      const units = ['pcs', 'roll', 'time', 'm', 'l', 'm3', 'set', 'm2', 'kg', 'pack']
+      return units.map(el => {
+        return {
+          value: el,
+          text: this.$t(`unit.${el}`),
+        }
+      })
+    },
+    specId () {
+      return this.$route.params.specId
+    },
     hasCustomPurchasePrice () {
       return !this.profitForAll && isNumber(this.cost.customPurchasePrice)
     },
@@ -92,7 +117,7 @@ export default {
         await this.$apollo.query({
           query: GET_SPEC,
           variables: {
-            id: this.$route.params.specId,
+            id: this.specId,
           },
           fetchPolicy: 'network-only',
         })

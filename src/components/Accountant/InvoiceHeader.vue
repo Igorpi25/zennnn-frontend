@@ -1,19 +1,21 @@
 <template>
-  <div class="invoice-header">
+  <div
+    class="invoice-header"
+    @click="onHeaderClick"
+  >
     <span
       :class="[
         'status-indicator mr-2 md:mr-6 flex-shrink-0',
-        item.invoiceStatus === InvoiceStatus.IN_PRODUCTION
-          ? 'status-indicator--orange' : item.invoiceStatus === InvoiceStatus.IN_STOCK
-            ? 'status-indicator--green' : 'status-indicator--pink'
+        invoiceStatus,
       ]"
     >
     </span>
     <slot />
+    <div class="flex-grow" />
     <div
       v-if="expanded"
       :class="[
-        'invoice-header__expand',
+        'invoice-header__expand hover:text-gray-darkest',
         {'text-primary': iconColorPrimary}
       ]"
       @click="$emit('click', item.id)"
@@ -46,7 +48,7 @@
 
 <script>
 import { mdiMinus, mdiPlus } from '@mdi/js'
-import { InvoiceStatus } from '@/graphql/enums'
+import { InvoiceStatus } from '../../graphql/enums'
 
 export default {
   name: 'AccountantInvoiceHeader',
@@ -74,8 +76,21 @@ export default {
         mdiMinus,
         mdiPlus,
       },
-      InvoiceStatus,
     }
+  },
+  computed: {
+    invoiceStatus () {
+      return this.item.invoiceStatus === InvoiceStatus.IN_STOCK
+        ? 'status-indicator--green' : this.item.invoiceStatus === InvoiceStatus.IN_PRODUCTION
+          ? 'status-indicator--orange' : this.item.invoiceStatus === InvoiceStatus.IN_PROCESSING
+            ? 'status-indicator--pink' : 'bg-transparent'
+    },
+  },
+  methods: {
+    onHeaderClick (e) {
+      if (e.target !== this.$el) return
+      this.$emit('click', this.item.id)
+    },
   },
 }
 </script>
@@ -83,18 +98,18 @@ export default {
 <style lang="postcss">
 .invoice-header {
   padding: 5px 10px;
-  @apply relative flex items-center mx-auto w-full;
+  @apply relative flex items-center mx-auto w-full select-none;
   @apply rounded-sm bg-accent1 text-right;
   color: #252525;
 }
-.light-theme .invoice-header {
+[data-theme="light"] .invoice-header {
   --base-accent1: #d6d6d6;
   color: #797979;
 }
 
 .invoice-header__expand {
-  @apply ml-auto flex justify-end flex-grow;
-  @apply text-sm cursor-pointer;
+  @apply ml-auto flex justify-end;
+  @apply text-sm cursor-pointer select-none;
 }
 .invoice-header__expand__icon {
   @apply w-5 h-5;

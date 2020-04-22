@@ -1,4 +1,4 @@
-import format from 'date-fns/format'
+// import throttle from 'lodash.throttle'
 
 import {
   mdiClose,
@@ -10,20 +10,49 @@ import {
 import { GET_SPEC } from '../graphql/queries'
 import { UPDATE_INVOICE, CREATE_PRODUCT } from '../graphql/mutations'
 import {
-  ProductStatus,
   InvoiceProfitType,
+  SpecCurrency,
 } from '../graphql/enums'
 
+import { DEFAULT_CURRENCY } from '../config/globals'
+
+import Scroll from '../directives/Scroll'
+
 export default {
+  directives: {
+    Scroll,
+  },
+  props: {
+    currency: {
+      type: String,
+      default: DEFAULT_CURRENCY,
+    },
+    activeTab: {
+      type: Number,
+      default: 1,
+    },
+    scrollInvoiceId: {
+      type: String,
+      default: '',
+    },
+    scrollLeft: {
+      type: Number,
+      default: 0,
+    },
+  },
   data () {
     return {
-      ProductStatus,
+      isScrollStart: false,
+      scrollEndTimer: null,
+      isMouseOver: false,
+      lazyScrollLeft: 0,
+      scrollLeftDelay: 75,
+      scrollAnimationDuration: 75,
       InvoiceProfitType,
       isBooted: false,
       createLoading: null,
       updateLoading: null,
       deleteLoading: null,
-      activeTab: 1,
       errors: [],
       icons: {
         mdiClose,
@@ -40,10 +69,21 @@ export default {
     }
   },
   computed: {
+    specId () {
+      return this.$route.params.specId
+    },
     fixedHeadersWidth () {
       return this.productHeaders.reduce((acc, curr) => {
         return acc + (curr.width || 0)
       }, 0)
+    },
+    currencies () {
+      return Object.values(SpecCurrency).map(el => {
+        return {
+          text: el,
+          value: el,
+        }
+      })
     },
     tabs () {
       return [
@@ -66,7 +106,75 @@ export default {
       return this.invoiceItem.profitType === InvoiceProfitType.COMMISSION
     },
   },
+  watch: {
+    scrollLeft () {
+      if (this.invoiceItem.id === this.scrollInvoiceId) return
+      if (this.isMouseOver || this.isScrollStart) return
+      this.setScrollLeft()
+    },
+  },
+  mounted () {
+    // this.debounceEmitScrollLeftChange = throttle(this.emitScrollLeftChange, this.scrollLeftDelay, { leading: true })
+    if (this.scrollLeft) {
+      this.setScrollLeft(false)
+    }
+  },
   methods: {
+    emitScrollLeftChange () {
+      this.$emit('change:scrollLeft', this.lazyScrollLeft, this.invoiceItem.id)
+    },
+    setScrollLeft (animate = true) {
+      const target = this.$refs.productsTable
+      if (target) {
+        const scrollLeft = this.scrollLeft || 0
+        if (animate) {
+          target.scrollLeft = scrollLeft
+          // this.scrollLeftWithAnimation(scrollLeft)
+        } else {
+          target.scrollLeft = scrollLeft
+        }
+      }
+    },
+    scrollLeftWithAnimation (scrollLeft) {
+      const container = this.$refs.productsTable
+      if (!container) return
+      const targetLocation = scrollLeft
+      const startLocation = container.scrollLeft
+      if (targetLocation === startLocation) return
+      const startTime = performance.now()
+      const duration = this.scrollAnimationDuration
+      const ease = (t) => t
+      return new Promise(resolve => requestAnimationFrame(function step (currentTime) {
+        const timeElapsed = currentTime - startTime
+        const progress = Math.abs(duration ? Math.min(timeElapsed / duration, 1) : 1)
+
+        container.scrollLeft = Math.floor(startLocation + (targetLocation - startLocation) * ease(progress))
+
+        const clientWidth = container.clientWidth
+        if (progress === 1 || clientWidth + container.scrollLeft === container.scrollWidth) {
+          return resolve(targetLocation)
+        }
+
+        requestAnimationFrame(step)
+      }))
+    },
+    onScroll (e) {
+      const target = e.target
+      const scrollLeft = target ? target.scrollLeft : 0
+      this.lazyScrollLeft = scrollLeft < 0 ? 0 : scrollLeft
+      if (!this.isMouseOver && !this.isScrollStart) return
+      if (this.isScrollStart) {
+        this.clearScrollEndTimer()
+      }
+      this.emitScrollLeftChange()
+      // this.debounceEmitScrollLeftChange()
+    },
+    clearScrollEndTimer () {
+      clearTimeout(this.scrollEndTimer)
+      this.scrollEndTimer = setTimeout(() => {
+        this.isScrollStart = false
+      }, 300)
+    },
     async createProduct () {
       try {
         this.createLoading = true
@@ -91,16 +199,8 @@ export default {
         this.createLoading = false
       }
     },
-    formatDate (date) {
-      if (!date) return null
-      const parsedDate = this.$parseDate(date)
-      return format(parsedDate, this.$i18n.locale === 'zh'
-        ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
-          ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
-      )
-    },
-    switchTab (event) {
-      this.activeTab = event.target.value
+    switchTab (value) {
+      this.$emit('change:tab', value)
     },
     async updateInvoice (input) {
       try {
@@ -121,6 +221,7 @@ export default {
           this.refetchSpec()
         }
         this.$logger.warn('Error: ', error)
+        throw new Error(error)
         // this.$Amplify.Analytics.record({
         //   name: 'UpdateInvoiceError',
         //   attributes: {
@@ -140,7 +241,7 @@ export default {
         await this.$apollo.query({
           query: GET_SPEC,
           variables: {
-            id: this.$route.params.specId,
+            id: this.specId,
           },
           fetchPolicy: 'network-only',
         })

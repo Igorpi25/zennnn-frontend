@@ -8,28 +8,29 @@
             <div class="w-full">
               <h1 class="text-center md:text-left mb-0 md:mb-8 pt-10 md:pt-12">
                 <span class="text-white md:text-gray-lightest">
-                  {{ $t('passwordRestore.changePasswordStart') }}
+                  {{ $t('passwordRestoreConfirm.changePasswordHead') }}
                 </span>
                 <br />
                 <span class="text-gray-lightest md:text-white">
-                  {{ $t('passwordRestore.changePasswordEnd') }}
+                  {{ $t('passwordRestoreConfirm.changePasswordSubhead') }}
                 </span>
               </h1>
               <Form
                 ref="form"
+                :error-message.sync="errorMessage"
+                lazy-validation
                 rounded
                 shadow
                 class="form--max-w-md"
                 body-class="px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8"
-                :error-message.sync="errorMessage"
               >
                 <div class="w-full sm:w-1/2 sm:pr-2">
                   <TextField
                     v-model="formModel.password"
-                    :label="$t('passwordRestore.newPassword')"
+                    :label="$t('passwordRestoreConfirm.newPassword')"
                     :type="showPassword ? 'text' : 'password'"
+                    :rules="[rules.required, rules.passwordMinLength]"
                     name="password"
-                    required
                     autofocus
                     minlength="8"
                   >
@@ -42,11 +43,11 @@
                         v-if="showPassword"
                         color="#9A9A9A"
                         style="transform:rotateY(-180deg)"
-                      >{{ icons.mdiEyeOffOutline }}</Icon>
+                      >{{ icons.mdiEyeOutline }}</Icon>
                       <Icon
                         v-else
                         color="#9A9A9A"
-                      >{{ icons.mdiEyeOutline }}</Icon>
+                      >{{ icons.mdiEyeOffOutline }}</Icon>
                       </div>
                     </template>
                   </TextField>
@@ -54,11 +55,10 @@
                 <div class="w-full sm:w-1/2 sm:pl-2">
                   <TextField
                     v-model="formModel.passwordConfirm"
-                    :label="$t('passwordRestore.newPasswordConfirm')"
+                    :label="$t('passwordRestoreConfirm.newPasswordConfirm')"
                     :type="showConfirmPassword ? 'text' : 'password'"
-                    :rules="confirmRules"
+                    :rules="[rules.required, rules.passwordMinLength, rules.passwordConfirmRules]"
                     name="password"
-                    required
                     minlength="8"
                   >
                     <template v-slot:append-outer>
@@ -67,14 +67,14 @@
                         @click="showConfirmPassword = !showConfirmPassword"
                       >
                         <Icon
-                          v-if="showPassword"
+                          v-if="showConfirmPassword"
                           color="#9A9A9A"
                           style="transform:rotateY(-180deg)"
-                        >{{ icons.mdiEyeOffOutline }}</Icon>
+                        >{{ icons.mdiEyeOutline }}</Icon>
                         <Icon
                           v-else
                           color="#9A9A9A"
-                        >{{ icons.mdiEyeOutline }}</Icon>
+                        >{{ icons.mdiEyeOffOutline }}</Icon>
                       </div>
                     </template>
                   </TextField>
@@ -90,7 +90,7 @@
                       {{ $t('action.loading') }}
                     </span>
                     <span v-else>
-                      {{ $t('action.change') }}
+                      {{ $t('passwordRestoreConfirm.submit') }}
                     </span>
                   </Button>
                 </template>
@@ -139,9 +139,11 @@ export default {
         mdiEyeOutline,
         mdiEyeOffOutline,
       },
-      confirmRules: [
-        v => (v && v === this.formModel.password) || this.$t('passwordRestore.passwordsDoNotMatch'),
-      ],
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
+        passwordConfirmRules: v => (v && v === this.formModel.password) || this.$t('rule.passwordsDoNotMatch'),
+      },
     }
   },
   mounted () {
@@ -162,7 +164,7 @@ export default {
             this.formModel.code,
             this.formModel.password,
           )
-          this.$notify({ color: 'primary', text: this.$t('message.passwordChanged'), timeout: 10000 })
+          this.$notify({ color: 'primary', text: this.$t('message.passwordChanged') })
           this.$router.push({ name: 'signin' })
         }
       } catch (error) {

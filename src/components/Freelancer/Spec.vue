@@ -22,9 +22,19 @@
           </span>
         </span>
         <span
-          class="text-gray text-sm cursor-pointer whitespace-no-wrap"
+          v-if="expanded.length === 0"
+          class="text-gray hover:text-gray-dark text-sm cursor-pointer whitespace-no-wrap select-none"
+          @click="expandAll"
+        >
+          {{ $t('action.expandAll') }}
+        </span>
+        <span
+          v-else
+          class="text-gray hover:text-gray-dark text-sm cursor-pointer whitespace-no-wrap select-none"
           @click="collapseAll"
-        >{{ $t('action.collapseAll') }}</span>
+        >
+          {{ $t('action.collapseAll') }}
+        </span>
       </div>
 
       <div v-for="(item) in items" :key="item.id" class="mb-6">
@@ -43,52 +53,41 @@
               outlined
               colored
               hide-details
-              class="text-sm w-40 mr-2 md:p-0 leading-normal"
+              class="text-sm w-48 mr-2 md:p-0 leading-normal"
               @input="updateInvoice({
                 invoiceNo: $event
               }, item.id)"
             />
-            <v-menu
-              ref="menu"
-              v-model="menuPurchaseDate[item.id]"
-              transition="scale-transition"
-              min-width="290px"
-              offset-y
+            <DatePicker
+              :value="item.purchaseDate"
+              @input="updateInvoice({ purchaseDate: $event }, item.id)"
             >
               <template v-slot:activator="{ on }">
-                <div v-on="on">
-                  <TextField
-                    :value="formatDate(item.purchaseDate)"
-                    :placeholder="$t('shipping.purchaseDate')"
-                    solo
-                    outlined
-                    colored
-                    readonly
-                    hide-details
-                    class="text-sm w-40 mr-2 md:p-0 leading-normal"
-                  />
+                <div class="text-left">
+                  <div v-on="on" class="inline-block">
+                    <TextField
+                      :value="item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : null"
+                      :placeholder="$t('shipping.purchaseDate')"
+                      solo
+                      outlined
+                      colored
+                      readonly
+                      hide-details
+                      class="text-sm w-32 mr-2 md:p-0 leading-normal"
+                    />
+                  </div>
                 </div>
               </template>
-              <v-date-picker
-                :value="$toISOString($parseDate(item.purchaseDate))"
-                :locale="$i18n.locale"
-                :next-icon="icons.mdiChevronRight"
-                :prev-icon="icons.mdiChevronLeft"
-                color="#5a8199"
-                no-title
-                dark
-                @change="updateInvoice({
-                  purchaseDate: $event || null
-                }, item.id)"
-              ></v-date-picker>
-            </v-menu>
+            </DatePicker>
             <!-- TODO on real api, need send id -->
             <Select
               :value="getInvoiceSupplier(item)"
               :placeholder="$t('shipping.supplierName')"
-              :nudge-bottom="23"
               :search.sync="supplierSearch"
               :items="suppliers"
+              flat
+              return-object
+              no-filter
               searchable
               item-value="id"
               item-text="name"
@@ -103,52 +102,42 @@
                   href="#"
                   @click.prevent.stop="openCreateSupplierDialog(item)"
                 >
-                  <Icon color="#5a8199">
-                    {{ icons.mdiPlusCircleOutline }}
-                  </Icon>
+                  <i class="icon-add text-lg text-primary block align-middle" />
                 </a>
               </template>
             </Select>
-            <v-menu
-              ref="menu"
-              v-model="menuShippingDate[item.id]"
-              transition="scale-transition"
-              min-width="290px"
-              offset-y
+            <DatePicker
+              :value="item.shippingDate"
+              @input="updateInvoice({ shippingDate: $event }, item.id)"
             >
               <template v-slot:activator="{ on }">
-                <div v-on="on">
-                  <TextField
-                    :value="formatDate(item.shippingDate)"
-                    :placeholder="$t('shipping.shippingDate')"
-                    solo
-                    outlined
-                    colored
-                    readonly
-                    hide-details
-                    class="text-sm w-40 mr-2 md:p-0 leading-normal"
-                  />
+                <div class="text-left">
+                  <div v-on="on" class="inline-block">
+                    <TextField
+                      :value="item.shippingDate ? $d($parseDate(item.shippingDate), 'short') : null"
+                      :placeholder="$t('shipping.shippingDate')"
+                      solo
+                      outlined
+                      colored
+                      readonly
+                      hide-details
+                      class="text-sm w-32 md:p-0 leading-normal"
+                    />
+                  </div>
                 </div>
               </template>
-              <v-date-picker
-                :value="$toISOString($parseDate(item.shippingDate))"
-                :locale="$i18n.locale"
-                :next-icon="icons.mdiChevronRight"
-                :prev-icon="icons.mdiChevronLeft"
-                color="#5a8199"
-                no-title
-                dark
-                @change="updateInvoice({
-                  shippingDate: $event || null
-                }, item.id)"
-              ></v-date-picker>
-            </v-menu>
+            </DatePicker>
           </div>
         </InvoiceHeader>
         <Invoice
           v-if="expanded.includes(item.id)"
-          style="margin-top: 1px"
           :invoice="item"
+          :active-tab="invoiceActiveTab"
+          :scroll-left="invoiceScrollLeft"
+          :scroll-invoice-id="invoiceScrollId"
+          style="margin-top: 1px"
+          @change:tab="setInvoiceActiveTab"
+          @change:scrollLeft="setScrollLeft"
         />
       </div>
     </div>
@@ -157,7 +146,7 @@
       class="mt-6"
     >
       <template v-slot:icon>
-        <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+        <i class="icon-add text-lg block align-middle" />
       </template>
       <span>{{ $t('shipping.addInvoice') }}</span>
     </Button>

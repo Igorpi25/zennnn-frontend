@@ -6,7 +6,7 @@
       :id="id"
       :placeholder="compPlaceholder"
       :class="[
-        'editable',
+        'editable placeholder-primary focus:placeholder-gray-lighter',
         {
           'editable--focused': isFocused,
           'editable--outlined': outlined,
@@ -31,7 +31,7 @@
       :id="id"
       :placeholder="compPlaceholder"
       :class="[
-        'editable',
+        'editable placeholder-primary focus:placeholder-gray-lighter',
         {
           'editable--focused': isFocused,
           'editable--outlined': outlined,
@@ -83,10 +83,12 @@ export default {
       type: String,
       default: 'text',
     },
+    // text, numeric, decimal
     inputmode: {
       type: String,
       default: 'text',
     },
+    // decimal, currency
     formatStyle: {
       type: String,
       default: 'decimal',
@@ -161,8 +163,12 @@ export default {
         : null
     },
     formatNumberOptions () {
+      // precision numbers digits must be between 0 and 20
+      const precision = this.inputmode === 'numeric'
+        ? 0 : this.formatStyle === 'currency'
+          ? 2 : 20
       return {
-        precision: this.inputmode === 'numeric' ? 0 : 2,
+        precision,
         thousand: this.editMode ? '' : ' ',
         decimal: ',',
         fixed: !this.editMode && this.formatStyle === 'currency',
@@ -276,8 +282,9 @@ export default {
       this.editMode = true
       this.isFocused = true
       if (this.type === 'number') {
+        const number = unformat(this.internalValue, this.formatNumberOptions.decimal)
         this.internalValue = this.value
-          ? formatNumber(this.internalValue, this.formatNumberOptions)
+          ? formatNumber(number, this.formatNumberOptions)
           : null
         setTimeout(() => {
           e.target.selectionStart = e.target.selectionEnd = e.target.value.length
@@ -494,29 +501,11 @@ div[contenteditable=true]:empty::before {
   background-color: #522b2d;
 }
 
- .editable::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  @apply text-primary;
-}
- .editable::-moz-placeholder { /* Firefox 19+ */
-  @apply text-primary;
-}
- .editable:-ms-input-placeholder { /* IE 10+ */
-  @apply text-primary;
-}
- .editable:-moz-placeholder { /* Firefox 18- */
+div.editable::placeholder {
   @apply text-primary;
 }
 
- .editable:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  @apply text-gray-lighter;
-}
- .editable:focus::-moz-placeholder { /* Firefox 19+ */
-  @apply text-gray-lighter;
-}
- .editable:focus:-ms-input-placeholder { /* IE 10+ */
-  @apply text-gray-lighter;
-}
- .editable:focus:-moz-placeholder { /* Firefox 18- */
+div.editable:focus::placeholder {
   @apply text-gray-lighter;
 }
 </style>

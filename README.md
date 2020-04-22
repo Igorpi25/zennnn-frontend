@@ -24,6 +24,18 @@ npm run test
 npm run lint
 ```
 
+### Compiles and hot-reloads Paper app for development
+```
+npm run serve:paper
+```
+Builds Paper app for development with `--mode paper.dev`, using `.env`, `.env.paper.dev` and `.env.paper.dev.local` if they are present.
+
+### Compiles and minifies Paper app for production
+```
+npm run build:paper
+```
+Builds Paper app for production with `--mode paper`, using `.env`, `.env.paper` and `.env.paper.local` if they are present.
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
@@ -41,3 +53,17 @@ See [Docs](https://cli.vuejs.org/guide/mode-and-env.html).
 
 ### Date parse on safari
 Parsing ISO 8601 or format like YYYY-MM-DD return Invalid Date on safari. Solved by using `date-fns/parseISO` for safely parse ISO 8601.
+
+### pdfMake plugin custom fonts
+Used [v0.1](https://github.com/bpampuch/pdfmake/tree/0.1).
+```
+git clone --branch 0.1 https://github.com/bpampuch/pdfmake.git
+cd pdfmake
+npm install
+```
+For build `vfs_fonts.js` with custom fonts, see [docs](https://pdfmake.github.io/docs/fonts/custom-fonts-client-side/).
+`vfs_fonts.js` copied to `src/plugins/pdfmake/vfs_fonts.js`
+
+For print in `zh-Hans` used custom font `NotoSansCJKsc`, for `zh-Hant` used `NotoSansCJKtc`, others used `MyriadPro`.
+Builded by `gulp buildFonts` custom fonts files for Noto can't import from `.js` files (perhaps due to file size ~44MB). Custom fonts for Noto generated with custom script, to `.json` file and loaded from s3, path to files `<process.env.VUE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME>/pdf/vfs/vfs_fonts_<FONT NAME>.json`.
+TODO: not work `.open()` method with Noto font, blocked by browser.

@@ -26,7 +26,7 @@
       <template>
         <Icon class="-ml-4 mr-2">{{ icons.mdiPlusCircleOutline }}</Icon>
       </template>
-      <span>{{ $t('requisites.addRequisites') }}</span>
+      <span>{{ $t('paper.addRequisites') }}</span>
     </Button>
   </div>
 </template>

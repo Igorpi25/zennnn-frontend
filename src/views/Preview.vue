@@ -1,380 +1,512 @@
 <template>
-  <div>
-
-    <v-dialog
-      v-model="leaveNote"
-      max-width="443"
-    >
-      <PreviewMessageModal
-        :heading="$t('preview.leaveNote')"
-        :client="client"
-        is-note
-        @save="saveMessage"
-        @close="leaveNote = false"
-      />
-    </v-dialog>
-
-    <v-dialog
-      v-model="leaveComment"
-      max-width="443"
-    >
-      <PreviewMessageModal
-        :heading="$t('preview.leaveComment')"
-        :client="client"
-        @save="saveMessage"
-        @close="leaveComment= false"
-      />
-    </v-dialog>
-
+  <div class="h-full">
     <div class="content view">
-      <StatusBar />
-      <div class="container container--sm">
-        <div class="pt-10 md:pb-32">
-          <div class="flex flex-col sm:flex-row justify-between">
-            <span class="mb-3">
-              <span>{{ $t('preview.shippingTitle') }}</span>&nbsp;
-              <span>{{ spec.specNo }}</span>&nbsp;
-              <span>{{ $t('preposition.from') }}:</span>&nbsp;
-              <span>{{ $d($parseDate(spec.createdAt), 'short') }}</span>
-            </span>
-            <span
-              class="mb-2 md:m-0 text-right text-primary text-sm cursor-pointer whitespace-no-wrap"
-              @click="collapseAll"
-            >{{ $t('action.collapseAll') }}</span>
-          </div>
-
-          <div v-for="(item) in items" :key="item.id" class="preview-invoice-wrapper">
-            <InvoiceHeader
-              :item="item"
-              :expanded="expanded"
-              icon-color-primary
-              @click="expand"
-            >
-              <div class="flex flex-col md:flex-row pr-2 w-full md:w-auto text-left">
-                <div>
-                  <span>{{ item.invoiceNo }}</span>&nbsp;
-                  <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
-                  <span>{{ formatDate(item.purchaseDate) }}</span>&nbsp;
-                </div>
-                <span class="hidden md:block mx-1">//</span>&nbsp;
-                <div>
-                  <span class="text-sm">{{ $t('preview.expectedShipment').toLowerCase() }}</span>&nbsp;
-                  <span>{{ formatDate(item.shippingDate) }}</span>
-                </div>
+      <StatusBar :paper-org-name="spec.orgName" />
+      <div class="container container--sm mb-12">
+        <div class="pt-8 pb-16">
+          <div class="flex flex-col sm:flex-row items-center justify-between pb-6">
+            <!-- TODO: change tag to h1, need refactor base h1 style -->
+            <div class="font-semibold leading-6 pr-sm py-2">
+              <h2 class="text-2xl inline-block align-middle mr-sm">
+                <span>{{ $t('preview.shippingTitle') }}</span>&nbsp;
+                <span>{{ spec.specNo }}</span>&nbsp;
+                <span>{{ $t('preposition.from') }}</span>&nbsp;
+                <span>{{ $d($parseDate(spec.createdAt), 'short') }}</span>
+              </h2>
+              <div
+                v-if="spec.shipped"
+                class="inline-block text-xs align-middle mr-sm px-sm bg-blue-400 text-white"
+                style="border-radius: 50px"
+              >
+                {{ $t('preview.shipped') }}
               </div>
-            </InvoiceHeader>
-            <div v-if="expanded.includes(item.id)">
-              <div class="data-table-wrapper">
-                <DataTable
-                  :headers="headers"
-                  :items="item.products"
-                  table-width="100%"
-                  table-class="table-fixed"
-                  thead-class="text-accent2"
-                  headers-whitespace-normal
+            </div>
+            <div class="ml-auto flex">
+              <div class="pr-2">
+                <button
+                  disabled
+                  class="w-full inline-block rounded-md border border-transparent pointer-events-none"
                 >
-                  <template v-slot:items="{ items }">
-                    <tr
-                      v-for="(item, index) in items"
-                      :key="item.id"
-                      class="items base-accent3 border-none"
-                    >
-                      <td class="text-gray-lighter text-right leading-none py-2 align-top">
-                        {{ index + 1 }}
-                      </td>
-                      <td>
-                        <ProductImage
-                          :product-id="item.id"
-                          :images="item.info.images"
-                        />
-                      </td>
-                      <td>
-                        <span>{{ item.name }}</span>
-                        <p class="text-gray-light leading-none">{{ item.article }}</p>
-                        <span class="flex items-center mt-2">
-                          <img
-                            v-if="item.productStatus === ProductStatus.IN_PRODUCTION"
-                            src="../assets/icons/factory-yellow.png"
-                            class="mb-2"
-                          >
-                          <img
-                            v-else-if="item.productStatus === ProductStatus.IN_STOCK"
-                            src="../assets/icons/in-stock.png"
-                          >
-                          <img
-                            v-else
-                            src="../assets/icons/in-processing.png"
-                          >
-                          <span class="ml-2 text-orange text-xs">
-                            <span>
-                              {{ item.productStatus ? $t(`status.${item.productStatus}`) : '' }}
-                            </span>
-                          </span>
-                        </span>
-                      </td>
-                      <td class="text-center">
-                        <div
-                          v-if="item.info.images.length > 1"
-                          class="flex justify-center items-center"
-                        >
-                          <span class="mr-1 text-sm text-gray-lightest">
-                           + {{ item.info.images.length - 1 }}
-                          </span>
-                          <img src="@/assets/icons/pre-image.png">
-                        </div>
-                      </td>
-                      <td class="text-right">{{ $n(item.cost.clientPrice) }}</td>
-                      <td class="text-center">{{ item.qty }}</td>
-                      <td class="text-right font-bold">{{ $n(item.cost.clientAmount) }}</td>
-                      <td class="text-right">{{ item.store.pkgQty }}</td>
-                      <td class="text-right">{{ item.store.pkgNo }}</td>
-                      <td @click="leaveNote = true">
-                        <div class="notes-count-wrapper">
-                          <span v-if="notes.length > 0" class="notes-count-bubble">{{ notes.length }}</span>
-                          <img src="@/assets/icons/message.png" class="mx-auto">
-                        </div>
-                      </td>
-                    </tr>
-                  </template>
-                </DataTable>
+                  <div class="h-10 w-10 flex items-center justify-center text-gray-75">
+                    <i class="icon-add-user text-2xl" />
+                  </div>
+                </button>
               </div>
-              <!-- / INVOICE FOOTER -->
-              <div class="p-2 md:p-6 w-full flex justify-end bg-white">
-                <div class="preview-footer md:mr-12 w-full md:w-1/2 flex">
-                  <ul class="leaders w-2/3">
-                    <li>
-                      <span class="bg-white font-black text-right">{{ $t('preview.total') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ $n(item.totalClientAmount) }}</span>
-                    </li>
-                    <li class="text-gray-lightest">
-                      <span class="bg-white font-semibold">{{ $t('preview.discount') }} {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ $n(item.discount) }}</span>
-                    </li>
-                    <li>
-                      <span class="bg-white font-semibold">{{ $t('preview.prepay') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold">{{ $n(item.prepayment) }}</span>
-                    </li>
-                    <li>
-                      <span class="bg-white font-semibold">{{ $t('preview.residue') }}: {{ $t('currency.CNY.symbol') }}</span>
-                      <span class="bg-white font-bold" style="color:#ff0000">{{ $n(item.obtainCost) }}</span>
-                    </li>
-                  </ul>
-                  <ul class="ml-5 text-sm text-gray-light">
-                    <li v-if="!item.discount" class="mt-1">({{ $t('preview.noDiscount') }})</li>
-                    <br v-else>
-                    <br>
-                    <li class="mt-1">{{ formatDate(item.prepaymentDate )|| '--.--.--' }}</li>
-                    <li class="mt-1">{{ formatDate(item.obtainCostDate) || '--.--.--' }}</li>
-                  </ul>
-                </div>
+              <div class="pr-2">
+                <button
+                  :disabled="printLoading"
+                  :class="{ 'hover:border-blue-500': !printLoading }"
+                  class="relative w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                  @click="printPdf"
+                >
+                  <div
+                    v-if="printLoading"
+                    class="absolute inset-0 flex items-center justify-center text-blue-500"
+                  >
+                    <v-progress-circular
+                      indeterminate
+                      size="20"
+                      width="2"
+                    />
+                  </div>
+                  <div :class="['h-10 w-10 flex items-center justify-center', { 'opacity-0': printLoading }]">
+                    <i class="icon-printer text-blue-500 text-2xl" />
+                  </div>
+                </button>
               </div>
-              <!-- INVOICE FOOTER / -->
+              <div class="pr-2">
+                <button
+                  :disabled="downloadLoading"
+                  :class="{ 'hover:border-blue-500': !downloadLoading }"
+                  class="relative w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                  @click="downloadPdf"
+                >
+                  <div
+                    v-if="downloadLoading"
+                    class="absolute inset-0 flex items-center justify-center text-blue-500"
+                  >
+                    <v-progress-circular
+                      indeterminate
+                      size="20"
+                      width="2"
+                    />
+                  </div>
+                  <div :class="['h-10 w-10 flex items-center justify-center', { 'opacity-0': downloadLoading }]">
+                    <i class="text-blue-500 text-2xl">
+                      <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M3.1665 3.29161C3.1665 1.82275 4.37687 0.618042 5.84452 0.618042H12.95C13.1533 0.618042 13.3405 0.707819 13.473 0.847343L17.9666 5.56129C18.0758 5.68341 18.1665 5.85823 18.1665 6.05898V16.7281C18.1665 18.1971 16.9561 19.4018 15.4885 19.4018H5.84452C4.37686 19.4018 3.1665 18.1971 3.1665 16.7281V3.29161ZM5.84452 2.06718C5.17403 2.06718 4.61564 2.62666 4.61564 3.29161V16.7281C4.61564 17.3966 5.17741 17.9527 5.84452 17.9527H15.4885C16.1595 17.9527 16.7174 17.3971 16.7174 16.7281V6.7748H14.4458C13.2204 6.7748 12.2297 5.79025 12.2297 4.56315V2.06718H5.84452ZM13.1097 2.06718L16.7174 5.89486H14.4458C13.7095 5.89486 13.1097 5.30264 13.1097 4.56315V2.06718ZM9.94184 6.49025C9.94184 6.09093 10.2673 5.76568 10.6664 5.76568C11.0655 5.76568 11.391 6.09093 11.391 6.49025V10.572L12.7145 9.15242C12.9823 8.86313 13.4449 8.83872 13.7384 9.11593C14.0266 9.38382 14.0505 9.84554 13.7733 10.1388L13.7722 10.1399L11.194 12.9073C11.0603 13.048 10.8728 13.1367 10.6664 13.1367C10.46 13.1367 10.2727 13.048 10.139 12.9075L10.1368 12.9052L7.56515 10.14L7.56399 10.1388C7.28478 9.8436 7.31324 9.38731 7.59738 9.11732C7.89252 8.83686 8.34971 8.86501 8.62008 9.14954L8.62218 9.15175L9.94184 10.5707V6.49025ZM6.32103 14.7308C6.32103 14.3315 6.64653 14.0062 7.0456 14.0062H14.2874C14.6891 14.0062 15.0164 14.3296 15.0164 14.7308C15.0164 15.1299 14.691 15.4554 14.2919 15.4554H7.0456C6.64648 15.4554 6.32103 15.1299 6.32103 14.7308Z" fill="currentColor"/>
+                      </svg>
+                    </i>
+                  </div>
+                </button>
+              </div>
+              <div class="pr-2">
+                <button
+                  ref="topSpecCommentsActivator"
+                  class="w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
+                  @click="$refs.topSpecComments.toggleMenu()"
+                >
+                  <div class="h-10 w-10 flex items-center justify-center">
+                    <Comments
+                      ref="topSpecComments"
+                      :activator="$refs.topSpecCommentsActivator"
+                      :items="spec.comments"
+                      :spec-id="specId"
+                      :right="$vuetify.breakpoint.mdAndDown"
+                      :left="$vuetify.breakpoint.lgAndUp"
+                      :offset-x="$vuetify.breakpoint.lgAndUp"
+                      class="text-blue-500 pointer-events-none"
+                      is-paper
+                    />
+                  </div>
+                </button>
+              </div>
+              <div class="pr-2">
+                <button
+                  class="w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
+                  @click="toggleExpandAll"
+                >
+                  <div class="h-10 w-10 flex items-center justify-center">
+                    <i v-if="expanded.length === 0" class="icon-arroe-bottom text-blue-500 text-2xl" />
+                    <i v-else class="icon-arroe-top text-blue-500 text-2xl" />
+                  </div>
+                </button>
+              </div>
             </div>
           </div>
 
-          <div class="preview-summary">
-            <h4 class="text-lg mb-4">
-              {{ $t('preview.summaryTitle') }}
-            </h4>
-            <div class="preview-summary__wrapper flex-col lg:flex-row">
-              <div class="preview-summary__info">
-                <div v-if="spec.containers" class="relative">
-                  <div
-                    v-if="spec.shipped"
-                    class="spec-summary__container__image spec-summary__container__image--shipped w-full"
-                    style="left: -20px; width: 350px; background-size: auto; z-index: 1;"
-                  />
-                    <div
-                      v-if="spec.containers.length === 1"
-                      class="spec-summary__container"
-                    >
-                      <div
-                        class="spec-summary__container__image spec-summary__container__image--full"
-                        :style="{
-                          width: (spec.containers[0].loaded || 0) + '%',
-                          height: '85px'
-                        }"
-                      />
-                      <img width="210" height="85" src="/img/container-empty.svg" alt="">
-                    </div>
-                    <div v-else>
-                      <div
-                        v-for="(c, i) in loadedContainers"
-                        :key="`loaded-${i}`"
-                        class="spec-summary__container"
-                      >
-                        <div
-                          class="spec-summary__container__image spec-summary__container__image--full-sm"
-                          :style="{
-                            width: '100%',
-                            height: '48px'
-                          }"
-                        />
-                        <div class="spec-summary__container__label">
-                          {{ loadedContainers.length }} x {{ c.type }}′
-                        </div>
-                        <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
+          <div class="pb-12 mb-1">
+            <div
+              v-for="(item) in items"
+              :key="item.id"
+              class="pb-1"
+            >
+              <div
+                :class="{ 'rounded-b-md': !expanded.includes(item.id) }"
+                style="background: #F0F0F0;"
+                class="h-12 flex items-center px-3 sm:px-5 rounded-t-md select-none cursor-pointer"
+                @click="expand(item.id)"
+              >
+                <div
+                  class="flex-shrink-0 w-3 h-3 mr-3 sm:mr-5 rounded-full"
+                  :class="[
+                    item.invoiceStatus === InvoiceStatus.IN_STOCK
+                      ? 'bg-green-500' : item.invoiceStatus === InvoiceStatus.IN_PRODUCTION
+                        ? 'bg-yellow-500' : item.invoiceStatus === InvoiceStatus.IN_PROCESSING
+                          ? 'bg-pink-500' : 'bg-gray-100'
+                  ]"
+                />
+                <div class="select-text">
+                  <div class="text-gray-400 font-semibold">
+                    <span>{{ item.invoiceNo || '-' }}</span>&nbsp;
+                    <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
+                    <span>{{ item.createdAt ? $d($parseDate(item.createdAt), 'short') : '-' }}</span>&nbsp;
+                    <span>/</span>&nbsp;
+                    <span class="text-sm">{{ $t('preview.expectedShipment').toLowerCase() }}</span>&nbsp;
+                    <span>{{ item.shippingDate ? $d($parseDate(item.shippingDate), 'short') : '-' }}</span>
+                  </div>
+                </div>
+                <div class="ml-auto">
+                  <button class="select-none focus:outline-none text-blue-500 focus:text-blue-600 hover:text-blue-600 transition-colors duration-100 ease-out">
+                    <i v-if="expanded.includes(item.id)" class="icon-arroe-top-1 text-sm" />
+                    <i v-else class="icon-arroe-bottom-1 text-sm" />
+                  </button>
+                </div>
+              </div>
+
+              <PaperInvoice
+                v-if="expanded.includes(item.id)"
+                :spec-id="specId"
+                :invoice="item"
+                :currency="currency"
+                :scroll-left="invoiceScrollLeft"
+                :scroll-invoice-id="invoiceScrollId"
+                @change:scrollLeft="setScrollLeft"
+              />
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div>
+            <div class="flex flex-wrap lg:flex-no-wrap pb-10">
+
+              <!-- Cargo Info -->
+              <div class="w-full flex-grow lg:w-auto pb-10 lg:pb-0 lg:pr-3">
+                <h4 class="text-xl font-semibold leading-6 mb-4">
+                  {{ $t('preview.cargoInfo') }}
+                </h4>
+
+                <!-- Summary -->
+                <div class="flex flex-wrap sm:flex-no-wrap -mx-2 pb-4">
+                  <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
+                    <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
+                      <div class="flex text-gray-100 pb-2">
+                        <i class="icon-calendar text-2xl mr-2" />
+                        <span>
+                          {{ $t('preview.estimateDate') }}
+                        </span>
                       </div>
-                      <div
-                        v-for="(c, i) in unloadedContainers"
-                        :key="`unloaded-${i}`"
-                        class="spec-summary__container"
-                      >
-                        <div
-                          class="spec-summary__container__image spec-summary__container__image--full-sm"
-                          :style="{
-                            width: (c.loaded || 0) + '%',
-                            height: '48px'
-                          }"
-                        />
-                        <img width="210" height="48" src="/img/container-empty-sm.svg" alt="">
+                      <div class="text-lg text-center font-semibold">
+                        {{ spec.estimateShippingDate ? $d($parseDate(spec.estimateShippingDate), 'short') : this.$t('placeholder.emptyDate') }}
                       </div>
                     </div>
                   </div>
-                  <div>
-                  <ul class="leaders">
-                    <li
-                      v-for="(c, i) in unloadedContainers"
-                      :key="i"
-                    >
-                      <span>
-                        <span class="leaders__num">
-                          {{ c.type || '20' }}{{ $t('preview.containerMeasure') }}
+                  <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
+                    <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
+                      <div class="flex text-gray-100 pb-2">
+                        <i class="icon-cap text-2xl mr-2" />
+                        <span>
+                          {{ $t('preview.totalVolume') }}
                         </span>
-                        {{ ` ${$t('preview.container')} ${$t('preview.containerLoaded')}` }}
-                      </span>
-                      <span class="leaders__num">
-                        {{ c.loaded }}%
-                      </span>
-                    </li>
-                    <li>
-                      <span>{{ $t('preview.estimateDate') }}</span>
-                      <span class="leaders__num">
-                        {{ $d($parseDate(spec.estimateShippingDate), 'short') }}
-                      </span>
-                    </li>
-                    <li>
-                      <span>{{ $t('preview.totalVolume') }}</span>
-                      <span class="leaders__num">
-                        {{ $n(spec.totalVolume, 'formatted') }} {{ $t('measure.m') }}<sup>3</sup>
-                      </span>
-                    </li>
-                    <li>
-                      <span>{{ $t('preview.totalWeight') }}</span>
-                      <span class="leaders__num">
-                        {{ $n(spec.totalWeight, 'formatted') }} {{ $t('measure.kg') }}
-                      </span>
-                    </li>
-                    <li>
-                      <span>{{ $t('preview.qtyOfPackages') }}</span>
-                      <span class="leaders__num">
-                        {{ $n(spec.qtyOfPackages, 'formatted') }}
-                      </span>
-                    </li>
-                  </ul>
+                      </div>
+                      <div class="text-lg text-center font-semibold">
+                        {{ $n(spec.totalVolume || 0) }} {{ $t('measure.m3') }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-1/2 sm:w-1/4 px-2">
+                    <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
+                      <div class="flex text-gray-100 pb-2">
+                        <i class="icon-boxes text-2xl mr-2" />
+                        <span>
+                          {{ $t('preview.totalPackages') }}
+                        </span>
+                      </div>
+                      <div class="text-lg text-center font-semibold">
+                        {{ $n(spec.qtyOfPackages || 0) }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-1/2 sm:w-1/4 px-2">
+                    <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
+                      <div class="flex text-gray-100 pb-2">
+                        <i class="icon-kg text-2xl mr-2" />
+                        <span>
+                          {{ $t('preview.totalWeight') }}
+                        </span>
+                      </div>
+                      <div class="text-lg text-center font-semibold">
+                        {{ $n(spec.totalWeight || 0) }} {{ $t('measure.kg') }}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="preview-summary__cost">
-                <div class="preview-summary__cost__card">
-                  <ul class="leaders">
-                    <li class="pb-2">
-                      <span class="font-bold">
-                        {{ $t('preview.costOfGood') }} {{ $t('currency.CNY.symbol') }}
-                      </span>
-                      <!-- TODO to custom component or Intl polyfill -->
-                      <!-- i18n-n has Error formatter.formatToParts is not a function. -->
-                      <span class="flex font-bold">
-                        <div class="text-accent1">{{ $n(spec.finalCost, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
-                      </span>
-                    </li>
-                    <li class="pb-2">
-                      <span>
-                        {{ $t('preview.totalPrepay') }} {{ $t('currency.CNY.symbol') }}
-                      </span>
-                      <span class="flex ">
-                        <div class="text-accent1">{{ $n(spec.totalPrepay, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
-                      </span>
-                    </li>
-                    <li class="pb-2">
-                      <span>
-                        {{ $t('preview.finalToPay') }}  {{ $t('currency.CNY.symbol') }}
-                      </span>
-                      <span class="flex font-bold" style="color: #ff0000;">
-                        <div>{{ $n(spec.totalClientDebt, 'integer') }}</div>
-                        <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
-                        <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
-                      </span>
-                    </li>
-                  </ul>
-                  <div class="mt-8 text-sm text-right">
-                    <v-menu
-                      v-model="menuCurrency"
-                      max-width="175"
-                      nudge-right="195"
-                      offset-y
+
+                <!-- Containers -->
+                <div class="relative sm:flex bg-gray-50 rounded-md overflow-hidden">
+                  <div class="flex-grow py-lg leading-4">
+                    <div
+                      v-for="(container, i) of containers"
+                      :key="i"
+                      class="flex flex-col xl:flex-row items-center justify-center"
                     >
-                      <template v-slot:activator="{ on }">
-                        <div class="w-full flex justify-end items-center" v-on="on">
-                          <span style="padding-top:2px; padding-right:3px; font-style:italic">Валюта:</span>
-                          <span class="flex items-center font-bold cursor-pointer">
-                            Китайский Юань CNY ({{ $t('currency.CNY.symbol') }})
-                            <Icon v-if="!menuCurrency">{{ icons.mdiChevronDown }}</Icon>
-                            <Icon v-else>{{ icons.mdiChevronUp }}</Icon>
+                      <div
+                        v-if="container.full"
+                        class="text-sm text-gray-200"
+                      >
+                        <div>
+                          {{ `${$tc('preview.container', container.full, { n: container.full })} ${container.size.replace('_', '')}'${container.mode.replace('_', '')}` }}
+                        </div>
+                        <div :class="['spec-container relative my-2', { 'spec-container--lg': container.size === '_40' || container.size === '_45' }]">
+                          <div class="spec-container__progress w-full h-full">
+                            <div
+                              style="width: 100%"
+                              class="relative w-0 h-full"
+                            >
+                              <div class="absolute top-0 left-0 bg-blue-500 w-full h-full" />
+                            </div>
+                          </div>
+                          <div class="absolute inset-0">
+                            <img v-if="container.size === '_20'" src="../assets/icons/c20_2x.png" alt="40'">
+                            <img v-else src="../assets/icons/c40_2x.png" alt="20'">
+                          </div>
+                        </div>
+                        <div>
+                          <span>{{ $t('preview.containerLoaded') }}</span>&nbsp;
+                          <span class="inline-block w-10 font-bold">
+                            100%
                           </span>
                         </div>
-                      </template>
-                      <template>
-                        <ul role="menu" class="bg-white">
-                          <li class="currency-picker__item">
-                            <span>Dollar</span>
-                          </li>
-                          <li class="currency-picker__item">
-                            <span>Bitcoin</span>
-                          </li>
-                          <li class="currency-picker__item">
-                            <span>Rubl</span>
-                          </li>
-                        </ul>
-                      </template>
-                    </v-menu>
+                      </div>
+                      <div
+                        v-if="container.full"
+                        class="flex items-center px-5 py-3"
+                      >
+                        <i class="icon-add-2 text-xl text-gray-100" />
+                      </div>
+                      <div class="text-sm text-gray-200">
+                        <div>
+                          {{ `${container.size.replace('_', '')}'${container.mode.replace('_', '')}` }}
+                        </div>
+                        <div :class="['spec-container relative my-2', { 'spec-container--lg': container.size === '_40' || container.size === '_45' }]">
+                          <div class="spec-container__progress h-full">
+                            <div
+                              :style="{ width: (container.loaded || 0) + '%' }"
+                              class="relative w-0 h-full"
+                            >
+                              <div class="absolute top-0 left-0 bg-blue-500 w-full h-full" />
+                            </div>
+                          </div>
+                          <div class="absolute inset-0">
+                            <img v-if="container.size === '_20'" src="../assets/icons/c20_2x.png" alt="40'">
+                            <img v-else src="../assets/icons/c40_2x.png" alt="20'">
+                          </div>
+                        </div>
+                        <div>
+                          <span>{{ $t('preview.containerLoaded') }}</span>&nbsp;
+                          <span class="inline-block w-10 font-bold">
+                            {{ container.loaded || 0 }}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-if="spec.shipped" class="spec-shipped flex-shrink-0 relative bg-gray-75">
+                    <div class="absolute inset-0 flex h-full items-center border-gray-50 pointer-events-none">
+                      <div class="spec-shipped__arrow"></div>
+                    </div>
+                    <div class="h-full flex items-center justify-center">
+                      <div class="text-center py-2 sm:px-0">
+                        <svg class="mx-auto mt-5 mb-4 text-blue-400" width="57" height="57" viewBox="0 0 57 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 28.397C0.5 12.9331 13.036 0.397034 28.5 0.397034C43.964 0.397034 56.5 12.9331 56.5 28.397C56.5 43.861 43.964 56.397 28.5 56.397C13.036 56.397 0.5 43.861 0.5 28.397ZM28.5 4.54518C15.327 4.54518 4.64815 15.224 4.64815 28.397C4.64815 41.57 15.327 52.2489 28.5 52.2489C41.673 52.2489 52.3518 41.57 52.3518 28.397C52.3518 15.224 41.673 4.54518 28.5 4.54518Z" fill="#2F80ED"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M44.2118 19.9962L26.0712 37.6498L15.8184 27.5301L19.5063 23.7936L26.0972 30.2989L40.5504 16.2338L44.2118 19.9962Z" fill="#2F80ED"/>
+                        </svg>
+                        <div class="text-sm">
+                          {{ $t('preview.shipped') }}
+                        </div>
+                        <div class="text-sm text-gray-100">
+                          <!-- TODO: add shippingDate -->
+                          {{ spec.shippingDate ? $d($parseDate(spec.shippingDate), 'short') : '' }}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="preview-summary__actions">
-                <div @click.prevent>
-                  <img src="@/assets/icons/printer.png" class="mr-3">
-                  <span class="text-left">{{ $t('preview.printThis') }}</span>
+
+              <!-- Financial Info -->
+              <div class="w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3">
+                <h4 class="text-xl font-semibold leading-6 mb-4">
+                  {{ $t('preview.financialInfo') }}
+                </h4>
+                <div class="bg-gray-50 rounded-md leading-5 p-5">
+                  <div class="flex rounded-md bg-white pl-4 pr-3 py-3 mb-1">
+                    <div class="flex-grow text-gray-100">
+                      {{ $t('preview.costOfGood') }}
+                    </div>
+                    <div class="text-right">
+                      {{ $n(spec.finalCost || 0, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
+                    </div>
+                  </div>
+                  <div class="flex rounded-md bg-white pl-4 pr-3 py-3 mb-1">
+                    <div class="flex-grow text-gray-100">
+                      {{ $t('preview.totalPrepay') }}
+                    </div>
+                    <div class="text-right">
+                      {{ $n(spec.totalPrepay || 0, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
+                    </div>
+                  </div>
+                  <div class="rounded-md bg-white pl-4 pr-3 py-3 mb-1">
+                    <div class="flex pb-2">
+                      <div class="flex-grow text-gray-100">
+                        {{ $t('preview.finalToPay') }}
+                      </div>
+                      <div :class="['text-right', { 'text-red-500' : spec.totalClientDebt > 0 }]">
+                        {{ $n(spec.totalClientDebt || 0, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
+                      </div>
+                    </div>
+                    <div class="flex">
+                      <div class="flex-grow text-gray-100">
+                        {{ $t('preview.exchangeRate', { currency: $t(`currency.${currency}.iso-4217`), exchange: $t(`currency.USD.iso-4217`) }) }}
+                      </div>
+                      <div class="text-right">
+                        {{ $n(spec.currencyRate || 0) }} {{ $t(`currency.USD.symbol`) }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex rounded-md bg-white pl-4 pr-3 py-3">
+                    <div class="flex-grow text-gray-100">
+                      {{ $t('preview.totalToPay', { currency: $t('currency.USD.iso-4217') }) }}
+                    </div>
+                    <div class="text-right">
+                      {{ $n(spec.total || 0, 'decimal') }} {{ $t(`currency.USD.symbol`) }}
+                    </div>
+                  </div>
                 </div>
-                <div @click.prevent>
-                  <img src="@/assets/icons/pdf.png" class="mr-3">
-                  <span class="text-left">{{ $t('preview.downloadPDF') }}</span>
+                <div
+                  v-if="spec.terms || spec.sentFrom"
+                  class="bg-gray-50 rounded-md text-center px-5 mt-4 py-6"
+                >
+                  <span v-if="spec.terms">
+                    {{ spec.terms }}&nbsp;
+                  </span>
+                  <span>
+                    {{ spec.sentFrom || '' }}
+                  </span>
                 </div>
-                <div @click="leaveComment = true">
-                  <img src="@/assets/icons/message.png" class="mr-3">
-                  <span class="text-left">{{ $t('preview.comment') }}</span>
-               </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="bg-gray-50 rounded-md p-3 select-none">
+              <div class="flex flex-wrap md:flex-no-wrap">
+                <div class="w-full md:w-auto p-2">
+                  <button
+                    style="min-width: 85px"
+                    disabled
+                    class="w-full inline-block rounded-md border border-gray-75 pointer-events-none"
+                  >
+                    <div class="h-12 flex items-center px-3 text-gray-75">
+                      <i class="icon-add-user text-xl mr-2" />
+                      <span class="whitespace-nowrap leading-tight">
+                        {{ $t('preview.share') }}
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div class="w-full md:w-auto p-2">
+                  <button
+                    :disabled="printLoading"
+                    :class="{ 'hover:border-blue-500': !printLoading }"
+                    style="min-width: 85px"
+                    class="relative w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                    @click="printPdf"
+                  >
+                    <div
+                      v-if="printLoading"
+                      class="absolute inset-0 flex items-center justify-center text-blue-500"
+                    >
+                      <v-progress-circular
+                        indeterminate
+                        size="24"
+                        width="2"
+                      />
+                    </div>
+                    <div :class="['h-12 flex items-center px-3', { 'opacity-0': printLoading }]">
+                      <i class="icon-printer text-gray-100 text-xl mr-2" />
+                      <span class="text-blue-500 whitespace-nowrap leading-tight">
+                        {{ $t('preview.print') }}
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div class="w-full md:w-auto p-2">
+                  <button
+                    :disabled="downloadLoading"
+                    :class="{ 'hover:border-blue-500': !downloadLoading }"
+                    style="min-width: 85px"
+                    class="relative w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                    @click="downloadPdf"
+                  >
+                    <div
+                      v-if="downloadLoading"
+                      class="absolute inset-0 flex items-center justify-center text-blue-500"
+                    >
+                      <v-progress-circular
+                        indeterminate
+                        size="24"
+                        width="2"
+                      />
+                    </div>
+                    <div :class="['h-12 flex items-center px-3', { 'opacity-0': downloadLoading }]">
+                      <i class="text-gray-100 text-xl mr-2">
+                        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M3.1665 3.29161C3.1665 1.82275 4.37687 0.618042 5.84452 0.618042H12.95C13.1533 0.618042 13.3405 0.707819 13.473 0.847343L17.9666 5.56129C18.0758 5.68341 18.1665 5.85823 18.1665 6.05898V16.7281C18.1665 18.1971 16.9561 19.4018 15.4885 19.4018H5.84452C4.37686 19.4018 3.1665 18.1971 3.1665 16.7281V3.29161ZM5.84452 2.06718C5.17403 2.06718 4.61564 2.62666 4.61564 3.29161V16.7281C4.61564 17.3966 5.17741 17.9527 5.84452 17.9527H15.4885C16.1595 17.9527 16.7174 17.3971 16.7174 16.7281V6.7748H14.4458C13.2204 6.7748 12.2297 5.79025 12.2297 4.56315V2.06718H5.84452ZM13.1097 2.06718L16.7174 5.89486H14.4458C13.7095 5.89486 13.1097 5.30264 13.1097 4.56315V2.06718ZM9.94184 6.49025C9.94184 6.09093 10.2673 5.76568 10.6664 5.76568C11.0655 5.76568 11.391 6.09093 11.391 6.49025V10.572L12.7145 9.15242C12.9823 8.86313 13.4449 8.83872 13.7384 9.11593C14.0266 9.38382 14.0505 9.84554 13.7733 10.1388L13.7722 10.1399L11.194 12.9073C11.0603 13.048 10.8728 13.1367 10.6664 13.1367C10.46 13.1367 10.2727 13.048 10.139 12.9075L10.1368 12.9052L7.56515 10.14L7.56399 10.1388C7.28478 9.8436 7.31324 9.38731 7.59738 9.11732C7.89252 8.83686 8.34971 8.86501 8.62008 9.14954L8.62218 9.15175L9.94184 10.5707V6.49025ZM6.32103 14.7308C6.32103 14.3315 6.64653 14.0062 7.0456 14.0062H14.2874C14.6891 14.0062 15.0164 14.3296 15.0164 14.7308C15.0164 15.1299 14.691 15.4554 14.2919 15.4554H7.0456C6.64648 15.4554 6.32103 15.1299 6.32103 14.7308Z" fill="currentColor"/>
+                        </svg>
+                      </i>
+
+                      <span class="text-blue-500 whitespace-nowrap leading-tight">
+                        {{ $t('preview.download') }}
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div class="w-full md:w-auto p-2 md:ml-auto">
+                  <button
+                    ref="bottomSpecCommentsActivator"
+                    style="min-width: 85px"
+                    class="w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
+                    @click="$refs.bottomSpecComments.toggleMenu()"
+                  >
+                    <div class="h-12 flex items-center px-3">
+                      <Comments
+                        ref="bottomSpecComments"
+                        :activator="$refs.bottomSpecCommentsActivator"
+                        :items="spec.comments"
+                        :spec-id="specId"
+                        :right="$vuetify.breakpoint.mdAndDown"
+                        :left="$vuetify.breakpoint.lgAndUp"
+                        :offset-x="$vuetify.breakpoint.lgAndUp"
+                        class="text-gray-100 mr-2 pointer-events-none"
+                        is-paper
+                      />
+                      <span class="text-blue-500 whitespace-nowrap leading-tight">
+                        {{ $t('preview.comment') }}
+                      </span>
+                    </div>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <Copyright />
+      <div class="absolute bottom-0 w-full">
+        <Copyright />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import format from 'date-fns/format'
+import deepmerge from 'deepmerge'
 
 import {
   mdiChevronDown,
   mdiChevronUp,
   mdiMinus,
   mdiPlus,
+  mdiPlusThick,
 } from '@mdi/js'
 
 import {
@@ -384,275 +516,481 @@ import {
   ziShare,
 } from '@/assets/icons'
 
-import PreviewMessageModal from '@/components/PreviewMessageModal'
+import StatusBar from '../components/StatusBar'
+import Copyright from '../components/Copyright'
+import Comments from '../components/Comments'
+import PaperInvoice from '../components/PaperInvoice'
 
-import StatusBar from '@/components/StatusBar'
-import Copyright from '@/components/Copyright'
-import InvoiceHeader from '../components/InvoiceHeader.vue'
-import ProductImage from '../components/ProductImage.vue'
-
-import { ProductStatus, InvoiceStatus } from '@/graphql/enums'
-import { GET_SPEC } from '../graphql/queries'
+import { Typename, Operation, InvoiceStatus } from '../graphql/enums'
+import { GET_PAPER_SPEC } from '../graphql/queries'
+import {
+  SET_SPEC_EXPANDED_INVOICES,
+  ADD_SPEC_EXPANDED_INVOICES,
+  REMOVE_SPEC_EXPANDED_INVOICES,
+} from '../graphql/mutations'
+import { PAPER_SPEC_DELTA } from '../graphql/subscriptions'
+import {
+  PAPER_SPEC_FRAGMENT,
+  PAPER_INVOICE_FRAGMENT,
+  PAPER_PRODUCT_FRAGMENT,
+  PAPER_SPEC_INVOICES_FRAGMENT,
+  PAPER_INVOICE_PRODUCTS_FRAGMENT,
+} from '../graphql/typeDefs'
+import { PAPER_STORE_KEY_PREFIX, DEFAULT_CURRENCY } from '../config/globals'
+import { getSpecExpandedInvoices } from '../graphql/resolvers'
+import specPdf from '../components/specPdf'
 
 export default {
   name: 'Preview',
   components: {
-    PreviewMessageModal,
     StatusBar,
     Copyright,
-    InvoiceHeader,
-    ProductImage,
+    Comments,
+    PaperInvoice,
   },
   apollo: {
-    getSpec: {
-      query: GET_SPEC,
+    getPaperSpec: {
+      query: GET_PAPER_SPEC,
       variables () {
         return {
           id: this.specId,
+        }
+      },
+      result ({ data, loading }) {
+        if (!loading && !this.isBooted) {
+          const spec = data.getPaperSpec || {}
+          this.updateExpanded(spec)
         }
       },
     },
   },
   data () {
     return {
-      leaveNote: false,
-      notes: [],
-      leaveComment: false,
-      comments: [],
-      containers: [
-        { type: '20', loaded: 100 },
-        { type: '20', loaded: 28 },
-      ],
+      printLoading: false,
+      downloadLoading: false,
+      InvoiceStatus,
+      invoiceScrollId: '',
+      invoiceScrollLeft: 0,
+      isBooted: false,
       expanded: [],
       icons: {
         mdiChevronDown,
         mdiChevronUp,
         mdiMinus,
         mdiPlus,
+        mdiPlusThick,
         ziSettings,
         ziPaperPlane,
         ziPrint,
         ziShare,
       },
       menuCurrency: false,
-      ProductStatus,
-      InvoiceStatus,
     }
   },
   computed: {
-    headers () {
-      return [
-        { text: '#', value: 'number', align: 'right', width: 20 },
-        { text: this.$t('preview.photo'), value: 'photo', align: 'left', width: 62 },
-        { text: this.$t('preview.name'), value: 'name', align: 'left', width: 260 },
-        { text: this.$t('preview.additionalImages'), value: 'images', align: 'left', width: 85 },
-        { text: `${this.$t('preview.price')}(¥)`, value: 'price', width: 80 },
-        { text: this.$t('preview.qty'), value: 'qty', width: 70 },
-        { text: `${this.$t('preview.cost')}(¥)`, value: 'cost', align: 'left', width: 90 },
-        { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'left', width: 62 },
-        { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'left', width: 62 },
-        { text: this.$t('preview.leaveNote'), value: 'note', align: 'left', width: 85 },
-      ]
-    },
     specId () {
       return this.$route.params.specId
     },
     spec () {
-      return this.getSpec || {}
+      return this.getPaperSpec || {}
+    },
+    currency () {
+      return this.spec.currency || DEFAULT_CURRENCY
     },
     client () {
-      const firstName = (this.getSpec && this.getSpec.client && this.getSpec.client.firstName) || {}
-      const lastName = (this.getSpec && this.getSpec.client && this.getSpec.client.lastName) || {}
+      const firstName = (this.spec.client && this.spec.client.firstName) || {}
+      const lastName = (this.spec.client && this.spec.client.lastName) || {}
       return firstName + ' ' + lastName || {}
     },
     items () {
-      return this.getSpec && this.getSpec.invoices
+      return this.spec.invoices || []
     },
-    unloadedContainers () {
-      return this.containers.filter(c => c.loaded !== 100)
+    containers () {
+      return this.spec.containers || []
     },
   },
+  watch: {
+    items (val, oldVal) {
+      const value = val || []
+      const oldValue = oldVal || []
+      // on invoice removed clear from expanded
+      if (oldValue.length > value.length) {
+        const removedIds = []
+        oldValue.forEach(v => {
+          if (!value.some(el => el.id === v.id)) {
+            removedIds.push(v.id)
+          }
+        })
+        this.removeExpandedInvoices(removedIds)
+      }
+    },
+  },
+  mounted () {
+    const commentsMerge = (target, source) => {
+      const destination = target.slice()
+      source.forEach(s => {
+        const index = target.findIndex(el => el.id === s.id)
+        if (index === -1) {
+          destination.push(s)
+        } else {
+          destination.splice(index, 1, Object.assign(target[index], s))
+        }
+      })
+      return destination
+    }
+
+    const observer = this.$apollo.subscribe({
+      query: PAPER_SPEC_DELTA,
+      variables: {
+        specId: this.specId,
+      },
+      fetchPolicy: 'no-cache',
+    })
+
+    const apolloClient = this.$apollo.provider.defaultClient
+
+    observer.subscribe({
+      next: ({ data }) => {
+        const delta = data.paperSpecDelta
+        const operation = delta.operation
+        const typename = delta.payload.__typename
+
+        this.$logger.info(`[${typename}]: ${JSON.stringify(data)}`)
+
+        // PRODUCT
+
+        if (operation === Operation.INSERT_PRODUCT) {
+          const parentInvoice = apolloClient.readFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+            fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+            fragmentName: 'PaperInvoiceProductsFragment',
+          })
+
+          if (!parentInvoice.products.some(el => el.id === delta.payload.id)) {
+            parentInvoice.products.push(delta.payload)
+
+            setTimeout(() => {
+              apolloClient.writeFragment({
+                id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+                fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+                fragmentName: 'PaperInvoiceProductsFragment',
+                data: parentInvoice,
+              })
+            }, 0)
+          }
+        }
+
+        if (operation === Operation.UPDATE_PRODUCT) {
+          const mergeOptions = {
+            customMerge: (key) => {
+              if (key === 'comments') {
+                return commentsMerge
+              }
+              if (key === 'images') {
+                const merge = (_, source) => {
+                  return source || []
+                }
+                return merge
+              }
+            },
+          }
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.PAPER_PRODUCT}:${delta.payload.id}`,
+            fragment: PAPER_PRODUCT_FRAGMENT,
+            fragmentName: 'PaperProductFragment',
+          })
+          const data = delta.payload.__typename === Typename.PAPER_PRODUCT
+            ? deepmerge(cacheData, delta.payload, mergeOptions)
+            : deepmerge(cacheData, delta.payload.fields, mergeOptions)
+          apolloClient.writeFragment({
+            id: `${Typename.PAPER_PRODUCT}:${delta.payload.id}`,
+            fragment: PAPER_PRODUCT_FRAGMENT,
+            fragmentName: 'PaperProductFragment',
+            data,
+          })
+        }
+
+        if (operation === Operation.DELETE_PRODUCT) {
+          let parentInvoice = apolloClient.readFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+            fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+            fragmentName: 'PaperInvoiceProductsFragment',
+          })
+
+          const index = parentInvoice.products.findIndex(p => p.id === delta.payload.id)
+
+          if (index !== -1) {
+            parentInvoice.products.splice(index, 1)
+            apolloClient.writeFragment({
+              id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
+              fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
+              fragmentName: 'PaperInvoiceProductsFragment',
+              data: parentInvoice,
+            })
+          }
+        }
+
+        // INVOICE
+
+        if (operation === Operation.INSERT_INVOICE) {
+          const parentSpec = apolloClient.readFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+            fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+            fragmentName: 'PaperSpecInvoicesFragment',
+          })
+
+          if (!parentSpec.invoices.some(el => el.id === delta.payload.id)) {
+            parentSpec.invoices.push(delta.payload)
+
+            apolloClient.writeFragment({
+              id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+              fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+              fragmentName: 'PaperSpecInvoicesFragment',
+              data: parentSpec,
+            })
+          }
+        }
+
+        if (operation === Operation.UPDATE_INVOICE) {
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.payload.id}`,
+            fragment: PAPER_INVOICE_FRAGMENT,
+            fragmentName: 'PaperInvoiceFragment',
+          })
+          const data = delta.payload.__typename === Typename.PAPER_INVOICE
+            ? Object.assign({}, cacheData, delta.payload)
+            : Object.assign({}, cacheData, delta.payload.fields)
+          apolloClient.writeFragment({
+            id: `${Typename.PAPER_INVOICE}:${delta.payload.id}`,
+            fragment: PAPER_INVOICE_FRAGMENT,
+            fragmentName: 'PaperInvoiceFragment',
+            data,
+          })
+        }
+
+        if (operation === Operation.DELETE_INVOICE) {
+          let parentSpec = apolloClient.readFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+            fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+            fragmentName: 'PaperSpecInvoicesFragment',
+          })
+
+          const index = parentSpec.invoices.findIndex(p => p.id === delta.payload.id)
+
+          if (index !== -1) {
+            parentSpec.invoices.splice(index, 1)
+            apolloClient.writeFragment({
+              id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
+              fragment: PAPER_SPEC_INVOICES_FRAGMENT,
+              fragmentName: 'PaperSpecInvoicesFragment',
+              data: parentSpec,
+            })
+          }
+        }
+
+        // SPEC
+
+        if (operation === Operation.UPDATE_SPEC) {
+          const mergeOptions = {
+            customMerge: (key) => {
+              if (key === 'comments') {
+                return commentsMerge
+              }
+              if (key === 'containers') {
+                const merge = (_, source) => {
+                  return source || []
+                }
+                return merge
+              }
+            },
+          }
+          const cacheData = apolloClient.readFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.payload.id}`,
+            fragment: PAPER_SPEC_FRAGMENT,
+            fragmentName: 'PaperSpecFragment',
+          })
+          const data = delta.payload.__typename === Typename.PAPER_SPEC
+            ? deepmerge(cacheData, delta.payload, mergeOptions)
+            : deepmerge(cacheData, delta.payload.fields, mergeOptions)
+          apolloClient.writeFragment({
+            id: `${Typename.PAPER_SPEC}:${delta.payload.id}`,
+            fragment: PAPER_SPEC_FRAGMENT,
+            fragmentName: 'PaperSpecFragment',
+            data,
+          })
+        }
+      },
+      error: (error) => {
+        this.$logger.warn('Error: ', error)
+      },
+    })
+  },
   methods: {
-    formatDate (date) {
-      if (!date) return null
-      const parsedDate = this.$parseDate(date)
-      return format(parsedDate, this.$i18n.locale === 'zh'
-        ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
-          ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
-      )
+    async downloadPdf () {
+      try {
+        this.downloadLoading = true
+        const requisite = this.spec.requisite || {}
+        const client = this.spec.client || {}
+        const shipment = this.spec.shipment || {}
+        const customs = this.spec.customs || {}
+        const isDraft = !this.spec.readyToPrint
+        await specPdf(this.spec, requisite, client, shipment, customs, 'download', isDraft)
+      } catch (error) {
+        this.$notify({
+          color: 'red',
+          text: `Error creating PDF: ${error.message}`,
+        })
+        throw new Error(error)
+      } finally {
+        this.downloadLoading = false
+      }
+    },
+    async printPdf () {
+      try {
+        this.printLoading = true
+        const requisite = this.spec.requisite || {}
+        const client = this.spec.client || {}
+        const shipment = this.spec.shipment || {}
+        const customs = this.spec.customs || {}
+        const isDraft = !this.spec.readyToPrint
+        await specPdf(this.spec, requisite, client, shipment, customs, 'print', isDraft)
+      } catch (error) {
+        this.$notify({
+          color: 'red',
+          text: `Error creating PDF: ${error.message}`,
+        })
+        throw new Error(error)
+      } finally {
+        this.printLoading = false
+      }
+    },
+    setScrollLeft (scrollLeft, invoiceId) {
+      this.invoiceScrollId = invoiceId
+      this.invoiceScrollLeft = scrollLeft
+    },
+    async updateExpanded (spec) {
+      const specId = spec && spec.id
+      if (!specId || this.isBooted) return
+      this.isBooted = true
+      const expanded = await getSpecExpandedInvoices(specId, PAPER_STORE_KEY_PREFIX)
+      if (!expanded) {
+        const [invoice] = spec.invoices || []
+        if (invoice && invoice.id) {
+          this.expanded = [invoice.id]
+          await this.setExpandedInvoices(this.expanded)
+        }
+      } else {
+        this.expanded = expanded || []
+      }
+    },
+    async setExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: SET_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+          prefix: PAPER_STORE_KEY_PREFIX,
+        },
+      })
+    },
+    async addExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: ADD_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+          prefix: PAPER_STORE_KEY_PREFIX,
+        },
+      })
+    },
+    async removeExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: REMOVE_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+          prefix: PAPER_STORE_KEY_PREFIX,
+        },
+      })
     },
     expand (id) {
       if (this.expanded.includes(id)) {
         const index = this.expanded.indexOf(id)
         this.expanded.splice(index, 1)
+        this.removeExpandedInvoices([id])
       } else {
         this.expanded.push(id)
+        this.addExpandedInvoices([id])
+      }
+    },
+    toggleExpandAll () {
+      if (this.expanded.length === 0) {
+        this.expandAll()
+      } else {
+        this.collapseAll()
       }
     },
     collapseAll () {
       this.expanded = []
+      this.setExpandedInvoices([])
     },
-    saveMessage (message) {
-      if (this.leaveNote) {
-        this.notes.push(message)
-        localStorage.setItem('notes', JSON.stringify(this.notes))
-        this.leaveNote = false
-      } else {
-        this.comments.push(message)
-        localStorage.setItem('comments', JSON.stringify(this.comments))
-        this.leaveComment = false
-      }
+    expandAll () {
+      const invoices = this.items
+      const ids = invoices.reduce((acc, curr) => {
+        return [...acc, curr.id]
+      }, [])
+      this.expanded = ids
+      this.setExpandedInvoices(ids)
     },
-  },
-  created () {
-    this.notes = JSON.parse(localStorage.getItem('notes')) || []
-    this.comments = JSON.parse(localStorage.getItem('comments')) || []
-  },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      vm.$el.classList.add('light-theme')
-    })
   },
 }
 </script>
 
 <style scoped lang="postcss">
-.preview-invoice-wrapper {
-  margin-bottom: 20px;
-  -webkit-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
-  -moz-box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
-  box-shadow: 0px 0px 42px -3px rgba(18,18,18,0.32);
+.spec-container {
+  width: 140px;
+  height: 56px;
 }
-.notes-count-wrapper {
-  position: relative;
-  width: 86px;
+.spec-container--lg {
+  width: 245px;
 }
-.notes-count-bubble {
-  position: absolute;
-  top: -7px;
-  right: 23px;
-  padding: 0 6px;
-  font-size: 12px;
-  color: #fff;
-  background-color: tomato;
-  border-radius: 50px;
+.spec-container__progress {
+  padding: 3px 5px;
 }
-.preview-summary {
-  margin: 70px 0 50px;
-  @apply bg-background;
+.spec-container__progress > div {
+  will-change: width;
+  transition: width .4s cubic-bezier(0.61, 1, 0.88, 1);
 }
 
-.preview-summary__wrapper {
-  @apply flex justify-between;
-}
-
-.preview-summary__info {
-  max-width: 340px;
-}
-
-.preview-summary__cost {
-  @apply flex-grow;
-  max-width: 490px;
-}
-.preview-summary__cost__card {
-  margin-top: 20px;
-  padding: 60px 20px 20px;
-  background-color: #272727;
-  border-radius: 4px;
-  font-size: 14px;
-  background: linear-gradient(to top, #f4f4f4 70%, #e5e5e5 100%);
-  @apply text-accent1;
-}
-@screen md {
-  .preview-summary__cost__card {
-    margin-top: 0;
-    padding-left: 60px;
-    padding-right: 60px;
-    font-size: 18px;
-  }
-}
-
-.preview-summary__actions {
+.spec-shipped {
   width: 100%;
-  padding-top: 20px;
-  padding-bottom: 20px;
 }
-.preview-summary__actions > div {
-  @apply flex items-center text-primary cursor-pointer;
-}
-.preview-summary__actions > div:not(:last-child) {
-  margin-bottom: 25px;
-}
-.preview-summary__actions div:hover {
-  color: #6996B2;
-}
-@screen lg {
-  .preview-summary__actions {
-    width: 120px;
-  }
-}
-
-.preview-summary__container {
-  width: 210px;
-  @apply mb-4 relative;
-}
-.preview-summary__container__image {
-  @apply absolute inset-0 w-full h-full bg-cover bg-left bg-no-repeat;
-}
-.preview-summary__container__image--full {
-  background-image: url("/img/container-full.png");
-}
-.preview-summary__container__image--full-sm {
-  background-image: url("/img/container-full-sm.png");
-}
-.preview-summary__container__image--shipped {
-  background-image: url("/img/container-shipped.png");
-}
-
-.preview-summary__info ul.leaders span:first-child,
-.preview-summary__info ul.leaders span + span {
-  @apply bg-background;
-}
-.preview-summary__cost ul.leaders span:first-child,
-.preview-summary__cost ul.leaders span + span {
-  background-color: #f4f4f4;
-}
-
-.preview-footer .leaders,
-.preview-summary .leaders {
-  line-height: 1.5rem;
-  padding: 0;
-  overflow-x: hidden;
-  list-style: none}
-.preview-footer .leaders li:after,
-.preview-summary .leaders li:after {
-  float: left;
+.spec-shipped__arrow {
+  border-color: transparent;
+  border-style: solid;
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  transform: translateX(-50%);
   width: 0;
-  white-space: nowrap;
-  content:
- ". . . . . . . . . . . . . . . . . . . . "
- ". . . . . . . . . . . . . . . . . . . . "
- ". . . . . . . . . . . . . . . . . . . . "
- ". . . . . . . . . . . . . . . . . . . . "
- }
-.preview-footer .leaders span:first-child,
-.preview-summary .leaders span:first-child {
-  padding-right: 0.33em;
+  height: 0;
+  top: 0;
+  left: 50%;
+  border-width: 15px 15px 0 15px;
+  border-top-color: inherit;
 }
-.preview-footer .leaders span + span,
-.preview-summary .leaders span + span {
-  float: right;
-  padding-left: 0.33em;
-  position: relative;
-  z-index: 1
-}
-.preview-summary .leaders__num {
-  @apply text-black font-bold;
-}
-.preview-summary .currency-picker__item {
-  @apply flex cursor-pointer py-1 px-2 outline-none;
-}
-.preview-summary .currency-picker__item:hover {
-  @apply text-primary;
+
+@screen sm {
+  .spec-shipped {
+    width: 148px;
+  }
+  .spec-shipped__arrow {
+    border-color: transparent;
+    transform: translateY(-50%);
+    top: 50%;
+    left: 0;
+    border-width: 15px 0 15px 15px;
+    border-left-color: inherit;
+  }
 }
 </style>

@@ -2,19 +2,18 @@
   <div>
     <div
       class="card__col-left"
-      :class="{ 'card__col-left--section': field.section }"
     >
       <label
         class="truncate"
         :class="{ 'visibility-hidden opacity-0': isDisabled }"
-        :title="$t(`label.${templateName}.${field.label || key}`)"
+        :title="$t(`${templateName}.label.${field.label || key}`)"
       >
-        {{ $t(`label.${templateName}.${field.label || key}`) }}
+        {{ $t(`${templateName}.label.${field.label || key}`) }}
       </label>
       <TextField
         :disabled="isDisabled"
         :value="item.template && item.template[key]"
-        :placeholder="(item.template && item.template[key]) || $t(`placeholder.${templateName}.${field.placeholder || key}`)"
+        :placeholder="(item.template && item.template[key]) || $t(`${templateName}.placeholder.${field.placeholder || key}`)"
         squared
         right
         hide-details
@@ -28,7 +27,6 @@
     >
       <div
         class="card__col-right relative"
-        :class="{ 'card__col-right--section': field.section }"
       >
         <span class="card__subtitle">
           {{ field.subtitle ? $t(`${templateName}.${field.subtitle}`) : '' }}
@@ -36,7 +34,7 @@
         <label :class="{ 'visibility-hidden opacity-0': isDisabled }">
           <span
             v-if="field.label"
-            v-html="$t(`label.${templateName}.${field.label}`)"
+            v-html="$t(`${templateName}.label.${field.label}`)"
           />
         </label>
         <TextArea

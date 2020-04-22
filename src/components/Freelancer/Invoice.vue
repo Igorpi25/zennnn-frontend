@@ -1,6 +1,14 @@
 <template>
   <div>
-    <div class="data-table-wrapper">
+    <div
+      v-scroll="onScroll"
+      ref="productsTable"
+      class="data-table-wrapper"
+      @mouseenter="isMouseOver = true"
+      @mouseleave="isMouseOver = false"
+      @touchstart="isScrollStart = true"
+      @touchend="clearScrollEndTimer"
+    >
       <div>
         <div class="flex">
           <DataTable
@@ -20,14 +28,13 @@
                 ></div>
                 <ul
                   class="tabs"
-                  @click="switchTab"
                 >
                   <li
                     v-for="tab in tabs"
                     :key="tab.value"
-                    :value="tab.value"
                     :style="{ width: tab.width + 'px' }"
                     :class="['tab-item', {'tab-item--active': activeTab === tab.value}]"
+                    @click="switchTab(tab.value)"
                   >{{ tab.text }}</li>
                 </ul>
               </div>
@@ -53,13 +60,13 @@
                 <template v-if="activeTab === 1">
                   <td class="text-gray-dark">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalNet, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
+                    {{ $n(invoiceItem.totalNet) }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
                   </td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalGross, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
+                    {{ $n(invoiceItem.totalGross) }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
                   </td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalCapacity, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.m') }}<sup>3</sup></span>
+                    {{ $n(invoiceItem.totalVolume) }} <span class="text-gray-dark">{{ $t('measure.m') }}<sup>3</sup></span>
                   </td>
                   <td></td>
                 </template>
@@ -113,34 +120,34 @@ export default {
     },
     productHeaders () {
       return [
-        { text: '', value: 'status', align: 'left', width: 14 },
-        { text: this.$t('shipping.productIndexNo'), value: 'index', align: 'left', width: 54 },
-        { text: this.$t('shipping.photo'), value: 'photo', width: 55 },
-        { text: this.$t('shipping.name'), value: 'name', width: 165 },
-        { text: this.$t('shipping.model'), value: 'model', width: 165 },
-        { text: this.$t('shipping.qty'), value: 'qty', width: 110 },
+        { text: '', value: 'status', align: 'left', width: 14, minWidth: 14 },
+        { text: this.$t('shipping.productIndexNo'), value: 'index', align: 'left', width: 54, minWidth: 54 },
+        { text: this.$t('shipping.photo'), value: 'photo', width: 54, minWidth: 54 },
+        { text: this.$t('shipping.name'), value: 'name', width: 154, minWidth: 154 },
+        { text: this.$t('shipping.model'), value: 'model', width: 154, minWidth: 154 },
+        { text: this.$t('shipping.qty'), value: 'qty', width: 110, minWidth: 110 },
       ]
     },
     storeHeaders () {
       return [
-        { text: `${this.$t('shipping.net')}, ${this.$t('measure.kg')}`, value: 'net', width: 167, bgcolor: 'gray-darkest' },
-        { text: `${this.$t('shipping.gross')}, ${this.$t('measure.kg')}`, value: 'gross', width: 167, bgcolor: 'gray-darkest' },
+        { text: `${this.$t('shipping.net')} ${this.$t('measure.unit')} ${this.$t('measure.kg')}`, value: 'net', width: 167, bgcolor: 'gray-darkest' },
+        { text: `${this.$t('shipping.gross')} ${this.$t('measure.unit')} ${this.$t('measure.kg')}`, value: 'gross', width: 167, bgcolor: 'gray-darkest' },
         { text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`, value: 'size', width: 169, bgcolor: 'gray-darkest' },
-        { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
+        { text: '', value: 'action', width: 24, bgcolor: 'gray-darkest' },
       ]
     },
     infoHeaders () {
       return [
-        { text: this.$t('shipping.additionalPhoto'), value: 'images', width: 85, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.additionalInfo'), value: 'description', align: 'left', bgcolor: 'gray-darkest' },
-        { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.additionalPhoto'), value: 'images', width: 175, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.additionalInfo'), value: 'description', width: '100%', align: 'left', bgcolor: 'gray-darkest' },
+        { text: '', value: 'action', width: 24, bgcolor: 'gray-darkest' },
       ]
     },
     linkHeaders () {
       return [
-        { text: this.$t('shipping.linkField'), value: 'url', align: 'left', bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.linkField'), value: 'url', width: '100%', align: 'left', bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.openLink'), value: 'openLink', width: 70, bgcolor: 'gray-darkest' },
-        { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
+        { text: '', value: 'action', width: 24, bgcolor: 'gray-darkest' },
       ]
     },
   },
@@ -161,7 +168,7 @@ export default {
   bacground-color: #252525;
 }
 .tab-item:not(:first-child) {
-  margin-left:  1px;
+  padding-left:  1px;
 }
 .tab-item--active {
   @apply bg-gray-darkest;

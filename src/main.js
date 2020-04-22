@@ -15,10 +15,36 @@ import './assets/css/main.css'
 
 Vue.config.productionTip = false
 
-new Vue({
-  router,
-  i18n,
-  vuetify,
-  apolloProvider,
-  render: h => h(App),
-}).$mount('#app')
+function runApp () {
+  new Vue({
+    router,
+    i18n,
+    vuetify,
+    apolloProvider,
+    render: h => h(App),
+  }).$mount('#app')
+}
+
+// Intl polyfill https://github.com/andyearnshaw/Intl.js
+if (typeof Intl === 'object' && Intl.NumberFormat.prototype.formatToParts) {
+  runApp()
+} else {
+  require.ensure([
+    'intl',
+    'intl/locale-data/jsonp/en.js',
+    'intl/locale-data/jsonp/fr.js',
+    'intl/locale-data/jsonp/zh-Hans.js',
+    'intl/locale-data/jsonp/zh-Hant.js',
+    'intl/locale-data/jsonp/ru.js',
+    'intl/locale-data/jsonp/uk.js',
+  ], function (require) {
+    window.Intl = require('intl')
+    require('intl/locale-data/jsonp/en.js')
+    require('intl/locale-data/jsonp/fr.js')
+    require('intl/locale-data/jsonp/zh-Hans.js')
+    require('intl/locale-data/jsonp/zh-Hant.js')
+    require('intl/locale-data/jsonp/ru.js')
+    require('intl/locale-data/jsonp/uk.js')
+    runApp()
+  }, 'intl')
+}

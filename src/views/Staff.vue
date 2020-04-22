@@ -27,7 +27,7 @@
           </TextField>
         </div>
 
-        <div class="overflow-x-auto pb-16">
+        <div class="overflow-x-auto pb-4">
           <DataTable
             :headers="headers"
             :items="items"
@@ -63,14 +63,15 @@
 
              <template v-slot:items="{ items }">
               <template v-for="(item, index) in items">
-                <tr :key="item.id" class="items bg-background hover:bg-accent3 border-none">
+                <tr :key="item.id" class="items bg-gray-900 hover:bg-accent3 border-none">
                   <td class="relative px-3">
                     <span
                       :class="[
                         'status-indicator inline-block',
-                        item.specStatus === SpecStatus.IN_PRODUCTION
-                          ? 'status-indicator--orange' : item.specStatus === SpecStatus.IN_STOCK
-                            ? 'status-indicator--green' : 'status-indicator--pink'
+                        item.specStatus === SpecStatus.IN_STOCK
+                          ? 'status-indicator--green' : item.specStatus === SpecStatus.IN_PRODUCTION
+                            ? 'status-indicator--orange' : item.specStatus === SpecStatus.IN_PROCESSING
+                              ? 'status-indicator--pink' : 'bg-transparent'
                       ]"
                     >
                     </span>
@@ -78,7 +79,7 @@
                   <td>
                     <span class="flex item-center" @click="toggle(index)">
                       <span>{{ item.inWorkCount }}</span>
-                      <div class="icon" style="width:18px">
+                      <div class="relative" style="width:18px">
                         <div class="icon__item">
                           <Icon v-if="expanded.includes(index)">{{ icons.mdiChevronUp }}</Icon>
                           <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
@@ -86,18 +87,33 @@
                       </div>
                     </span>
                   </td>
-                  <td>{{ item.profit }}</td>
-                  <td>{{ Math.ceil(((item.profit || 0) * 100) / (item.finalCost || 1)) }}%</td>
-                  <td class="text-right">{{ item.finalObtainCost }}</td>
-                  <td class="text-right">{{ item.finalCost }}</td>
-                  <td class="text-left pl-10">{{ item.givenName }} {{ item.familyName }}</td>
+                  <td class="text-right">{{ $n(item.profit || 0, 'decimal') }}</td>
+                  <td class="text-right">{{ $n(item.percent) }}%</td>
+                  <td class="text-right">{{ $n(item.finalObtainCost || 0, 'decimal') }}</td>
+                  <td class="text-right">{{ $n(item.finalCost || 0, 'decimal') }}</td>
+                  <td class="text-left">
+                    <div class="pl-2 leading-tight">
+                      {{ item.givenName }} {{ item.familyName }}
+                    </div>
+                  </td>
                   <td class="text-left">{{ item.role | roleFilter }}</td>
-                  <td class="text-right pointer-events-none" @click.prevent.stop>
+                  <td class="text-center pointer-events-none" @click.prevent.stop>
                     <div
-                      class="cursor-pointer pointer-events-auto"
-                      @click="deleteProject(item.id)"
+                      v-if="deleteUserLoading === item.id"
+                      class="flex items-center justify-center"
                     >
-                      <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 13 16"><defs></defs><g><g><title>Delete</title><image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQCAYAAADNo/U5AAAAU0lEQVQ4T2NkQANBQUH/0cXWrVvHiCyGwgFJgDQhK0Lng9QwYjMZ3SZ0PoZNhDSQbxM2N+OzDaQe7CeQx0mhSVIMM3xUEzSUKQsIYpIPLEGTlWAB2MDtgmErnM4AAAAASUVORK5CYII=" width="13" height="16" transform="matrix(1,0,0,1,0,0)" ></image></g></g></svg>
+                      <v-progress-circular
+                        indeterminate
+                        size="18"
+                        width="2"
+                      />
+                    </div>
+                    <div
+                      v-else
+                      class="cursor-pointer pointer-events-auto flex items-center justify-center"
+                      @click="deleteUser(item.id)"
+                    >
+                      <i class="icon-delete text-lg text-gray-200" />
                     </div>
                   </td>
                 </tr>
@@ -105,7 +121,7 @@
                   <tr
                     v-for="(specItem, specIndex) in item.specs"
                     :key="`expand-${index}-${specItem.id}`"
-                    class="items text-sm bg-chaos-black"
+                    class="items text-sm bg-chaos-black cursor-default"
                   >
                     <!-- <td :colspan="headers.length" class="bg-chaos-black">
                       <DataTable
@@ -123,23 +139,30 @@
                         :class="[
                           'status-mini',
                           'status-indicator inline-block',
-                          specItem.specStatus === SpecStatus.IN_PRODUCTION
-                            ? 'status-indicator--orange' : specItem.specStatus === SpecStatus.IN_STOCK
-                              ? 'status-indicator--green' : 'status-indicator--pink'
+                          specItem.specStatus === SpecStatus.IN_STOCK
+                            ? 'status-indicator--green' : specItem.specStatus === SpecStatus.IN_PRODUCTION
+                              ? 'status-indicator--orange' : specItem.specStatus === SpecStatus.IN_PROCESSING
+                                ? 'status-indicator--pink' : 'bg-transparent'
                         ]"
                       >
                       </span>
                     </td>
                     <td class="text-center relative">
                       <div v-if="specIndex == 0" class="staff__triangle"></div>
-                      <strong>+$</strong>&nbsp;&nbsp;<strong>-$</strong>
+                      <strong>
+                        <!-- +$</strong>&nbsp;&nbsp;<strong>-$ -->
+                      </strong>
                     </td>
-                    <td>{{ specItem.profit || 0 }}</td>
-                    <td>{{ Math.ceil(((specItem.profit || 0) * 100) / (specItem.finalCost || 1)) }}%</td>
-                    <td class="text-right">{{ specItem.finalCost || 0 }}</td>
-                    <td class="text-right">{{ specItem.finalObtainCost || 0 }}</td>
-                    <td class="text-center">{{ specItem.customNumber || specItem.specNo || '' }}</td>
-                    <td class="text-center">{{ getClientName(specItem.client) }}</td>
+                    <td class="text-right">{{ $n(specItem.profit || 0, 'decimal') }}</td>
+                    <td class="text-right">{{ $n(specItem.percent) }}%</td>
+                    <td class="text-right">{{ $n(specItem.finalObtainCost || 0, 'decimal') }}</td>
+                    <td class="text-right">{{ $n(specItem.finalCost || 0, 'decimal') }}</td>
+                    <td class="text-left">
+                      <div class="pl-2">
+                        {{ specItem.specNo || '' }}
+                      </div>
+                    </td>
+                    <td class="text-left">{{ specItem.clientFullName }}</td>
                     <td></td>
                   </tr>
                 </template>
@@ -147,20 +170,32 @@
             </template>
           </DataTable>
         </div>
-        <div class="overflow-x-auto">
-          <h4>Invitations</h4>
+        <h4 class="text-xl font-semibold text-white mt-12">
+          {{ $t('staff.invitations') }}
+        </h4>
+        <div class="overflow-x-auto pb-4">
           <DataTable
             :headers="invitationsHeaders"
             :items="invitations"
             table-width="100%"
             table-class="table-fixed"
             thead-class="text-accent2 border-b border-accent2"
-            items-row-class="bg-transparent border-none"
+            items-row-class="border-none bg-gray-900 hover:bg-accent3"
             items-cell-class="bg-transparent"
           >
+            <template v-slot:item.invitationEmail="{ item }">
+              <td class="truncate">
+                <span>{{ item.invitationEmail }}</span>
+              </td>
+            </template>
             <template v-slot:item.invitationRole="{ item }">
-              <td>
+              <td class="leading-tight">
                 {{ item.invitationRole | roleFilter }}
+              </td>
+            </template>
+            <template v-slot:item.status="{ item }">
+              <td>
+                {{ item.status | statusFilter }}
               </td>
             </template>
             <template v-slot:item.createdAt="{ item }">
@@ -176,10 +211,10 @@
             <template v-slot:item.actions="{ item }">
               <td>
                 <div
-                  class="cursor-pointer pointer-events-auto"
+                  class="cursor-pointer pointer-events-auto flex items-center justify-center"
                   @click="cancelInvitation(item.id)"
                 >
-                  <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 13 16"><defs></defs><g><g><title>Delete</title><image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQCAYAAADNo/U5AAAAU0lEQVQ4T2NkQANBQUH/0cXWrVvHiCyGwgFJgDQhK0Lng9QwYjMZ3SZ0PoZNhDSQbxM2N+OzDaQe7CeQx0mhSVIMM3xUEzSUKQsIYpIPLEGTlWAB2MDtgmErnM4AAAAASUVORK5CYII=" width="13" height="16" transform="matrix(1,0,0,1,0,0)" ></image></g></g></svg>
+                  <i class="icon-delete text-lg text-gray-200" />
                 </div>
               </td>
             </template>
@@ -212,9 +247,10 @@ import {
 
 import StaffCreateModal from '../components/StaffCreateModal.vue'
 import { LIST_ORG_INVITATIONS, LIST_STAFF } from '../graphql/queries'
-import { CANCEL_INVITATION } from '../graphql/mutations'
-import { SpecStatus, ClientType } from '../graphql/enums'
+import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
+import { SpecStatus } from '../graphql/enums'
 import { i18n } from '../plugins'
+import { confirmDialog } from '../util/helpers'
 
 export default {
   name: 'Staff',
@@ -225,6 +261,10 @@ export default {
     roleFilter: function (val) {
       return i18n.te(`role.${val}`)
         ? i18n.t(`role.${val}`) : val
+    },
+    statusFilter: function (val) {
+      return i18n.te(`invitationStatus.${val}`)
+        ? i18n.t(`invitationStatus.${val}`) : val
     },
   },
   apollo: {
@@ -248,23 +288,12 @@ export default {
   data () {
     return {
       SpecStatus,
+      deleteUserLoading: null,
       search: '',
       loading: false,
       createLoading: false,
       deleteLoading: null,
       createStaffDialog: false,
-      // items: [
-      //   {
-      //     status: 'ORANGE',
-      //     inWork: 3,
-      //     diff: '150 005',
-      //     diffPercent: '50%',
-      //     revenue: '300 000',
-      //     costOfGoods: '150 000',
-      //     fullName: 'Игорь Иванов',
-      //     access: 'Директор',
-      //   },
-      // ],
       expanded: [],
       errors: [],
       icons: {
@@ -277,7 +306,14 @@ export default {
   },
   computed: {
     items () {
-      return (this.listStaff && this.listStaff.items) || []
+      const items = (this.listStaff && this.listStaff.items) || []
+      return items.map(item => {
+        return {
+          ...item,
+          // for search
+          fullName: `${item.givenName} ${item.familyName}`,
+        }
+      })
     },
     orgId () {
       return this.$route.params.orgId
@@ -288,10 +324,10 @@ export default {
     headers () {
       return [
         { text: '', value: 'status', align: 'left', width: 45, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.inWork'), value: 'inWork', align: 'left', width: 80, minWidth: 80, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.diff'), value: 'profit', align: 'left', width: 60, minWidth: 60, bgcolor: 'tansparent' },
-        { text: '(%)', value: 'diffPercent', align: 'left', width: 40, minWidth: 40, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.revenue'), value: 'finalObtainCost', align: 'right', width: 80, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('staff.inWork'), value: 'inWorkCount', align: 'left', width: 80, minWidth: 80, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('staff.diff'), value: 'profit', align: 'right', width: 120, minWidth: 120, bgcolor: 'tansparent' },
+        { text: this.$t('staff.percent'), value: 'diffPercent', align: 'right', width: 80, minWidth: 80, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('staff.revenue'), value: 'finalObtainCost', align: 'right', width: 120, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('staff.costOfGoods'), value: 'finalCost', align: 'right', width: 120, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('staff.fullName'), value: 'fullName', align: 'left', width: 180, minWidth: 180, bgcolor: 'tansparent' },
         { text: this.$t('staff.access'), value: 'access', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent' },
@@ -300,30 +336,18 @@ export default {
     },
     invitationsHeaders () {
       return [
-        { text: 'Given Name', width: 100, bgcolor: 'tansparent', value: 'invitationGivenName' },
-        { text: 'Family name', width: 100, bgcolor: 'tansparent', value: 'invitationFamilyName' },
-        { text: 'Email', bgcolor: 'tansparent', value: 'invitationEmail' },
-        { text: 'Role', bgcolor: 'tansparent', value: 'invitationRole' },
-        { text: 'Status', bgcolor: 'tansparent', value: 'status' },
-        { text: 'Created At', width: 120, bgcolor: 'tansparent', value: 'createdAt' },
-        { text: 'Updated At', width: 120, bgcolor: 'tansparent', value: 'updatedAt' },
+        { text: this.$t('staff.inviteGivenName'), width: 160, align: 'left', bgcolor: 'tansparent', value: 'invitationGivenName' },
+        { text: this.$t('staff.inviteFamilyName'), width: 160, align: 'left', bgcolor: 'tansparent', value: 'invitationFamilyName' },
+        { text: this.$t('staff.inviteEmail'), width: 200, align: 'left', bgcolor: 'tansparent', value: 'invitationEmail' },
+        { text: this.$t('staff.inviteRole'), width: 120, align: 'left', bgcolor: 'tansparent', value: 'invitationRole' },
+        { text: this.$t('staff.inviteStatus'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'status' },
+        { text: this.$t('staff.inviteCreatedAt'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'createdAt' },
+        { text: this.$t('staff.inviteUpdatedAt'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'updatedAt' },
         { text: '', value: 'actions', bgcolor: 'tansparent', width: 48 },
       ]
     },
   },
   methods: {
-    getClientName (item) {
-      if (!item) return ''
-      let name = ''
-      if (item.clientType === ClientType.LEGAL) {
-        name = item.companyNameSl || item.companyNameCl || ''
-      } else {
-        name = item.lastName || ''
-        name += item.firstName ? ` ${item.firstName}` : ''
-        name += item.middleName ? ` ${item.middleName}` : ''
-      }
-      return name
-    },
     // TODO: update on after mutation
     refetchInvitations () {
       this.$apollo.queries.listOrgInvitations.refetch()
@@ -337,6 +361,46 @@ export default {
         this.refetchInvitations()
       } catch (error) {
         throw new Error(error)
+      }
+    },
+    async deleteUser (userId) {
+      try {
+        const msg = this.$t('alert.removeEmployee')
+        const confirm = await confirmDialog(msg)
+        if (confirm === 'not_confirmed') {
+          return
+        }
+        this.deleteUserLoading = userId
+        await this.$apollo.mutate({
+          mutation: REMOVE_USER_FROM_ORG,
+          variables: {
+            orgId: this.orgId,
+            userId,
+          },
+        })
+        const { listStaff } = this.$apollo.provider.defaultClient.readQuery({
+          query: LIST_STAFF,
+          variables: { orgId: this.orgId },
+        })
+
+        const index = listStaff.items.findIndex(el => el.id === userId)
+
+        if (index !== -1) {
+          listStaff.items.splice(index, 1)
+          this.$apollo.provider.defaultClient.writeQuery({
+            query: LIST_STAFF,
+            variables: { orgId: this.orgId },
+            data: {
+              listStaff,
+            },
+          })
+        }
+      } catch (error) {
+        if (error === 'not_confirmed') return
+        if (error.message !== 'ForbiddenError: Owner cannot be deleted.') return
+        throw new Error(error)
+      } finally {
+        this.deleteUserLoading = null
       }
     },
     toggle (index) {

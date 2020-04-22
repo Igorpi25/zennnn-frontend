@@ -4,18 +4,21 @@ export const InvoiceProfitType = {
 }
 
 export const SpecStatus = {
+  IN_DRAFT: 'IN_DRAFT',
   IN_PROCESSING: 'IN_PROCESSING',
   IN_PRODUCTION: 'IN_PRODUCTION',
   IN_STOCK: 'IN_STOCK',
 }
 
 export const InvoiceStatus = {
+  IN_DRAFT: 'IN_DRAFT',
   IN_PROCESSING: 'IN_PROCESSING',
   IN_PRODUCTION: 'IN_PRODUCTION',
   IN_STOCK: 'IN_STOCK',
 }
 
 export const ProductStatus = {
+  IN_DRAFT: 'IN_DRAFT',
   IN_PROCESSING: 'IN_PROCESSING',
   IN_PRODUCTION: 'IN_PRODUCTION',
   IN_STOCK: 'IN_STOCK',
@@ -24,6 +27,41 @@ export const ProductStatus = {
 export const ClientType = {
   LEGAL: 'LEGAL',
   NATURAL: 'NATURAL',
+}
+
+export const SpecCurrency = {
+  USD: 'USD',
+  CNY: 'CNY',
+  RUB: 'RUB',
+  EUR: 'EUR',
+  UAH: 'UAH',
+}
+
+export const ShipmentType = {
+  UNDEFINED: 'UNDEFINED',
+  MARINE: 'MARINE',
+  AIR: 'AIR',
+  RAILWAY: 'RAILWAY',
+  CAR: 'CAR',
+  MIXED: 'MIXED',
+  EXPRESS: 'EXPRESS',
+}
+
+export const CustomsTerms = {
+  EXW: 'EXW',
+  FCA: 'FCA',
+  CPT: 'CPT',
+  CIP: 'CIP',
+  DAT: 'DAT',
+  DAP: 'DAP',
+  DDP: 'DDP',
+}
+
+export const CustomsTermsMore = {
+  FAS: 'FAS',
+  FOB: 'FOB',
+  CFR: 'CFR',
+  CIF: 'CIF',
 }
 
 export const Role = {
@@ -38,6 +76,13 @@ export const Typename = {
   SPEC: 'Spec',
   INVOICE: 'Invoice',
   PRODUCT: 'Product',
+  PAPER_SPEC: 'PaperSpec',
+  PAPER_INVOICE: 'PaperInvoice',
+  PAPER_PRODUCT: 'PaperProduct',
+  CLIENT: 'Client',
+  SUPPLIER: 'Supplier',
+  REQUISITE: 'Requisite',
+  REQUISITE_ITEMS: 'RequisiteItems',
 }
 
 export const Operation = {
@@ -52,4 +97,9 @@ export const Operation = {
   DELETE_PRODUCT: 'DELETE_PRODUCT',
   DELETE_INVOICE: 'DELETE_INVOICE',
   DELETE_SPEC: 'DELETE_SPEC',
+  INSERT_CLIENT: 'INSERT_CLIENT',
+  UPDATE_CLIENT: 'UPDATE_CLIENT',
+  DELETE_CLIENT: 'DELETE_CLIENT',
+  SET_REQUISITES: 'SET_REQUISITES',
+  UPDATE_REQUISITES: 'UPDATE_REQUISITES',
 }

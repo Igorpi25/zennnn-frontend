@@ -66,7 +66,7 @@
             <tr
               v-for="(item) in items"
               :key="item.id"
-              class="items bg-background hover:bg-accent3 border-none"
+              class="items bg-gray-900 hover:bg-accent3 border-none"
               @click="$router.push({
                 name: 'spec',
                 params: {
@@ -78,9 +78,10 @@
                 <span
                   :class="[
                     'status-indicator inline-block',
-                    item.specStatus === SpecStatus.IN_PRODUCTION
-                      ? 'status-indicator--orange' : item.specStatus === SpecStatus.IN_STOCK
-                        ? 'status-indicator--green' : 'status-indicator--pink'
+                    item.specStatus === SpecStatus.IN_STOCK
+                      ? 'status-indicator--green' : item.specStatus === SpecStatus.IN_PRODUCTION
+                        ? 'status-indicator--orange' : item.specStatus === SpecStatus.IN_PROCESSING
+                          ? 'status-indicator--pink' : 'bg-transparent'
                   ]"
                 >
                 </span>
@@ -88,7 +89,7 @@
               <td></td>
               <td></td>
               <td>{{ (item.client && item.client.uid) || '-' }}</td>
-              <td>{{ getClientName(item.client) }}</td>
+              <td>{{ item.client && item.client.fullName }}</td>
               <td>{{ ((item.client && item.client.phone) || (item.client && item.client.mobilePhone)) || '-' }}</td>
               <td>{{ item.customNumber || item.specNo || '-' }}</td>
               <td class="text-center">
@@ -99,7 +100,7 @@
                   class="cursor-pointer pointer-events-auto"
                   @click="deleteSpec(item.id)"
                 >
-                  <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 13 16"><defs></defs><g><g><title>Delete</title><image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQCAYAAADNo/U5AAAAU0lEQVQ4T2NkQANBQUH/0cXWrVvHiCyGwgFJgDQhK0Lng9QwYjMZ3SZ0PoZNhDSQbxM2N+OzDaQe7CeQx0mhSVIMM3xUEzSUKQsIYpIPLEGTlWAB2MDtgmErnM4AAAAASUVORK5CYII=" width="13" height="16" transform="matrix(1,0,0,1,0,0)" ></image></g></g></svg>
+                  <i class="icon-delete text-lg text-gray-200" />
                 </div>
               </td>
             </tr>
@@ -107,10 +108,10 @@
         </DataTable>
       </div>
       <Button
-        v-if="roleInOrg === 'OWNER' || roleInOrg === 'MANAGER' || roleInOrg === 'FREELANCER'"
+        v-if="canCreateSpec"
         outline
         class="mt-6"
-        @click="createSpec"
+        @click="createSpecDialog = true"
       >
         <template v-slot:icon>
           <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
@@ -118,28 +119,170 @@
         <span>{{ $t('deals.createDeal') }}</span>
       </Button>
     </div>
+    <v-dialog
+      v-if="canCreateSpec"
+      v-model="createSpecDialog"
+      max-width="458"
+    >
+      <div class="relative bg-gray-400">
+        <div class="pt-6 px-6 pb-8">
+          <div class="flex">
+            <i class="icon-add-user text-primary text-2xl mr-2" />
+            <div class="w-64 text-white font-semibold pb-6">
+              {{ $t('deals.createSpecDialogHeader') }}
+            </div>
+          </div>
+          <div class="pb-8">
+            <Select
+              ref="createSpecSelect"
+              :value="createSpecClient"
+              :placeholder="$t('deals.createSpecDialogSearchPlaceholder')"
+              :search.sync="clientSearch"
+              :items="clients"
+              searchable
+              return-object
+              no-filter
+              item-value="id"
+              item-text="fullName"
+              solo
+              squared
+              hide-details
+              class="text-sm select_nd"
+              input-class="h-8 text-primary placeholder-gray-100"
+              @input="v => createSpecClient = v"
+              @click:prepend-item="createClient"
+            >
+              <template v-slot:prepend-item>
+                <span class="flex items-center jusitfy-center text-primary">
+                  <i class="icon-add mr-1" />
+                  <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
+                </span>
+              </template>
+              <template v-slot:append>
+                <div class="text-green-500 select-none">
+                  <Icon v-if="createSpecClient" size="12">{{ icons.mdiCheck }}</Icon>
+                </div>
+              </template>
+            </Select>
+          </div>
+          <div>
+            <button
+              v-if="createSpecClient"
+              :disabled="createLoading"
+              :class="{ 'hover:bg-primary-accent focus:bg-primary-accent': !createLoading }"
+              style="min-width: 120px"
+              class="relative ml-auto px-3 h-10 flex items-center justify-center relative rounded-md bg-primary text-white focus:outline-none select-none align-middle transition-colors duration-100 ease-out"
+              @click="createSpec"
+            >
+              <div
+                v-if="createLoading"
+                class="absolute inset-0 flex items-center justify-center"
+              >
+                <v-progress-circular
+                  indeterminate
+                  size="24"
+                  width="2"
+                />
+              </div>
+              <span
+                :class="{ 'opacity-0': createLoading }"
+              >
+                {{ $t('deals.createSpecDialogAdd') }}
+              </span>
+            </button>
+            <button
+              v-else
+              :disabled="createLoading"
+              :class="{ 'hover:border-primary focus:border-primary': !createLoading }"
+              style="min-width: 120px"
+              class="relative px-3 h-10 flex items-center justify-center relative rounded-md border border-gray-200 text-primary focus:outline-none select-none align-middle transition-colors duration-100 ease-out"
+              @click="createSpec"
+            >
+              <div
+                v-if="createLoading"
+                class="absolute inset-0 flex items-center justify-center"
+              >
+                <v-progress-circular
+                  indeterminate
+                  size="24"
+                  width="2"
+                />
+              </div>
+              <span
+                :class="{ 'opacity-0': createLoading }"
+              >
+                {{ $t('deals.createSpecDialogWithoutClient') }}
+              </span>
+            </button>
+          </div>
+        </div>
+        <span
+          class="absolute top-0 right-0 mt-4 mr-4 text-gray-200 hover:text-gray-100 cursor-pointer"
+          @click="createSpecDialog = false"
+        >
+          <i class="icon-close" />
+        </span>
+      </div>
+    </v-dialog>
+    <v-dialog
+      v-if="canCreateSpec"
+      ref="clientDialog"
+      v-model="clientDialog"
+      :fullscreen="$vuetify.breakpoint.xs"
+      scrollable
+      max-width="1024"
+      content-class="text-gray-100"
+    >
+      <ClientCard
+        ref="clientCard"
+        :org-id="orgId"
+        create
+        is-component
+        @close="clientDialog = false"
+        @create="setCreateSpecClient"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
-import { mdiPlusCircleOutline, mdiMagnify } from '@mdi/js'
+import { mdiPlusCircleOutline, mdiMagnify, mdiCheck } from '@mdi/js'
 
 import {
+  Role,
   Typename,
   Operation,
   SpecStatus,
-  ClientType,
 } from '../graphql/enums'
 import { SPEC_FRAGMENT } from '../graphql/typeDefs'
-import { GET_SPECS, GET_ORGS } from '../graphql/queries'
+import { GET_SPECS, GET_ORGS, SEARCH_CLIENTS } from '../graphql/queries'
 import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
 import { SPECS_DELTA } from '../graphql/subscriptions'
+
+import ClientCard from '../components/ClientCard.vue'
 
 import { confirmDialog } from '@/util/helpers'
 
 export default {
   name: 'Specs',
+  components: {
+    ClientCard,
+  },
   apollo: {
+    searchClients: {
+      query: SEARCH_CLIENTS,
+      variables () {
+        return {
+          orgId: this.orgId,
+          search: this.clientSearch,
+        }
+      },
+      fetchPolicy: 'cache-and-network',
+      skip () {
+        return !this.clientSearch
+      },
+      debounce: 300,
+    },
     getSpecs: {
       query: GET_SPECS,
       variables () {
@@ -155,18 +298,31 @@ export default {
   },
   data () {
     return {
+      clientDialog: false,
+      clientSearch: '',
+      createSpecClient: null,
+      createSpecDialog: false,
       SpecStatus,
       search: '',
       loading: false,
       createLoading: false,
       deleteLoading: null,
       icons: {
+        mdiCheck,
         mdiMagnify,
         mdiPlusCircleOutline,
       },
     }
   },
   computed: {
+    clients () {
+      return (this.searchClients && this.searchClients.items) || []
+    },
+    canCreateSpec () {
+      return this.roleInOrg === Role.OWNER ||
+        this.roleInOrg === Role.MANAGER ||
+        this.roleInOrg === Role.FREELANCER
+    },
     roleInOrg () {
       const orgs = this.getOrgs || []
       const org = orgs.find(el => el.id === this.orgId) || {}
@@ -180,8 +336,8 @@ export default {
         { text: '', value: 'status', align: 'left', width: 45, bgcolor: 'tansparent', sortable: true },
         { text: '', value: 'coming', align: 'left', width: 45, bgcolor: 'tansparent', sortable: true },
         { text: '', value: 'spending', align: 'left', width: 45, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('deals.clientUid'), value: 'clientUid', align: 'left', width: 80, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('deals.clientName'), value: 'clientName', align: 'left', width: 200, minWidth: 200, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('deals.clientUid'), value: 'client.uid', align: 'left', width: 80, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('deals.clientName'), value: 'clientFillName', align: 'left', width: 200, minWidth: 200, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('deals.clientPhone'), value: 'clientPhone', align: 'left', width: 165, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('deals.specNo'), value: 'specNo', align: 'left', width: 220, minWidth: 220, bgcolor: 'tansparent', sortable: true },
         { text: this.$t('deals.createdAt'), value: 'createdAt', width: 120, minWidth: 120, bgcolor: 'tansparent' },
@@ -189,7 +345,25 @@ export default {
       ]
     },
     items () {
-      return this.getSpecs || []
+      const items = this.getSpecs || []
+      return items.map(item => {
+        const client = item.client || {}
+        return {
+          ...item,
+          // for search
+          clientFillName: client.fullName,
+          clientPhone: client.phone || client.mobilePhone,
+        }
+      })
+    },
+  },
+  watch: {
+    createSpecDialog (val) {
+      if (!val) {
+        setTimeout(() => {
+          this.createSpecClient = null
+        }, 300)
+      }
     },
   },
   mounted () {
@@ -260,26 +434,31 @@ export default {
     })
   },
   methods: {
-    getClientName (item) {
-      if (!item) return ''
-      let name = ''
-      if (item.clientType === ClientType.LEGAL) {
-        name = item.companyNameSl || item.companyNameCl || ''
-      } else {
-        name = item.lastName || ''
-        name += item.firstName ? ` ${item.firstName}` : ''
-        name += item.middleName ? ` ${item.middleName}` : ''
-      }
-      return name
+    createClient () {
+      this.clientDialog = true
+      this.$nextTick(() => {
+        if (this.$refs.clientCard) {
+          this.$refs.clientCard.reset()
+          if (this.$refs.clientDialog.$refs.dialog) {
+            this.$refs.clientDialog.$refs.dialog.scrollTop = 0
+          }
+        }
+      })
+    },
+    setCreateSpecClient (client) {
+      this.clientDialog = false
+      this.createSpecClient = client
     },
     async createSpec () {
       try {
         this.createLoading = true
+        const variables = { orgId: this.orgId }
+        if (this.createSpecClient && this.createSpecClient.id) {
+          variables.clientId = this.createSpecClient.id
+        }
         const response = await this.$apollo.mutate({
           mutation: CREATE_SPEC,
-          variables: {
-            orgId: this.orgId,
-          },
+          variables,
         })
         if (response && response.data && response.data.createSpec) {
           const spec = response.data.createSpec
@@ -300,6 +479,7 @@ export default {
               },
             })
           }
+          this.$router.push({ name: 'spec', params: { orgId: this.orgId, specId: spec.id } })
         }
       } catch (error) {
         if (error.graphQLErrors) {
@@ -313,7 +493,9 @@ export default {
           throw new Error(error)
         }
       } finally {
-        this.createLoading = false
+        setTimeout(() => {
+          this.createLoading = false
+        }, 150)
       }
     },
     async deleteSpec (id) {

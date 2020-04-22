@@ -4,9 +4,7 @@
       <span
         :class="[
           'status-indicator__bordered',
-          item.productStatus === ProductStatus.IN_PRODUCTION
-            ? 'status-indicator__bordered--orange' : item.productStatus === ProductStatus.IN_STOCK
-              ? 'status-indicator__bordered--green' : 'status-indicator__bordered--pink'
+          productStatus,
         ]"
       >
       </span>
@@ -18,6 +16,8 @@
       <ProductImage
         :product-id="item.id"
         :images="info.images"
+        :upload="false"
+        :removable="false"
       />
     </td>
     <td>
@@ -27,7 +27,8 @@
       <span>{{ item.article || $t('shipping.model') }}</span>
     </td>
     <td class="text-right">
-      <span>{{ $n(item.qty, 'formatted') || $t('placeholder.emptyNumber') }}</span>
+      <span class="mr-1">{{ $n(item.qty) || $t('placeholder.emptyNumber') }}</span>
+      <span>{{ $t(`unit.${item.unit || 'pcs'}`) }}</span>
     </td>
 
     <template v-if="activeTab === 1">
@@ -61,18 +62,20 @@
           <ProductImagesList
             :product-id="item.id"
             :images="info.images"
+            :upload="false"
+            :removable="false"
           />
         </div>
       </td>
       <td class="text-left">
-        <span>{{ info.description || $t('placeholder.emptyText') }}</span>
+        <span>{{ info.description || '-' }}</span>
       </td>
       <td></td>
     </template>
 
     <template v-else-if="activeTab === 3">
-      <td class="text-left text-primary">
-        <span>{{ link.url || $t('placeholder.emptyText') }}</span>
+      <td class="text-left">
+        <span>{{ link.url || '-' }}</span>
       </td>
       <td class="text-right">
         <i><a href="#"></a></i>
@@ -83,10 +86,6 @@
 </template>
 
 <script>
-import { mdiClose } from '@mdi/js'
-import {
-  ProductStatus,
-} from '@/graphql/enums'
 import product from '../../mixins/product'
 
 export default {
@@ -113,14 +112,6 @@ export default {
       type: Boolean,
       default: true,
     },
-  },
-  data () {
-    return {
-      ProductStatus,
-      icons: {
-        mdiClose,
-      },
-    }
   },
 }
 </script>

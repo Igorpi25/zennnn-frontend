@@ -42,8 +42,8 @@ export const GET_IMAGE_UPLOAD_URL = gql`
 `
 
 export const CREATE_SPEC = gql`
-  mutation CreateSpec($orgId: ID!) {
-    createSpec(orgId: $orgId) {
+  mutation CreateSpec($orgId: ID!, $clientId: ID) {
+    createSpec(orgId: $orgId, clientId: $clientId) {
       ...SpecFragment
     }
   }
@@ -138,6 +138,16 @@ export const UPDATE_PRODUCT_INFO = gql`
       images
       description
     }
+  }
+`
+export const ADD_PRODUCT_IMAGE = gql`
+  mutation AddProductImage($id: ID!, $inputImages: [String!]!, $unshift: Boolean) {
+    addProductImage(id: $id, inputImages: $inputImages, unshift: $unshift)
+  }
+`
+export const REMOVE_PRODUCT_IMAGE = gql`
+  mutation RemoveProductImage($id: ID!, $inputImages: [String!]!) {
+    removeProductImage(id: $id, inputImages: $inputImages)
   }
 `
 export const UPDATE_PRODUCT_LINK = gql`
@@ -338,6 +348,18 @@ export const DELETE_REQUISITE = gql`
   }
 `
 
+export const SET_DEFAULT_REQUISITE = gql`
+  mutation SetDefaultReqisite($orgId: ID!, $id: ID!) {
+    setDefaultReqisite(orgId: $orgId, id: $id)
+  }
+`
+
+export const SET_ORG_AVATAR = gql`
+  mutation SetOrgAvatar($orgId: ID!, $avatar: String!) {
+    setOrgAvatar(orgId: $orgId, avatar: $avatar)
+  }
+`
+
 export const CREATE_CONTRACT = gql`
   mutation CreateContract($orgId: ID!, $input: CreateContractInput!) {
     createContract(orgId: $orgId, input: $input) {
@@ -347,7 +369,7 @@ export const CREATE_CONTRACT = gql`
   ${ORG_CONTRACT_FRAGMENT}
 `
 
-export const UPDATE_СONTRACT = gql`
+export const UPDATE_CONTRACT = gql`
   mutation UpdateContract($id: ID!, $input: UpdateContractInput!) {
     updateContract(id: $id, input: $input) {
       ...OrgContractFragment
@@ -356,7 +378,7 @@ export const UPDATE_СONTRACT = gql`
   ${ORG_CONTRACT_FRAGMENT}
 `
 
-export const DELETE_СONTRACT = gql`
+export const DELETE_CONTRACT = gql`
   mutation DeleteContract($id: ID!) {
     deleteContract(id: $id)
   }
@@ -383,5 +405,149 @@ export const DECLINE_INVITATION = gql`
 export const CANCEL_INVITATION = gql`
   mutation CancelInvitation($id: ID!) {
     cancelInvitation(id: $id)
+  }
+`
+
+export const REMOVE_USER_FROM_ORG = gql`
+  mutation RemoveUserFromOrg($orgId: ID!, $userId: ID!) {
+    removeUserFromOrg(orgId: $orgId, userId: $userId)
+  }
+`
+
+export const OPEN_LINK_ACCESS = gql`
+  mutation OpenLinkAccess($specId: ID!) {
+    openLinkAccess(specId: $specId)
+  }
+`
+
+export const CLOSE_LINK_ACCESS = gql`
+  mutation CloseLinkAccess($specId: ID!) {
+    closeLinkAccess(specId: $specId)
+  }
+`
+
+export const ADD_EMAIL_ACCESS_TO_SPEC = gql`
+  mutation AddEmailAccessToSpec($specId: ID!, $email: String!) {
+    addEmailAccessToSpec(specId: $specId, email: $email)
+  }
+`
+
+export const REMOVE_EMAIL_ACCESS_TO_SPEC = gql`
+  mutation RemoveEmailAccessToSpec($specId: ID!, $email: String!) {
+    removeEmailAccessToSpec(specId: $specId, email: $email)
+  }
+`
+
+export const SEND_LINK_ACCESS_TO_EMAIL = gql`
+  mutation SendLinkAccessToEmail($specId: ID!, $email: String!) {
+    sendLinkAccessToEmail(specId: $specId, email: $email)
+  }
+`
+
+export const ADD_COMMENT_TO_SPEC = gql`
+  mutation AddCommentToSpec($specId: ID!, $comment: String!) {
+    addCommentToSpec(specId: $specId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_SPEC_COMMENT = gql`
+  mutation ReplyToSpecComment($specId: ID!, $commentId: ID!, $comment: String!) {
+    replyToSpecComment(specId: $specId, commentId: $commentId, comment: $comment)
+  }
+`
+
+export const ADD_COMMENT_TO_PRODUCT = gql`
+  mutation AddCommentToProduct($productId: ID!, $comment: String!) {
+    addCommentToProduct(productId: $productId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_PRODUCT_COMMENT = gql`
+  mutation ReplyToProductComment($productId: ID!, $commentId: ID!, $comment: String!) {
+    replyToProductComment(productId: $productId, commentId: $commentId, comment: $comment)
+  }
+`
+
+export const ADD_COMMENT_TO_PAPER_SPEC = gql`
+  mutation AddCommentToPaperSpec($specId: ID!, $comment: String!) {
+    addCommentToPaperSpec(specId: $specId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_PAPER_SPEC_COMMENT = gql`
+  mutation ReplyToPaperSpecComment($specId: ID!, $commentId: ID!, $comment: String!) {
+    replyToPaperSpecComment(specId: $specId, commentId: $commentId, comment: $comment)
+  }
+`
+
+export const ADD_COMMENT_TO_PAPER_PRODUCT = gql`
+  mutation AddCommentToPaperProduct($productId: ID!, $comment: String!) {
+    addCommentToPaperProduct(productId: $productId, comment: $comment)
+  }
+`
+
+export const REPLY_TO_PAPER_PRODUCT_COMMENT = gql`
+  mutation ReplyToPaperProductComment($productId: ID!, $commentId: ID!, $comment: String!) {
+    replyToPaperProductComment(productId: $productId, commentId: $commentId, comment: $comment)
+  }
+`
+
+export const MARK_SPEC_COMMENTS_AS_VIEWED = gql`
+  mutation MarkSpecCommentsAsViewed($specId: ID!, $commentsIds: [ID!]) {
+    markSpecCommentsAsViewed(specId: $specId, commentsIds: $commentsIds)
+  }
+`
+
+export const MARK_PRODUCT_COMMENTS_AS_VIEWED = gql`
+  mutation MarkProductCommentsAsViewed($productId: ID!, $commentsIds: [ID!]) {
+    markProductCommentsAsViewed(productId: $productId, commentsIds: $commentsIds)
+  }
+`
+
+export const MARK_PAPER_SPEC_COMMENTS_AS_VIEWED = gql`
+  mutation MarkPaperSpecCommentsAsViewed($specId: ID!, $commentsIds: [ID!]) {
+    markPaperSpecCommentsAsViewed(specId: $specId, commentsIds: $commentsIds)
+  }
+`
+
+export const MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED = gql`
+  mutation MarkPaperProductCommentsAsViewed($productId: ID!, $commentsIds: [ID!]) {
+    markPaperProductCommentsAsViewed(productId: $productId, commentsIds: $commentsIds)
+  }
+`
+
+export const SET_SPEC_CONTAINER_SIZE = gql`
+  mutation SetSpecContainerSize($specId: ID!, $containerId: ID!, $inputSize: ContainerSize!, $inputMode: ContainerMode) {
+    setSpecContainerSize(specId: $specId, containerId: $containerId, inputSize: $inputSize, inputMode: $inputMode)
+  }
+`
+
+export const SET_SPEC_CONTAINER_CUSTOM_CAPACITY = gql`
+  mutation SetSpecContainerCustomCapacity($specId: ID!, $containerId: ID!, $capacity: Float, $shrink: Float) {
+    setSpecContainerCustomCapacity(specId: $specId, containerId: $containerId, capacity: $capacity, shrink: $shrink)
+  }
+`
+
+export const SET_SPEC_ACTIVE_TAB = gql`
+  mutation SetSpecActiveTab($specId: ID!, $tab: Int!) {
+    setSpecActiveTab(specId: $specId, tab: $tab) @client
+  }
+`
+
+export const SET_SPEC_EXPANDED_INVOICES = gql`
+  mutation SetSpecExpandedInvoices($specId: ID!, $ids: [ID!]!, $prefix: String) {
+    setSpecExpandedInvoices(specId: $specId, ids: $ids, prefix: $prefix) @client
+  }
+`
+
+export const ADD_SPEC_EXPANDED_INVOICES = gql`
+  mutation AddSpecExpandedInvoices($specId: ID!, $ids: [ID!]!, $prefix: String) {
+    addSpecExpandedInvoices(specId: $specId, ids: $ids, prefix: $prefix) @client
+  }
+`
+
+export const REMOVE_SPEC_EXPANDED_INVOICES = gql`
+  mutation RemoveSpecExpandedInvoices($specId: ID!, $ids: [ID!]!, $prefix: String) {
+    removeSpecExpandedInvoices(specId: $specId, ids: $ids, prefix: $prefix) @client
   }
 `

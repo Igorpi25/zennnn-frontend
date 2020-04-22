@@ -63,7 +63,10 @@
     </div>
 
     <div class="flex sm:flex-wrap w-full sm:w-auto md:px-3 max-w-xs">
-      <div class="flex flex-col items-end w-full sm:w-32 pr-1 md:pr-0 lg:pr-1">
+      <div
+        v-if="item.profitType === InvoiceProfitType.COMMISSION"
+        class="flex flex-col items-end w-full sm:w-32 pr-1 md:pr-0 lg:pr-1"
+      >
         <label class="text-xs text-gray-light select-none pr-2">
           {{ $t('shipping.discount') }}
         </label>
@@ -84,7 +87,7 @@
           })"
         >
           <template v-slot:append>
-            {{ $t('currency.CNY.symbol') }}
+            {{ $t(`currency.${currency}.symbol`) }}
           </template>
         </TextField>
       </div>
@@ -109,7 +112,7 @@
           })"
         >
           <template v-slot:append>
-            {{ $t('currency.CNY.symbol') }}
+            {{ $t(`currency.${currency}.symbol`) }}
           </template>
         </TextField>
         <v-menu
@@ -122,7 +125,7 @@
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(prepaymentDate)"
+                :value="prepaymentDate ? $d($parseDate(prepaymentDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -138,13 +141,14 @@
           </template>
           <v-date-picker
             v-model="prepaymentDate"
-            @change="menuPrepaymentDate = false"
             :locale="$i18n.locale"
+            :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"
             no-title
             dark
+            @change="menuPrepaymentDate = false"
           ></v-date-picker>
         </v-menu>
       </div>
@@ -159,7 +163,7 @@
           class="leading-none"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.obtainCost, 'formatted') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.obtainCost, 'formatted') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
         <v-menu
           ref="menu"
@@ -171,7 +175,7 @@
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(residueDate)"
+                :value="residueDate ? $d($parseDate(residueDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -187,13 +191,14 @@
           </template>
           <v-date-picker
             v-model="residueDate"
-            @change="menuResidueDate = false"
             :locale="$i18n.locale"
+            :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"
             no-title
             dark
+            @change="menuResidueDate = false"
           ></v-date-picker>
         </v-menu>
       </div>
@@ -205,7 +210,7 @@
           class="leading-none text-white"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.clientDebt, 'formatted') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.clientDebt, 'formatted') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
         <v-menu
           ref="menu"
@@ -217,7 +222,7 @@
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(clientDebtDate)"
+                :value="clientDebtDate ? $d($parseDate(clientDebtDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -233,13 +238,14 @@
           </template>
           <v-date-picker
             v-model="clientDebtDate"
-            @change="menuClientDebtDate = false"
             :locale="$i18n.locale"
+            :first-day-of-week="$i18n.locale === 'ru' ? 1 : 0"
             :next-icon="icons.mdiChevronRight"
             :prev-icon="icons.mdiChevronLeft"
             color="#5a8199"
             no-title
             dark
+            @change="menuClientDebtDate = false"
           ></v-date-picker>
         </v-menu>
       </div>
@@ -250,14 +256,18 @@
 
 <script>
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js'
-import format from 'date-fns/format'
 
 import { InvoiceProfitType } from '@/graphql/enums'
 import { UPDATE_INVOICE } from '@/graphql/mutations'
+import { DEFAULT_CURRENCY } from '../config/globals'
 
 export default {
   name: 'InvoiceFooter',
   props: {
+    currency: {
+      type: String,
+      default: DEFAULT_CURRENCY,
+    },
     item: {
       type: Object,
       default: () => ({}),
@@ -280,12 +290,6 @@ export default {
     }
   },
   methods: {
-    formatDate (date) {
-      return format(this.$parseDate(date), this.$i18n.locale === 'zh'
-        ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
-          ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
-      )
-    },
     async updateInvoice (input) {
       try {
         this.updateLoading = input.id
@@ -363,7 +367,7 @@ export default {
   @apply bg-accent1;
   border-radius: 2px;
 }
-.light-theme .invoice-footer {
+[data-theme="light"] .invoice-footer {
   @apply bg-white;
 }
 .invoice-footer > div {

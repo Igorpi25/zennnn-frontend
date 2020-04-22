@@ -1,24 +1,35 @@
 export default {
   data () {
     return {
-      hasError: false,
+      shouldValidate: false,
+      hasError: null,
       errorText: '',
+    }
+  },
+  watch: {
+    'form.wasValidated': {
+      handler () {
+        this.shouldValidate = true
+      },
+    },
+  },
+  mounted () {
+    const form = this.form || {}
+    if (!form.lazyValidation && this.value) {
+      this.shouldValidate = true
+      this.validate()
     }
   },
   methods: {
     checkField (e) {
-      if (this.form) {
-        if (!this.form.wasValidated) return
-        this.validate(e.target)
-      }
+      this.shouldValidate = true
+      if (this.form && this.form.lazyValidation && !this.form.wasValidated) return
+      this.validate(e.target)
     },
     validate (el) {
       let errorsCount = 0
       const element = el || this.$refs.input
-      if (element.willValidate === true && !element.validity.valid) {
-        this.setError(element.validationMessage)
-        errorsCount++
-      } else if (this.rules && this.rules.length > 0) {
+      if (this.rules && this.rules.length > 0) {
         for (let rule of this.rules) {
           const result = rule(this.internalValue)
           if (result !== true) {
@@ -27,6 +38,9 @@ export default {
             break
           }
         }
+      } else if (element.willValidate === true && !element.validity.valid) {
+        this.setError(element.validationMessage)
+        errorsCount++
       }
       if (errorsCount === 0) {
         this.clearError()
@@ -35,6 +49,9 @@ export default {
     },
     reset () {
       this.internalValue = ''
+      this.clearError()
+    },
+    resetValidation () {
       this.clearError()
     },
     setError (errorMessage) {

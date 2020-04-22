@@ -44,7 +44,7 @@
           <template v-slot:header.deals-content>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <img class="inline mr-1" src="../assets/icons/deals.png" v-on="on">
+                <i class="icon-portdolio text-lg align-middle mr-1" v-on="on" />
               </template>
               <span>
                 {{ $t('clients.currentDealsAmount') }}
@@ -55,7 +55,7 @@
             <tr
               v-for="(item) in items"
               :key="item.id"
-              class="items bg-background hover:bg-accent3 border-none"
+              class="items bg-gray-900 hover:bg-accent3 border-none"
               @click="$router.push({
                 name: 'client',
                 params: {
@@ -64,7 +64,7 @@
               })"
             >
               <td></td>
-              <td>{{ item.companyName || (`${item.lastName || ''} ${item.firstName || ''} ${item.middleName || ''}`) }}</td>
+              <td>{{ item.fullName }}</td>
               <td>{{ item.phone || item.mobilePhone }}</td>
               <td>{{ item.contactPerson }}</td>
               <td></td>
@@ -75,7 +75,7 @@
                   class="cursor-pointer pointer-events-auto"
                   @click="deleteClient(item.id)"
                 >
-                  <svg width="13" height="16" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 13 16"><defs></defs><g><g><title>Delete</title><image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAQCAYAAADNo/U5AAAAU0lEQVQ4T2NkQANBQUH/0cXWrVvHiCyGwgFJgDQhK0Lng9QwYjMZ3SZ0PoZNhDSQbxM2N+OzDaQe7CeQx0mhSVIMM3xUEzSUKQsIYpIPLEGTlWAB2MDtgmErnM4AAAAASUVORK5CYII=" width="13" height="16" transform="matrix(1,0,0,1,0,0)" ></image></g></g></svg>
+                  <i class="icon-delete text-lg text-gray-200" />
                 </div>
               </td>
             </tr>
@@ -102,7 +102,6 @@
 <script>
 import { mdiPlusCircleOutline, mdiMagnify } from '@mdi/js'
 
-import { ClientType } from '@/graphql/enums'
 import { LIST_CLIENTS } from '@/graphql/queries'
 import { DELETE_CLIENT } from '@/graphql/mutations'
 
@@ -138,32 +137,27 @@ export default {
     headers () {
       return [
         { text: '', value: 'debt', align: 'left', width: 60, bgcolor: 'tansparent', sortable: true, tooltip: this.$t('clients.clientsDebt') },
-        { text: this.$t('label.client.companyName'), value: 'name', align: 'left', width: 220, minWidth: 220, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('label.client.phone'), value: 'phone', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('label.client.contactPerson'), value: 'contactPerson', align: 'left', width: 165, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('clients.companyName'), value: 'fullName', align: 'left', width: 220, minWidth: 220, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('clients.phone'), value: 'clientPhone', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('clients.contactPerson'), value: 'contactPerson', align: 'left', width: 165, bgcolor: 'tansparent', sortable: true },
         { text: '', value: 'coming', align: 'left', width: 45, bgcolor: 'tansparent' },
-        { text: this.$t('label.client.uidAbr'), value: 'uid', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent', sortable: true },
+        { text: this.$t('clients.uid'), value: 'uid', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent', sortable: true },
         { text: '', value: 'deals', width: 60, minWidth: 60, bgcolor: 'tansparent', sortable: true, tooltip: this.$t('clients.currentDealsAmount') },
         { text: '', value: 'actions', align: 'right', width: 48, bgcolor: 'tansparent' },
       ]
     },
     items () {
-      return (this.listClients && this.listClients.items) || []
+      const items = (this.listClients && this.listClients.items) || []
+      return items.map(item => {
+        return {
+          ...item,
+          // for search
+          clientPhone: item.phone || item.mobilePhone,
+        }
+      })
     },
   },
   methods: {
-    getClientName (item) {
-      if (!item) return ''
-      let name = ''
-      if (item.clientType === ClientType.LEGAL) {
-        name = item.companyNameSl || item.companyNameCl || ''
-      } else {
-        name = item.lastName || ''
-        name += item.firstName ? ` ${item.firstName}` : ''
-        name += item.middleName ? ` ${item.middleName}` : ''
-      }
-      return name
-    },
     async deleteClient (id) {
       try {
         const msg = this.$t('alert.removeClient')

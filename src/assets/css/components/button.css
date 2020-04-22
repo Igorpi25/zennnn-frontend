@@ -33,11 +33,12 @@
 .button--disabled {
   pointer-events: none;
   cursor: not-allowed;
+  user-select: none;
   background-color: #626262;
   color: #ffffff
 }
 .button--disabled:hover {
-   background-color: #626262;
+  background-color: #626262;
   color: #ffffff
 }
 

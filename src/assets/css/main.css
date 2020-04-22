@@ -26,11 +26,39 @@
   --base-accent1: #404040;    /* spec invoice-header */
   --base-accent2: #616161;    /* table header text */
   --base-accent3: #252525;    /* table tr items */
-  --base-background: #0F0F0F; /* view */
 }
 
-/* .light-theme {
-  --base-accent1: #ffffff;
-  --base-accent2: #7b7b7b;
-  --base-accent3: #f4f4f4;
-} */
+.dots {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+.dots::before {
+  display: block;
+  content:
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+  ;
+}
+
+.status-stock {
+  color: #00FF16;
+}
+.status-production {
+  color: #FFB700;
+}
+.status-processing {
+  color: #FF005E;
+}
+
+.min-h-4 {
+  min-height: 1rem;
+}
+.min-h-5 {
+  min-height: 1.25rem;
+}
+.min-h-6 {
+  min-height: 1.5rem;
+}

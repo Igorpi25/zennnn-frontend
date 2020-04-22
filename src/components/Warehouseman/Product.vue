@@ -4,9 +4,7 @@
       <span
         :class="[
           'status-indicator__bordered',
-          item.productStatus === ProductStatus.IN_PRODUCTION
-            ? 'status-indicator__bordered--orange' : item.productStatus === ProductStatus.IN_STOCK
-              ? 'status-indicator__bordered--green' : 'status-indicator__bordered--pink'
+          productStatus,
         ]"
       >
       </span>
@@ -18,32 +16,18 @@
       <ProductImage
         :product-id="item.id"
         :images="info.images"
+        sortable
       />
     </td>
     <td>
-      <Editable
-        :value="item.name"
-        :placeholder="$t('shipping.name')"
-        @input="updateProduct({ name: $event })"
-      />
+      <span>{{ item.name || $t('shipping.name') }}</span>
     </td>
     <td>
-      <Editable
-        :value="item.article"
-        :placeholder="$t('shipping.model')"
-        @input="updateProduct({ article: $event })"
-      />
+      <span>{{ item.article || $t('shipping.model') }}</span>
     </td>
-    <td>
-      <Editable
-        lazy
-        type="number"
-        inputmode="decimal"
-        format-style="decimal"
-        :value="item.qty"
-        :placeholder="$t('placeholder.emptyNumber')"
-        @input="updateProduct({ qty: $event })"
-      />
+    <td class="text-right">
+      <span class="mr-1">{{ $n(item.qty) || $t('placeholder.emptyNumber') }}</span>
+      <span>{{ $t(`unit.${item.unit || 'pcs'}`) }}</span>
     </td>
 
     <template v-if="activeTab === 1">
@@ -65,28 +49,30 @@
           @input="updateProductStore({ gross: $event })"
         />
       </td>
-      <td class="flex items-center" style="line-height:35px">
-        <Editable
-          type="number"
-          inputmode="decimal"
-          :placeholder="$t('placeholder.emptyNumber')"
-          :value="store.width"
-          @input="updateProductStore({ width: $event })"
-        />
-        <Editable
-          type="number"
-          inputmode="decimal"
-          :placeholder="$t('placeholder.emptyNumber')"
-          :value="store.height"
-          @input="updateProductStore({ height: $event })"
-        />
-        <Editable
-          type="number"
-          inputmode="decimal"
-          :placeholder="$t('placeholder.emptyNumber')"
-          :value="store.length"
-          @input="updateProductStore({ length: $event })"
-        />
+      <td>
+        <div class="flex items-center">
+          <Editable
+            type="number"
+            inputmode="decimal"
+            :placeholder="$t('placeholder.emptyNumber')"
+            :value="store.width"
+            @input="updateProductStore({ width: $event })"
+          />
+          <Editable
+            type="number"
+            inputmode="decimal"
+            :placeholder="$t('placeholder.emptyNumber')"
+            :value="store.height"
+            @input="updateProductStore({ height: $event })"
+          />
+          <Editable
+            type="number"
+            inputmode="decimal"
+            :placeholder="$t('placeholder.emptyNumber')"
+            :value="store.length"
+            @input="updateProductStore({ length: $event })"
+          />
+        </div>
       </td>
       <td>
         <Editable
@@ -119,7 +105,7 @@
 
     <template v-else-if="activeTab === 2">
       <td class="text-right">
-        <div v-if="info.images && info.images.length > 0">
+        <div v-if="info.images">
           <ProductImagesList
             :product-id="item.id"
             :images="info.images"
@@ -152,8 +138,6 @@
 </template>
 
 <script>
-import { mdiClose } from '@mdi/js'
-import { ProductStatus } from '@/graphql/enums'
 import product from '../../mixins/product'
 
 export default {
@@ -180,14 +164,6 @@ export default {
       type: Boolean,
       default: true,
     },
-  },
-  data () {
-    return {
-      ProductStatus,
-      icons: {
-        mdiClose,
-      },
-    }
   },
 }
 </script>

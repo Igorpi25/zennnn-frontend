@@ -51,7 +51,7 @@ import { mdiPlusCircleOutline } from '@mdi/js'
 import { ziGear, ziTrash } from '@/assets/icons'
 
 import { LIST_ORG_CONTRACTS } from '../graphql/queries'
-import { DELETE_СONTRACT } from '../graphql/mutations'
+import { DELETE_CONTRACT } from '../graphql/mutations'
 
 import { confirmDialog } from '@/util/helpers'
 
@@ -81,7 +81,7 @@ export default {
           return
         }
         const response = await this.$apollo.mutate({
-          mutation: DELETE_СONTRACT,
+          mutation: DELETE_CONTRACT,
           variables: { id },
           update: (store) => {
             const data = store.readQuery({

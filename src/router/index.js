@@ -25,7 +25,7 @@ import { Auth, i18n } from '../plugins'
 import { apolloClient } from '../plugins/apollo'
 import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
 
-import { CURRENT_ORG_STORE_KEY } from '../config/globals'
+import { CURRENT_LANG_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
 
 Vue.use(VueRouter)
 
@@ -33,9 +33,19 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    redirect: () => {
-      const orgId = localStorage.getItem(CURRENT_ORG_STORE_KEY) || ''
-      return { name: 'specs', params: { orgId } }
+    beforeEnter: async (to, from, next) => {
+      try {
+        const loggedIn = await Auth.checkAuth()
+        if (!loggedIn) {
+          return next({ name: 'about' })
+        }
+        const orgId = localStorage.getItem(CURRENT_ORG_STORE_KEY) || ''
+        return next({ name: 'specs', params: { orgId } })
+      } catch (error) {
+        // eslint-disable-next-line
+        console.warn('Error on / before route enter')
+        next()
+      }
     },
   },
   {
@@ -58,12 +68,14 @@ const routes = [
             localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
             next({ name: 'specs', params: { orgId: org.id } })
           } else {
+            localStorage.removeItem(CURRENT_ORG_STORE_KEY)
             throw new Error('Not found')
           }
         } else if (getOrgs.some(el => el.id === orgId)) {
           localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
           next()
         } else {
+          localStorage.removeItem(CURRENT_ORG_STORE_KEY)
           throw new Error('Not found')
         }
       } catch (error) {
@@ -84,7 +96,7 @@ const routes = [
       {
         path: 'spec/:specId',
         name: 'spec',
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, scrollToTop: true },
         component: Spec,
         beforeEnter: async (to, from, next) => {
           try {
@@ -116,14 +128,14 @@ const routes = [
       {
         path: 'clients/create',
         name: 'client-create',
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, scrollToTop: true },
         props: { create: true },
         component: ClientItem,
       },
       {
         path: 'clients/:clientId',
         name: 'client',
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, scrollToTop: true },
         component: ClientItem,
       },
       {
@@ -135,14 +147,14 @@ const routes = [
       {
         path: 'suppliers/create',
         name: 'supplier-create',
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, scrollToTop: true },
         props: { create: true },
         component: SupplierItem,
       },
       {
         path: 'suppliers/:supplierId',
         name: 'supplier',
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, scrollToTop: true },
         component: SupplierItem,
       },
       {
@@ -154,8 +166,8 @@ const routes = [
       {
         path: 'requisites',
         name: 'requisites',
-        component: RequisiteList,
         meta: { requiresAuth: true },
+        component: RequisiteList,
       },
       {
         path: 'requisites/create',
@@ -167,8 +179,8 @@ const routes = [
       {
         path: 'requisites/:reqId',
         name: 'requisite',
+        meta: { requiresAuth: true, scrollToTop: true },
         component: RequisiteItem,
-        meta: { requiresAuth: true },
       },
     ],
   },
@@ -206,10 +218,22 @@ const routes = [
     },
   },
   {
-    path: '/spec/:specId/preview',
+    path: '/about',
+    name: 'about',
+    component: () => import(/* webpackChunkName: "home" */ '../views/About.vue'),
+  },
+  {
+    path: '/paper/:specId',
     name: 'preview',
-    meta: { requiresAuth: true },
     component: Preview,
+    meta: { scrollToTop: true },
+    beforeEnter: (to, from, next) => {
+      if (to.query.sid) {
+        localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid)
+        return next({ name: 'preview', params: { specId: to.params.specId }, query: {} })
+      }
+      next()
+    },
   },
   {
     path: '/signin',
@@ -282,10 +306,50 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
+  scrollBehavior (to, from, savedPosition) {
+    if (to.matched.some((m) => m.meta.scrollToTop)) {
+      return { x: 0, y: 0 }
+    }
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  },
   routes,
 })
 
 router.beforeEach(async (to, from, next) => {
+  // browser language detect
+  const localLang = localStorage.getItem(CURRENT_LANG_STORE_KEY)
+  if (!localLang) {
+    const defaultLang = process.env.VUE_APP_I18N_LOCALE || 'en'
+    const userLang = navigator.language || navigator.userLanguage || ''
+    // is not default lang
+    if (!userLang.startsWith(defaultLang)) {
+      const supportedLangs = i18n.availableLocales
+      let lang = userLang.split('-')[0] || ''
+      if (!supportedLangs.includes(lang)) {
+        // default for not supported langs
+        lang = defaultLang
+        const langs = navigator.languages || []
+        for (const sLang of supportedLangs) {
+          if (langs.some(el => (el || '').startsWith(sLang))) {
+            lang = sLang
+            break
+          }
+        }
+      }
+      localStorage.setItem(CURRENT_LANG_STORE_KEY, lang)
+      i18n.locale = lang
+    }
+  }
+  // set theme attribute
+  if (to.name === 'preview' || to.name === 'about') {
+    document.body.dataset.theme = 'light'
+  } else {
+    document.body.dataset.theme = 'dark'
+  }
   // check auth
   const loggedIn = await Auth.checkAuth()
   if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -307,6 +371,9 @@ router.beforeEach(async (to, from, next) => {
       next()
     }
   } else {
+    if (!loggedIn && to.path === '/') {
+      return next({ name: 'about' })
+    }
     next() // make sure to always call next()!
   }
 })

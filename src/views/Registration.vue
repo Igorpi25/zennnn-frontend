@@ -31,7 +31,7 @@
                 <template v-slot:text>
                   <span>{{ $t('signup.hasAccount') }}</span>
                 </template>
-                <span>{{ $t('action.login') }}</span>
+                <span>{{ $t('signup.signin') }}</span>
               </Button>
             </div>
             <div class="hidden md:flex">
@@ -41,6 +41,7 @@
           <div class="flex-shrink-0">
             <Form
               ref="form"
+              v-model="formValidity"
               :title="$t('signup.registration')"
               :error-message.sync="errorMessage"
               rounded
@@ -55,8 +56,8 @@
                 <TextField
                   v-model="formModel.firstName"
                   :label="$t('signup.firstName')"
+                  :rules="[rules.required]"
                   name="firstName"
-                  required
                   autofocus
                   state-icon
                 />
@@ -65,8 +66,8 @@
                 <TextField
                   v-model="formModel.lastName"
                   :label="$t('signup.lastName')"
+                  :rules="[rules.required]"
                   name="lastName"
-                  required
                   state-icon
                 />
               </div>
@@ -75,10 +76,10 @@
                   ref="email"
                   :value="formModel.email"
                   :label="$t('signup.login')"
+                  :rules="[rules.required, rules.email]"
                   type="email"
                   name="email"
                   readonly
-                  required
                   state-icon
                 />
               </div>
@@ -87,8 +88,8 @@
                   v-model="formModel.password"
                   :label="$t('signup.password')"
                   :type="showPassword ? 'text' : 'password'"
+                  :rules="[rules.required, rules.passwordMinLength]"
                   name="password"
-                  required
                   minlength="8"
                   state-icon
                 >
@@ -101,18 +102,21 @@
                         v-if="showPassword"
                         color="#9A9A9A"
                         style="transform:rotateY(-180deg)"
-                      >{{ icons.mdiEyeOffOutline }}</Icon>
+                      >{{ icons.mdiEyeOutline }}</Icon>
                       <Icon
                         v-else
                         color="#9A9A9A"
-                      >{{ icons.mdiEyeOutline }}</Icon>
+                      >{{ icons.mdiEyeOffOutline }}</Icon>
                     </div>
                   </template>
                 </TextField>
               </div>
               <div class="relative mx-auto text-secondary">
                 <!-- TODO fix position -->
-                <Checkbox required secondary>
+                <Checkbox
+                  :rules="[rules.required]"
+                  secondary
+                >
                   <span class="ml-3 float-left text-gray-light">
                     {{ $t('signup.acceptPolicyAndTerms') }}&nbsp;
                     <a class="text-secondary" href="#">{{ $t('signup.privacyPolicy') }}</a>
@@ -122,9 +126,9 @@
                 </Checkbox>
                 <div class="flex justify-center">
                   <Button
+                    :disabled="formValidity || loading"
                     large
                     secondary
-                    :disabled="loading"
                     class="mt-5 flex justify-center"
                     @click="onSubmit"
                   >
@@ -178,6 +182,7 @@ export default {
   },
   data () {
     return {
+      formValidity: false,
       loading: false,
       errorMessage: '',
       showTempPassword: false,
@@ -191,6 +196,11 @@ export default {
       icons: {
         mdiEyeOutline,
         mdiEyeOffOutline,
+      },
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
+        passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
       },
     }
   },
@@ -212,6 +222,7 @@ export default {
           const attrs = {
             given_name: firstName,
             family_name: lastName,
+            locale: this.$i18n.locale,
           }
           const loggedUser = await this.$Auth.completeNewPassword(this.user, password, attrs)
           this.$logger.info('Registered complite user', loggedUser)

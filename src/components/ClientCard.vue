@@ -36,26 +36,40 @@
       max-width="520"
     >
       <SaveBeforeCloseModal
-        :text=" `${$t('paper.saveChanges')}${$t('paper.beforeClosing')}`"
-        :postScriptum="$t('paper.ifNotSave')"
+        :text="$t('label.saveChangesBeforeClose')"
+        :postScriptum="$t('label.saveChangesHint')"
         @dontSave="$emit('confirm', 1)"
-        @cancel="saveBeforeCloseDialog = false"
+        @cancel="$emit('confirm', 0)"
         @save="$emit('confirm', 2)"
       />
     </v-dialog>
 
-    <div id="container" class="container">
-      <div class="py-12">
+    <div id="container" :class="[ isComponent ? 'bg-chaos-black rounded-lg relative' : 'container' ]">
+      <span
+        v-if="isComponent"
+        class="absolute cursor-pointer"
+        :style="{ top: '12px', right: '12px', zIndex: '10' }"
+        @click="$emit('close')"
+      >
+        <svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0.780869" y1="1.3753" x2="8.78087" y2="11.3753" stroke="#9F9F9F" stroke-width="2"/>
+          <line x1="8.78087" y1="1.6247" x2="0.780869" y2="11.6247" stroke="#9F9F9F" stroke-width="2"/>
+        </svg>
+      </span>
+      <div :class="[ isComponent ? 'pt-5 px-4' : 'py-12' ]">
         <div>
           <header class="header">
             <span class="header__title">{{ $t('client.clientCard') }}</span>
-            <div class="header__actions">
+            <div
+              v-if="!isComponent"
+              class="header__actions"
+            >
               <ToggleButton
                 v-if="!create"
                 :value="editMode"
                 small
                 class="mr-2"
-                @input="editMode=!editMode"
+                @input="toggleEditMode"
               >
                 <span>{{ $t('client.edit') }}</span>
               </ToggleButton>
@@ -72,7 +86,7 @@
             <RadioButton
               :value="clientType"
               :label="legalType"
-              :disables="!editMode"
+              :disabled="!editMode"
               name="person-type"
               class="mr-6"
               @input="switchPersonType(legalType)"
@@ -91,15 +105,52 @@
           </div>
           <div class="flex justify-between relative">
             <TemplateCard
+              ref="LEGAL"
               template-name="client"
               :fields="legalFieldsSettings"
               :item="client"
               :is-disabled="!editMode"
-              :class="{'template-card': isNaturalPerson}"
+              :is-not-active="isNaturalPerson"
+              :class="{ 'template-card': isNaturalPerson }"
               @update-template="updateTemplate"
               @update-value="updateValue"
             >
-              <template v-slot:prepand>
+              <template v-slot:language>
+                <div class="card__col-right">
+                  <select
+                    :ref="`${legalType}-languageInput`"
+                    :value="client.language"
+                    :disabled="!editMode || !!updateLoading"
+                    required
+                    class="simple-select mx-1"
+                    name="language-select"
+                    @change="updateLanguageInput"
+                  >
+                    <option
+                      v-if="create && !client.language"
+                      value=""
+                    >
+                      {{ $t('placeholder.notChosen') }}
+                    </option>
+                    <option
+                      v-for="opt of langs"
+                      :key="opt.value"
+                      :value="opt.value"
+                    >
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        {{ opt.text }}
+                      </span>
+                    </option>
+                  </select>
+                  <div
+                    v-if="languageInputError[clientType]"
+                    class="text-xs text-red leading-none mx-2"
+                  >
+                    {{ languageInputError[clientType] }}
+                  </div>
+                </div>
+              </template>
+              <template v-slot:prepend>
                 <RadioButton
                   :value="clientType"
                   :label="legalType"
@@ -111,19 +162,29 @@
                   <span>{{ $t('client.legalPerson') }}</span>
                 </RadioButton>
               </template>
-              <template v-slot:apend>
+              <template v-slot:append>
                 <div :class="['text-center', { 'card__section--faded': isNaturalPerson }]">
                   <Button
-                    large
+                    v-if="!editMode"
                     :disabled="isNaturalPerson || !!updateLoading"
+                    large
+                    class="mb-4 mx-auto"
+                    @click="edit"
+                  >
+                    <span>{{ $t('client.edit') }}</span>
+                  </Button>
+                  <Button
+                    v-else
+                    :disabled="isNaturalPerson || !!updateLoading"
+                    large
                     class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
                     <span>{{ $t('client.save') }}</span>
                   </Button>
                   <Button
-                    text
                     :disabled="isNaturalPerson"
+                    text
                     class="mx-auto"
                     @click="saveAsTemplate"
                   >
@@ -133,15 +194,52 @@
               </template>
             </TemplateCard>
             <TemplateCard
+              ref="NATURAL"
               template-name="client"
               :fields="naturalFieldsSettings"
               :item="client"
               :is-disabled="!editMode"
+              :is-not-active="!isNaturalPerson"
               :class="{ 'template-card': !isNaturalPerson }"
               @update-template="updateTemplate"
               @update-value="updateValue"
             >
-              <template v-slot:prepand>
+              <template v-slot:language>
+                <div class="card__col-right">
+                  <select
+                    :ref="`${naturalType}-languageInput`"
+                    :value="client.language"
+                    :disabled="!editMode || !!updateLoading"
+                    required
+                    class="simple-select mx-1"
+                    name="language-select"
+                    @change="updateLanguageInput"
+                  >
+                    <option
+                      v-if="create && !client.language"
+                      value=""
+                    >
+                      {{ $t('placeholder.notChosen') }}
+                    </option>
+                    <option
+                      v-for="opt of langs"
+                      :key="opt.value"
+                      :value="opt.value"
+                    >
+                      <span class="leaders__num cursor-pointer" style="padding-right:0">
+                        {{ opt.text }}
+                      </span>
+                    </option>
+                  </select>
+                  <div
+                    v-if="languageInputError[clientType]"
+                    class="text-xs text-red leading-none mx-2"
+                  >
+                    {{ languageInputError[clientType] }}
+                  </div>
+                </div>
+              </template>
+              <template v-slot:prepend>
                 <RadioButton
                   :value="clientType"
                   :label="naturalType"
@@ -153,19 +251,29 @@
                   <span>{{ $t('client.naturalPerson') }}</span>
                 </RadioButton>
               </template>
-              <template v-slot:apend>
+              <template v-slot:append>
                 <div :class="['text-center', { 'card__section--faded': !isNaturalPerson }]">
                   <Button
-                    large
+                    v-if="!editMode"
                     :disabled="!isNaturalPerson || !!updateLoading"
+                    large
+                    class="mb-4 mx-auto"
+                    @click="edit"
+                  >
+                    <span>{{ $t('client.edit') }}</span>
+                  </Button>
+                  <Button
+                    v-else
+                    :disabled="!isNaturalPerson || !!updateLoading"
+                    large
                     class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
                     <span>{{ $t('client.save') }}</span>
                   </Button>
                   <Button
-                    text
                     :disabled="!isNaturalPerson"
+                    text
                     class="mx-auto"
                     @click="saveAsTemplate"
                   >
@@ -176,13 +284,14 @@
             </TemplateCard>
           </div>
           <button
+            v-if="!isComponent"
             class="back-to-list-btn"
             @click="$router.push({
               name: 'clients',
               params: {
                 orgId,
               }
-            })"
+            }).catch(err => {})"
           >
             <Icon class="mr-2">
               {{ icons.mdiArrowLeft }}
@@ -203,7 +312,7 @@ import deepEqual from 'deep-equal'
 import { mdiArrowLeft } from '@mdi/js'
 
 import { ClientType } from '@/graphql/enums'
-import { GET_CLIENT, LIST_CLIENT_TEMPLATES } from '@/graphql/queries'
+import { GET_CLIENT, GET_ORG_NEXT_CLIENT_UID, LIST_CLIENT_TEMPLATES } from '@/graphql/queries'
 import {
   CREATE_CLIENT,
   UPDATE_CLIENT,
@@ -233,6 +342,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isComponent: {
+      type: Boolean,
+      default: false,
+    },
   },
   apollo: {
     listClientTemplates: {
@@ -243,6 +356,25 @@ export default {
         }
       },
       fetchPolicy: 'cache-and-network',
+    },
+    getOrgNextClientUid: {
+      query: GET_ORG_NEXT_CLIENT_UID,
+      variables () {
+        return {
+          orgId: this.orgId,
+        }
+      },
+      result ({ data, loading }) {
+        if (loading) return
+        if (data) {
+          this.client.uid = data.getOrgNextClientUid
+          this.clientClone.uid = data.getOrgNextClientUid
+        }
+      },
+      skip () {
+        return !this.create
+      },
+      fetchPolicy: 'network-only',
     },
     getClient: {
       query: GET_CLIENT,
@@ -263,6 +395,8 @@ export default {
   },
   data () {
     return {
+      languageInputError: {},
+      wasValidate: false,
       saveBeforeCloseDialog: false,
       templateChanged: false,
       createTemplateLoading: false,
@@ -277,11 +411,14 @@ export default {
       expanded: [],
       legalFieldsSettings: {
         customUid: {
+          disabled: true,
           defaultValueKey: 'uid',
           label: 'uid',
           placeholder: 'uid',
         },
         companyName: {
+          ref: 'legalCompanyNameInput',
+          rules: [v => !!v || this.$t('rule.required')],
           rows: 2,
         },
         legalAddress: {
@@ -317,6 +454,7 @@ export default {
         swift: {},
         ownerFullName: {},
         ownerJobPosition: {},
+        contactPerson: {},
         consignee: {
           section: true,
           subtitle: 'shippingInfo',
@@ -326,10 +464,21 @@ export default {
           placeholder: 'deliveryAddress',
           rows: 2,
         },
-        contactPerson: {},
+        importerContactPerson: {
+          label: 'contactPerson',
+          placeholder: 'contactPerson',
+        },
         contactMobilePhone: {
           label: 'mobilePhone',
           placeholder: 'mobilePhone',
+        },
+        importerFax: {
+          label: 'fax',
+          placeholder: 'fax',
+        },
+        importerEmail: {
+          label: 'email',
+          placeholder: 'email',
         },
         legalTypeNote: {
           label: 'note',
@@ -338,19 +487,36 @@ export default {
           subtitle: 'note',
           rows: 3,
         },
+        language: {
+          labelReadonly: true,
+          section: true,
+          subtitle: 'language',
+          labelHint: 'languageDescription',
+        },
       },
       naturalFieldsSettings: {
         customUid: {
+          disabled: true,
           defaultValueKey: 'uid',
           label: 'uid',
-          placeholder: 'uidAbr',
+          placeholder: 'uid',
         },
-        firstName: {},
-        lastName: {},
+        firstName: {
+          ref: 'naturalFirstNameInput',
+          rules: [v => !!v || this.$t('rule.required')],
+        },
+        lastName: {
+          ref: 'naturalLastNameInput',
+          rules: [v => !!v || this.$t('rule.required')],
+        },
         middleName: {},
         passportId: {},
         mobilePhone: {},
         additionalPhone: {},
+        naturalEmail: {
+          label: 'email',
+          placeholder: 'email',
+        },
         address: {
           rows: 2,
         },
@@ -364,11 +530,18 @@ export default {
           subtitle: 'note',
           rows: 3,
         },
+        language: {
+          labelReadonly: true,
+          section: true,
+          subtitle: 'language',
+          labelHint: 'languageDescription',
+        },
       },
       client: {
         id: null,
         uid: null,
         clientType: null,
+        language: '',
         template: {},
       },
       clientClone: {},
@@ -378,6 +551,16 @@ export default {
     }
   },
   computed: {
+    langs () {
+      return [
+        { value: 'en', text: 'English' },
+        { value: 'zh-Hans', text: '简体' },
+        { value: 'zh-Hant', text: '繁体' },
+        { value: 'fr', text: 'Français' },
+        { value: 'ru', text: 'Русский' },
+        { value: 'uk', text: 'Український' },
+      ]
+    },
     fieldsKeys () {
       return [
         ...this.legalFieldsKeys,
@@ -385,8 +568,9 @@ export default {
       ]
     },
     templateFieldsKeys () {
+      const fields = this.fieldsKeys.filter(k => k !== 'language')
       return [
-        ...this.fieldsKeys,
+        ...fields,
         'templateName',
       ]
     },
@@ -410,7 +594,7 @@ export default {
           template.templateName === null ||
           template.templateName === 'default'
         ) &&
-        this.fieldsKeys.every(k => template[k] === null)
+        this.templateFieldsKeys.filter(el => el !== 'templateName').every(k => !template[k])
       ) {
         return 'default'
       }
@@ -448,7 +632,10 @@ export default {
   },
   watch: {
     saveBeforeCloseDialog (val) {
-      !val && this.$off('confirm')
+      if (!val) {
+        this.$emit('confirm', 0)
+        this.$off('confirm')
+      }
     },
     templateListDialog (val) {
       if (!this.create && !val && this.templateChanged) {
@@ -467,18 +654,63 @@ export default {
   created () {
     this.editMode = this.create
     if (this.create) {
-      this.clientType = this.naturalType
-      this.clientClone = cloneDeep(this.client)
+      this.reset()
     }
   },
   methods: {
+    async toggleEditMode () {
+      if (this.editMode && this.hasDeepChange) {
+        const r = await this.openConfirmDialog()
+        if (r) {
+          if (r === 2) {
+            this.wasValidate = true
+            const isValid = this.validate(true)
+            if (!isValid) {
+              this.saveBeforeCloseDialog = false
+              this.$vuetify.goTo('#container')
+              this.editMode = false
+              this.$nextTick(() => {
+                this.editMode = true
+              })
+              return
+            }
+            try {
+              await this.update(this.clientType, false)
+              this.saveBeforeCloseDialog = false
+            } catch (error) {
+              this.$logger.warn('Error: ', error)
+            }
+          } else {
+            this.setData(this.clientClone)
+            this.resetValidation()
+            this.editMode = false
+            this.saveBeforeCloseDialog = false
+          }
+        } else {
+          this.editMode = false
+          this.$nextTick(() => {
+            this.editMode = true
+          })
+          this.saveBeforeCloseDialog = false
+        }
+      } else {
+        this.editMode = !this.editMode
+      }
+    },
     async checkChangesBeforeLeave (next) {
       if (this.hasDeepChange) {
         const r = await this.openConfirmDialog()
         if (r) {
           if (r === 2) {
+            this.wasValidate = true
+            const isValid = this.validate(true)
+            if (!isValid) {
+              this.saveBeforeCloseDialog = false
+              this.$vuetify.goTo('#container')
+              return next(false)
+            }
             try {
-              await this.update()
+              await this.update(this.clientType, false)
               return next()
             } catch (error) {
               this.$logger.warn('Error: ', error)
@@ -488,6 +720,7 @@ export default {
             return next()
           }
         } else {
+          this.saveBeforeCloseDialog = false
           return next(false)
         }
       } else {
@@ -502,7 +735,112 @@ export default {
         })
       })
     },
-    async update (type) {
+    reset () {
+      this.clientType = this.naturalType
+      this.client = {
+        id: null,
+        uid: null,
+        clientType: null,
+        language: '',
+        template: {},
+      }
+      this.languageInputError = {}
+      this.clientClone = cloneDeep(this.client)
+      this.$apollo.queries.getOrgNextClientUid.refetch()
+    },
+    validate (focus) {
+      if (!this.wasValidate) return
+      const type = this.clientType
+      const validateFields = []
+      let errorsCount = 0
+      let fields = []
+      const refs = this.$refs[type].$refs
+      if (type === this.naturalType) {
+        fields = this.naturalFieldsSettings
+      } else {
+        fields = this.legalFieldsSettings
+      }
+      for (const [, v] of Object.entries(fields)) {
+        if (v.rules) {
+          const field = refs[v.ref][0]
+          if (field) {
+            validateFields.push(field)
+          }
+        }
+      }
+      let firstNotValidInput = null
+      validateFields.forEach(el => {
+        const errCount = el.validate()
+        if (errCount && !firstNotValidInput) {
+          firstNotValidInput = el.$refs.input
+        }
+        errorsCount += errCount
+      })
+      // validate language input separately
+      const languageInputValidity = this.validateLanguageInput()
+      if (!languageInputValidity.valid) {
+        errorsCount += 1
+        if (!firstNotValidInput) {
+          firstNotValidInput = languageInputValidity.el
+        }
+      }
+      if (focus && errorsCount && firstNotValidInput) {
+        this.$vuetify.goTo(firstNotValidInput)
+        const delay = this.isComponent ? 0 : 200
+        setTimeout(() => {
+          firstNotValidInput.focus()
+        }, delay)
+      }
+      return !errorsCount
+    },
+    validateLanguageInput () {
+      const type = this.clientType
+      const el = this.$refs[`${type}-languageInput`]
+      if (!el.validity.valid) {
+        const message = this.$t('rule.requiredSelect')
+        this.$set(this.languageInputError, type, message)
+        return { message, el, valid: false }
+      } else {
+        this.$set(this.languageInputError, type, '')
+        return { valid: true }
+      }
+    },
+    resetValidation () {
+      const type = this.clientType
+      const validateFields = []
+      let fields = []
+      const refs = this.$refs[type].$refs
+      if (type === this.naturalType) {
+        fields = this.naturalFieldsSettings
+      } else {
+        fields = this.legalFieldsSettings
+      }
+      for (const [, v] of Object.entries(fields)) {
+        if (v.rules) {
+          const field = refs[v.ref][0]
+          if (field) {
+            validateFields.push(field)
+          }
+        }
+      }
+      validateFields.forEach(el => {
+        el.resetValidation()
+      })
+    },
+    updateLanguageInput (e) {
+      const v = e.target.value
+      const validity = this.validateLanguageInput()
+      if (validity.valid) {
+        this.updateValue('language', v)
+      }
+    },
+    async update (type, redirectAfterCreate = true) {
+      this.wasValidate = true
+      // TODO: validate input Uniq number
+      const isValid = this.validate(true)
+      if (!isValid) {
+        return
+      }
       try {
         let input = {
           clientType: this.clientType,
@@ -527,17 +865,28 @@ export default {
           mutation: query,
           variables,
         })
-        if (response && response.data && response.data.createClient) {
-          this.setData(response.data.createClient)
-          this.editMode = false
-          this.clientClone = cloneDeep(this.client)
-          this.$router.push({
-            name: 'client',
-            params: {
-              orgId: this.orgId,
-              clientId: response.data.createClient.id,
-            },
-          })
+        if (response && response.data) {
+          const data = this.create
+            ? response.data.createClient
+            : response.data.updateClient
+          this.setData(data)
+          if (this.isComponent) {
+            const action = this.create ? 'create' : 'update'
+            this.$emit(action, data)
+          } else {
+            this.editMode = false
+            if (this.create && redirectAfterCreate) {
+              this.$router.push({
+                name: 'client',
+                params: {
+                  orgId: this.orgId,
+                  clientId: data.id,
+                },
+              })
+            } else {
+              this.$vuetify.goTo('#container')
+            }
+          }
         }
       } catch (error) {
         this.$logger.warn('Error: ', error)
@@ -598,7 +947,7 @@ export default {
     },
     edit () {
       this.editMode = true
-      this.$vuetify.goTo('#container')
+      // this.$vuetify.goTo('#container')
     },
     switchPersonType (type) {
       this.clientType = type
@@ -611,6 +960,7 @@ export default {
       }
     },
     updateValue (key, value) {
+      this.validate()
       if (!this.client.hasOwnProperty(key)) {
         this.$set(this.client, key, value)
       } else {
@@ -640,6 +990,7 @@ export default {
         this.client.template = { id: this.client.id }
       }
       this.templateChanged = true
+      this.templateListDialog = false
     },
   },
 }

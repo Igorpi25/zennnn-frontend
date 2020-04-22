@@ -1,5 +1,3 @@
-import format from 'date-fns/format'
-
 import {
   mdiPlusCircleOutline,
   mdiChevronLeft,
@@ -8,10 +6,25 @@ import {
   mdiPlus,
   mdiSync,
 } from '@mdi/js'
-
-import { ClientType, InvoiceStatus } from '@/graphql/enums'
-import { GET_SPEC, SEARCH_CLIENTS, SEARCH_SUPPLIERS, GET_IS_SPEC_SYNC } from '../graphql/queries'
-import { CREATE_INVOICE, UPDATE_INVOICE, UPDATE_SPEC, SET_SPEC_CLIENT, SET_INVOICE_SUPPLIER } from '../graphql/mutations'
+import { Role } from '../graphql/enums'
+import {
+  GET_SPEC,
+  SEARCH_CLIENTS,
+  SEARCH_SUPPLIERS,
+  GET_IS_SPEC_SYNC,
+} from '../graphql/queries'
+import {
+  CREATE_INVOICE,
+  UPDATE_INVOICE,
+  UPDATE_SPEC,
+  SET_SPEC_CLIENT,
+  SET_INVOICE_SUPPLIER,
+  SET_SPEC_ACTIVE_TAB,
+  SET_SPEC_EXPANDED_INVOICES,
+  ADD_SPEC_EXPANDED_INVOICES,
+  REMOVE_SPEC_EXPANDED_INVOICES,
+} from '../graphql/mutations'
+import { getSpecExpandedInvoices, getSpecActiveTab } from '../graphql/resolvers'
 
 export default {
   apollo: {
@@ -26,6 +39,12 @@ export default {
         }
       },
       fetchPolicy: 'cache-only',
+      result ({ data, loading }) {
+        if (!loading && !this.isBooted) {
+          const spec = data.getSpec || {}
+          this.updateExpandedAndActiveTab(spec)
+        }
+      },
     },
     searchClients: {
       query: SEARCH_CLIENTS,
@@ -58,7 +77,8 @@ export default {
   },
   data () {
     return {
-      InvoiceStatus,
+      Role,
+      clientDialog: false,
       createLoading: null,
       updateLoading: null,
       deleteLoading: null,
@@ -78,6 +98,9 @@ export default {
         mdiPlus,
         mdiSync,
       },
+      invoiceScrollId: '',
+      invoiceScrollLeft: 0,
+      invoiceActiveTab: 1,
     }
   },
   computed: {
@@ -91,7 +114,7 @@ export default {
       return this.getSpec || {}
     },
     items () {
-      return this.getSpec && this.getSpec.invoices
+      return (this.getSpec && this.getSpec.invoices) || []
     },
     specClient () {
       const client = this.spec.client || {}
@@ -119,15 +142,80 @@ export default {
       })
     },
   },
+  watch: {
+    items (val, oldVal) {
+      const value = val || []
+      const oldValue = oldVal || []
+      // on invoice removed clear from expanded
+      if (oldValue.length > value.length) {
+        const removedIds = []
+        oldValue.forEach(v => {
+          if (!value.some(el => el.id === v.id)) {
+            removedIds.push(v.id)
+          }
+        })
+        this.removeExpandedInvoices(removedIds)
+      }
+    },
+  },
   methods: {
-    formatDate (date) {
-      if (!date) return ''
-      return format(
-        this.$parseDate(date),
-        this.$i18n.locale === 'zh'
-          ? 'yyyy-M-d' : this.$i18n.locale === 'ru'
-            ? 'dd.MM.yyyy' : 'dd/MM/yyyy',
-      )
+    setScrollLeft (scrollLeft, invoiceId) {
+      this.invoiceScrollId = invoiceId
+      this.invoiceScrollLeft = scrollLeft
+    },
+    async updateExpandedAndActiveTab (spec) {
+      const specId = spec && spec.id
+      if (!specId || this.isBooted) return
+      this.isBooted = true
+      const activeTab = await getSpecActiveTab(specId)
+      this.invoiceActiveTab = activeTab || 1
+      const expanded = await getSpecExpandedInvoices(specId)
+      if (!expanded) {
+        const [invoice] = spec.invoices || []
+        if (invoice && invoice.id) {
+          this.expanded = [invoice.id]
+          await this.setExpandedInvoices(this.expanded)
+        }
+      } else {
+        this.expanded = expanded || []
+      }
+    },
+    async setExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: SET_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+        },
+      })
+    },
+    async addExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: ADD_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+        },
+      })
+    },
+    async removeExpandedInvoices (ids) {
+      await this.$apollo.mutate({
+        mutation: REMOVE_SPEC_EXPANDED_INVOICES,
+        variables: {
+          specId: this.specId,
+          ids,
+        },
+      })
+    },
+    async setInvoiceActiveTab (value) {
+      this.invoiceActiveTab = value
+      await this.$apollo.mutate({
+        mutation: SET_SPEC_ACTIVE_TAB,
+        variables: {
+          specId: this.specId,
+          tab: value,
+        },
+      })
     },
     getInvoiceSupplier (item) {
       const supplier = item.supplier || {}
@@ -139,6 +227,22 @@ export default {
     openCreateSupplierDialog (item) {
       this.createSupplierInvoice = item
       this.supplierDialog = true
+    },
+    createClient () {
+      this.clientDialog = true
+      this.$nextTick(() => {
+        if (this.$refs.clientCard) {
+          this.$refs.clientCard.reset()
+          if (this.$refs.clientDialog.$refs.dialog) {
+            this.$refs.clientDialog.$refs.dialog.scrollTop = 0
+          }
+        }
+      })
+    },
+    setCreateSpecClient (client) {
+      this.setSpecClient(client.id)
+      this.clientDialog = false
+      this.$apollo.queries.searchClients.refetch()
     },
     setCreatedSupplier (supplier) {
       this.setInvoiceSupplier(this.createSupplierInvoice.id, (supplier && supplier.id))
@@ -153,48 +257,47 @@ export default {
       }, 200)
     },
     getClientName (item) {
-      if (!item) return ''
-      let name = ''
-      if (item.clientType === ClientType.LEGAL) {
-        name = item.companyName || item.companyNameSl || item.companyNameCl || ''
-      } else {
-        name = item.lastName || ''
-        name += item.firstName ? ` ${item.firstName}` : ''
-        name += item.middleName ? ` ${item.middleName}` : ''
-      }
-      return name
+      return item.fullName || ''
     },
     getSupplierName (item) {
-      if (!item) return ''
-      return item.companyNameSl || item.companyNameCl || ''
+      return item.companyNameSl || ''
     },
     expand (id) {
-      // this.$apollo.mutate({
-      //   mutation: TOGGLE_SPEC_EXPANDED_INVOICES,
-      //   variables: {
-      //     specId: this.specId,
-      //     invoiceId: id
-      //   }
-      // })
       if (this.expanded.includes(id)) {
         const index = this.expanded.indexOf(id)
         this.expanded.splice(index, 1)
+        this.removeExpandedInvoices([id])
       } else {
         this.expanded.push(id)
+        this.addExpandedInvoices([id])
       }
     },
     collapseAll () {
       this.expanded = []
+      this.setExpandedInvoices([])
+    },
+    expandAll () {
+      const invoices = this.items
+      const ids = invoices.reduce((acc, curr) => {
+        return [...acc, curr.id]
+      }, [])
+      this.expanded = ids
+      this.setExpandedInvoices(ids)
     },
     async createInvoice () {
       try {
         this.createLoading = true
-        await this.$apollo.mutate({
+        const { data } = await this.$apollo.mutate({
           mutation: CREATE_INVOICE,
           variables: {
             specId: this.specId,
           },
         })
+        const id = data && data.createInvoice && data.createInvoice.id
+        if (id) {
+          this.expanded.push(id)
+          await this.addExpandedInvoices([id])
+        }
       } catch (error) {
         throw new Error(error)
       } finally {
@@ -218,6 +321,7 @@ export default {
         if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
           this.refetchSpec()
         }
+        this.$logger.warn('Error: ', error)
         throw new Error(error)
       } finally {
         this.updateLoading = false
@@ -255,6 +359,10 @@ export default {
           },
         })
       } catch (error) {
+        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+          this.refetchSpec()
+        }
+        this.$logger.warn('Error: ', error)
         throw new Error(error)
       } finally {
         this.updateLoading = false
@@ -271,6 +379,10 @@ export default {
           },
         })
       } catch (error) {
+        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+          this.refetchSpec()
+        }
+        this.$logger.warn('Error: ', error)
         throw new Error(error)
       } finally {
         this.updateLoading = false

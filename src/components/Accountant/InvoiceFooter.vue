@@ -1,28 +1,28 @@
 <template>
   <div class="invoice-footer">
     <div class="flex sm:flex-wrap w-full sm:w-auto md:px-3 max-w-xs">
-      <div class="flex flex-col items-end w-full sm:w-32 pr-1 md:pr-0 lg:pr-1">
+      <div
+        v-if="isInvoiceProfitTypeCommission"
+        class="flex flex-col items-end w-full sm:w-32 pr-1 md:pr-0 lg:pr-1"
+      >
         <label class="text-xs text-gray-light select-none pr-2">
           {{ $t('shipping.discount') }}
         </label>
-        <span class="mr-2 leading-none">{{ $n(item.discount, 'decimal') || $t('placeholder.emptyNumber') }} {{ $t('currency.CNY.symbol') }}</span>
+        <span class="mr-2 leading-none">{{ $n(item.discount, 'decimal') || $t('placeholder.emptyNumber') }} {{ $t(`currency.${currency}.symbol`) }}</span>
       </div>
       <div class="flex flex-col items-end w-full sm:w-32 pl-1 md:pl-0 lg:pl-1">
         <label class="text-xs text-gray-light select-none pr-2">
           {{ $t('shipping.prepay') }}
         </label>
-        <span class="mr-2 leading-none">{{ $n(item.prepayment, 'decimal') || $t('placeholder.emptyNumber') }} {{ $t('currency.CNY.symbol') }}</span>
-        <v-menu
-          ref="menu"
-          v-model="menuPrepaymentDate"
-          transition="scale-transition"
-          min-width="290px"
-          offset-y
+        <span class="mr-2 leading-none">{{ $n(item.prepayment, 'decimal') || $t('placeholder.emptyNumber') }} {{ $t(`currency.${currency}.symbol`) }}</span>
+        <DatePicker
+          :value="item.prepaymentDate"
+          @input="updateInvoice({ prepaymentDate: $event })"
         >
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(item.prepaymentDate)"
+                :value="item.prepaymentDate ? $d($parseDate(item.prepaymentDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -33,19 +33,7 @@
               />
             </div>
           </template>
-          <v-date-picker
-            :value="$toISOString($parseDate(item.prepaymentDate))"
-            :locale="$i18n.locale"
-            :next-icon="icons.mdiChevronRight"
-            :prev-icon="icons.mdiChevronLeft"
-            color="#5a8199"
-            no-title
-            dark
-            @change="updateInvoice({
-              prepaymentDate: $event || null
-            })"
-          ></v-date-picker>
-        </v-menu>
+        </DatePicker>
       </div>
     </div>
 
@@ -55,19 +43,16 @@
           {{ $t('shipping.obtainCost') }}
         </label>
         <span class="leading-none">
-          {{ $n(item.obtainCost, 'decimal') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.obtainCost, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
         </span>
-        <v-menu
-          ref="menu"
-          v-model="menuResidueDate"
-          transition="scale-transition"
-          min-width="290px"
-          offset-y
+        <DatePicker
+          :value="item.obtainCostDate"
+          @input="updateInvoice({ obtainCostDate: $event })"
         >
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(item.obtainCostDate)"
+                :value="item.obtainCostDate ? $d($parseDate(item.obtainCostDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -78,38 +63,23 @@
               />
             </div>
           </template>
-          <v-date-picker
-            :value="$toISOString($parseDate(item.obtainCostDate))"
-            :locale="$i18n.locale"
-            :next-icon="icons.mdiChevronRight"
-            :prev-icon="icons.mdiChevronLeft"
-            color="#5a8199"
-            no-title
-            dark
-            @change="updateInvoice({
-              obtainCostDate: $event || null
-            })"
-          ></v-date-picker>
-        </v-menu>
+        </DatePicker>
       </div>
       <div class="flex flex-col items-end w-full pr-2 md:pr-0">
         <label class="text-xs text-gray-light select-none whitespace-no-wrap">
           {{ $t('shipping.clientDebt') }}
         </label>
         <span class="leading-none text-white">
-          {{ $n(item.clientDebt, 'decimal') }} {{ $t('currency.CNY.symbol') }}
+          {{ $n(item.clientDebt, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
         </span>
-        <v-menu
-          ref="menu"
-          v-model="menuClientDebtDate"
-          transition="scale-transition"
-          min-width="290px"
-          offset-y
+        <DatePicker
+          :value="item.clientDebtDate"
+          @input="updateInvoice({ clientDebtDate: $event })"
         >
           <template v-slot:activator="{ on }">
             <div class="p-0 -mr-2 leading-none" v-on="on">
               <TextField
-                :value="formatDate(item.clientDebtDate)"
+                :value="item.clientDebtDate ? $d($parseDate(item.clientDebtDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
                 right
                 colored
@@ -120,19 +90,7 @@
               />
             </div>
           </template>
-          <v-date-picker
-            :value="$toISOString($parseDate(item.clientDebtDate))"
-            :locale="$i18n.locale"
-            :next-icon="icons.mdiChevronRight"
-            :prev-icon="icons.mdiChevronLeft"
-            color="#5a8199"
-            no-title
-            dark
-            @change="updateInvoice({
-              clientDebtDate: $event || null
-            })"
-          ></v-date-picker>
-        </v-menu>
+        </DatePicker>
       </div>
     </div>
 

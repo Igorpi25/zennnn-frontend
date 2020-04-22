@@ -1,6 +1,14 @@
 <template>
   <div>
-    <div class="data-table-wrapper">
+    <div
+      v-scroll="onScroll"
+      ref="productsTable"
+      class="data-table-wrapper"
+      @mouseenter="isMouseOver = true"
+      @mouseleave="isMouseOver = false"
+      @touchstart="isScrollStart = true"
+      @touchend="clearScrollEndTimer"
+    >
       <div>
         <div class="flex">
           <DataTable
@@ -20,14 +28,13 @@
                 ></div>
                 <ul
                   class="tabs"
-                  @click="switchTab"
                 >
                   <li
                     v-for="tab in tabs"
                     :key="tab.value"
-                    :value="tab.value"
                     :style="{ width: tab.width + 'px' }"
                     :class="['tab-item', {'tab-item--active': activeTab === tab.value}]"
+                    @click="switchTab(tab.value)"
                   >{{ tab.text }}</li>
                 </ul>
               </div>
@@ -74,7 +81,8 @@
       </div>
     </div>
     <InvoiceFooter
-      v-if="items && activeTab === 1"
+      v-if="items"
+      :currency="currency"
       :item="invoiceItem"
     />
   </div>
@@ -134,21 +142,21 @@ export default {
           width: 138,
           bgcolor: 'gray-darkest',
         },
-        { text: this.$t('shipping.obtainAmount'), value: 'purchaseAmount', minWidth: 100, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.obtainAmount'), value: 'purchaseAmount', minWidth: 100, width: '100%', bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.clientCost'), value: 'clientPrice', width: 138, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.obtainAmount'), value: 'clientAmount', minWidth: 100, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.obtainAmount'), value: 'clientAmount', minWidth: 100, width: '100%', bgcolor: 'gray-darkest' },
       ]
     },
     infoHeaders () {
       return [
-        { text: this.$t('shipping.additionalPhoto'), value: 'images', width: 85, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.additionalInfo'), value: 'description', align: 'left', bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.additionalPhoto'), value: 'images', width: 175, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.additionalInfo'), value: 'description', width: '100%', align: 'left', bgcolor: 'gray-darkest' },
         { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
       ]
     },
     linkHeaders () {
       return [
-        { text: this.$t('shipping.linkField'), value: 'url', align: 'left', bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.linkField'), value: 'url', width: '100%', align: 'left', bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.openLink'), value: 'openLink', width: 70, bgcolor: 'gray-darkest' },
       ]
     },
@@ -170,7 +178,7 @@ export default {
   bacground-color: #252525;
 }
 .tab-item:not(:first-child) {
-  margin-left:  1px;
+  padding-left:  1px;
 }
 .tab-item--active {
   @apply bg-gray-darkest;

@@ -1,6 +1,6 @@
 <template>
   <div class="copyright">
-    <div>©2019 Zennnn Corp. All Rights Reserved. Privacy Policy</div>
+    <div>©2019 ZENNNN Corp. All Rights Reserved. Privacy Policy</div>
     <span class="text-gray-dark">
       <span>Frontend: {{ frontendVersion }}</span>
       <template v-if="backendVersion">

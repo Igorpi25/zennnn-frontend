@@ -13,7 +13,7 @@
             <template v-slot:text>
               <span>{{ $t('welcome.hasAccount') }}</span>
             </template>
-            <span>{{ $t('action.login') }}</span>
+            <span>{{ $t('welcome.signin') }}</span>
           </Button>
           <div class="mb-8 md:mb-32">
             <div class="w-full flex-grow">
@@ -27,6 +27,7 @@
               </h1>
               <div class="form--max-w-md bg-accent1 py-5 md:px-8 md:-ml-8 rounded md:shadow-md">
                 <p class="text-gray-lightest md:text-white mb-4">
+                  <span v-if="username">{{ $t('welcome.confirmRegistrationEmail', { email: username }) }}&nbsp;</span>
                   {{ $t('welcome.confirmRegistration') }}&nbsp;—&nbsp;
                   <span class="text-white sm:inline block">
                     {{ $t('welcome.followTheLink') }}
@@ -42,7 +43,7 @@
                     class="inline-block"
                     @click.prevent="resendSignUp"
                   >
-                    <span>{{ $t('action.resend') }}</span>
+                    <span>{{ $t('welcome.resend') }}</span>
                   </Button>
                 </p>
               </div>
@@ -90,9 +91,9 @@ export default {
       try {
         if (!this.username) return
         await this.$Auth.resendSignUp(this.username)
-        this.$notify({ color: 'green', text: this.$t('message.emailResent'), timeout: 10000 })
+        this.$notify({ color: 'green', text: this.$t('message.emailResent') })
       } catch (error) {
-        this.$notify({ color: 'orange', text: this.$t('message.failedToSent'), timeout: 10000 })
+        this.$notify({ color: 'orange', text: this.$t('message.failedToSent') })
         this.$logger.warn('Error: ', error)
       }
     },

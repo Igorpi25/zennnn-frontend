@@ -5,14 +5,14 @@
         name: 'specs',
         params: { orgId },
       }"
-      :class="{ active: $route.name == 'spec' }"
+      :class="{ active: $route.name === 'spec' }"
     >
       <div class="navbar__link">
         <Icon
-          v-if="$route.name == 'spec'"
+          v-if="$route.name === 'spec'"
           :class="[
             'mr-2',
-            {'-ml-2': $route.name == 'spec'}
+            {'-ml-2': $route.name === 'spec'}
           ]"
         >
           {{ icons.mdiArrowLeft }}
@@ -26,15 +26,15 @@
         name: 'clients',
         params: { orgId },
       }"
-      :class="{ active: $route.name == 'client' || $route.name == 'client-create' }"
+      :class="{ active: $route.name === 'client' || $route.name === 'client-create' }"
     >
       <div class="navbar__link">
         <Icon
-          v-if="$route.name == 'client' ||
-          $route.name == 'client-create'"
+          v-if="$route.name === 'client' ||
+          $route.name === 'client-create'"
           :class="[
             'mr-2',
-            {'-ml-2': $route.name == 'client' || $route.name == 'client-create'}
+            {'-ml-2': $route.name === 'client' || $route.name === 'client-create'}
           ]"
         >
           {{ icons.mdiArrowLeft }}
@@ -48,42 +48,21 @@
         name: 'suppliers',
         params: { orgId },
       }"
-      :class="{ active: $route.name == 'supplier' ||
-      $route.name == 'supplier-create' }"
+      :class="{ active: $route.name === 'supplier' ||
+      $route.name === 'supplier-create' }"
     >
       <div class="navbar__link">
         <Icon
-          v-if="$route.name == 'supplier' ||
-          $route.name == 'supplier-create'"
+          v-if="$route.name === 'supplier' ||
+          $route.name === 'supplier-create'"
           :class="[
             'mr-2',
-            {'-ml-2': $route.name == 'supplier' || $route.name == 'supplier-create'}
+            {'-ml-2': $route.name === 'supplier' || $route.name === 'supplier-create'}
           ]"
         >
           {{ icons.mdiArrowLeft }}
         </Icon>
         {{ $t('navbar.suppliers') }}
-      </div>
-    </router-link>
-    <router-link
-      v-if="roleInOrg === 'OWNER' || roleInOrg === 'MANAGER'"
-      :to="{
-        name: 'requisites',
-      }"
-      :class="{ active: $route.name == 'requisite' || $route.name == 'requisite-create' }"
-    >
-      <div class="navbar__link">
-        <Icon
-          v-if="$route.name == 'requisite' ||
-          $route.name == 'requisite-create'"
-          :class="[
-            'mr-2',
-            {'-ml-2': $route.name == 'requisite' || $route.name == 'requisite-create'}
-          ]"
-        >
-          {{ icons.mdiArrowLeft }}
-        </Icon>
-        {{ $t('requisites.requisites') }}
       </div>
     </router-link>
     <router-link
@@ -140,6 +119,7 @@ export default {
   display: flex;
   padding-top: 40px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .navbar__link {
   white-space: nowrap;

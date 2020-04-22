@@ -17,8 +17,8 @@
       max-width="520"
     >
       <SaveBeforeCloseModal
-        :text=" `${$t('paper.saveChanges')} ${$t('paper.supplyContract')} ${$t('paper.beforeClosing')}`"
-        :postScriptum="$t('paper.ifNotSave')"
+        :text="`${$t('label.saveDocChangesBeforeClose', { doc: $t('paper.supplyContract') })}`"
+        :postScriptum="$t('label.saveChangesHint')"
         @dontSave="doNotSaveContractChanges"
         @cancel="cancel"
         @save="saveContractChanges"
@@ -473,7 +473,7 @@ import { ziGear, ziPencil, ziChevronUpCircle } from '@/assets/icons'
 import { apolloClient } from '../plugins/apollo'
 
 import { GET_ORG_REQUISITE } from '../graphql/queries'
-import { CREATE_CONTRACT, UPDATE_СONTRACT } from '../graphql/mutations'
+import { CREATE_CONTRACT, UPDATE_CONTRACT } from '../graphql/mutations'
 
 import PaperCompanyListModal from '@/components/PaperCompanyListModal.vue'
 import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
@@ -608,7 +608,7 @@ export default {
         this.$set(input, 'items', items)
         this.$set(input, 'specItems', specItems)
 
-        const query = this.create ? CREATE_CONTRACT : UPDATE_СONTRACT
+        const query = this.create ? CREATE_CONTRACT : UPDATE_CONTRACT
 
         const variables = this.create
           ? { orgId: this.orgId, input }

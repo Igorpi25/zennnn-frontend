@@ -26,9 +26,11 @@
             <Select
               :value="specClient"
               :placeholder="$t('placeholder.emptyText')"
-              :nudge-bottom="28"
               :search.sync="clientSearch"
               :items="clients"
+              flat
+              return-object
+              no-filter
               searchable
               item-value="id"
               item-text="name"
@@ -39,13 +41,31 @@
               class="leading-normal max-w-sm w-auto inline-flex spec-search-input"
               style="min-width: 220px"
               @input="setSpecClient($event && $event.id)"
-            />
+              @click:prepend-item="createClient"
+            >
+              <template v-slot:prepend-item>
+                <span class="flex items-center jusitfy-center text-primary">
+                  <i class="icon-add mr-1" />
+                  <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
+                </span>
+              </template>
+            </Select>
           </span>
         </span>
         <span
-          class="text-gray text-sm cursor-pointer whitespace-no-wrap"
+          v-if="expanded.length === 0"
+          class="text-gray hover:text-gray-dark text-sm cursor-pointer whitespace-no-wrap select-none"
+          @click="expandAll"
+        >
+          {{ $t('action.expandAll') }}
+        </span>
+        <span
+          v-else
+          class="text-gray hover:text-gray-dark text-sm cursor-pointer whitespace-no-wrap select-none"
           @click="collapseAll"
-        >{{ $t('action.collapseAll') }}</span>
+        >
+          {{ $t('action.collapseAll') }}
+        </span>
       </div>
 
       <div v-for="(item) in items" :key="item.id" class="mb-6">
@@ -64,52 +84,41 @@
               outlined
               colored
               hide-details
-              class="text-sm w-40 mr-2 md:p-0 leading-normal"
+              class="text-sm w-48 mr-2 md:p-0 leading-normal"
               @input="updateInvoice({
                 invoiceNo: $event
               }, item.id)"
             />
-            <v-menu
-              ref="menu"
-              v-model="menuPurchaseDate[item.id]"
-              transition="scale-transition"
-              min-width="290px"
-              offset-y
+            <DatePicker
+              :value="item.purchaseDate"
+              @input="updateInvoice({ purchaseDate: $event }, item.id)"
             >
               <template v-slot:activator="{ on }">
-                <div v-on="on">
-                  <TextField
-                    :value="formatDate(item.purchaseDate)"
-                    :placeholder="$t('shipping.purchaseDate')"
-                    solo
-                    outlined
-                    colored
-                    readonly
-                    hide-details
-                    class="text-sm w-40 mr-2 md:p-0 leading-normal"
-                  />
+                <div class="text-left">
+                  <div v-on="on" class="inline-block">
+                    <TextField
+                      :value="item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : null"
+                      :placeholder="$t('shipping.purchaseDate')"
+                      solo
+                      outlined
+                      colored
+                      readonly
+                      hide-details
+                      class="text-sm w-32 mr-2 md:p-0 leading-normal"
+                    />
+                  </div>
                 </div>
               </template>
-              <v-date-picker
-                :value="$toISOString($parseDate(item.purchaseDate))"
-                :locale="$i18n.locale"
-                :next-icon="icons.mdiChevronRight"
-                :prev-icon="icons.mdiChevronLeft"
-                color="#5a8199"
-                no-title
-                dark
-                @change="updateInvoice({
-                  purchaseDate: $event || null
-                }, item.id)"
-              ></v-date-picker>
-            </v-menu>
+            </DatePicker>
             <!-- TODO on real api, need send id -->
             <Select
               :value="getInvoiceSupplier(item)"
               :placeholder="$t('shipping.supplierName')"
-              :nudge-bottom="23"
               :search.sync="supplierSearch"
               :items="suppliers"
+              flat
+              return-object
+              no-filter
               searchable
               item-value="id"
               item-text="name"
@@ -124,68 +133,70 @@
                   href="#"
                   @click.prevent.stop="openCreateSupplierDialog(item)"
                 >
-                  <Icon color="#5a8199">
-                    {{ icons.mdiPlusCircleOutline }}
-                  </Icon>
+                  <i class="icon-add text-lg text-primary block align-middle" />
                 </a>
               </template>
             </Select>
-            <v-menu
-              ref="menu"
-              v-model="menuShippingDate[item.id]"
-              transition="scale-transition"
-              min-width="290px"
-              offset-y
+            <DatePicker
+              :value="item.shippingDate"
+              @input="updateInvoice({ shippingDate: $event }, item.id)"
             >
               <template v-slot:activator="{ on }">
-                <div v-on="on">
-                  <TextField
-                    :value="formatDate(item.shippingDate)"
-                    :placeholder="$t('shipping.shippingDate')"
-                    solo
-                    outlined
-                    colored
-                    readonly
-                    hide-details
-                    class="text-sm w-40 mr-2 md:p-0 leading-normal"
-                  />
+                <div class="text-left">
+                  <div v-on="on" class="inline-block">
+                    <TextField
+                      :value="item.shippingDate ? $d($parseDate(item.shippingDate), 'short') : null"
+                      :placeholder="$t('shipping.shippingDate')"
+                      solo
+                      outlined
+                      colored
+                      readonly
+                      hide-details
+                      class="text-sm w-32 md:p-0 leading-normal"
+                    />
+                  </div>
                 </div>
               </template>
-              <v-date-picker
-                :value="$toISOString($parseDate(item.shippingDate))"
-                :locale="$i18n.locale"
-                :next-icon="icons.mdiChevronRight"
-                :prev-icon="icons.mdiChevronLeft"
-                color="#5a8199"
-                no-title
-                dark
-                @change="updateInvoice({
-                  shippingDate: $event || null
-                }, item.id)"
-              ></v-date-picker>
-            </v-menu>
+            </DatePicker>
           </div>
         </InvoiceHeader>
         <Invoice
           v-if="expanded.includes(item.id)"
-          style="margin-top: 1px"
+          :currency="spec.currency"
           :invoice="item"
+          :active-tab="invoiceActiveTab"
+          :scroll-left="invoiceScrollLeft"
+          :scroll-invoice-id="invoiceScrollId"
+          style="margin-top: 1px"
+          @change:tab="setInvoiceActiveTab"
+          @change:scrollLeft="setScrollLeft"
+          @update:currency="updateSpec({ currency: $event })"
         />
       </div>
     </div>
-    <Button
-      outline
-      class="mt-6"
-      @click="createInvoice"
-    >
-      <template v-slot:icon>
-        <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
-      </template>
-      <span>{{ $t('shipping.addInvoice') }}</span>
-    </Button>
+    <div class="flex pt-5">
+      <Button
+        outline
+        @click="createInvoice"
+      >
+        <template v-slot:icon>
+          <i class="icon-add text-lg block align-middle" />
+        </template>
+        <span>{{ $t('shipping.addInvoice') }}</span>
+      </Button>
+      <div class="flex-grow" />
+      <Comments
+        :items="spec.comments"
+        :spec-id="specId"
+        left
+      />
+    </div>
 
     <div>
-      <SpecSummary :spec="spec" />
+      <SpecSummary
+        :spec="spec"
+        :role="Role.OWNER"
+      />
     </div>
 
     <v-dialog
@@ -204,14 +215,33 @@
         @create="setCreatedSupplier"
       />
     </v-dialog>
+    <v-dialog
+      ref="clientDialog"
+      v-model="clientDialog"
+      :fullscreen="$vuetify.breakpoint.xs"
+      scrollable
+      max-width="1024"
+      content-class="text-gray-100"
+    >
+      <ClientCard
+        ref="clientCard"
+        :org-id="orgId"
+        create
+        is-component
+        @close="clientDialog = false"
+        @create="setCreateSpecClient"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import InvoiceHeader from './InvoiceHeader.vue'
 import Invoice from './Invoice.vue'
-import SpecSummary from '@/components/SpecSummary'
-import SupplierCard from '@/components/SupplierCard'
+import SpecSummary from '../SpecSummary'
+import ClientCard from '../ClientCard'
+import SupplierCard from '../SupplierCard'
+import Comments from '../Comments'
 
 import spec from '../../mixins/spec'
 
@@ -221,7 +251,9 @@ export default {
     InvoiceHeader,
     Invoice,
     SpecSummary,
+    ClientCard,
     SupplierCard,
+    Comments,
   },
   mixins: [spec],
   data () {

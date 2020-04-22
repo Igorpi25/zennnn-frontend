@@ -1,24 +1,33 @@
 <template>
   <v-menu
+    v-model="menu"
     :close-on-content-click="false"
     :nudge-width="380"
     :max-width="380"
-    :disabled="!previewImage"
+    :disabled="!previewImage || uploading"
     open-on-hover
     offset-x
   >
     <template v-slot:activator="{ on }">
-      <div v-on="on">
-        <FileUploader
-          :loading="loading"
-          :src="previewImage"
-          :show-preview="imagesList.length === 0"
-          check-download-url
-          @update="updateImages"
-        >
-          <template v-slot:preview>
+      <div v-on="on" class="inline-block align-middle pr-2">
+        <slot name="menu-activator">
+          <FileUploader
+            v-if="upload"
+            :loading="addLoading"
+            :uploading.sync="uploading"
+            :hovered="menu"
+            :src="previewImage"
+            show-preview
+            check-download-url
+            @update="addImage"
+          />
+          <div
+            v-else
+            class="w-10 h-10 rounded overflow-hidden inline-block"
+          >
             <v-img
-              :src="`${previewImage}${ICON_IMAGE_POSTFIX}`"
+              v-if="previewImage"
+              :src="iconImageSrc"
               aspect-ratio="1"
             >
               <template v-slot:placeholder>
@@ -27,32 +36,37 @@
                 </div>
               </template>
             </v-img>
-          </template>
-        </FileUploader>
+          </div>
+        </slot>
       </div>
     </template>
     <div
-      class="bg-gray-darker"
+      :class="[light ? 'bg-paper' : 'bg-gray-darker']"
     >
       <div class="text-accent2 truncate h-8 px-1 flex items-center">
-        <Spinner v-if="currentImageFilenameLoading" />
-        <span v-else>
-          {{ currentImageFilename || currentImage }}
-        </span>
+        <div class="flex-grow truncate">
+          <Spinner v-if="currentImageFilenameLoading" />
+          <span v-else>
+            {{ currentImageFilename || currentImage }}
+          </span>
+        </div>
       </div>
-      <div
+      <Sortable
         v-if="imagesList.length > 1"
+        :disabled="!sortable"
+        draggable=".sortable-source"
         class="inline-flex px-1 overflow-x-auto"
+        @input="sortImages"
       >
         <v-img
           v-for="(img, i) in imagesList"
           :key="img"
           :src="`${img}${ICON_IMAGE_POSTFIX}`"
           :class="[
-            'rounded-sm h-6 w-6',
-            { 'mr-1' : i + 1 < imagesList.length },
-            { 'border-2 border-solid border-primary': i === currentImageIndex },
+            'rounded-sm h-8 w-8 mr-1 sortable-source focus:outline-none',
+            { 'border border-solid border-white': i === currentImageIndex },
           ]"
+          :gradient="i !== currentImageIndex ? '0deg, rgba(0,0,0,.3), rgba(0,0,0,.3)' : ''"
           aspect-ratio="1"
           @click="setCurrentIndex(i)"
         >
@@ -62,34 +76,52 @@
             </div>
           </template>
         </v-img>
-      </div>
-      <div class="w-full pa-1">
-        <v-img
-          :src="`${currentImage}${PREVIEW_IMAGE_POSTFIX}`"
-          :key="currentImage"
-          class="w-full"
-          aspect-ratio="1"
+      </Sortable>
+      <div class="w-full p-1 relative">
+        <div class="w-full rounded overflow-hidden">
+          <v-img
+            :src="previewImageSrc"
+            :key="currentImage"
+            class="w-full"
+            aspect-ratio="1"
+          >
+            <template v-slot:placeholder>
+              <div class="flex justify-center items-center w-full h-full">
+                <Spinner />
+              </div>
+            </template>
+          </v-img>
+        </div>
+        <div
+          v-if="removable"
+          class="absolute inset-x-0 top-0 h-20 m-1 rounded-t overflow-hidden pointer-event-none"
+          style="background: linear-gradient(0deg, rgba(30, 30, 30, 0) 0%, rgba(30, 30, 30, 0.56) 100%);"
         >
-          <template v-slot:placeholder>
-            <div class="flex justify-center items-center w-full h-full">
-              <Spinner />
-            </div>
-          </template>
-        </v-img>
+          <div
+            class="absolute pointer-events-auto cursor-pointer"
+            style="top:12px; right:12px"
+            @click="removeImage(currentImage)"
+          >
+            <Icon color="#c1c1c1" size="22">{{ icons.mdiTrashCanOutline }}</Icon>
+          </div>
+        </div>
       </div>
     </div>
   </v-menu>
 </template>
 
 <script>
-import { UPDATE_PRODUCT_INFO } from '../graphql/mutations'
-
-import FileUploader from '../components/FileUploader.vue'
+import { mdiTrashCanOutline } from '@mdi/js'
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX, IMAGE_FILENAME_METADATA } from '../config/globals'
+import { ADD_PRODUCT_IMAGE, REMOVE_PRODUCT_IMAGE, UPDATE_PRODUCT_INFO } from '../graphql/mutations'
+
+import Sortable from '../plugins/draggable/Sortable'
+import FileUploader from '../components/FileUploader.vue'
 
 export default {
   name: 'ProductImage',
   components: {
+    Sortable,
     FileUploader,
   },
   props: {
@@ -101,16 +133,37 @@ export default {
       type: Array,
       default: undefined,
     },
+    upload: {
+      type: Boolean,
+      default: true,
+    },
+    removable: {
+      type: Boolean,
+      default: true,
+    },
+    sortable: {
+      type: Boolean,
+      default: false,
+    },
+    light: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
       ICON_IMAGE_POSTFIX,
-      PREVIEW_IMAGE_POSTFIX,
-      loading: false,
+      uploading: false,
+      addLoading: false,
+      updateImagesLoading: false,
+      removeLoading: null,
       menu: false,
       currentImageFilenameLoading: false,
       currentImageFilename: '',
       currentImageIndex: 0,
+      icons: {
+        mdiTrashCanOutline,
+      },
     }
   },
   computed: {
@@ -119,6 +172,14 @@ export default {
     },
     previewImage () {
       return this.imagesList[0]
+    },
+    previewImageSrc () {
+      if (!this.currentImage) return ''
+      return `${this.currentImage}${PREVIEW_IMAGE_POSTFIX}`
+    },
+    iconImageSrc () {
+      if (!this.currentImage) return ''
+      return `${this.previewImage}${ICON_IMAGE_POSTFIX}`
     },
     currentImage () {
       const index = this.currentImageIndex || 0
@@ -136,14 +197,27 @@ export default {
     },
   },
   methods: {
+    sortImages (data) {
+      if (data.oldContainer.id !== data.newContainer.id) return
+      const oldIndex = data.oldIndex
+      const newIndex = data.newIndex
+      if (oldIndex === newIndex) return
+      let newValue = this.imagesList.slice()
+      newValue.splice(newIndex, 0, newValue.splice(oldIndex, 1)[0])
+      this.updateImages(newValue)
+    },
     setCurrentIndex (index) {
+      if (!this.imagesList[index]) {
+        index = 0
+      }
       this.currentImageIndex = index
     },
     async setMainImageName (src) {
+      const s3Src = src.replace(process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME, process.env.VUE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME)
       this.currentImageFilename = ''
       try {
         this.currentImageFilenameLoading = true
-        const response = await this.$axios.head(src)
+        const response = await this.$axios.head(s3Src)
         if (response && response.statusText === 'OK') {
           const filename = response.headers[IMAGE_FILENAME_METADATA]
           this.currentImageFilename = filename
@@ -156,10 +230,9 @@ export default {
         this.currentImageFilenameLoading = false
       }
     },
-    async updateImages (src) {
+    async updateImages (images) {
       try {
-        this.loading = true
-        const images = [...this.imagesList, src]
+        this.updateImagesLoading = true
         const input = { images }
         await this.$apollo.mutate({
           mutation: UPDATE_PRODUCT_INFO,
@@ -174,9 +247,60 @@ export default {
         //   }
         // })
       } finally {
-        this.loading = false
+        this.updateImagesLoading = false
+      }
+    },
+    async removeImage (src) {
+      try {
+        this.removeLoading = src
+        const inputImages = [src]
+        await this.$apollo.mutate({
+          mutation: REMOVE_PRODUCT_IMAGE,
+          variables: { id: this.productId, inputImages },
+        })
+        const newIndex = this.currentImageIndex > 0 ? this.currentImageIndex - 1 : 0
+        this.setCurrentIndex(newIndex)
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+        // Analytics.record({
+        //   name: 'UpdateProductError',
+        //   attributes: {
+        //     error: error
+        //   }
+        // })
+      } finally {
+        this.removeLoading = null
+      }
+    },
+    async addImage (src) {
+      try {
+        this.addLoading = true
+        const inputImages = [src]
+        await this.$apollo.mutate({
+          mutation: ADD_PRODUCT_IMAGE,
+          variables: { id: this.productId, inputImages, unshift: true },
+        })
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+        // Analytics.record({
+        //   name: 'UpdateProductError',
+        //   attributes: {
+        //     error: error
+        //   }
+        // })
+      } finally {
+        this.addLoading = false
       }
     },
   },
 }
 </script>
+
+<style>
+.bg-paper {
+  background-color: #f4f4f4;
+}
+.draggable-mirror {
+  z-index: 500!important;
+}
+</style>

@@ -1,6 +1,14 @@
 <template>
   <div>
-    <div class="data-table-wrapper">
+    <div
+      v-scroll="onScroll"
+      ref="productsTable"
+      class="data-table-wrapper"
+      @mouseenter="isMouseOver = true"
+      @mouseleave="isMouseOver = false"
+      @touchstart="isScrollStart = true"
+      @touchend="clearScrollEndTimer"
+    >
       <div>
         <div class="flex">
           <DataTable
@@ -20,15 +28,35 @@
                 ></div>
                 <ul
                   class="tabs"
-                  @click="switchTab"
                 >
                   <li
                     v-for="tab in tabs"
                     :key="tab.value"
-                    :value="tab.value"
                     :style="{ width: tab.width + 'px' }"
-                    :class="['tab-item', {'tab-item--active': activeTab === tab.value}]"
-                  >{{ tab.text }}</li>
+                    :class="['tab-item', { 'tab-item--active': activeTab === tab.value }]"
+                    @click="switchTab(tab.value)"
+                  >
+                    <span>{{ tab.text }}</span>
+                    <select
+                      v-if="tab.value === 1"
+                      :value="currency"
+                      :disabled="activeTab !== tab.value"
+                      :class="[
+                        'simple-select text-sm ml-px',
+                        { 'text-gray-100': activeTab === tab.value },
+                        { 'pointer-events-none': activeTab !== tab.value }
+                      ]"
+                      @change="$emit('update:currency', $event.target.value)"
+                    >
+                      <option
+                        v-for="curr of currencies"
+                        :key="curr.value"
+                        :value="curr.value"
+                      >
+                        {{ curr.text }}
+                      </option>
+                    </select>
+                  </li>
                 </ul>
               </div>
             </template>
@@ -59,7 +87,7 @@
                       @click.prevent="createProduct"
                     >
                       <template v-slot:icon>
-                        <Icon size="20">{{ icons.mdiPlusCircleOutline }}</Icon>
+                        <i class="icon-add text-xl block align-middle" />
                       </template>
                       <span>{{ $t('shipping.addProduct') }}</span>
                     </Button>
@@ -81,16 +109,16 @@
                 <template v-else-if="activeTab === 2">
                   <td class="text-gray-dark">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalNet, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
+                    {{ $n(invoiceItem.totalNet) }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
                   </td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalGross, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
+                    {{ $n(invoiceItem.totalGross) }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
                   </td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalCapacity, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.m') }}<sup>3</sup></span>
+                    {{ $n(invoiceItem.totalVolume) }} <span class="text-gray-dark">{{ $t('measure.m') }}<sup>3</sup></span>
                   </td>
                   <td class="text-gray-dark text-center" colspan="3">
-                    {{ $n(invoiceItem.totalPkgQty, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.pkg') }}</span>
+                    {{ $n(invoiceItem.totalPkgQty) }} <span class="text-gray-dark">{{ $t('measure.pkg') }}</span>
                   </td>
                   <td></td>
                 </template>
@@ -107,7 +135,8 @@
       </div>
     </div>
     <InvoiceFooter
-      v-if="items && activeTab === 1"
+      v-if="items"
+      :currency="currency"
       :item="invoiceItem"
     />
   </div>
@@ -144,12 +173,12 @@ export default {
     },
     productHeaders () {
       return [
-        { text: '', value: 'status', align: 'left', width: 14 },
-        { text: this.$t('shipping.productIndexNo'), value: 'index', align: 'left', width: 54 },
-        { text: this.$t('shipping.photo'), value: 'photo', width: 55 },
-        { text: this.$t('shipping.name'), value: 'name', width: 165 },
-        { text: this.$t('shipping.model'), value: 'model', width: 165 },
-        { text: this.$t('shipping.qty'), value: 'qty', width: 110 },
+        { text: '', value: 'status', align: 'left', width: 14, minWidth: 14 },
+        { text: this.$t('shipping.productIndexNo'), value: 'index', align: 'left', width: 54, minWidth: 54 },
+        { text: this.$t('shipping.photo'), value: 'photo', width: 54, minWidth: 54 },
+        { text: this.$t('shipping.name'), value: 'name', width: 154, minWidth: 154 },
+        { text: this.$t('shipping.model'), value: 'model', width: 154, minWidth: 154 },
+        { text: this.$t('shipping.qty'), value: 'qty', width: 110, minWidth: 110 },
       ]
     },
     costHeaders () {
@@ -161,35 +190,35 @@ export default {
           width: 138,
           bgcolor: 'gray-darkest',
         },
-        { text: this.$t('shipping.obtainAmount'), value: 'purchaseAmount', minWidth: 100, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.obtainAmount'), value: 'purchaseAmount', width: '100%', minWidth: 300, bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.clientCost'), value: 'clientPrice', width: 138, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.obtainAmount'), value: 'clientAmount', minWidth: 100, bgcolor: 'gray-darkest' },
-        { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.obtainAmount'), value: 'clientAmount', width: '100%', minWidth: 300, bgcolor: 'gray-darkest' },
+        { text: '', value: 'action', width: 24, bgcolor: 'gray-darkest' },
       ]
     },
     storeHeaders () {
       return [
-        { text: `${this.$t('shipping.net')}, ${this.$t('measure.kg')}`, value: 'net', width: 75, bgcolor: 'gray-darkest' },
-        { text: `${this.$t('shipping.gross')}, ${this.$t('measure.kg')}`, value: 'gross', width: 80, bgcolor: 'gray-darkest' },
-        { text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`, value: 'size', width: 148, bgcolor: 'gray-darkest' },
+        { text: `${this.$t('shipping.net')} ${this.$t('measure.unit')} ${this.$t('measure.kg')}`, value: 'net', width: 75, bgcolor: 'gray-darkest' },
+        { text: `${this.$t('shipping.gross')} ${this.$t('measure.unit')} ${this.$t('measure.kg')}`, value: 'gross', width: 75, bgcolor: 'gray-darkest' },
+        { text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`, value: 'size', width: 168, bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.packageQty'), value: 'pkgQty', width: 65, bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.packageNo'), value: 'pkgNo', width: 65, bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.atWhouse'), value: 'atWhouse', minWidth: 75, bgcolor: 'gray-darkest' },
-        { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
+        { text: '', value: 'action', width: 24, bgcolor: 'gray-darkest' },
       ]
     },
     infoHeaders () {
       return [
-        { text: this.$t('shipping.additionalPhoto'), value: 'images', width: 85, bgcolor: 'gray-darkest' },
-        { text: this.$t('shipping.additionalInfo'), value: 'description', align: 'left', bgcolor: 'gray-darkest' },
-        { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.additionalPhoto'), value: 'images', width: 175, bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.additionalInfo'), value: 'description', width: '100%', align: 'left', bgcolor: 'gray-darkest' },
+        { text: '', value: 'action', width: 24, bgcolor: 'gray-darkest' },
       ]
     },
     linkHeaders () {
       return [
-        { text: this.$t('shipping.linkField'), value: 'url', align: 'left', bgcolor: 'gray-darkest' },
+        { text: this.$t('shipping.linkField'), value: 'url', width: '100%', align: 'left', bgcolor: 'gray-darkest' },
         { text: this.$t('shipping.openLink'), value: 'openLink', width: 70, bgcolor: 'gray-darkest' },
-        { text: '', value: 'action', width: 20, bgcolor: 'gray-darkest' },
+        { text: '', value: 'action', width: 24, bgcolor: 'gray-darkest' },
       ]
     },
   },
@@ -210,7 +239,7 @@ export default {
   bacground-color: #252525;
 }
 .tab-item:not(:first-child) {
-  margin-left:  1px;
+  padding-left:  1px;
 }
 .tab-item--active {
   @apply bg-gray-darkest;
