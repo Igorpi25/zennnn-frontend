@@ -474,7 +474,7 @@
                 Много непонятных систем
               </h4>
               <p class="leading-relaxed text-gray-140">
-                ZENNNN — первая система, созданная предпринемателями, а не програмистами. В zennnn нет бесконечного количества непонятных функций, только то, что используется каждый день. А на первом плане всегда финансовые показатели и КРI струдников.
+                ZENNNN — первая система, созданная предпринемателями, а не програмистами. В ZENNNN нет бесконечного количества непонятных функций, только то, что используется каждый день. А на первом плане всегда финансовые показатели и КРI струдников.
               </p>
             </div>
           </div>
@@ -507,7 +507,7 @@
                 Языковые барьеры
               </h4>
               <p class="leading-relaxed text-gray-140">
-                ZENNNN — мультиязычная программа. По сути ваши поставщики смогут общаться с клиентами из любой точки мира, забыв о языковых барьерах, а вы и zennnn будете контролировать этот процесс.
+                ZENNNN — мультиязычная программа. По сути ваши поставщики смогут общаться с клиентами из любой точки мира, забыв о языковых барьерах, а вы и ZENNNN будете контролировать этот процесс.
               </p>
             </div>
           </div>
@@ -1034,7 +1034,7 @@
               Если бы биты и пиксели умели любить,<br>ZENNNN стал бы первой программой, которая полюбила человека.
             </div>
             <div class="text-white text-xl pb-10 mb-3" style="max-width: 910px">
-              За время взаимодействия с zennnn деятельность Вашей компании станет прозрачной, наладится управленческий учёт, а на своих должностях останутся только самые эффективные сотрудники
+              За время взаимодействия с ZENNNN деятельность Вашей компании станет прозрачной, наладится управленческий учёт, а на своих должностях останутся только самые эффективные сотрудники
             </div>
             <router-link
               :to="{ name: 'signup' }"
@@ -1052,7 +1052,7 @@
     </main>
     <footer class="text-black leading-6 py-6" style="background: #F2F2F2;">
       <div class="text-center py-1 px-4">
-        <span class="inline-block sm:inline">Copyright © 2015-2019 Zennnn.</span> <span class="inline-block sm:inline">All rights reserved.</span>
+        <span class="inline-block sm:inline">Copyright © 2015-2019 ZENNNN.</span> <span class="inline-block sm:inline">All rights reserved.</span>
       </div>
     </footer>
   </div>
@@ -1065,8 +1065,8 @@ export default {
     meta: [
       { hid: 'theme-color', name: 'theme-color', content: '#ffffff' },
       { hid: 'description', name: 'description', content: 'бэк-офис ZENNNN' },
-      { vmid: 'og:title', property: 'og:title', content: 'Zennnn' },
-      { vmid: 'og:site_name', property: 'og:site_name', content: 'Zennnn' },
+      { vmid: 'og:title', property: 'og:title', content: 'ZENNNN' },
+      { vmid: 'og:site_name', property: 'og:site_name', content: 'ZENNNN' },
       { vmid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_HOSTNAME}/about/` },
       { vmid: 'og:image', property: 'og:image', content: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png` },
       { vmid: 'og:description', property: 'og:description', content: 'бэк-офис ZENNNN' },
@@ -1161,12 +1161,12 @@ export default {
       team: [
         {
           name: 'Михаил Болтенков',
-          position: 'CEO, экономист, сооснователь zennnn',
+          position: 'CEO, экономист, сооснователь ZENNNN',
           country: 'ru',
         },
         {
           name: 'Игорь Иванов',
-          position: 'CTO, программист, сооснователь zennnn, бэк-энд разработчик',
+          position: 'CTO, программист, сооснователь ZENNNN, бэк-энд разработчик',
           country: 'ru',
         },
         {
