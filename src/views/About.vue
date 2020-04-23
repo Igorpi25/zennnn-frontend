@@ -167,26 +167,51 @@
           <span v-html="'ZENNNN уже рассказал о&nbsp;себе за&nbsp;четыре минуты'" />
         </h3>
         <div class="w-15 h-px py-xs my-6 mx-auto bg-blue-700" />
-        <div class="h-0 sm:h-64 relative">
-          <div class="absolute top-0 left-0 right-0 flex justify-center px-4">
+        <div class="pb-6"></div>
+        <div class="relative">
+          <div style="max-width: 1000px;">
+            <div style="padding-bottom: 20.2%;" />
+          </div>
+          <div style="background: linear-gradient(180deg, #F4F4F4 0%, rgba(244, 244, 244, 0) 100%);">
+            <div style="max-width: 1000px;">
+              <div style="padding-bottom: 36%;" />
+            </div>
+          </div>
+          <div class="absolute inset-0 flex justify-center mx-4 md:mx-6">
             <div
-              :style="videoSize"
-              style="20px 50px 60px rgba(0, 0, 0, 0.15); border-radius: 12px;"
-              class="flex items-center justify-center bg-gray-900"
+              style="box-shadow: 20px 50px 60px rgba(0, 0, 0, 0.15); border-radius: 12px; max-width: 1000px;"
+              class="relative bg-gray-900 overflow-hidden w-full h-full"
             >
-              <img
-                src="/img/video.png"
-                alt="play"
-                style="height: 50%;"
-              >
+              <div class="absolute inset-0">
+                <!-- <iframe v-if="isVideoActivated" class="w-full h-full" width="1206" height="678" src="https://www.youtube.com/embed/LMFUvAmbwS0?rel=0&controls=2&color=red&modestbranding=1&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                <div id="ytplayer" class="w-full h-full"></div>
+              </div>
+              <transition name="fade">
+                <div
+                  v-if="!isVideoActivated"
+                  class="video absolute inset-0 flex items-center justify-center cursor-pointer bg-gray-900"
+                  @click="playVideo"
+                >
+                  <img
+                    src="/static/img/video-preview.png"
+                    alt="video-preview"
+                    style="height: 50%; min-height: 140px;"
+                  >
+                  <div class="video-play absolute inset-0 flex items-center justify-center">
+                    <svg width="121" height="121" viewBox="0 0 121 121" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle opacity="0.2" cx="60.7686" cy="60.0278" r="60" fill="#C4C4C4"/>
+                      <path d="M86.0371 57.4298C88.0371 58.5845 88.0371 61.4712 86.0371 62.6259L50.0371 83.4105C48.0371 84.5652 45.5371 83.1218 45.5371 80.8124L45.5371 39.2432C45.5371 36.9338 48.0371 35.4904 50.0371 36.6451L86.0371 57.4298Z" fill="white"/>
+                    </svg>
+                  </div>
+                </div>
+              </transition>
             </div>
           </div>
         </div>
-        <div style="height: 30rem; background: linear-gradient(180deg, #F4F4F4 0%, rgba(244, 244, 244, 0) 100%);"></div>
       </div>
       <!-- VIDEO / -->
       <!-- / SECURITY -->
-      <div class="container container--xs pb-16">
+      <div class="container container--xs pt-16 sm:pt-20 pb-16">
         <div class="flex flex-wrap lg:flex-no-wrap pt-6 pb-6">
           <div class="w-full flex-shrink-0" style="max-width: 532px;">
             <h3 class="section-title font-bold">
@@ -1083,6 +1108,10 @@ export default {
   },
   data () {
     return {
+      player: null,
+      isVideoActivated: false,
+      isYouTubeIframeAPILoading: false,
+      videoId: 'LMFUvAmbwS0',
       activeFeature: 1,
       features: [
         {
@@ -1276,23 +1305,83 @@ export default {
       ],
     }
   },
-  computed: {
-    videoSize () {
-      const breakpoint = this.$vuetify.breakpoint.name
-      switch (breakpoint) {
-        case 'xs': return { width: '320px', height: '197px' }
-        case 'sm': return { width: '640px', height: '394px' }
-        case 'md': return { width: '768px', height: '472px' }
-        case 'lg':
-        case 'xl': return { width: '1000px', height: '615px' }
-        default: return { width: '320px', height: '197px' }
+  mounted () {
+    if (window.YT) {
+      this.onYouTubeIframeAPIReady()
+    } else {
+      this.loadYouTubeIframeApi()
+    }
+  },
+  beforeDestroy () {
+    if (this.player) {
+      this.player.destroy()
+    }
+  },
+  methods: {
+    playVideo () {
+      this.isVideoActivated = true
+      try {
+        this.player.playVideo()
+      } catch (error) {
+        // eslint-disable-next-line
+        console.warn('Video play error: ', error)
       }
+    },
+    loadYouTubeIframeApi () {
+      if (window.YT || this.isYouTubeIframeAPILoading) {
+        return Promise.resolve()
+      }
+      return new Promise((resolve, reject) => {
+        this.isYouTubeIframeAPILoading = true
+        window['onYouTubeIframeAPIReady'] = this.onYouTubeIframeAPIReady
+        // This code loads the IFrame Player API code asynchronously.
+        const script = document.createElement('script')
+        script.src = 'https://www.youtube.com/iframe_api'
+        const firstScriptTag = document.getElementsByTagName('script')[0]
+        firstScriptTag.parentNode.insertBefore(script, firstScriptTag)
+        // defines the callback that resolves on successful load
+        script.onload = () => {
+          this.isYouTubeIframeAPILoading = false
+          resolve()
+        }
+      })
+    },
+    onYouTubeIframeAPIReady () {
+      // This function creates an <iframe> (and YouTube player)
+      // after the API code downloads.
+      this.player = new window.YT.Player('ytplayer', {
+        height: '1000',
+        width: '562',
+        videoId: this.videoId,
+        playerVars: {
+          rel: 0,
+          controls: 1,
+          modestbranding: 1,
+          showinfo: 0,
+          enablejsapi: 1,
+        },
+        events: {
+          'onReady': this.onPlayerReady,
+        },
+      })
+    },
+    onPlayerReady (event) {
+      // prepare video to immediate play start
+      event.target.seekTo(0, true)
+      event.target.pauseVideo()
     },
   },
 }
 </script>
 
 <style scoped>
+.video .video-play circle {
+  will-change: opacity;
+  transition: opacity 0.1s cubic-bezier(0.61, 1, 0.88, 1);
+}
+.video:hover .video-play circle {
+  opacity: .35;
+}
 .about-imac {
   top: 114px;
   left: 60%;
