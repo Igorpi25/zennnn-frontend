@@ -39,6 +39,12 @@ const routes = [
         if (!loggedIn) {
           return next({ name: 'about' })
         }
+        // set theme attribute
+        if (to.name === 'preview' || to.name === 'about') {
+          document.body.dataset.theme = 'light'
+        } else {
+          document.body.dataset.theme = 'dark'
+        }
         const orgId = localStorage.getItem(CURRENT_ORG_STORE_KEY) || ''
         return next({ name: 'specs', params: { orgId } })
       } catch (error) {
