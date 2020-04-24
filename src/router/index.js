@@ -273,7 +273,7 @@ const routes = [
           // Add message to Analytics
         }
       }
-      next('/')
+      next('/signin')
     },
   },
   {
@@ -292,7 +292,7 @@ const routes = [
       } else {
         // Incorrect request to restore password
         router.app.$notify({ color: 'red', text: i18n.t('message.incorrectRestorePassword') })
-        next('/')
+        next('/signin')
       }
     },
   },
