@@ -8,16 +8,32 @@
             <img src="@/assets/img/logo.svg" alt="Logo">
           </a>
           <nav class="hidden md:flex items-center leading-5" style="color: #BDBDBD;">
-            <a href="#" class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out">
+            <a
+              href="#"
+              class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
+              @click.prevent="goTo('#video')"
+            >
               Система
             </a>
-            <a href="#" class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out">
+            <a
+              href="#"
+              class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
+              @click.prevent="goTo('#security')"
+            >
               Безопасность
             </a>
-            <a href="#" class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out">
+            <a
+              href="#"
+              class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
+              @click.prevent="goTo('#feature')"
+            >
               Функции
             </a>
-            <a href="#" class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out">
+            <a
+              href="#"
+              class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
+              @click.prevent="goTo('#review')"
+            >
               Отзывы
             </a>
           </nav>
@@ -171,7 +187,7 @@
     </div>
     <main>
       <!-- / VIDEO -->
-      <div>
+      <div id="video">
         <h3 class="section-title font-bold text-center mx-auto mt-10" style="max-width: 772px;">
           <span v-html="video.title" />
         </h3>
@@ -220,7 +236,7 @@
       </div>
       <!-- VIDEO / -->
       <!-- / SECURITY -->
-      <div class="container container--xs pt-16 sm:pt-20 pb-16">
+      <div id="security" class="container container--xs pt-16 sm:pt-20 pb-16">
         <div class="flex flex-wrap lg:flex-no-wrap pt-6 pb-6">
           <div class="w-full flex-shrink-0" style="max-width: 532px;">
             <h3
@@ -266,7 +282,7 @@
       </div>
       <!-- SECURITY / -->
       <!-- / FEATURE -->
-      <div class="relative pt-24" style="background: #F8F8F8;">
+      <div id="feature" class="relative pt-24" style="background: #F8F8F8;">
         <div>
           <div class="container container--xs flex w-full overflow-x-auto mb-8">
             <nav class="tabs relative inline-flex justify-center mx-auto text-2xl text-black font-bold leading-7">
@@ -617,7 +633,7 @@
       </div>
       <!-- USER INTERFACE / -->
       <!-- / REVIEW -->
-      <div class="py-32 bg-gray-900">
+      <div id="review" class="py-32 bg-gray-900">
         <div class="container container--xs flex flex-col md:flex-row relative py-5">
           <div class="absolute right-0 px-4" style="top: -90px; transform: translateY(-100%);">
             <img src="@/assets/img/quote-open.svg" alt="quote" class="w-48 lg:w-auto">
@@ -1133,6 +1149,9 @@ export default {
     }
   },
   methods: {
+    goTo (id) {
+      this.$vuetify.goTo(id)
+    },
     playVideo () {
       this.isVideoActivated = true
       try {
