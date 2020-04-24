@@ -2,57 +2,72 @@
   <div class="font-montserrat">
     <div class="flex flex-col min-h-screen">
       <!-- / HEADER -->
-      <header class="container container--xs pt-6 pb-4 font-medium">
-        <div class="flex items-center h-13">
-          <a href="/" class="h-6 mr-16">
-            <img src="@/assets/img/logo.svg" alt="Logo">
-          </a>
-          <nav class="hidden md:flex items-center leading-5" style="color: #BDBDBD;">
-            <a
-              href="#"
-              class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
-              @click.prevent="goTo('#video')"
-            >
-              Система
+      <header class="pt-6 pb-4 font-medium">
+        <div class="container container--xs">
+          <div class="flex items-center h-13">
+            <a href="/" class="h-6 mr-16">
+              <img src="@/assets/img/logo.svg" alt="Logo">
             </a>
-            <a
-              href="#"
-              class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
-              @click.prevent="goTo('#security')"
+            <nav class="hidden md:flex items-center leading-5" style="color: #BDBDBD;">
+              <a
+                v-for="(item, i) of navItems"
+                :key="i"
+                :class="{ 'text-blue-700': activeNav === i }"
+                href="#"
+                class="mx-5 hover:text-blue-700 transition-colors duration-100 ease-out"
+                @click.prevent="goTo(i)"
+              >
+                {{ item.text }}
+              </a>
+            </nav>
+            <router-link
+              :to="{ name: 'signup' }"
+              class="hidden lg:inline-flex items-center text-blue-700 px-6 ml-auto h-13 rounded-50 shadow-outline select-none focus:outline-none focus:text-blue-800 hover:text-blue-800"
             >
-              Безопасность
-            </a>
-            <a
-              href="#"
-              class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
-              @click.prevent="goTo('#feature')"
-            >
-              Функции
-            </a>
-            <a
-              href="#"
-              class="mx-5 focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
-              @click.prevent="goTo('#review')"
-            >
-              Отзывы
-            </a>
-          </nav>
-          <router-link
-            :to="{ name: 'signup' }"
-            class="hidden lg:inline-flex items-center text-blue-700 px-6 ml-auto h-13 rounded-50 shadow-outline select-none focus:outline-none focus:text-blue-800 hover:text-blue-800"
-          >
-            Получить пробный период
-          </router-link>
+              Получить пробный период
+            </router-link>
+          </div>
         </div>
       </header>
       <!-- HEADER / -->
+      <v-scale-transition hide-on-leave>
+        <div
+          v-if="isInfoAlertActive"
+          :style="{ transform: `translateY(${infoAlertTop}px)` }"
+          class="info-alert z-10 fixed inset-x-0 top-0"
+        >
+          <div class="container container--xs info-alert__container">
+            <div class="relative">
+              <div
+                class="absolute right-0 w-full flex items-center rounded-md px-4 py-3"
+                style="background: #FFF2AD; min-height: 48px;"
+              >
+                <img src="@/assets/img/info.svg" alt="info" class="flex-shrink-0 self-start mr-4">
+                <div
+                  v-html="'ZENNNN — самый удобный сервис для удаленной работы с&nbsp;поставщиками со&nbsp;всего мира.'"
+                  class="flex-grow font-semibold leading-5 text-center"
+                />
+                <div
+                  class="flex-shrink-0 self-start text-gray-900 hover:text-black ml-4 w-5 h-5 flex items-center justify-center"
+                  @click="isInfoAlertActive = false"
+                >
+                  <svg class="cursor-pointer" width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.46451 0.657227L9.94979 9.14251L8.53557 10.5567L0.0502933 2.07144L1.46451 0.657227Z" fill="currentColor"/>
+                    <path d="M9.94979 2.07144L1.46451 10.5567L0.050293 9.14251L8.53557 0.657227L9.94979 2.07144Z" fill="currentColor"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </v-scale-transition>
       <!-- / HERO -->
       <div class="md:relative flex-grow flex items-end pb-3">
         <div class="w-full md:pt-12">
           <div class="container container--xs">
-            <div class="">
+            <div class="pt-32 md:pt-6">
               <div class="flex">
-                <h1 class="head-title font-bold flex-shrink-0 md:pt-6 mt-sm mb-5">бэк-офис ZENNNN</h1>
+                <h1 class="head-title font-bold flex-shrink-0 mt-sm mb-5">бэк-офис ZENNNN</h1>
                 <div class="w-full pb-5">
                   <div class="relative h-full md:static">
                     <div class="about-saas absolute left-0 md:top-0 md:right-0 bottom-0 md:bottom-auto md:right-auto md:pt-10 pl-3 md:pl-5">
@@ -783,6 +798,9 @@
 </template>
 
 <script>
+const INFO_ALERT_TOP = 90
+const SCROLL_THRESHOLD = 90
+
 export default {
   name: 'About',
   metaInfo: {
@@ -798,6 +816,36 @@ export default {
   },
   data () {
     return {
+      isHeaderActive: true,
+      isScrollingUp: false,
+      savedScroll: 0,
+      previousScroll: 0,
+      currentScroll: 0,
+      infoAlertTop: INFO_ALERT_TOP,
+      isInfoAlertActive: true,
+      activeNav: -1,
+      navItems: [
+        {
+          text: 'Система',
+          sectionId: 'video',
+          rect: null,
+        },
+        {
+          text: 'Безопасность',
+          sectionId: 'security',
+          rect: null,
+        },
+        {
+          text: 'Функции',
+          sectionId: 'feature',
+          rect: null,
+        },
+        {
+          text: 'Отзывы',
+          sectionId: 'review',
+          rect: null,
+        },
+      ],
       video: {
         title: 'ZENNNN уже рассказал о&nbsp;себе за&nbsp;четыре минуты',
       },
@@ -1134,6 +1182,11 @@ export default {
       ],
     }
   },
+  watch: {
+    isScrollingUp () {
+      this.savedScroll = this.savedScroll || this.currentScroll
+    },
+  },
   mounted () {
     if (process.env.NODE_ENV === 'production') {
       if (window.YT) {
@@ -1142,14 +1195,43 @@ export default {
         this.loadYouTubeIframeApi()
       }
     }
+    window.addEventListener('scroll', this.onScroll, { passive: true })
   },
   beforeDestroy () {
     if (this.player) {
       this.player.destroy()
     }
+    window.removeEventListener('scroll', this.onScroll, { passive: true })
   },
   methods: {
-    goTo (id) {
+    onScroll () {
+      let scrollY = window.pageYOffset || 0
+      if (scrollY < 0) {
+        scrollY = 0
+      }
+      if (this.isInfoAlertActive) {
+        let infoAlertTop = INFO_ALERT_TOP - scrollY
+        infoAlertTop = infoAlertTop < 8 ? 8 : infoAlertTop
+        this.infoAlertTop = infoAlertTop
+      }
+      this.previousScroll = this.currentScroll
+      this.currentScroll = scrollY
+      this.isScrollingUp = this.currentScroll < this.previousScroll
+      this.currentThreshold = Math.abs(this.currentScroll - SCROLL_THRESHOLD)
+      this.$nextTick(() => {
+        if (
+          Math.abs(this.currentScroll - this.savedScroll) > SCROLL_THRESHOLD
+        ) {
+          if (this.isScrollingUp) {
+            // TODO
+          }
+          this.savedScroll = this.currentScroll
+        }
+      })
+    },
+    goTo (index) {
+      const nav = this.navItems[index]
+      const id = nav ? `#${nav.sectionId}` : null
       this.$vuetify.goTo(id)
     },
     playVideo () {
@@ -1209,6 +1291,19 @@ export default {
 </script>
 
 <style scoped lang="postcss">
+.info-alert {
+  will-change: transform;
+  transition: transform .2s cubic-bezier(.4,0,.2,1);
+}
+.info-alert__container {
+  padding-left: 4px!important;
+}
+@screen xl {
+  .info-alert__container {
+    padding-left: 28px!important;
+  }
+}
+
 .video .video-play circle {
   will-change: opacity;
   transition: opacity 0.1s cubic-bezier(0.61, 1, 0.88, 1);
