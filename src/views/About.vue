@@ -1275,6 +1275,7 @@ export default {
           modestbranding: 1,
           showinfo: 0,
           enablejsapi: 1,
+          origin: window.location.origin,
         },
         events: {
           'onReady': this.onPlayerReady,
