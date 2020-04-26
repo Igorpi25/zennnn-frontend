@@ -1,25 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import RequisiteList from '../views/RequisiteList.vue'
-import RequisiteItem from '../views/RequisiteItem.vue'
+// TODO: Uncaught TypeError: y.b is not a constructor
 import OrgLayout from '../views/OrgLayout.vue'
-import Specs from '../views/Specs.vue'
-import Spec from '../views/Spec.vue'
-import ClientItem from '../views/ClientItem.vue'
-import ClientList from '../views/ClientList.vue'
-import SupplierItem from '..//views/SupplierItem.vue'
-import SupplierList from '../views/SupplierList.vue'
-import Staff from '../views/Staff.vue'
-import Preview from '../views/Preview.vue'
-import Invitation from '../views/Invitation.vue'
-import SignIn from '../views/SignIn.vue'
-import Registration from '../views/Registration.vue'
-import SignUp from '../views/SignUp.vue'
-import Welcome from '../views/Welcome.vue'
-import PasswordRestore from '../views/PasswordRestore.vue'
-import PasswordRestoreConfirm from '../views/PasswordRestoreConfirm.vue'
-import NotFound from '../views/NotFound.vue'
 
 import { Auth, i18n } from '../plugins'
 import { apolloClient } from '../plugins/apollo'
@@ -27,23 +10,41 @@ import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/quer
 
 import { CURRENT_LANG_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
 
+const Home = () => import(/* webpackChunkName: "home" */ '../views/About.vue')
+const RequisiteList = () => import(/* webpackChunkName: "main" */ '../views/RequisiteList.vue')
+const RequisiteItem = () => import(/* webpackChunkName: "main" */ '../views/RequisiteItem.vue')
+// const OrgLayout = () => import(/* webpackChunkName: "main" */ '../views/OrgLayout.vue')
+const Specs = () => import(/* webpackChunkName: "main" */ '../views/Specs.vue')
+const Spec = () => import(/* webpackChunkName: "main" */ '../views/Spec.vue')
+const ClientItem = () => import(/* webpackChunkName: "main" */ '../views/ClientItem.vue')
+const ClientList = () => import(/* webpackChunkName: "main" */ '../views/ClientList.vue')
+const SupplierItem = () => import(/* webpackChunkName: "main" */ '../views/SupplierItem.vue')
+const SupplierList = () => import(/* webpackChunkName: "main" */ '../views/SupplierList.vue')
+const Staff = () => import(/* webpackChunkName: "main" */ '../views/Staff.vue')
+const Preview = () => import(/* webpackChunkName: "paper" */ '../views/Preview.vue')
+const Invitation = () => import(/* webpackChunkName: "main" */ '../views/Invitation.vue')
+const SignIn = () => import(/* webpackChunkName: "common" */ '../views/SignIn.vue')
+const Registration = () => import(/* webpackChunkName: "common" */ '../views/Registration.vue')
+const SignUp = () => import(/* webpackChunkName: "common" */ '../views/SignUp.vue')
+const Welcome = () => import(/* webpackChunkName: "common" */ '../views/Welcome.vue')
+const PasswordRestore = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestore.vue')
+const PasswordRestoreConfirm = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestoreConfirm.vue')
+const NotFound = () => import(/* webpackChunkName: "common" */ '../views/NotFound.vue')
+
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     name: 'home',
+    component: Home,
     beforeEnter: async (to, from, next) => {
       try {
         const loggedIn = await Auth.checkAuth()
         if (!loggedIn) {
-          return next({ name: 'about' })
-        }
-        // set theme attribute
-        if (to.name === 'preview' || to.name === 'about') {
+          // set light theme permanently
           document.body.dataset.theme = 'light'
-        } else {
-          document.body.dataset.theme = 'dark'
+          return next()
         }
         const orgId = localStorage.getItem(CURRENT_ORG_STORE_KEY) || ''
         return next({ name: 'specs', params: { orgId } })
@@ -226,7 +227,7 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    component: () => import(/* webpackChunkName: "home" */ '../views/About.vue'),
+    component: Home,
   },
   {
     path: '/paper/:specId',
@@ -350,11 +351,9 @@ router.beforeEach(async (to, from, next) => {
       i18n.locale = lang
     }
   }
-  // set theme attribute
+  // set light theme permanently
   if (to.name === 'preview' || to.name === 'about') {
     document.body.dataset.theme = 'light'
-  } else {
-    document.body.dataset.theme = 'dark'
   }
   // check auth
   const loggedIn = await Auth.checkAuth()
@@ -378,10 +377,20 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     if (!loggedIn && to.path === '/') {
-      return next({ name: 'about' })
+      return next()
     }
     next() // make sure to always call next()!
   }
+})
+
+router.beforeResolve((to, from, next) => {
+  // set theme attribute
+  if (to.path === '/' || to.name === 'preview' || to.name === 'about') {
+    document.body.dataset.theme = 'light'
+  } else {
+    document.body.dataset.theme = 'dark'
+  }
+  next()
 })
 
 export default router

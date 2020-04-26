@@ -20,19 +20,40 @@ const productionPlugins = [
     // indexPath: path.join(__dirname, 'src', 'about.html'),
 
     // Required - Routes to render.
-    routes: ['/about'],
+    routes: ['/', '/about'],
+
+    postProcess (renderedRoute) {
+      if (renderedRoute.route === '/') {
+        renderedRoute.outputPath = path.join(__dirname, 'dist', 'home.html')
+      } else {
+        renderedRoute.outputPath = path.join(__dirname, 'dist', `${renderedRoute.route.replace('/', '')}.html`)
+      }
+      return renderedRoute
+    },
   }),
 ]
 
 module.exports = {
+  chainWebpack: config => {
+    // remove the prefetch plugin
+    // config.plugins.delete('prefetch')
+    // or:
+    // modify prefetch plugin options:
+    config.plugin('prefetch').tap(options => {
+      options[0].fileBlacklist = options[0].fileBlacklist || [/\.map/]
+      options[0].fileBlacklist.push(/(pdfFonts|pdfMake)(.)+?\.js$/)
+      return options
+    })
+  },
   configureWebpack: (config) => {
     const definePlugin = new webpack.DefinePlugin({
       'process.env': {
         'FRONTEND_VERSION': JSON.stringify(version),
       },
     })
+    config.plugins.push(definePlugin)
     if (process.env.NODE_ENV === 'production') {
-      config.plugins.push(...productionPlugins, definePlugin)
+      config.plugins.push(...productionPlugins)
     }
   },
   pluginOptions: {

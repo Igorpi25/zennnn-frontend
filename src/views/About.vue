@@ -802,12 +802,15 @@ const SCROLL_THRESHOLD = 90
 export default {
   name: 'About',
   metaInfo: {
+    link: [
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900&display=swap&subset=cyrillic' },
+    ],
     meta: [
       { hid: 'theme-color', name: 'theme-color', content: '#ffffff' },
       { hid: 'description', name: 'description', content: 'бэк-офис ZENNNN' },
       { vmid: 'og:title', property: 'og:title', content: 'ZENNNN' },
       { vmid: 'og:site_name', property: 'og:site_name', content: 'ZENNNN' },
-      { vmid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_HOSTNAME}/about/` },
+      { vmid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_HOSTNAME}${window.location.pathname}` },
       { vmid: 'og:image', property: 'og:image', content: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png` },
       { vmid: 'og:description', property: 'og:description', content: 'бэк-офис ZENNNN' },
     ],
