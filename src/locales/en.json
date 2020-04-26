@@ -749,7 +749,8 @@
     "passwordChanged": "Password changed",
     "emailConfirmed": "Email confirmed.",
     "emailAlreadyConfirmed": "Email already confirmed.",
-    "incorrectRestorePassword": "Incorrect request to restore password."
+    "incorrectRestorePassword": "Incorrect request to restore password.",
+    "documentGenerateLoading": "Document is being generated, please wait..."
   },
   "alert": {
     "attention": "Attention!",

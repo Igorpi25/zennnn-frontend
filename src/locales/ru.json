@@ -748,7 +748,8 @@
     "passwordChanged": "Пароль изменен.",
     "emailConfirmed": "Email подтвержден.",
     "emailAlreadyConfirmed": "Email был подтвержден ранее.",
-    "incorrectRestorePassword": "Не корректный запрос смены пароля."
+    "incorrectRestorePassword": "Не корректный запрос смены пароля.",
+    "documentGenerateLoading": "Документ генерируется, пожалуйста подождите..."
   },
   "alert": {
     "attention": "Внимание!",

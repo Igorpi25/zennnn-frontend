@@ -29,6 +29,7 @@ const SignUp = () => import(/* webpackChunkName: "common" */ '../views/SignUp.vu
 const Welcome = () => import(/* webpackChunkName: "common" */ '../views/Welcome.vue')
 const PasswordRestore = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestore.vue')
 const PasswordRestoreConfirm = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestoreConfirm.vue')
+const Print = () => import(/* webpackChunkName: "common" */ '../views/Print.vue')
 const NotFound = () => import(/* webpackChunkName: "common" */ '../views/NotFound.vue')
 
 Vue.use(VueRouter)
@@ -239,6 +240,23 @@ const routes = [
         localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid)
         return next({ name: 'preview', params: { specId: to.params.specId }, query: {} })
       }
+      next()
+    },
+  },
+  {
+    path: '/print/:docNo',
+    name: 'print',
+    component: Print,
+    beforeEnter: (to, from, next) => {
+      if (!to.params.docNo || !window.opener) {
+        return next(false)
+      }
+      router.app.$notify({
+        color: 'primary',
+        text: i18n.t('message.documentGenerateLoading'),
+        timeout: 0,
+        close: false,
+      })
       next()
     },
   },

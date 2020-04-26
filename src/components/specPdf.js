@@ -881,6 +881,10 @@ const genAmountInWords = (spec, clientLang) => {
 
 export default async (spec, requisite, client, shipment, customs, method = 'open', isDraft = true) => {
   try {
+    let win = null
+    if (method !== 'download') {
+      win = window.open(`/print/${spec.specNo}`, '_blank')
+    }
     const defaultLang = i18n.fallbackLocale
     const clientLang = client.language || defaultLang
     const pdfMake = (await import(/* webpackChunkName: "pdfMake" */ 'pdfmake/build/pdfmake')).default
@@ -1310,12 +1314,13 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
     if (isDraft) {
       dd.watermark = { text: i18n.t('preview.draft'), color: 'gray', opacity: 0.3, bold: true, italics: false }
     }
+    const pdfDocGenerator = pdfMake.createPdf(dd)
     if (method === 'download') {
-      pdfMake.createPdf(dd).download(spec.specNo)
+      pdfDocGenerator.download(spec.specNo)
     } else if (method === 'print') {
-      pdfMake.createPdf(dd).print()
+      pdfDocGenerator.print({}, win)
     } else {
-      pdfMake.createPdf(dd).open()
+      pdfDocGenerator.open({}, win)
     }
   } catch (error) {
     throw new Error(error)

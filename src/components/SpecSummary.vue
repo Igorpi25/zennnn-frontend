@@ -737,9 +737,7 @@ export default {
     async doPrint (requisite, client, shipment, customs) {
       try {
         this.printLoading = true
-        const defaultLang = this.$i18n.fallbackLocale
-        const clientLang = client.language || defaultLang
-        const method = clientLang === 'zh-Hans' || clientLang === 'zh-Hant' ? 'download' : 'open'
+        const method = 'print'
         await specPdf(this.spec, requisite, client, shipment, customs, method, false)
       } catch (error) {
         this.$notify({
