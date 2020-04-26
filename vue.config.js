@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { execSync } = require('child_process')
 const pkgVersion = require('./package.json').version
 const commitHash = execSync('git rev-parse HEAD').toString().trim().slice(0, 7)
@@ -51,7 +52,15 @@ module.exports = {
         'FRONTEND_VERSION': JSON.stringify(version),
       },
     })
-    config.plugins.push(definePlugin)
+    const copyPlugin = new CopyWebpackPlugin(
+      [
+        {
+          from: 'src/sw.js',
+          to: 'service-worker.js',
+        },
+      ],
+    )
+    config.plugins.push(definePlugin, copyPlugin)
     if (process.env.NODE_ENV === 'production') {
       config.plugins.push(...productionPlugins)
     }

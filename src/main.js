@@ -13,6 +13,8 @@ import './components'
 // Tailwindcss
 import './assets/css/main.css'
 
+import './registerServiceWorker'
+
 Vue.config.productionTip = false
 
 function runApp () {
