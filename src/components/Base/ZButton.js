@@ -1,5 +1,5 @@
 export default {
-  name: 'ZButton',
+  name: 'Button',
   props: {
     tag: {
       type: String,
@@ -20,12 +20,12 @@ export default {
     borderless: Boolean,
     contentClass: {
       type: String,
-      default: 'h-12 flex items-center',
+      default: 'flex items-center',
     },
   },
   computed: {
     staticClass () {
-      return 'inline-flex relative rounded-md focus:outline-none select-none align-middle transition-colors duration-100 ease-out'
+      return 'h-12 inline-flex relative rounded-md focus:outline-none select-none align-middle transition-colors duration-100 ease-out'
     },
     classes () {
       const classes = []
@@ -34,7 +34,7 @@ export default {
         if (this.outlined) {
           classes.push('text-gray-400')
         } else {
-          classes.push('text-gray-100')
+          classes.push('text-gray-200')
         }
       } else if (this.outlined) {
         classes.push('text-blue-500')
@@ -61,32 +61,33 @@ export default {
         classes.push('pointer-events-none', 'cursor-default')
       }
       if (this.block) {
-        classes.push('w-full')
+        classes.push('w-full justify-center')
       }
       return classes
     },
   },
   methods: {
     click (e) {
+      this.$el.blur()
       this.$emit('click', e)
     },
     genContent () {
       const children = []
       const data = {
-        staticClass: this.contentClass,
         class: [
+          this.contentClass,
           { 'opacity-0': this.loading },
-          this.$slots.icon ? 'px-2' : 'px-4',
+          this.$slots.icon ? 'px-sm' : 'px-4',
         ],
       }
       if (this.$slots.icon) {
         const icon = this.$createElement('i', {
-          staticClass: 'w-6 ml-2px mr-2 flex items-center',
+          class: 'w-6 mr-sm flex items-center text-2xl',
         }, this.$slots.icon)
         children.push(icon)
       }
       const text = this.$createElement('span', {
-        class: { 'px-2px leading-none': this.$slots.icon },
+        class: { 'leading-none': this.$slots.icon },
       }, this.$slots.default)
       children.push(text)
       return this.$createElement('span', data, children)
@@ -97,8 +98,10 @@ export default {
         attrs: {
           tabindex: 'tabindex' in this.$attrs ? this.$attrs.tabindex : undefined,
         },
-        staticClass: this.staticClass,
-        class: this.classes,
+        class: [
+          this.staticClass,
+          ...this.classes,
+        ],
         props: {},
         [this.to ? 'nativeOn' : 'on']: {
           ...this.$listeners,
