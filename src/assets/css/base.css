@@ -138,6 +138,25 @@ img {
 
 /* SIMPLE SELECT --> */
 
+/* <-- DOTS */
+
+.dots {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+.dots::before {
+  display: block;
+  content:
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+  ;
+}
+
+/* DOTS --> */
+
 .overflow-scroll-touch {
   -webkit-overflow-scrolling: touch;
 }

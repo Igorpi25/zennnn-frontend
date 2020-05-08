@@ -13,7 +13,7 @@
 @import "./components/checkbox.css";
 @import "./components/radio-button.css";
 @import "./components/toggle-button.css";
-@import "./components/button.css";
+/* @import "./components/button.css"; */
 @import "./components/icon.css";
 @import "./components/alert.css";
 @import "./components/data-table.css";
@@ -21,27 +21,6 @@
 @import "./components/tooltip.css";
 
 @import "tailwindcss/utilities";
-
-:root {
-  --base-accent1: #404040;    /* spec invoice-header */
-  --base-accent2: #616161;    /* table header text */
-  --base-accent3: #252525;    /* table tr items */
-}
-
-.dots {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: clip;
-}
-.dots::before {
-  display: block;
-  content:
-    ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . "
-  ;
-}
 
 .status-stock {
   color: #00FF16;
