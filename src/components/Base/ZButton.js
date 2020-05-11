@@ -20,7 +20,7 @@ export default {
     borderless: Boolean,
     contentClass: {
       type: String,
-      default: 'flex items-center',
+      default: 'w-full flex items-center justify-center',
     },
   },
   computed: {

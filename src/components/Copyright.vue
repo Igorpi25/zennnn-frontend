@@ -1,13 +1,9 @@
 <template>
-  <div class="copyright">
-    <div>©2019 ZENNNN Corp. All Rights Reserved. Privacy Policy</div>
-    <span class="text-gray-dark">
-      <span>Frontend: {{ frontendVersion }}</span>
-      <template v-if="backendVersion">
-        &nbsp; | &nbsp;
-        <span>Backend: {{ backendVersion }}</span>
-      </template>
-    </span>
+  <div class="my-auto text-sm text-gray-200">
+    <div>
+      ©2019 ZENNNN. <a href="#" class="text-blue-500 hover:text-blue-600" @click.prevent>Пользовательское соглашение</a>
+    </div>
+    <div>{{ version }}</div>
   </div>
 </template>
 
@@ -25,6 +21,13 @@ export default {
     return {
       frontendVersion: process.env.FRONTEND_VERSION || '',
     }
+  },
+  computed: {
+    version () {
+      return this.backendVersion
+        ? `front/${this.frontendVersion} | backend/${this.backendVersion}`
+        : `front/${this.frontendVersion}`
+    },
   },
 }
 </script>
