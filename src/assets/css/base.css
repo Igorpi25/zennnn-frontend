@@ -177,3 +177,14 @@ form input:-webkit-autofill:focus,
 form input:-webkit-autofill:active {
   -webkit-transition-delay: 99999s;
 }
+
+/* Signin, Signup views */
+.auth-left {
+  width: 44%!important;
+}
+.auth-left--bg {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: -300px 380px;
+  background-image: url(../img/cloud.svg);
+}
