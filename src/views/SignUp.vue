@@ -100,7 +100,7 @@
     </div>
     <div class="container h-full flex-grow flex flex-col">
       <div class="h-24 flex items-center justify-end text-gray-200 pr-20">
-        <span class="pr-1">{{ $t('signup.hasAccount') }} </span>
+        <span class="pr-1">{{ $t('signup.hasAccount') }}</span>
         <router-link
           :to="{ name: 'signin' }"
           class="text-blue-500 hover:text-blue-600"
