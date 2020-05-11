@@ -160,3 +160,12 @@ img {
 .overflow-scroll-touch {
   -webkit-overflow-scrolling: touch;
 }
+
+.text-overflow-ellipsis {
+  text-overflow: ellipsis;
+}
+
+/* Safari text color on faded on input disabled */
+input:disabled {
+  -webkit-text-fill-color: currentColor;
+}

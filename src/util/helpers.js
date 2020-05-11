@@ -362,11 +362,50 @@ export const event = (name) => {
 }
 
 /**
+ * Unformat number with decimal
+ * @param {string|number} value
+ * @param {string|number} decimal
+ * @returns {number}
+ */
+export const unformatNumber = (value, decimal) => {
+  if (value === null) return null
+  // Check to number
+  const n = Number(value)
+  value = !isNaN(n) ? n : value
+  // Return the value as-is if it's already a number:
+  if (typeof value === 'number') return value
+  const s = toStr(value)
+  const negative = s.indexOf('-') === 0 ? -1 : 1
+  const parts = s.split(decimal)
+  const i = onlyNumbers(parts[0])
+  const d = onlyNumbers(parts[1])
+  return parseFloat(`${i}.${d}`) * negative
+}
+
+/**
+ * Clear string to only numbers
+ * @param {string|number} value
+ * @returns {number}
+ */
+const onlyNumbers = (value) => {
+  return toStr(value).replace(/\D+/g, '') || '0'
+}
+
+/**
+ * To string
+ * @param {string|number} value
+ * @returns {number}
+ */
+const toStr = (value) => {
+  return value ? value.toString() : ''
+}
+
+/**
  * Unformat number
  * @param {string|number} value
  * @returns {number}
  */
-export const unformat = (value) => {
+export const unformat = (value, decimal) => {
   if (value === null) return null
   // Fails silently (need decent errors):
   value = value || 0
@@ -375,7 +414,7 @@ export const unformat = (value) => {
   if (typeof value === 'number') return value
 
   // Decimal can be ',' or '.'
-  const decimal = '(,|.)'
+  decimal = decimal || '(,|.)'
 
   // Build regex to strip out everything except digits, decimal point and minus sign:
   const regex = new RegExp('[^0-9-' + decimal + ']', ['g'])

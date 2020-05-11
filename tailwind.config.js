@@ -39,7 +39,7 @@ module.exports = {
       'gray-500': '#353535',
       'gray-600': '#2F2F2F',
       'gray-700': '#282828',
-      'gray-800': '#222222',
+      'gray-800': '#232323',
       'gray-900': '#1E1E1E',
       'blue-400': '#2F80ED',
       'blue-500': '#7E99D0', // primary color
@@ -48,6 +48,7 @@ module.exports = {
       'blue-800': '#2F52D4', // landing hover color
       'pink-500': '#FF005E', // error, IN_PROCESSING
       'green-500': '#08DC1B', // success, IN_STOCK
+      'yellow-400': '#EAD377', // input warning
       'yellow-500': '#FDB600', // warning, IN_PRODUCTION
       'red-500': '#FF212D',
     },
@@ -59,6 +60,7 @@ module.exports = {
     boxShadow: {
       primary: '0 0 0 1px #5a8199',
       'blue-500': '0 0 0 1px #7E99D0',
+      'yellow-400': '0 0 0 1px #EAD377',
       default: '0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06)',
       md: '0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06)',
       lg: '0px 4px 10px rgba(0, 0, 0, 0.25)',
@@ -78,6 +80,11 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    backgroundColor: ['responsive', 'hover', 'focus', 'focus-within'],
+    borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
+    boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
+    overflow: ['responsive', 'hover'],
+  },
   plugins: [],
 }

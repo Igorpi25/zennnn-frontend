@@ -6,8 +6,8 @@
 @import "./components/layout.css";
 @import "./components/status-bar.css";
 @import "./components/form.css";
-@import "./components/input-base.css";
-@import "./components/text-field.css";
+/* @import "./components/input-base.css"; */
+/* @import "./components/text-field.css"; */
 @import "./components/text-area.css";
 @import "./components/select.css";
 @import "./components/checkbox.css";
