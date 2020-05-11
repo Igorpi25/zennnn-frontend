@@ -1,9 +1,15 @@
 export default {
+  props: {
+    rules: Array,
+    patterns: Array,
+  },
   data () {
     return {
       shouldValidate: false,
       hasError: null,
       errorText: '',
+      hasWarn: null,
+      warnText: '',
     }
   },
   watch: {
@@ -47,20 +53,47 @@ export default {
       }
       return errorsCount
     },
+    validatePatterns (value) {
+      let warnsCount = 0
+      if (this.patterns && this.patterns.length > 0) {
+        for (let rule of this.patterns) {
+          const result = rule(value)
+          if (result !== true) {
+            warnsCount++
+            this.setWarn(result)
+            break
+          }
+        }
+      }
+      if (warnsCount === 0) {
+        this.clearWarn()
+      }
+      return warnsCount
+    },
     reset () {
       this.internalValue = ''
       this.clearError()
+      this.clearWarn()
     },
     resetValidation () {
       this.clearError()
+      this.clearWarn()
     },
-    setError (errorMessage) {
-      this.errorText = errorMessage
+    setError (msg) {
+      this.errorText = msg
       this.hasError = true
     },
     clearError () {
       this.errorText = ''
       this.hasError = false
+    },
+    setWarn (msg) {
+      this.warnText = msg
+      this.hasWarn = true
+    },
+    clearWarn () {
+      this.warnText = ''
+      this.hasWarn = false
     },
   },
 }
