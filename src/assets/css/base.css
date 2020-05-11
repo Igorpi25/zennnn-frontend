@@ -172,18 +172,8 @@ input:disabled {
 
 /* Change Autocomplete styles in Chrome*/
 form input:-webkit-autofill,
-form input:-webkit-autofill:hover, 
+form input:-webkit-autofill:hover,
 form input:-webkit-autofill:focus,
-form textarea:-webkit-autofill,
-form textarea:-webkit-autofill:hover,
-form textarea:-webkit-autofill:focus,
-form select:-webkit-autofill,
-form select:-webkit-autofill:hover,
-form select:-webkit-autofill:focus {
-  border: 0;
-  color: #fff;
-  -webkit-text-fill-color: #fff;
-  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
-  transition: background-color 5000s ease-in-out 0s;
-  background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(0,174,255,0.04) 50%,rgba(255,255,255,0) 51%,rgba(0,174,255,0.03) 100%); 
+form input:-webkit-autofill:active {
+  -webkit-transition-delay: 99999s;
 }
