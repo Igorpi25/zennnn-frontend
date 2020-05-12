@@ -200,7 +200,9 @@ export default {
         this.errorMessage = error.message || error
         this.$logger.warn('Error: ', error)
       } finally {
-        this.loading = false
+        setTimeout(() => {
+          this.loading = false
+        }, 100)
       }
     },
   },

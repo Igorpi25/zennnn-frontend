@@ -294,7 +294,9 @@ export default {
         this.errorMessage = message
         this.$logger.warn('Error: ', error)
       } finally {
-        this.loading = false
+        setTimeout(() => {
+          this.loading = false
+        }, 100)
       }
     },
     async completeNewPassword (e) {
@@ -329,7 +331,9 @@ export default {
         this.compliteErrorMessage = error.message || error
         this.$logger.warn('Error: ', error)
       } finally {
-        this.compliteLoading = false
+        setTimeout(() => {
+          this.compliteLoading = false
+        }, 100)
       }
     },
   },
