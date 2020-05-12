@@ -1,7 +1,7 @@
 <template>
   <div class="my-auto text-sm text-gray-200 leading-snug">
     <div>
-      ©2019 ZENNNN. <a v-html="'Пользовательское&nbsp;соглашение'" href="#" class="text-blue-500 hover:text-blue-600" @click.prevent></a>
+      ©2019 ZENNNN. <a v-html="'Пользовательское&nbsp;соглашение'" href="#" class="text-blue-500 hover:text-blue-600 focus:outline-none focus:text-blue-600" @click.prevent></a>
     </div>
     <div>{{ version }}</div>
   </div>
