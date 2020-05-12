@@ -1,11 +1,11 @@
 <template>
-  <div class="content view">
+  <div class="min-h-screen flex flex-col">
     <StatusBar />
     <NavBar />
     <div class="mb-12">
       <router-view />
     </div>
-    <div class="absolute bottom-0 w-full">
+    <div class="h-12 absolute bottom-0 w-full flex items-center justify-center text-center">
       <Copyright />
     </div>
   </div>
