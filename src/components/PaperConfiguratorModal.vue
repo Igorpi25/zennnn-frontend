@@ -49,8 +49,6 @@
       <TextField
         v-model="contract.name"
         :placeholder="$t('paper.name')"
-        outlined
-        hide-details
         class="w-5/6 ml-6"
       />
     </div>
@@ -82,10 +80,8 @@
             <span>
               <TextField
                 v-model="contract.country"
+                solo
                 :placeholder="$t('paper.location')"
-                single-line
-                text-dark
-                hide-details
               />
             </span>
             <v-tooltip top max-width="340">
@@ -142,9 +138,7 @@
             <TextField
               v-model="item.title"
               :placeholder="$t('paper.paragraphHeading')"
-              single-line
-              text-dark
-              hide-details
+              solo
             />
             <span
               class="remove-item"
@@ -313,9 +307,7 @@
                <TextField
                 v-model="contract.country"
                 :placeholder="$t('paper.location')"
-                single-line
-                text-dark
-                hide-details
+                solo
               />
             </span>
               <v-tooltip top max-width="340">
@@ -337,9 +329,7 @@
             <TextField
               v-model="contract.specItems[0].title"
               :placeholder="$t('paper.deliveryItem')"
-              single-line
-              text-dark
-              hide-details
+              solo
             />
           </div>
           <div class="paper-table">
@@ -369,9 +359,7 @@
             <TextField
               v-model="item.title"
               :placeholder="$t('paper.paragraphHeading')"
-              single-line
-              text-dark
-              hide-details
+              solo
             />
             <span
               class="remove-item"

@@ -31,7 +31,7 @@
                     autofocus
                     minlength="8"
                   >
-                    <template v-slot:append-outer>
+                    <template v-slot:append>
                       <div
                         class="cursor-pointer select-none"
                         @click="showPassword = !showPassword"
@@ -58,7 +58,7 @@
                     name="password"
                     minlength="8"
                   >
-                    <template v-slot:append-outer>
+                    <template v-slot:append>
                       <div
                         class="cursor-pointer select-none"
                         @click="showConfirmPassword = !showConfirmPassword"

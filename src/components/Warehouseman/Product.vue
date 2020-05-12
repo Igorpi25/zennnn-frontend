@@ -32,63 +32,65 @@
 
     <template v-if="activeTab === 1">
       <td>
-        <Editable
-          type="number"
-          inputmode="decimal"
-          :placeholder="$t('placeholder.emptyNumber')"
+        <TextField
           :value="store.net"
+          :placeholder="$t('placeholder.emptyNumber')"
+          solo
+          number
           @input="updateProductStore({ net: $event })"
         />
       </td>
       <td>
-        <Editable
-          type="number"
-          inputmode="decimal"
-          :placeholder="$t('placeholder.emptyNumber')"
+        <TextField
           :value="store.gross"
+          :placeholder="$t('placeholder.emptyNumber')"
+          solo
+          number
           @input="updateProductStore({ gross: $event })"
         />
       </td>
       <td>
         <div class="flex items-center">
-          <Editable
-            type="number"
-            inputmode="decimal"
-            :placeholder="$t('placeholder.emptyNumber')"
+          <TextField
             :value="store.width"
+            :placeholder="$t('placeholder.emptyNumber')"
+            solo
+            number
             @input="updateProductStore({ width: $event })"
           />
-          <Editable
-            type="number"
-            inputmode="decimal"
-            :placeholder="$t('placeholder.emptyNumber')"
+          <TextField
             :value="store.height"
+            :placeholder="$t('placeholder.emptyNumber')"
+            solo
+            number
             @input="updateProductStore({ height: $event })"
           />
-          <Editable
-            type="number"
-            inputmode="decimal"
-            :placeholder="$t('placeholder.emptyNumber')"
+          <TextField
             :value="store.length"
+            :placeholder="$t('placeholder.emptyNumber')"
+            solo
+            number
             @input="updateProductStore({ length: $event })"
           />
         </div>
       </td>
       <td>
-        <Editable
-          type="number"
-          inputmode="numeric"
-          :placeholder="$t('placeholder.emptyNumber')"
+        <TextField
           :value="store.pkgQty"
+          :placeholder="$t('placeholder.emptyNumber')"
+          solo
+          number
+          number-format="integer"
           @input="updateProductStore({ pkgQty: $event })"
         />
       </td>
       <td>
-        <Editable
-          type="number"
-          inputmode="numeric"
-          :placeholder="$t('placeholder.emptyNumber')"
+        <TextField
           :value="store.pkgNo"
+          :placeholder="$t('placeholder.emptyNumber')"
+          solo
+          number
+          number-format="integer"
           @input="updateProductStore({ pkgNo: $event })"
         />
       </td>
@@ -113,9 +115,10 @@
         </div>
       </td>
       <td class="text-left">
-        <Editable
+        <TextField
           :value="info.description"
           :placeholder="$t('placeholder.emptyText')"
+          solo
           @input="updateProductInfo({ description: $event })"
         />
       </td>
@@ -123,9 +126,10 @@
 
     <template v-else-if="activeTab === 3">
       <td class="text-left text-primary">
-        <Editable
+        <TextField
           :value="link.url"
           :placeholder="$t('placeholder.emptyText')"
+          solo
           @input="updateProductLink({ url: $event })"
         />
       </td>

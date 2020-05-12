@@ -115,8 +115,6 @@
                     :placeholder="editMode ? $t('requisite.placeholder.fillFields') : '-'"
                     :rules="item.rules"
                     :disabled="!editMode"
-                    squared
-                    hide-details
                     class="template-card__input pt-1"
                     input-class="text-gray-300 focus:text-white placeholder-gray-300"
                     @input="updateRequisite(key, $event)"
@@ -177,8 +175,6 @@
                     :value="requisite[key]"
                     :placeholder="editMode ? $t('requisite.placeholder.fillFields') : '-'"
                     :disabled="!editMode"
-                    squared
-                    hide-details
                     class="template-card__input pt-1"
                     input-class="text-gray-300 focus:text-white placeholder-gray-300"
                     @input="updateRequisite(key, $event)"

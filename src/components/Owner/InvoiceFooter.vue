@@ -36,13 +36,8 @@
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           lazy
-          type="number"
-          inputmode="decimal"
-          format-style="decimal"
           solo
-          colored
-          outlined
-          hide-details
+          number
           @input="updateInvoice({
             profitPercent: $event
           })"
@@ -76,15 +71,9 @@
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           lazy
-          type="number"
-          inputmode="decimal"
-          format-style="currency"
           solo
-          outlined
-          colored
-          hide-details
-          persistent-label
-          class="p-0"
+          number
+          number-format="currency"
           @input="updateInvoice({
             discount: $event
           })"
@@ -103,15 +92,9 @@
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           lazy
-          type="number"
-          inputmode="decimal"
-          format-style="currency"
           solo
-          colored
-          outlined
-          hide-details
-          persistent-label
-          class="p-0"
+          number
+          number-format="currency"
           @input="updateInvoice({
             prepayment: $event
           })"
@@ -129,11 +112,9 @@
               <TextField
                 :value="item.prepaymentDate ? $d($parseDate(item.prepaymentDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
-                right
-                colored
-                borderless
+                solo
+                align-right
                 readonly
-                hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
               />
             </div>
@@ -162,11 +143,9 @@
               <TextField
                 :value="item.obtainCostDate ? $d($parseDate(item.obtainCostDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
-                right
-                colored
-                borderless
+                solo
+                align-right
                 readonly
-                hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
               />
             </div>
@@ -192,11 +171,9 @@
               <TextField
                 :value="item.clientDebtDate ? $d($parseDate(item.clientDebtDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
-                right
-                colored
-                borderless
+                solo
+                align-right
                 readonly
-                hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
               />
             </div>

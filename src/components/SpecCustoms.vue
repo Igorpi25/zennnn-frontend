@@ -63,14 +63,9 @@
             :value="item.cost"
             :placeholder="$t('placeholder.emptyNumber')"
             lazy
-            type="number"
-            inputmode="decimal"
-            format-style="currency"
+            number
+            number-format="currency"
             solo
-            squared
-            hide-details
-            class="text-sm text-field_nd"
-            input-class="h-8 text-primary placeholder-gray-200"
             @input="$emit('update', { customs: { cost: $event } })"
           >
             <template v-slot:append>
@@ -89,14 +84,9 @@
             :value="item.discount"
             :placeholder="$t('placeholder.emptyNumber')"
             lazy
-            type="number"
-            inputmode="decimal"
-            format-style="currency"
+            number
+            number-format="currency"
             solo
-            squared
-            hide-details
-            class="text-sm text-field_nd"
-            input-class="h-8 text-primary placeholder-gray-200"
             @input="$emit('update', { customs: { discount: $event } })"
           >
             <template v-slot:append>

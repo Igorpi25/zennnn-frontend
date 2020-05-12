@@ -14,9 +14,7 @@
         :disabled="isDisabled"
         :value="item.template && item.template[key]"
         :placeholder="(item.template && item.template[key]) || $t(`${templateName}.placeholder.${field.placeholder || key}`)"
-        squared
-        right
-        hide-details
+        align-right
         class="pt-0 partner-card__label"
         @input="$emit('update-template', key, $event)"
       />

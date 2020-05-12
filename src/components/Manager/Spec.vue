@@ -81,9 +81,6 @@
               :debounce="250"
               :placeholder="$t('shipping.invoiceNo')"
               solo
-              outlined
-              colored
-              hide-details
               class="text-sm w-48 mr-2 md:p-0 leading-normal"
               @input="updateInvoice({
                 invoiceNo: $event
@@ -95,15 +92,12 @@
             >
               <template v-slot:activator="{ on }">
                 <div class="text-left">
-                 <div v-on="on" class="inline-block">
+                 <div v-on="on">
                     <TextField
                       :value="item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : null"
                       :placeholder="$t('shipping.purchaseDate')"
                       solo
-                      outlined
-                      colored
                       readonly
-                      hide-details
                       class="text-sm w-32 mr-2 md:p-0 leading-normal"
                     />
                  </div>
@@ -143,15 +137,12 @@
             >
               <template v-slot:activator="{ on }">
                 <div class="text-left">
-                  <div v-on="on" class="inline-block">
+                  <div v-on="on">
                     <TextField
                       :value="item.shippingDate ? $d($parseDate(item.shippingDate), 'short') : null"
                       :placeholder="$t('shipping.shippingDate')"
                       solo
-                      outlined
-                      colored
                       readonly
-                      hide-details
                       class="text-sm w-32 md:p-0 leading-normal"
                     />
                   </div>

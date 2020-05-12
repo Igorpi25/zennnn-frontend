@@ -383,14 +383,7 @@
                 :placeholder="$t('placeholder.emptyNumber')"
                 :disabled="isCurrencyDisabled"
                 lazy
-                type="number"
-                inputmode="decimal"
-                format-style="decimal"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary placeholder-gray-200"
+                number
                 @input="updateSpec({ currencyRate: $event })"
               />
             </div>
@@ -506,8 +499,6 @@
           <TextField
             ref="linkInput"
             :value="link"
-            hide-details
-            squared
             readonly
             solo
             class="mb-1"

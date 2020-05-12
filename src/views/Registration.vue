@@ -59,7 +59,6 @@
                   :label="$t('signup.lastName')"
                   :rules="[rules.required]"
                   name="lastName"
-                  state-icon
                 />
               </div>
               <div class="w-full">
@@ -71,7 +70,6 @@
                   type="email"
                   name="email"
                   readonly
-                  state-icon
                 />
               </div>
               <div class="w-full">
@@ -82,9 +80,8 @@
                   :rules="[rules.required, rules.passwordMinLength]"
                   name="password"
                   minlength="8"
-                  state-icon
                 >
-                  <template v-slot:append-outer>
+                  <template v-slot:append>
                     <div
                       class="cursor-pointer select-none"
                       @click="showPassword = !showPassword"

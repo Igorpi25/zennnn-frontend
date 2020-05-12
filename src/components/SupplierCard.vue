@@ -209,8 +209,6 @@
                         :value="shop.template && shop.template['name']"
                         :placeholder="(shop.template && shop.template['name']) || `${$t('supplier.placeholder.shopName')}`"
                         :disabled="!shop.editMode"
-                        squared
-                        hide-details
                         class="pt-0 template-card__label"
                         input-class="text-gray-300 focus:text-white placeholder-gray-300"
                         @input="updateShopTemplate(index, 'name', $event)"
@@ -246,8 +244,6 @@
                             :value="shop.template && shop.template[key]"
                             :placeholder="(shop.template && shop.template[key]) || $t(`supplier.placeholder.${f.label || key}`)"
                             :disabled="!shop.editMode"
-                            squared
-                            hide-details
                             class="pt-0 template-card__label"
                             input-class="text-gray-300 focus:text-white placeholder-gray-300"
                             @input="updateShopTemplate(index, key, $event)"

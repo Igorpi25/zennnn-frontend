@@ -24,11 +24,9 @@
               <TextField
                 :value="item.prepaymentDate ? $d($parseDate(item.prepaymentDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
-                right
-                colored
-                borderless
+                solo
+                align-right
                 readonly
-                hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
               />
             </div>
@@ -54,11 +52,9 @@
               <TextField
                 :value="item.obtainCostDate ? $d($parseDate(item.obtainCostDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
-                right
-                colored
-                borderless
+                solo
+                align-right
                 readonly
-                hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
               />
             </div>
@@ -81,11 +77,9 @@
               <TextField
                 :value="item.clientDebtDate ? $d($parseDate(item.clientDebtDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
-                right
-                colored
-                borderless
+                solo
+                align-right
                 readonly
-                hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
               />
             </div>

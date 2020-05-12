@@ -45,7 +45,7 @@
         <Form
           ref="form"
         >
-          <ZTextField
+          <TextField
             v-model="formModel.login"
             :placeholder="$t('signin.login')"
             :rules="[rules.required, rules.email]"
@@ -54,8 +54,8 @@
             name="login"
             autofocus
           >
-          </ZTextField>
-          <ZTextField
+          </TextField>
+          <TextField
             v-model="formModel.password"
             :placeholder="$t('signin.password')"
             :type="showPassword ? 'text' : 'password'"
@@ -78,7 +78,7 @@
                 </svg>
               </div>
             </template>
-          </ZTextField>
+          </TextField>
           <div class="pb-6">
             <router-link
               :to="{ name: 'password-restore' }"
@@ -122,7 +122,7 @@
             </span>
           </p>
         </div>
-        <ZTextField
+        <TextField
           v-model="compliteFormModel.firstName"
           :placeholder="$t('signup.firstName')"
           :rules="[rules.required]"
@@ -130,16 +130,16 @@
           name="firstName"
           autofocus
         >
-        </ZTextField>
-        <ZTextField
+        </TextField>
+        <TextField
           v-model="compliteFormModel.lastName"
           :placeholder="$t('signup.lastName')"
           :rules="[rules.required]"
           class="pb-6"
           name="lastName"
         >
-        </ZTextField>
-        <ZTextField
+        </TextField>
+        <TextField
           ref="email"
           v-model="compliteFormModel.email"
           :placeholder="$t('signin.login')"
@@ -148,8 +148,8 @@
           type="email"
           name="email"
         >
-        </ZTextField>
-        <ZTextField
+        </TextField>
+        <TextField
           v-model="compliteFormModel.password"
           :placeholder="$t('signup.password')"
           :type="compliteShowPassword ? 'text' : 'password'"
@@ -172,7 +172,7 @@
               </svg>
             </div>
           </template>
-        </ZTextField>
+        </TextField>
         <Checkbox
           :rules="[rules.required]"
           class="pb-12"

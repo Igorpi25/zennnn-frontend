@@ -48,7 +48,7 @@ export default {
     minlength: String,
     maxlength: String,
     // props 'right' renamed to 'text-align', remove use 'input-class' instead
-    alighRight: Boolean,
+    alignRight: Boolean,
     autofocus: Boolean,
     placeholder: String,
     clearable: Boolean,
@@ -158,7 +158,7 @@ export default {
       if (this.disabled) {
         genericClasses.push('cursor-not-allowed')
       }
-      if (this.number || this.alighRight) {
+      if (this.number || this.alignRight) {
         genericClasses.push('text-right')
       }
       // should merge props classes

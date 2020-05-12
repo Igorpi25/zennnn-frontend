@@ -4,19 +4,17 @@
       <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
 
       <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-4">
-        <ZTextField
+        <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          outlined
           class="w-full sm:w-64"
           content-class="input-transparent"
           input-class="placeholder-blue-500"
-
         >
           <template v-slot:prepend>
             <i class="icon-search text-2xl text-gray-100"></i>
           </template>
-        </ZTextField>
+        </TextField>
       </div>
 
       <div class="overflow-x-auto overflow-scroll-touch pb-8">

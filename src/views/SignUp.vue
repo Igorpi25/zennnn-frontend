@@ -52,7 +52,7 @@
           ref="form"
           v-model="formValidity"
         >
-          <ZTextField
+          <TextField
             v-model="formModel.firstName"
             :placeholder="$t('signup.firstName')"
             :rules="[rules.required]"
@@ -60,16 +60,16 @@
             name="firstName"
             autofocus
           >
-          </ZTextField>
-          <ZTextField
+          </TextField>
+          <TextField
             v-model="formModel.lastName"
             :placeholder="$t('signup.lastName')"
             :rules="[rules.required]"
             class="pb-6"
             name="lastName"
           >
-          </ZTextField>
-          <ZTextField
+          </TextField>
+          <TextField
             ref="email"
             v-model="formModel.email"
             :placeholder="$t('signup.login')"
@@ -78,8 +78,8 @@
             type="email"
             name="email"
           >
-          </ZTextField>
-          <ZTextField
+          </TextField>
+          <TextField
             v-model="formModel.password"
             :placeholder="$t('signup.password')"
             :type="showPassword ? 'text' : 'password'"
@@ -102,7 +102,7 @@
                 </svg>
               </div>
             </template>
-          </ZTextField>
+          </TextField>
           <Checkbox
             :rules="[rules.required]"
             class="pb-12"
