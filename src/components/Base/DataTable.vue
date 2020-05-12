@@ -7,7 +7,8 @@
     <slot name="top"/>
     <table
       :width="tableWidth || null"
-      :class="tableClass"
+      :class="['border-separate', tableClass]"
+      style="border-spacing: 0 4px"
     >
       <thead
         v-if="!hideHeaders"
@@ -34,8 +35,7 @@
                   headersWhitespaceNormal
                     ? 'whitespace-normal'
                     : 'whitespace-no-wrap',
-                  `text-${header.align || 'center'}`,
-                  `bg-${header.bgcolor || 'gradient'}`,
+                    header.align === 'left' ? 'text-left' : header.align === 'right' ? 'text-right' : 'text-center',
                   { 'sortable cursor-pointer': header.sortable },
                   header.sortable && internalOptions.sortBy.includes(header.value)
                     ? `active ${internalOptions.sortDesc[internalOptions.sortBy.findIndex(k => k === header.value)] ? 'desc' : 'asc'}`
@@ -54,7 +54,11 @@
                   v-if="header.sortable"
                   class="data-table-header__icon"
                 >
-                  <svg width="12" height="13" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 12 13"><defs></defs><g><g><title>Sort</title><path d="M11.0991,7.0508c-0.443,-0.391 -1.159,-0.391 -1.603,0l-2.599,2.293v0v-7.586c0,-0.552 -0.507,-1 -1.134,-1c-0.627,0 -1.134,0.448 -1.134,1v7.586v0l-2.599,-2.293c-0.444,-0.391 -1.16,-0.391 -1.603,0c-0.443,0.391 -0.443,1.023 0,1.414l5.336,4.707v0l5.336,-4.707c0.443,-0.391 0.443,-1.023 0,-1.414z" fill="currentColor" fill-opacity="1"></path></g></g></svg>
+                  <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.20718 11.2442L13.5001 16.537L12.0001 18.037L6.70718 12.7442L8.20718 11.2442Z" fill="currentColor"/>
+                    <path d="M17.293 12.7442L12.0001 18.037L10.5001 16.537L15.793 11.2442L17.293 12.7442Z" fill="currentColor"/>
+                    <path d="M13.1001 15.4415L10.9001 15.4415L10.9001 7.45126L13.1001 7.45126L13.1001 15.4415Z" fill="currentColor"/>
+                  </svg>
                 </span>
               </td>
             </slot>
@@ -91,7 +95,10 @@
               >
                 <td
                   :key="`${index}-${header.value}`"
-                  :class="[`text-${header.align || 'center'}`, itemsCellClass]"
+                  :class="[
+                    header.align === 'left' ? 'text-left' : header.align === 'right' ? 'text-right' : 'text-center',
+                    itemsCellClass,
+                  ]"
                 >
                   {{ item[header.value] }}
                 </td>

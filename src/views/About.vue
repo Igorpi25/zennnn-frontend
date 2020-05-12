@@ -6,7 +6,7 @@
         <div class="container container--xs">
           <div class="flex items-center h-13">
             <a href="/" class="h-6 mr-16">
-              <img src="@/assets/img/logo.svg" alt="Logo">
+              <img src="@/assets/img/logo-light.svg" alt="Logo">
             </a>
             <nav class="hidden md:flex items-center leading-5" style="color: #BDBDBD;">
               <a
@@ -623,7 +623,7 @@
         <div class="w-full lg:w-1/2 sm:px-10 lg:pt-16">
           <div class="pl-6 ml-1">
             <div class="inline-block">
-              <img src="@/assets/img/logo.svg" alt="Logo" style="height: 46px;">
+              <img src="@/assets/img/logo-light.svg" alt="Logo" style="height: 46px;">
             </div>
             <div class="w-15 h-px py-xs my-6 bg-blue-700" />
             <div class="text-lg leading-relaxed text-gray-140 pb-8">

@@ -1,87 +1,36 @@
 <template>
-  <div class="navbar container container--sm">
-    <router-link
-      :to="{
-        name: 'specs',
-        params: { orgId },
-      }"
-      :class="{ active: $route.name === 'spec' }"
-    >
-      <div class="navbar__link">
-        <Icon
-          v-if="$route.name === 'spec'"
-          :class="[
-            'mr-2',
-            {'-ml-2': $route.name === 'spec'}
-          ]"
+  <div class="relative">
+    <div class="absolute bottom-0 inset-x-0 border-b border-gray-500" />
+    <div class="container container--sm flex h-16 overflow-x-auto overflow-scroll-touch">
+      <div
+        v-for="(item, i) in items"
+        :key="item.name"
+        :class="[
+          'text-gray-200',
+          i === 0 ? 'mr-5' : 'mx-5',
+        ]"
+      >
+        <router-link
+          :to="{
+            name: item.name,
+            params: item.params,
+          }"
+          :exact="item.exact"
+          active-class="text-white border-blue-500 relative"
+          class="hover:text-white border-b-2 border-transparent whitespace-no-wrap text-xl leading-6 h-full flex items-center duration-100 ease-out"
+          style="transition-property: color;"
         >
-          {{ icons.mdiArrowLeft }}
-        </Icon>
-        {{ $t('navbar.deals') }}
+          {{ item.text }}
+        </router-link>
       </div>
-    </router-link>
-    <router-link
-      v-if="roleInOrg === 'OWNER' || roleInOrg === 'MANAGER'"
-      :to="{
-        name: 'clients',
-        params: { orgId },
-      }"
-      :class="{ active: $route.name === 'client' || $route.name === 'client-create' }"
-    >
-      <div class="navbar__link">
-        <Icon
-          v-if="$route.name === 'client' ||
-          $route.name === 'client-create'"
-          :class="[
-            'mr-2',
-            {'-ml-2': $route.name === 'client' || $route.name === 'client-create'}
-          ]"
-        >
-          {{ icons.mdiArrowLeft }}
-        </Icon>
-        {{ $t('navbar.clients') }}
+      <div class="ml-5 text-gray-400 border-b-2 border-transparent whitespace-no-wrap text-xl leading-6 h-full flex items-center">
+        {{ $t('navbar.goods') }}
       </div>
-    </router-link>
-    <router-link
-      v-if="roleInOrg === 'OWNER' || roleInOrg === 'MANAGER'"
-      :to="{
-        name: 'suppliers',
-        params: { orgId },
-      }"
-      :class="{ active: $route.name === 'supplier' ||
-      $route.name === 'supplier-create' }"
-    >
-      <div class="navbar__link">
-        <Icon
-          v-if="$route.name === 'supplier' ||
-          $route.name === 'supplier-create'"
-          :class="[
-            'mr-2',
-            {'-ml-2': $route.name === 'supplier' || $route.name === 'supplier-create'}
-          ]"
-        >
-          {{ icons.mdiArrowLeft }}
-        </Icon>
-        {{ $t('navbar.suppliers') }}
-      </div>
-    </router-link>
-    <router-link
-      v-if="roleInOrg === Role.OWNER"
-      :to="{
-        name: 'staff',
-        params: { orgId },
-      }"
-    >
-      <div class="navbar__link">
-        {{ $t('navbar.staff') }}
-      </div>
-    </router-link>
+    </div>
   </div>
 </template>
 
 <script>
-import { mdiArrowLeft } from '@mdi/js'
-
 import { GET_ORGS } from '../graphql/queries'
 import { Role } from '../graphql/enums'
 
@@ -93,14 +42,6 @@ export default {
       fetchPolicy: 'cache-only',
     },
   },
-  data () {
-    return {
-      Role,
-      icons: {
-        mdiArrowLeft,
-      },
-    }
-  },
   computed: {
     orgId () {
       return this.$route.params.orgId
@@ -110,28 +51,36 @@ export default {
       const org = orgs.find(el => el.id === this.orgId) || {}
       return org.role || null
     },
+    items () {
+      const items = [
+        {
+          name: 'specs',
+          exact: this.$route.name !== 'spec',
+          text: this.$t('navbar.deals'),
+          params: { orgId: this.orgId },
+        },
+      ]
+      if (this.roleInOrg === 'OWNER' || this.roleInOrg === 'MANAGER') {
+        items.push({
+          name: 'clients',
+          text: this.$t('navbar.clients'),
+          params: { orgId: this.orgId },
+        })
+        items.push({
+          name: 'suppliers',
+          text: this.$t('navbar.suppliers'),
+          params: { orgId: this.orgId },
+        })
+      }
+      if (this.roleInOrg === Role.OWNER) {
+        items.push({
+          name: 'staff',
+          text: this.$t('navbar.staff'),
+          params: { orgId: this.orgId },
+        })
+      }
+      return items
+    },
   },
 }
 </script>
-
-<style>
-.navbar {
-  display: flex;
-  padding-top: 40px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.navbar__link {
-  white-space: nowrap;
-  padding: 5px 20px;
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-}
-.navbar > a.router-link-exact-active,
-.navbar > a.router-link-active.active {
-  border: 1px solid #aaaaaa;
-  border-radius: 9999px;
-  position: relative;
-}
-</style>

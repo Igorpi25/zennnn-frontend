@@ -17,57 +17,8 @@
         </div>
         <div class="flex-grow" />
         <div class="flex justify-end">
-          <!-- Lang picker -->
-          <div class="flex items-center">
-            <v-menu
-              v-model="langMenu"
-              :nudge-bottom="40"
-              bottom
-              left
-            >
-              <template v-slot:activator="{ on }">
-                <div
-                  class="flex items-center cursor-pointer pr-2"
-                  v-on="on"
-                >
-                  <img
-                    :src="`/img/flags/${$i18n.locale}.svg`"
-                    :class="[
-                      'h-6 w-6 rounded-full mr-2',
-                    ]"
-                  >
-                  <i class="text-xs text-primary icon-arroe-bottom-1 cursor-pointer" />
-                </div>
-              </template>
-              <template>
-                <ul
-                  class="status-bar-lang-menu border-gray-400 text-sm text-gray-100 bg-gray-400 py-2"
-                  role="menu"
-                >
-                  <li
-                    v-for="lang in langs"
-                    :key="lang.value"
-                    :value="lang.value"
-                    :class="[
-                      'flex items-center h-9 px-2 cursor-pointer hover:bg-gray-300 focus:outline-none focus:bg-gray-300',
-                      'transition-colors duration-100 ease-out',
-                      { 'text-white': lang.value === $i18n.locale }
-                    ]"
-                    tabindex="0"
-                    role="menuitem"
-                    @click="changeLang(lang.value)"
-                  >
-                    <img
-                      :src="`/img/flags/${lang.value}.svg`"
-                      :alt="lang.text"
-                      class="h-6 w-6 rounded-full mr-2"
-                    >
-                    <span>{{ lang.text }}</span>
-                  </li>
-                </ul>
-              </template>
-            </v-menu>
-          </div>
+          <!-- Locale picker -->
+          <LocalePicker />
           <!-- Menu -->
           <div
             v-if="!loggedIn"
@@ -271,18 +222,19 @@
 <script>
 import { mdiStar, mdiStarOutline, mdiAccountCircle } from '@mdi/js'
 
-import { CURRENT_LANG_STORE_KEY } from '../config/globals'
 import { Role } from '../graphql/enums'
 import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 import { SET_ORG_AVATAR } from '../graphql/mutations'
 import { wsLink } from '../plugins/apollo'
 
 import FileUploader from './FileUploader.vue'
+import LocalePicker from './LocalePicker.vue'
 
 export default {
   name: 'StatusBar',
   components: {
     FileUploader,
+    LocalePicker,
   },
   props: {
     paperOrgName: {
@@ -315,7 +267,6 @@ export default {
       favorites: [],
       orgDialog: false,
       profileMenu: false,
-      langMenu: false,
       icons: {
         mdiStar,
         mdiStarOutline,
@@ -324,16 +275,6 @@ export default {
     }
   },
   computed: {
-    langs () {
-      return [
-        { value: 'en', text: 'English' },
-        { value: 'zh-Hans', text: '简体' },
-        { value: 'zh-Hant', text: '繁体' },
-        { value: 'fr', text: 'Français' },
-        { value: 'ru', text: 'Русский' },
-        { value: 'uk', text: 'Український' },
-      ]
-    },
     loggedIn () {
       return this.isLoggedIn && this.orgId
     },
@@ -466,11 +407,6 @@ export default {
       }
       // close ws client on logout for update connectionParams
       wsLink.subscriptionClient.close(true)
-    },
-    changeLang (lang) {
-      localStorage.setItem(CURRENT_LANG_STORE_KEY, lang)
-      this.$i18n.locale = lang
-      this.langMenu = false
     },
   },
 }
