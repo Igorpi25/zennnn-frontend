@@ -25,15 +25,18 @@ export default {
       default: null,
     },
     lazy: Boolean,
-    id: String,
     label: {
       type: String,
       default: '',
     },
-    type: {
-      type: String,
-      default: 'text',
-    },
+    labelNoWrap: Boolean,
+    labelHint: String,
+    // props 'right' renamed to 'text-align'
+    // TODO: remove prop use 'input-class' instead
+    alignRight: Boolean,
+    clearable: Boolean,
+    singleLine: Boolean,
+    solo: Boolean,
     number: Boolean,
     // integer, decimal, currency, fixed
     // 'formatStyle' renamed to 'numberFormat'
@@ -41,19 +44,19 @@ export default {
       type: String,
       default: 'decimal',
     },
+    type: {
+      type: String,
+      default: 'text',
+    },
+    id: String,
     name: String,
     required: Boolean,
     readonly: Boolean,
     disabled: Boolean,
     minlength: String,
     maxlength: String,
-    // props 'right' renamed to 'text-align', remove use 'input-class' instead
-    alignRight: Boolean,
     autofocus: Boolean,
     placeholder: String,
-    clearable: Boolean,
-    singleLine: Boolean,
-    solo: Boolean,
     debounce: {
       type: Number,
       default: 0,
@@ -386,18 +389,40 @@ export default {
       ])])
     },
 
+    genLabelHint () {
+      if (!this.labelHint) return null
+      return this.$createElement('v-tooltip', {
+        props: {
+          top: true,
+        },
+        scopedSlots: {
+          activator: props => {
+            return this.$createElement('i', {
+              class: 'ml-1 icon-add text-base text-blue-500 hover:text-blue-600 cursor-pointer',
+              on: props.on,
+            })
+          },
+        },
+      }, this.labelHint)
+    },
+
     genLabel () {
       if (this.$slots.label) return this.$slots.label
       if (this.singleLine || this.solo || !this.label) return null
-      return this.$createElement('label', {
-        ref: 'label',
-        class: 'pt-2 py-1 overflow-hidden text-overflow-ellipsis',
-        on: {
+      const props = {
+        ref: 'label-content',
+        class: [
+          'leading-5 py-2',
+          { 'overflow-hidden text-overflow-ellipsis': !this.labelNoWrap },
+        ],
+      }
+      if (!this.labelNoWrap) {
+        props.on = {
           mouseenter: () => {
-            const target = this.$refs.label
-            const child = this.$refs.label.firstChild
+            const target = this.$refs['label-content']
+            const child = this.$refs['label-content'].firstChild
             const spanWidth = Math.round(child.getBoundingClientRect().width)
-            const parentWidth = target.clientWidth
+            const parentWidth = this.$refs['label'].clientWidth
             if (spanWidth > parentWidth) {
               target.style.overflow = 'visible'
               child.style.backgroundColor = this.backgroundColor
@@ -405,20 +430,25 @@ export default {
             }
           },
           mouseleave: () => {
-            const target = this.$refs.label
-            const child = this.$refs.label.firstChild
+            const target = this.$refs['label-content']
+            const child = this.$refs['label-content'].firstChild
             const spanWidth = child.getBoundingClientRect().width
-            const parentWidth = target.clientWidth
+            const parentWidth = this.$refs['label'].clientWidth
             if (spanWidth > parentWidth) {
               target.style.overflow = 'hidden'
               child.style.backgroundColor = 'unset'
               child.style.zIndex = 'unset'
             }
           },
-        },
-      }, [this.$createElement('span', {
-        class: 'text-base text-gray-100 whitespace-no-wrap leading-5 relative pointer-events-none py-xs pr-xs',
+        }
+      }
+      const content = this.$createElement('div', props, [this.$createElement('span', {
+        class: 'text-base text-gray-100 whitespace-no-wrap relative pointer-events-none py-xs pr-xs',
       }, this.label)])
+      return this.$createElement('label', {
+        ref: 'label',
+        class: 'flex items-center',
+      }, [content, this.genLabelHint()])
     },
 
     genInput () {
