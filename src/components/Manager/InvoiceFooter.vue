@@ -151,7 +151,7 @@
           class="leading-none"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.obtainCost, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
+          {{ $n(item.obtainCost, 'fixed') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
         <DatePicker
           :value="item.obtainCostDate"
@@ -181,7 +181,7 @@
           class="leading-none text-white"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.clientDebt, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
+          {{ $n(item.clientDebt, 'fixed') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
         <DatePicker
           :value="item.clientDebtDate"

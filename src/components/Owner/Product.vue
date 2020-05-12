@@ -91,11 +91,11 @@
         class="text-right"
         style="padding-left: 11px; padding-right: 11px;"
       >
-        {{ $n(cost.purchasePrice, 'decimal') }}
+        {{ $n(cost.purchasePrice, 'fixed') }}
       </td>
 
       <td class="text-right">
-        {{ $n(cost.purchaseAmount, 'decimal') }}
+        {{ $n(cost.purchaseAmount, 'fixed') }}
       </td>
 
       <td v-if="isInvoiceProfitTypeCommission || !profitForAll">
@@ -115,11 +115,11 @@
         class="text-right"
         style="padding-left: 11px; padding-right: 11px;"
       >
-        {{ $n(cost.clientPrice, 'decimal') }}
+        {{ $n(cost.clientPrice, 'fixed') }}
       </td>
 
       <td class="text-right">
-        {{ $n(cost.clientAmount, 'decimal') }}
+        {{ $n(cost.clientAmount, 'fixed') }}
       </td>
     </template>
 

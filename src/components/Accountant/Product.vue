@@ -34,25 +34,25 @@
     <template v-if="activeTab === 1">
       <td class="text-right">
         <span v-if="!profitForAll">
-          {{ $n(purchasePrice, 'decimal') || $t('placeholder.emptyNumber') }}
+          {{ $n(purchasePrice, 'fixed') || $t('placeholder.emptyNumber') }}
         </span>
         <span v-else>
-          {{ $n(cost.purchasePrice, 'decimal') || $t('placeholder.emptyNumber') }}
+          {{ $n(cost.purchasePrice, 'fixed') || $t('placeholder.emptyNumber') }}
         </span>
       </td>
       <td class="text-right">
-        {{ $n(cost.purchaseAmount, 'decimal') }}
+        {{ $n(cost.purchaseAmount, 'fixed') }}
       </td>
       <td class="text-right">
         <span v-if="!profitForAll">
-          {{ $n(clientPrice, 'decimal') }}
+          {{ $n(clientPrice, 'fixed') }}
         </span>
         <span v-else>
-          {{ $n(cost.clientPrice, 'decimal') || $t('placeholder.emptyNumber') }}
+          {{ $n(cost.clientPrice, 'fixed') || $t('placeholder.emptyNumber') }}
         </span>
       </td>
       <td class="text-right">
-        {{ $n(cost.clientAmount, 'decimal') }}
+        {{ $n(cost.clientAmount, 'fixed') }}
       </td>
     </template>
 

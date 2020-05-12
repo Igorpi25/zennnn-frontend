@@ -249,8 +249,8 @@
                 <!-- i18n-n has Error formatter.formatToParts is not a function. -->
                 <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.finalCost, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'fixed').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.finalCost, 'fixed').slice(-2) }}</div>
                 </span> -->
                 <i18n-n :value="spec.finalCost || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
@@ -271,8 +271,8 @@
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.finalObtainCost, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.finalObtainCost, 'decimal').slice(-2) }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'fixed').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.finalObtainCost, 'fixed').slice(-2) }}</div>
                 </span> -->
                 <i18n-n :value="spec.finalObtainCost || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
@@ -293,8 +293,8 @@
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
                   <div style="color: #00ff16;">{{ $n(spec.profit, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.profit, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.profit, 'decimal').slice(-2) }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.profit, 'fixed').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.profit, 'fixed').slice(-2) }}</div>
                 </span> -->
                 <i18n-n :value="spec.profit || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
@@ -319,8 +319,8 @@
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.totalPrepay, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'fixed').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.totalPrepay, 'fixed').slice(-2) }}</div>
                 </span> -->
                 <i18n-n :value="spec.totalPrepay || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
@@ -341,8 +341,8 @@
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
                   <div style="color: #ff2900;">{{ $n(spec.totalClientDebt, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'fixed').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.totalClientDebt, 'fixed').slice(-2) }}</div>
                 </span> -->
                 <i18n-n :value="spec.totalClientDebt || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">

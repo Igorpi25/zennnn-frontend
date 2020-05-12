@@ -35,16 +35,9 @@ export default {
       default: 'text',
     },
     number: Boolean,
-    // text, numeric, decimal
-    // TODO: compute for number numberic/decimal, else text or tel
-    inputmode: {
-      type: String,
-      default: 'text',
-    },
-    // integer, decimal, currency
-    // TODO: rename to format, used only for numbers,
-    // can be integer, decimal, currency of formatter style
-    format: {
+    // integer, decimal, currency, fixed
+    // 'formatStyle' renamed to 'numberFormat'
+    numberFormat: {
       type: String,
       default: 'decimal',
     },
@@ -54,7 +47,7 @@ export default {
     disabled: Boolean,
     minlength: String,
     maxlength: String,
-    // TODO: props 'right' renamed to 'text-align', remove use 'input-class' instead
+    // props 'right' renamed to 'text-align', remove use 'input-class' instead
     alighRight: Boolean,
     autofocus: Boolean,
     placeholder: String,
@@ -86,6 +79,12 @@ export default {
   },
 
   computed: {
+    inputmode () {
+      if (this.number) {
+        return this.numberFormat === 'integer' ? 'numeric' : 'decimal'
+      }
+      return 'text'
+    },
     currentLang () {
       return this.$i18n.locale
     },
@@ -105,15 +104,16 @@ export default {
       }
     },
     formatNumberOptions () {
+      const isFixed = this.numberFormat === 'currency' || this.numberFormat === 'fixed'
       // precision numbers digits must be between 0 and 20
-      const precision = this.inputmode === 'numeric'
-        ? 0 : this.format === 'currency'
+      const precision = this.numberFormat === 'integer'
+        ? 0 : isFixed
           ? 2 : 20
       return {
         precision,
         thousand: this.editMode ? '' : this.computedFormatOptions.thousand,
         decimal: this.computedFormatOptions.decimal,
-        fixed: !this.editMode && this.format === 'currency',
+        fixed: !this.editMode && isFixed,
         fallback: !this.editMode ? 0 : null,
       }
     },

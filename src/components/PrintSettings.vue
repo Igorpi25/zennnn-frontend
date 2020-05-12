@@ -1671,7 +1671,7 @@
             <div class="w-full flex pb-4 px-3 sm:w-1/2 text-xl">
               <div class="whitespace-no-wrap">{{ $t('shipping.invoiceAmount') }}</div>
               <div class="flex-grow dots" />
-              <div class="text-white whitespace-no-wrap">{{ $n(amount || 0, 'decimal') }} {{ $t(`currency.USD.symbol`) }}</div>
+              <div class="text-white whitespace-no-wrap">{{ $n(amount || 0, 'fixed') }} {{ $t(`currency.USD.symbol`) }}</div>
             </div>
           </div>
           <div class="w-full sm:w-1/2 px-3">

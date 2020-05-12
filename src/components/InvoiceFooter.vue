@@ -163,7 +163,7 @@
           class="leading-none"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.obtainCost, 'formatted') }} {{ $t(`currency.${currency}.symbol`) }}
+          {{ $n(item.obtainCost, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
         <v-menu
           ref="menu"
@@ -210,7 +210,7 @@
           class="leading-none text-white"
           style="padding: 2px 0 2px;"
         >
-          {{ $n(item.clientDebt, 'formatted') }} {{ $t(`currency.${currency}.symbol`) }}
+          {{ $n(item.clientDebt, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
         <v-menu
           ref="menu"

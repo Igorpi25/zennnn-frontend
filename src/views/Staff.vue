@@ -79,10 +79,10 @@
                       <span>{{ item.inWorkCount }}</span>
                     </span>
                   </td>
-                  <td class="text-right">{{ $n(item.profit || 0, 'decimal') }}</td>
+                  <td class="text-right">{{ $n(item.profit || 0, 'fixed') }}</td>
                   <td class="text-right">{{ $n(item.percent) }}%</td>
-                  <td class="text-right">{{ $n(item.finalObtainCost || 0, 'decimal') }}</td>
-                  <td class="text-right">{{ $n(item.finalCost || 0, 'decimal') }}</td>
+                  <td class="text-right">{{ $n(item.finalObtainCost || 0, 'fixed') }}</td>
+                  <td class="text-right">{{ $n(item.finalCost || 0, 'fixed') }}</td>
                   <td class="text-left">
                     <div class="pl-2 leading-tight">
                       {{ item.givenName }} {{ item.familyName }}
@@ -158,10 +158,10 @@
                         <!-- +$</strong>&nbsp;&nbsp;<strong>-$ -->
                       </strong>
                     </td>
-                    <td class="text-right">{{ $n(specItem.profit || 0, 'decimal') }}</td>
+                    <td class="text-right">{{ $n(specItem.profit || 0, 'fixed') }}</td>
                     <td class="text-right">{{ $n(specItem.percent) }}%</td>
-                    <td class="text-right">{{ $n(specItem.finalObtainCost || 0, 'decimal') }}</td>
-                    <td class="text-right">{{ $n(specItem.finalCost || 0, 'decimal') }}</td>
+                    <td class="text-right">{{ $n(specItem.finalObtainCost || 0, 'fixed') }}</td>
+                    <td class="text-right">{{ $n(specItem.finalCost || 0, 'fixed') }}</td>
                     <td class="text-left">
                       <div class="pl-2">
                         {{ specItem.specNo || '' }}

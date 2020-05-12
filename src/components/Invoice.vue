@@ -64,11 +64,11 @@
                 <template v-if="activeTab === 1">
                   <td class="text-gray-light text-right">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-right">
-                    {{ $n(invoiceItem.totalPurchaseAmount || 0, 'formatted') }}
+                    {{ $n(invoiceItem.totalPurchaseAmount || 0, 'decimal') }}
                   </td>
                   <td class="text-gray-dark text-right">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-right">
-                    {{ $n(invoiceItem.totalClientAmount || 0, 'formatted') }}
+                    {{ $n(invoiceItem.totalClientAmount || 0, 'decimal') }}
                   </td>
                   <td colspan="2"></td>
                 </template>
@@ -76,16 +76,16 @@
                 <template v-else-if="activeTab === 2">
                   <td class="text-gray-dark">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalNet, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
+                    {{ $n(invoiceItem.totalNet, 'decimal') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
                   </td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalGross, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
+                    {{ $n(invoiceItem.totalGross, 'decimal') }} <span class="text-gray-dark">{{ $t('measure.kg') }}</span>
                   </td>
                   <td class="text-gray-dark text-center">
-                    {{ $n(invoiceItem.totalVolume, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.m') }}<sup>3</sup></span>
+                    {{ $n(invoiceItem.totalVolume, 'decimal') }} <span class="text-gray-dark">{{ $t('measure.m') }}<sup>3</sup></span>
                   </td>
                   <td class="text-gray-dark text-center" colspan="3">
-                    {{ $n(invoiceItem.totalPkgQty, 'formatted') }} <span class="text-gray-dark">{{ $t('measure.pkg') }}</span>
+                    {{ $n(invoiceItem.totalPkgQty, 'decimal') }} <span class="text-gray-dark">{{ $t('measure.pkg') }}</span>
                   </td>
                   <td></td>
                 </template>

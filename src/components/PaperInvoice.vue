@@ -91,12 +91,12 @@
               {{ $te(`productStatus.${item.productStatus}`) ? $t(`productStatus.${item.productStatus}`) : '' }}
             </div>
           </td>
-          <td class="bg-white p-2 text-right">{{ $n(item.price || 0, 'decimal') }}</td>
+          <td class="bg-white p-2 text-right">{{ $n(item.price || 0, 'fixed') }}</td>
           <td class="bg-white py-2 pl-2 pr-1 text-right">{{ $n(item.qty || 0) }}</td>
           <td class="bg-white py-2 pl-1 pr-2">
             {{ $te(`unit.${item.unit}`) ? $t(`unit.${item.unit}`) : '' }}
           </td>
-          <td class="bg-white p-2 text-right">{{ $n(item.amount || 0, 'decimal') }}</td>
+          <td class="bg-white p-2 text-right">{{ $n(item.amount || 0, 'fixed') }}</td>
           <td class="bg-white p-2 text-right">{{ $n(item.pkgQty || 0) }}</td>
           <td class="bg-white p-2 text-right">{{ item.pkgNo || '-' }}</td>
           <td class="bg-white px-1 text-right">
@@ -139,25 +139,25 @@
             <div class="h-6 flex">
               <div class="flex-grow text-gray-100 dots" />
               <div class="flex-shrink-0">
-                {{ $n(invoice.totalClientAmount || 0, 'decimal') }}
+                {{ $n(invoice.totalClientAmount || 0, 'fixed') }}
               </div>
             </div>
             <div class="h-6 flex">
               <div class="flex-grow text-gray-100 dots" />
               <div class="flex-shrink-0">
-                {{ $n(invoice.discount || 0, 'decimal') }}
+                {{ $n(invoice.discount || 0, 'fixed') }}
               </div>
             </div>
             <div class="h-6 flex">
               <div class="flex-grow text-gray-100 dots" />
               <div class="flex-shrink-0">
-                {{ $n(invoice.prepayment || 0, 'decimal') }}
+                {{ $n(invoice.prepayment || 0, 'fixed') }}
               </div>
             </div>
             <div class="h-6 flex">
               <div class="flex-grow text-gray-100 dots" />
               <div class="flex-shrink-0">
-                {{ $n(invoice.clientDebt || 0, 'decimal') }}
+                {{ $n(invoice.clientDebt || 0, 'fixed') }}
               </div>
             </div>
           </td>
