@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <div class="overflow-x-auto">
+      <div class="overflow-x-auto overflow-scroll-touch pb-8">
         <DataTable
           :headers="headers"
           :items="items"
@@ -89,7 +89,7 @@
             <tr
               v-for="(item) in items"
               :key="item.id"
-              class="items bg-gray-900 hover:bg-accent3 border-none"
+              class="cursor-pointer"
               @click="$router.push({
                 name: 'spec',
                 params: {
@@ -122,7 +122,7 @@
                   class="cursor-pointer pointer-events-auto flex items-center"
                   @click="deleteSpec(item.id)"
                 >
-                  <i class="icon-delete text-lg text-gray-200" />
+                  <i class="icon-delete text-lg text-gray-200 hover:text-gray-100" />
                 </div>
               </td>
             </tr>
@@ -133,7 +133,6 @@
         v-if="canCreateSpec"
         block
         outlined
-        class="mt-6"
         @click="createSpecDialog = true"
       >
         <template v-slot:icon>
@@ -562,9 +561,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.input-transparent {
-  background: transparent!important;
-}
-</style>

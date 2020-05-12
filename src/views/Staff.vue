@@ -7,24 +7,23 @@
     />
 
     <div class="container container--sm">
-      <div class="py-10">
+      <div class="pt-4 pb-10">
         <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
 
-        <div class="pt-5 pb-6">
-          <TextField
+        <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-4">
+          <ZTextField
             v-model="search"
             :placeholder="$t('placeholder.pageSearch')"
-            solo
             outlined
-            background-dark
-            hide-details
-            height="40"
-            class="max-w-2xl text-2xl leading-normal mx-auto"
+            class="w-full sm:w-64"
+            content-class="input-transparent"
+            input-class="placeholder-blue-500"
+
           >
-            <template v-slot:append>
-              <Icon size="24">{{ icons.mdiMagnify }}</Icon>
+            <template v-slot:prepend>
+              <i class="icon-search text-2xl text-gray-100"></i>
             </template>
-          </TextField>
+          </ZTextField>
         </div>
 
         <div class="overflow-x-auto pb-4">
@@ -34,14 +33,13 @@
             :search="search"
             table-width="100%"
             table-class="table-fixed"
-            thead-class="text-accent2 border-b border-accent2"
           >
             <template v-slot:header.status="{ header }">
               <td
                 :width="header.width + 'px'"
                 class="px-3"
               >
-                <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 10 10"><defs><clipPath id="ClipPath1016"><path d="M5.00003,0c2.76138,0 4.99994,2.23864 4.99994,5.00005c0,2.76141 -2.23856,4.99997 -4.99994,4.99997c-2.76152,0 -5.00007,-2.23855 -5.00007,-4.99997c0,-2.76141 2.23856,-5.00005 5.00007,-5.00005z" fill="currentColor"></path></clipPath></defs><g><g><title>Status</title><path d="M5.00003,0c2.76138,0 4.99994,2.23864 4.99994,5.00005c0,2.76141 -2.23856,4.99997 -4.99994,4.99997c-2.76152,0 -5.00007,-2.23855 -5.00007,-4.99997c0,-2.76141 2.23856,-5.00005 5.00007,-5.00005z" fill-opacity="0" fill="currentColor" stroke-dashoffset="0" stroke-dasharray="" stroke-linejoin="miter" stroke-linecap="butt" stroke-opacity="1" stroke="#414141" stroke-miterlimit="50" stroke-width="2" clip-path="url(&quot;#ClipPath1016&quot;)"></path></g></g></svg>
+                <div class="ml-6 w-3 h-3 rounded-full border border-gray-400" />
               </td>
             </template>
             <template v-slot:header.debt="{ header }">
@@ -67,24 +65,18 @@
                   <td class="relative px-3">
                     <span
                       :class="[
-                        'status-indicator inline-block',
+                        'ml-6 w-3 h-3 rounded-full',
                         item.specStatus === SpecStatus.IN_STOCK
-                          ? 'status-indicator--green' : item.specStatus === SpecStatus.IN_PRODUCTION
-                            ? 'status-indicator--orange' : item.specStatus === SpecStatus.IN_PROCESSING
-                              ? 'status-indicator--pink' : 'bg-transparent'
+                          ? 'bg-green-500' : item.specStatus === SpecStatus.IN_PRODUCTION
+                            ? 'bg-yellow-500' : item.specStatus === SpecStatus.IN_PROCESSING
+                              ? 'bg-pink-500' : 'bg-gray-800'
                       ]"
                     >
                     </span>
                   </td>
                   <td>
-                    <span class="flex item-center" @click="toggle(index)">
+                    <span class="flex item-center">
                       <span>{{ item.inWorkCount }}</span>
-                      <div class="relative" style="width:18px">
-                        <div class="icon__item">
-                          <Icon v-if="expanded.includes(index)">{{ icons.mdiChevronUp }}</Icon>
-                          <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-                        </div>
-                      </div>
                     </span>
                   </td>
                   <td class="text-right">{{ $n(item.profit || 0, 'decimal') }}</td>
@@ -110,18 +102,33 @@
                     </div>
                     <div
                       v-else
-                      class="cursor-pointer pointer-events-auto flex items-center justify-center"
+                      class="cursor-pointer pointer-events-auto flex items-center"
                       @click="deleteUser(item.id)"
                     >
-                      <i class="icon-delete text-lg text-gray-200" />
+                      <i class="icon-delete text-lg text-gray-200 hover:text-gray-100" />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="text-lg cursor-pointer select-none flex items-center"
+                      @click="toggle(index)"
+                    >
+                      <i
+                        v-if="expanded.includes(index)"
+                        class="icon-arroe-top-1 text-blue-500 hover:text-blue-600"
+                      />
+                      <i
+                        v-else
+                        class="icon-arroe-bottom-1 text-blue-500 hover:text-blue-600"
+                      />
                     </div>
                   </td>
                 </tr>
                 <template v-if="expanded.includes(index)" class="expanded">
                   <tr
-                    v-for="(specItem, specIndex) in item.specs"
+                    v-for="specItem in item.specs"
                     :key="`expand-${index}-${specItem.id}`"
-                    class="items text-sm bg-chaos-black cursor-default"
+                    class="cursor-default"
                   >
                     <!-- <td :colspan="headers.length" class="bg-chaos-black">
                       <DataTable
@@ -137,18 +144,16 @@
                     <td class="text-right relative px-3">
                       <span
                         :class="[
-                          'status-mini',
-                          'status-indicator inline-block',
+                          'ml-6 w-3 h-3 rounded-full',
                           specItem.specStatus === SpecStatus.IN_STOCK
-                            ? 'status-indicator--green' : specItem.specStatus === SpecStatus.IN_PRODUCTION
-                              ? 'status-indicator--orange' : specItem.specStatus === SpecStatus.IN_PROCESSING
-                                ? 'status-indicator--pink' : 'bg-transparent'
+                            ? 'bg-green-500' : specItem.specStatus === SpecStatus.IN_PRODUCTION
+                              ? 'bg-yellow-500' : specItem.specStatus === SpecStatus.IN_PROCESSING
+                                ? 'bg-pink-500' : 'bg-gray-800'
                         ]"
                       >
                       </span>
                     </td>
                     <td class="text-center relative">
-                      <div v-if="specIndex == 0" class="staff__triangle"></div>
                       <strong>
                         <!-- +$</strong>&nbsp;&nbsp;<strong>-$ -->
                       </strong>
@@ -164,6 +169,7 @@
                     </td>
                     <td class="text-left">{{ specItem.clientFullName }}</td>
                     <td></td>
+                    <td></td>
                   </tr>
                 </template>
               </template>
@@ -173,7 +179,7 @@
         <h4 class="text-xl font-semibold text-white mt-12">
           {{ $t('staff.invitations') }}
         </h4>
-        <div class="overflow-x-auto pb-4">
+        <div class="overflow-x-auto overflow-scroll-touch pb-8">
           <DataTable
             :headers="invitationsHeaders"
             :items="invitations"
@@ -220,18 +226,16 @@
             </template>
           </DataTable>
         </div>
-        <Button
-          outline
-          class="mt-6"
+        <ZButton
+          block
+          outlined
           @click="createStaffDialog = true"
         >
           <template v-slot:icon>
-            <Icon>
-              {{ icons.mdiPlusCircleOutline }}
-            </Icon>
+            <i class="icon-add-user text-gray-100 text-2xl" />
           </template>
           <span>{{ $t('staff.addStaff') }}</span>
-        </Button>
+        </ZButton>
       </div>
     </div>
   </div>
@@ -323,27 +327,29 @@ export default {
     },
     headers () {
       return [
-        { text: '', value: 'status', align: 'left', width: 45, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.inWork'), value: 'inWorkCount', align: 'left', width: 80, minWidth: 80, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.diff'), value: 'profit', align: 'right', width: 120, minWidth: 120, bgcolor: 'tansparent' },
-        { text: this.$t('staff.percent'), value: 'diffPercent', align: 'right', width: 80, minWidth: 80, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.revenue'), value: 'finalObtainCost', align: 'right', width: 120, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.costOfGoods'), value: 'finalCost', align: 'right', width: 120, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('staff.fullName'), value: 'fullName', align: 'left', width: 180, minWidth: 180, bgcolor: 'tansparent' },
-        { text: this.$t('staff.access'), value: 'access', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent' },
-        { text: '', value: 'actions', width: 48, bgcolor: 'tansparent' },
+        { text: '', value: 'status', align: 'left', width: 45, sortable: true },
+        { text: this.$t('staff.inWork'), value: 'inWorkCount', align: 'left', width: 80, minWidth: 80, sortable: true },
+        { text: this.$t('staff.diff'), value: 'profit', align: 'right', width: 120, minWidth: 120 },
+        { text: this.$t('staff.percent'), value: 'diffPercent', align: 'right', width: 80, minWidth: 80, sortable: true },
+        { text: this.$t('staff.revenue'), value: 'finalObtainCost', align: 'right', width: 120, sortable: true },
+        { text: this.$t('staff.costOfGoods'), value: 'finalCost', align: 'right', width: 120, sortable: true },
+        { text: this.$t('staff.fullName'), value: 'fullName', align: 'left', width: 180, minWidth: 180 },
+        { text: this.$t('staff.access'), value: 'access', align: 'left', width: 120, minWidth: 120 },
+        { text: '', value: 'actions', width: 48 },
+        { text: '', value: 'expand', width: 32 },
       ]
     },
     invitationsHeaders () {
       return [
-        { text: this.$t('staff.inviteGivenName'), width: 160, align: 'left', bgcolor: 'tansparent', value: 'invitationGivenName' },
-        { text: this.$t('staff.inviteFamilyName'), width: 160, align: 'left', bgcolor: 'tansparent', value: 'invitationFamilyName' },
-        { text: this.$t('staff.inviteEmail'), width: 200, align: 'left', bgcolor: 'tansparent', value: 'invitationEmail' },
-        { text: this.$t('staff.inviteRole'), width: 120, align: 'left', bgcolor: 'tansparent', value: 'invitationRole' },
-        { text: this.$t('staff.inviteStatus'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'status' },
-        { text: this.$t('staff.inviteCreatedAt'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'createdAt' },
-        { text: this.$t('staff.inviteUpdatedAt'), width: 100, align: 'left', bgcolor: 'tansparent', value: 'updatedAt' },
-        { text: '', value: 'actions', bgcolor: 'tansparent', width: 48 },
+        { text: this.$t('staff.inviteGivenName'), width: 160, align: 'left', value: 'invitationGivenName' },
+        { text: this.$t('staff.inviteFamilyName'), width: 160, align: 'left', value: 'invitationFamilyName' },
+        { text: this.$t('staff.inviteEmail'), width: 200, align: 'left', value: 'invitationEmail' },
+        { text: this.$t('staff.inviteRole'), width: 120, align: 'left', value: 'invitationRole' },
+        { text: this.$t('staff.inviteStatus'), width: 100, align: 'left', value: 'status' },
+        { text: this.$t('staff.inviteCreatedAt'), width: 100, align: 'left', value: 'createdAt' },
+        { text: this.$t('staff.inviteUpdatedAt'), width: 100, align: 'left', value: 'updatedAt' },
+        { text: '', value: 'actions', width: 48 },
+        { text: '', value: 'expand', width: 32 },
       ]
     },
   },
@@ -414,21 +420,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.status-mini {
-  transform: scale(0.6);
-}
-.items:hover  .traingle {
-  @apply bg-gray;
-}
-.staff__triangle {
-  width: 14px;
-  height: 14px;
-  transform: rotate(45deg);
-  background-color: #0F0F0F;
-  position: absolute;
-  top: -7px;
-  left: 15px;
-}
-</style>

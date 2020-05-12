@@ -6,10 +6,13 @@
   @apply px-sm pb-2 bg-gray-800;
   border-radius: 6px;
 }
-.data-table thead { 
+.data-table thead {
   text-align: center;
   user-select: none;
   @apply bg-gray-800 text-gray-400;
+}
+.data-table thead td {
+  @apply leading-tight;
 }
 .data-table td:first-child {
   border-top-left-radius: 6px;
