@@ -394,6 +394,8 @@ export default {
       return this.$createElement('v-tooltip', {
         props: {
           top: true,
+          maxWidth: 285,
+          nudgeBottom: 5,
         },
         scopedSlots: {
           activator: props => {
