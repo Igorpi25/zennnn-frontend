@@ -428,78 +428,61 @@
       <div class="bg-gray-700 rounded-md p-3 select-none">
         <div class="flex flex-wrap lg:justify-between">
           <div class="w-full md:w-auto p-2">
-            <a
+            <Button
               :href="`/paper/${$route.params.specId}`"
-              style="min-width: 85px"
               target="_blank"
-              class="w-full inline-block rounded-md border border-gray-400 select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
+              outlined
+              @click="openPaperList"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-eay text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.previewAsCustomer') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="icon-eay text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.previewAsCustomer') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <a
-              href="#"
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
-              @click.prevent="openPaperList"
+            <Button
+              outlined
+              borderless
+              @click="openPaperList"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-settings text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.paperConfigurator') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="icon-settings text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.paperConfigurator') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <a
-              href="#"
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
-              @click.prevent="printDialog = true"
+            <Button
+              outlined
+              borderless
+              @click="printDialog = true"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-printer text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.print') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="icon-printer text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.print') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <a
-              href="#"
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
-              @click.prevent="accessControlDialog = true"
+            <Button
+              outlined
+              borderless
+              @click="accessControlDialog = true"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-add-user text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.inviteCustomer') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="icon-add-user text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.inviteCustomer') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <button
-              disabled
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent pointer-events-none"
-            >
-              <div class="h-12 flex items-center px-2 text-gray-400">
-                <i class="icon-mail text-2xl mr-2" />
-                <span class="whitespace-nowrap">
-                  {{ $t('shipping.notifyCustomer') }}
-                </span>
-              </div>
-            </button>
+            <Button outlined borderless disabled>
+              <template v-slot:icon>
+                <i class="icon-mail text-2xl" />
+              </template>
+              {{ $t('shipping.notifyCustomer') }}
+            </Button>
           </div>
         </div>
       </div>
@@ -548,7 +531,7 @@
             required
           />
           <Button
-            :disabled="sendAccessLinkLoading"
+            :loading="sendAccessLinkLoading"
             @click="sendLinkAccessToEmail(emailAccessInput)"
           >
             {{ $t('shipping.sendEmail') }}

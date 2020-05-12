@@ -33,29 +33,13 @@
           </div>
         </div>
         <div class="flex items-center">
-          <button
-            :disabled="!isValid || loading"
-            :class="[ isValid && !loading ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
-            class="relative h-12 w-full sm:w-48 px-4 rounded-md focus:outline-none text-white focus:bg-primary-accent transition-colors duration-100 ease-out"
+          <Button
+            :disabled="!isValid"
+            :loading="loading"
             @click="print"
           >
-            <div
-              v-if="loading"
-              class="absolute inset-0 flex items-center justify-center"
-            >
-              <v-progress-circular
-                indeterminate
-                size="24"
-                width="2"
-              />
-            </div>
-            <span
-              :class="{ 'opacity-0': loading }"
-              class="transition-opacity duration-75 ease-in-out"
-            >
-              {{ $t('shipping.doPrint') }}
-            </span>
-          </button>
+            {{ $t('shipping.doPrint') }}
+          </Button>
         </div>
       </div>
     </div>
@@ -1732,12 +1716,12 @@
     <!-- Footer -->
     <div class="px-3 pb-3">
       <div class="flex flex-col sm:flex-row">
-        <button
-          class="h-12 w-full mb-3 sm:mb-0 sm:w-48 px-4 rounded-md focus:outline-none border border-gray-400 hover:border-primary hover:text-primary focus:border-primary focus:text-primary"
+        <Button
+          outlined
           @click="$emit('close')"
         >
           {{ $t('shipping.cancelPrint') }}
-        </button>
+        </Button>
         <div class="flex flex-wrap items-center justify-center sm:justify-end flex-grow pr-4 order-first sm:order-none">
           <div v-if="errorFieldsCount" class="text-sm text-pink-500 pb-3 sm:pb-0 pr-4 whitespace-no-wrap">
             <Icon class="inline mr-1">{{ icons.mdiAlertOutline }}</Icon>
@@ -1748,29 +1732,13 @@
             <span>{{ $t('print.warning') }}</span>
           </div>
         </div>
-        <button
-          :disabled="!isValid || loading"
-          :class="[ isValid && !loading ? 'bg-primary hover:bg-primary-accent' : 'bg-gray-400 text-gray-100 cursor-default' ]"
-          class="relative h-12 w-full sm:w-48 px-4 rounded-md focus:outline-none text-white focus:bg-primary-accent transition-colors duration-100 ease-out"
+        <Button
+          :disabled="!isValid"
+          :loading="loading"
           @click="print"
         >
-          <div
-            v-if="loading"
-            class="absolute inset-0 flex items-center justify-center"
-          >
-            <v-progress-circular
-              indeterminate
-              size="24"
-              width="2"
-            />
-          </div>
-          <span
-            :class="{ 'opacity-0': loading }"
-            class="transition-opacity duration-75 ease-in-out"
-          >
-            {{ $t('shipping.doPrint') }}
-          </span>
-        </button>
+          {{ $t('shipping.doPrint') }}
+        </Button>
       </div>
     </div>
     <v-dialog

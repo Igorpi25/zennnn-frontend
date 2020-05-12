@@ -29,8 +29,8 @@
               <span class="block md:inline">{{ $t('notFound.subtitle') }}</span>
             </p>
             <Button
-              outline
-              secondary
+              outlined
+              borderless
               class="mt-8 mx-auto"
               @click="$router.push({ name: 'home' })"
             >

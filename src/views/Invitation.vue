@@ -11,20 +11,15 @@
         </div>
         <div class="flex items-center justify-center">
           <Button
-            :loading="declineLoading"
-            :disabled="acceptLoading || declineLoading"
-            large
-            gray
+            :loading="acceptLoading || declineLoading"
+            outlined
             class="mx-1"
             @click="declineInvitation"
           >
             {{ $t('invitation.decline') }}
           </Button>
           <Button
-            :loading="acceptLoading"
-            :disabled="acceptLoading || declineLoading"
-            large
-            secondary
+            :loading="acceptLoading || declineLoading"
             class="mx-1"
             @click="acceptInvitation"
           >

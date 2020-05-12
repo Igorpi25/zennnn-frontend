@@ -1,24 +1,21 @@
 <template>
   <div class="container container--sm">
-    <div class="py-10">
+    <div class="pt-4 pb-10">
 
-       <div class="overflow-x-auto">
+      <div class="overflow-x-auto overflow-scroll-touch pb-8">
         <DataTable
           :headers="headers"
           :items="items"
           table-width="100%"
           table-class="table-fixed"
-          thead-class="text-accent2 border-b border-accent2 bg-gray-900"
         >
           <template v-slot:items="{ items }">
             <tr
               v-for="(item) in items"
               :key="item.id"
-              class="items bg-gray-900 hover:bg-accent3 border-none"
+              class="cursor-pointer"
             >
-              <td
-                class="text-center align-middle"
-              >
+              <td class="text-center align-middle">
                 <div
                   class="cursor-pointer select-none inline-block align-middle"
                   @click="setDefaultRequisite(item.id)"
@@ -32,14 +29,12 @@
               <td @click="goToRequisite(item)">{{ item.nameEng }}</td>
               <td @click="goToRequisite(item)">{{ item.ownerFullName }}</td>
               <td @click="goToRequisite(item)">{{ item.ownerJobPosition }}</td>
-              <td
-                class="text-center align-middle"
-              >
+              <td>
                 <div
-                  class="cursor-pointer inline-block align-middle"
+                  class="cursor-pointer flex items-center"
                   @click="deleteRequisite(item.id)"
                 >
-                  <i class="icon-delete text-lg text-gray-200" />
+                  <i class="icon-delete text-lg text-gray-200 hover:text-gray-100" />
                 </div>
               </td>
             </tr>
@@ -47,14 +42,14 @@
         </DataTable>
       </div>
       <Button
-        outline
-        class="mt-6"
+        block
+        outlined
         @click="$router.push({
           name: 'requisite-create'
         })"
       >
         <template v-slot:icon>
-          <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+          <i class="icon-add text-gray-100 text-xl" />
         </template>
         <span>{{ $t('requisites.addRequisites') }}</span>
       </Button>
@@ -107,12 +102,12 @@ export default {
     },
     headers () {
       return [
-        { text: '', value: 'current', bgcolor: 'tansparent', align: 'center', width: 36, minWidth: 36 },
-        { text: this.$t('requisites.companyName'), value: 'name', bgcolor: 'tansparent', align: 'left', width: 200, minWidth: 200 },
-        { text: this.$t('requisites.companyNameEng'), value: 'nameEng', bgcolor: 'tansparent', align: 'left', width: 240, minWidth: 240 },
-        { text: this.$t('requisites.fullName'), value: 'ownerFullName', bgcolor: 'tansparent', align: 'left', width: 160, minWidth: 160 },
-        { text: this.$t('requisites.position'), value: 'ownerJobPosition', bgcolor: 'tansparent', align: 'left', width: 120, minWidth: 120 },
-        { text: '', value: 'action', bgcolor: 'tansparent', width: 48, minWidth: 48 },
+        { text: '', value: 'current', align: 'center', width: 36, minWidth: 36 },
+        { text: this.$t('requisites.companyName'), value: 'name', align: 'left', width: 200, minWidth: 200 },
+        { text: this.$t('requisites.companyNameEng'), value: 'nameEng', align: 'left', width: 240, minWidth: 240 },
+        { text: this.$t('requisites.fullName'), value: 'ownerFullName', align: 'left', width: 160, minWidth: 160 },
+        { text: this.$t('requisites.position'), value: 'ownerJobPosition', align: 'left', width: 120, minWidth: 120 },
+        { text: '', value: 'action', width: 48, minWidth: 48 },
       ]
     },
     items () {

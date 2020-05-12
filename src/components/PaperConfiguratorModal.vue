@@ -197,8 +197,7 @@
             </div>
           </div>
           <Button
-            small
-            outline
+            outlined
             class="mt-4"
             @click="addParagraph(contract.items, index)"
           >
@@ -210,7 +209,7 @@
         </div>
 
         <Button
-          outline
+          outlined
           class="mt-10"
           @click="addHeading(contract.items)"
         >
@@ -420,8 +419,7 @@
             </span>
           </div>
           <Button
-            small
-            outline
+            outlined
             class="mt-4"
             @click="addParagraph(contract.specItems, index + 1)"
           >
@@ -433,7 +431,7 @@
         </div>
 
         <Button
-          outline
+          outlined
           class="mt-10"
           @click="addHeading(contract.specItems)"
         >
@@ -447,7 +445,6 @@
     </div>
     <div class="modal-footer">
       <Button
-        large
         class="mr-8"
         @click="update"
       >

@@ -74,7 +74,8 @@
                 <span>{{ $t('client.edit') }}</span>
               </ToggleButton>
               <Button
-                text
+                outlined
+                borderless
                 class="inline-block mt-3 md:text-left md:mt-0"
                 @click="showModalList"
               >
@@ -166,8 +167,8 @@
                 <div :class="['text-center', { 'card__section--faded': isNaturalPerson }]">
                   <Button
                     v-if="!editMode"
-                    :disabled="isNaturalPerson || !!updateLoading"
-                    large
+                    :disabled="isNaturalPerson"
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="edit"
                   >
@@ -175,8 +176,8 @@
                   </Button>
                   <Button
                     v-else
-                    :disabled="isNaturalPerson || !!updateLoading"
-                    large
+                    :disabled="isNaturalPerson"
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
@@ -184,7 +185,8 @@
                   </Button>
                   <Button
                     :disabled="isNaturalPerson"
-                    text
+                    outlined
+                    borderless
                     class="mx-auto"
                     @click="saveAsTemplate"
                   >
@@ -255,8 +257,8 @@
                 <div :class="['text-center', { 'card__section--faded': !isNaturalPerson }]">
                   <Button
                     v-if="!editMode"
-                    :disabled="!isNaturalPerson || !!updateLoading"
-                    large
+                    :disabled="!isNaturalPerson"
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="edit"
                   >
@@ -264,8 +266,8 @@
                   </Button>
                   <Button
                     v-else
-                    :disabled="!isNaturalPerson || !!updateLoading"
-                    large
+                    :disabled="!isNaturalPerson"
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
@@ -273,7 +275,8 @@
                   </Button>
                   <Button
                     :disabled="!isNaturalPerson"
-                    text
+                    outlined
+                    borderless
                     class="mx-auto"
                     @click="saveAsTemplate"
                   >
@@ -283,21 +286,6 @@
               </template>
             </TemplateCard>
           </div>
-          <button
-            v-if="!isComponent"
-            class="back-to-list-btn"
-            @click="$router.push({
-              name: 'clients',
-              params: {
-                orgId,
-              }
-            }).catch(err => {})"
-          >
-            <Icon class="mr-2">
-              {{ icons.mdiArrowLeft }}
-            </Icon>
-            {{ $t('client.backToClientsList') }}
-          </button>
         </div>
       </div>
     </div>
@@ -1019,14 +1007,6 @@ export default {
     @apply pl-1 pr-6;
     @apply border rounded-full text-sm;
   }
-  .back-to-list-btn {
-    @apply flex items-center;
-    @apply py-2 pl-3 pr-6 mx-auto mt-20;
-    @apply border rounded-full text-sm;
-  }
-  .back-to-list-btn:focus {
-    @apply outline-none;
-  }
   .template-card {
     display: none;
   }
@@ -1050,11 +1030,6 @@ export default {
     }
     .card__add-address-btn {
       margin-left: 0;
-    }
-    .back-to-list-btn {
-      @apply flex items-center;
-      @apply py-2 pl-3 pr-6 mx-0 mt-6;
-      @apply border rounded-full text-sm;
     }
     .template-card {
       display: block;

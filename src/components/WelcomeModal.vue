@@ -25,12 +25,11 @@
           {{ $t('welcomeModal.footerInMenu') }}
         </p>
       </div>
-      <button
-        class="mb-2 px-6 mx-auto h-12 flex items-center relative rounded-md bg-primary hover:bg-primary-accent text-white focus:outline-none select-none align-middle transition-colors duration-100 ease-out"
+      <Button
         @click="$emit('close')"
       >
-        <span>{{ $t('welcomeModal.fillRequisites') }}</span>
-      </button>
+        {{ $t('welcomeModal.fillRequisites') }}
+      </Button>
     </div>
     <span
       class="absolute top-0 right-0 mt-3 mr-4 text-gray-200 hover:text-gray-100 cursor-pointer"

@@ -19,7 +19,7 @@
       </li>
     </ul>
     <Button
-      outline
+      outlined
       class="mt-4"
       @click="$emit('openRequisiteDialog')"
     >

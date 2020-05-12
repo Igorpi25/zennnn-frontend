@@ -17,7 +17,6 @@
         outlined
       />
       <Button
-        large
         class="sm:ml-5"
         @click="save"
       >

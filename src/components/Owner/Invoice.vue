@@ -82,8 +82,8 @@
                 >
                   <div class="flex">
                     <Button
-                      text
-                      class="flex"
+                      outlined
+                      borderless
                       @click.prevent="createProduct"
                     >
                       <template v-slot:icon>

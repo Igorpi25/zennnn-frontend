@@ -129,7 +129,7 @@
           </template>
         </DataTable>
       </div>
-      <ZButton
+      <Button
         v-if="canCreateSpec"
         block
         outlined
@@ -139,7 +139,7 @@
           <i class="icon-portdolio text-gray-100 text-lg" />
         </template>
         <span>{{ $t('deals.createDeal') }}</span>
-      </ZButton>
+      </Button>
     </div>
     <v-dialog
       v-if="canCreateSpec"
@@ -188,54 +188,22 @@
             </Select>
           </div>
           <div>
-            <button
+            <Button
               v-if="createSpecClient"
-              :disabled="createLoading"
-              :class="{ 'hover:bg-primary-accent focus:bg-primary-accent': !createLoading }"
-              style="min-width: 120px"
-              class="relative ml-auto px-3 h-10 flex items-center justify-center relative rounded-md bg-primary text-white focus:outline-none select-none align-middle transition-colors duration-100 ease-out"
+              :loading="createLoading"
+              outlined
               @click="createSpec"
             >
-              <div
-                v-if="createLoading"
-                class="absolute inset-0 flex items-center justify-center"
-              >
-                <v-progress-circular
-                  indeterminate
-                  size="24"
-                  width="2"
-                />
-              </div>
-              <span
-                :class="{ 'opacity-0': createLoading }"
-              >
-                {{ $t('deals.createSpecDialogAdd') }}
-              </span>
-            </button>
-            <button
+              {{ $t('deals.createSpecDialogAdd') }}
+            </Button>
+            <Button
               v-else
-              :disabled="createLoading"
-              :class="{ 'hover:border-primary focus:border-primary': !createLoading }"
-              style="min-width: 120px"
-              class="relative px-3 h-10 flex items-center justify-center relative rounded-md border border-gray-200 text-primary focus:outline-none select-none align-middle transition-colors duration-100 ease-out"
+              :loading="createLoading"
+              outlined
               @click="createSpec"
             >
-              <div
-                v-if="createLoading"
-                class="absolute inset-0 flex items-center justify-center"
-              >
-                <v-progress-circular
-                  indeterminate
-                  size="24"
-                  width="2"
-                />
-              </div>
-              <span
-                :class="{ 'opacity-0': createLoading }"
-              >
-                {{ $t('deals.createSpecDialogWithoutClient') }}
-              </span>
-            </button>
+              {{ $t('deals.createSpecDialogWithoutClient') }}
+            </Button>
           </div>
         </div>
         <span

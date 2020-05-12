@@ -15,28 +15,25 @@
           {{ postScriptum }}
         </p>
       </div>
-      <div class="sm:pb-8 flex flex-col sm:flex-row justify-between items-center text-base">
+      <div class="sm:pb-8 flex flex-col sm:flex-row sm:items-center">
         <Button
-          outline
-          width="140"
-          class="mb-3 sm:mb-0"
+          outlined
+          class="sm:flex-1 mb-3 sm:mb-0 sm:mr-2"
           @click="$emit('dontSave')"
         >
           <span>{{ dontSaveButton || $t('action.dontSave') }}</span>
         </Button>
 
         <Button
-          outline
-          width="140"
-          class="mb-3 sm:mb-0"
+          outlined
+          class="sm:flex-1 mb-3 sm:mb-0 sm:mx-2"
           @click="$emit('cancel')"
         >
           <span>{{ cancelButton || $t('action.cancel') }}</span>
         </Button>
 
         <Button
-          width="140"
-          class="mb-3 sm:mb-0"
+          class="sm:flex-1 mb-3 sm:mb-0 sm:ml-2"
           @click="$emit('save')"
         >
           <span>{{ saveButton || $t('action.save') }}</span>

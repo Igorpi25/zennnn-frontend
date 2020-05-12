@@ -22,15 +22,12 @@
               </p>
             </div>
             <div class="flex-grow">
+              <span>{{ $t('signup.hasAccount') }}</span>
               <Button
-                outline
-                secondary
+                outlined
                 class="mx-auto md:mx-0 md:mt-0 mt-8 md:mt-24"
                 @click="$router.push({name: 'signin'})"
               >
-                <template v-slot:text>
-                  <span>{{ $t('signup.hasAccount') }}</span>
-                </template>
                 <span>{{ $t('signup.signin') }}</span>
               </Button>
             </div>
@@ -44,13 +41,7 @@
               v-model="formValidity"
               :title="$t('signup.registration')"
               :error-message.sync="errorMessage"
-              rounded
-              shadow
-              class="form--max-w-sm mx-auto m-0"
-              body-class="pt-8 md:pt-12 pb-10 px-0 md:px-12"
-              header
-              header-icon="circle"
-              header-class="px-6 hidden md:flex"
+              class="form--max-w-sm mx-auto m-0 pt-8 md:pt-12 pb-10 px-0 md:px-12"
             >
               <div class="w-full">
                 <TextField
@@ -126,18 +117,12 @@
                 </Checkbox>
                 <div class="flex justify-center">
                   <Button
-                    :disabled="formValidity || loading"
-                    large
-                    secondary
+                    :disabled="formValidity"
+                    :loading="loading"
                     class="mt-5 flex justify-center"
                     @click="onSubmit"
                   >
-                    <span v-if="loading">
-                      {{ $t('action.loading') }}
-                    </span>
-                    <span v-else>
-                      {{ $t('signup.submit') }}
-                    </span>
+                    {{ $t('signup.submit') }}
                   </Button>
                 </div>
               </div>

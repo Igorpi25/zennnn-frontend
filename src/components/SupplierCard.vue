@@ -71,7 +71,8 @@
                 <span>{{ $t('supplier.edit') }}</span>
               </ToggleButton>
               <Button
-                text
+                outlined
+                borderless
                 class="inline-block mt-3 md:mt-0"
                 @click="showModalList"
               >
@@ -150,8 +151,7 @@
                 <div class="text-center">
                   <Button
                     v-if="!editMode"
-                    :disabled="!!updateLoading"
-                    large
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="edit"
                   >
@@ -159,15 +159,15 @@
                   </Button>
                   <Button
                     v-else
-                    :disabled="!!updateLoading"
-                    large
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="update()"
                   >
                     <span>{{ $t('supplier.save') }}</span>
                   </Button>
                   <Button
-                    text
+                    outlined
+                    borderless
                     class="mx-auto"
                     @click="saveAsTemplate"
                   >
@@ -275,8 +275,7 @@
                       <template v-if="!create">
                         <Button
                           v-if="shop.editMode"
-                          :disabled="!!updateLoading"
-                          large
+                          :loading="!!updateLoading"
                           class="mb-4 mx-auto"
                           @click="updateShop(shop.id)"
                         >
@@ -284,8 +283,7 @@
                         </Button>
                         <Button
                           v-else
-                          :disabled="!!updateLoading"
-                          large
+                          :loading="!!updateLoading"
                           class="mb-4 mx-auto"
                           @click="editShop(shop)"
                         >
@@ -298,8 +296,7 @@
               </template>
               <template v-slot:append>
                 <Button
-                  outline
-                  white
+                  outlined
                   @click="addShop"
                 >
                   <template v-slot:icon>
@@ -310,21 +307,6 @@
               </template>
             </TemplateCard>
           </div>
-          <button
-            v-if="!isComponent"
-            class="back-to-list-btn"
-            @click="$router.push({
-              name: 'suppliers',
-              params: {
-                orgId,
-              }
-            }).catch(err => {})"
-          >
-            <Icon class="mr-2">
-              {{ icons.mdiArrowLeft }}
-            </Icon>
-            {{ $t('supplier.backToSuppliersList') }}
-          </button>
         </div>
       </div>
     </div>
@@ -1103,14 +1085,6 @@ export default {
     user-select: none;
     cursor: pointer;
   }
-  .back-to-list-btn {
-    @apply flex items-center;
-    @apply py-2 pl-3 pr-6 mx-auto mt-20;
-    @apply border rounded-full text-sm;
-  }
-  .back-to-list-btn:focus {
-    @apply outline-none;
-  }
   .template-card {
     display: none;
   }
@@ -1139,11 +1113,6 @@ export default {
     .card__add-address-btn {
       margin-top: 52px;
       margin-left: 0;
-    }
-    .back-to-list-btn {
-      @apply flex items-center;
-      @apply py-2 pl-3 pr-6 mx-0 mt-6;
-      @apply border rounded-full text-sm;
     }
     .template-card {
       display: block;

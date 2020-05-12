@@ -41,7 +41,7 @@ export default {
       type: String,
       default: 'text',
     },
-    // decimal, currency
+    // integer, decimal, currency
     // TODO: rename to format, used only for numbers,
     // can be integer, decimal, currency of formatter style
     format: {
@@ -441,6 +441,7 @@ export default {
           name: this.name,
           minlength: this.minlength,
           maxlength: this.maxlength,
+          inputmode: this.inputmode,
         },
         class: this.computedInputClass,
         on: Object.assign(listeners, {

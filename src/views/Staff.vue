@@ -226,7 +226,7 @@
             </template>
           </DataTable>
         </div>
-        <ZButton
+        <Button
           block
           outlined
           @click="createStaffDialog = true"
@@ -235,7 +235,7 @@
             <i class="icon-add-user text-gray-100 text-2xl" />
           </template>
           <span>{{ $t('staff.addStaff') }}</span>
-        </ZButton>
+        </Button>
       </div>
     </div>
   </div>

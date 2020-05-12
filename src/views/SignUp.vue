@@ -48,7 +48,7 @@
       </div>
       <div class="signup--top flex flex-col justify-center sm:block w-full max-w-sm flex-grow mx-auto sm:mx-0 lg:ml-24">
         <div class="pb-10 font-semibold text-2xl">Регистрация</div>
-        <ZForm
+        <Form
           ref="form"
           v-model="formValidity"
         >
@@ -114,15 +114,15 @@
               <a class="text-blue-500 hover:text-blue-600" href="#">{{ $t('signup.termsOfUse') }}</a>
             </span>
           </Checkbox>
-        </ZForm>
-        <ZButton
+        </Form>
+        <Button
           :disabled="formValidity"
           :loading="loading"
           class="w-full sm:w-48"
           @click="onSubmit"
         >
           Зарегистрироваться
-        </ZButton>
+        </Button>
       </div>
       <div class="py-5 md:pb-8 lg:pl-24">
         <Social class="sm:hidden justify-center mb-1 pb-6" />

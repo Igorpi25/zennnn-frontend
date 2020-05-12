@@ -5,8 +5,7 @@
       <div class="container">
         <div class="flex flex-col">
           <Button
-            outline
-            secondary
+            outlined
             class="mx-auto sm:mr-0 mt-8 mb-24 md:mb-0 flex justify-center sm:justify-end"
             @click="$router.push({name: 'signin'})"
           >
@@ -38,8 +37,8 @@
                     {{ $t('welcome.emailNotRecieved') }}
                   </span>&nbsp;
                   <Button
-                    text
-                    secondary
+                    outlined
+                    borderless
                     class="inline-block"
                     @click.prevent="resendSignUp"
                   >

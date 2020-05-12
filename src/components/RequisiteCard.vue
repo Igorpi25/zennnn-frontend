@@ -36,7 +36,6 @@
       <div :class="[ isComponent ? 'pt-5 px-4' : 'py-12' ]">
       <Button
         v-if="!isComponent && showFillLaterButton"
-        large
         class="mb-6 mx-auto md:mr-0 md:ml-auto"
         @click="$router.push({ name: 'home' })"
       >
@@ -129,7 +128,6 @@
           <template v-slot:append>
             <div class="text-center mt-32">
               <Button
-                large
                 class="mb-4 mx-auto md:hidden"
                 @click="update()"
               >
@@ -193,8 +191,7 @@
             <div class="text-center mt-32">
               <Button
                 v-if="!editMode"
-                :disabled="updateLoading"
-                large
+                :loading="updateLoading"
                 class="mb-4 mx-auto"
                 @click="edit"
               >
@@ -204,8 +201,7 @@
               </Button>
               <Button
                 v-else
-                :disabled="updateLoading"
-                large
+                :loading="updateLoading"
                 class="mb-4 mx-auto"
                 @click="update()"
               >

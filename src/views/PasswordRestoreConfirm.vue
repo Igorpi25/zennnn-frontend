@@ -19,10 +19,7 @@
                 ref="form"
                 :error-message.sync="errorMessage"
                 lazy-validation
-                rounded
-                shadow
-                class="form--max-w-md"
-                body-class="px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8"
+                class="form--max-w-md px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8"
               >
                 <div class="w-full sm:w-1/2 sm:pr-2">
                   <TextField
@@ -81,17 +78,10 @@
                 </div>
                 <template v-slot:append>
                   <Button
-                    :disabled="loading"
-                    large
-                    secondary
+                    :loading="loading"
                     @click="onSubmit"
                   >
-                    <span v-if="loading">
-                      {{ $t('action.loading') }}
-                    </span>
-                    <span v-else>
-                      {{ $t('passwordRestoreConfirm.submit') }}
-                    </span>
+                    {{ $t('passwordRestoreConfirm.submit') }}
                   </Button>
                 </template>
               </Form>

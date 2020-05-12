@@ -36,8 +36,6 @@
     </div>
     <div class="modal__footer">
       <Button
-        large
-        primary
         @click="$emit('set-template', internalValue)"
       >
         <span>{{ $t('action.apply') }}</span>

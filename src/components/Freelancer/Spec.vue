@@ -142,7 +142,7 @@
       </div>
     </div>
     <Button
-      outline
+      outlined
       class="mt-6"
     >
       <template v-slot:icon>

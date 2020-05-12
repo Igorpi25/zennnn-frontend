@@ -176,7 +176,7 @@
     </div>
     <div class="flex pt-5">
       <Button
-        outline
+        outlined
         @click="createInvoice"
       >
         <template v-slot:icon>

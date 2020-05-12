@@ -42,7 +42,7 @@
       </div>
       <div class="signin--top flex flex-col justify-center sm:block w-full max-w-sm flex-grow mx-auto sm:mx-0 lg:ml-24">
         <div class="pb-10 font-semibold text-2xl">Войти</div>
-        <ZForm
+        <Form
           ref="form"
         >
           <ZTextField
@@ -87,14 +87,14 @@
               {{ $t('signin.forgotPassword') }}
             </router-link>
           </div>
-        </ZForm>
-        <ZButton
+        </Form>
+        <Button
           :loading="loading"
           class="w-full sm:w-48"
           @click="onSubmit"
         >
           {{ $t('signin.submit') }}
-        </ZButton>
+        </Button>
       </div>
       <div class="py-5 md:pb-8 lg:pl-24">
         <Social class="sm:hidden justify-center mb-1 pb-6" />
@@ -107,7 +107,7 @@
       persistent
       content-class="p-5 bg-gray-900"
     >
-      <ZForm
+      <Form
         ref="compliteForm"
         v-model="compliteFormValidity"
         :title="$t('signup.registration')"
@@ -184,15 +184,15 @@
             <a class="text-blue-500 hover:text-blue-600" href="#">{{ $t('signup.termsOfUse') }}</a>
           </span>
         </Checkbox>
-      </ZForm>
-      <ZButton
+      </Form>
+      <Button
         :disabled="compliteFormValidity"
         :loading="compliteLoading"
         class="w-full sm:w-48"
         @click="completeNewPassword"
       >
         {{ $t('signup.submit') }}
-      </ZButton>
+      </Button>
     </v-dialog>
   </div>
 </template>

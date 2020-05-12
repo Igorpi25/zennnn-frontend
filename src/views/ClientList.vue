@@ -82,7 +82,7 @@
 
         </DataTable>
       </div>
-      <ZButton
+      <Button
         block
         outlined
         @click="$router.push({
@@ -93,7 +93,7 @@
           <i class="icon-add-user text-gray-100 text-2xl" />
         </template>
         <span>{{ $t('clients.createClient') }}</span>
-      </ZButton>
+      </Button>
     </div>
   </div>
 </template>
