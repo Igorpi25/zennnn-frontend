@@ -1,53 +1,13 @@
-html,
-body {
-  @apply h-full;
-}
-
 body {
   @apply p-0 m-0;
   @apply font-myriad;
+  @apply bg-gray-900 text-gray-100;
 }
 
-h1 {
-  @apply text-2xl mb-8 leading-none;
-}
-@screen lg {
-  h1 {
-    @apply text-3xl;
-  }
+[data-theme="light"] {
+  @apply bg-white text-gray-900;
 }
 
-.headline {
-  max-width: 460px;
-  @apply text-center mb-0 pt-10 mx-auto;
-}
-.headline > span:first-child {
-  @apply text-white mr-2 inline;
-}
-.headline > span:last-child {
-  @apply text-gray-lightest;
-}
-
-@screen sm {
-  .headline {
-    @apply text-left mx-0;
-  }
-  .headline > span:first-child {
-    @apply block;
-  }
-}
-
-@screen md {
-  .headline {
-    @apply mb-8 pt-12;
-  }
-  .headline > span:first-child {
-    @apply text-gray-lightest;
-  }
-  .headline > span:last-child {
-    @apply text-white;
-  }
-}
 
 /* Turn Off Number Input Arrows */
 input[type=number]::-webkit-inner-spin-button,
@@ -187,4 +147,23 @@ form input:-webkit-autofill:active {
   background-attachment: fixed;
   background-position: -300px 380px;
   background-image: url(../img/cloud.svg);
+}
+
+/* 404 */
+.text-404 {
+  /* -webkit-text-stroke: 1px #fff;
+  color: transparent; */
+  @apply text-accent1;
+  font-size: 7.5rem;
+  line-height: 1;
+}
+@screen sm {
+  .text-404 {
+    font-size: 12rem;
+  }
+}
+
+/* Full height dialog override */
+.dialog-full-height {
+  max-height: 100% !important;
 }
