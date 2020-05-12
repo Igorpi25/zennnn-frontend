@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col relative">
     <StatusBar />
     <NavBar />
     <div class="mb-12">
