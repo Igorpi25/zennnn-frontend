@@ -43,7 +43,7 @@
         <slot />
       </label>
     </div>
-    <div v-if="!hideDetails" class="h-4 leading-tight text-sm" style="color: #D7C370;">
+    <div v-if="!hideDetails" class="h-5 leading-tight text-sm" style="color: #D7C370;">
       {{ errorText }}
     </div>
   </div>
