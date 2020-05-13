@@ -115,7 +115,7 @@
           </TextField>
           <Checkbox
             :rules="[rules.check]"
-            class="pb-8"
+            class="pb-6"
           >
             <span class="ml-3 float-left" v-html="policyHtml" />
           </Checkbox>
