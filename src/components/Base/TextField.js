@@ -71,6 +71,7 @@ export default {
     },
     // preferably validation icon
     adlib: Boolean,
+    stateIcon: Boolean,
   },
 
   data () {
@@ -240,7 +241,11 @@ export default {
       }
     },
 
-    onBlur () {
+    onBlur (e) {
+      this.wasBlurred = true
+      if (this.validateOnBlur) {
+        this.checkField(e)
+      }
       this.hasFocus = false
       // stop edit mode and call emit
       this.editMode = false
@@ -335,7 +340,7 @@ export default {
       const props = {
         activator: this.$refs['content'],
         attach: this.$refs['alert'],
-        value: this.hasWarn || this.hasError,
+        value: (this.hasWarn || this.hasError) && this.hasFocus,
         top: true,
         offsetY: true,
         zIndex: 'unset',
@@ -551,6 +556,8 @@ export default {
       }
       children.push(this.genInput())
       if (this.required || this.adlib) {
+        children.push(this.genStateIndicator())
+      } else if (this.stateIcon && this.wasBlurred) {
         children.push(this.genStateIndicator())
       }
       if (this.$slots.append) {

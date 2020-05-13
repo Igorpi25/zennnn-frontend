@@ -4,7 +4,7 @@
       <div class="signup--top flex-grow lg:pl-8">
         <div class="auth-left--bg absolute pointer-events-none bottom-0 left-0 top-0" style="right: 50%" />
         <div class="pt-2 lg:pl-12 pb-12">
-          <router-link to="/">
+          <router-link to="/" class="focus:outline-none">
             <img src="@/assets/img/logo-dark.svg" alt="Logo">
           </router-link>
         </div>
@@ -38,7 +38,7 @@
               <span class="pr-1">{{ $t('signup.hasAccount') }}</span>
               <router-link
                 :to="{ name: 'signin' }"
-                class="text-blue-500 hover:text-blue-600"
+                class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
               >
                 <span>{{ $t('signup.signin') }}</span>
               </router-link>
@@ -58,7 +58,9 @@
             :rules="[rules.required]"
             class="pb-6"
             name="firstName"
+            validate-on-blur
             autofocus
+            state-icon
           >
           </TextField>
           <TextField
@@ -67,6 +69,8 @@
             :rules="[rules.required]"
             class="pb-6"
             name="lastName"
+            validate-on-blur
+            state-icon
           >
           </TextField>
           <TextField
@@ -77,6 +81,8 @@
             class="pb-6"
             type="email"
             name="email"
+            validate-on-blur
+            state-icon
           >
           </TextField>
           <TextField
@@ -87,14 +93,16 @@
             class="pb-6"
             name="password"
             minlength="8"
+            validate-on-blur
+            state-icon
           >
             <template v-slot:append>
               <div
-                class="cursor-pointer select-none text-gray-500 hover:text-blue-500"
+                class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
                 @click="showPassword = !showPassword"
               >
-                <svg v-if="showPassword" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 4.5C7 4.5 2.73 7.61 1 12C2.73 16.39 7 19.5 12 19.5C17 19.5 21.27 16.39 23 12C21.27 7.61 17 4.5 12 4.5ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17ZM12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9Z" fill="currentColor"/>
+                <svg v-if="showPassword" width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 0.5C6.76598 0.5 2.22933 3.54786 0 8C2.22933 12.4521 6.76598 15.5 12 15.5C17.2339 15.5 21.7706 12.4521 24 8C21.7707 3.54786 17.2339 0.5 12 0.5ZM17.9168 4.47744C19.3269 5.37683 20.5217 6.58152 21.4193 8C20.5218 9.41848 19.3268 10.6232 17.9168 11.5226C16.1451 12.6527 14.099 13.25 12 13.25C9.90094 13.25 7.85494 12.6527 6.0832 11.5226C4.6732 10.6231 3.47836 9.41844 2.58084 8C3.47831 6.58147 4.6732 5.37678 6.0832 4.47744C6.17503 4.41884 6.2678 4.36208 6.36112 4.30634C6.12773 4.94684 6 5.63811 6 6.35938C6 9.67302 8.68631 12.3594 12 12.3594C15.3136 12.3594 18 9.67302 18 6.35938C18 5.63811 17.8723 4.94684 17.6389 4.3063C17.7321 4.36203 17.825 4.41884 17.9168 4.47744ZM12 5.60938C12 6.85203 10.9927 7.85938 9.75 7.85938C8.50734 7.85938 7.5 6.85203 7.5 5.60938C7.5 4.36672 8.50734 3.35938 9.75 3.35938C10.9927 3.35938 12 4.36672 12 5.60938Z" fill="currentColor"/>
                 </svg>
                 <svg  v-else width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M19.3684 3.63488L20.3158 2.68752C21.0526 1.95067 21.1579 1.0033 20.5263 0.371726C19.8947 -0.15459 18.9474 -0.15459 18.2105 0.582252L16.6316 2.1612C15.1579 1.63488 13.6842 1.31909 12.1053 1.31909C6.84211 1.31909 2.21053 4.37173 0 8.89804C1.05263 11.0033 2.63158 12.898 4.63158 14.1612L3.47368 15.2138C2.73684 15.9507 2.63158 16.898 3.26316 17.5296C3.89474 18.0559 4.84211 18.0559 5.57895 17.3191L7.26316 15.6349C7.26316 15.6349 7.26316 15.6349 7.36842 15.6349L9.05263 13.8454L17.7895 5.10857L19.3684 3.63488ZM6.10526 12.6875C6.10526 12.6875 6 12.6875 6 12.5823C4.63158 11.5296 3.36842 10.3717 2.42105 8.89804C3.36842 7.52962 4.52632 6.26646 6 5.3191C6.10526 5.21383 6.21053 5.21383 6.31579 5.10857C9.47368 3.0033 12.6316 3.21383 14.8421 3.84541L6.10526 12.6875Z" fill="currentColor"/>
@@ -109,20 +117,20 @@
           >
             <span class="ml-3 float-left">
               {{ $t('signup.acceptPolicyAndTerms') }}&nbsp;
-              <a class="text-blue-500 hover:text-blue-600" href="#">{{ $t('signup.privacyPolicy') }}</a>
+              <a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none" href="#">{{ $t('signup.privacyPolicy') }}</a>
               &nbsp;{{ $t('preposition.and') }}&nbsp;
-              <a class="text-blue-500 hover:text-blue-600" href="#">{{ $t('signup.termsOfUse') }}</a>
+              <a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none" href="#">{{ $t('signup.termsOfUse') }}</a>
             </span>
           </Checkbox>
+          <Button
+            :disabled="formValidity"
+            :loading="loading"
+            class="w-full sm:w-48"
+            @click="onSubmit"
+          >
+            Зарегистрироваться
+          </Button>
         </Form>
-        <Button
-          :disabled="formValidity"
-          :loading="loading"
-          class="w-full sm:w-48"
-          @click="onSubmit"
-        >
-          Зарегистрироваться
-        </Button>
       </div>
       <div class="py-5 md:pb-8 lg:pl-24">
         <Social class="sm:hidden justify-center mb-1 pb-6" />
