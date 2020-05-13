@@ -207,6 +207,10 @@ export default {
       } catch (error) {
         this.errorMessage = error.message || error
         this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'red',
+          text: this.errorMessage,
+        })
       } finally {
         setTimeout(() => {
           this.loading = false

@@ -308,6 +308,10 @@ export default {
         }
         this.errorMessage = message
         this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'red',
+          text: message,
+        })
       } finally {
         setTimeout(() => {
           this.loading = false
@@ -345,6 +349,10 @@ export default {
       } catch (error) {
         this.compliteErrorMessage = error.message || error
         this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'red',
+          text: this.compliteErrorMessage,
+        })
       } finally {
         setTimeout(() => {
           this.compliteLoading = false
