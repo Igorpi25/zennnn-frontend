@@ -1,4 +1,7 @@
 {
+  "app": {
+    "userAgreement": "Пользовательское&nbsp;соглашение"
+  },
   "passwordRestore": {
     "accessRecoveryHead": "Access recovery,",
     "accessRecoverySubhead": "enter the data and get a link to change password.",
@@ -27,6 +30,9 @@
     "submit": "Get link"
   },
   "signin": {
+    "title": "Ре&shy;во&shy;лю&shy;ци&shy;он&shy;ный<br>сервис для ве&shy;де&shy;ния<br>меж&shy;ду&shy;на&shy;род&shy;ной<br>тор&shy;гов&shy;ли.",
+    "subtitle": "Простой. Мультиязычный.<br>Мощный.",
+    "formTitle": "Log In",
     "noAccount": "No account?",
     "signup": "Sign up",
     "welcomeHead": "Welcome back to ZENNNN,",
@@ -47,6 +53,10 @@
     "submit": "Log In"
   },
   "signup": {
+    "feat1": "Не&nbsp;требует обучения",
+    "feat2": "Облачные технологии",
+    "feat3": "Международные документы<br>в пару кликов",
+    "feat4": "Мультиязычность",
     "registration": "Registration",
     "hello": "Hello,",
     "helloContent": "this is ZENNNN — the first digital back office for international trade.",

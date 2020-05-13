@@ -9,13 +9,11 @@
           </router-link>
         </div>
         <div class="pt-1 lg:pl-12">
-          <div
-            v-html="'Ре&shy;во&shy;лю&shy;ци&shy;он&shy;ный<br>сервис для ве&shy;де&shy;ния<br>меж&shy;ду&shy;на&shy;род&shy;ной<br>тор&shy;гов&shy;ли.'"
+          <h2
+            v-html="$t('signin.title')"
             class="text-4xl text-gray-100 font-semibold leading-tight pb-4"
           />
-          <div class="text-2xl text-gray-200 leading-relaxed">
-            Простой. Мультиязычный.<br>Мощный.
-          </div>
+          <h3 class="text-2xl text-gray-200 leading-relaxed" v-html="$t('signin.subtitle')" />
         </div>
       </div>
       <Social class="mb-2 py-6 md:pb-8 lg:pl-20" />
@@ -41,7 +39,9 @@
         </div>
       </div>
       <div class="signin--top flex flex-col justify-center sm:block w-full max-w-sm flex-grow mx-auto sm:mx-0 lg:ml-24">
-        <div class="pb-10 font-semibold text-2xl">Войти</div>
+        <h1 class="pb-10 font-semibold text-2xl">
+          {{ $t('signin.formTitle') }}
+        </h1>
         <Form
           ref="form"
           v-model="formValidity"

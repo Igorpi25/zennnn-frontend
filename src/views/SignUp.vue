@@ -47,7 +47,9 @@
         </div>
       </div>
       <div class="signup--top flex flex-col justify-center sm:block w-full max-w-sm flex-grow mx-auto sm:mx-0 lg:ml-24">
-        <div class="pb-10 font-semibold text-2xl">Регистрация</div>
+        <h1 class="pb-10 font-semibold text-2xl">
+          {{ $t('signup.registration') }}
+        </h1>
         <Form
           ref="form"
           v-model="formValidity"
@@ -128,7 +130,7 @@
             class="w-full sm:w-48"
             @click="onSubmit"
           >
-            Зарегистрироваться
+            {{ $t('signup.submit') }}
           </Button>
         </Form>
       </div>
@@ -154,12 +156,6 @@ export default {
   },
   data () {
     return {
-      items: [
-        { text: 'Не&nbsp;требует обучения' },
-        { text: 'Облачные технологии' },
-        { text: 'Международные документы<br>в пару кликов' },
-        { text: 'Мультиязычность' },
-      ],
       frontendVersion: process.env.FRONTEND_VERSION || '',
       formValidity: false,
       loading: false,
@@ -177,6 +173,16 @@ export default {
         passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
       },
     }
+  },
+  computed: {
+    items () {
+      return [
+        { text: this.$t('signup.feat1') },
+        { text: this.$t('signup.feat2') },
+        { text: this.$t('signup.feat3') },
+        { text: this.$t('signup.feat4') },
+      ]
+    },
   },
   methods: {
     async onSubmit (e) {
