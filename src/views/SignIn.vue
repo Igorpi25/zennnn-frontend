@@ -188,15 +188,10 @@
           </template>
         </TextField>
         <Checkbox
-          :rules="[rules.required]"
+          :rules="[rules.check]"
           class="pb-12"
         >
-          <span class="ml-3 float-left">
-            {{ $t('signup.acceptPolicyAndTerms') }}&nbsp;
-            <a class="text-blue-500 hover:text-blue-600" href="#">{{ $t('signup.privacyPolicy') }}</a>
-            &nbsp;{{ $t('preposition.and') }}&nbsp;
-            <a class="text-blue-500 hover:text-blue-600" href="#">{{ $t('signup.termsOfUse') }}</a>
-          </span>
+          <span class="ml-3 float-left" v-html="policyHtml" />
         </Checkbox>
         <Button
           :disabled="compliteFormValidity"
@@ -251,11 +246,18 @@ export default {
       },
       compliteShowPassword: false,
       rules: {
+        check: v => !!v || this.$t('signup.check'),
         required: v => !!v || this.$t('rule.required'),
         email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
         passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
       },
     }
+  },
+  computed: {
+    policyHtml () {
+      return `${this.$t('signup.acceptPolicyAndTerms')}&nbsp;<a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none" href="#">
+        ${this.$t('signup.privacyPolicy')}</a> ${this.$t('preposition.and')}&nbsp;<a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none" href="#">${this.$t('signup.termsOfUse')}</a>`
+    },
   },
   methods: {
     async onSubmit (e) {

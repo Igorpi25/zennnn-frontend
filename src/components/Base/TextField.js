@@ -25,10 +25,7 @@ export default {
       default: null,
     },
     lazy: Boolean,
-    label: {
-      type: String,
-      default: '',
-    },
+    label: String,
     labelNoWrap: Boolean,
     labelHint: String,
     // props 'right' renamed to 'text-align'
