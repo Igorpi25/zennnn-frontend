@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog
+    <!-- <v-dialog
       v-model="templateListDialog"
       max-width="480"
       overlay-color="#0f0f0f"
@@ -29,7 +29,7 @@
         @save="createSupplierTemplate"
         @close="templateSaveDialog = false"
       />
-    </v-dialog>
+    </v-dialog> -->
 
     <v-dialog
       v-model="saveBeforeCloseDialog"
@@ -44,7 +44,52 @@
       />
     </v-dialog>
 
-    <div id="container" :class="[ isComponent ? 'bg-chaos-black rounded-lg relative' : 'container' ]">
+    <div class="container container--sm pt-8 pb-12">
+      <h1 class="text-2xl text-white font-semibold leading-tight mb-5">
+        Создать нового поставщика
+      </h1>
+      <div class="bg-gray-800 rounded-md p-sm mb-12">
+        <div
+          class="flex overflow-x-auto overflow-scroll-touch"
+          style="height: 44px;"
+        >
+        </div>
+        <div
+          class="bg-gray-600 rounded-md p-5 pt-6"
+        >
+          <!-- Legal info -->
+          <EntityLegalInfo supplier />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Detail -->
+          <EntityLegalDetail supplier />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Contacts -->
+          <EntityContactList />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Branches -->
+          <EntityBranchList />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <div class="flex flex-wrap pb-5">
+            <div class="w-full lg:w-1/2 lg:pr-5">
+              <!-- Extra -->
+              <EntityExtra />
+            </div>
+          </div>
+        </div>
+      </div>
+      <Button
+        outlined
+        class="w-40"
+      >
+        Сохранить
+      </Button>
+    </div>
+
+    <!-- <div id="container" :class="[ isComponent ? 'bg-chaos-black rounded-lg relative' : 'container' ]">
       <span
         v-if="isComponent"
         class="absolute cursor-pointer"
@@ -100,7 +145,6 @@
             </RadioButton>
           </div>
           <div class="flex justify-between relative">
-            <!-- <div class="partner-card__triangle"></div> -->
             <TemplateCard
               ref="supplier"
               template-name="supplier"
@@ -176,7 +220,6 @@
                 </div>
               </template>
             </TemplateCard>
-            <!-- TODO TemplateCard for each shop -->
             <TemplateCard
               template-name="supplier"
               :title="$t('supplier.shops')"
@@ -305,7 +348,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -331,19 +374,30 @@ import {
   DELETE_SUPPLIER_TEMPLATE,
 } from '@/graphql/mutations'
 
+import EntityLegalInfo from './EntityLegalInfo.vue'
+import EntityLegalDetail from './EntityLegalDetail.vue'
+import EntityContactList from './EntityContactList.vue'
+import EntityExtra from './EntityExtra.vue'
+import EntityBranchList from './EntityBranchList.vue'
+
 import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
-import TemplateSaveModal from '@/components/TemplateSaveModal.vue'
-import TemplateListModal from '@/components/TemplateListModal.vue'
-import TemplateCard from '@/components/TemplateCard.vue'
+// import TemplateSaveModal from '@/components/TemplateSaveModal.vue'
+// import TemplateListModal from '@/components/TemplateListModal.vue'
+// import TemplateCard from '@/components/TemplateCard.vue'
 import { CREATE_SUPPLIER_SHOP, UPDATE_SUPPLIER_SHOP, DELETE_SUPPLIER_SHOP } from '../graphql/mutations'
 
 export default {
   name: 'SupplierCard',
   components: {
+    EntityLegalInfo,
+    EntityLegalDetail,
+    EntityContactList,
+    EntityExtra,
+    EntityBranchList,
     SaveBeforeCloseModal,
-    TemplateSaveModal,
-    TemplateListModal,
-    TemplateCard,
+    // TemplateSaveModal,
+    // TemplateListModal,
+    // TemplateCard,
   },
   props: {
     orgId: {

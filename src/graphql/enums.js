@@ -27,6 +27,7 @@ export const ProductStatus = {
 export const ClientType = {
   LEGAL: 'LEGAL',
   NATURAL: 'NATURAL',
+  OTHER: 'OTHER',
 }
 
 export const SpecCurrency = {
