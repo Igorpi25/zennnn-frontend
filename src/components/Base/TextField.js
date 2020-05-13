@@ -69,6 +69,8 @@ export default {
       type: [String, Object],
       default: '',
     },
+    // preferably validation icon
+    adlib: Boolean,
   },
 
   data () {
@@ -485,6 +487,45 @@ export default {
       })
     },
 
+    genStateIndicator () {
+      const svg = []
+      const color = this.adlib && !this.internalValue
+        ? 'text-yellow-500'
+        : !this.hasError && !this.hasWarn && this.shouldValidate
+          ? 'text-green-500' : 'text-pink-500'
+      const isValid = color === 'text-green-500'
+      const svgData = {
+        class: color,
+        attrs: {
+          xmlns: 'http://www.w3.org/2000/svg',
+          fill: 'none',
+          width: isValid ? 11 : 8,
+          height: isValid ? 9 : 8,
+          viewBox: isValid ? '0 0 11 9' : '0 0 8 8',
+        },
+      }
+      if (isValid) {
+        svg.push(this.$createElement('svg', svgData, [this.$createElement('path', {
+          attrs: {
+            d: 'M1.41421 1L6.07107 5.65685L4.65685 7.07107L0 2.41421L1.41421 1Z M10.3137 1.41421L4.65685 7.07107L3.24264 5.65685L8.8995 0L10.3137 1.41421Z',
+            fill: 'currentColor',
+          },
+        })]))
+      } else {
+        svg.push(this.$createElement('svg', svgData, [this.$createElement('circle', {
+          attrs: {
+            cx: 4,
+            cy: 4,
+            r: 4,
+            fill: 'currentColor',
+          },
+        })]))
+      }
+      return this.$createElement('div', {
+        class: 'px-1 flex items-center flex-shrink-0',
+      }, svg)
+    },
+
     genContent () {
       const children = []
       const data = {
@@ -498,7 +539,7 @@ export default {
         },
       }
       const slotClass = [
-        'w-10 flex items-center justify-center select-none',
+        'w-10 flex items-center flex-shrink-0 justify-center select-none',
         this.disabled ? 'text-gray-600' : this.solo ? 'text-gray-300' : 'text-gray-200',
         this.solo ? 'text-xl' : 'text-2xl',
       ]
@@ -509,6 +550,9 @@ export default {
         children.push(prepend)
       }
       children.push(this.genInput())
+      if (this.required || this.adlib) {
+        children.push(this.genStateIndicator())
+      }
       if (this.$slots.append) {
         const append = this.$createElement('div', {
           class: slotClass,
