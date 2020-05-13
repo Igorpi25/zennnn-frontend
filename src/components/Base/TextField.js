@@ -25,42 +25,35 @@ export default {
       default: null,
     },
     lazy: Boolean,
-    id: String,
-    label: {
+    label: String,
+    labelNoWrap: Boolean,
+    labelHint: String,
+    // props 'right' renamed to 'text-align'
+    // TODO: remove prop use 'input-class' instead
+    alignRight: Boolean,
+    clearable: Boolean,
+    singleLine: Boolean,
+    solo: Boolean,
+    number: Boolean,
+    // integer, decimal, currency, fixed
+    // 'formatStyle' renamed to 'numberFormat'
+    numberFormat: {
       type: String,
-      default: '',
+      default: 'decimal',
     },
     type: {
       type: String,
       default: 'text',
     },
-    number: Boolean,
-    // text, numeric, decimal
-    // TODO: compute for number numberic/decimal, else text or tel
-    inputmode: {
-      type: String,
-      default: 'text',
-    },
-    // decimal, currency
-    // TODO: rename to format, used only for numbers,
-    // can be integer, decimal, currency of formatter style
-    format: {
-      type: String,
-      default: 'decimal',
-    },
+    id: String,
     name: String,
     required: Boolean,
     readonly: Boolean,
     disabled: Boolean,
     minlength: String,
     maxlength: String,
-    // TODO: props 'right' renamed to 'text-align', remove use 'input-class' instead
-    alighRight: Boolean,
     autofocus: Boolean,
     placeholder: String,
-    clearable: Boolean,
-    singleLine: Boolean,
-    solo: Boolean,
     debounce: {
       type: Number,
       default: 0,
@@ -73,6 +66,9 @@ export default {
       type: [String, Object],
       default: '',
     },
+    // preferably validation icon
+    adlib: Boolean,
+    stateIcon: Boolean,
   },
 
   data () {
@@ -86,6 +82,12 @@ export default {
   },
 
   computed: {
+    inputmode () {
+      if (this.number) {
+        return this.numberFormat === 'integer' ? 'numeric' : 'decimal'
+      }
+      return 'text'
+    },
     currentLang () {
       return this.$i18n.locale
     },
@@ -105,15 +107,16 @@ export default {
       }
     },
     formatNumberOptions () {
+      const isFixed = this.numberFormat === 'currency' || this.numberFormat === 'fixed'
       // precision numbers digits must be between 0 and 20
-      const precision = this.inputmode === 'numeric'
-        ? 0 : this.format === 'currency'
+      const precision = this.numberFormat === 'integer'
+        ? 0 : isFixed
           ? 2 : 20
       return {
         precision,
         thousand: this.editMode ? '' : this.computedFormatOptions.thousand,
         decimal: this.computedFormatOptions.decimal,
-        fixed: !this.editMode && this.format === 'currency',
+        fixed: !this.editMode && isFixed,
         fallback: !this.editMode ? 0 : null,
       }
     },
@@ -130,7 +133,7 @@ export default {
       let genericClasses = [
         'rounded',
         this.hasWarn || this.hasError ? 'shadow-yellow-400' : 'focus-within:shadow-blue-500',
-        this.disabled ? 'text-gray-600 cursor-not-allowed' : this.solo ? 'text-blue-500' : 'text-white',
+        this.disabled ? 'text-gray-200 cursor-not-allowed' : this.solo ? 'text-blue-500' : 'text-white',
         this.solo
           ? 'h-8 text-sm bg-transparent focus-within:bg-gray-800'
           : 'h-10 text-base bg-gray-800',
@@ -152,13 +155,11 @@ export default {
     },
     computedInputClass () {
       const staticClasses = ['w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out']
-      const genericClasses = [
-        this.disabled ? 'placeholder-gray-600' : 'placeholder-gray-200',
-      ]
+      const genericClasses = ['placeholder-gray-200']
       if (this.disabled) {
         genericClasses.push('cursor-not-allowed')
       }
-      if (this.number || this.alighRight) {
+      if (this.number || this.alignRight) {
         genericClasses.push('text-right')
       }
       // should merge props classes
@@ -237,7 +238,11 @@ export default {
       }
     },
 
-    onBlur () {
+    onBlur (e) {
+      this.wasBlurred = true
+      if (this.validateOnBlur) {
+        this.checkField(e)
+      }
       this.hasFocus = false
       // stop edit mode and call emit
       this.editMode = false
@@ -332,7 +337,7 @@ export default {
       const props = {
         activator: this.$refs['content'],
         attach: this.$refs['alert'],
-        value: this.hasWarn || this.hasError,
+        value: (this.hasWarn || this.hasError) && this.hasFocus,
         top: true,
         offsetY: true,
         zIndex: 'unset',
@@ -386,18 +391,43 @@ export default {
       ])])
     },
 
+    genLabelHint () {
+      if (!this.labelHint) return null
+      return this.$createElement('v-tooltip', {
+        props: {
+          top: true,
+          maxWidth: 285,
+          nudgeBottom: 5,
+          nudgeRight: 104,
+        },
+        scopedSlots: {
+          activator: props => {
+            return this.$createElement('i', {
+              class: 'ml-1 icon-add text-base text-blue-500 hover:text-blue-600 cursor-pointer',
+              on: props.on,
+            })
+          },
+        },
+      }, this.labelHint)
+    },
+
     genLabel () {
       if (this.$slots.label) return this.$slots.label
       if (this.singleLine || this.solo || !this.label) return null
-      return this.$createElement('label', {
-        ref: 'label',
-        class: 'pt-2 py-1 overflow-hidden text-overflow-ellipsis',
-        on: {
+      const props = {
+        ref: 'label-content',
+        class: [
+          'leading-5 py-2',
+          { 'overflow-hidden text-overflow-ellipsis': !this.labelNoWrap },
+        ],
+      }
+      if (!this.labelNoWrap) {
+        props.on = {
           mouseenter: () => {
-            const target = this.$refs.label
-            const child = this.$refs.label.firstChild
+            const target = this.$refs['label-content']
+            const child = this.$refs['label-content'].firstChild
             const spanWidth = Math.round(child.getBoundingClientRect().width)
-            const parentWidth = target.clientWidth
+            const parentWidth = this.$refs['label'].clientWidth
             if (spanWidth > parentWidth) {
               target.style.overflow = 'visible'
               child.style.backgroundColor = this.backgroundColor
@@ -405,20 +435,25 @@ export default {
             }
           },
           mouseleave: () => {
-            const target = this.$refs.label
-            const child = this.$refs.label.firstChild
+            const target = this.$refs['label-content']
+            const child = this.$refs['label-content'].firstChild
             const spanWidth = child.getBoundingClientRect().width
-            const parentWidth = target.clientWidth
+            const parentWidth = this.$refs['label'].clientWidth
             if (spanWidth > parentWidth) {
               target.style.overflow = 'hidden'
               child.style.backgroundColor = 'unset'
               child.style.zIndex = 'unset'
             }
           },
-        },
-      }, [this.$createElement('span', {
-        class: 'text-base text-gray-100 whitespace-no-wrap leading-5 relative pointer-events-none py-xs pr-xs',
+        }
+      }
+      const content = this.$createElement('div', props, [this.$createElement('span', {
+        class: 'text-base text-gray-100 whitespace-no-wrap relative pointer-events-none py-xs pr-xs',
       }, this.label)])
+      return this.$createElement('label', {
+        ref: 'label',
+        class: 'flex items-center',
+      }, [content, this.genLabelHint()])
     },
 
     genInput () {
@@ -441,6 +476,7 @@ export default {
           name: this.name,
           minlength: this.minlength,
           maxlength: this.maxlength,
+          inputmode: this.inputmode,
         },
         class: this.computedInputClass,
         on: Object.assign(listeners, {
@@ -451,6 +487,45 @@ export default {
           blur: this.onBlur,
         }),
       })
+    },
+
+    genStateIndicator () {
+      const svg = []
+      const color = this.adlib && !this.internalValue
+        ? 'text-yellow-500'
+        : !this.hasError && !this.hasWarn && this.shouldValidate
+          ? 'text-green-500' : 'text-pink-500'
+      const isValid = color === 'text-green-500'
+      const svgData = {
+        class: color,
+        attrs: {
+          xmlns: 'http://www.w3.org/2000/svg',
+          fill: 'none',
+          width: isValid ? 11 : 8,
+          height: isValid ? 9 : 8,
+          viewBox: isValid ? '0 0 11 9' : '0 0 8 8',
+        },
+      }
+      if (isValid) {
+        svg.push(this.$createElement('svg', svgData, [this.$createElement('path', {
+          attrs: {
+            d: 'M1.41421 1L6.07107 5.65685L4.65685 7.07107L0 2.41421L1.41421 1Z M10.3137 1.41421L4.65685 7.07107L3.24264 5.65685L8.8995 0L10.3137 1.41421Z',
+            fill: 'currentColor',
+          },
+        })]))
+      } else {
+        svg.push(this.$createElement('svg', svgData, [this.$createElement('circle', {
+          attrs: {
+            cx: 4,
+            cy: 4,
+            r: 4,
+            fill: 'currentColor',
+          },
+        })]))
+      }
+      return this.$createElement('div', {
+        class: 'px-1 flex items-center flex-shrink-0',
+      }, svg)
     },
 
     genContent () {
@@ -466,7 +541,7 @@ export default {
         },
       }
       const slotClass = [
-        'w-10 flex items-center justify-center select-none',
+        'w-10 flex items-center flex-shrink-0 justify-center select-none',
         this.disabled ? 'text-gray-600' : this.solo ? 'text-gray-300' : 'text-gray-200',
         this.solo ? 'text-xl' : 'text-2xl',
       ]
@@ -477,6 +552,11 @@ export default {
         children.push(prepend)
       }
       children.push(this.genInput())
+      if (this.required || this.adlib) {
+        children.push(this.genStateIndicator())
+      } else if (this.stateIcon && this.wasBlurred) {
+        children.push(this.genStateIndicator())
+      }
       if (this.$slots.append) {
         const append = this.$createElement('div', {
           class: slotClass,
@@ -495,7 +575,10 @@ export default {
       this.genWarnMenu(),
     ]
     const data = {
-      class: 'flex flex-col relative',
+      class: [
+        'flex flex-col relative',
+        { 'opacity-40': this.disabled },
+      ],
     }
     return h('div', data, children)
   },

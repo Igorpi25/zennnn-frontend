@@ -30,7 +30,7 @@
     </div>
     <div class="modal-footer">
       <Button
-        outline
+        outlined
         class="my-5 ml-8"
         @click="$emit('createPaper')"
       >

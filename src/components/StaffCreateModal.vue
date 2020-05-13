@@ -17,9 +17,7 @@
               ref="emailForm"
               :error-message.sync="emailErrorMessage"
               lazy-validation
-              rounded
-              shadow
-              body-class="form--max-w-sm mx-auto m-0 pt-8 md:pt-12 pb-10 px-4"
+              class="form--max-w-sm mx-auto m-0 pt-8 md:pt-12 pb-10 px-4"
             >
               <div class="w-full">
                 <TextField
@@ -33,8 +31,7 @@
                 />
               </div>
               <Button
-                :disabled="emailFormLoading"
-                large
+                :loading="emailFormLoading"
                 class="mt-10 mx-auto"
                 @click="getInviteUser"
               >
@@ -47,9 +44,7 @@
               ref="inviteForm"
               :error-message.sync="inviteErrorMessage"
               lazy-validation
-              rounded
-              shadow
-              body-class="form--max-w-sm mx-auto m-0 pt-8 md:pt-12 pb-10 px-4"
+              class="form--max-w-sm mx-auto m-0 pt-8 md:pt-12 pb-10 px-4"
             >
               <div class="w-full">
                 <TextField
@@ -110,8 +105,7 @@
               </div>
               <div class="w-full">
                 <Button
-                  :disabled="inviteFormLoading"
-                  large
+                  :loading="inviteFormLoading"
                   class="mt-10 mx-auto"
                   @click="submit"
                 >
@@ -120,8 +114,7 @@
               </div>
               <div class="w-full text-center">
                 <Button
-                  :disabled="inviteFormLoading"
-                  text
+                  :loading="inviteFormLoading"
                   class="mt-5 text-gray-100 hover:text-white"
                   @click="invitationStep = 1"
                 >

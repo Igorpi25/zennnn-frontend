@@ -1,26 +1,23 @@
 <template>
   <div class="container container--sm">
-    <div class="py-10">
+    <div class="pt-4 pb-10">
       <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
 
-        <div class="pt-5 pb-6">
+      <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-4">
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          solo
-          outlined
-          background-dark
-          hide-details
-          height="40"
-          class="max-w-2xl text-2xl leading-normal mx-auto"
+          class="w-full sm:w-64"
+          content-class="input-transparent"
+          input-class="placeholder-blue-500"
         >
-          <template v-slot:append>
-            <Icon size="24">{{ icons.mdiMagnify }}</Icon>
+          <template v-slot:prepend>
+            <i class="icon-search text-2xl text-gray-100"></i>
           </template>
         </TextField>
       </div>
 
-      <div class="overflow-x-auto">
+      <div class="overflow-x-auto overflow-scroll-touch pb-8">
         <DataTable
           :headers="headers"
           :items="items"
@@ -55,7 +52,7 @@
             <tr
               v-for="(item) in items"
               :key="item.id"
-              class="items bg-gray-900 hover:bg-accent3 border-none"
+              class="cursor-pointer"
               @click="$router.push({
                 name: 'client',
                 params: {
@@ -72,10 +69,10 @@
               <td>{{ item.deals }}</td>
               <td class="text-right pointer-events-none" @click.prevent.stop>
                 <div
-                  class="cursor-pointer pointer-events-auto"
+                  class="cursor-pointer pointer-events-auto flex items-center"
                   @click="deleteClient(item.id)"
                 >
-                  <i class="icon-delete text-lg text-gray-200" />
+                  <i class="icon-delete text-lg text-gray-200 hover:text-gray-100" />
                 </div>
               </td>
             </tr>
@@ -84,14 +81,14 @@
         </DataTable>
       </div>
       <Button
-        outline
-        class="mt-6"
+        block
+        outlined
         @click="$router.push({
           name: 'client-create'
         })"
       >
         <template v-slot:icon>
-          <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+          <i class="icon-add-user text-gray-100 text-2xl" />
         </template>
         <span>{{ $t('clients.createClient') }}</span>
       </Button>

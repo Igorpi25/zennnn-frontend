@@ -167,3 +167,8 @@ form input:-webkit-autofill:active {
 .dialog-full-height {
   max-height: 100% !important;
 }
+
+/* Temp class */
+.input-transparent {
+  background: transparent!important;
+}

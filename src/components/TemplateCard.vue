@@ -53,8 +53,6 @@
                     :disabled="isDisabled"
                     :value="item.template && item.template[key]"
                     :placeholder="(item.template && item.template[key]) || $t(`${templateName}.placeholder.${field.placeholder || key}`)"
-                    squared
-                    hide-details
                     class="pt-0 template-card__label"
                     input-class="text-gray-300 focus:text-white placeholder-gray-300"
                     @input="$emit('update-template', key, $event)"

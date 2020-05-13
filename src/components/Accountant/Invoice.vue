@@ -60,11 +60,11 @@
                 <template v-if="activeTab === 1">
                   <td class="text-gray-light text-right">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-right">
-                    {{ $n(invoiceItem.totalPurchaseAmount || 0, 'decimal') }}
+                    {{ $n(invoiceItem.totalPurchaseAmount || 0, 'fixed') }}
                   </td>
                   <td class="text-gray-dark text-right">{{ $t('shipping.total') }}</td>
                   <td class="text-gray-dark text-right">
-                    {{ $n(invoiceItem.totalClientAmount || 0, 'decimal') }}
+                    {{ $n(invoiceItem.totalClientAmount || 0, 'fixed') }}
                   </td>
                   <td colspan="2"></td>
                 </template>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog
+    <!-- <v-dialog
       v-model="templateListDialog"
       max-width="480"
       overlay-color="#0f0f0f"
@@ -29,7 +29,7 @@
         @save="createSupplierTemplate"
         @close="templateSaveDialog = false"
       />
-    </v-dialog>
+    </v-dialog> -->
 
     <v-dialog
       v-model="saveBeforeCloseDialog"
@@ -44,7 +44,52 @@
       />
     </v-dialog>
 
-    <div id="container" :class="[ isComponent ? 'bg-chaos-black rounded-lg relative' : 'container' ]">
+    <div class="container container--sm pt-8 pb-12">
+      <h1 class="text-2xl text-white font-semibold leading-tight mb-5">
+        Создать нового поставщика
+      </h1>
+      <div class="bg-gray-800 rounded-md p-sm mb-12">
+        <div
+          class="flex overflow-x-auto overflow-scroll-touch"
+          style="height: 44px;"
+        >
+        </div>
+        <div
+          class="bg-gray-600 rounded-md p-5 pt-6"
+        >
+          <!-- Legal info -->
+          <EntityLegalInfo supplier />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Detail -->
+          <EntityLegalDetail supplier />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Contacts -->
+          <EntityContactList />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Branches -->
+          <EntityBranchList />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <div class="flex flex-wrap pb-5">
+            <div class="w-full lg:w-1/2 lg:pr-5">
+              <!-- Extra -->
+              <EntityExtra />
+            </div>
+          </div>
+        </div>
+      </div>
+      <Button
+        outlined
+        class="w-40"
+      >
+        Сохранить
+      </Button>
+    </div>
+
+    <!-- <div id="container" :class="[ isComponent ? 'bg-chaos-black rounded-lg relative' : 'container' ]">
       <span
         v-if="isComponent"
         class="absolute cursor-pointer"
@@ -71,7 +116,8 @@
                 <span>{{ $t('supplier.edit') }}</span>
               </ToggleButton>
               <Button
-                text
+                outlined
+                borderless
                 class="inline-block mt-3 md:mt-0"
                 @click="showModalList"
               >
@@ -99,7 +145,6 @@
             </RadioButton>
           </div>
           <div class="flex justify-between relative">
-            <!-- <div class="partner-card__triangle"></div> -->
             <TemplateCard
               ref="supplier"
               template-name="supplier"
@@ -150,8 +195,7 @@
                 <div class="text-center">
                   <Button
                     v-if="!editMode"
-                    :disabled="!!updateLoading"
-                    large
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="edit"
                   >
@@ -159,15 +203,15 @@
                   </Button>
                   <Button
                     v-else
-                    :disabled="!!updateLoading"
-                    large
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="update()"
                   >
                     <span>{{ $t('supplier.save') }}</span>
                   </Button>
                   <Button
-                    text
+                    outlined
+                    borderless
                     class="mx-auto"
                     @click="saveAsTemplate"
                   >
@@ -176,7 +220,6 @@
                 </div>
               </template>
             </TemplateCard>
-            <!-- TODO TemplateCard for each shop -->
             <TemplateCard
               template-name="supplier"
               :title="$t('supplier.shops')"
@@ -209,8 +252,6 @@
                         :value="shop.template && shop.template['name']"
                         :placeholder="(shop.template && shop.template['name']) || `${$t('supplier.placeholder.shopName')}`"
                         :disabled="!shop.editMode"
-                        squared
-                        hide-details
                         class="pt-0 template-card__label"
                         input-class="text-gray-300 focus:text-white placeholder-gray-300"
                         @input="updateShopTemplate(index, 'name', $event)"
@@ -246,8 +287,6 @@
                             :value="shop.template && shop.template[key]"
                             :placeholder="(shop.template && shop.template[key]) || $t(`supplier.placeholder.${f.label || key}`)"
                             :disabled="!shop.editMode"
-                            squared
-                            hide-details
                             class="pt-0 template-card__label"
                             input-class="text-gray-300 focus:text-white placeholder-gray-300"
                             @input="updateShopTemplate(index, key, $event)"
@@ -275,8 +314,7 @@
                       <template v-if="!create">
                         <Button
                           v-if="shop.editMode"
-                          :disabled="!!updateLoading"
-                          large
+                          :loading="!!updateLoading"
                           class="mb-4 mx-auto"
                           @click="updateShop(shop.id)"
                         >
@@ -284,8 +322,7 @@
                         </Button>
                         <Button
                           v-else
-                          :disabled="!!updateLoading"
-                          large
+                          :loading="!!updateLoading"
                           class="mb-4 mx-auto"
                           @click="editShop(shop)"
                         >
@@ -298,8 +335,7 @@
               </template>
               <template v-slot:append>
                 <Button
-                  outline
-                  white
+                  outlined
                   @click="addShop"
                 >
                   <template v-slot:icon>
@@ -310,24 +346,9 @@
               </template>
             </TemplateCard>
           </div>
-          <button
-            v-if="!isComponent"
-            class="back-to-list-btn"
-            @click="$router.push({
-              name: 'suppliers',
-              params: {
-                orgId,
-              }
-            }).catch(err => {})"
-          >
-            <Icon class="mr-2">
-              {{ icons.mdiArrowLeft }}
-            </Icon>
-            {{ $t('supplier.backToSuppliersList') }}
-          </button>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -353,19 +374,30 @@ import {
   DELETE_SUPPLIER_TEMPLATE,
 } from '@/graphql/mutations'
 
+import EntityLegalInfo from './EntityLegalInfo.vue'
+import EntityLegalDetail from './EntityLegalDetail.vue'
+import EntityContactList from './EntityContactList.vue'
+import EntityExtra from './EntityExtra.vue'
+import EntityBranchList from './EntityBranchList.vue'
+
 import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
-import TemplateSaveModal from '@/components/TemplateSaveModal.vue'
-import TemplateListModal from '@/components/TemplateListModal.vue'
-import TemplateCard from '@/components/TemplateCard.vue'
+// import TemplateSaveModal from '@/components/TemplateSaveModal.vue'
+// import TemplateListModal from '@/components/TemplateListModal.vue'
+// import TemplateCard from '@/components/TemplateCard.vue'
 import { CREATE_SUPPLIER_SHOP, UPDATE_SUPPLIER_SHOP, DELETE_SUPPLIER_SHOP } from '../graphql/mutations'
 
 export default {
   name: 'SupplierCard',
   components: {
+    EntityLegalInfo,
+    EntityLegalDetail,
+    EntityContactList,
+    EntityExtra,
+    EntityBranchList,
     SaveBeforeCloseModal,
-    TemplateSaveModal,
-    TemplateListModal,
-    TemplateCard,
+    // TemplateSaveModal,
+    // TemplateListModal,
+    // TemplateCard,
   },
   props: {
     orgId: {
@@ -1103,14 +1135,6 @@ export default {
     user-select: none;
     cursor: pointer;
   }
-  .back-to-list-btn {
-    @apply flex items-center;
-    @apply py-2 pl-3 pr-6 mx-auto mt-20;
-    @apply border rounded-full text-sm;
-  }
-  .back-to-list-btn:focus {
-    @apply outline-none;
-  }
   .template-card {
     display: none;
   }
@@ -1139,11 +1163,6 @@ export default {
     .card__add-address-btn {
       margin-top: 52px;
       margin-left: 0;
-    }
-    .back-to-list-btn {
-      @apply flex items-center;
-      @apply py-2 pl-3 pr-6 mx-0 mt-6;
-      @apply border rounded-full text-sm;
     }
     .template-card {
       display: block;

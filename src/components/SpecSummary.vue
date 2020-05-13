@@ -249,8 +249,8 @@
                 <!-- i18n-n has Error formatter.formatToParts is not a function. -->
                 <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.finalCost, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'fixed').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.finalCost, 'fixed').slice(-2) }}</div>
                 </span> -->
                 <i18n-n :value="spec.finalCost || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
@@ -271,8 +271,8 @@
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.finalObtainCost, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.finalObtainCost, 'decimal').slice(-2) }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'fixed').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.finalObtainCost, 'fixed').slice(-2) }}</div>
                 </span> -->
                 <i18n-n :value="spec.finalObtainCost || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
@@ -293,8 +293,8 @@
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
                   <div style="color: #00ff16;">{{ $n(spec.profit, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.profit, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.profit, 'decimal').slice(-2) }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.profit, 'fixed').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.profit, 'fixed').slice(-2) }}</div>
                 </span> -->
                 <i18n-n :value="spec.profit || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
@@ -319,8 +319,8 @@
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
                   <div class="text-white">{{ $n(spec.totalPrepay, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'fixed').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.totalPrepay, 'fixed').slice(-2) }}</div>
                 </span> -->
                 <i18n-n :value="spec.totalPrepay || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
@@ -341,8 +341,8 @@
                 <div class="flex-grow dots" />
                 <!-- <span class="flex">
                   <div style="color: #ff2900;">{{ $n(spec.totalClientDebt, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
+                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'fixed').slice(-3, -2) }}</div>
+                  <div class="text-sm">{{ $n(spec.totalClientDebt, 'fixed').slice(-2) }}</div>
                 </span> -->
                 <i18n-n :value="spec.totalClientDebt || 0" format="decimal" class="flex items-baseline">
                   <template v-slot:integer="slotProps">
@@ -383,14 +383,7 @@
                 :placeholder="$t('placeholder.emptyNumber')"
                 :disabled="isCurrencyDisabled"
                 lazy
-                type="number"
-                inputmode="decimal"
-                format-style="decimal"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary placeholder-gray-200"
+                number
                 @input="updateSpec({ currencyRate: $event })"
               />
             </div>
@@ -428,78 +421,61 @@
       <div class="bg-gray-700 rounded-md p-3 select-none">
         <div class="flex flex-wrap lg:justify-between">
           <div class="w-full md:w-auto p-2">
-            <a
+            <Button
               :href="`/paper/${$route.params.specId}`"
-              style="min-width: 85px"
               target="_blank"
-              class="w-full inline-block rounded-md border border-gray-400 select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
+              outlined
+              @click="openPaperList"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-eay text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.previewAsCustomer') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="icon-eay text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.previewAsCustomer') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <a
-              href="#"
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
-              @click.prevent="openPaperList"
+            <Button
+              outlined
+              borderless
+              @click="openPaperList"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-settings text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.paperConfigurator') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="icon-settings text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.paperConfigurator') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <a
-              href="#"
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
-              @click.prevent="printDialog = true"
+            <Button
+              outlined
+              borderless
+              @click="printDialog = true"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-printer text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.print') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="icon-printer text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.print') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <a
-              href="#"
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
-              @click.prevent="accessControlDialog = true"
+            <Button
+              outlined
+              borderless
+              @click="accessControlDialog = true"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-add-user text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.inviteCustomer') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="icon-add-user text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.inviteCustomer') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <button
-              disabled
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent pointer-events-none"
-            >
-              <div class="h-12 flex items-center px-2 text-gray-400">
-                <i class="icon-mail text-2xl mr-2" />
-                <span class="whitespace-nowrap">
-                  {{ $t('shipping.notifyCustomer') }}
-                </span>
-              </div>
-            </button>
+            <Button outlined borderless disabled>
+              <template v-slot:icon>
+                <i class="icon-mail text-2xl" />
+              </template>
+              {{ $t('shipping.notifyCustomer') }}
+            </Button>
           </div>
         </div>
       </div>
@@ -523,8 +499,6 @@
           <TextField
             ref="linkInput"
             :value="link"
-            hide-details
-            squared
             readonly
             solo
             class="mb-1"
@@ -548,7 +522,7 @@
             required
           />
           <Button
-            :disabled="sendAccessLinkLoading"
+            :loading="sendAccessLinkLoading"
             @click="sendLinkAccessToEmail(emailAccessInput)"
           >
             {{ $t('shipping.sendEmail') }}

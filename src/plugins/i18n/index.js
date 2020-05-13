@@ -132,15 +132,15 @@ const numberFormats = {
       currency: 'USD',
       maximumFractionDigits: 2,
     },
-    decimal: {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    },
     integer: {
       maximumFractionDigits: 0,
     },
-    formatted: {
+    decimal: {
       minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    },
+    fixed: {
+      minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     },
   },
@@ -150,15 +150,15 @@ const numberFormats = {
       currency: 'EUR',
       maximumFractionDigits: 2,
     },
-    decimal: {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    },
     integer: {
       maximumFractionDigits: 0,
     },
-    formatted: {
+    decimal: {
       minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    },
+    fixed: {
+      minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     },
   },
@@ -168,15 +168,15 @@ const numberFormats = {
       currency: 'RUB',
       maximumFractionDigits: 2,
     },
-    decimal: {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    },
     integer: {
       maximumFractionDigits: 0,
     },
-    formatted: {
+    decimal: {
       minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    },
+    fixed: {
+      minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     },
   },
@@ -186,15 +186,15 @@ const numberFormats = {
       currency: 'EUR',
       maximumFractionDigits: 2,
     },
-    decimal: {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    },
     integer: {
       maximumFractionDigits: 0,
     },
-    formatted: {
+    decimal: {
       minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    },
+    fixed: {
+      minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     },
   },

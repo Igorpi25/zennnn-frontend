@@ -335,7 +335,7 @@
                       {{ $t('preview.costOfGood') }}
                     </div>
                     <div class="text-right">
-                      {{ $n(spec.finalCost || 0, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
+                      {{ $n(spec.finalCost || 0, 'fixed') }} {{ $t(`currency.${currency}.symbol`) }}
                     </div>
                   </div>
                   <div class="flex rounded-md bg-white pl-4 pr-3 py-3 mb-1">
@@ -343,7 +343,7 @@
                       {{ $t('preview.totalPrepay') }}
                     </div>
                     <div class="text-right">
-                      {{ $n(spec.totalPrepay || 0, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
+                      {{ $n(spec.totalPrepay || 0, 'fixed') }} {{ $t(`currency.${currency}.symbol`) }}
                     </div>
                   </div>
                   <div class="rounded-md bg-white pl-4 pr-3 py-3 mb-1">
@@ -352,7 +352,7 @@
                         {{ $t('preview.finalToPay') }}
                       </div>
                       <div :class="['text-right', { 'text-red-500' : spec.totalClientDebt > 0 }]">
-                        {{ $n(spec.totalClientDebt || 0, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
+                        {{ $n(spec.totalClientDebt || 0, 'fixed') }} {{ $t(`currency.${currency}.symbol`) }}
                       </div>
                     </div>
                     <div class="flex">
@@ -369,7 +369,7 @@
                       {{ $t('preview.totalToPay', { currency: $t('currency.USD.iso-4217') }) }}
                     </div>
                     <div class="text-right">
-                      {{ $n(spec.total || 0, 'decimal') }} {{ $t(`currency.USD.symbol`) }}
+                      {{ $n(spec.total || 0, 'fixed') }} {{ $t(`currency.USD.symbol`) }}
                     </div>
                   </div>
                 </div>

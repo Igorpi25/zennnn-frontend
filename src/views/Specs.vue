@@ -4,26 +4,24 @@
       <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
 
       <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-4">
-        <ZTextField
+        <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          outlined
           class="w-full sm:w-64"
           content-class="input-transparent"
           input-class="placeholder-blue-500"
-
         >
           <template v-slot:prepend>
             <i class="icon-search text-2xl text-gray-100"></i>
           </template>
-        </ZTextField>
+        </TextField>
         <div class="flex w-full sm:w-auto items-center justify-end">
           <span class="pr-2 whitespace-no-wrap">Без сортировки</span>
           <i class="icon-filter text-2xl text-gray-200" />
         </div>
       </div>
 
-      <div class="overflow-x-auto">
+      <div class="overflow-x-auto overflow-scroll-touch pb-8">
         <DataTable
           :headers="headers"
           :items="items"
@@ -89,7 +87,7 @@
             <tr
               v-for="(item) in items"
               :key="item.id"
-              class="items bg-gray-900 hover:bg-accent3 border-none"
+              class="cursor-pointer"
               @click="$router.push({
                 name: 'spec',
                 params: {
@@ -122,25 +120,24 @@
                   class="cursor-pointer pointer-events-auto flex items-center"
                   @click="deleteSpec(item.id)"
                 >
-                  <i class="icon-delete text-lg text-gray-200" />
+                  <i class="icon-delete text-lg text-gray-200 hover:text-gray-100" />
                 </div>
               </td>
             </tr>
           </template>
         </DataTable>
       </div>
-      <ZButton
+      <Button
         v-if="canCreateSpec"
         block
         outlined
-        class="mt-6"
         @click="createSpecDialog = true"
       >
         <template v-slot:icon>
           <i class="icon-portdolio text-gray-100 text-lg" />
         </template>
         <span>{{ $t('deals.createDeal') }}</span>
-      </ZButton>
+      </Button>
     </div>
     <v-dialog
       v-if="canCreateSpec"
@@ -189,54 +186,22 @@
             </Select>
           </div>
           <div>
-            <button
+            <Button
               v-if="createSpecClient"
-              :disabled="createLoading"
-              :class="{ 'hover:bg-primary-accent focus:bg-primary-accent': !createLoading }"
-              style="min-width: 120px"
-              class="relative ml-auto px-3 h-10 flex items-center justify-center relative rounded-md bg-primary text-white focus:outline-none select-none align-middle transition-colors duration-100 ease-out"
+              :loading="createLoading"
+              outlined
               @click="createSpec"
             >
-              <div
-                v-if="createLoading"
-                class="absolute inset-0 flex items-center justify-center"
-              >
-                <v-progress-circular
-                  indeterminate
-                  size="24"
-                  width="2"
-                />
-              </div>
-              <span
-                :class="{ 'opacity-0': createLoading }"
-              >
-                {{ $t('deals.createSpecDialogAdd') }}
-              </span>
-            </button>
-            <button
+              {{ $t('deals.createSpecDialogAdd') }}
+            </Button>
+            <Button
               v-else
-              :disabled="createLoading"
-              :class="{ 'hover:border-primary focus:border-primary': !createLoading }"
-              style="min-width: 120px"
-              class="relative px-3 h-10 flex items-center justify-center relative rounded-md border border-gray-200 text-primary focus:outline-none select-none align-middle transition-colors duration-100 ease-out"
+              :loading="createLoading"
+              outlined
               @click="createSpec"
             >
-              <div
-                v-if="createLoading"
-                class="absolute inset-0 flex items-center justify-center"
-              >
-                <v-progress-circular
-                  indeterminate
-                  size="24"
-                  width="2"
-                />
-              </div>
-              <span
-                :class="{ 'opacity-0': createLoading }"
-              >
-                {{ $t('deals.createSpecDialogWithoutClient') }}
-              </span>
-            </button>
+              {{ $t('deals.createSpecDialogWithoutClient') }}
+            </Button>
           </div>
         </div>
         <span
@@ -562,9 +527,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.input-transparent {
-  background: transparent!important;
-}
-</style>

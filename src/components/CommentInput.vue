@@ -18,8 +18,8 @@
       class="flex"
     >
       <Button
-        text
-        gray
+        outlined
+        borderless
         class="text-gray-lighter hover:text-gray-light"
         @click="blur"
       >
@@ -27,8 +27,10 @@
       </Button>
       <div class="flex-grow" />
       <Button
-        :disabled="loading || !comment"
-        text
+        :disabled="!comment"
+        :loading="loading"
+        outlined
+        borderless
         @click="submitComment"
       >
         {{ $t('comments.post') }}

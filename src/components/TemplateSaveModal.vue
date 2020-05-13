@@ -13,11 +13,8 @@
         :placeholder="$t('action.createPatternName')"
         class="w-full sm:w-4/5 py-5"
         height="36"
-        hide-details
-        outlined
       />
       <Button
-        large
         class="sm:ml-5"
         @click="save"
       >

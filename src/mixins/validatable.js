@@ -2,9 +2,12 @@ export default {
   props: {
     rules: Array,
     patterns: Array,
+    validateOnBlur: Boolean,
   },
   data () {
     return {
+      wasBlurred: false,
+      wasValidated: false,
       shouldValidate: false,
       hasError: null,
       errorText: '',
@@ -16,6 +19,7 @@ export default {
     'form.wasValidated': {
       handler () {
         this.shouldValidate = true
+        this.wasValidated = true
       },
     },
   },
@@ -28,11 +32,13 @@ export default {
   },
   methods: {
     checkField (e) {
+      if (this.validateOnBlur && !this.wasBlurred) return
       this.shouldValidate = true
       if (this.form && this.form.lazyValidation && !this.form.wasValidated) return
       this.validate(e.target)
     },
     validate (el) {
+      this.wasValidated = true
       let errorsCount = 0
       const element = el || this.$refs.input
       if (this.rules && this.rules.length > 0) {

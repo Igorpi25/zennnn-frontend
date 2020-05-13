@@ -36,7 +36,6 @@
       <div :class="[ isComponent ? 'pt-5 px-4' : 'py-12' ]">
       <Button
         v-if="!isComponent && showFillLaterButton"
-        large
         class="mb-6 mx-auto md:mr-0 md:ml-auto"
         @click="$router.push({ name: 'home' })"
       >
@@ -116,8 +115,6 @@
                     :placeholder="editMode ? $t('requisite.placeholder.fillFields') : '-'"
                     :rules="item.rules"
                     :disabled="!editMode"
-                    squared
-                    hide-details
                     class="template-card__input pt-1"
                     input-class="text-gray-300 focus:text-white placeholder-gray-300"
                     @input="updateRequisite(key, $event)"
@@ -129,7 +126,6 @@
           <template v-slot:append>
             <div class="text-center mt-32">
               <Button
-                large
                 class="mb-4 mx-auto md:hidden"
                 @click="update()"
               >
@@ -179,8 +175,6 @@
                     :value="requisite[key]"
                     :placeholder="editMode ? $t('requisite.placeholder.fillFields') : '-'"
                     :disabled="!editMode"
-                    squared
-                    hide-details
                     class="template-card__input pt-1"
                     input-class="text-gray-300 focus:text-white placeholder-gray-300"
                     @input="updateRequisite(key, $event)"
@@ -193,8 +187,7 @@
             <div class="text-center mt-32">
               <Button
                 v-if="!editMode"
-                :disabled="updateLoading"
-                large
+                :loading="updateLoading"
                 class="mb-4 mx-auto"
                 @click="edit"
               >
@@ -204,8 +197,7 @@
               </Button>
               <Button
                 v-else
-                :disabled="updateLoading"
-                large
+                :loading="updateLoading"
                 class="mb-4 mx-auto"
                 @click="update()"
               >

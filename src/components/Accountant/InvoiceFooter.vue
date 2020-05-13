@@ -8,13 +8,13 @@
         <label class="text-xs text-gray-light select-none pr-2">
           {{ $t('shipping.discount') }}
         </label>
-        <span class="mr-2 leading-none">{{ $n(item.discount, 'decimal') || $t('placeholder.emptyNumber') }} {{ $t(`currency.${currency}.symbol`) }}</span>
+        <span class="mr-2 leading-none">{{ $n(item.discount, 'fixed') || $t('placeholder.emptyNumber') }} {{ $t(`currency.${currency}.symbol`) }}</span>
       </div>
       <div class="flex flex-col items-end w-full sm:w-32 pl-1 md:pl-0 lg:pl-1">
         <label class="text-xs text-gray-light select-none pr-2">
           {{ $t('shipping.prepay') }}
         </label>
-        <span class="mr-2 leading-none">{{ $n(item.prepayment, 'decimal') || $t('placeholder.emptyNumber') }} {{ $t(`currency.${currency}.symbol`) }}</span>
+        <span class="mr-2 leading-none">{{ $n(item.prepayment, 'fixed') || $t('placeholder.emptyNumber') }} {{ $t(`currency.${currency}.symbol`) }}</span>
         <DatePicker
           :value="item.prepaymentDate"
           @input="updateInvoice({ prepaymentDate: $event })"
@@ -24,11 +24,9 @@
               <TextField
                 :value="item.prepaymentDate ? $d($parseDate(item.prepaymentDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
-                right
-                colored
-                borderless
+                solo
+                align-right
                 readonly
-                hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
               />
             </div>
@@ -43,7 +41,7 @@
           {{ $t('shipping.obtainCost') }}
         </label>
         <span class="leading-none">
-          {{ $n(item.obtainCost, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
+          {{ $n(item.obtainCost, 'fixed') }} {{ $t(`currency.${currency}.symbol`) }}
         </span>
         <DatePicker
           :value="item.obtainCostDate"
@@ -54,11 +52,9 @@
               <TextField
                 :value="item.obtainCostDate ? $d($parseDate(item.obtainCostDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
-                right
-                colored
-                borderless
+                solo
+                align-right
                 readonly
-                hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
               />
             </div>
@@ -70,7 +66,7 @@
           {{ $t('shipping.clientDebt') }}
         </label>
         <span class="leading-none text-white">
-          {{ $n(item.clientDebt, 'decimal') }} {{ $t(`currency.${currency}.symbol`) }}
+          {{ $n(item.clientDebt, 'fixed') }} {{ $t(`currency.${currency}.symbol`) }}
         </span>
         <DatePicker
           :value="item.clientDebtDate"
@@ -81,11 +77,9 @@
               <TextField
                 :value="item.clientDebtDate ? $d($parseDate(item.clientDebtDate), 'short') : null"
                 :placeholder="$t('placeholder.emptyDate')"
-                right
-                colored
-                borderless
+                solo
+                align-right
                 readonly
-                hide-details
                 class="text-xs text-right pr-2 pt-1 pb-0"
               />
             </div>

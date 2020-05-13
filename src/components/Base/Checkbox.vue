@@ -1,41 +1,52 @@
 <template>
-  <InputBase
-    :is-dirty="!!internalValue"
-    :has-error="hasError"
-    :hide-details="hideDetails"
-    :detail-text="errorText"
-    :class="[
-      'checkbox',
-      {'checkbox--secondary': secondary},
-      {'checkbox--vertical': verticalAlign},
-      {'checkbox--horizontal': horizontalAlign},
-    ]"
-  >
-    <div class="checkbox__slot">
-      <div class="checkbox__input">
+  <div>
+    <div class="flex items-start">
+      <div class="flex-shrink-0 relative w-5 h-5">
         <input
           ref="input"
           type="checkbox"
+          role="checkbox"
           v-model="internalValue"
-          :id="inputId"
+          :id="computedId"
           :name="name"
           :required="required"
           :readonly="readonly"
           :disabled="disabled"
+          class="absolute opacity-0 select-none cursor-pointer inset-0"
+          aria-hidden="true"
           @change="checkField"
         >
-        <i class="checkbox__icon">
-          <div class="icon__item">
-            <svg v-if="checked" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><title>checkbox</title><path d="M7,3a4,4,0,1,0,4,4A4,4,0,0,0,7,3Zm0,7a3,3,0,1,1,3-3A3,3,0,0,1,7,10Z" style="fill:#5a8199"/><circle cx="7" cy="7" r="3" style="fill:#16a0ce"/><path d="M0,0V14H14V0H0ZM12,12H2V2H12V12Z" style="fill:currentColor"/></svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><title>checkbox-empty</title><path d="M0,0V14H14V0H0ZM12,12H2V2H12V12Z" style="fill:currentColor"/></svg>
-          </div>
-        </i>
+        <div
+          :class="[
+            'transition-colors duration-100 ease-out',
+            'relative w-full h-full flex pointer-events-none border-2 border-gray-300',
+            { 'bg-gray-300': checked }
+          ]"
+          style="border-radius: 3px;"
+        >
+          <v-fade-transition>
+            <div v-show="checked" class="absolute inset-0 flex items-center justify-center">
+              <svg
+                width="14"
+                height="10"
+                viewBox="0 0 14 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M2.01953 3.68994L6.23828 7.81494L12.582 1.50244" stroke="white" stroke-width="3"/>
+              </svg>
+            </div>
+          </v-fade-transition>
+        </div>
       </div>
-      <label :for="inputId" class="cursor-pointer">
+      <label :for="computedId" class="cursor-pointer select-none leading-tight">
         <slot />
       </label>
     </div>
-  </InputBase>
+    <div v-if="!hideDetails" class="h-4 leading-tight text-sm" style="color: #D7C370;">
+      {{ errorText }}
+    </div>
+  </div>
 </template>
 
 <script>
@@ -54,55 +65,24 @@ export default {
       type: Boolean,
       default: false,
     },
-    rules: {
-      type: Array,
-    },
-    label: {
-      type: String,
-      default: '',
-    },
-    name: {
-      type: String,
-      default: null,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    readonly: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    hideDetails: {
-      type: Boolean,
-      default: false,
-    },
-    horizontalAlign: {
-      type: Boolean,
-      default: false,
-    },
-    verticalAlign: {
-      type: Boolean,
-      default: false,
-    },
-    secondary: {
-      type: Boolean,
-      default: false,
-    },
+    label: String,
+    id: String,
+    name: String,
+    required: Boolean,
+    readonly: Boolean,
+    disabled: Boolean,
+    hideDetails: Boolean,
   },
   data () {
     return {
       checked: false,
-      // TODO input registrator
-      inputId: 'input' + Math.round(Math.random() * 100000),
       lazyValue: this.value,
     }
   },
   computed: {
+    computedId () {
+      return this.id || `input-${this._uid}`
+    },
     internalValue: {
       get () {
         return this.lazyValue

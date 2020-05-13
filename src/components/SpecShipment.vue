@@ -9,10 +9,6 @@
           :value="item.sentFrom"
           :debounce="250"
           :placeholder="$t('shipping.sentFrom')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { sentFrom: $event } })"
         />
@@ -22,10 +18,6 @@
           :value="item.sentThrough"
           :debounce="250"
           :placeholder="$t('shipping.sentThrough')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { sentThrough: $event } })"
         />
@@ -35,10 +27,6 @@
           :value="item.sentDestination"
           :debounce="250"
           :placeholder="$t('shipping.destination')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { sentDestination: $event } })"
         />
@@ -79,10 +67,6 @@
           :value="item.marine.billOfLadingNo"
           :debounce="250"
           :placeholder="$t('shipping.billOfLadingNo')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { marine: { billOfLadingNo: $event } } })"
         />
@@ -90,10 +74,6 @@
           :value="item.marine.ship"
           :debounce="250"
           :placeholder="$t('shipping.ship')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { marine: { ship: $event } } })"
         />
@@ -111,10 +91,6 @@
               :value="item.marine.containersCount"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              solo
-              squared
-              hide-details
-              class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
               @input="$emit('update', { shipment: { marine: { containersCount: $event } } })"
             />
@@ -125,10 +101,6 @@
             :value="item.marine.containersNo"
             :debounce="250"
             :placeholder="$t('shipping.containersNo')"
-            solo
-            squared
-            hide-details
-            class="text-sm text-field_nd"
             input-class="h-8 text-primary placeholder-gray-200"
             @input="$emit('update', { shipment: { marine: { containersNo: $event } } })"
           />
@@ -147,11 +119,7 @@
                   <TextField
                     :value="item.marine.exportDate ? $d($parseDate(item.marine.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
-                    solo
-                    squared
                     readonly
-                    hide-details
-                    class="text-sm text-field_nd"
                     input-class="h-8 text-primary placeholder-gray-200"
                   />
                 </div>
@@ -169,10 +137,6 @@
           :value="item.air.airWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.airWaybillNo')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { air: { airWaybillNo: $event } } })"
         />
@@ -180,10 +144,6 @@
           :value="item.air.flight"
           :debounce="250"
           :placeholder="$t('shipping.flight')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { air: { flight: $event } } })"
         />
@@ -201,10 +161,6 @@
               :value="item.air.numbersOfPkg"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              solo
-              squared
-              hide-details
-              class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
               @input="$emit('update', { shipment: { air: { numbersOfPkg: $event } } })"
             />
@@ -220,10 +176,6 @@
           :value="item.railway.internationalWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { railway: { internationalWaybillNo: $event } } })"
         />
@@ -231,10 +183,6 @@
           :value="item.railway.train"
           :debounce="250"
           :placeholder="$t('shipping.train')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { railway: { train: $event } } })"
         />
@@ -252,10 +200,6 @@
               :value="item.railway.containersCount"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              solo
-              squared
-              hide-details
-              class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
               @input="$emit('update', { shipment: { railway: { containersCount: $event } } })"
             />
@@ -266,10 +210,6 @@
             :value="item.railway.containersNo"
             :debounce="250"
             :placeholder="$t('shipping.trainContainersNo')"
-            solo
-            squared
-            hide-details
-            class="text-sm text-field_nd"
             input-class="h-8 text-primary placeholder-gray-200"
             @input="$emit('update', { shipment: { railway: { containersNo: $event } } })"
           />
@@ -288,11 +228,7 @@
                   <TextField
                     :value="item.railway.exportDate ? $d($parseDate(item.railway.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
-                    solo
-                    squared
                     readonly
-                    hide-details
-                    class="text-sm text-field_nd"
                     input-class="h-8 text-primary placeholder-gray-200"
                   />
                 </div>
@@ -310,10 +246,6 @@
           :value="item.car.internationalWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { car: { internationalWaybillNo: $event } } })"
         />
@@ -321,10 +253,6 @@
           :value="item.car.vehicleNo"
           :debounce="250"
           :placeholder="$t('shipping.vehicleNo')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { car: { vehicleNo: $event } } })"
         />
@@ -342,10 +270,6 @@
               :value="item.car.semitrailerNo"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              solo
-              squared
-              hide-details
-              class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
               @input="$emit('update', { shipment: { car: { semitrailerNo: $event } } })"
             />
@@ -365,11 +289,7 @@
                   <TextField
                     :value="item.car.exportDate ? $d($parseDate(item.car.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
-                    solo
-                    squared
                     readonly
-                    hide-details
-                    class="text-sm text-field_nd"
                     input-class="h-8 text-primary placeholder-gray-200"
                   />
                 </div>
@@ -387,10 +307,6 @@
           :value="item.mixed.internationalWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { mixed: { internationalWaybillNo: $event } } })"
         />
@@ -398,10 +314,6 @@
           :value="item.mixed.ship"
           :debounce="250"
           :placeholder="$t('shipping.ship')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { mixed: { ship: $event } } })"
         />
@@ -409,10 +321,6 @@
           :value="item.mixed.train"
           :debounce="250"
           :placeholder="$t('shipping.train')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { mixed: { train: $event } } })"
         />
@@ -420,10 +328,6 @@
           :value="item.mixed.flight"
           :debounce="250"
           :placeholder="$t('shipping.flight')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { mixed: { flight: $event } } })"
         />
@@ -441,10 +345,6 @@
               :value="item.mixed.vehicleNo"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              solo
-              squared
-              hide-details
-              class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
               @input="$emit('update', { shipment: { mixed: { vehicleNo: $event } } })"
             />
@@ -455,10 +355,6 @@
             :value="item.mixed.containersNo"
             :debounce="250"
             :placeholder="$t('shipping.containersNo')"
-            solo
-            squared
-            hide-details
-            class="text-sm text-field_nd"
             input-class="h-8 text-primary placeholder-gray-200"
             @input="$emit('update', { shipment: { mixed: { containersNo: $event } } })"
           />
@@ -477,11 +373,7 @@
                   <TextField
                     :value="item.mixed.exportDate ? $d($parseDate(item.mixed.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
-                    solo
-                    squared
                     readonly
-                    hide-details
-                    class="text-sm text-field_nd"
                     input-class="h-8 text-primary placeholder-gray-200"
                   />
                 </div>
@@ -499,10 +391,6 @@
           :value="item.express.postalNo"
           :debounce="250"
           :placeholder="$t('shipping.postalNo')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { express: { postalNo: $event } } })"
         />
@@ -510,10 +398,6 @@
           :value="item.express.deliveryService"
           :debounce="250"
           :placeholder="$t('shipping.deliveryService')"
-          solo
-          squared
-          hide-details
-          class="text-sm text-field_nd"
           input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { express: { deliveryService: $event } } })"
         />
@@ -531,10 +415,6 @@
               :value="item.express.numbersOfPkg"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              solo
-              squared
-              hide-details
-              class="text-sm text-field_nd"
               input-class="h-8 text-primary placeholder-gray-200"
               @input="$emit('update', { shipment: { express: { numbersOfPkg: $event } } })"
             />

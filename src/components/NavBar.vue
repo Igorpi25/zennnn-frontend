@@ -17,7 +17,7 @@
           }"
           :exact="item.exact"
           active-class="text-white border-blue-500 relative"
-          class="hover:text-white border-b-2 border-transparent whitespace-no-wrap text-xl leading-6 h-full flex items-center duration-100 ease-out"
+          class="focus:outline-none focus:text-white hover:text-white border-b-2 border-transparent whitespace-no-wrap text-xl leading-6 h-full flex items-center duration-100 ease-out"
           style="transition-property: color;"
         >
           {{ item.text }}

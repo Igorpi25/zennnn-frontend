@@ -20,14 +20,7 @@
                 :title="$t('passwordRestore.recoveryByEmail')"
                 :error-message.sync="errorMessage"
                 lazy-validation
-                rounded
-                shadow
-                class="form--max-w-md"
-                body-class="px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8 mb-16 md:mb-0"
-                header
-                header-icon="dots"
-                header-class="hidden md:flex"
-                append-class="flex-col sm:flex-row items-center"
+                class="form--max-w-md px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8 mb-16 md:mb-0"
               >
                 <template v-slot:alert>
                   <Alert
@@ -63,17 +56,10 @@
                 </div>
                 <template v-slot:append>
                   <Button
-                    large
-                    secondary
-                    :disabled="loading"
+                    :loading="loading"
                     @click="onSubmit"
                   >
-                    <span v-if="loading">
-                      {{ $t('action.loading') }}
-                    </span>
-                    <span v-else>
-                      {{ $t('passwordRestore.submit') }}
-                    </span>
+                    {{ $t('passwordRestore.submit') }}
                   </Button>
                 </template>
               </Form>

@@ -63,14 +63,9 @@
             :value="item.cost"
             :placeholder="$t('placeholder.emptyNumber')"
             lazy
-            type="number"
-            inputmode="decimal"
-            format-style="currency"
+            number
+            number-format="currency"
             solo
-            squared
-            hide-details
-            class="text-sm text-field_nd"
-            input-class="h-8 text-primary placeholder-gray-200"
             @input="$emit('update', { customs: { cost: $event } })"
           >
             <template v-slot:append>
@@ -89,14 +84,9 @@
             :value="item.discount"
             :placeholder="$t('placeholder.emptyNumber')"
             lazy
-            type="number"
-            inputmode="decimal"
-            format-style="currency"
+            number
+            number-format="currency"
             solo
-            squared
-            hide-details
-            class="text-sm text-field_nd"
-            input-class="h-8 text-primary placeholder-gray-200"
             @input="$emit('update', { customs: { discount: $event } })"
           >
             <template v-slot:append>
@@ -160,7 +150,7 @@
     </h4>
     <div class="bg-gray-700 rounded-md py-1 px-2">
       <div class="px-1 py-3 mb-1 text-lg text-center font-bold">
-        {{ $n(amount || 0, 'decimal') }} {{ $t(`currency.USD.symbol`) }}
+        {{ $n(amount || 0, 'fixed') }} {{ $t(`currency.USD.symbol`) }}
       </div>
       <div class="px-1 pb-1">
         <TextArea

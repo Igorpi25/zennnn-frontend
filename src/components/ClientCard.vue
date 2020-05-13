@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog
+    <!-- <v-dialog
       v-model="templateListDialog"
       max-width="480"
       overlay-color="#0f0f0f"
@@ -29,7 +29,7 @@
         @save="createClientTemplate"
         @close="templateSaveDialog = false"
       />
-    </v-dialog>
+    </v-dialog> -->
 
     <v-dialog
       v-model="saveBeforeCloseDialog"
@@ -44,7 +44,125 @@
       />
     </v-dialog>
 
-    <div id="container" :class="[ isComponent ? 'bg-chaos-black rounded-lg relative' : 'container' ]">
+    <div class="container container--sm pt-8 pb-12">
+      <h1 class="text-2xl text-white font-semibold leading-tight mb-5">
+        Создать нового клиента
+      </h1>
+      <div class="bg-gray-800 rounded-md p-sm mb-12">
+        <div
+          class="flex overflow-x-auto overflow-scroll-touch"
+          style="height: 44px;"
+        >
+          <div
+            v-for="(tab, i) in tabs"
+            :aria-selected="clientType === tab.value"
+            :key="tab.value"
+            :class="[
+              'w-full sm:w-auto flex items-center justify-center rounded-t bg-gray-600 cursor-pointer',
+              'focus:outline-none focus:text-white hover:text-white select-none whitespace-no-wrap',
+              'transition-colors duration-100 ease-out px-10',
+              { 'mr-1': i + 1 < tabs.length },
+              clientType === tab.value ? 'text-white' : 'bg-opacity-30 text-gray-200',
+            ]"
+            role="tab"
+            tabindex="0"
+            @click="switchClientType(tab.value)"
+            @keydown.enter.exact="switchClientType(tab.value)"
+          >
+            {{ tab.text }}
+          </div>
+        </div>
+        <div
+          v-if="clientType === ClientType.LEGAL"
+          class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
+        >
+          <!-- Legal info -->
+          <EntityLegalInfo />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Detail -->
+          <EntityLegalDetail />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Contacts -->
+          <EntityContactList />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <div class="flex flex-wrap pb-5">
+            <div class="w-full lg:w-1/2 lg:pr-5">
+              <!-- Shipping -->
+              <EntityShipping />
+            </div>
+            <div class="w-full lg:w-1/2 lg:pl-5">
+              <!-- Extra -->
+              <EntityExtra />
+            </div>
+          </div>
+        </div>
+        <div
+          v-else-if="clientType === ClientType.NATURAL"
+          class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
+        >
+          <!-- Natural info -->
+          <EntityNaturalInfo />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Detail -->
+          <EntityNaturalDetail />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Contacts -->
+          <EntityContactList />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <div class="flex flex-wrap pb-5">
+            <div class="w-full lg:w-1/2 lg:pr-5">
+              <!-- Shipping -->
+              <EntityShipping />
+            </div>
+            <div class="w-full lg:w-1/2 lg:pl-5">
+              <!-- Shipping -->
+              <EntityExtra />
+            </div>
+          </div>
+        </div>
+        <div
+          v-else-if="clientType === ClientType.OTHER"
+          class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
+        >
+          <!-- Legal info -->
+          <EntityLegalInfo />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Detail -->
+          <EntityLegalDetail />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Contacts -->
+          <EntityContactList />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <div class="flex flex-wrap pb-5">
+            <div class="w-full lg:w-1/2 lg:pr-5">
+              <!-- Shipping -->
+              <EntityShipping />
+            </div>
+            <div class="w-full lg:w-1/2 lg:pl-5">
+              <!-- Shipping -->
+              <EntityExtra />
+            </div>
+          </div>
+        </div>
+      </div>
+      <Button
+        outlined
+        class="w-40"
+      >
+        Сохранить
+      </Button>
+    </div>
+
+    <!-- <div id="container" :class="[ isComponent ? 'bg-chaos-black rounded-lg relative' : 'container' ]">
       <span
         v-if="isComponent"
         class="absolute cursor-pointer"
@@ -74,7 +192,8 @@
                 <span>{{ $t('client.edit') }}</span>
               </ToggleButton>
               <Button
-                text
+                outlined
+                borderless
                 class="inline-block mt-3 md:text-left md:mt-0"
                 @click="showModalList"
               >
@@ -166,8 +285,8 @@
                 <div :class="['text-center', { 'card__section--faded': isNaturalPerson }]">
                   <Button
                     v-if="!editMode"
-                    :disabled="isNaturalPerson || !!updateLoading"
-                    large
+                    :disabled="isNaturalPerson"
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="edit"
                   >
@@ -175,8 +294,8 @@
                   </Button>
                   <Button
                     v-else
-                    :disabled="isNaturalPerson || !!updateLoading"
-                    large
+                    :disabled="isNaturalPerson"
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
@@ -184,7 +303,8 @@
                   </Button>
                   <Button
                     :disabled="isNaturalPerson"
-                    text
+                    outlined
+                    borderless
                     class="mx-auto"
                     @click="saveAsTemplate"
                   >
@@ -255,8 +375,8 @@
                 <div :class="['text-center', { 'card__section--faded': !isNaturalPerson }]">
                   <Button
                     v-if="!editMode"
-                    :disabled="!isNaturalPerson || !!updateLoading"
-                    large
+                    :disabled="!isNaturalPerson"
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="edit"
                   >
@@ -264,8 +384,8 @@
                   </Button>
                   <Button
                     v-else
-                    :disabled="!isNaturalPerson || !!updateLoading"
-                    large
+                    :disabled="!isNaturalPerson"
+                    :loading="!!updateLoading"
                     class="mb-4 mx-auto"
                     @click="update(naturalType)"
                   >
@@ -273,7 +393,8 @@
                   </Button>
                   <Button
                     :disabled="!isNaturalPerson"
-                    text
+                    outlined
+                    borderless
                     class="mx-auto"
                     @click="saveAsTemplate"
                   >
@@ -283,24 +404,10 @@
               </template>
             </TemplateCard>
           </div>
-          <button
-            v-if="!isComponent"
-            class="back-to-list-btn"
-            @click="$router.push({
-              name: 'clients',
-              params: {
-                orgId,
-              }
-            }).catch(err => {})"
-          >
-            <Icon class="mr-2">
-              {{ icons.mdiArrowLeft }}
-            </Icon>
-            {{ $t('client.backToClientsList') }}
-          </button>
         </div>
       </div>
-    </div>
+    </div> -->
+
   </div>
 </template>
 
@@ -320,18 +427,32 @@ import {
   DELETE_CLIENT_TEMPLATE,
 } from '@/graphql/mutations'
 
+import EntityLegalInfo from './EntityLegalInfo.vue'
+import EntityLegalDetail from './EntityLegalDetail.vue'
+import EntityContactList from './EntityContactList.vue'
+import EntityShipping from './EntityShipping.vue'
+import EntityExtra from './EntityExtra.vue'
+import EntityNaturalInfo from './EntityNaturalInfo.vue'
+import EntityNaturalDetail from './EntityNaturalDetail.vue'
 import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
-import TemplateSaveModal from '@/components/TemplateSaveModal.vue'
-import TemplateListModal from '@/components/TemplateListModal.vue'
-import TemplateCard from '@/components/TemplateCard.vue'
+// import TemplateSaveModal from '@/components/TemplateSaveModal.vue'
+// import TemplateListModal from '@/components/TemplateListModal.vue'
+// import TemplateCard from '@/components/TemplateCard.vue'
 
 export default {
   name: 'ClientCard',
   components: {
+    EntityLegalInfo,
+    EntityLegalDetail,
+    EntityContactList,
+    EntityShipping,
+    EntityExtra,
+    EntityNaturalInfo,
+    EntityNaturalDetail,
     SaveBeforeCloseModal,
-    TemplateSaveModal,
-    TemplateListModal,
-    TemplateCard,
+    // TemplateSaveModal,
+    // TemplateListModal,
+    // TemplateCard,
   },
   props: {
     orgId: {
@@ -395,6 +516,8 @@ export default {
   },
   data () {
     return {
+      ClientType,
+      activeClientType: null,
       languageInputError: {},
       wasValidate: false,
       saveBeforeCloseDialog: false,
@@ -551,6 +674,22 @@ export default {
     }
   },
   computed: {
+    tabs () {
+      return [
+        {
+          value: ClientType.LEGAL,
+          text: this.$t('client.legalPersonAbr'),
+        },
+        {
+          value: ClientType.NATURAL,
+          text: this.$t('client.naturalPersonAbr'),
+        },
+        {
+          value: ClientType.OTHER,
+          text: 'Другое',
+        },
+      ]
+    },
     langs () {
       return [
         { value: 'en', text: 'English' },
@@ -736,7 +875,7 @@ export default {
       })
     },
     reset () {
-      this.clientType = this.naturalType
+      this.clientType = ClientType.LEGAL
       this.client = {
         id: null,
         uid: null,
@@ -949,6 +1088,9 @@ export default {
       this.editMode = true
       // this.$vuetify.goTo('#container')
     },
+    switchClientType (type) {
+      this.clientType = type
+    },
     switchPersonType (type) {
       this.clientType = type
     },
@@ -1019,14 +1161,6 @@ export default {
     @apply pl-1 pr-6;
     @apply border rounded-full text-sm;
   }
-  .back-to-list-btn {
-    @apply flex items-center;
-    @apply py-2 pl-3 pr-6 mx-auto mt-20;
-    @apply border rounded-full text-sm;
-  }
-  .back-to-list-btn:focus {
-    @apply outline-none;
-  }
   .template-card {
     display: none;
   }
@@ -1050,11 +1184,6 @@ export default {
     }
     .card__add-address-btn {
       margin-left: 0;
-    }
-    .back-to-list-btn {
-      @apply flex items-center;
-      @apply py-2 pl-3 pr-6 mx-0 mt-6;
-      @apply border rounded-full text-sm;
     }
     .template-card {
       display: block;

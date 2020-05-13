@@ -4,8 +4,7 @@
     <section>
       <div class="container">
         <Button
-          outline
-          secondary
+          outlined
           class="mb-5 mt-8 flex justify-center sm:justify-end"
           @click="$router.push({name: 'signup'})"
         >
@@ -27,14 +26,7 @@
               :title="$t('signinByPhone.loginByPhone')"
               :error-message.sync="errorMessage"
               lazy-validation
-              rounded
-              shadow
-              class="form--max-w-md"
-              body-class="px-0 md:p-8 pt-8 py-1 md:py-8"
-              append-class="flex-col sm:flex-row items-center"
-              header
-              header-icon="dots"
-              header-class="hidden md:flex"
+              class="form--max-w-md px-0 md:p-8 pt-8 py-1 md:py-8 flex-col sm:flex-row items-center"
             >
               <div class="w-full sm:w-1/2 sm:pr-2">
                 <TextField
@@ -56,8 +48,8 @@
                   maxlength="6"
                 />
                 <Button
-                  text
-                  secondary
+                  outlined
+                  borderless
                   @click.prevent
                 >
                   <span>{{ $t('signinByPhone.resendCode') }}</span>
@@ -65,17 +57,10 @@
               </div>
               <template v-slot:append>
                 <Button
-                  large
-                  secondary
-                  :disabled="loading"
+                  :loading="loading"
                   @click="onSubmit"
                 >
-                  <span v-if="loading">
-                    {{ $t('action.loading') }}
-                  </span>
-                  <span v-else>
-                    {{ $t('signinByPhone.submit') }}
-                  </span>
+                  {{ $t('signinByPhone.submit') }}
                 </Button>
                 <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-no-wrap">
                   <span>{{ $t('preposition.or') }}</span>&nbsp;
