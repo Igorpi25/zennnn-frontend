@@ -133,7 +133,7 @@ export default {
       let genericClasses = [
         'rounded',
         this.hasWarn || this.hasError ? 'shadow-yellow-400' : 'focus-within:shadow-blue-500',
-        this.disabled ? 'text-gray-600 cursor-not-allowed' : this.solo ? 'text-blue-500' : 'text-white',
+        this.disabled ? 'text-gray-200 cursor-not-allowed' : this.solo ? 'text-blue-500' : 'text-white',
         this.solo
           ? 'h-8 text-sm bg-transparent focus-within:bg-gray-800'
           : 'h-10 text-base bg-gray-800',
@@ -155,9 +155,7 @@ export default {
     },
     computedInputClass () {
       const staticClasses = ['w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out']
-      const genericClasses = [
-        this.disabled ? 'placeholder-gray-600' : 'placeholder-gray-200',
-      ]
+      const genericClasses = ['placeholder-gray-200']
       if (this.disabled) {
         genericClasses.push('cursor-not-allowed')
       }
@@ -396,6 +394,7 @@ export default {
           top: true,
           maxWidth: 285,
           nudgeBottom: 5,
+          nudgeRight: 104,
         },
         scopedSlots: {
           activator: props => {
@@ -528,7 +527,10 @@ export default {
       this.genWarnMenu(),
     ]
     const data = {
-      class: 'flex flex-col relative',
+      class: [
+        'flex flex-col relative',
+        { 'opacity-40': this.disabled },
+      ],
     }
     return h('div', data, children)
   },

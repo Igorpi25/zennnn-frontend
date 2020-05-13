@@ -65,6 +65,13 @@ module.exports = {
       md: '0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06)',
       lg: '0px 4px 10px rgba(0, 0, 0, 0.25)',
     },
+    letterSpacing: {
+      tight: '-.025em',
+      normal: '0',
+      wide: '.025em',
+      wider: '.05em',
+      widest: '.15em',
+    },
     extend: {
       spacing: {
         'xs': '2px',
@@ -76,7 +83,11 @@ module.exports = {
         '9': '2.25rem',
       },
       opacity: {
+        '10': '.1',
+        '30': '.3',
         '35': '.35',
+        '40': '.4',
+        '90': '.9',
       },
     },
   },
