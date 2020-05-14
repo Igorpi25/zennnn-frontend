@@ -19,7 +19,7 @@
             input-class="placeholder-blue-500"
           >
             <template v-slot:prepend>
-              <i class="icon-search text-2xl text-gray-100"></i>
+              <i class="zi-magnifier text-2xl text-gray-100"></i>
             </template>
           </TextField>
         </div>
@@ -103,7 +103,7 @@
                       class="cursor-pointer pointer-events-auto flex items-center"
                       @click="deleteUser(item.id)"
                     >
-                      <i class="icon-delete text-lg text-gray-200 hover:text-gray-100" />
+                      <i class="zi-delete text-lg text-gray-200 hover:text-gray-100" />
                     </div>
                   </td>
                   <td>
@@ -113,11 +113,11 @@
                     >
                       <i
                         v-if="expanded.includes(index)"
-                        class="icon-arroe-top-1 text-blue-500 hover:text-blue-600"
+                        class="zi-chevron-up text-blue-500 hover:text-blue-600"
                       />
                       <i
                         v-else
-                        class="icon-arroe-bottom-1 text-blue-500 hover:text-blue-600"
+                        class="zi-chevron-down text-blue-500 hover:text-blue-600"
                       />
                     </div>
                   </td>
@@ -218,7 +218,7 @@
                   class="cursor-pointer pointer-events-auto flex items-center justify-center"
                   @click="cancelInvitation(item.id)"
                 >
-                  <i class="icon-delete text-lg text-gray-200" />
+                  <i class="zi-delete text-lg text-gray-200" />
                 </div>
               </td>
             </template>
@@ -230,7 +230,7 @@
           @click="createStaffDialog = true"
         >
           <template v-slot:icon>
-            <i class="icon-add-user text-gray-100 text-2xl" />
+            <i class="zi-user-plus text-gray-100 text-2xl" />
           </template>
           <span>{{ $t('staff.addStaff') }}</span>
         </Button>

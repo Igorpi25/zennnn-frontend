@@ -45,7 +45,7 @@
             >
               <template v-slot:prepend-item>
                 <span class="flex items-center jusitfy-center text-primary">
-                  <i class="icon-add mr-1" />
+                  <i class="zi-plus mr-1" />
                   <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
                 </span>
               </template>
@@ -127,7 +127,7 @@
                   href="#"
                   @click.prevent.stop="openCreateSupplierDialog(item)"
                 >
-                  <i class="icon-add text-lg text-primary block align-middle" />
+                  <i class="zi-plus text-lg text-primary block align-middle" />
                 </a>
               </template>
             </Select>
@@ -171,7 +171,7 @@
         @click="createInvoice"
       >
         <template v-slot:icon>
-          <i class="icon-add text-lg block align-middle" />
+          <i class="zi-plus text-lg block align-middle" />
         </template>
         <span>{{ $t('shipping.addInvoice') }}</span>
       </Button>

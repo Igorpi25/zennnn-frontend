@@ -17,7 +17,7 @@
           </span>
         </div>
       </v-scale-transition>
-      <i :class="['icon-message cursor-pointer select-none', sm ? 'text-sm' : 'text-xl']" />
+      <i :class="['zi-chat cursor-pointer select-none', sm ? 'text-sm' : 'text-xl']" />
     </div>
     <v-menu
       v-model="isMenuActive"

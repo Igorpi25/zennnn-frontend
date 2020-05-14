@@ -428,7 +428,7 @@
               @click="openPaperList"
             >
               <template v-slot:icon>
-                <i class="icon-eay text-gray-100 text-2xl" />
+                <i class="zi-eye text-gray-100 text-2xl" />
               </template>
               {{ $t('shipping.previewAsCustomer') }}
             </Button>
@@ -440,7 +440,7 @@
               @click="openPaperList"
             >
               <template v-slot:icon>
-                <i class="icon-settings text-gray-100 text-2xl" />
+                <i class="zi-setting text-gray-100 text-2xl" />
               </template>
               {{ $t('shipping.paperConfigurator') }}
             </Button>
@@ -452,7 +452,7 @@
               @click="printDialog = true"
             >
               <template v-slot:icon>
-                <i class="icon-printer text-gray-100 text-2xl" />
+                <i class="zi-print text-gray-100 text-2xl" />
               </template>
               {{ $t('shipping.print') }}
             </Button>
@@ -464,7 +464,7 @@
               @click="accessControlDialog = true"
             >
               <template v-slot:icon>
-                <i class="icon-add-user text-gray-100 text-2xl" />
+                <i class="zi-user-plus text-gray-100 text-2xl" />
               </template>
               {{ $t('shipping.inviteCustomer') }}
             </Button>
@@ -472,7 +472,7 @@
           <div class="w-full md:w-auto p-2">
             <Button outlined borderless disabled>
               <template v-slot:icon>
-                <i class="icon-mail text-2xl" />
+                <i class="zi-email text-2xl" />
               </template>
               {{ $t('shipping.notifyCustomer') }}
             </Button>
@@ -566,7 +566,6 @@
 import cloneDeep from 'clone-deep'
 
 import { mdiClose, mdiPlusThick } from '@mdi/js'
-import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
 
 import PaperListModal from '@/components/PaperListModal.vue'
 import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
@@ -644,10 +643,6 @@ export default {
       icons: {
         mdiClose,
         mdiPlusThick,
-        ziSettings,
-        ziPaperPlane,
-        ziPrint,
-        ziShare,
       },
     }
   },

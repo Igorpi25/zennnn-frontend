@@ -111,7 +111,7 @@
             />
           </td>
           <td class="bg-white p-2 rounded-r-md text-center">
-            <i class="icon-arroe-bottom-1 text-xs text-gray-75" />
+            <i class="zi-open-in-new text-gray-75 text-2xl align-middle" />
           </td>
         </tr>
       </tbody>

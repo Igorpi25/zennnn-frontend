@@ -377,7 +377,7 @@ export default {
           }, [
             this.$createElement('i', {
               class: [
-                'icon-close text-gray-200 hover:text-gray-300 cursor-pointer',
+                'zi-close text-gray-200 hover:text-gray-300 cursor-pointer',
                 this.solo ? 'text-lg' : 'text-xl',
               ],
               on: {
@@ -403,7 +403,7 @@ export default {
         scopedSlots: {
           activator: props => {
             return this.$createElement('i', {
-              class: 'ml-1 icon-add text-base text-blue-500 hover:text-blue-600 cursor-pointer',
+              class: 'ml-1 zi-help text-base text-blue-500 hover:text-blue-600 cursor-pointer',
               on: props.on,
             })
           },

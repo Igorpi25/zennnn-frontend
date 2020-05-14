@@ -12,7 +12,7 @@
           input-class="placeholder-blue-500"
         >
           <template v-slot:prepend>
-            <i class="icon-search text-2xl text-gray-100"></i>
+            <i class="zi-magnifier text-2xl text-gray-100"></i>
           </template>
         </TextField>
       </div>
@@ -41,7 +41,7 @@
           <template v-slot:header.deals-content>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <i class="icon-portdolio text-lg align-middle mr-1" v-on="on" />
+                <i class="zi-bag text-lg align-middle mr-1" v-on="on" />
               </template>
               <span>
                 {{ $t('clients.currentDealsAmount') }}
@@ -72,7 +72,7 @@
                   class="cursor-pointer pointer-events-auto flex items-center"
                   @click="deleteClient(item.id)"
                 >
-                  <i class="icon-delete text-lg text-gray-200 hover:text-gray-100" />
+                  <i class="zi-delete text-lg text-gray-200 hover:text-gray-100" />
                 </div>
               </td>
             </tr>
@@ -88,7 +88,7 @@
         })"
       >
         <template v-slot:icon>
-          <i class="icon-add-user text-gray-100 text-2xl" />
+          <i class="zi-user-plus text-gray-100 text-2xl" />
         </template>
         <span>{{ $t('clients.createClient') }}</span>
       </Button>

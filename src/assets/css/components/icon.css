@@ -1,15 +1,7 @@
-/* should be deleted */
-.icon__item {
-  text-indent: 0;
-  letter-spacing: normal;
-  @apply fill-current align-middle select-none;
-  @apply absolute inset-0 flex justify-center items-center;
-}
-
 /* icons from font */
-[class^="icon-"], [class*=" icon-"] {
+[class^="zi-"], [class*=" zi-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon' !important;
+  font-family: 'z-icons' !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -22,155 +14,263 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-Logo:before {
-  content: "\e900";
-  color: currentColor;
-}
-.icon-action:before {
-  content: "\e901";
-  color: currentColor;
-}
-.icon-add-2:before {
-  content: "\e902";
-  color: currentColor;
-}
-.icon-add-user:before {
-  content: "\e903";
-  color: currentColor;
-}
-.icon-add:before {
-  content: "\e904";
-  color: currentColor;
-}
-.icon-arroe-bottom:before {
-  content: "\e905";
-  color: currentColor;
-}
-.icon-arroe-bottom-1:before {
-  content: "\e906";
-  color: currentColor;
-}
-.icon-arroe-top-3:before {
-  content: "\e907";
-  color: currentColor;
-}
-.icon-arroe-top:before {
-  content: "\e908";
-  color: currentColor;
-}
-.icon-arroe-top-1:before {
-  content: "\e909";
-  color: currentColor;
-}
-.icon-arrow-bottom-3:before {
-  content: "\e90a";
-  color: currentColor;
-}
-.icon-arrow-left:before {
-  content: "\e90b";
-  color: currentColor;
-}
-.icon-arrow-right:before {
-  content: "\e90c";
-  color: currentColor;
-}
-.icon-boxes:before {
-  content: "\e90d";
-  color: currentColor;
-}
-.icon-burger:before {
-  content: "\e90e";
-  color: currentColor;
-}
-.icon-calendar:before {
-  content: "\e90f";
-  color: currentColor;
-}
-.icon-cap:before {
-  content: "\e910";
-  color: currentColor;
-}
-.icon-close:before {
-  content: "\e911";
-  color: currentColor;
-}
-.icon-copy:before {
-  content: "\e912";
-  color: currentColor;
-}
-.icon-delete:before {
-  content: "\e913";
-  color: currentColor;
-}
-.icon-doc:before {
-  content: "\e914";
-  color: currentColor;
-}
-.icon-eay:before {
-  content: "\e915";
-  color: currentColor;
-}
-.icon-edit:before {
-  content: "\e916";
-  color: currentColor;
-}
-.icon-filter:before {
-  content: "\e917";
-  color: currentColor;
-}
-.icon-kg:before {
-  content: "\e918";
-  color: currentColor;
-}
-.icon-language:before {
-  content: "\e919";
-  color: currentColor;
-}
-.icon-link:before {
-  content: "\e91a";
-  color: currentColor;
-}
-.icon-mail:before {
-  content: "\e91b";
-  color: currentColor;
-}
-.icon-message:before {
-  content: "\e91c";
-  color: currentColor;
-}
-.icon-move:before {
-  content: "\e91d";
-  color: currentColor;
-}
-.icon-portdolio:before {
-  content: "\e91e";
-  color: currentColor;
-}
-.icon-printer:before {
-  content: "\e91f";
-  color: currentColor;
-}
-.icon-qr-code:before {
-  content: "\e920";
-  color: currentColor;
-}
-.icon-search:before {
-  content: "\e921";
-  color: currentColor;
-}
-.icon-settings-2:before {
+.zi-magnifier:before {
   content: "\e922";
   color: currentColor;
 }
-.icon-settings:before {
-  content: "\e923";
+.zi-user:before {
+  content: "\e92b";
   color: currentColor;
 }
-.icon-sloi:before {
+.zi-users:before {
+  content: "\e92c";
+  color: currentColor;
+}
+.zi-zoom:before {
+  content: "\e937";
+  color: currentColor;
+}
+.zi-template:before {
+  content: "\e938";
+  color: currentColor;
+}
+.zi-copy:before {
+  content: "\e93c";
+  color: currentColor;
+}
+.zi-delete:before {
+  content: "\e93d";
+  color: currentColor;
+}
+.zi-doc:before {
+  content: "\e93e";
+  color: currentColor;
+}
+.zi-filter:before {
+  content: "\e93f";
+  color: currentColor;
+}
+.zi-plus-outline:before {
+  content: "\e940";
+  color: currentColor;
+}
+.zi-plus:before {
+  content: "\e941";
+  color: currentColor;
+}
+.zi-action:before {
+  content: "\e900";
+  color: currentColor;
+}
+.zi-arrow-bottom-sort:before {
+  content: "\e901";
+  color: currentColor;
+}
+.zi-arrow-left:before {
+  content: "\e902";
+  color: currentColor;
+}
+.zi-arrow-right:before {
+  content: "\e903";
+  color: currentColor;
+}
+.zi-arrow-top-sort:before {
+  content: "\e904";
+  color: currentColor;
+}
+.zi-arrow-component:before {
+  content: "\e905";
+  color: currentColor;
+}
+.zi-bag:before {
+  content: "\e906";
+  color: currentColor;
+}
+.zi-boxes:before {
+  content: "\e907";
+  color: currentColor;
+}
+.zi-calendar:before {
+  content: "\e908";
+  color: currentColor;
+}
+.zi-camera:before {
+  content: "\e909";
+  color: currentColor;
+}
+.zi-chat:before {
+  content: "\e90a";
+  color: currentColor;
+}
+.zi-check-outline:before {
+  content: "\e90b";
+  color: currentColor;
+}
+.zi-check:before {
+  content: "\e90c";
+  color: currentColor;
+}
+.zi-chevron-down:before {
+  content: "\e90d";
+  color: currentColor;
+}
+.zi-chevron-up:before {
+  content: "\e90e";
+  color: currentColor;
+}
+.zi-close:before {
+  content: "\e90f";
+  color: currentColor;
+}
+.zi-cogs:before {
+  content: "\e910";
+  color: currentColor;
+}
+.zi-collapse:before {
+  content: "\e911";
+  color: currentColor;
+}
+.zi-cup:before {
+  content: "\e913";
+  color: currentColor;
+}
+.zi-download:before {
+  content: "\e912";
+  color: currentColor;
+}
+.zi-edit:before {
+  content: "\e914";
+  color: currentColor;
+}
+.zi-email:before {
+  content: "\e915";
+  color: currentColor;
+}
+.zi-exit:before {
+  content: "\e916";
+  color: currentColor;
+}
+.zi-expand:before {
+  content: "\e917";
+  color: currentColor;
+}
+.zi-eye:before {
+  content: "\e918";
+  color: currentColor;
+}
+.zi-facebook:before {
+  content: "\e919";
+  color: currentColor;
+}
+.zi-full-screen:before {
+  content: "\e91a";
+  color: currentColor;
+}
+.zi-group:before {
+  content: "\e91b";
+  color: currentColor;
+}
+.zi-help:before {
+  content: "\e91c";
+  color: currentColor;
+}
+.zi-image:before {
+  content: "\e91d";
+  color: currentColor;
+}
+.zi-info:before {
+  content: "\e91e";
+  color: currentColor;
+}
+.zi-instagram:before {
+  content: "\e91f";
+  color: currentColor;
+}
+.zi-languagesl:before {
+  content: "\e920";
+  color: currentColor;
+}
+.zi-link:before {
+  content: "\e921";
+  color: currentColor;
+}
+.zi-massa:before {
   content: "\e924";
   color: currentColor;
 }
-.icon-zoom:before {
+.zi-menu:before {
   content: "\e925";
+  color: currentColor;
+}
+.zi-moving:before {
+  content: "\e926";
+  color: currentColor;
+}
+.zi-number:before {
+  content: "\e927";
+  color: currentColor;
+}
+.zi-open-in-new:before {
+  content: "\e928";
+  color: currentColor;
+}
+.zi-pages:before {
+  content: "\e929";
+  color: currentColor;
+}
+.zi-play:before {
+  content: "\e92a";
+  color: currentColor;
+}
+.zi-print:before {
+  content: "\e92d";
+  color: currentColor;
+}
+.zi-publish:before {
+  content: "\e92e";
+  color: currentColor;
+}
+.zi-qc:before {
+  content: "\e92f";
+  color: currentColor;
+}
+.zi-quote-right:before {
+  content: "\e930";
+  color: currentColor;
+}
+.zi-setting:before {
+  content: "\e931";
+  color: currentColor;
+}
+.zi-settings:before {
+  content: "\e932";
+  color: currentColor;
+}
+.zi-share:before {
+  content: "\e933";
+  color: currentColor;
+}
+.zi-telegram:before {
+  content: "\e934";
+  color: currentColor;
+}
+.zi-unload:before {
+  content: "\e935";
+  color: currentColor;
+}
+.zi-user-plus:before {
+  content: "\e936";
+  color: currentColor;
+}
+.zi-vk:before {
+  content: "\e939";
+  color: currentColor;
+}
+.zi-youtube:before {
+  content: "\e93a";
+  color: currentColor;
+}
+.zi-Z:before {
+  content: "\e93b";
   color: currentColor;
 }

@@ -6,7 +6,7 @@
         <span class="text-gray-200 mr-1">{{ titleHint }}</span>
         <v-tooltip top max-width="272" nudge-bottom="5" nudge-right="104">
           <template v-slot:activator="{ on }">
-            <i class="icon-add align-middle text-base text-blue-500 hover:text-blue-600 cursor-pointer" v-on="on" />
+            <i class="zi-help align-middle text-base text-blue-500 hover:text-blue-600 cursor-pointer" v-on="on" />
           </template>
           <span>
             Для правильности составления документов предназначенных для страны отправления или страны продажи товара, указываейте реквизиты компании клиента на его радном языке, попросите клиента прислать их вам и укажите эти реквизиты в полях ниже. В крайнем случае указывайте все реквизиты на английском языке.
@@ -18,8 +18,8 @@
           class="w-6 h-6 flex items-center justify-center text-xl text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none select-none"
            @click="toggleExpand"
         >
-          <i v-if="expanded" class="icon-arroe-bottom-1" />
-          <i v-else class="icon-arroe-top-1" />
+          <i v-if="expanded" class="zi-chevron-down" />
+          <i v-else class="zi-chevron-up" />
         </button>
       </div>
     </div>

@@ -64,7 +64,7 @@
                   v-on="on"
                 >
                   <template>
-                    <i class="text-lg text-gray-100 icon-burger align-middle pl-3" />
+                    <i class="text-lg text-gray-100 zi-menu align-middle pl-3" />
                     <div class="w-px h-5 bg-gray-300 mx-5" />
                   </template>
                   <div

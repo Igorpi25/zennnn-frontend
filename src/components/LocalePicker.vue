@@ -17,7 +17,7 @@
               'h-6 w-6 rounded-full mr-2',
             ]"
           >
-          <i class="text-xs text-primary icon-arroe-bottom-1 cursor-pointer" />
+          <i class="text-xs text-primary zi-chevron-down cursor-pointer" />
         </div>
       </template>
       <template>

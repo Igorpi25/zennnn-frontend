@@ -87,7 +87,7 @@
                       @click.prevent="createProduct"
                     >
                       <template v-slot:icon>
-                        <i class="icon-add text-xl block align-middle" />
+                        <i class="zi-plus text-xl block align-middle" />
                       </template>
                       <span>{{ $t('shipping.addProduct') }}</span>
                     </Button>

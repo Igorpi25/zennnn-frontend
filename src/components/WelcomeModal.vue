@@ -35,7 +35,7 @@
       class="absolute top-0 right-0 mt-3 mr-4 text-gray-200 hover:text-gray-100 cursor-pointer"
       @click="$emit('close')"
     >
-      <i class="icon-close" />
+      <i class="zi-close" />
     </span>
   </div>
 </template>
