@@ -82,7 +82,7 @@ export default {
       }
       if (this.$slots.icon) {
         const icon = this.$createElement('i', {
-          class: 'w-6 mr-sm flex items-center text-2xl',
+          class: 'w-6 mr-sm flex items-center justify-center text-2xl',
         }, this.$slots.icon)
         children.push(icon)
       }

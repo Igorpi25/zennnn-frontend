@@ -541,7 +541,7 @@ export default {
         },
       }
       const slotClass = [
-        'w-10 flex items-center flex-shrink-0 justify-center select-none',
+        'w-10 flex items-center justify-center flex-shrink-0 select-none',
         this.disabled ? 'text-gray-600' : this.solo ? 'text-gray-300' : 'text-gray-200',
         this.solo ? 'text-xl' : 'text-2xl',
       ]
