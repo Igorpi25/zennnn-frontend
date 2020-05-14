@@ -132,7 +132,7 @@ export default {
       const staticClasses = ['relative flex items-center focus:outline-none transition-colors duration-100 ease-out']
       let genericClasses = [
         'rounded',
-        this.hasWarn || this.hasError ? 'shadow-yellow-400' : 'focus-within:shadow-blue-500',
+        this.hasWarn || this.hasError ? 'shadow-yellow-300' : 'focus-within:shadow-blue-500',
         this.disabled ? 'text-gray-200 cursor-not-allowed' : this.solo ? 'text-blue-500' : 'text-white',
         this.solo
           ? 'h-8 text-sm bg-transparent focus-within:bg-gray-800'
@@ -343,7 +343,7 @@ export default {
         zIndex: 'unset',
         nudgeBottom: this.solo ? '32' : '40',
         allowOverflow: true,
-        contentClass: 'shadow-yellow-400',
+        contentClass: 'shadow-yellow-300',
         openOnClick: false,
         disableKeys: true,
         closeOnClick: false,
@@ -358,7 +358,7 @@ export default {
         props,
       }, [this.$createElement('div', {
         class: [
-          'text-black bg-yellow-400 flex items-center',
+          'text-black bg-yellow-300 flex items-center',
           this.solo ? 'pb-8' : 'pb-10',
         ],
         on: {

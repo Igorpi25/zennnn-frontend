@@ -1,26 +1,16 @@
 <template>
-  <div>
+  <div :class="{ 'opacity-40': disabled }">
     <div class="flex items-start">
-      <div class="flex-shrink-0 relative w-5 h-5">
-        <input
-          ref="input"
-          type="checkbox"
-          role="checkbox"
-          v-model="internalValue"
-          :id="computedId"
-          :name="name"
-          :required="required"
-          :readonly="readonly"
-          :disabled="disabled"
-          class="absolute opacity-0 select-none cursor-pointer inset-0"
-          aria-hidden="true"
-          @change="checkField"
-        >
+      <div
+        class="flex-shrink-0 relative w-5 h-5"
+        style="border-radius: 3px;"
+      >
         <div
           :class="[
             'transition-colors duration-100 ease-out',
-            'relative w-full h-full flex pointer-events-none border-2 border-gray-300',
-            { 'bg-gray-300': checked }
+            'relative w-full h-full flex border-2 border-gray-300',
+            { 'bg-gray-300': checked },
+            { 'shadow-blue-500': hasFocus },
           ]"
           style="border-radius: 3px;"
         >
@@ -38,12 +28,31 @@
             </div>
           </v-fade-transition>
         </div>
+        <input
+          ref="input"
+          v-model="internalValue"
+          :id="computedId"
+          :name="name"
+          :required="required"
+          :readonly="readonly"
+          :disabled="disabled"
+          :class="[
+            'absolute opacity-0 select-none cursor-pointer inset-0 w-full h-full',
+            { 'cursor-not-allowed': disabled },
+          ]"
+          type="checkbox"
+          role="checkbox"
+          aria-hidden="true"
+          @focus="hasFocus = true"
+          @blur="hasFocus = false"
+          @change="checkField"
+        >
       </div>
       <label :for="computedId" class="cursor-pointer select-none leading-tight">
         <slot />
       </label>
     </div>
-    <div v-if="!hideDetails" class="h-6 pt-2 leading-tight text-sm" style="color: #D7C370;">
+    <div v-if="!hideDetails" class="h-6 pt-2 leading-tight text-sm text-yellow-400">
       {{ errorText }}
     </div>
   </div>
@@ -75,6 +84,7 @@ export default {
   },
   data () {
     return {
+      hasFocus: false,
       checked: false,
       lazyValue: this.value,
     }
