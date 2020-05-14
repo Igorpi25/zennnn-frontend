@@ -1,7 +1,7 @@
 /* icons from font */
 [class^="zi-"], [class*=" zi-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'z-icons' !important;
+  font-family: 'icomoon' !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -14,50 +14,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.zi-magnifier:before {
-  content: "\e922";
-  color: currentColor;
-}
-.zi-user:before {
-  content: "\e92b";
-  color: currentColor;
-}
-.zi-users:before {
-  content: "\e92c";
-  color: currentColor;
-}
-.zi-zoom:before {
-  content: "\e937";
-  color: currentColor;
-}
-.zi-template:before {
-  content: "\e938";
-  color: currentColor;
-}
-.zi-copy:before {
-  content: "\e93c";
-  color: currentColor;
-}
-.zi-delete:before {
-  content: "\e93d";
-  color: currentColor;
-}
-.zi-doc:before {
-  content: "\e93e";
-  color: currentColor;
-}
-.zi-filter:before {
-  content: "\e93f";
-  color: currentColor;
-}
-.zi-plus-outline:before {
-  content: "\e940";
-  color: currentColor;
-}
-.zi-plus:before {
-  content: "\e941";
-  color: currentColor;
-}
 .zi-action:before {
   content: "\e900";
   color: currentColor;
@@ -102,11 +58,11 @@
   content: "\e90a";
   color: currentColor;
 }
-.zi-check-outline:before {
+.zi-check:before {
   content: "\e90b";
   color: currentColor;
 }
-.zi-check:before {
+.zi-check-outline:before {
   content: "\e90c";
   color: currentColor;
 }
@@ -130,147 +86,195 @@
   content: "\e911";
   color: currentColor;
 }
+.zi-copy:before {
+  content: "\e912";
+  color: currentColor;
+}
 .zi-cup:before {
   content: "\e913";
   color: currentColor;
 }
-.zi-download:before {
-  content: "\e912";
-  color: currentColor;
-}
-.zi-edit:before {
+.zi-delete:before {
   content: "\e914";
   color: currentColor;
 }
-.zi-email:before {
+.zi-doc:before {
   content: "\e915";
   color: currentColor;
 }
-.zi-exit:before {
+.zi-download:before {
   content: "\e916";
   color: currentColor;
 }
-.zi-expand:before {
+.zi-edit:before {
   content: "\e917";
   color: currentColor;
 }
-.zi-eye:before {
+.zi-email:before {
   content: "\e918";
   color: currentColor;
 }
-.zi-facebook:before {
+.zi-exit:before {
   content: "\e919";
   color: currentColor;
 }
-.zi-full-screen:before {
+.zi-expand:before {
   content: "\e91a";
   color: currentColor;
 }
-.zi-group:before {
+.zi-eye:before {
   content: "\e91b";
   color: currentColor;
 }
-.zi-help:before {
+.zi-eye-off:before {
   content: "\e91c";
   color: currentColor;
 }
-.zi-image:before {
+.zi-facebook:before {
   content: "\e91d";
   color: currentColor;
 }
-.zi-info:before {
+.zi-filter:before {
   content: "\e91e";
   color: currentColor;
 }
-.zi-instagram:before {
+.zi-full-screen:before {
   content: "\e91f";
   color: currentColor;
 }
-.zi-languagesl:before {
+.zi-group:before {
   content: "\e920";
   color: currentColor;
 }
-.zi-link:before {
+.zi-help:before {
   content: "\e921";
   color: currentColor;
 }
-.zi-massa:before {
+.zi-image:before {
+  content: "\e922";
+  color: currentColor;
+}
+.zi-info:before {
+  content: "\e923";
+  color: currentColor;
+}
+.zi-instagram:before {
   content: "\e924";
   color: currentColor;
 }
-.zi-menu:before {
+.zi-languagesl:before {
   content: "\e925";
   color: currentColor;
 }
-.zi-moving:before {
+.zi-link:before {
   content: "\e926";
   color: currentColor;
 }
-.zi-number:before {
+.zi-magnifier:before {
   content: "\e927";
   color: currentColor;
 }
-.zi-open-in-new:before {
+.zi-massa:before {
   content: "\e928";
   color: currentColor;
 }
-.zi-pages:before {
+.zi-menu:before {
   content: "\e929";
   color: currentColor;
 }
-.zi-play:before {
+.zi-moving:before {
   content: "\e92a";
   color: currentColor;
 }
-.zi-print:before {
+.zi-number:before {
+  content: "\e92b";
+  color: currentColor;
+}
+.zi-open-in-new:before {
+  content: "\e92c";
+  color: currentColor;
+}
+.zi-pages:before {
   content: "\e92d";
   color: currentColor;
 }
-.zi-publish:before {
+.zi-play:before {
   content: "\e92e";
   color: currentColor;
 }
-.zi-qc:before {
+.zi-plus:before {
   content: "\e92f";
   color: currentColor;
 }
-.zi-quote-right:before {
+.zi-plus-outline:before {
   content: "\e930";
   color: currentColor;
 }
-.zi-setting:before {
+.zi-print:before {
   content: "\e931";
   color: currentColor;
 }
-.zi-settings:before {
+.zi-publish:before {
   content: "\e932";
   color: currentColor;
 }
-.zi-share:before {
+.zi-qc:before {
   content: "\e933";
   color: currentColor;
 }
-.zi-telegram:before {
+.zi-quote-right:before {
   content: "\e934";
   color: currentColor;
 }
-.zi-unload:before {
+.zi-setting:before {
   content: "\e935";
   color: currentColor;
 }
-.zi-user-plus:before {
+.zi-settings:before {
   content: "\e936";
   color: currentColor;
 }
-.zi-vk:before {
+.zi-share:before {
+  content: "\e937";
+  color: currentColor;
+}
+.zi-telegram:before {
+  content: "\e938";
+  color: currentColor;
+}
+.zi-template:before {
   content: "\e939";
   color: currentColor;
 }
-.zi-youtube:before {
+.zi-unload:before {
   content: "\e93a";
   color: currentColor;
 }
-.zi-Z:before {
+.zi-user:before {
   content: "\e93b";
+  color: currentColor;
+}
+.zi-user-plus:before {
+  content: "\e93c";
+  color: currentColor;
+}
+.zi-users:before {
+  content: "\e93d";
+  color: currentColor;
+}
+.zi-vk:before {
+  content: "\e93e";
+  color: currentColor;
+}
+.zi-youtube:before {
+  content: "\e93f";
+  color: currentColor;
+}
+.zi-Z:before {
+  content: "\e940";
+  color: currentColor;
+}
+.zi-zoom:before {
+  content: "\e941";
   color: currentColor;
 }

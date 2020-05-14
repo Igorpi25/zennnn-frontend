@@ -149,7 +149,7 @@
                 <div class="ml-auto">
                   <button class="select-none focus:outline-none text-blue-500 focus:text-blue-600 hover:text-blue-600 transition-colors duration-100 ease-out">
                     <i v-if="expanded.includes(item.id)" class="zi-chevron-up text-xl align-middle" />
-                    <i v-else class="zi-chevron-down text-xl align-middle" />
+                    <i v-else class="zi-chevron-down text-2xl align-middle" />
                   </button>
                 </div>
               </div>

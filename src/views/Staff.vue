@@ -103,12 +103,12 @@
                       class="cursor-pointer pointer-events-auto flex items-center"
                       @click="deleteUser(item.id)"
                     >
-                      <i class="zi-delete text-lg text-gray-200 hover:text-gray-100" />
+                      <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
                     </div>
                   </td>
                   <td>
                     <div
-                      class="text-lg cursor-pointer select-none flex items-center"
+                      class="text-2xl cursor-pointer select-none flex items-center"
                       @click="toggle(index)"
                     >
                       <i
@@ -218,7 +218,7 @@
                   class="cursor-pointer pointer-events-auto flex items-center justify-center"
                   @click="cancelInvitation(item.id)"
                 >
-                  <i class="zi-delete text-lg text-gray-200" />
+                  <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
                 </div>
               </td>
             </template>

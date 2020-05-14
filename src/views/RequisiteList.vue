@@ -34,7 +34,7 @@
                   class="cursor-pointer flex items-center"
                   @click="deleteRequisite(item.id)"
                 >
-                  <i class="zi-delete text-lg text-gray-200 hover:text-gray-100" />
+                  <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
                 </div>
               </td>
             </tr>

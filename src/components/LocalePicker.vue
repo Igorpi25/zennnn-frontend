@@ -8,16 +8,16 @@
     >
       <template v-slot:activator="{ on }">
         <div
-          class="flex items-center cursor-pointer pr-2"
+          class="flex items-center cursor-pointer pr-1"
           v-on="on"
         >
           <img
             :src="require(`@/assets/img/flags/round/${$i18n.locale}.svg`)"
             :class="[
-              'h-6 w-6 rounded-full mr-2',
+              'h-6 w-6 rounded-full mr-1',
             ]"
           >
-          <i class="text-xs text-primary zi-chevron-down cursor-pointer" />
+          <i class="zi-chevron-down text-lg text-blue-500 hover:text-blue-600 cursor-pointer" />
         </div>
       </template>
       <template>
