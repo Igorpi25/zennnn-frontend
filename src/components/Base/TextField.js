@@ -34,6 +34,7 @@ export default {
     clearable: Boolean,
     singleLine: Boolean,
     solo: Boolean,
+    soloFlat: Boolean,
     number: Boolean,
     // integer, decimal, currency, fixed
     // 'formatStyle' renamed to 'numberFormat'
@@ -69,6 +70,10 @@ export default {
     // preferably validation icon
     adlib: Boolean,
     stateIcon: Boolean,
+    slotClass: {
+      type: String,
+      default: 'w-10',
+    },
   },
 
   data () {
@@ -138,7 +143,7 @@ export default {
           ? 'h-8 text-sm bg-transparent focus-within:bg-gray-800'
           : 'h-10 text-base bg-gray-800',
       ]
-      if (this.solo && !this.internalValue) {
+      if (this.solo && !this.soloFlat && !this.internalValue) {
         genericClasses.push('bg-gray-800')
       }
       if (!this.$slots.prepend) {
@@ -155,7 +160,9 @@ export default {
     },
     computedInputClass () {
       const staticClasses = ['w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out']
-      const genericClasses = ['placeholder-gray-200']
+      const genericClasses = [
+        this.solo && this.soloFlat ? 'placeholder-blue-500' : 'placeholder-gray-200',
+      ]
       if (this.disabled) {
         genericClasses.push('cursor-not-allowed')
       }
@@ -541,9 +548,10 @@ export default {
         },
       }
       const slotClass = [
-        'w-10 flex items-center justify-center flex-shrink-0 select-none',
+        'flex items-center justify-center flex-shrink-0 select-none',
         this.disabled ? 'text-gray-600' : this.solo ? 'text-gray-300' : 'text-gray-200',
         this.solo ? 'text-xl' : 'text-2xl',
+        this.slotClass,
       ]
       if (this.$slots.prepend) {
         const prepend = this.$createElement('div', {
