@@ -425,6 +425,8 @@
               :href="`/paper/${$route.params.specId}`"
               target="_blank"
               outlined
+              class="w-full"
+              content-class="w-full flex items-center"
               @click="openPaperList"
             >
               <template v-slot:icon>
@@ -437,6 +439,8 @@
             <Button
               outlined
               borderless
+              class="w-full"
+              content-class="w-full flex items-center"
               @click="openPaperList"
             >
               <template v-slot:icon>
@@ -449,6 +453,8 @@
             <Button
               outlined
               borderless
+              class="w-full"
+              content-class="w-full flex items-center"
               @click="printDialog = true"
             >
               <template v-slot:icon>
@@ -461,6 +467,8 @@
             <Button
               outlined
               borderless
+              class="w-full"
+              content-class="w-full flex items-center"
               @click="accessControlDialog = true"
             >
               <template v-slot:icon>
@@ -470,7 +478,13 @@
             </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <Button outlined borderless disabled>
+            <Button
+              outlined
+              borderless
+              disabled
+              class="w-full"
+              content-class="w-full flex items-center"
+            >
               <template v-slot:icon>
                 <i class="zi-email text-2xl" />
               </template>
