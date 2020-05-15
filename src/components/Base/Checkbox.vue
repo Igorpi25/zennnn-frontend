@@ -8,8 +8,9 @@
         <div
           :class="[
             'transition-colors duration-100 ease-out',
-            'relative w-full h-full flex border-2 border-gray-300',
-            { 'bg-gray-300': checked },
+            'relative w-full h-full flex border-2',
+            borderColor ? borderColor : 'border-gray-300',
+            { [bgColor || 'bg-gray-300']: checked },
             { 'shadow-blue-500': hasFocus },
           ]"
           style="border-radius: 3px;"
@@ -75,6 +76,8 @@ export default {
       default: false,
     },
     label: String,
+    borderColor: String,
+    bgColor: String,
     id: String,
     name: String,
     required: Boolean,
