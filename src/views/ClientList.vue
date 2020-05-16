@@ -12,7 +12,7 @@
           input-class="placeholder-blue-500"
         >
           <template v-slot:prepend>
-            <i class="icon-search text-2xl text-gray-100"></i>
+            <i class="zi-magnifier text-2xl text-gray-100"></i>
           </template>
         </TextField>
       </div>
@@ -24,7 +24,7 @@
           :search="search"
           table-width="100%"
           table-class="table-fixed"
-          thead-class="text-accent2 border-b border-accent2"
+          thead-class="text-gray-200 border-b border-gray-200"
         >
           <template v-slot:header.debt-content>
             <v-tooltip top>
@@ -41,7 +41,7 @@
           <template v-slot:header.deals-content>
             <v-tooltip top>
               <template v-slot:activator="{ on }">
-                <i class="icon-portdolio text-lg align-middle mr-1" v-on="on" />
+                <i class="zi-bag text-lg align-middle mr-1" v-on="on" />
               </template>
               <span>
                 {{ $t('clients.currentDealsAmount') }}
@@ -72,7 +72,7 @@
                   class="cursor-pointer pointer-events-auto flex items-center"
                   @click="deleteClient(item.id)"
                 >
-                  <i class="icon-delete text-lg text-gray-200 hover:text-gray-100" />
+                  <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
                 </div>
               </td>
             </tr>
@@ -88,7 +88,7 @@
         })"
       >
         <template v-slot:icon>
-          <i class="icon-add-user text-gray-100 text-2xl" />
+          <i class="zi-user-plus text-gray-100 text-2xl" />
         </template>
         <span>{{ $t('clients.createClient') }}</span>
       </Button>
@@ -133,14 +133,14 @@ export default {
   computed: {
     headers () {
       return [
-        { text: '', value: 'debt', align: 'left', width: 60, bgcolor: 'tansparent', sortable: true, tooltip: this.$t('clients.clientsDebt') },
-        { text: this.$t('clients.companyName'), value: 'fullName', align: 'left', width: 220, minWidth: 220, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('clients.phone'), value: 'clientPhone', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('clients.contactPerson'), value: 'contactPerson', align: 'left', width: 165, bgcolor: 'tansparent', sortable: true },
-        { text: '', value: 'coming', align: 'left', width: 45, bgcolor: 'tansparent' },
-        { text: this.$t('clients.uid'), value: 'uid', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent', sortable: true },
-        { text: '', value: 'deals', width: 60, minWidth: 60, bgcolor: 'tansparent', sortable: true, tooltip: this.$t('clients.currentDealsAmount') },
-        { text: '', value: 'actions', align: 'right', width: 48, bgcolor: 'tansparent' },
+        { text: '', value: 'debt', align: 'left', width: 60, sortable: true, tooltip: this.$t('clients.clientsDebt') },
+        { text: this.$t('clients.companyName'), value: 'fullName', align: 'left', width: 220, minWidth: 220, sortable: true },
+        { text: this.$t('clients.phone'), value: 'clientPhone', align: 'left', width: 120, minWidth: 120, sortable: true },
+        { text: this.$t('clients.contactPerson'), value: 'contactPerson', align: 'left', width: 165, sortable: true },
+        { text: '', value: 'coming', align: 'left', width: 45 },
+        { text: this.$t('clients.uid'), value: 'uid', align: 'left', width: 120, minWidth: 120, sortable: true },
+        { text: '', value: 'deals', width: 60, minWidth: 60, sortable: true, tooltip: this.$t('clients.currentDealsAmount') },
+        { text: '', value: 'actions', align: 'right', width: 48 },
       ]
     },
     items () {

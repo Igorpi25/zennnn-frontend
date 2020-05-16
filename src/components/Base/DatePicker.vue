@@ -19,7 +19,7 @@
       :first-day-of-week="firstDayOfWeek"
       :next-icon="icons.mdiChevronRight"
       :prev-icon="icons.mdiChevronLeft"
-      color="#5a8199"
+      color="#7E99D0"
       no-title
       dark
       @input="input"

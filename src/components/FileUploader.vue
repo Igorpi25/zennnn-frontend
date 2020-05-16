@@ -1,5 +1,5 @@
 <template>
-  <div class="w-9 h-9 relative">
+  <div class="w-8 h-8 relative">
     <div
       ref="drop"
       :class="[
@@ -19,9 +19,9 @@
         v-if="!internalSrc"
         :class="[
           'w-full h-full border flex justify-center items-center',
-          'hover:border-gray-lighter hover:text-gray-lighter',
+          'hover:border-gray-150 hover:text-gray-150',
           rounded ? 'rounded-full' : 'rounded',
-          isDragOver ? 'border-gray-lighter border-solid text-gray-lighter' : 'border-dashed'
+          isDragOver ? 'border-gray-150 border-solid text-gray-150' : 'border-dashed'
         ]"
       >
         <Icon>

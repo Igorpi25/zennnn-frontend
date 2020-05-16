@@ -24,7 +24,7 @@
       />
     </v-dialog>
 
-    <div id="container" :class="[ isComponent ? 'view bg-chaos-black rounded-lg relative' : 'container' ]">
+    <div id="container" :class="[ isComponent ? 'view bg-gray-900 rounded-lg relative' : 'container' ]">
       <span
         v-if="isComponent"
         class="absolute cursor-pointer"
@@ -42,18 +42,18 @@
         <span>{{ $t('requisite.fillLater') }}</span>
       </Button>
       <div class="md:flex md:items-center text-sm mb-3">
-        <span class="block md:inline-block font-bold md:font-normal text-2xl md:text-base mb-6 md:mb-0 md:mr-2 text-center text-gray-lighter">
+        <span class="block md:inline-block font-bold md:font-normal text-2xl md:text-base mb-6 md:mb-0 md:mr-2 text-center text-gray-150">
           {{ $t('requisite.requisitesOfMyCompany') }}
         </span>
         <div class="flex flex-col md:flex-row items-center">
-          <ToggleButton
+          <SwitchToggle
             v-if="!create"
             :value="editMode"
             small
             @input="toggleEditMode"
           >
             <span>{{ $t('requisite.edit') }}</span>
-          </ToggleButton>
+          </SwitchToggle>
         </div>
       </div>
       <div class="requisite-card__radio-group">
@@ -93,7 +93,7 @@
               >
                 <div
                   v-if="item.subtitle"
-                  class="text-gray-lightest px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
+                  class="text-gray-150 px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
                 >
                   {{ $t(`requisite.${item.subtitle}`) }}
                 </div>
@@ -150,7 +150,7 @@
               >
                 <div
                   v-if="item.subtitle"
-                  class="text-gray-lightest px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
+                  class="text-gray-150 px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
                 >
                   {{ $t(`requisite.${item.subtitle}`) }}
                 </div>
@@ -593,7 +593,7 @@ export default {
   }
   .requisite-header__title {
     font-size: 24px;
-    @apply block text-gray-lighter;
+    @apply block text-gray-150;
   }
   .requisite-card__radio-group {
     display: flex;

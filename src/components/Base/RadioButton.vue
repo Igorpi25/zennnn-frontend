@@ -1,36 +1,60 @@
 <template>
-  <InputBase
-    :is-dirty="!!internalValue"
-    :has-error="hasError"
-    :hide-details="hideDetails"
-    :detail-text="errorText"
-    :class="['radio', {'radio--center': center}]"
-  >
-    <div class="radio__slot">
-      <div class="radio__input">
+  <div :class="{ 'opacity-40': disabled }">
+    <div class="flex items-start">
+      <div
+        class="flex-shrink-0 relative rounded-full"
+        :style="{
+          width: '18px',
+          height: '18px',
+        }"
+      >
+        <div
+          :class="[
+            'transition-colors duration-100 ease-out',
+            'relative w-full h-full flex border-2 rounded-full',
+            checked ? 'border-blue-500' : borderColor ? borderColor : 'border-gray-300',
+            { [bgColor || 'bg-blue-500']: checked },
+            { 'shadow-blue-600': hasFocus },
+          ]"
+        >
+          <v-fade-transition>
+            <div v-show="checked" class="absolute inset-0 flex items-center justify-center">
+              <div class="bg-white rounded-full w-2 h-2" />
+            </div>
+          </v-fade-transition>
+        </div>
         <input
           ref="input"
-          type="radio"
           v-model="internalValue"
           :value="label"
-          :id="inputId"
+          :id="computedId"
           :name="name"
           :required="required"
           :readonly="readonly"
           :disabled="disabled"
+          :class="[
+            'absolute opacity-0 select-none cursor-pointer top-0 left-0',
+            { 'cursor-not-allowed': disabled },
+          ]"
+          :style="{
+            width: '18px',
+            height: '18px',
+          }"
+          type="radio"
+          tabindex="0"
+          aria-hidden="true"
+          @focus="hasFocus = true"
+          @blur="hasFocus = false"
         >
-        <i class="radio__icon">
-          <div class="icon__item">
-            <svg v-if="checked" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><title>radio-checked</title><path d="M7,3a4,4,0,1,0,4,4A4,4,0,0,0,7,3Zm0,7a3,3,0,1,1,3-3A3,3,0,0,1,7,10Z" style="fill:#5a8199"/><circle cx="7" cy="7" r="3" style="fill:#16a0ce"/><path d="M7,0a7,7,0,1,0,7,7A7,7,0,0,0,7,0ZM7,13a6,6,0,1,1,6-6A6,6,0,0,1,7,13Z" style="fill:#5a8199"/></svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><title>radio</title><path d="M7,0a7,7,0,1,0,7,7A7,7,0,0,0,7,0ZM7,13a6,6,0,1,1,6-6A6,6,0,0,1,7,13Z" style="fill:#5a8199"/></svg>
-          </div>
-        </i>
       </div>
-      <label :for="inputId">
+      <label :for="computedId" class="cursor-pointer select-none leading-tight">
         <slot />
       </label>
     </div>
-  </InputBase>
+    <div v-if="!hideDetails" class="h-6 pt-2 leading-tight text-sm text-yellow-400">
+      {{ errorText }}
+    </div>
+  </div>
 </template>
 
 <script>
@@ -41,43 +65,25 @@ export default {
   mixins: [validatable],
   props: {
     value: [String, Number, Boolean],
-    label: {
-      type: String,
-      default: '',
-    },
-    name: {
-      type: String,
-      default: null,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    readonly: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    hideDetails: {
-      type: Boolean,
-      default: false,
-    },
-    center: {
-      type: Boolean,
-      default: false,
-    },
+    label: String,
+    borderColor: String,
+    bgColor: String,
+    name: String,
+    required: Boolean,
+    readonly: Boolean,
+    disabled: Boolean,
+    hideDetails: Boolean,
   },
   data () {
     return {
-      // TODO input registrator
-      inputId: 'input' + Math.round(Math.random() * 100000),
+      hasFocus: false,
       lazyValue: this.value,
     }
   },
   computed: {
+    computedId () {
+      return this.id || `input-${this._uid}`
+    },
     internalValue: {
       get () {
         return this.lazyValue
@@ -92,8 +98,11 @@ export default {
     },
   },
   watch: {
-    value (val) {
-      this.lazyValue = val
+    value: {
+      handler (val) {
+        this.lazyValue = val
+      },
+      immediate: true,
     },
   },
 }

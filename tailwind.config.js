@@ -5,21 +5,11 @@ module.exports = {
     },
     colors: {
       primary: '#5a8199',
-      'primary-accent': '#6996B2',
-      secondary: '#16a0ce',
-      accent1: '#404040',
-      accent2: '#616161',
-      accent3: '#252525',
-      'chaos-black': '#0F0F0F',
-      'gray-lightest': '#9F9F9F',
       'gray-lighter': '#868686',
       'gray-light': '#777777',
       gray: '#393939',
       'gray-dark': '#545454',
-      'gray-darker': '#303132',
       'gray-darkest': '#2A2B2D',
-      'logo-mobile': '#CACACA',
-      'logo-desktop': '#1E0E00',
       error: '#c4321d',
       red: '#BF3A40',
       green: '#48BB78',
@@ -48,9 +38,12 @@ module.exports = {
       'blue-800': '#2F52D4', // landing hover color
       'pink-500': '#FF005E', // error, IN_PROCESSING
       'green-500': '#08DC1B', // success, IN_STOCK
-      'yellow-400': '#EAD377', // input warning
+      'yellow-300': '#EAD377', // input warning
+      'yellow-400': '#D7C370', // checkbox error text
       'yellow-500': '#FDB600', // warning, IN_PRODUCTION
+      'purple-500': '#4C51BF', // custom price color
       'red-500': '#FF212D',
+      'red-600': '#FF121F', // spec total client debt text
     },
     fontFamily: {
       'myriad': ['MyriadPro', 'sans-serif'],
@@ -60,7 +53,8 @@ module.exports = {
     boxShadow: {
       primary: '0 0 0 1px #5a8199',
       'blue-500': '0 0 0 1px #7E99D0',
-      'yellow-400': '0 0 0 1px #EAD377',
+      'blue-600': '0 0 0 1px #5C78B1',
+      'yellow-300': '0 0 0 1px #EAD377',
       default: '0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06)',
       md: '0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06)',
       lg: '0px 4px 10px rgba(0, 0, 0, 0.25)',
@@ -78,6 +72,7 @@ module.exports = {
         'sm': '10px',
         'lg': '30px',
         '9': '2.25rem',
+        '11': '2.75rem',
       },
       height: {
         '9': '2.25rem',
@@ -88,6 +83,9 @@ module.exports = {
         '35': '.35',
         '40': '.4',
         '90': '.9',
+      },
+      zIndex: {
+        '1': '1',
       },
     },
   },

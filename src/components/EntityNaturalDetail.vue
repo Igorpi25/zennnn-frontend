@@ -6,7 +6,7 @@
         <span class="text-gray-200 mr-1"> (указывайте, как в паспорте)</span>
         <v-tooltip top max-width="272" nudge-bottom="5" nudge-right="104">
           <template v-slot:activator="{ on }">
-            <i class="icon-add align-middle text-base text-blue-500 hover:text-blue-600 cursor-pointer" v-on="on" />
+            <i class="zi-help align-middle text-base text-blue-500 hover:text-blue-600 cursor-pointer" v-on="on" />
           </template>
           <span>
             Все указанные в этом разделе данные будут подставлены в договор, контракт, инвойс и прочие документы, которые система подготовит автоматически. Также в документах будет использовано ФИО и дата рождения клиента. Непосредственно перед тем как поделится с клиентом данными о совместной сделке, вы сможете устаовить, какие документы показать клиенту.
@@ -15,11 +15,11 @@
       </div>
       <div>
         <button
-          class="w-6 h-6 flex items-center justify-center text-xl text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none select-none"
+          class="w-6 h-6 flex items-center justify-center text-2xl text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none select-none"
            @click="toggleExpand"
         >
-          <i v-if="expanded" class="icon-arroe-bottom-1" />
-          <i v-else class="icon-arroe-top-1" />
+          <i v-if="expanded" class="zi-chevron-down" />
+          <i v-else class="zi-chevron-up" />
         </button>
       </div>
     </div>
@@ -54,7 +54,7 @@
                 style="max-width: 232px"
               >
                 <template v-slot:prepend>
-                  <i class="icon-calendar text-lg" />
+                  <i class="zi-calendar text-lg" />
                 </template>
               </TextField>
               <TextField
@@ -65,7 +65,7 @@
                 style="max-width: 232px"
               >
                 <template v-slot:prepend>
-                  <i class="icon-calendar text-lg" />
+                  <i class="zi-calendar text-lg" />
                 </template>
               </TextField>
             </div>

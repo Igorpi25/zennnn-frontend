@@ -1,79 +1,65 @@
 <template>
-  <InputBase
-    :is-dirty="!!internalInput"
-    :has-error="hasError"
-    :hide-details="hideDetails"
-    :detail-text="errorText"
+  <div
     :class="[
-      customClass,
       'select',
-      {
-        'select--outlined': outlined,
-        'select--squared': squared,
-        'select--borderless': borderless,
-        'select--solo': solo,
-        'select--colored': colored,
-        'select--focused': hasFocus && searchable,
-        'select--active': isActive,
-        'select--menu-active': isMenuActive,
-        'select--disabled': disabled,
-      }
+      { 'select--menu-active': isMenuActive }
     ]"
   >
     <div
       ref="slot"
-      class="select__controls"
     >
-      <div
-        :style="{ paddingTop: !solo ? '10px' : null }"
-        class="select__slot"
+      <TextField
+        ref="input"
+        v-model="internalInput"
+        :id="computedId"
+        :type="type"
+        :name="name"
+        :required="required"
+        :readonly="!searchable"
+        :disabled="disabled"
+        :minlength="minlength"
+        :maxlength="maxlength"
+        :autofocus="autofocus"
+        :placeholder="placeholder"
+        :debounce="debounce"
+        :content-class="contentClass"
+        :input-class="inputClass"
+        :adlib="adlib"
+        :state-icon="stateIcon"
+        :slot-class="slotClass"
+        :class="['select-input']"
+        :label="label"
+        :label-no-wrap="labelNoWrap"
+        :label-hint="labelHint"
+        :single-line="singleLine"
+        :solo="solo"
+        :solo-flat="soloFlat"
+        :dense="dense"
+        autocomplete="off"
+        force-update
+        @input="onInput"
+        @focus="onFocus"
+        @blur="onBlur"
+        @keydown="onKeyDown"
       >
-        <label
-          v-if="!solo"
-          :for="inputId"
-          :class="[
-            'select__label',
-            { 'select__label--active': isLabelActive }
-          ]"
-        >
-          {{ label }}
-        </label>
-        <div
-          v-if="$slots.prepend"
-          class="select__prepend"
-        >
+        <template v-if="$slots.prepend" v-slot:prepend>
           <slot name="prepend" />
-        </div>
-        <input
-          ref="input"
-          v-model="internalInput"
-          :id="inputId"
-          :type="type"
-          :name="name"
-          :required="required"
-          :readonly="!searchable"
-          :disabled="disabled"
-          :minlength="minlength"
-          :maxlength="maxlength"
-          :autofocus="autofocus"
-          :placeholder="placeholder"
-          :class="[placeholderClass, inputClass, 'select-input']"
-          autocomplete="off"
-          @input="input"
-          @focus="onFocus"
-          @blur="onBlur"
-          @keydown="onKeyDown"
-        >
-        <div
-          v-if="$slots.append || $scopedSlots.append"
-          class="select__append"
-        >
-          <slot name="append" :isMenuOpen="isMenuActive" :toggle="toggleMenu" />
-        </div>
-      </div>
-      <div class="select__append-outer">
-        <slot name="append-outer" :isMenuOpen="isMenuActive" />
-      </div>
+        </template>
+        <template v-if="$slots.append" v-slot:append>
+          <slot name="append" />
+        </template>
+        <template v-if="hasArrowIcon" v-slot:append>
+          <button
+            v-if="hasArrowIcon"
+            :disabled="disabled"
+            :class="{ 'cursor-not-allowed': disabled }"
+            tabindex="-1"
+            class="flex items-center text-2xl text-blue-500 hover:text-blue-600 focus:text-blue-600 cursor-pointer focus:outline-none select-none"
+          >
+            <i :class="isMenuActive ? 'zi-chevron-up' : 'zi-chevron-down'" />
+          </button>
+        </template>
+      </TextField>
     </div>
     <v-menu
       ref="menu"
@@ -88,19 +74,20 @@
       :max-height="maxHeight"
       :min-width="minWidth"
       :max-width="maxWidth"
-      :nudge-bottom="menuNudgeBottom"
       :content-class="menuContentClass"
       allow-overflow
       offset-y
     >
       <ul
-        class="select-picker text-sm"
+        class="select-picker"
         role="menu"
       >
         <li
           v-if="$slots['prepend-item']"
           key="select-prepend-item"
-          class="select-picker__item v-list-item"
+          :class="[
+            'select-picker__item v-list-item',
+          ]"
           tabindex="0"
           role="menuitem"
           @click="prependItemClick"
@@ -125,7 +112,7 @@
           <div
             v-if="item.divider"
             :key="`divider-${i}`"
-            class="border-b border-primary"
+            class="border-b border-blue-500"
           />
           <li
             v-else
@@ -154,11 +141,10 @@
         </li>
       </ul>
     </v-menu>
-  </InputBase>
+  </div>
 </template>
 
 <script>
-import focusable from '@/mixins/focusable'
 import validatable from '@/mixins/validatable'
 import { isObject, defaultFilter } from '../../util/helpers'
 
@@ -169,24 +155,15 @@ export default {
       default: null,
     },
   },
-  mixins: [focusable, validatable],
+  mixins: [validatable],
   props: {
     value: {
       type: [String, Number, Object],
       default: () => ({}),
     },
-    returnObject: {
-      type: Boolean,
-      default: false,
-    },
-    search: {
-      type: String,
-      default: '',
-    },
-    searchable: {
-      type: Boolean,
-      default: false,
-    },
+    returnObject: Boolean,
+    search: String,
+    searchable: Boolean,
     items: {
       type: Array,
       default: () => ([]),
@@ -215,89 +192,57 @@ export default {
       type: [Number, String],
       default: 0,
     },
-    rules: {
-      type: Array,
-    },
-    label: {
-      type: String,
-      default: '',
-    },
+    rules: Array,
+    label: String,
+    labelNoWrap: Boolean,
+    labelHint: String,
     type: {
       type: String,
       default: 'text',
     },
-    name: {
-      type: String,
-      default: null,
+    name: String,
+    required: Boolean,
+    disabled: Boolean,
+    minlength: String,
+    maxlength: String,
+    autofocus: Boolean,
+    placeholder: String,
+    clearable: Boolean,
+    hideDetails: Boolean,
+    singleLine: Boolean,
+    solo: Boolean,
+    soloFlat: Boolean,
+    debounce: {
+      type: Number,
+      default: 0,
     },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    minlength: {
-      type: String,
-      default: null,
-    },
-    maxlength: {
-      type: String,
-      default: null,
-    },
-    autofocus: {
-      type: Boolean,
-      default: false,
-    },
-    placeholder: {
-      type: String,
-      default: null,
-    },
-    clearable: {
-      type: Boolean,
-      default: false,
-    },
-    hideDetails: {
-      type: Boolean,
-      default: false,
-    },
-    outlined: {
-      type: Boolean,
-      default: false,
-    },
-    squared: {
-      type: Boolean,
-      default: false,
-    },
-    borderless: {
-      type: Boolean,
-      default: false,
-    },
-    solo: {
-      type: Boolean,
-      default: false,
-    },
-    colored: {
-      type: Boolean,
-      default: false,
-    },
-    customClass: {
-      type: [String, Array, Object],
+    contentClass: {
+      type: [String, Object],
       default: '',
     },
     inputClass: {
-      type: [String, Array, Object],
+      type: [String, Object],
       default: '',
+    },
+    // preferably validation icon
+    adlib: Boolean,
+    stateIcon: Boolean,
+    slotClass: {
+      type: String,
+      default: 'w-10',
     },
     flat: Boolean,
     menuAttach: undefined,
     noFilter: Boolean,
+    hasArrowIcon: {
+      type: Boolean,
+      default: true,
+    },
+    dense: Boolean,
   },
   data () {
     return {
-      // TODO input registrator
-      inputId: 'input' + Math.round(Math.random() * 100000),
+      hasFocus: false,
       lazyInput: '',
       lazyValue: this.value,
       isMenuActive: false,
@@ -305,14 +250,14 @@ export default {
     }
   },
   computed: {
+    computedId () {
+      return this.id || `input-${this._uid}`
+    },
     filteredItems () {
       if (!this.noFilter && this.searchable && this.search) {
         return this.items.filter(item => Object.values(item).some(el => defaultFilter(el, this.search)))
       }
       return this.items
-    },
-    menuNudgeBottom () {
-      return !this.flat ? -1 : null
     },
     menuContentClass () {
       let result = 'select-menu'
@@ -323,16 +268,6 @@ export default {
     },
     isActive () {
       return this.hasFocus || this.isMenuActive
-    },
-    placeholderClass () {
-      let c = this.colored
-        ? 'placeholder-primary' : this.squared
-          ? 'placeholder-gray-200' : this.outlined
-            ? 'placeholder-primary' : 'placeholder-gray-100'
-      if (this.outlined || this.squared) {
-        c += ' focus:placeholder-gray-light'
-      }
-      return c
     },
     internalValue: {
       get () {
@@ -421,6 +356,14 @@ export default {
     }
   },
   methods: {
+    onFocus () {
+      this.hasFocus = true
+    },
+
+    onBlur () {
+      this.hasFocus = false
+    },
+
     onKeyDown (e) {
       const menu = this.$refs.menu
 
@@ -561,6 +504,9 @@ export default {
     focus () {
       this.$refs.input.focus()
     },
+    blur () {
+      this.$refs.input.blur()
+    },
     select (value) {
       this.internalValueObject = value
       this.checkField({})
@@ -568,11 +514,10 @@ export default {
       this.$emit('input', val)
       this.closeMenu()
     },
-    input (e) {
+    onInput (val) {
       if (this.searchable) {
-        this.$emit('update:search', e.target.value || '')
+        this.$emit('update:search', val || '')
       }
-      this.checkField(e)
     },
     closeConditional (e) {
       if (

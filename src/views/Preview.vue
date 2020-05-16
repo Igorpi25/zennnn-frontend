@@ -28,7 +28,7 @@
                   class="w-full inline-block rounded-md border border-transparent pointer-events-none"
                 >
                   <div class="h-10 w-10 flex items-center justify-center text-gray-75">
-                    <i class="icon-add-user text-2xl" />
+                    <i class="zi-user-plus text-2xl" />
                   </div>
                 </button>
               </div>
@@ -50,7 +50,7 @@
                     />
                   </div>
                   <div :class="['h-10 w-10 flex items-center justify-center', { 'opacity-0': printLoading }]">
-                    <i class="icon-printer text-blue-500 text-2xl" />
+                    <i class="zi-print text-blue-500 text-2xl" />
                   </div>
                 </button>
               </div>
@@ -107,8 +107,8 @@
                   @click="toggleExpandAll"
                 >
                   <div class="h-10 w-10 flex items-center justify-center">
-                    <i v-if="expanded.length === 0" class="icon-arroe-bottom text-blue-500 text-2xl" />
-                    <i v-else class="icon-arroe-top text-blue-500 text-2xl" />
+                    <i v-if="expanded.length === 0" class="zi-expand text-blue-500 text-2xl" />
+                    <i v-else class="zi-collapse text-blue-500 text-2xl" />
                   </div>
                 </button>
               </div>
@@ -148,8 +148,8 @@
                 </div>
                 <div class="ml-auto">
                   <button class="select-none focus:outline-none text-blue-500 focus:text-blue-600 hover:text-blue-600 transition-colors duration-100 ease-out">
-                    <i v-if="expanded.includes(item.id)" class="icon-arroe-top-1 text-sm" />
-                    <i v-else class="icon-arroe-bottom-1 text-sm" />
+                    <i v-if="expanded.includes(item.id)" class="zi-chevron-up text-xl align-middle" />
+                    <i v-else class="zi-chevron-down text-2xl align-middle" />
                   </button>
                 </div>
               </div>
@@ -181,7 +181,7 @@
                   <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
                     <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
                       <div class="flex text-gray-100 pb-2">
-                        <i class="icon-calendar text-2xl mr-2" />
+                        <i class="zi-calendar text-2xl mr-2" />
                         <span>
                           {{ $t('preview.estimateDate') }}
                         </span>
@@ -194,7 +194,7 @@
                   <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
                     <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
                       <div class="flex text-gray-100 pb-2">
-                        <i class="icon-cap text-2xl mr-2" />
+                        <i class="zi-cup text-2xl mr-2" />
                         <span>
                           {{ $t('preview.totalVolume') }}
                         </span>
@@ -207,7 +207,7 @@
                   <div class="w-1/2 sm:w-1/4 px-2">
                     <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
                       <div class="flex text-gray-100 pb-2">
-                        <i class="icon-boxes text-2xl mr-2" />
+                        <i class="zi-boxes text-2xl mr-2" />
                         <span>
                           {{ $t('preview.totalPackages') }}
                         </span>
@@ -220,7 +220,7 @@
                   <div class="w-1/2 sm:w-1/4 px-2">
                     <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
                       <div class="flex text-gray-100 pb-2">
-                        <i class="icon-kg text-2xl mr-2" />
+                        <i class="zi-massa text-2xl mr-2" />
                         <span>
                           {{ $t('preview.totalWeight') }}
                         </span>
@@ -272,7 +272,7 @@
                         v-if="container.full"
                         class="flex items-center px-5 py-3"
                       >
-                        <i class="icon-add-2 text-xl text-gray-100" />
+                        <i class="zi-plus text-xl text-gray-100" />
                       </div>
                       <div class="text-sm text-gray-200">
                         <div>
@@ -397,7 +397,7 @@
                     class="w-full inline-block rounded-md border border-gray-75 pointer-events-none"
                   >
                     <div class="h-12 flex items-center px-3 text-gray-75">
-                      <i class="icon-add-user text-xl mr-2" />
+                      <i class="zi-user-plus text-xl mr-2" />
                       <span class="whitespace-nowrap leading-tight">
                         {{ $t('preview.share') }}
                       </span>
@@ -423,7 +423,7 @@
                       />
                     </div>
                     <div :class="['h-12 flex items-center px-3', { 'opacity-0': printLoading }]">
-                      <i class="icon-printer text-gray-100 text-xl mr-2" />
+                      <i class="zi-print text-gray-100 text-xl mr-2" />
                       <span class="text-blue-500 whitespace-nowrap leading-tight">
                         {{ $t('preview.print') }}
                       </span>
@@ -491,7 +491,7 @@
           </div>
         </div>
       </div>
-      <div class="absolute bottom-0 w-full">
+      <div class="absolute bottom-0 w-full text-center">
         <Copyright />
       </div>
     </div>
@@ -500,21 +500,6 @@
 
 <script>
 import deepmerge from 'deepmerge'
-
-import {
-  mdiChevronDown,
-  mdiChevronUp,
-  mdiMinus,
-  mdiPlus,
-  mdiPlusThick,
-} from '@mdi/js'
-
-import {
-  ziSettings,
-  ziPaperPlane,
-  ziPrint,
-  ziShare,
-} from '@/assets/icons'
 
 import StatusBar from '../components/StatusBar'
 import Copyright from '../components/Copyright'
@@ -573,17 +558,6 @@ export default {
       invoiceScrollLeft: 0,
       isBooted: false,
       expanded: [],
-      icons: {
-        mdiChevronDown,
-        mdiChevronUp,
-        mdiMinus,
-        mdiPlus,
-        mdiPlusThick,
-        ziSettings,
-        ziPaperPlane,
-        ziPrint,
-        ziShare,
-      },
       menuCurrency: false,
     }
   },

@@ -34,7 +34,7 @@
                   class="cursor-pointer flex items-center"
                   @click="deleteRequisite(item.id)"
                 >
-                  <i class="icon-delete text-lg text-gray-200 hover:text-gray-100" />
+                  <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
                 </div>
               </td>
             </tr>
@@ -49,7 +49,7 @@
         })"
       >
         <template v-slot:icon>
-          <i class="icon-add text-gray-100 text-xl" />
+          <i class="zi-plus-outline text-gray-100 text-2xl" />
         </template>
         <span>{{ $t('requisites.addRequisites') }}</span>
       </Button>

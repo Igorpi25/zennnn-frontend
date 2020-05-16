@@ -13,7 +13,7 @@
       <div class="flex justify-between">
         <span class="mb-3">
           <span>{{ $t('shipping.shippingTitle') }}</span>&nbsp;
-          <span class="text-primary">
+          <span class="text-blue-500">
             {{ spec.specNo }}
           </span>&nbsp;
           <span>{{ $t('preposition.from') }}:</span>&nbsp;

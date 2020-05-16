@@ -48,7 +48,7 @@
       <form ref="form" class="bg-gray-600 rounded py-6">
         <!-- REQUISITE -->
         <h5 class="uppercase mb-3 px-3">
-          <span class="inline-block font-bold">{{ $t('shipping.supplierTitle') }}</span>&nbsp;<span class="inline-block font-bold text-gray-light">{{ $t('shipping.supplierSubtitle') }}</span>
+          <span class="inline-block font-bold">{{ $t('shipping.supplierTitle') }}</span>&nbsp;<span class="inline-block font-bold text-blue-200">{{ $t('shipping.supplierSubtitle') }}</span>
         </h5>
         <div class="flex flex-wrap">
           <div class="w-full sm:w-1/2 px-3">
@@ -70,7 +70,7 @@
                 squared
                 hide-details
                 class="text-sm select_nd"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 @input="setRequisite"
                 @click:append-item="createRequisite"
               >
@@ -81,7 +81,7 @@
                   </span>
                 </template>
                 <template v-slot:append="{ isMenuOpen, toggle }">
-                  <div class="text-primary cursor-pointer select-none" @click="toggle">
+                  <div class="text-blue-500 cursor-pointer select-none" @click="toggle">
                     <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
                     <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                   </div>
@@ -91,14 +91,14 @@
             <div class="pb-4">
               <label class="text-sm">
                 <span>{{ $t('requisite.label.address') }}</span>&nbsp;
-                <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
+                <span class="text-blue-200">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
                 :value="requisite.legalAddress"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!hasRequisite"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 required
                 @input="updateRequisite({ legalAddress: $event })"
               >
@@ -119,7 +119,7 @@
                   :debounce="250"
                   :placeholder="'000 - 00 - 00'"
                   :disabled="!hasRequisite"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="updateRequisite({ phone: $event })"
                 >
@@ -141,7 +141,7 @@
                   :debounce="250"
                   :placeholder="'000 - 00 - 00'"
                   :disabled="!hasRequisite"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-blue-500 placeholder-gray-200"
                   @input="updateRequisite({ fax: $event })"
                 />
               </div>
@@ -155,7 +155,7 @@
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!hasRequisite"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 required
                 @input="updateRequisite({ email: $event })"
               >
@@ -175,7 +175,7 @@
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!hasRequisite"
-                input-class="h-8 text-primary placeholder-gray-200"
+                input-class="h-8 text-blue-500 placeholder-gray-200"
                 @input="updateRequisite({ website: $event })"
               />
             </div>
@@ -190,7 +190,7 @@
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!hasRequisite"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 required
                 @input="updateRequisite({ bankName: $event })"
               >
@@ -204,14 +204,14 @@
             <div class="pb-4">
               <label class="text-sm">
                 <span>{{ $t('requisite.label.bankAddress') }}</span>&nbsp;
-                <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
+                <span class="text-blue-200">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
                 :value="requisite.bankAddress"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!hasRequisite"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 required
                 @input="updateRequisite({ bankAddress: $event })"
               >
@@ -231,7 +231,7 @@
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!hasRequisite"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 required
                 @input="updateRequisite({ bankAccountNumber: $event })"
               >
@@ -251,7 +251,7 @@
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!hasRequisite"
-                input-class="h-8 text-primary placeholder-yellow-500"
+                input-class="h-8 text-blue-500 placeholder-yellow-500"
                 @input="updateRequisite({ swift: $event })"
               />
             </div>
@@ -264,7 +264,7 @@
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!hasRequisite"
-                input-class="h-8 text-primary placeholder-yellow-500"
+                input-class="h-8 text-blue-500 placeholder-yellow-500"
                 @input="updateRequisite({ itn: $event })"
               />
             </div>
@@ -278,7 +278,7 @@
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   :disabled="!hasRequisite"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-blue-500 placeholder-gray-200"
                   @input="updateRequisite({ bic: $event })"
                 />
               </div>
@@ -291,7 +291,7 @@
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   :disabled="!hasRequisite"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-blue-500 placeholder-gray-200"
                   @input="updateRequisite({ okpo: $event })"
                 />
               </div>
@@ -301,7 +301,7 @@
         <div class="border-t border-gray-900 m-3" />
         <!-- CLIENT -->
         <h5 class="uppercase mb-3 px-3 pt-4">
-          <span class="inline-block font-bold">{{ $t('shipping.clientTitle') }}</span>&nbsp;<span class="inline-block font-bold text-gray-light">{{ $t('shipping.clientSubtitle') }}</span>
+          <span class="inline-block font-bold">{{ $t('shipping.clientTitle') }}</span>&nbsp;<span class="inline-block font-bold text-blue-200">{{ $t('shipping.clientSubtitle') }}</span>
         </h5>
         <div class="flex flex-wrap">
           <div class="w-full sm:w-1/2 px-3">
@@ -324,7 +324,7 @@
                 squared
                 hide-details
                 class="text-sm select_nd"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 @input="setSpecClient($event && $event.id)"
                 @click:append-item="createClient"
               >
@@ -335,7 +335,7 @@
                   </span>
                 </template>
                 <template v-slot:append="{ isMenuOpen, toggle }">
-                  <div class="text-primary cursor-pointer select-none" @click="toggle">
+                  <div class="text-blue-500 cursor-pointer select-none" @click="toggle">
                     <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
                     <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                   </div>
@@ -347,14 +347,14 @@
                 <label class="text-sm">
                   <!-- TODO: in Client type change address to placeOfResidence -->
                   <span>{{ $t('requisite.label.address') }}</span>&nbsp;
-                  <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
+                  <span class="text-blue-200">{{ $t('shipping.inEnglish') }}</span>
                 </label>
                 <TextField
                   v-if="isClientTypeNatural"
                   :value="client.deliveryAddress"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="updateClient({ deliveryAddress: $event })"
                 >
@@ -369,7 +369,7 @@
                   :value="client.legalAddress"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="updateClient({ legalAddress: $event })"
                 >
@@ -389,7 +389,7 @@
                     :value="client.firstName"
                     :debounce="250"
                     :placeholder="$t('placeholder.notIndicated')"
-                    input-class="h-8 text-primary placeholder-pink-500"
+                    input-class="h-8 text-blue-500 placeholder-pink-500"
                     requried
                     @input="updateClient({ firstName: $event })"
                   >
@@ -408,7 +408,7 @@
                     :value="client.lastName"
                     :debounce="250"
                     :placeholder="$t('placeholder.notIndicated')"
-                    input-class="h-8 text-primary placeholder-pink-500"
+                    input-class="h-8 text-blue-500 placeholder-pink-500"
                     requried
                     @input="updateClient({ lastName: $event })"
                   >
@@ -427,7 +427,7 @@
                     :value="client.middleName"
                     :debounce="250"
                     :placeholder="$t('placeholder.notIndicated')"
-                    input-class="h-8 text-primary placeholder-gray-200"
+                    input-class="h-8 text-blue-500 placeholder-gray-200"
                     @input="updateClient({ middleName: $event })"
                   />
                 </div>
@@ -440,7 +440,7 @@
                   :value="client.contactPerson"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   requried
                   @input="updateClient({ contactPerson: $event })"
                 >
@@ -465,7 +465,7 @@
                     :value="client.mobilePhone"
                     :debounce="250"
                     :placeholder="'000 - 00 - 00'"
-                    input-class="h-8 text-primary placeholder-pink-500"
+                    input-class="h-8 text-blue-500 placeholder-pink-500"
                     required
                     @input="updateClient({ mobilePhone: $event })"
                   >
@@ -480,7 +480,7 @@
                     :value="client.phone"
                     :debounce="250"
                     :placeholder="'000 - 00 - 00'"
-                    input-class="h-8 text-primary placeholder-pink-500"
+                    input-class="h-8 text-blue-500 placeholder-pink-500"
                     required
                     @input="updateClient({ phone: $event })"
                   >
@@ -503,7 +503,7 @@
                     :value="client.additionalPhone"
                     :debounce="250"
                     :placeholder="'000 - 00 - 00'"
-                    input-class="h-8 text-primary placeholder-gray-200"
+                    input-class="h-8 text-blue-500 placeholder-gray-200"
                     @input="updateClient({ additionalPhone: $event })"
                   />
                   <TextField
@@ -511,7 +511,7 @@
                     :value="client.fax"
                     :debounce="250"
                     :placeholder="'000 - 00 - 00'"
-                    input-class="h-8 text-primary placeholder-gray-200"
+                    input-class="h-8 text-blue-500 placeholder-gray-200"
                     @input="updateClient({ fax: $event })"
                   />
                 </div>
@@ -526,7 +526,7 @@
                     :value="client.naturalEmail"
                     :debounce="250"
                     :placeholder="$t('placeholder.notIndicated')"
-                    input-class="h-8 text-primary placeholder-pink-500"
+                    input-class="h-8 text-blue-500 placeholder-pink-500"
                     required
                     @input="updateClient({ naturalEmail: $event })"
                   >
@@ -541,7 +541,7 @@
                     :value="client.email"
                     :debounce="250"
                     :placeholder="$t('placeholder.notIndicated')"
-                    input-class="h-8 text-primary placeholder-pink-500"
+                    input-class="h-8 text-blue-500 placeholder-pink-500"
                     required
                     @input="updateClient({ email: $event })"
                   >
@@ -566,7 +566,7 @@
             />
             <span class="switch-slider" />
           </label>
-          <span class="inline-block font-bold">{{ $t('shipping.importerTitle') }}</span>&nbsp;<span class="inline-block font-bold text-gray-light">{{ $t('shipping.importerSubtitle') }}</span>
+          <span class="inline-block font-bold">{{ $t('shipping.importerTitle') }}</span>&nbsp;<span class="inline-block font-bold text-blue-200">{{ $t('shipping.importerSubtitle') }}</span>
         </h5>
         <div class="flex flex-wrap">
           <div class="w-full sm:w-1/2 px-3">
@@ -579,7 +579,7 @@
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!isImporterActive"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 required
                 @input="updateClient({ consignee: $event })"
               >
@@ -594,14 +594,14 @@
               <label class="text-sm">
                 <!-- TODO: in Client type change address to placeOfResidence -->
                 <span>{{ $t('requisite.label.address') }}</span>&nbsp;
-                <span class="text-gray-light">{{ $t('shipping.inEnglish') }}</span>
+                <span class="text-blue-200">{{ $t('shipping.inEnglish') }}</span>
               </label>
               <TextField
                 :value="importer.shippingAddress"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!isImporterActive"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 required
                 @input="updateClient({ shippingAddress: $event })"
               >
@@ -621,7 +621,7 @@
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
                 :disabled="!isImporterActive"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 required
                 @input="updateClient({ importerContactPerson: $event })"
               >
@@ -644,7 +644,7 @@
                   :debounce="250"
                   :placeholder="'000 - 00 - 00'"
                   :disabled="!isImporterActive"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="updateClient({ contactMobilePhone: $event })"
                 >
@@ -666,7 +666,7 @@
                   :debounce="250"
                   :placeholder="'000 - 00 - 00'"
                   :disabled="!isImporterActive"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-blue-500 placeholder-gray-200"
                   @input="updateClient({ importerFax: $event })"
                 />
               </div>
@@ -681,7 +681,7 @@
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
                   :disabled="!isImporterActive"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="updateClient({ importerEmail: $event })"
                 >
@@ -710,7 +710,7 @@
                 :value="shipment.sentFrom"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 required
                 @input="$emit('update', { shipment: { sentFrom: $event } })"
               >
@@ -729,7 +729,7 @@
                 :value="shipment.sentThrough"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
-                input-class="h-8 text-primary placeholder-yellow-500"
+                input-class="h-8 text-blue-500 placeholder-yellow-500"
                 @input="$emit('update', { shipment: { sentThrough: $event } })"
               />
             </div>
@@ -741,7 +741,7 @@
                 :value="shipment.sentDestination"
                 :debounce="250"
                 :placeholder="$t('placeholder.notIndicated')"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 required
                 @input="$emit('update', { shipment: { sentDestination: $event } })"
               >
@@ -770,7 +770,7 @@
                         :value="shipment.marine.exportDate ? $d($parseDate(shipment.marine.exportDate), 'short'): ''"
                         :placeholder="$t('placeholder.notIndicated')"
                         readonly
-                        input-class="h-8 text-primary placeholder-yellow-500"
+                        input-class="h-8 text-blue-500 placeholder-yellow-500"
                       />
                     </div>
                   </template>
@@ -784,7 +784,7 @@
                   :value="shipment.marine.containersCount"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { shipment: { marine: { containersCount: $event } } })"
                 >
@@ -813,12 +813,12 @@
                 squared
                 hide-details
                 class="text-sm select_nd"
-                input-class="h-8 text-primary placeholder-pink-500"
+                input-class="h-8 text-blue-500 placeholder-pink-500"
                 required
                 @input="$emit('update', { shipment: { activeType: $event } })"
               >
                 <template v-slot:append="{ isMenuOpen, toggle }">
-                  <div class="text-primary cursor-pointer select-none" @click="toggle">
+                  <div class="text-blue-500 cursor-pointer select-none" @click="toggle">
                     <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
                     <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                   </div>
@@ -835,7 +835,7 @@
                   :value="shipment.marine.billOfLadingNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { shipment: { marine: { billOfLadingNo: $event } } })"
                 >
@@ -854,7 +854,7 @@
                   :value="shipment.marine.ship"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { marine: { ship: $event } } })"
                 />
               </div>
@@ -866,7 +866,7 @@
                   :value="shipment.marine.containersNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { marine: { containersNo: $event } } })"
                 />
               </div>
@@ -881,7 +881,7 @@
                   :value="shipment.air.airWaybillNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { shipment: { air: { airWaybillNo: $event } } })"
                 >
@@ -900,7 +900,7 @@
                   :value="shipment.air.flight"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { air: { flight: $event } } })"
                 />
               </div>
@@ -912,7 +912,7 @@
                   :value="shipment.air.numbersOfPkg"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { shipment: { air: { numbersOfPkg: $event } } })"
                 >
@@ -934,7 +934,7 @@
                   :value="shipment.railway.internationalWaybillNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { shipment: { railway: { internationalWaybillNo: $event } } })"
                 >
@@ -953,7 +953,7 @@
                   :value="shipment.railway.train"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { railway: { train: $event } } })"
                 />
               </div>
@@ -965,7 +965,7 @@
                   :value="shipment.railway.containersCount"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { shipment: { railway: { containersCount: $event } } })"
                 >
@@ -984,7 +984,7 @@
                   :value="shipment.railway.containersNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { railway: { containersNo: $event } } })"
                 />
               </div>
@@ -1002,7 +1002,7 @@
                         :value="shipment.railway.exportDate ? $d($parseDate(shipment.railway.exportDate), 'short'): ''"
                         :placeholder="$t('placeholder.notIndicated')"
                         readonly
-                        input-class="h-8 text-primary placeholder-yellow-500"
+                        input-class="h-8 text-blue-500 placeholder-yellow-500"
                       />
                     </div>
                   </template>
@@ -1019,7 +1019,7 @@
                   :value="shipment.car.internationalWaybillNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { shipment: { car: { internationalWaybillNo: $event } } })"
                 >
@@ -1038,7 +1038,7 @@
                   :value="shipment.car.vehicleNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { car: { vehicleNo: $event } } })"
                 />
               </div>
@@ -1050,7 +1050,7 @@
                   :value="shipment.car.semitrailerNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { car: { semitrailerNo: $event } } })"
                 />
               </div>
@@ -1068,7 +1068,7 @@
                         :value="shipment.car.exportDate ? $d($parseDate(shipment.car.exportDate), 'short'): ''"
                         :placeholder="$t('placeholder.notIndicated')"
                         readonly
-                        input-class="h-8 text-primary placeholder-yellow-500"
+                        input-class="h-8 text-blue-500 placeholder-yellow-500"
                       />
                     </div>
                   </template>
@@ -1085,7 +1085,7 @@
                   :value="shipment.mixed.internationalWaybillNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { shipment: { mixed: { internationalWaybillNo: $event } } })"
                 >
@@ -1104,7 +1104,7 @@
                   :value="shipment.mixed.ship"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { mixed: { ship: $event } } })"
                 />
               </div>
@@ -1116,7 +1116,7 @@
                   :value="shipment.mixed.train"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { mixed: { train: $event } } })"
                 />
               </div>
@@ -1128,7 +1128,7 @@
                   :value="shipment.mixed.flight"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { mixed: { flight: $event } } })"
                 />
               </div>
@@ -1140,7 +1140,7 @@
                   :value="shipment.mixed.vehicleNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { mixed: { vehicleNo: $event } } })"
                 />
               </div>
@@ -1152,7 +1152,7 @@
                   :value="shipment.mixed.containersNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { mixed: { containersNo: $event } } })"
                 />
               </div>
@@ -1170,7 +1170,7 @@
                         :value="shipment.mixed.exportDate ? $d($parseDate(shipment.mixed.exportDate), 'short'): ''"
                         :placeholder="$t('placeholder.notIndicated')"
                         readonly
-                        input-class="h-8 text-primary placeholder-yellow-500"
+                        input-class="h-8 text-blue-500 placeholder-yellow-500"
                       />
                     </div>
                   </template>
@@ -1187,7 +1187,7 @@
                   :value="shipment.express.postalNo"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { shipment: { express: { postalNo: $event } } })"
                 >
@@ -1206,7 +1206,7 @@
                   :value="shipment.express.deliveryService"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { shipment: { express: { deliveryService: $event } } })"
                 />
               </div>
@@ -1218,7 +1218,7 @@
                   :value="shipment.express.numbersOfPkg"
                   :debounce="250"
                   :placeholder="$t('placeholder.notChosen')"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { shipment: { express: { numbersOfPkg: $event } } })"
                 >
@@ -1255,12 +1255,12 @@
                   squared
                   hide-details
                   class="text-sm select_nd"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { customs: { countryOfOrigin: $event } })"
                 >
                   <template v-slot:append="{ isMenuOpen, toggle }">
-                    <div class="text-primary cursor-pointer select-none" @click="toggle">
+                    <div class="text-blue-500 cursor-pointer select-none" @click="toggle">
                       <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
                       <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                     </div>
@@ -1283,12 +1283,12 @@
                   squared
                   hide-details
                   class="text-sm select_nd"
-                  input-class="h-8 text-primary placeholder-pink-500"
+                  input-class="h-8 text-blue-500 placeholder-pink-500"
                   required
                   @input="$emit('update', { customs: { terms: $event } })"
                 >
                   <template v-slot:append="{ isMenuOpen, toggle }">
-                    <div class="text-primary cursor-pointer select-none" @click="toggle">
+                    <div class="text-blue-500 cursor-pointer select-none" @click="toggle">
                       <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
                       <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
                     </div>
@@ -1307,7 +1307,7 @@
                   lazy
                   number
                   number-format="currency"
-                  input-class="h-8 text-primary placeholder-yellow-500"
+                  input-class="h-8 text-blue-500 placeholder-yellow-500"
                   @input="$emit('update', { customs: { cost: $event } })"
                 >
                   <template v-slot:append>
@@ -1329,7 +1329,7 @@
                   squared
                   hide-details
                   class="text-sm select_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-blue-500 placeholder-gray-200"
                   @input="$emit('update', { customs: { currency: $event } })"
                 >
                   <template v-slot:append="{ isMenuOpen }">
@@ -1354,7 +1354,7 @@
                   lazy
                   number
                   number-format="currency"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-blue-500 placeholder-gray-200"
                   @input="$emit('update', { customs: { discount: $event } })"
                 >
                   <template v-slot:append>
@@ -1375,7 +1375,7 @@
                   squared
                   hide-details
                   class="text-sm select_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-blue-500 placeholder-gray-200"
                 >
                   <template v-slot:append="{ isMenuOpen }">
                     <div class="text-gray-darkest cursor-not-allowed">
@@ -1398,7 +1398,7 @@
                   squared
                   hide-details
                   class="text-sm select_nd"
-                  input-class="h-8 text-primary placeholder-gray-200"
+                  input-class="h-8 text-blue-500 placeholder-gray-200"
                 >
                   <template v-slot:append="{ isMenuOpen }">
                     <div class="text-gray-darkest cursor-not-allowed">
@@ -1437,7 +1437,7 @@
                 squared
                 hide-details
                 class="text-sm text-area_nd"
-                input-class="text-primary placeholder-yellow-500"
+                input-class="text-blue-500 placeholder-yellow-500"
                 @input="$emit('update', { amountInWords: $event })"
               />
             </div>
@@ -1455,7 +1455,7 @@
                 squared
                 hide-details
                 class="text-sm text-area_nd"
-                input-class="text-primary placeholder-yellow-500"
+                input-class="text-blue-500 placeholder-yellow-500"
                 @input="$emit('update', { amountInWordsClientLang: $event })"
               />
             </div>

@@ -7,11 +7,11 @@
           <div class="mb-8 sm:mt-24 mb-0">
             <div class="w-full">
               <h1 class="text-center md:text-left mb-12 pt-10 md:pt-12">
-                <span class="text-white md:text-gray-lightest">
+                <span class="text-white md:text-gray-100">
                   {{ $t('passwordRestore.accessRecoveryHead') }}
                 </span>
                 <br />
-                <span class="text-gray-lightest md:text-white">
+                <span class="text-gray-100 md:text-white">
                   {{ $t('passwordRestore.accessRecoverySubhead') }}
                 </span>
               </h1>
@@ -40,14 +40,14 @@
                       autofocus
                     />
                   </div>
-                  <div class="text-gray-lighter text-sm">
+                  <div class="text-gray-150 text-sm">
                     <p>{{ $t('passwordRestore.notRecieveEmailHead') }}&nbsp;
                       <span>
                         {{ $t('passwordRestore.notRecieveEmailSubhead') }}
                       </span>
                       <!-- <router-link
                         :to="{ name: 'login-restore' }"
-                        class="text-primary"
+                        class="text-blue-500"
                       >
                         {{ $t('passwordRestore.restoreBySms') }}
                       </router-link> -->

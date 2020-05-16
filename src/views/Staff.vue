@@ -19,7 +19,7 @@
             input-class="placeholder-blue-500"
           >
             <template v-slot:prepend>
-              <i class="icon-search text-2xl text-gray-100"></i>
+              <i class="zi-magnifier text-2xl text-gray-100"></i>
             </template>
           </TextField>
         </div>
@@ -59,7 +59,7 @@
 
              <template v-slot:items="{ items }">
               <template v-for="(item, index) in items">
-                <tr :key="item.id" class="items bg-gray-900 hover:bg-accent3 border-none">
+                <tr :key="item.id" class="items bg-gray-900 hover:bg-gray-800 border-none">
                   <td class="relative px-3">
                     <span
                       :class="[
@@ -103,21 +103,21 @@
                       class="cursor-pointer pointer-events-auto flex items-center"
                       @click="deleteUser(item.id)"
                     >
-                      <i class="icon-delete text-lg text-gray-200 hover:text-gray-100" />
+                      <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
                     </div>
                   </td>
                   <td>
                     <div
-                      class="text-lg cursor-pointer select-none flex items-center"
+                      class="text-2xl cursor-pointer select-none flex items-center"
                       @click="toggle(index)"
                     >
                       <i
                         v-if="expanded.includes(index)"
-                        class="icon-arroe-top-1 text-blue-500 hover:text-blue-600"
+                        class="zi-chevron-up text-blue-500 hover:text-blue-600"
                       />
                       <i
                         v-else
-                        class="icon-arroe-bottom-1 text-blue-500 hover:text-blue-600"
+                        class="zi-chevron-down text-blue-500 hover:text-blue-600"
                       />
                     </div>
                   </td>
@@ -128,15 +128,15 @@
                     :key="`expand-${index}-${specItem.id}`"
                     class="cursor-default"
                   >
-                    <!-- <td :colspan="headers.length" class="bg-chaos-black">
+                    <!-- <td :colspan="headers.length" class="bg-gray-900">
                       <DataTable
                         :headers="headers"
                         :items="item.specs"
                         hide-headers
                         table-width="100%"
                         table-class="table-fixed"
-                        items-row-class="bg-chaos-black"
-                        items-cell-class="bg-chaos-black"
+                        items-row-class="bg-gray-900"
+                        items-cell-class="bg-gray-900"
                       />
                     </td> -->
                     <td class="text-right relative px-3">
@@ -183,8 +183,8 @@
             :items="invitations"
             table-width="100%"
             table-class="table-fixed"
-            thead-class="text-accent2 border-b border-accent2"
-            items-row-class="border-none bg-gray-900 hover:bg-accent3"
+            thead-class="text-gray-200 border-b border-gray-200"
+            items-row-class="border-none bg-gray-900 hover:bg-gray-800"
             items-cell-class="bg-transparent"
           >
             <template v-slot:item.invitationEmail="{ item }">
@@ -218,7 +218,7 @@
                   class="cursor-pointer pointer-events-auto flex items-center justify-center"
                   @click="cancelInvitation(item.id)"
                 >
-                  <i class="icon-delete text-lg text-gray-200" />
+                  <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
                 </div>
               </td>
             </template>
@@ -230,7 +230,7 @@
           @click="createStaffDialog = true"
         >
           <template v-slot:icon>
-            <i class="icon-add-user text-gray-100 text-2xl" />
+            <i class="zi-user-plus text-gray-100 text-2xl" />
           </template>
           <span>{{ $t('staff.addStaff') }}</span>
         </Button>

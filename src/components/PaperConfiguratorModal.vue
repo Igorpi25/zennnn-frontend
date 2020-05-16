@@ -107,7 +107,7 @@
           </div>
           <Checkbox
             :value="contract.useDefaultDocHeader"
-            class="-ml-6 text-primary"
+            class="-ml-6 text-blue-500"
             hide-details
             vertical-align
             @input="useDefaultHeader"
@@ -125,7 +125,7 @@
               class="heading__number flex items-center cursor-pointer"
               @click="changePos(index, contract.items)"
             >
-              <i v-if="index > 0" class="text-primary">
+              <i v-if="index > 0" class="text-blue-500">
                 <Icon
                   size="24"
                   class="icon-move-up--heading"
@@ -159,7 +159,7 @@
                 class="paragraph__number flex cursor-pointer"
                 @click="changePos(idx, item.paragraphs)"
               >
-                <i v-if="idx > 0" class="text-primary">
+                <i v-if="idx > 0" class="text-blue-500">
                   <Icon
                     size="24"
                     class="icon-move-up--paragraph"
@@ -299,7 +299,7 @@
           <div class="paper-title__title">
             <span>{{ $t('paper.specification') }} №A0000-26082020-1</span>
             <span class="block"> {{ $t('paper.to') }}
-              <span class="text-gray-lighter">{{ contract.title }}</span>
+              <span class="text-gray-150">{{ contract.title }}</span>
             </span>
           </div>
           <div class="paper-title__info">
@@ -346,7 +346,7 @@
               class="heading__number flex items-center cursor-pointer"
               @click="changePos(index + 1, contract.specItems)"
             >
-              <i v-if="index > 0" class="text-primary">
+              <i v-if="index > 0" class="text-blue-500">
                 <Icon
                   size="24"
                   class="icon-move-up--heading"
@@ -378,7 +378,7 @@
               class="paragraph__number flex cursor-pointer"
               @click="changePos(idx, item.paragraphs)"
             >
-              <i v-if="idx > 0" class="text-primary">
+              <i v-if="idx > 0" class="text-blue-500">
                 <Icon
                   size="24"
                   class="icon-move-up--paragraph"
@@ -683,7 +683,7 @@ export default {
     display: flex;
     flex-direction: column;
     position: relative;
-    @apply bg-accent1;
+    @apply bg-gray-400;
   }
   .modal-header {
     max-width: 906px;
@@ -796,7 +796,7 @@ export default {
     cursor: pointer;
   }
   .paper-details__requisite {
-    @apply flex items-center text-primary cursor-pointer;
+    @apply flex items-center text-blue-500 cursor-pointer;
     position: absolute;
     top: -5px;
     left: 25%;

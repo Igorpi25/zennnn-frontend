@@ -7,7 +7,7 @@
           <div class="w-full flex flex-col-reverse justify-end md:flex-col">
             <div class="pt-10 md:pt-12">
               <h1 class="hidden md:block">
-                <span class="text-gray-lightest mr-2 inline md:block">
+                <span class="text-gray-100 mr-2 inline md:block">
                   {{ $t('signup.hello') }}
                 </span>
                 <span class="text-white inline sm:block" style="max-width:552px;">
@@ -16,7 +16,7 @@
               </h1>
               <p class="text-white mb-0 md:mb-5" style="max-width:460px;">
                 <span>{{ $t('signup.compliteRegistration') }}</span>&nbsp;
-                <span class="text-gray-lightest">
+                <span class="text-gray-100">
                   {{ $t('signup.registerContent') }}
                 </span>
               </p>
@@ -99,17 +99,17 @@
                   </template>
                 </TextField>
               </div>
-              <div class="relative mx-auto text-secondary">
+              <div class="relative mx-auto text-gray-300">
                 <!-- TODO fix position -->
                 <Checkbox
                   :rules="[rules.required]"
                   secondary
                 >
-                  <span class="ml-3 float-left text-gray-light">
+                  <span class="ml-3 float-left text-gray-200">
                     {{ $t('signup.acceptPolicyAndTerms') }}&nbsp;
-                    <a class="text-secondary" href="#">{{ $t('signup.privacyPolicy') }}</a>
+                    <a class="text-gray-300" href="#">{{ $t('signup.privacyPolicy') }}</a>
                     &nbsp;{{ $t('preposition.and') }}&nbsp;
-                    <a class="text-secondary" href="#">{{ $t('signup.termsOfUse') }}</a>
+                    <a class="text-gray-300" href="#">{{ $t('signup.termsOfUse') }}</a>
                   </span>
                 </Checkbox>
                 <div class="flex justify-center">

@@ -47,7 +47,7 @@
           </template>
         </TextField>
       </div>
-      <ToggleButton
+      <SwitchToggle
         small
         :value="item.profitForAll"
         @input="updateInvoice({
@@ -55,7 +55,7 @@
         })"
       >
         <span>{{ $t('shipping.forAll') }}</span>
-      </ToggleButton>
+      </SwitchToggle>
     </div>
 
     <div class="flex sm:flex-wrap w-full sm:w-auto md:px-3 max-w-xs">
@@ -227,7 +227,7 @@ export default {
 <style lang="postcss">
 .invoice-footer {
   @apply flex flex-wrap justify-center items-start py-1 px-4;
-  @apply bg-accent1;
+  @apply bg-gray-400;
   border-radius: 2px;
 }
 .invoice-footer > div {

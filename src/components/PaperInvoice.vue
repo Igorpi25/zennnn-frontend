@@ -2,7 +2,7 @@
   <div
     v-scroll="onScroll"
     ref="productsTable"
-    class="data-table-wrapper border-t border-white bg-gray-50 rounded-b-md"
+    class="overflow-x-auto overflow-scroll-touch border-t border-white bg-gray-50 rounded-b-md"
     @mouseenter="isMouseOver = true"
     @mouseleave="isMouseOver = false"
     @touchstart="isScrollStart = true"
@@ -73,8 +73,8 @@
             <div v-else class="h-12 w-12" style="border-radius: 5px; background: rgb(196, 196, 196, 0.2);" />
           </td>
           <td class="bg-white p-2">
-            <div class="min-h-5 truncate pb-xs" style="min-width: 250px;">{{ item.name }} {{ item.article }}</div>
-            <div class="text-gray-100 truncate min-h-5">
+            <div class="truncate pb-xs" style="min-width: 250px; min-height: 1.25rem;">{{ item.name }} {{ item.article }}</div>
+            <div class="text-gray-100 truncate" style="min-height: 1.25rem;">
               {{ item.description }}
             </div>
           </td>
@@ -111,7 +111,7 @@
             />
           </td>
           <td class="bg-white p-2 rounded-r-md text-center">
-            <i class="icon-arroe-bottom-1 text-xs text-gray-75" />
+            <i class="zi-open-in-new text-gray-75 text-2xl align-middle" />
           </td>
         </tr>
       </tbody>

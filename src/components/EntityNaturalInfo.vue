@@ -95,7 +95,7 @@
           class="w-1/2 pr-4"
         >
           <template v-slot:prepend>
-            <i class="icon-calendar text-lg" />
+            <i class="zi-calendar text-lg" />
           </template>
         </TextField>
         <div class="w-1/2 pl-4 opacity-40">

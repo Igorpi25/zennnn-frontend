@@ -12,12 +12,12 @@
           input-class="placeholder-blue-500"
         >
           <template v-slot:prepend>
-            <i class="icon-search text-2xl text-gray-100"></i>
+            <i class="zi-magnifier text-2xl text-gray-100"></i>
           </template>
         </TextField>
         <div class="flex w-full sm:w-auto items-center justify-end">
           <span class="pr-2 whitespace-no-wrap">Без сортировки</span>
-          <i class="icon-filter text-2xl text-gray-200" />
+          <i class="zi-filter text-2xl text-gray-200" />
         </div>
       </div>
 
@@ -120,7 +120,7 @@
                   class="cursor-pointer pointer-events-auto flex items-center"
                   @click="deleteSpec(item.id)"
                 >
-                  <i class="icon-delete text-lg text-gray-200 hover:text-gray-100" />
+                  <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
                 </div>
               </td>
             </tr>
@@ -134,7 +134,7 @@
         @click="createSpecDialog = true"
       >
         <template v-slot:icon>
-          <i class="icon-portdolio text-gray-100 text-lg" />
+          <i class="zi-bag text-gray-100 text-2xl" />
         </template>
         <span>{{ $t('deals.createDeal') }}</span>
       </Button>
@@ -147,7 +147,7 @@
       <div class="relative bg-gray-400">
         <div class="pt-6 px-6 pb-8">
           <div class="flex">
-            <i class="icon-add-user text-primary text-2xl mr-2" />
+            <i class="zi-user-plus text-blue-500 text-2xl mr-2" />
             <div class="w-64 text-white font-semibold pb-6">
               {{ $t('deals.createSpecDialogHeader') }}
             </div>
@@ -168,13 +168,13 @@
               squared
               hide-details
               class="text-sm select_nd"
-              input-class="h-8 text-primary placeholder-gray-100"
+              input-class="h-8 text-blue-500 placeholder-gray-100"
               @input="v => createSpecClient = v"
               @click:prepend-item="createClient"
             >
               <template v-slot:prepend-item>
-                <span class="flex items-center jusitfy-center text-primary">
-                  <i class="icon-add mr-1" />
+                <span class="flex items-center jusitfy-center text-blue-500">
+                  <i class="zi-plus mr-1" />
                   <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
                 </span>
               </template>
@@ -208,7 +208,7 @@
           class="absolute top-0 right-0 mt-4 mr-4 text-gray-200 hover:text-gray-100 cursor-pointer"
           @click="createSpecDialog = false"
         >
-          <i class="icon-close" />
+          <i class="zi-close" />
         </span>
       </div>
     </v-dialog>

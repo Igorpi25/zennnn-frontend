@@ -205,7 +205,7 @@
     "obtainCost": "Залишок для закупа",
     "clientDebt": "Борг клієнта",
     "summaryTitle": "Загальні відомості по специфікації",
-    "container": "контейнер",
+    "container": "контейнерів | контейнер | контейнера | контейнерів",
     "containerMeasure": "`",
     "containerLoaded": "заповнений на:",
     "estimateDate": "Готовність до відправки",

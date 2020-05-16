@@ -216,7 +216,7 @@
     "obtainCost": "Остаток для закупа",
     "clientDebt": "Долг клиента",
     "summaryTitle": "Общие сведения по спецификации",
-    "container": "контейнер",
+    "container": "контейнеров | контейнер | контейнера | контейнеров",
     "containerMeasure": "`",
     "containerLoaded": "заполнен на:",
     "estimateDate": "Готовность к отправке",

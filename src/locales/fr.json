@@ -205,7 +205,7 @@
     "obtainCost": "Montant à payer",
     "clientDebt": "Dette du client",
     "summaryTitle": "Résumé d'expédition",
-    "container": "récipient",
+    "container": "conteneurs | contenant | conteneurs",
     "containerMeasure": "`",
     "containerLoaded": "Chargée le :",
     "estimateDate": "Date d'envoi estimée",

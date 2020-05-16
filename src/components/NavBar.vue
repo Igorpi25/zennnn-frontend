@@ -7,7 +7,7 @@
         :key="item.name"
         :class="[
           'text-gray-200',
-          i === 0 ? 'mr-5' : 'mx-5',
+          i === 0 ? 'pr-5' : 'px-5',
         ]"
       >
         <router-link
@@ -23,7 +23,10 @@
           {{ item.text }}
         </router-link>
       </div>
-      <div class="ml-5 text-gray-400 border-b-2 border-transparent whitespace-no-wrap text-xl leading-6 h-full flex items-center">
+      <div
+        v-if="ownerOrManager"
+        class="px-5 text-gray-400 border-b-2 border-transparent whitespace-no-wrap text-xl leading-6 h-full flex items-center cursor-default"
+      >
         {{ $t('navbar.goods') }}
       </div>
     </div>
@@ -51,6 +54,9 @@ export default {
       const org = orgs.find(el => el.id === this.orgId) || {}
       return org.role || null
     },
+    ownerOrManager () {
+      return this.roleInOrg === Role.OWNER || this.roleInOrg === Role.MANAGER
+    },
     items () {
       const items = [
         {
@@ -60,7 +66,7 @@ export default {
           params: { orgId: this.orgId },
         },
       ]
-      if (this.roleInOrg === 'OWNER' || this.roleInOrg === 'MANAGER') {
+      if (this.ownerOrManager) {
         items.push({
           name: 'clients',
           text: this.$t('navbar.clients'),

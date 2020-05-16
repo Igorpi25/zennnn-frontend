@@ -30,11 +30,11 @@ export default {
     }
   },
   computed: {
-    productStatus () {
+    productStatusColor () {
       return this.item.productStatus === ProductStatus.IN_STOCK
-        ? 'status-indicator__bordered--green' : this.item.productStatus === ProductStatus.IN_PRODUCTION
-          ? 'status-indicator__bordered--orange' : this.item.productStatus === ProductStatus.IN_PROCESSING
-            ? 'status-indicator__bordered--pink' : 'bg-transparent'
+        ? 'bg-green-500' : this.item.productStatus === ProductStatus.IN_PRODUCTION
+          ? 'bg-yellow-500' : this.item.productStatus === ProductStatus.IN_PROCESSING
+            ? 'bg-pink-500' : ''
     },
     unitsItems () {
       const units = ['pcs', 'roll', 'time', 'm', 'l', 'm3', 'set', 'm2', 'kg', 'pack']
@@ -87,6 +87,10 @@ export default {
     async updateProduct (input) {
       try {
         const id = this.item.id
+        if (!id && this.create) {
+          this.$emit('create-product')
+          return
+        }
         this.updateLoading = id
         await this.$apollo.mutate({
           mutation: UPDATE_PRODUCT,
@@ -132,6 +136,10 @@ export default {
     async updateProductCost (input) {
       try {
         const id = this.item.id
+        if (!id && this.create) {
+          this.$emit('create-product')
+          return
+        }
         this.updateLoading = id
         await this.$apollo.mutate({
           mutation: UPDATE_PRODUCT_COST,
@@ -153,6 +161,10 @@ export default {
     async updateProductStore (input) {
       try {
         const id = this.item.id
+        if (!id && this.create) {
+          this.$emit('create-product')
+          return
+        }
         this.updateLoading = id
         await this.$apollo.mutate({
           mutation: UPDATE_PRODUCT_STORE,
@@ -174,6 +186,10 @@ export default {
     async updateProductInfo (input) {
       try {
         const id = this.item.id
+        if (!id && this.create) {
+          this.$emit('create-product')
+          return
+        }
         this.updateLoading = id
         await this.$apollo.mutate({
           mutation: UPDATE_PRODUCT_INFO,
@@ -195,6 +211,10 @@ export default {
     async updateProductLink (input) {
       try {
         const id = this.item.id
+        if (!id && this.create) {
+          this.$emit('create-product')
+          return
+        }
         this.updateLoading = id
         await this.$apollo.mutate({
           mutation: UPDATE_PRODUCT_LINK,
@@ -215,6 +235,7 @@ export default {
     },
     async deleteProduct (id) {
       try {
+        if (!id) return
         const msg = this.$t('alert.removeProduct')
         const confirm = await confirmDialog(msg)
         if (confirm === 'not_confirmed') {

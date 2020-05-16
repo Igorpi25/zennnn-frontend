@@ -33,7 +33,7 @@
   height: auto;
   display: block;
   @apply appearance-none outline-none w-full;
-  @apply bg-accent1 text-white;
+  @apply bg-gray-400 text-white;
 }
 
 .text-area--single-line textarea {
