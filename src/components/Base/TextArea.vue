@@ -1,91 +1,46 @@
 <template>
-  <InputBase
-    :is-dirty="!!internalValue"
-    :has-error="hasError"
-    :has-state-icon="hasStateIcon"
-    :hide-details="hideDetails"
-    :detail-text="errorText"
+  <div
     :class="[
-      'text-area',
-      {
-        'is-disabled': disabled,
-        'is-readonly': readonly,
-        'text-area--single-line': singleLine,
-        'text-area--outlined': outlined,
-        'text-area--squared': squared,
-        'text-area--solo': solo,
-        'text-area--focused': hasFocus,
-        'text-area--transparent': transparent
-      }
+      'rounded relative flex items-center focus:outline-none transition-colors duration-100 ease-out',
+      'focus-within:shadow-blue-500 text-white text-base bg-gray-800',
+      { 'opacity-40 cursor-not-allowed': this.disabled },
     ]"
   >
-    <div class="text-area__controls">
-      <div class="text-area__slot">
-        <label
-          v-if="!solo"
-          :for="inputId"
-          :class="[
-            'text-area__label',
-            { 'text-area__label--active': isLabelActive }
-          ]"
-        >
-          {{ label }}
-        </label>
-        <div
-          v-if="$slots.prepend"
-          class="text-area__prepend"
-        >
-          <slot name="prepend" />
-        </div>
-        <textarea
-          ref="input"
-          v-model="internalValue"
-          :id="inputId"
-          :name="name"
-          :required="required"
-          :readonly="readonly"
-          :disabled="disabled"
-          :cols="cols"
-          :rows="rows"
-          :maxlength="maxlength"
-          :minlength="minlength"
-          :autofocus="autofocus"
-          :placeholder="placeholder"
-          :class="[placeholderClass, inputClass]"
-          @input="calculateHeight"
-          @focus="onFocus"
-          @blur="onBlur"
-        />
-        <div
-          v-if="$slots.append"
-          class="text-area__append"
-        >
-          <slot name="append" />
-        </div>
-      </div>
-      <div class="text-area__append-outer">
-        <slot name="append-outer" />
-        <div
-          v-if="hasStateIcon"
-          class="text-area__state-icon"
-        >
-          <Icon v-if="hasError" color="#808080">
-            {{ icons.mdiCloseCircle }}
-          </Icon>
-          <Icon v-else color="#808080">
-            {{ icons.mdiCheckCircle }}
-          </Icon>
-        </div>
-      </div>
-      <div
-        v-if="hideDetails && hasError"
-        class="absolute text-red text-xs"
-        style="bottom:-18px;"
-      >
-        <span>{{ errorText }}</span>
-      </div>
-    </div>
-  </InputBase>
+    <label
+      v-if="!singleLine"
+      :for="computedId"
+      :class="[
+        'block leading-5 text-base text-gray-200 text-right whitespace-no-wrap py-2',
+      ]"
+    >
+      {{ label }}
+    </label>
+    <textarea
+      ref="input"
+      v-model="internalValue"
+      :id="computedId"
+      :name="name"
+      :required="required"
+      :readonly="readonly"
+      :disabled="disabled"
+      :cols="cols"
+      :rows="rows"
+      :maxlength="maxlength"
+      :minlength="minlength"
+      :autofocus="autofocus"
+      :placeholder="placeholder"
+      :class="[
+        'w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out truncate',
+        'placeholder-gray-200 px-sm py-3',
+        { 'cursor-not-allowed': this.disabled },
+        inputClass,
+      ]"
+      style="resize:none"
+      @input="onInput"
+      @focus="onFocus"
+      @blur="onBlur"
+    />
+  </div>
 </template>
 
 <script>
@@ -93,7 +48,6 @@ import debounce from 'lodash.debounce'
 
 import { mdiCloseCircle, mdiCheckCircle } from '@mdi/js'
 
-import focusable from '@/mixins/focusable'
 import validatable from '@/mixins/validatable'
 
 export default {
@@ -103,102 +57,44 @@ export default {
       default: null,
     },
   },
-  mixins: [focusable, validatable],
+  mixins: [validatable],
   props: {
-    autoGrow: {
-      type: Boolean,
-      default: false,
-    },
     value: {
       type: [String, Number],
       default: null,
     },
-    rules: {
-      type: Array,
-    },
-    label: {
-      type: String,
-      default: '',
-    },
+    label: String,
     type: {
       type: String,
       default: 'text',
     },
-    name: {
-      type: String,
-      default: null,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    readonly: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
+    name: String,
+    required: Boolean,
+    readonly: Boolean,
+    disabled: Boolean,
     cols: {
-      type: String,
+      type: [String, Number],
       default: null,
     },
     rows: {
       type: [String, Number],
       default: null,
     },
-    minlength: {
-      type: String,
-      default: null,
-    },
-    maxlength: {
-      type: String,
-      default: null,
-    },
-    autofocus: {
-      type: Boolean,
-      default: false,
-    },
-    placeholder: {
-      type: String,
-      default: null,
-    },
-    clearable: {
-      type: Boolean,
-      default: false,
-    },
-    hideDetails: {
-      type: Boolean,
-      default: false,
-    },
-    stateIcon: {
-      type: Boolean,
-      default: false,
-    },
-    outlined: {
-      type: Boolean,
-      default: false,
-    },
-    squared: {
-      type: Boolean,
-      default: false,
-    },
-    solo: {
-      type: Boolean,
-      default: false,
-    },
-    singleLine: {
-      type: Boolean,
-      default: false,
-    },
-    transparent: {
-      type: Boolean,
-      default: false,
-    },
+    minlength: String,
+    maxlength: String,
+    autofocus: Boolean,
+    placeholder: String,
+    clearable: Boolean,
+    hideDetails: Boolean,
+    autoGrow: Boolean,
+    singleLine: Boolean,
     debounce: {
       type: Number,
       default: 0,
+    },
+    contentClass: {
+      type: [String, Object],
+      default: '',
     },
     inputClass: {
       type: [String, Object],
@@ -207,8 +103,7 @@ export default {
   },
   data () {
     return {
-      // TODO input registrator
-      inputId: 'textarea' + Math.round(Math.random() * 100000),
+      hasFocus: false,
       lazyValue: this.value,
       icons: {
         mdiCloseCircle,
@@ -217,10 +112,8 @@ export default {
     }
   },
   computed: {
-    placeholderClass () {
-      return this.squared
-        ? 'placeholder-white focus:placeholder-gray-lighter'
-        : 'placeholder-gray-lighter'
+    computedId () {
+      return this.id || `input-${this._uid}`
     },
     internalValue: {
       get () {
@@ -238,9 +131,6 @@ export default {
     },
     isLabelActive () {
       return this.hasFocus || this.internalValue || this.placeholder
-    },
-    hasStateIcon () {
-      return this.form && this.form.wasValidated && this.stateIcon
     },
   },
   watch: {
@@ -282,6 +172,17 @@ export default {
       const minHeight = parseInt(this.rows, 10) * 24
 
       textArea.style.height = Math.max(minHeight, height) + 'px'
+    },
+    onInput () {
+      if (this.autoGrow) {
+        this.calculateHeight()
+      }
+    },
+    onFocus () {
+      this.hasFocus = true
+    },
+    onBlur () {
+      this.hasFocus = false
     },
   },
 }

@@ -507,6 +507,18 @@ export const checkPrecision = (val, base) => {
 }
 
 /**
+ * Check string for link
+ * @param {string} value string
+ * @returns {boolean}
+ */
+export const isLink = (value) => {
+  if (!value || typeof value !== 'string') return false
+  const isLink = new RegExp('^(http(s)?://)([^\\s]+)')
+  value.replace(new RegExp('\\s'), '')
+  return isLink.test(value)
+}
+
+/**
  * String type check
  * @param {any} value
  * @returns {boolean}

@@ -8,17 +8,17 @@
       <ul>
         <li
           v-for="item in items" :key="item.id"
-          class="flex py-3 px-10 hover:bg-accent1"
+          class="flex py-3 px-10 hover:bg-gray-400"
           @click="$emit('openPaper', item.id)"
         >
           <span class="flex-grow text-sm cursor-pointer">{{ item.name }}</span>
-          <span class="mr-6 cursor-pointer text-primary">
+          <span class="mr-6 cursor-pointer text-blue-500">
             <Icon size="24">
               {{ icons.ziGear }}
             </Icon>
           </span>
           <span
-            class="cursor-pointer text-primary"
+            class="cursor-pointer text-blue-500"
             @click.stop="deleteContract(item.id)"
           >
             <Icon size="24">

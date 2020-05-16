@@ -5,15 +5,8 @@
 @import "tailwindcss/components";
 @import "./components/layout.css";
 @import "./components/status-bar.css";
-@import "./components/form.css";
-/* @import "./components/input-base.css"; */
-/* @import "./components/text-field.css"; */
-@import "./components/text-area.css";
 @import "./components/select.css";
-/* @import "./components/checkbox.css"; */
-@import "./components/radio-button.css";
-@import "./components/toggle-button.css";
-/* @import "./components/button.css"; */
+@import "./components/switch.css";
 @import "./components/icon.css";
 @import "./components/alert.css";
 @import "./components/data-table.css";
@@ -21,23 +14,4 @@
 @import "./components/tooltip.css";
 
 @import "tailwindcss/utilities";
-
-.status-stock {
-  color: #00FF16;
-}
-.status-production {
-  color: #FFB700;
-}
-.status-processing {
-  color: #FF005E;
-}
-
-.min-h-4 {
-  min-height: 1rem;
-}
-.min-h-5 {
-  min-height: 1.25rem;
-}
-.min-h-6 {
-  min-height: 1.5rem;
-}
+@import "./components/utils.css";

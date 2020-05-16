@@ -34,3 +34,14 @@
   @apply min-h-full flex flex-col relative;
   overflow-x: hidden;
 }
+
+/* Signin, Signup views */
+.auth-left {
+  width: 44%!important;
+}
+.auth-left--bg {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: -300px 380px;
+  background-image: url(../img/cloud.svg);
+}

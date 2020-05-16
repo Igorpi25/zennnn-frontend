@@ -100,10 +100,24 @@ export default {
       },
       invoiceScrollId: '',
       invoiceScrollLeft: 0,
-      invoiceActiveTab: 1,
+      invoiceActiveTab: 0,
     }
   },
   computed: {
+    specTitleText () {
+      return `
+        ${this.$t('preview.shippingTitle')}
+         ${this.spec.specNo} ${this.$t('preposition.from')}
+         ${this.$d(this.$parseDate(this.spec.createdAt), 'short')}
+      `
+    },
+    specTitleHtml () {
+      return `
+        ${this.$t('preview.shippingTitle')}
+        &nbsp;${this.spec.specNo} ${this.$t('preposition.from')}
+        &nbsp;${this.$d(this.$parseDate(this.spec.createdAt), 'short')}
+      `
+    },
     orgId () {
       return this.$route.params.orgId
     },
@@ -168,7 +182,7 @@ export default {
       if (!specId || this.isBooted) return
       this.isBooted = true
       const activeTab = await getSpecActiveTab(specId)
-      this.invoiceActiveTab = activeTab || 1
+      this.invoiceActiveTab = activeTab || this.defaultTab
       const expanded = await getSpecExpandedInvoices(specId)
       if (!expanded) {
         const [invoice] = spec.invoices || []

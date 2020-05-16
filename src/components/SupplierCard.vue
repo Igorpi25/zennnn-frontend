@@ -49,11 +49,7 @@
         Создать нового поставщика
       </h1>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
-        <div
-          class="flex overflow-x-auto overflow-scroll-touch"
-          style="height: 44px;"
-        >
-        </div>
+        <div class="h-11 flex overflow-x-auto overflow-scroll-touch" />
         <div
           class="bg-gray-600 rounded-md p-5 pt-6"
         >
@@ -89,7 +85,7 @@
       </Button>
     </div>
 
-    <!-- <div id="container" :class="[ isComponent ? 'bg-chaos-black rounded-lg relative' : 'container' ]">
+    <!-- <div id="container" :class="[ isComponent ? 'bg-gray-900 rounded-lg relative' : 'container' ]">
       <span
         v-if="isComponent"
         class="absolute cursor-pointer"
@@ -106,7 +102,7 @@
           <header class="header">
             <span class="header__title">{{ $t('supplier.supplierCard') }}</span>
             <div class="header__actions">
-              <ToggleButton
+              <SwitchToggle
                 v-if="!create"
                 :value="editMode"
                 small
@@ -114,7 +110,7 @@
                 @input="toggleEditMode"
               >
                 <span>{{ $t('supplier.edit') }}</span>
-              </ToggleButton>
+              </SwitchToggle>
               <Button
                 outlined
                 borderless
@@ -185,7 +181,7 @@
                   </select>
                   <div
                     v-if="languageInputError"
-                    class="text-xs text-red leading-none mx-2"
+                    class="text-xs text-red-500 leading-none mx-2"
                   >
                     {{ languageInputError }}
                   </div>
@@ -1114,7 +1110,7 @@ export default {
   }
   .header__title {
     font-size: 24px;
-    @apply mb-6 block font-bold text-center text-gray-lighter;
+    @apply mb-6 block font-bold text-center text-gray-150;
   }
   .header__actions {
     @apply flex flex-col justify-around items-center;

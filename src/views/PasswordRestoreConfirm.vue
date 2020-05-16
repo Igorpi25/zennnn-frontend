@@ -7,11 +7,11 @@
           <div class="mb-8 sm:mt-24 mb-0">
             <div class="w-full">
               <h1 class="text-center md:text-left mb-0 md:mb-8 pt-10 md:pt-12">
-                <span class="text-white md:text-gray-lightest">
+                <span class="text-white md:text-gray-100">
                   {{ $t('passwordRestoreConfirm.changePasswordHead') }}
                 </span>
                 <br />
-                <span class="text-gray-lightest md:text-white">
+                <span class="text-gray-100 md:text-white">
                   {{ $t('passwordRestoreConfirm.changePasswordSubhead') }}
                 </span>
               </h1>

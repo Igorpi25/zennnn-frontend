@@ -114,7 +114,7 @@ export default {
 <style scoped lang="postcss">
 .invoice-footer {
   @apply flex flex-wrap justify-end items-start py-1 px-4;
-  @apply bg-accent1;
+  @apply bg-gray-400;
   border-radius: 2px;
 }
 .invoice-footer > div {

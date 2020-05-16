@@ -117,7 +117,7 @@
         <div class="w-full pb-6">
           <p class="text-white">
             <span>{{ $t('signup.compliteRegistration') }}</span>&nbsp;
-            <span class="text-gray-lightest">
+            <span class="text-gray-100">
               {{ $t('signup.registerContent') }}
             </span>
           </p>

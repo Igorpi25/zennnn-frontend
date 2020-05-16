@@ -9,9 +9,9 @@
           :class="[
             'transition-colors duration-100 ease-out',
             'relative w-full h-full flex border-2',
-            borderColor ? borderColor : 'border-gray-300',
-            { [bgColor || 'bg-gray-300']: checked },
-            { 'shadow-blue-500': hasFocus },
+            checked ? 'border-blue-500' : borderColor ? borderColor : 'border-gray-300',
+            { [bgColor || 'bg-blue-500']: checked },
+            { 'shadow-blue-600': hasFocus },
           ]"
           style="border-radius: 3px;"
         >
@@ -38,7 +38,7 @@
           :readonly="readonly"
           :disabled="disabled"
           :class="[
-            'absolute opacity-0 select-none cursor-pointer inset-0 w-full h-full',
+            'absolute opacity-0 select-none cursor-pointer top-0 left-0 w-5 h-5',
             { 'cursor-not-allowed': disabled },
           ]"
           type="checkbox"

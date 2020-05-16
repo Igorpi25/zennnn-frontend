@@ -74,6 +74,8 @@ export default {
       type: String,
       default: 'w-10',
     },
+    forceUpdate: Boolean,
+    dense: Boolean,
   },
 
   data () {
@@ -134,14 +136,15 @@ export default {
       },
     },
     computedContentClass () {
-      const staticClasses = ['relative flex items-center focus:outline-none transition-colors duration-100 ease-out']
+      const staticClasses = ['text-field__content relative flex items-center focus:outline-none transition-colors duration-100 ease-out']
       let genericClasses = [
         'rounded',
         this.hasWarn || this.hasError ? 'shadow-yellow-300' : 'focus-within:shadow-blue-500',
         this.disabled ? 'text-gray-200 cursor-not-allowed' : this.solo ? 'text-blue-500' : 'text-white',
         this.solo
-          ? 'h-8 text-sm bg-transparent focus-within:bg-gray-800'
-          : 'h-10 text-base bg-gray-800',
+          ? 'bg-transparent focus-within:bg-gray-800'
+          : 'text-base bg-gray-800',
+        this.solo || this.dense ? 'h-8' : 'h-10',
       ]
       if (this.solo && !this.soloFlat && !this.internalValue) {
         genericClasses.push('bg-gray-800')
@@ -159,7 +162,7 @@ export default {
       return staticClasses.concat(genericClasses)
     },
     computedInputClass () {
-      const staticClasses = ['w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out']
+      const staticClasses = ['w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out truncate']
       const genericClasses = [
         this.solo && this.soloFlat ? 'placeholder-blue-500' : 'placeholder-gray-200',
       ]
@@ -188,6 +191,10 @@ export default {
     },
     value: {
       handler (val) {
+        if (this.forceUpdate) {
+          this.internalValue = this.number ? this.formatNumber(val) : val
+          return
+        }
         if (this.editMode) return
         this.internalValue = this.number ? this.formatNumber(val) : val
       },
@@ -243,6 +250,7 @@ export default {
           e.target.selectionStart = e.target.selectionEnd = e.target.value.length
         })
       }
+      this.$emit('focus', e)
     },
 
     onBlur (e) {
@@ -269,6 +277,7 @@ export default {
       if (this.internalValue !== this.value && !this.lazy) {
         this.emitChange()
       }
+      this.$emit('blur', e)
     },
 
     onInput (e) {
@@ -313,6 +322,7 @@ export default {
     },
 
     onKeyDown (e) {
+      this.$emit('keydown', e)
       if (this.debounce) {
         // on esc set value from store
         if (e.key === 'Esc' || e.key === 'Escape') {
@@ -330,6 +340,10 @@ export default {
 
     focus () {
       this.$refs.input.focus()
+    },
+
+    blur () {
+      this.$refs.input.blur()
     },
 
     emitChange () {

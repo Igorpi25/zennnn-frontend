@@ -65,11 +65,11 @@
                 >
                   <template>
                     <i class="text-lg text-gray-100 zi-menu align-middle pl-3" />
-                    <div class="w-px h-5 bg-gray-300 mx-5" />
+                    <div class="w-px h-5 bg-gray-300 mx-3 sm:mx-5" />
                   </template>
                   <div
                     v-if="currentOrg"
-                    class="text-sm text-right pr-2 max-w-xs"
+                    class="hidden sm:block text-sm text-right pr-2 max-w-xs"
                   >
                     <div
                       class="text-white leading-4 truncate"
@@ -143,7 +143,7 @@
             <li
               v-if="item.header"
               :key="`header${i}`"
-              class="px-3 pt-2 text-sm text-gray-lighter font-bold"
+              class="px-3 pt-2 text-sm text-gray-150 font-bold"
             >
               {{ item.text }}
             </li>
@@ -190,7 +190,7 @@
                   </div>
                   <div
                     v-else
-                    class="border border-gray-lightest rounded-full w-8 h-8"
+                    class="border border-gray-100 rounded-full w-8 h-8"
                   />
                 </div>
                 <div
@@ -201,7 +201,7 @@
                     <div class="text-sm">{{ item.name }}</div>
                     <div
                       v-text="`${item.owner.givenName} ${item.owner.familyName}`"
-                      class="text-xs text-gray-lighter"
+                      class="text-xs text-gray-150"
                     />
                   </div>
                 </div>

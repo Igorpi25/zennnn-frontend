@@ -8,6 +8,9 @@ body {
   @apply bg-white text-gray-900;
 }
 
+img {
+  border-style: none;
+}
 
 /* Turn Off Number Input Arrows */
 input[type=number]::-webkit-inner-spin-button,
@@ -18,111 +21,6 @@ input[type=number]::-webkit-outer-spin-button {
 /* Turn Off Date Input Arrows */
 [type="date"]::-webkit-inner-spin-button {
   display: none;
-}
-
-img {
-  border-style: none;
-}
-
-/* <-- SWITCH */
-
-.switch input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.switch {
-  display: inline-block;
-  position: relative;
-  font-size: 18px;
-  height: 24px;
-  width: 45px;
-  user-select: none;
-  margin-right: 8px;
-}
-
-.switch-slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #222222;
-  border-radius: 50px;
-  transition: all 300ms;
-}
-.switch-slider::before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
-  border-radius: 50px;
-  background-color: #676767;
-  transition: all 300ms;
-}
-
-.switch input:checked + .switch-slider {
-  background-color: #7E99D0;
-}
-.switch input:checked + .switch-slider::before {
-  background-color: #ffffff;
-  transform: translateX(21px);
-}
-
-/* SWITCH --> */
-
-/* <-- SIMPLE SELECT */
-
-.simple-select {
-  position: relative;
-  display: inline-block;
-  -webkit-appearance: none;
-  background: transparent;
-  padding-left: .15em;
-  padding-right: .65em;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.49307 0.464478L7.14993 6.12133L5.73571 7.53555L0.0788574 1.87869L1.49307 0.464478Z' fill='%235a8199'/%3E%3Cpath d='M11.3926 1.87869L5.73571 7.53555L4.3215 6.12133L9.97835 0.464478L11.3926 1.87869Z' fill='%235a8199'/%3E%3C/svg%3E%0A");
-	background-repeat: no-repeat, repeat;
-	/* arrow icon position (1em from the right, 50% vertical) , then gradient position*/
-	background-position: right .1em top 50%, 0 0;
-	/* icon size, then gradient */
-	background-size: .5em auto, 100%;
-}
-.simple-select:disabled {
-  background: none;
-}
-
-/* SIMPLE SELECT --> */
-
-/* <-- DOTS */
-
-.dots {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: clip;
-}
-.dots::before {
-  display: block;
-  content:
-    ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . "
-  ;
-}
-
-/* DOTS --> */
-
-.overflow-scroll-touch {
-  -webkit-overflow-scrolling: touch;
-}
-
-.text-overflow-ellipsis {
-  text-overflow: ellipsis;
 }
 
 /* Safari text color on faded on input disabled */
@@ -136,39 +34,4 @@ form input:-webkit-autofill:hover,
 form input:-webkit-autofill:focus,
 form input:-webkit-autofill:active {
   -webkit-transition-delay: 99999s;
-}
-
-/* Signin, Signup views */
-.auth-left {
-  width: 44%!important;
-}
-.auth-left--bg {
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: -300px 380px;
-  background-image: url(../img/cloud.svg);
-}
-
-/* 404 */
-.text-404 {
-  /* -webkit-text-stroke: 1px #fff;
-  color: transparent; */
-  @apply text-accent1;
-  font-size: 7.5rem;
-  line-height: 1;
-}
-@screen sm {
-  .text-404 {
-    font-size: 12rem;
-  }
-}
-
-/* Full height dialog override */
-.dialog-full-height {
-  max-height: 100% !important;
-}
-
-/* Temp class */
-.input-transparent {
-  background: transparent!important;
 }

@@ -99,7 +99,7 @@ export default {
 .invoice-header {
   padding: 5px 10px;
   @apply relative flex items-center mx-auto w-full select-none;
-  @apply rounded-sm bg-accent1 text-right;
+  @apply rounded-sm bg-gray-400 text-right;
   color: #252525;
 }
 

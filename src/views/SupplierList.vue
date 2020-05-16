@@ -25,7 +25,7 @@
             :search="search"
             table-width="100%"
             table-class="table-fixed"
-            thead-class="text-accent2 border-b border-accent2"
+            thead-class="text-gray-200 border-b border-gray-200"
           >
             <template v-slot:header.debt-content>
               <v-tooltip top>
@@ -151,14 +151,14 @@ export default {
   computed: {
     headers () {
       return [
-        { text: '', value: 'debt', align: 'left', width: 60, bgcolor: 'tansparent', sortable: true, tooltip: this.$t('suppliers.suppliersDebt') },
-        { text: this.$t('suppliers.companyName'), value: 'supplierCompanyName', align: 'left', width: 220, minWidth: 220, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('suppliers.phone'), value: 'supplierPhone', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('suppliers.contactPerson'), value: 'supplierContactPerson', align: 'left', width: 165, bgcolor: 'tansparent', sortable: true },
-        { text: this.$t('suppliers.inn'), value: 'inn', align: 'left', width: 120, minWidth: 120, bgcolor: 'tansparent', sortable: true },
-        { text: '', value: 'deals', width: 60, minWidth: 60, bgcolor: 'tansparent', sortable: true, tooltip: this.$t('suppliers.currentDealsAmount') },
-        { text: '', value: 'factory', width: 60, minWidth: 60, bgcolor: 'tansparent', sortable: true, tooltip: this.$t('suppliers.currentDealsAmount') },
-        { text: '', value: 'actions', align: 'right', width: 48, bgcolor: 'tansparent' },
+        { text: '', value: 'debt', align: 'left', width: 60, sortable: true, tooltip: this.$t('suppliers.suppliersDebt') },
+        { text: this.$t('suppliers.companyName'), value: 'supplierCompanyName', align: 'left', width: 220, minWidth: 220, sortable: true },
+        { text: this.$t('suppliers.phone'), value: 'supplierPhone', align: 'left', width: 120, minWidth: 120, sortable: true },
+        { text: this.$t('suppliers.contactPerson'), value: 'supplierContactPerson', align: 'left', width: 165, sortable: true },
+        { text: this.$t('suppliers.inn'), value: 'inn', align: 'left', width: 120, minWidth: 120, sortable: true },
+        { text: '', value: 'deals', width: 60, minWidth: 60, sortable: true, tooltip: this.$t('suppliers.currentDealsAmount') },
+        { text: '', value: 'factory', width: 60, minWidth: 60, sortable: true, tooltip: this.$t('suppliers.currentDealsAmount') },
+        { text: '', value: 'actions', align: 'right', width: 48 },
       ]
     },
     items () {

@@ -1,18 +1,27 @@
 <template>
   <div
     :class="[
-      'data-table'
+      'data-table',
+      { 'data-table--flat': flat },
     ]"
   >
     <slot name="top"/>
     <table
       :width="tableWidth || null"
-      :class="['border-separate', tableClass]"
-      style="border-spacing: 0 4px"
+      :class="[
+        'border-separate bg-gray-800 rounded-md',
+        { 'px-sm pb-2': !flat },
+        tableClass,
+      ]"
+      :style="{ 'border-spacing': flat ? '0 1px' : '0 4px' }"
     >
       <thead
         v-if="!hideHeaders"
-        :class="theadClass"
+        :class="[
+          'bg-gray-800 text-center select-none',
+          flat ? 'text-gray-300' : 'text-gray-400',
+          theadClass,
+        ]"
       >
         <tr>
           <template
@@ -32,14 +41,16 @@
                   minWidth: convertToUnit(header.minWidth) || null
                 }"
                 :class="[
+                  'p-1',
                   headersWhitespaceNormal
                     ? 'whitespace-normal'
-                    : 'whitespace-no-wrap',
+                    : 'truncate',
                     header.align === 'left' ? 'text-left' : header.align === 'right' ? 'text-right' : 'text-center',
                   { 'sortable cursor-pointer': header.sortable },
                   header.sortable && internalOptions.sortBy.includes(header.value)
                     ? `active ${internalOptions.sortDesc[internalOptions.sortBy.findIndex(k => k === header.value)] ? 'desc' : 'asc'}`
                     : '',
+                  header.class,
                 ]"
                 @click="header.sortable ? sort(header.value) : {}"
               >
@@ -48,18 +59,12 @@
                 :value="header.value"
                 :header="header"
                >
-                <span class="mr-1">{{ header.text }}</span>
+                <span>{{ header.text }}</span>
                </slot>
-                <span
+                <i
                   v-if="header.sortable"
-                  class="data-table-header__icon"
-                >
-                  <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8.20718 11.2442L13.5001 16.537L12.0001 18.037L6.70718 12.7442L8.20718 11.2442Z" fill="currentColor"/>
-                    <path d="M17.293 12.7442L12.0001 18.037L10.5001 16.537L15.793 11.2442L17.293 12.7442Z" fill="currentColor"/>
-                    <path d="M13.1001 15.4415L10.9001 15.4415L10.9001 7.45126L13.1001 7.45126L13.1001 15.4415Z" fill="currentColor"/>
-                  </svg>
-                </span>
+                  class="data-table-header__icon zi-arrow-bottom-sort"
+                />
               </td>
             </slot>
           </template>
@@ -85,7 +90,7 @@
             v-else
             v-for="(item, index) in items"
             :key="index"
-            :class="['items base-accent3', itemsRowClass]"
+            :class="['items base-gray-800', itemsRowClass]"
           >
             <template v-for="header in headers">
               <slot
@@ -96,6 +101,7 @@
                 <td
                   :key="`${index}-${header.value}`"
                   :class="[
+                    'p-1',
                     header.align === 'left' ? 'text-left' : header.align === 'right' ? 'text-right' : 'text-center',
                     itemsCellClass,
                   ]"
@@ -146,10 +152,8 @@ function searchTableItems (
 export default {
   name: 'DataTable',
   props: {
-    hideHeaders: {
-      type: Boolean,
-      default: false,
-    },
+    flat: Boolean,
+    hideHeaders: Boolean,
     itemsRowClass: {
       type: String,
       default: null,
@@ -162,10 +166,7 @@ export default {
       type: [String, Number],
       default: '',
     },
-    headersWhitespaceNormal: {
-      type: Boolean,
-      default: false,
-    },
+    headersWhitespaceNormal: Boolean,
     headers: {
       type: Array,
       default: () => ([]),
@@ -174,18 +175,12 @@ export default {
       type: Array,
       default: () => ([]),
     },
-    light: {
-      type: Boolean,
-      default: false,
-    },
+    light: Boolean,
     expanded: {
       type: Array,
       default: () => ([]),
     },
-    expand: {
-      type: Boolean,
-      default: false,
-    },
+    expand: Boolean,
     tableClass: {
       type: [String, Array, Object],
       default: '',
@@ -198,10 +193,7 @@ export default {
       type: [String, Array, Object],
       default: '',
     },
-    search: {
-      type: String,
-      default: '',
-    },
+    search: String,
     customFilter: {
       type: Function,
       default: defaultFilter,

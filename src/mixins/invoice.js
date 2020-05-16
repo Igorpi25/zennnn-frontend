@@ -85,14 +85,6 @@ export default {
         }
       })
     },
-    tabs () {
-      return [
-        { value: 1, text: this.$t('shipping.prices'), width: 130 },
-        { value: 2, text: this.$t('shipping.warehouse'), width: 130 },
-        { value: 3, text: this.$t('shipping.description'), width: 130 },
-        { value: 4, text: this.$t('shipping.link'), width: 130 },
-      ]
-    },
     items () {
       return (this.invoice && this.invoice.products) || []
     },

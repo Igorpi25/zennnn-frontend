@@ -216,7 +216,7 @@
     "obtainCost": "Amount to Pay",
     "clientDebt": "Client Debt",
     "summaryTitle": "Shipping Summary",
-    "container": "container",
+    "container": "сontainers | сontainer | сontainers",
     "containerMeasure": "`",
     "containerLoaded": "loaded:",
     "estimateDate": "Estimated Shipping Date",

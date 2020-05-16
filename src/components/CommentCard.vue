@@ -18,7 +18,7 @@
         </div>
         <div
           v-if="item.updatedAt"
-          class="leading-none text-gray-light" style="font-size:10px;"
+          class="leading-none text-gray-200" style="font-size:10px;"
         >
           {{ $d($parseDate(item.updatedAt), 'time') }}, {{ $d($parseDate(item.updatedAt), 'short') }}
         </div>

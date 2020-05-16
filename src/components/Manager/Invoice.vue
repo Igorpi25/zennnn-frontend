@@ -3,7 +3,7 @@
     <div
       v-scroll="onScroll"
       ref="productsTable"
-      class="data-table-wrapper"
+      class="overflow-x-auto overflow-scroll-touch"
       @mouseenter="isMouseOver = true"
       @mouseleave="isMouseOver = false"
       @touchstart="isScrollStart = true"
@@ -16,7 +16,7 @@
             :items="items"
             table-width="100%"
             table-class="table-fixed"
-            thead-class="text-accent2"
+            thead-class="text-gray-200"
           >
             <template v-slot:top>
               <div class="flex">
@@ -69,12 +69,12 @@
                 :active-tab="activeTab"
                 :profit-type="invoiceItem.profitType"
                 :profit-for-all="invoiceItem.profitForAll"
-                class="items base-accent3"
+                class="items base-gray-800"
               />
             </template>
 
             <template v-slot:footer>
-              <tr class="items base-accent3">
+              <tr class="items base-gray-800">
                 <td colspan="3"></td>
                 <td
                   class="text-primary"

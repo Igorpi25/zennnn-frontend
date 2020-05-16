@@ -147,7 +147,7 @@
       <div class="relative bg-gray-400">
         <div class="pt-6 px-6 pb-8">
           <div class="flex">
-            <i class="zi-user-plus text-primary text-2xl mr-2" />
+            <i class="zi-user-plus text-blue-500 text-2xl mr-2" />
             <div class="w-64 text-white font-semibold pb-6">
               {{ $t('deals.createSpecDialogHeader') }}
             </div>
@@ -168,12 +168,12 @@
               squared
               hide-details
               class="text-sm select_nd"
-              input-class="h-8 text-primary placeholder-gray-100"
+              input-class="h-8 text-blue-500 placeholder-gray-100"
               @input="v => createSpecClient = v"
               @click:prepend-item="createClient"
             >
               <template v-slot:prepend-item>
-                <span class="flex items-center jusitfy-center text-primary">
+                <span class="flex items-center jusitfy-center text-blue-500">
                   <i class="zi-plus mr-1" />
                   <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
                 </span>

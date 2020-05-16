@@ -23,7 +23,7 @@
           />
           <div
             v-else
-            class="w-10 h-10 rounded overflow-hidden inline-block"
+            class="w-8 h-8 rounded overflow-hidden inline-block"
           >
             <v-img
               v-if="previewImage"
@@ -41,9 +41,9 @@
       </div>
     </template>
     <div
-      :class="[light ? 'bg-paper' : 'bg-gray-darker']"
+      :class="[light ? 'bg-paper' : 'bg-gray-500']"
     >
-      <div class="text-accent2 truncate h-8 px-1 flex items-center">
+      <div class="text-gray-200 truncate h-8 px-1 flex items-center">
         <div class="flex-grow truncate">
           <Spinner v-if="currentImageFilenameLoading" />
           <span v-else>

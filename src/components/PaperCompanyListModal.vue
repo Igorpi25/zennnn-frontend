@@ -3,7 +3,7 @@
     <div v-if="loading" class="flex justify-center items-center w-full h-full">
       <Spinner />
     </div>
-    <ul class="ml-6 text-primary">
+    <ul class="ml-6 text-blue-500">
       <li
         v-for="requisite in requisiteList"
         :key="requisite.id"

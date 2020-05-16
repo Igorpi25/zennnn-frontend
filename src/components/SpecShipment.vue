@@ -1,61 +1,65 @@
 <template>
-  <div class="w-full pb-4 md:w-1/2 lg:w-4/6 md:pr-3">
-    <h4 class="text-xl font-semibold leading-6 mb-4">
+  <div class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3">
+    <h4 class="text-white text-xl font-semibold leading-6 mb-4">
       {{ $t('shipping.forDeliver') }}
     </h4>
-    <div class="bg-gray-700 rounded-t-md mb-1 py-1 px-2 flex flex-wrap items-center">
-      <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
+    <div class="bg-gray-700 rounded-t-md flex flex-wrap lg:flex-no-wrap items-center mb-1 py-2 px-sm">
+      <div class="w-full pb-5 lg:p-0 lg:w-1/3">
         <TextField
           :value="item.sentFrom"
           :debounce="250"
           :placeholder="$t('shipping.sentFrom')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
           @input="$emit('update', { shipment: { sentFrom: $event } })"
         />
       </div>
-      <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
+
+      <div class="flex justify-center w-full lg:w-auto px-1 xl:px-2">
+        <svg class="transform rotate-90 lg:rotate-0" width="32" height="5" viewBox="0 0 32 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M31.4001 2.30004L27.8001 3.95216e-05C27.7001 -0.0999605 27.5001 3.95253e-05 27.5001 0.10004C27.5001 0.20004 27.5001 0.40004 27.6001 0.40004L30.4001 2.20004H0.00012207V2.70004H30.4001L27.6001 4.50004C27.5001 4.60004 27.4001 4.70004 27.5001 4.80004C27.5001 5.00004 27.6001 5.00004 27.7001 5.00004H27.8001L31.4001 2.70004C31.5001 2.70004 31.5001 2.60004 31.5001 2.50004C31.5001 2.40004 31.5001 2.40004 31.4001 2.30004Z" fill="#676767"/>
+        </svg>
+      </div>
+
+      <div class="w-full flex-1 py-5 lg:p-0">
         <TextField
           :value="item.sentThrough"
           :debounce="250"
           :placeholder="$t('shipping.sentThrough')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
           @input="$emit('update', { shipment: { sentThrough: $event } })"
         />
       </div>
-      <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
+
+      <div class="flex justify-center w-full lg:w-auto px-1 xl:px-2">
+        <svg class="transform rotate-90 lg:rotate-0" width="32" height="5" viewBox="0 0 32 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M31.4001 2.30004L27.8001 3.95216e-05C27.7001 -0.0999605 27.5001 3.95253e-05 27.5001 0.10004C27.5001 0.20004 27.5001 0.40004 27.6001 0.40004L30.4001 2.20004H0.00012207V2.70004H30.4001L27.6001 4.50004C27.5001 4.60004 27.4001 4.70004 27.5001 4.80004C27.5001 5.00004 27.6001 5.00004 27.7001 5.00004H27.8001L31.4001 2.70004C31.5001 2.70004 31.5001 2.60004 31.5001 2.50004C31.5001 2.40004 31.5001 2.40004 31.4001 2.30004Z" fill="#676767"/>
+        </svg>
+      </div>
+
+      <div class="w-full flex-1 pt-5 lg:p-0">
         <TextField
           :value="item.sentDestination"
           :debounce="250"
           :placeholder="$t('shipping.destination')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
           @input="$emit('update', { shipment: { sentDestination: $event } })"
         />
       </div>
     </div>
-    <div class="bg-gray-700 rounded-b-md py-1 px-2 flex flex-wrap">
-      <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1">
+
+    <div class="bg-gray-700 rounded-b-md flex flex-wrap pt-4 pb-5" style="padding-left: 6px: padding-right: 6px;">
+      <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1 pb-2">
         <Select
           :value="item.activeType"
           :placeholder="$t('shipping.shipmentType')"
           :search.sync="shipmentTypeSearch"
           :items="shipmentTypes"
+          dense
           searchable
-          solo
-          squared
-          hide-details
-          class="text-sm select_nd"
-          input-class="h-8 text-primary placeholder-gray-200"
           @input="$emit('update', { shipment: { activeType: $event } })"
-        >
-          <template v-slot:append="{ isMenuOpen, toggle }">
-            <div class="text-primary cursor-pointer select-none" @click="toggle">
-              <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-              <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-            </div>
-          </template>
-        </Select>
+        />
       </div>
-      <div class="w-full sm:w-2/3 md:w-full lg:w-2/3 px-1">
+      <div class="w-full sm:w-2/3 md:w-full lg:w-2/3 px-1 pb-2">
         <div class="h-8" />
       </div>
       <!-- MARINE -->
@@ -67,14 +71,16 @@
           :value="item.marine.billOfLadingNo"
           :debounce="250"
           :placeholder="$t('shipping.billOfLadingNo')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { marine: { billOfLadingNo: $event } } })"
         />
         <TextField
           :value="item.marine.ship"
           :debounce="250"
           :placeholder="$t('shipping.ship')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { marine: { ship: $event } } })"
         />
       </div>
@@ -91,7 +97,8 @@
               :value="item.marine.containersCount"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              input-class="h-8 text-primary placeholder-gray-200"
+              dense
+              class="pb-2"
               @input="$emit('update', { shipment: { marine: { containersCount: $event } } })"
             />
           </div>
@@ -101,7 +108,8 @@
             :value="item.marine.containersNo"
             :debounce="250"
             :placeholder="$t('shipping.containersNo')"
-            input-class="h-8 text-primary placeholder-gray-200"
+            dense
+            class="pb-2"
             @input="$emit('update', { shipment: { marine: { containersNo: $event } } })"
           />
         </div>
@@ -119,8 +127,9 @@
                   <TextField
                     :value="item.marine.exportDate ? $d($parseDate(item.marine.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
+                    dense
                     readonly
-                    input-class="h-8 text-primary placeholder-gray-200"
+                     class="pb-2"
                   />
                 </div>
               </template>
@@ -137,14 +146,16 @@
           :value="item.air.airWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.airWaybillNo')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { air: { airWaybillNo: $event } } })"
         />
         <TextField
           :value="item.air.flight"
           :debounce="250"
           :placeholder="$t('shipping.flight')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { air: { flight: $event } } })"
         />
       </div>
@@ -161,7 +172,8 @@
               :value="item.air.numbersOfPkg"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              input-class="h-8 text-primary placeholder-gray-200"
+              dense
+              class="pb-2"
               @input="$emit('update', { shipment: { air: { numbersOfPkg: $event } } })"
             />
           </div>
@@ -176,14 +188,16 @@
           :value="item.railway.internationalWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { railway: { internationalWaybillNo: $event } } })"
         />
         <TextField
           :value="item.railway.train"
           :debounce="250"
           :placeholder="$t('shipping.train')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { railway: { train: $event } } })"
         />
       </div>
@@ -200,7 +214,8 @@
               :value="item.railway.containersCount"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              input-class="h-8 text-primary placeholder-gray-200"
+              dense
+              class="pb-2"
               @input="$emit('update', { shipment: { railway: { containersCount: $event } } })"
             />
           </div>
@@ -210,7 +225,8 @@
             :value="item.railway.containersNo"
             :debounce="250"
             :placeholder="$t('shipping.trainContainersNo')"
-            input-class="h-8 text-primary placeholder-gray-200"
+            dense
+            class="pb-2"
             @input="$emit('update', { shipment: { railway: { containersNo: $event } } })"
           />
         </div>
@@ -228,8 +244,9 @@
                   <TextField
                     :value="item.railway.exportDate ? $d($parseDate(item.railway.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
+                    dense
                     readonly
-                    input-class="h-8 text-primary placeholder-gray-200"
+                    class="pb-2"
                   />
                 </div>
               </template>
@@ -246,14 +263,16 @@
           :value="item.car.internationalWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { car: { internationalWaybillNo: $event } } })"
         />
         <TextField
           :value="item.car.vehicleNo"
           :debounce="250"
           :placeholder="$t('shipping.vehicleNo')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { car: { vehicleNo: $event } } })"
         />
       </div>
@@ -270,7 +289,8 @@
               :value="item.car.semitrailerNo"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              input-class="h-8 text-primary placeholder-gray-200"
+              dense
+              class="pb-2"
               @input="$emit('update', { shipment: { car: { semitrailerNo: $event } } })"
             />
           </div>
@@ -289,8 +309,9 @@
                   <TextField
                     :value="item.car.exportDate ? $d($parseDate(item.car.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
+                    dense
                     readonly
-                    input-class="h-8 text-primary placeholder-gray-200"
+                    class="pb-2"
                   />
                 </div>
               </template>
@@ -307,28 +328,32 @@
           :value="item.mixed.internationalWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { mixed: { internationalWaybillNo: $event } } })"
         />
         <TextField
           :value="item.mixed.ship"
           :debounce="250"
           :placeholder="$t('shipping.ship')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { mixed: { ship: $event } } })"
         />
         <TextField
           :value="item.mixed.train"
           :debounce="250"
           :placeholder="$t('shipping.train')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { mixed: { train: $event } } })"
         />
         <TextField
           :value="item.mixed.flight"
           :debounce="250"
           :placeholder="$t('shipping.flight')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { mixed: { flight: $event } } })"
         />
       </div>
@@ -345,7 +370,8 @@
               :value="item.mixed.vehicleNo"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              input-class="h-8 text-primary placeholder-gray-200"
+              dense
+              class="pb-2"
               @input="$emit('update', { shipment: { mixed: { vehicleNo: $event } } })"
             />
           </div>
@@ -355,7 +381,8 @@
             :value="item.mixed.containersNo"
             :debounce="250"
             :placeholder="$t('shipping.containersNo')"
-            input-class="h-8 text-primary placeholder-gray-200"
+            dense
+            class="pb-2"
             @input="$emit('update', { shipment: { mixed: { containersNo: $event } } })"
           />
         </div>
@@ -373,8 +400,9 @@
                   <TextField
                     :value="item.mixed.exportDate ? $d($parseDate(item.mixed.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
+                    dense
                     readonly
-                    input-class="h-8 text-primary placeholder-gray-200"
+                    class="pb-2"
                   />
                 </div>
               </template>
@@ -391,14 +419,16 @@
           :value="item.express.postalNo"
           :debounce="250"
           :placeholder="$t('shipping.postalNo')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { express: { postalNo: $event } } })"
         />
         <TextField
           :value="item.express.deliveryService"
           :debounce="250"
           :placeholder="$t('shipping.deliveryService')"
-          input-class="h-8 text-primary placeholder-gray-200"
+          dense
+          class="pb-2"
           @input="$emit('update', { shipment: { express: { deliveryService: $event } } })"
         />
       </div>
@@ -415,7 +445,8 @@
               :value="item.express.numbersOfPkg"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
-              input-class="h-8 text-primary placeholder-gray-200"
+              dense
+              class="pb-2"
               @input="$emit('update', { shipment: { express: { numbersOfPkg: $event } } })"
             />
           </div>

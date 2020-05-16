@@ -24,8 +24,8 @@
                   {{ $t('welcome.successRegister') }}
                 </span>
               </h1>
-              <div class="form--max-w-md bg-accent1 py-5 md:px-8 md:-ml-8 rounded md:shadow-md">
-                <p class="text-gray-lightest md:text-white mb-4">
+              <div class="form--max-w-md bg-gray-400 py-5 md:px-8 md:-ml-8 rounded md:shadow-md">
+                <p class="text-gray-100 md:text-white mb-4">
                   <span v-if="username">{{ $t('welcome.confirmRegistrationEmail', { email: username }) }}&nbsp;</span>
                   {{ $t('welcome.confirmRegistration') }}&nbsp;—&nbsp;
                   <span class="text-white sm:inline block">

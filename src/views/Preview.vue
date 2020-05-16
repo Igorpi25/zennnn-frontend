@@ -491,7 +491,7 @@
           </div>
         </div>
       </div>
-      <div class="absolute bottom-0 w-full">
+      <div class="absolute bottom-0 w-full text-center">
         <Copyright />
       </div>
     </div>

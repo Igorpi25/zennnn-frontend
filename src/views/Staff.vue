@@ -59,7 +59,7 @@
 
              <template v-slot:items="{ items }">
               <template v-for="(item, index) in items">
-                <tr :key="item.id" class="items bg-gray-900 hover:bg-accent3 border-none">
+                <tr :key="item.id" class="items bg-gray-900 hover:bg-gray-800 border-none">
                   <td class="relative px-3">
                     <span
                       :class="[
@@ -128,15 +128,15 @@
                     :key="`expand-${index}-${specItem.id}`"
                     class="cursor-default"
                   >
-                    <!-- <td :colspan="headers.length" class="bg-chaos-black">
+                    <!-- <td :colspan="headers.length" class="bg-gray-900">
                       <DataTable
                         :headers="headers"
                         :items="item.specs"
                         hide-headers
                         table-width="100%"
                         table-class="table-fixed"
-                        items-row-class="bg-chaos-black"
-                        items-cell-class="bg-chaos-black"
+                        items-row-class="bg-gray-900"
+                        items-cell-class="bg-gray-900"
                       />
                     </td> -->
                     <td class="text-right relative px-3">
@@ -183,8 +183,8 @@
             :items="invitations"
             table-width="100%"
             table-class="table-fixed"
-            thead-class="text-accent2 border-b border-accent2"
-            items-row-class="border-none bg-gray-900 hover:bg-accent3"
+            thead-class="text-gray-200 border-b border-gray-200"
+            items-row-class="border-none bg-gray-900 hover:bg-gray-800"
             items-cell-class="bg-transparent"
           >
             <template v-slot:item.invitationEmail="{ item }">
