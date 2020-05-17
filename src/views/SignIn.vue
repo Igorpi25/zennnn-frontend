@@ -286,9 +286,9 @@ export default {
               })
             } else {
               if (this.$route.query.redirect) {
-                this.$router.replace({ path: this.$route.query.redirect })
+                this.$router.replace({ path: this.$route.query.redirect }).catch(() => {})
               } else {
-                this.$router.replace({ name: 'home' })
+                this.$router.replace({ name: 'home' }).catch(() => {})
               }
             }
           }
