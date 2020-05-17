@@ -14,9 +14,9 @@
           Накладные и товары
         </h1>
         <div class="flex items-center text-white">
-          <SwitchToggle class="inline-flex">
+          <SwitchInput class="inline-flex">
             <span class="mr-2">Уростить интерфейс</span>
-          </SwitchToggle>
+          </SwitchInput>
           <v-tooltip top max-width="320" nudge-bottom="8" nudge-right="110">
             <template v-slot:activator="{ on }">
               <i class="zi-help text-blue-500 cursor-pointer" v-on="on" />
@@ -164,13 +164,13 @@
                 </span>
               </option>
             </select>
-            <SwitchToggle
+            <SwitchInput
               :value="spec.shipped"
               hide-details
               @input="updateSpec({ shipped: $event })"
             >
               {{ $t('shipping.setShipped') }}
-            </SwitchToggle>
+            </SwitchInput>
           </div>
         </template>
       </SpecDelivery>

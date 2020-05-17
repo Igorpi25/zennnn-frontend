@@ -211,7 +211,7 @@
           v-if="isOwnerOrManager || isWarehouseman"
           class="h-4 relative"
         >
-          <SwitchToggle
+          <SwitchInput
             :value="store.atWhouse"
             hide-details
             small

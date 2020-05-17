@@ -51,8 +51,9 @@
             </template>
             <template v-slot:header.factory-content>
               <v-tooltip top>
+                <!-- TODO: change icon and content -->
                 <template v-slot:activator="{ on }">
-                  <img class="inline mr-1" src="../assets/icons/factory.png" v-on="on">
+                  <i class="zi-info text-2xl mr-1" v-on="on" />
                 </template>
                 <span>
                   {{ $t('suppliers.currentDealsAmount') }}
@@ -79,10 +80,8 @@
                 <td>{{ item.inn }}</td>
                 <td>{{ item.deals }}</td>
                 <td>
-                  <img
-                    src="../assets/icons/factory-green.png"
-                    v-if="item.factory == 'GREEN'"
-                  >
+                  <!-- TODO: change icon -->
+                  <i v-if="item.factory == 'GREEN'" class="zi-info text-2xl mr-1" />
                 </td>
                 <td class="text-right pointer-events-none" @click.prevent.stop>
                   <div

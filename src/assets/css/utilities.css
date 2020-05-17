@@ -1,0 +1,49 @@
+.overflow-scroll-touch {
+  -webkit-overflow-scrolling: touch;
+}
+
+.text-overflow-ellipsis {
+  text-overflow: ellipsis;
+}
+
+/* DOTS */
+.dots {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+.dots::before {
+  display: block;
+  content:
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+  ;
+}
+
+/* Full height dialog override */
+.dialog-full-height {
+  max-height: 100% !important;
+}
+
+/* override vuetify datepicker */
+.v-picker button:active,
+.v-picker button:focus {
+  outline: none;
+}
+
+/* override vuetify tooltip */
+.v-tooltip__content {
+  background-color: #585858!important;
+  color: #AAA!important;
+  border-radius: 6px!important;
+  line-height: 1.25!important;
+  padding: 20px!important;
+  opacity: 1!important;
+}
+
+/* Temp class */
+.input-transparent {
+  background: transparent!important;
+}

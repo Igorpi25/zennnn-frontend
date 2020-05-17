@@ -179,7 +179,7 @@
               v-if="!isComponent"
               class="header__actions"
             >
-              <SwitchToggle
+              <SwitchInput
                 v-if="!create"
                 :value="editMode"
                 small
@@ -187,7 +187,7 @@
                 @input="toggleEditMode"
               >
                 <span>{{ $t('client.edit') }}</span>
-              </SwitchToggle>
+              </SwitchInput>
               <Button
                 outlined
                 borderless
@@ -199,7 +199,7 @@
             </div>
           </header>
           <div class="card__radio-group lg:block">
-            <RadioButton
+            <RadioInput
               :value="clientType"
               :label="legalType"
               :disabled="!editMode"
@@ -208,8 +208,8 @@
               @input="switchPersonType(legalType)"
             >
               <span>{{ $t('client.legalPersonAbr') }}</span>
-            </RadioButton>
-            <RadioButton
+            </RadioInput>
+            <RadioInput
               :value="clientType"
               :label="naturalType"
               :disabled="!editMode"
@@ -217,7 +217,7 @@
               @input="switchPersonType(naturalType)"
             >
               <span>{{ $t('client.naturalPersonAbr') }}</span>
-            </RadioButton>
+            </RadioInput>
           </div>
           <div class="flex justify-between relative">
             <TemplateCard
@@ -267,7 +267,7 @@
                 </div>
               </template>
               <template v-slot:prepend>
-                <RadioButton
+                <RadioInput
                   :value="clientType"
                   :label="legalType"
                   :disabled="!editMode"
@@ -276,7 +276,7 @@
                   @input="switchPersonType(legalType)"
                 >
                   <span>{{ $t('client.legalPerson') }}</span>
-                </RadioButton>
+                </RadioInput>
               </template>
               <template v-slot:append>
                 <div :class="['text-center', { 'card__section--faded': isNaturalPerson }]">
@@ -357,7 +357,7 @@
                 </div>
               </template>
               <template v-slot:prepend>
-                <RadioButton
+                <RadioInput
                   :value="clientType"
                   :label="naturalType"
                   :disabled="!editMode"
@@ -366,7 +366,7 @@
                   @input="switchPersonType(naturalType)"
                 >
                   <span>{{ $t('client.naturalPerson') }}</span>
-                </RadioButton>
+                </RadioInput>
               </template>
               <template v-slot:append>
                 <div :class="['text-center', { 'card__section--faded': !isNaturalPerson }]">

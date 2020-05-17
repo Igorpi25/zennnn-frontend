@@ -1,4 +1,10 @@
 module.exports = {
+  purge: [
+    './src/**/*.html',
+    './src/**/*.vue',
+    './src/**/*.jsx',
+    './src/components/Base/*.js',
+  ],
   theme: {
     container: {
       center: true,

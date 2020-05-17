@@ -16,10 +16,10 @@
         <div class="flex items-center text-white">
           <v-tooltip top max-width="320" nudge-bottom="8" nudge-right="110">
             <template v-slot:activator="{ on }">
-              <SwitchToggle v-on="on" class="inline-flex items-center">
+              <SwitchInput v-on="on" class="inline-flex items-center">
                 <span class="mr-2">Уростить интерфейс</span>
                 <i class="zi-help text-blue-500 cursor-pointer" />
-              </SwitchToggle>
+              </SwitchInput>
             </template>
             <span>
               Чтобы не пугаться количества данных используемых для международной торговли, рекомендуем включить «Упростить интерфей» и работать над сделкой поэтапно. Интерфейс будет усложняться по мере работы с ним.
@@ -158,13 +158,13 @@
                 </span>
               </option>
             </select>
-            <SwitchToggle
+            <SwitchInput
               :value="spec.shipped"
               hide-details
               @input="updateSpec({ shipped: $event })"
             >
               {{ $t('shipping.setShipped') }}
-            </SwitchToggle>
+            </SwitchInput>
           </div>
         </template>
       </SpecDelivery>

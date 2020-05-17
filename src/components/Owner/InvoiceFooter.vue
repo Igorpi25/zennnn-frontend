@@ -3,7 +3,7 @@
 
     <div class="flex items-center">
       <div class="mr-2 flex flex-col items-start">
-        <RadioButton
+        <RadioInput
           v-model="internalProfitType"
           :label="InvoiceProfitType.MARGIN"
           name="profit-type"
@@ -15,8 +15,8 @@
           <span class="text-gray-light">
             {{ $t('shipping.margin') }}
           </span>
-        </RadioButton>
-        <RadioButton
+        </RadioInput>
+        <RadioInput
           v-model="internalProfitType"
           :label="InvoiceProfitType.COMMISSION"
           name="profit-type"
@@ -28,7 +28,7 @@
           <span class="text-gray-light">
             {{ $t('shipping.commission') }}
           </span>
-        </RadioButton>
+        </RadioInput>
       </div>
       <div class="w-16 mr-2">
         <TextField
@@ -47,7 +47,7 @@
           </template>
         </TextField>
       </div>
-      <SwitchToggle
+      <SwitchInput
         small
         :value="item.profitForAll"
         @input="updateInvoice({
@@ -55,7 +55,7 @@
         })"
       >
         <span>{{ $t('shipping.forAll') }}</span>
-      </SwitchToggle>
+      </SwitchInput>
     </div>
 
     <div class="flex sm:flex-wrap w-full sm:w-auto md:px-3 max-w-xs">

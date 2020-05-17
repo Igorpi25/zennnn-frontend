@@ -745,7 +745,7 @@
                   style="box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08); border-radius: 10px;"
                 >
                   <img
-                    :src="require(`@/assets/img/${member.country}.svg`)"
+                    :src="require(`@/assets/img/flags/countries/${member.country}.svg`)"
                     :alt="member.country"
                     class="w-8 h-8 ml-1 mr-sm"
                   >
