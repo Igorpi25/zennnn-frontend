@@ -1,5 +1,5 @@
 <template>
-  <div class="font-montserrat">
+  <div>
     <div class="flex flex-col min-h-screen">
       <!-- / HEADER -->
       <header class="pt-6 pb-4 font-medium">
@@ -805,8 +805,10 @@ export default {
     link: [
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900&display=swap&subset=cyrillic' },
     ],
+    style: [
+      { cssText: 'body { font-family: Montserrat,sans-serif }', type: 'text/css' },
+    ],
     meta: [
-      { hid: 'theme-color', name: 'theme-color', content: '#ffffff' },
       { hid: 'description', name: 'description', content: 'бэк-офис ZENNNN' },
       { vmid: 'og:title', property: 'og:title', content: 'ZENNNN' },
       { vmid: 'og:site_name', property: 'og:site_name', content: 'ZENNNN' },
