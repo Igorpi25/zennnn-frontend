@@ -79,29 +79,34 @@
             </div>
           </template>
           <template v-slot:items="{ items }">
-            <InvoiceProduct
+            <template
               v-for="(item, index) in items"
-              :key="item.id"
-              :item="item"
-              :index="index"
-              :active-tab="activeTab"
-              :profit-type="invoiceItem.profitType"
-              :profit-for-all="invoiceItem.profitForAll"
-              :role="role"
-            />
-            <InvoiceProduct
-              key="create"
-              :index="items.length + 1"
-              :active-tab="activeTab"
-              :profit-type="invoiceItem.profitType"
-              :profit-for-all="invoiceItem.profitForAll"
-              :role="role"
-              create
-              @create-product="createProduct"
-            />
+            >
+              <InvoiceProduct
+                v-if="item.id === `empty-${invoice.id}` && isOwnerOrManager"
+                :key="index"
+                :index="items.length"
+                :active-tab="activeTab"
+                :profit-type="invoiceItem.profitType"
+                :profit-for-all="invoiceItem.profitForAll"
+                :role="role"
+                create
+                @create="addProduct"
+              />
+              <InvoiceProduct
+                v-else
+                :key="index"
+                :item="item"
+                :index="index + 1"
+                :active-tab="activeTab"
+                :profit-type="invoiceItem.profitType"
+                :profit-for-all="invoiceItem.profitForAll"
+                :role="role"
+              />
+            </template>
           </template>
 
-          <template v-slot:footer>
+          <template v-if="!create" v-slot:footer>
             <tr>
               <td colspan="4">
                 <div
@@ -198,7 +203,7 @@
       </div>
     </div>
     <InvoiceAmount
-      v-if="isAmountVisible && items"
+      v-if="isAmountVisible && items && !create"
       :role="role"
       :currency="currency"
       :item="invoiceItem"
@@ -229,6 +234,7 @@ export default {
       type: String,
       required: true,
     },
+    create: Boolean,
   },
   computed: {
     isAmountVisible () {

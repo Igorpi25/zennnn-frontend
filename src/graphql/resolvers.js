@@ -4,6 +4,7 @@ import {
   SPEC_EXPANDED_INVOICES_STORE_KEY,
   PAPER_STORE_KEY_PREFIX,
 } from '../config/globals'
+import { emptyInvoice, emptyProduct } from '../graphql/enums'
 
 const getUsername = async (defaultUsername = '') => {
   defaultUsername = defaultUsername || 'Username'
@@ -44,6 +45,13 @@ const resolvers = {
       const specId = spec.id
       const activeTab = await getSpecActiveTab(specId)
       const expandedInvoices = await getSpecExpandedInvoices(specId)
+      const invoices = spec.invoices
+      const emptyId = `empty-${specId}`
+      const emptyIndex = invoices.findIndex(el => el.id === emptyId)
+      if (emptyIndex === -1) {
+        invoices.push(Object.assign({}, emptyInvoice, { id: emptyId, products: [] }))
+        spec.invoices = invoices
+      }
       return { ...spec, activeTab, expandedInvoices }
     },
     getPaperSpec: async (data) => {
@@ -90,6 +98,18 @@ const resolvers = {
       const result = invoicesIds.filter(id => !ids.includes(id))
       await store.setItem(key, result)
       return true
+    },
+  },
+  Invoice: {
+    products: (invoice) => {
+      const products = invoice.products
+      const emptyId = `empty-${invoice.id}`
+      const emptyIndex = products.findIndex(el => el.id === emptyId)
+      if (emptyIndex === -1) {
+        products.push(Object.assign({}, emptyProduct, { id: emptyId }))
+        invoice.products = products
+      }
+      return invoice
     },
   },
 }

@@ -1,6 +1,7 @@
 <template>
   <div>
     <component
+      ref="spec"
       v-if="roleInProject"
       :is="componentName"
     />
@@ -16,7 +17,7 @@ import SpecAccountant from '@/components/SpecAccountant.vue'
 import SpecWarehouseman from '@/components/SpecWarehouseman.vue'
 import SpecFreelancer from '@/components/SpecFreelancer.vue'
 
-import { Role, Typename, Operation } from '../graphql/enums' // eslint-disable-line
+import { Role, Typename, Operation, emptyInvoice, emptyProduct } from '../graphql/enums' // eslint-disable-line
 import {
   SPEC_FRAGMENT,
   INVOICE_FRAGMENT,
@@ -123,7 +124,16 @@ export default {
           })
 
           if (!parentInvoice.products.some(el => el.id === delta.payload.id)) {
-            parentInvoice.products.push(delta.payload)
+            const products = parentInvoice.products
+            const emptyId = `empty-${delta.parentId}`
+            const emptyIndex = products.findIndex(el => el.id === emptyId)
+            if (emptyIndex !== -1) {
+              products.splice(emptyIndex, 1, delta.payload)
+              products.push(Object.assign({}, emptyProduct, { id: emptyId }))
+              parentInvoice.products = products
+            } else {
+              parentInvoice.products.push(delta.payload)
+            }
 
             setTimeout(() => {
               apolloClient.writeFragment({
@@ -132,7 +142,7 @@ export default {
                 fragmentName: 'InvoiceProductsFragment',
                 data: parentInvoice,
               })
-            }, 0)
+            }, 75)
           }
         }
 
@@ -194,7 +204,22 @@ export default {
           })
 
           if (!parentSpec.invoices.some(el => el.id === delta.payload.id)) {
-            parentSpec.invoices.push(delta.payload)
+            const invoices = parentSpec.invoices
+            const emptyId = `empty-${delta.parentId}`
+            const emptyIndex = invoices.findIndex(el => el.id === emptyId)
+            if (emptyIndex !== -1) {
+              if (parentSpec.invoices.length === 1) {
+                this.$refs.spec.expanded = [delta.payload.id]
+                this.$refs.spec.setExpandedInvoices([delta.payload.id])
+              }
+              const product = Object.assign({}, emptyProduct, { id: `empty-${delta.payload.id}` })
+              const invoice = Object.assign({}, delta.payload, { products: [product] })
+              invoices.splice(emptyIndex, 1, invoice)
+              invoices.push(Object.assign({}, emptyInvoice, { id: emptyId, products: [product, product] }))
+              parentSpec.invoices = invoices
+            } else {
+              parentSpec.invoices.push(delta.payload)
+            }
 
             apolloClient.writeFragment({
               id: `${Typename.SPEC}:${delta.parentId}`,

@@ -104,6 +104,12 @@ export default {
     }
   },
   computed: {
+    emptyId () {
+      return `empty-${this.spec.id}`
+    },
+    isEmpty () {
+      return this.items.length === 1 && this.items[0].id === this.emptyId
+    },
     specTitleText () {
       return `
         ${this.$t('preview.shippingTitle')}
@@ -298,14 +304,19 @@ export default {
       this.expanded = ids
       this.setExpandedInvoices(ids)
     },
-    async createInvoice () {
+    async createInvoice (input) {
       try {
         this.createLoading = true
+        const variables = {
+          specId: this.specId,
+        }
+        if (input) {
+          variables.input = input
+        }
         const { data } = await this.$apollo.mutate({
           mutation: CREATE_INVOICE,
-          variables: {
-            specId: this.specId,
-          },
+          variables,
+          fetchPolicy: 'no-cache',
         })
         const id = data && data.createInvoice && data.createInvoice.id
         if (id) {

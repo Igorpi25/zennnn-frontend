@@ -66,8 +66,8 @@ export const DELETE_SPEC = gql`
 `
 
 export const CREATE_INVOICE = gql`
-  mutation CreateInvoice($specId: ID!) {
-    createInvoice(specId: $specId) {
+  mutation CreateInvoice($specId: ID!, $input: CreateInvoiceInput) {
+    createInvoice(specId: $specId, input: $input) {
       ...InvoiceFragment
       products {
         ...ProductFragment
@@ -79,7 +79,7 @@ export const CREATE_INVOICE = gql`
 `
 
 export const UPDATE_INVOICE = gql`
-  mutation UpdateInvoice($id: ID!, $input: InvoiceInput!) {
+  mutation UpdateInvoice($id: ID!, $input: UpdateInvoiceInput!) {
     updateInvoice(id: $id, input: $input) {
       ...InvoiceFragment
     }
@@ -88,11 +88,24 @@ export const UPDATE_INVOICE = gql`
 `
 
 export const CREATE_PRODUCT = gql`
-  mutation CreateProduct($invoiceId: ID!) {
-    createProduct(invoiceId: $invoiceId) {
+  mutation CreateProduct($invoiceId: ID!, $input: ProductInput) {
+    createProduct(invoiceId: $invoiceId, input: $input) {
       ...ProductFragment
     }
   }
+  ${PRODUCT_FRAGMENT}
+`
+
+export const CREATE_PRODUCT_WITH_INVOICE = gql`
+  mutation CreateProductWithInvoice($specId: ID!, $input: ProductInput) {
+    createProductWithInvoice(specId: $specId, input: $input) {
+      ...InvoiceFragment
+      products {
+        ...ProductFragment
+      }
+    }
+  }
+  ${INVOICE_FRAGMENT}
   ${PRODUCT_FRAGMENT}
 `
 
