@@ -28,10 +28,9 @@
         <div class="w-full lg:w-1/2 lg:pr-5">
           <div class="pb-2">
             <TextField
-              :value="item.itn"
               label="ИНН / VAT"
               placeholder="Номер ИНН или VAT"
-              @input="$emit('update', 'itn', $event)"
+              disabled
             />
           </div>
           <div class="pb-2">
@@ -53,20 +52,19 @@
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.mailingAddress"
+              :value="item.manufacturersAddress"
               label="Фактический адрес (почтовый адрес)"
               placeholder="Of. 1010, Miramar Tower, 35 Nathan Rd., Kowloon, Hong Kong"
-              @input="$emit('update', 'mailingAddress', $event)"
+              @input="$emit('update', 'manufacturersAddress', $event)"
             />
           </div>
           <div class="pb-2 lg:pb-1">
             <div class="flex justify-between">
               <TextField
-                :value="item.mailingAddressPostcode"
                 label="Индекс почтового адреса"
                 placeholder="000000"
                 class="w-48 pb-2"
-                @input="$emit('update', 'mailingAddressPostcode', $event)"
+                disabled
               />
               <div class="relative flex-shrink-0 relative w-12 pl-sm">
                 <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
@@ -85,26 +83,23 @@
           </div>
           <div class="flex items-end pb-2">
             <TextField
-              :value="item.iec"
               label="КПП"
               placeholder="Номер КПП"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-              @input="$emit('update', 'iec', $event)"
+              disabled
             />
             <TextField
-              :value="item.okpo"
               label="ОКПО"
               placeholder="Номер ОКПО"
               class="flex-grow"
-              @input="$emit('update', 'okpo', $event)"
+              disabled
             />
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.psrn"
               label="ОГРН"
               placeholder="Номер ОГРН"
-              @input="$emit('update', 'psrn', $event)"
+              disabled
             />
           </div>
           <div class="flex items-end pb-2">
@@ -140,10 +135,10 @@
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.bankAccountNumber"
+              :value="item.accountNumber"
               label="Номер счёта"
               placeholder="Номер счёта"
-              @input="$emit('update', 'bankAccountNumber', $event)"
+              @input="$emit('update', 'accountNumber', $event)"
             />
           </div>
           <div class="flex items-end pb-2">
@@ -155,11 +150,10 @@
               @input="$emit('update', 'swift', $event)"
             />
             <TextField
-              :value="item.bic"
               label="БИК"
               placeholder="Номер БИК"
               class="flex-grow"
-              @input="$emit('update', 'bic', $event)"
+              disabled
             />
           </div>
           <div class="pb-2">
@@ -171,21 +165,20 @@
           </div>
           <div class="pb-2 lg:pb-1">
             <TextField
-              :value="item.correspondentAccountNumber"
               label="Корреспондентский счёт"
               placeholder="Номер счёта"
               class="pb-2"
-              @input="$emit('update', 'correspondentAccountNumber', $event)"
+              disabled
             />
             <div class="lg:pb-20 mr-10" />
           </div>
           <div class="flex items-end pb-2">
             <TextField
-              :value="item.phone"
+              :value="item.workPhone"
               label="Телефон"
               placeholder="123-4567-8901"
               class="w-1/2 pr-2"
-              @input="$emit('update', 'phone', $event)"
+              @input="$emit('update', 'workPhone', $event)"
             />
             <TextField
               :value="item.fax"
@@ -197,9 +190,10 @@
           </div>
           <div>
             <TextField
+              :value="item.website"
               label="Сайт"
               placeholder="https://www.site.com"
-              disabled
+              @input="$emit('update', 'website', $event)"
             />
           </div>
         </div>
@@ -210,13 +204,12 @@
 
 <script>
 export default {
-  name: 'EntityLegalDetail',
+  name: 'EntitySupplierDetail',
   props: {
     item: {
       type: Object,
       default: () => ({}),
     },
-    supplier: Boolean,
   },
   data () {
     return {
@@ -225,9 +218,7 @@ export default {
   },
   computed: {
     titleHint () {
-      return this.supplier
-        ? ' (указывайте на языке поставщика или английском)'
-        : ' (указывайте на языке клиента или английском)'
+      return ' (указывайте на языке поставщика или английском)'
     },
   },
   methods: {

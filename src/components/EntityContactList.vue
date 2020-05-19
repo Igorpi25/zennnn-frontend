@@ -27,6 +27,7 @@
             block
             outlined
             class="h-10 text-sm pr-6"
+            disabled
           >
             Добавить способ связи
           </Button>
@@ -39,6 +40,12 @@
 <script>
 export default {
   name: 'EntityContactList',
+  props: {
+    item: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data () {
     return {
       items: [],

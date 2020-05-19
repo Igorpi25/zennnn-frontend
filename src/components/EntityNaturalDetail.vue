@@ -28,14 +28,17 @@
         <div class="w-full lg:w-1/2 lg:pr-5">
           <div class="pb-2">
             <TextField
+              :value="item.passportId"
               label="Номер паспорта или ID"
               placeholder="Номер документа"
+              @input="$emit('update', 'passportId', $event)"
             />
           </div>
           <div class="pb-2">
             <TextField
               label="Гражданство"
               placeholder="Выберите страну"
+              disabled
             >
               <template v-slot:prepend>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -52,6 +55,7 @@
                 placeholder="Дата"
                 class="w-1/2 pr-sm"
                 style="max-width: 232px"
+                disabled
               >
                 <template v-slot:prepend>
                   <i class="zi-calendar text-lg" />
@@ -63,6 +67,7 @@
                 placeholder="Дата"
                 class="w-1/2"
                 style="max-width: 232px"
+                disabled
               >
                 <template v-slot:prepend>
                   <i class="zi-calendar text-lg" />
@@ -74,12 +79,15 @@
             <TextField
               label="Кем выдано"
               placeholder="Наименование органа власти"
+              disabled
             />
           </div>
           <div class="pb-2">
             <TextField
+              :value="item.address"
               label="Адрес места жительства"
               placeholder="Of. 1010, Miramar Tower, 35 Nathan Rd., Kowloon, Hong Kong"
+              @input="$emit('update', 'address', $event)"
             />
           </div>
           <div class="pb-2">
@@ -87,12 +95,15 @@
               label="Индекс юр. адреса"
               placeholder="000000"
               class="w-48"
+              disabled
             />
           </div>
           <div class="pb-2">
             <TextField
+              :value="item.deliveryAddress"
               label="Почтовый адрес"
               placeholder="Of. 1010, Miramar Tower, 35 Nathan Rd., Kowloon, Hong Kong"
+              @input="$emit('update', 'deliveryAddress', $event)"
             />
           </div>
           <div class="pb-2 lg:pb-1">
@@ -101,12 +112,15 @@
                 label="Индекс почтового адреса"
                 placeholder="000000"
                 class="w-48 pb-2"
+                disabled
               />
-              <div class="relative flex-shrink-0 relative w-10 pl-sm">
+              <div class="relative flex-shrink-0 relative w-12 pl-sm">
                 <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
                   Совпадает
                 </label>
-                <div class="h-full flex items-center pt-8" />
+                <div class="h-full flex items-center justify-end pt-8 pb-1">
+                   <SwitchInput disabled hide-details />
+                </div>
               </div>
             </div>
             <div class="relative lg:pb-20">
@@ -121,24 +135,28 @@
             <TextField
               label="ИНН / VAT"
               placeholder="Номер ИНН или VAT"
+              disabled
             />
           </div>
           <div class="pb-2">
             <TextField
               label="Банк получателя"
               placeholder="Наименование банка получателя"
+              disabled
             />
           </div>
           <div class="pb-2">
             <TextField
               label="Адрес банка получателя"
               placeholder="1/F, Causeway Bay Plaza 2, 463-483 Lockhart Rd., Causeway Bay, Hong Kong"
+              disabled
             />
           </div>
           <div class="pb-2">
             <TextField
               label="Номер счёта"
               placeholder="Номер счёта"
+              disabled
             />
           </div>
           <div class="flex items-end pb-2">
@@ -146,24 +164,29 @@
               label="SWIFT"
               placeholder="HSBCHKHHHKH"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
+              disabled
             />
             <TextField
               label="БИК"
               placeholder="Номер БИК"
               class="flex-grow"
+              disabled
             />
           </div>
           <div>
             <div class="flex items-end pb-2">
               <TextField
+                :value="item.additionalPhone"
                 label="Телефон"
                 placeholder="123-4567-8901"
                 class="w-1/2 pr-2"
+                @input="$emit('update', 'additionalPhone', $event)"
               />
               <TextField
                 label="Факс"
                 placeholder="123-4567-8901"
                 class="w-1/2 pl-2"
+                disabled
               />
             </div>
             <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
@@ -179,6 +202,13 @@
 <script>
 export default {
   name: 'EntityNaturalDetail',
+  props: {
+    item: {
+      type: Object,
+      default: () => ({}),
+    },
+    supplier: Boolean,
+  },
   data () {
     return {
       expanded: true,

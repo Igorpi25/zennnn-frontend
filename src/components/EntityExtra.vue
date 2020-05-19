@@ -17,9 +17,14 @@
     <v-expand-transition>
       <div v-show="expanded" class="pt-4">
         <div class="pb-2">
-          <TextField
-            label="Примечание"
+          <label class="block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
+            Примечание
+          </label>
+          <TextArea
+            :value="supplier ? item.note : natural ? item.naturalTypeNote : item.legalTypeNote"
+            rows="4"
             placeholder="Что-то важное, что не хотелось бы забыть..."
+            @input="supplier ? $emit('update', 'note', $event) : natural ? $emit('update', 'naturalTypeNote', $event) : $emit('update', 'legalTypeNote', $event)"
           />
         </div>
         <div class="pb-2">
@@ -59,6 +64,14 @@
 <script>
 export default {
   name: 'EntityExtra',
+  props: {
+    item: {
+      type: Object,
+      default: () => ({}),
+    },
+    natural: Boolean,
+    supplier: Boolean,
+  },
   data () {
     return {
       expanded: true,
