@@ -42,9 +42,6 @@
                 }"
                 :class="[
                   'p-1',
-                  headersWhitespaceNormal
-                    ? 'whitespace-normal'
-                    : 'truncate',
                     header.align === 'left' ? 'text-left' : header.align === 'right' ? 'text-right' : 'text-center',
                   { 'sortable cursor-pointer': header.sortable },
                   header.sortable && internalOptions.sortBy.includes(header.value)
@@ -166,7 +163,6 @@ export default {
       type: [String, Number],
       default: '',
     },
-    headersWhitespaceNormal: Boolean,
     headers: {
       type: Array,
       default: () => ([]),

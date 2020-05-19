@@ -169,14 +169,16 @@
                     {{ $t('shipping.total') }}
                   </span>
                 </td>
-                <td class="text-center">
+                <td class="text-right pr-sm">
                   <span class="relative z-1">
-                    {{ $n(invoiceItem.totalNet) }} <span class="text-gray-300">{{ $t('measure.kg') }}</span>
+                    <span>{{ $n(invoiceItem.totalNet) }}</span>
+                    <span class="text-gray-300 absolute right-0 transform translate-x-full pl-1">{{ $t('measure.kg') }}</span>
                   </span>
                 </td>
-                <td class="text-center">
+                <td class="text-right pr-sm">
                   <span class="relative z-1">
-                    {{ $n(invoiceItem.totalGross) }} <span class="text-gray-300">{{ $t('measure.kg') }}</span>
+                    <span>{{ $n(invoiceItem.totalGross) }}</span>
+                    <span class="text-gray-300 absolute right-0 transform translate-x-full pl-1">{{ $t('measure.kg') }}</span>
                   </span>
                 </td>
                 <td class="text-center">
@@ -307,12 +309,12 @@ export default {
     },
     storeHeaders () {
       return [
-        { text: `${this.$t('shipping.net')} ${this.$t('measure.unit')} ${this.$t('measure.kg')}`, value: 'net', align: 'right', width: 100, class: 'bg-gray-600 relative z-1 pr-sm' },
-        { text: `${this.$t('shipping.gross')} ${this.$t('measure.unit')} ${this.$t('measure.kg')}`, value: 'gross', align: 'right', width: 100, class: 'bg-gray-600 relative z-1 pr-sm' },
-        { text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`, value: 'size', align: 'right', width: '140%', class: 'bg-gray-600 relative z-1 pr-sm' },
-        { text: this.$t('shipping.packageQty'), value: 'pkgQty', width: 65, align: 'right', class: 'bg-gray-600 relative z-1 pr-sm pr-sm' },
-        { text: this.$t('shipping.packageNo'), value: 'pkgNo', width: 54, align: 'right', class: 'bg-gray-600 relative z-1 pr-sm' },
-        { text: this.$t('shipping.atWhouse'), value: 'atWhouse', width: 40, align: 'right', class: 'bg-gray-600 relative z-1 pr-sm' },
+        { text: `${this.$t('shipping.net')} ${this.$t('measure.unit')} ${this.$t('measure.kg')}`, value: 'net', align: 'right', width: 64, class: 'bg-gray-600 relative z-1 leading-none pr-sm py-0' },
+        { text: `${this.$t('shipping.gross')} ${this.$t('measure.unit')} ${this.$t('measure.kg')}`, value: 'gross', align: 'right', width: 64, class: 'bg-gray-600 relative z-1 leading-none pr-sm py-0' },
+        { text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`, value: 'size', align: 'center', width: '140%', class: 'bg-gray-600 relative z-1 leading-none pr-sm py-0' },
+        { text: this.$t('shipping.packageQty'), value: 'pkgQty', width: 62, align: 'right', class: 'bg-gray-600 relative z-1 leading-none pr-sm pr-sm py-0' },
+        { text: this.$t('shipping.packageNo'), value: 'pkgNo', width: 62, align: 'right', class: 'bg-gray-600 relative z-1 leading-none pr-sm py-0' },
+        { text: this.$t('shipping.atWhouse'), value: 'atWhouse', width: 32, align: 'right', class: 'bg-gray-600 relative z-2 leading-none whitespace-no-wrap pr-sm py-0' },
         { text: '', value: 'action', width: 48, class: 'bg-gray-600 relative z-1' },
       ]
     },

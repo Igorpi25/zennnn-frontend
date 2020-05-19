@@ -154,7 +154,7 @@
         <td /><td /><td /><td /><td /><td />
       </template>
       <template v-else>
-        <td class="pl-sm">
+        <td class="pl-1">
           <TextField
             :value="store.net"
             :placeholder="$t('placeholder.emptyNumber')"
@@ -163,7 +163,7 @@
             @input="updateProductStore({ net: $event })"
           />
         </td>
-        <td class="pl-sm">
+        <td>
           <TextField
             :value="store.gross"
             :placeholder="$t('placeholder.emptyNumber')"
