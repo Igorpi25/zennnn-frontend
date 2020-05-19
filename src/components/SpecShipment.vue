@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="bg-gray-700 rounded-b-md flex flex-wrap pt-4 pb-5" style="padding-left: 6px: padding-right: 6px;">
+    <div class="bg-gray-700 rounded-b-md flex flex-wrap pt-4 pb-5" style="padding-left: 6px; padding-right: 6px;">
       <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1 pb-2">
         <Select
           :value="item.activeType"
