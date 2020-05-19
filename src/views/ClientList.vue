@@ -17,14 +17,14 @@
         </TextField>
       </div>
 
-      <div class="overflow-x-auto overflow-scroll-touch pb-8">
+      <div class="overflow-x-auto overflow-scroll-touch pb-4">
         <DataTable
           :headers="headers"
           :items="items"
           :search="search"
           table-width="100%"
           table-class="table-fixed"
-          thead-class="text-gray-200 border-b border-gray-200"
+          hoverable
         >
           <template v-slot:header.debt-content>
             <v-tooltip top>
@@ -53,12 +53,9 @@
               v-for="(item) in items"
               :key="item.id"
               class="cursor-pointer"
-              @click="$router.push({
-                name: 'client',
-                params: {
-                  clientId: item.id
-                }
-              })"
+              tabindex="0"
+              @click="goToClient(item.id)"
+              @keydown.enter.exact.self="goToClient(item.id)"
             >
               <td></td>
               <td>{{ item.fullName }}</td>
@@ -67,13 +64,13 @@
               <td></td>
               <td>{{ item.uid }}</td>
               <td>{{ item.deals }}</td>
-              <td class="text-right pointer-events-none" @click.prevent.stop>
-                <div
-                  class="cursor-pointer pointer-events-auto flex items-center"
+              <td class="text-center pointer-events-none" @click.prevent.stop>
+                <button
+                  class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
                   @click="deleteClient(item.id)"
                 >
-                  <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
-                </div>
+                  <i class="zi-delete" />
+                </button>
               </td>
             </tr>
           </template>
@@ -83,6 +80,7 @@
       <Button
         block
         outlined
+        class="mt-4"
         @click="$router.push({
           name: 'client-create'
         })"
@@ -155,6 +153,12 @@ export default {
     },
   },
   methods: {
+    goToClient (clientId) {
+      this.$router.push({
+        name: 'client',
+        params: { clientId },
+      })
+    },
     async deleteClient (id) {
       try {
         const msg = this.$t('alert.removeClient')

@@ -3,6 +3,7 @@
     :class="[
       'data-table',
       { 'data-table--flat': flat },
+      { 'data-table--hoverable': hoverable },
     ]"
   >
     <slot name="top"/>
@@ -69,7 +70,10 @@
       </thead>
       <tbody>
         <slot name="items" :items="computedItems">
-          <tr v-if="computedItems.length === 0" :class="itemsRowClass">
+          <tr
+            v-if="computedItems.length === 0"
+            :class="itemsRowClass"
+          >
             <td
               :colspan="headers.length"
               :class="itemsCellClass"
@@ -87,7 +91,7 @@
             v-else
             v-for="(item, index) in items"
             :key="index"
-            :class="['items base-gray-800', itemsRowClass]"
+            :class="itemsRowClass"
           >
             <template v-for="header in headers">
               <slot
@@ -150,6 +154,7 @@ export default {
   name: 'DataTable',
   props: {
     flat: Boolean,
+    hoverable: Boolean,
     hideHeaders: Boolean,
     itemsRowClass: {
       type: String,

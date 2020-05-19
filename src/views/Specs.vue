@@ -21,13 +21,14 @@
         </div>
       </div>
 
-      <div class="overflow-x-auto overflow-scroll-touch pb-8">
+      <div class="overflow-x-auto overflow-scroll-touch pb-4">
         <DataTable
           :headers="headers"
           :items="items"
           :search="search"
           table-width="100%"
           table-class="table-fixed"
+          hoverable
         >
           <template v-slot:header.status="{ header }">
             <td
@@ -88,12 +89,9 @@
               v-for="(item) in items"
               :key="item.id"
               class="cursor-pointer"
-              @click="$router.push({
-                name: 'spec',
-                params: {
-                  specId: item.id
-                }
-              })"
+              tabindex="0"
+              @click="goToSpec(item.id)"
+              @keydown.enter.exact.self="goToSpec(item.id)"
             >
               <td class="relative">
                 <div
@@ -116,12 +114,12 @@
                 {{ $d($parseDate(item.createdAt), 'short') }}
               </td>
               <td class="text-center pointer-events-none" @click.prevent.stop>
-                <div
-                  class="cursor-pointer pointer-events-auto flex items-center"
+                <button
+                  class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
                   @click="deleteSpec(item.id)"
                 >
-                  <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
-                </div>
+                  <i class="zi-delete" />
+                </button>
               </td>
             </tr>
           </template>
@@ -131,6 +129,7 @@
         v-if="canCreateSpec"
         block
         outlined
+        class="mt-4"
         @click="createSpecDialog = true"
       >
         <template v-slot:icon>
@@ -422,6 +421,12 @@ export default {
     })
   },
   methods: {
+    goToSpec (specId) {
+      this.$router.push({
+        name: 'spec',
+        params: { specId },
+      })
+    },
     createClient () {
       this.clientDialog = true
       this.$nextTick(() => {

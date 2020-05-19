@@ -59,7 +59,7 @@
 
              <template v-slot:items="{ items }">
               <template v-for="(item, index) in items">
-                <tr :key="item.id" class="items bg-gray-900 hover:bg-gray-800 border-none">
+                <tr :key="item.id">
                   <td class="relative px-3">
                     <span
                       :class="[
@@ -87,7 +87,7 @@
                     </div>
                   </td>
                   <td class="text-left">{{ item.role | roleFilter }}</td>
-                  <td class="text-center pointer-events-none" @click.prevent.stop>
+                  <td class="text-center">
                     <div
                       v-if="deleteUserLoading === item.id"
                       class="flex items-center justify-center"
@@ -98,28 +98,28 @@
                         width="2"
                       />
                     </div>
-                    <div
+                    <button
                       v-else
-                      class="cursor-pointer pointer-events-auto flex items-center"
+                      class="flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
                       @click="deleteUser(item.id)"
                     >
-                      <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
-                    </div>
+                      <i class="zi-delete" />
+                    </button>
                   </td>
                   <td>
-                    <div
-                      class="text-2xl cursor-pointer select-none flex items-center"
+                    <button
+                      class="flex items-center text-2xl text-blue-500 focus:text-blue-600 hover:text-blue-600 focus:outline-none select-none"
                       @click="toggle(index)"
                     >
                       <i
                         v-if="expanded.includes(index)"
-                        class="zi-chevron-up text-blue-500 hover:text-blue-600"
+                        class="zi-chevron-up"
                       />
                       <i
                         v-else
-                        class="zi-chevron-down text-blue-500 hover:text-blue-600"
+                        class="zi-chevron-down"
                       />
-                    </div>
+                    </button>
                   </td>
                 </tr>
                 <template v-if="expanded.includes(index)" class="expanded">
@@ -177,15 +177,12 @@
         <h4 class="text-xl font-semibold text-white mt-12">
           {{ $t('staff.invitations') }}
         </h4>
-        <div class="overflow-x-auto overflow-scroll-touch pb-8">
+        <div class="overflow-x-auto overflow-scroll-touch pb-4">
           <DataTable
             :headers="invitationsHeaders"
             :items="invitations"
             table-width="100%"
             table-class="table-fixed"
-            thead-class="text-gray-200 border-b border-gray-200"
-            items-row-class="border-none bg-gray-900 hover:bg-gray-800"
-            items-cell-class="bg-transparent"
           >
             <template v-slot:item.invitationEmail="{ item }">
               <td class="truncate">
@@ -214,12 +211,12 @@
             </template>
             <template v-slot:item.actions="{ item }">
               <td>
-                <div
-                  class="cursor-pointer pointer-events-auto flex items-center justify-center"
+                <button
+                  class="flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
                   @click="cancelInvitation(item.id)"
                 >
-                  <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
-                </div>
+                  <i class="zi-delete" />
+                </button>
               </td>
             </template>
           </DataTable>
@@ -227,6 +224,7 @@
         <Button
           block
           outlined
+          class="mt-4"
           @click="createStaffDialog = true"
         >
           <template v-slot:icon>
