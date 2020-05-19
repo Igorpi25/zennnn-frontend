@@ -142,69 +142,71 @@
       v-if="canCreateSpec"
       v-model="createSpecDialog"
       max-width="458"
+      content-class="bg-gray-400"
     >
-      <div class="relative bg-gray-400">
-        <div class="pt-6 px-6 pb-8">
-          <div class="flex">
-            <i class="zi-user-plus text-blue-500 text-2xl mr-2" />
-            <div class="w-64 text-white font-semibold pb-6">
-              {{ $t('deals.createSpecDialogHeader') }}
-            </div>
-          </div>
-          <div class="pb-8">
-            <Select
-              ref="createSpecSelect"
-              :value="createSpecClient"
-              :placeholder="$t('deals.createSpecDialogSearchPlaceholder')"
-              :search.sync="clientSearch"
-              :items="clients"
-              searchable
-              return-object
-              no-filter
-              item-value="id"
-              item-text="fullName"
-              solo
-              squared
-              hide-details
-              class="text-sm select_nd"
-              input-class="h-8 text-blue-500 placeholder-gray-100"
-              @input="v => createSpecClient = v"
-              @click:prepend-item="createClient"
-            >
-              <template v-slot:prepend-item>
-                <span class="flex items-center jusitfy-center text-blue-500">
-                  <i class="zi-plus mr-1" />
-                  <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
-                </span>
-              </template>
-              <template v-slot:append>
-                <div class="text-green-500 select-none">
-                  <Icon v-if="createSpecClient" size="12">{{ icons.mdiCheck }}</Icon>
-                </div>
-              </template>
-            </Select>
-          </div>
-          <div>
-            <Button
-              v-if="createSpecClient"
-              :loading="createLoading"
-              outlined
-              @click="createSpec"
-            >
-              {{ $t('deals.createSpecDialogAdd') }}
-            </Button>
-            <Button
-              v-else
-              :loading="createLoading"
-              outlined
-              @click="createSpec"
-            >
-              {{ $t('deals.createSpecDialogWithoutClient') }}
-            </Button>
+      <div ref="createSpecContainer" class="relative">
+        <div class="bg-gray-500 flex text-lg text-white font-semibold px-8 py-6">
+          <i class="zi-user-plus text-3xl text-blue-500 mr-2" />
+          <div class="w-64">
+            {{ $t('deals.createSpecDialogHeader') }}
           </div>
         </div>
+        <div class="px-8 py-6">
+          <Select
+            ref="createSpecSelect"
+            :value="createSpecClient"
+            :label="$t('deals.createSpecDialogSearchPlaceholder')"
+            placeholder="Начните печатать"
+            :search.sync="clientSearch"
+            :items="clients"
+            label-no-wrap
+            searchable
+            return-object
+            no-filter
+            item-value="id"
+            item-text="fullName"
+            state-icon
+            @input="v => createSpecClient = v"
+            @click:prepend-item="createClient"
+          >
+            <template v-slot:prepend-item>
+              <span class="flex items-center jusitfy-center text-blue-500">
+                <i class="zi-plus-outline text-2xl mr-1" />
+                <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
+              </span>
+            </template>
+            <template v-slot:prepend>
+              <i class="zi-magnifier text-gray-200" />
+            </template>
+            <template v-slot:append>
+              <div class="text-green-500 select-none">
+                <Icon v-if="createSpecClient" size="12">{{ icons.mdiCheck }}</Icon>
+              </div>
+            </template>
+          </Select>
+        </div>
+        <div
+          class="flex justify-between px-8 pb-8"
+        >
+          <Button
+            :disabled="createWithClientLoading"
+            :loading="createWithoutClientLoading"
+            outlined
+            @click="createSpec(true)"
+          >
+            {{ $t('deals.createSpecDialogWithoutClient') }}
+          </Button>
+          <Button
+            v-if="createSpecClient"
+            :disabled="createWithoutClientLoading"
+            :loading="createWithClientLoading"
+            @click="createSpec()"
+          >
+            {{ $t('deals.createSpecDialogAdd') }}
+          </Button>
+        </div>
         <span
-          class="absolute top-0 right-0 mt-4 mr-4 text-gray-200 hover:text-gray-100 cursor-pointer"
+          class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-3 mr-3"
           @click="createSpecDialog = false"
         >
           <i class="zi-close" />
@@ -215,10 +217,10 @@
       v-if="canCreateSpec"
       ref="clientDialog"
       v-model="clientDialog"
-      :fullscreen="$vuetify.breakpoint.xs"
+      :fullscreen="$vuetify.breakpoint.mdAndDown"
       scrollable
-      max-width="1024"
-      content-class="text-gray-100"
+      max-width="1178"
+      content-class="dialog-full-height overflow-scroll-touch bg-gray-900"
     >
       <ClientCard
         ref="clientCard"
@@ -292,7 +294,8 @@ export default {
       SpecStatus,
       search: '',
       loading: false,
-      createLoading: false,
+      createWithoutClientLoading: false,
+      createWithClientLoading: false,
       deleteLoading: null,
       icons: {
         mdiCheck,
@@ -442,11 +445,12 @@ export default {
       this.clientDialog = false
       this.createSpecClient = client
     },
-    async createSpec () {
+    async createSpec (withoutClient) {
+      const loading = withoutClient ? 'createWithoutClientLoading' : 'createWithClientLoading'
+      this[loading] = true
       try {
-        this.createLoading = true
         const variables = { orgId: this.orgId }
-        if (this.createSpecClient && this.createSpecClient.id) {
+        if (!withoutClient && this.createSpecClient && this.createSpecClient.id) {
           variables.clientId = this.createSpecClient.id
         }
         const response = await this.$apollo.mutate({
@@ -487,7 +491,7 @@ export default {
         }
       } finally {
         setTimeout(() => {
-          this.createLoading = false
+          this[loading] = false
         }, 150)
       }
     },
