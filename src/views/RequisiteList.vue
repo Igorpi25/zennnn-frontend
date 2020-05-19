@@ -2,7 +2,7 @@
   <div class="container container--sm">
     <div class="pt-4 pb-10">
 
-      <div class="overflow-x-auto overflow-scroll-touch pb-8">
+      <div class="overflow-x-auto overflow-scroll-touch pb-4">
         <DataTable
           :headers="headers"
           :items="items"
@@ -30,12 +30,12 @@
               <td @click="goToRequisite(item)">{{ item.ownerFullName }}</td>
               <td @click="goToRequisite(item)">{{ item.ownerJobPosition }}</td>
               <td>
-                <div
-                  class="cursor-pointer flex items-center"
+                <button
+                  class="flex items-center text-2xl text-gray-200 focus:text-gray-100 focus:outline-none hover:text-gray-100 select-none"
                   @click="deleteRequisite(item.id)"
                 >
-                  <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
-                </div>
+                  <i class="zi-delete" />
+                </button>
               </td>
             </tr>
           </template>
@@ -44,6 +44,7 @@
       <Button
         block
         outlined
+        class="mt-4"
         @click="$router.push({
           name: 'requisite-create'
         })"

@@ -18,14 +18,14 @@
           </TextField>
         </div>
 
-        <div class="overflow-x-auto overflow-scroll-touch pb-8">
+        <div class="overflow-x-auto overflow-scroll-touch pb-4">
           <DataTable
             :headers="headers"
             :items="items"
             :search="search"
             table-width="100%"
             table-class="table-fixed"
-            thead-class="text-gray-200 border-b border-gray-200"
+            hoverable
           >
             <template v-slot:header.debt-content>
               <v-tooltip top>
@@ -51,8 +51,9 @@
             </template>
             <template v-slot:header.factory-content>
               <v-tooltip top>
+                <!-- TODO: change icon and content -->
                 <template v-slot:activator="{ on }">
-                  <img class="inline mr-1" src="../assets/icons/factory.png" v-on="on">
+                  <i class="zi-info text-xl align-middle mr-1" v-on="on" />
                 </template>
                 <span>
                   {{ $t('suppliers.currentDealsAmount') }}
@@ -62,15 +63,12 @@
 
             <template v-slot:items="{ items }">
              <tr
-              class="cursor-pointer"
               v-for="(item, index) in items"
               :key="index"
-              @click="$router.push({
-                name: 'supplier',
-                params: {
-                  supplierId: item.id
-                }
-              })"
+              class="cursor-pointer"
+              tabindex="0"
+              @click="goToSupplier(item.id)"
+              @keydown.enter.exact.self="goToSupplier(item.id)"
             >
                 <td></td>
                 <td>{{ item.companyNameSl || item.companyNameCl }}</td>
@@ -79,18 +77,16 @@
                 <td>{{ item.inn }}</td>
                 <td>{{ item.deals }}</td>
                 <td>
-                  <img
-                    src="../assets/icons/factory-green.png"
-                    v-if="item.factory == 'GREEN'"
-                  >
+                  <!-- TODO: change icon -->
+                  <i v-if="item.factory == 'GREEN'" class="zi-info text-2xl mr-1" />
                 </td>
-                <td class="text-right pointer-events-none" @click.prevent.stop>
-                  <div
-                    class="cursor-pointer pointer-events-auto flex items-center"
+                <td class="text-center pointer-events-none" @click.prevent.stop>
+                  <button
+                    class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
                     @click="deleteSupplier(item.id)"
                   >
-                    <i class="zi-delete text-2xl text-gray-200 hover:text-gray-100" />
-                  </div>
+                    <i class="zi-delete" />
+                  </button>
                 </td>
              </tr>
             </template>
@@ -100,6 +96,7 @@
         <Button
           block
           outlined
+          class="mt-4"
           @click="$router.push({
             name: 'supplier-create'
           })"
@@ -175,6 +172,12 @@ export default {
     },
   },
   methods: {
+    goToSupplier (supplierId) {
+      this.$router.push({
+        name: 'supplier',
+        params: { supplierId },
+      })
+    },
     async deleteSupplier (id) {
       try {
         const msg = this.$t('alert.removeSupplier')

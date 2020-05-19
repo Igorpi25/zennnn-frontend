@@ -13,8 +13,15 @@
 .data-table.data-table--flat thead td {
   @apply h-10;
 }
-.data-table tbody td {
+.data-table tbody tr {
   @apply bg-gray-600;
+}
+.data-table.data-table--hoverable tbody tr:hover,
+.data-table.data-table--hoverable tbody tr:focus {
+  @apply bg-gray-500;
+}
+.data-table.data-table--hoverable tbody tr:focus {
+  outline: none;
 }
 .data-table thead .data-table-header__icon {
   @apply inline-flex align-middle text-gray-200 text-2xl;

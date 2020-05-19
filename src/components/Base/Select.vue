@@ -25,7 +25,7 @@
         :content-class="contentClass"
         :input-class="inputClass"
         :adlib="adlib"
-        :state-icon="stateIcon"
+        :state-icon="compStateIcon"
         :slot-class="slotClass"
         :class="['select-input']"
         :label="label"
@@ -55,6 +55,7 @@
             :class="{ 'cursor-not-allowed': disabled }"
             tabindex="-1"
             class="flex items-center text-2xl text-blue-500 hover:text-blue-600 focus:text-blue-600 cursor-pointer focus:outline-none select-none"
+            @click="toggleMenu"
           >
             <i :class="isMenuActive ? 'zi-chevron-up' : 'zi-chevron-down'" />
           </button>
@@ -250,6 +251,9 @@ export default {
     }
   },
   computed: {
+    compStateIcon () {
+      return this.stateIcon && !!this.internalValue
+    },
     computedId () {
       return this.id || `input-${this._uid}`
     },
@@ -480,7 +484,10 @@ export default {
     toggleMenu () {
       if (this.disabled) return
       if (this.isMenuActive) {
-        this.closeMenu()
+        setTimeout(() => {
+          this.closeMenu()
+        }, 75)
+        this.blur()
       } else {
         this.openMenu()
       }

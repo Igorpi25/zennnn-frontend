@@ -29,7 +29,7 @@
             <span class="text-base text-gray-100 pl-xs pr-sm">%</span>
           </template>
         </TextField>
-        <SwitchToggle
+        <SwitchInput
           :value="item.profitForAll"
           hide-details
           @input="updateInvoice({
@@ -37,7 +37,7 @@
           })"
         >
           <span class="text-white">{{ $t('shipping.forAll') }}</span>
-        </SwitchToggle>
+        </SwitchInput>
       </div>
     </div>
 

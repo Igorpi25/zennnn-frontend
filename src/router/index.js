@@ -43,15 +43,13 @@ const routes = [
       try {
         const loggedIn = await Auth.checkAuth()
         if (!loggedIn) {
-          // set light theme permanently
-          document.body.dataset.theme = 'light'
           return next()
         }
         const orgId = localStorage.getItem(CURRENT_ORG_STORE_KEY) || ''
         return next({ name: 'specs', params: { orgId } })
       } catch (error) {
         // eslint-disable-next-line
-        console.warn('Error on / before route enter')
+        console.warn('Error on / before route enter', error.message)
         next()
       }
     },
@@ -369,10 +367,6 @@ router.beforeEach(async (to, from, next) => {
       i18n.locale = lang
     }
   }
-  // set light theme permanently
-  if (to.name === 'preview' || to.name === 'about') {
-    document.body.dataset.theme = 'light'
-  }
   // check auth
   const loggedIn = await Auth.checkAuth()
   if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -394,21 +388,32 @@ router.beforeEach(async (to, from, next) => {
       next()
     }
   } else {
-    if (!loggedIn && to.path === '/') {
+    // set light theme permanently
+    const fromUndef = from.name === null && from.path === '/'
+    if ((fromUndef && !loggedIn && to.path === '/') || (fromUndef && (to.name === 'preview' || to.name === 'about'))) {
+      setTheme('light')
       return next()
     }
     next() // make sure to always call next()!
   }
 })
 
-router.beforeResolve((to, from, next) => {
-  // set theme attribute
-  if (to.path === '/' || to.name === 'preview' || to.name === 'about') {
-    document.body.dataset.theme = 'light'
-  } else {
-    document.body.dataset.theme = 'dark'
+router.beforeResolve(async (to, from, next) => {
+  const loggedIn = await Auth.checkAuth()
+  let theme = 'dark'
+  if ((!loggedIn && to.path === '/') || to.name === 'preview' || to.name === 'about') {
+    theme = 'light'
   }
+  // set theme meta && attribute
+  setTheme(theme)
   next()
 })
+
+const setTheme = (theme) => {
+  const themeColor = theme === 'dark' ? '#1E1E1E' : '#ffffff'
+  document.body.dataset.theme = theme
+  document.head.querySelector('meta[name="theme-color"]')
+    .setAttribute('content', themeColor)
+}
 
 export default router

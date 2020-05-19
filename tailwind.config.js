@@ -1,4 +1,10 @@
 module.exports = {
+  purge: [
+    './src/**/*.html',
+    './src/**/*.vue',
+    './src/**/*.jsx',
+    './src/components/Base/*.js',
+  ],
   theme: {
     container: {
       center: true,
@@ -67,12 +73,19 @@ module.exports = {
       widest: '.15em',
     },
     extend: {
+      fontSize: {
+        '28': '28px',
+      },
       spacing: {
         'xs': '2px',
         'sm': '10px',
+        'md': '14px',
         'lg': '30px',
+        '7': '1.75rem',
         '9': '2.25rem',
         '11': '2.75rem',
+        '36': '9rem',
+        '38': '9.5rem',
       },
       height: {
         '9': '2.25rem',
@@ -86,6 +99,7 @@ module.exports = {
       },
       zIndex: {
         '1': '1',
+        '2': '2',
       },
     },
   },

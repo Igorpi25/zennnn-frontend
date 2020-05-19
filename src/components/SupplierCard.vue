@@ -102,7 +102,7 @@
           <header class="header">
             <span class="header__title">{{ $t('supplier.supplierCard') }}</span>
             <div class="header__actions">
-              <SwitchToggle
+              <SwitchInput
                 v-if="!create"
                 :value="editMode"
                 small
@@ -110,7 +110,7 @@
                 @input="toggleEditMode"
               >
                 <span>{{ $t('supplier.edit') }}</span>
-              </SwitchToggle>
+              </SwitchInput>
               <Button
                 outlined
                 borderless
@@ -122,7 +122,7 @@
             </div>
           </header>
           <div class="card__radio-group">
-            <RadioButton
+            <RadioInput
               :value="editCard"
               :label="editCardTypes.SUPPLIER"
               name="card-type"
@@ -130,15 +130,15 @@
               @input="editCard = editCardTypes.SUPPLIER"
             >
               <span>{{ $t('supplier.legalPersonAbr') }}</span>
-            </RadioButton>
-            <RadioButton
+            </RadioInput>
+            <RadioInput
               :value="editCard"
               :label="editCardTypes.SHOPS"
               name="card-type"
               @input="editCard = editCardTypes.SHOPS"
             >
               <span>{{ $t('supplier.shops') }}</span>
-            </RadioButton>
+            </RadioInput>
           </div>
           <div class="flex justify-between relative">
             <TemplateCard

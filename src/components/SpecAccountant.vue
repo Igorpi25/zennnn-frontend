@@ -25,7 +25,7 @@
           <div class="flex-grow" />
           <div class="flex text-gray-200 text-lg overflow-hidden">
             <span v-html="specTitleHtml" :title="specTitleText" class="truncate" />
-            <div class="inline-block text-2xl pl-sm">
+            <div class="inline-block text-2xl pl-sm pr-3 md:pr-md">
               <button
                 v-if="expanded.length === 0"
                 class="flex items-center text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"

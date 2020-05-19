@@ -10,9 +10,10 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemo
 import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from '../../graphql'
 import { GET_BACKEND_VERSION } from '../../graphql/queries'
-import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY } from '../../config/globals'
-import { Auth, Logger, i18n } from '../index'
+import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../../config/globals'
+import { Auth, Logger, i18n, store } from '../index'
 import router from '../../router'
+import { getUsername } from '../../graphql/resolvers'
 
 const logger = new Logger('Apollo')
 
@@ -201,14 +202,21 @@ export const apolloClient = new ApolloClient({
   connectToDevTools: true,
 })
 
-const data = {
-  isLoggedIn: false,
-  isSpecSync: false,
-  loggedInUser: null,
+const setData = async () => {
+  const username = await getUsername()
+  const key = `${username}.${SPEC_SIMPLE_UI_OFF_STORE_KEY}`
+  const specSimpleUIOff = await store.getItem(key)
+  const data = {
+    isLoggedIn: false,
+    isSpecSync: false,
+    specSimpleUIOff,
+    loggedInUser: null,
+  }
+  cache.writeData({ data })
 }
 
-cache.writeData({ data })
-apolloClient.onResetStore(() => cache.writeData({ data }))
+setData()
+apolloClient.onResetStore(() => setData())
 
 Vue.use(VueApollo)
 

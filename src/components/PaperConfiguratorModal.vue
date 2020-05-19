@@ -144,10 +144,7 @@
               class="remove-item"
               @click="removeItem(contract.items, index)"
             >
-              <i>
-                <img src="@/assets/icons/delete-circle.svg" alt="Remove">
-              </i>
-              <!-- <Icon icon-name="delete-circle" /> -->
+              <i class="zi-close text-2xl" title="Remove" />
             </span>
           </div>
           <div>
@@ -183,10 +180,7 @@
                 class="remove-item"
                 @click="removeParagraph(contract.items, index, idx)"
               >
-                <i>
-                  <img src="@/assets/icons/delete-circle.svg" alt="Remove">
-                </i>
-                <!-- <Icon icon-name="delete-circle" /> -->
+                <i class="zi-close text-2xl" title="Remove" />
               </span>
             </div>
           </div>
@@ -365,9 +359,7 @@
               class="remove-item"
               @click="removeItem(contract.specItems, index + 1)"
             >
-              <i>
-                <img src="@/assets/icons/delete-circle.svg" alt="Remove">
-              </i>
+              <i class="zi-close text-2xl" title="Remove" />
             </span>
           </div>
           <div
@@ -401,9 +393,7 @@
               class="remove-item"
               @click="removeParagraph(contract.specItems, index + 1, idx)"
             >
-              <i>
-                <img src="@/assets/icons/delete-circle.svg" alt="Remove">
-              </i>
+              <i class="zi-close text-2xl" title="Remove" />
             </span>
           </div>
           <Button

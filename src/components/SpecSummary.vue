@@ -162,13 +162,13 @@
         <h3 class="pb-3 font-semibold">{{ $t('shipping.access') }}</h3>
         <Spinner v-if="linkAccessLoading" />
         <template v-else>
-          <!-- <SwitchToggle
+          <!-- <SwitchInput
             :value="linkAccess"
             class="mb-2"
             @input="updateLinkAccess"
           >
             <span>{{ $t('shipping.linkAccess') }}</span>
-          </SwitchToggle> -->
+          </SwitchInput> -->
           <TextField
             ref="linkInput"
             :value="link"

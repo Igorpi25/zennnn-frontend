@@ -35,6 +35,13 @@
   overflow-x: hidden;
 }
 
+/* smaller placeholder font on spec view */
+.spec input::placeholder,
+.spec textarea::placeholder {
+  font-size: 14px;
+  line-height: 26px;
+}
+
 /* Signin, Signup views */
 .auth-left {
   width: 44%!important;
@@ -44,4 +51,17 @@
   background-attachment: fixed;
   background-position: -300px 380px;
   background-image: url(../img/cloud.svg);
+}
+
+/* Rotation animation for sync icon */
+.simple-rotation-anim {
+  animation-name: simple-rotation;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes simple-rotation {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(359deg); }
 }

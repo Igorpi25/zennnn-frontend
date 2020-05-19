@@ -46,18 +46,18 @@
           {{ $t('requisite.requisitesOfMyCompany') }}
         </span>
         <div class="flex flex-col md:flex-row items-center">
-          <SwitchToggle
+          <SwitchInput
             v-if="!create"
             :value="editMode"
             small
             @input="toggleEditMode"
           >
             <span>{{ $t('requisite.edit') }}</span>
-          </SwitchToggle>
+          </SwitchInput>
         </div>
       </div>
       <div class="requisite-card__radio-group">
-        <RadioButton
+        <RadioInput
           :value="cardType"
           :label="requisiteType.ABOUT"
           hide-details
@@ -66,8 +66,8 @@
           @input="cardType = requisiteType.ABOUT"
         >
           <span>{{ $t('requisite.about') }}</span>
-        </RadioButton>
-        <RadioButton
+        </RadioInput>
+        <RadioInput
           :value="cardType"
           :label="requisiteType.BANK"
           hide-details
@@ -76,7 +76,7 @@
           @input="cardType = requisiteType.BANK"
         >
           <span>{{ $t('requisite.bankDetails') }}</span>
-        </RadioButton>
+        </RadioInput>
       </div>
       <div class="flex justify-between">
         <TemplateCard

@@ -1,6 +1,6 @@
 <template>
   <!-- Financial Info -->
-    <div class="w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3">
+    <div class="w-full">
       <h4 class="text-white text-xl font-semibold leading-6 mb-4">
         {{ $t('preview.financialInfo') }}
       </h4>

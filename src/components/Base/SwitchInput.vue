@@ -1,52 +1,33 @@
 <template>
   <div :class="{ 'opacity-40': disabled }">
-    <div class="flex items-start">
-      <div
-        class="flex-shrink-0 relative rounded-full"
-        :style="{
-          width: '18px',
-          height: '18px',
-        }"
+    <div class="flex items-center">
+      <label
+        :for="computedId"
+        :class="[
+          'switch align-middle',
+          { 'mr-2': $slots.default },
+          { 'switch--small': small }
+        ]"
       >
-        <div
-          :class="[
-            'transition-colors duration-100 ease-out',
-            'relative w-full h-full flex border-2 rounded-full',
-            checked ? 'border-blue-500' : borderColor ? borderColor : 'border-gray-300',
-            { [bgColor || 'bg-blue-500']: checked },
-            { 'shadow-blue-600': hasFocus },
-          ]"
-        >
-          <v-fade-transition>
-            <div v-show="checked" class="absolute inset-0 flex items-center justify-center">
-              <div class="bg-white rounded-full w-2 h-2" />
-            </div>
-          </v-fade-transition>
-        </div>
         <input
           ref="input"
           v-model="internalValue"
-          :value="label"
           :id="computedId"
           :name="name"
           :required="required"
           :readonly="readonly"
           :disabled="disabled"
-          :class="[
-            'absolute opacity-0 select-none cursor-pointer top-0 left-0',
-            { 'cursor-not-allowed': disabled },
-          ]"
-          :style="{
-            width: '18px',
-            height: '18px',
-          }"
-          type="radio"
-          tabindex="0"
+          type="checkbox"
+          role="checkbox"
           aria-hidden="true"
           @focus="hasFocus = true"
           @blur="hasFocus = false"
-        >
-      </div>
+          @change="checkField"
+        />
+        <span
+          :class="['switch-slider', { 'shadow-blue-600': hasFocus }]"
+        />
+      </label>
       <label :for="computedId" class="cursor-pointer select-none leading-tight">
         <slot />
       </label>
@@ -61,22 +42,31 @@
 import validatable from '@/mixins/validatable'
 
 export default {
-  name: 'RadioButton',
+  name: 'SwitchInput',
+  inject: {
+    form: {
+      default: null,
+    },
+  },
   mixins: [validatable],
   props: {
-    value: [String, Number, Boolean],
+    value: {
+      type: Boolean,
+      default: false,
+    },
     label: String,
-    borderColor: String,
-    bgColor: String,
+    id: String,
     name: String,
     required: Boolean,
     readonly: Boolean,
     disabled: Boolean,
     hideDetails: Boolean,
+    small: Boolean,
   },
   data () {
     return {
       hasFocus: false,
+      checked: false,
       lazyValue: this.value,
     }
   },
@@ -90,20 +80,29 @@ export default {
       },
       set (val) {
         this.lazyValue = val
+        this.checked = !!val
         this.$emit('input', val)
       },
-    },
-    checked () {
-      return this.label === this.internalValue
     },
   },
   watch: {
     value: {
       handler (val) {
         this.lazyValue = val
+        this.checked = !!val
       },
       immediate: true,
     },
+  },
+  created () {
+    if (this.form) {
+      this.form.register(this)
+    }
+  },
+  beforeDestroy () {
+    if (this.form) {
+      this.form.unregister(this)
+    }
   },
 }
 </script>

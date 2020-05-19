@@ -68,11 +68,3 @@ export default {
   },
 }
 </script>
-
-<style>
-/* override vuetify datepicker */
-.v-picker button:active,
-.v-picker button:focus {
-  outline: none;
-}
-</style>

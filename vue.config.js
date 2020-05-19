@@ -42,7 +42,7 @@ module.exports = {
     // modify prefetch plugin options:
     config.plugin('prefetch').tap(options => {
       options[0].fileBlacklist = options[0].fileBlacklist || [/\.map/]
-      options[0].fileBlacklist.push(/(pdfFonts|pdfMake)(.)+?\.js$/)
+      options[0].fileBlacklist.push(/(pdfFonts|pdfMake|intl)(.)+?\.js$/)
       return options
     })
   },

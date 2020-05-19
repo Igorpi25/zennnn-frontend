@@ -204,7 +204,7 @@ import LocalePicker from '../components/LocalePicker.vue'
 import { apolloClient } from '../plugins/apollo'
 
 import { GET_PROFILE, GET_ORGS } from '../graphql/queries'
-import { COMPLITE_REGISTRATION } from '../graphql/mutations'
+import { COMPLITE_REGISTRATION, INIT_SPEC_SIMPLE_UI } from '../graphql/mutations'
 
 export default {
   name: 'SignIn',
@@ -268,6 +268,9 @@ export default {
             // TODO: save user to cache and redirect to Registration.vue view
             // this.$router.push({ name: 'registration', query: this.$route.query })
           } else {
+            await this.$apollo.mutate({
+              mutation: INIT_SPEC_SIMPLE_UI,
+            })
             this.$logger.info('Logged in user', user)
             const { data: { getProfile } } = await apolloClient.query({
               query: GET_PROFILE,
@@ -286,9 +289,9 @@ export default {
               })
             } else {
               if (this.$route.query.redirect) {
-                this.$router.replace({ path: this.$route.query.redirect })
+                this.$router.replace({ path: this.$route.query.redirect }).catch(() => {})
               } else {
-                this.$router.replace({ name: 'home' })
+                this.$router.replace({ name: 'home' }).catch(() => {})
               }
             }
           }

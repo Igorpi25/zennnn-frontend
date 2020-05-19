@@ -1,10 +1,10 @@
 <template>
   <div
     :class="[
-      'md:h-12 relative flex items-center mx-auto w-full select-none py-2 md:py-0 px-3 md:px-5',
+      'md:h-12 relative flex items-center mx-auto w-full select-none py-2 md:py-0 px-3 md:pl-5 md:pr-md',
       'rounded-t text-right',
       { 'rounded-b': !isExpanded },
-      create ? 'bg-gray-400' : 'bg-gray-500',
+      create && !isEmpty ? 'bg-gray-700' : 'bg-gray-500',
     ]"
   >
     <Checkbox
@@ -26,10 +26,10 @@
         :value="item.invoiceNo"
         :debounce="250"
         :placeholder="$t('shipping.invoiceNo')"
+        :lazy="create"
         solo
         class="w-full sm:w-auto lg:w-32 lg:flex-shrink-0 sm:flex-grow md:flex-grow-0 mb-2 md:mb-0 mr-2"
         @input="$emit('update', { invoiceNo: $event }, item.id)"
-        @focus="onFocus"
       >
         <template v-slot:prepend>
           <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,8 +49,7 @@
                 :placeholder="$t('shipping.purchaseDate')"
                 solo
                 readonly
-                class="w-full sm:w-32 mb-2 md:mb-0 mr-2"
-                @focus="onFocus"
+                class="w-full sm:w-36 mb-2 md:mb-0 mr-2"
               >
                 <template v-slot:prepend>
                   <i class="zi-calendar text-2xl" />
@@ -74,9 +73,8 @@
         item-text="companyNameSl"
         return-object
         hide-details
-        class="w-full sm:w-auto lg:w-full lg:flex-shrink-0 sm:flex-grow md:flex-grow-0 max-w-sm mb-2 md:mb-0 mr-2"
-        @input="setInvoiceSupplier(item.id, ($event && $event.id))"
-        @focus="onFocus"
+        class="w-full sm:w-auto xl:w-full lg:flex-shrink-0 sm:flex-grow md:flex-grow-0 lg:flex-grow xl:flex-grow-0 max-w-sm mb-2 md:mb-0 mr-2"
+        @input="updateSupplier(item.id, ($event && $event.id))"
       >
         <template v-slot:prepend>
           <button
@@ -99,8 +97,7 @@
                 :placeholder="$t('shipping.shippingDate')"
                 solo
                 readonly
-                class="lg:flex-shrink-0 w-full sm:w-32 mr-2"
-                @focus="onFocus"
+                class="lg:flex-shrink-0 w-full sm:w-38 mr-2"
               >
                 <template v-slot:prepend>
                   <i class="zi-calendar text-2xl" />
@@ -122,6 +119,7 @@
     </div>
     <div class="flex-grow" />
     <button
+      v-if="!create"
       class="flex items-center text-2xl text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
       @click="$emit('click', item.id)"
     >
@@ -179,6 +177,7 @@ export default {
       required: true,
     },
     create: Boolean,
+    isEmpty: Boolean,
   },
   apollo: {
     searchSuppliers: {
@@ -222,11 +221,6 @@ export default {
     },
   },
   methods: {
-    onFocus () {
-      if (this.create) {
-        this.$emit('create')
-      }
-    },
     onHeaderClick (e) {
       if (e.target !== this.$el) return
       this.$emit('click', this.item.id)
@@ -246,6 +240,13 @@ export default {
           this.$refs.supplierDialog.$refs.dialog.scrollTop = 0
         }
       }, 200)
+    },
+    updateSupplier (invoiceId, supplierId) {
+      if (this.create) {
+        this.$emit('update', { supplier: supplierId }, invoiceId)
+      } else {
+        this.setInvoiceSupplier(invoiceId, supplierId)
+      }
     },
     async setInvoiceSupplier (invoiceId, supplierId) {
       try {

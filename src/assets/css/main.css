@@ -6,12 +6,11 @@
 @import "./components/layout.css";
 @import "./components/status-bar.css";
 @import "./components/select.css";
-@import "./components/switch.css";
+@import "./components/switch-input.css";
 @import "./components/icon.css";
 @import "./components/alert.css";
 @import "./components/data-table.css";
 @import "./components/transitions.css";
-@import "./components/tooltip.css";
 
 @import "tailwindcss/utilities";
-@import "./components/utils.css";
+@import "./utilities.css";
