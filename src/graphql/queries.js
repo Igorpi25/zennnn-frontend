@@ -74,6 +74,12 @@ export const GET_IS_SPEC_SYNC = gql`
   }
 `
 
+export const SPEC_SIMPLE_UI_OFF = gql`
+  query SpecSimpleUIOff {
+    specSimpleUIOff @client
+  }
+`
+
 export const GET_PROFILE = gql`
   query GetProfile {
     getProfile {

@@ -14,7 +14,11 @@
           Накладные и товары
         </h1>
         <div class="flex items-center text-white">
-          <SwitchInput class="inline-flex">
+          <SwitchInput
+            :value="specSimpleUI"
+            class="inline-flex"
+            @input="toggleSpecSimpleUI"
+          >
             <span class="mr-2">Уростить интерфейс</span>
           </SwitchInput>
           <v-tooltip top max-width="320" nudge-bottom="8" nudge-right="110">
@@ -126,6 +130,7 @@
               :scroll-left="invoiceScrollLeft"
               :scroll-invoice-id="invoiceScrollId"
               :role="Role.OWNER"
+              :hide-summary="!isInfoVisible"
               create
               @change:tab="setInvoiceActiveTab"
               @change:scrollLeft="setScrollLeft"
@@ -148,6 +153,7 @@
               :scroll-left="invoiceScrollLeft"
               :scroll-invoice-id="invoiceScrollId"
               :role="Role.OWNER"
+              :hide-summary="!isInfoVisible"
               @change:tab="setInvoiceActiveTab"
               @change:scrollLeft="setScrollLeft"
               @update:currency="updateSpec({ currency: $event })"
@@ -158,50 +164,62 @@
     </div>
 
     <div class="flex flex-wrap lg:flex-no-wrap pb-8">
-      <SpecDelivery :spec="spec">
-        <template v-slot:actions>
-          <div class="flex items-center justify-between pt-6">
-            <select
-              :value="`${container.size}${container.mode}`"
-              :disabled="setContainerSizeLoading"
-              name="container-size"
-              class="simple-select"
-              @change="setContainerSize(container.id, $event)"
-            >
-              <option value="_20_DC">
-                <span class="leaders__num cursor-pointer" style="padding-right:0">
-                  20{{ $t('shipping.containerMeasure') }}DC
-                </span>
-              </option>
-              <option value="_40_HC">
-                <span class="leaders__num cursor-pointer" style="padding-right:0">
-                  40{{ $t('shipping.containerMeasure') }}HC
-                </span>
-              </option>
-              <option value="_45_HC">
-                <span class="leaders__num cursor-pointer" style="padding-right:0">
-                  45{{ $t('shipping.containerMeasure') }}HC
-                </span>
-              </option>
-            </select>
-            <SwitchInput
-              :value="spec.shipped"
-              hide-details
-              @input="updateSpec({ shipped: $event })"
-            >
-              {{ $t('shipping.setShipped') }}
-            </SwitchInput>
-          </div>
-        </template>
-      </SpecDelivery>
-      <SpecCostInfo
-        :role="Role.OWNER"
-        :spec="spec"
-        @update-spec="updateSpec"
-      />
+      <div class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3" style="max-width: 746px">
+        <SpecDelivery
+          v-if="isInfoVisible"
+          :spec="spec"
+          :hide-containers="!isCostVisible"
+        >
+          <template v-slot:actions>
+            <div class="flex items-center justify-between pt-6">
+              <select
+                :value="`${container.size}${container.mode}`"
+                :disabled="setContainerSizeLoading"
+                name="container-size"
+                class="simple-select"
+                @change="setContainerSize(container.id, $event)"
+              >
+                <option value="_20_DC">
+                  <span class="leaders__num cursor-pointer" style="padding-right:0">
+                    20{{ $t('shipping.containerMeasure') }}DC
+                  </span>
+                </option>
+                <option value="_40_HC">
+                  <span class="leaders__num cursor-pointer" style="padding-right:0">
+                    40{{ $t('shipping.containerMeasure') }}HC
+                  </span>
+                </option>
+                <option value="_45_HC">
+                  <span class="leaders__num cursor-pointer" style="padding-right:0">
+                    45{{ $t('shipping.containerMeasure') }}HC
+                  </span>
+                </option>
+              </select>
+              <SwitchInput
+                :value="spec.shipped"
+                hide-details
+                @input="updateSpec({ shipped: $event })"
+              >
+                {{ $t('shipping.setShipped') }}
+              </SwitchInput>
+            </div>
+          </template>
+        </SpecDelivery>
+      </div>
+      <div class="w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3">
+        <SpecCostInfo
+          v-if="isCostVisible"
+          :role="Role.OWNER"
+          :spec="spec"
+          @update-spec="updateSpec"
+        />
+      </div>
     </div>
 
-    <div class="pb-8">
+    <div
+      v-if="isSummaryVisible"
+      class="pb-8"
+    >
       <h4 class="text-white text-xl font-semibold leading-6 mb-4">
         <span class="mr-1">Дополнительно</span>
         <v-tooltip top max-width="240">
@@ -242,6 +260,7 @@
     </div> -->
 
     <SpecSummary
+      v-if="isSummaryVisible"
       :spec="spec"
       :role="Role.OWNER"
     />

@@ -6,12 +6,13 @@ import {
   mdiPlus,
   mdiSync,
 } from '@mdi/js'
-import { Role } from '../graphql/enums'
+import { Role, ProductStatus } from '../graphql/enums'
 import {
   GET_SPEC,
   SEARCH_CLIENTS,
   SEARCH_SUPPLIERS,
   GET_IS_SPEC_SYNC,
+  SPEC_SIMPLE_UI_OFF,
 } from '../graphql/queries'
 import {
   CREATE_INVOICE,
@@ -23,11 +24,15 @@ import {
   SET_SPEC_EXPANDED_INVOICES,
   ADD_SPEC_EXPANDED_INVOICES,
   REMOVE_SPEC_EXPANDED_INVOICES,
+  SET_SPEC_SIMPLE_UI,
 } from '../graphql/mutations'
 import { getSpecExpandedInvoices, getSpecActiveTab } from '../graphql/resolvers'
 
 export default {
   apollo: {
+    specSimpleUIOff: {
+      query: SPEC_SIMPLE_UI_OFF,
+    },
     isSpecSync: {
       query: GET_IS_SPEC_SYNC,
     },
@@ -104,6 +109,33 @@ export default {
     }
   },
   computed: {
+    isInfoVisible () {
+      return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct)
+    },
+    isCostVisible () {
+      return this.specSimpleUIOff || (this.hasFilledProduct)
+    },
+    isSummaryVisible () {
+      return this.specSimpleUIOff || (this.hasInvoiceShippingDate && this.hasFilledProduct)
+    },
+    hasInvoiceShippingDate () {
+      const invoices = this.spec.invoices || []
+      return invoices.some(el => el.shippingDate)
+    },
+    hasFilledProduct () {
+      const invoices = this.spec.invoices || []
+      return invoices.some(i => {
+        const products = i.products || []
+        return products.some(el => {
+          return el.productStatus === ProductStatus.IN_PROCESSING ||
+            el.productStatus === ProductStatus.IN_PRODUCTION ||
+            el.productStatus === ProductStatus.IN_STOCK
+        })
+      })
+    },
+    specSimpleUI () {
+      return !this.specSimpleUIOff
+    },
     emptyId () {
       return `empty-${this.spec.id}`
     },
@@ -179,6 +211,14 @@ export default {
     },
   },
   methods: {
+    async toggleSpecSimpleUI (value) {
+      await this.$apollo.mutate({
+        mutation: SET_SPEC_SIMPLE_UI,
+        variables: {
+          value: !value,
+        },
+      })
+    },
     setScrollLeft (scrollLeft, invoiceId) {
       this.invoiceScrollId = invoiceId
       this.invoiceScrollLeft = scrollLeft

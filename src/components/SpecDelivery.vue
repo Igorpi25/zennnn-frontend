@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3">
+  <div class="w-full">
     <h4 class="text-white text-xl font-semibold leading-6 mb-4">
       {{ $t('preview.cargoInfo') }}
     </h4>
@@ -61,7 +61,10 @@
     </div>
 
     <!-- Containers -->
-    <div class="relative sm:flex bg-gray-700 rounded-md overflow-hidden">
+    <div
+      v-if="!hideContainers"
+      class="relative sm:flex bg-gray-700 rounded-md overflow-hidden"
+    >
       <div class="flex-grow p-5 leading-4">
         <div
           v-for="(container, i) of containers"
@@ -140,6 +143,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    hideContainers: Boolean,
   },
   computed: {
     containers () {

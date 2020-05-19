@@ -203,7 +203,7 @@
       </div>
     </div>
     <InvoiceAmount
-      v-if="isAmountVisible && items && !create"
+      v-if="isAmountVisible && items && !create && !hideSummary"
       :role="role"
       :currency="currency"
       :item="invoiceItem"
@@ -235,6 +235,7 @@ export default {
       required: true,
     },
     create: Boolean,
+    hideSummary: Boolean,
   },
   computed: {
     isAmountVisible () {

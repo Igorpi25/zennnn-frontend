@@ -541,6 +541,18 @@ export const SET_SPEC_CONTAINER_CUSTOM_CAPACITY = gql`
   }
 `
 
+export const INIT_SPEC_SIMPLE_UI = gql`
+  mutation InitSpecSimpleUI {
+    initSpecSimpleUI @client
+  }
+`
+
+export const SET_SPEC_SIMPLE_UI = gql`
+  mutation SetSpecSimpleUI($value: Boolean) {
+    setSpecSimpleUI(value: $value) @client
+  }
+`
+
 export const SET_SPEC_ACTIVE_TAB = gql`
   mutation SetSpecActiveTab($specId: ID!, $tab: Int!) {
     setSpecActiveTab(specId: $specId, tab: $tab) @client
