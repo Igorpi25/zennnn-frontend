@@ -61,76 +61,78 @@
     </div>
 
     <!-- Containers -->
-    <div
-      v-if="!hideContainers"
-      class="relative sm:flex bg-gray-700 rounded-md overflow-hidden"
-    >
-      <div class="flex-grow p-5 leading-4">
-        <div
-          v-for="(container, i) of containers"
-          :key="i"
-          class="flex flex-col xl:flex-row items-center justify-center"
-        >
+    <v-slide-y-transition hide-on-leave>
+      <div
+        v-if="!hideContainers"
+        class="relative sm:flex bg-gray-700 rounded-md overflow-hidden"
+      >
+        <div class="flex-grow p-5 leading-4">
           <div
-            v-if="container.full"
-            class="text-sm text-gray-200"
-            style="min-width: 160px"
+            v-for="(container, i) of containers"
+            :key="i"
+            class="flex flex-col xl:flex-row items-center justify-center"
           >
-            <div>
-              <span class="text-white text-xl font-semibold pr-1">{{ container.full }}</span>
-              <span>{{ $tc('shipping.container', container.full) }}</span>
-              <span class="text-white text-xl font-semibold pl-1">{{ `${container.size.replace('_', '')}'${container.mode.replace('_', '')}` }}</span>
-            </div>
-            <div :class="['spec-container relative my-2', { 'spec-container--lg': container.size === '_40' || container.size === '_45' }]">
-              <div class="spec-container__progress w-full h-full">
-                <div
-                  style="width: 100%"
-                  class="relative w-0 h-full"
-                >
-                  <div class="absolute top-0 left-0 bg-blue-500 w-full h-full" />
+            <div
+              v-if="container.full"
+              class="text-sm text-gray-200"
+              style="min-width: 160px"
+            >
+              <div>
+                <span class="text-white text-xl font-semibold pr-1">{{ container.full }}</span>
+                <span>{{ $tc('shipping.container', container.full) }}</span>
+                <span class="text-white text-xl font-semibold pl-1">{{ `${container.size.replace('_', '')}'${container.mode.replace('_', '')}` }}</span>
+              </div>
+              <div :class="['spec-container relative my-2', { 'spec-container--lg': container.size === '_40' || container.size === '_45' }]">
+                <div class="spec-container__progress w-full h-full">
+                  <div
+                    style="width: 100%"
+                    class="relative w-0 h-full"
+                  >
+                    <div class="absolute top-0 left-0 bg-blue-500 w-full h-full" />
+                  </div>
+                </div>
+                <div class="absolute inset-0">
+                  <img v-if="container.size === '_20'" src="@/assets/icons/c20_2x.png" alt="40'">
+                  <img v-else src="@/assets/icons/c40_2x.png" alt="20'">
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center text-2xl text-white font-bold">
+                  100%
                 </div>
               </div>
-              <div class="absolute inset-0">
-                <img v-if="container.size === '_20'" src="@/assets/icons/c20_2x.png" alt="40'">
-                <img v-else src="@/assets/icons/c40_2x.png" alt="20'">
-              </div>
-              <div class="absolute inset-0 flex items-center justify-center text-2xl text-white font-bold">
-                100%
-              </div>
             </div>
-          </div>
-          <div
-            v-if="container.full"
-            class="flex items-center px-4 py-2"
-          >
-            <i class="zi-plus text-4xl text-gray-400" />
-          </div>
-          <div class="text-sm text-gray-200" style="min-width: 160px">
-            <div>
-              <span class="text-white text-xl font-semibold pl-1">{{ `${container.size.replace('_', '')}'${container.mode.replace('_', '')}` }}</span>
+            <div
+              v-if="container.full"
+              class="flex items-center px-4 py-2"
+            >
+              <i class="zi-plus text-4xl text-gray-400" />
             </div>
-            <div :class="['spec-container relative my-2', { 'spec-container--lg': container.size === '_40' || container.size === '_45' }]">
-              <div class="spec-container__progress h-full">
-                <div
-                  :style="{ width: (container.loaded || 0) + '%' }"
-                  class="relative w-0 h-full"
-                >
-                  <div class="absolute top-0 left-0 bg-blue-500 w-full h-full" />
+            <div class="text-sm text-gray-200" style="min-width: 160px">
+              <div>
+                <span class="text-white text-xl font-semibold pl-1">{{ `${container.size.replace('_', '')}'${container.mode.replace('_', '')}` }}</span>
+              </div>
+              <div :class="['spec-container relative my-2', { 'spec-container--lg': container.size === '_40' || container.size === '_45' }]">
+                <div class="spec-container__progress h-full">
+                  <div
+                    :style="{ width: (container.loaded || 0) + '%' }"
+                    class="relative w-0 h-full"
+                  >
+                    <div class="absolute top-0 left-0 bg-blue-500 w-full h-full" />
+                  </div>
+                </div>
+                <div class="absolute inset-0">
+                  <img v-if="container.size === '_20'" src="@/assets/icons/c20_2x.png" alt="40'">
+                  <img v-else src="@/assets/icons/c40_2x.png" alt="20'">
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center text-2xl text-white font-bold">
+                  {{ container.loaded || 0 }}%
                 </div>
               </div>
-              <div class="absolute inset-0">
-                <img v-if="container.size === '_20'" src="@/assets/icons/c20_2x.png" alt="40'">
-                <img v-else src="@/assets/icons/c40_2x.png" alt="20'">
-              </div>
-              <div class="absolute inset-0 flex items-center justify-center text-2xl text-white font-bold">
-                {{ container.loaded || 0 }}%
-              </div>
             </div>
           </div>
+          <slot name="actions" />
         </div>
-        <slot name="actions" />
       </div>
-    </div>
+    </v-slide-y-transition>
 
   </div>
 </template>

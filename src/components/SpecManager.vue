@@ -30,7 +30,7 @@
             </span>
           </v-tooltip>
         </div>
-         <div class="flex items-center text-gray-300">
+        <div class="flex items-center text-gray-300">
           <span v-if="spec.client">
             {{ `Клиент: ${spec.client.uid} ${spec.client.fullName}` }}
           </span>
@@ -123,20 +123,22 @@
               create
               @update="createInvoice"
             />
-            <Invoice
-              v-if="isEmpty"
-              :currency="spec.currency"
-              :invoice="item"
-              :active-tab="invoiceActiveTab"
-              :scroll-left="invoiceScrollLeft"
-              :scroll-invoice-id="invoiceScrollId"
-              :role="Role.MANAGER"
-              :hide-summary="!isInfoVisible"
-              create
-              @change:tab="setInvoiceActiveTab"
-              @change:scrollLeft="setScrollLeft"
-              @update:currency="updateSpec({ currency: $event })"
-            />
+            <v-expand-transition>
+              <Invoice
+                v-if="isEmpty"
+                :currency="spec.currency"
+                :invoice="item"
+                :active-tab="invoiceActiveTab"
+                :scroll-left="invoiceScrollLeft"
+                :scroll-invoice-id="invoiceScrollId"
+                :role="Role.MANAGER"
+                :hide-summary="!isInfoVisible"
+                create
+                @change:tab="setInvoiceActiveTab"
+                @change:scrollLeft="setScrollLeft"
+                @update:currency="updateSpec({ currency: $event })"
+              />
+            </v-expand-transition>
           </template>
           <template v-else>
             <InvoiceHeader
@@ -146,19 +148,21 @@
               @update="updateInvoice"
               @click="expand"
             />
-            <Invoice
-              v-if="expanded.includes(item.id)"
-              :currency="spec.currency"
-              :invoice="item"
-              :active-tab="invoiceActiveTab"
-              :scroll-left="invoiceScrollLeft"
-              :scroll-invoice-id="invoiceScrollId"
-              :role="Role.MANAGER"
-              :hide-summary="!isInfoVisible"
-              @change:tab="setInvoiceActiveTab"
-              @change:scrollLeft="setScrollLeft"
-              @update:currency="updateSpec({ currency: $event })"
-            />
+            <v-expand-transition>
+              <Invoice
+                v-if="expanded.includes(item.id)"
+                :currency="spec.currency"
+                :invoice="item"
+                :active-tab="invoiceActiveTab"
+                :scroll-left="invoiceScrollLeft"
+                :scroll-invoice-id="invoiceScrollId"
+                :role="Role.MANAGER"
+                :hide-summary="!isInfoVisible"
+                @change:tab="setInvoiceActiveTab"
+                @change:scrollLeft="setScrollLeft"
+                @update:currency="updateSpec({ currency: $event })"
+              />
+            </v-expand-transition>
           </template>
         </div>
       </div>
@@ -166,81 +170,87 @@
 
     <div class="flex flex-wrap lg:flex-no-wrap pb-8">
       <div class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3" style="max-width: 746px">
-        <SpecDelivery
-          v-if="isInfoVisible"
-          :spec="spec"
-          :hide-containers="!isCostVisible"
-        >
-          <template v-slot:actions>
-            <div class="flex items-center justify-between pt-6">
-              <select
-                :value="`${container.size}${container.mode}`"
-                :disabled="setContainerSizeLoading"
-                name="container-size"
-                class="simple-select"
-                @change="setContainerSize(container.id, $event)"
-              >
-                <option value="_20_DC">
-                  <span class="leaders__num cursor-pointer" style="padding-right:0">
-                    20{{ $t('shipping.containerMeasure') }}DC
-                  </span>
-                </option>
-                <option value="_40_HC">
-                  <span class="leaders__num cursor-pointer" style="padding-right:0">
-                    40{{ $t('shipping.containerMeasure') }}HC
-                  </span>
-                </option>
-                <option value="_45_HC">
-                  <span class="leaders__num cursor-pointer" style="padding-right:0">
-                    45{{ $t('shipping.containerMeasure') }}HC
-                  </span>
-                </option>
-              </select>
-              <SwitchInput
-                :value="spec.shipped"
-                hide-details
-                @input="updateSpec({ shipped: $event })"
-              >
-                {{ $t('shipping.setShipped') }}
-              </SwitchInput>
-            </div>
-          </template>
-        </SpecDelivery>
+        <v-slide-y-transition hide-on-leave>
+          <SpecDelivery
+            v-if="isInfoVisible"
+            :spec="spec"
+            :hide-containers="!isCostVisible"
+          >
+            <template v-slot:actions>
+              <div class="flex items-center justify-between pt-6">
+                <select
+                  :value="`${container.size}${container.mode}`"
+                  :disabled="setContainerSizeLoading"
+                  name="container-size"
+                  class="simple-select"
+                  @change="setContainerSize(container.id, $event)"
+                >
+                  <option value="_20_DC">
+                    <span class="leaders__num cursor-pointer" style="padding-right:0">
+                      20{{ $t('shipping.containerMeasure') }}DC
+                    </span>
+                  </option>
+                  <option value="_40_HC">
+                    <span class="leaders__num cursor-pointer" style="padding-right:0">
+                      40{{ $t('shipping.containerMeasure') }}HC
+                    </span>
+                  </option>
+                  <option value="_45_HC">
+                    <span class="leaders__num cursor-pointer" style="padding-right:0">
+                      45{{ $t('shipping.containerMeasure') }}HC
+                    </span>
+                  </option>
+                </select>
+                <SwitchInput
+                  :value="spec.shipped"
+                  hide-details
+                  @input="updateSpec({ shipped: $event })"
+                >
+                  {{ $t('shipping.setShipped') }}
+                </SwitchInput>
+              </div>
+            </template>
+          </SpecDelivery>
+        </v-slide-y-transition>
       </div>
       <div class="w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3">
-        <SpecCostInfo
-          v-if="isCostVisible"
-          :role="Role.MANAGER"
-          :spec="spec"
-          @update-spec="updateSpec"
-        />
+        <v-slide-y-transition hide-on-leave>
+          <SpecCostInfo
+            v-if="isCostVisible"
+            :role="Role.MANAGER"
+            :spec="spec"
+            @update-spec="updateSpec"
+          />
+        </v-slide-y-transition>
       </div>
     </div>
 
-    <div
-      v-if="isSummaryVisible"
-      class="pb-8"
-    >
-      <h4 class="text-white text-xl font-semibold leading-6 mb-4">
-        <span class="mr-1">Дополнительно</span>
-        <v-tooltip top max-width="240">
-          <template v-slot:activator="{ on }">
-            <i class="zi-help align-middle text-blue-500 text-xl cursor-pointer" v-on="on" />
-          </template>
-          <span>
-            Например, груз может быть скоропортящимся или хрупким или отдельно нужно указать перечень HS кодов (кодов ТН ВЭД)
-          </span>
-        </v-tooltip>
-      </h4>
-      <div class="flex">
-        <div class="w-full flex-grow lg:w-auto lg:pr-3">
-          <div class="rounded-md bg-gray-700 pt-2 px-sm pb-5">
-            <TextArea placeholder="Особые заметки" />
+    <v-slide-y-transition hide-on-leave>
+      <div
+        v-if="isSummaryVisible"
+        class="pb-8"
+      >
+        <h4 class="text-white text-xl font-semibold leading-6 mb-4">
+          <span class="mr-1">Дополнительно</span>
+          <v-tooltip top max-width="240">
+            <template v-slot:activator="{ on }">
+              <i class="zi-help align-middle text-blue-500 text-xl cursor-pointer" v-on="on" />
+            </template>
+            <span>
+              Например, груз может быть скоропортящимся или хрупким или отдельно нужно указать перечень HS кодов (кодов ТН ВЭД)
+            </span>
+          </v-tooltip>
+        </h4>
+        <div class="flex">
+          <div class="w-full flex-grow lg:w-auto lg:pr-3">
+            <div class="rounded-md bg-gray-700 pt-2 px-sm pb-5">
+              <TextArea placeholder="Особые заметки" />
+            </div>
           </div>
+          <div class="hidden lg:block w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3" />
         </div>
-        <div class="hidden lg:block w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3" />
       </div>
-    </div>
+    </v-slide-y-transition>
 
     <!-- <div class="flex pt-5">
       <Button
@@ -260,11 +270,13 @@
       />
     </div> -->
 
-    <SpecSummary
-      v-if="isSummaryVisible"
-      :spec="spec"
-      :role="Role.MANAGER"
-    />
+    <v-slide-y-transition hide-on-leave>
+      <SpecSummary
+        v-if="isSummaryVisible"
+        :spec="spec"
+        :role="Role.MANAGER"
+      />
+    </v-slide-y-transition>
 
     <v-dialog
       ref="clientDialog"
