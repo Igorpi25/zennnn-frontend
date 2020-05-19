@@ -1513,8 +1513,8 @@
       v-model="clientDialog"
       :fullscreen="$vuetify.breakpoint.xs"
       scrollable
-      max-width="1024"
-      content-class="text-gray-100"
+      max-width="1110"
+      content-class="dialog-full-height overflow-scroll-touch"
     >
       <ClientCard
         ref="clientCard"

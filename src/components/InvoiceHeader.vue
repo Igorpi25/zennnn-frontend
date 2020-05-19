@@ -134,13 +134,15 @@
         class="zi-chevron-down"
       />
     </button>
+    <div v-else class="w-6 h-6" />
     <v-dialog
       v-if="isOwnerOrManager"
       ref="supplierDialog"
       v-model="supplierDialog"
+      :fullscreen="$vuetify.breakpoint.smAndDown"
       scrollable
-      max-width="1024"
-      :fullscreen="$vuetify.breakpoint.xs"
+      max-width="1110"
+      content-class="dialog-full-height overflow-scroll-touch"
     >
       <SupplierCard
         ref="supplierCard"
@@ -230,7 +232,7 @@ export default {
       this.supplierDialog = true
     },
     setCreatedSupplier (supplier) {
-      this.setInvoiceSupplier(this.createSupplierInvoice.id, (supplier && supplier.id))
+      this.updateSupplier(this.createSupplierInvoice.id, (supplier && supplier.id))
       this.supplierDialog = false
       this.createSupplierInvoice = null
       this.$apollo.queries.searchSuppliers.refetch()
@@ -242,7 +244,7 @@ export default {
       }, 200)
     },
     updateSupplier (invoiceId, supplierId) {
-      if (this.create) {
+      if (this.create || this.isEmpty) {
         this.$emit('update', { supplier: supplierId }, invoiceId)
       } else {
         this.setInvoiceSupplier(invoiceId, supplierId)

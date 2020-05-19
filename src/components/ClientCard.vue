@@ -44,7 +44,10 @@
       />
     </v-dialog>
 
-    <div id="container" class="container container--sm pt-8 pb-12">
+    <div
+      id="container"
+      :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container container--sm']"
+    >
       <h1 class="text-2xl text-white font-semibold leading-tight mb-5">
         Создать нового клиента
       </h1>
