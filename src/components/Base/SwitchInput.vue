@@ -25,10 +25,16 @@
           @change="checkField"
         />
         <span
-          :class="['switch-slider', { 'shadow-blue-600': hasFocus }]"
+          :class="['switch-slider', { 'shadow-blue-600': hasFocus }, { 'cursor-not-allowed': disabled }]"
         />
       </label>
-      <label :for="computedId" class="cursor-pointer select-none leading-tight">
+      <label
+        :for="computedId"
+        :class="[
+          'select-none leading-tight',
+          disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+        ]"
+      >
         <slot />
       </label>
     </div>
