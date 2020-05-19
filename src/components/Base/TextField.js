@@ -469,7 +469,10 @@ export default {
         }
       }
       const content = this.$createElement('div', props, [this.$createElement('span', {
-        class: 'text-base text-gray-100 whitespace-no-wrap relative pointer-events-none py-xs pr-xs',
+        class: [
+          'text-base text-gray-100 whitespace-no-wrap relative py-xs pr-xs',
+          { 'pointer-events-none': !this.labelNoWrap },
+        ],
       }, this.label)])
       return this.$createElement('label', {
         ref: 'label',
