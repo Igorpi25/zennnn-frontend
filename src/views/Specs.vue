@@ -217,10 +217,10 @@
       v-if="canCreateSpec"
       ref="clientDialog"
       v-model="clientDialog"
-      :fullscreen="$vuetify.breakpoint.mdAndDown"
+      :fullscreen="$vuetify.breakpoint.smAndDown"
       scrollable
-      max-width="1178"
-      content-class="dialog-full-height overflow-scroll-touch bg-gray-900"
+      max-width="1110"
+      content-class="dialog-full-height overflow-scroll-touch"
     >
       <ClientCard
         ref="clientCard"

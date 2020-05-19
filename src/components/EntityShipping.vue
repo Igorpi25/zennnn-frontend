@@ -18,14 +18,20 @@
       <div v-show="expanded" class="pt-4">
         <div class="pb-2">
           <TextField
+            :value="natural ? '' : item.consignee"
+            :disabled="natural"
             label="Грузополучатель"
             placeholder="Наименование компании"
+            @input="$emit('update', 'consignee', $event)"
           />
         </div>
         <div class="pb-2">
           <TextField
+            :value="natural ? '' : item.shippingAddress"
+            :disabled="natural"
             label="Адрес выдачи товара (адрес доставки груза)"
             placeholder="оф. 8, стр. 11, ул. Строительная 84, Москва, Россия"
+            @input="$emit('update', 'shippingAddress', $event)"
           />
         </div>
         <div class="pb-2 lg:pb-1">
@@ -34,12 +40,15 @@
               label="Индекс адреса доставки"
               placeholder="000000"
               class="w-48 pb-2"
+              disabled
             />
-            <div class="relative flex-shrink-0 relative w-10 pl-sm">
+            <div class="relative flex-shrink-0 relative w-12 pl-sm">
               <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
                 Совпадает
               </label>
-              <div class="h-full flex items-center pt-8" />
+              <div class="h-full flex items-center justify-end pt-8 pb-1">
+                <SwitchInput disabled hide-details />
+              </div>
             </div>
           </div>
           <div class="relative lg:pb-20">
@@ -50,6 +59,14 @@
         </div>
         <div class="flex items-end pb-2">
           <TextField
+            :value="natural ? '' : item.importerContactPerson"
+            :disabled="natural"
+            label="Контактное лицо"
+            placeholder="Имя"
+            class="flex-grow"
+            @input="$emit('update', 'importerContactPerson', $event)"
+          />
+          <!-- <TextField
             label="Контактное лицо"
             label-no-wrap
             placeholder="Имя"
@@ -58,12 +75,15 @@
           <TextField
             placeholder="Фамилия"
             class="flex-grow"
-          />
+          /> -->
         </div>
         <div>
           <TextField
+            :value="natural ? '' : item.contactMobilePhone"
+            :disabled="natural"
             label="Мобильный телефон"
             placeholder="123-4567-8901"
+            @input="$emit('update', 'contactMobilePhone', $event)"
           />
         </div>
       </div>
@@ -74,6 +94,13 @@
 <script>
 export default {
   name: 'EntityShipping',
+  props: {
+    item: {
+      type: Object,
+      default: () => ({}),
+    },
+    natural: Boolean,
+  },
   data () {
     return {
       expanded: true,

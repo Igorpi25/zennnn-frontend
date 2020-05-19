@@ -33,7 +33,7 @@
 
     <v-dialog
       v-model="saveBeforeCloseDialog"
-      max-width="520"
+      max-width="463"
     >
       <SaveBeforeCloseModal
         :text="$t('label.saveChangesBeforeClose')"
@@ -44,7 +44,10 @@
       />
     </v-dialog>
 
-    <div class="container container--sm pt-8 pb-12">
+    <div
+      id="container"
+      :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container container--sm']"
+    >
       <h1 class="text-2xl text-white font-semibold leading-tight mb-5">
         Создать нового поставщика
       </h1>
@@ -54,32 +57,34 @@
           class="bg-gray-600 rounded-md p-5 pt-6"
         >
           <!-- Legal info -->
-          <EntityLegalInfo supplier />
+          <EntityLegalInfo supplier :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <EntityLegalDetail supplier />
+          <EntitySupplierDetail :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
-          <EntityContactList />
+          <EntityContactList :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Branches -->
-          <EntityBranchList />
+          <EntityBranchList :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
               <!-- Extra -->
-              <EntityExtra />
+              <EntityExtra supplier :item="supplier" @update="updateValue" />
             </div>
           </div>
         </div>
       </div>
       <Button
+        :loading="updateLoading"
         outlined
         class="w-40"
+        @click="update()"
       >
         Сохранить
       </Button>
@@ -371,7 +376,7 @@ import {
 } from '@/graphql/mutations'
 
 import EntityLegalInfo from './EntityLegalInfo.vue'
-import EntityLegalDetail from './EntityLegalDetail.vue'
+import EntitySupplierDetail from './EntitySupplierDetail.vue'
 import EntityContactList from './EntityContactList.vue'
 import EntityExtra from './EntityExtra.vue'
 import EntityBranchList from './EntityBranchList.vue'
@@ -386,7 +391,7 @@ export default {
   name: 'SupplierCard',
   components: {
     EntityLegalInfo,
-    EntityLegalDetail,
+    EntitySupplierDetail,
     EntityContactList,
     EntityExtra,
     EntityBranchList,
@@ -445,7 +450,7 @@ export default {
       createTemplateLoading: false,
       deleteTemplateLoading: null,
       loading: false,
-      updateLoading: null,
+      updateLoading: false,
       templateListDialog: false,
       templateSaveDialog: false,
       editCard: 'SUPPLIER',
@@ -481,6 +486,10 @@ export default {
         website: {},
         companyType: {},
         fieldOfActivity: {},
+        legalAddress: {},
+        legalAddressPostcode: {},
+        fax: {},
+        ownerFullName: {},
         manufacturersAddress: {
           section: true,
           rows: 2,
@@ -699,13 +708,13 @@ export default {
         if (r) {
           if (r === 2) {
             this.wasValidate = true
-            const isValid = this.validate(true)
-            if (!isValid) {
-              this.editCard = this.editCardTypes.SUPPLIER
-              this.saveBeforeCloseDialog = false
-              this.$vuetify.goTo('#container')
-              return next(false)
-            }
+            // const isValid = this.validate(true)
+            // if (!isValid) {
+            //   this.editCard = this.editCardTypes.SUPPLIER
+            //   this.saveBeforeCloseDialog = false
+            //   this.$vuetify.goTo('#container')
+            //   return next(false)
+            // }
             try {
               await this.update(false, true)
               return next()
@@ -737,10 +746,10 @@ export default {
       this.supplier = {
         id,
         language: '',
-        template: { id },
+        // template: { id },
         shops: [],
       }
-      this.addShop()
+      // this.addShop()
       // clone supplier for detect changes
       this.supplierClone = cloneDeep(this.supplier)
     },
@@ -818,23 +827,23 @@ export default {
       }
     },
     async update (redirectAfterCreate = true, fullUpdate) {
-      this.wasValidate = true
-      // TODO: validate input Uniq number
-      const isValid = this.validate(true)
-      if (!isValid) {
-        return
-      }
+      // this.wasValidate = true
+      // // TODO: validate input Uniq number
+      // const isValid = this.validate(true)
+      // if (!isValid) {
+      //   return
+      // }
       try {
         let input = {
-          template: {},
+          // template: {},
         }
         this.fieldsKeys.forEach(key => {
           input[key] = this.supplier[key] || null
         })
-        const template = this.supplier.template || {}
-        this.templateFieldsKeys.forEach(key => {
-          input.template[key] = template[key] || null
-        })
+        // const template = this.supplier.template || {}
+        // this.templateFieldsKeys.forEach(key => {
+        //   input.template[key] = template[key] || null
+        // })
         if (this.create || fullUpdate) {
           const supplierShops = this.supplier.shops || []
           input.shops = supplierShops.map(s => {
@@ -842,12 +851,12 @@ export default {
             this.shopFieldsKeys.forEach(key => {
               shop[key] = s[key] || null
             })
-            let sTemplate = s.template || {}
-            let template = {}
-            this.shopFieldsKeys.forEach(key => {
-              template[key] = sTemplate[key] || null
-            })
-            shop.template = template
+            // let sTemplate = s.template || {}
+            // let template = {}
+            // this.shopFieldsKeys.forEach(key => {
+            //   template[key] = sTemplate[key] || null
+            // })
+            // shop.template = template
             return shop
           })
         }
@@ -858,7 +867,7 @@ export default {
           ? { orgId: this.orgId, input }
           : { id: this.supplier.id, input }
 
-        this.updateLoading = 'supplier'
+        this.updateLoading = true
         const response = await this.$apollo.mutate({
           mutation: query,
           variables,
@@ -888,9 +897,13 @@ export default {
         }
       } catch (error) {
         this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'red',
+          text: error.message,
+        })
         throw new Error(error)
       } finally {
-        this.updateLoading = null
+        this.updateLoading = false
       }
     },
     setData (item) {
@@ -965,7 +978,7 @@ export default {
       }
     },
     updateValue (key, value) {
-      this.validate()
+      // this.validate()
       if (!this.supplier.hasOwnProperty(key)) {
         this.$set(this.supplier, key, value)
       } else {

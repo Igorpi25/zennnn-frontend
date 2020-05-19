@@ -56,7 +56,7 @@
             >
               <template v-slot:prepend-item>
                 <span class="flex items-center jusitfy-center text-blue-500">
-                  <i class="zi-plus mr-1" />
+                  <i class="zi-plus-outline text-2xl mr-1" />
                   <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
                 </span>
               </template>
@@ -283,8 +283,8 @@
       v-model="clientDialog"
       :fullscreen="$vuetify.breakpoint.xs"
       scrollable
-      max-width="1024"
-      content-class="text-gray-100"
+      max-width="1110"
+      content-class="dialog-full-height overflow-scroll-touch"
     >
       <ClientCard
         ref="clientCard"

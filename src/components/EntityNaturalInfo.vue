@@ -7,31 +7,48 @@
           label-no-wrap
           placeholder="Имя"
           class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
+          disabled
         />
         <TextField
           placeholder="Фамилия"
           class="flex-grow"
+          disabled
         />
       </div>
       <div class="pb-2">
         <TextField
+          :value="item.mobilePhone"
           label="Мобильный телефон"
           label-hint="Убедитесь в безошибочности введенного номера мобильного. Данный телефон будет использован для отправки автоматических уведомлений, которые существенно упрастят совместную работу."
           placeholder="123-4567-8901"
+          @input="$emit('update', 'mobilePhone', $event)"
         />
       </div>
       <div class="pb-2">
         <TextField
+          :value="item.naturalEmail"
           label="Электронная почта"
           label-hint="Убедитесь в безошибочности введенного адреса электронной почты. Данный адрес будет использован для отправки автоматических уведомлений, которые существенно упрастят совместную работу."
           placeholder="example@mail.com"
+          @input="$emit('update', 'naturalEmail', $event)"
         />
       </div>
       <div class="pb-2 lg:pb-1">
-        <TextField
+        <!-- <TextField
           label="Язык для отправки уведомлений и печати документов"
           placeholder="Выберите язык"
           class="pb-2"
+        /> -->
+        <Select
+          :value="item.language"
+          :items="langs"
+          label="Язык для отправки уведомлений и печати документов"
+          placeholder="Выберите язык"
+          item-value="value"
+          item-text="text"
+          hide-details
+          class="pb-2"
+          @input="$emit('update', 'language', $event)"
         />
         <div class="relative lg:pb-20">
           <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
@@ -57,22 +74,28 @@
     <div class="w-full lg:w-1/2 lg:pl-5">
       <div class="pb-2">
         <TextField
+          :value="item.firstName"
           label="Имя клиента"
           placeholder="Иван"
+          @input="$emit('update', 'firstName', $event)"
         />
       </div>
       <div class="pb-2 lg:pb-1">
         <div class="flex">
           <TextField
+            :value="item.lastName"
             label="Фамилия клиента"
             placeholder="Иванов"
             class="pb-2 flex-grow"
+            @input="$emit('update', 'lastName', $event)"
           />
-          <div class="relative flex-shrink-0 relative w-10 pl-sm">
+          <div class="relative flex-shrink-0 relative w-12 pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
               Совпадает
             </label>
-            <div class="h-full flex items-center pt-8" />
+            <div class="h-full flex items-center justify-end pt-8 pb-1">
+              <SwitchInput disabled hide-details />
+            </div>
           </div>
         </div>
         <div class="relative lg:pb-20">
@@ -83,8 +106,10 @@
       </div>
       <div class="pb-2">
         <TextField
+          :value="item.middleName"
           label="Отчество (если есть)"
           placeholder="Иванович"
+          @input="$emit('update', 'middleName', $event)"
         />
       </div>
       <div class="flex items-end pb-2">
@@ -93,6 +118,7 @@
           label-no-wrap
           placeholder="Дата"
           class="w-1/2 pr-4"
+          disabled
         >
           <template v-slot:prepend>
             <i class="zi-calendar text-lg" />
@@ -117,7 +143,7 @@
           Уникальный номер клиента
         </label>
         <div class="h-10 flex items-center text-white mb-2 px-sm">
-          B00001
+          {{ item.uid || 'B00001' }}
         </div>
         <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
           Уникальный номер клиента (УНК) генерируется системой автоматически. Литера «А» соответствует коммерческим организациям (юр. лицам), «В» — частным лицам (физ. лицам), «С» — некоммерческим организациям и прочим.
@@ -130,5 +156,23 @@
 <script>
 export default {
   name: 'EntityNaturalInfo',
+  props: {
+    item: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  computed: {
+    langs () {
+      return [
+        { value: 'en', text: 'English' },
+        { value: 'zh-Hans', text: '简体' },
+        { value: 'zh-Hant', text: '繁体' },
+        { value: 'fr', text: 'Français' },
+        { value: 'ru', text: 'Русский' },
+        { value: 'uk', text: 'Український' },
+      ]
+    },
+  },
 }
 </script>

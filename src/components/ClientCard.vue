@@ -33,7 +33,7 @@
 
     <v-dialog
       v-model="saveBeforeCloseDialog"
-      max-width="520"
+      max-width="463"
     >
       <SaveBeforeCloseModal
         :text="$t('label.saveChangesBeforeClose')"
@@ -44,7 +44,10 @@
       />
     </v-dialog>
 
-    <div class="container container--sm pt-8 pb-12">
+    <div
+      id="container"
+      :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container container--sm']"
+    >
       <h1 class="text-2xl text-white font-semibold leading-tight mb-5">
         Создать нового клиента
       </h1>
@@ -55,14 +58,15 @@
             :aria-selected="clientType === tab.value"
             :key="tab.value"
             :class="[
-              'w-full sm:w-auto flex items-center justify-center rounded-t bg-gray-600 cursor-pointer',
-              'focus:outline-none focus:text-white hover:text-white select-none whitespace-no-wrap',
+              'w-full sm:w-auto flex items-center justify-center rounded-t bg-gray-600',
+              'select-none whitespace-no-wrap cursor-pointer',
               'transition-colors duration-100 ease-out px-10',
               { 'mr-1': i + 1 < tabs.length },
+              tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',
               clientType === tab.value ? 'text-white' : 'bg-opacity-30 text-gray-200',
             ]"
-            role="tab"
-            tabindex="0"
+            :role="tab.disabled ? null : 'tab'"
+            :tabindex="tab.disabled ? null : 0"
             @click="switchClientType(tab.value)"
             @keydown.enter.exact="switchClientType(tab.value)"
           >
@@ -74,25 +78,25 @@
           class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
         >
           <!-- Legal info -->
-          <EntityLegalInfo />
+          <EntityLegalInfo :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <EntityLegalDetail />
+          <EntityLegalDetail :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
-          <EntityContactList />
+          <EntityContactList :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
               <!-- Shipping -->
-              <EntityShipping />
+              <EntityShipping :item="client" @update="updateValue" />
             </div>
             <div class="w-full lg:w-1/2 lg:pl-5">
               <!-- Extra -->
-              <EntityExtra />
+              <EntityExtra :item="client" @update="updateValue" />
             </div>
           </div>
         </div>
@@ -101,25 +105,25 @@
           class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
         >
           <!-- Natural info -->
-          <EntityNaturalInfo />
+          <EntityNaturalInfo :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <EntityNaturalDetail />
+          <EntityNaturalDetail :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
-          <EntityContactList />
+          <EntityContactList :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
               <!-- Shipping -->
-              <EntityShipping />
+              <EntityShipping :item="client" natural @update="updateValue" />
             </div>
             <div class="w-full lg:w-1/2 lg:pl-5">
               <!-- Shipping -->
-              <EntityExtra />
+              <EntityExtra :item="client" natural @update="updateValue" />
             </div>
           </div>
         </div>
@@ -152,8 +156,10 @@
         </div>
       </div>
       <Button
+        :loading="updateLoading"
         outlined
         class="w-40"
+        @click="update()"
       >
         Сохранить
       </Button>
@@ -413,8 +419,6 @@
 import cloneDeep from 'clone-deep'
 import deepEqual from 'deep-equal'
 
-import { mdiArrowLeft } from '@mdi/js'
-
 import { ClientType } from '@/graphql/enums'
 import { GET_CLIENT, GET_ORG_NEXT_CLIENT_UID, LIST_CLIENT_TEMPLATES } from '@/graphql/queries'
 import {
@@ -522,7 +526,7 @@ export default {
       createTemplateLoading: false,
       deleteTemplateLoading: null,
       loading: false,
-      updateLoading: null,
+      updateLoading: false,
       templateListDialog: false,
       templateSaveDialog: false,
       clientType: null,
@@ -665,9 +669,6 @@ export default {
         template: {},
       },
       clientClone: {},
-      icons: {
-        mdiArrowLeft,
-      },
     }
   },
   computed: {
@@ -684,6 +685,7 @@ export default {
         {
           value: ClientType.OTHER,
           text: 'Другое',
+          disabled: true,
         },
       ]
     },
@@ -839,12 +841,12 @@ export default {
         if (r) {
           if (r === 2) {
             this.wasValidate = true
-            const isValid = this.validate(true)
-            if (!isValid) {
-              this.saveBeforeCloseDialog = false
-              this.$vuetify.goTo('#container')
-              return next(false)
-            }
+            // const isValid = this.validate(true)
+            // if (!isValid) {
+            //   this.saveBeforeCloseDialog = false
+            //   this.$vuetify.goTo('#container')
+            //   return next(false)
+            // }
             try {
               await this.update(this.clientType, false)
               return next()
@@ -971,12 +973,12 @@ export default {
       }
     },
     async update (type, redirectAfterCreate = true) {
-      this.wasValidate = true
-      // TODO: validate input Uniq number
-      const isValid = this.validate(true)
-      if (!isValid) {
-        return
-      }
+      // this.wasValidate = true
+      // // TODO: validate input Uniq number
+      // const isValid = this.validate(true)
+      // if (!isValid) {
+      //   return
+      // }
       try {
         let input = {
           clientType: this.clientType,
@@ -985,10 +987,10 @@ export default {
         this.fieldsKeys.forEach(key => {
           input[key] = this.client[key] || null
         })
-        const template = this.client.template || {}
-        this.templateFieldsKeys.forEach(key => {
-          input.template[key] = template[key] || null
-        })
+        // const template = this.client.template || {}
+        // this.templateFieldsKeys.forEach(key => {
+        //   input.template[key] = template[key] || null
+        // })
 
         const query = this.create ? CREATE_CLIENT : UPDATE_CLIENT
 
@@ -996,7 +998,7 @@ export default {
           ? { orgId: this.orgId, input }
           : { id: this.client.id, input }
 
-        this.updateLoading = type
+        this.updateLoading = true
         const response = await this.$apollo.mutate({
           mutation: query,
           variables,
@@ -1026,9 +1028,13 @@ export default {
         }
       } catch (error) {
         this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'red',
+          text: error.message,
+        })
         throw new Error(error)
       } finally {
-        this.updateLoading = null
+        this.updateLoading = false
       }
     },
     setData (item) {
@@ -1099,7 +1105,7 @@ export default {
       }
     },
     updateValue (key, value) {
-      this.validate()
+      // this.validate()
       if (!this.client.hasOwnProperty(key)) {
         this.$set(this.client, key, value)
       } else {
@@ -1134,71 +1140,3 @@ export default {
   },
 }
 </script>
-
-<style lang="postcss" scoped>
-  .header {
-    @apply mb-3 text-sm items-center;
-  }
-  .header__title {
-    font-size: 24px;
-    @apply mb-6 block font-bold text-center text-gray-150;
-  }
-  .header__actions {
-    @apply flex flex-col justify-around items-center;
-  }
-  .card__radio-group {
-    display: flex;
-    margin-top: 60px;
-    margin-left: 30px;
-  }
-  .card__add-address-btn {
-    height: 26px;
-    margin-left: -30px;
-    @apply flex justify-start items-center;
-    @apply pl-1 pr-6;
-    @apply border rounded-full text-sm;
-  }
-  .template-card {
-    display: none;
-  }
-  .template-card__triangle {
-    width: 0;
-    height: 0;
-  }
-
-  @screen md {
-    .header {
-      @apply flex;
-    }
-    .header__title {
-      @apply mr-2 mb-0 inline text-base font-normal;
-    }
-    .header__actions {
-      @apply flex-row justify-start;
-    }
-    .card__radio-group {
-      display: none;
-    }
-    .card__add-address-btn {
-      margin-left: 0;
-    }
-    .template-card {
-      display: block;
-    }
-    .template-card__triangle {
-      width: 14px;
-      height: 14px;
-      transform: rotate(45deg);
-      background-color: #0F0F0F;
-      position: absolute;
-      top: -7px;
-      left: 95px;
-    }
-  }
-
-  @screen lg {
-    .header__actions {
-      width: 33%;
-    }
-  }
-</style>
