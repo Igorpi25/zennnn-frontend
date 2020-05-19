@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="spec">
     <component
       ref="spec"
       v-if="roleInProject"
