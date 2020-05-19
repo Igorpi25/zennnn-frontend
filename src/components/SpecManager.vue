@@ -30,37 +30,38 @@
             </span>
           </v-tooltip>
         </div>
-        <div class="flex items-center text-gray-300">
-          <span>{{ `Клиент: ` }}</span>
+         <div class="flex items-center text-gray-300">
           <span v-if="spec.client">
-            {{ `${spec.client.uid} ${spec.client.fullName}` }}
+            {{ `Клиент: ${spec.client.uid} ${spec.client.fullName}` }}
           </span>
-          <Select
-            v-else
-            :value="spec.client"
-            :placeholder="$t('placeholder.emptyText')"
-            :search.sync="clientSearch"
-            :items="clients"
-            :has-arrow-icon="false"
-            flat
-            no-filter
-            searchable
-            return-object
-            item-value="id"
-            item-text="name"
-            solo
-            hide-details
-            class="inline-flex justify-end ml-2"
-            @input="setSpecClient($event && $event.id)"
-            @click:prepend-item="createClient"
-          >
-            <template v-slot:prepend-item>
-              <span class="flex items-center jusitfy-center text-blue-500">
-                <i class="zi-plus mr-1" />
-                <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
-              </span>
-            </template>
-          </Select>
+          <template v-else>
+            <span>{{ `Клиент:` }}</span>
+            <Select
+              :value="spec.client"
+              :placeholder="$t('placeholder.emptyText')"
+              :search.sync="clientSearch"
+              :items="clients"
+              :has-arrow-icon="false"
+              flat
+              no-filter
+              searchable
+              return-object
+              item-value="id"
+              item-text="name"
+              solo
+              hide-details
+              class="inline-flex justify-end ml-2"
+              @input="setSpecClient($event && $event.id)"
+              @click:prepend-item="createClient"
+            >
+              <template v-slot:prepend-item>
+                <span class="flex items-center jusitfy-center text-blue-500">
+                  <i class="zi-plus mr-1" />
+                  <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
+                </span>
+              </template>
+            </Select>
+          </template>
         </div>
       </div>
 
