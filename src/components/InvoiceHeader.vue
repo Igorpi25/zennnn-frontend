@@ -49,7 +49,7 @@
                 :placeholder="$t('shipping.purchaseDate')"
                 solo
                 readonly
-                class="w-full sm:w-32 mb-2 md:mb-0 mr-2"
+                class="w-full sm:w-36 mb-2 md:mb-0 mr-2"
               >
                 <template v-slot:prepend>
                   <i class="zi-calendar text-2xl" />
@@ -73,7 +73,7 @@
         item-text="companyNameSl"
         return-object
         hide-details
-        class="w-full sm:w-auto lg:w-full lg:flex-shrink-0 sm:flex-grow md:flex-grow-0 max-w-sm mb-2 md:mb-0 mr-2"
+        class="w-full sm:w-auto xl:w-full lg:flex-shrink-0 sm:flex-grow md:flex-grow-0 lg:flex-grow xl:flex-grow-0 max-w-sm mb-2 md:mb-0 mr-2"
         @input="updateSupplier(item.id, ($event && $event.id))"
       >
         <template v-slot:prepend>
@@ -97,7 +97,7 @@
                 :placeholder="$t('shipping.shippingDate')"
                 solo
                 readonly
-                class="lg:flex-shrink-0 w-full sm:w-32 mr-2"
+                class="lg:flex-shrink-0 w-full sm:w-38 mr-2"
               >
                 <template v-slot:prepend>
                   <i class="zi-calendar text-2xl" />
