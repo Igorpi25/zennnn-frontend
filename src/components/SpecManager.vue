@@ -124,7 +124,7 @@
               @update="createInvoice"
             />
             <v-expand-transition>
-              <Invoice
+              <InvoiceContent
                 v-if="isEmpty"
                 :currency="spec.currency"
                 :invoice="item"
@@ -149,7 +149,7 @@
               @click="expand"
             />
             <v-expand-transition>
-              <Invoice
+              <InvoiceContent
                 v-if="expanded.includes(item.id)"
                 :currency="spec.currency"
                 :invoice="item"
@@ -301,7 +301,7 @@
 
 <script>
 import InvoiceHeader from './InvoiceHeader.vue'
-import Invoice from './Invoice.vue'
+import InvoiceContent from './InvoiceContent.vue'
 import SpecSummary from './SpecSummary.vue'
 import ClientCard from './ClientCard.vue'
 // import Comments from './Comments.vue'
@@ -319,7 +319,7 @@ export default {
   name: 'SpecManager',
   components: {
     InvoiceHeader,
-    Invoice,
+    InvoiceContent,
     SpecSummary,
     ClientCard,
     // Comments,

@@ -56,7 +56,7 @@
             @update="updateInvoice"
             @click="expand"
           />
-          <Invoice
+          <InvoiceContent
             v-if="expanded.includes(item.id)"
             :currency="spec.currency"
             :invoice="item"
@@ -103,7 +103,7 @@
 
 <script>
 import InvoiceHeader from './InvoiceHeader.vue'
-import Invoice from './Invoice.vue'
+import InvoiceContent from './InvoiceContent.vue'
 // import Comments from './Comments.vue'
 import SpecCostInfo from './SpecCostInfo.vue'
 
@@ -113,7 +113,7 @@ export default {
   name: 'SpecAccountant',
   components: {
     InvoiceHeader,
-    Invoice,
+    InvoiceContent,
     // Comments,
     SpecCostInfo,
   },

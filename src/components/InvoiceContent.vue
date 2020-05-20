@@ -221,7 +221,7 @@ import InvoiceSummary from './InvoiceSummary.vue'
 import { Role } from '../graphql/enums'
 
 export default {
-  name: 'OwnerInvoice',
+  name: 'InvoiceContent',
   components: {
     InvoiceProduct,
     InvoiceSummary,
