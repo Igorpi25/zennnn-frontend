@@ -204,7 +204,7 @@
         </DataTable>
       </div>
     </div>
-    <InvoiceAmount
+    <InvoiceSummary
       v-if="isAmountVisible && items && !create && !hideSummary"
       :role="role"
       :currency="currency"
@@ -217,14 +217,14 @@
 import invoice from '../mixins/invoice'
 
 import InvoiceProduct from './InvoiceProduct.vue'
-import InvoiceAmount from './InvoiceAmount.vue'
+import InvoiceSummary from './InvoiceSummary.vue'
 import { Role } from '../graphql/enums'
 
 export default {
   name: 'OwnerInvoice',
   components: {
     InvoiceProduct,
-    InvoiceAmount,
+    InvoiceSummary,
   },
   mixins: [invoice],
   props: {

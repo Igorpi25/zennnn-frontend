@@ -185,7 +185,7 @@ import invoice from '../mixins/invoice'
 import { Role } from '../graphql/enums'
 
 export default {
-  name: 'InvoiceAmount',
+  name: 'InvoiceSummary',
   mixins: [invoice],
   props: {
     item: {
