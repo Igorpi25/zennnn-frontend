@@ -139,7 +139,7 @@
 
 <script>
 export default {
-  name: 'SpecDelivery',
+  name: 'SpecShipping',
   props: {
     spec: {
       type: Object,

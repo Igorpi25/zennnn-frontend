@@ -73,7 +73,7 @@
     </div>
 
     <div class="flex flex-wrap lg:flex-no-wrap pb-8">
-      <SpecDelivery :spec="spec" />
+      <SpecShipping :spec="spec" />
     </div>
 
     <!-- <div class="flex pt-5">
@@ -101,7 +101,7 @@
 import InvoiceHeader from '../InvoiceHeader.vue'
 import InvoiceContent from '../InvoiceContent.vue'
 // import Comments from '../Comments.vue'
-import SpecDelivery from '../SpecDelivery.vue'
+import SpecShipping from '../SpecShipping.vue'
 
 import spec from '../../mixins/spec'
 
@@ -111,7 +111,7 @@ export default {
     InvoiceHeader,
     InvoiceContent,
     // Comments,
-    SpecDelivery,
+    SpecShipping,
   },
   mixins: [spec],
   data () {

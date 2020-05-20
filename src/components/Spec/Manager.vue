@@ -171,7 +171,7 @@
     <div class="flex flex-wrap lg:flex-no-wrap pb-8">
       <div class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3" style="max-width: 746px">
         <v-slide-y-transition hide-on-leave>
-          <SpecDelivery
+          <SpecShipping
             v-if="isInfoVisible"
             :spec="spec"
             :hide-containers="!isCostVisible"
@@ -210,7 +210,7 @@
                 </SwitchInput>
               </div>
             </template>
-          </SpecDelivery>
+          </SpecShipping>
         </v-slide-y-transition>
       </div>
       <div class="w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3">
@@ -305,7 +305,7 @@ import InvoiceContent from '../InvoiceContent.vue'
 import SpecSummary from '../SpecSummary.vue'
 import ClientCard from '../ClientCard.vue'
 // import Comments from '../Comments.vue'
-import SpecDelivery from '../SpecDelivery.vue'
+import SpecShipping from '../SpecShipping.vue'
 import SpecCost from '../SpecCost.vue'
 
 import spec from '../../mixins/spec'
@@ -323,7 +323,7 @@ export default {
     SpecSummary,
     ClientCard,
     // Comments,
-    SpecDelivery,
+    SpecShipping,
     SpecCost,
   },
   mixins: [spec],
