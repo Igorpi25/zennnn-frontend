@@ -132,7 +132,7 @@
                 :scroll-left="invoiceScrollLeft"
                 :scroll-invoice-id="invoiceScrollId"
                 :role="Role.MANAGER"
-                :hide-summary="!isInfoVisible"
+                :hide-summary="!isInvoiceSummaryVisible"
                 create
                 @change:tab="setInvoiceActiveTab"
                 @change:scrollLeft="setScrollLeft"
@@ -157,7 +157,7 @@
                 :scroll-left="invoiceScrollLeft"
                 :scroll-invoice-id="invoiceScrollId"
                 :role="Role.MANAGER"
-                :hide-summary="!isInfoVisible"
+                :hide-summary="!isInvoiceSummaryVisible"
                 @change:tab="setInvoiceActiveTab"
                 @change:scrollLeft="setScrollLeft"
                 @update:currency="updateSpec({ currency: $event })"

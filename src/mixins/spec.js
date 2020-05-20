@@ -109,6 +109,9 @@ export default {
     }
   },
   computed: {
+    isInvoiceSummaryVisible () {
+      return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct || this.hasFilledProductQty)
+    },
     isInfoVisible () {
       return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct)
     },
@@ -131,6 +134,13 @@ export default {
             el.productStatus === ProductStatus.IN_PRODUCTION ||
             el.productStatus === ProductStatus.IN_STOCK
         })
+      })
+    },
+    hasFilledProductQty () {
+      const invoices = this.spec.invoices || []
+      return invoices.some(i => {
+        const products = i.products || []
+        return products.some(el => el.qty)
       })
     },
     specSimpleUI () {
