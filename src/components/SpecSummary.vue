@@ -259,7 +259,7 @@ import {
 } from '../graphql/mutations'
 import { DEFAULT_CURRENCY } from '../config/globals'
 
-import specPdf from '../components/specPdf'
+import printInvoice from '../components/printInvoice'
 
 export default {
   name: 'SpecSummary',
@@ -379,7 +379,7 @@ export default {
       try {
         this.printLoading = true
         const method = 'print'
-        await specPdf(this.spec, requisite, client, shipment, customs, method, false)
+        await printInvoice(this.spec, requisite, client, shipment, customs, method, false)
       } catch (error) {
         this.$notify({
           color: 'red',

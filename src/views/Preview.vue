@@ -523,7 +523,7 @@ import {
 } from '../graphql/typeDefs'
 import { PAPER_STORE_KEY_PREFIX, DEFAULT_CURRENCY } from '../config/globals'
 import { getSpecExpandedInvoices } from '../graphql/resolvers'
-import specPdf from '../components/specPdf'
+import printInvoice from '../components/printInvoice'
 
 export default {
   name: 'Preview',
@@ -808,7 +808,7 @@ export default {
         const shipment = this.spec.shipment || {}
         const customs = this.spec.customs || {}
         const isDraft = !this.spec.readyToPrint
-        await specPdf(this.spec, requisite, client, shipment, customs, 'download', isDraft)
+        await printInvoice(this.spec, requisite, client, shipment, customs, 'download', isDraft)
       } catch (error) {
         this.$notify({
           color: 'red',
@@ -827,7 +827,7 @@ export default {
         const shipment = this.spec.shipment || {}
         const customs = this.spec.customs || {}
         const isDraft = !this.spec.readyToPrint
-        await specPdf(this.spec, requisite, client, shipment, customs, 'print', isDraft)
+        await printInvoice(this.spec, requisite, client, shipment, customs, 'print', isDraft)
       } catch (error) {
         this.$notify({
           color: 'red',
