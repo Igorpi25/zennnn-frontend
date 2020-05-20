@@ -86,7 +86,6 @@
               outlined
               class="w-full"
               content-class="w-full flex items-center"
-              @click="openPaperList"
             >
               <template v-slot:icon>
                 <i class="zi-eye text-gray-100 text-2xl" />
