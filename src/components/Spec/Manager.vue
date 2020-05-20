@@ -215,7 +215,7 @@
       </div>
       <div class="w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3">
         <v-slide-y-transition hide-on-leave>
-          <SpecCostInfo
+          <SpecCost
             v-if="isCostVisible"
             :role="Role.MANAGER"
             :spec="spec"
@@ -306,7 +306,7 @@ import SpecSummary from '../SpecSummary.vue'
 import ClientCard from '../ClientCard.vue'
 // import Comments from '../Comments.vue'
 import SpecDelivery from '../SpecDelivery.vue'
-import SpecCostInfo from '../SpecCostInfo.vue'
+import SpecCost from '../SpecCost.vue'
 
 import spec from '../../mixins/spec'
 
@@ -324,7 +324,7 @@ export default {
     ClientCard,
     // Comments,
     SpecDelivery,
-    SpecCostInfo,
+    SpecCost,
   },
   mixins: [spec],
   data () {

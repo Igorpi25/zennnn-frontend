@@ -73,7 +73,7 @@
     </div>
 
     <div class="flex justify-end pb-8">
-      <SpecCostInfo
+      <SpecCost
         :role="Role.ACCOUNTANT"
         :spec="spec"
         @update-spec="updateSpec"
@@ -105,7 +105,7 @@
 import InvoiceHeader from '../InvoiceHeader.vue'
 import InvoiceContent from '../InvoiceContent.vue'
 // import Comments from '../Comments.vue'
-import SpecCostInfo from '../SpecCostInfo.vue'
+import SpecCost from '../SpecCost.vue'
 
 import spec from '../../mixins/spec'
 
@@ -115,7 +115,7 @@ export default {
     InvoiceHeader,
     InvoiceContent,
     // Comments,
-    SpecCostInfo,
+    SpecCost,
   },
   mixins: [spec],
   data () {

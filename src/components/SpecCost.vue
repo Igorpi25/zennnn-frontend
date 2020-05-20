@@ -95,7 +95,7 @@ import { DEFAULT_CURRENCY } from '../config/globals'
 import { SpecCurrency, Role } from '../graphql/enums'
 
 export default {
-  name: 'SpecCostInfo',
+  name: 'SpecCost',
   props: {
     spec: {
       type: Object,
