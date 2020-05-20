@@ -52,7 +52,7 @@
           <InvoiceHeader
             :item="item"
             :is-expanded="expanded.includes(item.id)"
-            :role="Role.FREELANCER"
+            :role="Role.ACCOUNTANT"
             @update="updateInvoice"
             @click="expand"
           />
@@ -63,7 +63,7 @@
             :active-tab="invoiceActiveTab"
             :scroll-left="invoiceScrollLeft"
             :scroll-invoice-id="invoiceScrollId"
-            :role="Role.FREELANCER"
+            :role="Role.ACCOUNTANT"
             @change:tab="setInvoiceActiveTab"
             @change:scrollLeft="setScrollLeft"
             @update:currency="updateSpec({ currency: $event })"
@@ -72,8 +72,12 @@
       </div>
     </div>
 
-    <div class="flex flex-wrap lg:flex-no-wrap pb-8">
-      <SpecDelivery :spec="spec" />
+    <div class="flex justify-end pb-8">
+      <SpecCostInfo
+        :role="Role.ACCOUNTANT"
+        :spec="spec"
+        @update-spec="updateSpec"
+      />
     </div>
 
     <!-- <div class="flex pt-5">
@@ -98,33 +102,26 @@
 </template>
 
 <script>
-import InvoiceHeader from './InvoiceHeader.vue'
-import InvoiceContent from './InvoiceContent.vue'
-// import Comments from './Comments.vue'
-import SpecDelivery from './SpecDelivery.vue'
+import InvoiceHeader from '../InvoiceHeader.vue'
+import InvoiceContent from '../InvoiceContent.vue'
+// import Comments from '../Comments.vue'
+import SpecCostInfo from '../SpecCostInfo.vue'
 
-import spec from '../mixins/spec'
+import spec from '../../mixins/spec'
 
 export default {
-  name: 'SpecFreelancer',
+  name: 'Accountant',
   components: {
     InvoiceHeader,
     InvoiceContent,
     // Comments,
-    SpecDelivery,
+    SpecCostInfo,
   },
   mixins: [spec],
   data () {
     return {
       defaultTab: 2,
     }
-  },
-  computed: {
-    // TODO: need work with containers
-    container () {
-      const containers = this.spec.containers || []
-      return containers[0] || {}
-    },
   },
 }
 </script>

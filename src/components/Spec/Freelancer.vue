@@ -52,7 +52,7 @@
           <InvoiceHeader
             :item="item"
             :is-expanded="expanded.includes(item.id)"
-            :role="Role.WAREHOUSEMAN"
+            :role="Role.FREELANCER"
             @update="updateInvoice"
             @click="expand"
           />
@@ -63,7 +63,7 @@
             :active-tab="invoiceActiveTab"
             :scroll-left="invoiceScrollLeft"
             :scroll-invoice-id="invoiceScrollId"
-            :role="Role.WAREHOUSEMAN"
+            :role="Role.FREELANCER"
             @change:tab="setInvoiceActiveTab"
             @change:scrollLeft="setScrollLeft"
             @update:currency="updateSpec({ currency: $event })"
@@ -98,15 +98,15 @@
 </template>
 
 <script>
-import InvoiceHeader from './InvoiceHeader.vue'
-import InvoiceContent from './InvoiceContent.vue'
-// import Comments from './Comments.vue'
-import SpecDelivery from './SpecDelivery.vue'
+import InvoiceHeader from '../InvoiceHeader.vue'
+import InvoiceContent from '../InvoiceContent.vue'
+// import Comments from '../Comments.vue'
+import SpecDelivery from '../SpecDelivery.vue'
 
-import spec from '../mixins/spec'
+import spec from '../../mixins/spec'
 
 export default {
-  name: 'SpecWarehouseman',
+  name: 'Freelancer',
   components: {
     InvoiceHeader,
     InvoiceContent,

@@ -117,7 +117,7 @@
         >
           <template v-if="item.id === emptyId">
             <InvoiceHeader
-              :role="Role.MANAGER"
+              :role="Role.OWNER"
               :class="{ 'mt-1': !isEmpty }"
               :is-empty="isEmpty"
               create
@@ -131,7 +131,7 @@
                 :active-tab="invoiceActiveTab"
                 :scroll-left="invoiceScrollLeft"
                 :scroll-invoice-id="invoiceScrollId"
-                :role="Role.MANAGER"
+                :role="Role.OWNER"
                 :hide-summary="!isInvoiceSummaryVisible"
                 create
                 @change:tab="setInvoiceActiveTab"
@@ -144,7 +144,7 @@
             <InvoiceHeader
               :item="item"
               :is-expanded="expanded.includes(item.id)"
-              :role="Role.MANAGER"
+              :role="Role.OWNER"
               @update="updateInvoice"
               @click="expand"
             />
@@ -156,7 +156,7 @@
                 :active-tab="invoiceActiveTab"
                 :scroll-left="invoiceScrollLeft"
                 :scroll-invoice-id="invoiceScrollId"
-                :role="Role.MANAGER"
+                :role="Role.OWNER"
                 :hide-summary="!isInvoiceSummaryVisible"
                 @change:tab="setInvoiceActiveTab"
                 @change:scrollLeft="setScrollLeft"
@@ -217,7 +217,7 @@
         <v-slide-y-transition hide-on-leave>
           <SpecCostInfo
             v-if="isCostVisible"
-            :role="Role.MANAGER"
+            :role="Role.OWNER"
             :spec="spec"
             @update-spec="updateSpec"
           />
@@ -274,7 +274,7 @@
       <SpecSummary
         v-if="isSummaryVisible"
         :spec="spec"
-        :role="Role.MANAGER"
+        :role="Role.OWNER"
       />
     </v-slide-y-transition>
 
@@ -300,23 +300,23 @@
 </template>
 
 <script>
-import InvoiceHeader from './InvoiceHeader.vue'
-import InvoiceContent from './InvoiceContent.vue'
-import SpecSummary from './SpecSummary.vue'
-import ClientCard from './ClientCard.vue'
-// import Comments from './Comments.vue'
-import SpecDelivery from './SpecDelivery.vue'
-import SpecCostInfo from './SpecCostInfo.vue'
+import InvoiceHeader from '../InvoiceHeader.vue'
+import InvoiceContent from '../InvoiceContent.vue'
+import SpecSummary from '../SpecSummary.vue'
+import ClientCard from '../ClientCard.vue'
+// import Comments from '../Comments.vue'
+import SpecDelivery from '../SpecDelivery.vue'
+import SpecCostInfo from '../SpecCostInfo.vue'
 
-import spec from '../mixins/spec'
+import spec from '../../mixins/spec'
 
 import {
   SET_SPEC_CONTAINER_SIZE,
   SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
-} from '../graphql/mutations'
+} from '../../graphql/mutations'
 
 export default {
-  name: 'SpecManager',
+  name: 'Owner',
   components: {
     InvoiceHeader,
     InvoiceContent,
