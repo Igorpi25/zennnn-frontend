@@ -192,6 +192,7 @@
             :disabled="createWithClientLoading"
             :loading="createWithoutClientLoading"
             outlined
+            merge-class="border-gray-200"
             @click="createSpec(true)"
           >
             {{ $t('deals.createSpecDialogWithoutClient') }}

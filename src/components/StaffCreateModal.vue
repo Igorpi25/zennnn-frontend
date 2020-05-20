@@ -115,7 +115,7 @@
               <div class="w-full text-center">
                 <Button
                   :loading="inviteFormLoading"
-                  class="mt-5 text-gray-100 hover:text-white"
+                  merge-class="mt-5 text-gray-100 hover:text-white"
                   @click="invitationStep = 1"
                 >
                   <span>{{ $t('staff.back') }}</span>

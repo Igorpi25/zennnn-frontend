@@ -25,7 +25,7 @@
           <Button
             block
             outlined
-            class="h-10 text-sm pr-6"
+            merge-class="h-10 text-sm pr-6"
           >
             Добавить филиал
           </Button>

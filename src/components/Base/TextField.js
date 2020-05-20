@@ -1,11 +1,12 @@
 import debounce from 'lodash.debounce'
 
-import validatable from '@/mixins/validatable'
+import validatable from '../../mixins/validatable'
 
 import {
   formatNumber,
   unformatNumber,
   setCursor,
+  mergeClasses,
 } from '../../util/helpers'
 
 export default {
@@ -155,15 +156,15 @@ export default {
       if (!this.$slots.append) {
         genericClasses.push('pr-sm')
       }
-      // should merge props classes
+      // merge props classes
       if (this.contentClass) {
-        genericClasses.push(this.contentClass)
+        genericClasses = mergeClasses(genericClasses, this.contentClass)
       }
       return staticClasses.concat(genericClasses)
     },
     computedInputClass () {
       const staticClasses = ['w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out truncate']
-      const genericClasses = [
+      let genericClasses = [
         this.solo && this.soloFlat ? 'placeholder-blue-500' : 'placeholder-gray-200',
       ]
       if (this.disabled) {
@@ -172,9 +173,9 @@ export default {
       if (this.number || this.alignRight) {
         genericClasses.push('text-right')
       }
-      // should merge props classes
+      // merge props classes
       if (this.inputClass) {
-        genericClasses.push(this.inputClass)
+        genericClasses = mergeClasses(genericClasses, this.inputClass)
       }
       return staticClasses.concat(genericClasses)
     },

@@ -519,6 +519,82 @@ export const isLink = (value) => {
 }
 
 /**
+ * Normalized classes array
+ * @param {string,Array} c classes
+ * @returns {Array} result
+ */
+export const classToArray = (c) => {
+  if (!c) return []
+  const a = Array.isArray(c) ? c.slice() : (c || '').split(' ')
+  return a.reduce((acc, curr) => {
+    if (curr) {
+      const s = (curr || '').split(' ').filter(el => el)
+      return [...acc, ...s]
+    } else {
+      return acc
+    }
+  }, [])
+}
+
+/**
+ * Clear tailwindcss classes
+ * @param {string,Array,null,undefined} source source classes
+ * @param {string,Array} dest destination classes
+ * @returns {string,Array,undefined} result
+ */
+export const clearClasses = (source, dest) => {
+  if (!dest) return source
+  const isSourceArray = Array.isArray(source)
+  const aDest = classToArray(dest)
+  let aSource = classToArray(source)
+  const colorRe = new RegExp('(text|bg|border)-(white|black|transparent|current|\\w+-\\d+)$')
+  const textSizeRe = new RegExp('(28|xs|sm|base|lg|\\dxl)$')
+  const clearRe = new RegExp('(text|bg|border|w|h|p|px|py|pb|pl|pt|pr|m|mx|my|mb|ml|mt|mr)-')
+  for (const el of aDest) {
+    if (clearRe.test(el)) {
+      const split = el.split('-')
+      let reString = `^${split[0]}-`
+      if (colorRe.test(el)) {
+        reString += '(white|black|transparent|current|\\w+-\\d+)$'
+      } else if (split.length === 2) {
+        reString += !isNaN(Number(split[1]))
+          ? '\\d+'
+          : textSizeRe.test(split[1])
+            ? '(28|xs|sm|base|lg|\\dxl)$'
+            : `\\w{1,${split[1].length}}`
+      } else if (split.length === 3) {
+        reString += split[1] === 'opacity' ? 'opacity-' : `\\w{1,${split[1].length}}-`
+        reString += isNaN(Number(split[2])) ? `\\w{1,${split[2].length}}` : '\\d+'
+      }
+      const re = new RegExp(reString)
+      aSource = aSource.filter(s => !re.test(s))
+    }
+  }
+  if (isSourceArray) {
+    return aSource.filter(el => el)
+  } else {
+    return aSource.join(' ').replace(/\s+/g, ' ').trim()
+  }
+}
+
+/**
+ * Merge tailwindcss classes
+ * @param {string,Array,null,undefined} source source classes
+ * @param {string,Array} dest destination classes
+ * @returns {string,Array,undefined} result
+ */
+export const mergeClasses = (source, dest) => {
+  if (!dest) return source
+  const aSource = clearClasses(source, dest)
+  if (Array.isArray(aSource)) {
+    return [...aSource, ...classToArray(dest)]
+  } else {
+    const d = Array.isArray(dest) ? dest.join(' ') : dest
+    return `${aSource} ${d}`.replace(/\s+/g, ' ').trim()
+  }
+}
+
+/**
  * String type check
  * @param {any} value
  * @returns {boolean}

@@ -158,7 +158,7 @@
       <Button
         :loading="updateLoading"
         outlined
-        class="w-40"
+        merge-class="w-40"
         @click="update()"
       >
         Сохранить
