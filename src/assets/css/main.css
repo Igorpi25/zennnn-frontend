@@ -4,7 +4,6 @@
 
 @import "tailwindcss/components";
 @import "./components/layout.css";
-@import "./components/status-bar.css";
 @import "./components/select.css";
 @import "./components/switch-input.css";
 @import "./components/icon.css";

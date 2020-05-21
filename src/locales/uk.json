@@ -659,7 +659,7 @@
     "enterReply": "Введіть відповідь …",
     "post": "Відправити"
   },
-  "statusBar": {
+  "header": {
     "requisites": "Реквізити",
     "myCompanies": "Мої компанії",
     "signin": "Увійти",

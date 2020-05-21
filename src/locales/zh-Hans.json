@@ -659,7 +659,7 @@
     "enterReply": "回复",
     "post": "发送"
   },
-  "statusBar": {
+  "header": {
     "requisites": "公司资料",
     "myCompanies": "我的账户",
     "signin": "登录",

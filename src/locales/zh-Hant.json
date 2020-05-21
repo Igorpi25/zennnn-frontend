@@ -659,7 +659,7 @@
     "enterReply": "回復",
     "post": "發送"
   },
-  "statusBar": {
+  "header": {
     "requisites": "公司資料",
     "myCompanies": "我的賬戶",
     "signin": "登入",

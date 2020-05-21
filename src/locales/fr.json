@@ -659,7 +659,7 @@
     "enterReply": "Entrez la réponse…",
     "post": "Publier"
   },
-  "statusBar": {
+  "header": {
     "requisites": "Détails de l'entreprise",
     "myCompanies": "Mes comptes",
     "signin": "S'identifier",

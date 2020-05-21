@@ -1,7 +1,7 @@
 <template>
   <div class="bg-gray-400">
     <div class="container">
-      <div class="status-bar flex">
+      <div class="h-14 flex">
         <!-- Logo -->
         <div class="flex items-center">
           <router-link to="/" class="text-gray-100">
@@ -32,7 +32,7 @@
               <div class="flex items-center h-full text-gray-100">
                 <div class="w-px h-5 bg-gray-300 mr-3 ml-3" />
                 <div class="flex items-center h-full px-2 hover:bg-gray-200 transition-colors duration-100 ease-out">
-                  <span>{{ $t('statusBar.signin') }}</span>
+                  <span>{{ $t('header.signin') }}</span>
                   <Icon
                     size="32"
                     class="ml-2"
@@ -50,7 +50,7 @@
             <v-menu
               v-model="profileMenu"
               :nudge-bottom="56"
-              content-class="status-bar-profile-menu"
+              content-class="header-profile-menu"
               bottom
               left
             >
@@ -79,7 +79,7 @@
                     <div
                       class="text-xs leading-none text-gray-100"
                     >
-                      {{ $t(`statusBar.role.${currentOrg.role}`) }}
+                      {{ $t(`header.role.${currentOrg.role}`) }}
                     </div>
                   </div>
                   <div class="avatar">
@@ -136,7 +136,7 @@
     >
       <div class="bg-gray">
         <div class="p-6 flex items-center bg-gray-darkest">
-          <span class="text-gray-100">{{ $t('statusBar.myCompanies') }}</span>
+          <span class="text-gray-100">{{ $t('header.myCompanies') }}</span>
         </div>
         <ul class="list-none text-white overflow-y-auto" style="max-height:520px;">
           <template v-for="(item, i) in orgsByRole">
@@ -231,7 +231,7 @@ import FileUploader from './FileUploader.vue'
 import LocalePicker from './LocalePicker.vue'
 
 export default {
-  name: 'StatusBar',
+  name: 'Header',
   components: {
     FileUploader,
     LocalePicker,
@@ -312,7 +312,7 @@ export default {
       Object.keys(Role).forEach(role => {
         const orgs = groups[role]
         if (orgs) {
-          items.push({ header: true, text: this.$t(`statusBar.role.${role}`) })
+          items.push({ header: true, text: this.$t(`header.role.${role}`) })
           items.push(...groups[role])
         }
       })
@@ -323,11 +323,11 @@ export default {
     },
     profileItems () {
       const items = [
-        { value: 'orgsList', text: this.$t('statusBar.myCompanies') },
-        { value: 'logout', text: this.$t('statusBar.signout') },
+        { value: 'orgsList', text: this.$t('header.myCompanies') },
+        { value: 'logout', text: this.$t('header.signout') },
       ]
       if (this.currentOrg.role === Role.OWNER || this.currentOrg.role === Role.MANAGER) {
-        items.splice(1, 0, { value: 'requisites', text: this.$t('statusBar.requisites') })
+        items.splice(1, 0, { value: 'requisites', text: this.$t('header.requisites') })
       }
       return items
     },

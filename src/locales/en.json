@@ -671,7 +671,7 @@
     "enterReply": "Enter reply…",
     "post": "Post"
   },
-  "statusBar": {
+  "header": {
     "requisites": "Company details",
     "myCompanies": "My accounts",
     "signin": "Log In",

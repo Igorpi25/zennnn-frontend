@@ -670,7 +670,7 @@
     "enterReply": "Введите ответ…",
     "post": "Отправить"
   },
-  "statusBar": {
+  "header": {
     "requisites": "Реквизиты компаний",
     "myCompanies": "Мои аккаунты",
     "signin": "Войти",

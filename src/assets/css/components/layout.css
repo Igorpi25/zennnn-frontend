@@ -30,6 +30,12 @@
   }
 }
 
+.header-profile-menu {
+  box-shadow: none!important;
+  border-top-left-radius: 0!important;
+  border-top-right-radius: 0!important;
+}
+
 .content {
   @apply min-h-full flex flex-col relative;
   overflow-x: hidden;
