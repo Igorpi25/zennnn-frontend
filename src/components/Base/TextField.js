@@ -61,11 +61,11 @@ export default {
       default: 0,
     },
     contentClass: {
-      type: [String, Object],
+      type: [String, Array],
       default: '',
     },
     inputClass: {
-      type: [String, Object],
+      type: [String, Array],
       default: '',
     },
     // preferably validation icon

@@ -105,7 +105,7 @@
           <TextField
             :value="purchasePrice"
             :placeholder="$t('placeholder.emptyNumber')"
-            :input-class="{ 'text-purple-500': hasCustomPurchasePrice }"
+            :input-class="hasCustomPurchasePrice ? 'text-purple-500' : null"
             lazy
             solo
             number
@@ -128,7 +128,7 @@
           <TextField
             :value="clientPrice"
             :placeholder="$t('placeholder.emptyNumber')"
-            :input-class="{ 'text-purple-500': hasCustomPurchasePrice }"
+            :input-class="hasCustomClientPrice ? 'text-purple-500' : null"
             lazy
             solo
             number
