@@ -1,35 +1,5 @@
 <template>
   <div>
-    <!-- <v-dialog
-      v-model="templateListDialog"
-      max-width="480"
-      overlay-color="#0f0f0f"
-      overlay-opacity="0.6"
-    >
-      <TemplateListModal
-        :templates="templates"
-        :current-template="currentTemplate"
-        :visibility="templateListDialog"
-        @delete="deleteSupplierTemplate"
-        @cancel="restoreTemplate"
-        @close="templateListDialog = false"
-        @set-template="setTemplate"
-      />
-    </v-dialog>
-    <v-dialog
-      v-model="templateSaveDialog"
-      max-width="650"
-      overlay-color="#0f0f0f"
-      overlay-opacity="0.6"
-    >
-      <TemplateSaveModal
-        ref="templateSave"
-        :loading="createTemplateLoading"
-        :visibility="templateSaveDialog"
-        @save="createSupplierTemplate"
-        @close="templateSaveDialog = false"
-      />
-    </v-dialog> -->
 
     <v-dialog
       v-model="saveBeforeCloseDialog"
@@ -382,9 +352,6 @@ import EntityExtra from './EntityExtra.vue'
 import EntityBranchList from './EntityBranchList.vue'
 
 import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
-// import TemplateSaveModal from '@/components/TemplateSaveModal.vue'
-// import TemplateListModal from '@/components/TemplateListModal.vue'
-// import TemplateCard from '@/components/TemplateCard.vue'
 import { CREATE_SUPPLIER_SHOP, UPDATE_SUPPLIER_SHOP, DELETE_SUPPLIER_SHOP } from '../graphql/mutations'
 
 export default {
@@ -396,9 +363,6 @@ export default {
     EntityExtra,
     EntityBranchList,
     SaveBeforeCloseModal,
-    // TemplateSaveModal,
-    // TemplateListModal,
-    // TemplateCard,
   },
   props: {
     orgId: {
