@@ -283,7 +283,7 @@
     "vat": "VAT",
     "copyLink": "Копіювати посилання"
   },
-  "preview": {
+  "paper": {
     "cargoInfo": "Загальна вантажна інформація",
     "financialInfo": "Загальна фінансова інформація",
     "draft": "DRAFT",
@@ -530,7 +530,7 @@
     "subtitle": "яку ви шукайте, що не була знайдена.",
     "toHome": "На головну"
   },
-  "paper": {
+  "contract": {
     "supplyContract": "«Договір поставки»",
     "paperConfigurator": "Конструктор документів (список)",
     "createPaper": "Створити документ",

@@ -1312,7 +1312,7 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
       },
     }
     if (isDraft) {
-      dd.watermark = { text: i18n.t('preview.draft'), color: 'gray', opacity: 0.3, bold: true, italics: false }
+      dd.watermark = { text: i18n.t('paper.draft'), color: 'gray', opacity: 0.3, bold: true, italics: false }
     }
     const pdfDocGenerator = pdfMake.createPdf(dd)
     if (method === 'download') {

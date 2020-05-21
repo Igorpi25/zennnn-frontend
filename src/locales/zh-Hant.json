@@ -283,7 +283,7 @@
     "vat": "VAT（納稅人識別號）",
     "copyLink": "複製連結"
   },
-  "preview": {
+  "paper": {
     "cargoInfo": "貨物信息",
     "financialInfo": "最終付款信息",
     "draft": "DRAFT",
@@ -530,7 +530,7 @@
     "subtitle": "您搜索的頁面不存在",
     "toHome": "返回首頁"
   },
-  "paper": {
+  "contract": {
     "supplyContract": "供應合同",
     "paperConfigurator": "文件庫",
     "createPaper": "創建新文件",

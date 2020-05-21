@@ -5,7 +5,7 @@
       v-model="paperList"
       max-width="443"
     >
-      <PaperListModal
+      <ContractListModal
         :items="papers"
         @close="paperList = false"
         @openPaper="openContract"
@@ -21,7 +21,7 @@
       scrollable
       persistent
     >
-      <PaperConfiguratorModal
+      <ContractConfiguratorModal
         :blank="blank"
         :create="create"
         @update="contractCreated"
@@ -239,8 +239,8 @@ import cloneDeep from 'clone-deep'
 
 import { mdiClose, mdiPlusThick } from '@mdi/js'
 
-import PaperListModal from '@/components/PaperListModal.vue'
-import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
+import ContractListModal from '@/components/ContractListModal.vue'
+import ContractConfiguratorModal from '@/components/ContractConfiguratorModal.vue'
 import PrintSettings from '../components/PrintSettings.vue'
 import SpecShipment from '../components/SpecShipment.vue'
 import SpecCustoms from '../components/SpecCustoms.vue'
@@ -264,8 +264,8 @@ import printInvoice from '../components/printInvoice'
 export default {
   name: 'SpecSummary',
   components: {
-    PaperListModal,
-    PaperConfiguratorModal,
+    ContractListModal,
+    ContractConfiguratorModal,
     PrintSettings,
     SpecShipment,
     SpecCustoms,

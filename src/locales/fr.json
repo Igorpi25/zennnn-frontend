@@ -283,7 +283,7 @@
     "vat": "T.V.A.",
     "copyLink": "Copier le lien"
   },
-  "preview": {
+  "paper": {
     "cargoInfo": "Infos de livraison",
     "financialInfo": "Informations sur le coût final",
     "draft": "DRAFT",
@@ -530,7 +530,7 @@
     "subtitle": "la page que vous recherchez est introuvable.",
     "toHome": "À la page d’accueil"
   },
-  "paper": {
+  "contract": {
     "supplyContract": "«Contrat d'approvisionnement»",
     "paperConfigurator": "Configurateur de documents (liste)",
     "createPaper": "Créer un document",

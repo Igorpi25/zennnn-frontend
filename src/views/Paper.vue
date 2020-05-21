@@ -8,7 +8,7 @@
             <!-- TODO: change tag to h1, need refactor base h1 style -->
             <div class="font-semibold leading-6 pr-sm py-2">
               <h2 class="text-2xl inline-block align-middle mr-sm">
-                <span>{{ $t('preview.shippingTitle') }}</span>&nbsp;
+                <span>{{ $t('paper.shippingTitle') }}</span>&nbsp;
                 <span>{{ spec.specNo }}</span>&nbsp;
                 <span>{{ $t('preposition.from') }}</span>&nbsp;
                 <span>{{ $d($parseDate(spec.createdAt), 'short') }}</span>
@@ -18,7 +18,7 @@
                 class="inline-block text-xs align-middle mr-sm px-sm bg-blue-400 text-white"
                 style="border-radius: 50px"
               >
-                {{ $t('preview.shipped') }}
+                {{ $t('paper.shipped') }}
               </div>
             </div>
             <div class="ml-auto flex">
@@ -142,7 +142,7 @@
                     <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
                     <span>{{ item.createdAt ? $d($parseDate(item.createdAt), 'short') : '-' }}</span>&nbsp;
                     <span>/</span>&nbsp;
-                    <span class="text-sm">{{ $t('preview.expectedShipment').toLowerCase() }}</span>&nbsp;
+                    <span class="text-sm">{{ $t('paper.expectedShipment').toLowerCase() }}</span>&nbsp;
                     <span>{{ item.shippingDate ? $d($parseDate(item.shippingDate), 'short') : '-' }}</span>
                   </div>
                 </div>
@@ -173,7 +173,7 @@
               <!-- Cargo Info -->
               <div class="w-full flex-grow lg:w-auto pb-10 lg:pb-0 lg:pr-3">
                 <h4 class="text-xl font-semibold leading-6 mb-4">
-                  {{ $t('preview.cargoInfo') }}
+                  {{ $t('paper.cargoInfo') }}
                 </h4>
 
                 <!-- Summary -->
@@ -183,7 +183,7 @@
                       <div class="flex text-gray-100 pb-2">
                         <i class="zi-calendar text-2xl mr-2" />
                         <span>
-                          {{ $t('preview.estimateDate') }}
+                          {{ $t('paper.estimateDate') }}
                         </span>
                       </div>
                       <div class="text-lg text-center font-semibold">
@@ -196,7 +196,7 @@
                       <div class="flex text-gray-100 pb-2">
                         <i class="zi-cup text-2xl mr-2" />
                         <span>
-                          {{ $t('preview.totalVolume') }}
+                          {{ $t('paper.totalVolume') }}
                         </span>
                       </div>
                       <div class="text-lg text-center font-semibold">
@@ -209,7 +209,7 @@
                       <div class="flex text-gray-100 pb-2">
                         <i class="zi-boxes text-2xl mr-2" />
                         <span>
-                          {{ $t('preview.totalPackages') }}
+                          {{ $t('paper.totalPackages') }}
                         </span>
                       </div>
                       <div class="text-lg text-center font-semibold">
@@ -222,7 +222,7 @@
                       <div class="flex text-gray-100 pb-2">
                         <i class="zi-massa text-2xl mr-2" />
                         <span>
-                          {{ $t('preview.totalWeight') }}
+                          {{ $t('paper.totalWeight') }}
                         </span>
                       </div>
                       <div class="text-lg text-center font-semibold">
@@ -245,7 +245,7 @@
                         class="text-sm text-gray-200"
                       >
                         <div>
-                          {{ `${$tc('preview.container', container.full, { n: container.full })} ${container.size.replace('_', '')}'${container.mode.replace('_', '')}` }}
+                          {{ `${$tc('paper.container', container.full, { n: container.full })} ${container.size.replace('_', '')}'${container.mode.replace('_', '')}` }}
                         </div>
                         <div :class="['spec-container relative my-2', { 'spec-container--lg': container.size === '_40' || container.size === '_45' }]">
                           <div class="spec-container__progress w-full h-full">
@@ -262,7 +262,7 @@
                           </div>
                         </div>
                         <div>
-                          <span>{{ $t('preview.containerLoaded') }}</span>&nbsp;
+                          <span>{{ $t('paper.containerLoaded') }}</span>&nbsp;
                           <span class="inline-block w-10 font-bold">
                             100%
                           </span>
@@ -293,7 +293,7 @@
                           </div>
                         </div>
                         <div>
-                          <span>{{ $t('preview.containerLoaded') }}</span>&nbsp;
+                          <span>{{ $t('paper.containerLoaded') }}</span>&nbsp;
                           <span class="inline-block w-10 font-bold">
                             {{ container.loaded || 0 }}%
                           </span>
@@ -312,7 +312,7 @@
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M44.2118 19.9962L26.0712 37.6498L15.8184 27.5301L19.5063 23.7936L26.0972 30.2989L40.5504 16.2338L44.2118 19.9962Z" fill="#2F80ED"/>
                         </svg>
                         <div class="text-sm">
-                          {{ $t('preview.shipped') }}
+                          {{ $t('paper.shipped') }}
                         </div>
                         <div class="text-sm text-gray-100">
                           <!-- TODO: add shippingDate -->
@@ -327,12 +327,12 @@
               <!-- Financial Info -->
               <div class="w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3">
                 <h4 class="text-xl font-semibold leading-6 mb-4">
-                  {{ $t('preview.financialInfo') }}
+                  {{ $t('paper.financialInfo') }}
                 </h4>
                 <div class="bg-gray-50 rounded-md leading-5 p-5">
                   <div class="flex rounded-md bg-white pl-4 pr-3 py-3 mb-1">
                     <div class="flex-grow text-gray-100">
-                      {{ $t('preview.costOfGood') }}
+                      {{ $t('paper.costOfGood') }}
                     </div>
                     <div class="text-right">
                       {{ $n(spec.finalCost || 0, 'fixed') }} {{ $t(`currency.${currency}.symbol`) }}
@@ -340,7 +340,7 @@
                   </div>
                   <div class="flex rounded-md bg-white pl-4 pr-3 py-3 mb-1">
                     <div class="flex-grow text-gray-100">
-                      {{ $t('preview.totalPrepay') }}
+                      {{ $t('paper.totalPrepay') }}
                     </div>
                     <div class="text-right">
                       {{ $n(spec.totalPrepay || 0, 'fixed') }} {{ $t(`currency.${currency}.symbol`) }}
@@ -349,7 +349,7 @@
                   <div class="rounded-md bg-white pl-4 pr-3 py-3 mb-1">
                     <div class="flex pb-2">
                       <div class="flex-grow text-gray-100">
-                        {{ $t('preview.finalToPay') }}
+                        {{ $t('paper.finalToPay') }}
                       </div>
                       <div :class="['text-right', { 'text-red-500' : spec.totalClientDebt > 0 }]">
                         {{ $n(spec.totalClientDebt || 0, 'fixed') }} {{ $t(`currency.${currency}.symbol`) }}
@@ -357,7 +357,7 @@
                     </div>
                     <div class="flex">
                       <div class="flex-grow text-gray-100">
-                        {{ $t('preview.exchangeRate', { currency: $t(`currency.${currency}.iso-4217`), exchange: $t(`currency.USD.iso-4217`) }) }}
+                        {{ $t('paper.exchangeRate', { currency: $t(`currency.${currency}.iso-4217`), exchange: $t(`currency.USD.iso-4217`) }) }}
                       </div>
                       <div class="text-right">
                         {{ $n(spec.currencyRate || 0) }} {{ $t(`currency.USD.symbol`) }}
@@ -366,7 +366,7 @@
                   </div>
                   <div class="flex rounded-md bg-white pl-4 pr-3 py-3">
                     <div class="flex-grow text-gray-100">
-                      {{ $t('preview.totalToPay', { currency: $t('currency.USD.iso-4217') }) }}
+                      {{ $t('paper.totalToPay', { currency: $t('currency.USD.iso-4217') }) }}
                     </div>
                     <div class="text-right">
                       {{ $n(spec.total || 0, 'fixed') }} {{ $t(`currency.USD.symbol`) }}
@@ -399,7 +399,7 @@
                     <div class="h-12 flex items-center px-3 text-gray-75">
                       <i class="zi-user-plus text-xl mr-2" />
                       <span class="whitespace-nowrap leading-tight">
-                        {{ $t('preview.share') }}
+                        {{ $t('paper.share') }}
                       </span>
                     </div>
                   </button>
@@ -425,7 +425,7 @@
                     <div :class="['h-12 flex items-center px-3', { 'opacity-0': printLoading }]">
                       <i class="zi-print text-gray-100 text-xl mr-2" />
                       <span class="text-blue-500 whitespace-nowrap leading-tight">
-                        {{ $t('preview.print') }}
+                        {{ $t('paper.print') }}
                       </span>
                     </div>
                   </button>
@@ -456,7 +456,7 @@
                       </i>
 
                       <span class="text-blue-500 whitespace-nowrap leading-tight">
-                        {{ $t('preview.download') }}
+                        {{ $t('paper.download') }}
                       </span>
                     </div>
                   </button>
@@ -481,7 +481,7 @@
                         is-paper
                       />
                       <span class="text-blue-500 whitespace-nowrap leading-tight">
-                        {{ $t('preview.comment') }}
+                        {{ $t('paper.comment') }}
                       </span>
                     </div>
                   </button>
@@ -526,7 +526,7 @@ import { getSpecExpandedInvoices } from '../graphql/resolvers'
 import printInvoice from '../components/printInvoice'
 
 export default {
-  name: 'Preview',
+  name: 'Paper',
   components: {
     Header,
     Copyright,

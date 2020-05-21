@@ -5,7 +5,7 @@
       v-model="requisiteList"
       max-width="400"
     >
-      <PaperCompanyListModal
+      <ContractCompanyListModal
         ref="requisiteList"
         @openRequisiteDialog="openRequisiteDialog"
         @chooseRequisite="chooseRequisite"
@@ -17,7 +17,7 @@
       max-width="520"
     >
       <SaveBeforeCloseModal
-        :text="`${$t('label.saveDocChangesBeforeClose', { doc: $t('paper.supplyContract') })}`"
+        :text="`${$t('label.saveDocChangesBeforeClose', { doc: $t('contract.supplyContract') })}`"
         :postScriptum="$t('label.saveChangesHint')"
         @dontSave="doNotSaveContractChanges"
         @cancel="cancel"
@@ -48,7 +48,7 @@
       </Icon>
       <TextField
         v-model="contract.name"
-        :placeholder="$t('paper.name')"
+        :placeholder="$t('contract.name')"
         class="w-5/6 ml-6"
       />
     </div>
@@ -60,7 +60,7 @@
             <span class="paper-title__title mb-8 md:mt-0">
               <Editable
                 v-model="contract.title"
-                :placeholder="$t('paper.heading')"
+                :placeholder="$t('contract.heading')"
                 type="editable"
                 single-line
                 text-dark
@@ -72,7 +72,7 @@
                 <span class="paper-title__number" v-on="on">A0000-26082020-1</span>
               </template>
               <span class="text-sm">
-                {{ $t('paper.specNumber') }}
+                {{ $t('contract.specNumber') }}
               </span>
             </v-tooltip>
           </div>
@@ -81,15 +81,15 @@
               <TextField
                 v-model="contract.country"
                 solo
-                :placeholder="$t('paper.location')"
+                :placeholder="$t('contract.location')"
               />
             </span>
             <v-tooltip top max-width="340">
               <template v-slot:activator="{ on }">
-                <span class="mt-8 sm:mt-0" v-on="on">{{ $t('paper.date') }}</span>
+                <span class="mt-8 sm:mt-0" v-on="on">{{ $t('contract.date') }}</span>
               </template>
               <span class="text-sm">
-                {{ $t('paper.paperDate') }}
+                {{ $t('contract.paperDate') }}
               </span>
             </v-tooltip>
           </div>
@@ -97,7 +97,7 @@
             <TextArea
               v-model="contract.docHeader"
               :disabled="contract.useDefaultDocHeader"
-              :placeholder="$t('paper.textField')"
+              :placeholder="$t('contract.textField')"
               hide-details
               single-line
               text-dark
@@ -112,7 +112,7 @@
             vertical-align
             @input="useDefaultHeader"
           >
-            <span class="ml-2 mb-2 text-sm text-black">{{ $t('paper.contractHeader') }}</span>
+            <span class="ml-2 mb-2 text-sm text-black">{{ $t('contract.contractHeader') }}</span>
           </Checkbox>
         </div>
 
@@ -137,7 +137,7 @@
             </span>
             <TextField
               v-model="item.title"
-              :placeholder="$t('paper.paragraphHeading')"
+              :placeholder="$t('contract.paragraphHeading')"
               solo
             />
             <span
@@ -168,7 +168,7 @@
               </span>
               <TextArea
                 v-model="item.paragraphs[idx]"
-                :placeholder="$t('paper.paragraph')"
+                :placeholder="$t('contract.paragraph')"
                 hide-details
                 single-line
                 text-dark
@@ -192,7 +192,7 @@
             <template v-slot:icon>
               <Icon size="16">{{ icons.mdiPlusCircleOutline }}</Icon>
             </template>
-            <span class="text-sm">{{ $t('paper.addParagraph') }}</span>
+            <span class="text-sm">{{ $t('contract.addParagraph') }}</span>
           </Button>
         </div>
 
@@ -204,7 +204,7 @@
           <template v-slot:icon>
             <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
           </template>
-          <span>{{ $t('paper.addHeading') }}</span>
+          <span>{{ $t('contract.addHeading') }}</span>
         </Button>
 
         <div class="paper-requisites mt-10">
@@ -212,14 +212,14 @@
             <span class="heading__number flex items-center">
                 <span>{{ contract.items.length + 1 }}.</span>
               </span>
-            <span>{{ $t('paper.details') }}</span>
+            <span>{{ $t('contract.details') }}</span>
           </div>
 
           <div class="paper-details mt-16 flex flex-col md:flex-row justify-around text-sm">
             <div class="w-full md:w-1/2 pl-4 md:pr-10 leading-none relative">
               <ul>
                 <li class="flex">
-                  <span class="-ml-4 mr-2">{{ $t('paper.requisites.supplier') }}</span>
+                  <span class="-ml-4 mr-2">{{ $t('contract.requisites.supplier') }}</span>
                   <div
                     class="paper-details__requisite"
                     @click="openRequisiteList"
@@ -231,57 +231,57 @@
                   </div>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.address') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.address') }}</span>
                   <span class="w-2/3">{{ requisite.legalAddress }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.postcode') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.postcode') }}</span>
                   <span class="w-2/3">{{ requisite.leagalAddressPostcode || '_ _ _ _ _ _' }}</span>
                 </li>
                 <li class="flex mt-4">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.phone') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.phone') }}</span>
                   <span class="w-2/3">{{ requisite.phone }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.fax') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.fax') }}</span>
                   <span class="w-2/3">{{ requisite.fax }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.email') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.email') }}</span>
                   <span class="w-2/3">{{ requisite.email }}</span>
                 </li>
                 <li class="flex mt-4">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.bank') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.bank') }}</span>
                   <span class="w-2/3">{{ requisite.bankName }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.bankAddress') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.bankAddress') }}</span>
                   <span class="w-2/3">{{ requisite.bankAddress }}</span>
                 </li>
                 <li class="flex mt-4">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.accountNumber') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.accountNumber') }}</span>
                   <span class="w-2/3">{{ requisite.bankAccountNumber }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.swift') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.swift') }}</span>
                   <span class="w-2/3">{{ requisite.swift }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.fullName') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.fullName') }}</span>
                   <span class="w-2/3">{{ requisite.ownerFullName }}</span>
                 </li>
                 <li class="flex">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.position') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.position') }}</span>
                   <span class="w-2/3">{{ requisite.ownerJobPosition }}</span>
                 </li>
                 <li class="flex mt-4">
-                  <span class="w-1/3 -ml-4 mr-2">{{ $t('paper.requisites.signatureStamp') }}</span>
+                  <span class="w-1/3 -ml-4 mr-2">{{ $t('contract.requisites.signatureStamp') }}</span>
                   <span class="w-2/3">_____________________</span>
                 </li>
               </ul>
             </div>
             <div class="w-full md:w-1/2 mt-8 -ml-5 md:ml-0 md:mt-0 paper-buyer-details">
-              {{ $t('paper.buyerDetails') }}
+              {{ $t('contract.buyerDetails') }}
             </div>
           </div>
 
@@ -291,8 +291,8 @@
       <div class="modal-paper mt-4">
         <div class="paper-title">
           <div class="paper-title__title">
-            <span>{{ $t('paper.specification') }} №A0000-26082020-1</span>
-            <span class="block"> {{ $t('paper.to') }}
+            <span>{{ $t('contract.specification') }} №A0000-26082020-1</span>
+            <span class="block"> {{ $t('contract.to') }}
               <span class="text-gray-150">{{ contract.title }}</span>
             </span>
           </div>
@@ -300,16 +300,16 @@
             <span>
                <TextField
                 v-model="contract.country"
-                :placeholder="$t('paper.location')"
+                :placeholder="$t('contract.location')"
                 solo
               />
             </span>
               <v-tooltip top max-width="340">
                 <template v-slot:activator="{ on }">
-                  <span v-on="on">{{ $t('paper.date') }}</span>
+                  <span v-on="on">{{ $t('contract.date') }}</span>
                 </template>
                 <span class="text-sm">
-                  {{ $t('paper.paperDate') }}
+                  {{ $t('contract.paperDate') }}
                 </span>
               </v-tooltip>
             </div>
@@ -319,15 +319,15 @@
             <span class="heading__number heading__nubmer--first">
                 <span>1.</span>
               </span>
-              <!-- SET VALUE {paper.deliveryItem} BY DEFAULT -->
+              <!-- SET VALUE {contract.deliveryItem} BY DEFAULT -->
             <TextField
               v-model="contract.specItems[0].title"
-              :placeholder="$t('paper.deliveryItem')"
+              :placeholder="$t('contract.deliveryItem')"
               solo
             />
           </div>
           <div class="paper-table">
-            {{ $t('paper.table') }}
+            {{ $t('contract.table') }}
           </div>
 
         </div>
@@ -352,7 +352,7 @@
             </span>
             <TextField
               v-model="item.title"
-              :placeholder="$t('paper.paragraphHeading')"
+              :placeholder="$t('contract.paragraphHeading')"
               solo
             />
             <span
@@ -382,7 +382,7 @@
             </span>
             <TextArea
               v-model="item.paragraphs[idx]"
-              :placeholder="$t('paper.paragraph')"
+              :placeholder="$t('contract.paragraph')"
               hide-details
               single-line
               text-dark
@@ -404,7 +404,7 @@
             <template v-slot:icon>
               <Icon size="16">{{ icons.mdiPlusCircleOutline }}</Icon>
             </template>
-            <span class="text-sm">{{ $t('paper.addParagraph') }}</span>
+            <span class="text-sm">{{ $t('contract.addParagraph') }}</span>
           </Button>
         </div>
 
@@ -416,7 +416,7 @@
           <template v-slot:icon>
             <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
           </template>
-          <span>{{ $t('paper.addHeading') }}</span>
+          <span>{{ $t('contract.addHeading') }}</span>
         </Button>
       </div>
 
@@ -450,14 +450,14 @@ import { apolloClient } from '../plugins/apollo'
 import { GET_ORG_REQUISITE } from '../graphql/queries'
 import { CREATE_CONTRACT, UPDATE_CONTRACT } from '../graphql/mutations'
 
-import PaperCompanyListModal from '@/components/PaperCompanyListModal.vue'
+import ContractCompanyListModal from '@/components/ContractCompanyListModal.vue'
 import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
 import RequisiteCard from '@/components/RequisiteCard.vue'
 
 export default {
-  name: 'PaperConfiguratorModal',
+  name: 'ContractConfiguratorModal',
   components: {
-    PaperCompanyListModal,
+    ContractCompanyListModal,
     SaveBeforeCloseModal,
     RequisiteCard,
   },

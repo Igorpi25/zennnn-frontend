@@ -294,7 +294,7 @@
     "vat": "VAT",
     "copyLink": "Копировать ссылку"
   },
-  "preview": {
+  "paper": {
     "cargoInfo": "Общая грузовая информация",
     "financialInfo": "Общая финансовая информация",
     "draft": "DRAFT",
@@ -541,7 +541,7 @@
     "subtitle": "которую вы ищите, не была найдена.",
     "toHome": "На главную"
   },
-  "paper": {
+  "contract": {
     "supplyContract": "«Договор Поставки»",
     "paperConfigurator": "Конструктор документов (список)",
     "createPaper": "Создать документ",

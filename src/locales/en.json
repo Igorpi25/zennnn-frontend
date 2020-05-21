@@ -294,7 +294,7 @@
     "vat": "VAT",
     "copyLink": "Copy link"
   },
-  "preview": {
+  "paper": {
     "cargoInfo": "Shipping Info",
     "financialInfo": "Final Cost Info",
     "draft": "DRAFT",
@@ -542,7 +542,7 @@
     "subtitle": "the page you are looking for was not found.",
     "toHome": "To Home"
   },
-  "paper": {
+  "contract": {
     "supplyContract": "«Supply Contract»",
     "paperConfigurator": "Document configurator (list)",
     "createPaper": "Create document",

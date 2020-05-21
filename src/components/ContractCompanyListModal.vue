@@ -26,7 +26,7 @@
       <template>
         <Icon class="-ml-4 mr-2">{{ icons.mdiPlusCircleOutline }}</Icon>
       </template>
-      <span>{{ $t('paper.addRequisites') }}</span>
+      <span>{{ $t('contract.addRequisites') }}</span>
     </Button>
   </div>
 </template>
@@ -38,7 +38,7 @@ import { ziGear } from '@/assets/icons'
 import { LIST_ORG_REQUISITES } from '../graphql/queries'
 
 export default {
-  name: 'PaperCompanyListModal',
+  name: 'ContractCompanyListModal',
   apollo: {
     listOrgRequisites: {
       query: LIST_ORG_REQUISITES,

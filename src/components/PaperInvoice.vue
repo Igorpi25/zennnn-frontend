@@ -119,19 +119,19 @@
         <tr class="text-sm">
           <td colspan="5" class="py-2 pr-2 text-gray-100 text-right">
             <div class="h-6">
-              <span>{{ $t('preview.total') }}</span>&nbsp;
+              <span>{{ $t('paper.total') }}</span>&nbsp;
               <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}:</span>
             </div>
             <div class="h-6">
-              <span>{{ $t('preview.discount') }}</span>&nbsp;
+              <span>{{ $t('paper.discount') }}</span>&nbsp;
               <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}:</span>
             </div>
             <div class="h-6">
-              <span>{{ $t('preview.prepay') }}</span>&nbsp;
+              <span>{{ $t('paper.prepay') }}</span>&nbsp;
               <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}:</span>
             </div>
             <div class="h-6">
-              <span>{{ $t('preview.residue') }}</span>&nbsp;
+              <span>{{ $t('paper.residue') }}</span>&nbsp;
               <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}:</span>
             </div>
           </td>
@@ -164,7 +164,7 @@
           <td colspan="4" class="py-2 pl-5 text-gray-100">
             <div class="h-6">
               <span v-if="!invoice.discount">
-                ({{ $t('preview.noDiscount') }})
+                ({{ $t('paper.noDiscount') }})
               </span>
             </div>
             <div class="h-6" />
@@ -236,17 +236,17 @@ export default {
   computed: {
     headers () {
       return [
-        { text: this.$t('preview.itemNo'), value: 'number', align: 'center', width: 48 },
-        { text: this.$t('preview.photo'), value: 'photo', align: 'left', width: 58 },
-        { text: this.$t('preview.name'), value: 'name', align: 'left', width: 250 },
-        { text: this.$t('preview.status'), value: 'status', align: 'left', width: 120 },
-        { text: `${this.$t('preview.price')}(${this.$t(`currency.${this.currency}.symbol`)})`, align: 'right', value: 'price', width: 96 },
-        { text: this.$t('preview.qty'), value: 'qty', align: 'right', width: 65 },
-        { text: this.$t('preview.unit'), value: 'unit', align: 'left', width: 60 },
-        { text: `${this.$t('preview.cost')}(${this.$t(`currency.${this.currency}.symbol`)})`, value: 'cost', align: 'right', width: 116 },
-        { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'right', width: 70 },
-        { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'right', width: 70 },
-        { text: this.$t('preview.notes'), value: 'note', align: 'left', width: 66 },
+        { text: this.$t('paper.itemNo'), value: 'number', align: 'center', width: 48 },
+        { text: this.$t('paper.photo'), value: 'photo', align: 'left', width: 58 },
+        { text: this.$t('paper.name'), value: 'name', align: 'left', width: 250 },
+        { text: this.$t('paper.status'), value: 'status', align: 'left', width: 120 },
+        { text: `${this.$t('paper.price')}(${this.$t(`currency.${this.currency}.symbol`)})`, align: 'right', value: 'price', width: 96 },
+        { text: this.$t('paper.qty'), value: 'qty', align: 'right', width: 65 },
+        { text: this.$t('paper.unit'), value: 'unit', align: 'left', width: 60 },
+        { text: `${this.$t('paper.cost')}(${this.$t(`currency.${this.currency}.symbol`)})`, value: 'cost', align: 'right', width: 116 },
+        { text: this.$t('paper.qtyOfPackages'), value: 'pkgQty', align: 'right', width: 70 },
+        { text: this.$t('paper.packageNo'), value: 'pkgNo', align: 'right', width: 70 },
+        { text: this.$t('paper.notes'), value: 'note', align: 'left', width: 66 },
         { text: '', value: 'actions', width: 48 },
       ]
     },
