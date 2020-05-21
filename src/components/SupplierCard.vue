@@ -863,7 +863,7 @@ export default {
       } catch (error) {
         this.$logger.warn('Error: ', error)
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: error.message,
         })
         throw new Error(error)

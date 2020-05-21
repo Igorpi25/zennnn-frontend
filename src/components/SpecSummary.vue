@@ -382,7 +382,7 @@ export default {
         await printInvoice(this.spec, requisite, client, shipment, customs, method, false)
       } catch (error) {
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: `Error creating PDF: ${error.message}`,
         })
         throw new Error(error)
@@ -502,13 +502,13 @@ export default {
         })
         this.emailAccessInput = ''
         this.$notify({
-          color: 'green',
+          color: 'success',
           text: this.$t('message.emailSent', { email }),
         })
         return result
       } catch (error) {
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: this.$t('message.failedToSent'),
         })
         throw new Error(error)
@@ -530,7 +530,7 @@ export default {
         const successful = document.execCommand('copy')
         if (successful) {
           this.$notify({
-            color: 'green',
+            color: 'success',
             text: this.$t('message.linkCopied'),
           })
         } else {
@@ -539,7 +539,7 @@ export default {
       } catch (error) {
         this.$logger.info('Copy link error: ', error)
         this.$notify({
-          color: 'orange',
+          color: 'warn',
           text: this.$t('message.linkNotCopied'),
         })
       }

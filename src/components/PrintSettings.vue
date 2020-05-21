@@ -1808,7 +1808,7 @@ export default {
       } catch (error) {
         const message = !this.client || !this.client.id ? 'Покупатель не установлен.' : error.message
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: message,
         })
         throw new Error(error)
@@ -1826,7 +1826,7 @@ export default {
       } catch (error) {
         const message = !this.requisiteId ? 'Продавец / Поставщик не установлен.' : error.message
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: message,
         })
         throw new Error(error)

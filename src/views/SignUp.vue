@@ -209,7 +209,7 @@ export default {
         this.errorMessage = error.message || error
         this.$logger.warn('Error: ', error)
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: this.errorMessage,
         })
       } finally {

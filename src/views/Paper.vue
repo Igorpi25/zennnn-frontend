@@ -811,7 +811,7 @@ export default {
         await printInvoice(this.spec, requisite, client, shipment, customs, 'download', isDraft)
       } catch (error) {
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: `Error creating PDF: ${error.message}`,
         })
         throw new Error(error)
@@ -830,7 +830,7 @@ export default {
         await printInvoice(this.spec, requisite, client, shipment, customs, 'print', isDraft)
       } catch (error) {
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: `Error creating PDF: ${error.message}`,
         })
         throw new Error(error)

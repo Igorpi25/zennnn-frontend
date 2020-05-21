@@ -304,7 +304,7 @@ export default {
         this.errorMessage = message
         this.$logger.warn('Error: ', error)
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: message,
         })
       } finally {
@@ -345,7 +345,7 @@ export default {
         this.compliteErrorMessage = error.message || error
         this.$logger.warn('Error: ', error)
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: this.compliteErrorMessage,
         })
       } finally {

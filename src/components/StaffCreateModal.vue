@@ -271,7 +271,7 @@ export default {
           this.emailErrorMessage = this.$t('staff.userAlreadyExistInOrg')
         } else {
           this.$notify({
-            color: 'red',
+            color: 'error',
             text: error.message,
           })
           throw new Error(error)
@@ -310,7 +310,7 @@ export default {
           this.inviteErrorMessage = this.$t('staff.userNotActive')
         } else {
           this.$notify({
-            color: 'red',
+            color: 'error',
             text: error.message,
           })
           throw new Error(error)
