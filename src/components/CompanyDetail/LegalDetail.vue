@@ -210,7 +210,7 @@
 
 <script>
 export default {
-  name: 'EntityLegalDetail',
+  name: 'LegalDetail',
   props: {
     item: {
       type: Object,

@@ -48,25 +48,25 @@
           class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
         >
           <!-- Legal info -->
-          <EntityLegalInfo :item="client" @update="updateValue" />
+          <LegalInfo :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <EntityLegalDetail :item="client" @update="updateValue" />
+          <LegalDetail :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
-          <EntityContactList :item="client" @update="updateValue" />
+          <ContactList :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
-              <!-- Shipping -->
-              <EntityShipping :item="client" @update="updateValue" />
+              <!-- ShippingInfo -->
+              <ShippingInfo :item="client" @update="updateValue" />
             </div>
             <div class="w-full lg:w-1/2 lg:pl-5">
-              <!-- Extra -->
-              <EntityExtra :item="client" @update="updateValue" />
+              <!-- ExtraInfo -->
+              <ExtraInfo :item="client" @update="updateValue" />
             </div>
           </div>
         </div>
@@ -75,25 +75,25 @@
           class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
         >
           <!-- Natural info -->
-          <EntityNaturalInfo :item="client" @update="updateValue" />
+          <NaturalInfo :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <EntityNaturalDetail :item="client" @update="updateValue" />
+          <NaturalDetail :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
-          <EntityContactList :item="client" @update="updateValue" />
+          <ContactList :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
-              <!-- Shipping -->
-              <EntityShipping :item="client" natural @update="updateValue" />
+              <!-- ShippingInfo -->
+              <ShippingInfo :item="client" natural @update="updateValue" />
             </div>
             <div class="w-full lg:w-1/2 lg:pl-5">
-              <!-- Shipping -->
-              <EntityExtra :item="client" natural @update="updateValue" />
+              <!-- ShippingInfo -->
+              <ExtraInfo :item="client" natural @update="updateValue" />
             </div>
           </div>
         </div>
@@ -102,25 +102,25 @@
           class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
         >
           <!-- Legal info -->
-          <EntityLegalInfo />
+          <LegalInfo />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <EntityLegalDetail />
+          <LegalDetail />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
-          <EntityContactList />
+          <ContactList />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
-              <!-- Shipping -->
-              <EntityShipping />
+              <!-- ShippingInfo -->
+              <ShippingInfo />
             </div>
             <div class="w-full lg:w-1/2 lg:pl-5">
-              <!-- Shipping -->
-              <EntityExtra />
+              <!-- ShippingInfo -->
+              <ExtraInfo />
             </div>
           </div>
         </div>
@@ -389,34 +389,34 @@
 import cloneDeep from 'clone-deep'
 import deepEqual from 'deep-equal'
 
-import { ClientType } from '@/graphql/enums'
-import { GET_CLIENT, GET_ORG_NEXT_CLIENT_UID, LIST_CLIENT_TEMPLATES } from '@/graphql/queries'
+import { ClientType } from '../graphql/enums'
+import { GET_CLIENT, GET_ORG_NEXT_CLIENT_UID, LIST_CLIENT_TEMPLATES } from '../graphql/queries'
 import {
   CREATE_CLIENT,
   UPDATE_CLIENT,
   CREATE_CLIENT_TEMPLATE,
   DELETE_CLIENT_TEMPLATE,
-} from '@/graphql/mutations'
+} from '../graphql/mutations'
 
-import EntityLegalInfo from './EntityLegalInfo.vue'
-import EntityLegalDetail from './EntityLegalDetail.vue'
-import EntityContactList from './EntityContactList.vue'
-import EntityShipping from './EntityShipping.vue'
-import EntityExtra from './EntityExtra.vue'
-import EntityNaturalInfo from './EntityNaturalInfo.vue'
-import EntityNaturalDetail from './EntityNaturalDetail.vue'
-import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
+import LegalInfo from './CompanyDetail/LegalInfo.vue'
+import LegalDetail from './CompanyDetail/LegalDetail.vue'
+import ContactList from './CompanyDetail/ContactList.vue'
+import ShippingInfo from './CompanyDetail/ShippingInfo.vue'
+import ExtraInfo from './CompanyDetail/ExtraInfo.vue'
+import NaturalInfo from './CompanyDetail/NaturalInfo.vue'
+import NaturalDetail from './CompanyDetail/NaturalDetail.vue'
+import SaveBeforeCloseModal from './SaveBeforeCloseModal.vue'
 
 export default {
   name: 'ClientCard',
   components: {
-    EntityLegalInfo,
-    EntityLegalDetail,
-    EntityContactList,
-    EntityShipping,
-    EntityExtra,
-    EntityNaturalInfo,
-    EntityNaturalDetail,
+    LegalInfo,
+    LegalDetail,
+    ContactList,
+    ShippingInfo,
+    ExtraInfo,
+    NaturalInfo,
+    NaturalDetail,
     SaveBeforeCloseModal,
   },
   props: {

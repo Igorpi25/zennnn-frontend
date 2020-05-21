@@ -201,7 +201,7 @@
 
 <script>
 export default {
-  name: 'EntityNaturalDetail',
+  name: 'NaturalDetail',
   props: {
     item: {
       type: Object,

@@ -204,7 +204,7 @@
 
 <script>
 export default {
-  name: 'EntitySupplierDetail',
+  name: 'SupplierDetail',
   props: {
     item: {
       type: Object,

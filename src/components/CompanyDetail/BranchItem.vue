@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: 'EntityContactItem',
+  name: 'BranchItem',
 }
 </script>

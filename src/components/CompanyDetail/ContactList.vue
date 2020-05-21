@@ -2,7 +2,7 @@
   <div>
     <div class="flex items-center text-lg leading-tight pt-10">
       <div class="flex-grow text-white font-semibold tracking-widest" @click="toggleExpand">
-        Филиалы поставщика
+        Дополнительные способы связи
       </div>
       <div>
         <button
@@ -19,15 +19,17 @@
         <div
           v-if="items.length > 0"
           class="pb-10">
-          <EntityBranchItem />
+          <div>
+          </div>
         </div>
         <div class="pt-10 w-1/2">
           <Button
             block
             outlined
             merge-class="h-10 text-sm pr-6"
+            disabled
           >
-            Добавить филиал
+            Добавить способ связи
           </Button>
         </div>
       </div>
@@ -36,12 +38,13 @@
 </template>
 
 <script>
-import EntityBranchItem from './EntityBranchItem.vue'
-
 export default {
-  name: 'EntityBranchList',
-  components: {
-    EntityBranchItem,
+  name: 'ContactList',
+  props: {
+    item: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {

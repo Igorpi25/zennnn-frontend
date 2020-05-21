@@ -63,7 +63,7 @@
 
 <script>
 export default {
-  name: 'EntityExtra',
+  name: 'ExtraInfo',
   props: {
     item: {
       type: Object,

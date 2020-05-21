@@ -27,25 +27,25 @@
           class="bg-gray-600 rounded-md p-5 pt-6"
         >
           <!-- Legal info -->
-          <EntityLegalInfo supplier :item="supplier" @update="updateValue" />
+          <LegalInfo supplier :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <EntitySupplierDetail :item="supplier" @update="updateValue" />
+          <SupplierDetail :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
-          <EntityContactList :item="supplier" @update="updateValue" />
+          <ContactList :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Branches -->
-          <EntityBranchList :item="supplier" @update="updateValue" />
+          <BranchList :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
-              <!-- Extra -->
-              <EntityExtra supplier :item="supplier" @update="updateValue" />
+              <!-- ExtraInfo -->
+              <ExtraInfo supplier :item="supplier" @update="updateValue" />
             </div>
           </div>
         </div>
@@ -336,32 +336,33 @@ import {
   mdiClose,
 } from '@mdi/js'
 
-import { uuid } from '@/util/helpers'
-import { GET_SUPPLIER, LIST_SUPPLIER_TEMPLATES } from '@/graphql/queries'
+import { GET_SUPPLIER, LIST_SUPPLIER_TEMPLATES } from '../graphql/queries'
 import {
   CREATE_SUPPLIER,
   UPDATE_SUPPLIER,
   CREATE_SUPPLIER_TEMPLATE,
   DELETE_SUPPLIER_TEMPLATE,
-} from '@/graphql/mutations'
+  CREATE_SUPPLIER_SHOP,
+  UPDATE_SUPPLIER_SHOP,
+  DELETE_SUPPLIER_SHOP,
+} from '../graphql/mutations'
+import { uuid } from '../util/helpers'
 
-import EntityLegalInfo from './EntityLegalInfo.vue'
-import EntitySupplierDetail from './EntitySupplierDetail.vue'
-import EntityContactList from './EntityContactList.vue'
-import EntityExtra from './EntityExtra.vue'
-import EntityBranchList from './EntityBranchList.vue'
-
-import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
-import { CREATE_SUPPLIER_SHOP, UPDATE_SUPPLIER_SHOP, DELETE_SUPPLIER_SHOP } from '../graphql/mutations'
+import LegalInfo from './CompanyDetail/LegalInfo.vue'
+import SupplierDetail from './CompanyDetail/SupplierDetail.vue'
+import ContactList from './CompanyDetail/ContactList.vue'
+import ExtraInfo from './CompanyDetail/ExtraInfo.vue'
+import BranchList from './CompanyDetail/BranchList.vue'
+import SaveBeforeCloseModal from './SaveBeforeCloseModal.vue'
 
 export default {
   name: 'SupplierCard',
   components: {
-    EntityLegalInfo,
-    EntitySupplierDetail,
-    EntityContactList,
-    EntityExtra,
-    EntityBranchList,
+    LegalInfo,
+    SupplierDetail,
+    ContactList,
+    ExtraInfo,
+    BranchList,
     SaveBeforeCloseModal,
   },
   props: {

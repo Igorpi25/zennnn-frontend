@@ -93,7 +93,7 @@
 
 <script>
 export default {
-  name: 'EntityShipping',
+  name: 'ShippingInfo',
   props: {
     item: {
       type: Object,

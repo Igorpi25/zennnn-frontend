@@ -98,7 +98,7 @@
 
 <script>
 export default {
-  name: 'EntityLegalInfo',
+  name: 'LegalInfo',
   props: {
     item: {
       type: Object,
