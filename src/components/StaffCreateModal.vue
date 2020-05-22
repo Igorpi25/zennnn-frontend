@@ -89,7 +89,7 @@
               >
                 <Select
                   v-model="inviteFormModel.locale"
-                  :label="$t('client.label.language')"
+                  :label="$t('companyDetail.label.language')"
                   :items="langs"
                   :rules="[rules.requiredSelect]"
                   flat

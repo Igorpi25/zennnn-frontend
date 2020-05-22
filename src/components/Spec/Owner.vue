@@ -11,7 +11,7 @@
     <div class="py-10">
       <div class="flex flex-wrap items-center justify-between pb-4">
         <h1 class="text-2xl text-white font-semibold">
-          Накладные и товары
+          {{ $t('shipping.title') }}
         </h1>
         <div class="flex items-center text-white">
           <SwitchInput
@@ -19,26 +19,27 @@
             class="inline-flex"
             @input="toggleSpecSimpleUI"
           >
-            <span class="mr-2">Уростить интерфейс</span>
+            <span class="mr-2">
+              {{ $t('shipping.simpleInterface') }}
+            </span>
           </SwitchInput>
-          <v-tooltip top max-width="320" nudge-bottom="8" nudge-right="110">
+          <v-tooltip top max-width="320" nudge-right="130">
             <template v-slot:activator="{ on }">
               <i class="zi-help text-blue-500 cursor-pointer" v-on="on" />
             </template>
             <span>
-              Чтобы не пугаться количества данных используемых для международной торговли, рекомендуем включить «Упростить интерфей» и работать над сделкой поэтапно. Интерфейс будет усложняться по мере работы с ним.
+              {{ $t('shipping.simpleInterfaceHint') }}
             </span>
           </v-tooltip>
         </div>
         <div class="flex items-center text-gray-300">
           <span v-if="spec.client">
-            {{ `Клиент: ${spec.client.uid} ${spec.client.fullName}` }}
+            {{ `${$t('shipping.shippingClient')}: ${spec.client.uid} ${spec.client.fullName}` }}
           </span>
           <template v-else>
-            <span>{{ `Клиент:` }}</span>
             <Select
               :value="spec.client"
-              :placeholder="$t('placeholder.emptyText')"
+              :placeholder="$t('shipping.shippingClientAdd')"
               :search.sync="clientSearch"
               :items="clients"
               :has-arrow-icon="false"
@@ -74,13 +75,11 @@
               </button>
             </Checkbox>
           </div>
-          <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-sm">
-            <i class="zi-copy text-2xl sm:mr-sm" />
-            <span class="hidden sm:inline">Копировать</span>
+          <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-1 sm:px-sm">
+            <i class="zi-copy text-2xl" />
           </button>
-          <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-sm">
-            <i class="zi-delete text-2xl sm:mr-sm" />
-            <span class="hidden sm:inline">Удалить</span>
+          <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-1 sm:px-sm">
+            <i class="zi-delete text-2xl" />
           </button>
           <div class="w-px h-5 bg-gray-400 mx-sm" />
           <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-sm">
@@ -187,17 +186,17 @@
                 >
                   <option value="_20_DC">
                     <span class="leaders__num cursor-pointer" style="padding-right:0">
-                      20{{ $t('shipping.containerMeasure') }}DC
+                      20'DC
                     </span>
                   </option>
                   <option value="_40_HC">
                     <span class="leaders__num cursor-pointer" style="padding-right:0">
-                      40{{ $t('shipping.containerMeasure') }}HC
+                      40'HC
                     </span>
                   </option>
                   <option value="_45_HC">
                     <span class="leaders__num cursor-pointer" style="padding-right:0">
-                      45{{ $t('shipping.containerMeasure') }}HC
+                      45'HC
                     </span>
                   </option>
                 </select>
@@ -231,20 +230,22 @@
         class="pb-8"
       >
         <h4 class="text-white text-xl font-semibold leading-6 mb-4">
-          <span class="mr-1">Дополнительно</span>
-          <v-tooltip top max-width="240">
+          <span class="mr-1">{{ $t('shipping.extraTitle') }}</span>
+          <v-tooltip top max-width="240" nudge-right="90">
             <template v-slot:activator="{ on }">
               <i class="zi-help align-middle text-blue-500 text-xl cursor-pointer" v-on="on" />
             </template>
             <span>
-              Например, груз может быть скоропортящимся или хрупким или отдельно нужно указать перечень HS кодов (кодов ТН ВЭД)
+              {{ $t('shipping.extraHint') }}
             </span>
           </v-tooltip>
         </h4>
         <div class="flex">
           <div class="w-full flex-grow lg:w-auto lg:pr-3">
             <div class="rounded-md bg-gray-700 pt-2 px-sm pb-5">
-              <TextArea placeholder="Особые заметки" />
+              <TextArea
+                :placeholder="$t('shipping.extraPlaceholder')"
+              />
             </div>
           </div>
           <div class="hidden lg:block w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3" />

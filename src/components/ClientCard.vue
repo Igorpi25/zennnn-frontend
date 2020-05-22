@@ -18,8 +18,17 @@
       id="container"
       :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container container--sm']"
     >
+      <span
+        v-if="isComponent"
+        class="absolute top-0 right-0 z-10 pt-3 pr-3"
+      >
+        <i
+          class="zi-close text-2xl text-gray-100 hover:text-white cursor-pointer"
+          @click="$emit('close')"
+        />
+      </span>
       <h1 class="text-2xl text-white font-semibold leading-tight mb-5">
-        Создать нового клиента
+        {{ create ? $t('client.createTitle') : $t('client.editTitle') }}
       </h1>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
         <div class="h-11 flex overflow-x-auto overflow-scroll-touch">
@@ -131,255 +140,9 @@
         merge-class="w-40"
         @click="update()"
       >
-        Сохранить
+        {{ $t('client.save') }}
       </Button>
     </div>
-
-    <!-- <div id="container" :class="[ isComponent ? 'bg-gray-900 rounded-lg relative' : 'container' ]">
-      <span
-        v-if="isComponent"
-        class="absolute cursor-pointer"
-        :style="{ top: '12px', right: '12px', zIndex: '10' }"
-        @click="$emit('close')"
-      >
-        <svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="0.780869" y1="1.3753" x2="8.78087" y2="11.3753" stroke="#9F9F9F" stroke-width="2"/>
-          <line x1="8.78087" y1="1.6247" x2="0.780869" y2="11.6247" stroke="#9F9F9F" stroke-width="2"/>
-        </svg>
-      </span>
-      <div :class="[ isComponent ? 'pt-5 px-4' : 'py-12' ]">
-        <div>
-          <header class="header">
-            <span class="header__title">{{ $t('client.clientCard') }}</span>
-            <div
-              v-if="!isComponent"
-              class="header__actions"
-            >
-              <SwitchInput
-                v-if="!create"
-                :value="editMode"
-                small
-                class="mr-2"
-                @input="toggleEditMode"
-              >
-                <span>{{ $t('client.edit') }}</span>
-              </SwitchInput>
-              <Button
-                outlined
-                borderless
-                class="inline-block mt-3 md:text-left md:mt-0"
-                @click="showModalList"
-              >
-                <span class="text-sm">{{ $t('client.clientCardPatterns') }}</span>
-              </Button>
-            </div>
-          </header>
-          <div class="card__radio-group lg:block">
-            <RadioInput
-              :value="clientType"
-              :label="legalType"
-              :disabled="!editMode"
-              name="person-type"
-              class="mr-6"
-              @input="switchPersonType(legalType)"
-            >
-              <span>{{ $t('client.legalPersonAbr') }}</span>
-            </RadioInput>
-            <RadioInput
-              :value="clientType"
-              :label="naturalType"
-              :disabled="!editMode"
-              name="person-type"
-              @input="switchPersonType(naturalType)"
-            >
-              <span>{{ $t('client.naturalPersonAbr') }}</span>
-            </RadioInput>
-          </div>
-          <div class="flex justify-between relative">
-            <TemplateCard
-              ref="LEGAL"
-              template-name="client"
-              :fields="legalFieldsSettings"
-              :item="client"
-              :is-disabled="!editMode"
-              :is-not-active="isNaturalPerson"
-              :class="{ 'template-card': isNaturalPerson }"
-              @update-template="updateTemplate"
-              @update-value="updateValue"
-            >
-              <template v-slot:language>
-                <div class="card__col-right">
-                  <select
-                    :ref="`${legalType}-languageInput`"
-                    :value="client.language"
-                    :disabled="!editMode || !!updateLoading"
-                    required
-                    class="simple-select mx-1"
-                    name="language-select"
-                    @change="updateLanguageInput"
-                  >
-                    <option
-                      v-if="create && !client.language"
-                      value=""
-                    >
-                      {{ $t('placeholder.notChosen') }}
-                    </option>
-                    <option
-                      v-for="opt of langs"
-                      :key="opt.value"
-                      :value="opt.value"
-                    >
-                      <span class="leaders__num cursor-pointer" style="padding-right:0">
-                        {{ opt.text }}
-                      </span>
-                    </option>
-                  </select>
-                  <div
-                    v-if="languageInputError[clientType]"
-                    class="text-xs text-red-500 leading-none mx-2"
-                  >
-                    {{ languageInputError[clientType] }}
-                  </div>
-                </div>
-              </template>
-              <template v-slot:prepend>
-                <RadioInput
-                  :value="clientType"
-                  :label="legalType"
-                  :disabled="!editMode"
-                  center
-                  name="client-type"
-                  @input="switchPersonType(legalType)"
-                >
-                  <span>{{ $t('client.legalPerson') }}</span>
-                </RadioInput>
-              </template>
-              <template v-slot:append>
-                <div :class="['text-center', { 'card__section--faded': isNaturalPerson }]">
-                  <Button
-                    v-if="!editMode"
-                    :disabled="isNaturalPerson"
-                    :loading="!!updateLoading"
-                    class="mb-4 mx-auto"
-                    @click="edit"
-                  >
-                    <span>{{ $t('client.edit') }}</span>
-                  </Button>
-                  <Button
-                    v-else
-                    :disabled="isNaturalPerson"
-                    :loading="!!updateLoading"
-                    class="mb-4 mx-auto"
-                    @click="update(naturalType)"
-                  >
-                    <span>{{ $t('client.save') }}</span>
-                  </Button>
-                  <Button
-                    :disabled="isNaturalPerson"
-                    outlined
-                    borderless
-                    class="mx-auto"
-                    @click="saveAsTemplate"
-                  >
-                    <span class="text-sm">{{ $t('client.saveAsPattern') }}</span>
-                  </Button>
-                </div>
-              </template>
-            </TemplateCard>
-            <TemplateCard
-              ref="NATURAL"
-              template-name="client"
-              :fields="naturalFieldsSettings"
-              :item="client"
-              :is-disabled="!editMode"
-              :is-not-active="!isNaturalPerson"
-              :class="{ 'template-card': !isNaturalPerson }"
-              @update-template="updateTemplate"
-              @update-value="updateValue"
-            >
-              <template v-slot:language>
-                <div class="card__col-right">
-                  <select
-                    :ref="`${naturalType}-languageInput`"
-                    :value="client.language"
-                    :disabled="!editMode || !!updateLoading"
-                    required
-                    class="simple-select mx-1"
-                    name="language-select"
-                    @change="updateLanguageInput"
-                  >
-                    <option
-                      v-if="create && !client.language"
-                      value=""
-                    >
-                      {{ $t('placeholder.notChosen') }}
-                    </option>
-                    <option
-                      v-for="opt of langs"
-                      :key="opt.value"
-                      :value="opt.value"
-                    >
-                      <span class="leaders__num cursor-pointer" style="padding-right:0">
-                        {{ opt.text }}
-                      </span>
-                    </option>
-                  </select>
-                  <div
-                    v-if="languageInputError[clientType]"
-                    class="text-xs text-red-500 leading-none mx-2"
-                  >
-                    {{ languageInputError[clientType] }}
-                  </div>
-                </div>
-              </template>
-              <template v-slot:prepend>
-                <RadioInput
-                  :value="clientType"
-                  :label="naturalType"
-                  :disabled="!editMode"
-                  center
-                  name="client-type"
-                  @input="switchPersonType(naturalType)"
-                >
-                  <span>{{ $t('client.naturalPerson') }}</span>
-                </RadioInput>
-              </template>
-              <template v-slot:append>
-                <div :class="['text-center', { 'card__section--faded': !isNaturalPerson }]">
-                  <Button
-                    v-if="!editMode"
-                    :disabled="!isNaturalPerson"
-                    :loading="!!updateLoading"
-                    class="mb-4 mx-auto"
-                    @click="edit"
-                  >
-                    <span>{{ $t('client.edit') }}</span>
-                  </Button>
-                  <Button
-                    v-else
-                    :disabled="!isNaturalPerson"
-                    :loading="!!updateLoading"
-                    class="mb-4 mx-auto"
-                    @click="update(naturalType)"
-                  >
-                    <span>{{ $t('client.save') }}</span>
-                  </Button>
-                  <Button
-                    :disabled="!isNaturalPerson"
-                    outlined
-                    borderless
-                    class="mx-auto"
-                    @click="saveAsTemplate"
-                  >
-                    <span class="text-sm">{{ $t('client.saveAsPattern') }}</span>
-                  </Button>
-                </div>
-              </template>
-            </TemplateCard>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
   </div>
 </template>
@@ -640,27 +403,17 @@ export default {
       return [
         {
           value: ClientType.LEGAL,
-          text: this.$t('client.legalPersonAbr'),
+          text: this.$t('client.legalPerson'),
         },
         {
           value: ClientType.NATURAL,
-          text: this.$t('client.naturalPersonAbr'),
+          text: this.$t('client.privatePerson'),
         },
         {
           value: ClientType.OTHER,
-          text: 'Другое',
+          text: this.$t('client.other'),
           disabled: true,
         },
-      ]
-    },
-    langs () {
-      return [
-        { value: 'en', text: 'English' },
-        { value: 'zh-Hans', text: '简体' },
-        { value: 'zh-Hant', text: '繁体' },
-        { value: 'fr', text: 'Français' },
-        { value: 'ru', text: 'Русский' },
-        { value: 'uk', text: 'Український' },
       ]
     },
     fieldsKeys () {

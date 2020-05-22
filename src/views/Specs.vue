@@ -16,7 +16,9 @@
           </template>
         </TextField>
         <div class="flex w-full sm:w-auto items-center justify-end">
-          <span class="pr-2 whitespace-no-wrap">Без сортировки</span>
+          <span class="pr-2 whitespace-no-wrap">
+            {{ $t('label.noSort') }}
+          </span>
           <i class="zi-filter text-2xl text-gray-200" />
         </div>
       </div>
@@ -156,7 +158,7 @@
             ref="createSpecSelect"
             :value="createSpecClient"
             :label="$t('deals.createSpecDialogSearchPlaceholder')"
-            placeholder="Начните печатать"
+            :placeholder="$t('placeholder.startTyping')"
             :search.sync="clientSearch"
             :items="clients"
             label-no-wrap
@@ -327,7 +329,7 @@ export default {
         { text: '', value: 'status', align: 'left', width: 45, sortable: true },
         { text: '', value: 'coming', align: 'left', width: 45, sortable: true },
         { text: '', value: 'spending', align: 'left', width: 45, sortable: true },
-        { text: this.$t('deals.clientUid'), value: 'client.uid', align: 'left', width: 80, sortable: true },
+        { text: this.$t('deals.clientUcn'), value: 'client.uid', align: 'left', width: 80, sortable: true },
         { text: this.$t('deals.clientName'), value: 'clientFillName', align: 'left', width: 200, minWidth: 200, sortable: true },
         { text: this.$t('deals.clientPhone'), value: 'clientPhone', align: 'left', width: 165, sortable: true },
         { text: this.$t('deals.specNo'), value: 'specNo', align: 'left', width: 220, minWidth: 220, sortable: true },
@@ -484,7 +486,7 @@ export default {
           for (let err of error.graphQLErrors) {
             const { message } = err
             if (message === 'ForbiddenError: Insufficient access rights') {
-              alert('Только купившие ПРО аккаунт могут создавать Спецификацию.')
+              alert(this.$t('alert.insufficientAccess'))
             }
           }
         } else {

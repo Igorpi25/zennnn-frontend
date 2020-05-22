@@ -2,7 +2,7 @@
   <div>
     <div class="flex items-center text-lg leading-tight pt-10">
       <div class="flex-grow text-white font-semibold tracking-widest" @click="toggleExpand">
-        Филиалы поставщика
+        {{ $t('companyDetail.supplierBranchList') }}
       </div>
       <div>
         <button
@@ -27,7 +27,7 @@
             outlined
             merge-class="h-10 text-sm pr-6"
           >
-            Добавить филиал
+            {{ $t('companyDetail.addBranch') }}
           </Button>
         </div>
       </div>

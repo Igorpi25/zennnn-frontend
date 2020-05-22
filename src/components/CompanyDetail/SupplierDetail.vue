@@ -2,15 +2,15 @@
   <div>
     <div class="flex items-center pt-10">
       <div class="flex-grow text-lg leading-tight" @click="toggleExpand">
-        <span class="text-white uppercase font-semibold tracking-widest">РЕКВИЗИТЫ КОМПАНИИ</span>
+        <span class="text-white uppercase font-semibold tracking-widest">
+          {{ $t('companyDetail.legalDetail') }}
+        </span>
         <span class="text-gray-200 mr-1">{{ titleHint }}</span>
-        <v-tooltip top max-width="272" nudge-bottom="5" nudge-right="104">
+        <v-tooltip top max-width="332" nudge-right="136">
           <template v-slot:activator="{ on }">
             <i class="zi-help align-middle text-base text-blue-500 hover:text-blue-600 cursor-pointer" v-on="on" />
           </template>
-          <span>
-            Для правильности составления документов предназначенных для страны отправления или страны продажи товара, указываейте реквизиты компании клиента на его радном языке, попросите клиента прислать их вам и укажите эти реквизиты в полях ниже. В крайнем случае указывайте все реквизиты на английском языке.
-          </span>
+          <span v-html="$t('companyDetail.legalDetailHint')" />
         </v-tooltip>
       </div>
       <div>
@@ -28,24 +28,25 @@
         <div class="w-full lg:w-1/2 lg:pr-5">
           <div class="pb-2">
             <TextField
-              label="ИНН / VAT"
-              placeholder="Номер ИНН или VAT"
+              :label="$t('companyDetail.label.vat')"
+              :placeholder="$t('companyDetail.placeholder.vat')"
               disabled
             />
           </div>
           <div class="pb-2">
             <TextField
               :value="item.legalAddress"
-              label="Адрес регистрации компании (юр. адрес)"
-              placeholder="Of. 1010, Miramar Tower, 35 Nathan Rd., Kowloon, Hong Kong"
+              :label="$t('companyDetail.label.legalAddress')"
+              :placeholder="$t('companyDetail.placeholder.address')"
               @input="$emit('update', 'legalAddress', $event)"
             />
           </div>
           <div class="pb-2">
             <TextField
               :value="item.legalAddressPostcode"
-              label="Индекс юр. адреса"
-              placeholder="000000"
+              :label="$t('companyDetail.label.legalAddressPostcode')"
+              :placeholder="$t('companyDetail.placeholder.postcode')"
+              label-no-wrap
               class="w-48"
               @input="$emit('update', 'legalAddressPostcode', $event)"
             />
@@ -53,22 +54,23 @@
           <div class="pb-2">
             <TextField
               :value="item.manufacturersAddress"
-              label="Фактический адрес (почтовый адрес)"
-              placeholder="Of. 1010, Miramar Tower, 35 Nathan Rd., Kowloon, Hong Kong"
+              :label="$t('companyDetail.label.mailingAddress')"
+              :placeholder="$t('companyDetail.placeholder.address')"
               @input="$emit('update', 'manufacturersAddress', $event)"
             />
           </div>
           <div class="pb-2 lg:pb-1">
             <div class="flex justify-between">
               <TextField
-                label="Индекс почтового адреса"
-                placeholder="000000"
+                :label="$t('companyDetail.label.mailingAddressPostcode')"
+                :placeholder="$t('companyDetail.placeholder.postcode')"
+                label-no-wrap
                 class="w-48 pb-2"
                 disabled
               />
               <div class="relative flex-shrink-0 relative w-12 pl-sm">
                 <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
-                  Совпадает
+                  {{ $t('companyDetail.label.matches') }}
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
                   <SwitchInput disabled hide-details />
@@ -77,42 +79,43 @@
             </div>
             <div class="relative lg:pb-20">
               <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
-                Если у компании совпадают адрес регистрации и фактический адрес, активируйте переключатель для автозаполнения.
+                {{ $t('companyDetail.hint.mailingAddress') }}
               </div>
             </div>
           </div>
           <div class="flex items-end pb-2">
             <TextField
-              label="КПП"
-              placeholder="Номер КПП"
+              :label="$t('companyDetail.label.iec')"
+              :placeholder="$t('companyDetail.placeholder.iec')"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
               disabled
             />
             <TextField
-              label="ОКПО"
-              placeholder="Номер ОКПО"
+              :label="$t('companyDetail.label.okpo')"
+              :placeholder="$t('companyDetail.placeholder.okpo')"
               class="flex-grow"
               disabled
             />
           </div>
           <div class="pb-2">
             <TextField
-              label="ОГРН"
-              placeholder="Номер ОГРН"
+              :label="$t('companyDetail.label.psrn')"
+              :placeholder="$t('companyDetail.placeholder.psrn')"
               disabled
             />
           </div>
           <div class="flex items-end pb-2">
             <TextField
               :value="item.ownerFullName"
-              label="ФИО директора"
-              placeholder="Имя"
+              :label="$t('companyDetail.label.ownerFullName')"
+              :placeholder="$t('companyDetail.placeholder.firstName')"
+              label-no-wrap
               class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
               @input="$emit('update', 'ownerFullName', $event)"
             />
             <!-- <TextField
+              :placeholder="$t('companyDetail.placeholder.lastName')"
               class="flex-grow"
-              placeholder="Фамилия"
             /> -->
           </div>
         </div>
@@ -120,53 +123,53 @@
           <div class="pb-2">
             <TextField
               :value="item.bankName"
-              label="Банк получателя"
-              placeholder="Наименование банка получателя"
+              :label="$t('companyDetail.label.bankName')"
+              :placeholder="$t('companyDetail.placeholder.bankName')"
               @input="$emit('update', 'bankName', $event)"
             />
           </div>
           <div class="pb-2">
             <TextField
               :value="item.bankAddress"
-              label="Адрес банка получателя"
-              placeholder="1/F, Causeway Bay Plaza 2, 463-483 Lockhart Rd., Causeway Bay, Hong Kong"
+              :label="$t('companyDetail.label.bankAddress')"
+              :placeholder="$t('companyDetail.placeholder.bankAddress')"
               @input="$emit('update', 'bankAddress', $event)"
             />
           </div>
           <div class="pb-2">
             <TextField
               :value="item.accountNumber"
-              label="Номер счёта"
-              placeholder="Номер счёта"
+              :label="$t('companyDetail.label.bankAccountNumber')"
+              :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
               @input="$emit('update', 'accountNumber', $event)"
             />
           </div>
           <div class="flex items-end pb-2">
             <TextField
               :value="item.swift"
-              label="SWIFT"
-              placeholder="HSBCHKHHHKH"
+              :label="$t('companyDetail.label.swift')"
+              :placeholder="$t('companyDetail.placeholder.swift')"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
               @input="$emit('update', 'swift', $event)"
             />
             <TextField
-              label="БИК"
-              placeholder="Номер БИК"
+              :label="$t('companyDetail.label.bic')"
+              :placeholder="$t('companyDetail.placeholder.bic')"
               class="flex-grow"
               disabled
             />
           </div>
           <div class="pb-2">
             <TextField
-              label="Банк корреспондент"
-              placeholder="Наименование банка корреспондента"
+              :label="$t('companyDetail.label.correspondentBankName')"
+              :placeholder="$t('companyDetail.placeholder.correspondentBankName')"
               disabled
             />
           </div>
           <div class="pb-2 lg:pb-1">
             <TextField
-              label="Корреспондентский счёт"
-              placeholder="Номер счёта"
+              :label="$t('companyDetail.label.correspondentAccountNumber')"
+              :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
               class="pb-2"
               disabled
             />
@@ -175,15 +178,15 @@
           <div class="flex items-end pb-2">
             <TextField
               :value="item.workPhone"
-              label="Телефон"
-              placeholder="123-4567-8901"
+              :label="$t('companyDetail.label.phone')"
+              :placeholder="$t('companyDetail.placeholder.phone')"
               class="w-1/2 pr-2"
               @input="$emit('update', 'workPhone', $event)"
             />
             <TextField
               :value="item.fax"
-              label="Факс"
-              placeholder="123-4567-8901"
+              :label="$t('companyDetail.label.fax')"
+              :placeholder="$t('companyDetail.placeholder.phone')"
               class="w-1/2 pl-2"
               @input="$emit('update', 'fax', $event)"
             />
@@ -191,8 +194,8 @@
           <div>
             <TextField
               :value="item.website"
-              label="Сайт"
-              placeholder="https://www.site.com"
+              :label="$t('companyDetail.label.site')"
+              :placeholder="$t('companyDetail.placeholder.site')"
               @input="$emit('update', 'website', $event)"
             />
           </div>
@@ -218,7 +221,7 @@ export default {
   },
   computed: {
     titleHint () {
-      return ' (указывайте на языке поставщика или английском)'
+      return ` ${this.$t('companyDetail.supplierDetailDesc')}`
     },
   },
   methods: {

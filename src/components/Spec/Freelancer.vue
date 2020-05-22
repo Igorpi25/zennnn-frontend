@@ -11,11 +11,11 @@
     <div class="py-10">
       <div class="flex flex-wrap items-center justify-between pb-4">
         <h1 class="text-2xl text-white font-semibold">
-          Накладные и товары
+          {{ $t('shipping.title') }}
         </h1>
         <div class="text-gray-300">
           <span v-if="spec.client">
-            {{ `Клиент: ${spec.client.uid} ${spec.client.fullName}` }}
+            {{ `${$t('shipping.shippingClient')}: ${spec.client.uid} ${spec.client.fullName}` }}
           </span>
         </div>
       </div>

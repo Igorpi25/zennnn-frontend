@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="flex items-center text-lg leading-tight pt-10">
-      <span class="flex-grow text-white font-semibold tracking-widest" @click="toggleExpand">
-        Примечание
+      <span class="flex-grow text-white font-semibold tracking-widest uppercase" @click="toggleExpand">
+        {{ $t('companyDetail.note') }}
       </span>
       <div>
         <button
@@ -18,31 +18,33 @@
       <div v-show="expanded" class="pt-4">
         <div class="pb-2">
           <label class="block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
-            Примечание
+            {{ $t('companyDetail.label.note') }}
           </label>
           <TextArea
             :value="supplier ? item.note : natural ? item.naturalTypeNote : item.legalTypeNote"
+            :placeholder="$t('companyDetail.placeholder.note')"
             rows="4"
-            placeholder="Что-то важное, что не хотелось бы забыть..."
             @input="supplier ? $emit('update', 'note', $event) : natural ? $emit('update', 'naturalTypeNote', $event) : $emit('update', 'legalTypeNote', $event)"
           />
         </div>
         <div class="pb-2">
           <TextField
             disabled
-            label="Тэги (через запятую)"
-            placeholder="Тэги будут показаны в списке компаний напротив имени клиента"
+            :label="$t('companyDetail.label.tags')"
+            :placeholder="$t('companyDetail.placeholder.tags')"
           >
             <template v-slot:label>
               <label class="block leading-5 text-base text-gray-100 whitespace-no-wrap py-2">
-                <span>Тэги</span> <span class="text-gray-200">(через запятую)</span>
+                <span>{{ $t('companyDetail.label.tags') }}</span> <span class="text-gray-200">{{ $t('companyDetail.label.tagsDesc') }}</span>
               </label>
             </template>
           </TextField>
         </div>
         <div class="inline-block cursor-not-allowed opacity-40">
           <label class="block leading-5 text-base text-gray-100 whitespace-no-wrap py-2">
-            <span>Прикрепить файл</span>
+            <span>
+              {{ $t('companyDetail.label.attachFile') }}
+            </span>
           </label>
           <div class="flex items-center text-gray-200 h-10 bg-gray-800 rounded px-sm">
             <div class="mr-sm">
@@ -52,7 +54,7 @@
               </svg>
             </div>
             <div style="font-size: 13px;">
-              Перетащите файлы сюда
+              {{ $t('companyDetail.placeholder.attachFile') }}
             </div>
           </div>
         </div>

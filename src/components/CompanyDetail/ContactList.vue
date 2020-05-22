@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="flex items-center text-lg leading-tight pt-10">
-      <div class="flex-grow text-white font-semibold tracking-widest" @click="toggleExpand">
-        Дополнительные способы связи
+      <div class="flex-grow text-white font-semibold tracking-widest uppercase" @click="toggleExpand">
+        {{ $t('companyDetail.contactList') }}
       </div>
       <div>
         <button
@@ -29,7 +29,7 @@
             merge-class="h-10 text-sm pr-6"
             disabled
           >
-            Добавить способ связи
+            {{ $t('companyDetail.addContact') }}
           </Button>
         </div>
       </div>

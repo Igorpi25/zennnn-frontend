@@ -2,7 +2,7 @@
   <!-- Financial Info -->
     <div class="w-full">
       <h4 class="text-white text-xl font-semibold leading-6 mb-4">
-        {{ $t('paper.financialInfo') }}
+        {{ $t('shipping.financialInfo') }}
       </h4>
       <div class="bg-gray-700 rounded-md leading-5 p-5">
         <div class="flex text-gray-200 px-sm pb-3">

@@ -1,46 +1,48 @@
 <template>
   <div class="flex flex-wrap">
     <div class="w-full lg:w-1/2 lg:pr-5">
-      <TextField
-        :value="supplier ? item.manager : item.contactPerson"
-        label="Контактное лицо"
-        label-hint="Убедитесь в безошибочности введенного номера мобильного. Данный телефон будет использован для отправки автоматических уведомлений, которые существенно упрастят совместную работу."
-        placeholder="Имя"
-        @input="supplier ? $emit('update', 'manager', $event) : $emit('update', 'contactPerson', $event)"
-      />
+      <div class="flex items-end pb-2">
+        <TextField
+          :value="supplier ? item.manager : item.contactPerson"
+          :label="$t('companyDetail.label.contactPerson')"
+          :placeholder="$t('companyDetail.placeholder.firstName')"
+          label-no-wrap
+          class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
+          @input="supplier ? $emit('update', 'manager', $event) : $emit('update', 'contactPerson', $event)"
+        />
+        <TextField
+          :placeholder="$t('companyDetail.placeholder.lastName')"
+          class="flex-grow"
+          disabled
+        />
+      </div>
       <div class="pb-2">
         <TextField
           :value="supplier ? item.mobilePhone : ''"
           :disabled="!supplier"
-          label="Мобильный телефон"
-          label-hint="Убедитесь в безошибочности введенного номера мобильного. Данный телефон будет использован для отправки автоматических уведомлений, которые существенно упрастят совместную работу."
-          placeholder="123-4567-8901"
+          :label="$t('companyDetail.label.mobilePhone')"
+          :label-hint="$t('companyDetail.hint.mobilePhone')"
+          :placeholder="$t('companyDetail.placeholder.mobilePhone')"
           @input="$emit('update', 'mobilePhone', $event)"
         />
       </div>
       <div class="pb-2">
         <TextField
           :value="item.email"
-          label="Электронная почта"
-          label-hint="Убедитесь в безошибочности введенного адреса электронной почты. Данный адрес будет использован для отправки автоматических уведомлений, которые существенно упрастят совместную работу."
-          placeholder="example@mail.com"
+          :label="$t('companyDetail.label.email')"
+          :label-hint="$t('companyDetail.hint.email')"
+          :placeholder="$t('companyDetail.placeholder.email')"
           @input="$emit('update', 'email', $event)"
         />
       </div>
       <div>
-        <!-- <TextField
-          label="Язык для отправки уведомлений и печати документов"
-          placeholder="Выберите язык"
-          class="pb-2"
-        /> -->
         <Select
           :value="item.language"
           :items="langs"
-          label="Язык для отправки уведомлений и печати документов"
-          placeholder="Выберите язык"
+          :label="$t('companyDetail.label.locale')"
+          :placeholder="$t('companyDetail.placeholder.locale')"
           item-value="value"
           item-text="text"
-          hide-details
           class="pb-2"
           @input="$emit('update', 'language', $event)"
         />
@@ -54,14 +56,14 @@
         <div class="flex">
           <TextField
             :value="supplier ? item.companyNameSl : item.companyName"
-            label="Наименование компании по-английски"
-            placeholder="Укажите наименование компании"
+            :label="$t('companyDetail.label.companyName')"
+            :placeholder="$t('companyDetail.placeholder.companyName')"
             class="pb-2 flex-grow"
             @input="supplier ? $emit('update', 'companyNameSl', $event) : $emit('update', 'companyName', $event)"
           />
           <div class="relative flex-shrink-0 relative w-12 pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
-              Только англ.
+              {{ $t('companyDetail.label.englishOnly') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
               <SwitchInput disabled hide-details />
@@ -70,20 +72,20 @@
         </div>
         <div class="relative lg:pb-20">
           <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
-            Если у компании существует наименование только на английском языке, активируйте переключатель для автозаполнения.
+            {{ $t('companyDetail.hint.companyName') }}
           </div>
         </div>
       </div>
       <div class="pb-2">
         <TextField
+          :label="$t('companyDetail.label.companyNameLocal')"
+          :placeholder="$t('companyDetail.placeholder.companyNameLocal')"
           disabled
-          label="Наименование компании (местное)"
-          placeholder="На русском, китайском, любом другом языке"
         />
       </div>
       <div>
         <label class="block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
-          Уникальный номер клиента
+          {{ $t('companyDetail.label.ucn') }}
         </label>
         <div class="h-10 flex items-center text-white mb-2 px-sm">
           {{ item.uid || uidPlaceholder }}
@@ -119,13 +121,13 @@ export default {
     },
     localeSelectHint () {
       return this.supplier
-        ? 'Для того, чтобы ваши поставщики получали уведомления на понятном для них языке, необходимо установить язык для отправки уведомлений. Также все документы будут содержать установленный вами язык и английский.'
-        : 'Для того, чтобы ваши клиенты получали уведомления на понятном для них языке, необходимо установить язык для отправки уведомлений. Также все документы будут содержать установленный вами язык и английский.'
+        ? this.$t('companyDetail.hint.supplierLocale')
+        : this.$t('companyDetail.hint.clientLocale')
     },
     uidHint () {
       return this.supplier
-        ? 'Уникальный номер поставщика (УНП) генерируется системой автоматически.'
-        : 'Уникальный номер клиента (УНК) генерируется системой автоматически. Литера «А» соответствует коммерческим организациям (юр. лицам), «В» — частным лицам (физ. лицам), «С» — некоммерческим организациям и прочим.'
+        ? this.$t('companyDetail.hint.usn')
+        : this.$t('companyDetail.hint.ucn')
     },
     uidPlaceholder () {
       return this.supplier ? 'Z00001' : 'A00001'

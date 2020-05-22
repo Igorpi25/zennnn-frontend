@@ -280,7 +280,7 @@
               </svg>
             </div>
             <div style="font-size: 13px;">
-              Перетащите файлы сюда
+              {{ $t('shipping.linkFile') }}
             </div>
           </div>
         </td>
@@ -314,7 +314,7 @@
               >
                 <i class="text-2xl zi-link mr-sm" />
                 <span>
-                  Добавить ссылку
+                  {{ $t('shipping.linkAdd') }}
                 </span>
               </button>
             </div>
@@ -342,7 +342,7 @@
             ref="comment-activator"
             class="h-8 w-32 inline-block rounded text-blue-500 border border-gray-400 hover:border-blue-500 focus:border-blue-500 focus:outline-none select-none transition-colors duration-100 ease-out"
           >
-            Начать диалог
+            {{ $t('shipping.chatStart') }}
           </button>
         </td>
       </template>

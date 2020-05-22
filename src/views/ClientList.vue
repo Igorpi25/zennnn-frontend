@@ -136,7 +136,7 @@ export default {
         { text: this.$t('clients.phone'), value: 'clientPhone', align: 'left', width: 120, minWidth: 120, sortable: true },
         { text: this.$t('clients.contactPerson'), value: 'contactPerson', align: 'left', width: 165, sortable: true },
         { text: '', value: 'coming', align: 'left', width: 45 },
-        { text: this.$t('clients.uid'), value: 'uid', align: 'left', width: 120, minWidth: 120, sortable: true },
+        { text: this.$t('clients.ucn'), value: 'uid', align: 'left', width: 120, minWidth: 120, sortable: true },
         { text: '', value: 'deals', width: 60, minWidth: 60, sortable: true, tooltip: this.$t('clients.currentDealsAmount') },
         { text: '', value: 'actions', align: 'right', width: 48 },
       ]

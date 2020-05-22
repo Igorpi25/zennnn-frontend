@@ -154,14 +154,14 @@ export default {
     },
     specTitleText () {
       return `
-        ${this.$t('paper.shippingTitle')}
+         ${this.$t('shipping.dealNo')}
          ${this.spec.specNo} ${this.$t('preposition.from')}
          ${this.$d(this.$parseDate(this.spec.createdAt), 'short')}
       `
     },
     specTitleHtml () {
       return `
-        ${this.$t('paper.shippingTitle')}
+        ${this.$t('shipping.dealNo')}
         &nbsp;${this.spec.specNo} ${this.$t('preposition.from')}
         &nbsp;${this.$d(this.$parseDate(this.spec.createdAt), 'short')}
       `

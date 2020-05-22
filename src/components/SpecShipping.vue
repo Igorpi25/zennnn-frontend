@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <h4 class="text-white text-xl font-semibold leading-6 mb-4">
-      {{ $t('paper.cargoInfo') }}
+      {{ $t('shipping.cargoInfo') }}
     </h4>
 
     <!-- Summary -->
@@ -11,7 +11,7 @@
           <div class="flex text-gray-200 pb-2">
             <i class="zi-calendar text-gray-300 text-2xl mr-2" />
             <span>
-              {{ $t('paper.estimateDate') }}
+              {{ $t('shipping.estimateDate') }}
             </span>
           </div>
           <div class="text-white text-lg font-semibold pl-8 sm:pl-0 md:pl-8 lg:pl-0 xl:pl-8">
@@ -24,7 +24,7 @@
           <div class="flex text-gray-200 pb-2">
             <i class="zi-cup text-gray-200 text-2xl mr-2" />
             <span>
-              {{ $t('paper.totalVolume') }}
+              {{ $t('shipping.totalVolume') }}
             </span>
           </div>
           <div class="text-white text-lg font-semibold pl-8 sm:pl-0 md:pl-8 lg:pl-0 xl:pl-8">
@@ -37,7 +37,7 @@
           <div class="flex text-gray-200 pb-2">
             <i class="zi-boxes text-gray-300 text-2xl mr-2" />
             <span>
-              {{ $t('paper.totalPackages') }}
+              {{ $t('shipping.totalPackages') }}
             </span>
           </div>
           <div class="text-white text-lg font-semibold pl-8 sm:pl-0 md:pl-8 lg:pl-0 xl:pl-8">
@@ -50,7 +50,7 @@
           <div class="flex text-gray-200 pb-2">
             <i class="zi-massa text-gray-300 text-2xl mr-2" />
             <span>
-              {{ $t('paper.totalWeight') }}
+              {{ $t('shipping.totalWeight') }}
             </span>
           </div>
           <div class="text-white text-lg font-semibold pl-8 sm:pl-0 md:pl-8 lg:pl-0 xl:pl-8">

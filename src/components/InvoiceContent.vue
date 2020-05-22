@@ -327,14 +327,14 @@ export default {
     },
     linkHeaders () {
       return [
-        { text: 'Прикрепить файл', value: 'file', width: '100%', align: 'left', class: 'bg-gray-600 relative z-1 pl-6 pr-3' },
-        { text: this.$t('shipping.linkField'), value: 'url', align: 'left', width: 264, class: 'bg-gray-600 relative z-1 pl-3' },
+        { text: this.$t('shipping.linkAttachFile'), value: 'file', width: '100%', align: 'left', class: 'bg-gray-600 relative z-1 pl-6 pr-3' },
+        { text: this.$t('shipping.linkSave'), value: 'url', align: 'left', width: 264, class: 'bg-gray-600 relative z-1 pl-3' },
         { text: '', value: 'action', width: 48, class: 'bg-gray-600 relative z-1' },
       ]
     },
     chatHeaders () {
       return [
-        { text: 'Участники', value: 'participants', width: '100%', align: 'left', class: 'bg-gray-600 relative z-1 px-6' },
+        { text: this.$t('shipping.chatMembers'), value: 'participants', width: '100%', align: 'left', class: 'bg-gray-600 relative z-1 px-6' },
         { text: '', value: 'messages', width: 140, align: 'left', class: 'bg-gray-600 relative z-1' },
         { text: '', value: 'startChat', width: 168, align: 'right', class: 'bg-gray-600 relative z-1' },
       ]

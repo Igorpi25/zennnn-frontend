@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="flex items-center text-lg leading-tight pt-10">
-      <div class="flex-grow text-white font-semibold tracking-widest" @click="toggleExpand">
-        Информация для отгрузки
+      <div class="flex-grow text-white font-semibold tracking-widest uppercase" @click="toggleExpand">
+        {{ $t('companyDetail.shippingInfo') }}
       </div>
       <div>
         <button
@@ -20,8 +20,8 @@
           <TextField
             :value="natural ? '' : item.consignee"
             :disabled="natural"
-            label="Грузополучатель"
-            placeholder="Наименование компании"
+            :label="$t('companyDetail.label.consignee')"
+            :placeholder="$t('companyDetail.placeholder.consignee')"
             @input="$emit('update', 'consignee', $event)"
           />
         </div>
@@ -29,22 +29,22 @@
           <TextField
             :value="natural ? '' : item.shippingAddress"
             :disabled="natural"
-            label="Адрес выдачи товара (адрес доставки груза)"
-            placeholder="оф. 8, стр. 11, ул. Строительная 84, Москва, Россия"
+            :label="$t('companyDetail.label.deliveryAddress')"
+            :placeholder="$t('companyDetail.placeholder.deliveryAddress')"
             @input="$emit('update', 'shippingAddress', $event)"
           />
         </div>
         <div class="pb-2 lg:pb-1">
           <div class="flex justify-between">
             <TextField
-              label="Индекс адреса доставки"
-              placeholder="000000"
+              :label="$t('companyDetail.label.deliveryAddressPostcode')"
+              :placeholder="$t('companyDetail.placeholder.postcode')"
               class="w-48 pb-2"
               disabled
             />
             <div class="relative flex-shrink-0 relative w-12 pl-sm">
               <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
-                Совпадает
+                {{ $t('companyDetail.label.matches') }}
               </label>
               <div class="h-full flex items-center justify-end pt-8 pb-1">
                 <SwitchInput disabled hide-details />
@@ -53,7 +53,7 @@
           </div>
           <div class="relative lg:pb-20">
             <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
-              Если у компании совпадают адрес доставки и фактический адрес, активируйте переключатель для автозаполнения.
+              {{ $t('companyDetail.hint.mailingAddress') }}
             </div>
           </div>
         </div>
@@ -61,19 +61,19 @@
           <TextField
             :value="natural ? '' : item.importerContactPerson"
             :disabled="natural"
-            label="Контактное лицо"
-            placeholder="Имя"
+            :label="$t('companyDetail.label.contactPerson')"
+            :placeholder="$t('companyDetail.label.firstName')"
             class="flex-grow"
             @input="$emit('update', 'importerContactPerson', $event)"
           />
           <!-- <TextField
-            label="Контактное лицо"
+            :label="$t('companyDetail.label.contactPerson')"
+            :placeholder="$t('companyDetail.label.firstName')"
             label-no-wrap
-            placeholder="Имя"
             class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
           />
           <TextField
-            placeholder="Фамилия"
+            :placeholder="$t('companyDetail.label.lastName')"
             class="flex-grow"
           /> -->
         </div>
@@ -81,8 +81,8 @@
           <TextField
             :value="natural ? '' : item.contactMobilePhone"
             :disabled="natural"
-            label="Мобильный телефон"
-            placeholder="123-4567-8901"
+            :label="$t('companyDetail.label.mobilePhone')"
+            :placeholder="$t('companyDetail.label.mobilePhone')"
             @input="$emit('update', 'contactMobilePhone', $event)"
           />
         </div>

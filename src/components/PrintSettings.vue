@@ -307,7 +307,7 @@
           <div class="w-full sm:w-1/2 px-3">
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('client.label.companyName') }}</span>
+                <span>{{ $t('companyDetail.label.companyName') }}</span>
               </label>
               <Select
                 :value="specClient"
@@ -383,7 +383,7 @@
               <template v-if="isClientTypeNatural">
                 <div key="client-natural-firstName" class="pb-4">
                   <label class="text-sm">
-                    <span>{{ $t('client.label.firstName') }}</span>
+                    <span>{{ $t('companyDetail.label.givenName') }}</span>
                   </label>
                   <TextField
                     :value="client.firstName"
@@ -402,7 +402,7 @@
                 </div>
                 <div key="client-natural-lastName" class="pb-4">
                   <label class="text-sm">
-                    <span>{{ $t('client.label.lastName') }}</span>
+                    <span>{{ $t('companyDetail.label.familyName') }}</span>
                   </label>
                   <TextField
                     :value="client.lastName"
@@ -421,7 +421,7 @@
                 </div>
                 <div key="client-natural-middleName" class="pb-4">
                   <label class="text-sm">
-                    <span>{{ $t('client.label.middleName') }}</span>
+                    <span>{{ $t('companyDetail.label.middleName') }}</span>
                   </label>
                   <TextField
                     :value="client.middleName"
@@ -434,7 +434,7 @@
               </template>
               <div v-else key="client-contact-person" class="pb-4">
                 <label class="text-sm">
-                  <span>{{ $t('client.label.contactPerson') }}</span>
+                  <span>{{ $t('companyDetail.label.contactPerson') }}</span>
                 </label>
                 <TextField
                   :value="client.contactPerson"
@@ -458,7 +458,7 @@
               <div class="pb-4 flex">
                 <div class="w-4/6 pr-2">
                   <label class="text-sm">
-                    <span>{{ $t('client.label.phone') }}</span>
+                    <span>{{ $t('companyDetail.label.phone') }}</span>
                   </label>
                   <TextField
                     v-if="isClientTypeNatural"
@@ -495,7 +495,7 @@
               <div class="pb-4">
                 <div class="w-4/6 pr-2">
                   <label class="text-sm">
-                    <span v-if="isClientTypeNatural">{{ $t('client.label.additionalPhone') }}</span>
+                    <span v-if="isClientTypeNatural">{{ $t('companyDetail.label.phone') }}</span>
                     <span v-else>{{ $t('client.label.fax') }}</span>
                   </label>
                   <TextField
@@ -519,7 +519,7 @@
               <div class="pb-4">
                 <div>
                   <label class="text-sm">
-                    <span>{{ $t('client.label.email') }}</span>
+                    <span>{{ $t('companyDetail.label.email') }}</span>
                   </label>
                   <TextField
                     v-if="isClientTypeNatural"
@@ -572,7 +572,7 @@
           <div class="w-full sm:w-1/2 px-3">
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('client.label.companyName') }}</span>
+                <span>{{ $t('companyDetail.label.companyName') }}</span>
               </label>
               <TextField
                 :value="importer.consignee"
@@ -614,7 +614,7 @@
             </div>
             <div class="pb-4">
               <label class="text-sm">
-                <span>{{ $t('client.label.contactPerson') }}</span>
+                <span>{{ $t('companyDetail.label.contactPerson') }}</span>
               </label>
               <TextField
                 :value="importer.importerContactPerson"
@@ -637,7 +637,7 @@
             <div class="pb-4 flex">
               <div class="w-4/6 pr-2">
                 <label class="text-sm">
-                  <span>{{ $t('client.label.phone') }}</span>
+                  <span>{{ $t('companyDetail.label.phone') }}</span>
                 </label>
                 <TextField
                   :value="importer.contactMobilePhone"
@@ -659,7 +659,7 @@
             <div class="pb-4">
               <div class="w-4/6 pr-2">
                 <label class="text-sm">
-                  <span>{{ $t('client.label.fax') }}</span>
+                  <span>{{ $t('companyDetail.label.fax') }}</span>
                 </label>
                 <TextField
                   :value="importer.importerFax"
@@ -674,7 +674,7 @@
             <div class="pb-4">
               <div>
                 <label class="text-sm">
-                  <span>{{ $t('client.label.email') }}</span>
+                  <span>{{ $t('companyDetail.label.email') }}</span>
                 </label>
                 <TextField
                   :value="importer.importerEmail"
