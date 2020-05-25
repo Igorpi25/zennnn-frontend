@@ -84,6 +84,9 @@ export default {
   },
 
   computed: {
+    hideError () {
+      return this.stateIcon && !this.required
+    },
     inputmode () {
       if (this.number) {
         return this.numberFormat === 'integer' ? 'numeric' : 'decimal'
@@ -134,7 +137,7 @@ export default {
       const staticClasses = ['text-field__content relative flex items-center focus:outline-none transition-colors duration-100 ease-out']
       let genericClasses = [
         'rounded',
-        this.hasWarn || this.hasError ? 'shadow-yellow-300' : 'focus-within:shadow-blue-500',
+        (this.hasWarn || this.hasError) && !this.hideError ? 'shadow-yellow-300' : 'focus-within:shadow-blue-500',
         this.disabled ? 'text-gray-200 cursor-not-allowed' : this.solo ? 'text-blue-500' : 'text-white',
         this.solo
           ? 'bg-transparent focus-within:bg-gray-800'
@@ -332,6 +335,7 @@ export default {
     },
 
     emitChange () {
+      if (!this.valid) return
       // on number type return internal value, without formatting
       const val = this.number
         ? this.unformat(this.internalValue)
@@ -340,6 +344,7 @@ export default {
     },
 
     genWarnMenu () {
+      if (this.hideError) return null
       const props = {
         activator: this.$refs['content'],
         attach: this.$refs['alert'],
@@ -500,11 +505,13 @@ export default {
 
     genStateIndicator () {
       const svg = []
-      const color = !this.hasError && !this.hasWarn && this.shouldValidate && !this.required
-        ? 'text-yellow-500'
-        : !this.hasError && !this.hasWarn && this.shouldValidate
-          ? 'text-green-500' : 'text-pink-500'
-      const isValid = color === 'text-green-500'
+      let color = 'text-pink-500'
+      const isValid = !this.hasError && !this.hasWarn && this.shouldValidate
+      if (isValid) {
+        color = 'text-green-500'
+      } else if (!this.required) {
+        color = 'text-yellow-500'
+      }
       const svgData = {
         class: color,
         attrs: {
