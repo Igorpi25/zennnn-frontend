@@ -21,7 +21,7 @@ const ClientList = () => import(/* webpackChunkName: "main" */ '../views/ClientL
 const SupplierItem = () => import(/* webpackChunkName: "main" */ '../views/SupplierItem.vue')
 const SupplierList = () => import(/* webpackChunkName: "main" */ '../views/SupplierList.vue')
 const Staff = () => import(/* webpackChunkName: "main" */ '../views/Staff.vue')
-const Preview = () => import(/* webpackChunkName: "paper" */ '../views/Preview.vue')
+const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
 const Invitation = () => import(/* webpackChunkName: "main" */ '../views/Invitation.vue')
 const SignIn = () => import(/* webpackChunkName: "common" */ '../views/SignIn.vue')
 const Registration = () => import(/* webpackChunkName: "common" */ '../views/Registration.vue')
@@ -132,14 +132,14 @@ const routes = [
         component: ClientList,
       },
       {
-        path: 'clients/create',
+        path: `clients/:groupId?/create`,
         name: 'client-create',
         meta: { requiresAuth: true, scrollToTop: true },
         props: { create: true },
         component: ClientItem,
       },
       {
-        path: 'clients/:clientId',
+        path: `clients/:groupId/:clientId`,
         name: 'client',
         meta: { requiresAuth: true, scrollToTop: true },
         component: ClientItem,
@@ -218,7 +218,7 @@ const routes = [
 
         next()
       } catch (error) {
-        router.app.$notify({ color: 'red', text: error.message || '' })
+        router.app.$notify({ color: 'error', text: error.message || '' })
         next('/not-found')
       }
     },
@@ -230,13 +230,13 @@ const routes = [
   },
   {
     path: '/paper/:specId',
-    name: 'preview',
-    component: Preview,
+    name: 'paper',
+    component: Paper,
     meta: { scrollToTop: true },
     beforeEnter: (to, from, next) => {
       if (to.query.sid) {
         localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid)
-        return next({ name: 'preview', params: { specId: to.params.specId }, query: {} })
+        return next({ name: 'paper', params: { specId: to.params.specId }, query: {} })
       }
       next()
     },
@@ -288,11 +288,11 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (to.query.username) {
         if (to.query.state === 'success') {
-          router.app.$notify({ color: 'green', text: i18n.t('message.emailConfirmed') })
+          router.app.$notify({ color: 'success', text: i18n.t('message.emailConfirmed') })
         } else if (to.query.state === 'confirmed') {
-          router.app.$notify({ color: 'orange', text: i18n.t('message.emailAlreadyConfirmed') })
+          router.app.$notify({ color: 'warn', text: i18n.t('message.emailAlreadyConfirmed') })
         } else if (to.query.state === 'error') {
-          router.app.$notify({ color: 'red', text: to.query.message })
+          router.app.$notify({ color: 'error', text: to.query.message })
           // Add message to Analytics
         }
       }
@@ -314,7 +314,7 @@ const routes = [
         next()
       } else {
         // Incorrect request to restore password
-        router.app.$notify({ color: 'red', text: i18n.t('message.incorrectRestorePassword') })
+        router.app.$notify({ color: 'error', text: i18n.t('message.incorrectRestorePassword') })
         next('/signin')
       }
     },
@@ -390,7 +390,7 @@ router.beforeEach(async (to, from, next) => {
   } else {
     // set light theme permanently
     const fromUndef = from.name === null && from.path === '/'
-    if ((fromUndef && !loggedIn && to.path === '/') || (fromUndef && (to.name === 'preview' || to.name === 'about'))) {
+    if ((fromUndef && !loggedIn && to.path === '/') || (fromUndef && (to.name === 'paper' || to.name === 'about'))) {
       setTheme('light')
       return next()
     }
@@ -401,7 +401,7 @@ router.beforeEach(async (to, from, next) => {
 router.beforeResolve(async (to, from, next) => {
   const loggedIn = await Auth.checkAuth()
   let theme = 'dark'
-  if ((!loggedIn && to.path === '/') || to.name === 'preview' || to.name === 'about') {
+  if ((!loggedIn && to.path === '/') || to.name === 'paper' || to.name === 'about') {
     theme = 'light'
   }
   // set theme meta && attribute

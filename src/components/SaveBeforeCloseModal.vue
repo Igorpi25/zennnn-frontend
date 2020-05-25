@@ -19,6 +19,7 @@
         <Button
           outlined
           class="sm:flex-1 mb-3 sm:mb-0 sm:mr-2"
+          merge-class="border-gray-200"
           @click="$emit('dontSave')"
         >
           <span>{{ dontSaveButton || $t('action.dontSave') }}</span>
@@ -27,6 +28,7 @@
         <Button
           outlined
           class="sm:flex-1 mb-3 sm:mb-0 sm:mx-2"
+          merge-class="border-gray-200"
           @click="$emit('cancel')"
         >
           <span>{{ cancelButton || $t('action.cancel') }}</span>

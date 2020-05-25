@@ -50,6 +50,7 @@ module.exports = {
       'purple-500': '#4C51BF', // custom price color
       'red-500': '#FF212D',
       'red-600': '#FF121F', // spec total client debt text
+      'red-900': '#3D242D', // error color
     },
     fontFamily: {
       'myriad': ['MyriadPro', 'sans-serif'],
@@ -84,11 +85,9 @@ module.exports = {
         '7': '1.75rem',
         '9': '2.25rem',
         '11': '2.75rem',
+        '14': '3.5rem',
         '36': '9rem',
         '38': '9.5rem',
-      },
-      height: {
-        '9': '2.25rem',
       },
       opacity: {
         '10': '.1',

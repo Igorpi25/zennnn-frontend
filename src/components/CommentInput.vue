@@ -20,7 +20,7 @@
       <Button
         outlined
         borderless
-        class="text-gray-150 hover:text-gray-200"
+        merge-class="text-gray-150 hover:text-gray-200"
         @click="blur"
       >
         {{ $t('action.cancel') }}

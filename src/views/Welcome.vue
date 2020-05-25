@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <StatusBar></StatusBar>
+    <Header />
     <section>
       <div class="container">
         <div class="flex flex-col">
@@ -60,14 +60,14 @@
 </template>
 
 <script>
-import StatusBar from '@/components/StatusBar.vue'
+import Header from '@/components/Header.vue'
 import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
 
 export default {
   name: 'Welcome',
   components: {
-    StatusBar,
+    Header,
     Social,
     Copyright,
   },
@@ -90,9 +90,9 @@ export default {
       try {
         if (!this.username) return
         await this.$Auth.resendSignUp(this.username)
-        this.$notify({ color: 'green', text: this.$t('message.emailResent') })
+        this.$notify({ color: 'success', text: this.$t('message.emailResent') })
       } catch (error) {
-        this.$notify({ color: 'orange', text: this.$t('message.failedToSent') })
+        this.$notify({ color: 'warn', text: this.$t('message.failedToSent') })
         this.$logger.warn('Error: ', error)
       }
     },

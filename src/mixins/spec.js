@@ -109,6 +109,9 @@ export default {
     }
   },
   computed: {
+    isInvoiceSummaryVisible () {
+      return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct || this.hasFilledProductQty)
+    },
     isInfoVisible () {
       return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct)
     },
@@ -133,6 +136,13 @@ export default {
         })
       })
     },
+    hasFilledProductQty () {
+      const invoices = this.spec.invoices || []
+      return invoices.some(i => {
+        const products = i.products || []
+        return products.some(el => el.qty)
+      })
+    },
     specSimpleUI () {
       return !this.specSimpleUIOff
     },
@@ -144,14 +154,14 @@ export default {
     },
     specTitleText () {
       return `
-        ${this.$t('preview.shippingTitle')}
+         ${this.$t('shipping.dealNo')}
          ${this.spec.specNo} ${this.$t('preposition.from')}
          ${this.$d(this.$parseDate(this.spec.createdAt), 'short')}
       `
     },
     specTitleHtml () {
       return `
-        ${this.$t('preview.shippingTitle')}
+        ${this.$t('shipping.dealNo')}
         &nbsp;${this.spec.specNo} ${this.$t('preposition.from')}
         &nbsp;${this.$d(this.$parseDate(this.spec.createdAt), 'short')}
       `

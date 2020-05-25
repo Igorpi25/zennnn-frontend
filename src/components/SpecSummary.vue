@@ -5,7 +5,7 @@
       v-model="paperList"
       max-width="443"
     >
-      <PaperListModal
+      <ContractListModal
         :items="papers"
         @close="paperList = false"
         @openPaper="openContract"
@@ -21,7 +21,7 @@
       scrollable
       persistent
     >
-      <PaperConfiguratorModal
+      <ContractConfiguratorModal
         :blank="blank"
         :create="create"
         @update="contractCreated"
@@ -86,7 +86,6 @@
               outlined
               class="w-full"
               content-class="w-full flex items-center"
-              @click="openPaperList"
             >
               <template v-slot:icon>
                 <i class="zi-eye text-gray-100 text-2xl" />
@@ -240,8 +239,8 @@ import cloneDeep from 'clone-deep'
 
 import { mdiClose, mdiPlusThick } from '@mdi/js'
 
-import PaperListModal from '@/components/PaperListModal.vue'
-import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
+import ContractListModal from '@/components/ContractListModal.vue'
+import ContractConfiguratorModal from '@/components/ContractConfiguratorModal.vue'
 import PrintSettings from '../components/PrintSettings.vue'
 import SpecShipment from '../components/SpecShipment.vue'
 import SpecCustoms from '../components/SpecCustoms.vue'
@@ -260,13 +259,13 @@ import {
 } from '../graphql/mutations'
 import { DEFAULT_CURRENCY } from '../config/globals'
 
-import specPdf from '../components/specPdf'
+import printInvoice from '../components/printInvoice'
 
 export default {
   name: 'SpecSummary',
   components: {
-    PaperListModal,
-    PaperConfiguratorModal,
+    ContractListModal,
+    ContractConfiguratorModal,
     PrintSettings,
     SpecShipment,
     SpecCustoms,
@@ -380,10 +379,10 @@ export default {
       try {
         this.printLoading = true
         const method = 'print'
-        await specPdf(this.spec, requisite, client, shipment, customs, method, false)
+        await printInvoice(this.spec, requisite, client, shipment, customs, method, false)
       } catch (error) {
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: `Error creating PDF: ${error.message}`,
         })
         throw new Error(error)
@@ -503,13 +502,13 @@ export default {
         })
         this.emailAccessInput = ''
         this.$notify({
-          color: 'green',
+          color: 'success',
           text: this.$t('message.emailSent', { email }),
         })
         return result
       } catch (error) {
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: this.$t('message.failedToSent'),
         })
         throw new Error(error)
@@ -531,7 +530,7 @@ export default {
         const successful = document.execCommand('copy')
         if (successful) {
           this.$notify({
-            color: 'green',
+            color: 'success',
             text: this.$t('message.linkCopied'),
           })
         } else {
@@ -540,7 +539,7 @@ export default {
       } catch (error) {
         this.$logger.info('Copy link error: ', error)
         this.$notify({
-          color: 'orange',
+          color: 'warn',
           text: this.$t('message.linkNotCopied'),
         })
       }

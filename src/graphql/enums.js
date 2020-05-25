@@ -26,7 +26,7 @@ export const ProductStatus = {
 
 export const ClientType = {
   LEGAL: 'LEGAL',
-  NATURAL: 'NATURAL',
+  PRIVATE: 'PRIVATE',
   OTHER: 'OTHER',
 }
 

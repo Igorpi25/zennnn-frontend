@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <StatusBar></StatusBar>
+    <Header />
     <section class="h-full flex flex-grow">
       <div class="container">
         <div class="flex flex-col md:flex-row">
@@ -139,7 +139,7 @@
 <script>
 import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
 
-import StatusBar from '@/components/StatusBar.vue'
+import Header from '@/components/Header.vue'
 import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
 
@@ -148,7 +148,7 @@ import { Auth } from '../plugins'
 export default {
   name: 'Registration',
   components: {
-    StatusBar,
+    Header,
     Social,
     Copyright,
   },

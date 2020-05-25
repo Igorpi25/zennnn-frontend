@@ -11,11 +11,11 @@
 <script>
 import deepmerge from 'deepmerge'
 
-import SpecOwner from '@/components/SpecOwner.vue'
-import SpecManager from '@/components/SpecManager.vue'
-import SpecAccountant from '@/components/SpecAccountant.vue'
-import SpecWarehouseman from '@/components/SpecWarehouseman.vue'
-import SpecFreelancer from '@/components/SpecFreelancer.vue'
+import Owner from '@/components/Spec/Owner.vue'
+import Manager from '@/components/Spec/Manager.vue'
+import Accountant from '@/components/Spec/Accountant.vue'
+import Warehouseman from '@/components/Spec/Warehouseman.vue'
+import Freelancer from '@/components/Spec/Freelancer.vue'
 
 import { Role, Typename, Operation, emptyInvoice, emptyProduct } from '../graphql/enums' // eslint-disable-line
 import {
@@ -36,11 +36,11 @@ import { SPEC_DELTA } from '../graphql/subscriptions'
 export default {
   name: 'Spec',
   components: {
-    SpecOwner,
-    SpecManager,
-    SpecAccountant,
-    SpecWarehouseman,
-    SpecFreelancer,
+    Owner,
+    Manager,
+    Accountant,
+    Warehouseman,
+    Freelancer,
   },
   apollo: {
     roleInProject: {
@@ -73,11 +73,11 @@ export default {
     },
     componentName () {
       switch (this.roleInProject) {
-        case Role.OWNER: return 'SpecOwner'
-        case Role.MANAGER: return 'SpecManager'
-        case Role.ACCOUNTANT: return 'SpecAccountant'
-        case Role.WAREHOUSEMAN: return 'SpecWarehouseman'
-        case Role.FREELANCER: return 'SpecFreelancer'
+        case Role.OWNER: return 'Owner'
+        case Role.MANAGER: return 'Manager'
+        case Role.ACCOUNTANT: return 'Accountant'
+        case Role.WAREHOUSEMAN: return 'Warehouseman'
+        case Role.FREELANCER: return 'Freelancer'
         default: return null
       }
     },

@@ -54,13 +54,13 @@
               :key="item.id"
               class="cursor-pointer"
               tabindex="0"
-              @click="goToClient(item.id)"
-              @keydown.enter.exact.self="goToClient(item.id)"
+              @click="goToClient(item)"
+              @keydown.enter.exact.self="goToClient(item)"
             >
               <td></td>
               <td>{{ item.fullName }}</td>
               <td>{{ item.phone || item.mobilePhone }}</td>
-              <td>{{ item.contactPerson }}</td>
+              <td>{{ item.contactPerson && item.contactPerson.fullName }}</td>
               <td></td>
               <td>{{ item.uid }}</td>
               <td>{{ item.deals }}</td>
@@ -82,7 +82,10 @@
         outlined
         class="mt-4"
         @click="$router.push({
-          name: 'client-create'
+          name: 'client-create',
+          query: {
+            clientType,
+          },
         })"
       >
         <template v-slot:icon>
@@ -95,12 +98,11 @@
 </template>
 
 <script>
-import { mdiPlusCircleOutline, mdiMagnify } from '@mdi/js'
+import { ClientType } from '../graphql/enums'
+import { LIST_CLIENTS } from '../graphql/queries'
+import { DELETE_CLIENT } from '../graphql/mutations'
 
-import { LIST_CLIENTS } from '@/graphql/queries'
-import { DELETE_CLIENT } from '@/graphql/mutations'
-
-import { confirmDialog } from '@/util/helpers'
+import { confirmDialog } from '../util/helpers'
 
 export default {
   name: 'ClientList',
@@ -122,13 +124,12 @@ export default {
       createLoading: false,
       deleteLoading: null,
       errors: [],
-      icons: {
-        mdiMagnify,
-        mdiPlusCircleOutline,
-      },
     }
   },
   computed: {
+    clientType () {
+      return this.$route.query.clientType || 1
+    },
     headers () {
       return [
         { text: '', value: 'debt', align: 'left', width: 60, sortable: true, tooltip: this.$t('clients.clientsDebt') },
@@ -136,7 +137,7 @@ export default {
         { text: this.$t('clients.phone'), value: 'clientPhone', align: 'left', width: 120, minWidth: 120, sortable: true },
         { text: this.$t('clients.contactPerson'), value: 'contactPerson', align: 'left', width: 165, sortable: true },
         { text: '', value: 'coming', align: 'left', width: 45 },
-        { text: this.$t('clients.uid'), value: 'uid', align: 'left', width: 120, minWidth: 120, sortable: true },
+        { text: this.$t('clients.ucn'), value: 'uid', align: 'left', width: 120, minWidth: 120, sortable: true },
         { text: '', value: 'deals', width: 60, minWidth: 60, sortable: true, tooltip: this.$t('clients.currentDealsAmount') },
         { text: '', value: 'actions', align: 'right', width: 48 },
       ]
@@ -153,10 +154,24 @@ export default {
     },
   },
   methods: {
-    goToClient (clientId) {
+    getClientTypeNumeric (type) {
+      switch (type) {
+        case ClientType.LEGAL: return 1
+        case ClientType.PRIVATE: return 2
+        case ClientType.OTHER: return 3
+        default: return 1
+      }
+    },
+    goToClient (item) {
       this.$router.push({
         name: 'client',
-        params: { clientId },
+        params: {
+          groupId: item.groupId,
+          clientId: item.id,
+        },
+        query: {
+          clientType: this.getClientTypeNumeric(item.clientType),
+        },
       })
     },
     async deleteClient (id) {

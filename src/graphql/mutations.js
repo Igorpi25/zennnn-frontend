@@ -4,7 +4,6 @@ import {
   INVOICE_FRAGMENT,
   PRODUCT_FRAGMENT,
   CLIENT_FRAGMENT,
-  CLIENT_TEMPLATE_FRAGMENT,
   SUPPLIER_FRAGMENT,
   SUPPLIER_TEMPLATE_FRAGMENT,
   SUPPLIER_SHOP_FRAGMENT,
@@ -196,49 +195,26 @@ export const SET_INVOICE_SUPPLIER = gql`
 `
 
 export const CREATE_CLIENT = gql`
-  mutation CreateClient($orgId: ID!, $input: CreateClientInput!) {
-    createClient(orgId: $orgId, input: $input) {
+  mutation CreateClient($orgId: ID!, $groupId: ID, $input: CreateClientInput!) {
+    createClient(orgId: $orgId, groupId: $groupId, input: $input) {
       ...ClientFragment
-      template {
-        ...ClientTemplateFragment
-      }
     }
   }
   ${CLIENT_FRAGMENT}
-  ${CLIENT_TEMPLATE_FRAGMENT}
 `
 
 export const UPDATE_CLIENT = gql`
   mutation UpdateClient($id: ID!, $input: UpdateClientInput!) {
     updateClient(id: $id, input: $input) {
       ...ClientFragment
-      template {
-        ...ClientTemplateFragment
-      }
     }
   }
   ${CLIENT_FRAGMENT}
-  ${CLIENT_TEMPLATE_FRAGMENT}
 `
 
 export const DELETE_CLIENT = gql`
   mutation DeleteClient($id: ID!) {
     deleteClient(id: $id)
-  }
-`
-
-export const CREATE_CLIENT_TEMPLATE = gql`
-  mutation CreateClientTemplate($orgId: ID!, $fromClient: ID, $input: CreateClientTemplateInput!) {
-    createClientTemplate(orgId: $orgId, fromClient: $fromClient, input: $input) {
-      ...ClientTemplateFragment
-    }
-  }
-  ${CLIENT_TEMPLATE_FRAGMENT}
-`
-
-export const DELETE_CLIENT_TEMPLATE = gql`
-  mutation DeleteClientTemplate($id: ID!) {
-    deleteClientTemplate(id: $id)
   }
 `
 

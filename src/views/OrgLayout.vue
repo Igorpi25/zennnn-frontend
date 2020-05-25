@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col relative">
-    <StatusBar />
+    <Header />
     <NavBar />
     <div class="mb-12">
       <router-view />
@@ -12,14 +12,14 @@
 </template>
 
 <script>
-import StatusBar from '@/components/StatusBar'
+import Header from '@/components/Header'
 import NavBar from '@/components/NavBar'
 import Copyright from '@/components/Copyright'
 
 export default {
   name: 'OrgLayout',
   components: {
-    StatusBar,
+    Header,
     NavBar,
     Copyright,
   },

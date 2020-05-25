@@ -1,3 +1,5 @@
+import { mergeClasses } from '../../util/helpers'
+
 export default {
   name: 'Button',
   props: {
@@ -18,6 +20,8 @@ export default {
     block: Boolean,
     outlined: Boolean,
     borderless: Boolean,
+    // TODO: soudl be removed in v3
+    mergeClass: [String, Array],
     contentClass: {
       type: String,
       default: 'w-full flex items-center justify-center',
@@ -28,7 +32,7 @@ export default {
       return 'h-12 inline-flex relative rounded-md focus:outline-none select-none align-middle transition-colors duration-100 ease-out'
     },
     classes () {
-      const classes = []
+      const classes = [this.staticClass]
       // text classes
       if (this.disabled) {
         if (this.outlined) {
@@ -94,14 +98,15 @@ export default {
     },
     genRouterLink () {
       let tag
+      let classes = this.classes
+      if (this.mergeClass) {
+        classes = mergeClasses(classes, this.mergeClass)
+      }
       const data = {
         attrs: {
           tabindex: 'tabindex' in this.$attrs ? this.$attrs.tabindex : undefined,
         },
-        class: [
-          this.staticClass,
-          ...this.classes,
-        ],
+        class: classes,
         props: {},
         [this.to ? 'nativeOn' : 'on']: {
           ...this.$listeners,

@@ -1,35 +1,5 @@
 <template>
   <div>
-    <!-- <v-dialog
-      v-model="templateListDialog"
-      max-width="480"
-      overlay-color="#0f0f0f"
-      overlay-opacity="0.6"
-    >
-      <TemplateListModal
-        :templates="templates"
-        :current-template="currentTemplate"
-        :visibility="templateListDialog"
-        @delete="deleteSupplierTemplate"
-        @cancel="restoreTemplate"
-        @close="templateListDialog = false"
-        @set-template="setTemplate"
-      />
-    </v-dialog>
-    <v-dialog
-      v-model="templateSaveDialog"
-      max-width="650"
-      overlay-color="#0f0f0f"
-      overlay-opacity="0.6"
-    >
-      <TemplateSaveModal
-        ref="templateSave"
-        :loading="createTemplateLoading"
-        :visibility="templateSaveDialog"
-        @save="createSupplierTemplate"
-        @close="templateSaveDialog = false"
-      />
-    </v-dialog> -->
 
     <v-dialog
       v-model="saveBeforeCloseDialog"
@@ -48,8 +18,17 @@
       id="container"
       :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container container--sm']"
     >
+      <span
+        v-if="isComponent"
+        class="absolute top-0 right-0 z-10 pt-3 pr-3"
+      >
+        <i
+          class="zi-close text-2xl text-gray-100 hover:text-white cursor-pointer"
+          @click="$emit('close')"
+        />
+      </span>
       <h1 class="text-2xl text-white font-semibold leading-tight mb-5">
-        Создать нового поставщика
+        {{ create ? $t('supplier.createTitle') : $t('supplier.editTitle') }}
       </h1>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
         <div class="h-11 flex overflow-x-auto overflow-scroll-touch" />
@@ -57,25 +36,25 @@
           class="bg-gray-600 rounded-md p-5 pt-6"
         >
           <!-- Legal info -->
-          <EntityLegalInfo supplier :item="supplier" @update="updateValue" />
+          <LegalInfo is-supplier :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <EntitySupplierDetail :item="supplier" @update="updateValue" />
+          <LegalDetail is-supplier :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
-          <EntityContactList :item="supplier" @update="updateValue" />
+          <ContactList :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Branches -->
-          <EntityBranchList :item="supplier" @update="updateValue" />
+          <BranchList :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
-              <!-- Extra -->
-              <EntityExtra supplier :item="supplier" @update="updateValue" />
+              <!-- ExtraInfo -->
+              <ExtraInfo :item="supplier" @update="updateValue" />
             </div>
           </div>
         </div>
@@ -83,273 +62,13 @@
       <Button
         :loading="updateLoading"
         outlined
-        class="w-40"
+        merge-class="w-40"
         @click="update()"
       >
-        Сохранить
+        {{ $t('client.save') }}
       </Button>
     </div>
 
-    <!-- <div id="container" :class="[ isComponent ? 'bg-gray-900 rounded-lg relative' : 'container' ]">
-      <span
-        v-if="isComponent"
-        class="absolute cursor-pointer"
-        :style="{ top: '12px', right: '12px', zIndex: '10' }"
-        @click="$emit('close')"
-      >
-        <svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="0.780869" y1="1.3753" x2="8.78087" y2="11.3753" stroke="#9F9F9F" stroke-width="2"/>
-          <line x1="8.78087" y1="1.6247" x2="0.780869" y2="11.6247" stroke="#9F9F9F" stroke-width="2"/>
-        </svg>
-      </span>
-      <div :class="[ isComponent ? 'pt-5 px-4' : 'py-12' ]">
-        <div>
-          <header class="header">
-            <span class="header__title">{{ $t('supplier.supplierCard') }}</span>
-            <div class="header__actions">
-              <SwitchInput
-                v-if="!create"
-                :value="editMode"
-                small
-                class="mr-2"
-                @input="toggleEditMode"
-              >
-                <span>{{ $t('supplier.edit') }}</span>
-              </SwitchInput>
-              <Button
-                outlined
-                borderless
-                class="inline-block mt-3 md:mt-0"
-                @click="showModalList"
-              >
-                <span>{{ $t('supplier.supplierCardPatterns') }}</span>
-              </Button>
-            </div>
-          </header>
-          <div class="card__radio-group">
-            <RadioInput
-              :value="editCard"
-              :label="editCardTypes.SUPPLIER"
-              name="card-type"
-              class="mr-6"
-              @input="editCard = editCardTypes.SUPPLIER"
-            >
-              <span>{{ $t('supplier.legalPersonAbr') }}</span>
-            </RadioInput>
-            <RadioInput
-              :value="editCard"
-              :label="editCardTypes.SHOPS"
-              name="card-type"
-              @input="editCard = editCardTypes.SHOPS"
-            >
-              <span>{{ $t('supplier.shops') }}</span>
-            </RadioInput>
-          </div>
-          <div class="flex justify-between relative">
-            <TemplateCard
-              ref="supplier"
-              template-name="supplier"
-              :fields="fieldsSettings"
-              :item="supplier"
-              :is-disabled="!editMode"
-              :title="$t('supplier.legalPerson')"
-              :class="{ 'template-card': isShops }"
-              @update-template="updateTemplate"
-              @update-value="updateValue"
-            >
-              <template v-slot:language>
-                <div class="card__col-right">
-                  <select
-                    ref="languageInput"
-                    :value="supplier.language"
-                    :disabled="!editMode || !!updateLoading"
-                    required
-                    class="simple-select mx-1"
-                    name="language-select"
-                    @change="updateLanguageInput"
-                  >
-                    <option
-                      v-if="create && !supplier.language"
-                      value=""
-                    >
-                      {{ $t('placeholder.notChosen') }}
-                    </option>
-                    <option
-                      v-for="opt of langs"
-                      :key="opt.value"
-                      :value="opt.value"
-                    >
-                      <span class="leaders__num cursor-pointer" style="padding-right:0">
-                        {{ opt.text }}
-                      </span>
-                    </option>
-                  </select>
-                  <div
-                    v-if="languageInputError"
-                    class="text-xs text-red-500 leading-none mx-2"
-                  >
-                    {{ languageInputError }}
-                  </div>
-                </div>
-              </template>
-              <template v-slot:append>
-                <div class="text-center">
-                  <Button
-                    v-if="!editMode"
-                    :loading="!!updateLoading"
-                    class="mb-4 mx-auto"
-                    @click="edit"
-                  >
-                    <span>{{ $t('supplier.edit') }}</span>
-                  </Button>
-                  <Button
-                    v-else
-                    :loading="!!updateLoading"
-                    class="mb-4 mx-auto"
-                    @click="update()"
-                  >
-                    <span>{{ $t('supplier.save') }}</span>
-                  </Button>
-                  <Button
-                    outlined
-                    borderless
-                    class="mx-auto"
-                    @click="saveAsTemplate"
-                  >
-                    <span class="text-sm">{{ $t('supplier.saveAsPattern') }}</span>
-                  </Button>
-                </div>
-              </template>
-            </TemplateCard>
-            <TemplateCard
-              template-name="supplier"
-              :title="$t('supplier.shops')"
-              :class="{ 'template-card': !isShops }"
-            >
-              <template v-slot:items>
-                <div v-for="(shop, index) in supplier.shops" :key="index">
-                  <div class="flex flex-col justify-between relative pb-4 lg:flex-row lg:flex-wrap lg:pt-5">
-                    <div class="card__col-left card__col-left--shops">
-                      <div
-                        class="card__expand-btn"
-                        @click="expandShop(shop.id)"
-                      >
-                        {{ index + 1 }}
-                        <Icon v-if="shop.expanded">{{ icons.mdiChevronUp }}</Icon>
-                        <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-                      </div>
-                      <div
-                        class="absolute"
-                        style="right: -18px;"
-                        @click="deleteShop(shop.id)"
-                      >
-                        <Icon
-                          class="cursor-pointer"
-                        >
-                          {{ icons.mdiClose }}
-                        </Icon>
-                      </div>
-                      <TextField
-                        :value="shop.template && shop.template['name']"
-                        :placeholder="(shop.template && shop.template['name']) || `${$t('supplier.placeholder.shopName')}`"
-                        :disabled="!shop.editMode"
-                        class="pt-0 template-card__label"
-                        input-class="text-gray-300 focus:text-white placeholder-gray-300"
-                        @input="updateShopTemplate(index, 'name', $event)"
-                      />
-                    </div>
-                    <div class="card__col-right">
-                      <TextArea
-                        :value="shop.name"
-                        :disabled="!shop.editMode"
-                        :placeholder="!shop.editMode ? '-' : null"
-                        squared
-                        rows="2"
-                        hide-details
-                        class="template-card__input"
-                        @input="updateShopValue(index, 'name', $event)"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    v-if="shop.expanded"
-                    class="pb-16"
-                  >
-                    <div class="flex flex-col justify-between pb-8 lg:flex-row lg:flex-wrap lg:pb-0">
-                      <template
-                        v-for="([key, f]) in Object.entries(shopFieldsSettings).slice(1)"
-                      >
-                        <div
-                          class="card__col-left card__col-left--shops"
-                          :key="key"
-                        >
-                          <label>{{ $t(`supplier.label.${f.label || key}`) }}</label>
-                          <TextField
-                            :value="shop.template && shop.template[key]"
-                            :placeholder="(shop.template && shop.template[key]) || $t(`supplier.placeholder.${f.label || key}`)"
-                            :disabled="!shop.editMode"
-                            class="pt-0 template-card__label"
-                            input-class="text-gray-300 focus:text-white placeholder-gray-300"
-                            @input="updateShopTemplate(index, key, $event)"
-                          />
-                        </div>
-                        <div
-                          class="card__col-right"
-                          :key="`shop-${key}`"
-                        >
-                          <label></label>
-                          <TextArea
-                            :value="shop[key]"
-                            :disabled="!shop.editMode"
-                            :placeholder="!shop.editMode ? '-' : null"
-                            squared
-                            rows="1"
-                            hide-details
-                            class="template-card__input pb-4"
-                            @input="updateShopValue(index, key, $event)"
-                          />
-                        </div>
-                      </template>
-                    </div>
-                    <div class="text-center mt-16">
-                      <template v-if="!create">
-                        <Button
-                          v-if="shop.editMode"
-                          :loading="!!updateLoading"
-                          class="mb-4 mx-auto"
-                          @click="updateShop(shop.id)"
-                        >
-                          <span>{{ $t('supplier.save') }}</span>
-                        </Button>
-                        <Button
-                          v-else
-                          :loading="!!updateLoading"
-                          class="mb-4 mx-auto"
-                          @click="editShop(shop)"
-                        >
-                          <span>{{ $t('supplier.edit') }}</span>
-                        </Button>
-                      </template>
-                    </div>
-                  </div>
-                </div>
-              </template>
-              <template v-slot:append>
-                <Button
-                  outlined
-                  @click="addShop"
-                >
-                  <template v-slot:icon>
-                    <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
-                  </template>
-                  <span>{{ $t('supplier.addAddress') }}</span>
-                </Button>
-              </template>
-            </TemplateCard>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -366,39 +85,34 @@ import {
   mdiClose,
 } from '@mdi/js'
 
-import { uuid } from '@/util/helpers'
-import { GET_SUPPLIER, LIST_SUPPLIER_TEMPLATES } from '@/graphql/queries'
+import { GET_SUPPLIER, LIST_SUPPLIER_TEMPLATES } from '../graphql/queries'
 import {
   CREATE_SUPPLIER,
   UPDATE_SUPPLIER,
   CREATE_SUPPLIER_TEMPLATE,
   DELETE_SUPPLIER_TEMPLATE,
-} from '@/graphql/mutations'
+  CREATE_SUPPLIER_SHOP,
+  UPDATE_SUPPLIER_SHOP,
+  DELETE_SUPPLIER_SHOP,
+} from '../graphql/mutations'
+import { uuid } from '../util/helpers'
 
-import EntityLegalInfo from './EntityLegalInfo.vue'
-import EntitySupplierDetail from './EntitySupplierDetail.vue'
-import EntityContactList from './EntityContactList.vue'
-import EntityExtra from './EntityExtra.vue'
-import EntityBranchList from './EntityBranchList.vue'
-
-import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
-// import TemplateSaveModal from '@/components/TemplateSaveModal.vue'
-// import TemplateListModal from '@/components/TemplateListModal.vue'
-// import TemplateCard from '@/components/TemplateCard.vue'
-import { CREATE_SUPPLIER_SHOP, UPDATE_SUPPLIER_SHOP, DELETE_SUPPLIER_SHOP } from '../graphql/mutations'
+import LegalInfo from './CompanyDetail/LegalInfo.vue'
+import LegalDetail from './CompanyDetail/LegalDetail.vue'
+import ContactList from './CompanyDetail/ContactList.vue'
+import ExtraInfo from './CompanyDetail/ExtraInfo.vue'
+import BranchList from './CompanyDetail/BranchList.vue'
+import SaveBeforeCloseModal from './SaveBeforeCloseModal.vue'
 
 export default {
   name: 'SupplierCard',
   components: {
-    EntityLegalInfo,
-    EntitySupplierDetail,
-    EntityContactList,
-    EntityExtra,
-    EntityBranchList,
+    LegalInfo,
+    LegalDetail,
+    ContactList,
+    ExtraInfo,
+    BranchList,
     SaveBeforeCloseModal,
-    // TemplateSaveModal,
-    // TemplateListModal,
-    // TemplateCard,
   },
   props: {
     orgId: {
@@ -545,16 +259,6 @@ export default {
     }
   },
   computed: {
-    langs () {
-      return [
-        { value: 'en', text: 'English' },
-        { value: 'zh-Hans', text: '简体' },
-        { value: 'zh-Hant', text: '繁体' },
-        { value: 'fr', text: 'Français' },
-        { value: 'ru', text: 'Русский' },
-        { value: 'uk', text: 'Український' },
-      ]
-    },
     supplierId () {
       return this.$route.params.supplierId
     },
@@ -898,7 +602,7 @@ export default {
       } catch (error) {
         this.$logger.warn('Error: ', error)
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: error.message,
         })
         throw new Error(error)
@@ -1113,86 +817,3 @@ export default {
   },
 }
 </script>
-
-<style lang="postcss" scoped>
-  #container {
-    color: #aaaaaa;
-  }
-  .header {
-    @apply mb-3 text-sm items-center;
-  }
-  .header__title {
-    font-size: 24px;
-    @apply mb-6 block font-bold text-center text-gray-150;
-  }
-  .header__actions {
-    @apply flex flex-col justify-around items-center;
-  }
-  .card__radio-group {
-    display: flex;
-    margin-top: 60px;
-    margin-left: 30px;
-  }
-  .card__expand-btn {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    left: -23px;
-    font-size: 12px;
-    transition: .5s;
-    transform: rotate(0);
-    user-select: none;
-    cursor: pointer;
-  }
-  .template-card {
-    display: none;
-  }
-  .template-card__triangle {
-    width: 0;
-    height: 0;
-  }
-
-  @screen md {
-    .header {
-      @apply flex;
-    }
-    .header__title {
-      @apply mr-2 mb-0 inline text-base font-normal;
-    }
-    .header__actions {
-      @apply flex-row justify-start;
-    }
-    .card__radio-group {
-      display: none;
-    }
-    .card__expand-btn {
-      left: -28px;
-      font-size: 16px;
-    }
-    .card__add-address-btn {
-      margin-top: 52px;
-      margin-left: 0;
-    }
-    .template-card {
-      display: block;
-    }
-    .template-card__triangle {
-      width: 14px;
-      height: 14px;
-      transform: rotate(45deg);
-      background-color: #0F0F0F;
-      position: absolute;
-      top: -7px;
-      left: 95px;
-    }
-  }
-
-  @screen lg {
-    .card__expand-btn {
-      left: -10px;
-    }
-     .header__actions {
-      width: 35%;
-    }
-  }
-</style>

@@ -171,7 +171,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
           )
           if (message && message.includes('Forbidden')) {
-            router.app.$notify({ color: 'orange', text: 'Forbidden' })
+            router.app.$notify({ color: 'warn', text: 'Forbidden' })
           }
       }
     }

@@ -330,7 +330,7 @@ export default {
       if (!file) return
       if (file.size > UPLOAD_FILE_SIZE_MB * 1048576) {
         this.$notify({
-          color: 'orange',
+          color: 'warn',
           text: `Large file size. Please upload a file size less than ${UPLOAD_FILE_SIZE_MB}Mb.`,
         })
         return

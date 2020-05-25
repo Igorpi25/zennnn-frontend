@@ -2,7 +2,7 @@
   <div class="content">
     <div class="bg-gray-400">
       <div class="container">
-        <div class="status-bar">
+        <div class="header">
           <div class="flex items-center">
             <router-link to="/" class="text-gray-100">
               <svg width="113" height="18" viewBox="0 0 113 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -16,7 +16,7 @@
     </div>
 
     <!--
-      TODO Change StatusBar
+      TODO Change Header
     -->
 
     <section class="h-full flex-grow mt-16 flex items-center">

@@ -214,59 +214,90 @@ export const INVOICE_PRODUCTS_FRAGMENT = gql`
   ${PRODUCT_FRAGMENT}
 `
 
+export const PERSON_FRAGMENT = gql`
+  fragment PersonFragment on Person {
+    firstName
+    lastName
+    middleName
+    fullName
+  }
+`
+
 export const CLIENT_FRAGMENT = gql`
   fragment ClientFragment on Client {
     id
+    groupId
     uid
-    customUid
     clientType
+    locale
     createdAt
     updatedAt
-    language
-    # legal
+    # LEGAL
+    contactPerson {
+      ...PersonFragment
+    }
     companyName
+    companyNameLocal
+    companyOwner {
+      ...PersonFragment
+    }
+
     legalAddress
     legalAddressPostcode
     mailingAddress
     mailingAddressPostcode
+    deliveryAddress
+    deliveryAddressPostcode
+
     phone
+    phoneOption
     fax
+    # for contact
+    mobilePhone
     email
-    itn
+
+    vat
     iec
+    okpo
     psrn
+    bic
+    swift
+
     bankName
     bankAddress
     bankAccountNumber
+    correspondentBankName
     correspondentAccountNumber
-    bic
-    okpo
-    swift
-    ownerFullName
-    ownerJobPosition
+
     importerActive
-    consignee
-    shippingAddress
-    contactPerson
-    contactMobilePhone
-    importerContactPerson
-    importerFax
+    importerCompanyName
+    importerContactPerson {
+      ...PersonFragment
+    }
+    importerMobilePhone
+    importerPhone
     importerEmail
-    legalTypeNote
-    # natural
-    firstName
-    lastName
-    middleName
+    note
+    # PRIVATE
+    person {
+      ...PersonFragment
+    }
+    birthdate
     passportId
-    mobilePhone
-    additionalPhone
-    naturalEmail
-    address
-    deliveryAddress
-    naturalTypeNote
+    citizenship
+    issueDate
+    expireDate
+    issuedBy
+
+    avatar
+    contacts
+    tags
+    files
+
     # computed value
     fullName
   }
+  ${PERSON_FRAGMENT}
 `
 
 export const SPEC_FRAGMENT = gql`
@@ -321,50 +352,6 @@ export const SPEC_FRAGMENT = gql`
   ${CONTAINER_FRAGMENT}
   ${SHIPMENT_FRAGMENT}
   ${CUSTOMS_FRAGMENT}
-`
-
-export const CLIENT_TEMPLATE_FRAGMENT = gql`
-  fragment ClientTemplateFragment on ClientTemplate {
-    id
-    templateName
-    customUid
-    # legal
-    companyName
-    legalAddress
-    legalAddressPostcode
-    mailingAddress
-    mailingAddressPostcode
-    phone
-    fax
-    email
-    itn
-    iec
-    psrn
-    bankName
-    bankAddress
-    bankAccountNumber
-    correspondentAccountNumber
-    bic
-    okpo
-    swift
-    ownerFullName
-    ownerJobPosition
-    consignee
-    shippingAddress
-    contactPerson
-    contactMobilePhone
-    legalTypeNote
-    # natural
-    firstName
-    lastName
-    middleName
-    passportId
-    mobilePhone
-    additionalPhone
-    address
-    deliveryAddress
-    naturalTypeNote
-  }
 `
 
 export const SUPPLIER_TEMPLATE_FRAGMENT = gql`

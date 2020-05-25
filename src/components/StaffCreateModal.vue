@@ -89,7 +89,7 @@
               >
                 <Select
                   v-model="inviteFormModel.locale"
-                  :label="$t('client.label.language')"
+                  :label="$t('companyDetail.label.language')"
                   :items="langs"
                   :rules="[rules.requiredSelect]"
                   flat
@@ -115,7 +115,7 @@
               <div class="w-full text-center">
                 <Button
                   :loading="inviteFormLoading"
-                  class="mt-5 text-gray-100 hover:text-white"
+                  merge-class="mt-5 text-gray-100 hover:text-white"
                   @click="invitationStep = 1"
                 >
                   <span>{{ $t('staff.back') }}</span>
@@ -141,6 +141,7 @@ import { ziUserPlus } from '../assets/icons'
 import { Role } from '../graphql/enums'
 import { GET_INVITE_USER_TO_ORG } from '../graphql/queries'
 import { INVITE_USER_TO_ORG } from '../graphql/mutations'
+import { LOCALES_LIST } from '../config/globals'
 
 export default {
   name: 'StaffCreateModal',
@@ -185,14 +186,7 @@ export default {
       return this.$route.params.orgId
     },
     langs () {
-      return [
-        { value: 'en', text: 'English' },
-        { value: 'zh-Hans', text: '简体' },
-        { value: 'zh-Hant', text: '繁体' },
-        { value: 'fr', text: 'Français' },
-        { value: 'ru', text: 'Русский' },
-        { value: 'uk', text: 'Український' },
-      ]
+      return LOCALES_LIST
     },
     roles () {
       return [
@@ -271,7 +265,7 @@ export default {
           this.emailErrorMessage = this.$t('staff.userAlreadyExistInOrg')
         } else {
           this.$notify({
-            color: 'red',
+            color: 'error',
             text: error.message,
           })
           throw new Error(error)
@@ -310,7 +304,7 @@ export default {
           this.inviteErrorMessage = this.$t('staff.userNotActive')
         } else {
           this.$notify({
-            color: 'red',
+            color: 'error',
             text: error.message,
           })
           throw new Error(error)

@@ -209,7 +209,6 @@ export default {
     autofocus: Boolean,
     placeholder: String,
     clearable: Boolean,
-    hideDetails: Boolean,
     singleLine: Boolean,
     solo: Boolean,
     soloFlat: Boolean,

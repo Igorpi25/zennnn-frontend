@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <StatusBar></StatusBar>
+    <Header />
     <section>
       <div class="container">
         <div>
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import StatusBar from '@/components/StatusBar.vue'
+import Header from '@/components/Header.vue'
 import SocialSignIn from '@/components/SocialSignIn.vue'
 import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
@@ -86,7 +86,7 @@ import Copyright from '@/components/Copyright.vue'
 export default {
   name: 'LoginRestore',
   components: {
-    StatusBar,
+    Header,
     SocialSignIn,
     Social,
     Copyright,

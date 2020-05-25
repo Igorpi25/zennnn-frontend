@@ -1,4 +1,7 @@
 {
+  "app": {
+    "userAgreement": "Conditions&nbsp;d'utilisation"
+  },
   "passwordRestore": {
     "accessRecoveryHead": "Récupération d'accès,",
     "accessRecoverySubhead": "Entrez les données et obtenez un lien pour changer le mot de passe.",
@@ -27,6 +30,8 @@
     "submit": "Obtenir le lien"
   },
   "signin": {
+    "subtitle": "Facile.  Multilingue.<br>Puissant.",
+    "formTitle": "S'identifier",
     "noAccount": "Pas de compte?",
     "signup": "S'inscrire",
     "welcomeHead": "Bienvenue à ZENNNN,",
@@ -47,6 +52,10 @@
     "submit": "S'identifier"
   },
   "signup": {
+    "feat1": "Pas besoin d'apprendre à&nbsp;utiliser",
+    "feat2": "Tout dans le&nbsp;cloud",
+    "feat3": "Quelques clics pour compléter les documents",
+    "feat4": "Interface multilingue",
     "registration": "Enregistrement",
     "hello": "Bonjour,",
     "helloContent": "c'est ZENNNN — le premier back office numérique pour le commerce international.",
@@ -63,6 +72,7 @@
     "acceptPolicyAndTerms": "je suis d'accord avec",
     "privacyPolicy": "Politique de confidentialité",
     "termsOfUse": "Conditions d'utilisation",
+    "check": "Case à cocher si vous acceptez",
     "submit": "Créer un compte"
   },
   "welcome": {
@@ -77,19 +87,35 @@
     "resend": "Renvoyer."
   },
   "deals": {
-    "createSpecDialogHeader": "Veuillez lier le Client au Contrat et continuer",
-    "createSpecDialogSearchPlaceholder": "Prénom ou nom",
+    "createSpecDialogHeader": "Ajouter le client",
+    "createSpecDialogSearchLabel": "Prénom ou nom, nom de l'entreprise",
+    "createSpecDialogSearchPlaceholder": "Commencer à écrire",
     "createSpecDialogAddClient": "Créer un nouveau Client",
-    "createSpecDialogWithoutClient": "Continuer sans lier le Client",
-    "createSpecDialogAdd": "Lien Client",
+    "createSpecDialogWithoutClient": "Sauter",
+    "createSpecDialogAd": "Continuer",
     "createDeal": "Créer l'accord",
-    "clientUid": "UCN",
+    "clientUcn": "UCN",
     "clientName": "Client",
     "clientPhone": "Numéro de téléphone",
     "specNo": "Numéro de contrat (N ° d'expédition)",
     "createdAt": "Créé",
     "moneyRecieved": "Client payé",
-    "expensesPaid": "Dépenses payées"
+    "expensesPaid": "Dépenses payées",
+    "firstStep": "Premier pas",
+    "nextStep": "L'étape suivante",
+    "lastStep": "Dernière étape",
+    "addSupplier": "AJOUTER UN FOURNISSEUR",
+    "addClient": "CRÉER UN CLIENT",
+    "addDeal": "CRÉER UNE OFFRE",
+    "add": "Ajouter",
+    "create": "Créer",
+    "success": "Ok!",
+    "noData": "Actuellement, toutes les offres sont terminées, vous pouvez en commencer une nouvelle.",
+    "turnoverHint": "Chiffre d'affaires total avec le client actuellement en cours.",
+    "marginHint": "Montant de la marge de l'opération.",
+    "zHint": "Le signe Z montre qui a un compte ZENNNN.",
+    "contactPerson": "Représentant",
+    "contact": "Contact"
   },
   "staff": {
     "createStaff": "Créer un employé",
@@ -118,16 +144,25 @@
     "inviteRole": "Rôle",
     "inviteStatus": "Statut",
     "inviteCreatedAt": "Créé sur",
-    "inviteUpdatedAt": "Mis à jour le"
+    "inviteUpdatedAt": "Mis à jour le",
+    "staffName": "Nom de l'employé",
+    "accessControl": "Activée",
+    "invitationFrom": "Date d’invantation"
   },
   "requisites": {
     "companyName": "Nom de la compagnie",
     "companyNameEng": "Nom de l'entreprise en anglais",
     "fullName": "Nom complet du propriétaire",
     "position": "Position",
-    "addRequisites": "Ajouter des exigences"
+    "addRequisites": "Ajouter des exigences",
+    "title": "Vos entreprises",
+    "addCompany": "Ajouter une entreprise",
+    "unfilled": "Vous n'avez pas renseigné les informations de l'entreprise."
   },
   "requisite": {
+    "createTitle": "Ajouter les détails de l'entreprise",
+    "editTitle": "Coordonnées de l'entreprise",
+    "back": "Retour",
     "requisitesOfMyCompany": "Besoins de mon entreprise",
     "about": "Sur",
     "bankDetails": "Exigences bancaires",
@@ -165,7 +200,17 @@
     }
   },
   "shipping": {
-    "shippingTitle": "Livraison №",
+    "cargoInfo": "Infos de livraison",
+    "financialInfo": "Informations sur le coût final",
+    "estimateDate": "Date d'expédition estimée",
+    "totalVolume": "Volume total",
+    "totalWeight": "Poids total",
+    "totalPackages": "Paquets",
+    "title": "Reçus et marchandises",
+    "dealNo": "Contrat No.",
+    "simpleInterface": "Interface simple",
+    "simpleInterfaceHint": "Pour permettre à l'interface de suivre votre travail étape par étape et de passer à un mode plus compliqué, laissez ce commutateur activé.",
+    "specNo": "Livraison №",
     "shippingClient": "Client",
     "prices": "Prix",
     "warehouse": "Entrepôt",
@@ -173,7 +218,7 @@
     "link": "Lien",
     "addInvoice": "Créer une facture",
     "addProduct": "Ajouter un produit",
-    "invoiceNo": "N ° de facture",
+    "invoiceNo": "de facture",
     "purchaseDate": "date d'achat",
     "supplierName": "Nom du fournisseur",
     "shippingDate": "Date d'expédition",
@@ -199,18 +244,13 @@
     "total": "Total:",
     "margin": "Marge",
     "commission": "Commission",
-    "forAll": "Pour tous les prix",
+    "forAll": "Pour tous les produits",
     "discount": "Remise",
     "prepay": "Prépayé",
     "obtainCost": "Montant à payer",
     "clientDebt": "Dette du client",
     "summaryTitle": "Résumé d'expédition",
     "container": "conteneurs | contenant | conteneurs",
-    "containerMeasure": "`",
-    "containerLoaded": "Chargée le :",
-    "estimateDate": "Date d'envoi estimée",
-    "totalVolume": "Volume total",
-    "totalWeight": "Poids total",
     "qtyOfPackages": "Quantité de colis",
     "finalCost": "Coût du client final:",
     "finalObtainCost": "Montant final à payer:",
@@ -270,6 +310,7 @@
     "inviteCustomer": "Partager",
     "notifyCustomer": "Notifier",
     "toPrintInvoiceTitle": "Pour imprimer la facture",
+    "toPrintPackingListTitle": "Pour imprimer la liste de colisage",
     "toPrintInvoiceSubtitle": "les champs suivants sont obligatoires",
     "doPrint": "Impression",
     "cancelPrint": "Annuler",
@@ -283,7 +324,7 @@
     "vat": "T.V.A.",
     "copyLink": "Copier le lien"
   },
-  "preview": {
+  "paper": {
     "cargoInfo": "Infos de livraison",
     "financialInfo": "Informations sur le coût final",
     "draft": "DRAFT",
@@ -335,7 +376,7 @@
     "contactPerson": "Contact",
     "inn": "VAT",
     "suppliersDebt": "Votre dette envers l'entreprise",
-    "currentDealsAmount": "Montant actuel des transactions"
+    "currentDealsAmount": "Montant actuel des transactions avec le fournisseur."
   },
   "supplier": {
     "supplierCard": "Carte du fournisseur",
@@ -419,7 +460,7 @@
     "companyName": "Nom de la compagnie",
     "phone": "Numéro de téléphone",
     "contactPerson": "Contact",
-    "uid": "UCN"
+    "ucn": "UCN"
   },
   "client": {
     "save": "sauvegarder",
@@ -429,20 +470,23 @@
     "edit": "Éditer",
     "clientCardPatterns": "Modèles de carte du client",
     "legalPerson": "Personne morale",
-    "naturalPerson": "Personne naturelle",
-    "legalPersonAbr": "Personne morale",
-    "naturalPersonAbr": "Personne privée",
-    "note": "Remarque",
-    "shippingInfo": "Infos de livraison",
+    "privatePerson": "Personne naturelle",
     "language": "Langue",
     "languageAndRegion": "Langue et région",
-    "languageDescription": "Langue utilisée pour envoyer des SMS et des e-mails",
+    "languageDescription": "Langue utilisée pour envoyer des SMS et des e-mails"
+  },
+  "companyDetail": {
+    "note": "Remarque",
+    "shippingInfo": "Infos de livraison",
     "label": {
-      "uid": "Numéro de client unique",
-      "uidAbr": "UCN",
+      "ucn": "Numéro de client unique",
+      "uidShort": "UCN",
       "firstName": "Prénom",
       "lastName": "Nom de famille",
+      "givenName": "Prénom",
+      "familyName": "Nom de famille",
       "middleName": "Deuxième nom",
+      "avatar": "Photo d'utilisateur",
       "companyName": "Nom de la compagnie",
       "passportId": "ID du passeport",
       "legalAddress": "Adresse légale",
@@ -452,13 +496,13 @@
       "phone": "Numéro de téléphone",
       "fax": "Fax",
       "email": "Email",
-      "itn": "TVA (numéro d'identification du contribuable) / T.V.A.",
+      "vat": "TVA (numéro d'identification du contribuable) / T.V.A.",
       "iec": "IEC",
       "psrn": "PSRN",
       "bankName": "Banque du bénéficiaire",
-      "payeesBank": "Banque du bénéficiaire",
       "bankAddress": "adresse de la banque",
       "bankAccountNumber": "numéro de compte bancaire",
+      "correspondentBankName": "Banque correspondante",
       "correspondentAccountNumber": "Numéro de compte correspondant",
       "bic": "BIC",
       "okpo": "OKPO",
@@ -472,52 +516,70 @@
       "contactPerson": "Contact",
       "mobilePhone": "Téléphone portable",
       "additionalPhone": "Numéro de téléphone supplémentaire",
-      "address": "Lieu de résidence",
+      "placeOfResidence": "Lieu de résidence",
+      "placeOfResidencePostcode": "Le numéro postal",
       "note": "Remarque",
+      "tags": "Mots clés",
+      "tagsDesc": "(séparé par des virgules)",
+      "attachFile": "Ajouter le fichier",
+      "branchType": "Type de fichier",
+      "branchName": "Nom de fichier",
       "password": "Mot de passe",
       "language": "Langue"
     },
     "placeholder": {
-      "uid": "Numéro de client unique:",
-      "uidAbr": "UCN:",
-      "companyName": "Nom de la compagnie:",
+      "uid": "Numéro de client unique",
+      "uidShort": "UCN",
+      "locale": "Choisir la langue",
+      "companyName": "Nom de la compagnie",
+      "companyNameLocal": "En russe, chinois ou autre langue",
+      "address": "Of. 1010, Miramar Tower, 35 Nathan Rd., Kowloon, Hong Kong",
+      "postcode": "000000",
       "legalAddress": "Adresse légale:",
       "legalAddressAbr": "Adresse légale:",
       "mailingAddress": "Adresse postale:",
-      "postcode": "Code postal:",
       "legalAddressPostcode": "Code postal de l'adresse légale:",
       "mailingAddressPostcode": "Code postal de l'adresse postale:",
       "phone": "Numéro de téléphone:",
+      "phoneOption": "000",
       "fax": "Fax:",
-      "email": "Email:",
-      "itn": "TVA:",
-      "iec": "CEI:",
-      "psrn": "PSRN:",
-      "bankName": "Banque du bénéficiaire:",
-      "payeesBank": "Banque du bénéficiaire:",
-      "bankAddress": "Adresse de la banque:",
-      "bankAccountNumber": "Numéro de compte bancaire:",
+      "email": "example@mail.com",
+      "site": "www.site.com",
+      "vat": "TVA",
+      "iec": "CEI",
+      "psrn": "PSRN",
+      "bankName": "Nom de banque du bénéficiaire",
+      "bankAddress": "1/F, Causeway Bay Plaza 2, 463-483 Lockhart Rd., Causeway Bay, Hong Kong",
+      "bankAccountNumber": "Numéro de compte",
       "bankAccountNumberAbr": "Numéro de compte bancaire:",
+      "correspondentBankName": "Nom de la banque correspondante",
       "correspondentAccountNumber": "Numéro de compte correspondant:",
       "correspondentAccountNumberAbr": "Corr. numéro de compte:",
-      "bic": "BIC:",
-      "okpo": "OKPO:",
-      "swift": "SWIFT:",
+      "bic": "BIC",
+      "okpo": "OKPO",
+      "swift": "HSBCHKHHHKH",
       "ownerFullName": "Nom complet du propriétaire:",
+      "ownerFullNameAlt": "",
       "ownerJobPosition": "Position:",
-      "consignee": "Destinataire:",
-      "deliveryAddress": "Adresse de livraison:",
-      "contactPerson": "Contact:",
-      "mobilePhone": "Téléphone portable:",
-      "note": "Remarque:",
-      "firstName": "Prénom:",
-      "lastName": "Nom de famille:",
-      "middleName": "Deuxième nom:",
-      "passportId": "ID du passeport:",
+      "consignee": "Destinataire",
+      "deliveryAddress": "Adresse de livraison",
+      "mobilePhone": "Téléphone portable",
+      "note": "Remarque",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille",
+      "givenName": "Prénom",
+      "familyName": "Nom de famille",
+      "middleName": "Deuxième nom",
+      "date": "Date",
+      "passportId": "Numéro d'identification",
+      "citizenship": "Sélectionnez le pays",
+      "issuedBy": "Nom de l'autorité",
       "additionalPhone": "Numéro de téléphone supplémentaire:",
-      "address": "Lieu de résidence:",
+      "placeOfResidence": "Lieu de résidence:",
       "language": "Langue:"
-    }
+    },
+    "hint": {},
+    "rule": {}
   },
   "invitation": {
     "text": "Vous avez reçu une invitation au système de {company}.",
@@ -528,9 +590,11 @@
   "notFound": {
     "title": "Pardon,",
     "subtitle": "la page que vous recherchez est introuvable.",
+    "text": "Désolé, Page introuvable. Peut-être que la page a été supprimée ou n'a jamais existé. Essayez de commencer à partir de la page principale.",
     "toHome": "À la page d’accueil"
   },
-  "paper": {
+  "forbidden": {},
+  "contract": {
     "supplyContract": "«Contrat d'approvisionnement»",
     "paperConfigurator": "Configurateur de documents (liste)",
     "createPaper": "Créer un document",
@@ -572,7 +636,7 @@
   "print": {
     "supplierAddress": "Adresse (en anglais)",
     "cleintAddress": "Adresse (dans la langue du client)",
-    "importerAddress": "Adresse (dans la langue du client)",
+    "importerAddress": "Adresse (dans la langue du pays de livraison)",
     "supplierDiscount": "Remise fournisseur",
     "sheet": "Feuille {p} de {t}",
     "seller": "Vendeur (Fournisseur)",
@@ -642,8 +706,8 @@
     "confirmation": "Je confirme que tout ce qui précède est vrai!",
     "manager": "Position",
     "sign": "Signature",
-    "required": "nécessairement",
-    "warning": "de préférence"
+    "required": "Nécessairement",
+    "warning": "De préférence"
   },
   "welcomeModal": {
     "head": "Bienvenue sur ZENNNN",
@@ -659,7 +723,7 @@
     "enterReply": "Entrez la réponse…",
     "post": "Publier"
   },
-  "statusBar": {
+  "header": {
     "requisites": "Détails de l'entreprise",
     "myCompanies": "Mes comptes",
     "signin": "S'identifier",
@@ -737,6 +801,7 @@
     "createPatternName": "Définir le nom du modèle"
   },
   "message": {
+    "notSavedWarning": "Voulez-vous vraiment fermer la fenêtre sans enregistrer les modifications?",
     "userNotConfirmed": "L'utilisateur n'est pas confirmé, un lien de confirmation se trouve dans votre boite email.",
     "linkCopied": "Lien copié dans le presse-papiers.",
     "linkNotCopied": "Impossible de copier le lien dans le presse-papiers.",
@@ -748,9 +813,11 @@
     "passwordChanged": "Mot de passe changé",
     "emailConfirmed": "E-mail confirmé.",
     "emailAlreadyConfirmed": "E-mail déjà confirmé.",
-    "incorrectRestorePassword": "Demande de restauration du mot de passe incorrecte."
+    "incorrectRestorePassword": "Demande de restauration du mot de passe incorrecte.",
+    "documentGenerateLoading": "Génération du document, veuillez patienter..."
   },
   "alert": {
+    "insufficientAccess": "Droits d'accès insuffisants",
     "attention": "Attention!",
     "removeDeal": "Voulez-vous vraiment supprimer l'accord?",
     "removeInvoice": "Voulez-vous vraiment supprimer la facture?",
@@ -762,6 +829,7 @@
     "removeEmployee": "Voulez-vous vraiment supprimer l'employé?"
   },
   "rule": {
+    "onlyLatin": "Seuls les lettres et symboles latins sont autorisés",
     "required": "Remplissez ce champ.",
     "requiredSelect": "veuillez sélectionner",
     "email": "Entrer votre Email.",
@@ -775,6 +843,7 @@
     "through": "par"
   },
   "label": {
+    "noSort": "Pas de tri",
     "saveAsPattern": "Enregistrer comme modèle",
     "template": "Modèle",
     "defaultTemplateName": "Modèle (par défaut)",
@@ -788,7 +857,8 @@
     "emptyDate": "--.--.----",
     "emptyText": "----",
     "emptyNumber": "-",
-    "pageSearch": "recherche de page rapide"
+    "pageSearch": "recherche de page rapide",
+    "startTyping": "Commencer à écrire"
   },
   "role": {
     "OWNER": "PDG",
