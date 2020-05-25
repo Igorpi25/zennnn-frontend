@@ -1,5 +1,7 @@
 {
-  "app": {},
+  "app": {
+    "userAgreement": "用戶服務協議 "
+  },
   "passwordRestore": {
     "accessRecoveryHead": "找回密碼，",
     "accessRecoverySubhead": "請輸入電子郵件。",
@@ -28,6 +30,8 @@
     "submit": "找回用戶名"
   },
   "signin": {
+    "subtitle": "簡單。 多種語言。 強大。",
+    "formTitle": "登入",
     "noAccount": "尚未註冊？",
     "signup": "請註冊",
     "welcomeHead": "歡迎再此來到ZENNNN，",
@@ -48,6 +52,10 @@
     "submit": "登入"
   },
   "signup": {
+    "feat1": "無需學習如何使用",
+    "feat2": " 雲支持",
+    "feat3": "自動創建國際文檔",
+    "feat4": "多語言界面",
     "registration": "新用戶註冊",
     "hello": "Hi，",
     "helloContent": "ZENNNN是第一個國際貿易數碼辦公室。",
@@ -64,6 +72,7 @@
     "acceptPolicyAndTerms": "同意",
     "privacyPolicy": "隱私政策",
     "termsOfUse": "用戶服務協議",
+    "check": "同意並接受",
     "submit": "註冊"
   },
   "welcome": {
@@ -79,10 +88,11 @@
   },
   "deals": {
     "createSpecDialogHeader": "請選客戶與繼續",
-    "createSpecDialogSearchPlaceholder": "姓名",
+    "createSpecDialogSearchLabel": "姓名或公司名稱",
+    "createSpecDialogSearchPlaceholder": "開始打字",
     "createSpecDialogAddClient": "創建新客戶",
-    "createSpecDialogWithoutClient": "不加客戶可繼續",
-    "createSpecDialogAdd": "加客戶",
+    "createSpecDialogWithoutClient": "稍後添加客戶",
+    "createSpecDialogAd": "添加客戶",
     "createDeal": "創建新交易",
     "clientUcn": "客戶編碼",
     "clientName": "客戶名稱",
@@ -90,7 +100,22 @@
     "specNo": "合同編碼",
     "createdAt": "创建日期",
     "moneyRecieved": "客戶已支付",
-    "expensesPaid": "余款已支付"
+    "expensesPaid": "余款已支付",
+    "firstStep": "第一步",
+    "nextStep": "下一步",
+    "lastStep": "最後一步",
+    "addSupplier": "創建供應商",
+    "addClient": "創建客戶",
+    "addDeal": "創建交易",
+    "add": "添加",
+    "create": "創建",
+    "success": "成功",
+    "noData": "交易都結束，可以創建新的交易。",
+    "turnoverHint": "當前交易的客戶總營業額。",
+    "marginHint": "交易利潤金額。",
+    "zHint": "Z符號表示您對方有ZENNNN賬戶。",
+    "contactPerson": "聯繫人",
+    "contact": "聯繫方式"
   },
   "staff": {
     "createStaff": "創建新員工",
@@ -119,16 +144,25 @@
     "inviteRole": "職位",
     "inviteStatus": "狀態",
     "inviteCreatedAt": "創建日期",
-    "inviteUpdatedAt": "完成日期"
+    "inviteUpdatedAt": "完成日期",
+    "staffName": "員工姓名",
+    "accessControl": "已啟用",
+    "invitationFrom": "邀請日子"
   },
   "requisites": {
     "companyName": "公司名稱",
     "companyNameEng": "公司英文名稱",
     "fullName": "總經理姓名",
     "position": "法人職位",
-    "addRequisites": "添加公司資料"
+    "addRequisites": "添加公司資料",
+    "title": "您的公司",
+    "addCompany": "添加公司資料",
+    "unfilled": "您尚未填寫公司資料。"
   },
   "requisite": {
+    "createTitle": "添加公司資料",
+    "editTitle": "公司資料",
+    "back": "返回",
     "requisitesOfMyCompany": "公司資料",
     "about": "關於公司",
     "bankDetails": "銀行資料",
@@ -172,7 +206,10 @@
     "totalVolume": "總容積",
     "totalWeight": "總重量",
     "totalPackages": "件數",
+    "title": "收據和貨物",
     "dealNo": "交易編號",
+    "simpleInterface": "簡約界面",
+    "simpleInterfaceHint": "填寫交易資料時候請保持開通簡約界面，這樣可以更簡單一步一步操作。",
     "specNo": "明細表 #",
     "shippingClient": "客户",
     "prices": "價格",
@@ -273,7 +310,8 @@
     "inviteCustomer": "分享",
     "notifyCustomer": "發出通知",
     "toPrintInvoiceTitle": "打印發票",
-    "toPrintInvoiceSubtitle": "填寫剩余空格",
+    "toPrintPackingListTitle": "打印包裝單",
+    "toPrintInvoiceSubtitle": "请填寫剩余空格",
     "doPrint": "打印",
     "cancelPrint": "取消",
     "supplierTitle": "賣家 / 供應商",
@@ -338,7 +376,7 @@
     "contactPerson": "聯系人",
     "inn": "納稅人識別號 (VAT)",
     "suppliersDebt": "我司債務 （往供應商）",
-    "currentDealsAmount": "交易中"
+    "currentDealsAmount": "與供應商的當前交易量。"
   },
   "supplier": {
     "supplierCard": "供應商登記表",
@@ -463,6 +501,7 @@
       "bankName": "銀行名稱",
       "bankAddress": "銀行地址",
       "bankAccountNumber": "賬號",
+      "correspondentBankName": "代理銀行",
       "correspondentAccountNumber": "代理賬號",
       "bic": "銀行統一代碼",
       "okpo": "企業與組織機構分類碼",
@@ -478,46 +517,57 @@
       "additionalPhone": "其他電話",
       "placeOfResidence": "登記地址",
       "note": "備註",
+      "tags": "標籤",
+      "tagsDesc": "（被逗號隔開）",
       "password": "密碼",
       "language": "語言"
     },
     "placeholder": {
       "uid": "客戶編碼",
       "uidShort": "客戶編碼",
-      "companyName": "公司名稱：",
-      "postcode": "郵政編碼：",
+      "locale": "請選擇語言",
+      "companyName": "公司名稱",
+      "companyNameLocal": "俄語，中文或其他語言",
+      "address": "Of. 1010, Miramar Tower, 35 Nathan Rd., Kowloon, Hong Kong",
+      "postcode": "000000",
       "legalAddress": "註冊地址：",
       "legalAddressAbr": "註冊地址：",
       "mailingAddress": "郵政地址：",
       "legalAddressPostcode": "註冊地址郵政編碼：",
       "mailingAddressPostcode": "郵政編碼：",
       "phone": "電話：",
+      "phoneOption": "000",
       "fax": "傳真：",
-      "email": "電子郵箱",
-      "vat": "納稅人識別號 (TIN)：",
+      "email": "example@mail.com",
+      "site": "www.site.com",
+      "vat": "納稅人識別號 (TIN)",
       "iec": "納稅人登記原因代碼",
-      "psrn": "基本國家註冊號：",
-      "bankName": "銀行名稱：",
-      "bankAddress": "銀行地址：",
-      "bankAccountNumber": "賬號：",
+      "psrn": "基本國家註冊號",
+      "bankName": "收款銀行名稱",
+      "bankAddress": "1/F, Causeway Bay Plaza 2, 463-483 Lockhart Rd., Causeway Bay, Hong Kong",
+      "bankAccountNumber": "賬號",
       "bankAccountNumberAbr": "賬號：",
+      "correspondentBankName": "代理銀行名稱",
       "correspondentAccountNumber": "代理賬號：",
       "correspondentAccountNumberAbr": "代理賬號：",
       "bic": "銀行統一代碼：",
       "okpo": "企業與組織機構分類碼",
-      "swift": "SWIFT:",
+      "swift": "HSBCHKHHHKH",
       "ownerFullName": "法人姓名：",
+      "ownerFullNameAlt": "何梵尊",
       "ownerJobPosition": "法人職位",
-      "consignee": "收貨 （私人，公司）：",
-      "deliveryAddress": "送貨地址：",
+      "consignee": "收貨 （私人，公司）",
+      "deliveryAddress": "送貨地址",
       "mobilePhone": "聯系電話",
-      "note": "備註：",
+      "note": "備註",
       "firstName": "名",
       "lastName": "姓",
       "givenName": "名",
       "familyName": "姓",
       "middleName": "附名",
-      "passportId": "護照號碼：",
+      "date": "日期",
+      "passportId": "身份號碼",
+      "citizenship": "請選擇國家",
       "additionalPhone": "保存多一個電話：",
       "placeOfResidence": "本人登記地址：",
       "language": "語言："
@@ -744,6 +794,7 @@
     "createPatternName": "創建模板名稱"
   },
   "message": {
+    "notSavedWarning": "未保存變化。您是否確定要繼續？",
     "userNotConfirmed": "註冊尚未完成驗證，請查閱電子郵件點擊鏈接確認。",
     "linkCopied": "鏈接已復制",
     "linkNotCopied": "鏈接未復制。",
@@ -759,6 +810,7 @@
     "documentGenerateLoading": "正在產生文件，請稍候..."
   },
   "alert": {
+    "insufficientAccess": "訪問權限不足",
     "attention": "注意！",
     "removeDeal": "是否刪除交易？",
     "removeInvoice": "是否刪除單據？",
@@ -770,6 +822,7 @@
     "removeEmployee": "是否刪除此員工？"
   },
   "rule": {
+    "onlyLatin": "只允許使用拉丁字母和符號",
     "required": "請填寫",
     "requiredSelect": "請選",
     "email": "請輸入郵件地址",
@@ -783,6 +836,7 @@
     "through": "通過"
   },
   "label": {
+    "noSort": "無排序",
     "saveAsPattern": "保存為像模板",
     "template": "選擇模板",
     "defaultTemplateName": "默認模板",
@@ -796,7 +850,8 @@
     "emptyDate": "--.--.----",
     "emptyText": "----",
     "emptyNumber": "-",
-    "pageSearch": "頁面搜索"
+    "pageSearch": "頁面搜索",
+    "startTyping": "開始打字"
   },
   "role": {
     "OWNER": "總經理",
