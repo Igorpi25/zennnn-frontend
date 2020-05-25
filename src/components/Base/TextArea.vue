@@ -3,7 +3,7 @@
     :class="[
       'rounded relative flex items-center focus:outline-none transition-colors duration-100 ease-out',
       'focus-within:shadow-blue-500 text-white text-base bg-gray-800',
-      { 'opacity-40 cursor-not-allowed': this.disabled },
+      { 'opacity-40 cursor-not-allowed': disabled },
     ]"
   >
     <label
@@ -32,7 +32,8 @@
       :class="[
         'w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out truncate',
         'placeholder-gray-200 px-sm py-3',
-        { 'cursor-not-allowed': this.disabled },
+        { 'cursor-not-allowed': disabled },
+        { 'cursor-wait': !disabled && loading },
         inputClass,
       ]"
       style="resize:none"
@@ -95,6 +96,7 @@ export default {
       type: [String, Object],
       default: '',
     },
+    loading: Boolean,
   },
   data () {
     return {

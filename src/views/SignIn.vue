@@ -53,9 +53,11 @@
             :rules="[rules.required, rules.email]"
             class="pb-6"
             type="email"
+            autocomplete="on"
             name="login"
             autofocus
             validate-on-blur
+            emit-invalid
           >
           </TextField>
           <TextField
@@ -65,8 +67,10 @@
             :rules="[rules.required, rules.passwordMinLength]"
             class="pb-6"
             name="password"
+            autocomplete="on"
             minlength="8"
             validate-on-blur
+            emit-invalid
           >
             <template v-slot:append>
               <div
@@ -128,11 +132,13 @@
           :rules="[rules.required]"
           class="pb-6"
           name="firstName"
+          autocomplete="on"
           autofocus
           validate-on-blur
           state-icon
           state-icon-on-validate
           required
+          emit-invalid
         >
         </TextField>
         <TextField
@@ -141,10 +147,12 @@
           :rules="[rules.required]"
           class="pb-6"
           name="lastName"
+          autocomplete="on"
           validate-on-blur
           state-icon
           state-icon-on-validate
           required
+          emit-invalid
         >
         </TextField>
         <TextField
@@ -155,11 +163,13 @@
           class="pb-6"
           type="email"
           name="email"
+          autocomplete="on"
           disabled
           validate-on-blur
           state-icon
           state-icon-on-validate
           required
+          emit-invalid
         >
         </TextField>
         <TextField
@@ -169,11 +179,13 @@
           :rules="[rules.required, rules.passwordMinLength]"
           class="pb-6"
           name="password"
+          autocomplete="on"
           minlength="8"
           validate-on-blur
           state-icon
           state-icon-on-validate
           required
+          emit-invalid
         >
           <template v-slot:append>
             <div

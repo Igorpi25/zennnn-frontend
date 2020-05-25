@@ -71,6 +71,11 @@ export default {
     },
     forceUpdate: Boolean,
     dense: Boolean,
+    autocomplete: {
+      type: String,
+      default: 'off',
+    },
+    emitInvalid: Boolean,
   },
 
   data () {
@@ -335,7 +340,7 @@ export default {
     },
 
     emitChange () {
-      if (!this.valid) return
+      if (!this.emitInvalid && !this.valid) return
       // on number type return internal value, without formatting
       const val = this.number
         ? this.unformat(this.internalValue)
@@ -473,25 +478,29 @@ export default {
     genInput () {
       const listeners = Object.assign({}, this.$listeners)
       delete listeners['change'] // Change should not be bound externally
+      const attrs = {
+        ...this.$attrs,
+        autofocus: this.autofocus,
+        disabled: this.disabled,
+        id: this.computedId,
+        placeholder: this.compPlaceholder,
+        readonly: this.readonly,
+        type: this.type,
+        required: this.required,
+        name: this.name,
+        minlength: this.minlength,
+        maxlength: this.maxlength,
+        inputmode: this.inputmode,
+      }
+      if (this.autocomplete === 'off') {
+        attrs.autocomplete = 'off'
+      }
       return this.$createElement('input', {
         ref: 'input',
         domProps: {
           value: this.lazyValue,
         },
-        attrs: {
-          ...this.$attrs,
-          autofocus: this.autofocus,
-          disabled: this.disabled,
-          id: this.computedId,
-          placeholder: this.compPlaceholder,
-          readonly: this.readonly,
-          type: this.type,
-          required: this.required,
-          name: this.name,
-          minlength: this.minlength,
-          maxlength: this.maxlength,
-          inputmode: this.inputmode,
-        },
+        attrs,
         class: this.computedInputClass,
         on: Object.assign(listeners, {
           input: this.onInput,
