@@ -132,14 +132,14 @@ const routes = [
         component: ClientList,
       },
       {
-        path: 'clients/create',
+        path: `clients/:groupId?/create`,
         name: 'client-create',
         meta: { requiresAuth: true, scrollToTop: true },
         props: { create: true },
         component: ClientItem,
       },
       {
-        path: 'clients/:clientId',
+        path: `clients/:groupId/:clientId`,
         name: 'client',
         meta: { requiresAuth: true, scrollToTop: true },
         component: ClientItem,
@@ -218,7 +218,7 @@ const routes = [
 
         next()
       } catch (error) {
-        router.app.$notify({ color: 'red', text: error.message || '' })
+        router.app.$notify({ color: 'error', text: error.message || '' })
         next('/not-found')
       }
     },
@@ -288,11 +288,11 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (to.query.username) {
         if (to.query.state === 'success') {
-          router.app.$notify({ color: 'green', text: i18n.t('message.emailConfirmed') })
+          router.app.$notify({ color: 'success', text: i18n.t('message.emailConfirmed') })
         } else if (to.query.state === 'confirmed') {
-          router.app.$notify({ color: 'orange', text: i18n.t('message.emailAlreadyConfirmed') })
+          router.app.$notify({ color: 'warn', text: i18n.t('message.emailAlreadyConfirmed') })
         } else if (to.query.state === 'error') {
-          router.app.$notify({ color: 'red', text: to.query.message })
+          router.app.$notify({ color: 'error', text: to.query.message })
           // Add message to Analytics
         }
       }
@@ -314,7 +314,7 @@ const routes = [
         next()
       } else {
         // Incorrect request to restore password
-        router.app.$notify({ color: 'red', text: i18n.t('message.incorrectRestorePassword') })
+        router.app.$notify({ color: 'error', text: i18n.t('message.incorrectRestorePassword') })
         next('/signin')
       }
     },

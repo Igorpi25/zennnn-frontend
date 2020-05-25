@@ -4,7 +4,6 @@ import {
   INVOICE_FRAGMENT,
   PRODUCT_FRAGMENT,
   CLIENT_FRAGMENT,
-  CLIENT_TEMPLATE_FRAGMENT,
   SUPPLIER_FRAGMENT,
   SUPPLIER_TEMPLATE_FRAGMENT,
   SUPPLIER_SHOP_FRAGMENT,
@@ -101,7 +100,6 @@ export const GET_SPECS = gql`
       client {
         id
         uid
-        customUid
         clientType
         createdAt
         updatedAt
@@ -109,13 +107,10 @@ export const GET_SPECS = gql`
         companyName
         phone
         fax
-        # natural
-        firstName
-        lastName
-        middleName
+        # private
         passportId
         mobilePhone
-        additionalPhone
+        fullName
       }
     }
   }
@@ -137,7 +132,6 @@ export const GET_SPEC = gql`
       client {
         id
         uid
-        customUid
         clientType
         createdAt
         updatedAt
@@ -145,13 +139,10 @@ export const GET_SPEC = gql`
         companyName
         phone
         fax
-        # natural
-        firstName
-        lastName
-        middleName
+        # private
         passportId
         mobilePhone
-        additionalPhone
+        fullName
       }
     }
   }
@@ -170,13 +161,21 @@ export const GET_CLIENT = gql`
   query GetClient($id: ID!) {
     getClient(id: $id) {
       ...ClientFragment
-      template {
-        ...ClientTemplateFragment
-      }
     }
   }
   ${CLIENT_FRAGMENT}
-  ${CLIENT_TEMPLATE_FRAGMENT}
+`
+
+export const GET_CLIENT_GROUP = gql`
+  query GetClientGroup($orgId: ID!, $groupId: ID!) {
+    getClientGroup(orgId: $orgId, groupId: $groupId) {
+      id
+      uid
+      LEGAL
+      PRIVATE
+      OTHER
+    }
+  }
 `
 
 export const LIST_CLIENTS = gql`
@@ -184,25 +183,10 @@ export const LIST_CLIENTS = gql`
     listClients(orgId: $orgId) {
       items {
         ...ClientFragment
-        template {
-          ...ClientTemplateFragment
-        }
       }
     }
   }
   ${CLIENT_FRAGMENT}
-  ${CLIENT_TEMPLATE_FRAGMENT}
-`
-
-export const LIST_CLIENT_TEMPLATES = gql`
-  query ListClientTemplates($orgId: ID!) {
-    listClientTemplates(orgId: $orgId) {
-      items {
-        ...ClientTemplateFragment
-      }
-    }
-  }
-  ${CLIENT_TEMPLATE_FRAGMENT}
 `
 
 export const SEARCH_CLIENTS = gql`
@@ -210,14 +194,10 @@ export const SEARCH_CLIENTS = gql`
     searchClients(orgId: $orgId, search: $search) {
       items {
         ...ClientFragment
-        template {
-          ...ClientTemplateFragment
-        }
       }
     }
   }
   ${CLIENT_FRAGMENT}
-  ${CLIENT_TEMPLATE_FRAGMENT}
 `
 
 export const GET_SUPPLIER = gql`

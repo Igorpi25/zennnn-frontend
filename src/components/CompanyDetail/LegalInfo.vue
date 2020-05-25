@@ -3,23 +3,21 @@
     <div class="w-full lg:w-1/2 lg:pr-5">
       <div class="flex items-end pb-2">
         <TextField
-          :value="supplier ? item.manager : item.contactPerson"
+          v-model="firstName"
           :label="$t('companyDetail.label.contactPerson')"
           :placeholder="$t('companyDetail.placeholder.firstName')"
           label-no-wrap
           class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
-          @input="supplier ? $emit('update', 'manager', $event) : $emit('update', 'contactPerson', $event)"
         />
         <TextField
+          v-model="lastName"
           :placeholder="$t('companyDetail.placeholder.lastName')"
           class="flex-grow"
-          disabled
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="supplier ? item.mobilePhone : ''"
-          :disabled="!supplier"
+          :value="item.mobilePhone"
           :label="$t('companyDetail.label.mobilePhone')"
           :label-hint="$t('companyDetail.hint.mobilePhone')"
           :placeholder="$t('companyDetail.placeholder.mobilePhone')"
@@ -37,14 +35,14 @@
       </div>
       <div>
         <Select
-          :value="item.language"
-          :items="langs"
+          :value="item.locale"
+          :items="locales"
           :label="$t('companyDetail.label.locale')"
           :placeholder="$t('companyDetail.placeholder.locale')"
           item-value="value"
           item-text="text"
           class="pb-2"
-          @input="$emit('update', 'language', $event)"
+          @input="$emit('update', 'locale', $event)"
         />
         <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
           {{ localeSelectHint }}
@@ -55,11 +53,11 @@
       <div class="pb-2 lg:pb-1">
         <div class="flex">
           <TextField
-            :value="supplier ? item.companyNameSl : item.companyName"
+            :value="item.companyName"
             :label="$t('companyDetail.label.companyName')"
             :placeholder="$t('companyDetail.placeholder.companyName')"
             class="pb-2 flex-grow"
-            @input="supplier ? $emit('update', 'companyNameSl', $event) : $emit('update', 'companyName', $event)"
+            @input="$emit('update', 'companyName', $event)"
           />
           <div class="relative flex-shrink-0 relative w-12 pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
@@ -78,9 +76,11 @@
       </div>
       <div class="pb-2">
         <TextField
+          :value="item.companyNameLocal"
           :label="$t('companyDetail.label.companyNameLocal')"
           :placeholder="$t('companyDetail.placeholder.companyNameLocal')"
           disabled
+          @input="$emit('update', 'companyNameLocal', $event)"
         />
       </div>
       <div>
@@ -88,7 +88,7 @@
           {{ $t('companyDetail.label.ucn') }}
         </label>
         <div class="h-10 flex items-center text-white mb-2 px-sm">
-          {{ item.uid || uidPlaceholder }}
+          {{ item.uid || uid || uidPlaceholder }}
         </div>
         <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
           {{ uidHint }}
@@ -99,38 +99,54 @@
 </template>
 
 <script>
+import { LOCALES_LIST } from '../../config/globals'
+
 export default {
   name: 'LegalInfo',
   props: {
+    uid: String,
     item: {
       type: Object,
       default: () => ({}),
     },
-    supplier: Boolean,
+    isSupplier: Boolean,
   },
   computed: {
-    langs () {
-      return [
-        { value: 'en', text: 'English' },
-        { value: 'zh-Hans', text: '简体' },
-        { value: 'zh-Hant', text: '繁体' },
-        { value: 'fr', text: 'Français' },
-        { value: 'ru', text: 'Русский' },
-        { value: 'uk', text: 'Український' },
-      ]
+    firstName: {
+      get () {
+        return (this.item.contactPerson && this.item.contactPerson.firstName) || ''
+      },
+      set (val) {
+        const person = this.item.contactPerson || {}
+        person.firstName = val
+        this.$emit('update', 'contactPerson', person)
+      },
+    },
+    lastName: {
+      get () {
+        return (this.item.contactPerson && this.item.contactPerson.lastName) || ''
+      },
+      set (val) {
+        const person = this.item.contactPerson || {}
+        person.lastName = val
+        this.$emit('update', 'contactPerson', person)
+      },
+    },
+    locales () {
+      return LOCALES_LIST
     },
     localeSelectHint () {
-      return this.supplier
+      return this.isSupplier
         ? this.$t('companyDetail.hint.supplierLocale')
         : this.$t('companyDetail.hint.clientLocale')
     },
     uidHint () {
-      return this.supplier
+      return this.isSupplier
         ? this.$t('companyDetail.hint.usn')
         : this.$t('companyDetail.hint.ucn')
     },
     uidPlaceholder () {
-      return this.supplier ? 'Z00001' : 'A00001'
+      return this.isSupplier ? 'Z00001' : 'A00001'
     },
   },
 }

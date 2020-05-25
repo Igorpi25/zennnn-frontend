@@ -207,13 +207,12 @@
 
 <script>
 export default {
-  name: 'NaturalDetail',
+  name: 'PrivateDetail',
   props: {
     item: {
       type: Object,
       default: () => ({}),
     },
-    supplier: Boolean,
   },
   data () {
     return {

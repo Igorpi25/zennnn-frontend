@@ -141,6 +141,7 @@ import { ziUserPlus } from '../assets/icons'
 import { Role } from '../graphql/enums'
 import { GET_INVITE_USER_TO_ORG } from '../graphql/queries'
 import { INVITE_USER_TO_ORG } from '../graphql/mutations'
+import { LOCALES_LIST } from '../config/globals'
 
 export default {
   name: 'StaffCreateModal',
@@ -185,14 +186,7 @@ export default {
       return this.$route.params.orgId
     },
     langs () {
-      return [
-        { value: 'en', text: 'English' },
-        { value: 'zh-Hans', text: '简体' },
-        { value: 'zh-Hant', text: '繁体' },
-        { value: 'fr', text: 'Français' },
-        { value: 'ru', text: 'Русский' },
-        { value: 'uk', text: 'Український' },
-      ]
+      return LOCALES_LIST
     },
     roles () {
       return [

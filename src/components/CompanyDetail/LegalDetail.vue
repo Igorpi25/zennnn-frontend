@@ -28,10 +28,10 @@
         <div class="w-full lg:w-1/2 lg:pr-5">
           <div class="pb-2">
             <TextField
-              :value="item.itn"
+              :value="item.vat"
               :label="$t('companyDetail.label.vat')"
               :placeholder="$t('companyDetail.placeholder.vat')"
-              @input="$emit('update', 'itn', $event)"
+              @input="$emit('update', 'vat', $event)"
             />
           </div>
           <div class="pb-2">
@@ -111,17 +111,17 @@
           </div>
           <div class="flex items-end pb-2">
             <TextField
-              :value="item.ownerFullName"
+              v-model="firstName"
               :label="$t('companyDetail.label.ownerFullName')"
               :placeholder="$t('companyDetail.placeholder.firstName')"
               label-no-wrap
               class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
-              @input="$emit('update', 'ownerFullName', $event)"
             />
-            <!-- <TextField
+            <TextField
+              v-model="lastName"
               :placeholder="$t('companyDetail.placeholder.lastName')"
               class="flex-grow"
-            /> -->
+            />
           </div>
         </div>
         <div class="w-full lg:w-1/2 lg:pl-5">
@@ -167,9 +167,10 @@
           </div>
           <div class="pb-2">
             <TextField
+              :value="item.correspondentBankName"
               :label="$t('companyDetail.label.correspondentBankName')"
               :placeholder="$t('companyDetail.placeholder.correspondentBankName')"
-              disabled
+              @input="$emit('update', 'correspondentBankName', $event)"
             />
           </div>
           <div class="pb-2 lg:pb-1">
@@ -200,9 +201,10 @@
           </div>
           <div>
             <TextField
+              :value="item.website"
               :label="$t('companyDetail.label.site')"
               :placeholder="$t('companyDetail.placeholder.site')"
-              disabled
+              @input="$emit('update', 'website', $event)"
             />
           </div>
         </div>
@@ -219,7 +221,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    supplier: Boolean,
+    isSupplier: Boolean,
   },
   data () {
     return {
@@ -227,8 +229,28 @@ export default {
     }
   },
   computed: {
+    firstName: {
+      get () {
+        return (this.item.companyOwner && this.item.companyOwner.firstName) || ''
+      },
+      set (val) {
+        const person = this.item.companyOwner || {}
+        person.firstName = val
+        this.$emit('update', 'companyOwner', person)
+      },
+    },
+    lastName: {
+      get () {
+        return (this.item.companyOwner && this.item.companyOwner.lastName) || ''
+      },
+      set (val) {
+        const person = this.item.companyOwner || {}
+        person.lastName = val
+        this.$emit('update', 'companyOwner', person)
+      },
+    },
     titleDesc () {
-      return this.supplier
+      return this.isSupplier
         ? ` ${this.$t('companyDetail.supplierDetailDesc')}`
         : ` ${this.$t('companyDetail.legalDetailDesc')}`
     },

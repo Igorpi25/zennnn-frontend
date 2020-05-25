@@ -36,11 +36,11 @@
           class="bg-gray-600 rounded-md p-5 pt-6"
         >
           <!-- Legal info -->
-          <LegalInfo supplier :item="supplier" @update="updateValue" />
+          <LegalInfo is-supplier :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <SupplierDetail :item="supplier" @update="updateValue" />
+          <LegalDetail is-supplier :item="supplier" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
@@ -54,7 +54,7 @@
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
               <!-- ExtraInfo -->
-              <ExtraInfo supplier :item="supplier" @update="updateValue" />
+              <ExtraInfo :item="supplier" @update="updateValue" />
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@ import {
 import { uuid } from '../util/helpers'
 
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
-import SupplierDetail from './CompanyDetail/SupplierDetail.vue'
+import LegalDetail from './CompanyDetail/LegalDetail.vue'
 import ContactList from './CompanyDetail/ContactList.vue'
 import ExtraInfo from './CompanyDetail/ExtraInfo.vue'
 import BranchList from './CompanyDetail/BranchList.vue'
@@ -108,7 +108,7 @@ export default {
   name: 'SupplierCard',
   components: {
     LegalInfo,
-    SupplierDetail,
+    LegalDetail,
     ContactList,
     ExtraInfo,
     BranchList,

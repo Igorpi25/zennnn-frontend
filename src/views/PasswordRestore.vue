@@ -26,7 +26,7 @@
                   <Alert
                     :value="!!successMessage"
                     :text="successMessage"
-                    color="green"
+                    color="success"
                   />
                 </template>
                 <div class="w-full">

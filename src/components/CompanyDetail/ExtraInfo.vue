@@ -21,10 +21,10 @@
             {{ $t('companyDetail.label.note') }}
           </label>
           <TextArea
-            :value="supplier ? item.note : natural ? item.naturalTypeNote : item.legalTypeNote"
+            :value="item.note"
             :placeholder="$t('companyDetail.placeholder.note')"
             rows="4"
-            @input="supplier ? $emit('update', 'note', $event) : natural ? $emit('update', 'naturalTypeNote', $event) : $emit('update', 'legalTypeNote', $event)"
+            @input="$emit('update', 'note', $event)"
           />
         </div>
         <div class="pb-2">
@@ -71,8 +71,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    natural: Boolean,
-    supplier: Boolean,
   },
   data () {
     return {

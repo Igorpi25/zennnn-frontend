@@ -53,11 +53,11 @@
           </div>
         </div>
         <div
-          v-if="clientType === ClientType.LEGAL"
+          v-if="clientType === ClientType.LEGAL || clientType === ClientType.OTHER"
           class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
         >
           <!-- Legal info -->
-          <LegalInfo :item="client" @update="updateValue" />
+          <LegalInfo :uid="uid" :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
@@ -80,15 +80,15 @@
           </div>
         </div>
         <div
-          v-else-if="clientType === ClientType.NATURAL"
+          v-else-if="clientType === ClientType.PRIVATE"
           class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
         >
-          <!-- Natural info -->
-          <NaturalInfo :item="client" @update="updateValue" />
+          <!-- Private info -->
+          <PrivateInfo :uid="uid" :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <NaturalDetail :item="client" @update="updateValue" />
+          <PrivateDetail :item="client" @update="updateValue" />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
@@ -98,38 +98,11 @@
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
               <!-- ShippingInfo -->
-              <ShippingInfo :item="client" natural @update="updateValue" />
+              <ShippingInfo :item="client" is-private @update="updateValue" />
             </div>
             <div class="w-full lg:w-1/2 lg:pl-5">
               <!-- ShippingInfo -->
-              <ExtraInfo :item="client" natural @update="updateValue" />
-            </div>
-          </div>
-        </div>
-        <div
-          v-else-if="clientType === ClientType.OTHER"
-          class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
-        >
-          <!-- Legal info -->
-          <LegalInfo />
-          <!-- Divider -->
-          <div class="mt-10 border-t border-gray-400" />
-          <!-- Detail -->
-          <LegalDetail />
-          <!-- Divider -->
-          <div class="mt-10 border-t border-gray-400" />
-          <!-- Contacts -->
-          <ContactList />
-          <!-- Divider -->
-          <div class="mt-10 border-t border-gray-400" />
-          <div class="flex flex-wrap pb-5">
-            <div class="w-full lg:w-1/2 lg:pr-5">
-              <!-- ShippingInfo -->
-              <ShippingInfo />
-            </div>
-            <div class="w-full lg:w-1/2 lg:pl-5">
-              <!-- ShippingInfo -->
-              <ExtraInfo />
+              <ExtraInfo :item="client" is-private @update="updateValue" />
             </div>
           </div>
         </div>
@@ -153,12 +126,10 @@ import cloneDeep from 'clone-deep'
 import deepEqual from 'deep-equal'
 
 import { ClientType } from '../graphql/enums'
-import { GET_CLIENT, GET_ORG_NEXT_CLIENT_UID, LIST_CLIENT_TEMPLATES } from '../graphql/queries'
+import { GET_CLIENT, GET_CLIENT_GROUP, GET_ORG_NEXT_CLIENT_UID } from '../graphql/queries'
 import {
   CREATE_CLIENT,
   UPDATE_CLIENT,
-  CREATE_CLIENT_TEMPLATE,
-  DELETE_CLIENT_TEMPLATE,
 } from '../graphql/mutations'
 
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
@@ -166,8 +137,8 @@ import LegalDetail from './CompanyDetail/LegalDetail.vue'
 import ContactList from './CompanyDetail/ContactList.vue'
 import ShippingInfo from './CompanyDetail/ShippingInfo.vue'
 import ExtraInfo from './CompanyDetail/ExtraInfo.vue'
-import NaturalInfo from './CompanyDetail/NaturalInfo.vue'
-import NaturalDetail from './CompanyDetail/NaturalDetail.vue'
+import PrivateInfo from './CompanyDetail/PrivateInfo.vue'
+import PrivateDetail from './CompanyDetail/PrivateDetail.vue'
 import SaveBeforeCloseModal from './SaveBeforeCloseModal.vue'
 
 export default {
@@ -178,8 +149,8 @@ export default {
     ContactList,
     ShippingInfo,
     ExtraInfo,
-    NaturalInfo,
-    NaturalDetail,
+    PrivateInfo,
+    PrivateDetail,
     SaveBeforeCloseModal,
   },
   props: {
@@ -197,27 +168,11 @@ export default {
     },
   },
   apollo: {
-    listClientTemplates: {
-      query: LIST_CLIENT_TEMPLATES,
-      variables () {
-        return {
-          orgId: this.orgId,
-        }
-      },
-      fetchPolicy: 'cache-and-network',
-    },
     getOrgNextClientUid: {
       query: GET_ORG_NEXT_CLIENT_UID,
       variables () {
         return {
           orgId: this.orgId,
-        }
-      },
-      result ({ data, loading }) {
-        if (loading) return
-        if (data) {
-          this.client.uid = data.getOrgNextClientUid
-          this.clientClone.uid = data.getOrgNextClientUid
         }
       },
       skip () {
@@ -241,6 +196,19 @@ export default {
       },
       fetchPolicy: 'cache-and-network',
     },
+    getClientGroup: {
+      query: GET_CLIENT_GROUP,
+      variables () {
+        return {
+          orgId: this.$route.params.orgId,
+          groupId: this.$route.params.groupId,
+        }
+      },
+      skip () {
+        return !this.$route.params.groupId
+      },
+      fetchPolicy: 'cache-and-network',
+    },
   },
   data () {
     return {
@@ -254,11 +222,7 @@ export default {
       deleteTemplateLoading: null,
       loading: false,
       updateLoading: false,
-      templateListDialog: false,
-      templateSaveDialog: false,
-      clientType: null,
       isExpanded: false,
-      editMode: false,
       expanded: [],
       legalFieldsSettings: {
         customUid: {
@@ -399,6 +363,26 @@ export default {
     }
   },
   computed: {
+    clientType () {
+      return this.getClientTypeFromNumeric(this.$route.query.clientType)
+    },
+    uid () {
+      if (this.client.uid) {
+        return this.client.uid
+      }
+      let nextUid = ''
+      if (this.getClientGroup && this.getClientGroup.id) {
+        nextUid = this.getClientGroup.uid
+      } else {
+        nextUid = this.getOrgNextClientUid || ''
+      }
+      if (this.clientType === ClientType.OTHER) {
+        nextUid = nextUid.replace('A', 'C')
+      } else if (this.clientType === ClientType.PRIVATE) {
+        nextUid = nextUid.replace('A', 'B')
+      }
+      return nextUid
+    },
     tabs () {
       return [
         {
@@ -406,113 +390,89 @@ export default {
           text: this.$t('client.legalPerson'),
         },
         {
-          value: ClientType.NATURAL,
+          value: ClientType.PRIVATE,
           text: this.$t('client.privatePerson'),
         },
         {
           value: ClientType.OTHER,
           text: this.$t('client.other'),
-          disabled: true,
         },
       ]
     },
-    fieldsKeys () {
+    privateField () {
       return [
-        ...this.legalFieldsKeys,
-        ...this.naturalFieldsKeys,
+        'locale', 'contactPerson',
+        'legalAddress', 'legalAddressPostcode', 'mailingAddress', 'mailingAddressPostcode',
+        'deliveryAddress', 'deliveryAddressPostcode', 'phone', 'phoneOption', 'fax',
+        'mobilePhone', 'email',
+        'vat', 'iec', 'okpo', 'psrn', 'bic', 'swift',
+        'bankName', 'bankAddress', 'bankAccountNumber', 'correspondentBankName', 'correspondentAccountNumber',
+        'importerActive', 'importerCompanyName', 'importerContactPerson',
+        'importerMobilePhone', 'importerPhone', 'importerEmail', 'note',
+        'person', 'birthdate', 'passportId', 'citizenship', 'issueDate', 'expireDate', 'issuedBy', 'avatar',
+        'contacts', 'tags', 'files',
       ]
     },
-    templateFieldsKeys () {
-      const fields = this.fieldsKeys.filter(k => k !== 'language')
+    legalFields () {
       return [
-        ...fields,
-        'templateName',
+        'locale', 'contactPerson',
+        'companyName', 'companyNameLocal', 'companyOwner',
+        'legalAddress', 'legalAddressPostcode', 'mailingAddress', 'mailingAddressPostcode',
+        'deliveryAddress', 'deliveryAddressPostcode', 'phone', 'phoneOption', 'fax',
+        'mobilePhone', 'email',
+        'vat', 'iec', 'okpo', 'psrn', 'bic', 'swift',
+        'bankName', 'bankAddress', 'bankAccountNumber', 'correspondentBankName', 'correspondentAccountNumber',
+        'importerActive', 'importerCompanyName', 'importerContactPerson',
+        'importerMobilePhone', 'importerPhone', 'importerEmail', 'note',
+        'contacts', 'tags', 'files',
       ]
-    },
-    legalFieldsKeys () {
-      return Object.keys(this.legalFieldsSettings)
-    },
-    naturalFieldsKeys () {
-      return Object.keys(this.naturalFieldsSettings)
-    },
-    safeClientType () {
-      return this.clientType || ClientType.NATURAL
     },
     hasDeepChange () {
       return !deepEqual(this.client, this.clientClone)
     },
-    currentTemplate () {
-      let result = null
-      const template = (this.client && this.client.template) || {}
-      if (
-        (
-          template.templateName === null ||
-          template.templateName === 'default'
-        ) &&
-        this.templateFieldsKeys.filter(el => el !== 'templateName').every(k => !template[k])
-      ) {
-        return 'default'
-      }
-      let cTemplate = {}
-      this.templateFieldsKeys.forEach(k => {
-        cTemplate[k] = template[k] || null
-      })
-      for (const t of this.templates) {
-        let c = {}
-        this.templateFieldsKeys.forEach(k => {
-          c[k] = t[k] || null
-        })
-        if (deepEqual(cTemplate, c)) {
-          result = t.id
-          break
-        }
-      }
-      return result
-    },
-    templates () {
-      return (this.listClientTemplates && this.listClientTemplates.items) || []
-    },
-    legalType () {
-      return ClientType.LEGAL
-    },
-    naturalType () {
-      return ClientType.NATURAL
-    },
     isLegalPerson () {
-      return this.clientType === this.legalType
+      return this.clientType === ClientType.LEGAL
     },
-    isNaturalPerson () {
-      return this.clientType === this.naturalType
+    isPrivatePerson () {
+      return this.clientType === ClientType.PRIVATE
     },
   },
   watch: {
+    '$route' (to, from) {
+      this.reset()
+    },
     saveBeforeCloseDialog (val) {
       if (!val) {
         this.$emit('confirm', 0)
         this.$off('confirm')
       }
     },
-    templateListDialog (val) {
-      if (!this.create && !val && this.templateChanged) {
-        this.update(this.clientType)
-        this.templateChanged = false
-      }
-    },
-    templateSaveDialog (val) {
-      if (val) {
-        setTimeout(() => {
-          this.$refs.templateSave.focusInput()
-        }, 0)
-      }
-    },
   },
   created () {
-    this.editMode = this.create
     if (this.create) {
       this.reset()
     }
   },
   methods: {
+    getClientTypeFromNumeric (type) {
+      switch (type) {
+        case 1:
+        case '1': return ClientType.LEGAL
+        case 2:
+        case '2': return ClientType.PRIVATE
+        case 3:
+        case '3': return ClientType.OTHER
+        default: return ClientType.LEGAL
+      }
+    },
+    getClientTypeNumeric (type) {
+      switch (type) {
+        case ClientType.LEGAL: return 1
+        case ClientType.PRIVATE: return 2
+        case ClientType.OTHER: return 3
+        default: return 1
+      }
+    },
     async toggleEditMode () {
       if (this.editMode && this.hasDeepChange) {
         const r = await this.openConfirmDialog()
@@ -572,6 +532,7 @@ export default {
               return next(false)
             }
           } else {
+            this.saveBeforeCloseDialog = false
             return next()
           }
         } else {
@@ -590,19 +551,6 @@ export default {
         })
       })
     },
-    reset () {
-      this.clientType = ClientType.LEGAL
-      this.client = {
-        id: null,
-        uid: null,
-        clientType: null,
-        language: '',
-        template: {},
-      }
-      this.languageInputError = {}
-      this.clientClone = cloneDeep(this.client)
-      this.$apollo.queries.getOrgNextClientUid.refetch()
-    },
     validate (focus) {
       if (!this.wasValidate) return
       const type = this.clientType
@@ -610,7 +558,7 @@ export default {
       let errorsCount = 0
       let fields = []
       const refs = this.$refs[type].$refs
-      if (type === this.naturalType) {
+      if (type === ClientType.PRIVATE) {
         fields = this.naturalFieldsSettings
       } else {
         fields = this.legalFieldsSettings
@@ -665,7 +613,7 @@ export default {
       const validateFields = []
       let fields = []
       const refs = this.$refs[type].$refs
-      if (type === this.naturalType) {
+      if (type === ClientType.PRIVATE) {
         fields = this.naturalFieldsSettings
       } else {
         fields = this.legalFieldsSettings
@@ -697,22 +645,27 @@ export default {
       //   return
       // }
       try {
-        let input = {
-          clientType: this.clientType,
-          template: {},
+        const input = {}
+        if (this.create) {
+          input.clientType = this.clientType
         }
-        this.fieldsKeys.forEach(key => {
-          input[key] = this.client[key] || null
+        const fieldsKeys = this.clientType === ClientType.PRIVATE ? this.privateField : this.legalFields
+        fieldsKeys.forEach(key => {
+          if (this.client[key] && (key === 'companyOwner' || key === 'contactPerson' || key === 'importerContactPerson' || key === 'person')) {
+            input[key] = {
+              firstName: this.client[key].firstName,
+              lastName: this.client[key].lastName,
+              middleName: this.client[key].middleName,
+            }
+          } else {
+            input[key] = this.client[key] || null
+          }
         })
-        // const template = this.client.template || {}
-        // this.templateFieldsKeys.forEach(key => {
-        //   input.template[key] = template[key] || null
-        // })
 
         const query = this.create ? CREATE_CLIENT : UPDATE_CLIENT
 
         const variables = this.create
-          ? { orgId: this.orgId, input }
+          ? { orgId: this.orgId, input, groupId: this.getClientGroup && this.getClientGroup.id }
           : { id: this.client.id, input }
 
         this.updateLoading = true
@@ -721,6 +674,7 @@ export default {
           variables,
         })
         if (response && response.data) {
+          this.$apollo.queries.getClientGroup.refetch()
           const data = this.create
             ? response.data.createClient
             : response.data.updateClient
@@ -729,13 +683,16 @@ export default {
             const action = this.create ? 'create' : 'update'
             this.$emit(action, data)
           } else {
-            this.editMode = false
             if (this.create && redirectAfterCreate) {
               this.$router.push({
                 name: 'client',
                 params: {
                   orgId: this.orgId,
                   clientId: data.id,
+                  groupId: data.groupId,
+                },
+                query: {
+                  clientType: this.getClientTypeNumeric(data.clientType),
                 },
               })
             } else {
@@ -751,108 +708,45 @@ export default {
         })
         throw new Error(error)
       } finally {
+        this.saveBeforeCloseDialog = false
         this.updateLoading = false
       }
     },
+    reset () {
+      this.client = {
+        id: null,
+        uid: null,
+        clientType: null,
+        language: '',
+      }
+      this.languageInputError = {}
+      this.clientClone = cloneDeep(this.client)
+      this.$apollo.queries.getOrgNextClientUid.refetch()
+    },
     setData (item) {
       if (!item) return
-      this.clientType = item.clientType
       this.client = cloneDeep(item)
       this.clientClone = cloneDeep(this.client)
     },
-    async createClientTemplate (templateName) {
-      try {
-        this.createTemplateLoading = true
-        let input = {}
-        const template = this.client.template || {}
-        this.templateFieldsKeys.forEach(key => {
-          input[key] = template[key] || null
-        })
-        input.templateName = templateName
-        const fromClient = !this.create
-          ? this.client.id
-          : null
-
-        await this.$apollo.mutate({
-          mutation: CREATE_CLIENT_TEMPLATE,
-          variables: {
-            orgId: this.orgId,
-            fromClient,
-            input,
-          },
-        })
-        this.$apollo.queries.listClientTemplates.refetch()
-        this.client.template.templateName = templateName
-        this.templateSaveDialog = false
-      } catch (error) {
-        throw new Error(error)
-      } finally {
-        this.createTemplateLoading = false
-      }
-    },
-    async deleteClientTemplate (id) {
-      try {
-        this.deleteTemplateLoading = id
-        await this.$apollo.mutate({
-          mutation: DELETE_CLIENT_TEMPLATE,
-          variables: { id },
-        })
-        this.$apollo.queries.listClientTemplates.refetch()
-      } catch (error) {
-        throw new Error(error)
-      } finally {
-        this.deleteTemplateLoading = null
-      }
-    },
-    edit () {
-      this.editMode = true
-      // this.$vuetify.goTo('#container')
-    },
     switchClientType (type) {
-      this.clientType = type
-    },
-    switchPersonType (type) {
-      this.clientType = type
-    },
-    updateTemplate (key, value) {
-      if (!this.client.template.hasOwnProperty(key)) {
-        this.$set(this.client.template, key, value)
+      if (this.clientType === type) return
+      const group = this.getClientGroup || {}
+      const groupId = group.id
+      const clientId = group[type]
+      const clientType = this.getClientTypeNumeric(type)
+      if (groupId && clientId) {
+        this.$router.push({ name: 'client', params: { groupId, clientId }, query: { clientType } }).catch(() => {})
       } else {
-        this.client.template[key] = value
+        this.$router.push({ name: 'client-create', params: { groupId }, query: { clientType } }).catch(() => {})
       }
+      this.$apollo.queries.getClientGroup.refetch()
     },
     updateValue (key, value) {
-      // this.validate()
       if (!this.client.hasOwnProperty(key)) {
         this.$set(this.client, key, value)
       } else {
         this.client[key] = value
       }
-    },
-    saveAsTemplate () {
-      this.templateSaveDialog = true
-    },
-    showModalList () {
-      this.templateListDialog = true
-    },
-    restoreTemplate () {
-      this.client.template = this.templateCopy || { id: this.client.id }
-      this.templateCopy = null
-      this.templateListDialog = false
-      this.templateChanged = false
-    },
-    setTemplate (id) {
-      this.templateCopy = Object.assign({}, this.client.template)
-      const template = this.templates.find(t => t.id === id)
-      if (template) {
-        let temp = Object.assign({}, template, { id: this.client.template.id })
-        delete temp.__typename
-        this.client.template = temp
-      } else if (id === 'default') {
-        this.client.template = { id: this.client.id }
-      }
-      this.templateChanged = true
-      this.templateListDialog = false
     },
   },
 }

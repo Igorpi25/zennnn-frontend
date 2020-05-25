@@ -350,7 +350,7 @@
                   <span class="text-blue-200">{{ $t('shipping.inEnglish') }}</span>
                 </label>
                 <TextField
-                  v-if="isClientTypeNatural"
+                  v-if="isClientTypePrivate"
                   :value="client.deliveryAddress"
                   :debounce="250"
                   :placeholder="$t('placeholder.notIndicated')"
@@ -380,8 +380,8 @@
                   </template>
                 </TextField>
               </div>
-              <template v-if="isClientTypeNatural">
-                <div key="client-natural-firstName" class="pb-4">
+              <template v-if="isClientTypePrivate">
+                <div key="client-private-firstName" class="pb-4">
                   <label class="text-sm">
                     <span>{{ $t('companyDetail.label.givenName') }}</span>
                   </label>
@@ -400,7 +400,7 @@
                     </template>
                   </TextField>
                 </div>
-                <div key="client-natural-lastName" class="pb-4">
+                <div key="client-private-lastName" class="pb-4">
                   <label class="text-sm">
                     <span>{{ $t('companyDetail.label.familyName') }}</span>
                   </label>
@@ -419,7 +419,7 @@
                     </template>
                   </TextField>
                 </div>
-                <div key="client-natural-middleName" class="pb-4">
+                <div key="client-private-middleName" class="pb-4">
                   <label class="text-sm">
                     <span>{{ $t('companyDetail.label.middleName') }}</span>
                   </label>
@@ -461,7 +461,7 @@
                     <span>{{ $t('companyDetail.label.phone') }}</span>
                   </label>
                   <TextField
-                    v-if="isClientTypeNatural"
+                    v-if="isClientTypePrivate"
                     :value="client.mobilePhone"
                     :debounce="250"
                     :placeholder="'000 - 00 - 00'"
@@ -495,11 +495,11 @@
               <div class="pb-4">
                 <div class="w-4/6 pr-2">
                   <label class="text-sm">
-                    <span v-if="isClientTypeNatural">{{ $t('companyDetail.label.phone') }}</span>
+                    <span v-if="isClientTypePrivate">{{ $t('companyDetail.label.phone') }}</span>
                     <span v-else>{{ $t('client.label.fax') }}</span>
                   </label>
                   <TextField
-                    v-if="isClientTypeNatural"
+                    v-if="isClientTypePrivate"
                     :value="client.additionalPhone"
                     :debounce="250"
                     :placeholder="'000 - 00 - 00'"
@@ -522,7 +522,7 @@
                     <span>{{ $t('companyDetail.label.email') }}</span>
                   </label>
                   <TextField
-                    v-if="isClientTypeNatural"
+                    v-if="isClientTypePrivate"
                     :value="client.naturalEmail"
                     :debounce="250"
                     :placeholder="$t('placeholder.notIndicated')"
@@ -1651,8 +1651,8 @@ export default {
     hasClient () {
       return this.client && this.client.id
     },
-    isClientTypeNatural () {
-      return this.client && this.client.clientType === ClientType.NATURAL
+    isClientTypePrivate () {
+      return this.client && this.client.clientType === ClientType.PRIVATE
     },
     hasRequisite () {
       return this.requisiteId

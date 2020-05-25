@@ -53,7 +53,7 @@
 
 <script>
 // TODO: rename to CURRENT_LOCALE_STORE_KEY
-import { CURRENT_LANG_STORE_KEY } from '../config/globals'
+import { CURRENT_LANG_STORE_KEY, LOCALES_LIST } from '../config/globals'
 
 export default {
   name: 'LocalePicker',
@@ -70,14 +70,7 @@ export default {
   },
   computed: {
     locales () {
-      return [
-        { value: 'en', text: 'English' },
-        { value: 'zh-Hans', text: '简体' },
-        { value: 'zh-Hant', text: '繁体' },
-        { value: 'fr', text: 'Français' },
-        { value: 'ru', text: 'Русский' },
-        { value: 'uk', text: 'Український' },
-      ]
+      return LOCALES_LIST
     },
   },
   methods: {
