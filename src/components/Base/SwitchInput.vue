@@ -22,7 +22,6 @@
           aria-hidden="true"
           @focus="hasFocus = true"
           @blur="hasFocus = false"
-          @change="checkField"
         />
         <span
           :class="['switch-slider', { 'shadow-blue-600': hasFocus }, { 'cursor-not-allowed': disabled }]"
@@ -39,7 +38,9 @@
       </label>
     </div>
     <div v-if="!hideDetails" class="h-6 pt-2 leading-tight text-sm text-yellow-400">
-      {{ errorText }}
+      <v-slide-y-transition>
+        <span v-show="errorText">{{ errorText }}</span>
+      </v-slide-y-transition>
     </div>
   </div>
 </template>
@@ -49,11 +50,6 @@ import validatable from '@/mixins/validatable'
 
 export default {
   name: 'SwitchInput',
-  inject: {
-    form: {
-      default: null,
-    },
-  },
   mixins: [validatable],
   props: {
     value: {
@@ -99,16 +95,6 @@ export default {
       },
       immediate: true,
     },
-  },
-  created () {
-    if (this.form) {
-      this.form.register(this)
-    }
-  },
-  beforeDestroy () {
-    if (this.form) {
-      this.form.unregister(this)
-    }
   },
 }
 </script>

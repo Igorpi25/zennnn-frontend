@@ -12,12 +12,6 @@ import {
 export default {
   name: 'TextField',
 
-  inject: {
-    form: {
-      default: null,
-    },
-  },
-
   mixins: [validatable],
 
   props: {
@@ -37,6 +31,7 @@ export default {
     solo: Boolean,
     soloFlat: Boolean,
     number: Boolean,
+    loading: Boolean,
     // integer, decimal, currency, fixed
     // 'formatStyle' renamed to 'numberFormat'
     numberFormat: {
@@ -68,9 +63,8 @@ export default {
       type: [String, Array],
       default: '',
     },
-    // preferably validation icon
-    adlib: Boolean,
     stateIcon: Boolean,
+    stateIconOnValidate: Boolean,
     slotClass: {
       type: String,
       default: 'w-10',
@@ -169,6 +163,8 @@ export default {
       ]
       if (this.disabled) {
         genericClasses.push('cursor-not-allowed')
+      } else if (this.loading) {
+        genericClasses.push('cursor-wait')
       }
       if (this.number || this.alignRight) {
         genericClasses.push('text-right')
@@ -207,9 +203,6 @@ export default {
     if (this.debounce) {
       this.debounceInput = debounce(this.emitChange, this.debounce)
     }
-    if (this.form) {
-      this.form.register(this)
-    }
   },
   mounted () {
     let el = this.$el
@@ -223,11 +216,6 @@ export default {
     }
     if (this.autofocus) {
       this.$refs.input.focus()
-    }
-  },
-  beforeDestroy () {
-    if (this.form) {
-      this.form.unregister(this)
     }
   },
 
@@ -255,10 +243,7 @@ export default {
     },
 
     onBlur (e) {
-      this.wasBlurred = true
-      if (this.validateOnBlur) {
-        this.checkField(e)
-      }
+      this.hasFocused = true
       this.hasFocus = false
       // stop edit mode and call emit
       this.editMode = false
@@ -303,7 +288,7 @@ export default {
         positionFromEnd = el.value.length - positionFromEnd
         setCursor(el, positionFromEnd)
 
-        this.hasError = e.target.validity.badInput
+        this.badInput = e.target.validity.badInput
       }
       this.internalValue = value
       if (!this.lazy) {
@@ -313,7 +298,6 @@ export default {
           this.emitChange()
         }
       }
-      this.checkField(e)
     },
 
     onChange () {
@@ -516,7 +500,7 @@ export default {
 
     genStateIndicator () {
       const svg = []
-      const color = this.adlib && !this.internalValue
+      const color = !this.hasError && !this.hasWarn && this.shouldValidate && !this.required
         ? 'text-yellow-500'
         : !this.hasError && !this.hasWarn && this.shouldValidate
           ? 'text-green-500' : 'text-pink-500'
@@ -578,9 +562,10 @@ export default {
         children.push(prepend)
       }
       children.push(this.genInput())
-      if (this.required || this.adlib) {
-        children.push(this.genStateIndicator())
-      } else if (this.stateIcon && this.wasBlurred) {
+      const showState = this.stateIconOnValidate
+        ? this.stateIcon && !(this.validateOnBlur && !this.hasFocused)
+        : this.stateIcon
+      if (showState) {
         children.push(this.genStateIndicator())
       }
       if (this.$slots.append) {
@@ -602,7 +587,7 @@ export default {
     ]
     const data = {
       class: [
-        'flex flex-col relative',
+        'flex flex-col relative transition-opacity duration-75 ease-in',
         { 'opacity-40': this.disabled },
       ],
     }

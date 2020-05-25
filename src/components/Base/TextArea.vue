@@ -52,11 +52,6 @@ import validatable from '@/mixins/validatable'
 
 export default {
   name: 'TextArea',
-  inject: {
-    form: {
-      default: null,
-    },
-  },
   mixins: [validatable],
   props: {
     value: {
@@ -145,20 +140,12 @@ export default {
     if (this.debounce) {
       this.debounceInput = debounce(this.emitChange, this.debounce)
     }
-    if (this.form) {
-      this.form.register(this)
-    }
   },
   mounted () {
     if (this.autofocus) {
       this.$refs.input.focus()
     }
     this.autoGrow && this.calculateHeight()
-  },
-  beforeDestroy () {
-    if (this.form) {
-      this.form.unregister(this)
-    }
   },
   methods: {
     emitChange () {

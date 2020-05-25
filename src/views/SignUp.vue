@@ -63,6 +63,8 @@
             validate-on-blur
             autofocus
             state-icon
+            state-icon-on-validate
+            required
           >
           </TextField>
           <TextField
@@ -73,6 +75,8 @@
             name="lastName"
             validate-on-blur
             state-icon
+            state-icon-on-validate
+            required
           >
           </TextField>
           <TextField
@@ -85,6 +89,8 @@
             name="email"
             validate-on-blur
             state-icon
+            state-icon-on-validate
+            required
           >
           </TextField>
           <TextField
@@ -97,6 +103,8 @@
             minlength="8"
             validate-on-blur
             state-icon
+            state-icon-on-validate
+            required
           >
             <template v-slot:append>
               <div
@@ -110,6 +118,7 @@
           </TextField>
           <Checkbox
             :rules="[rules.check]"
+            lazy-validation
             class="pb-6"
           >
             <span class="ml-3 float-left" v-html="policyHtml" />

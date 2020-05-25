@@ -46,7 +46,6 @@
           aria-hidden="true"
           @focus="hasFocus = true"
           @blur="hasFocus = false"
-          @change="checkField"
         >
       </div>
       <label :for="computedId" class="cursor-pointer select-none leading-tight">
@@ -54,7 +53,9 @@
       </label>
     </div>
     <div v-if="!hideDetails" class="h-6 pt-2 leading-tight text-sm text-yellow-400">
-      {{ errorText }}
+      <v-slide-y-transition>
+        <span v-show="errorText">{{ errorText }}</span>
+      </v-slide-y-transition>
     </div>
   </div>
 </template>
@@ -64,11 +65,6 @@ import validatable from '@/mixins/validatable'
 
 export default {
   name: 'Checkbox',
-  inject: {
-    form: {
-      default: null,
-    },
-  },
   mixins: [validatable],
   props: {
     value: {
@@ -115,16 +111,6 @@ export default {
       },
       immediate: true,
     },
-  },
-  created () {
-    if (this.form) {
-      this.form.register(this)
-    }
-  },
-  beforeDestroy () {
-    if (this.form) {
-      this.form.unregister(this)
-    }
   },
 }
 </script>

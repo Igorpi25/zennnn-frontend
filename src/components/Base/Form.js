@@ -15,7 +15,6 @@ export default {
       inputs: [],
       watchers: [],
       errorBag: {},
-      wasValidated: false,
       error: false,
     }
   },
@@ -92,10 +91,9 @@ export default {
       this.$delete(this.errorBag, found._uid)
     },
     validate () {
-      this.wasValidated = true
       let result = 0
       this.inputs.forEach(input => {
-        const errorsCount = input.validate()
+        const errorsCount = input.validate(true)
         result = result + errorsCount
       })
       return result === 0

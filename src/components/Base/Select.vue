@@ -24,10 +24,14 @@
         :debounce="debounce"
         :content-class="contentClass"
         :input-class="inputClass"
-        :adlib="adlib"
-        :state-icon="compStateIcon"
+        :state-icon="stateIcon"
+        :state-icon-on-validate="stateIconOnValidate"
         :slot-class="slotClass"
         :class="['select-input']"
+        :rules="rules"
+        :patterns="patterns"
+        :validate-on-blur="validateOnBlur"
+        :lazy-validation="lazyValidation"
         :label="label"
         :label-no-wrap="labelNoWrap"
         :label-hint="labelHint"
@@ -146,17 +150,10 @@
 </template>
 
 <script>
-import validatable from '@/mixins/validatable'
 import { isObject, defaultFilter } from '../../util/helpers'
 
 export default {
   name: 'Select',
-  inject: {
-    form: {
-      default: null,
-    },
-  },
-  mixins: [validatable],
   props: {
     value: {
       type: [String, Number, Object],
@@ -193,7 +190,11 @@ export default {
       type: [Number, String],
       default: 0,
     },
+    // validation props
     rules: Array,
+    patterns: Array,
+    validateOnBlur: Boolean,
+    lazyValidation: Boolean,
     label: String,
     labelNoWrap: Boolean,
     labelHint: String,
@@ -224,9 +225,8 @@ export default {
       type: [String, Object],
       default: '',
     },
-    // preferably validation icon
-    adlib: Boolean,
     stateIcon: Boolean,
+    stateIconOnValidate: Boolean,
     slotClass: {
       type: String,
       default: 'w-10',
@@ -250,9 +250,6 @@ export default {
     }
   },
   computed: {
-    compStateIcon () {
-      return this.stateIcon && !!this.internalValue
-    },
     computedId () {
       return this.id || `input-${this._uid}`
     },
@@ -342,21 +339,11 @@ export default {
       }
     },
   },
-  created () {
-    if (this.form) {
-      this.form.register(this)
-    }
-  },
   mounted () {
     if (this.autofocus) {
       this.$refs.input.focus()
     }
     this.content = this.$refs.menu && this.$refs.menu.$refs.content
-  },
-  beforeDestroy () {
-    if (this.form) {
-      this.form.unregister(this)
-    }
   },
   methods: {
     onFocus () {
@@ -515,7 +502,6 @@ export default {
     },
     select (value) {
       this.internalValueObject = value
-      this.checkField({})
       const val = this.returnObject ? value : value[this.itemValue]
       this.$emit('input', val)
       this.closeMenu()
