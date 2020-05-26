@@ -239,7 +239,7 @@ import {
   CREATE_CLIENT,
   UPDATE_CLIENT,
 } from '../graphql/mutations'
-import { isObject } from '../util/helpers'
+import { isObject, replaceAt } from '../util/helpers'
 
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
 import LegalDetail from './CompanyDetail/LegalDetail.vue'
@@ -347,9 +347,9 @@ export default {
         nextUid = this.getOrgNextClientUid || ''
       }
       if (this.clientType === ClientType.OTHER) {
-        nextUid = nextUid.replace('A', 'C')
+        nextUid = replaceAt(nextUid, 0, 'C')
       } else if (this.clientType === ClientType.PRIVATE) {
-        nextUid = nextUid.replace('A', 'B')
+        nextUid = replaceAt(nextUid, 0, 'B')
       }
       return nextUid
     },
