@@ -3,11 +3,11 @@
     <div class="pt-4 pb-10">
       <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
 
-      <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-4">
+      <div class="flex items-end flex-wrap md:flex-no-wrap justify-between">
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          class="w-full sm:w-64"
+          class="w-full md:w-64 flex-shrink-0 pb-4"
           content-class="input-transparent"
           input-class="placeholder-blue-500"
         >
@@ -15,6 +15,27 @@
             <i class="zi-magnifier text-2xl text-gray-100"></i>
           </template>
         </TextField>
+        <div class="h-11 flex overflow-x-auto overflow-scroll-touch pl-4">
+          <div
+            v-for="(tab, i) in tabs"
+            :aria-selected="clientType === tab.value"
+            :key="tab.value"
+            :class="[
+              'w-full sm:w-auto flex items-center justify-center rounded-t',
+              'select-none whitespace-no-wrap cursor-pointer',
+              'transition-colors duration-100 ease-in px-10',
+              { 'mr-1': i + 1 < tabs.length },
+              tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',
+              clientType === tab.value ? 'text-white bg-gray-800' : 'bg-transparent',
+            ]"
+            :role="tab.disabled ? null : 'tab'"
+            :tabindex="tab.disabled ? null : 0"
+            @click="switchClientType(tab.value)"
+            @keydown.enter.exact="switchClientType(tab.value)"
+          >
+            {{ tab.text }}
+          </div>
+        </div>
       </div>
 
       <div class="overflow-x-auto overflow-scroll-touch pb-4">
@@ -127,15 +148,39 @@ export default {
     }
   },
   computed: {
+    tabs () {
+      return [
+        {
+          value: 1,
+          text: this.$t('client.legalPerson'),
+        },
+        {
+          value: 2,
+          text: this.$t('client.privatePerson'),
+        },
+        {
+          value: 3,
+          text: this.$t('client.other'),
+        },
+      ]
+    },
     clientType () {
-      return this.$route.query.clientType || 1
+      return Number.parseInt(this.$route.query.clientType, 10) || 1
+    },
+    clientTypeEnum () {
+      switch (this.clientType) {
+        case 1: return ClientType.LEGAL
+        case 2: return ClientType.PRIVATE
+        case 3: return ClientType.OTHER
+        default: return ClientType.LEGAL
+      }
     },
     headers () {
       return [
         { text: '', value: 'debt', align: 'left', width: 60, sortable: true, tooltip: this.$t('clients.clientsDebt') },
         { text: this.$t('clients.companyName'), value: 'fullName', align: 'left', width: 220, minWidth: 220, sortable: true },
-        { text: this.$t('clients.phone'), value: 'clientPhone', align: 'left', width: 120, minWidth: 120, sortable: true },
-        { text: this.$t('clients.contactPerson'), value: 'contactPerson', align: 'left', width: 165, sortable: true },
+        { text: this.$t('clients.phone'), value: 'phone', align: 'left', width: 120, minWidth: 120, sortable: true },
+        { text: this.$t('clients.contactPerson'), value: 'contactPerson.fullName', align: 'left', width: 165, sortable: true },
         { text: '', value: 'coming', align: 'left', width: 45 },
         { text: this.$t('clients.ucn'), value: 'uid', align: 'left', width: 120, minWidth: 120, sortable: true },
         { text: '', value: 'deals', width: 60, minWidth: 60, sortable: true, tooltip: this.$t('clients.currentDealsAmount') },
@@ -144,16 +189,13 @@ export default {
     },
     items () {
       const items = (this.listClients && this.listClients.items) || []
-      return items.map(item => {
-        return {
-          ...item,
-          // for search
-          clientPhone: item.phone || item.mobilePhone,
-        }
-      })
+      return items.filter(el => el.clientType === this.clientTypeEnum)
     },
   },
   methods: {
+    switchClientType (type) {
+      this.$router.push({ query: { clientType: type } }).catch(() => {})
+    },
     getClientTypeNumeric (type) {
       switch (type) {
         case ClientType.LEGAL: return 1

@@ -7,7 +7,7 @@
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          class="w-full sm:w-64"
+          class="w-full sm:w-64 pb-4 sm:pb-0"
           content-class="input-transparent"
           input-class="placeholder-blue-500"
         >
