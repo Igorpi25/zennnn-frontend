@@ -40,6 +40,7 @@
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
+      @change="onChange"
     />
   </div>
 </template>
@@ -97,6 +98,7 @@ export default {
       default: '',
     },
     loading: Boolean,
+    lazy: Boolean,
   },
   data () {
     return {
@@ -119,10 +121,12 @@ export default {
       set (val) {
         const value = val || null
         this.lazyValue = value
-        if (this.debounce) {
-          this.debounceInput()
-        } else {
-          this.$emit('input', value)
+        if (!this.lazy) {
+          if (this.debounce) {
+            this.debounceInput()
+          } else {
+            this.$emit('input', value)
+          }
         }
       },
     },
@@ -165,6 +169,11 @@ export default {
     onInput () {
       if (this.autoGrow) {
         this.calculateHeight()
+      }
+    },
+    onChange () {
+      if (this.lazy) {
+        this.emitChange()
       }
     },
     onFocus () {

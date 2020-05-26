@@ -139,7 +139,7 @@ export default {
       },
     },
     computedContentClass () {
-      const staticClasses = ['text-field__content relative flex items-center focus:outline-none transition-colors duration-100 ease-out']
+      const staticClasses = ['text-field__content relative flex items-center focus:outline-none transition-colors-and-opacity duration-150 ease-in-out']
       let genericClasses = [
         'rounded',
         (this.hasWarn || this.hasError) && !this.hideError ? 'shadow-yellow-300' : 'focus-within:shadow-blue-500',
@@ -157,6 +157,9 @@ export default {
       }
       if (!this.$slots.append) {
         genericClasses.push('pr-sm')
+      }
+      if (!this.disabled && this.loading) {
+        genericClasses.push('cursor-wait opacity-75')
       }
       // merge props classes
       if (this.contentClass) {
@@ -486,7 +489,6 @@ export default {
         placeholder: this.compPlaceholder,
         readonly: this.readonly,
         type: this.type,
-        required: this.required,
         name: this.name,
         minlength: this.minlength,
         maxlength: this.maxlength,

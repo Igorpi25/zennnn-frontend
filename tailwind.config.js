@@ -100,6 +100,9 @@ module.exports = {
         '1': '1',
         '2': '2',
       },
+      transitionProperty: {
+        'colors-and-opacity': 'background-color, border-color, color, fill, stroke, opacity',
+      },
     },
   },
   variants: {

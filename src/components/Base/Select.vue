@@ -39,6 +39,7 @@
         :solo="solo"
         :solo-flat="soloFlat"
         :dense="dense"
+        :loading="loading"
         autocomplete="off"
         force-update
         @input="onInput"
@@ -239,6 +240,7 @@ export default {
       default: true,
     },
     dense: Boolean,
+    loading: Boolean,
   },
   data () {
     return {
