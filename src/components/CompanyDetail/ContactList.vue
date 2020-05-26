@@ -38,9 +38,13 @@
 </template>
 
 <script>
+import clientDetail from '../../mixins/clientDetail'
+
 export default {
   name: 'ContactList',
+  mixins: [clientDetail],
   props: {
+    loading: Boolean,
     item: {
       type: Object,
       default: () => ({}),
@@ -49,13 +53,7 @@ export default {
   data () {
     return {
       items: [],
-      expanded: true,
     }
-  },
-  methods: {
-    toggleExpand () {
-      this.expanded = !this.expanded
-    },
   },
 }
 </script>

@@ -35,14 +35,19 @@
               :value="item.passportId"
               :label="$t('companyDetail.label.passportId')"
               :placeholder="$t('companyDetail.placeholder.passportId')"
+              :loading="loading"
+              lazy
               @input="$emit('update', 'passportId', $event)"
             />
           </div>
           <div class="pb-2">
             <TextField
+              :value="item.citizenship"
               :label="$t('companyDetail.label.citizenship')"
               :placeholder="$t('companyDetail.placeholder.citizenship')"
-              disabled
+              :loading="loading"
+              lazy
+              @input="$emit('update', 'citizenship', $event)"
             >
               <template v-slot:prepend>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -53,79 +58,123 @@
           </div>
           <div class="pb-2">
             <div class="flex">
-              <TextField
-                :label="$t('companyDetail.label.issueDate')"
-                :placeholder="$t('companyDetail.placeholder.date')"
-                label-no-wrap
-                class="w-1/2 pr-sm"
-                style="max-width: 232px"
-                disabled
+              <DatePicker
+                :value="item.issueDate"
+                @input="$emit('update', 'issueDate', $event)"
               >
-                <template v-slot:prepend>
-                  <i class="zi-calendar text-lg" />
+                <template v-slot:activator="{ on }">
+                  <div
+                    class="w-1/2 pr-sm"
+                    style="max-width: 232px"
+                    v-on="on"
+                  >
+                    <TextField
+                      :value="item.issueDate ? $d($parseDate(item.issueDate), 'short') : null"
+                      :label="$t('companyDetail.label.issueDate')"
+                      :placeholder="$t('companyDetail.placeholder.date')"
+                      :loading="loading"
+                      label-no-wrap
+                      readonly
+                    >
+                      <template v-slot:prepend>
+                        <i class="zi-calendar text-lg" />
+                      </template>
+                    </TextField>
+                  </div>
                 </template>
-              </TextField>
-              <TextField
-                :label="$t('companyDetail.label.expireDate')"
-                :placeholder="$t('companyDetail.placeholder.date')"
-                label-no-wrap
-                class="w-1/2"
-                style="max-width: 232px"
-                disabled
+              </DatePicker>
+              <DatePicker
+                :value="item.expireDate"
+                @input="$emit('update', 'expireDate', $event)"
               >
-                <template v-slot:prepend>
-                  <i class="zi-calendar text-lg" />
+                <template v-slot:activator="{ on }">
+                  <div
+                    class="w-1/2 pr-sm"
+                    style="max-width: 232px"
+                    v-on="on"
+                  >
+                    <TextField
+                      :value="item.expireDate ? $d($parseDate(item.expireDate), 'short') : null"
+                      :label="$t('companyDetail.label.expireDate')"
+                      :placeholder="$t('companyDetail.placeholder.date')"
+                      :loading="loading"
+                      readonly
+                    >
+                      <template v-slot:prepend>
+                        <i class="zi-calendar text-lg" />
+                      </template>
+                    </TextField>
+                  </div>
                 </template>
-              </TextField>
+              </DatePicker>
             </div>
           </div>
           <div class="pb-2">
             <TextField
+              :value="item.issuedBy"
               :label="$t('companyDetail.label.issuedBy')"
               :placeholder="$t('companyDetail.placeholder.issuedBy')"
-              disabled
+              :loading="loading"
+              lazy
+              @input="$emit('update', 'issuedBy', $event)"
             />
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.address"
+              :value="item.legalAddress"
               :label="$t('companyDetail.label.placeOfResidence')"
               :placeholder="$t('companyDetail.placeholder.address')"
-              @input="$emit('update', 'address', $event)"
+              :loading="loading"
+              lazy
+              @input="$emit('update', 'legalAddress', $event)"
             />
           </div>
           <div class="pb-2">
             <TextField
+              :value="item.legalAddressPostcode"
               :label="$t('companyDetail.label.placeOfResidencePostcode')"
               :placeholder="$t('companyDetail.placeholder.address')"
+              :loading="loading"
+              lazy
               label-no-wrap
               class="w-48"
-              disabled
+              @input="$emit('update', 'legalAddressPostcode', $event)"
             />
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.deliveryAddress"
-              :label="$t('companyDetail.label.mailingAddress')"
+              :value="item.mailingAddress"
+              :label="$t('companyDetail.label.privateMailingAddress')"
               :placeholder="$t('companyDetail.placeholder.address')"
-              @input="$emit('update', 'deliveryAddress', $event)"
+              :disabled="item.isMailingAddressMatch"
+              :loading="loading"
+              lazy
+              @input="$emit('update', 'mailingAddress', $event)"
             />
           </div>
           <div class="pb-2 lg:pb-1">
             <div class="flex justify-between">
               <TextField
+                :value="item.mailingAddressPostcode"
                 :label="$t('companyDetail.label.mailingAddressPostcode')"
                 :placeholder="$t('companyDetail.placeholder.postcode')"
+                :loading="loading"
+                :disabled="item.isMailingAddressMatch"
+                lazy
                 label-no-wrap
                 class="w-48 pb-2"
-                disabled
+                @input="$emit('update', 'mailingAddressPostcode', $event)"
               />
-              <div class="relative flex-shrink-0 relative w-12 pl-sm">
+              <div class="relative flex-shrink-0 relative pl-sm">
                 <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
                   {{ $t('companyDetail.label.matches') }}
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
-                   <SwitchInput disabled hide-details />
+                   <SwitchInput
+                    :value="item.isMailingAddressMatch"
+                    hide-details
+                    @input="$emit('update', 'isMailingAddressMatch', $event)"
+                  />
                 </div>
               </div>
             </div>
@@ -139,60 +188,83 @@
         <div class="w-full lg:w-1/2 lg:pl-5">
           <div class="pb-2">
             <TextField
+              :value="item.vat"
               :label="$t('companyDetail.label.vat')"
               :placeholder="$t('companyDetail.placeholder.vat')"
-              disabled
+              :loading="loading"
+              lazy
+              @input="$emit('update', 'vat', $event)"
             />
           </div>
           <div class="pb-2">
             <TextField
+              :value="item.bankName"
               :label="$t('companyDetail.label.bankName')"
               :placeholder="$t('companyDetail.placeholder.bankName')"
-              disabled
+              :loading="loading"
+              lazy
+              @input="$emit('update', 'bankName', $event)"
             />
           </div>
           <div class="pb-2">
             <TextField
+              :value="item.bankAddress"
               :label="$t('companyDetail.label.bankAddress')"
               :placeholder="$t('companyDetail.placeholder.bankAddress')"
-              disabled
+              :loading="loading"
+              lazy
+              @input="$emit('update', 'bankAddress', $event)"
             />
           </div>
           <div class="pb-2">
             <TextField
+              :value="item.bankAccountNumber"
               :label="$t('companyDetail.label.bankAccountNumber')"
               :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
-              disabled
+              :loading="loading"
+              lazy
+              @input="$emit('update', 'bankAccountNumber', $event)"
             />
           </div>
           <div class="flex items-end pb-2">
             <TextField
+              :value="item.swift"
               :label="$t('companyDetail.label.swift')"
               :placeholder="$t('companyDetail.placeholder.swift')"
+              :loading="loading"
+              lazy
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-              disabled
+              @input="$emit('update', 'swift', $event)"
             />
             <TextField
+              :value="item.bic"
               :label="$t('companyDetail.label.bic')"
               :placeholder="$t('companyDetail.placeholder.bic')"
+              :loading="loading"
+              lazy
               class="flex-grow"
-              disabled
+              @input="$emit('update', 'bic', $event)"
             />
           </div>
           <div>
             <div class="flex items-end pb-2">
               <TextField
-                :value="item.additionalPhone"
+                :value="item.phone"
                 :label="$t('companyDetail.label.phone')"
                 :placeholder="$t('companyDetail.placeholder.phone')"
+                :loading="loading"
+                lazy
                 class="w-1/2 pr-2"
-                @input="$emit('update', 'additionalPhone', $event)"
+                @input="$emit('update', 'phone', $event)"
               />
               <TextField
+                :value="item.fax"
                 :label="$t('companyDetail.label.fax')"
                 :placeholder="$t('companyDetail.placeholder.phone')"
+                :loading="loading"
+                lazy
                 class="w-1/2 pl-2"
-                disabled
+                @input="$emit('update', 'fax', $event)"
               />
             </div>
             <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
@@ -206,9 +278,13 @@
 </template>
 
 <script>
+import clientDetail from '../../mixins/clientDetail'
+
 export default {
   name: 'PrivateDetail',
+  mixins: [clientDetail],
   props: {
+    loading: Boolean,
     item: {
       type: Object,
       default: () => ({}),
@@ -216,12 +292,27 @@ export default {
   },
   data () {
     return {
-      expanded: true,
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+      },
     }
   },
-  methods: {
-    toggleExpand () {
-      this.expanded = !this.expanded
+  watch: {
+    'item.legalAddress' (val) {
+      if (this.item.isMailingAddressMatch) {
+        this.$emit('update', 'mailingAddress', val)
+      }
+    },
+    'item.legalAddressPostcode' (val) {
+      if (this.item.isMailingAddressMatch) {
+        this.$emit('update', 'mailingAddressPostcode', val)
+      }
+    },
+    'item.isMailingAddressMatch' (val) {
+      if (val) {
+        this.$emit('update', 'mailingAddress', this.item.legalAddress)
+        this.$emit('update', 'mailingAddressPostcode', this.item.legalAddressPostcode)
+      }
     },
   },
 }

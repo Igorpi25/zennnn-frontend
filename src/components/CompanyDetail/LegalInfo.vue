@@ -6,12 +6,24 @@
           v-model="firstName"
           :label="$t('companyDetail.label.contactPerson')"
           :placeholder="$t('companyDetail.placeholder.firstName')"
+          :loading="loading"
+          :rules="[rules.required]"
+          lazy
+          lazy-validation
+          state-icon
+          required
           label-no-wrap
           class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
         />
         <TextField
           v-model="lastName"
           :placeholder="$t('companyDetail.placeholder.lastName')"
+          :loading="loading"
+          :rules="[rules.required]"
+          lazy
+          lazy-validation
+          state-icon
+          required
           class="flex-grow"
         />
       </div>
@@ -21,6 +33,12 @@
           :label="$t('companyDetail.label.mobilePhone')"
           :label-hint="$t('companyDetail.hint.mobilePhone')"
           :placeholder="$t('companyDetail.placeholder.mobilePhone')"
+          :loading="loading"
+          :rules="[rules.required]"
+          lazy
+          lazy-validation
+          state-icon
+          required
           @input="$emit('update', 'mobilePhone', $event)"
         />
       </div>
@@ -30,6 +48,12 @@
           :label="$t('companyDetail.label.email')"
           :label-hint="$t('companyDetail.hint.email')"
           :placeholder="$t('companyDetail.placeholder.email')"
+          :loading="loading"
+          :rules="[rules.required, rules.email]"
+          lazy
+          lazy-validation
+          state-icon
+          required
           @input="$emit('update', 'email', $event)"
         />
       </div>
@@ -39,6 +63,11 @@
           :items="locales"
           :label="$t('companyDetail.label.locale')"
           :placeholder="$t('companyDetail.placeholder.locale')"
+          :loading="loading"
+          :rules="[rules.required]"
+          lazy-validation
+          state-icon
+          required
           item-value="value"
           item-text="text"
           class="pb-2"
@@ -56,15 +85,25 @@
             :value="item.companyName"
             :label="$t('companyDetail.label.companyName')"
             :placeholder="$t('companyDetail.placeholder.companyName')"
+            :loading="loading"
+            :rules="[rules.required]"
+            lazy
+            lazy-validation
+            state-icon
+            required
             class="pb-2 flex-grow"
             @input="$emit('update', 'companyName', $event)"
           />
-          <div class="relative flex-shrink-0 relative w-12 pl-sm">
+          <div class="relative flex-shrink-0 relative pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
               {{ $t('companyDetail.label.englishOnly') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
-              <SwitchInput disabled hide-details />
+              <SwitchInput
+                :value="item.isCompanyNameMatch"
+                hide-details
+                @input="$emit('update', 'isCompanyNameMatch', $event)"
+              />
             </div>
           </div>
         </div>
@@ -79,7 +118,13 @@
           :value="item.companyNameLocal"
           :label="$t('companyDetail.label.companyNameLocal')"
           :placeholder="$t('companyDetail.placeholder.companyNameLocal')"
-          disabled
+          :loading="loading"
+          :disabled="item.isCompanyNameMatch"
+          :rules="[rules.required]"
+          lazy
+          lazy-validation
+          state-icon
+          required
           @input="$emit('update', 'companyNameLocal', $event)"
         />
       </div>
@@ -104,6 +149,7 @@ import { LOCALES_LIST } from '../../config/globals'
 export default {
   name: 'LegalInfo',
   props: {
+    loading: Boolean,
     uid: String,
     item: {
       type: Object,
@@ -111,24 +157,30 @@ export default {
     },
     isSupplier: Boolean,
   },
+  data () {
+    return {
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
+      },
+    }
+  },
   computed: {
     firstName: {
       get () {
-        return (this.item.contactPerson && this.item.contactPerson.firstName) || ''
+        return this.item.contactPerson && this.item.contactPerson.firstName
       },
       set (val) {
-        const person = this.item.contactPerson || {}
-        person.firstName = val
+        const person = Object.assign({}, this.item.contactPerson, { firstName: val })
         this.$emit('update', 'contactPerson', person)
       },
     },
     lastName: {
       get () {
-        return (this.item.contactPerson && this.item.contactPerson.lastName) || ''
+        return this.item.contactPerson && this.item.contactPerson.lastName
       },
       set (val) {
-        const person = this.item.contactPerson || {}
-        person.lastName = val
+        const person = Object.assign({}, this.item.contactPerson, { lastName: val })
         this.$emit('update', 'contactPerson', person)
       },
     },
@@ -147,6 +199,18 @@ export default {
     },
     uidPlaceholder () {
       return this.isSupplier ? 'Z00001' : 'A00001'
+    },
+  },
+  watch: {
+    'item.companyName' (val) {
+      if (this.item.isCompanyNameMatch) {
+        this.$emit('update', 'companyNameLocal', val)
+      }
+    },
+    'item.isCompanyNameMatch' (val) {
+      if (val) {
+        this.$emit('update', 'companyNameLocal', this.item.companyName)
+      }
     },
   },
 }

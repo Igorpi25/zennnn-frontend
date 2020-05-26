@@ -6,12 +6,24 @@
           v-model="contactFirstName"
           :label="$t('companyDetail.label.contactPerson')"
           :placeholder="$t('companyDetail.placeholder.firstName')"
+          :loading="loading"
+          :rules="[rules.required]"
+          lazy
+          lazy-validation
+          state-icon
+          required
           label-no-wrap
           class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
         />
         <TextField
           v-model="contactLastName"
           :placeholder="$t('companyDetail.placeholder.lastName')"
+          :loading="loading"
+          :rules="[rules.required]"
+          lazy
+          lazy-validation
+          state-icon
+          required
           class="flex-grow"
         />
       </div>
@@ -21,6 +33,12 @@
           :label="$t('companyDetail.label.mobilePhone')"
           :label-hint="$t('companyDetail.hint.mobilePhone')"
           :placeholder="$t('companyDetail.placeholder.mobilePhone')"
+          :loading="loading"
+          :rules="[rules.required]"
+          lazy
+          lazy-validation
+          state-icon
+          required
           @input="$emit('update', 'mobilePhone', $event)"
         />
       </div>
@@ -30,6 +48,12 @@
           :label="$t('companyDetail.label.email')"
           :label-hint="$t('companyDetail.hint.email')"
           :placeholder="$t('companyDetail.placeholder.email')"
+          :loading="loading"
+          :rules="[rules.required, rules.email]"
+          lazy
+          lazy-validation
+          state-icon
+          required
           @input="$emit('update', 'email', $event)"
         />
       </div>
@@ -39,6 +63,11 @@
           :items="locales"
           :label="$t('companyDetail.label.locale')"
           :placeholder="$t('companyDetail.placeholder.locale')"
+          :loading="loading"
+          :rules="[rules.required]"
+          lazy-validation
+          state-icon
+          required
           item-value="value"
           item-text="text"
           class="pb-2"
@@ -70,6 +99,13 @@
           v-model="firstName"
           :label="$t('companyDetail.label.givenName')"
           :placeholder="$t('companyDetail.placeholder.givenName')"
+          :disabled="item.isPersonMatch"
+          :loading="loading"
+          :rules="[rules.required]"
+          lazy
+          lazy-validation
+          state-icon
+          required
         />
       </div>
       <div class="pb-2 lg:pb-1">
@@ -78,14 +114,25 @@
             v-model="lastName"
             :label="$t('companyDetail.label.familyName')"
             :placeholder="$t('companyDetail.placeholder.familyName')"
+            :disabled="item.isPersonMatch"
+            :loading="loading"
+            :rules="[rules.required]"
+            lazy
+            lazy-validation
+            state-icon
+            required
             class="pb-2 flex-grow"
           />
-          <div class="relative flex-shrink-0 relative w-12 pl-sm">
+          <div class="relative flex-shrink-0 relative pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
               {{ $t('companyDetail.label.matches') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
-              <SwitchInput disabled hide-details />
+              <SwitchInput
+                :value="item.isPersonMatch"
+                hide-details
+                @input="$emit('update', 'isPersonMatch', $event)"
+              />
             </div>
           </div>
         </div>
@@ -100,20 +147,35 @@
           v-model="middleName"
           :label="$t('companyDetail.label.middleName')"
           :placeholder="$t('companyDetail.placeholder.middleName')"
+          lazy
         />
       </div>
       <div class="flex items-end pb-2">
-        <TextField
-          :label="$t('companyDetail.label.birthdate')"
-          :placeholder="$t('companyDetail.placeholder.date')"
-          label-no-wrap
-          class="w-1/2 pr-4"
-          disabled
+        <DatePicker
+          :value="item.birthdate"
+          @input="$emit('update', 'birthdate', $event)"
         >
-          <template v-slot:prepend>
-            <i class="zi-calendar text-lg" />
+          <template v-slot:activator="{ on }">
+            <div v-on="on" class="w-1/2 pr-4">
+              <TextField
+                :value="item.birthdate ? $d($parseDate(item.birthdate), 'short') : null"
+                :label="$t('companyDetail.label.birthdate')"
+                :placeholder="$t('companyDetail.placeholder.date')"
+                :loading="loading"
+                :rules="[rules.required]"
+                lazy
+                lazy-validation
+                state-icon
+                label-no-wrap
+                readonly
+              >
+                <template v-slot:prepend>
+                  <i class="zi-calendar text-lg" />
+                </template>
+              </TextField>
+            </div>
           </template>
-        </TextField>
+        </DatePicker>
         <div class="w-1/2 pl-4 opacity-40">
           <label class="block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
             {{ $t('companyDetail.label.avatar') }}
@@ -148,65 +210,97 @@ import { LOCALES_LIST } from '../../config/globals'
 export default {
   name: 'PrivateInfo',
   props: {
+    loading: Boolean,
     uid: String,
     item: {
       type: Object,
       default: () => ({}),
     },
   },
+  data () {
+    return {
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
+      },
+    }
+  },
   computed: {
     contactFirstName: {
       get () {
-        return (this.item.contactPerson && this.item.contactPerson.firstName) || ''
+        return this.item.contactPerson && this.item.contactPerson.firstName
       },
       set (val) {
-        const person = this.item.contactPerson || {}
-        person.firstName = val
+        const person = Object.assign({}, this.item.contactPerson, { firstName: val })
         this.$emit('update', 'contactPerson', person)
       },
     },
     contactLastName: {
       get () {
-        return (this.item.contactPerson && this.item.contactPerson.lastName) || ''
+        return this.item.contactPerson && this.item.contactPerson.lastName
       },
       set (val) {
-        const person = this.item.contactPerson || {}
-        person.lastName = val
+        const person = Object.assign({}, this.item.contactPerson, { lastName: val })
         this.$emit('update', 'contactPerson', person)
       },
     },
     firstName: {
       get () {
-        return (this.item.person && this.item.person.firstName) || ''
+        return this.item.person && this.item.person.firstName
       },
       set (val) {
-        const person = this.item.person || {}
-        person.firstName = val
+        const person = Object.assign({}, this.item.person, { firstName: val })
         this.$emit('update', 'person', person)
       },
     },
     lastName: {
       get () {
-        return (this.item.person && this.item.person.lastName) || ''
+        return this.item.person && this.item.person.lastName
       },
       set (val) {
-        const person = this.item.person || {}
-        person.lastName = val
+        const person = Object.assign({}, this.item.person, { lastName: val })
         this.$emit('update', 'person', person)
       },
     },
     middleName: {
       get () {
-        return (this.item.person && this.item.person.lastName) || ''
+        return this.item.person && this.item.person.middleName
       },
       set (val) {
-        const person = this.item.person || {}
-        person.lastName = val
+        const person = Object.assign({}, this.item.person, { middleName: val })
         this.$emit('update', 'person', person)
       },
     },
     locales () {
       return LOCALES_LIST
+    },
+  },
+  watch: {
+    contactFirstName (val) {
+      if (this.item.isPersonMatch) {
+        const person = Object.assign({}, this.item.contactPerson, {
+          firstName: val,
+          middleName: this.item.person && this.item.person.middleName,
+        })
+        this.$emit('update', 'person', person)
+      }
+    },
+    contactLastName (val) {
+      if (this.item.isPersonMatch) {
+        const person = Object.assign({}, this.item.contactPerson, {
+          lastName: val,
+          middleName: this.item.person && this.item.person.middleName,
+        })
+        this.$emit('update', 'person', person)
+      }
+    },
+    'item.isPersonMatch' (val) {
+      if (val) {
+        const person = Object.assign({}, this.item.contactPerson, {
+          middleName: this.item.person && this.item.person.middleName,
+        })
+        this.$emit('update', 'person', person)
+      }
     },
   },
 }

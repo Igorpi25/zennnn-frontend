@@ -238,6 +238,7 @@ export const CLIENT_FRAGMENT = gql`
     }
     companyName
     companyNameLocal
+    isCompanyNameMatch
     companyOwner {
       ...PersonFragment
     }
@@ -246,12 +247,15 @@ export const CLIENT_FRAGMENT = gql`
     legalAddressPostcode
     mailingAddress
     mailingAddressPostcode
+    isMailingAddressMatch
     deliveryAddress
     deliveryAddressPostcode
+    isDeliveryAddressMatch
 
     phone
     phoneOption
     fax
+    website
     # for contact
     mobilePhone
     email
@@ -282,6 +286,7 @@ export const CLIENT_FRAGMENT = gql`
     person {
       ...PersonFragment
     }
+    isPersonMatch
     birthdate
     passportId
     citizenship

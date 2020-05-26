@@ -31,6 +31,8 @@
               :value="item.vat"
               :label="$t('companyDetail.label.vat')"
               :placeholder="$t('companyDetail.placeholder.vat')"
+              :loading="loading"
+              lazy
               @input="$emit('update', 'vat', $event)"
             />
           </div>
@@ -39,6 +41,11 @@
               :value="item.legalAddress"
               :label="$t('companyDetail.label.legalAddress')"
               :placeholder="$t('companyDetail.placeholder.address')"
+              :loading="loading"
+              :rules="[rules.required]"
+              lazy
+              lazy-validation
+              state-icon
               @input="$emit('update', 'legalAddress', $event)"
             />
           </div>
@@ -47,6 +54,11 @@
               :value="item.legalAddressPostcode"
               :label="$t('companyDetail.label.legalAddressPostcode')"
               :placeholder="$t('companyDetail.placeholder.postcode')"
+              :loading="loading"
+              :rules="[rules.required]"
+              lazy
+              lazy-validation
+              state-icon
               label-no-wrap
               class="w-48"
               @input="$emit('update', 'legalAddressPostcode', $event)"
@@ -57,6 +69,9 @@
               :value="item.mailingAddress"
               :label="$t('companyDetail.label.mailingAddress')"
               :placeholder="$t('companyDetail.placeholder.address')"
+              :loading="loading"
+              :disabled="item.isMailingAddressMatch"
+              lazy
               @input="$emit('update', 'mailingAddress', $event)"
             />
           </div>
@@ -66,16 +81,23 @@
                 :value="item.mailingAddressPostcode"
                 :label="$t('companyDetail.label.mailingAddressPostcode')"
                 :placeholder="$t('companyDetail.placeholder.postcode')"
+                :loading="loading"
+                :disabled="item.isMailingAddressMatch"
+                lazy
                 label-no-wrap
                 class="w-48 pb-2"
                 @input="$emit('update', 'mailingAddressPostcode', $event)"
               />
-              <div class="relative flex-shrink-0 relative w-12 pl-sm">
+              <div class="relative flex-shrink-0 relative pl-sm">
                 <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
                   {{ $t('companyDetail.label.matches') }}
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
-                  <SwitchInput disabled hide-details />
+                  <SwitchInput
+                    :value="item.isMailingAddressMatch"
+                    hide-details
+                    @input="$emit('update', 'isMailingAddressMatch', $event)"
+                  />
                 </div>
               </div>
             </div>
@@ -90,6 +112,8 @@
               :value="item.iec"
               :label="$t('companyDetail.label.iec')"
               :placeholder="$t('companyDetail.placeholder.iec')"
+              :loading="loading"
+              lazy
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
               @input="$emit('update', 'iec', $event)"
             />
@@ -97,6 +121,8 @@
               :value="item.okpo"
               :label="$t('companyDetail.label.okpo')"
               :placeholder="$t('companyDetail.placeholder.okpo')"
+              :loading="loading"
+              lazy
               class="flex-grow"
               @input="$emit('update', 'okpo', $event)"
             />
@@ -106,6 +132,8 @@
               :value="item.psrn"
               :label="$t('companyDetail.label.psrn')"
               :placeholder="$t('companyDetail.placeholder.psrn')"
+              :loading="loading"
+              lazy
               @input="$emit('update', 'psrn', $event)"
             />
           </div>
@@ -114,12 +142,16 @@
               v-model="firstName"
               :label="$t('companyDetail.label.ownerFullName')"
               :placeholder="$t('companyDetail.placeholder.firstName')"
+              :loading="loading"
+              lazy
               label-no-wrap
               class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
             />
             <TextField
               v-model="lastName"
               :placeholder="$t('companyDetail.placeholder.lastName')"
+              :loading="loading"
+              lazy
               class="flex-grow"
             />
           </div>
@@ -130,6 +162,8 @@
               :value="item.bankName"
               :label="$t('companyDetail.label.bankName')"
               :placeholder="$t('companyDetail.placeholder.bankName')"
+              :loading="loading"
+              lazy
               @input="$emit('update', 'bankName', $event)"
             />
           </div>
@@ -138,6 +172,8 @@
               :value="item.bankAddress"
               :label="$t('companyDetail.label.bankAddress')"
               :placeholder="$t('companyDetail.placeholder.bankAddress')"
+              :loading="loading"
+              lazy
               @input="$emit('update', 'bankAddress', $event)"
             />
           </div>
@@ -146,6 +182,8 @@
               :value="item.bankAccountNumber"
               :label="$t('companyDetail.label.bankAccountNumber')"
               :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
+              :loading="loading"
+              lazy
               @input="$emit('update', 'bankAccountNumber', $event)"
             />
           </div>
@@ -154,6 +192,8 @@
               :value="item.swift"
               :label="$t('companyDetail.label.swift')"
               :placeholder="$t('companyDetail.placeholder.swift')"
+              :loading="loading"
+              lazy
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
               @input="$emit('update', 'swift', $event)"
             />
@@ -161,6 +201,8 @@
               :value="item.bic"
               :label="$t('companyDetail.label.bic')"
               :placeholder="$t('companyDetail.placeholder.bic')"
+              :loading="loading"
+              lazy
               class="flex-grow"
               @input="$emit('update', 'bic', $event)"
             />
@@ -170,6 +212,8 @@
               :value="item.correspondentBankName"
               :label="$t('companyDetail.label.correspondentBankName')"
               :placeholder="$t('companyDetail.placeholder.correspondentBankName')"
+              :loading="loading"
+              lazy
               @input="$emit('update', 'correspondentBankName', $event)"
             />
           </div>
@@ -178,6 +222,8 @@
               :value="item.correspondentAccountNumber"
               :label="$t('companyDetail.label.correspondentAccountNumber')"
               :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
+              :loading="loading"
+              lazy
               class="pb-2"
               @input="$emit('update', 'correspondentAccountNumber', $event)"
             />
@@ -188,6 +234,11 @@
               :value="item.phone"
               :label="$t('companyDetail.label.phone')"
               :placeholder="$t('companyDetail.placeholder.phone')"
+              :loading="loading"
+              :rules="[rules.required]"
+              lazy
+              lazy-validation
+              state-icon
               class="w-1/2 pr-2"
               @input="$emit('update', 'phone', $event)"
             />
@@ -195,6 +246,8 @@
               :value="item.fax"
               :label="$t('companyDetail.label.fax')"
               :placeholder="$t('companyDetail.placeholder.phone')"
+              :loading="loading"
+              lazy
               class="w-1/2 pl-2"
               @input="$emit('update', 'fax', $event)"
             />
@@ -204,6 +257,8 @@
               :value="item.website"
               :label="$t('companyDetail.label.site')"
               :placeholder="$t('companyDetail.placeholder.site')"
+              :loading="loading"
+              lazy
               @input="$emit('update', 'website', $event)"
             />
           </div>
@@ -214,9 +269,13 @@
 </template>
 
 <script>
+import clientDetail from '../../mixins/clientDetail'
+
 export default {
   name: 'LegalDetail',
+  mixins: [clientDetail],
   props: {
+    loading: Boolean,
     item: {
       type: Object,
       default: () => ({}),
@@ -225,27 +284,27 @@ export default {
   },
   data () {
     return {
-      expanded: true,
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+      },
     }
   },
   computed: {
     firstName: {
       get () {
-        return (this.item.companyOwner && this.item.companyOwner.firstName) || ''
+        return this.item.companyOwner && this.item.companyOwner.firstName
       },
       set (val) {
-        const person = this.item.companyOwner || {}
-        person.firstName = val
+        const person = Object.assign({}, this.item.companyOwner, { firstName: val })
         this.$emit('update', 'companyOwner', person)
       },
     },
     lastName: {
       get () {
-        return (this.item.companyOwner && this.item.companyOwner.lastName) || ''
+        return this.item.companyOwner && this.item.companyOwner.lastName
       },
       set (val) {
-        const person = this.item.companyOwner || {}
-        person.lastName = val
+        const person = Object.assign({}, this.item.companyOwner, { lastName: val })
         this.$emit('update', 'companyOwner', person)
       },
     },
@@ -255,9 +314,22 @@ export default {
         : ` ${this.$t('companyDetail.legalDetailDesc')}`
     },
   },
-  methods: {
-    toggleExpand () {
-      this.expanded = !this.expanded
+  watch: {
+    'item.legalAddress' (val) {
+      if (this.item.isMailingAddressMatch) {
+        this.$emit('update', 'mailingAddress', val)
+      }
+    },
+    'item.legalAddressPostcode' (val) {
+      if (this.item.isMailingAddressMatch) {
+        this.$emit('update', 'mailingAddressPostcode', val)
+      }
+    },
+    'item.isMailingAddressMatch' (val) {
+      if (val) {
+        this.$emit('update', 'mailingAddress', this.item.legalAddress)
+        this.$emit('update', 'mailingAddressPostcode', this.item.legalAddressPostcode)
+      }
     },
   },
 }

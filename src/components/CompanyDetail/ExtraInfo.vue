@@ -23,6 +23,8 @@
           <TextArea
             :value="item.note"
             :placeholder="$t('companyDetail.placeholder.note')"
+            :loading="loading"
+            lazy
             rows="4"
             @input="$emit('update', 'note', $event)"
           />
@@ -32,6 +34,8 @@
             disabled
             :label="$t('companyDetail.label.tags')"
             :placeholder="$t('companyDetail.placeholder.tags')"
+            :loading="loading"
+            lazy
           >
             <template v-slot:label>
               <label class="block leading-5 text-base text-gray-100 whitespace-no-wrap py-2">
@@ -64,22 +68,16 @@
 </template>
 
 <script>
+import clientDetail from '../../mixins/clientDetail'
+
 export default {
   name: 'ExtraInfo',
+  mixins: [clientDetail],
   props: {
+    loading: Boolean,
     item: {
       type: Object,
       default: () => ({}),
-    },
-  },
-  data () {
-    return {
-      expanded: true,
-    }
-  },
-  methods: {
-    toggleExpand () {
-      this.expanded = !this.expanded
     },
   },
 }

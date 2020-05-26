@@ -68,7 +68,7 @@
                 class="w-48 pb-2"
                 disabled
               />
-              <div class="relative flex-shrink-0 relative w-12 pl-sm">
+              <div class="relative flex-shrink-0 relative pl-sm">
                 <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
                   {{ $t('companyDetail.label.matches') }}
                 </label>
@@ -206,27 +206,20 @@
 </template>
 
 <script>
+import clientDetail from '../../mixins/clientDetail'
+
 export default {
   name: 'SupplierDetail',
+  mixins: [clientDetail],
   props: {
     item: {
       type: Object,
       default: () => ({}),
     },
   },
-  data () {
-    return {
-      expanded: true,
-    }
-  },
   computed: {
     titleHint () {
       return ` ${this.$t('companyDetail.supplierDetailDesc')}`
-    },
-  },
-  methods: {
-    toggleExpand () {
-      this.expanded = !this.expanded
     },
   },
 }
