@@ -624,13 +624,12 @@ export default {
     },
     reset () {
       this.item = {}
-      this.itemClone = cloneDeep(this.item)
+      this.itemClone = {}
       this.$apollo.queries.getOrgNextClientUid.refetch()
     },
     setData (item) {
       if (!item) return
-      const clone = cloneDeep(item)
-      this.item = clone
+      this.item = cloneDeep(item)
       this.itemClone = cloneDeep(item)
     },
     switchClientType (type) {
