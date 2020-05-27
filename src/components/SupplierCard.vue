@@ -36,36 +36,66 @@
           class="bg-gray-600 rounded-md p-5 pt-6"
         >
           <!-- Legal info -->
-          <LegalInfo is-supplier :item="supplier" @update="updateValue" />
+          <LegalInfo
+            :loading="loading"
+            :uid="uid"
+            :item="item"
+            is-supplier
+            @update="updateValue"
+          />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <LegalDetail is-supplier :item="supplier" @update="updateValue" />
+          <LegalDetail
+            :loading="loading"
+            :is-expanded="!create"
+            :item="item"
+            is-supplier
+            @update="updateValue"
+          />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
-          <ContactList :item="supplier" @update="updateValue" />
+          <ContactList
+            :loading="loading"
+            :is-expanded="!create"
+            :item="item"
+            @update="updateValue"
+          />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Branches -->
-          <BranchList :item="supplier" @update="updateValue" />
+          <BranchList
+            :loading="loading"
+            :emit-changes="create || isComponent"
+            :supplier-id="supplierId"
+            :is-expanded="!create"
+            :items="item.branches"
+            @update="updateValue"
+          />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
               <!-- ExtraInfo -->
-              <ExtraInfo :item="supplier" @update="updateValue" />
+              <ExtraInfo
+                :loading="loading"
+                :is-expanded="!create"
+                :item="item"
+                @update="updateValue"
+              />
             </div>
           </div>
         </div>
       </div>
       <Button
+        v-if="isComponent"
         :loading="updateLoading"
         outlined
         merge-class="w-40"
         @click="update()"
       >
-        {{ $t('client.save') }}
+        {{ $t('supplier.save') }}
       </Button>
     </div>
 
@@ -77,25 +107,12 @@
 import cloneDeep from 'clone-deep'
 import deepEqual from 'deep-equal'
 
-import {
-  mdiPlusCircleOutline,
-  mdiArrowLeft,
-  mdiChevronUp,
-  mdiChevronDown,
-  mdiClose,
-} from '@mdi/js'
-
-import { GET_SUPPLIER, LIST_SUPPLIER_TEMPLATES } from '../graphql/queries'
+import { GET_SUPPLIER, GET_ORG_NEXT_SUPPLIER_UID } from '../graphql/queries'
 import {
   CREATE_SUPPLIER,
   UPDATE_SUPPLIER,
-  CREATE_SUPPLIER_TEMPLATE,
-  DELETE_SUPPLIER_TEMPLATE,
-  CREATE_SUPPLIER_SHOP,
-  UPDATE_SUPPLIER_SHOP,
-  DELETE_SUPPLIER_SHOP,
 } from '../graphql/mutations'
-import { uuid } from '../util/helpers'
+import { isObject } from '../util/helpers'
 
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
 import LegalDetail from './CompanyDetail/LegalDetail.vue'
@@ -129,14 +146,17 @@ export default {
     },
   },
   apollo: {
-    listSupplierTemplates: {
-      query: LIST_SUPPLIER_TEMPLATES,
+    getOrgNextSupplierUid: {
+      query: GET_ORG_NEXT_SUPPLIER_UID,
       variables () {
         return {
           orgId: this.orgId,
         }
       },
-      fetchPolicy: 'cache-and-network',
+      skip () {
+        return !this.create
+      },
+      fetchPolicy: 'network-only',
     },
     getSupplier: {
       query: GET_SUPPLIER,
@@ -157,185 +177,47 @@ export default {
   },
   data () {
     return {
-      languageInputError: '',
-      wasValidate: false,
       saveBeforeCloseDialog: false,
-      templateChanged: false,
-      createTemplateLoading: false,
-      deleteTemplateLoading: null,
-      loading: false,
       updateLoading: false,
-      templateListDialog: false,
-      templateSaveDialog: false,
-      editCard: 'SUPPLIER',
-      editMode: false,
-      shopFieldsSettings: {
-        name: {
-          label: 'shopName',
-          placeholder: 'shopName',
-        },
-        address: {
-          label: 'shopAddress',
-          placeholder: 'shopAddress',
-        },
-        seller: {},
-        workPhone: {},
-        mobilePhone: {},
-        wechat: {},
-        email: {},
-        qq: {},
-        skype: {},
-      },
-      fieldsSettings: {
-        companyNameSl: {
-          ref: 'companyNameSlInput',
-          rules: [v => !!v || this.$t('rule.required')],
-          rows: 2,
-          label: 'companyNameSl',
-          inputLabel: 'selectedLanguage',
-        },
-        companyNameCl: {
-          rows: 2,
-        },
-        website: {},
-        companyType: {},
-        fieldOfActivity: {},
-        legalAddress: {},
-        legalAddressPostcode: {},
-        fax: {},
-        ownerFullName: {},
-        manufacturersAddress: {
-          section: true,
-          rows: 2,
-        },
-        manager: {},
-        workPhone: {},
-        mobilePhone: {},
-        email: {},
-        skype: {},
-        qq: {},
-        bankName: {
-          section: true,
-        },
-        bankAddress: {
-          rows: 2,
-        },
-        accountNumber: {},
-        swift: {},
-        responsiblePerson: {
-          section: true,
-          subtitle: 'storage',
-        },
-        deliveryAddress: {
-          rows: 3,
-        },
-        contactNumber: {},
-        note: {
-          rows: 5,
-          section: true,
-          subtitle: 'note',
-        },
-        language: {
-          labelReadonly: true,
-          section: true,
-          subtitle: 'language',
-          labelHint: 'languageDescription',
-        },
-      },
-      supplier: {
-        id: null,
-        language: '',
-        template: {},
-        shops: [],
-      },
-      supplierClone: {},
-      icons: {
-        mdiPlusCircleOutline,
-        mdiArrowLeft,
-        mdiChevronDown,
-        mdiChevronUp,
-        mdiClose,
-      },
+      item: {},
+      itemClone: {},
     }
   },
   computed: {
+    loading () {
+      return this.$apollo.queries.getSupplier.loading
+    },
+    uid () {
+      if (this.item.uid) {
+        return this.item.uid
+      }
+      return this.getOrgNextSupplierUid || ''
+    },
     supplierId () {
       return this.$route.params.supplierId
     },
-    shopFieldsKeys () {
-      return Object.keys(this.shopFieldsSettings)
-    },
-    templateFieldsKeys () {
-      const fields = this.fieldsKeys.filter(k => k !== 'language')
+    fieldsKeys () {
       return [
-        ...fields,
-        'templateName',
+        'locale', 'contactPerson', 'companyType',
+        'companyName', 'companyNameLocal', 'companyOwner', 'isCompanyNameMatch',
+        'legalAddress', 'legalAddressPostcode', 'mailingAddress', 'mailingAddressPostcode',
+        'phone', 'phoneOption', 'fax', 'website',
+        'isMailingAddressMatch',
+        'mobilePhone', 'email',
+        'vat', 'iec', 'okpo', 'psrn', 'bic', 'swift',
+        'bankName', 'bankAddress', 'bankAccountNumber', 'correspondentBankName', 'correspondentAccountNumber',
+        'note', 'tags', 'files',
+        // 'contacts',
       ]
     },
-    fieldsKeys () {
-      return Object.keys(this.fieldsSettings)
+    branchFieldsKeys () {
+      return [
+        'name', 'address', 'contactPerson',
+        'workPhone', 'mobilePhone', 'contacts',
+      ]
     },
     hasDeepChange () {
-      const supplierWithoutShops = { id: this.supplier.id }
-      const supplierCloneWithoutShops = { id: this.supplierClone.id }
-      this.fieldsKeys.forEach(k => {
-        supplierWithoutShops[k] = this.supplier[k]
-        supplierCloneWithoutShops[k] = this.supplierClone[k]
-      })
-      return !deepEqual(supplierWithoutShops, supplierCloneWithoutShops)
-    },
-    hasShopsInEditMode () {
-      const shops = this.supplier.shops || []
-      return shops.some(el => el.editMode)
-    },
-    currentTemplate () {
-      let result = null
-      const shopCheckFields = this.shopFieldsKeys
-      if (
-        (
-          this.supplier.template.templateName === null ||
-          this.supplier.template.templateName === 'default'
-        ) &&
-        this.templateFieldsKeys.filter(el => el !== 'templateName').every(el => !this.supplier.template[el])
-      ) {
-        const shops = this.supplier.shops || []
-        if (shops.every(s => {
-          let template = s.template || {}
-          return shopCheckFields.every(k => {
-            return template[k] === null
-          })
-        })) {
-          return 'default'
-        }
-      }
-      let template = {}
-      this.templateFieldsKeys.forEach(k => {
-        template[k] = this.supplier.template[k] || null
-      })
-      for (const t of this.templates) {
-        let c = {}
-        this.templateFieldsKeys.forEach(k => {
-          c[k] = t[k] || null
-        })
-        if (deepEqual(template, c)) {
-          // TODO check shop fields
-          result = t.id
-          break
-        }
-      }
-      return result
-    },
-    templates () {
-      return (this.listSupplierTemplates && this.listSupplierTemplates.items) || []
-    },
-    editCardTypes () {
-      return {
-        SUPPLIER: 'SUPPLIER',
-        SHOPS: 'SHOPS',
-      }
-    },
-    isShops () {
-      return this.editCard === this.editCardTypes.SHOPS
+      return !deepEqual(this.item, this.itemClone)
     },
   },
   watch: {
@@ -345,80 +227,18 @@ export default {
         this.$off('confirm')
       }
     },
-    templateListDialog (val) {
-      if (!this.create && !val && this.templateChanged) {
-        this.update()
-        this.templateChanged = false
-      }
-    },
-    templateSaveDialog (val) {
-      if (val) {
-        setTimeout(() => {
-          this.$refs.templateSave.focusInput()
-        }, 0)
-      }
-    },
   },
   created () {
-    this.editMode = this.create
     if (this.create) {
       this.reset()
     }
   },
   methods: {
-    async toggleEditMode () {
-      if (this.editMode && this.hasDeepChange) {
-        const r = await this.openConfirmDialog()
-        if (r) {
-          if (r === 2) {
-            this.wasValidate = true
-            const isValid = this.validate(true)
-            if (!isValid) {
-              this.editCard = this.editCardTypes.SUPPLIER
-              this.saveBeforeCloseDialog = false
-              this.$vuetify.goTo('#container')
-              this.editMode = false
-              this.$nextTick(() => {
-                this.editMode = true
-              })
-              return
-            }
-            try {
-              await this.update(false)
-              this.saveBeforeCloseDialog = false
-            } catch (error) {
-              this.$logger.warn('Error: ', error)
-            }
-          } else {
-            this.setData(this.supplierClone)
-            this.resetValidation()
-            this.editMode = false
-            this.saveBeforeCloseDialog = false
-          }
-        } else {
-          this.editMode = false
-          this.$nextTick(() => {
-            this.editMode = true
-          })
-          this.saveBeforeCloseDialog = false
-        }
-      } else {
-        this.editMode = !this.editMode
-      }
-    },
     async checkChangesBeforeLeave (next) {
-      if (this.hasDeepChange || this.hasShopsInEditMode) {
+      if (this.hasDeepChange) {
         const r = await this.openConfirmDialog()
         if (r) {
           if (r === 2) {
-            this.wasValidate = true
-            // const isValid = this.validate(true)
-            // if (!isValid) {
-            //   this.editCard = this.editCardTypes.SUPPLIER
-            //   this.saveBeforeCloseDialog = false
-            //   this.$vuetify.goTo('#container')
-            //   return next(false)
-            // }
             try {
               await this.update(false, true)
               return next()
@@ -445,123 +265,139 @@ export default {
         })
       })
     },
-    reset () {
-      const id = uuid()
-      this.supplier = {
-        id,
-        language: '',
-        // template: { id },
-        shops: [],
-      }
-      // this.addShop()
-      // clone supplier for detect changes
-      this.supplierClone = cloneDeep(this.supplier)
+    setData (item) {
+      if (!item) return
+      this.item = cloneDeep(item)
+      this.itemClone = cloneDeep(item)
     },
-    validate (focus) {
-      if (!this.wasValidate) return
-      const validateFields = []
-      let errorsCount = 0
-      const fields = this.fieldsSettings
-      const refs = this.$refs['supplier'].$refs
-      for (const [, v] of Object.entries(fields)) {
-        if (v.rules) {
-          const field = refs[v.ref][0]
-          if (field) {
-            validateFields.push(field)
-          }
+    updateValue (key, value) {
+      if (this.isComponent) {
+        if (!this.item.hasOwnProperty(key)) {
+          this.$set(this.item, key, value)
+        } else {
+          this.item[key] = value
         }
-      }
-      let firstNotValidInput = null
-      validateFields.forEach(el => {
-        const errCount = el.validate()
-        if (errCount && !firstNotValidInput) {
-          firstNotValidInput = el.$refs.input
-        }
-        errorsCount += errCount
-      })
-      // validate language input separately
-      const languageInputValidity = this.validateLanguageInput()
-      if (!languageInputValidity.valid) {
-        errorsCount += 1
-        if (!firstNotValidInput) {
-          firstNotValidInput = languageInputValidity.el
-        }
-      }
-      if (focus && errorsCount && firstNotValidInput) {
-        this.$vuetify.goTo(firstNotValidInput)
-        const delay = this.isComponent ? 0 : 200
-        setTimeout(() => {
-          firstNotValidInput.focus()
-        }, delay)
-      }
-      return !errorsCount
-    },
-    validateLanguageInput () {
-      const el = this.$refs.languageInput
-      if (!el.validity.valid) {
-        const message = this.$t('rule.requiredSelect')
-        this.languageInputError = message
-        return { message, el, valid: false }
+      } else if (this.create) {
+        this.createSupplier({ [key]: value }, true)
       } else {
-        this.languageInputError = ''
-        return { valid: true }
+        // TODO: toggle's watcher update problem on data set
+        if (deepEqual(this.item[key], value)) return
+        let input = {}
+        if (isObject(value)) {
+          const val = {}
+          for (let [k, v] of Object.entries(value)) {
+            if (k !== '__typename' && k !== 'fullName') {
+              val[k] = v
+            }
+          }
+          input[key] = val
+        } else {
+          input[key] = value
+        }
+        this.updateSupplier(input)
       }
     },
-    resetValidation () {
-      const validateFields = []
-      const fields = this.fieldsSettings
-      const refs = this.$refs['supplier'].$refs
-      for (const [, v] of Object.entries(fields)) {
-        if (v.rules) {
-          const field = refs[v.ref][0]
-          if (field) {
-            validateFields.push(field)
+    reset () {
+      this.item = {}
+      this.itemClone = {}
+    },
+    async createSupplier (input, redirectAfterCreate = true) {
+      try {
+        this.updateLoading = true
+
+        const variables = { orgId: this.orgId, input }
+
+        const response = await this.$apollo.mutate({
+          mutation: CREATE_SUPPLIER,
+          variables,
+        })
+        if (response && response.data) {
+          const data = response.data.createSupplier
+          this.setData(data)
+          if (this.isComponent) {
+            this.$emit('create', data)
+          } else {
+            if (redirectAfterCreate) {
+              this.$router.push({
+                name: 'supplier',
+                params: {
+                  orgId: this.orgId,
+                  supplierId: data.id,
+                },
+              })
+            }
           }
         }
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'error',
+          text: error.message,
+        })
+        throw new Error(error)
+      } finally {
+        this.updateLoading = false
       }
-      validateFields.forEach(el => {
-        el.resetValidation()
-      })
     },
-    updateLanguageInput (e) {
-      const v = e.target.value
-      const validity = this.validateLanguageInput()
-      if (validity.valid) {
-        this.updateValue('language', v)
+    async updateSupplier (input) {
+      try {
+        this.updateLoading = true
+
+        const variables = { id: this.item.id, input }
+
+        const response = await this.$apollo.mutate({
+          mutation: UPDATE_SUPPLIER,
+          variables,
+        })
+        if (response && response.data) {
+          const data = response.data.updateSupplier
+          this.setData(data)
+          if (this.isComponent) {
+            this.$emit('update', data)
+          }
+        }
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'error',
+          text: error.message,
+        })
+        throw new Error(error)
+      } finally {
+        this.updateLoading = false
       }
     },
     async update (redirectAfterCreate = true, fullUpdate) {
-      // this.wasValidate = true
-      // // TODO: validate input Uniq number
-      // const isValid = this.validate(true)
-      // if (!isValid) {
-      //   return
-      // }
       try {
-        let input = {
-          // template: {},
-        }
+        this.updateLoading = true
+        let input = {}
         this.fieldsKeys.forEach(key => {
-          input[key] = this.supplier[key] || null
+          const val = this.item[key]
+          if (val && (key === 'companyOwner' || key === 'contactPerson')) {
+            input[key] = {
+              firstName: val.firstName,
+              lastName: val.lastName,
+            }
+          } else if (val) {
+            input[key] = val
+          }
         })
-        // const template = this.supplier.template || {}
-        // this.templateFieldsKeys.forEach(key => {
-        //   input.template[key] = template[key] || null
-        // })
         if (this.create || fullUpdate) {
-          const supplierShops = this.supplier.shops || []
-          input.shops = supplierShops.map(s => {
-            let shop = {}
-            this.shopFieldsKeys.forEach(key => {
-              shop[key] = s[key] || null
+          const brunches = this.item.branches || []
+          input.branches = brunches.map(b => {
+            let branch = {}
+            this.branchFieldsKeys.forEach(key => {
+              const val = b[key]
+              if (val && (key === 'contactPerson')) {
+                branch[key] = {
+                  firstName: val.firstName,
+                  lastName: val.lastName,
+                }
+              } else if (val) {
+                branch[key] = val
+              }
             })
-            // let sTemplate = s.template || {}
-            // let template = {}
-            // this.shopFieldsKeys.forEach(key => {
-            //   template[key] = sTemplate[key] || null
-            // })
-            // shop.template = template
-            return shop
+            return branch
           })
         }
 
@@ -569,9 +405,8 @@ export default {
 
         const variables = this.create
           ? { orgId: this.orgId, input }
-          : { id: this.supplier.id, input }
+          : { id: this.item.id, input }
 
-        this.updateLoading = true
         const response = await this.$apollo.mutate({
           mutation: query,
           variables,
@@ -585,7 +420,6 @@ export default {
             const action = this.create ? 'create' : 'update'
             this.$emit(action, data)
           } else {
-            this.editMode = false
             if (this.create && redirectAfterCreate) {
               this.$router.push({
                 name: 'supplier',
@@ -609,210 +443,6 @@ export default {
       } finally {
         this.updateLoading = false
       }
-    },
-    setData (item) {
-      if (!item) return
-      const shopsOld = this.supplier.shops || []
-      const shops = (item.shops || []).slice().map(shop => {
-        const old = shopsOld.find(el => el.id === shop.id) || {}
-        const oldValues = old.editMode ? old : {}
-        return {
-          ...shop,
-          ...oldValues,
-          expanded: !!old.expanded,
-          editMode: !!old.editMode,
-        }
-      })
-      this.supplier = cloneDeep(Object.assign({}, item, { shops }))
-      this.supplierClone = cloneDeep(this.supplier)
-    },
-    async createSupplierTemplate (templateName) {
-      try {
-        this.createTemplateLoading = true
-        let input = {}
-        const template = this.supplier.template || {}
-        this.templateFieldsKeys.forEach(key => {
-          input[key] = template[key] || null
-        })
-        input.templateName = templateName
-        const fromSupplier = !this.create
-          ? this.supplier.id
-          : null
-
-        await this.$apollo.mutate({
-          mutation: CREATE_SUPPLIER_TEMPLATE,
-          variables: {
-            orgId: this.orgId,
-            fromSupplier,
-            input,
-          },
-        })
-        this.$apollo.queries.listSupplierTemplates.refetch()
-        this.supplier.template.templateName = templateName
-        this.templateSaveDialog = false
-      } catch (error) {
-        throw new Error(error)
-      } finally {
-        this.createTemplateLoading = false
-      }
-    },
-    async deleteSupplierTemplate (id) {
-      try {
-        this.deleteTemplateLoading = id
-        await this.$apollo.mutate({
-          mutation: DELETE_SUPPLIER_TEMPLATE,
-          variables: { id },
-        })
-        this.$apollo.queries.listSupplierTemplates.refetch()
-      } catch (error) {
-        throw new Error(error)
-      } finally {
-        this.deleteTemplateLoading = null
-      }
-    },
-    edit () {
-      this.editMode = true
-      // this.$vuetify.goTo('#container')
-    },
-    updateTemplate (key, value) {
-      if (!this.supplier.template.hasOwnProperty(key)) {
-        this.$set(this.supplier.template, key, value)
-      } else {
-        this.supplier.template[key] = value
-      }
-    },
-    updateValue (key, value) {
-      // this.validate()
-      if (!this.supplier.hasOwnProperty(key)) {
-        this.$set(this.supplier, key, value)
-      } else {
-        this.supplier[key] = value
-      }
-    },
-    updateShopTemplate (index, key, value) {
-      if (!this.supplier.shops[index].template) {
-        this.$set(this.supplier.shops[index], 'template', {})
-      }
-      if (!this.supplier.shops[index].template.hasOwnProperty(key)) {
-        this.$set(this.supplier.shops[index].template, key, value)
-      } else {
-        this.supplier.shops[index].template[key] = value
-      }
-    },
-    updateShopValue (index, key, value) {
-      if (!this.supplier.shops[index].hasOwnProperty(key)) {
-        this.$set(this.supplier.shops[index], key, value)
-      } else {
-        this.supplier.shops[index][key] = value
-      }
-    },
-    async addShop () {
-      try {
-        if (this.create) {
-          const id = uuid()
-          const shop = {
-            id,
-            template: {
-              id,
-            },
-            expanded: true,
-            editMode: true,
-          }
-          this.supplier.shops.push(shop)
-        } else {
-          const response = await this.$apollo.mutate({
-            mutation: CREATE_SUPPLIER_SHOP,
-            variables: { supplierId: this.supplierId, input: {} },
-          })
-          if (response && response.data && response.data.createSupplierShop) {
-            this.supplier.shops
-              .push(Object.assign(response.data.createSupplierShop, {
-                editMode: true,
-                expanded: true,
-              }))
-          }
-        }
-      } catch (error) {
-        throw new Error(error)
-      }
-    },
-    editShop (shop) {
-      this.$set(shop, 'editMode', true)
-    },
-    async updateShop (shopId) {
-      try {
-        const shops = this.supplier.shops || []
-        const shop = shops.find(el => el.id === shopId) || {}
-        const expanded = shop.expanded
-        const shopTemplate = shop.template || {}
-        const input = {}
-        const template = {}
-        this.shopFieldsKeys.forEach(key => {
-          input[key] = shop[key]
-          template[key] = shopTemplate[key]
-        })
-        input.template = template
-        const response = await this.$apollo.mutate({
-          mutation: UPDATE_SUPPLIER_SHOP,
-          variables: { id: shopId, input },
-        })
-        if (response && response.data && response.data.updateSupplierShop) {
-          const index = this.supplier.shops.findIndex(el => el.id === shopId)
-          const updatedItem = Object.assign(response.data.updateSupplierShop, {
-            editMode: false,
-            expanded,
-          })
-          this.supplier.shops.splice(index, 1, updatedItem)
-        }
-      } catch (error) {
-        throw new Error(error)
-      }
-    },
-    async deleteShop (id) {
-      try {
-        const response = await this.$apollo.mutate({
-          mutation: DELETE_SUPPLIER_SHOP,
-          variables: { id },
-        })
-        if (response && response.data && response.data.deleteSupplierShop) {
-          this.supplier.shops = this.supplier.shops.filter(el => el.id !== id)
-          // TODO remove from cache
-        }
-      } catch (error) {
-        throw new Error(error)
-      }
-    },
-    expandShop (shopId) {
-      const shops = this.supplier.shops || []
-      const shop = shops.find(el => el.id === shopId)
-      if (shop) {
-        this.$set(shop, 'expanded', !shop.expanded)
-      }
-    },
-    saveAsTemplate () {
-      this.templateSaveDialog = true
-    },
-    showModalList () {
-      this.templateListDialog = true
-    },
-    restoreTemplate () {
-      this.supplier.template = this.templateCopy || { id: this.supplier.id }
-      this.templateCopy = null
-      this.templateListDialog = false
-      this.templateChanged = false
-    },
-    setTemplate (id) {
-      this.templateCopy = Object.assign({}, this.supplier.template)
-      const template = this.templates.find(t => t.id === id)
-      if (template) {
-        let temp = Object.assign({}, template, { id: this.supplier.template.id })
-        delete temp.__typename
-        this.supplier.template = temp
-      } else if (id === 'default') {
-        this.supplier.template = { id: this.supplier.id }
-      }
-      this.templateChanged = true
-      this.templateListDialog = false
     },
   },
 }

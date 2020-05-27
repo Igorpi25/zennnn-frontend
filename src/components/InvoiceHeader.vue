@@ -70,7 +70,7 @@
         no-filter
         searchable
         item-value="id"
-        item-text="companyNameSl"
+        item-text="companyName"
         return-object
         hide-details
         class="w-full sm:w-auto xl:w-full lg:flex-shrink-0 sm:flex-grow md:flex-grow-0 lg:flex-grow xl:flex-grow-0 max-w-sm mb-2 md:mb-0 mr-2"
@@ -114,7 +114,7 @@
       <span class="mr-1">{{ item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : '-' }}</span>&nbsp;
       <span v-if="item.supplier">
         <span> / </span>
-        {{ item.supplier.companyNameSl || '' }}
+        {{ item.supplier.companyName || '' }}
       </span>
     </div>
     <div class="flex-grow" />

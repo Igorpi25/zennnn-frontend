@@ -133,39 +133,78 @@ export const PRODUCT_FRAGMENT = gql`
   ${COMMENT_FRAGMENT}
 `
 
+export const PERSON_FRAGMENT = gql`
+  fragment PersonFragment on Person {
+    firstName
+    lastName
+    middleName
+    fullName
+  }
+`
+
+export const CONTACT_FRAGMENT = gql`
+  fragment ContactFragment on Contact {
+    contactType
+    contact
+  }
+`
+
 export const SUPPLIER_FRAGMENT = gql`
   fragment SupplierFragment on Supplier {
     id
+    uid
+    locale
     createdAt
     updatedAt
-    language
-    companyNameSl
-    companyNameCl
-    website
+    
     companyType
-    fieldOfActivity
+    contactPerson {
+      ...PersonFragment
+    }
+    companyName
+    companyNameLocal
+    isCompanyNameMatch
+    companyOwner {
+      ...PersonFragment
+    }
+
     legalAddress
     legalAddressPostcode
-    manufacturersAddress
-    manager
-    workPhone
+    mailingAddress
+    mailingAddressPostcode
+    isMailingAddressMatch
+
+    phone
+    phoneOption
     fax
+    website
+    # for contact
     mobilePhone
-    wechat
     email
-    skype
-    qq
+
+    vat
+    iec
+    okpo
+    psrn
+    bic
+    swift
+
     bankName
     bankAddress
-    accountNumber
-    swift
-    ownerFullName
-    ownerJobPosition
-    responsiblePerson
-    deliveryAddress
-    contactNumber
+    bankAccountNumber
+    correspondentBankName
+    correspondentAccountNumber
+
     note
+
+    contacts {
+      ...ContactFragment
+    }
+    tags
+    files
   }
+  ${PERSON_FRAGMENT}
+  ${CONTACT_FRAGMENT}
 `
 
 export const INVOICE_FRAGMENT = gql`
@@ -212,15 +251,6 @@ export const INVOICE_PRODUCTS_FRAGMENT = gql`
     }
   }
   ${PRODUCT_FRAGMENT}
-`
-
-export const PERSON_FRAGMENT = gql`
-  fragment PersonFragment on Person {
-    firstName
-    lastName
-    middleName
-    fullName
-  }
 `
 
 export const CLIENT_FRAGMENT = gql`
@@ -295,7 +325,9 @@ export const CLIENT_FRAGMENT = gql`
     issuedBy
 
     avatar
-    contacts
+    contacts {
+      ...ContactFragment
+    }
     tags
     files
 
@@ -303,6 +335,7 @@ export const CLIENT_FRAGMENT = gql`
     fullName
   }
   ${PERSON_FRAGMENT}
+  ${CONTACT_FRAGMENT}
 `
 
 export const SPEC_FRAGMENT = gql`
@@ -359,67 +392,23 @@ export const SPEC_FRAGMENT = gql`
   ${CUSTOMS_FRAGMENT}
 `
 
-export const SUPPLIER_TEMPLATE_FRAGMENT = gql`
-  fragment SupplierTemplateFragment on SupplierTemplate {
+export const SUPPLIER_BRANCH_FRAGMENT = gql`
+  fragment SupplierBranchFragment on SupplierBranch {
     id
-    templateName
-    companyNameSl
-    companyNameCl
-    website
-    companyType
-    fieldOfActivity
-    legalAddress
-    legalAddressPostcode
-    manufacturersAddress
-    manager
-    workPhone
-    fax
-    mobilePhone
-    wechat
-    email
-    skype
-    qq
-    bankName
-    bankAddress
-    accountNumber
-    swift
-    ownerFullName
-    ownerJobPosition
-    responsiblePerson
-    deliveryAddress
-    contactNumber
-    note
-  }
-`
-
-export const SUPPLIER_SHOP_FRAGMENT = gql`
-  fragment SupplierShopFragment on SupplierShop {
-    id
+    branchType
     name
     address
-    seller
+    contactPerson {
+      ...PersonFragment
+    }
     workPhone
     mobilePhone
-    wechat
-    email
-    qq
-    skype
+    contacts {
+      ...ContactFragment
+    }
   }
-`
-
-export const SUPPLIER_SHOP_TEMPLATE_FRAGMENT = gql`
-  fragment SupplierShopTemplateFragment on SupplierShopTemplate {
-    id
-    name
-    address
-    seller
-    workPhone
-    mobilePhone
-    wechat
-    email
-    qq
-    skype
-  }
+  ${PERSON_FRAGMENT}
+  ${CONTACT_FRAGMENT}
 `
 
 export const SPEC_INVOICES_FRAGMENT = gql`

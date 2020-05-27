@@ -20,8 +20,8 @@ export default {
       default: false,
     },
   },
-  async beforeRouteLeave (to, from, next) {
-    await this.$refs.card.checkChangesBeforeLeave(next)
-  },
+  // async beforeRouteLeave (to, from, next) {
+  //   await this.$refs.card.checkChangesBeforeLeave(next)
+  // },
 }
 </script>

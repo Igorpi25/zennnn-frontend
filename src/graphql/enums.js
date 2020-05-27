@@ -38,6 +38,25 @@ export const SpecCurrency = {
   UAH: 'UAH',
 }
 
+export const ContactType = {
+  EMAIL: 'EMAIL',
+  QQ: 'QQ',
+  WE_CHAT: 'WE_CHAT',
+  MESSENGER: 'MESSENGER',
+  VIBER: 'VIBER',
+  TELEGRAM: 'TELEGRAM',
+  WHATSAPP: 'WHATSAPP',
+  KAKAO_TALK: 'KAKAO_TALK',
+  SKYPE: 'SKYPE',
+}
+
+export const BranchType = {
+  OFFICE: 'OFFICE',
+  PRODUCTION: 'PRODUCTION',
+  WAREHOUSE: 'WAREHOUSE',
+  SHOP: 'SHOP',
+}
+
 export const ShipmentType = {
   UNDEFINED: 'UNDEFINED',
   MARINE: 'MARINE',

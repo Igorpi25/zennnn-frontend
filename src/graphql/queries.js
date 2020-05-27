@@ -5,9 +5,7 @@ import {
   PRODUCT_FRAGMENT,
   CLIENT_FRAGMENT,
   SUPPLIER_FRAGMENT,
-  SUPPLIER_TEMPLATE_FRAGMENT,
-  SUPPLIER_SHOP_FRAGMENT,
-  SUPPLIER_SHOP_TEMPLATE_FRAGMENT,
+  SUPPLIER_BRANCH_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
   ORG_CONTRACT_FRAGMENT,
   PAPER_SPEC_FRAGMENT,
@@ -200,25 +198,23 @@ export const SEARCH_CLIENTS = gql`
   ${CLIENT_FRAGMENT}
 `
 
+export const GET_ORG_NEXT_SUPPLIER_UID = gql`
+  query GetOrgNextSupplierUid($orgId: ID!) {
+    getOrgNextSupplierUid(orgId: $orgId)
+  }
+`
+
 export const GET_SUPPLIER = gql`
   query GetSupplier($id: ID!) {
     getSupplier(id: $id) {
       ...SupplierFragment
-      template {
-        ...SupplierTemplateFragment
-      }
-      shops {
-        ...SupplierShopFragment
-        template {
-          ...SupplierShopTemplateFragment
-        }
+      branches {
+        ...SupplierBranchFragment
       }
     }
   }
   ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
 export const LIST_SUPPLIERS = gql`
@@ -226,33 +222,14 @@ export const LIST_SUPPLIERS = gql`
     listSuppliers(orgId: $orgId) {
       items {
         ...SupplierFragment
-        template {
-          ...SupplierTemplateFragment
-        }
-        shops {
-          ...SupplierShopFragment
-          template {
-            ...SupplierShopTemplateFragment
-          }
+        branches {
+          ...SupplierBranchFragment
         }
       }
     }
   }
   ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
-`
-
-export const LIST_SUPPLIER_TEMPLATES = gql`
-  query ListSupplierTemplates($orgId: ID!) {
-    listSupplierTemplates(orgId: $orgId) {
-      items {
-        ...SupplierTemplateFragment
-      }
-    }
-  }
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
 export const SEARCH_SUPPLIERS = gql`
@@ -260,15 +237,12 @@ export const SEARCH_SUPPLIERS = gql`
     searchSuppliers(orgId: $orgId, search: $search) {
       items {
         ...SupplierFragment
-        template {
-          ...SupplierTemplateFragment
-        }
       }
     }
   }
   ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
 `
+
 export const GET_ORG_REQUISITE = gql`
   query GetOrgRequisite($id: ID!) {
     getOrgRequisite(id: $id) {
