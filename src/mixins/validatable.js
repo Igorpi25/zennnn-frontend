@@ -9,6 +9,7 @@ export default {
     patterns: Array,
     validateOnBlur: Boolean,
     lazyValidation: Boolean,
+    hideWarn: Boolean,
   },
   data () {
     return {
@@ -70,7 +71,7 @@ export default {
         }
       }
       this.valid = errorsCount === 0
-      if (this.valid) {
+      if (this.rules && this.valid) {
         this.clearError()
       }
       return errorsCount
@@ -82,7 +83,9 @@ export default {
           const result = rule(value)
           if (result !== true) {
             warnsCount++
-            this.setWarn(result)
+            if (!this.hideWarn) {
+              this.setWarn(result)
+            }
             break
           }
         }

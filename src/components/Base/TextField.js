@@ -65,10 +65,13 @@ export default {
     },
     stateIcon: Boolean,
     stateIconOnValidate: Boolean,
+    stateColor: String,
     slotClass: {
       type: String,
       default: 'w-10',
     },
+    prependSlotClass: String,
+    appendSlotClass: String,
     forceUpdate: Boolean,
     dense: Boolean,
     autocomplete: {
@@ -76,6 +79,7 @@ export default {
       default: 'off',
     },
     emitInvalid: Boolean,
+    notFocusOnSelect: Boolean,
   },
 
   data () {
@@ -142,13 +146,15 @@ export default {
       const staticClasses = ['text-field__content relative flex items-center focus:outline-none transition-colors-and-opacity duration-150 ease-in-out']
       let genericClasses = [
         'rounded',
-        (this.hasWarn || this.hasError) && !this.hideError ? 'shadow-yellow-300' : 'focus-within:shadow-blue-500',
         this.disabled ? 'text-gray-200 cursor-not-allowed' : this.solo ? 'text-blue-500' : 'text-white',
         this.solo
           ? 'bg-transparent focus-within:bg-gray-800'
           : 'text-base bg-gray-800',
         this.solo || this.dense ? 'h-8' : 'h-10',
       ]
+      if (!this.notFocusOnSelect) {
+        genericClasses.push((this.hasWarn || this.hasError) && !this.hideError ? 'shadow-yellow-300' : 'focus-within:shadow-blue-500')
+      }
       if (this.solo && !this.soloFlat && !this.internalValue) {
         genericClasses.push('bg-gray-800')
       }
@@ -520,7 +526,7 @@ export default {
       const isValid = !this.hasError && !this.hasWarn && this.shouldValidate
       if (isValid) {
         color = 'text-green-500'
-      } else if (!this.required) {
+      } else if (!this.required || this.stateColor === 'warn') {
         color = 'text-yellow-500'
       }
       const svgData = {
@@ -561,8 +567,13 @@ export default {
         ref: 'content',
         class: this.computedContentClass,
         on: {
-          click: () => {
+          click: (e) => {
             if (this.hasFocus || this.disabled || !this.$refs.input) return
+            // Prevent focus on select prepend focus
+            if (
+              e.target.tagName.toUpperCase() === 'INPUT' &&
+              e.target.id !== this.computedId
+            ) return
             this.focus()
           },
         },
@@ -574,8 +585,11 @@ export default {
         this.slotClass,
       ]
       if (this.$slots.prepend) {
+        const prependSlotClass = this.prependSlotClass
+          ? mergeClasses(slotClass, this.prependSlotClass)
+          : slotClass
         const prepend = this.$createElement('div', {
-          class: slotClass,
+          class: prependSlotClass,
         }, this.$slots.prepend)
         children.push(prepend)
       }
@@ -587,8 +601,11 @@ export default {
         children.push(this.genStateIndicator())
       }
       if (this.$slots.append) {
+        const appendSlotClass = this.appendSlotClass
+          ? mergeClasses(slotClass, this.appendSlotClass)
+          : slotClass
         const append = this.$createElement('div', {
-          class: slotClass,
+          class: appendSlotClass,
         }, this.$slots.append)
         children.push(append)
       }

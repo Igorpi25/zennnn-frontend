@@ -26,12 +26,17 @@
         :input-class="inputClass"
         :state-icon="stateIcon"
         :state-icon-on-validate="stateIconOnValidate"
+        :state-color="stateColor"
         :slot-class="slotClass"
+        :prepend-slot-class="prependSlotClass"
+        :append-slot-class="appendSlotClass"
         :class="['select-input']"
+        :not-focus-on-select="notFocusOnSelect"
         :rules="rules"
         :patterns="patterns"
         :validate-on-blur="validateOnBlur"
         :lazy-validation="lazyValidation"
+        :hide-warn="hideWarn"
         :label="label"
         :label-no-wrap="labelNoWrap"
         :label-hint="labelHint"
@@ -70,7 +75,7 @@
     <v-menu
       ref="menu"
       v-model="isMenuActive"
-      :activator="$refs.slot"
+      :activator="activator || $refs.slot"
       :attach="menuAttach"
       :close-on-click="false"
       :close-on-content-click="false"
@@ -132,7 +137,9 @@
             role="menuitem"
             @click="select(item)"
           >
-            <span>{{ item[itemText] }}</span>
+            <slot name="item" :item="item">
+              <span>{{ item[itemText] }}</span>
+            </slot>
           </li>
         </template>
         <li
@@ -196,6 +203,7 @@ export default {
     patterns: Array,
     validateOnBlur: Boolean,
     lazyValidation: Boolean,
+    hideWarn: Boolean,
     label: String,
     labelNoWrap: Boolean,
     labelHint: String,
@@ -228,11 +236,16 @@ export default {
     },
     stateIcon: Boolean,
     stateIconOnValidate: Boolean,
+    stateColor: String,
     slotClass: {
       type: String,
       default: 'w-10',
     },
+    prependSlotClass: String,
+    appendSlotClass: String,
+    notFocusOnSelect: Boolean,
     flat: Boolean,
+    activator: undefined,
     menuAttach: undefined,
     noFilter: Boolean,
     hasArrowIcon: {
@@ -339,6 +352,9 @@ export default {
           this.$emit('update:search', '')
         }, 250)
       }
+    },
+    isMenuActive (val) {
+      this.$emit('menu', val)
     },
   },
   mounted () {

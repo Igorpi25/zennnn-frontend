@@ -2,7 +2,7 @@
   @apply text-gray-100 bg-gray-900 text-left py-1;
 }
 .select-picker__item {
-  @apply h-8 flex items-center cursor-pointer px-2 outline-none;
+  @apply h-9 flex items-center cursor-pointer px-2 outline-none;
 }
 .select-picker__item--selected {
   @apply text-white;
@@ -15,7 +15,8 @@
   @apply cursor-default;
 }
 
-.select.select--menu-active .text-field__content {
+.select.select--menu-active .text-field__content,
+.combo-input.combo-input--menu-active .text-field__content {
   border-bottom-left-radius: 0!important;
   border-bottom-right-radius: 0!important;
 }
