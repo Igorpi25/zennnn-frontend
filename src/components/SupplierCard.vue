@@ -318,6 +318,7 @@ export default {
             this.$emit('create', data)
           } else {
             if (redirectAfterCreate) {
+              this.$notify(this.$t('supplier.created'))
               this.$router.push({
                 name: 'supplier',
                 params: {

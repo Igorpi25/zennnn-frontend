@@ -500,6 +500,7 @@ export default {
             this.$emit('create', data)
           } else {
             if (redirectAfterCreate) {
+              this.$notify(this.$t('client.created'))
               this.$router.push({
                 name: 'client',
                 params: {

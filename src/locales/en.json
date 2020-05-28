@@ -441,6 +441,7 @@
   "supplier": {
     "createTitle": "Создать нового поставщика",
     "editTitle": "Данные о поставщике",
+    "created": "Created.",
     "supplierCard": "Supplier's card",
     "edit": "Edit",
     "supplierCardPatterns": "Supplier's card pattern",
@@ -538,6 +539,7 @@
   "client": {
     "createTitle": "Создать нового клиента",
     "editTitle": "Данные о клиенте",
+    "created": "Created.",
     "save": "Save",
     "saveAsPattern": "Save as a pattern",
     "backToClientsList": "Back to clients list",
