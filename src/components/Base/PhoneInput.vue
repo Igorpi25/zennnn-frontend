@@ -1,57 +1,60 @@
 <template>
-  <TextField
-    ref="phoneInput"
-    v-model="internalValue"
-    :loading="loading"
-    :label="label"
-    :label-no-wrap="labelNoWrap"
-    :label-hint="labelHint"
-    :placeholder="phonePlaceholder"
-    :class="['combo-input', { 'combo-input--menu-active': isPhoneMenuActive }]"
-    :state-icon="stateIcon"
-    :state-color="stateColor"
-    :required="required"
-    :patterns="inputPatterns"
-    force-update
-    hide-warn
-    type="tel"
-    prepend-slot-class="w-auto"
-    @blur="onBlur"
-  >
-    <template v-slot:prepend>
-      <Select
-        :value="countryCode"
-        :activator="$refs.phoneInput"
-        :search.sync="phoneSearch"
-        :items="phonesItems"
-        :patterns="inputPatterns"
-        :size="compSize"
-        hide-warn
-        searchable
-        item-value="value"
-        item-text="code"
-        prepend-slot-class="w-auto pl-2"
-        append-slot-class="w-auto pr-1"
-        not-focus-on-select
-        @menu="v => isPhoneMenuActive = v"
-        @input="onCountryCodeSelect"
-      >
-        <template v-slot:prepend>
-          <img
-            :src="`/static/flags/${countryCode}.svg`"
-            class="w-6 rounded-sm mr-2"
-          >
-        </template>
-        <template v-slot:item="{ item }">
-          <img
-            :src="`/static/flags/${item.value}.svg`"
-            class="w-6 rounded-sm mr-2"
-          >
-          <span>{{ item.code }}</span>
-        </template>
-      </Select>
-    </template>
-  </TextField>
+  <div>
+    <TextField
+      ref="phoneInput"
+      v-model="internalValue"
+      :loading="loading"
+      :label="label"
+      :label-no-wrap="labelNoWrap"
+      :label-hint="labelHint"
+      :placeholder="phonePlaceholder"
+      :class="['combo-input', { 'combo-input--menu-active': isPhoneMenuActive }]"
+      :state-icon="stateIcon"
+      :state-color="stateColor"
+      :required="required"
+      :patterns="inputPatterns"
+      force-update
+      hide-warn
+      type="tel"
+      prepend-slot-class="w-auto"
+      @blur="onBlur"
+    >
+      <template v-slot:prepend>
+        <Select
+          :value="countryCode"
+          :activator="$refs.phoneInput"
+          :search.sync="phoneSearch"
+          :items="phonesItems"
+          :patterns="inputPatterns"
+          :size="compSize"
+          hide-warn
+          searchable
+          item-value="value"
+          item-text="code"
+          prepend-slot-class="w-auto pl-2"
+          append-slot-class="w-auto pr-1"
+          not-focus-on-select
+          @menu="v => isPhoneMenuActive = v"
+          @input="onCountryCodeSelect"
+        >
+          <template v-slot:prepend>
+            <img
+              :src="`/static/flags/${countryCode}.svg`"
+              class="w-6 rounded-sm mr-2"
+            >
+          </template>
+          <template v-slot:item="{ item }">
+            <img
+              :src="`/static/flags/${item.value}.svg`"
+              class="w-6 rounded-sm mr-2"
+            >
+            <span class="text-white pr-1">{{ item.code }}</span>
+            <span class="text-gray-200">{{ item.placeholder }}</span>
+          </template>
+        </Select>
+      </template>
+    </TextField>
+  </div>
 </template>
 
 <script>
