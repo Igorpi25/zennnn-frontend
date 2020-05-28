@@ -971,6 +971,7 @@
     "removeEmployee": "Are you sure you want to delete the Employee?"
   },
   "rule": {
+    "phone": "Fill in this field.",
     "onlyLatin": "Only latin letters and symbols are allowed",
     "required": "Fill in this field.",
     "requiredSelect": "Please select.",
