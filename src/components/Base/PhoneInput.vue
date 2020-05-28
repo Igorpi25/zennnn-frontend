@@ -25,13 +25,13 @@
         :search.sync="phoneSearch"
         :items="phonesItems"
         :patterns="inputPatterns"
+        :size="compSize"
         hide-warn
         searchable
         item-value="value"
         item-text="code"
-        content-class="w-38"
         prepend-slot-class="w-auto pl-2"
-        append-slot-class="w-auto pl-1 pr-sm"
+        append-slot-class="w-auto pr-1"
         not-focus-on-select
         @menu="v => isPhoneMenuActive = v"
         @input="onCountryCodeSelect"
@@ -39,13 +39,13 @@
         <template v-slot:prepend>
           <img
             :src="`/static/flags/${countryCode}.svg`"
-            class="w-6 rounded-sm mr-4"
+            class="w-6 rounded-sm mr-2"
           >
         </template>
         <template v-slot:item="{ item }">
           <img
             :src="`/static/flags/${item.value}.svg`"
-            class="w-6 rounded-sm mr-4"
+            class="w-6 rounded-sm mr-2"
           >
           <span>{{ item.code }}</span>
         </template>
@@ -83,6 +83,10 @@ export default {
     }
   },
   computed: {
+    compSize () {
+      const length = (this.currentPhoneItem.code || '').length
+      return length + 1
+    },
     inputPatterns () {
       return [
         v => {

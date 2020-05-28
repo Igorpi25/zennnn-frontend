@@ -78,6 +78,7 @@ export default {
       type: String,
       default: 'off',
     },
+    size: [Number, String],
     emitInvalid: Boolean,
     notFocusOnSelect: Boolean,
   },
@@ -502,6 +503,9 @@ export default {
       }
       if (this.autocomplete === 'off') {
         attrs.autocomplete = 'off'
+      }
+      if (this.size) {
+        attrs.size = this.size
       }
       return this.$createElement('input', {
         ref: 'input',

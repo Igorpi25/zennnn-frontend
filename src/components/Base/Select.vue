@@ -45,6 +45,7 @@
         :solo-flat="soloFlat"
         :dense="dense"
         :loading="loading"
+        :size="size"
         autocomplete="off"
         force-update
         @input="onInput"
@@ -254,6 +255,7 @@ export default {
     },
     dense: Boolean,
     loading: Boolean,
+    size: [Number, String],
   },
   data () {
     return {
