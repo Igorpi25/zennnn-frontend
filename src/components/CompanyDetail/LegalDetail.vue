@@ -251,6 +251,7 @@
           <div class="flex items-end pb-2">
             <PhoneInput
               :value="item.phone"
+              :locale="item.locale"
               :label="$t('companyDetail.label.phone')"
               :loading="loading"
               state-icon
@@ -261,6 +262,7 @@
             />
             <PhoneInput
               :value="item.fax"
+              :locale="item.locale"
               :label="$t('companyDetail.label.fax')"
               :loading="loading"
               class="w-1/2 pl-2"

@@ -80,7 +80,7 @@
             >
               <td></td>
               <td>{{ item.fullName }}</td>
-              <td>{{ item.phone || item.mobilePhone }}</td>
+              <td>{{ item.clientPhone }}</td>
               <td>{{ item.contactPerson && item.contactPerson.fullName }}</td>
               <td></td>
               <td>{{ item.uid }}</td>
@@ -179,7 +179,7 @@ export default {
       return [
         { text: '', value: 'debt', align: 'left', width: 60, sortable: true, tooltip: this.$t('clients.clientsDebt') },
         { text: this.$t('clients.companyName'), value: 'fullName', align: 'left', width: 220, minWidth: 220, sortable: true },
-        { text: this.$t('clients.phone'), value: 'phone', align: 'left', width: 120, minWidth: 120, sortable: true },
+        { text: this.$t('clients.phone'), value: 'clientPhone', align: 'left', width: 120, minWidth: 120, sortable: true },
         { text: this.$t('clients.contactPerson'), value: 'contactPerson.fullName', align: 'left', width: 165, sortable: true },
         { text: '', value: 'coming', align: 'left', width: 45 },
         { text: this.$t('clients.ucn'), value: 'uid', align: 'left', width: 120, minWidth: 120, sortable: true },
@@ -189,7 +189,13 @@ export default {
     },
     items () {
       const items = (this.listClients && this.listClients.items) || []
-      return items.filter(el => el.clientType === this.clientTypeEnum)
+      const itemsMapped = items.map(item => {
+        return {
+          ...item,
+          clientPhone: (item.mobilePhone && item.mobilePhone.phone) || (item.phone && item.phone.phone),
+        }
+      })
+      return itemsMapped.filter(el => el.clientType === this.clientTypeEnum)
     },
   },
   methods: {

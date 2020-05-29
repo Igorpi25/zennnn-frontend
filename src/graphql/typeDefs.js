@@ -142,6 +142,13 @@ export const PERSON_FRAGMENT = gql`
   }
 `
 
+export const PHONE_FRAGMENT = gql`
+  fragment PhoneFragment on Phone {
+    countryCode
+    phone
+  }
+`
+
 export const CONTACT_FRAGMENT = gql`
   fragment ContactFragment on Contact {
     contactType
@@ -174,12 +181,18 @@ export const SUPPLIER_FRAGMENT = gql`
     mailingAddressPostcode
     isMailingAddressMatch
 
-    phone
+    phone {
+      ...PhoneFragment
+    }
     phoneOption
-    fax
+    fax {
+      ...PhoneFragment
+    }
     website
     # for contact
-    mobilePhone
+    mobilePhone {
+      ...PhoneFragment
+    }
     email
 
     vat
@@ -204,6 +217,7 @@ export const SUPPLIER_FRAGMENT = gql`
     files
   }
   ${PERSON_FRAGMENT}
+  ${PHONE_FRAGMENT}
   ${CONTACT_FRAGMENT}
 `
 
@@ -282,12 +296,18 @@ export const CLIENT_FRAGMENT = gql`
     deliveryAddressPostcode
     isDeliveryAddressMatch
 
-    phone
+    phone {
+      ...PhoneFragment
+    }
     phoneOption
-    fax
+    fax {
+      ...PhoneFragment
+    }
     website
     # for contact
-    mobilePhone
+    mobilePhone {
+      ...PhoneFragment
+    }
     email
 
     vat
@@ -308,8 +328,12 @@ export const CLIENT_FRAGMENT = gql`
     importerContactPerson {
       ...PersonFragment
     }
-    importerMobilePhone
-    importerPhone
+    importerMobilePhone {
+      ...PhoneFragment
+    }
+    importerPhone {
+      ...PhoneFragment
+    }
     importerEmail
     note
     # PRIVATE
@@ -335,6 +359,7 @@ export const CLIENT_FRAGMENT = gql`
     fullName
   }
   ${PERSON_FRAGMENT}
+  ${PHONE_FRAGMENT}
   ${CONTACT_FRAGMENT}
 `
 
@@ -401,13 +426,18 @@ export const SUPPLIER_BRANCH_FRAGMENT = gql`
     contactPerson {
       ...PersonFragment
     }
-    workPhone
-    mobilePhone
+    workPhone {
+      ...PhoneFragment
+    }
+    mobilePhone {
+      ...PhoneFragment
+    }
     contacts {
       ...ContactFragment
     }
   }
   ${PERSON_FRAGMENT}
+  ${PHONE_FRAGMENT}
   ${CONTACT_FRAGMENT}
 `
 

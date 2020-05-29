@@ -34,6 +34,7 @@
       <div class="pb-2">
         <PhoneInput
           :value="item.mobilePhone"
+          :locale="item.locale"
           :label="$t('companyDetail.label.mobilePhone')"
           :label-hint="$t('companyDetail.hint.mobilePhone')"
           :rule-message="$t('companyDetail.rule.notificationMobilePhone')"

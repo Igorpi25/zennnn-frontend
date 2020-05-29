@@ -32,6 +32,7 @@
             <BranchItem
               :loading="loading"
               :item="item"
+              :locale="locale"
               @update="updateData(i, item, $event)"
               @delete="deleteData(i, item.id)"
             />
@@ -72,6 +73,7 @@ export default {
   },
   mixins: [clientDetail],
   props: {
+    locale: String,
     emitChanges: Boolean,
     supplierId: String,
     items: {

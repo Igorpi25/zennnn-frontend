@@ -72,7 +72,7 @@
             >
                 <td></td>
                 <td>{{ item.companyName }}</td>
-                <td>{{ item.phone || item.mobilePhone }}</td>
+                <td>{{ item.supplierPhone }}</td>
                 <td>{{ item.contactPerson && item.contactPerson.fullName }}</td>
                 <td>{{ item.vat }}</td>
                 <td>{{ item.deals }}</td>
@@ -150,7 +150,7 @@ export default {
       return [
         { text: '', value: 'debt', align: 'left', width: 60, sortable: true, tooltip: this.$t('suppliers.suppliersDebt') },
         { text: this.$t('suppliers.companyName'), value: 'companyName', align: 'left', width: 220, minWidth: 220, sortable: true },
-        { text: this.$t('suppliers.phone'), value: 'phone', align: 'left', width: 120, minWidth: 120, sortable: true },
+        { text: this.$t('suppliers.phone'), value: 'supplierPhone', align: 'left', width: 120, minWidth: 120, sortable: true },
         { text: this.$t('suppliers.contactPerson'), value: 'contactPerson.fullName', align: 'left', width: 165, sortable: true },
         { text: this.$t('suppliers.inn'), value: 'vat', align: 'left', width: 120, minWidth: 120, sortable: true },
         { text: '', value: 'deals', width: 60, minWidth: 60, sortable: true, tooltip: this.$t('suppliers.currentDealsAmount') },
@@ -160,7 +160,12 @@ export default {
     },
     items () {
       const items = (this.listSuppliers && this.listSuppliers.items) || []
-      return items
+      return items.map(item => {
+        return {
+          ...item,
+          supplierPhone: (item.mobilePhone && item.mobilePhone.phone) || (item.phone && item.phone.phone),
+        }
+      })
     },
   },
   methods: {

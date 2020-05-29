@@ -77,15 +77,17 @@
     </div>
     <PhoneInput
       :value="item.mobilePhone"
+      :locale="locale"
       :label="$t('companyDetail.label.mobilePhone')"
       :loading="loading"
       @input="updateData('mobilePhone', $event)"
     />
     <PhoneInput
       :value="item.workPhone"
+      :locale="locale"
       :label="$t('companyDetail.label.phone')"
       :loading="loading"
-      @input="updateData('mobilePhone', $event)"
+      @input="updateData('workPhone', $event)"
     />
   </div>
 </template>
@@ -96,6 +98,7 @@ import { BranchType } from '../../graphql/enums'
 export default {
   name: 'BranchItem',
   props: {
+    locale: String,
     loading: Boolean,
     create: Boolean,
     item: {

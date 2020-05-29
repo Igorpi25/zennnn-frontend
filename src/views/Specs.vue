@@ -110,7 +110,7 @@
               <td></td>
               <td>{{ (item.client && item.client.uid) || '-' }}</td>
               <td>{{ item.client && item.client.fullName }}</td>
-              <td>{{ ((item.client && item.client.phone) || (item.client && item.client.mobilePhone)) || '-' }}</td>
+              <td>{{ ((item.client && item.client.mobilePhone && item.client.mobilePhone.phone)) || '-' }}</td>
               <td>{{ item.customNumber || item.specNo || '-' }}</td>
               <td class="text-center">
                 {{ $d($parseDate(item.createdAt), 'short') }}

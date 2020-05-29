@@ -103,11 +103,17 @@ export const GET_SPECS = gql`
         updatedAt
         # legal
         companyName
-        phone
-        fax
+        phone {
+          phone
+        }
+        fax {
+          phone
+        }
         # private
         passportId
-        mobilePhone
+        mobilePhone {
+          phone
+        }
         fullName
       }
     }
@@ -135,11 +141,17 @@ export const GET_SPEC = gql`
         updatedAt
         # legal
         companyName
-        phone
-        fax
+        phone {
+          phone
+        }
+        fax {
+          phone
+        }
         # private
         passportId
-        mobilePhone
+        mobilePhone {
+          phone
+        }
         fullName
       }
     }

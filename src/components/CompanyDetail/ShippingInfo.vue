@@ -108,6 +108,7 @@
         <div>
           <PhoneInput
             :value="item.importerMobilePhone"
+            :locale="item.locale"
             :label="$t('companyDetail.label.mobilePhone')"
             :loading="loading"
             :required="!isPrivate"

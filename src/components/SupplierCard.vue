@@ -62,6 +62,7 @@
             :is-expanded="!create"
             :items="item.branches"
             :create="create && !isComponent"
+            :locale="item.locale"
             @update="updateValue"
           />
           <!-- Divider -->
