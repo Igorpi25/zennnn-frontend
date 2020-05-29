@@ -20,8 +20,8 @@
           type="checkbox"
           role="checkbox"
           aria-hidden="true"
-          @focus="hasFocus = true"
-          @blur="hasFocus = false"
+          @focus="onFocus"
+          @blur="onBlur"
         />
         <span
           :class="['switch-slider', { 'shadow-blue-600': hasFocus }, { 'cursor-not-allowed': disabled }]"
@@ -82,18 +82,24 @@ export default {
       },
       set (val) {
         this.lazyValue = val
-        this.checked = !!val
         this.$emit('input', val)
       },
     },
   },
   watch: {
-    value: {
-      handler (val) {
-        this.lazyValue = val
-        this.checked = !!val
-      },
-      immediate: true,
+    internalValue (val) {
+      this.checked = !!val
+    },
+    value (val) {
+      this.lazyValue = val
+    },
+  },
+  methods: {
+    onFocus () {
+      this.hasFocus = true
+    },
+    onBlur () {
+      this.hasFocus = false
     },
   },
 }

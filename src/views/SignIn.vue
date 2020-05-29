@@ -57,7 +57,6 @@
             name="login"
             autofocus
             validate-on-blur
-            emit-invalid
           >
           </TextField>
           <TextField
@@ -70,7 +69,6 @@
             autocomplete="on"
             minlength="8"
             validate-on-blur
-            emit-invalid
           >
             <template v-slot:append>
               <div
@@ -138,7 +136,6 @@
           state-icon
           state-icon-on-validate
           required
-          emit-invalid
         >
         </TextField>
         <TextField
@@ -152,7 +149,6 @@
           state-icon
           state-icon-on-validate
           required
-          emit-invalid
         >
         </TextField>
         <TextField
@@ -169,7 +165,6 @@
           state-icon
           state-icon-on-validate
           required
-          emit-invalid
         >
         </TextField>
         <TextField
@@ -185,7 +180,6 @@
           state-icon
           state-icon-on-validate
           required
-          emit-invalid
         >
           <template v-slot:append>
             <div

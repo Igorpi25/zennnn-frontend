@@ -1,6 +1,7 @@
 import debounce from 'lodash.debounce'
 
 import validatable from '../../mixins/validatable'
+import mask from '../../directives/Mask'
 
 import {
   formatNumber,
@@ -14,7 +15,10 @@ export default {
 
   mixins: [validatable],
 
+  directives: { mask },
+
   props: {
+    mask: String,
     value: {
       type: [String, Number, Date],
       default: null,
@@ -79,7 +83,6 @@ export default {
       default: 'off',
     },
     size: [Number, String],
-    emitInvalid: Boolean,
     notFocusOnSelect: Boolean,
   },
 
@@ -350,7 +353,6 @@ export default {
     },
 
     emitChange () {
-      if (!this.emitInvalid && !this.valid) return
       // on number type return internal value, without formatting
       const val = this.number
         ? this.unformat(this.internalValue)
@@ -507,7 +509,7 @@ export default {
       if (this.size) {
         attrs.size = this.size
       }
-      return this.$createElement('input', {
+      const data = {
         ref: 'input',
         domProps: {
           value: this.lazyValue,
@@ -521,7 +523,14 @@ export default {
           focus: this.onFocus,
           blur: this.onBlur,
         }),
-      })
+      }
+      if (this.mask) {
+        data.directives = [{
+          name: 'mask',
+          value: this.mask,
+        }]
+      }
+      return this.$createElement('input', data)
     },
 
     genStateIndicator () {

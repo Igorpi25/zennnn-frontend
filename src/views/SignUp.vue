@@ -66,7 +66,6 @@
             state-icon
             state-icon-on-validate
             required
-            emit-invalid
           >
           </TextField>
           <TextField
@@ -80,7 +79,6 @@
             state-icon
             state-icon-on-validate
             required
-            emit-invalid
           >
           </TextField>
           <TextField
@@ -96,7 +94,6 @@
             state-icon
             state-icon-on-validate
             required
-            emit-invalid
           >
           </TextField>
           <TextField
@@ -112,7 +109,6 @@
             state-icon
             state-icon-on-validate
             required
-            emit-invalid
           >
             <template v-slot:append>
               <div
