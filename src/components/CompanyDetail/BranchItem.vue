@@ -44,7 +44,7 @@
       :label="$t('companyDetail.label.branchName')"
       :placeholder="$t('companyDetail.placeholder.branchName')"
       :loading="loading"
-      lazy
+      :debounce="500"
       class="pb-2"
       @input="updateData('name', $event)"
     />
@@ -53,7 +53,7 @@
       :label="$t('companyDetail.label.branchAddress')"
       :placeholder="$t('companyDetail.placeholder.address')"
       :loading="loading"
-      lazy
+      :debounce="500"
       class="pb-2"
       @input="updateData('address', $event)"
     />
@@ -63,7 +63,7 @@
         :label="$t('companyDetail.label.contactPerson')"
         :placeholder="$t('companyDetail.placeholder.firstName')"
         :loading="loading"
-        lazy
+        :debounce="500"
         label-no-wrap
         class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
       />
@@ -71,25 +71,21 @@
         v-model="lastName"
         :placeholder="$t('companyDetail.placeholder.lastName')"
         :loading="loading"
-        lazy
+        :debounce="500"
         class="flex-grow"
       />
     </div>
-    <TextField
+    <PhoneInput
       :value="item.mobilePhone"
       :label="$t('companyDetail.label.mobilePhone')"
-      :placeholder="$t('companyDetail.placeholder.mobilePhone')"
       :loading="loading"
-      lazy
       @input="updateData('mobilePhone', $event)"
     />
-    <TextField
+    <PhoneInput
       :value="item.workPhone"
       :label="$t('companyDetail.label.phone')"
-      :placeholder="$t('companyDetail.placeholder.phone')"
       :loading="loading"
-      lazy
-      @input="updateData('workPhone', $event)"
+      @input="updateData('mobilePhone', $event)"
     />
   </div>
 </template>
@@ -101,6 +97,7 @@ export default {
   name: 'BranchItem',
   props: {
     loading: Boolean,
+    create: Boolean,
     item: {
       type: Object,
       default: () => ({}),

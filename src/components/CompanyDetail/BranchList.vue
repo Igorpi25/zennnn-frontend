@@ -72,7 +72,6 @@ export default {
   },
   mixins: [clientDetail],
   props: {
-    loading: Boolean,
     emitChanges: Boolean,
     supplierId: String,
     items: {
@@ -90,7 +89,7 @@ export default {
   methods: {
     addData () {
       if (this.emitChanges) {
-        this.$emit('update', 'branches', [...this.items, { branchType: BranchType.WAREHOUSE }])
+        this.$emit('update', { 'branches': [...this.items, { branchType: BranchType.WAREHOUSE }] })
       } else {
         this.addBranch()
       }
@@ -100,7 +99,7 @@ export default {
         const updatedItem = Object.assign({}, item, value)
         const items = this.items.slice()
         items.splice(i, 1, updatedItem)
-        this.$emit('update', 'branches', items)
+        this.$emit('update', { 'branches': items })
       } else {
         this.updateBranch(item.id, value)
       }
@@ -109,7 +108,7 @@ export default {
       if (this.emitChanges) {
         const items = this.items.slice()
         items.splice(i, 1)
-        this.$emit('update', 'branches', items)
+        this.$emit('update', { 'branches': items })
       } else {
         this.deleteBranch(id)
       }

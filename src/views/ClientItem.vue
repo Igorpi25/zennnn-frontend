@@ -1,6 +1,5 @@
 <template>
   <ClientCard
-    ref="card"
     :org-id="$route.params.orgId"
     :create="create"
   />
@@ -20,11 +19,5 @@ export default {
       default: false,
     },
   },
-  // async beforeRouteLeave (to, from, next) {
-  //   await this.$refs.card.checkChangesBeforeLeave(next)
-  // },
-  // async beforeRouteUpdate (to, from, next) {
-  //   await this.$refs.card.checkChangesBeforeLeave(next)
-  // },
 }
 </script>

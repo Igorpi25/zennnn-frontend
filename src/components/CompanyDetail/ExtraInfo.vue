@@ -24,9 +24,10 @@
             :value="item.note"
             :placeholder="$t('companyDetail.placeholder.note')"
             :loading="loading"
-            lazy
+            :debounce="500"
+            :lazy="create"
             rows="4"
-            @input="$emit('update', 'note', $event)"
+            @input="updateData({ 'note': $event })"
           />
         </div>
         <div class="pb-2">
@@ -35,7 +36,8 @@
             :label="$t('companyDetail.label.tags')"
             :placeholder="$t('companyDetail.placeholder.tags')"
             :loading="loading"
-            lazy
+            :debounce="500"
+            :lazy="create"
           >
             <template v-slot:label>
               <label class="block leading-5 text-base text-gray-100 whitespace-no-wrap py-2">
@@ -74,7 +76,6 @@ export default {
   name: 'ExtraInfo',
   mixins: [clientDetail],
   props: {
-    loading: Boolean,
     item: {
       type: Object,
       default: () => ({}),

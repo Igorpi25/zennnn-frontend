@@ -1,19 +1,6 @@
 <template>
   <div>
 
-    <v-dialog
-      v-model="saveBeforeCloseDialog"
-      max-width="463"
-    >
-      <SaveBeforeCloseModal
-        :text="$t('label.saveChangesBeforeClose')"
-        :postScriptum="$t('label.saveChangesHint')"
-        @dontSave="$emit('confirm', 1)"
-        @cancel="$emit('confirm', 0)"
-        @save="$emit('confirm', 2)"
-      />
-    </v-dialog>
-
     <div
       id="container"
       :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container container--sm']"
@@ -62,6 +49,7 @@
             :loading="loading"
             :uid="uid"
             :item="item"
+            :create="create && !isComponent"
             @update="updateValue"
           />
           <!-- Divider -->
@@ -71,6 +59,7 @@
             :loading="loading"
             :item="item"
             :is-expanded="!create"
+            :create="create && !isComponent"
             @update="updateValue"
           />
           <!-- Divider -->
@@ -80,6 +69,7 @@
             :loading="loading"
             :item="item"
             :is-expanded="!create"
+            :create="create && !isComponent"
             @update="updateValue"
           />
           <!-- Divider -->
@@ -91,6 +81,7 @@
                 :loading="loading"
                 :item="item"
                 :is-expanded="!create"
+                :create="create && !isComponent"
                 @update="updateValue"
               />
             </div>
@@ -100,6 +91,7 @@
                 :loading="loading"
                 :item="item"
                 :is-expanded="!create"
+                :create="create && !isComponent"
                 @update="updateValue"
               />
             </div>
@@ -115,6 +107,7 @@
             :loading="loading"
             :uid="uid"
             :item="item"
+            :create="create && !isComponent"
             @update="updateValue"
           />
           <!-- Divider -->
@@ -124,6 +117,7 @@
             :loading="loading"
             :item="item"
             :is-expanded="!create"
+            :create="create && !isComponent"
             @update="updateValue"
           />
           <!-- Divider -->
@@ -133,6 +127,7 @@
             :loading="loading"
             :item="item"
             :is-expanded="!create"
+            :create="create && !isComponent"
             @update="updateValue"
           />
           <!-- Divider -->
@@ -144,6 +139,7 @@
                 :loading="loading"
                 :item="item"
                 :is-expanded="!create"
+                :create="create && !isComponent"
                 is-private
                 @update="updateValue"
               />
@@ -154,6 +150,7 @@
                 :loading="loading"
                 :item="item"
                 :is-expanded="!create"
+                :create="create && !isComponent"
                 is-private
                 @update="updateValue"
               />
@@ -170,6 +167,7 @@
             :loading="loading"
             :uid="uid"
             :item="item"
+            :create="create && !isComponent"
             @update="updateValue"
           />
           <!-- Divider -->
@@ -179,6 +177,7 @@
             :loading="loading"
             :item="item"
             :is-expanded="!create"
+            :create="create && !isComponent"
             @update="updateValue"
           />
           <!-- Divider -->
@@ -188,6 +187,7 @@
             :loading="loading"
             :item="item"
             :is-expanded="!create"
+            :create="create && !isComponent"
             @update="updateValue"
           />
           <!-- Divider -->
@@ -199,6 +199,7 @@
                 :loading="loading"
                 :item="item"
                 :is-expanded="!create"
+                :create="create && !isComponent"
                 @update="updateValue"
               />
             </div>
@@ -208,6 +209,7 @@
                 :loading="loading"
                 :item="item"
                 :is-expanded="!create"
+                :create="create && !isComponent"
                 @update="updateValue"
               />
             </div>
@@ -215,11 +217,11 @@
         </div>
       </div>
       <Button
-        v-if="isComponent"
+        v-if="create && isComponent"
         :loading="updateLoading"
         outlined
         merge-class="w-40"
-        @click="update()"
+        @click="createClient(item)"
       >
         {{ $t('client.save') }}
       </Button>
@@ -231,7 +233,6 @@
 <script>
 // TODO install in dependencies
 import cloneDeep from 'clone-deep'
-import deepEqual from 'deep-equal'
 
 import { ClientType } from '../graphql/enums'
 import { GET_CLIENT, GET_CLIENT_GROUP, GET_ORG_NEXT_CLIENT_UID } from '../graphql/queries'
@@ -239,7 +240,7 @@ import {
   CREATE_CLIENT,
   UPDATE_CLIENT,
 } from '../graphql/mutations'
-import { isObject, replaceAt } from '../util/helpers'
+import { replaceAt } from '../util/helpers'
 
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
 import LegalDetail from './CompanyDetail/LegalDetail.vue'
@@ -248,7 +249,6 @@ import ShippingInfo from './CompanyDetail/ShippingInfo.vue'
 import ExtraInfo from './CompanyDetail/ExtraInfo.vue'
 import PrivateInfo from './CompanyDetail/PrivateInfo.vue'
 import PrivateDetail from './CompanyDetail/PrivateDetail.vue'
-import SaveBeforeCloseModal from './SaveBeforeCloseModal.vue'
 
 export default {
   name: 'ClientCard',
@@ -260,7 +260,6 @@ export default {
     ExtraInfo,
     PrivateInfo,
     PrivateDetail,
-    SaveBeforeCloseModal,
   },
   props: {
     orgId: {
@@ -293,7 +292,7 @@ export default {
       query: GET_CLIENT,
       variables () {
         return {
-          id: this.$route.params.clientId,
+          id: this.clientId,
         }
       },
       result ({ data, loading }) {
@@ -322,15 +321,16 @@ export default {
   data () {
     return {
       internalClientType: ClientType.LEGAL,
-      saveBeforeCloseDialog: false,
       updateLoading: false,
       item: {},
-      itemClone: {},
     }
   },
   computed: {
     loading () {
       return this.$apollo.queries.getClient.loading
+    },
+    clientId () {
+      return this.$route.params.clientId
     },
     clientType () {
       if (this.isComponent) return this.internalClientType
@@ -369,39 +369,6 @@ export default {
         },
       ]
     },
-    privateField () {
-      return [
-        'locale', 'contactPerson',
-        'legalAddress', 'legalAddressPostcode', 'mailingAddress', 'mailingAddressPostcode',
-        'deliveryAddress', 'deliveryAddressPostcode', 'phone', 'phoneOption', 'fax',
-        'isMailingAddressMatch', 'isDeliveryAddressMatch',
-        'mobilePhone', 'email',
-        'vat', 'iec', 'okpo', 'psrn', 'bic', 'swift',
-        'bankName', 'bankAddress', 'bankAccountNumber', 'correspondentBankName', 'correspondentAccountNumber',
-        'importerActive', 'importerCompanyName', 'importerContactPerson',
-        'importerMobilePhone', 'importerPhone', 'importerEmail', 'note',
-        'person', 'birthdate', 'passportId', 'citizenship', 'issueDate', 'expireDate', 'issuedBy', 'avatar', 'isPersonMatch',
-        'contacts', 'tags', 'files',
-      ]
-    },
-    legalFields () {
-      return [
-        'locale', 'contactPerson',
-        'companyName', 'companyNameLocal', 'companyOwner', 'isCompanyNameMatch',
-        'legalAddress', 'legalAddressPostcode', 'mailingAddress', 'mailingAddressPostcode',
-        'deliveryAddress', 'deliveryAddressPostcode', 'phone', 'phoneOption', 'fax', 'website',
-        'isMailingAddressMatch', 'isDeliveryAddressMatch',
-        'mobilePhone', 'email',
-        'vat', 'iec', 'okpo', 'psrn', 'bic', 'swift',
-        'bankName', 'bankAddress', 'bankAccountNumber', 'correspondentBankName', 'correspondentAccountNumber',
-        'importerActive', 'importerCompanyName', 'importerContactPerson',
-        'importerMobilePhone', 'importerPhone', 'importerEmail', 'note',
-        'contacts', 'tags', 'files',
-      ]
-    },
-    hasDeepChange () {
-      return !deepEqual(this.item, this.itemClone)
-    },
     isLegalType () {
       return this.clientType === ClientType.LEGAL
     },
@@ -417,17 +384,6 @@ export default {
       if (this.isComponent) return
       this.$apollo.queries.getClientGroup.refetch()
     },
-    saveBeforeCloseDialog (val) {
-      if (!val) {
-        this.$emit('confirm', 0)
-        this.$off('confirm')
-      }
-    },
-  },
-  created () {
-    if (this.create) {
-      this.reset()
-    }
   },
   methods: {
     getClientTypeFromNumeric (type) {
@@ -449,44 +405,57 @@ export default {
         default: return 1
       }
     },
-    async checkChangesBeforeLeave (next) {
-      if (this.hasDeepChange) {
-        const r = await this.openConfirmDialog()
-        if (r) {
-          if (r === 2) {
-            try {
-              await this.update(this.clientType, false)
-              return next()
-            } catch (error) {
-              this.$logger.warn('Error: ', error)
-              return next(false)
-            }
-          } else {
-            this.saveBeforeCloseDialog = false
-            return next()
-          }
+    reset () {
+      this.item = {}
+      this.$apollo.queries.getOrgNextClientUid.refetch()
+    },
+    setData (item) {
+      if (!item) return
+      this.item = cloneDeep(item)
+    },
+    switchClientType (type) {
+      if (this.isComponent) {
+        this.internalClientType = type
+        const clone = this.item
+        this.reset()
+        this.$nextTick(() => {
+          this.setData(clone)
+        })
+        return
+      }
+      if (this.clientType === type) return
+      const group = this.getClientGroup || {}
+      const groupId = group.id
+      const clientId = group[type]
+      const clientType = this.getClientTypeNumeric(type)
+      if (groupId && clientId) {
+        this.$router.push({ name: 'client', params: { groupId, clientId }, query: { clientType } }).catch(() => {})
+      } else {
+        this.$router.push({ name: 'client-create', params: { groupId }, query: { clientType } }).catch(() => {})
+      }
+      this.reset()
+    },
+    updateValue (input) {
+      if (this.create) {
+        if (this.isComponent) {
+          this.item = Object.assign({}, this.item, input)
         } else {
-          this.saveBeforeCloseDialog = false
-          return next(false)
+          this.createClient(input, true)
         }
       } else {
-        return next()
+        this.updateClient(input)
       }
-    },
-    async openConfirmDialog () {
-      this.saveBeforeCloseDialog = true
-      return new Promise((resolve) => {
-        this.$on('confirm', result => {
-          resolve(result)
-        })
-      })
     },
     async createClient (input, redirectAfterCreate = true) {
       try {
         this.updateLoading = true
         input.clientType = this.clientType
 
-        const variables = { orgId: this.orgId, input, groupId: this.getClientGroup && this.getClientGroup.id }
+        const variables = {
+          orgId: this.orgId,
+          groupId: this.getClientGroup && this.getClientGroup.id,
+          input,
+        }
 
         const response = await this.$apollo.mutate({
           mutation: CREATE_CLIENT,
@@ -495,7 +464,6 @@ export default {
         if (response && response.data) {
           this.$apollo.queries.getClientGroup.refetch()
           const data = response.data.createClient
-          this.setData(data)
           if (this.isComponent) {
             this.$emit('create', data)
           } else {
@@ -530,7 +498,7 @@ export default {
       try {
         this.updateLoading = true
 
-        const variables = { id: this.$route.params.clientId, input }
+        const variables = { id: this.clientId, input }
 
         const response = await this.$apollo.mutate({
           mutation: UPDATE_CLIENT,
@@ -538,7 +506,6 @@ export default {
         })
         if (response && response.data) {
           const data = response.data.updateClient
-          this.setData(data)
           if (this.isComponent) {
             this.$emit('update', data)
           }
@@ -552,129 +519,6 @@ export default {
         throw new Error(error)
       } finally {
         this.updateLoading = false
-      }
-    },
-    async update (type, redirectAfterCreate = true) {
-      try {
-        const input = {}
-        if (this.create) {
-          input.clientType = this.clientType
-        }
-        const fieldsKeys = this.clientType === ClientType.PRIVATE ? this.privateField : this.legalFields
-        fieldsKeys.forEach(key => {
-          const val = this.item[key]
-          if (val && (key === 'companyOwner' || key === 'contactPerson' || key === 'importerContactPerson' || key === 'person')) {
-            input[key] = {
-              firstName: val.firstName,
-              lastName: val.lastName,
-              middleName: val.middleName,
-            }
-          } else if (val) {
-            input[key] = val
-          }
-        })
-
-        const query = this.create ? CREATE_CLIENT : UPDATE_CLIENT
-
-        const variables = this.create
-          ? { orgId: this.orgId, input, groupId: this.getClientGroup && this.getClientGroup.id }
-          : { id: this.item.id, input }
-
-        this.updateLoading = true
-        const response = await this.$apollo.mutate({
-          mutation: query,
-          variables,
-        })
-        if (response && response.data) {
-          const data = this.create
-            ? response.data.createClient
-            : response.data.updateClient
-          this.setData(data)
-          if (this.isComponent) {
-            const action = this.create ? 'create' : 'update'
-            this.$emit(action, data)
-          } else {
-            if (this.create && redirectAfterCreate) {
-              this.$router.push({
-                name: 'client',
-                params: {
-                  orgId: this.orgId,
-                  clientId: data.id,
-                  groupId: data.groupId,
-                },
-                query: {
-                  clientType: this.getClientTypeNumeric(data.clientType),
-                },
-              })
-            } else {
-              this.$vuetify.goTo('#container')
-            }
-          }
-        }
-      } catch (error) {
-        this.$logger.warn('Error: ', error)
-        this.$notify({
-          color: 'error',
-          text: error.message,
-        })
-        throw new Error(error)
-      } finally {
-        this.saveBeforeCloseDialog = false
-        this.updateLoading = false
-      }
-    },
-    reset () {
-      this.item = {}
-      this.itemClone = {}
-      this.$apollo.queries.getOrgNextClientUid.refetch()
-    },
-    setData (item) {
-      if (!item) return
-      this.item = cloneDeep(item)
-      this.itemClone = cloneDeep(item)
-    },
-    switchClientType (type) {
-      if (this.isComponent) {
-        this.internalClientType = type
-        return
-      }
-      if (this.clientType === type) return
-      const group = this.getClientGroup || {}
-      const groupId = group.id
-      const clientId = group[type]
-      const clientType = this.getClientTypeNumeric(type)
-      if (groupId && clientId) {
-        this.$router.push({ name: 'client', params: { groupId, clientId }, query: { clientType } }).catch(() => {})
-      } else {
-        this.$router.push({ name: 'client-create', params: { groupId }, query: { clientType } }).catch(() => {})
-      }
-      this.reset()
-    },
-    updateValue (key, value) {
-      if (this.isComponent) {
-        if (!this.item.hasOwnProperty(key)) {
-          this.$set(this.item, key, value)
-        } else {
-          this.item[key] = value
-        }
-      } else if (this.create) {
-        this.createClient({ [key]: value }, true)
-      } else {
-        // TODO: toggle's watcher update problem on data set
-        if (deepEqual(this.item[key], value)) return
-        let input = {}
-        if (isObject(value)) {
-          const val = {}
-          for (let [k, v] of Object.entries(value)) {
-            if (k !== '__typename' && k !== 'fullName') {
-              val[k] = v
-            }
-          }
-          input[key] = val
-        } else {
-          input[key] = value
-        }
-        this.updateClient(input)
       }
     },
   },

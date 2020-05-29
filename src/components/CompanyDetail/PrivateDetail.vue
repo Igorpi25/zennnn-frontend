@@ -10,7 +10,7 @@
         </span>
         <v-tooltip top max-width="332" nudge-right="136">
           <template v-slot:activator="{ on }">
-            <i class="zi-help align-middle text-base text-blue-500 hover:text-blue-600 cursor-pointer" v-on="on" />
+            <i class="zi-help align-middle text-base text-blue-500 cursor-pointer" v-on="on" />
           </template>
           <span>
             {{ $t('companyDetail.privateDetailHint') }}
@@ -36,31 +36,51 @@
               :label="$t('companyDetail.label.passportId')"
               :placeholder="$t('companyDetail.placeholder.passportId')"
               :loading="loading"
-              lazy
-              @input="$emit('update', 'passportId', $event)"
+              :debounce="500"
+              :lazy="create"
+              @input="updateData({ 'passportId': $event })"
             />
           </div>
           <div class="pb-2">
-            <TextField
+            <Select
               :value="item.citizenship"
+              :search.sync="countriesSearch"
+              :items="countries"
               :label="$t('companyDetail.label.citizenship')"
               :placeholder="$t('companyDetail.placeholder.citizenship')"
               :loading="loading"
-              lazy
-              @input="$emit('update', 'citizenship', $event)"
+              searchable
+              item-value="value"
+              item-text="text"
+              prepend-slot-class="w-auto pl-2"
+              @input="updateData({ 'citizenship': $event })"
             >
               <template v-slot:prepend>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M0 12C0 18.63 5.37012 24 12 24C18.63 24 24 18.63 24 12C24 5.37012 18.63 0 12 0C5.37012 0 0 5.37012 0 12ZM2.49993 12C2.49993 11.23 2.59007 10.48 2.76486 9.76511L4.99991 12L4.49999 15L6.5 16.9999V19.7451C4.08009 18.025 2.49993 15.1954 2.49993 12ZM9.81491 2.75484C10.5149 2.58496 11.2451 2.49998 12 2.49998C12.835 2.49998 13.645 2.61005 14.415 2.81004L14 3.5001L14.5 4.00002H16.0001L16.4152 3.58501C16.7646 3.77004 17.0948 3.97003 17.4151 4.195L16.5002 4.49999L15.5 5.49994L16.5002 5.99997V6.5H15.5V7.49995C15.5 7.49995 16.1899 7.99998 16.9999 7.99998C17.795 7.99998 17.4401 6.90499 18.0001 6.5C18.5651 6.0949 19.2502 6.18499 19.2502 6.18499L19.5752 6.26997C20.1852 7.07488 20.6699 7.97511 21 8.94991V8.99993C21 8.99993 20.295 8.4999 19.0001 8.4999C17.7052 8.4999 16.5002 8.99993 16.5002 8.99993C16.5002 8.99993 15.0898 9.41009 15 10.5C14.8448 12.3749 15.5 13 15.5 13L18.0001 14.4999V19.3653C16.3653 20.7002 14.275 21.5 12 21.5C10.9251 21.5 9.89504 21.3253 8.92998 20.9951L11.5 15L11.0001 12.5C11.0001 12.5 9.01496 9.99994 8.00004 9.99994C6.98517 9.99994 6.50006 11.4999 6.50006 11.4999L5.5 9.50002L8.49996 7.49995L9.99999 3.49999L9.81491 2.75484Z" fill="#676767"/>
-                </svg>
+                <img
+                  v-if="item.citizenship"
+                  :src="`/static/flags/${item.citizenship}.svg`"
+                  class="w-6 rounded-sm mr-4"
+                >
+                <img
+                  v-else
+                  src="@/assets/icons/earth.svg"
+                  class="h-6 w-6 rounded-full mr-4"
+                >
               </template>
-            </TextField>
+              <template v-slot:item="{ item }">
+                <img
+                  :src="`/static/flags/${item.value}.svg`"
+                  class="w-6 rounded-sm mr-4"
+                >
+                <span>{{ item.text }}</span>
+              </template>
+            </Select>
           </div>
           <div class="pb-2">
             <div class="flex">
               <DatePicker
                 :value="item.issueDate"
-                @input="$emit('update', 'issueDate', $event)"
+                @input="updateData({ 'issueDate': $event })"
               >
                 <template v-slot:activator="{ on }">
                   <div
@@ -85,7 +105,7 @@
               </DatePicker>
               <DatePicker
                 :value="item.expireDate"
-                @input="$emit('update', 'expireDate', $event)"
+                @input="updateData({ 'expireDate': $event })"
               >
                 <template v-slot:activator="{ on }">
                   <div
@@ -115,8 +135,9 @@
               :label="$t('companyDetail.label.issuedBy')"
               :placeholder="$t('companyDetail.placeholder.issuedBy')"
               :loading="loading"
-              lazy
-              @input="$emit('update', 'issuedBy', $event)"
+              :debounce="500"
+              :lazy="create"
+              @input="updateData({ 'issuedBy': $event })"
             />
           </div>
           <div class="pb-2">
@@ -125,20 +146,22 @@
               :label="$t('companyDetail.label.placeOfResidence')"
               :placeholder="$t('companyDetail.placeholder.address')"
               :loading="loading"
-              lazy
-              @input="$emit('update', 'legalAddress', $event)"
+              :debounce="500"
+              :lazy="create"
+              @input="updateLegalAddress"
             />
           </div>
           <div class="pb-2">
             <TextField
               :value="item.legalAddressPostcode"
               :label="$t('companyDetail.label.placeOfResidencePostcode')"
-              :placeholder="$t('companyDetail.placeholder.address')"
+              :placeholder="$t('companyDetail.placeholder.postcode')"
               :loading="loading"
-              lazy
+              :debounce="500"
+              :lazy="create"
               label-no-wrap
               class="w-48"
-              @input="$emit('update', 'legalAddressPostcode', $event)"
+              @input="updateLegalAddressPostcode"
             />
           </div>
           <div class="pb-2">
@@ -146,10 +169,11 @@
               :value="item.mailingAddress"
               :label="$t('companyDetail.label.privateMailingAddress')"
               :placeholder="$t('companyDetail.placeholder.address')"
-              :disabled="item.isMailingAddressMatch"
+              :disabled="isMailingAddressMatch"
               :loading="loading"
-              lazy
-              @input="$emit('update', 'mailingAddress', $event)"
+              :debounce="500"
+              :lazy="create"
+              @input="updateMailingAddress"
             />
           </div>
           <div class="pb-2 lg:pb-1">
@@ -159,11 +183,12 @@
                 :label="$t('companyDetail.label.mailingAddressPostcode')"
                 :placeholder="$t('companyDetail.placeholder.postcode')"
                 :loading="loading"
-                :disabled="item.isMailingAddressMatch"
-                lazy
+                :disabled="isMailingAddressMatch"
+                :debounce="500"
+                :lazy="create"
                 label-no-wrap
                 class="w-48 pb-2"
-                @input="$emit('update', 'mailingAddressPostcode', $event)"
+                @input="updateMailingAddressPostcode"
               />
               <div class="relative flex-shrink-0 relative pl-sm">
                 <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
@@ -171,9 +196,9 @@
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
                    <SwitchInput
-                    :value="item.isMailingAddressMatch"
+                    :value="isMailingAddressMatch"
                     hide-details
-                    @input="$emit('update', 'isMailingAddressMatch', $event)"
+                    @input="updateMailingAddressMatch"
                   />
                 </div>
               </div>
@@ -192,8 +217,9 @@
               :label="$t('companyDetail.label.vat')"
               :placeholder="$t('companyDetail.placeholder.vat')"
               :loading="loading"
-              lazy
-              @input="$emit('update', 'vat', $event)"
+              :debounce="500"
+              :lazy="create"
+              @input="updateData({ 'vat': $event })"
             />
           </div>
           <div class="pb-2">
@@ -202,8 +228,9 @@
               :label="$t('companyDetail.label.bankName')"
               :placeholder="$t('companyDetail.placeholder.bankName')"
               :loading="loading"
-              lazy
-              @input="$emit('update', 'bankName', $event)"
+              :debounce="500"
+              :lazy="create"
+              @input="updateData({ 'bankName': $event })"
             />
           </div>
           <div class="pb-2">
@@ -212,8 +239,9 @@
               :label="$t('companyDetail.label.bankAddress')"
               :placeholder="$t('companyDetail.placeholder.bankAddress')"
               :loading="loading"
-              lazy
-              @input="$emit('update', 'bankAddress', $event)"
+              :debounce="500"
+              :lazy="create"
+              @input="updateData({ 'bankAddress': $event })"
             />
           </div>
           <div class="pb-2">
@@ -222,8 +250,9 @@
               :label="$t('companyDetail.label.bankAccountNumber')"
               :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
               :loading="loading"
-              lazy
-              @input="$emit('update', 'bankAccountNumber', $event)"
+              :debounce="500"
+              :lazy="create"
+              @input="updateData({ 'bankAccountNumber': $event })"
             />
           </div>
           <div class="flex items-end pb-2">
@@ -232,39 +261,37 @@
               :label="$t('companyDetail.label.swift')"
               :placeholder="$t('companyDetail.placeholder.swift')"
               :loading="loading"
-              lazy
+              :debounce="500"
+              :lazy="create"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-              @input="$emit('update', 'swift', $event)"
+              @input="updateData({ 'swift': $event })"
             />
             <TextField
               :value="item.bic"
               :label="$t('companyDetail.label.bic')"
               :placeholder="$t('companyDetail.placeholder.bic')"
               :loading="loading"
-              lazy
+              :debounce="500"
+              :lazy="create"
               class="flex-grow"
-              @input="$emit('update', 'bic', $event)"
+              @input="updateData({ 'bic': $event })"
             />
           </div>
           <div>
             <div class="flex items-end pb-2">
-              <TextField
+              <PhoneInput
                 :value="item.phone"
                 :label="$t('companyDetail.label.phone')"
-                :placeholder="$t('companyDetail.placeholder.phone')"
                 :loading="loading"
-                lazy
                 class="w-1/2 pr-2"
-                @input="$emit('update', 'phone', $event)"
+                @input="updateData({ 'phone': $event })"
               />
-              <TextField
+              <PhoneInput
                 :value="item.fax"
                 :label="$t('companyDetail.label.fax')"
-                :placeholder="$t('companyDetail.placeholder.phone')"
                 :loading="loading"
-                lazy
                 class="w-1/2 pl-2"
-                @input="$emit('update', 'fax', $event)"
+                @input="updateData({ 'fax': $event })"
               />
             </div>
             <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
@@ -278,13 +305,13 @@
 </template>
 
 <script>
+import Countries from '../../config/countries-iso3.json'
 import clientDetail from '../../mixins/clientDetail'
 
 export default {
   name: 'PrivateDetail',
   mixins: [clientDetail],
   props: {
-    loading: Boolean,
     item: {
       type: Object,
       default: () => ({}),
@@ -292,27 +319,79 @@ export default {
   },
   data () {
     return {
+      isMailingAddressMatchLazy: false,
+      countriesSearch: '',
       rules: {
         required: v => !!v || this.$t('rule.required'),
       },
     }
   },
+  computed: {
+    isMailingAddressMatch: {
+      get () {
+        return this.isMailingAddressMatchLazy
+      },
+      set (val) {
+        this.isMailingAddressMatchLazy = val
+      },
+    },
+    countries () {
+      return Object.entries(Countries).map(([k, v]) => {
+        const name = this.$te(`countries.${k}`, 'en') ? this.$t(`countries.${k}`, 'en') : v
+        return {
+          text: this.$te(`countries.${k}`) ? this.$t(`countries.${k}`) : name,
+          value: k,
+          name,
+        }
+      })
+    },
+  },
   watch: {
-    'item.legalAddress' (val) {
-      if (this.item.isMailingAddressMatch) {
-        this.$emit('update', 'mailingAddress', val)
-      }
-    },
-    'item.legalAddressPostcode' (val) {
-      if (this.item.isMailingAddressMatch) {
-        this.$emit('update', 'mailingAddressPostcode', val)
-      }
-    },
     'item.isMailingAddressMatch' (val) {
+      this.isMailingAddressMatchLazy = val
+    },
+  },
+  methods: {
+    updateMailingAddressMatch (val) {
+      this.isMailingAddressMatch = val
+      const input = { 'isMailingAddressMatch': val }
       if (val) {
-        this.$emit('update', 'mailingAddress', this.item.legalAddress)
-        this.$emit('update', 'mailingAddressPostcode', this.item.legalAddressPostcode)
+        input.mailingAddress = this.item.legalAddress
+        input.mailingAddressPostcode = this.item.legalAddressPostcode
+        if (this.item.isDeliveryAddressMatch) {
+          input.deliveryAddress = this.item.legalAddress
+          input.deliveryAddressPostcode = this.item.legalAddressPostcode
+        }
       }
+      this.updateData(input)
+    },
+    updateLegalAddress (val) {
+      const input = { legalAddress: val }
+      if (this.isMailingAddressMatch) {
+        input.mailingAddress = val
+      }
+      this.updateData(input)
+    },
+    updateLegalAddressPostcode (val) {
+      const input = { legalAddressPostcode: val }
+      if (this.isMailingAddressMatch) {
+        input.mailingAddressPostcode = val
+      }
+      this.updateData(input)
+    },
+    updateMailingAddress (val) {
+      const input = { mailingAddress: val }
+      if (this.item.isDeliveryAddressMatch) {
+        input.deliveryAddress = val
+      }
+      this.updateData(input)
+    },
+    updateMailingAddressPostcode (val) {
+      const input = { mailingAddressPostcode: val }
+      if (this.item.isDeliveryAddressMatch) {
+        input.deliveryAddressPostcode = val
+      }
+      this.updateData(input)
     },
   },
 }

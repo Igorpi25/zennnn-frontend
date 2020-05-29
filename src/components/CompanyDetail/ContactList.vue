@@ -44,7 +44,6 @@ export default {
   name: 'ContactList',
   mixins: [clientDetail],
   props: {
-    loading: Boolean,
     item: {
       type: Object,
       default: () => ({}),
