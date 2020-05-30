@@ -111,7 +111,7 @@
             :locale="item.locale"
             :label="$t('companyDetail.label.mobilePhone')"
             :loading="loading"
-            :required="!isPrivate"
+            :state-icon="!isPrivate"
             state-color="warn"
             @input="updateData({ 'importerMobilePhone': $event })"
           />

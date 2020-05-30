@@ -215,6 +215,9 @@ export const SUPPLIER_FRAGMENT = gql`
     }
     tags
     files
+
+    isRequiredFilled
+    isOptionalFilled
   }
   ${PERSON_FRAGMENT}
   ${PHONE_FRAGMENT}
@@ -357,6 +360,9 @@ export const CLIENT_FRAGMENT = gql`
 
     # computed value
     fullName
+
+    isRequiredFilled
+    isOptionalFilled
   }
   ${PERSON_FRAGMENT}
   ${PHONE_FRAGMENT}

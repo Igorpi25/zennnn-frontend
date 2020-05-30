@@ -18,25 +18,50 @@
         {{ create ? $t('client.createTitle') : $t('client.editTitle') }}
       </h1>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
-        <div class="h-11 flex overflow-x-auto overflow-scroll-touch">
-          <div
-            v-for="(tab, i) in tabs"
-            :aria-selected="clientType === tab.value"
-            :key="tab.value"
-            :class="[
-              'w-full sm:w-auto flex items-center justify-center rounded-t bg-gray-600',
-              'select-none whitespace-no-wrap cursor-pointer',
-              'transition-colors duration-100 ease-in px-10',
-              { 'mr-1': i + 1 < tabs.length },
-              tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',
-              clientType === tab.value ? 'text-white' : 'bg-opacity-30 text-gray-200',
-            ]"
-            :role="tab.disabled ? null : 'tab'"
-            :tabindex="tab.disabled ? null : 0"
-            @click="switchClientType(tab.value)"
-            @keydown.enter.exact="switchClientType(tab.value)"
-          >
-            {{ tab.text }}
+        <div class="lg:h-11 flex flex-wrap lg:flex-no-wrap">
+          <div class="h-11 flex order-last lg:order-none overflow-x-auto overflow-scroll-touch">
+            <div
+              v-for="(tab, i) in tabs"
+              :aria-selected="clientType === tab.value"
+              :key="tab.value"
+              :class="[
+                'w-full sm:w-auto flex items-center justify-center rounded-t bg-gray-600',
+                'select-none whitespace-no-wrap cursor-pointer',
+                'transition-colors duration-100 ease-in px-10',
+                { 'mr-1': i + 1 < tabs.length },
+                tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',
+                clientType === tab.value ? 'text-white' : 'bg-opacity-30 text-gray-200',
+              ]"
+              :role="tab.disabled ? null : 'tab'"
+              :tabindex="tab.disabled ? null : 0"
+              @click="switchClientType(tab.value)"
+              @keydown.enter.exact="switchClientType(tab.value)"
+            >
+              {{ tab.text }}
+            </div>
+          </div>
+          <div class="flex-grow" />
+          <div class="w-full lg:w-auto flex items-center justify-end">
+            <v-slide-x-reverse-transition>
+              <div v-if="!item.isRequiredFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+                <span class="text-pink-500 mr-2">
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="4" cy="4" r="4" fill="currentColor" />
+                  </svg>
+                </span>
+                <span>{{ $t('print.required') }}</span>
+              </div>
+            </v-slide-x-reverse-transition>
+            <v-slide-x-reverse-transition>
+              <div v-if="!item.isOptionalFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+                <span class="text-yellow-500 mr-2">
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="4" cy="4" r="4" fill="currentColor" />
+                  </svg>
+                </span>
+                <span>{{ $t('print.warning') }}</span>
+              </div>
+            </v-slide-x-reverse-transition>
           </div>
         </div>
         <div
@@ -233,6 +258,7 @@
 <script>
 // TODO install in dependencies
 import cloneDeep from 'clone-deep'
+import { validateLegalClient, validatePrivateClient } from '../util/validation'
 
 import { ClientType } from '../graphql/enums'
 import { GET_CLIENT, GET_CLIENT_GROUP, GET_ORG_NEXT_CLIENT_UID } from '../graphql/queries'
@@ -414,12 +440,18 @@ export default {
       this.item = cloneDeep(item)
     },
     switchClientType (type) {
-      if (this.isComponent) {
+      if (this.create && this.isComponent) {
         this.internalClientType = type
         const clone = this.item
         this.reset()
         this.$nextTick(() => {
-          this.setData(clone)
+          let v = {}
+          if (type === ClientType.PRIVATE) {
+            v = validatePrivateClient(clone)
+          } else {
+            v = validateLegalClient(clone)
+          }
+          this.setData(Object.assign(clone, v))
         })
         return
       }
@@ -438,7 +470,14 @@ export default {
     updateValue (input) {
       if (this.create) {
         if (this.isComponent) {
-          this.item = Object.assign({}, this.item, input)
+          const newItem = Object.assign({}, this.item, input)
+          let v = {}
+          if (this.internalClientType === ClientType.PRIVATE) {
+            v = validatePrivateClient(newItem)
+          } else {
+            v = validateLegalClient(newItem)
+          }
+          this.item = Object.assign({}, newItem, v)
         } else {
           this.createClient(input, true)
         }

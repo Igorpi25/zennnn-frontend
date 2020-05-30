@@ -18,7 +18,28 @@
         {{ create ? $t('supplier.createTitle') : $t('supplier.editTitle') }}
       </h1>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
-        <div class="h-11 flex overflow-x-auto overflow-scroll-touch" />
+        <div class="h-11 flex items-center justify-end text-gray-100">
+          <v-slide-x-reverse-transition>
+            <div v-if="!item.isRequiredFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+              <span class="text-pink-500 mr-2">
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="4" cy="4" r="4" fill="currentColor" />
+                </svg>
+              </span>
+              <span>{{ $t('print.required') }}</span>
+            </div>
+          </v-slide-x-reverse-transition>
+          <v-slide-x-reverse-transition>
+            <div v-if="!item.isOptionalFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+              <span class="text-yellow-500 mr-2">
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="4" cy="4" r="4" fill="currentColor" />
+                </svg>
+              </span>
+              <span>{{ $t('print.warning') }}</span>
+            </div>
+          </v-slide-x-reverse-transition>
+        </div>
         <div
           class="bg-gray-600 rounded-md p-5 pt-6"
         >
@@ -98,6 +119,7 @@
 <script>
 // TODO install in dependencies
 import cloneDeep from 'clone-deep'
+import { validateSupplier } from '../util/validation'
 
 import { GET_SUPPLIER, GET_ORG_NEXT_SUPPLIER_UID } from '../graphql/queries'
 import {
@@ -192,7 +214,9 @@ export default {
     updateValue (input) {
       if (this.create) {
         if (this.isComponent) {
-          this.item = Object.assign({}, this.item, input)
+          const newItem = Object.assign({}, this.item, input)
+          const v = validateSupplier(newItem)
+          this.item = Object.assign({}, newItem, v)
         } else {
           this.createSupplier(input, true)
         }
