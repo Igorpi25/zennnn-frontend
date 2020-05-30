@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex items-center pt-10">
-      <div class="flex-grow text-lg leading-tight" @click="toggleExpand">
+      <div class="flex-grow text-lg leading-tight">
         <span class="text-white uppercase font-semibold tracking-widest uppercase">
           {{ $t('companyDetail.legalDetail') }}
         </span>
