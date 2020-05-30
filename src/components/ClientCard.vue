@@ -67,7 +67,7 @@
           <!-- Contacts -->
           <ContactList
             :loading="loading"
-            :item="item"
+            :items="item.contacts"
             :is-expanded="!create"
             :create="create && !isComponent"
             @update="updateValue"
@@ -125,7 +125,7 @@
           <!-- Contacts -->
           <ContactList
             :loading="loading"
-            :item="item"
+            :items="item.contacts"
             :is-expanded="!create"
             :create="create && !isComponent"
             @update="updateValue"
@@ -185,7 +185,7 @@
           <!-- Contacts -->
           <ContactList
             :loading="loading"
-            :item="item"
+            :items="item.contacts"
             :is-expanded="!create"
             :create="create && !isComponent"
             @update="updateValue"

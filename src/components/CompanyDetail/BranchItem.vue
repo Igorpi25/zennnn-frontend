@@ -80,6 +80,7 @@
       :locale="locale"
       :label="$t('companyDetail.label.mobilePhone')"
       :loading="loading"
+      class="pb-2"
       @input="updateData('mobilePhone', $event)"
     />
     <PhoneInput
@@ -89,14 +90,41 @@
       :loading="loading"
       @input="updateData('workPhone', $event)"
     />
+    <div
+      v-if="contactItems.length > 0"
+      class="flex flex-wrap -mx-5"
+    >
+      <div
+        v-for="(item, i) in contactItems"
+        :key="i"
+        class="w-full pt-11 px-5"
+      >
+        <ContactItem
+          :loading="loading"
+          :item="item"
+          @update="updateContact(i, item, $event)"
+          @delete="deleteContact(i)"
+        />
+      </div>
+    </div>
+    <ContactItem
+      ref="contactCreate"
+      create
+      class="pt-11 pr-8"
+      @update="addContact"
+    />
   </div>
 </template>
 
 <script>
-import { BranchType } from '../../graphql/enums'
+import { BranchType, ContactType } from '../../graphql/enums'
+import ContactItem from './ContactItem'
 
 export default {
   name: 'BranchItem',
+  components: {
+    ContactItem,
+  },
   props: {
     locale: String,
     loading: Boolean,
@@ -107,6 +135,14 @@ export default {
     },
   },
   computed: {
+    contactItems () {
+      return (this.item.contacts || []).map(item => {
+        return {
+          contactType: item.contactType,
+          contact: item.contact,
+        }
+      })
+    },
     isWarehouse () {
       return this.item.branchType === BranchType.WAREHOUSE
     },
@@ -146,6 +182,26 @@ export default {
   methods: {
     updateData (key, value) {
       this.$emit('update', { [key]: value })
+    },
+    addContact (val) {
+      const item = val || {}
+      const contactType = item.contactType || ContactType.QQ
+      const contact = item.contact || null
+      this.$emit('update', { 'contacts': [...this.contactItems, { contactType, contact }] })
+      this.$nextTick(() => {
+        this.$refs.contactCreate.setItem()
+      })
+    },
+    updateContact (i, item, value) {
+      const updatedItem = Object.assign({}, item, value)
+      const items = this.contactItems.slice()
+      items.splice(i, 1, updatedItem)
+      this.$emit('update', { 'contacts': items })
+    },
+    deleteContact (i) {
+      const items = this.contactItems.slice()
+      items.splice(i, 1)
+      this.$emit('update', { 'contacts': items })
     },
   },
 }

@@ -17,17 +17,29 @@
     <v-expand-transition>
       <div v-show="expanded">
         <div
-          v-if="items.length > 0"
-          class="pb-10">
-          <div>
+          v-if="clearedItems.length > 0"
+          class="flex flex-wrap -mx-5"
+        >
+          <div
+            v-for="(item, i) in clearedItems"
+            :key="i"
+            class="w-full lg:w-1/2 pt-10 px-5"
+          >
+            <ContactItem
+              :loading="loading"
+              :item="item"
+              @update="updateData(i, item, $event)"
+              @delete="deleteData(i)"
+            />
           </div>
         </div>
-        <div class="pt-10 w-1/2">
+        <div class="w-full lg:w-1/2 pt-10 pr-5">
           <Button
+            :loading="createLoading"
             block
             outlined
-            merge-class="h-10 text-sm pr-6"
-            disabled
+            merge-class="h-10 text-sm"
+            @click="addData"
           >
             {{ $t('companyDetail.addContact') }}
           </Button>
@@ -38,21 +50,58 @@
 </template>
 
 <script>
+import ContactItem from './ContactItem.vue'
 import clientDetail from '../../mixins/clientDetail'
+import { ContactType } from '../../graphql/enums'
 
 export default {
   name: 'ContactList',
+  components: {
+    ContactItem,
+  },
   mixins: [clientDetail],
   props: {
-    item: {
-      type: Object,
-      default: () => ({}),
+    emitChanges: Boolean,
+    supplierId: String,
+    items: {
+      type: Array,
+      default: () => ([]),
     },
   },
   data () {
     return {
-      items: [],
+      createLoading: false,
+      updateLoading: false,
+      deleteLoading: false,
     }
+  },
+  computed: {
+    // filter items fron __typename for fully array update
+    clearedItems () {
+      const items = this.items || []
+      return items.map(item => {
+        return {
+          contactType: item.contactType,
+          contact: item.contact,
+        }
+      })
+    },
+  },
+  methods: {
+    addData () {
+      this.$emit('update', { 'contacts': [...this.clearedItems, { contactType: ContactType.QQ }] })
+    },
+    updateData (i, item, value) {
+      const updatedItem = Object.assign({}, item, value)
+      const items = this.clearedItems.slice()
+      items.splice(i, 1, updatedItem)
+      this.$emit('update', { 'contacts': items })
+    },
+    deleteData (i) {
+      const items = this.clearedItems.slice()
+      items.splice(i, 1)
+      this.$emit('update', { 'contacts': items })
+    },
   },
 }
 </script>

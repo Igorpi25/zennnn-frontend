@@ -48,7 +48,7 @@
           <ContactList
             :loading="loading"
             :is-expanded="!create"
-            :item="item"
+            :items="item.contacts"
             :create="create && !isComponent"
             @update="updateValue"
           />

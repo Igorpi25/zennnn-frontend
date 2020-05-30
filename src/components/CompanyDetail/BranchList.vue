@@ -15,10 +15,10 @@
       </div>
     </div>
     <v-expand-transition>
-      <div v-show="expanded" class="pt-4">
+      <div v-show="expanded">
         <div
           v-if="items.length > 0"
-          class="flex flex-wrap -mx-5"
+          class="flex flex-wrap -mx-5 pt-4"
         >
           <div
             v-for="(item, i) in items"
