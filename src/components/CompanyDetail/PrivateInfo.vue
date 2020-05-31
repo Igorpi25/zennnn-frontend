@@ -39,6 +39,8 @@
           :label-hint="$t('companyDetail.hint.mobilePhone')"
           :rule-message="$t('companyDetail.rule.notificationMobilePhone')"
           :loading="loading"
+          :lazy="create"
+          lazy-validation
           state-icon
           required
           @input="updateData({ 'mobilePhone': $event })"
@@ -179,6 +181,9 @@
           :placeholder="$t('companyDetail.placeholder.middleName')"
           :lazy="create"
           :debounce="500"
+          :rules="[rules.required]"
+          state-icon
+          state-color="none"
           @input="updatePerson({ middleName: $event })"
         />
       </div>

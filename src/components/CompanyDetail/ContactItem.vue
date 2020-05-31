@@ -7,9 +7,10 @@
         :loading="loading"
         :placeholder="currentPlaceholder"
         :class="['combo-input', { 'combo-input--menu-active': isMenuActive }]"
-        :state-icon="false"
-        :state-color="'warn'"
         :lazy="create"
+        :rules="[rules.required]"
+        state-icon
+        state-color="none"
         prepend-slot-class="w-20 mr-1"
         @blur="onBlur"
         @input="onInput"
@@ -75,6 +76,10 @@ export default {
       lazyContactType: undefined,
       blurWithoutUpdate: false,
       isMenuActive: false,
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+        contact: v => (v && v.contact) || this.$t('rule.required'),
+      },
     }
   },
   computed: {
@@ -153,7 +158,9 @@ export default {
   watch: {
     item: {
       handler (val) {
-        this.setItem(val)
+        this.$nextTick(() => {
+          this.setItem(val)
+        })
       },
       deep: true,
       immediate: true,

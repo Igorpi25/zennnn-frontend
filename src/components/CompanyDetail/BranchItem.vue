@@ -23,7 +23,7 @@
           </div>
         </v-fade-transition>
         <Select
-          :value="item.branchType"
+          :value="internalItem.branchType"
           :items="branchTypeItems"
           :placeholder="$t('placeholder.notChosen')"
           :loading="loading"
@@ -33,27 +33,33 @@
         />
         <button
           class="flex justify-center items-center text-2xl text-gray-200 cursor-pointer focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-1"
-          @click="$emit('delete', item.id)"
+          @click="$emit('delete', internalItem.id)"
         >
           <i class="zi-close" />
         </button>
       </div>
     </div>
     <TextField
-      :value="item.name"
+      :value="internalItem.name"
       :label="$t('companyDetail.label.branchName')"
       :placeholder="$t('companyDetail.placeholder.branchName')"
       :loading="loading"
       :debounce="500"
+      :rules="[rules.required]"
+      state-icon
+      state-color="none"
       class="pb-2"
       @input="updateData('name', $event)"
     />
     <TextField
-      :value="item.address"
+      :value="internalItem.address"
       :label="$t('companyDetail.label.branchAddress')"
       :placeholder="$t('companyDetail.placeholder.address')"
       :loading="loading"
       :debounce="500"
+      :rules="[rules.required]"
+      state-icon
+      state-color="none"
       class="pb-2"
       @input="updateData('address', $event)"
     />
@@ -64,6 +70,9 @@
         :placeholder="$t('companyDetail.placeholder.firstName')"
         :loading="loading"
         :debounce="500"
+        :rules="[rules.required]"
+        state-icon
+        state-color="none"
         label-no-wrap
         class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
       />
@@ -72,22 +81,31 @@
         :placeholder="$t('companyDetail.placeholder.lastName')"
         :loading="loading"
         :debounce="500"
+        :rules="[rules.required]"
+        state-icon
+        state-color="none"
         class="flex-grow"
       />
     </div>
     <PhoneInput
-      :value="item.mobilePhone"
+      :value="internalItem.mobilePhone"
       :locale="locale"
       :label="$t('companyDetail.label.mobilePhone')"
       :loading="loading"
+      state-icon
+      state-color="none"
+      required
       class="pb-2"
       @input="updateData('mobilePhone', $event)"
     />
     <PhoneInput
-      :value="item.workPhone"
+      :value="internalItem.workPhone"
       :locale="locale"
       :label="$t('companyDetail.label.phone')"
       :loading="loading"
+      state-icon
+      state-color="none"
+      required
       @input="updateData('workPhone', $event)"
     />
     <div
@@ -131,12 +149,27 @@ export default {
     create: Boolean,
     item: {
       type: Object,
-      default: () => ({}),
     },
   },
+  data () {
+    return {
+      lazyItem: undefined,
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+      },
+    }
+  },
   computed: {
+    internalItem: {
+      get () {
+        return this.lazyItem || {}
+      },
+      set (val) {
+        this.lazyItem = val
+      },
+    },
     contactItems () {
-      return (this.item.contacts || []).map(item => {
+      return (this.internalItem.contacts || []).map(item => {
         return {
           contactType: item.contactType,
           contact: item.contact,
@@ -144,7 +177,7 @@ export default {
       })
     },
     isWarehouse () {
-      return this.item.branchType === BranchType.WAREHOUSE
+      return this.internalItem.branchType === BranchType.WAREHOUSE
     },
     branchTypeItems () {
       return Object.values(BranchType).map(el => {
@@ -156,27 +189,37 @@ export default {
     },
     firstName: {
       get () {
-        return this.item.contactPerson && this.item.contactPerson.firstName
+        return this.internalItem.contactPerson && this.internalItem.contactPerson.firstName
       },
       set (val) {
         const person = Object.assign({}, {
           firstName: val,
-          lastName: this.item.contactPerson && this.item.contactPerson.lastName,
+          lastName: this.internalItem.contactPerson && this.internalItem.contactPerson.lastName,
         })
         this.updateData('contactPerson', person)
       },
     },
     lastName: {
       get () {
-        return this.item.contactPerson && this.item.contactPerson.lastName
+        return this.internalItem.contactPerson && this.internalItem.contactPerson.lastName
       },
       set (val) {
         const person = Object.assign({}, {
-          firstName: this.item.contactPerson && this.item.contactPerson.firstName,
+          firstName: this.internalItem.contactPerson && this.internalItem.contactPerson.firstName,
           lastName: val,
         })
         this.updateData('contactPerson', person)
       },
+    },
+  },
+  watch: {
+    item: {
+      handler (val) {
+        this.$nextTick(() => {
+          this.internalItem = val
+        })
+      },
+      immediate: true,
     },
   },
   methods: {

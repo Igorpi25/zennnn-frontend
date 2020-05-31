@@ -39,6 +39,8 @@
           :label-hint="$t('companyDetail.hint.mobilePhone')"
           :rule-message="$t('companyDetail.rule.notificationMobilePhone')"
           :loading="loading"
+          :lazy="create"
+          lazy-validation
           state-icon
           required
           @input="updateData({ 'mobilePhone': $event })"

@@ -25,6 +25,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="compRules"
+              state-icon
+              state-color="none"
               @input="updateData({ 'importerCompanyName': $event })"
             />
           </div>
@@ -36,7 +39,8 @@
               :loading="loading"
               :disabled="isDeliveryAddressMatch"
               :rules="compRules"
-              :state-icon="hasStateIcon"
+              :state-icon="true"
+              :state-color="hasStateIcon ? 'warn' : 'none'"
               :debounce="500"
               :lazy="create"
               lazy-validation
@@ -52,7 +56,8 @@
                 :loading="loading"
                 :disabled="isDeliveryAddressMatch"
                 :rules="compRules"
-                :state-icon="hasStateIcon"
+                :state-icon="true"
+                :state-color="hasStateIcon ? 'warn' : 'none'"
                 :debounce="500"
                 :lazy="create"
                 lazy-validation
@@ -87,7 +92,8 @@
               :placeholder="$t('companyDetail.label.firstName')"
               :loading="loading"
               :rules="compRules"
-              :state-icon="hasStateIcon"
+              :state-icon="true"
+              :state-color="hasStateIcon ? 'warn' : 'none'"
               :debounce="500"
               :lazy="create"
               lazy-validation
@@ -100,7 +106,8 @@
               :placeholder="$t('companyDetail.label.lastName')"
               :loading="loading"
               :rules="compRules"
-              :state-icon="hasStateIcon"
+              :state-icon="true"
+              :state-color="hasStateIcon ? 'warn' : 'none'"
               :debounce="500"
               :lazy="create"
               lazy-validation
@@ -114,9 +121,11 @@
               :locale="item.locale"
               :label="$t('companyDetail.label.mobilePhone')"
               :loading="loading"
-              :state-icon="hasStateIcon"
+              :state-color="hasStateIcon ? 'warn' : 'none'"
+              :state-icon="true"
+              :lazy="create"
+              lazy-validation
               required
-              state-color="warn"
               @input="updateData({ 'importerMobilePhone': $event })"
             />
           </div>
@@ -172,7 +181,7 @@ export default {
       },
     },
     compRules () {
-      return !this.isPrivate ? [this.rules.required] : undefined
+      return [this.rules.required]
     },
     importerContactPerson () {
       return this.item.importerContactPerson || {}

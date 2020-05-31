@@ -26,6 +26,8 @@
             :loading="loading"
             :debounce="500"
             :lazy="create"
+            :rules="[rules.required]"
+            state-icon
             rows="4"
             @input="updateData({ 'note': $event })"
           />
@@ -81,6 +83,13 @@ export default {
       default: () => ({}),
     },
     isRequisite: Boolean,
+  },
+  data () {
+    return {
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+      },
+    }
   },
 }
 </script>

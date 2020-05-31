@@ -70,6 +70,8 @@
           :locale="item.locale"
           :label="$t('companyDetail.label.phone')"
           :loading="loading"
+          :lazy="create"
+          lazy-validation
           state-icon
           required
           class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-sm"
@@ -82,6 +84,9 @@
           :loading="loading"
           :debounce="500"
           :lazy="create"
+          :rules="[rules.required]"
+          state-icon
+          state-color="none"
           class="w-full sm:w-auto lg:w-full max-w-xs"
           @input="updateData({ 'phoneOption': $event })"
         />
@@ -92,6 +97,11 @@
           :locale="item.locale"
           :label="$t('companyDetail.label.fax')"
           :loading="loading"
+          :lazy="create"
+          state-icon
+          state-color="none"
+          lazy-validation
+          required
           class="sm:w-4/6 max-w-xs sm:pr-sm"
           @input="updateData({ 'fax': $event })"
         />
@@ -104,6 +114,10 @@
           :loading="loading"
           :debounce="500"
           :lazy="create"
+          :rules="[rules.required]"
+          state-icon
+          state-color="none"
+          required
           @input="updateData({ 'website': $event })"
         />
       </div>
@@ -181,6 +195,9 @@
           :disabled="isMailingAddressMatch"
           :debounce="500"
           :lazy="create"
+          :rules="[rules.required]"
+          state-icon
+          state-color="none"
           @input="updateMailingAddress"
         />
       </div>
@@ -194,6 +211,9 @@
             :disabled="isMailingAddressMatch"
             :debounce="500"
             :lazy="create"
+            :rules="[rules.required]"
+            state-icon
+            state-color="none"
             label-no-wrap
             class="w-48 pb-2"
             @input="updateMailingAddressPostcode"
@@ -225,6 +245,9 @@
           :loading="loading"
           :debounce="500"
           :lazy="create"
+          :rules="[rules.required]"
+          state-icon
+          state-color="none"
           class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
           @input="updateData({ 'iec': $event })"
         />
@@ -235,6 +258,9 @@
           :loading="loading"
           :debounce="500"
           :lazy="create"
+          :rules="[rules.required]"
+          state-icon
+          state-color="none"
           class="flex-grow"
           @input="updateData({ 'okpo': $event })"
         />
@@ -247,6 +273,9 @@
           :loading="loading"
           :debounce="500"
           :lazy="create"
+          :rules="[rules.required]"
+          state-icon
+          state-color="none"
           @input="updateData({ 'psrn': $event })"
         />
       </div>

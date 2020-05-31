@@ -84,6 +84,9 @@
           :placeholder="$t('companyDetail.placeholder.bic')"
           :loading="loading"
           :debounce="500"
+          :rules="[rules.required]"
+          state-icon
+          state-color="none"
           class="flex-grow"
           @input="updateData({ 'bic': $event })"
         />
@@ -95,6 +98,9 @@
           :placeholder="$t('companyDetail.placeholder.correspondentBankName')"
           :loading="loading"
           :debounce="500"
+          :rules="[rules.required]"
+          state-icon
+          state-color="none"
           @input="updateData({ 'correspondentBankName': $event })"
         />
       </div>
@@ -105,6 +111,9 @@
           :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
           :loading="loading"
           :debounce="500"
+          :rules="[rules.required]"
+          state-icon
+          state-color="none"
           @input="updateData({ 'correspondentAccountNumber': $event })"
         />
       </div>

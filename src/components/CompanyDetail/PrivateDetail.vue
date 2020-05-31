@@ -38,6 +38,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               @input="updateData({ 'passportId': $event })"
             />
           </div>
@@ -49,6 +52,9 @@
               :label="$t('companyDetail.label.citizenship')"
               :placeholder="$t('companyDetail.placeholder.citizenship')"
               :loading="loading"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               searchable
               item-value="value"
               item-text="text"
@@ -93,6 +99,9 @@
                       :label="$t('companyDetail.label.issueDate')"
                       :placeholder="$t('companyDetail.placeholder.date')"
                       :loading="loading"
+                      :rules="[rules.required]"
+                      state-icon
+                      state-color="none"
                       label-no-wrap
                       readonly
                     >
@@ -118,6 +127,9 @@
                       :label="$t('companyDetail.label.expireDate')"
                       :placeholder="$t('companyDetail.placeholder.date')"
                       :loading="loading"
+                      :rules="[rules.required]"
+                      state-icon
+                      state-color="none"
                       readonly
                     >
                       <template v-slot:prepend>
@@ -137,6 +149,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               @input="updateData({ 'issuedBy': $event })"
             />
           </div>
@@ -148,6 +163,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               @input="updateLegalAddress"
             />
           </div>
@@ -159,6 +177,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               label-no-wrap
               class="w-48"
               @input="updateLegalAddressPostcode"
@@ -173,6 +194,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               @input="updateMailingAddress"
             />
           </div>
@@ -186,6 +210,9 @@
                 :disabled="isMailingAddressMatch"
                 :debounce="500"
                 :lazy="create"
+                :rules="[rules.required]"
+                state-icon
+                state-color="none"
                 label-no-wrap
                 class="w-48 pb-2"
                 @input="updateMailingAddressPostcode"
@@ -219,6 +246,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               @input="updateData({ 'vat': $event })"
             />
           </div>
@@ -230,6 +260,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               @input="updateData({ 'bankName': $event })"
             />
           </div>
@@ -241,6 +274,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               @input="updateData({ 'bankAddress': $event })"
             />
           </div>
@@ -252,6 +288,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               @input="updateData({ 'bankAccountNumber': $event })"
             />
           </div>
@@ -263,6 +302,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
               @input="updateData({ 'swift': $event })"
             />
@@ -273,6 +315,9 @@
               :loading="loading"
               :debounce="500"
               :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               class="flex-grow"
               @input="updateData({ 'bic': $event })"
             />
@@ -284,6 +329,11 @@
                 :locale="item.locale"
                 :label="$t('companyDetail.label.phone')"
                 :loading="loading"
+                :rules="[rules.required]"
+                :lazy="create"
+                state-icon
+                state-color="none"
+                required
                 class="w-1/2 pr-2"
                 @input="updateData({ 'phone': $event })"
               />
@@ -292,6 +342,11 @@
                 :locale="item.locale"
                 :label="$t('companyDetail.label.fax')"
                 :loading="loading"
+                :rules="[rules.required]"
+                :lazy="create"
+                state-icon
+                state-color="none"
+                required
                 class="w-1/2 pl-2"
                 @input="updateData({ 'fax': $event })"
               />
