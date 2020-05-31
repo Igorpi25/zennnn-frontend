@@ -246,7 +246,7 @@
         :loading="updateLoading"
         outlined
         merge-class="w-40"
-        @click="createClient(item)"
+        @click="createFromItem"
       >
         {{ $t('client.save') }}
       </Button>
@@ -484,6 +484,15 @@ export default {
       } else {
         this.updateClient(input)
       }
+    },
+    createFromItem () {
+      const item = {}
+      for (let [k, v] of Object.entries(this.item)) {
+        if (k !== 'isRequiredFilled' && k !== 'isOptionalFilled') {
+          item[k] = v
+        }
+      }
+      this.createClient(item)
     },
     async createClient (input, redirectAfterCreate = true) {
       try {

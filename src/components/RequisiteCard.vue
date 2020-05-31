@@ -118,7 +118,7 @@
         :loading="updateLoading"
         outlined
         merge-class="w-40"
-        @click="createRequisite(item)"
+        @click="createFromItem"
       >
         {{ create ? $t('action.create') : $t('action.save') }}
       </Button>
@@ -244,6 +244,15 @@ export default {
     },
     reset () {
       this.item = {}
+    },
+    createFromItem () {
+      const item = {}
+      for (let [k, v] of Object.entries(this.item)) {
+        if (k !== 'isRequiredFilled' && k !== 'isOptionalFilled') {
+          item[k] = v
+        }
+      }
+      this.createRequisite(item)
     },
     async createRequisite (input, redirectAfterCreate = true) {
       try {

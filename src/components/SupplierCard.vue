@@ -108,7 +108,7 @@
         :loading="updateLoading"
         outlined
         merge-class="w-40"
-        @click="createSupplier(item)"
+        @click="createFromItem"
       >
         {{ $t('supplier.save') }}
       </Button>
@@ -227,6 +227,15 @@ export default {
     },
     reset () {
       this.item = {}
+    },
+    createFromItem () {
+      const item = {}
+      for (let [k, v] of Object.entries(this.item)) {
+        if (k !== 'isRequiredFilled' && k !== 'isOptionalFilled') {
+          item[k] = v
+        }
+      }
+      this.createSupplier(item)
     },
     async createSupplier (input, redirectAfterCreate = true) {
       try {
