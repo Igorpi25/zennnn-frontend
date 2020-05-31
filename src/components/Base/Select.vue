@@ -15,7 +15,7 @@
         :type="type"
         :name="name"
         :required="required"
-        :readonly="!searchable"
+        :readonly="readonly || !searchable"
         :disabled="disabled"
         :minlength="minlength"
         :maxlength="maxlength"
@@ -63,9 +63,11 @@
           <button
             v-if="hasArrowIcon"
             :disabled="disabled"
-            :class="{ 'cursor-not-allowed': disabled }"
             tabindex="-1"
-            class="flex items-center text-2xl text-blue-500 hover:text-blue-600 focus:text-blue-600 cursor-pointer focus:outline-none select-none"
+            :class="[
+              disabled ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:text-blue-600',
+              'flex items-center text-2xl focus:text-blue-600 cursor-pointer focus:outline-none select-none'
+            ]"
             @click="toggleMenu"
           >
             <i :class="isMenuActive ? 'zi-chevron-up' : 'zi-chevron-down'" />
@@ -256,6 +258,7 @@ export default {
     dense: Boolean,
     loading: Boolean,
     size: [Number, String],
+    readonly: Boolean,
   },
   data () {
     return {

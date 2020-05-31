@@ -15,6 +15,7 @@
       :required="required"
       :mask="currentMask"
       :rules="compRule"
+      :readonly="readonly"
       type="tel"
       prepend-slot-class="w-auto"
       @blur="onBlur"
@@ -30,6 +31,7 @@
           :items="phonesItems"
           :patterns="codeInputPatterns"
           :size="compSize"
+          :readonly="readonly"
           hide-warn
           type="tel"
           searchable
@@ -91,6 +93,7 @@ export default {
       type: Number,
       default: 500,
     },
+    readonly: Boolean,
   },
   data () {
     return {
@@ -224,6 +227,7 @@ export default {
       }
     },
     onBlur (e) {
+      this.$emit('blur', e)
       // cancel debounced
       if (this.debounce) {
         this.debounceInput.cancel()
@@ -233,11 +237,11 @@ export default {
         this.blurWithoutUpdate = false
         return
       }
+      if (this.readonly) return
       // immediate call changes
       if (!this.lazy) {
         this.emitChange()
       }
-      this.$emit('blur', e)
     },
     emitChange () {
       // prevent emit if no changes
@@ -279,6 +283,7 @@ export default {
       return result
     },
     onCountryCodeSelect (val) {
+      if (this.readonly) return
       this.countryCode = val
       this.$refs.input.focus()
     },
