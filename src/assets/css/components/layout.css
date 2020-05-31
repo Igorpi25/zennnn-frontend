@@ -71,3 +71,11 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(359deg); }
 }
+
+.file-list__item .file-list__close {
+  opacity: 0;
+}
+
+.file-list__item:hover .file-list__close {
+  opacity: 1;
+}

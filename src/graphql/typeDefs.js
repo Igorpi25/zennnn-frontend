@@ -158,6 +158,14 @@ export const CONTACT_FRAGMENT = gql`
   }
 `
 
+export const ATTACH_FILE_FRAGMENT = gql`
+  fragment AttachFileFragment on AttachFile {
+    url
+    filename
+    contentType
+  }
+`
+
 export const SUPPLIER_FRAGMENT = gql`
   fragment SupplierFragment on Supplier {
     id
@@ -216,7 +224,9 @@ export const SUPPLIER_FRAGMENT = gql`
       ...ContactFragment
     }
     tags
-    files
+    files {
+      ...AttachFileFragment
+    }
 
     isRequiredFilled
     isOptionalFilled
@@ -224,6 +234,7 @@ export const SUPPLIER_FRAGMENT = gql`
   ${PERSON_FRAGMENT}
   ${PHONE_FRAGMENT}
   ${CONTACT_FRAGMENT}
+  ${ATTACH_FILE_FRAGMENT}
 `
 
 export const INVOICE_FRAGMENT = gql`
@@ -358,7 +369,9 @@ export const CLIENT_FRAGMENT = gql`
       ...ContactFragment
     }
     tags
-    files
+    files {
+      ...AttachFileFragment
+    }
 
     # computed value
     fullName
@@ -369,6 +382,7 @@ export const CLIENT_FRAGMENT = gql`
   ${PERSON_FRAGMENT}
   ${PHONE_FRAGMENT}
   ${CONTACT_FRAGMENT}
+  ${ATTACH_FILE_FRAGMENT}
 `
 
 export const SPEC_FRAGMENT = gql`

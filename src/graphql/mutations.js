@@ -39,6 +39,16 @@ export const GET_IMAGE_UPLOAD_URL = gql`
   }
 `
 
+export const GET_FILE_UPLOAD_URL = gql`
+  mutation GetFileUploadUrl($orgId: ID!, $filename: String!) {
+    getFileUploadUrl(orgId: $orgId, filename: $filename) {
+      uploadUrl
+      downloadUrl
+      contentType
+    }
+  }
+`
+
 export const CREATE_SPEC = gql`
   mutation CreateSpec($orgId: ID!, $clientId: ID) {
     createSpec(orgId: $orgId, clientId: $clientId) {
