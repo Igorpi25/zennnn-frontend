@@ -14,7 +14,7 @@
           @click="$emit('close')"
         />
       </span>
-      <h1 class="text-2xl text-white font-semibold leading-tight mb-5">
+      <h1 class="text-2xl text-white font-semibold leading-tight mb-4">
         {{ create ? $t('client.createTitle') : $t('client.editTitle') }}
       </h1>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
