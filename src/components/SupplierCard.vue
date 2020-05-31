@@ -96,6 +96,7 @@
                 :is-expanded="!create"
                 :item="item"
                 :create="create && !isComponent"
+                is-supplier
                 @update="updateValue"
               />
             </div>

@@ -636,6 +636,7 @@
       "branchType": "File type",
       "branchName": "File name",
       "branchAddress": "Address",
+      "supplierType": "Тип поставщика",
       "password": "Password",
       "language": "Language"
     },
@@ -689,6 +690,7 @@
       "passportId": "ID number",
       "citizenship": "Select the Contry",
       "issuedBy": "Name of authority",
+      "supplierType": "Выберите тип поставщика",
       "additionalPhone": "Additional phone number:",
       "placeOfResidence": "Place of residence:",
       "language": "Language:"

@@ -32,6 +32,20 @@
             @input="updateData({ 'note': $event })"
           />
         </div>
+        <div v-if="isSupplier" class="pb-2">
+          <TextField
+            :value="item.companyType"
+            :label="$t('companyDetail.label.supplierType')"
+            :placeholder="$t('companyDetail.placeholder.supplierType')"
+            :loading="loading"
+            :debounce="500"
+            :lazy="create"
+            :rules="[rules.required]"
+            state-icon
+            state-color="none"
+            disabled
+          />
+        </div>
         <div :class="{ 'pb-2': !isRequisite }">
           <TextField
             :value="inputTags"
@@ -82,6 +96,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    isSupplier: Boolean,
     isRequisite: Boolean,
   },
   data () {
