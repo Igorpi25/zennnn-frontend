@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex items-center text-lg leading-tight pt-10">
-      <div class="flex-grow text-white font-semibold tracking-widest uppercase" @click="toggleExpand">
+      <div class="flex-grow text-white font-semibold tracking-widest uppercase">
         {{ $t('companyDetail.shippingInfo') }}
       </div>
       <div>
@@ -15,71 +15,131 @@
       </div>
     </div>
     <v-expand-transition>
-      <div v-show="expanded" class="pt-4">
-        <div class="pb-2">
-          <TextField
-            :value="isPrivate ? '' : item.importerCompanyName"
-            :disabled="isPrivate"
-            :label="$t('companyDetail.label.consignee')"
-            :placeholder="$t('companyDetail.placeholder.consignee')"
-            @input="$emit('update', 'importerCompanyName', $event)"
-          />
-        </div>
-        <div class="pb-2">
-          <TextField
-            :value="isPrivate ? '' : item.deliveryAddress"
-            :disabled="isPrivate"
-            :label="$t('companyDetail.label.deliveryAddress')"
-            :placeholder="$t('companyDetail.placeholder.deliveryAddress')"
-            @input="$emit('update', 'deliveryAddress', $event)"
-          />
-        </div>
-        <div class="pb-2 lg:pb-1">
-          <div class="flex justify-between">
+      <div v-show="expanded" :class="['pt-4', { 'lg:flex': isRequisite }]">
+        <div :class="{ 'lg:w-1/2 lg:pr-5': isRequisite }">
+          <div class="pb-2">
             <TextField
-              :value="item.deliveryAddressPostcode"
-              :label="$t('companyDetail.label.deliveryAddressPostcode')"
-              :placeholder="$t('companyDetail.placeholder.postcode')"
-              class="w-48 pb-2"
-              @input="$emit('update', 'deliveryAddressPostcode', $event)"
+              :value="item.importerCompanyName"
+              :label="$t('companyDetail.label.consignee')"
+              :placeholder="$t('companyDetail.placeholder.consignee')"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="compRules"
+              state-icon
+              state-color="none"
+              @input="updateData({ 'importerCompanyName': $event })"
             />
-            <div class="relative flex-shrink-0 relative w-12 pl-sm">
-              <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
-                {{ $t('companyDetail.label.matches') }}
-              </label>
-              <div class="h-full flex items-center justify-end pt-8 pb-1">
-                <SwitchInput disabled hide-details />
+          </div>
+          <div class="pb-2">
+            <TextField
+              :value="item.deliveryAddress"
+              :label="$t('companyDetail.label.deliveryAddress')"
+              :placeholder="$t('companyDetail.placeholder.deliveryAddress')"
+              :loading="loading"
+              :disabled="isDeliveryAddressMatch"
+              :rules="compRules"
+              :state-icon="true"
+              :state-color="hasStateIcon ? 'warn' : 'none'"
+              :debounce="500"
+              :lazy="create"
+              lazy-validation
+              @input="updateData({ 'deliveryAddress': $event })"
+            />
+          </div>
+          <div class="pb-2 lg:pb-1">
+            <div class="flex justify-between">
+              <TextField
+                :value="item.deliveryAddressPostcode"
+                :label="$t('companyDetail.label.deliveryAddressPostcode')"
+                :placeholder="$t('companyDetail.placeholder.postcode')"
+                :loading="loading"
+                :disabled="isDeliveryAddressMatch"
+                :rules="compRules"
+                :state-icon="true"
+                :state-color="hasStateIcon ? 'warn' : 'none'"
+                :debounce="500"
+                :lazy="create"
+                lazy-validation
+                class="w-48 pb-2"
+                @input="updateData({ 'deliveryAddressPostcode': $event })"
+              />
+              <div class="relative flex-shrink-0 relative pl-sm">
+                <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
+                  {{ $t('companyDetail.label.matches') }}
+                </label>
+                <div class="h-full flex items-center justify-end pt-8 pb-1">
+                  <SwitchInput
+                    :value="isDeliveryAddressMatch"
+                    hide-details
+                    @input="updateDeliveryAddressMatch"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="relative lg:pb-20">
+              <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
+                {{ $t('companyDetail.hint.deliveryAddress') }}
               </div>
             </div>
           </div>
-          <div class="relative lg:pb-20">
-            <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
-              {{ $t('companyDetail.hint.mailingAddress') }}
-            </div>
+        </div>
+        <div :class="{ 'lg:w-1/2 lg:pl-5': isRequisite }">
+          <div class="flex items-end pb-2">
+            <TextField
+              :value="importerContactPerson.firstName"
+              :label="$t('companyDetail.label.contactPerson')"
+              :placeholder="$t('companyDetail.label.firstName')"
+              :loading="loading"
+              :rules="compRules"
+              :state-icon="true"
+              :state-color="hasStateIcon ? 'warn' : 'none'"
+              :debounce="500"
+              :lazy="create"
+              lazy-validation
+              label-no-wrap
+              class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
+              @input="updateContactPerson({ firstName: $event })"
+            />
+            <TextField
+              :value="importerContactPerson.lastName"
+              :placeholder="$t('companyDetail.label.lastName')"
+              :loading="loading"
+              :rules="compRules"
+              :state-icon="true"
+              :state-color="hasStateIcon ? 'warn' : 'none'"
+              :debounce="500"
+              :lazy="create"
+              lazy-validation
+              class="flex-grow"
+              @input="updateContactPerson({ lastName: $event })"
+            />
           </div>
-        </div>
-        <div class="flex items-end pb-2">
-          <TextField
-            v-model="firstName"
-            :label="$t('companyDetail.label.contactPerson')"
-            :placeholder="$t('companyDetail.label.firstName')"
-            label-no-wrap
-            class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
-          />
-          <TextField
-            v-model="lastName"
-            :placeholder="$t('companyDetail.label.lastName')"
-            class="flex-grow"
-          />
-        </div>
-        <div>
-          <TextField
-            :value="isPrivate ? '' : item.importerMobilePhone"
-            :disabled="isPrivate"
-            :label="$t('companyDetail.label.mobilePhone')"
-            :placeholder="$t('companyDetail.label.mobilePhone')"
-            @input="$emit('update', 'importerMobilePhone', $event)"
-          />
+          <div>
+            <PhoneInput
+              :value="item.importerMobilePhone"
+              :locale="item.locale"
+              :label="$t('companyDetail.label.mobilePhone')"
+              :loading="loading"
+              :state-color="hasStateIcon ? 'warn' : 'none'"
+              :state-icon="true"
+              :lazy="create"
+              lazy-validation
+              required
+              @input="updateData({ 'importerMobilePhone': $event })"
+            />
+          </div>
+          <div class="pt-10">
+            <Alert
+              v-if="isRequisite"
+              :value="true"
+              :close="false"
+              color="warn"
+              max-width="none"
+            >
+              {{ $t('companyDetail.hint.companyLocale') }}
+            </Alert>
+          </div>
         </div>
       </div>
     </v-expand-transition>
@@ -87,45 +147,68 @@
 </template>
 
 <script>
+import clientDetail from '../../mixins/clientDetail'
+
 export default {
   name: 'ShippingInfo',
+  mixins: [clientDetail],
   props: {
     item: {
       type: Object,
       default: () => ({}),
     },
     isPrivate: Boolean,
+    isRequisite: Boolean,
   },
   data () {
     return {
-      expanded: true,
+      isDeliveryAddressMatchLazy: false,
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+      },
     }
   },
   computed: {
-    firstName: {
+    hasStateIcon () {
+      return !(this.isPrivate || this.isRequisite)
+    },
+    isDeliveryAddressMatch: {
       get () {
-        return (this.item.importerContactPerson && this.item.importerContactPerson.firstName) || ''
+        return this.isDeliveryAddressMatchLazy
       },
       set (val) {
-        const person = this.item.importerContactPerson || {}
-        person.firstName = val
-        this.$emit('update', 'importerContactPerson', person)
+        this.isDeliveryAddressMatchLazy = val
       },
     },
-    lastName: {
-      get () {
-        return (this.item.importerContactPerson && this.item.importerContactPerson.lastName) || ''
-      },
-      set (val) {
-        const person = this.item.importerContactPerson || {}
-        person.lastName = val
-        this.$emit('update', 'importerContactPerson', person)
-      },
+    compRules () {
+      return [this.rules.required]
+    },
+    importerContactPerson () {
+      return this.item.importerContactPerson || {}
+    },
+  },
+  watch: {
+    'item.isDeliveryAddressMatch' (val) {
+      this.isDeliveryAddressMatchLazy = val
     },
   },
   methods: {
-    toggleExpand () {
-      this.expanded = !this.expanded
+    updateDeliveryAddressMatch (val) {
+      this.isDeliveryAddressMatch = val
+      const input = { 'isDeliveryAddressMatch': val }
+      if (val) {
+        input.deliveryAddress = this.item.mailingAddress
+        input.deliveryAddressPostcode = this.item.mailingAddressPostcode
+      }
+      this.updateData(input)
+    },
+    updateContactPerson (personInput) {
+      const value = Object.assign({}, {
+        firstName: this.importerContactPerson.firstName,
+        lastName: this.importerContactPerson.lastName,
+      }, personInput)
+      const input = { 'importerContactPerson': value }
+      this.updateData(input)
     },
   },
 }

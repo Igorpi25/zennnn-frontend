@@ -24,10 +24,19 @@
         :debounce="debounce"
         :content-class="contentClass"
         :input-class="inputClass"
-        :adlib="adlib"
-        :state-icon="compStateIcon"
+        :state-icon="stateIcon"
+        :state-icon-on-validate="stateIconOnValidate"
+        :state-color="stateColor"
         :slot-class="slotClass"
+        :prepend-slot-class="prependSlotClass"
+        :append-slot-class="appendSlotClass"
         :class="['select-input']"
+        :not-focus-on-select="notFocusOnSelect"
+        :rules="rules"
+        :patterns="patterns"
+        :validate-on-blur="validateOnBlur"
+        :lazy-validation="lazyValidation"
+        :hide-warn="hideWarn"
         :label="label"
         :label-no-wrap="labelNoWrap"
         :label-hint="labelHint"
@@ -35,6 +44,8 @@
         :solo="solo"
         :solo-flat="soloFlat"
         :dense="dense"
+        :loading="loading"
+        :size="size"
         autocomplete="off"
         force-update
         @input="onInput"
@@ -65,7 +76,7 @@
     <v-menu
       ref="menu"
       v-model="isMenuActive"
-      :activator="$refs.slot"
+      :activator="activator || $refs.slot"
       :attach="menuAttach"
       :close-on-click="false"
       :close-on-content-click="false"
@@ -127,7 +138,9 @@
             role="menuitem"
             @click="select(item)"
           >
-            <span>{{ item[itemText] }}</span>
+            <slot name="item" :item="item">
+              <span>{{ item[itemText] }}</span>
+            </slot>
           </li>
         </template>
         <li
@@ -146,17 +159,10 @@
 </template>
 
 <script>
-import validatable from '@/mixins/validatable'
 import { isObject, defaultFilter } from '../../util/helpers'
 
 export default {
   name: 'Select',
-  inject: {
-    form: {
-      default: null,
-    },
-  },
-  mixins: [validatable],
   props: {
     value: {
       type: [String, Number, Object],
@@ -193,7 +199,12 @@ export default {
       type: [Number, String],
       default: 0,
     },
+    // validation props
     rules: Array,
+    patterns: Array,
+    validateOnBlur: Boolean,
+    lazyValidation: Boolean,
+    hideWarn: Boolean,
     label: String,
     labelNoWrap: Boolean,
     labelHint: String,
@@ -224,14 +235,18 @@ export default {
       type: [String, Object],
       default: '',
     },
-    // preferably validation icon
-    adlib: Boolean,
     stateIcon: Boolean,
+    stateIconOnValidate: Boolean,
+    stateColor: String,
     slotClass: {
       type: String,
       default: 'w-10',
     },
+    prependSlotClass: String,
+    appendSlotClass: String,
+    notFocusOnSelect: Boolean,
     flat: Boolean,
+    activator: undefined,
     menuAttach: undefined,
     noFilter: Boolean,
     hasArrowIcon: {
@@ -239,6 +254,8 @@ export default {
       default: true,
     },
     dense: Boolean,
+    loading: Boolean,
+    size: [Number, String],
   },
   data () {
     return {
@@ -250,9 +267,6 @@ export default {
     }
   },
   computed: {
-    compStateIcon () {
-      return this.stateIcon && !!this.internalValue
-    },
     computedId () {
       return this.id || `input-${this._uid}`
     },
@@ -341,22 +355,15 @@ export default {
         }, 250)
       }
     },
-  },
-  created () {
-    if (this.form) {
-      this.form.register(this)
-    }
+    isMenuActive (val) {
+      this.$emit('menu', val)
+    },
   },
   mounted () {
     if (this.autofocus) {
       this.$refs.input.focus()
     }
     this.content = this.$refs.menu && this.$refs.menu.$refs.content
-  },
-  beforeDestroy () {
-    if (this.form) {
-      this.form.unregister(this)
-    }
   },
   methods: {
     onFocus () {
@@ -515,7 +522,6 @@ export default {
     },
     select (value) {
       this.internalValueObject = value
-      this.checkField({})
       const val = this.returnObject ? value : value[this.itemValue]
       this.$emit('input', val)
       this.closeMenu()
@@ -526,6 +532,11 @@ export default {
       }
     },
     closeConditional (e) {
+      // Close on label click
+      if (this.$refs.input.$refs['label'] && this.$refs.input.$refs['label'].contains(e.target)) {
+        this.closeMenu()
+        return
+      }
       if (
         // Click originates from outside the menu content
         this.content &&

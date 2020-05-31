@@ -1,60 +1,78 @@
 export default {
+  inject: {
+    form: {
+      default: null,
+    },
+  },
   props: {
     rules: Array,
     patterns: Array,
     validateOnBlur: Boolean,
+    lazyValidation: Boolean,
+    hideWarn: Boolean,
   },
   data () {
     return {
-      wasBlurred: false,
-      wasValidated: false,
-      shouldValidate: false,
+      badInput: null,
+      hasInput: false,
+      hasFocused: false,
       hasError: null,
       errorText: '',
       hasWarn: null,
       warnText: '',
+      valid: false,
     }
+  },
+  computed: {
+    shouldValidate () {
+      if (this.hasError || this.hasWarn) return true
+      return (this.hasInput || this.hasFocused)
+    },
   },
   watch: {
-    'form.wasValidated': {
-      handler () {
-        this.shouldValidate = true
-        this.wasValidated = true
-      },
+    internalValue () {
+      this.hasInput = true
+      if (!(this.validateOnBlur && !this.hasFocused)) {
+        this.$nextTick(this.validate)
+      }
+    },
+    hasFocus (val) {
+      if (
+        !val &&
+        !this.disabled
+      ) {
+        this.hasFocused = true
+        this.$nextTick(this.validate)
+      }
     },
   },
-  mounted () {
-    const form = this.form || {}
-    if (!form.lazyValidation && this.value) {
-      this.shouldValidate = true
-      this.validate()
-    }
+  beforeMount () {
+    this.validateOnBlur || this.lazyValidation || this.validate()
+  },
+  created () {
+    this.form && this.form.register(this)
+  },
+  beforeDestroy () {
+    this.form && this.form.unregister(this)
   },
   methods: {
-    checkField (e) {
-      if (this.validateOnBlur && !this.wasBlurred) return
-      this.shouldValidate = true
-      if (this.form && this.form.lazyValidation && !this.form.wasValidated) return
-      this.validate(e.target)
-    },
-    validate (el) {
-      this.wasValidated = true
+    validate (force = false, value) {
+      if (!this.hasInput) return
+      if (force) this.hasInput = this.hasFocused = true
+      value = value || this.internalValue
       let errorsCount = 0
-      const element = el || this.$refs.input
       if (this.rules && this.rules.length > 0) {
         for (let rule of this.rules) {
-          const result = rule(this.internalValue)
+          const result = rule(value)
           if (result !== true) {
             errorsCount++
             this.setError(result)
             break
           }
         }
-      } else if (element.willValidate === true && !element.validity.valid) {
-        this.setError(element.validationMessage)
-        errorsCount++
       }
-      if (errorsCount === 0) {
+      this.valid = errorsCount === 0
+      if (this.rules && this.valid) {
         this.clearError()
       }
       return errorsCount
@@ -66,7 +84,9 @@ export default {
           const result = rule(value)
           if (result !== true) {
             warnsCount++
-            this.setWarn(result)
+            if (!this.hideWarn) {
+              this.setWarn(result)
+            }
             break
           }
         }

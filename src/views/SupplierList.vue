@@ -71,10 +71,10 @@
               @keydown.enter.exact.self="goToSupplier(item.id)"
             >
                 <td></td>
-                <td>{{ item.companyNameSl || item.companyNameCl }}</td>
-                <td>{{ item.contactNumber || item.workPhone || '' }}</td>
-                <td>{{ item.responsiblePerson || item.manager || '' }}</td>
-                <td>{{ item.inn }}</td>
+                <td>{{ item.companyName }}</td>
+                <td>{{ item.supplierPhone }}</td>
+                <td>{{ item.contactPerson && item.contactPerson.fullName }}</td>
+                <td>{{ item.vat }}</td>
                 <td>{{ item.deals }}</td>
                 <td>
                   <!-- TODO: change icon -->
@@ -149,10 +149,10 @@ export default {
     headers () {
       return [
         { text: '', value: 'debt', align: 'left', width: 60, sortable: true, tooltip: this.$t('suppliers.suppliersDebt') },
-        { text: this.$t('suppliers.companyName'), value: 'supplierCompanyName', align: 'left', width: 220, minWidth: 220, sortable: true },
+        { text: this.$t('suppliers.companyName'), value: 'companyName', align: 'left', width: 220, minWidth: 220, sortable: true },
         { text: this.$t('suppliers.phone'), value: 'supplierPhone', align: 'left', width: 120, minWidth: 120, sortable: true },
-        { text: this.$t('suppliers.contactPerson'), value: 'supplierContactPerson', align: 'left', width: 165, sortable: true },
-        { text: this.$t('suppliers.inn'), value: 'inn', align: 'left', width: 120, minWidth: 120, sortable: true },
+        { text: this.$t('suppliers.contactPerson'), value: 'contactPerson.fullName', align: 'left', width: 165, sortable: true },
+        { text: this.$t('suppliers.inn'), value: 'vat', align: 'left', width: 120, minWidth: 120, sortable: true },
         { text: '', value: 'deals', width: 60, minWidth: 60, sortable: true, tooltip: this.$t('suppliers.currentDealsAmount') },
         { text: '', value: 'factory', width: 60, minWidth: 60, sortable: true, tooltip: this.$t('suppliers.currentDealsAmount') },
         { text: '', value: 'actions', align: 'right', width: 48 },
@@ -163,10 +163,7 @@ export default {
       return items.map(item => {
         return {
           ...item,
-          // for search
-          supplierCompanyName: item.companyNameSl || item.companyNameCl,
-          supplierPhone: item.contactNumber || item.workPhone,
-          supplierContactPerson: item.responsiblePerson || item.manager,
+          supplierPhone: (item.mobilePhone && item.mobilePhone.phone) || (item.phone && item.phone.phone),
         }
       })
     },

@@ -330,7 +330,7 @@ export default {
       return item.fullName || ''
     },
     getSupplierName (item) {
-      return item.companyNameSl || ''
+      return item.companyName || ''
     },
     expand (id) {
       if (this.expanded.includes(id)) {

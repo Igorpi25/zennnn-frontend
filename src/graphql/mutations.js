@@ -5,11 +5,10 @@ import {
   PRODUCT_FRAGMENT,
   CLIENT_FRAGMENT,
   SUPPLIER_FRAGMENT,
-  SUPPLIER_TEMPLATE_FRAGMENT,
-  SUPPLIER_SHOP_FRAGMENT,
-  SUPPLIER_SHOP_TEMPLATE_FRAGMENT,
+  SUPPLIER_BRANCH_FRAGMENT,
   ORG_CONTRACT_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
+  BANK_DETAIL_FRAGMENT,
 } from './typeDefs'
 
 export const LOGIN = gql`
@@ -36,6 +35,16 @@ export const GET_IMAGE_UPLOAD_URL = gql`
     getImageUploadUrl(orgId: $orgId, filename: $filename) {
       uploadUrl
       downloadUrl
+    }
+  }
+`
+
+export const GET_FILE_UPLOAD_URL = gql`
+  mutation GetFileUploadUrl($orgId: ID!, $filename: String!) {
+    getFileUploadUrl(orgId: $orgId, filename: $filename) {
+      uploadUrl
+      downloadUrl
+      contentType
     }
   }
 `
@@ -222,42 +231,26 @@ export const CREATE_SUPPLIER = gql`
   mutation CreateSupplier($orgId: ID!, $input: CreateSupplierInput!) {
     createSupplier(orgId: $orgId, input: $input) {
       ...SupplierFragment
-      template {
-        ...SupplierTemplateFragment
-      }
-      shops {
-        ...SupplierShopFragment
-        template {
-          ...SupplierShopTemplateFragment
-        }
+      branches {
+        ...SupplierBranchFragment
       }
     }
   }
   ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
 export const UPDATE_SUPPLIER = gql`
   mutation UpdateSupplier($id: ID!, $input: UpdateSupplierInput!) {
     updateSupplier(id: $id, input: $input) {
       ...SupplierFragment
-      template {
-        ...SupplierTemplateFragment
-      }
-      shops {
-        ...SupplierShopFragment
-        template {
-          ...SupplierShopTemplateFragment
-        }
+      branches {
+        ...SupplierBranchFragment
       }
     }
   }
   ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
 export const DELETE_SUPPLIER = gql`
@@ -266,50 +259,27 @@ export const DELETE_SUPPLIER = gql`
   }
 `
 
-export const CREATE_SUPPLIER_SHOP = gql`
-  mutation CreateSupplierShop($supplierId: ID!, $input: SupplierShopInput!) {
-    createSupplierShop(supplierId: $supplierId, input: $input) {
-      ...SupplierShopFragment
-      template {
-        ...SupplierShopTemplateFragment
-      }
+export const CREATE_SUPPLIER_BRANCH = gql`
+  mutation CreateSupplierBranch($supplierId: ID!, $input: SupplierBranchInput!) {
+    createSupplierBranch(supplierId: $supplierId, input: $input) {
+      ...SupplierBranchFragment
     }
   }
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
-export const UPDATE_SUPPLIER_SHOP = gql`
-  mutation UpdateSupplierShop($id: ID!, $input: SupplierShopInput!) {
-    updateSupplierShop(id: $id, input: $input) {
-      ...SupplierShopFragment
-      template {
-        ...SupplierShopTemplateFragment
-      }
+export const UPDATE_SUPPLIER_BRANCH = gql`
+  mutation UpdateSupplierBranch($id: ID!, $input: SupplierBranchInput!) {
+    updateSupplierBranch(id: $id, input: $input) {
+      ...SupplierBranchFragment
     }
   }
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
-export const DELETE_SUPPLIER_SHOP = gql`
+export const DELETE_SUPPLIER_BRANCH = gql`
   mutation DeleteSupplierShop($id: ID!) {
-    deleteSupplierShop(id: $id)
-  }
-`
-
-export const CREATE_SUPPLIER_TEMPLATE = gql`
-  mutation CreateSupplierTemplate($orgId: ID!, $fromSupplier: ID, $input: CreateSupplierTemplateInput!) {
-    createSupplierTemplate(orgId: $orgId, fromSupplier: $fromSupplier, input: $input) {
-      ...SupplierTemplateFragment
-    }
-  }
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
-`
-
-export const DELETE_SUPPLIER_TEMPLATE = gql`
-  mutation DeleteSupplierTemplate($id: ID!) {
-    deleteSupplierTemplate(id: $id)
+    deleteSupplierBranch(id: $id)
   }
 `
 
@@ -334,6 +304,30 @@ export const UPDATE_REQUISITE = gql`
 export const DELETE_REQUISITE = gql`
   mutation DeleteRequisite($id: ID!) {
     deleteRequisite(id: $id)
+  }
+`
+
+export const CREATE_COMPANY_BANK_DETAIL = gql`
+  mutation CreateCompanyBankDetail($companyId: ID!, $input: BankDetailInput!) {
+    createCompanyBankDetail(companyId: $companyId, input: $input) {
+      ...BankDetailFragment
+    }
+  }
+  ${BANK_DETAIL_FRAGMENT}
+`
+
+export const UPDATE_COMPANY_BANK_DETAIL = gql`
+  mutation UpdateCompanyBankDetail($companyId: ID!, $id: ID!, $input: BankDetailInput!) {
+    updateCompanyBankDetail(companyId: $companyId, id: $id, input: $input) {
+      ...BankDetailFragment
+    }
+  }
+  ${BANK_DETAIL_FRAGMENT}
+`
+
+export const DELETE_COMPANY_BANK_DETAIL = gql`
+  mutation DeleteCompanyBankDetail($companyId: ID!, $id: ID!) {
+    deleteCompanyBankDetail(companyId: $companyId, id: $id)
   }
 `
 

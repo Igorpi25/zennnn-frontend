@@ -93,7 +93,7 @@
     "createSpecDialogSearchPlaceholder": "Start typing",
     "createSpecDialogAddClient": "Create new Client",
     "createSpecDialogWithoutClient": "Add Client later",
-    "createSpecDialogAd": "Proceed",
+    "createSpecDialogAdd": "Proceed",
     "createDeal": "Create the deal",
     "clientUcn": "UCN",
     "clientName": "Client",
@@ -163,6 +163,7 @@
   "requisite": {
     "createTitle": "Add Company details",
     "editTitle": "Company details",
+    "created":"Created.",
     "back": "Back",
     "requisitesOfMyCompany": "Details of my company",
     "about": "About",
@@ -441,6 +442,7 @@
   "supplier": {
     "createTitle": "Создать нового поставщика",
     "editTitle": "Данные о поставщике",
+    "created": "Created.",
     "supplierCard": "Supplier's card",
     "edit": "Edit",
     "supplierCardPatterns": "Supplier's card pattern",
@@ -538,6 +540,7 @@
   "client": {
     "createTitle": "Создать нового клиента",
     "editTitle": "Данные о клиенте",
+    "created": "Created.",
     "save": "Save",
     "saveAsPattern": "Save as a pattern",
     "backToClientsList": "Back to clients list",
@@ -594,6 +597,7 @@
       "issuedBy": "Кем выдано",
       "legalAddress": "Legal address",
       "legalAddressPostcode": "Legal address postcode",
+      "privateMailingAddress": "Mailing Address",
       "mailingAddress": "Mailing Address",
       "mailingAddressPostcode": "Mailing address postcode",
       "phone": "Phone number",
@@ -631,6 +635,8 @@
       "attachFile": "Add file",
       "branchType": "File type",
       "branchName": "File name",
+      "branchAddress": "Address",
+      "supplierType": "Тип поставщика",
       "password": "Password",
       "language": "Language"
     },
@@ -684,6 +690,7 @@
       "passportId": "ID number",
       "citizenship": "Select the Contry",
       "issuedBy": "Name of authority",
+      "supplierType": "Выберите тип поставщика",
       "additionalPhone": "Additional phone number:",
       "placeOfResidence": "Place of residence:",
       "language": "Language:"
@@ -699,9 +706,11 @@
       "companyName": "Если у компании существует наименование только на английском языке, активируйте переключатель для автозаполнения.",
       "companyNameLocal": "ZENNNN настоятельно рекомендует стараться заполнять данные о вашей компании на английском языке. Если законодательство требует указывать данные о компании на государственном языке, например, когда вы ведете деятельность внутри страны, то лучшим решением будет создать еще одну компанию в список своих реквизитов. При этом реквизиты дополнительной компании могут быть полностью заполнены на государственном (местном) языке.",
       "mailingAddress": "Если у компании совпадают адрес регистрации и фактический адрес, активируйте переключатель для автозаполнения.",
+      "deliveryAddress": "Если у компании совпадают адрес доставки и фактический адрес, активируйте переключатель для автозаполнения.",
       "familyName": "Если клиент и контактное лицо — это один и тот же человек, активируйте переключатель для автозаполнения. Убедитесь, что имя и фамилия указаны, как в паспорте (ID) и на языке клиента или английском.",
       "phoneAndFax": "Этот телефон и факс будут указаны во всех документах, как контактные данные клиента.",
-      "privateAddress": "Если у клиента совпадают адрес места жительства и почтовый адрес, активируйте переключатель для автозаполнения."
+      "privateAddress": "Если у клиента совпадают адрес места жительства и почтовый адрес, активируйте переключатель для автозаполнения.",
+      "branchDeliveryAddress": "Адрес выдачи товара."
     },
     "rule": {
       "contactPersonFirstName": "Укажите имя контактного лица",
@@ -967,6 +976,7 @@
     "removeEmployee": "Are you sure you want to delete the Employee?"
   },
   "rule": {
+    "phone": "Fill in this field.",
     "onlyLatin": "Only latin letters and symbols are allowed",
     "required": "Fill in this field.",
     "requiredSelect": "Please select.",
@@ -1026,6 +1036,12 @@
     "FOB": "FOB",
     "CFR": "CFR",
     "CIF": "CIF"
+  },
+  "branchType": {
+    "OFFICE": "Офис",
+    "PRODUCTION": "Производство",
+    "WAREHOUSE": "Склад",
+    "SHOP": "Магазин"
   },
   "productStatus": {
     "IN_DRAFT": "Expecting",

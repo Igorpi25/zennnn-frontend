@@ -1,5 +1,5 @@
 <template>
-  <div class="w-8 h-8 relative">
+  <div :class="['relative', { 'w-8 h-8': uploadType === 'image' }]">
     <div
       ref="drop"
       :class="[
@@ -15,55 +15,61 @@
       @drop.prevent.stop="drop"
       @click="$refs.input.click()"
     >
-      <div
-        v-if="!internalSrc"
-        :class="[
-          'w-full h-full border flex justify-center items-center',
-          'hover:border-gray-150 hover:text-gray-150',
-          rounded ? 'rounded-full' : 'rounded',
-          isDragOver ? 'border-gray-150 border-solid text-gray-150' : 'border-dashed'
-        ]"
+      <slot
+        name="drag"
+        :loading="getUploadUrlLoading || uploadLoading || checkLoading"
+        :is-drag-over="isDragOver || hovered"
       >
-        <Icon>
-          {{ icons.mdiPlusThick }}
-        </Icon>
-      </div>
-      <div
-        v-else
-        :class="[
-          'w-full h-full',
-          rounded ? 'rounded-full' : 'rounded'
-        ]"
-      >
-        <slot name="preview">
-          <v-img
-            :src="iconImageSrc"
-            aspect-ratio="1"
-          >
-            <template v-slot:placeholder>
-              <div class="flex justify-center items-center w-full h-full">
-                <Spinner />
-              </div>
-            </template>
-          </v-img>
-        </slot>
         <div
-          v-if="isDragOver || hovered"
+          v-if="!internalSrc"
           :class="[
-            'absolute inset-0 w-full h-full bg-black opacity-35',
+            'w-full h-full border flex justify-center items-center',
+            'hover:border-gray-150 hover:text-gray-150',
             rounded ? 'rounded-full' : 'rounded',
-            { 'border border-white border-dashed' : isDragOver }
+            isDragOver ? 'border-gray-150 border-solid text-gray-150' : 'border-dashed'
           ]"
-        />
-        <div
-          v-if="(isDragOver || hovered) && !(getUploadUrlLoading || uploadLoading || checkLoading)"
-          class="absolute inset-0 flex justify-center items-center text-white"
         >
-          <Icon :size="isDragOver ? 18 : hoveredIconSize">
-            {{ isDragOver ? icons.mdiPlusThick : icons[hoveredIcon] }}
+          <Icon>
+            {{ icons.mdiPlusThick }}
           </Icon>
         </div>
-      </div>
+        <div
+          v-else
+          :class="[
+            'w-full h-full',
+            rounded ? 'rounded-full' : 'rounded'
+          ]"
+        >
+          <slot name="preview">
+            <v-img
+              :src="iconImageSrc"
+              aspect-ratio="1"
+            >
+              <template v-slot:placeholder>
+                <div class="flex justify-center items-center w-full h-full">
+                  <Spinner />
+                </div>
+              </template>
+            </v-img>
+          </slot>
+          <div
+            v-if="isDragOver || hovered"
+            :class="[
+              'absolute inset-0 w-full h-full bg-black opacity-35',
+              rounded ? 'rounded-full' : 'rounded',
+              { 'border border-white border-dashed' : isDragOver }
+            ]"
+          />
+          <div
+            v-if="(isDragOver || hovered) && !(getUploadUrlLoading || uploadLoading || checkLoading)"
+            class="absolute inset-0 flex justify-center items-center text-white"
+          >
+            <Icon :size="isDragOver ? 18 : hoveredIconSize">
+              {{ isDragOver ? icons.mdiPlusThick : icons[hoveredIcon] }}
+            </Icon>
+          </div>
+        </div>
+      </slot>
     </div>
     <template v-if="getUploadUrlLoading || uploadLoading || checkLoading">
       <div
@@ -116,8 +122,8 @@
     </template>
     <input
       ref="input"
+      :accept="fileAccept"
       type="file"
-      accept="image/jpeg,image/png"
       style="position:absolute; clip:rect(0,0,0,0); width:0; height:0;"
       @change="onChange"
     >
@@ -127,7 +133,7 @@
 <script>
 import axios from 'axios'
 import { mdiPlusThick, mdiClose, mdiMagnifyPlusOutline } from '@mdi/js'
-import { GET_IMAGE_UPLOAD_URL } from '../graphql/mutations'
+import { GET_IMAGE_UPLOAD_URL, GET_FILE_UPLOAD_URL } from '../graphql/mutations'
 import {
   ICON_IMAGE_POSTFIX,
   UPLOAD_FILE_SIZE_MB,
@@ -137,6 +143,14 @@ import {
 export default {
   name: 'FileUploader',
   props: {
+    fileAccept: {
+      type: String,
+      default: 'image/jpeg,image/png',
+    },
+    uploadType: {
+      type: String,
+      default: 'image',
+    },
     uploading: {
       type: Boolean,
       default: false,
@@ -324,7 +338,11 @@ export default {
     onChange (e) {
       const files = e.target.files
       this.file = files[0]
-      this.readAndUploadFile(this.file)
+      if (this.uploadType === 'image') {
+        this.readAndUploadFile(this.file)
+      } else {
+        this.getUploadUrl(this.file)
+      }
     },
     readAndUploadFile (file) {
       if (!file) return
@@ -348,16 +366,18 @@ export default {
         if (!file) return
         this.getUploadUrlLoading = true
         this.$emit('update:uploading', true)
+        const mutation = this.uploadType === 'image' ? GET_IMAGE_UPLOAD_URL : GET_FILE_UPLOAD_URL
         const result = await this.$apollo.mutate({
-          mutation: GET_IMAGE_UPLOAD_URL,
+          mutation,
           variables: {
             orgId: this.$route.params.orgId,
             filename: file.name,
           },
         })
-        const { data: { getImageUploadUrl } } = result
-        this.uploadSrc = getImageUploadUrl.downloadUrl
-        await this.upload(getImageUploadUrl, file)
+        const { data } = result
+        const uploadData = this.uploadType === 'image' ? data.getImageUploadUrl : data.getFileUploadUrl
+        this.uploadSrc = uploadData.downloadUrl
+        await this.upload(uploadData, file)
       } catch (error) {
         throw new Error(error)
       } finally {
@@ -387,7 +407,17 @@ export default {
           this.checkLoading = true
           this.startSrcCheckTimer(downloadUrl)
         } else {
-          this.emitSrc(downloadUrl)
+          if (this.uploadType === 'file') {
+            const data = {
+              filename: file.name,
+              contentType: uploadData.contentType,
+              url: downloadUrl,
+            }
+            this.$emit('uploaded', data)
+            return data
+          } else {
+            this.emitSrc(downloadUrl)
+          }
         }
         return downloadUrl
       } catch (error) {

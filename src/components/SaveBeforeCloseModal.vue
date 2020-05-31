@@ -18,7 +18,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center">
         <Button
           outlined
-          class="sm:flex-1 mb-3 sm:mb-0 sm:mr-2"
+          class="sm:flex-1 mb-3 sm:mb-0 sm:mr-2 whitespace-no-wrap"
           merge-class="border-gray-200"
           @click="$emit('dontSave')"
         >
@@ -27,7 +27,7 @@
 
         <Button
           outlined
-          class="sm:flex-1 mb-3 sm:mb-0 sm:mx-2"
+          class="sm:flex-1 mb-3 sm:mb-0 sm:mx-2 whitespace-no-wrap"
           merge-class="border-gray-200"
           @click="$emit('cancel')"
         >
@@ -35,7 +35,7 @@
         </Button>
 
         <Button
-          class="sm:flex-1 mb-3 sm:mb-0 sm:ml-2"
+          class="sm:flex-1 mb-3 sm:mb-0 sm:ml-2 whitespace-no-wrap"
           @click="$emit('save')"
         >
           <span>{{ saveButton || $t('action.save') }}</span>

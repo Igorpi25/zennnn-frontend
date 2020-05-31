@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     staticClass () {
-      return 'h-12 inline-flex relative rounded-md focus:outline-none select-none align-middle transition-colors duration-100 ease-out'
+      return 'h-12 inline-flex items-center relative rounded-md focus:outline-none select-none align-middle transition-colors duration-100 ease-out'
     },
     classes () {
       const classes = [this.staticClass]

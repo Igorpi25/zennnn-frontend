@@ -1,19 +1,6 @@
 <template>
   <div>
 
-    <v-dialog
-      v-model="saveBeforeCloseDialog"
-      max-width="463"
-    >
-      <SaveBeforeCloseModal
-        :text="$t('label.saveChangesBeforeClose')"
-        :postScriptum="$t('label.saveChangesHint')"
-        @dontSave="$emit('confirm', 1)"
-        @cancel="$emit('confirm', 0)"
-        @save="$emit('confirm', 2)"
-      />
-    </v-dialog>
-
     <div
       id="container"
       :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container container--sm']"
@@ -27,91 +14,239 @@
           @click="$emit('close')"
         />
       </span>
-      <h1 class="text-2xl text-white font-semibold leading-tight mb-5">
+      <h1 class="text-2xl text-white font-semibold leading-tight mb-4">
         {{ create ? $t('client.createTitle') : $t('client.editTitle') }}
       </h1>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
-        <div class="h-11 flex overflow-x-auto overflow-scroll-touch">
-          <div
-            v-for="(tab, i) in tabs"
-            :aria-selected="clientType === tab.value"
-            :key="tab.value"
-            :class="[
-              'w-full sm:w-auto flex items-center justify-center rounded-t bg-gray-600',
-              'select-none whitespace-no-wrap cursor-pointer',
-              'transition-colors duration-100 ease-out px-10',
-              { 'mr-1': i + 1 < tabs.length },
-              tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',
-              clientType === tab.value ? 'text-white' : 'bg-opacity-30 text-gray-200',
-            ]"
-            :role="tab.disabled ? null : 'tab'"
-            :tabindex="tab.disabled ? null : 0"
-            @click="switchClientType(tab.value)"
-            @keydown.enter.exact="switchClientType(tab.value)"
-          >
-            {{ tab.text }}
+        <div class="lg:h-11 flex flex-wrap lg:flex-no-wrap">
+          <div class="h-11 flex order-last lg:order-none overflow-x-auto overflow-scroll-touch">
+            <div
+              v-for="(tab, i) in tabs"
+              :aria-selected="clientType === tab.value"
+              :key="tab.value"
+              :class="[
+                'w-full sm:w-auto flex items-center justify-center rounded-t bg-gray-600',
+                'select-none whitespace-no-wrap cursor-pointer',
+                'transition-colors duration-100 ease-in px-10',
+                { 'mr-1': i + 1 < tabs.length },
+                tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',
+                clientType === tab.value ? 'text-white' : 'bg-opacity-30 text-gray-200',
+              ]"
+              :role="tab.disabled ? null : 'tab'"
+              :tabindex="tab.disabled ? null : 0"
+              @click="switchClientType(tab.value)"
+              @keydown.enter.exact="switchClientType(tab.value)"
+            >
+              {{ tab.text }}
+            </div>
+          </div>
+          <div class="flex-grow" />
+          <div class="w-full lg:w-auto flex items-center justify-end">
+            <v-slide-x-reverse-transition>
+              <div v-if="!item.isRequiredFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+                <span class="text-pink-500 mr-2">
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="4" cy="4" r="4" fill="currentColor" />
+                  </svg>
+                </span>
+                <span>{{ $t('print.required') }}</span>
+              </div>
+            </v-slide-x-reverse-transition>
+            <v-slide-x-reverse-transition>
+              <div v-if="!item.isOptionalFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+                <span class="text-yellow-500 mr-2">
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="4" cy="4" r="4" fill="currentColor" />
+                  </svg>
+                </span>
+                <span>{{ $t('print.warning') }}</span>
+              </div>
+            </v-slide-x-reverse-transition>
           </div>
         </div>
         <div
-          v-if="clientType === ClientType.LEGAL || clientType === ClientType.OTHER"
+          v-if="isLegalType"
+          key="legal"
           class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
         >
           <!-- Legal info -->
-          <LegalInfo :uid="uid" :item="client" @update="updateValue" />
+          <LegalInfo
+            :loading="loading"
+            :uid="uid"
+            :item="item"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <LegalDetail :item="client" @update="updateValue" />
+          <LegalDetail
+            :loading="loading"
+            :item="item"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
-          <ContactList :item="client" @update="updateValue" />
+          <ContactList
+            :loading="loading"
+            :items="item.contacts"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
               <!-- ShippingInfo -->
-              <ShippingInfo :item="client" @update="updateValue" />
+              <ShippingInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                @update="updateValue"
+              />
             </div>
             <div class="w-full lg:w-1/2 lg:pl-5">
               <!-- ExtraInfo -->
-              <ExtraInfo :item="client" @update="updateValue" />
+              <ExtraInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                @update="updateValue"
+              />
             </div>
           </div>
         </div>
         <div
-          v-else-if="clientType === ClientType.PRIVATE"
+          v-else-if="isPrivateType"
+          key="private"
           class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
         >
           <!-- Private info -->
-          <PrivateInfo :uid="uid" :item="client" @update="updateValue" />
+          <PrivateInfo
+            :loading="loading"
+            :uid="uid"
+            :item="item"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Detail -->
-          <PrivateDetail :item="client" @update="updateValue" />
+          <PrivateDetail
+            :loading="loading"
+            :item="item"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <!-- Contacts -->
-          <ContactList :item="client" @update="updateValue" />
+          <ContactList
+            :loading="loading"
+            :items="item.contacts"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
           <!-- Divider -->
           <div class="mt-10 border-t border-gray-400" />
           <div class="flex flex-wrap pb-5">
             <div class="w-full lg:w-1/2 lg:pr-5">
               <!-- ShippingInfo -->
-              <ShippingInfo :item="client" is-private @update="updateValue" />
+              <ShippingInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                is-private
+                @update="updateValue"
+              />
             </div>
             <div class="w-full lg:w-1/2 lg:pl-5">
               <!-- ShippingInfo -->
-              <ExtraInfo :item="client" is-private @update="updateValue" />
+              <ExtraInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                is-private
+                @update="updateValue"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          v-else-if="isOtherType"
+          key="other"
+          class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
+        >
+          <!-- Legal info -->
+          <LegalInfo
+            :loading="loading"
+            :uid="uid"
+            :item="item"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Detail -->
+          <LegalDetail
+            :loading="loading"
+            :item="item"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Contacts -->
+          <ContactList
+            :loading="loading"
+            :items="item.contacts"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <div class="flex flex-wrap pb-5">
+            <div class="w-full lg:w-1/2 lg:pr-5">
+              <!-- ShippingInfo -->
+              <ShippingInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                @update="updateValue"
+              />
+            </div>
+            <div class="w-full lg:w-1/2 lg:pl-5">
+              <!-- ExtraInfo -->
+              <ExtraInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                @update="updateValue"
+              />
             </div>
           </div>
         </div>
       </div>
       <Button
+        v-if="create && isComponent"
         :loading="updateLoading"
         outlined
         merge-class="w-40"
-        @click="update()"
+        @click="createFromItem"
       >
         {{ $t('client.save') }}
       </Button>
@@ -123,7 +258,7 @@
 <script>
 // TODO install in dependencies
 import cloneDeep from 'clone-deep'
-import deepEqual from 'deep-equal'
+import { validateLegalClient, validatePrivateClient } from '../util/validation'
 
 import { ClientType } from '../graphql/enums'
 import { GET_CLIENT, GET_CLIENT_GROUP, GET_ORG_NEXT_CLIENT_UID } from '../graphql/queries'
@@ -131,6 +266,7 @@ import {
   CREATE_CLIENT,
   UPDATE_CLIENT,
 } from '../graphql/mutations'
+import { replaceAt } from '../util/helpers'
 
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
 import LegalDetail from './CompanyDetail/LegalDetail.vue'
@@ -139,7 +275,6 @@ import ShippingInfo from './CompanyDetail/ShippingInfo.vue'
 import ExtraInfo from './CompanyDetail/ExtraInfo.vue'
 import PrivateInfo from './CompanyDetail/PrivateInfo.vue'
 import PrivateDetail from './CompanyDetail/PrivateDetail.vue'
-import SaveBeforeCloseModal from './SaveBeforeCloseModal.vue'
 
 export default {
   name: 'ClientCard',
@@ -151,7 +286,6 @@ export default {
     ExtraInfo,
     PrivateInfo,
     PrivateDetail,
-    SaveBeforeCloseModal,
   },
   props: {
     orgId: {
@@ -184,7 +318,7 @@ export default {
       query: GET_CLIENT,
       variables () {
         return {
-          id: this.$route.params.clientId,
+          id: this.clientId,
         }
       },
       result ({ data, loading }) {
@@ -212,163 +346,25 @@ export default {
   },
   data () {
     return {
-      ClientType,
-      activeClientType: null,
-      languageInputError: {},
-      wasValidate: false,
-      saveBeforeCloseDialog: false,
-      templateChanged: false,
-      createTemplateLoading: false,
-      deleteTemplateLoading: null,
-      loading: false,
+      internalClientType: ClientType.LEGAL,
       updateLoading: false,
-      isExpanded: false,
-      expanded: [],
-      legalFieldsSettings: {
-        customUid: {
-          disabled: true,
-          defaultValueKey: 'uid',
-          label: 'uid',
-          placeholder: 'uid',
-        },
-        companyName: {
-          ref: 'legalCompanyNameInput',
-          rules: [v => !!v || this.$t('rule.required')],
-          rows: 2,
-        },
-        legalAddress: {
-          rows: 2,
-        },
-        legalAddressPostcode: {
-          placeholder: 'postcode',
-        },
-        mailingAddress: {
-          rows: 2,
-        },
-        mailingAddressPostcode: {
-          placeholder: 'postcode',
-        },
-        phone: {},
-        fax: {},
-        email: {},
-        itn: {},
-        iec: {},
-        psrn: {
-          section: true,
-        },
-        bankName: {},
-        bankAddress: {},
-        bankAccountNumber: {
-          placeholder: 'bankAccountNumberAbr',
-        },
-        correspondentAccountNumber: {
-          placeholder: 'correspondentAccountNumberAbr',
-        },
-        bic: {},
-        okpo: {},
-        swift: {},
-        ownerFullName: {},
-        ownerJobPosition: {},
-        contactPerson: {},
-        consignee: {
-          section: true,
-          subtitle: 'shippingInfo',
-        },
-        shippingAddress: {
-          label: 'deliveryAddress',
-          placeholder: 'deliveryAddress',
-          rows: 2,
-        },
-        importerContactPerson: {
-          label: 'contactPerson',
-          placeholder: 'contactPerson',
-        },
-        contactMobilePhone: {
-          label: 'mobilePhone',
-          placeholder: 'mobilePhone',
-        },
-        importerFax: {
-          label: 'fax',
-          placeholder: 'fax',
-        },
-        importerEmail: {
-          label: 'email',
-          placeholder: 'email',
-        },
-        legalTypeNote: {
-          label: 'note',
-          placeholder: 'note',
-          section: true,
-          subtitle: 'note',
-          rows: 3,
-        },
-        language: {
-          labelReadonly: true,
-          section: true,
-          subtitle: 'language',
-          labelHint: 'languageDescription',
-        },
-      },
-      naturalFieldsSettings: {
-        customUid: {
-          disabled: true,
-          defaultValueKey: 'uid',
-          label: 'uid',
-          placeholder: 'uid',
-        },
-        firstName: {
-          ref: 'naturalFirstNameInput',
-          rules: [v => !!v || this.$t('rule.required')],
-        },
-        lastName: {
-          ref: 'naturalLastNameInput',
-          rules: [v => !!v || this.$t('rule.required')],
-        },
-        middleName: {},
-        passportId: {},
-        mobilePhone: {},
-        additionalPhone: {},
-        naturalEmail: {
-          label: 'email',
-          placeholder: 'email',
-        },
-        address: {
-          rows: 2,
-        },
-        deliveryAddress: {
-          rows: 2,
-        },
-        naturalTypeNote: {
-          label: 'note',
-          placeholder: 'note',
-          section: true,
-          subtitle: 'note',
-          rows: 3,
-        },
-        language: {
-          labelReadonly: true,
-          section: true,
-          subtitle: 'language',
-          labelHint: 'languageDescription',
-        },
-      },
-      client: {
-        id: null,
-        uid: null,
-        clientType: null,
-        language: '',
-        template: {},
-      },
-      clientClone: {},
+      item: {},
     }
   },
   computed: {
+    loading () {
+      return this.$apollo.queries.getClient.loading
+    },
+    clientId () {
+      return this.$route.params.clientId
+    },
     clientType () {
+      if (this.isComponent) return this.internalClientType
       return this.getClientTypeFromNumeric(this.$route.query.clientType)
     },
     uid () {
-      if (this.client.uid) {
-        return this.client.uid
+      if (this.item.uid) {
+        return this.item.uid
       }
       let nextUid = ''
       if (this.getClientGroup && this.getClientGroup.id) {
@@ -377,9 +373,9 @@ export default {
         nextUid = this.getOrgNextClientUid || ''
       }
       if (this.clientType === ClientType.OTHER) {
-        nextUid = nextUid.replace('A', 'C')
+        nextUid = replaceAt(nextUid, 0, 'C')
       } else if (this.clientType === ClientType.PRIVATE) {
-        nextUid = nextUid.replace('A', 'B')
+        nextUid = replaceAt(nextUid, 0, 'B')
       }
       return nextUid
     },
@@ -399,59 +395,21 @@ export default {
         },
       ]
     },
-    privateField () {
-      return [
-        'locale', 'contactPerson',
-        'legalAddress', 'legalAddressPostcode', 'mailingAddress', 'mailingAddressPostcode',
-        'deliveryAddress', 'deliveryAddressPostcode', 'phone', 'phoneOption', 'fax',
-        'mobilePhone', 'email',
-        'vat', 'iec', 'okpo', 'psrn', 'bic', 'swift',
-        'bankName', 'bankAddress', 'bankAccountNumber', 'correspondentBankName', 'correspondentAccountNumber',
-        'importerActive', 'importerCompanyName', 'importerContactPerson',
-        'importerMobilePhone', 'importerPhone', 'importerEmail', 'note',
-        'person', 'birthdate', 'passportId', 'citizenship', 'issueDate', 'expireDate', 'issuedBy', 'avatar',
-        'contacts', 'tags', 'files',
-      ]
-    },
-    legalFields () {
-      return [
-        'locale', 'contactPerson',
-        'companyName', 'companyNameLocal', 'companyOwner',
-        'legalAddress', 'legalAddressPostcode', 'mailingAddress', 'mailingAddressPostcode',
-        'deliveryAddress', 'deliveryAddressPostcode', 'phone', 'phoneOption', 'fax',
-        'mobilePhone', 'email',
-        'vat', 'iec', 'okpo', 'psrn', 'bic', 'swift',
-        'bankName', 'bankAddress', 'bankAccountNumber', 'correspondentBankName', 'correspondentAccountNumber',
-        'importerActive', 'importerCompanyName', 'importerContactPerson',
-        'importerMobilePhone', 'importerPhone', 'importerEmail', 'note',
-        'contacts', 'tags', 'files',
-      ]
-    },
-    hasDeepChange () {
-      return !deepEqual(this.client, this.clientClone)
-    },
-    isLegalPerson () {
+    isLegalType () {
       return this.clientType === ClientType.LEGAL
     },
-    isPrivatePerson () {
+    isPrivateType () {
       return this.clientType === ClientType.PRIVATE
+    },
+    isOtherType () {
+      return this.clientType === ClientType.OTHER
     },
   },
   watch: {
     '$route' (to, from) {
-      this.reset()
+      if (this.isComponent) return
+      this.$apollo.queries.getClientGroup.refetch()
     },
-    saveBeforeCloseDialog (val) {
-      if (!val) {
-        this.$emit('confirm', 0)
-        this.$off('confirm')
-      }
-    },
-  },
-  created () {
-    if (this.create) {
-      this.reset()
-    }
   },
   methods: {
     getClientTypeFromNumeric (type) {
@@ -473,218 +431,93 @@ export default {
         default: return 1
       }
     },
-    async toggleEditMode () {
-      if (this.editMode && this.hasDeepChange) {
-        const r = await this.openConfirmDialog()
-        if (r) {
-          if (r === 2) {
-            this.wasValidate = true
-            const isValid = this.validate(true)
-            if (!isValid) {
-              this.saveBeforeCloseDialog = false
-              this.$vuetify.goTo('#container')
-              this.editMode = false
-              this.$nextTick(() => {
-                this.editMode = true
-              })
-              return
-            }
-            try {
-              await this.update(this.clientType, false)
-              this.saveBeforeCloseDialog = false
-            } catch (error) {
-              this.$logger.warn('Error: ', error)
-            }
-          } else {
-            this.setData(this.clientClone)
-            this.resetValidation()
-            this.editMode = false
-            this.saveBeforeCloseDialog = false
-          }
-        } else {
-          this.editMode = false
-          this.$nextTick(() => {
-            this.editMode = true
-          })
-          this.saveBeforeCloseDialog = false
-        }
-      } else {
-        this.editMode = !this.editMode
-      }
+    reset () {
+      this.item = {}
+      this.$apollo.queries.getOrgNextClientUid.refetch()
     },
-    async checkChangesBeforeLeave (next) {
-      if (this.hasDeepChange) {
-        const r = await this.openConfirmDialog()
-        if (r) {
-          if (r === 2) {
-            this.wasValidate = true
-            // const isValid = this.validate(true)
-            // if (!isValid) {
-            //   this.saveBeforeCloseDialog = false
-            //   this.$vuetify.goTo('#container')
-            //   return next(false)
-            // }
-            try {
-              await this.update(this.clientType, false)
-              return next()
-            } catch (error) {
-              this.$logger.warn('Error: ', error)
-              return next(false)
-            }
-          } else {
-            this.saveBeforeCloseDialog = false
-            return next()
-          }
-        } else {
-          this.saveBeforeCloseDialog = false
-          return next(false)
-        }
-      } else {
-        return next()
-      }
+    setData (item) {
+      if (!item) return
+      this.item = cloneDeep(item)
     },
-    async openConfirmDialog () {
-      this.saveBeforeCloseDialog = true
-      return new Promise((resolve) => {
-        this.$on('confirm', result => {
-          resolve(result)
+    switchClientType (type) {
+      if (this.create && this.isComponent) {
+        this.internalClientType = type
+        const clone = this.item
+        this.reset()
+        this.$nextTick(() => {
+          let v = {}
+          if (type === ClientType.PRIVATE) {
+            v = validatePrivateClient(clone)
+          } else {
+            v = validateLegalClient(clone)
+          }
+          this.setData(Object.assign(clone, v))
         })
-      })
-    },
-    validate (focus) {
-      if (!this.wasValidate) return
-      const type = this.clientType
-      const validateFields = []
-      let errorsCount = 0
-      let fields = []
-      const refs = this.$refs[type].$refs
-      if (type === ClientType.PRIVATE) {
-        fields = this.naturalFieldsSettings
-      } else {
-        fields = this.legalFieldsSettings
+        return
       }
-      for (const [, v] of Object.entries(fields)) {
-        if (v.rules) {
-          const field = refs[v.ref][0]
-          if (field) {
-            validateFields.push(field)
+      if (this.clientType === type) return
+      const group = this.getClientGroup || {}
+      const groupId = group.id
+      const clientId = group[type]
+      const clientType = this.getClientTypeNumeric(type)
+      if (groupId && clientId) {
+        this.$router.push({ name: 'client', params: { groupId, clientId }, query: { clientType } }).catch(() => {})
+      } else {
+        this.$router.push({ name: 'client-create', params: { groupId }, query: { clientType } }).catch(() => {})
+      }
+      this.reset()
+    },
+    updateValue (input) {
+      if (this.create) {
+        if (this.isComponent) {
+          const newItem = Object.assign({}, this.item, input)
+          let v = {}
+          if (this.internalClientType === ClientType.PRIVATE) {
+            v = validatePrivateClient(newItem)
+          } else {
+            v = validateLegalClient(newItem)
           }
+          this.item = Object.assign({}, newItem, v)
+        } else {
+          this.createClient(input, true)
         }
-      }
-      let firstNotValidInput = null
-      validateFields.forEach(el => {
-        const errCount = el.validate()
-        if (errCount && !firstNotValidInput) {
-          firstNotValidInput = el.$refs.input
-        }
-        errorsCount += errCount
-      })
-      // validate language input separately
-      const languageInputValidity = this.validateLanguageInput()
-      if (!languageInputValidity.valid) {
-        errorsCount += 1
-        if (!firstNotValidInput) {
-          firstNotValidInput = languageInputValidity.el
-        }
-      }
-      if (focus && errorsCount && firstNotValidInput) {
-        this.$vuetify.goTo(firstNotValidInput)
-        const delay = this.isComponent ? 0 : 200
-        setTimeout(() => {
-          firstNotValidInput.focus()
-        }, delay)
-      }
-      return !errorsCount
-    },
-    validateLanguageInput () {
-      const type = this.clientType
-      const el = this.$refs[`${type}-languageInput`]
-      if (!el.validity.valid) {
-        const message = this.$t('rule.requiredSelect')
-        this.$set(this.languageInputError, type, message)
-        return { message, el, valid: false }
       } else {
-        this.$set(this.languageInputError, type, '')
-        return { valid: true }
+        this.updateClient(input)
       }
     },
-    resetValidation () {
-      const type = this.clientType
-      const validateFields = []
-      let fields = []
-      const refs = this.$refs[type].$refs
-      if (type === ClientType.PRIVATE) {
-        fields = this.naturalFieldsSettings
-      } else {
-        fields = this.legalFieldsSettings
-      }
-      for (const [, v] of Object.entries(fields)) {
-        if (v.rules) {
-          const field = refs[v.ref][0]
-          if (field) {
-            validateFields.push(field)
-          }
+    createFromItem () {
+      const item = {}
+      for (let [k, v] of Object.entries(this.item)) {
+        if (k !== 'isRequiredFilled' && k !== 'isOptionalFilled') {
+          item[k] = v
         }
       }
-      validateFields.forEach(el => {
-        el.resetValidation()
-      })
+      this.createClient(item)
     },
-    updateLanguageInput (e) {
-      const v = e.target.value
-      const validity = this.validateLanguageInput()
-      if (validity.valid) {
-        this.updateValue('language', v)
-      }
-    },
-    async update (type, redirectAfterCreate = true) {
-      // this.wasValidate = true
-      // // TODO: validate input Uniq number
-      // const isValid = this.validate(true)
-      // if (!isValid) {
-      //   return
-      // }
+    async createClient (input, redirectAfterCreate = true) {
       try {
-        const input = {}
-        if (this.create) {
-          input.clientType = this.clientType
-        }
-        const fieldsKeys = this.clientType === ClientType.PRIVATE ? this.privateField : this.legalFields
-        fieldsKeys.forEach(key => {
-          if (this.client[key] && (key === 'companyOwner' || key === 'contactPerson' || key === 'importerContactPerson' || key === 'person')) {
-            input[key] = {
-              firstName: this.client[key].firstName,
-              lastName: this.client[key].lastName,
-              middleName: this.client[key].middleName,
-            }
-          } else {
-            input[key] = this.client[key] || null
-          }
-        })
-
-        const query = this.create ? CREATE_CLIENT : UPDATE_CLIENT
-
-        const variables = this.create
-          ? { orgId: this.orgId, input, groupId: this.getClientGroup && this.getClientGroup.id }
-          : { id: this.client.id, input }
-
         this.updateLoading = true
+        input.clientType = this.clientType
+
+        const variables = {
+          orgId: this.orgId,
+          groupId: this.getClientGroup && this.getClientGroup.id,
+          input,
+        }
+
         const response = await this.$apollo.mutate({
-          mutation: query,
+          mutation: CREATE_CLIENT,
           variables,
         })
         if (response && response.data) {
           this.$apollo.queries.getClientGroup.refetch()
-          const data = this.create
-            ? response.data.createClient
-            : response.data.updateClient
-          this.setData(data)
+          const data = response.data.createClient
           if (this.isComponent) {
-            const action = this.create ? 'create' : 'update'
-            this.$emit(action, data)
+            this.$emit('create', data)
           } else {
-            if (this.create && redirectAfterCreate) {
-              this.$router.push({
+            if (redirectAfterCreate) {
+              this.$notify(this.$t('client.created'))
+              this.$router.replace({
                 name: 'client',
                 params: {
                   orgId: this.orgId,
@@ -695,8 +528,6 @@ export default {
                   clientType: this.getClientTypeNumeric(data.clientType),
                 },
               })
-            } else {
-              this.$vuetify.goTo('#container')
             }
           }
         }
@@ -708,44 +539,34 @@ export default {
         })
         throw new Error(error)
       } finally {
-        this.saveBeforeCloseDialog = false
         this.updateLoading = false
       }
     },
-    reset () {
-      this.client = {
-        id: null,
-        uid: null,
-        clientType: null,
-        language: '',
-      }
-      this.languageInputError = {}
-      this.clientClone = cloneDeep(this.client)
-      this.$apollo.queries.getOrgNextClientUid.refetch()
-    },
-    setData (item) {
-      if (!item) return
-      this.client = cloneDeep(item)
-      this.clientClone = cloneDeep(this.client)
-    },
-    switchClientType (type) {
-      if (this.clientType === type) return
-      const group = this.getClientGroup || {}
-      const groupId = group.id
-      const clientId = group[type]
-      const clientType = this.getClientTypeNumeric(type)
-      if (groupId && clientId) {
-        this.$router.push({ name: 'client', params: { groupId, clientId }, query: { clientType } }).catch(() => {})
-      } else {
-        this.$router.push({ name: 'client-create', params: { groupId }, query: { clientType } }).catch(() => {})
-      }
-      this.$apollo.queries.getClientGroup.refetch()
-    },
-    updateValue (key, value) {
-      if (!this.client.hasOwnProperty(key)) {
-        this.$set(this.client, key, value)
-      } else {
-        this.client[key] = value
+    async updateClient (input) {
+      try {
+        this.updateLoading = true
+
+        const variables = { id: this.clientId, input }
+
+        const response = await this.$apollo.mutate({
+          mutation: UPDATE_CLIENT,
+          variables,
+        })
+        if (response && response.data) {
+          const data = response.data.updateClient
+          if (this.isComponent) {
+            this.$emit('update', data)
+          }
+        }
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'error',
+          text: error.message,
+        })
+        throw new Error(error)
+      } finally {
+        this.updateLoading = false
       }
     },
   },

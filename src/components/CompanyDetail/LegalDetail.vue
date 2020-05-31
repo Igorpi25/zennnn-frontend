@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex items-center pt-10">
-      <div class="flex-grow text-lg leading-tight" @click="toggleExpand">
+      <div class="flex-grow text-lg leading-tight">
         <span class="text-white uppercase font-semibold tracking-widest uppercase">
           {{ $t('companyDetail.legalDetail') }}
         </span>
@@ -31,7 +31,13 @@
               :value="item.vat"
               :label="$t('companyDetail.label.vat')"
               :placeholder="$t('companyDetail.placeholder.vat')"
-              @input="$emit('update', 'vat', $event)"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
+              @input="updateData({ 'vat': $event })"
             />
           </div>
           <div class="pb-2">
@@ -39,7 +45,13 @@
               :value="item.legalAddress"
               :label="$t('companyDetail.label.legalAddress')"
               :placeholder="$t('companyDetail.placeholder.address')"
-              @input="$emit('update', 'legalAddress', $event)"
+              :loading="loading"
+              :rules="[rules.required]"
+              :debounce="500"
+              :lazy="create"
+              lazy-validation
+              state-icon
+              @input="updateLegalAddress"
             />
           </div>
           <div class="pb-2">
@@ -47,9 +59,15 @@
               :value="item.legalAddressPostcode"
               :label="$t('companyDetail.label.legalAddressPostcode')"
               :placeholder="$t('companyDetail.placeholder.postcode')"
+              :loading="loading"
+              :rules="[rules.required]"
+              :debounce="500"
+              :lazy="create"
+              lazy-validation
+              state-icon
               label-no-wrap
               class="w-48"
-              @input="$emit('update', 'legalAddressPostcode', $event)"
+              @input="updateLegalAddressPostcode"
             />
           </div>
           <div class="pb-2">
@@ -57,7 +75,14 @@
               :value="item.mailingAddress"
               :label="$t('companyDetail.label.mailingAddress')"
               :placeholder="$t('companyDetail.placeholder.address')"
-              @input="$emit('update', 'mailingAddress', $event)"
+              :loading="loading"
+              :disabled="isMailingAddressMatch"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
+              @input="updateMailingAddress"
             />
           </div>
           <div class="pb-2 lg:pb-1">
@@ -66,16 +91,27 @@
                 :value="item.mailingAddressPostcode"
                 :label="$t('companyDetail.label.mailingAddressPostcode')"
                 :placeholder="$t('companyDetail.placeholder.postcode')"
+                :loading="loading"
+                :disabled="isMailingAddressMatch"
+                :debounce="500"
+                :lazy="create"
+                :rules="[rules.required]"
+                state-icon
+                state-color="none"
                 label-no-wrap
                 class="w-48 pb-2"
-                @input="$emit('update', 'mailingAddressPostcode', $event)"
+                @input="updateMailingAddressPostcode"
               />
-              <div class="relative flex-shrink-0 relative w-12 pl-sm">
+              <div class="relative flex-shrink-0 relative pl-sm">
                 <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
                   {{ $t('companyDetail.label.matches') }}
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
-                  <SwitchInput disabled hide-details />
+                  <SwitchInput
+                    :value="isMailingAddressMatch"
+                    hide-details
+                    @input="updateMailingAddressMatch"
+                  />
                 </div>
               </div>
             </div>
@@ -90,15 +126,27 @@
               :value="item.iec"
               :label="$t('companyDetail.label.iec')"
               :placeholder="$t('companyDetail.placeholder.iec')"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-              @input="$emit('update', 'iec', $event)"
+              @input="updateData({ 'iec': $event })"
             />
             <TextField
               :value="item.okpo"
               :label="$t('companyDetail.label.okpo')"
               :placeholder="$t('companyDetail.placeholder.okpo')"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               class="flex-grow"
-              @input="$emit('update', 'okpo', $event)"
+              @input="updateData({ 'okpo': $event })"
             />
           </div>
           <div class="pb-2">
@@ -106,21 +154,41 @@
               :value="item.psrn"
               :label="$t('companyDetail.label.psrn')"
               :placeholder="$t('companyDetail.placeholder.psrn')"
-              @input="$emit('update', 'psrn', $event)"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
+              @input="updateData({ 'psrn': $event })"
             />
           </div>
           <div class="flex items-end pb-2">
             <TextField
-              v-model="firstName"
+              :value="companyOwner.firstName"
               :label="$t('companyDetail.label.ownerFullName')"
               :placeholder="$t('companyDetail.placeholder.firstName')"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               label-no-wrap
               class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
+              @input="updateCompanyOwner({ firstName: $event })"
             />
             <TextField
-              v-model="lastName"
+              :value="companyOwner.lastName"
               :placeholder="$t('companyDetail.placeholder.lastName')"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               class="flex-grow"
+              @input="updateCompanyOwner({ lastName: $event })"
             />
           </div>
         </div>
@@ -130,7 +198,13 @@
               :value="item.bankName"
               :label="$t('companyDetail.label.bankName')"
               :placeholder="$t('companyDetail.placeholder.bankName')"
-              @input="$emit('update', 'bankName', $event)"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
+              @input="updateData({ 'bankName': $event })"
             />
           </div>
           <div class="pb-2">
@@ -138,7 +212,13 @@
               :value="item.bankAddress"
               :label="$t('companyDetail.label.bankAddress')"
               :placeholder="$t('companyDetail.placeholder.bankAddress')"
-              @input="$emit('update', 'bankAddress', $event)"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
+              @input="updateData({ 'bankAddress': $event })"
             />
           </div>
           <div class="pb-2">
@@ -146,7 +226,13 @@
               :value="item.bankAccountNumber"
               :label="$t('companyDetail.label.bankAccountNumber')"
               :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
-              @input="$emit('update', 'bankAccountNumber', $event)"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
+              @input="updateData({ 'bankAccountNumber': $event })"
             />
           </div>
           <div class="flex items-end pb-2">
@@ -154,15 +240,27 @@
               :value="item.swift"
               :label="$t('companyDetail.label.swift')"
               :placeholder="$t('companyDetail.placeholder.swift')"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-              @input="$emit('update', 'swift', $event)"
+              @input="updateData({ 'swift': $event })"
             />
             <TextField
               :value="item.bic"
               :label="$t('companyDetail.label.bic')"
               :placeholder="$t('companyDetail.placeholder.bic')"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               class="flex-grow"
-              @input="$emit('update', 'bic', $event)"
+              @input="updateData({ 'bic': $event })"
             />
           </div>
           <div class="pb-2">
@@ -170,7 +268,13 @@
               :value="item.correspondentBankName"
               :label="$t('companyDetail.label.correspondentBankName')"
               :placeholder="$t('companyDetail.placeholder.correspondentBankName')"
-              @input="$emit('update', 'correspondentBankName', $event)"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
+              @input="updateData({ 'correspondentBankName': $event })"
             />
           </div>
           <div class="pb-2 lg:pb-1">
@@ -178,25 +282,41 @@
               :value="item.correspondentAccountNumber"
               :label="$t('companyDetail.label.correspondentAccountNumber')"
               :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
               class="pb-2"
-              @input="$emit('update', 'correspondentAccountNumber', $event)"
+              @input="updateData({ 'correspondentAccountNumber': $event })"
             />
             <div class="lg:pb-20 mr-10" />
           </div>
           <div class="flex items-end pb-2">
-            <TextField
+            <PhoneInput
               :value="item.phone"
+              :locale="item.locale"
               :label="$t('companyDetail.label.phone')"
-              :placeholder="$t('companyDetail.placeholder.phone')"
+              :loading="loading"
+              :lazy="create"
+              state-icon
+              state-color="warn"
+              required
               class="w-1/2 pr-2"
-              @input="$emit('update', 'phone', $event)"
+              @input="updateData({ 'phone': $event })"
             />
-            <TextField
+            <PhoneInput
               :value="item.fax"
+              :locale="item.locale"
               :label="$t('companyDetail.label.fax')"
-              :placeholder="$t('companyDetail.placeholder.phone')"
+              :loading="loading"
+              :lazy="create"
+              state-icon
+              state-color="none"
+              required
               class="w-1/2 pl-2"
-              @input="$emit('update', 'fax', $event)"
+              @input="updateData({ 'fax': $event })"
             />
           </div>
           <div>
@@ -204,7 +324,13 @@
               :value="item.website"
               :label="$t('companyDetail.label.site')"
               :placeholder="$t('companyDetail.placeholder.site')"
-              @input="$emit('update', 'website', $event)"
+              :loading="loading"
+              :debounce="500"
+              :lazy="create"
+              :rules="[rules.required]"
+              state-icon
+              state-color="none"
+              @input="updateData({ 'website': $event })"
             />
           </div>
         </div>
@@ -214,8 +340,11 @@
 </template>
 
 <script>
+import clientDetail from '../../mixins/clientDetail'
+
 export default {
   name: 'LegalDetail',
+  mixins: [clientDetail],
   props: {
     item: {
       type: Object,
@@ -225,29 +354,23 @@ export default {
   },
   data () {
     return {
-      expanded: true,
+      isMailingAddressMatchLazy: false,
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
+      },
     }
   },
   computed: {
-    firstName: {
+    isMailingAddressMatch: {
       get () {
-        return (this.item.companyOwner && this.item.companyOwner.firstName) || ''
+        return this.isMailingAddressMatchLazy
       },
       set (val) {
-        const person = this.item.companyOwner || {}
-        person.firstName = val
-        this.$emit('update', 'companyOwner', person)
+        this.isMailingAddressMatchLazy = val
       },
     },
-    lastName: {
-      get () {
-        return (this.item.companyOwner && this.item.companyOwner.lastName) || ''
-      },
-      set (val) {
-        const person = this.item.companyOwner || {}
-        person.lastName = val
-        this.$emit('update', 'companyOwner', person)
-      },
+    companyOwner () {
+      return this.item.companyOwner || {}
     },
     titleDesc () {
       return this.isSupplier
@@ -255,9 +378,60 @@ export default {
         : ` ${this.$t('companyDetail.legalDetailDesc')}`
     },
   },
+  watch: {
+    'item.isMailingAddressMatch' (val) {
+      this.isMailingAddressMatchLazy = val
+    },
+  },
   methods: {
-    toggleExpand () {
-      this.expanded = !this.expanded
+    updateMailingAddressMatch (val) {
+      this.isMailingAddressMatch = val
+      const input = { 'isMailingAddressMatch': val }
+      if (val) {
+        input.mailingAddress = this.item.legalAddress
+        input.mailingAddressPostcode = this.item.legalAddressPostcode
+        if (this.item.isDeliveryAddressMatch) {
+          input.deliveryAddress = this.item.legalAddress
+          input.deliveryAddressPostcode = this.item.legalAddressPostcode
+        }
+      }
+      this.updateData(input)
+    },
+    updateLegalAddress (val) {
+      const input = { legalAddress: val }
+      if (this.isMailingAddressMatch) {
+        input.mailingAddress = val
+      }
+      this.updateData(input)
+    },
+    updateLegalAddressPostcode (val) {
+      const input = { legalAddressPostcode: val }
+      if (this.isMailingAddressMatch) {
+        input.mailingAddressPostcode = val
+      }
+      this.updateData(input)
+    },
+    updateMailingAddress (val) {
+      const input = { mailingAddress: val }
+      if (this.item.isDeliveryAddressMatch) {
+        input.deliveryAddress = val
+      }
+      this.updateData(input)
+    },
+    updateMailingAddressPostcode (val) {
+      const input = { mailingAddressPostcode: val }
+      if (this.item.isDeliveryAddressMatch) {
+        input.deliveryAddressPostcode = val
+      }
+      this.updateData(input)
+    },
+    updateCompanyOwner (personInput) {
+      const value = Object.assign({}, {
+        firstName: this.companyOwner.firstName,
+        lastName: this.companyOwner.lastName,
+      }, personInput)
+      const input = { 'companyOwner': value }
+      this.updateData(input)
     },
   },
 }

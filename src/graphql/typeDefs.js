@@ -133,39 +133,108 @@ export const PRODUCT_FRAGMENT = gql`
   ${COMMENT_FRAGMENT}
 `
 
+export const PERSON_FRAGMENT = gql`
+  fragment PersonFragment on Person {
+    isName
+    name
+    firstName
+    lastName
+    middleName
+    fullName
+  }
+`
+
+export const PHONE_FRAGMENT = gql`
+  fragment PhoneFragment on Phone {
+    countryCode
+    phone
+  }
+`
+
+export const CONTACT_FRAGMENT = gql`
+  fragment ContactFragment on Contact {
+    contactType
+    contact
+  }
+`
+
+export const ATTACH_FILE_FRAGMENT = gql`
+  fragment AttachFileFragment on AttachFile {
+    url
+    filename
+    contentType
+  }
+`
+
 export const SUPPLIER_FRAGMENT = gql`
   fragment SupplierFragment on Supplier {
     id
+    uid
+    locale
     createdAt
     updatedAt
-    language
-    companyNameSl
-    companyNameCl
-    website
+    
     companyType
-    fieldOfActivity
+    contactPerson {
+      ...PersonFragment
+    }
+    companyName
+    companyNameLocal
+    isCompanyNameMatch
+    companyOwner {
+      ...PersonFragment
+    }
+
     legalAddress
     legalAddressPostcode
-    manufacturersAddress
-    manager
-    workPhone
-    fax
-    mobilePhone
-    wechat
+    mailingAddress
+    mailingAddressPostcode
+    isMailingAddressMatch
+
+    phone {
+      ...PhoneFragment
+    }
+    phoneOption
+    fax {
+      ...PhoneFragment
+    }
+    website
+    # for contact
+    mobilePhone {
+      ...PhoneFragment
+    }
     email
-    skype
-    qq
+
+    vat
+    iec
+    okpo
+    psrn
+    bic
+    swift
+
     bankName
     bankAddress
-    accountNumber
-    swift
-    ownerFullName
-    ownerJobPosition
-    responsiblePerson
-    deliveryAddress
-    contactNumber
+    bankAccountNumber
+    correspondentBankName
+    correspondentAccountNumber
+
     note
+
+    contacts {
+      ...ContactFragment
+    }
+    tags
+    files {
+      ...AttachFileFragment
+    }
+
+    isRequiredFilled
+    isOptionalFilled
   }
+  ${PERSON_FRAGMENT}
+  ${PHONE_FRAGMENT}
+  ${CONTACT_FRAGMENT}
+  ${ATTACH_FILE_FRAGMENT}
 `
 
 export const INVOICE_FRAGMENT = gql`
@@ -214,15 +283,6 @@ export const INVOICE_PRODUCTS_FRAGMENT = gql`
   ${PRODUCT_FRAGMENT}
 `
 
-export const PERSON_FRAGMENT = gql`
-  fragment PersonFragment on Person {
-    firstName
-    lastName
-    middleName
-    fullName
-  }
-`
-
 export const CLIENT_FRAGMENT = gql`
   fragment ClientFragment on Client {
     id
@@ -238,6 +298,7 @@ export const CLIENT_FRAGMENT = gql`
     }
     companyName
     companyNameLocal
+    isCompanyNameMatch
     companyOwner {
       ...PersonFragment
     }
@@ -246,14 +307,23 @@ export const CLIENT_FRAGMENT = gql`
     legalAddressPostcode
     mailingAddress
     mailingAddressPostcode
+    isMailingAddressMatch
     deliveryAddress
     deliveryAddressPostcode
+    isDeliveryAddressMatch
 
-    phone
+    phone {
+      ...PhoneFragment
+    }
     phoneOption
-    fax
+    fax {
+      ...PhoneFragment
+    }
+    website
     # for contact
-    mobilePhone
+    mobilePhone {
+      ...PhoneFragment
+    }
     email
 
     vat
@@ -274,14 +344,19 @@ export const CLIENT_FRAGMENT = gql`
     importerContactPerson {
       ...PersonFragment
     }
-    importerMobilePhone
-    importerPhone
+    importerMobilePhone {
+      ...PhoneFragment
+    }
+    importerPhone {
+      ...PhoneFragment
+    }
     importerEmail
     note
     # PRIVATE
     person {
       ...PersonFragment
     }
+    isPersonMatch
     birthdate
     passportId
     citizenship
@@ -290,14 +365,24 @@ export const CLIENT_FRAGMENT = gql`
     issuedBy
 
     avatar
-    contacts
+    contacts {
+      ...ContactFragment
+    }
     tags
-    files
+    files {
+      ...AttachFileFragment
+    }
 
     # computed value
     fullName
+
+    isRequiredFilled
+    isOptionalFilled
   }
   ${PERSON_FRAGMENT}
+  ${PHONE_FRAGMENT}
+  ${CONTACT_FRAGMENT}
+  ${ATTACH_FILE_FRAGMENT}
 `
 
 export const SPEC_FRAGMENT = gql`
@@ -354,67 +439,28 @@ export const SPEC_FRAGMENT = gql`
   ${CUSTOMS_FRAGMENT}
 `
 
-export const SUPPLIER_TEMPLATE_FRAGMENT = gql`
-  fragment SupplierTemplateFragment on SupplierTemplate {
+export const SUPPLIER_BRANCH_FRAGMENT = gql`
+  fragment SupplierBranchFragment on SupplierBranch {
     id
-    templateName
-    companyNameSl
-    companyNameCl
-    website
-    companyType
-    fieldOfActivity
-    legalAddress
-    legalAddressPostcode
-    manufacturersAddress
-    manager
-    workPhone
-    fax
-    mobilePhone
-    wechat
-    email
-    skype
-    qq
-    bankName
-    bankAddress
-    accountNumber
-    swift
-    ownerFullName
-    ownerJobPosition
-    responsiblePerson
-    deliveryAddress
-    contactNumber
-    note
-  }
-`
-
-export const SUPPLIER_SHOP_FRAGMENT = gql`
-  fragment SupplierShopFragment on SupplierShop {
-    id
+    branchType
     name
     address
-    seller
-    workPhone
-    mobilePhone
-    wechat
-    email
-    qq
-    skype
+    contactPerson {
+      ...PersonFragment
+    }
+    workPhone {
+      ...PhoneFragment
+    }
+    mobilePhone {
+      ...PhoneFragment
+    }
+    contacts {
+      ...ContactFragment
+    }
   }
-`
-
-export const SUPPLIER_SHOP_TEMPLATE_FRAGMENT = gql`
-  fragment SupplierShopTemplateFragment on SupplierShopTemplate {
-    id
-    name
-    address
-    seller
-    workPhone
-    mobilePhone
-    wechat
-    email
-    qq
-    skype
-  }
+  ${PERSON_FRAGMENT}
+  ${PHONE_FRAGMENT}
+  ${CONTACT_FRAGMENT}
 `
 
 export const SPEC_INVOICES_FRAGMENT = gql`
@@ -431,32 +477,90 @@ export const SPEC_INVOICES_FRAGMENT = gql`
   ${PRODUCT_FRAGMENT}
 `
 
+export const BANK_DETAIL_FRAGMENT = gql`
+  fragment BankDetailFragment on BankDetail {
+    id
+    bic
+    swift
+    bankName
+    bankAddress
+    bankAccountNumber
+    correspondentBankName
+    correspondentAccountNumber
+  }
+`
+
 export const ORG_REQUISITE_FRAGMENT = gql`
   fragment OrgRequisiteFragment on Requisite {
     id
-    name
-    nameEng
+    createdAt
+    updatedAt
+
+    companyName
+    companyNameLocal
+    isCompanyNameMatch
+    companyOwner {
+      ...PersonFragment
+    }
+
     legalAddress
     legalAddressPostcode
     mailingAddress
     mailingAddressPostcode
-    phone
-    fax
-    email
+    isMailingAddressMatch
+    deliveryAddress
+    deliveryAddressPostcode
+    isDeliveryAddressMatch
+
+    phone {
+      ...PhoneFragment
+    }
+    phoneOption
+    fax {
+      ...PhoneFragment
+    }
     website
-    itn
+    # for contact
+    mobilePhone {
+      ...PhoneFragment
+    }
+    email
+
+    vat
     iec
-    psrn
-    bankName
-    bankAddress
-    bankAccountNumber
-    correspondentAccountNumber
-    bic
     okpo
-    swift
-    ownerFullName
-    ownerJobPosition
+    psrn
+
+    defaultBankDetail
+
+    bankDetails {
+      ...BankDetailFragment
+    }
+
+    importerCompanyName
+    importerContactPerson {
+      ...PersonFragment
+    }
+    importerMobilePhone {
+      ...PhoneFragment
+    }
+    importerPhone {
+      ...PhoneFragment
+    }
+    importerEmail
+
+    contacts {
+      ...ContactFragment
+    }
+    tags
+
+    isRequiredFilled
+    isOptionalFilled
   }
+  ${PERSON_FRAGMENT}
+  ${PHONE_FRAGMENT}
+  ${CONTACT_FRAGMENT}
+  ${BANK_DETAIL_FRAGMENT}
 `
 
 export const ORG_CONTRACT_FRAGMENT = gql`

@@ -3,7 +3,7 @@
     :class="[
       'rounded relative flex items-center focus:outline-none transition-colors duration-100 ease-out',
       'focus-within:shadow-blue-500 text-white text-base bg-gray-800',
-      { 'opacity-40 cursor-not-allowed': this.disabled },
+      { 'opacity-40 cursor-not-allowed': disabled },
     ]"
   >
     <label
@@ -15,31 +15,41 @@
     >
       {{ label }}
     </label>
-    <textarea
-      ref="input"
-      v-model="internalValue"
-      :id="computedId"
-      :name="name"
-      :required="required"
-      :readonly="readonly"
-      :disabled="disabled"
-      :cols="cols"
-      :rows="rows"
-      :maxlength="maxlength"
-      :minlength="minlength"
-      :autofocus="autofocus"
-      :placeholder="placeholder"
-      :class="[
-        'w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out truncate',
-        'placeholder-gray-200 px-sm py-3',
-        { 'cursor-not-allowed': this.disabled },
-        inputClass,
-      ]"
-      style="resize:none"
-      @input="onInput"
-      @focus="onFocus"
-      @blur="onBlur"
-    />
+    <div class="relative w-full">
+      <textarea
+        ref="input"
+        v-model="internalValue"
+        :id="computedId"
+        :name="name"
+        :required="required"
+        :readonly="readonly"
+        :disabled="disabled"
+        :cols="cols"
+        :rows="rows"
+        :maxlength="maxlength"
+        :minlength="minlength"
+        :autofocus="autofocus"
+        :placeholder="placeholder"
+        :class="[
+          'w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out',
+          'placeholder-gray-200 px-sm py-3',
+          { 'cursor-not-allowed': disabled },
+          { 'cursor-wait': !disabled && loading },
+          { 'pr-7': hasState },
+          inputClass,
+        ]"
+        style="resize:none"
+        @input="onInput"
+        @focus="onFocus"
+        @blur="onBlur"
+        @change="onChange"
+      />
+      <span v-if="hasState" class="absolute top-0 right-0 text-green-500 pt-4 pr-4">
+        <svg width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" d="M1.41421 1L6.07107 5.65685L4.65685 7.07107L0 2.41421L1.41421 1Z M10.3137 1.41421L4.65685 7.07107L3.24264 5.65685L8.8995 0L10.3137 1.41421Z" />
+        </svg>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -52,11 +62,6 @@ import validatable from '@/mixins/validatable'
 
 export default {
   name: 'TextArea',
-  inject: {
-    form: {
-      default: null,
-    },
-  },
   mixins: [validatable],
   props: {
     value: {
@@ -100,6 +105,9 @@ export default {
       type: [String, Object],
       default: '',
     },
+    loading: Boolean,
+    lazy: Boolean,
+    stateIcon: Boolean,
   },
   data () {
     return {
@@ -112,6 +120,9 @@ export default {
     }
   },
   computed: {
+    hasState () {
+      return this.stateIcon && this.internalValue
+    },
     computedId () {
       return this.id || `input-${this._uid}`
     },
@@ -122,10 +133,12 @@ export default {
       set (val) {
         const value = val || null
         this.lazyValue = value
-        if (this.debounce) {
-          this.debounceInput()
-        } else {
-          this.$emit('input', value)
+        if (!this.lazy) {
+          if (this.debounce) {
+            this.debounceInput()
+          } else {
+            this.$emit('input', value)
+          }
         }
       },
     },
@@ -145,20 +158,12 @@ export default {
     if (this.debounce) {
       this.debounceInput = debounce(this.emitChange, this.debounce)
     }
-    if (this.form) {
-      this.form.register(this)
-    }
   },
   mounted () {
     if (this.autofocus) {
       this.$refs.input.focus()
     }
     this.autoGrow && this.calculateHeight()
-  },
-  beforeDestroy () {
-    if (this.form) {
-      this.form.unregister(this)
-    }
   },
   methods: {
     emitChange () {
@@ -176,6 +181,11 @@ export default {
     onInput () {
       if (this.autoGrow) {
         this.calculateHeight()
+      }
+    },
+    onChange () {
+      if (this.lazy) {
+        this.emitChange()
       }
     },
     onFocus () {

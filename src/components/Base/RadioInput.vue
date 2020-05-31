@@ -52,7 +52,9 @@
       </label>
     </div>
     <div v-if="!hideDetails" class="h-6 pt-2 leading-tight text-sm text-yellow-400">
-      {{ errorText }}
+      <v-slide-y-transition>
+        <span v-show="errorText">{{ errorText }}</span>
+      </v-slide-y-transition>
     </div>
   </div>
 </template>

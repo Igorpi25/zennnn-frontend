@@ -1,6 +1,7 @@
 import debounce from 'lodash.debounce'
 
 import validatable from '../../mixins/validatable'
+import mask from '../../directives/Mask'
 
 import {
   formatNumber,
@@ -12,15 +13,12 @@ import {
 export default {
   name: 'TextField',
 
-  inject: {
-    form: {
-      default: null,
-    },
-  },
-
   mixins: [validatable],
 
+  directives: { mask },
+
   props: {
+    mask: String,
     value: {
       type: [String, Number, Date],
       default: null,
@@ -37,6 +35,7 @@ export default {
     solo: Boolean,
     soloFlat: Boolean,
     number: Boolean,
+    loading: Boolean,
     // integer, decimal, currency, fixed
     // 'formatStyle' renamed to 'numberFormat'
     numberFormat: {
@@ -68,15 +67,23 @@ export default {
       type: [String, Array],
       default: '',
     },
-    // preferably validation icon
-    adlib: Boolean,
     stateIcon: Boolean,
+    stateIconOnValidate: Boolean,
+    stateColor: String,
     slotClass: {
       type: String,
       default: 'w-10',
     },
+    prependSlotClass: String,
+    appendSlotClass: String,
     forceUpdate: Boolean,
     dense: Boolean,
+    autocomplete: {
+      type: String,
+      default: 'off',
+    },
+    size: [Number, String],
+    notFocusOnSelect: Boolean,
   },
 
   data () {
@@ -90,6 +97,9 @@ export default {
   },
 
   computed: {
+    hideError () {
+      return this.stateIcon && !this.required
+    },
     inputmode () {
       if (this.number) {
         return this.numberFormat === 'integer' ? 'numeric' : 'decimal'
@@ -137,16 +147,18 @@ export default {
       },
     },
     computedContentClass () {
-      const staticClasses = ['text-field__content relative flex items-center focus:outline-none transition-colors duration-100 ease-out']
+      const staticClasses = ['text-field__content relative flex items-center focus:outline-none transition-colors-and-opacity duration-150 ease-in-out']
       let genericClasses = [
         'rounded',
-        this.hasWarn || this.hasError ? 'shadow-yellow-300' : 'focus-within:shadow-blue-500',
         this.disabled ? 'text-gray-200 cursor-not-allowed' : this.solo ? 'text-blue-500' : 'text-white',
         this.solo
           ? 'bg-transparent focus-within:bg-gray-800'
           : 'text-base bg-gray-800',
         this.solo || this.dense ? 'h-8' : 'h-10',
       ]
+      if (!this.notFocusOnSelect) {
+        genericClasses.push((this.hasWarn || this.hasError) && !this.hideError ? 'shadow-yellow-300' : 'focus-within:shadow-blue-500')
+      }
       if (this.solo && !this.soloFlat && !this.internalValue) {
         genericClasses.push('bg-gray-800')
       }
@@ -155,6 +167,9 @@ export default {
       }
       if (!this.$slots.append) {
         genericClasses.push('pr-sm')
+      }
+      if (!this.disabled && this.loading) {
+        genericClasses.push('cursor-wait opacity-75')
       }
       // merge props classes
       if (this.contentClass) {
@@ -169,6 +184,8 @@ export default {
       ]
       if (this.disabled) {
         genericClasses.push('cursor-not-allowed')
+      } else if (this.loading) {
+        genericClasses.push('cursor-wait')
       }
       if (this.number || this.alignRight) {
         genericClasses.push('text-right')
@@ -207,9 +224,6 @@ export default {
     if (this.debounce) {
       this.debounceInput = debounce(this.emitChange, this.debounce)
     }
-    if (this.form) {
-      this.form.register(this)
-    }
   },
   mounted () {
     let el = this.$el
@@ -223,11 +237,6 @@ export default {
     }
     if (this.autofocus) {
       this.$refs.input.focus()
-    }
-  },
-  beforeDestroy () {
-    if (this.form) {
-      this.form.unregister(this)
     }
   },
 
@@ -255,10 +264,7 @@ export default {
     },
 
     onBlur (e) {
-      this.wasBlurred = true
-      if (this.validateOnBlur) {
-        this.checkField(e)
-      }
+      this.hasFocused = true
       this.hasFocus = false
       // stop edit mode and call emit
       this.editMode = false
@@ -303,7 +309,7 @@ export default {
         positionFromEnd = el.value.length - positionFromEnd
         setCursor(el, positionFromEnd)
 
-        this.hasError = e.target.validity.badInput
+        this.badInput = e.target.validity.badInput
       }
       this.internalValue = value
       if (!this.lazy) {
@@ -313,10 +319,10 @@ export default {
           this.emitChange()
         }
       }
-      this.checkField(e)
     },
 
-    onChange () {
+    onChange (e) {
+      this.$emit('change', e)
       if (this.lazy) {
         this.emitChange()
       }
@@ -356,6 +362,7 @@ export default {
     },
 
     genWarnMenu () {
+      if (this.hideError) return null
       const props = {
         activator: this.$refs['content'],
         attach: this.$refs['alert'],
@@ -484,25 +491,31 @@ export default {
     genInput () {
       const listeners = Object.assign({}, this.$listeners)
       delete listeners['change'] // Change should not be bound externally
-      return this.$createElement('input', {
+      const attrs = {
+        ...this.$attrs,
+        autofocus: this.autofocus,
+        disabled: this.disabled,
+        id: this.computedId,
+        placeholder: this.compPlaceholder,
+        readonly: this.readonly,
+        type: this.type,
+        name: this.name,
+        minlength: this.minlength,
+        maxlength: this.maxlength,
+        inputmode: this.inputmode,
+      }
+      if (this.autocomplete === 'off') {
+        attrs.autocomplete = 'off'
+      }
+      if (this.size) {
+        attrs.size = this.size
+      }
+      const data = {
         ref: 'input',
         domProps: {
           value: this.lazyValue,
         },
-        attrs: {
-          ...this.$attrs,
-          autofocus: this.autofocus,
-          disabled: this.disabled,
-          id: this.computedId,
-          placeholder: this.compPlaceholder,
-          readonly: this.readonly,
-          type: this.type,
-          required: this.required,
-          name: this.name,
-          minlength: this.minlength,
-          maxlength: this.maxlength,
-          inputmode: this.inputmode,
-        },
+        attrs,
         class: this.computedInputClass,
         on: Object.assign(listeners, {
           input: this.onInput,
@@ -511,16 +524,27 @@ export default {
           focus: this.onFocus,
           blur: this.onBlur,
         }),
-      })
+      }
+      if (this.mask) {
+        data.directives = [{
+          name: 'mask',
+          value: this.mask,
+        }]
+      }
+      return this.$createElement('input', data)
     },
 
     genStateIndicator () {
       const svg = []
-      const color = this.adlib && !this.internalValue
-        ? 'text-yellow-500'
-        : !this.hasError && !this.hasWarn && this.shouldValidate
-          ? 'text-green-500' : 'text-pink-500'
-      const isValid = color === 'text-green-500'
+      let color = 'text-pink-500'
+      const isValid = !this.hasError && !this.hasWarn && this.valid
+      if (isValid) {
+        color = 'text-green-500'
+      } else if (this.stateColor === 'none') {
+        color = 'text-transparent'
+      } else if (!this.required || this.stateColor === 'warn') {
+        color = 'text-yellow-500'
+      }
       const svgData = {
         class: color,
         attrs: {
@@ -559,8 +583,13 @@ export default {
         ref: 'content',
         class: this.computedContentClass,
         on: {
-          click: () => {
+          click: (e) => {
             if (this.hasFocus || this.disabled || !this.$refs.input) return
+            // Prevent focus on select prepend focus
+            if (
+              e.target.tagName.toUpperCase() === 'INPUT' &&
+              e.target.id !== this.computedId
+            ) return
             this.focus()
           },
         },
@@ -572,20 +601,27 @@ export default {
         this.slotClass,
       ]
       if (this.$slots.prepend) {
+        const prependSlotClass = this.prependSlotClass
+          ? mergeClasses(slotClass, this.prependSlotClass)
+          : slotClass
         const prepend = this.$createElement('div', {
-          class: slotClass,
+          class: prependSlotClass,
         }, this.$slots.prepend)
         children.push(prepend)
       }
       children.push(this.genInput())
-      if (this.required || this.adlib) {
-        children.push(this.genStateIndicator())
-      } else if (this.stateIcon && this.wasBlurred) {
+      const showState = this.stateIconOnValidate
+        ? this.stateIcon && !(this.validateOnBlur && !this.hasFocused)
+        : this.stateIcon
+      if (showState) {
         children.push(this.genStateIndicator())
       }
       if (this.$slots.append) {
+        const appendSlotClass = this.appendSlotClass
+          ? mergeClasses(slotClass, this.appendSlotClass)
+          : slotClass
         const append = this.$createElement('div', {
-          class: slotClass,
+          class: appendSlotClass,
         }, this.$slots.append)
         children.push(append)
       }
@@ -602,7 +638,7 @@ export default {
     ]
     const data = {
       class: [
-        'flex flex-col relative',
+        'flex flex-col relative transition-opacity duration-75 ease-in',
         { 'opacity-40': this.disabled },
       ],
     }

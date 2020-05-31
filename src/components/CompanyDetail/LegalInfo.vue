@@ -3,25 +3,47 @@
     <div class="w-full lg:w-1/2 lg:pr-5">
       <div class="flex items-end pb-2">
         <TextField
-          v-model="firstName"
+          :value="contactPerson.firstName"
           :label="$t('companyDetail.label.contactPerson')"
           :placeholder="$t('companyDetail.placeholder.firstName')"
+          :loading="loading"
+          :rules="[v => !!v || this.$t('companyDetail.rule.contactPersonFirstName')]"
+          :debounce="500"
+          :lazy="create"
+          lazy-validation
+          state-icon
+          required
           label-no-wrap
           class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
+          @input="updateContactPerson({ firstName: $event })"
         />
         <TextField
-          v-model="lastName"
+          :value="contactPerson.lastName"
           :placeholder="$t('companyDetail.placeholder.lastName')"
+          :loading="loading"
+          :rules="[v => !!v || this.$t('companyDetail.rule.contactPersonLastName')]"
+          :debounce="500"
+          :lazy="create"
+          lazy-validation
+          state-icon
+          required
           class="flex-grow"
+          @input="updateContactPerson({ lastName: $event })"
         />
       </div>
       <div class="pb-2">
-        <TextField
+        <PhoneInput
           :value="item.mobilePhone"
+          :locale="item.locale"
           :label="$t('companyDetail.label.mobilePhone')"
           :label-hint="$t('companyDetail.hint.mobilePhone')"
-          :placeholder="$t('companyDetail.placeholder.mobilePhone')"
-          @input="$emit('update', 'mobilePhone', $event)"
+          :rule-message="$t('companyDetail.rule.notificationMobilePhone')"
+          :loading="loading"
+          :lazy="create"
+          lazy-validation
+          state-icon
+          required
+          @input="updateData({ 'mobilePhone': $event })"
         />
       </div>
       <div class="pb-2">
@@ -30,7 +52,14 @@
           :label="$t('companyDetail.label.email')"
           :label-hint="$t('companyDetail.hint.email')"
           :placeholder="$t('companyDetail.placeholder.email')"
-          @input="$emit('update', 'email', $event)"
+          :loading="loading"
+          :rules="[rules.email]"
+          :debounce="500"
+          :lazy="create"
+          lazy-validation
+          state-icon
+          required
+          @input="updateData({ 'email': $event })"
         />
       </div>
       <div>
@@ -39,11 +68,39 @@
           :items="locales"
           :label="$t('companyDetail.label.locale')"
           :placeholder="$t('companyDetail.placeholder.locale')"
+          :loading="loading"
+          :rules="[v => !!v || this.$t('companyDetail.rule.locale')]"
+          lazy-validation
+          state-icon
+          required
           item-value="value"
           item-text="text"
           class="pb-2"
-          @input="$emit('update', 'locale', $event)"
-        />
+          prepend-slot-class="w-auto pl-2"
+          @input="updateData({ 'locale': $event })"
+        >
+          <template v-slot:prepend>
+            <img
+              v-if="item.locale"
+              :src="require(`@/assets/img/flags/round/${item.locale}.svg`)"
+              :alt="item.locale"
+              class="h-6 w-6 rounded-full mr-4"
+            >
+            <img
+              v-else
+              src="@/assets/icons/earth.svg"
+              class="h-6 w-6 rounded-full mr-4"
+            >
+          </template>
+          <template v-slot:item="{ item }">
+            <img
+              :src="require(`@/assets/img/flags/round/${item.value}.svg`)"
+              :alt="item.text"
+              class="h-6 w-6 rounded-full mr-4"
+            >
+            <span>{{ item.text }}</span>
+          </template>
+        </Select>
         <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
           {{ localeSelectHint }}
         </div>
@@ -56,15 +113,26 @@
             :value="item.companyName"
             :label="$t('companyDetail.label.companyName')"
             :placeholder="$t('companyDetail.placeholder.companyName')"
+            :loading="loading"
+            :rules="[v => !!v || this.$t('companyDetail.rule.companyName')]"
+            :debounce="500"
+            :lazy="create"
+            lazy-validation
+            state-icon
+            required
             class="pb-2 flex-grow"
-            @input="$emit('update', 'companyName', $event)"
+            @input="updateCompanyName"
           />
-          <div class="relative flex-shrink-0 relative w-12 pl-sm">
+          <div class="relative flex-shrink-0 relative pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
               {{ $t('companyDetail.label.englishOnly') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
-              <SwitchInput disabled hide-details />
+              <SwitchInput
+                :value="isCompanyNameMatch"
+                hide-details
+                @input="updateCompanyNameMatch"
+              />
             </div>
           </div>
         </div>
@@ -79,8 +147,15 @@
           :value="item.companyNameLocal"
           :label="$t('companyDetail.label.companyNameLocal')"
           :placeholder="$t('companyDetail.placeholder.companyNameLocal')"
-          disabled
-          @input="$emit('update', 'companyNameLocal', $event)"
+          :loading="loading"
+          :disabled="isCompanyNameMatch"
+          :rules="[v => !!v || this.$t('companyDetail.rule.companyNameLocal')]"
+          :debounce="500"
+          :lazy="create"
+          lazy-validation
+          state-icon
+          required
+          @input="updateData({ 'companyNameLocal': $event })"
         />
       </div>
       <div>
@@ -100,9 +175,11 @@
 
 <script>
 import { LOCALES_LIST } from '../../config/globals'
+import companyDetail from '../../mixins/clientDetail'
 
 export default {
   name: 'LegalInfo',
+  mixins: [companyDetail],
   props: {
     uid: String,
     item: {
@@ -111,26 +188,25 @@ export default {
     },
     isSupplier: Boolean,
   },
+  data () {
+    return {
+      isCompanyNameMatchLazy: false,
+      rules: {
+        email: v => (v && /.+@.+\..+/.test(v)) || this.$t('companyDetail.rule.notificationEmail'),
+      },
+    }
+  },
   computed: {
-    firstName: {
+    isCompanyNameMatch: {
       get () {
-        return (this.item.contactPerson && this.item.contactPerson.firstName) || ''
+        return this.isCompanyNameMatchLazy
       },
       set (val) {
-        const person = this.item.contactPerson || {}
-        person.firstName = val
-        this.$emit('update', 'contactPerson', person)
+        this.isCompanyNameMatchLazy = val
       },
     },
-    lastName: {
-      get () {
-        return (this.item.contactPerson && this.item.contactPerson.lastName) || ''
-      },
-      set (val) {
-        const person = this.item.contactPerson || {}
-        person.lastName = val
-        this.$emit('update', 'contactPerson', person)
-      },
+    contactPerson () {
+      return this.item.contactPerson || {}
     },
     locales () {
       return LOCALES_LIST
@@ -147,6 +223,36 @@ export default {
     },
     uidPlaceholder () {
       return this.isSupplier ? 'Z00001' : 'A00001'
+    },
+  },
+  watch: {
+    'item.isCompanyNameMatch' (val) {
+      this.isCompanyNameMatchLazy = val
+    },
+  },
+  methods: {
+    updateCompanyNameMatch (val) {
+      this.isCompanyNameMatch = val
+      const input = { 'isCompanyNameMatch': val }
+      if (val) {
+        input.companyNameLocal = this.item.companyName
+      }
+      this.updateData(input)
+    },
+    updateCompanyName (val) {
+      const input = { companyName: val }
+      if (this.isCompanyNameMatch) {
+        input.companyNameLocal = val
+      }
+      this.updateData(input)
+    },
+    updateContactPerson (personInput) {
+      const value = Object.assign({}, {
+        firstName: this.contactPerson.firstName,
+        lastName: this.contactPerson.lastName,
+      }, personInput)
+      const input = { 'contactPerson': value }
+      this.updateData(input)
     },
   },
 }

@@ -547,7 +547,7 @@ export const clearClasses = (source, dest) => {
   const isSourceArray = Array.isArray(source)
   const aDest = classToArray(dest)
   let aSource = classToArray(source)
-  const colorRe = new RegExp('(text|bg|border)-(white|black|transparent|current|\\w+-\\d+)$')
+  const colorRe = new RegExp('(text|bg|border)-(white|black|transparent|current|(gray|blue|pink|green|yellow|purple|red)-\\d+)$')
   const textSizeRe = new RegExp('(28|xs|sm|base|lg|\\dxl)$')
   const clearRe = new RegExp('(text|bg|border|w|h|p|px|py|pb|pl|pt|pr|m|mx|my|mb|ml|mt|mr)-')
   for (const el of aDest) {
@@ -555,7 +555,7 @@ export const clearClasses = (source, dest) => {
       const split = el.split('-')
       let reString = `^${split[0]}-`
       if (colorRe.test(el)) {
-        reString += '(white|black|transparent|current|\\w+-\\d+)$'
+        reString += '(white|black|transparent|current|(gray|blue|pink|green|yellow|purple|red)-\\d+)$'
       } else if (split.length === 2) {
         reString += !isNaN(Number(split[1]))
           ? '\\d+'
@@ -592,6 +592,18 @@ export const mergeClasses = (source, dest) => {
     const d = Array.isArray(dest) ? dest.join(' ') : dest
     return `${aSource} ${d}`.replace(/\s+/g, ' ').trim()
   }
+}
+
+/**
+ * Replace char at index
+ * @param {string} str source string
+ * @param {number} index destination classes
+ * @param {string} replacement replace value
+ * @returns {string} result
+ */
+export const replaceAt = (str, index, replacement) => {
+  if (!str) return str
+  return str.substring(0, index) + replacement + str.substring(index + 1)
 }
 
 /**
