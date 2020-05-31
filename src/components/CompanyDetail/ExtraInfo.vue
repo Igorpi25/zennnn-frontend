@@ -34,12 +34,12 @@
         </div>
         <div :class="{ 'pb-2': !isRequisite }">
           <TextField
-            disabled
+            :value="inputTags"
             :label="$t('companyDetail.label.tags')"
             :placeholder="$t('companyDetail.placeholder.tags')"
             :loading="loading"
-            :debounce="500"
-            :lazy="create"
+            lazy
+            @change="updateTags"
           >
             <template v-slot:label>
               <label class="block leading-5 text-base text-gray-100 whitespace-no-wrap py-2">
@@ -86,10 +86,33 @@ export default {
   },
   data () {
     return {
+      lazyTags: [],
       rules: {
         required: v => !!v || this.$t('rule.required'),
       },
     }
+  },
+  computed: {
+    inputTags () {
+      return this.lazyTags.join(',')
+    },
+  },
+  watch: {
+    'item.tags' (val) {
+      this.lazyTags = val || []
+    },
+  },
+  methods: {
+    updateTags (e) {
+      const value = e.target.value || ''
+      const tags = []
+      value.split(',').forEach(s => {
+        if (s && s.trim() !== '') {
+          tags.push(s.trim())
+        }
+      })
+      this.updateData({ tags })
+    },
   },
 }
 </script>
