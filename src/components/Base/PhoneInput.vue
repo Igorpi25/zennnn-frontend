@@ -11,12 +11,15 @@
       :class="['combo-input', { 'combo-input--menu-active': isPhoneMenuActive }]"
       :state-icon="stateIcon"
       :state-color="stateColor"
+      :lazy-validation="lazyValidation"
       :required="required"
       :mask="currentMask"
+      :rules="compRule"
       type="tel"
       prepend-slot-class="w-auto"
       @blur="onBlur"
       @input="onInput"
+      @change="onChange"
       @keydown="onKeyDown"
     >
       <template v-slot:prepend>
@@ -79,6 +82,7 @@ export default {
     labelHint: String,
     rules: Array,
     lazyValidation: Boolean,
+    lazy: Boolean,
     stateIcon: Boolean,
     stateColor: String,
     required: Boolean,
@@ -99,6 +103,16 @@ export default {
     }
   },
   computed: {
+    compRule () {
+      return [
+        v => {
+          const val = v || ''
+          const message = this.ruleMessage || this.$t('rule.phone')
+          const mLength = this.currentMask.length || 1
+          return val.length === mLength || message
+        },
+      ]
+    },
     compSize () {
       const length = (this.currentCode || '').length
       return length + 1
@@ -122,7 +136,6 @@ export default {
       set (val) {
         const value = val || ''
         this.lazyValue = value
-        this.debounceInput()
       },
     },
     unmasked () {
@@ -169,9 +182,6 @@ export default {
       if (!val) return
       this.setValue(val)
     },
-    internalValue (val) {
-      this.validate(val || '')
-    },
     locale (val) {
       if (!this.value) {
         this.countryCode = this.defaultCountryCode
@@ -183,10 +193,17 @@ export default {
     this.debounceInput = debounce(this.emitChange, this.debounce)
   },
   methods: {
-    onInput () {
-      if (this.debounce) {
-        this.debounceInput()
-      } else {
+    onInput (val) {
+      if (!this.lazy) {
+        if (this.debounce) {
+          this.debounceInput()
+        } else {
+          this.emitChange()
+        }
+      }
+    },
+    onChange () {
+      if (this.lazy) {
         this.emitChange()
       }
     },
@@ -216,8 +233,10 @@ export default {
         this.blurWithoutUpdate = false
         return
       }
-      this.validate(this.internalValue || '')
-      this.emitChange()
+      // immediate call changes
+      if (!this.lazy) {
+        this.emitChange()
+      }
       this.$emit('blur', e)
     },
     emitChange () {
@@ -262,18 +281,6 @@ export default {
     onCountryCodeSelect (val) {
       this.countryCode = val
       this.$refs.input.focus()
-    },
-    validate (val) {
-      const message = this.ruleMessage || this.$t('rule.phone')
-      const length = this.currentMask.length || 1
-      const result = val.length === length || message
-      if (result !== true) {
-        this.isValid = false
-        this.$refs.input.setError(result)
-      } else {
-        this.isValid = true
-        this.$refs.input.clearError()
-      }
     },
     maskValue (value, masked = true) {
       value = value || ''

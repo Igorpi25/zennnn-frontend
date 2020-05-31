@@ -321,7 +321,8 @@ export default {
       }
     },
 
-    onChange () {
+    onChange (e) {
+      this.$emit('change', e)
       if (this.lazy) {
         this.emitChange()
       }
@@ -536,9 +537,11 @@ export default {
     genStateIndicator () {
       const svg = []
       let color = 'text-pink-500'
-      const isValid = !this.hasError && !this.hasWarn && this.shouldValidate
+      const isValid = !this.hasError && !this.hasWarn && this.valid
       if (isValid) {
         color = 'text-green-500'
+      } else if (this.stateColor === 'none') {
+        color = 'text-transparent'
       } else if (!this.required || this.stateColor === 'warn') {
         color = 'text-yellow-500'
       }
