@@ -44,8 +44,15 @@
         @blur="onBlur"
         @change="onChange"
       />
-      <span v-if="hasState" class="absolute top-0 right-0 text-green-500 pt-4 pr-4">
-        <svg width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <span
+        v-if="hasState"
+        class="absolute top-0 right-0  pt-4 pr-4"
+        :class="stateColorClass"
+      >
+        <svg v-if="stateColorClass === 'text-yellow-500' && stateColor === 'warn'" width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="4" cy="4" r="4" fill="currentColor" />
+        </svg>
+        <svg v-else width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill="currentColor" d="M1.41421 1L6.07107 5.65685L4.65685 7.07107L0 2.41421L1.41421 1Z M10.3137 1.41421L4.65685 7.07107L3.24264 5.65685L8.8995 0L10.3137 1.41421Z" />
         </svg>
       </span>
@@ -55,8 +62,6 @@
 
 <script>
 import debounce from 'lodash.debounce'
-
-import { mdiCloseCircle, mdiCheckCircle } from '@mdi/js'
 
 import validatable from '@/mixins/validatable'
 
@@ -108,20 +113,24 @@ export default {
     loading: Boolean,
     lazy: Boolean,
     stateIcon: Boolean,
+    stateColor: String,
   },
   data () {
     return {
       hasFocus: false,
       lazyValue: this.value,
-      icons: {
-        mdiCloseCircle,
-        mdiCheckCircle,
-      },
     }
   },
   computed: {
+    stateColorClass () {
+      return this.stateIcon && this.stateColor === 'warn' && !this.internalValue
+        ? 'text-yellow-500'
+        : this.hasState
+          ? 'text-green-500'
+          : ''
+    },
     hasState () {
-      return this.stateIcon && this.internalValue
+      return (this.stateIcon && this.internalValue) || (this.stateIcon && this.stateColor === 'warn')
     },
     computedId () {
       return this.id || `input-${this._uid}`
