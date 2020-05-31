@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     validate (force = false, value) {
+      if (!this.hasInput) return
       if (force) this.hasInput = this.hasFocused = true
       value = value || this.internalValue
       let errorsCount = 0

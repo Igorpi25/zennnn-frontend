@@ -508,7 +508,7 @@ export default {
           } else {
             if (redirectAfterCreate) {
               this.$notify(this.$t('client.created'))
-              this.$router.push({
+              this.$router.replace({
                 name: 'client',
                 params: {
                   orgId: this.orgId,

@@ -135,6 +135,8 @@ export const PRODUCT_FRAGMENT = gql`
 
 export const PERSON_FRAGMENT = gql`
   fragment PersonFragment on Person {
+    isName
+    name
     firstName
     lastName
     middleName
@@ -461,32 +463,90 @@ export const SPEC_INVOICES_FRAGMENT = gql`
   ${PRODUCT_FRAGMENT}
 `
 
+export const BANK_DETAIL_FRAGMENT = gql`
+  fragment BankDetailFragment on BankDetail {
+    id
+    bic
+    swift
+    bankName
+    bankAddress
+    bankAccountNumber
+    correspondentBankName
+    correspondentAccountNumber
+  }
+`
+
 export const ORG_REQUISITE_FRAGMENT = gql`
   fragment OrgRequisiteFragment on Requisite {
     id
-    name
-    nameEng
+    createdAt
+    updatedAt
+
+    companyName
+    companyNameLocal
+    isCompanyNameMatch
+    companyOwner {
+      ...PersonFragment
+    }
+
     legalAddress
     legalAddressPostcode
     mailingAddress
     mailingAddressPostcode
-    phone
-    fax
-    email
+    isMailingAddressMatch
+    deliveryAddress
+    deliveryAddressPostcode
+    isDeliveryAddressMatch
+
+    phone {
+      ...PhoneFragment
+    }
+    phoneOption
+    fax {
+      ...PhoneFragment
+    }
     website
-    itn
+    # for contact
+    mobilePhone {
+      ...PhoneFragment
+    }
+    email
+
+    vat
     iec
-    psrn
-    bankName
-    bankAddress
-    bankAccountNumber
-    correspondentAccountNumber
-    bic
     okpo
-    swift
-    ownerFullName
-    ownerJobPosition
+    psrn
+
+    defaultBankDetail
+
+    bankDetails {
+      ...BankDetailFragment
+    }
+
+    importerCompanyName
+    importerContactPerson {
+      ...PersonFragment
+    }
+    importerMobilePhone {
+      ...PhoneFragment
+    }
+    importerPhone {
+      ...PhoneFragment
+    }
+    importerEmail
+
+    contacts {
+      ...ContactFragment
+    }
+    tags
+
+    isRequiredFilled
+    isOptionalFilled
   }
+  ${PERSON_FRAGMENT}
+  ${PHONE_FRAGMENT}
+  ${CONTACT_FRAGMENT}
+  ${BANK_DETAIL_FRAGMENT}
 `
 
 export const ORG_CONTRACT_FRAGMENT = gql`

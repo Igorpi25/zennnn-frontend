@@ -5,7 +5,6 @@
     :create="create"
     :is-welcome.sync="showWelcomeDialog"
     :show-fill-later-button="showFillLaterButton"
-    :is-user-init-key-store="isUserInitKeyStore"
   />
 </template>
 
@@ -36,9 +35,6 @@ export default {
       },
     },
   },
-  async beforeRouteLeave (to, from, next) {
-    await this.$refs.card.checkChangesBeforeLeave(next)
-  },
   data () {
     return {
       showWelcomeDialog: false,
@@ -49,17 +45,17 @@ export default {
     profile () {
       return this.getProfile || {}
     },
-    isUserInitKeyStore () {
+    userInitKeyStore () {
       return `zIsUserInit.${this.profile.id}`
     },
   },
   mounted () {
-    if (this.$route.query.q && this.$route.query.q === 'welcome') {
-      let isUserInit = localStorage.getItem(this.isUserInitKeyStore)
+    if (this.$route.query.q === 'welcome') {
+      let isUserInit = localStorage.getItem(this.userInitKeyStore)
       if (!isUserInit) {
         this.showWelcomeDialog = true
         this.showFillLaterButton = true
-        localStorage.setItem(this.isUserInitKeyStore, 1)
+        localStorage.setItem(this.userInitKeyStore, 1)
       }
     }
   },

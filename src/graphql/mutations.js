@@ -8,6 +8,7 @@ import {
   SUPPLIER_BRANCH_FRAGMENT,
   ORG_CONTRACT_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
+  BANK_DETAIL_FRAGMENT,
 } from './typeDefs'
 
 export const LOGIN = gql`
@@ -293,6 +294,30 @@ export const UPDATE_REQUISITE = gql`
 export const DELETE_REQUISITE = gql`
   mutation DeleteRequisite($id: ID!) {
     deleteRequisite(id: $id)
+  }
+`
+
+export const CREATE_COMPANY_BANK_DETAIL = gql`
+  mutation CreateCompanyBankDetail($companyId: ID!, $input: BankDetailInput!) {
+    createCompanyBankDetail(companyId: $companyId, input: $input) {
+      ...BankDetailFragment
+    }
+  }
+  ${BANK_DETAIL_FRAGMENT}
+`
+
+export const UPDATE_COMPANY_BANK_DETAIL = gql`
+  mutation UpdateCompanyBankDetail($companyId: ID!, $id: ID!, $input: BankDetailInput!) {
+    updateCompanyBankDetail(companyId: $companyId, id: $id, input: $input) {
+      ...BankDetailFragment
+    }
+  }
+  ${BANK_DETAIL_FRAGMENT}
+`
+
+export const DELETE_COMPANY_BANK_DETAIL = gql`
+  mutation DeleteCompanyBankDetail($companyId: ID!, $id: ID!) {
+    deleteCompanyBankDetail(companyId: $companyId, id: $id)
   }
 `
 

@@ -141,10 +141,77 @@ const SUPPLIER_VALIDATION_FIELDS = {
   ],
 }
 
+const COMPANY_DETAIL_VALIDATION_FIELDS = {
+  REQUIRED: [
+    {
+      path: 'companyName',
+      type: VALIDATION_TYPE.REQUIRE,
+    },
+    {
+      path: 'companyNameLocal',
+      type: VALIDATION_TYPE.REQUIRE,
+    },
+    {
+      path: 'phone',
+      type: VALIDATION_TYPE.PHONE,
+    },
+    {
+      path: 'legalAddress',
+      type: VALIDATION_TYPE.REQUIRE,
+    },
+    {
+      path: 'companyOwner',
+      type: VALIDATION_TYPE.PERSON,
+    },
+  ],
+  OPTIONAL: [
+    {
+      path: 'email',
+      type: VALIDATION_TYPE.EMAIL,
+    },
+    {
+      path: 'vat',
+      type: VALIDATION_TYPE.REQUIRE,
+    },
+    {
+      path: 'legalAddressPostcode',
+      type: VALIDATION_TYPE.REQUIRE,
+    },
+  ],
+}
+
+const COMPANY_BANK_DETAIL_VALIDATION_FIELDS = {
+  REQUIRED: [
+    {
+      path: 'bankName',
+      type: VALIDATION_TYPE.REQUIRE,
+    },
+    {
+      path: 'bankAccountNumber',
+      type: VALIDATION_TYPE.REQUIRE,
+    },
+    {
+      path: 'swift',
+      type: VALIDATION_TYPE.REQUIRE,
+    },
+  ],
+  OPTIONAL: [
+    {
+      path: 'bankAddress',
+      type: VALIDATION_TYPE.REQUIRE,
+    },
+  ],
+}
+
 const validatePerson = (val) => {
-  const firstName = val && val.firstName
-  const lastName = val && val.lastName
-  return !!(firstName && lastName)
+  const person = val || {}
+  let result = false
+  if (person.isName) {
+    result = !!person.name
+  } else {
+    result = !!(person.firstName && person.lastName)
+  }
+  return result
 }
 
 const validatePhone = (val) => {
@@ -213,6 +280,40 @@ export const validateSupplier = (doc) => {
     const value = doc[field.path]
     return validateValue(field.type, value)
   })
+  return {
+    isRequiredFilled,
+    isOptionalFilled,
+  }
+}
+
+export const validateCompanyDetail = (doc) => {
+  const bankDetails = doc.bankDetails || []
+  let isRequiredFilled = COMPANY_DETAIL_VALIDATION_FIELDS.REQUIRED.every(field => {
+    const value = doc[field.path]
+    return validateValue(field.type, value)
+  })
+  let isOptionalFilled = COMPANY_DETAIL_VALIDATION_FIELDS.OPTIONAL.every(field => {
+    const value = doc[field.path]
+    return validateValue(field.type, value)
+  })
+  if (bankDetails.length > 0) {
+    if (isRequiredFilled) {
+      isRequiredFilled = bankDetails.every(item => {
+        return COMPANY_BANK_DETAIL_VALIDATION_FIELDS.REQUIRED.every(field => {
+          const value = item[field.path]
+          return validateValue(field.type, value)
+        })
+      })
+    }
+    if (isOptionalFilled) {
+      isOptionalFilled = bankDetails.every(item => {
+        return COMPANY_BANK_DETAIL_VALIDATION_FIELDS.OPTIONAL.every(field => {
+          const value = item[field.path]
+          return validateValue(field.type, value)
+        })
+      })
+    }
+  }
   return {
     isRequiredFilled,
     isOptionalFilled,

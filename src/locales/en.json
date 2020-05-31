@@ -163,6 +163,7 @@
   "requisite": {
     "createTitle": "Add Company details",
     "editTitle": "Company details",
+    "created":"Created.",
     "back": "Back",
     "requisitesOfMyCompany": "Details of my company",
     "about": "About",

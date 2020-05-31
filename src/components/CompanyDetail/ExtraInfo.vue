@@ -16,7 +16,7 @@
     </div>
     <v-expand-transition>
       <div v-show="expanded" class="pt-4">
-        <div class="pb-2">
+        <div v-if="!isRequisite" class="pb-2">
           <label class="block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
             {{ $t('companyDetail.label.note') }}
           </label>
@@ -30,7 +30,7 @@
             @input="updateData({ 'note': $event })"
           />
         </div>
-        <div class="pb-2">
+        <div :class="{ 'pb-2': !isRequisite }">
           <TextField
             disabled
             :label="$t('companyDetail.label.tags')"
@@ -46,7 +46,7 @@
             </template>
           </TextField>
         </div>
-        <div class="inline-block cursor-not-allowed opacity-40">
+        <div v-if="!isRequisite" class="inline-block cursor-not-allowed opacity-40">
           <label class="block leading-5 text-base text-gray-100 whitespace-no-wrap py-2">
             <span>
               {{ $t('companyDetail.label.attachFile') }}
@@ -80,6 +80,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    isRequisite: Boolean,
   },
 }
 </script>

@@ -163,6 +163,7 @@
   "requisite": {
     "createTitle": "Добавить реквизиты компании",
     "editTitle": "Данные компании",
+    "created": "Создан.",
     "back": "Назад",
     "requisitesOfMyCompany": "Реквизиты моей компании",
     "about": "О компании",

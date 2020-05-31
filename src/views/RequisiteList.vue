@@ -25,8 +25,8 @@
                   </Icon>
                 </div>
               </td>
-              <td @click="goToRequisite(item)">{{ item.name }}</td>
-              <td @click="goToRequisite(item)">{{ item.nameEng }}</td>
+              <td @click="goToRequisite(item)">{{ item.companyNameLocal }}</td>
+              <td @click="goToRequisite(item)">{{ item.companyName }}</td>
               <td @click="goToRequisite(item)">{{ item.ownerFullName }}</td>
               <td @click="goToRequisite(item)">{{ item.ownerJobPosition }}</td>
               <td>
@@ -104,15 +104,20 @@ export default {
     headers () {
       return [
         { text: '', value: 'current', align: 'center', width: 36, minWidth: 36 },
-        { text: this.$t('requisites.companyName'), value: 'name', align: 'left', width: 200, minWidth: 200 },
-        { text: this.$t('requisites.companyNameEng'), value: 'nameEng', align: 'left', width: 240, minWidth: 240 },
+        { text: this.$t('requisites.companyNameEng'), value: 'companyName', align: 'left', width: 200, minWidth: 200 },
+        { text: this.$t('requisites.companyName'), value: 'companyNameLocal', align: 'left', width: 240, minWidth: 240 },
         { text: this.$t('requisites.fullName'), value: 'ownerFullName', align: 'left', width: 160, minWidth: 160 },
         { text: this.$t('requisites.position'), value: 'ownerJobPosition', align: 'left', width: 120, minWidth: 120 },
         { text: '', value: 'action', width: 48, minWidth: 48 },
       ]
     },
     items () {
-      return this.listOrgRequisites || []
+      return (this.listOrgRequisites || []).map(item => {
+        return {
+          ...item,
+          ownerFullName: item.companyOwner && item.companyOwner.fullName,
+        }
+      })
     },
   },
   methods: {

@@ -244,7 +244,7 @@ export default {
           } else {
             if (redirectAfterCreate) {
               this.$notify(this.$t('supplier.created'))
-              this.$router.push({
+              this.$router.replace({
                 name: 'supplier',
                 params: {
                   orgId: this.orgId,
