@@ -3,6 +3,10 @@
     "userAgreement": "Terms&nbsp;of&nbsp;use"
   },
   "passwordRestore": {
+    "title": "Access recovery",
+    "subtitle": "Для восстановления пароля укажите почту, которую вы используете для входа в&nbsp;систему.",
+    "hint": "Если нашего письма нет во&nbsp;входящей почте, проверьте папку «Спам». Или повторно нажмите «Отправить&nbsp;письмо».",
+    "emailLabel": "Электронная почта (логин ZENNNN)",
     "accessRecoveryHead": "Access recovery,",
     "accessRecoverySubhead": "enter the data and get a link to change password.",
     "recoveryByEmail": "Recovery by email",
