@@ -57,8 +57,7 @@
             name="login"
             autofocus
             validate-on-blur
-          >
-          </TextField>
+          />
           <TextField
             v-model="formModel.password"
             :placeholder="$t('signin.password')"
@@ -136,8 +135,7 @@
           state-icon
           state-icon-on-validate
           required
-        >
-        </TextField>
+        />
         <TextField
           v-model="compliteFormModel.lastName"
           :placeholder="$t('signup.lastName')"
@@ -149,8 +147,7 @@
           state-icon
           state-icon-on-validate
           required
-        >
-        </TextField>
+        />
         <TextField
           ref="email"
           v-model="compliteFormModel.email"
@@ -165,8 +162,7 @@
           state-icon
           state-icon-on-validate
           required
-        >
-        </TextField>
+        />
         <TextField
           v-model="compliteFormModel.password"
           :placeholder="$t('signup.password')"

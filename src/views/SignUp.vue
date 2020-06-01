@@ -66,8 +66,7 @@
             state-icon
             state-icon-on-validate
             required
-          >
-          </TextField>
+          />
           <TextField
             v-model="formModel.lastName"
             :placeholder="$t('signup.lastName')"
@@ -79,8 +78,7 @@
             state-icon
             state-icon-on-validate
             required
-          >
-          </TextField>
+          />
           <TextField
             ref="email"
             v-model="formModel.email"
@@ -94,8 +92,7 @@
             state-icon
             state-icon-on-validate
             required
-          >
-          </TextField>
+          />
           <TextField
             v-model="formModel.password"
             :placeholder="$t('signup.password')"
