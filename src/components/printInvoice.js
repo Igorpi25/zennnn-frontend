@@ -96,7 +96,7 @@ const genBillToBody = (client, clientLang) => {
         {
           stack: [
             {
-              text: genValues(client.legalAddress, client.phone, client.fax),
+              text: genValues(client.legalAddress, client.phone && client.phone.phone, client.fax && client.fax.phone),
             },
           ],
         },
@@ -108,7 +108,7 @@ const genBillToBody = (client, clientLang) => {
         {
           stack: [
             {
-              text: genValues(client.deliveryAddress, client.mobilePhone, client.additionalPhone),
+              text: genValues(client.legalAddress, client.phone && client.phone.phone, client.fax && client.fax.phone),
             },
           ],
         },
@@ -122,7 +122,7 @@ const genBillToBody = (client, clientLang) => {
       {
         stack: [
           {
-            text: client.consignee,
+            text: client.importerCompanyName,
           },
         ],
       },
@@ -134,7 +134,7 @@ const genBillToBody = (client, clientLang) => {
       {
         stack: [
           {
-            text: genValues(client.shippingAddress, client.contactMobilePhone, client.importerFax),
+            text: genValues(client.deliveryAddress, client.importerPhone && client.importerPhone.phone, client.importerFax && client.importerFax.phone),
           },
         ],
       },
@@ -881,12 +881,13 @@ const genAmountInWords = (spec, clientLang) => {
 
 export default async (spec, requisite, client, shipment, customs, method = 'open', isDraft = true) => {
   try {
+    const bankDetail = (requisite.bankDetails || []).find(el => el.id === requisite.defaultBankDetail) || {}
     let win = null
     if (method !== 'download') {
       win = window.open(`/print/${spec.specNo}`, '_blank')
     }
     const defaultLang = i18n.fallbackLocale
-    const clientLang = client.language || defaultLang
+    const clientLang = client.locale || defaultLang
     const pdfMake = (await import(/* webpackChunkName: "pdfMake" */ 'pdfmake/build/pdfmake')).default
     let font
     let pdfFonts
@@ -1003,13 +1004,13 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
                 {
                   stack: genLabel('print.seller', clientLang),
                 },
-                requisite.name || '',
+                requisite.companyName || '',
               ],
               [
                 {
                   stack: genLabel('print.addressTelFax', clientLang),
                 },
-                genValues(requisite.legalAddress, requisite.phone, requisite.fax),
+                genValues(requisite.legalAddress, requisite.phone && requisite.phone.phone, requisite.fax && requisite.fax.phone),
               ],
               [
                 {
@@ -1021,25 +1022,25 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
                 {
                   stack: genLabel('print.vatNo', clientLang),
                 },
-                requisite.itn || '',
+                requisite.vat || '',
               ],
               [
                 {
                   stack: genLabel('print.beneficiyBank', clientLang),
                 },
-                requisite.bankName || '',
+                bankDetail.bankName || '',
               ],
               [
                 {
                   stack: genLabel('print.bankAddress', clientLang),
                 },
-                requisite.bankAddress || '',
+                bankDetail.bankAddress || '',
               ],
               [
                 {
                   stack: genLabel('print.accountNumberSwift', clientLang),
                 },
-                genValues(requisite.bankAccountNumber, requisite.swift),
+                genValues(requisite.bankAccountNumber, bankDetail.swift),
               ],
             ],
           },
@@ -1288,7 +1289,7 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
                 {
                   stack: [
                     {
-                      text: client.ownerFullName,
+                      text: client.companyOwner && client.companyOwner.fullName,
                     },
                   ],
                 },
