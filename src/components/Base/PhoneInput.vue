@@ -15,6 +15,8 @@
       :required="required"
       :mask="currentMask"
       :rules="compRule"
+      :readonly="readonly"
+      :disabled="disabled"
       type="tel"
       prepend-slot-class="w-auto"
       @blur="onBlur"
@@ -30,6 +32,8 @@
           :items="phonesItems"
           :patterns="codeInputPatterns"
           :size="compSize"
+          :readonly="readonly"
+          :disabled="disabled"
           hide-warn
           type="tel"
           searchable
@@ -91,6 +95,8 @@ export default {
       type: Number,
       default: 500,
     },
+    readonly: Boolean,
+    disabled: Boolean,
   },
   data () {
     return {
@@ -162,19 +168,29 @@ export default {
       return phonesPlaceholder[this.countryCode]
     },
     phonesItems () {
-      return Object.entries(phonesCode).map(([k, v]) => {
-        const code = phonesCode[k]
-        const codeUnformatted = this.phonesUnformatted[k]
-        const placeholder = phonesPlaceholder[k]
-        const mask = phonesMask[k]
-        return {
-          code,
-          codeUnformatted,
-          placeholder,
-          mask,
-          value: k,
-        }
-      })
+      return Object.entries(phonesCode)
+        .sort((a, b) => {
+          if (a[1] > b[1]) {
+            return 1
+          }
+          if (a[1] < b[1]) {
+            return -1
+          }
+          return 0
+        })
+        .map(([k, v]) => {
+          const code = phonesCode[k]
+          const codeUnformatted = this.phonesUnformatted[k]
+          const placeholder = phonesPlaceholder[k]
+          const mask = phonesMask[k]
+          return {
+            code,
+            codeUnformatted,
+            placeholder,
+            mask,
+            value: k,
+          }
+        })
     },
   },
   watch: {
@@ -224,6 +240,7 @@ export default {
       }
     },
     onBlur (e) {
+      this.$emit('blur', e)
       // cancel debounced
       if (this.debounce) {
         this.debounceInput.cancel()
@@ -233,11 +250,11 @@ export default {
         this.blurWithoutUpdate = false
         return
       }
+      if (this.readonly || this.disabled) return
       // immediate call changes
       if (!this.lazy) {
         this.emitChange()
       }
-      this.$emit('blur', e)
     },
     emitChange () {
       // prevent emit if no changes
@@ -279,6 +296,7 @@ export default {
       return result
     },
     onCountryCodeSelect (val) {
+      if (this.readonly || this.disabled) return
       this.countryCode = val
       this.$refs.input.focus()
     },

@@ -15,7 +15,7 @@
         :type="type"
         :name="name"
         :required="required"
-        :readonly="!searchable"
+        :readonly="readonly || !searchable"
         :disabled="disabled"
         :minlength="minlength"
         :maxlength="maxlength"
@@ -63,9 +63,11 @@
           <button
             v-if="hasArrowIcon"
             :disabled="disabled"
-            :class="{ 'cursor-not-allowed': disabled }"
             tabindex="-1"
-            class="flex items-center text-2xl text-blue-500 hover:text-blue-600 focus:text-blue-600 cursor-pointer focus:outline-none select-none"
+            :class="[
+              disabled ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:text-blue-600',
+              'flex items-center text-2xl focus:text-blue-600 cursor-pointer focus:outline-none select-none'
+            ]"
             @click="toggleMenu"
           >
             <i :class="isMenuActive ? 'zi-chevron-up' : 'zi-chevron-down'" />
@@ -91,7 +93,7 @@
       offset-y
     >
       <ul
-        class="select-picker"
+        :class="['select-picker', { 'select-picker--dense': solo || dense }]"
         role="menu"
       >
         <li
@@ -107,13 +109,18 @@
           <slot name="prepend-item" />
         </li>
         <li
-          v-if="filteredItems.length === 0"
+          v-if="filteredItems.length === 0 && searchable && search"
           class="select-picker__item select-picker__item--disabled"
         >
-          <span v-if="searchable && search" class="truncate">
+          <span class="truncate">
             {{ $t('select.noResult') }}
           </span>
-          <span v-else class="truncate">
+        </li>
+        <li
+          v-else-if="filteredItems.length === 0 && !hideNoData"
+          class="select-picker__item select-picker__item--disabled"
+        >
+          <span class="truncate">
             {{ $t('select.noData') }}
           </span>
         </li>
@@ -256,6 +263,8 @@ export default {
     dense: Boolean,
     loading: Boolean,
     size: [Number, String],
+    readonly: Boolean,
+    hideNoData: Boolean,
   },
   data () {
     return {

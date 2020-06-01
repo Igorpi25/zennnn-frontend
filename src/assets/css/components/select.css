@@ -4,6 +4,9 @@
 .select-picker__item {
   @apply h-9 flex items-center cursor-pointer px-2 outline-none;
 }
+.select-picker.select-picker--dense .select-picker__item {
+  height: 32px;
+}
 .select-picker__item--selected {
   @apply text-white;
 }
@@ -25,8 +28,8 @@
   border-top-right-radius: 0!important;
 }
 .select-menu.v-menu__content .select-picker {
-  padding-top: 0!important;
-  padding-bottom: 0!important;
+  padding-top: 8px;
+  padding-bottom: 12px;
 }
 .select-menu.v-menu__content {
   @apply shadow-blue-500;

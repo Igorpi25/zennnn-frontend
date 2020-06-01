@@ -359,6 +359,7 @@
     "clientAddCreate": "Создать",
     "clientAddEdit": "Править",
     "clientAddNotCreated": "Не создано",
+    "clientAddNoData": "Нет данных",
     "legalPerson": "Юрлицо",
     "privatePerson": "Физлицо",
     "otherPerson": "Другое",

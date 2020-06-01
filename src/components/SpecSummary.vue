@@ -32,12 +32,13 @@
     <v-dialog
       v-model="printDialog"
       :fullscreen="$vuetify.breakpoint.smAndDown"
-      content-class="dialog-full-height bg-gray-800"
-      max-width="900"
+      content-class="dialog-full-height overflow-scroll-touch"
+      max-width="1130"
       scrollable
       persistent
     >
       <PrintSettings
+        :ready-to-print="spec.readyToPrint"
         :org-id="orgId"
         :spec-id="spec.id"
         :requisite-id="spec.requisite"
@@ -373,6 +374,11 @@ export default {
         }, 200)
       }
     },
+  },
+  mounted () {
+    if (process.env.NODE_ENV === 'development' && this.$route.hash === '#print') {
+      this.printDialog = true
+    }
   },
   methods: {
     async doPrint (requisite, client, shipment, customs) {

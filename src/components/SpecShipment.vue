@@ -88,7 +88,7 @@
         v-if="item.activeType === ShipmentType.MARINE"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
-        <div class="flex items-center">
+        <div class="flex items-center pb-2">
           <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.containersCount')">
             {{ $t('shipping.containersCount') }}:
           </div>
@@ -98,22 +98,20 @@
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              class="pb-2"
               @input="$emit('update', { shipment: { marine: { containersCount: $event } } })"
             />
           </div>
         </div>
-        <div class="px-1">
+        <div class="px-1 pb-2">
           <TextField
             :value="item.marine.containersNo"
             :debounce="250"
             :placeholder="$t('shipping.containersNo')"
             dense
-            class="pb-2"
             @input="$emit('update', { shipment: { marine: { containersNo: $event } } })"
           />
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center pb-2">
           <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
             {{ $t('shipping.exportDate') }}:
           </div>
@@ -129,7 +127,6 @@
                     :placeholder="$t('placeholder.notIndicated')"
                     dense
                     readonly
-                     class="pb-2"
                   />
                 </div>
               </template>
@@ -163,7 +160,7 @@
         v-if="item.activeType === ShipmentType.AIR"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
-        <div class="flex items-center">
+        <div class="flex items-center pb-2">
           <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.numbersOfPkg')">
             {{ $t('shipping.numbersOfPkg') }}:
           </div>
@@ -173,7 +170,6 @@
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              class="pb-2"
               @input="$emit('update', { shipment: { air: { numbersOfPkg: $event } } })"
             />
           </div>
@@ -205,7 +201,7 @@
         v-if="item.activeType === ShipmentType.RAILWAY"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
-        <div class="flex items-center">
+        <div class="flex items-center pb-2">
           <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.trainContainersCount')">
             {{ $t('shipping.trainContainersCount') }}:
           </div>
@@ -215,22 +211,20 @@
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              class="pb-2"
               @input="$emit('update', { shipment: { railway: { containersCount: $event } } })"
             />
           </div>
         </div>
-        <div class="px-1">
+        <div class="px-1 pb-2">
           <TextField
             :value="item.railway.containersNo"
             :debounce="250"
             :placeholder="$t('shipping.trainContainersNo')"
             dense
-            class="pb-2"
             @input="$emit('update', { shipment: { railway: { containersNo: $event } } })"
           />
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center pb-2">
           <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
             {{ $t('shipping.exportDate') }}:
           </div>
@@ -246,7 +240,6 @@
                     :placeholder="$t('placeholder.notIndicated')"
                     dense
                     readonly
-                    class="pb-2"
                   />
                 </div>
               </template>
@@ -280,7 +273,7 @@
         v-if="item.activeType === ShipmentType.CAR"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
-        <div class="flex items-center">
+        <div class="flex items-center pb-2">
           <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.semitrailerNo')">
             {{ $t('shipping.semitrailerNo') }}:
           </div>
@@ -290,12 +283,11 @@
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              class="pb-2"
               @input="$emit('update', { shipment: { car: { semitrailerNo: $event } } })"
             />
           </div>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center pb-2">
           <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
             {{ $t('shipping.exportDate') }}:
           </div>
@@ -311,7 +303,6 @@
                     :placeholder="$t('placeholder.notIndicated')"
                     dense
                     readonly
-                    class="pb-2"
                   />
                 </div>
               </template>
@@ -361,7 +352,7 @@
         v-if="item.activeType === ShipmentType.MIXED"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
-        <div class="flex items-center">
+        <div class="flex items-center pb-2">
           <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.vehicleAndSemitrailerNo')">
             {{ $t('shipping.vehicleAndSemitrailerNo') }}:
           </div>
@@ -371,7 +362,6 @@
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              class="pb-2"
               @input="$emit('update', { shipment: { mixed: { vehicleNo: $event } } })"
             />
           </div>
@@ -386,7 +376,7 @@
             @input="$emit('update', { shipment: { mixed: { containersNo: $event } } })"
           />
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center pb-2">
           <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.exportDate')">
             {{ $t('shipping.exportDate') }}:
           </div>
@@ -402,7 +392,6 @@
                     :placeholder="$t('placeholder.notIndicated')"
                     dense
                     readonly
-                    class="pb-2"
                   />
                 </div>
               </template>
@@ -436,7 +425,7 @@
         v-if="item.activeType === ShipmentType.EXPRESS"
         class="w-full sm:w-2/3 md:w-full lg:w-2/3"
       >
-        <div class="flex items-center">
+        <div class="flex items-center pb-2">
           <div class="w-1/2 text-right px-1 truncate" :title="$t('shipping.numbersOfPkg')">
             {{ $t('shipping.numbersOfPkg') }}:
           </div>
@@ -446,7 +435,6 @@
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              class="pb-2"
               @input="$emit('update', { shipment: { express: { numbersOfPkg: $event } } })"
             />
           </div>
