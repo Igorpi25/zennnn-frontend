@@ -109,13 +109,18 @@
           <slot name="prepend-item" />
         </li>
         <li
-          v-if="filteredItems.length === 0"
+          v-if="filteredItems.length === 0 && searchable && search"
           class="select-picker__item select-picker__item--disabled"
         >
-          <span v-if="searchable && search" class="truncate">
+          <span class="truncate">
             {{ $t('select.noResult') }}
           </span>
-          <span v-else class="truncate">
+        </li>
+        <li
+          v-else-if="filteredItems.length === 0 && !hideNoData"
+          class="select-picker__item select-picker__item--disabled"
+        >
+          <span class="truncate">
             {{ $t('select.noData') }}
           </span>
         </li>
@@ -259,6 +264,7 @@ export default {
     loading: Boolean,
     size: [Number, String],
     readonly: Boolean,
+    hideNoData: Boolean,
   },
   data () {
     return {
