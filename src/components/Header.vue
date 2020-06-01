@@ -27,10 +27,10 @@
             <router-link
               v-if="!loggedIn"
               :to="{ name: 'signin' }"
-              class="hidden md:block h-full"
+              class="h-full"
             >
               <div class="flex items-center h-full text-gray-100">
-                <div class="w-px h-5 bg-gray-300 mr-3 ml-3" />
+                <div class="hidden sm:block w-px h-5 bg-gray-300 mx-3" />
                 <div class="flex items-center h-full px-2 hover:bg-gray-200 transition-colors duration-100 ease-out">
                   <span>{{ $t('header.signin') }}</span>
                   <Icon
