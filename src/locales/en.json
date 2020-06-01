@@ -77,6 +77,9 @@
     "submit": "Create account"
   },
   "welcome": {
+    "title": "Завершение регистрации",
+    "subtitle": "Осталось подтвердить регистрацию. Пройдите по ссылке в&nbsp;письме, которое мы отправили на&nbsp;почту:",
+    "hint": "Если нашего письма нет во&nbsp;входящей почте, проверьте папку «Спам». Или повторно нажмите «Отправить&nbsp;письмо».",
     "congrats": "Congratulations,",
     "successRegister": "you have successfully registered!",
     "confirmRegistrationEmail": "The email was sent to {email}.",
@@ -85,7 +88,7 @@
     "emailNotRecieved": "Didn’t receive an email?",
     "hasAccount": "I have an account.",
     "signin": "Log In",
-    "resend": "Resend."
+    "resend": "Resend"
   },
   "deals": {
     "createSpecDialogHeader": "Add the Client",
