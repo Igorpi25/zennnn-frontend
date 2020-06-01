@@ -16,6 +16,7 @@
       :mask="currentMask"
       :rules="compRule"
       :readonly="readonly"
+      :disabled="disabled"
       type="tel"
       prepend-slot-class="w-auto"
       @blur="onBlur"
@@ -32,6 +33,7 @@
           :patterns="codeInputPatterns"
           :size="compSize"
           :readonly="readonly"
+          :disabled="disabled"
           hide-warn
           type="tel"
           searchable
@@ -94,6 +96,7 @@ export default {
       default: 500,
     },
     readonly: Boolean,
+    disabled: Boolean,
   },
   data () {
     return {
@@ -237,7 +240,7 @@ export default {
         this.blurWithoutUpdate = false
         return
       }
-      if (this.readonly) return
+      if (this.readonly || this.disabled) return
       // immediate call changes
       if (!this.lazy) {
         this.emitChange()
@@ -283,7 +286,7 @@ export default {
       return result
     },
     onCountryCodeSelect (val) {
-      if (this.readonly) return
+      if (this.readonly || this.disabled) return
       this.countryCode = val
       this.$refs.input.focus()
     },
