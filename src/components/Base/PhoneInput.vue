@@ -168,19 +168,29 @@ export default {
       return phonesPlaceholder[this.countryCode]
     },
     phonesItems () {
-      return Object.entries(phonesCode).map(([k, v]) => {
-        const code = phonesCode[k]
-        const codeUnformatted = this.phonesUnformatted[k]
-        const placeholder = phonesPlaceholder[k]
-        const mask = phonesMask[k]
-        return {
-          code,
-          codeUnformatted,
-          placeholder,
-          mask,
-          value: k,
-        }
-      })
+      return Object.entries(phonesCode)
+        .sort((a, b) => {
+          if (a[1] > b[1]) {
+            return 1
+          }
+          if (a[1] < b[1]) {
+            return -1
+          }
+          return 0
+        })
+        .map(([k, v]) => {
+          const code = phonesCode[k]
+          const codeUnformatted = this.phonesUnformatted[k]
+          const placeholder = phonesPlaceholder[k]
+          const mask = phonesMask[k]
+          return {
+            code,
+            codeUnformatted,
+            placeholder,
+            mask,
+            value: k,
+          }
+        })
     },
   },
   watch: {
