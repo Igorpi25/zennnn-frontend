@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen h-full flex">
+  <div class="flex-grow flex">
     <div class="auth-left container flex-shrink-0 hidden sm:flex flex-col bg-gray-700">
       <div class="signup--top flex-grow lg:pl-8">
         <div class="auth-left--bg absolute pointer-events-none bottom-0 left-0 top-0" style="right: 50%" />
