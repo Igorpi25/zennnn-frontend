@@ -93,7 +93,7 @@
       offset-y
     >
       <ul
-        class="select-picker"
+        :class="['select-picker', { 'select-picker--dense': solo || dense }]"
         role="menu"
       >
         <li
