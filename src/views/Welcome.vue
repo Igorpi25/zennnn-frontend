@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
-import Copyright from '@/components/Copyright.vue'
+import Header from '../components/Header.vue'
+import Copyright from '../components/Copyright.vue'
 
 export default {
   name: 'Welcome',
