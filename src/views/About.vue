@@ -5,9 +5,12 @@
       <header class="pt-6 pb-4 font-medium">
         <div class="container container--xs">
           <div class="flex items-center h-13">
-            <a href="/" class="h-6 mr-16">
+            <router-link
+              :to="{ name: 'home' }"
+              class="h-6 mr-16"
+            >
               <img src="@/assets/img/logo-light.svg" alt="Logo">
-            </a>
+            </router-link>
             <nav class="hidden md:flex items-center leading-5" style="color: #BDBDBD;">
               <a
                 v-for="(item, i) of navItems"
@@ -809,12 +812,13 @@ export default {
       { cssText: 'body { font-family: Montserrat,sans-serif }', type: 'text/css' },
     ],
     meta: [
-      { hid: 'description', name: 'description', content: 'бэк-офис ZENNNN' },
-      { vmid: 'og:title', property: 'og:title', content: 'ZENNNN' },
+      { hid: 'title', name: 'title', content: 'Сервис для международной оптовой торговли с удаленным управлением | ZENNNN' },
+      { hid: 'description', name: 'description', content: 'Представляем вам революционной сервис международной оптовой торговли с возможностью удаленного контроля и управления закупками. Вся операционная деятельность компании в одной системе.' },
+      { vmid: 'og:title', property: 'og:title', content: 'Сервис для международной оптовой торговли с удаленным управлением | ZENNNN' },
+      { vmid: 'og:description', property: 'og:description', content: 'Представляем вам революционной сервис международной оптовой торговли с возможностью удаленного контроля и управления закупками. Вся операционная деятельность компании в одной системе.' },
       { vmid: 'og:site_name', property: 'og:site_name', content: 'ZENNNN' },
       { vmid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_HOSTNAME}${window.location.pathname}` },
       { vmid: 'og:image', property: 'og:image', content: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png` },
-      { vmid: 'og:description', property: 'og:description', content: 'бэк-офис ZENNNN' },
     ],
   },
   data () {
