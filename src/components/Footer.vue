@@ -8,6 +8,7 @@
             v-for="(item, i) in aboutLinks"
             :key="i"
             :class="{ 'pb-5': i + 1 < aboutLinks.length }"
+            class="px-4 sm:px-0"
           >
             <router-link
               v-if="item.to"
@@ -31,6 +32,7 @@
             v-for="(item, i) in extLinks"
             :key="i"
             :class="{ 'pb-5': i + 1 < extLinks.length }"
+            class="px-4 sm:px-0"
           >
             <router-link
               v-if="item.to"
@@ -50,37 +52,37 @@
         </div>
         <div class="relative h-full w-full md:w-1/3 md:pl-6 pt-6 md:pt-0">
           <div class="hidden md:block absolute left-0 w-px h-full bg-gray-400" />
-          <div class="pb-5">
+          <div class="pb-5 px-4 sm:px-0">
             <a href="#" class="focus:outline-none focus:text-blue-500 hover:text-blue-500">
               Facebook
               <i class="zi-facebook text-2xl text-gray-200 float-right" />
             </a>
           </div>
-          <div class="pb-5">
+          <div class="pb-5 px-4 sm:px-0">
             <a href="#" class="focus:outline-none focus:text-blue-500 hover:text-blue-500">
               Telegram
               <i class="zi-telegram text-2xl text-gray-200 float-right" />
             </a>
           </div>
-          <div class="pb-5">
+          <div class="pb-5 px-4 sm:px-0">
             <a href="#" class="focus:outline-none focus:text-blue-500 hover:text-blue-500">
               Instagram
               <i class="zi-instagram text-2xl text-gray-200 float-right" />
             </a>
           </div>
-          <div class="pb-5">
+          <div class="pb-5 px-4 sm:px-0">
             <a href="#" class="focus:outline-none focus:text-blue-500 hover:text-blue-500">
               Youtube ({{ $t('footer.training') }})
               <i class="zi-youtube text-2xl text-gray-200 float-right" />
             </a>
           </div>
-          <div class="pb-5">
+          <div class="pb-5 px-4 sm:px-0">
             <a href="#" class="focus:outline-none focus:text-blue-500 hover:text-blue-500">
               {{ $t('footer.vk') }}
               <i class="zi-vk text-2xl text-gray-200 float-right" />
             </a>
           </div>
-          <div>
+          <div class="px-4 sm:px-0">
             <a href="#" class="focus:outline-none focus:text-blue-500 hover:text-blue-500">
               Github
               <div class="text-gray-200 float-right">
