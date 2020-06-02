@@ -20,7 +20,7 @@
         <p v-html="$t('welcome.hint')" class="text-gray-200 leading-tight pb-6" />
       </div>
       <div class="hidden md:block absolute container right-0 bottom-0 pb-16">
-        <img class="pb-2" src="@/assets/img/person-sitting.svg">
+        <img class="ml-auto pb-2" src="@/assets/img/person-sitting.svg">
       </div>
     </section>
     <footer class="container">
