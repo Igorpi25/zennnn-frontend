@@ -25,9 +25,9 @@ const productionPlugins = [
 
     postProcess (renderedRoute) {
       if (renderedRoute.route === '/') {
-        renderedRoute.outputPath = path.join(__dirname, 'dist', 'home.html')
+        renderedRoute.outputPath = path.join(__dirname, 'dist', '/home/index.html')
       } else {
-        renderedRoute.outputPath = path.join(__dirname, 'dist', `${renderedRoute.route.replace('/', '')}.html`)
+        renderedRoute.outputPath = path.join(__dirname, 'dist', `${renderedRoute.route}/index.html`)
       }
       return renderedRoute
     },
