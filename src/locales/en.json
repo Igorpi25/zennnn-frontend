@@ -1,8 +1,45 @@
 {
   "app": {
-    "userAgreement": "Terms&amp;nbsp;of&amp;nbsp;use"
+    "title": "Сервис для международной оптовой торговли с удаленным управлением | ZENNNN",
+    "description": "Представляем вам революционной сервис международной оптовой торговли с возможностью удаленного контроля и управления закупками. Вся операционная деятельность компании в одной системе.",
+    "userAgreement": "Terms&nbsp;of&nbsp;use"
+  },
+  "home": {
+    "title": "Револю&shy;цион&shy;ный сервис для<br>ведения между&shy;народ&shy;ной торговли.",
+    "subtitle1": "Простой",
+    "subtitle2": "Мультиязычный",
+    "subtitle3": "Мощный",
+    "cty": "Попробовать 30 дней бесплатно",
+    "info": "ZENNNN совместил операционный учёт, продажи, работу бэк-офиса, склады, функции CRM, фрилансеров, документооборот и клиентов в единый алгоритм, чтобы сделать удаленную работу с поставщиками из-за рубежа по настоящему удобной и простой.",
+    "about": "Подробнее о сервисе",
+    "video": "Видео о сервисе",
+    "feat1": "Поможет преодолеть языковой барьер",
+    "feat2": "Предоставит вашим клиентам доступ к важной информации в виде он-лайн кабинета",
+    "feat3": "Напомнит о важном в работе",
+    "feat4": "Подготовит документы и проверит их на ошибки",
+    "feat5": "Позволит работать всем из любой точки мира",
+    "feat6": "Покажет KPI сотрудников и прибыль компании",
+    "feat7": "Сохранит все в облаке"
+  },
+  "footer": {
+    "about": "О системе",
+    "faq": "FAQ",
+    "stack": "Технические детали (стэк)",
+    "terms": "Условия использования",
+    "privacy": "Политика конфиденциальности",
+    "modules": "Модули расширений",
+    "tariffs": "Тарифы",
+    "jobs": "Вакансии",
+    "coordinates": "Координаты",
+    "blog": "Блог",
+    "training": "обучение",
+    "vk": "Вконтакте"
   },
   "passwordRestore": {
+    "title": "Восстановление доступа",
+    "subtitle": "Для восстановления пароля укажите почту, которую вы используете для входа в&nbsp;систему.",
+    "hint": "Если нашего письма нет во&nbsp;входящей почте, проверьте папку «Спам». Или повторно нажмите «Отправить&nbsp;письмо».",
+    "emailLabel": "Электронная почта (логин ZENNNN)",
     "accessRecoveryHead": "Access recovery,",
     "accessRecoverySubhead": "enter the data and get a link to change password.",
     "recoveryByEmail": "Recovery by email",
@@ -13,8 +50,8 @@
     "submit": "Get link"
   },
   "passwordRestoreConfirm": {
-    "changePasswordHead": "Password Change,",
-    "changePasswordSubhead": "enter new password",
+    "changePasswordHead": "Password Change",
+    "changePasswordSubhead": "Enter new password.",
     "newPassword": "New password",
     "newPasswordConfirm": "Confirm password",
     "submit": "Change"
@@ -30,7 +67,7 @@
     "submit": "Get link"
   },
   "signin": {
-    "title": "Ре&amp;shy;во&amp;shy;лю&amp;shy;ци&amp;shy;он&amp;shy;ный<br>сервис для ве&amp;shy;де&amp;shy;ния<br>меж&amp;shy;ду&amp;shy;на&amp;shy;род&amp;shy;ной<br>тор&amp;shy;гов&amp;shy;ли.",
+    "title": "Ре&shy;во&shy;лю&shy;ци&shy;он&shy;ный<br>сервис для ве&shy;де&shy;ния<br>меж&shy;ду&shy;на&shy;род&shy;ной<br>тор&shy;гов&shy;ли.",
     "subtitle": "Truly. Madly. Deeply.",
     "formTitle": "Log In",
     "noAccount": "No account?",
@@ -77,6 +114,9 @@
     "submit": "Create account"
   },
   "welcome": {
+    "title": "Завершение регистрации",
+    "subtitle": "Осталось подтвердить регистрацию. Пройдите по ссылке в&nbsp;письме, которое мы отправили на&nbsp;почту:",
+    "hint": "Если нашего письма нет во&nbsp;входящей почте, проверьте папку «Спам». Или повторно нажмите «Отправить&nbsp;письмо».",
     "congrats": "Congratulations,",
     "successRegister": "you have successfully registered!",
     "confirmRegistrationEmail": "The email was sent to {email}.",
@@ -85,7 +125,7 @@
     "emailNotRecieved": "Didn’t receive an email?",
     "hasAccount": "I have an account.",
     "signin": "Log In",
-    "resend": "Resend."
+    "resend": "Resend"
   },
   "deals": {
     "createSpecDialogHeader": "Add the Client",
@@ -93,7 +133,7 @@
     "createSpecDialogSearchPlaceholder": "Start typing",
     "createSpecDialogAddClient": "Create new Client",
     "createSpecDialogWithoutClient": "Add Client later",
-    "createSpecDialogAd": "Proceed",
+    "createSpecDialogAdd": "Proceed",
     "createDeal": "Create the deal",
     "clientUcn": "UCN",
     "clientName": "Client",
@@ -163,6 +203,7 @@
   "requisite": {
     "createTitle": "Add Company details",
     "editTitle": "Company details",
+    "created": "Created.",
     "back": "Back",
     "requisitesOfMyCompany": "Details of my company",
     "about": "About",
@@ -174,8 +215,8 @@
       "companyName": "Company name",
       "companyNameEng": "Company name in English",
       "address": "Address",
-      "legalAddress": "Registered office",
-      "legalAddressPostCode": "Registered office postcode",
+      "legalAddress": "Legal address",
+      "legalAddressPostCode": "Legal address postcode",
       "mailingAddress": "Mailing Address",
       "mailingAddressPostCode": "Mailing address postcode",
       "phone": "Phone number",
@@ -231,7 +272,7 @@
     "link": "Link",
     "addInvoice": "Create an invoice",
     "addProduct": "Add Product",
-    "invoiceNo": "Invoice",
+    "invoiceNo": "invoice",
     "purchaseDate": "Purchase Date",
     "supplierName": "Supplier Name",
     "shippingDate": "Shipping Date",
@@ -336,40 +377,40 @@
     "inEnglish": "(in English)",
     "vat": "VAT",
     "copyLink": "Copy link",
-    "companyNotSetted": "Вы не внесли реквизиты ни одной из своих компаний",
-    "clientNotSetted": "Начните вводить наименование клиента или создайте нового",
-    "deliveryAddressLabel": "Адрес доставки груза и контактная информация",
-    "deliveryAddressFromClient": "Взять данные из карточки клиента",
-    "deliveryAddressFromClientHint": "Вы ничего не указали в карточке клиента по поводу доставки",
-    "deliveryAddressSet": "Указать",
-    "deliveryAddressFromImporter": "Совпадает с адресом Импортера",
-    "deliveryAddressFromImporterHint": "У Импортера не указаны резвизиты",
-    "fromLabel": "Отправлено из...",
-    "viaLabel": "Через...",
-    "toLabel": "Пункт назначения",
-    "deliveryPlaceholder": "Город, страна (порт, жд. станция)",
-    "methodOfDispatchPlaceholder": "Не выбран ни один из типов отправки",
-    "termsPlaceholder": "Выберите условия",
-    "packingExtraTitle": "Дополнительно",
-    "packingNotelabel": "Особые заметки",
-    "packingNotePlaceholder": "Например, груз может быть скоропортящимся или хрупким или отдельно нужно указать перечень HS кодов (кодов ТН ВЭД)",
-    "clientAddLabel": "Название компании",
-    "clientAddCreateAndAttach": "Создать нового клиента и привязать к сделке",
+    "companyNotSetted": "You have not saved details of any your companies",
+    "clientNotSetted": "Start typing a client name or create a new one",
+    "deliveryAddressLabel": "Shipping address and contact information",
+    "deliveryAddressFromClient": "Use data from client record",
+    "deliveryAddressFromClientHint": "You specify nothing about delivery",
+    "deliveryAddressSet": "Specify",
+    "deliveryAddressFromImporter": "Matched to importer legal address",
+    "deliveryAddressFromImporterHint": "Importer's company details are empty",
+    "fromLabel": "From",
+    "viaLabel": "Via",
+    "toLabel": "To",
+    "deliveryPlaceholder": "City, country (port, railway station)",
+    "methodOfDispatchPlaceholder": "You didn't choose method of despatch",
+    "termsPlaceholder": "Select the turms of delivery",
+    "packingExtraTitle": "Additionally",
+    "packingNotelabel": "Special Notes",
+    "packingNotePlaceholder": "For example: special cargo marks, notifies or HS Code will be included to Packing list and other documents.",
+    "clientAddLabel": "Company Name",
+    "clientAddCreateAndAttach": "Create new client and attach to deal",
     "clientAddCreate": "Create",
     "clientAddEdit": "Edit",
     "clientAddNotCreated": "Doesn't exist",
-    "legalPerson": "Юрлицо",
-    "privatePerson": "Физлицо",
-    "otherPerson": "Другое",
-    "preprintTitle": "Предпечатная",
-    "printTitle": "Printing documents",
+    "legalPerson": "Legal Entity",
+    "privatePerson": "Private Person",
+    "otherPerson": "Other",
+    "preprintTitle": "Draft",
+    "printTitle": "Print",
     "printInvoice": "Invoice",
     "printPackingList": "Packing list",
     "printContract": "Contract (Int)",
-    "printContractAppendix": "Annex to Сontract",
-    "printInvoiceHint": "Обычно инвойс печатается в пяти экземплярах по одному для каждой из сторон сделки.",
+    "printContractAppendix": "Annex to Сontract (Int)",
+    "printInvoiceHint": "Usually invoice need five copies per one to each party.",
     "printAuto": "automatically",
-    "printVisibleAll": "Show to all",
+    "printVisibleAll": "Availible to all",
     "printVisibleOnlyClient": "Client only",
     "printHidden": "Hidden",
     "printEdit": "Edit",
@@ -433,18 +474,17 @@
     "inn": "VAT",
     "suppliersDebt": "Your debt to the company",
     "currentDealsAmount": "Current amount of deals with supplier.",
-    "dealsAmountHint": "Общая стоимость товара по всем текщим сделкам с поставщиком.",
-    "turnoverHint": "Общий перед поставщиком по всем текущим сделкам.",
-    "tags": "Тэг",
-    "usn": "УНП"
+    "tags": "Tag",
+    "usn": "USN"
   },
   "supplier": {
-    "createTitle": "Создать нового поставщика",
-    "editTitle": "Данные о поставщике",
+    "createTitle": "Create new supplier",
+    "editTitle": "Supplier details",
+    "created": "Created.",
     "supplierCard": "Supplier's card",
     "edit": "Edit",
     "supplierCardPatterns": "Supplier's card pattern",
-    "legalPerson": "Legal person",
+    "legalPerson": "Legal entity",
     "legalPersonAbr": "Legal person",
     "shops": "Shops",
     "note": "Note",
@@ -538,15 +578,16 @@
   "client": {
     "createTitle": "Создать нового клиента",
     "editTitle": "Данные о клиенте",
+    "created": "Created.",
     "save": "Save",
     "saveAsPattern": "Save as a pattern",
     "backToClientsList": "Back to clients list",
     "clientCard": "Client's card",
     "edit": "Edit",
     "clientCardPatterns": "Client's card patterns",
-    "legalPerson": "Legal person",
+    "legalPerson": "Legal Entity",
     "privatePerson": "Private person",
-    "other": "Другое",
+    "other": "Other organizations",
     "language": "Language",
     "languageAndRegion": "Language & Region",
     "languageDescription": "Language used to send sms and email"
@@ -594,6 +635,7 @@
       "issuedBy": "Кем выдано",
       "legalAddress": "Legal address",
       "legalAddressPostcode": "Legal address postcode",
+      "privateMailingAddress": "Mailing Address",
       "mailingAddress": "Mailing Address",
       "mailingAddressPostcode": "Mailing address postcode",
       "phone": "Phone number",
@@ -631,6 +673,8 @@
       "attachFile": "Add file",
       "branchType": "File type",
       "branchName": "File name",
+      "branchAddress": "Address",
+      "supplierType": "Тип поставщика",
       "password": "Password",
       "language": "Language"
     },
@@ -684,6 +728,7 @@
       "passportId": "ID number",
       "citizenship": "Select the Contry",
       "issuedBy": "Name of authority",
+      "supplierType": "Выберите тип поставщика",
       "additionalPhone": "Additional phone number:",
       "placeOfResidence": "Place of residence:",
       "language": "Language:"
@@ -699,9 +744,11 @@
       "companyName": "Если у компании существует наименование только на английском языке, активируйте переключатель для автозаполнения.",
       "companyNameLocal": "ZENNNN настоятельно рекомендует стараться заполнять данные о вашей компании на английском языке. Если законодательство требует указывать данные о компании на государственном языке, например, когда вы ведете деятельность внутри страны, то лучшим решением будет создать еще одну компанию в список своих реквизитов. При этом реквизиты дополнительной компании могут быть полностью заполнены на государственном (местном) языке.",
       "mailingAddress": "Если у компании совпадают адрес регистрации и фактический адрес, активируйте переключатель для автозаполнения.",
+      "deliveryAddress": "Если у компании совпадают адрес доставки и фактический адрес, активируйте переключатель для автозаполнения.",
       "familyName": "Если клиент и контактное лицо — это один и тот же человек, активируйте переключатель для автозаполнения. Убедитесь, что имя и фамилия указаны, как в паспорте (ID) и на языке клиента или английском.",
       "phoneAndFax": "Этот телефон и факс будут указаны во всех документах, как контактные данные клиента.",
-      "privateAddress": "Если у клиента совпадают адрес места жительства и почтовый адрес, активируйте переключатель для автозаполнения."
+      "privateAddress": "Если у клиента совпадают адрес места жительства и почтовый адрес, активируйте переключатель для автозаполнения.",
+      "branchDeliveryAddress": "Адрес выдачи товара."
     },
     "rule": {
       "contactPersonFirstName": "Укажите имя контактного лица",
@@ -729,7 +776,6 @@
     "toHome": "To Home"
   },
   "forbidden": {
-    "text": "",
     "logout": "Log out"
   },
   "contract": {
@@ -884,11 +930,7 @@
   "dataTable": {
     "noData": "No data available",
     "noResult": "No matching records found",
-    "ariaLabel": {
-      "sortDescending": "",
-      "sortAscending": "",
-      "sortNone": ""
-    }
+    "ariaLabel": {}
   },
   "select": {
     "noData": "No data available",
@@ -971,6 +1013,7 @@
     "removeEmployee": "Are you sure you want to delete the Employee?"
   },
   "rule": {
+    "phone": "Enter your phone.",
     "onlyLatin": "Only latin letters and symbols are allowed",
     "required": "Fill in this field.",
     "requiredSelect": "Please select.",
@@ -982,7 +1025,7 @@
     "from": "from",
     "and": "and",
     "or": "or",
-    "through": "through"
+    "through": "via"
   },
   "label": {
     "noSort": "No sort",
@@ -1030,6 +1073,12 @@
     "FOB": "FOB",
     "CFR": "CFR",
     "CIF": "CIF"
+  },
+  "branchType": {
+    "OFFICE": "Офис",
+    "PRODUCTION": "Производство",
+    "WAREHOUSE": "Склад",
+    "SHOP": "Магазин"
   },
   "productStatus": {
     "IN_DRAFT": "Expecting",
