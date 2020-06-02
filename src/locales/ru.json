@@ -17,8 +17,8 @@
     "submit": "Отправить ссылку"
   },
   "passwordRestoreConfirm": {
-    "changePasswordHead": "Смена пароля,",
-    "changePasswordSubhead": "введите новый пароль",
+    "changePasswordHead": "Смена пароля",
+    "changePasswordSubhead": "Введите новый пароль.",
     "newPassword": "Новый пароль",
     "newPasswordConfirm": "Повторите пароль",
     "submit": "Сменить"

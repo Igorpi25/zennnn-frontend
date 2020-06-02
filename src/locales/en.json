@@ -17,8 +17,8 @@
     "submit": "Get link"
   },
   "passwordRestoreConfirm": {
-    "changePasswordHead": "Password Change,",
-    "changePasswordSubhead": "enter new password",
+    "changePasswordHead": "Password Change",
+    "changePasswordSubhead": "Enter new password.",
     "newPassword": "New password",
     "newPasswordConfirm": "Confirm password",
     "submit": "Change"

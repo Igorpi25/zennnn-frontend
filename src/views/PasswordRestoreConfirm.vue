@@ -1,115 +1,90 @@
 <template>
   <div class="content">
     <Header />
-    <section>
-      <div class="container">
-        <div>
-          <div class="mb-8 sm:mt-24 mb-0">
-            <div class="w-full">
-              <h1 class="text-center md:text-left mb-0 md:mb-8 pt-10 md:pt-12">
-                <span class="text-white md:text-gray-100">
-                  {{ $t('passwordRestoreConfirm.changePasswordHead') }}
-                </span>
-                <br />
-                <span class="text-gray-100 md:text-white">
-                  {{ $t('passwordRestoreConfirm.changePasswordSubhead') }}
-                </span>
-              </h1>
-              <Form
-                ref="form"
-                :error-message.sync="errorMessage"
-                lazy-validation
-                class="form--max-w-md px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8"
-              >
-                <div class="w-full sm:w-1/2 sm:pr-2">
-                  <TextField
-                    v-model="formModel.password"
-                    :label="$t('passwordRestoreConfirm.newPassword')"
-                    :type="showPassword ? 'text' : 'password'"
-                    :rules="[rules.required, rules.passwordMinLength]"
-                    name="password"
-                    autofocus
-                    minlength="8"
-                  >
-                    <template v-slot:append>
-                      <div
-                        class="cursor-pointer select-none"
-                        @click="showPassword = !showPassword"
-                      >
-                      <Icon
-                        v-if="showPassword"
-                        color="#9A9A9A"
-                        style="transform:rotateY(-180deg)"
-                      >{{ icons.mdiEyeOutline }}</Icon>
-                      <Icon
-                        v-else
-                        color="#9A9A9A"
-                      >{{ icons.mdiEyeOffOutline }}</Icon>
-                      </div>
-                    </template>
-                  </TextField>
+    <section class="flex-grow container welcome--top">
+      <h2 class="text-32 text-gray-75 font-semibold leading-none pb-6">
+        {{ $t('passwordRestoreConfirm.changePasswordHead') }}
+      </h2>
+      <div class="w-full md:w-1/2">
+        <p v-html="$t('passwordRestoreConfirm.changePasswordSubhead')" class="pb-6" />
+        <div class="pb-10">
+          <Form
+            ref="form"
+            lazy-validation
+            @submit="onSubmit"
+          >
+            <TextField
+              v-model="formModel.password"
+              :placeholder="$t('passwordRestoreConfirm.newPassword')"
+              :type="showPassword ? 'text' : 'password'"
+              :rules="[rules.required, rules.passwordMinLength]"
+              class="pb-6"
+              name="password"
+              autocomplete="on"
+              minlength="8"
+              validate-on-blur
+              state-icon
+              required
+            >
+              <template v-slot:append>
+                <div
+                  class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
+                  @click="showPassword = !showPassword"
+                >
+                  <i v-if="showPassword" class="zi-eye align-middle" />
+                  <i v-else class=" zi-eye-off align-middle" style="font-size: 28px" />
                 </div>
-                <div class="w-full sm:w-1/2 sm:pl-2">
-                  <TextField
-                    v-model="formModel.passwordConfirm"
-                    :label="$t('passwordRestoreConfirm.newPasswordConfirm')"
-                    :type="showConfirmPassword ? 'text' : 'password'"
-                    :rules="[rules.required, rules.passwordMinLength, rules.passwordConfirmRules]"
-                    name="password"
-                    minlength="8"
-                  >
-                    <template v-slot:append>
-                      <div
-                        class="cursor-pointer select-none"
-                        @click="showConfirmPassword = !showConfirmPassword"
-                      >
-                        <Icon
-                          v-if="showConfirmPassword"
-                          color="#9A9A9A"
-                          style="transform:rotateY(-180deg)"
-                        >{{ icons.mdiEyeOutline }}</Icon>
-                        <Icon
-                          v-else
-                          color="#9A9A9A"
-                        >{{ icons.mdiEyeOffOutline }}</Icon>
-                      </div>
-                    </template>
-                  </TextField>
+              </template>
+            </TextField>
+            <TextField
+              v-model="formModel.passwordConfirm"
+              :placeholder="$t('passwordRestoreConfirm.newPasswordConfirm')"
+              :type="showConfirmPassword ? 'text' : 'password'"
+              :rules="[rules.required, rules.passwordMinLength, rules.passwordConfirmRules]"
+              name="password"
+              autocomplete="on"
+              minlength="8"
+              validate-on-blur
+              state-icon
+              required
+            >
+              <template v-slot:append>
+                <div
+                  class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
+                  @click="showConfirmPassword = !showConfirmPassword"
+                >
+                  <i v-if="showConfirmPassword" class="zi-eye align-middle" />
+                  <i v-else class=" zi-eye-off align-middle" style="font-size: 28px" />
                 </div>
-                <template v-slot:append>
-                  <Button
-                    :loading="loading"
-                    @click="onSubmit"
-                  >
-                    {{ $t('passwordRestoreConfirm.submit') }}
-                  </Button>
-                </template>
-              </Form>
-            </div>
-          </div>
-          <div class="mt-16">
-            <Social />
-          </div>
+              </template>
+            </TextField>
+          </Form>
+        </div>
+        <div class="pb-6">
+          <Button
+            :loading="loading"
+            style="min-width: 120px;"
+            @click.prevent="onSubmit"
+          >
+            <span>{{$t('passwordRestoreConfirm.submit') }}</span>
+          </Button>
         </div>
       </div>
     </section>
-    <Copyright />
-    <div class="content-background content-background--main" />
+    <footer class="container">
+      <Copyright class="pb-6" />
+    </footer>
   </div>
 </template>
 
 <script>
-import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
-
 import Header from '@/components/Header.vue'
-import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
 
 export default {
   name: 'PasswordRestoreConfirm',
   components: {
     Header,
-    Social,
     Copyright,
   },
   data () {
@@ -124,10 +99,6 @@ export default {
         code: '',
         password: '',
         passwordConfirm: '',
-      },
-      icons: {
-        mdiEyeOutline,
-        mdiEyeOffOutline,
       },
       rules: {
         required: v => !!v || this.$t('rule.required'),
@@ -159,6 +130,7 @@ export default {
         }
       } catch (error) {
         this.errorMessage = error.message || error
+        this.$notify({ color: 'error', text: this.errorMessage })
         throw new Error(error)
       } finally {
         this.loading = false
@@ -167,3 +139,14 @@ export default {
   },
 }
 </script>
+
+<style lang="postcss" scoped>
+.welcome--top {
+  padding-top: 5vh;
+}
+@screen sm {
+ .welcome--top {
+    padding-top: 15vh;
+  }
+}
+</style>
