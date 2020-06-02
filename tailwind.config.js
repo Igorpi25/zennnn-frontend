@@ -77,6 +77,7 @@ module.exports = {
       fontSize: {
         '28': '28px',
         '32': '32px',
+        '40': '40px',
         '56': '56px',
       },
       spacing: {
@@ -105,6 +106,9 @@ module.exports = {
       },
       transitionProperty: {
         'colors-and-opacity': 'background-color, border-color, color, fill, stroke, opacity',
+      },
+      borderRadius: {
+        'xl': '50px',
       },
     },
   },

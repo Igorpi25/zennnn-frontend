@@ -152,7 +152,7 @@ export default {
       return [
         {
           text: this.$t('footer.tariffs'),
-          href: '#',
+          to: { name: 'pricing' },
         },
         {
           text: this.$t('footer.jobs'),

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex-grow flex- flex-col">
     <!-- / HEADER -->
     <header>
       <div class="h-20 flex items-center container container--sm">
@@ -27,7 +27,7 @@
     </header>
     <!-- HEADER / -->
     <!-- / MAIN -->
-    <main class="container container--sm home-main--top">
+    <main class="container container--sm home-main--top flex-grow">
       <h1
         v-html="$t('home.title')"
         class="text-56 text-gray-75 text-center font-semibold mb-10"
