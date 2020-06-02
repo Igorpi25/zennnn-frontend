@@ -7,10 +7,10 @@
           :to="{ name: 'home' }"
           class="flex-shrink-0 select-none focus:outline-none mr-2 sm:mr-6"
         >
-          <img src="@/assets/img/logo-light.svg" alt="Logo">
+          <img src="@/assets/img/logo-light.svg" alt="Logo" style="height: 18px">
         </router-link>
-        <i class="zi-chevron-up text-2xl text-gray-75 transform rotate-90" />
-        <div class="ml-2 sm:ml-6">
+        <i class="hidden sm:block zi-chevron-up text-2xl text-gray-75 transform rotate-90" />
+        <div class="hidden sm:block ml-2 sm:ml-6">
           {{ title }}
         </div>
         <div class="flex-grow flex items-center justify-end">
@@ -23,6 +23,7 @@
           <Button
             outlined
             :to="{ name: 'signup' }"
+            class="text-center leading-none"
             merge-class="border-blue-500 hover:text-blue-600"
           >
             {{ $t('signup.submit') }}
