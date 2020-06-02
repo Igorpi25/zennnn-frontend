@@ -1,82 +1,48 @@
 <template>
   <div class="content">
     <Header />
-    <section>
-      <div class="container">
-        <div class="flex flex-col">
+    <section class="flex-grow container relative welcome--top">
+      <h2 class="text-32 text-gray-75 font-semibold leading-none pb-6">
+        {{ $t('welcome.title') }}
+      </h2>
+      <div class="w-full md:w-1/2">
+        <p v-html="$t('welcome.subtitle')" class="pb-6" />
+        <p class="text-2xl text-white pb-10">{{ username }}</p>
+        <div class="pb-6">
           <Button
-            outlined
-            class="mx-auto sm:mr-0 mt-8 mb-24 md:mb-0 flex justify-center sm:justify-end"
-            @click="$router.push({name: 'signin'})"
+            :loading="loading"
+            style="min-width: 120px;"
+            @click.prevent="resendSignUp"
           >
-            <template v-slot:text>
-              <span>{{ $t('welcome.hasAccount') }}</span>
-            </template>
-            <span>{{ $t('welcome.signin') }}</span>
+            <span>{{ $t('welcome.resend') }}</span>
           </Button>
-          <div class="mb-8 md:mb-32">
-            <div class="w-full flex-grow">
-              <h1 class="headline mb-12">
-                <span>
-                  {{ $t('welcome.congrats') }}
-                </span>
-                <span>
-                  {{ $t('welcome.successRegister') }}
-                </span>
-              </h1>
-              <div class="form--max-w-md bg-gray-400 py-5 md:px-8 md:-ml-8 rounded md:shadow-md">
-                <p class="text-gray-100 md:text-white mb-4">
-                  <span v-if="username">{{ $t('welcome.confirmRegistrationEmail', { email: username }) }}&nbsp;</span>
-                  {{ $t('welcome.confirmRegistration') }}&nbsp;—&nbsp;
-                  <span class="text-white sm:inline block">
-                    {{ $t('welcome.followTheLink') }}
-                  </span>
-                </p>
-                <p v-if="username">
-                  <span class="text-white">
-                    {{ $t('welcome.emailNotRecieved') }}
-                  </span>&nbsp;
-                  <Button
-                    outlined
-                    borderless
-                    class="inline-block"
-                    @click.prevent="resendSignUp"
-                  >
-                    <span>{{ $t('welcome.resend') }}</span>
-                  </Button>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="mt-16">
-            <Social />
-          </div>
         </div>
+        <p v-html="$t('welcome.hint')" class="text-gray-200 leading-tight pb-6" />
+      </div>
+      <div class="hidden md:block absolute container right-0 bottom-0 pb-16">
+        <img class="ml-auto pb-2" src="@/assets/img/person-sitting.svg">
       </div>
     </section>
-    <Copyright />
-    <div class="content-background content-background--main" />
+    <footer class="container">
+      <Copyright class="pb-6" />
+    </footer>
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
-import Social from '@/components/Social.vue'
-import Copyright from '@/components/Copyright.vue'
+import Header from '../components/Header.vue'
+import Copyright from '../components/Copyright.vue'
 
 export default {
   name: 'Welcome',
   components: {
     Header,
-    Social,
     Copyright,
   },
   data () {
     return {
       hasRegisteredUsername: false,
       loading: false,
-      errorMessage: '',
-      showPassword: false,
       username: null,
     }
   },
@@ -88,14 +54,28 @@ export default {
   methods: {
     async resendSignUp () {
       try {
-        if (!this.username) return
+        if (!this.username) throw new Error('User name not setted on "resendSignUp".')
+        this.loading = true
         await this.$Auth.resendSignUp(this.username)
         this.$notify({ color: 'success', text: this.$t('message.emailResent') })
       } catch (error) {
         this.$notify({ color: 'warn', text: this.$t('message.failedToSent') })
         this.$logger.warn('Error: ', error)
+      } finally {
+        this.loading = false
       }
     },
   },
 }
 </script>
+
+<style lang="postcss" scoped>
+.welcome--top {
+  padding-top: 5vh;
+}
+@screen sm {
+ .welcome--top {
+    padding-top: 15vh;
+  }
+}
+</style>

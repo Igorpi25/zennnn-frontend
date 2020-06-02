@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen h-full flex">
+  <div class="flex-grow flex">
     <div class="auth-left container flex-shrink-0 hidden sm:flex flex-col bg-gray-700">
       <div class="signin--top flex-grow lg:pl-8">
         <div class="auth-left--bg absolute pointer-events-none bottom-0 left-0 top-0" style="right: 50%" />
@@ -57,8 +57,7 @@
             name="login"
             autofocus
             validate-on-blur
-          >
-          </TextField>
+          />
           <TextField
             v-model="formModel.password"
             :placeholder="$t('signin.password')"
@@ -136,8 +135,7 @@
           state-icon
           state-icon-on-validate
           required
-        >
-        </TextField>
+        />
         <TextField
           v-model="compliteFormModel.lastName"
           :placeholder="$t('signup.lastName')"
@@ -149,8 +147,7 @@
           state-icon
           state-icon-on-validate
           required
-        >
-        </TextField>
+        />
         <TextField
           ref="email"
           v-model="compliteFormModel.email"
@@ -165,8 +162,7 @@
           state-icon
           state-icon-on-validate
           required
-        >
-        </TextField>
+        />
         <TextField
           v-model="compliteFormModel.password"
           :placeholder="$t('signup.password')"

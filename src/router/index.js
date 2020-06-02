@@ -10,7 +10,9 @@ import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/quer
 
 import { CURRENT_LANG_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
 
-const Home = () => import(/* webpackChunkName: "home" */ '../views/About.vue')
+const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+const Pricing = () => import(/* webpackChunkName: "home" */ '../views/Pricing.vue')
 const RequisiteList = () => import(/* webpackChunkName: "main" */ '../views/RequisiteList.vue')
 const RequisiteItem = () => import(/* webpackChunkName: "main" */ '../views/RequisiteItem.vue')
 // const OrgLayout = () => import(/* webpackChunkName: "main" */ '../views/OrgLayout.vue')
@@ -226,7 +228,12 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    component: Home,
+    component: About,
+  },
+  {
+    path: '/pricing',
+    name: 'pricing',
+    component: Pricing,
   },
   {
     path: '/paper/:specId',
@@ -390,7 +397,7 @@ router.beforeEach(async (to, from, next) => {
   } else {
     // set light theme permanently
     const fromUndef = from.name === null && from.path === '/'
-    if ((fromUndef && !loggedIn && to.path === '/') || (fromUndef && (to.name === 'paper' || to.name === 'about'))) {
+    if (fromUndef && (to.name === 'paper' || to.name === 'about' || to.name === 'pricing')) {
       setTheme('light')
       return next()
     }
@@ -398,10 +405,9 @@ router.beforeEach(async (to, from, next) => {
   }
 })
 
-router.beforeResolve(async (to, from, next) => {
-  const loggedIn = await Auth.checkAuth()
+router.beforeResolve((to, from, next) => {
   let theme = 'dark'
-  if ((!loggedIn && to.path === '/') || to.name === 'paper' || to.name === 'about') {
+  if (to.name === 'paper' || to.name === 'about' || to.name === 'pricing') {
     theme = 'light'
   }
   // set theme meta && attribute

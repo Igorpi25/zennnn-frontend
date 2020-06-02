@@ -1,91 +1,60 @@
 <template>
   <div class="content">
     <Header />
-    <section>
-      <div class="container">
-        <div>
-          <div class="mb-8 sm:mt-24 mb-0">
-            <div class="w-full">
-              <h1 class="text-center md:text-left mb-12 pt-10 md:pt-12">
-                <span class="text-white md:text-gray-100">
-                  {{ $t('passwordRestore.accessRecoveryHead') }}
-                </span>
-                <br />
-                <span class="text-gray-100 md:text-white">
-                  {{ $t('passwordRestore.accessRecoverySubhead') }}
-                </span>
-              </h1>
-              <Form
-                ref="form"
-                :title="$t('passwordRestore.recoveryByEmail')"
-                :error-message.sync="errorMessage"
-                lazy-validation
-                class="form--max-w-md px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8 mb-16 md:mb-0"
-              >
-                <template v-slot:alert>
-                  <Alert
-                    :value="!!successMessage"
-                    :text="successMessage"
-                    color="success"
-                  />
-                </template>
-                <div class="w-full">
-                  <div class="w-full sm:w-1/2">
-                    <TextField
-                      v-model="formModel.email"
-                      :label="$t('passwordRestore.email')"
-                      :rules="[rules.required, rules.email]"
-                      type="email"
-                      name="email"
-                      autofocus
-                    />
-                  </div>
-                  <div class="text-gray-150 text-sm">
-                    <p>{{ $t('passwordRestore.notRecieveEmailHead') }}&nbsp;
-                      <span>
-                        {{ $t('passwordRestore.notRecieveEmailSubhead') }}
-                      </span>
-                      <!-- <router-link
-                        :to="{ name: 'login-restore' }"
-                        class="text-blue-500"
-                      >
-                        {{ $t('passwordRestore.restoreBySms') }}
-                      </router-link> -->
-                    </p>
-                  </div>
-                </div>
-                <template v-slot:append>
-                  <Button
-                    :loading="loading"
-                    @click="onSubmit"
-                  >
-                    {{ $t('passwordRestore.submit') }}
-                  </Button>
-                </template>
-              </Form>
-            </div>
-          </div>
-          <div class="mb:mb-8">
-            <Social />
-          </div>
+    <section class="flex-grow container welcome--top">
+      <h2 class="text-32 text-gray-75 font-semibold leading-none pb-6">
+        {{ $t('passwordRestore.accessRecoveryHead') }}
+      </h2>
+      <div class="w-full md:w-1/2">
+        <p v-html="$t('passwordRestore.subtitle')" class="pb-6" />
+        <div class="pb-10">
+          <Form
+            ref="form"
+            lazy-validation
+            @submit="onSubmit"
+          >
+            <TextField
+              ref="email"
+              v-model="formModel.email"
+              :label="$t('passwordRestore.emailLabel')"
+              :placeholder="$t('companyDetail.placeholder.email')"
+              :rules="[rules.required, rules.email]"
+              state-icon
+              validate-on-blur
+              required
+              type="email"
+              autocomplete="on"
+              name="login"
+              autofocus
+            />
+          </Form>
         </div>
+        <div class="pb-6">
+          <Button
+            :loading="loading"
+            style="min-width: 120px;"
+            @click.prevent="onSubmit"
+          >
+            <span>{{ $t('welcome.resend') }}</span>
+          </Button>
+        </div>
+        <p v-html="$t('passwordRestore.hint')" class="text-gray-200 leading-tight pb-6" />
       </div>
     </section>
-    <Copyright />
-    <div class="content-background content-background--main" />
+    <footer class="container">
+      <Copyright class="pb-6" />
+    </footer>
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
-import Social from '@/components/Social.vue'
-import Copyright from '@/components/Copyright.vue'
+import Header from '../components/Header.vue'
+import Copyright from '../components/Copyright.vue'
 
 export default {
   name: 'PasswordRestore',
   components: {
     Header,
-    Social,
     Copyright,
   },
   data () {
@@ -105,8 +74,8 @@ export default {
   },
   methods: {
     async onSubmit (e) {
+      e.preventDefault()
       try {
-        e.preventDefault()
         this.loading = true
         this.errorMessage = ''
         this.successMessage = ''
@@ -116,10 +85,15 @@ export default {
           this.$logger.info('Password restore response', response)
           if (response) {
             this.successMessage = this.$t('message.emailSent', { email: this.formModel.email })
+            this.$notify({ color: 'success', text: this.successMessage })
+            this.$refs.form.reset()
           }
+        } else {
+          this.$refs.email.focus()
         }
       } catch (error) {
         this.errorMessage = error.message || error
+        this.$notify({ color: 'error', text: this.errorMessage })
         throw new Error(error)
       } finally {
         this.loading = false
@@ -128,3 +102,14 @@ export default {
   },
 }
 </script>
+
+<style lang="postcss" scoped>
+.welcome--top {
+  padding-top: 5vh;
+}
+@screen sm {
+ .welcome--top {
+    padding-top: 15vh;
+  }
+}
+</style>
