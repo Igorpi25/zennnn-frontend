@@ -13,6 +13,24 @@ import {
   PAPER_PRODUCT_FRAGMENT,
 } from './typeDefs'
 
+export const LIST_PRICES = gql`
+  query ListPrices {
+    listPrices
+  }
+`
+
+export const LIST_PAYMENT_METHODS = gql`
+  query ListPaymentMethods {
+    listPaymentMethods
+  }
+`
+
+export const LIST_PAYMENT_INVOICES = gql`
+  query ListPaymentInvoices {
+    listPaymentInvoices
+  }
+`
+
 export const GET_INVITE_USER_TO_ORG = gql`
   query GetInviteUserToOrg($orgId: ID!, $email: String!) {
     getInviteUserToOrg(orgId: $orgId, email: $email) {
@@ -87,6 +105,15 @@ export const GET_PROFILE = gql`
       picture
       initialized
       language
+      account {
+        customerId
+        subscriptionId
+        subscriptionStatus
+        latestInvoiceId
+        plan
+        planProduct
+        planPrice
+      }
     }
   }
 `

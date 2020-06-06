@@ -67,6 +67,10 @@ export default {
       type: [String, Array],
       default: '',
     },
+    labelClass: {
+      type: [String, Array],
+      default: '',
+    },
     stateIcon: Boolean,
     stateIconOnValidate: Boolean,
     stateColor: String,
@@ -476,9 +480,14 @@ export default {
           },
         }
       }
+      let classes = 'text-base text-gray-100 whitespace-no-wrap relative py-xs pr-xs'
+      // merge props classes
+      if (this.labelClass) {
+        classes = mergeClasses(classes, this.labelClass)
+      }
       const content = this.$createElement('div', props, [this.$createElement('span', {
         class: [
-          'text-base text-gray-100 whitespace-no-wrap relative py-xs pr-xs',
+          classes,
           { 'pointer-events-none': !this.labelNoWrap },
         ],
       }, this.label)])

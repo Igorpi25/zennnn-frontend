@@ -11,6 +11,30 @@ import {
   BANK_DETAIL_FRAGMENT,
 } from './typeDefs'
 
+export const CREATE_PAYMENT_SUBSCRIPTION = gql`
+  mutation CreatePaymentSubscription($customerId: String!, $paymentMethodId: String!, $priceId: String!) {
+    createPaymentSubscription(customerId: $customerId, paymentMethodId: $paymentMethodId, priceId: $priceId)
+  }
+`
+
+export const CHANGE_PAYMENT_SUBSCRIPTION = gql`
+  mutation ChangePaymentSubscription($priceId: String!) {
+    changePaymentSubscription(priceId: $priceId)
+  }
+`
+
+export const CANCEL_PAYMENT_SUBSCRIPTION = gql`
+  mutation CancelPaymentSubscription {
+    cancelPaymentSubscription
+  }
+`
+
+export const RETRY_INVOICE_WITH_NEW_PAYMENT_METHOD = gql`
+  mutation RetryInvoiceWithNewPaymentMethod($customerId: String!, $paymentMethodId: String!, $invoiceId: String!) {
+    retryInvoiceWithNewPaymentMethod(customerId: $customerId, paymentMethodId: $paymentMethodId, invoiceId: $invoiceId)
+  }
+`
+
 export const LOGIN = gql`
   mutation Login {
     login {
