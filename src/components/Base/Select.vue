@@ -24,6 +24,7 @@
         :debounce="debounce"
         :content-class="contentClass"
         :input-class="inputClass"
+        :label-class="labelClass"
         :state-icon="stateIcon"
         :state-icon-on-validate="stateIconOnValidate"
         :state-color="stateColor"
@@ -239,6 +240,10 @@ export default {
       default: '',
     },
     inputClass: {
+      type: [String, Object],
+      default: '',
+    },
+    labelClass: {
       type: [String, Object],
       default: '',
     },

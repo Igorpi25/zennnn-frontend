@@ -17,8 +17,9 @@
             {{ $t('signup.signin') }}
           </router-link>
           <Button
-            outlined
             :to="{ name: 'signup' }"
+            outlined
+            class="text-center leading-none"
           >
             {{ $t('signup.submit') }}
           </Button>
@@ -30,13 +31,13 @@
     <main class="container container--sm home-main--top flex-grow">
       <h1
         v-html="$t('home.title')"
-        class="text-56 text-gray-75 text-center font-semibold mb-10"
+        class="text-4xl sm:text-56 text-gray-75 text-center font-semibold mb-10"
       />
       <div class="flex flex-wrap sm:justify-center pb-12">
         <div
           v-for="item of subtitleItems"
           :key="item"
-          class="flex items-center px-6"
+          class="w-full sm:w-auto flex items-center px-10 pr-6 sm:pl-6"
         >
           <i class="zi-check text-2xl text-blue-500 mr-2" />
           <div class="text-xl text-gray-200">
@@ -47,6 +48,7 @@
       <div class="flex justify-center">
         <Button
           :to="{ name: 'signup' }"
+          class="text-center leading-none"
         >
           <div class="flex items-center px-2">
             <span>{{ $t('home.cty') }}</span>
@@ -63,10 +65,10 @@
         <img width="246" src="/static/img/home-container.png" class="absolute home-container">
       </div>
       <div class="pt-20 pb-20">
-        <div class="relative">
-          <div class="absolute top-0 left-0 w-xs sm:w-1 h-full bg-blue-500" />
-          <div v-html="$t('home.info')" class="text-xl leading-relaxed px-4 sm:px-18" />
-        </div>
+        <div
+          v-html="$t('home.info')"
+          class="border-l-2 sm:border-l-4 border-blue-500 text-xl leading-relaxed px-4 sm:px-18"
+        />
       </div>
     </main>
     <!-- MAIN / -->

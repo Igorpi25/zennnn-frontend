@@ -1,6 +1,10 @@
 .select-picker {
   @apply text-gray-100 bg-gray-900 text-left py-1;
 }
+[data-theme="light"] .select-picker {
+  background-color: #fff;
+  color: #1e1e1e;
+}
 .select-picker__item {
   @apply h-9 flex items-center cursor-pointer px-2 outline-none;
 }
@@ -10,9 +14,17 @@
 .select-picker__item--selected {
   @apply text-white;
 }
+[data-theme="light"] .select-picker__item--selected {
+  color: #1e1e1e;
+  background-color: #F7F7F7;
+}
 .select-picker__item:not(.select-picker__item--disabled).v-list-item--highlighted,
 .select-picker__item:not(.select-picker__item--disabled):hover {
   @apply bg-gray-600;
+}
+[data-theme="light"] .select-picker__item:not(.select-picker__item--disabled).v-list-item--highlighted,
+[data-theme="light"] .select-picker__item:not(.select-picker__item--disabled):hover {
+  background-color: #E4E4E4!important;
 }
 .select-picker__item--disabled {
   @apply cursor-default;

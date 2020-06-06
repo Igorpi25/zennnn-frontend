@@ -547,9 +547,9 @@ export const clearClasses = (source, dest) => {
   const isSourceArray = Array.isArray(source)
   const aDest = classToArray(dest)
   let aSource = classToArray(source)
-  const colorRe = new RegExp('(text|bg|border)-(white|black|transparent|current|(gray|blue|pink|green|yellow|purple|red)-\\d+)$')
+  const colorRe = new RegExp('(text|bg|border|placeholder)-(white|black|transparent|current|(gray|blue|pink|green|yellow|purple|red)-\\d+)$')
   const textSizeRe = new RegExp('(28|xs|sm|base|lg|\\dxl)$')
-  const clearRe = new RegExp('(text|bg|border|w|h|p|px|py|pb|pl|pt|pr|m|mx|my|mb|ml|mt|mr)-')
+  const clearRe = new RegExp('(text|bg|border|placeholder|w|h|p|px|py|pb|pl|pt|pr|m|mx|my|mb|ml|mt|mr)-')
   for (const el of aDest) {
     if (clearRe.test(el)) {
       const split = el.split('-')

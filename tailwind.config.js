@@ -58,7 +58,7 @@ module.exports = {
       'montserrat': ['Montserrat', 'sans-serif'],
     },
     boxShadow: {
-      primary: '0 0 0 1px #5a8199',
+      'gray-75': '0 0 0 1px #E4E4E4',
       'blue-500': '0 0 0 1px #7E99D0',
       'blue-600': '0 0 0 1px #5C78B1',
       'yellow-300': '0 0 0 1px #EAD377',

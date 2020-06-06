@@ -10,6 +10,15 @@ import {
   ORG_REQUISITE_FRAGMENT,
 } from './typeDefs'
 
+export const PAYMENT_DATA = gql`
+  subscription PaymentData {
+    paymentData {
+      operation
+      payload
+    }
+  }
+`
+
 export const SPECS_DELTA = gql`
   subscription delta {
     delta {
