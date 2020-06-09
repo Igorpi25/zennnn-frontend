@@ -386,7 +386,7 @@ export default {
   methods: {
     updateMailingAddressMatch (val) {
       this.isMailingAddressMatch = val
-      const input = { 'isMailingAddressMatch': val }
+      const input = { isMailingAddressMatch: val }
       if (val) {
         input.mailingAddress = this.item.legalAddress
         input.mailingAddressPostcode = this.item.legalAddressPostcode
@@ -430,7 +430,7 @@ export default {
         firstName: this.companyOwner.firstName,
         lastName: this.companyOwner.lastName,
       }, personInput)
-      const input = { 'companyOwner': value }
+      const input = { companyOwner: value }
       this.updateData(input)
     },
   },

@@ -135,14 +135,14 @@ const routes = [
         component: ClientList,
       },
       {
-        path: `clients/:groupId?/create`,
+        path: 'clients/:groupId?/create',
         name: 'client-create',
         meta: { requiresAuth: true, scrollToTop: true },
         props: { create: true },
         component: ClientItem,
       },
       {
-        path: `clients/:groupId/:clientId`,
+        path: 'clients/:groupId/:clientId',
         name: 'client',
         meta: { requiresAuth: true, scrollToTop: true },
         component: ClientItem,

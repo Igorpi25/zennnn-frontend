@@ -547,7 +547,7 @@ export default {
     },
     closeConditional (e) {
       // Close on label click
-      if (this.$refs.input.$refs['label'] && this.$refs.input.$refs['label'].contains(e.target)) {
+      if (this.$refs.input.$refs.label && this.$refs.input.$refs.label.contains(e.target)) {
         this.closeMenu()
         return
       }

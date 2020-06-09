@@ -165,7 +165,7 @@ const genDeliveryInfoTable = (shipment, clientLang) => {
     {
       fit: ['*', 3],
       margin: [0, 10, 0, 0],
-      svg: `<svg viewBox="0 0 110 3" width="110" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="110" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="110" y2="2" stroke="black" stroke-width="1"/></svg>`,
+      svg: '<svg viewBox="0 0 110 3" width="110" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="110" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="110" y2="2" stroke="black" stroke-width="1"/></svg>',
     },
     {
       stack: genLabel('print.via', clientLang),
@@ -173,7 +173,7 @@ const genDeliveryInfoTable = (shipment, clientLang) => {
     {
       fit: ['*', 3],
       margin: [0, 10, 0, 0],
-      svg: `<svg viewBox="0 0 110 3" width="110" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="110" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="110" y2="2" stroke="black" stroke-width="1"/></svg>`,
+      svg: '<svg viewBox="0 0 110 3" width="110" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="110" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="110" y2="2" stroke="black" stroke-width="1"/></svg>',
     },
     {
       stack: genLabel('print.to', clientLang),
@@ -187,7 +187,7 @@ const genDeliveryInfoTable = (shipment, clientLang) => {
     {
       fit: ['*', 3],
       margin: [0, 10, 0, 0],
-      svg: `<svg viewBox="0 0 180 3" width="180" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="180" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="180" y2="2" stroke="black" stroke-width="1"/></svg>`,
+      svg: '<svg viewBox="0 0 180 3" width="180" height="3" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="180" y2="0" stroke="black" stroke-width="1"/><line x1="0" y1="2" x2="180" y2="2" stroke="black" stroke-width="1"/></svg>',
     },
     {
       stack: genLabel('print.to', clientLang),

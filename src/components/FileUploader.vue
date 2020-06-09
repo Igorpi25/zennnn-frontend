@@ -244,7 +244,7 @@ export default {
 
   methods: {
     drop (e) {
-      let files = []
+      const files = []
       for (let i = 0; i < e.dataTransfer.files.length; i++) {
         files.push(e.dataTransfer.files[i])
       }

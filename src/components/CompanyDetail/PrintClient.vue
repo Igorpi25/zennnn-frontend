@@ -212,7 +212,7 @@ export default {
         firstName: this.contactPerson.firstName,
         lastName: this.contactPerson.lastName,
       }, personInput)
-      const input = { 'contactPerson': value }
+      const input = { contactPerson: value }
       this.updateData(input)
     },
   },

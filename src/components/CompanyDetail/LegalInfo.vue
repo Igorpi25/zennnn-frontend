@@ -233,7 +233,7 @@ export default {
   methods: {
     updateCompanyNameMatch (val) {
       this.isCompanyNameMatch = val
-      const input = { 'isCompanyNameMatch': val }
+      const input = { isCompanyNameMatch: val }
       if (val) {
         input.companyNameLocal = this.item.companyName
       }
@@ -251,7 +251,7 @@ export default {
         firstName: this.contactPerson.firstName,
         lastName: this.contactPerson.lastName,
       }, personInput)
-      const input = { 'contactPerson': value }
+      const input = { contactPerson: value }
       this.updateData(input)
     },
   },

@@ -33,6 +33,7 @@ export default class Auth {
     this.userPool = new CognitoUserPool(userPoolData)
     this.user = null
   }
+
   /**
    * After signin tokens sets to Memory storage,
    * after Login operation will be re setup to local storage
@@ -63,6 +64,7 @@ export default class Auth {
       })
     })
   }
+
   /**
    * Check auth of current user
    * @return {boolean} - logged in
@@ -71,7 +73,7 @@ export default class Auth {
     try {
       const session = await this.currentSession()
       const loggedIn = !!session
-      let localData = {
+      const localData = {
         isLoggedIn: loggedIn,
       }
       if (loggedIn) {
@@ -89,6 +91,7 @@ export default class Auth {
       return false
     }
   }
+
   signIn (username, password) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
@@ -111,7 +114,7 @@ export default class Auth {
           this.login()
             .then(() => {
               // set keys from memory storage to local storage
-              for (let [k, v] of this._memoryStorage.storageItemsMap()) {
+              for (const [k, v] of this._memoryStorage.storageItemsMap()) {
                 this._storage.setItem(k, v)
               }
               // clear memory storage
@@ -134,8 +137,8 @@ export default class Auth {
           // authentication.
 
           // store userAttributes on global variable
-          cognitoUser['challengeName'] = 'NEW_PASSWORD_REQUIRED'
-          cognitoUser['challengeParam'] = {
+          cognitoUser.challengeName = 'NEW_PASSWORD_REQUIRED'
+          cognitoUser.challengeParam = {
             userAttributes,
             requiredAttributes,
           }
@@ -145,6 +148,7 @@ export default class Auth {
       })
     })
   }
+
   completeNewPassword (user, password, requiredAttributes) {
     if (!password) { return Promise.reject(new Error('Password cannot be empty')) }
 
@@ -163,6 +167,7 @@ export default class Auth {
       })
     })
   }
+
   signUp (username, password, attrs) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
@@ -170,7 +175,7 @@ export default class Auth {
     if (!username || !password) {
       return Promise.reject(new Error('Username or password not defined.'))
     }
-    let attributes = []
+    const attributes = []
     Object.keys(attrs).map(key => {
       const attr = { Name: key, Value: attrs[key] }
       attributes.push(attr)
@@ -185,6 +190,7 @@ export default class Auth {
       })
     })
   }
+
   resendSignUp (username) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
@@ -203,6 +209,7 @@ export default class Auth {
       })
     })
   }
+
   forgotPassword (username) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
@@ -222,6 +229,7 @@ export default class Auth {
       })
     })
   }
+
   forgotPasswordConfirm (username, code, password) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
@@ -256,6 +264,7 @@ export default class Auth {
       logger.debug('no Congito User pool')
     }
   }
+
   /**
    * Get current authenticated user
    * @return - A promise resolves to current authenticated CognitoUser if success
@@ -322,13 +331,14 @@ export default class Auth {
         } else {
           logger.debug(
             `Unable to get the user data because the ${USER_ADMIN_SCOPE} ` +
-              `is not in the scopes of the access token`,
+              'is not in the scopes of the access token',
           )
           return resolve(user)
         }
       })
     })
   }
+
   /**
    * Get current user's session
    * @return - A promise resolves to session object if success
@@ -361,6 +371,7 @@ export default class Auth {
         })
     })
   }
+
   /**
    * Get the corresponding user session
    * @param {Object} user - The CognitoUser object
@@ -384,6 +395,7 @@ export default class Auth {
       })
     })
   }
+
   attributesToObject (attributes) {
     const obj = {}
     if (attributes) {
@@ -399,10 +411,12 @@ export default class Auth {
     }
     return obj
   }
+
   _cleanCachedItems () {
     this._memoryStorage.clear()
     this._storage.clear()
   }
+
   _createCognitoUser (username, forceMemoryStorage) {
     const userData = {
       Username: username,

@@ -683,7 +683,7 @@ export default {
         }
 
         if (operation === Operation.DELETE_PRODUCT) {
-          let parentInvoice = apolloClient.readFragment({
+          const parentInvoice = apolloClient.readFragment({
             id: `${Typename.PAPER_INVOICE}:${delta.parentId}`,
             fragment: PAPER_INVOICE_PRODUCTS_FRAGMENT,
             fragmentName: 'PaperInvoiceProductsFragment',
@@ -741,7 +741,7 @@ export default {
         }
 
         if (operation === Operation.DELETE_INVOICE) {
-          let parentSpec = apolloClient.readFragment({
+          const parentSpec = apolloClient.readFragment({
             id: `${Typename.PAPER_SPEC}:${delta.parentId}`,
             fragment: PAPER_SPEC_INVOICES_FRAGMENT,
             fragmentName: 'PaperSpecInvoicesFragment',

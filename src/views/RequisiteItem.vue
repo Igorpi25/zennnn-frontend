@@ -51,7 +51,7 @@ export default {
   },
   mounted () {
     if (this.$route.query.q === 'welcome') {
-      let isUserInit = localStorage.getItem(this.userInitKeyStore)
+      const isUserInit = localStorage.getItem(this.userInitKeyStore)
       if (!isUserInit) {
         this.showWelcomeDialog = true
         this.showFillLaterButton = true

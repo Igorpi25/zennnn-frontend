@@ -290,7 +290,7 @@ export default {
   methods: {
     updatePersonMatch (val) {
       this.isPersonMatch = val
-      const input = { 'isPersonMatch': val }
+      const input = { isPersonMatch: val }
       if (val) {
         input.person = {
           firstName: this.contactPerson.firstName,
@@ -305,7 +305,7 @@ export default {
         firstName: this.contactPerson.firstName,
         lastName: this.contactPerson.lastName,
       }, personInput)
-      const input = { 'contactPerson': value }
+      const input = { contactPerson: value }
       if (this.isPersonMatch) {
         input.person = {
           firstName: value.firstName,
@@ -321,7 +321,7 @@ export default {
         lastName: this.person.lastName,
         middleName: this.person.middleName,
       }, input)
-      this.updateData({ 'person': value })
+      this.updateData({ person: value })
     },
   },
 }

@@ -553,12 +553,12 @@ export default {
     },
     async update () {
       try {
-        let input = {}
+        const input = {}
 
         if (!this.create) input.id = this.contract.id
 
         for (const key in this.contractMetaData) {
-          if (this.contract.hasOwnProperty(key)) {
+          if (Object.prototype.hasOwnProperty.call(this.contract, key)) {
             this.$set(input, key, this.contract[key])
           }
         }

@@ -6,8 +6,8 @@ const masker = function (value, mask, masked = true, tokens) {
   let output = ''
   while (iMask < mask.length && iValue < value.length) {
     let cMask = mask[iMask]
-    let masker = tokens[cMask]
-    let cValue = value[iValue]
+    const masker = tokens[cMask]
+    const cValue = value[iValue]
     if (masker && !masker.escape) {
       if (masker.pattern.test(cValue)) {
         output += masker.transform ? masker.transform(cValue) : cValue
@@ -28,7 +28,7 @@ const masker = function (value, mask, masked = true, tokens) {
   // fix mask that ends with a char: (#)
   let restOutput = ''
   while (iMask < mask.length && masked) { // eslint-disable-line no-unmodified-loop-condition
-    let cMask = mask[iMask]
+    const cMask = mask[iMask]
     if (tokens[cMask]) {
       restOutput = ''
       break

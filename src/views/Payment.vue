@@ -734,7 +734,7 @@ export default {
 
       // If it's a first payment attempt, the payment intent is on the subscription latest invoice.
       // If it's a retry, the payment intent will be on the invoice itself.
-      let paymentIntent = invoice ? invoice.payment_intent : subscription.latest_invoice.payment_intent
+      const paymentIntent = invoice ? invoice.payment_intent : subscription.latest_invoice.payment_intent
 
       if (
         paymentIntent.status === 'requires_action' ||

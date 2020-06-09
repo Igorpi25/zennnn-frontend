@@ -4,13 +4,13 @@ describe('classToArray', () => {
   it('normalized classes array from string', () => {
     const classes = classToArray('flex items-center')
     expect(classes).toEqual(
-      expect.arrayContaining(['flex', 'items-center'])
+      expect.arrayContaining(['flex', 'items-center']),
     )
   })
   it('normalized classes array from array', () => {
     const classes = classToArray(['flex items-center', 'justify-center'])
     expect(classes).toEqual(
-      expect.arrayContaining(['flex', 'items-center', 'justify-center'])
+      expect.arrayContaining(['flex', 'items-center', 'justify-center']),
     )
   })
 })
@@ -33,7 +33,7 @@ describe('clearClasses', () => {
     const dest = 'h-10 mx-1'
     const classes = clearClasses(source, dest)
     expect(classes).toEqual(
-      expect.arrayContaining(['flex', 'items-center'])
+      expect.arrayContaining(['flex', 'items-center']),
     )
   })
   it('pseudo-class clear', () => {
@@ -41,7 +41,7 @@ describe('clearClasses', () => {
     const dest = 'hover:text-gray-900 focus:bg-blue-900'
     const classes = clearClasses(source, dest)
     expect(classes).toEqual(
-      'flex relative text-gray-100 bg-blue-100'
+      'flex relative text-gray-100 bg-blue-100',
     )
   })
 })
@@ -64,7 +64,7 @@ describe('mergeClasses', () => {
     const dest = 'h-10 mx-1 border-blue-500'
     const classes = mergeClasses(source, dest)
     expect(classes).toEqual(
-      expect.arrayContaining(['flex', 'items-center', 'h-10', 'mx-1', 'border-blue-500'])
+      expect.arrayContaining(['flex', 'items-center', 'h-10', 'mx-1', 'border-blue-500']),
     )
   })
   it('pseudo-class merge', () => {
@@ -72,7 +72,7 @@ describe('mergeClasses', () => {
     const dest = 'hover:text-gray-900 focus:bg-blue-900'
     const classes = mergeClasses(source, dest)
     expect(classes).toEqual(
-      'flex relative text-gray-100 bg-blue-100 text-2xl text-black hover:text-gray-900 focus:bg-blue-900'
+      'flex relative text-gray-100 bg-blue-100 text-2xl text-black hover:text-gray-900 focus:bg-blue-900',
     )
   })
 })

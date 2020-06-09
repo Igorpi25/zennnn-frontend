@@ -49,7 +49,7 @@ module.exports = {
   configureWebpack: (config) => {
     const definePlugin = new webpack.DefinePlugin({
       'process.env': {
-        'FRONTEND_VERSION': JSON.stringify(version),
+        FRONTEND_VERSION: JSON.stringify(version),
       },
     })
     const copyPlugin = new CopyWebpackPlugin(

@@ -7,8 +7,8 @@ let id = 0
 const Notify = {
   install (Vue) {
     if (Notify.installed) return
-    let NotificationsConstructor = Vue.extend(Notifications)
-    let _instance = new NotificationsConstructor()
+    const NotificationsConstructor = Vue.extend(Notifications)
+    const _instance = new NotificationsConstructor()
     _instance.$mount()
     document.body.appendChild(_instance.$el)
     Vue.prototype.$notify = (payload) => {
@@ -19,7 +19,7 @@ const Notify = {
         notification.text = payload
         notification.timeout = DEFAULT_TIMEOUT
       } else {
-        if (!payload.hasOwnProperty('timeout')) {
+        if (!Object.prototype.hasOwnProperty.call(payload, 'timeout')) {
           payload.timeout = DEFAULT_TIMEOUT
         }
         notification = Object.assign(notification, payload)

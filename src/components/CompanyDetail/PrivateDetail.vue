@@ -411,7 +411,7 @@ export default {
   methods: {
     updateMailingAddressMatch (val) {
       this.isMailingAddressMatch = val
-      const input = { 'isMailingAddressMatch': val }
+      const input = { isMailingAddressMatch: val }
       if (val) {
         input.mailingAddress = this.item.legalAddress
         input.mailingAddressPostcode = this.item.legalAddressPostcode

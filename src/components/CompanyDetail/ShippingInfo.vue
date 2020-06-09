@@ -195,7 +195,7 @@ export default {
   methods: {
     updateDeliveryAddressMatch (val) {
       this.isDeliveryAddressMatch = val
-      const input = { 'isDeliveryAddressMatch': val }
+      const input = { isDeliveryAddressMatch: val }
       if (val) {
         input.deliveryAddress = this.item.mailingAddress
         input.deliveryAddressPostcode = this.item.mailingAddressPostcode
@@ -207,7 +207,7 @@ export default {
         firstName: this.importerContactPerson.firstName,
         lastName: this.importerContactPerson.lastName,
       }, personInput)
-      const input = { 'importerContactPerson': value }
+      const input = { importerContactPerson: value }
       this.updateData(input)
     },
   },

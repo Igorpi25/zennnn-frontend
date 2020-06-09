@@ -61,7 +61,7 @@ export default {
           if (!val) return
 
           // Only watch if we're not already doing it
-          if (this.errorBag.hasOwnProperty(input._uid)) return
+          if (Object.prototype.hasOwnProperty.call(this.errorBag, input._uid)) return
 
           watchers.valid = watcher(input)
         })

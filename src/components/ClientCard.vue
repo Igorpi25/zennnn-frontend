@@ -487,7 +487,7 @@ export default {
     },
     createFromItem () {
       const item = {}
-      for (let [k, v] of Object.entries(this.item)) {
+      for (const [k, v] of Object.entries(this.item)) {
         if (k !== 'isRequiredFilled' && k !== 'isOptionalFilled') {
           item[k] = v
         }

@@ -559,7 +559,7 @@ export default {
       })
     },
     requisites () {
-      let items = this.listOrgRequisites || []
+      const items = this.listOrgRequisites || []
       return items
     },
     requisite () {

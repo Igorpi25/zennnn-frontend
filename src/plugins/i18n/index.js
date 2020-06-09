@@ -50,7 +50,7 @@ function loadLocaleMessages () {
 }
 
 const dateTimeFormats = {
-  'en': {
+  en: {
     time: {
       hour: 'numeric',
       minute: 'numeric',
@@ -69,7 +69,7 @@ const dateTimeFormats = {
       minute: 'numeric',
     },
   },
-  'fr': {
+  fr: {
     time: {
       hour: 'numeric',
       minute: 'numeric',
@@ -87,7 +87,7 @@ const dateTimeFormats = {
       minute: 'numeric',
     },
   },
-  'ru': {
+  ru: {
     time: {
       hour: 'numeric',
       minute: 'numeric',
@@ -105,7 +105,7 @@ const dateTimeFormats = {
       minute: 'numeric',
     },
   },
-  'uk': {
+  uk: {
     time: {
       hour: 'numeric',
       minute: 'numeric',
@@ -126,7 +126,7 @@ const dateTimeFormats = {
 }
 
 const numberFormats = {
-  'en': {
+  en: {
     currency: {
       style: 'currency',
       currency: 'USD',
@@ -144,7 +144,7 @@ const numberFormats = {
       maximumFractionDigits: 2,
     },
   },
-  'fr': {
+  fr: {
     currency: {
       style: 'currency',
       currency: 'EUR',
@@ -162,7 +162,7 @@ const numberFormats = {
       maximumFractionDigits: 2,
     },
   },
-  'ru': {
+  ru: {
     currency: {
       style: 'currency',
       currency: 'RUB',
@@ -180,7 +180,7 @@ const numberFormats = {
       maximumFractionDigits: 2,
     },
   },
-  'uk': {
+  uk: {
     currency: {
       style: 'currency',
       currency: 'EUR',

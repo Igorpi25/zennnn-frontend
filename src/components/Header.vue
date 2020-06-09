@@ -287,8 +287,8 @@ export default {
     },
     orgsByRole () {
       let orgs = this.getOrgs || []
-      let groups = {}
-      let items = []
+      const groups = {}
+      const items = []
       if (this.favorites) {
         orgs = orgs.sort((a, b) => {
           const a1 = this.favorites.includes(a.id)

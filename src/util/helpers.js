@@ -169,13 +169,13 @@ export function focusElement (id, isEnd) {
  * @param {HTMLElement} target element
  */
 export const getAllTextnodes = (target) => {
-  let treeWalker = document.createTreeWalker(
+  const treeWalker = document.createTreeWalker(
     target,
     NodeFilter.SHOW_TEXT,
     null,
     false,
   )
-  let nodeList = []
+  const nodeList = []
   while (treeWalker.nextNode()) {
     const node = treeWalker.currentNode
     nodeList.push(node)
@@ -209,7 +209,7 @@ export const getCaretPosition = (target) => {
 export const getCaretData = (target, position) => {
   if (!target) return
   let node
-  let nodes = getAllTextnodes(target)
+  const nodes = getAllTextnodes(target)
   for (let n = 0; n < nodes.length; n++) {
     if (position > nodes[n].nodeValue.length && nodes[n + 1]) {
       // remove amount from the position, go to next node
