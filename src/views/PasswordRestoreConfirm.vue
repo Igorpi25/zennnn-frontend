@@ -120,7 +120,7 @@ export default {
         this.errorMessage = ''
         const isValid = this.$refs.form.validate()
         if (isValid) {
-          await this.$Auth.forgotPasswordConfirm(
+          await this.$Auth.forgotPasswordSubmit(
             this.formModel.username,
             this.formModel.code,
             this.formModel.password,

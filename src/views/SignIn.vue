@@ -279,13 +279,18 @@ export default {
             // TODO: save user to cache and redirect to Registration.vue view
             // this.$router.push({ name: 'registration', query: this.$route.query })
           } else {
+            apolloClient.cache.writeData({
+              data: {
+                isLoggedIn: true,
+              },
+            })
             await this.$apollo.mutate({
               mutation: INIT_SPEC_SIMPLE_UI,
             })
             this.$logger.info('Logged in user', user)
             const { data: { getProfile } } = await apolloClient.query({
               query: GET_PROFILE,
-              fetchPolicy: 'cache-only',
+              fetchPolicy: 'network-only',
             })
             if (getProfile.initialized) {
               const { data: { getOrgs } } = await apolloClient.query({

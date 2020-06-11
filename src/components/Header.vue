@@ -79,7 +79,7 @@
                     <div
                       class="text-xs leading-none text-gray-100"
                     >
-                      {{ $t(`header.role.${currentOrg.role}`) }}
+                      {{ currentOrg.role ? $t(`header.role.${currentOrg.role}`) : '' }}
                     </div>
                   </div>
                   <div class="avatar">
@@ -393,17 +393,25 @@ export default {
       if (this.$route.name === 'requisites') return
       this.$router.push({ name: 'requisites', params: { orgId: this.orgId } })
     },
-    onSignOut () {
+    async onSignOut () {
       const profile = this.profile
       const username = profile.username || ''
       // TODO with Cache and FederatedInfo
       // const federatedInfo = Cache.getItem('federatedInfo')
       const isGoogleUser = username.startsWith('Google_')
-      const response = this.$Auth.signOut()
+      const response = await this.$Auth.signOut()
+      // falsy isLoggedIn in cache before route to signin
+      this.$apollo.provider.clients.defaultClient.cache.writeData({
+        data: { isLoggedIn: false },
+      })
       this.$logger.info('Sign Out: ', response)
-      this.$apollo.provider.clients.defaultClient.resetStore()
       if (!isGoogleUser) {
-        this.$router.replace({ name: 'signin' })
+        this.$router.replace({ name: 'signin' }).then(() => {
+          // reset store after redirect to signin
+          this.$apollo.provider.clients.defaultClient.resetStore()
+        })
+      } else {
+        this.$apollo.provider.clients.defaultClient.resetStore()
       }
       // close ws client on logout for update connectionParams
       wsLink.subscriptionClient.close(true)

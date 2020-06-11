@@ -4,7 +4,8 @@ import VueRouter from 'vue-router'
 // TODO: Uncaught TypeError: y.b is not a constructor
 import OrgLayout from '../views/OrgLayout.vue'
 
-import { Auth, i18n } from '../plugins'
+import { i18n } from '../plugins'
+import { checkAuth } from '../plugins/auth/checkAuth'
 import { apolloClient } from '../plugins/apollo'
 import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
 
@@ -44,7 +45,7 @@ const routes = [
     component: Home,
     beforeEnter: async (to, from, next) => {
       try {
-        const loggedIn = await Auth.checkAuth()
+        const loggedIn = await checkAuth()
         if (!loggedIn) {
           return next()
         }
@@ -204,7 +205,7 @@ const routes = [
           throw new Error('No valid link')
         }
 
-        const loggedIn = await Auth.checkAuth()
+        const loggedIn = await checkAuth()
         if (!loggedIn) {
           return next({ name: 'signin', query: { redirect: `/invitations/${id}` } })
         }
@@ -382,7 +383,7 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   // check auth
-  const loggedIn = await Auth.checkAuth()
+  const loggedIn = await checkAuth()
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.

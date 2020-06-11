@@ -97,7 +97,7 @@ const authLink = setContext(async (request, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `${token}` : '',
+      Authorization: token ? `Bearer ${token}` : '',
       sid,
       lang: i18n.locale,
     },
@@ -142,7 +142,7 @@ export const wsLink = new WebSocketLink({
       const token = session.getIdToken().getJwtToken()
       const sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
       return {
-        authToken: token || '',
+        authToken: token ? `Bearer ${token}` : '',
         sid,
       }
     },
