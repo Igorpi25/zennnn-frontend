@@ -71,11 +71,11 @@
               @keydown.enter.exact.self="goToSupplier(item.id)"
             >
                 <td></td>
-                <td>{{ item.companyName }}</td>
-                <td>{{ item.supplierPhone }}</td>
-                <td>{{ item.contactPerson && item.contactPerson.fullName }}</td>
-                <td>{{ item.vat }}</td>
-                <td>{{ item.deals }}</td>
+                <td class="truncate">{{ item.companyName }}</td>
+                <td class="truncate">{{ item.supplierPhone }}</td>
+                <td class="truncate">{{ item.contactPerson && item.contactPerson.fullName }}</td>
+                <td class="truncate">{{ item.vat }}</td>
+                <td class="truncate">{{ item.deals }}</td>
                 <td>
                   <!-- TODO: change icon -->
                   <i v-if="item.factory == 'GREEN'" class="zi-info text-2xl mr-1" />

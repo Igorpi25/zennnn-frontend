@@ -108,10 +108,10 @@
               </td>
               <td></td>
               <td></td>
-              <td>{{ (item.client && item.client.uid) || '-' }}</td>
-              <td>{{ item.client && item.client.fullName }}</td>
-              <td>{{ ((item.client && item.client.mobilePhone && item.client.mobilePhone.phone)) || '-' }}</td>
-              <td>{{ item.customNumber || item.specNo || '-' }}</td>
+              <td class="truncate">{{ (item.client && item.client.uid) || '-' }}</td>
+              <td class="truncate">{{ item.client && item.client.fullName }}</td>
+              <td class="truncate">{{ ((item.client && item.client.mobilePhone && item.client.mobilePhone.phone)) || '-' }}</td>
+              <td class="truncate">{{ item.customNumber || item.specNo || '-' }}</td>
               <td class="text-center">
                 {{ $d($parseDate(item.createdAt), 'short') }}
               </td>

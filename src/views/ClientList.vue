@@ -79,12 +79,12 @@
               @keydown.enter.exact.self="goToClient(item)"
             >
               <td></td>
-              <td>{{ item.fullName }}</td>
-              <td>{{ item.clientPhone }}</td>
-              <td>{{ item.contactPerson && item.contactPerson.fullName }}</td>
-              <td></td>
-              <td>{{ item.uid }}</td>
-              <td>{{ item.deals }}</td>
+              <td class="truncate">{{ item.fullName }}</td>
+              <td class="truncate">{{ item.clientPhone }}</td>
+              <td class="truncate">{{ item.contactPerson && item.contactPerson.fullName }}</td>
+              <td class="truncate"></td>
+              <td class="truncate">{{ item.uid }}</td>
+              <td class="truncate">{{ item.deals }}</td>
               <td class="text-center pointer-events-none" @click.prevent.stop>
                 <button
                   class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
