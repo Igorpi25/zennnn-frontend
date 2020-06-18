@@ -3,6 +3,8 @@
     "userAgreement": "用户服务协议"
   },
   "home": {},
+  "payment": {},
+  "pricing": {},
   "footer": {},
   "passwordRestore": {
     "accessRecoveryHead": "找回密码，",
@@ -770,6 +772,7 @@
     "myCompanies": "我司清单",
     "fillRequisites": "填写公司资料"
   },
+  "systemMessageModal": {},
   "comments": {
     "enterComment": "添加评论",
     "enterReply": "回复",
@@ -881,7 +884,6 @@
     "removeEmployee": "是否删除此员工？"
   },
   "rule": {
-    "phone": "请填写",
     "onlyLatin": "只允许使用拉丁字母和符号",
     "required": "请填写",
     "requiredSelect": "请选",

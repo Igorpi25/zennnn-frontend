@@ -3,6 +3,8 @@
     "userAgreement": "用戶服務協議 "
   },
   "home": {},
+  "payment": {},
+  "pricing": {},
   "footer": {},
   "passwordRestore": {
     "accessRecoveryHead": "找回密碼，",
@@ -771,6 +773,7 @@
     "myCompanies": "我司清單",
     "fillRequisites": "填寫公司資料"
   },
+  "systemMessageModal": {},
   "comments": {
     "enterComment": "添加評論",
     "enterReply": "回復",
@@ -882,7 +885,6 @@
     "removeEmployee": "是否刪除此員工？"
   },
   "rule": {
-    "phone": "請填寫",
     "onlyLatin": "只允許使用拉丁字母和符號",
     "required": "請填寫",
     "requiredSelect": "請選",

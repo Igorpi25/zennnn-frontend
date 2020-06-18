@@ -3,6 +3,8 @@
     "userAgreement": "Conditions&nbsp;d'utilisation"
   },
   "home": {},
+  "payment": {},
+  "pricing": {},
   "footer": {},
   "passwordRestore": {
     "accessRecoveryHead": "Récupération d'accès,",
@@ -776,6 +778,7 @@
     "myCompanies": "page Détails de l'entreprise",
     "fillRequisites": "Ajouter les Détails"
   },
+  "systemMessageModal": {},
   "comments": {
     "enterComment": "Entrez un commentaire…",
     "enterReply": "Entrez la réponse…",
@@ -887,7 +890,6 @@
     "removeEmployee": "Voulez-vous vraiment supprimer l'employé?"
   },
   "rule": {
-    "phone": "Remplissez ce champ.",
     "onlyLatin": "Seuls les lettres et symboles latins sont autorisés",
     "required": "Remplissez ce champ.",
     "requiredSelect": "veuillez sélectionner",
