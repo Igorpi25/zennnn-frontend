@@ -126,7 +126,7 @@ export default {
     codeInputPatterns () {
       return [
         v => {
-          const re = new RegExp(`^[0-9\\s\\-()+]{0,10}$`)
+          const re = new RegExp('^[0-9\\s\\-()+]{0,10}$')
           return re.test(v) || ''
         },
       ]
@@ -152,8 +152,8 @@ export default {
       return `+${(this.currentCode || '').replace(/\D/g, '')}`
     },
     phonesUnformatted () {
-      let result = {}
-      for (let [k, v] of Object.entries(phonesCode)) {
+      const result = {}
+      for (const [k, v] of Object.entries(phonesCode)) {
         result[k] = `+${v.replace(/\D/g, '')}`
       }
       return result
@@ -287,7 +287,7 @@ export default {
       let result = this.defaultCountryCode
       const phone = this.value && this.value.phone
       const value = phone || this.unmasked || ''
-      for (let [k, v] of Object.entries(this.phonesUnformatted)) {
+      for (const [k, v] of Object.entries(this.phonesUnformatted)) {
         if (value.startsWith(v)) {
           result = k
           break
@@ -307,8 +307,8 @@ export default {
       let iValue = 0
       let result = ''
       while (iMask < mask.length && iValue < value.length) {
-        let cMask = mask[iMask]
-        let cValue = value[iValue]
+        const cMask = mask[iMask]
+        const cValue = value[iValue]
         const masker = cMask === '#' ? /\d/ : undefined
         if (masker) {
           if (masker.test(cValue)) {

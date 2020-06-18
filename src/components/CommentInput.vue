@@ -8,19 +8,21 @@
       hide-details
       outlined
       auto-grow
-      rows="1"
+      rows="2"
+      class="shadow-gray-75"
+      content-class="bg-gray-50 focus-within:bg-white"
       @input="onInput"
       @focus-change="onFocusChange"
       @keydown.native.enter="handleMeta"
     />
     <div
       v-if="hasFocus"
-      class="flex"
+      class="flex pt-4"
     >
       <Button
         outlined
         borderless
-        merge-class="text-gray-150 hover:text-gray-200"
+        merge-class="text-gray-150 hover:text-gray-200 h-10"
         @click="blur"
       >
         {{ $t('action.cancel') }}
@@ -31,6 +33,7 @@
         :loading="loading"
         outlined
         borderless
+        merge-class="h-10"
         @click="submitComment"
       >
         {{ $t('comments.post') }}

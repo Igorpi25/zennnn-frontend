@@ -202,7 +202,7 @@ export default {
       const oldIndex = data.oldIndex
       const newIndex = data.newIndex
       if (oldIndex === newIndex) return
-      let newValue = this.imagesList.slice()
+      const newValue = this.imagesList.slice()
       newValue.splice(newIndex, 0, newValue.splice(oldIndex, 1)[0])
       this.updateImages(newValue)
     },

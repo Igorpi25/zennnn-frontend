@@ -4,7 +4,8 @@ import VueRouter from 'vue-router'
 // TODO: Uncaught TypeError: y.b is not a constructor
 import OrgLayout from '../views/OrgLayout.vue'
 
-import { Auth, i18n } from '../plugins'
+import { i18n } from '../plugins'
+import { checkAuth } from '../plugins/auth/checkAuth'
 import { apolloClient } from '../plugins/apollo'
 import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
 
@@ -44,7 +45,7 @@ const routes = [
     component: Home,
     beforeEnter: async (to, from, next) => {
       try {
-        const loggedIn = await Auth.checkAuth()
+        const loggedIn = await checkAuth()
         if (!loggedIn) {
           return next()
         }
@@ -135,14 +136,14 @@ const routes = [
         component: ClientList,
       },
       {
-        path: `clients/:groupId?/create`,
+        path: 'clients/:groupId?/create',
         name: 'client-create',
         meta: { requiresAuth: true, scrollToTop: true },
         props: { create: true },
         component: ClientItem,
       },
       {
-        path: `clients/:groupId/:clientId`,
+        path: 'clients/:groupId/:clientId',
         name: 'client',
         meta: { requiresAuth: true, scrollToTop: true },
         component: ClientItem,
@@ -194,6 +195,46 @@ const routes = [
     ],
   },
   {
+    path: '/z-:orgId?/payment',
+    name: 'payment',
+    meta: { requiresAuth: true },
+    component: Payment,
+    beforeEnter: async (to, from, next) => {
+      try {
+        const { data: { getOrgs } } = await apolloClient.query({
+          query: GET_ORGS,
+          fetchPolicy: 'cache-first',
+        })
+        if (!getOrgs || getOrgs.length === 0) {
+          throw new Error('Not found')
+        }
+        const orgId = to.params.orgId
+        if (!orgId) {
+          const [org] = getOrgs
+          if (org && org.id) {
+            localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
+            next({ name: 'specs', params: { orgId: org.id } })
+          } else {
+            localStorage.removeItem(CURRENT_ORG_STORE_KEY)
+            throw new Error('Not found')
+          }
+        } else if (getOrgs.some(el => el.id === orgId)) {
+          localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
+          next()
+        } else {
+          localStorage.removeItem(CURRENT_ORG_STORE_KEY)
+          throw new Error('Not found')
+        }
+      } catch (error) {
+        if (error.message === 'Not found') {
+          next('not-found')
+        } else {
+          next(false)
+        }
+      }
+    },
+  },
+  {
     path: '/invitations/:invitationId',
     name: 'invitation',
     component: Invitation,
@@ -204,7 +245,7 @@ const routes = [
           throw new Error('No valid link')
         }
 
-        const loggedIn = await Auth.checkAuth()
+        const loggedIn = await checkAuth()
         if (!loggedIn) {
           return next({ name: 'signin', query: { redirect: `/invitations/${id}` } })
         }
@@ -235,12 +276,6 @@ const routes = [
     path: '/pricing',
     name: 'pricing',
     component: Pricing,
-  },
-  {
-    path: '/payment',
-    name: 'payment',
-    meta: { requiresAuth: true },
-    component: Payment,
   },
   {
     path: '/paper/:specId',
@@ -382,7 +417,7 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   // check auth
-  const loggedIn = await Auth.checkAuth()
+  const loggedIn = await checkAuth()
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.

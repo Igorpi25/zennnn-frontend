@@ -13,8 +13,30 @@
           dense
           searchable
           hide-details
+          prepend-slot-class="w-auto pl-2"
           @input="$emit('update', { customs: { countryOfOrigin: $event } })"
-        />
+        >
+          <template v-slot:prepend>
+            <img
+              v-if="item.countryOfOrigin"
+              :src="`/static/flags/${item.countryOfOrigin}.svg`"
+              :alt="item.countryOfOrigin"
+              class="w-6 rounded-sm mr-4"
+            >
+            <img
+              v-else
+              src="@/assets/icons/earth.svg"
+              class="h-5 w-6 rounded-full mr-4"
+            >
+          </template>
+          <template v-slot:item="{ item }">
+            <img
+              :src="`/static/flags/${item.value}.svg`"
+              class="w-6 rounded-sm mr-4"
+            >
+            <span>{{ item.text }}</span>
+          </template>
+        </Select>
       </div>
       <div class="flex items-center pb-2">
         <div class="pl-sm pr-1 w-3/5 truncate" :title="$t('shipping.termsLabel')">

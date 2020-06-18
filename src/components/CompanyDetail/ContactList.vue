@@ -89,18 +89,18 @@ export default {
   },
   methods: {
     addData () {
-      this.$emit('update', { 'contacts': [...this.clearedItems, { contactType: ContactType.QQ }] })
+      this.$emit('update', { contacts: [...this.clearedItems, { contactType: ContactType.QQ }] })
     },
     updateData (i, item, value) {
       const updatedItem = Object.assign({}, item, value)
       const items = this.clearedItems.slice()
       items.splice(i, 1, updatedItem)
-      this.$emit('update', { 'contacts': items })
+      this.$emit('update', { contacts: items })
     },
     deleteData (i) {
       const items = this.clearedItems.slice()
       items.splice(i, 1)
-      this.$emit('update', { 'contacts': items })
+      this.$emit('update', { contacts: items })
     },
   },
 }

@@ -12,8 +12,14 @@ import {
 } from './typeDefs'
 
 export const CREATE_PAYMENT_SUBSCRIPTION = gql`
-  mutation CreatePaymentSubscription($customerId: String!, $paymentMethodId: String!, $priceId: String!) {
-    createPaymentSubscription(customerId: $customerId, paymentMethodId: $paymentMethodId, priceId: $priceId)
+  mutation CreatePaymentSubscription($paymentMethodId: String!, $priceId: String!) {
+    createPaymentSubscription(paymentMethodId: $paymentMethodId, priceId: $priceId)
+  }
+`
+
+export const CREATE_PROMO_SUBSCRIPTION = gql`
+  mutation CreatePromoSubscription($paymentMethodId: String!) {
+    createPromoSubscription(paymentMethodId: $paymentMethodId)
   }
 `
 
@@ -30,21 +36,65 @@ export const CANCEL_PAYMENT_SUBSCRIPTION = gql`
 `
 
 export const RETRY_INVOICE_WITH_NEW_PAYMENT_METHOD = gql`
-  mutation RetryInvoiceWithNewPaymentMethod($customerId: String!, $paymentMethodId: String!, $invoiceId: String!) {
-    retryInvoiceWithNewPaymentMethod(customerId: $customerId, paymentMethodId: $paymentMethodId, invoiceId: $invoiceId)
+  mutation RetryInvoiceWithNewPaymentMethod($paymentMethodId: String!, $invoiceId: String!) {
+    retryInvoiceWithNewPaymentMethod(paymentMethodId: $paymentMethodId, invoiceId: $invoiceId)
   }
 `
 
-export const LOGIN = gql`
-  mutation Login {
-    login {
+export const SET_DEFAULT_PAYMENT_METHOD = gql`
+  mutation SetDefaultPaymentMethod($paymentMethodId: String!) {
+    setDefaultPaymentMethod(paymentMethodId: $paymentMethodId)
+  }
+`
+
+export const ATTACH_PAYMENT_METHOD = gql`
+  mutation AttachPaymentMethod($paymentMethodId: String!, $setDefault: Boolean) {
+    attachPaymentMethod(paymentMethodId: $paymentMethodId, setDefault: $setDefault)
+  }
+`
+
+export const DETACH_PAYMENT_METHOD = gql`
+  mutation DetachPaymentMethod($paymentMethodId: String!) {
+    detachPaymentMethod(paymentMethodId: $paymentMethodId)
+  }
+`
+
+export const SIGNUP = gql`
+  mutation Signup($givenName: String!, $familyName: String!, $email: String!, $password: String!, $locale: String!, $priceId: String) {
+    signup(givenName: $givenName, familyName: $familyName, email: $email, password: $password, locale: $locale, priceId: $priceId) {
       id
       email
       givenName
       familyName
       picture
-      initialized
+      locale
+      account {
+        id
+        customerId
+        subscriptionId
+        subscriptionStatus
+        latestInvoiceId
+        price
+        productId
+        priceId
+        canTrial
+        periodEnd
+        cancelAtPeriodEnd
+        org
+      }
     }
+  }
+`
+
+export const NOTE_GREETING = gql`
+  mutation NoteGreeting {
+    noteGreeting
+  }
+`
+
+export const PREMIUM_CONTACT = gql`
+  mutation PremiumContact($name: String!, $email: String!) {
+    premiumContact(name: $name, email: $email)
   }
 `
 

@@ -107,7 +107,7 @@ export default {
   methods: {
     addData () {
       if (this.emitChanges) {
-        this.$emit('update', { 'bankDetails': [...this.items, {}] })
+        this.$emit('update', { bankDetails: [...this.items, {}] })
       } else {
         this.addBankDetail()
       }
@@ -117,7 +117,7 @@ export default {
         const updatedItem = Object.assign({}, item, value)
         const items = this.items.slice()
         items.splice(i, 1, updatedItem)
-        this.$emit('update', { 'bankDetails': items })
+        this.$emit('update', { bankDetails: items })
       } else {
         this.updateBankDetail(item.id, value)
       }
@@ -126,7 +126,7 @@ export default {
       if (this.emitChanges) {
         const items = this.items.slice()
         items.splice(i, 1)
-        this.$emit('update', { 'bankDetails': items })
+        this.$emit('update', { bankDetails: items })
       } else {
         this.deleteBankDetail(id)
       }

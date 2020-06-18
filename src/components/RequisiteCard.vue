@@ -167,10 +167,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    isWelcome: {
-      type: Boolean,
-      default: false,
-    },
     showFillLaterButton: {
       type: Boolean,
       default: false,
@@ -220,7 +216,7 @@ export default {
     },
     goBack () {
       if (this.showFillLaterButton) {
-        this.$router.push({ name: 'home' })
+        this.$router.push({ name: 'home' }).catch(() => {})
       } else {
         this.$router.go(-1)
       }
@@ -247,7 +243,7 @@ export default {
     },
     createFromItem () {
       const item = {}
-      for (let [k, v] of Object.entries(this.item)) {
+      for (const [k, v] of Object.entries(this.item)) {
         if (k !== 'isRequiredFilled' && k !== 'isOptionalFilled') {
           item[k] = v
         }

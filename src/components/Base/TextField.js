@@ -368,8 +368,8 @@ export default {
     genWarnMenu () {
       if (this.hideError) return null
       const props = {
-        activator: this.$refs['content'],
-        attach: this.$refs['alert'],
+        activator: this.$refs.content,
+        attach: this.$refs.alert,
         value: (this.hasWarn || this.hasError) && this.hasFocus,
         top: true,
         offsetY: true,
@@ -460,7 +460,7 @@ export default {
             const target = this.$refs['label-content']
             const child = this.$refs['label-content'].firstChild
             const spanWidth = Math.round(child.getBoundingClientRect().width)
-            const parentWidth = this.$refs['label'].clientWidth
+            const parentWidth = this.$refs.label.clientWidth
             if (spanWidth > parentWidth) {
               target.style.overflow = 'visible'
               child.style.backgroundColor = this.backgroundColor
@@ -471,7 +471,7 @@ export default {
             const target = this.$refs['label-content']
             const child = this.$refs['label-content'].firstChild
             const spanWidth = child.getBoundingClientRect().width
-            const parentWidth = this.$refs['label'].clientWidth
+            const parentWidth = this.$refs.label.clientWidth
             if (spanWidth > parentWidth) {
               target.style.overflow = 'hidden'
               child.style.backgroundColor = 'unset'
@@ -499,7 +499,7 @@ export default {
 
     genInput () {
       const listeners = Object.assign({}, this.$listeners)
-      delete listeners['change'] // Change should not be bound externally
+      delete listeners.change // Change should not be bound externally
       const attrs = {
         ...this.$attrs,
         autofocus: this.autofocus,

@@ -14,6 +14,7 @@ import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STO
 import { Auth, Logger, i18n, store } from '../index'
 import router from '../../router'
 import { getUsername } from '../../graphql/resolvers'
+import systemMessageBus from '../notify/systemMessageBus'
 
 const logger = new Logger('Apollo')
 
@@ -76,6 +77,8 @@ const authLink = setContext(async (request, { headers }) => {
   let token = null
   let sid = null
   if (
+    operationName === 'Signup' ||
+    operationName === 'ListPrices' ||
     operationName === 'GetPaperSpec' ||
     operationName === 'AddCommentToPaperSpec' ||
     operationName === 'ReplyToPaperSpecComment' ||
@@ -97,9 +100,9 @@ const authLink = setContext(async (request, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `${token}` : '',
+      Authorization: token ? `Bearer ${token}` : '',
       sid,
-      lang: i18n.locale,
+      locale: i18n.locale,
     },
   }
 })
@@ -142,7 +145,7 @@ export const wsLink = new WebSocketLink({
       const token = session.getIdToken().getJwtToken()
       const sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
       return {
-        authToken: token || '',
+        authToken: token ? `Bearer ${token}` : '',
         sid,
       }
     },
@@ -151,7 +154,7 @@ export const wsLink = new WebSocketLink({
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    for (let err of graphQLErrors) {
+    for (const err of graphQLErrors) {
       const { message, locations, path, extensions } = err
       const code = extensions && extensions.code
       switch (code) {
@@ -170,7 +173,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
           logger.warn(
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
           )
-          if (message && message.includes('Forbidden')) {
+          if (message === 'ForbiddenError: Insufficient access rights') {
+            systemMessageBus.$emit('system-message', message)
+          } else if (message && message.includes('Forbidden')) {
             router.app.$notify({ color: 'warn', text: 'Forbidden' })
           }
       }

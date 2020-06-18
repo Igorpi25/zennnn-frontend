@@ -25,10 +25,10 @@
                   </Icon>
                 </div>
               </td>
-              <td @click="goToRequisite(item)">{{ item.companyNameLocal }}</td>
-              <td @click="goToRequisite(item)">{{ item.companyName }}</td>
-              <td @click="goToRequisite(item)">{{ item.ownerFullName }}</td>
-              <td @click="goToRequisite(item)">{{ item.ownerJobPosition }}</td>
+              <td @click="goToRequisite(item)" class="truncate">{{ item.companyNameLocal }}</td>
+              <td @click="goToRequisite(item)" class="truncate">{{ item.companyName }}</td>
+              <td @click="goToRequisite(item)" class="truncate">{{ item.ownerFullName }}</td>
+              <td @click="goToRequisite(item)" class="truncate">{{ item.ownerJobPosition }}</td>
               <td>
                 <button
                   class="flex items-center text-2xl text-gray-200 focus:text-gray-100 focus:outline-none hover:text-gray-100 select-none"

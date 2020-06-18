@@ -1256,7 +1256,7 @@ export default {
       }
       return new Promise((resolve, reject) => {
         this.isYouTubeIframeAPILoading = true
-        window['onYouTubeIframeAPIReady'] = this.onYouTubeIframeAPIReady
+        window.onYouTubeIframeAPIReady = this.onYouTubeIframeAPIReady
         // This code loads the IFrame Player API code asynchronously.
         const script = document.createElement('script')
         script.src = 'https://www.youtube.com/iframe_api'
@@ -1285,7 +1285,7 @@ export default {
           origin: window.location.origin,
         },
         events: {
-          'onReady': this.onPlayerReady,
+          onReady: this.onPlayerReady,
         },
       })
     },

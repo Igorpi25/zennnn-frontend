@@ -5,6 +5,7 @@
       :nudge-bottom="nudgeBottom"
       bottom
       left
+      content-class="locale-picker__menu"
     >
       <template v-slot:activator="{ on }">
         <div
@@ -22,7 +23,7 @@
       </template>
       <template>
         <ul
-          class="locale-picker__menu border-gray-400 text-sm text-gray-100 bg-gray-400 py-2"
+          class="border-gray-400 text-sm text-gray-100 bg-gray-400 py-2"
           role="menu"
         >
           <li
@@ -84,11 +85,11 @@ export default {
 </script>
 
 <style lang="postcss">
-.locale-picker__menu {
+.locale-picker__menu > ul {
   position: relative;
   margin-top: 8px;
 }
-.locale-picker__menu::after {
+.locale-picker__menu > ul::after {
   border-color: transparent;
   border-style: solid;
   content: "";
@@ -102,7 +103,7 @@ export default {
   border-width: 0 5px 5px 5px;
   border-bottom-color: inherit;
 }
-.locale-picker__menu {
+.locale-picker__menu > ul {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }

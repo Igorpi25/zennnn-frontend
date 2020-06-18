@@ -38,8 +38,8 @@
           :readonly="readonly"
           :disabled="disabled"
           :class="[
-            'absolute opacity-0 select-none cursor-pointer top-0 left-0 w-5 h-5',
-            { 'cursor-not-allowed': disabled },
+            'absolute opacity-0 select-none top-0 left-0 w-5 h-5',
+            disabled ? 'cursor-not-allowed' : 'cursor-pointer',
           ]"
           type="checkbox"
           role="checkbox"
@@ -48,7 +48,7 @@
           @blur="hasFocus = false"
         >
       </div>
-      <label :for="computedId" class="cursor-pointer select-none leading-tight">
+      <label :for="computedId" :class="[disabled ? 'cursor-not-allowed' : 'cursor-pointer', 'select-none leading-tight']">
         <slot />
       </label>
     </div>

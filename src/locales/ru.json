@@ -878,6 +878,7 @@
   "header": {
     "requisites": "Реквизиты компаний",
     "myCompanies": "Мои аккаунты",
+    "tariffs": "Тарифы",
     "signin": "Войти",
     "signout": "Выйти",
     "role": {

@@ -7,8 +7,8 @@
       </h2>
       <div class="w-full md:w-1/2">
         <p v-html="$t('welcome.subtitle')" class="pb-6" />
-        <p class="text-2xl text-white pb-10">{{ username }}</p>
-        <div class="pb-6">
+        <p v-if="username" class="text-2xl text-white pb-10">{{ username }}</p>
+        <div v-if="username" class="pb-6">
           <Button
             :loading="loading"
             style="min-width: 120px;"

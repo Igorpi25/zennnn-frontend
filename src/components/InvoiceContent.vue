@@ -186,9 +186,14 @@
                     {{ $n(invoiceItem.totalVolume) }} <span class="text-gray-300">{{ $t('measure.m3') }}</span>
                   </span>
                 </td>
-                <td class="text-center" colspan="3">
+                <td class="text-right pr-sm">
                   <span class="relative z-1">
-                    {{ $n(invoiceItem.totalPkgQty) }} <span class="text-gray-300">{{ $t('measure.pkg') }}</span>
+                    {{ $n(invoiceItem.totalPkgQty) }}
+                  </span>
+                </td>
+                <td class="text-left" colspan="2">
+                  <span class="relative z-1">
+                    <span class="text-gray-300">{{ $t('measure.pkg') }}</span>
                   </span>
                 </td>
                 <td></td>

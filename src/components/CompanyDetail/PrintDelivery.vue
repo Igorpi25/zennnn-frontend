@@ -417,7 +417,7 @@ export default {
     },
     exportDate () {
       if (this.activeType && this.exportDateKey) {
-        return this.shipment[this.exportDateKey]['exportDate']
+        return this.shipment[this.exportDateKey].exportDate
       }
       return null
     },

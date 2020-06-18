@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import Header from '@/components/Header'
-import NavBar from '@/components/NavBar'
-import Copyright from '@/components/Copyright'
+import Header from '../components/Header.vue'
+import NavBar from '../components/NavBar.vue'
+import Copyright from '../components/Copyright.vue'
 
 export default {
   name: 'OrgLayout',

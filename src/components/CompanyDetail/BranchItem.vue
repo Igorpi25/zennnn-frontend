@@ -230,7 +230,7 @@ export default {
       const item = val || {}
       const contactType = item.contactType || ContactType.QQ
       const contact = item.contact || null
-      this.$emit('update', { 'contacts': [...this.contactItems, { contactType, contact }] })
+      this.$emit('update', { contacts: [...this.contactItems, { contactType, contact }] })
       this.$nextTick(() => {
         this.$refs.contactCreate.setItem()
       })
@@ -239,12 +239,12 @@ export default {
       const updatedItem = Object.assign({}, item, value)
       const items = this.contactItems.slice()
       items.splice(i, 1, updatedItem)
-      this.$emit('update', { 'contacts': items })
+      this.$emit('update', { contacts: items })
     },
     deleteContact (i) {
       const items = this.contactItems.slice()
       items.splice(i, 1)
-      this.$emit('update', { 'contacts': items })
+      this.$emit('update', { contacts: items })
     },
   },
 }

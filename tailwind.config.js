@@ -24,6 +24,7 @@ module.exports = {
       white: '#ffffff',
       transparent: 'transparent',
       current: 'currentColor',
+      'gray-10': '#F0F0F0',
       'gray-50': '#F7F7F7',
       'gray-75': '#E4E4E4',
       'gray-100': '#AAAAAA',
@@ -43,6 +44,7 @@ module.exports = {
       'blue-700': '#345DEE', // landing color
       'blue-800': '#2F52D4', // landing hover color
       'pink-500': '#FF005E', // error, IN_PROCESSING
+      'pink-600': '#E00052',
       'green-500': '#08DC1B', // success, IN_STOCK
       'yellow-300': '#EAD377', // input warning
       'yellow-400': '#D7C370', // checkbox error text
@@ -53,9 +55,9 @@ module.exports = {
       'red-900': '#3D242D', // error color
     },
     fontFamily: {
-      'myriad': ['MyriadPro', 'sans-serif'],
+      myriad: ['MyriadPro', 'sans-serif'],
       'myriad-cond': ['MyriadPro-Cond', 'sans-serif'],
-      'montserrat': ['Montserrat', 'sans-serif'],
+      montserrat: ['Montserrat', 'sans-serif'],
     },
     boxShadow: {
       'gray-75': '0 0 0 1px #E4E4E4',
@@ -75,40 +77,40 @@ module.exports = {
     },
     extend: {
       fontSize: {
-        '28': '28px',
-        '32': '32px',
-        '40': '40px',
-        '56': '56px',
+        28: '28px',
+        32: '32px',
+        40: '40px',
+        56: '56px',
       },
       spacing: {
-        'xs': '2px',
-        'sm': '10px',
-        'md': '14px',
-        'lg': '30px',
-        '7': '1.75rem',
-        '9': '2.25rem',
-        '11': '2.75rem',
-        '14': '3.5rem',
-        '18': '4.5rem',
-        '36': '9rem',
-        '38': '9.5rem',
+        xs: '2px',
+        sm: '10px',
+        md: '14px',
+        lg: '30px',
+        7: '1.75rem',
+        9: '2.25rem',
+        11: '2.75rem',
+        14: '3.5rem',
+        18: '4.5rem',
+        36: '9rem',
+        38: '9.5rem',
       },
       opacity: {
-        '10': '.1',
-        '30': '.3',
-        '35': '.35',
-        '40': '.4',
-        '90': '.9',
+        10: '.1',
+        30: '.3',
+        35: '.35',
+        40: '.4',
+        90: '.9',
       },
       zIndex: {
-        '1': '1',
-        '2': '2',
+        1: '1',
+        2: '2',
       },
       transitionProperty: {
         'colors-and-opacity': 'background-color, border-color, color, fill, stroke, opacity',
       },
       borderRadius: {
-        'xl': '50px',
+        xl: '50px',
       },
     },
   },
@@ -117,6 +119,7 @@ module.exports = {
     borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
     boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
     overflow: ['responsive', 'hover'],
+    visibility: ['group-hover'],
   },
   plugins: [],
 }

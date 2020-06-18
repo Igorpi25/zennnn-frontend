@@ -63,7 +63,7 @@ export default {
       value = value || this.internalValue
       let errorsCount = 0
       if (this.rules && this.rules.length > 0) {
-        for (let rule of this.rules) {
+        for (const rule of this.rules) {
           const result = rule(value)
           if (result !== true) {
             errorsCount++
@@ -81,7 +81,7 @@ export default {
     validatePatterns (value) {
       let warnsCount = 0
       if (this.patterns && this.patterns.length > 0) {
-        for (let rule of this.patterns) {
+        for (const rule of this.patterns) {
           const result = rule(value)
           if (result !== true) {
             warnsCount++

@@ -107,7 +107,7 @@
               is-product
               is-paper
               left
-              class="inline-block align-middle mr-sm text-gray-75 hover:text-gray-100 transition-colors duration-100 ease-out"
+              class="inline-block align-middle mr-sm text-gray-200 focus:text-gray-300 hover:text-gray-300 transition-colors duration-100 ease-out"
             />
           </td>
           <td class="bg-white p-2 rounded-r-md text-center">
@@ -135,7 +135,7 @@
               <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}:</span>
             </div>
           </td>
-          <td colspan="3" class="py-2">
+          <td colspan="3" class="py-2 pr-2">
             <div class="h-6 flex">
               <div class="flex-grow text-gray-100 dots" />
               <div class="flex-shrink-0">

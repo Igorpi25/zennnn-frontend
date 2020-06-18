@@ -11,9 +11,11 @@ export default class Logger {
     this.name = name
     this.level = level
   }
+
   _padding (n) {
     return n < 10 ? '0' + n : '' + n
   }
+
   _ts () {
     const dt = new Date()
     return [
@@ -21,6 +23,7 @@ export default class Logger {
       this._padding(dt.getSeconds()),
     ].join(':') + '.' + dt.getMilliseconds()
   }
+
   _log (type, ...msg) {
     let loggerLevelName = this.level
     // override log level if setted globally
@@ -54,6 +57,7 @@ export default class Logger {
       log(prefix, msg)
     }
   }
+
   log (...msg) { this._log('INFO', ...msg) }
   error (...msg) { this._log('ERROR', ...msg) }
   warn (...msg) { this._log('WARN', ...msg) }

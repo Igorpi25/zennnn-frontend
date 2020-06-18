@@ -55,7 +55,7 @@ const wsLink = new WebSocketLink({
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    for (let err of graphQLErrors) {
+    for (const err of graphQLErrors) {
       const { message, locations, path, extensions } = err
       const code = extensions && extensions.code
       switch (code) {
