@@ -33,8 +33,8 @@
           :readonly="readonly"
           :disabled="disabled"
           :class="[
-            'absolute opacity-0 select-none cursor-pointer top-0 left-0',
-            { 'cursor-not-allowed': disabled },
+            'absolute opacity-0 select-none top-0 left-0',
+            disabled ? 'cursor-not-allowed' : 'cursor-pointer',
           ]"
           :style="{
             width: '18px',
@@ -47,7 +47,7 @@
           @blur="hasFocus = false"
         >
       </div>
-      <label :for="computedId" class="cursor-pointer select-none leading-tight">
+      <label :for="computedId" :class="[disabled ? 'cursor-not-allowed' : 'cursor-pointer', 'select-none leading-tight']">
         <slot />
       </label>
     </div>

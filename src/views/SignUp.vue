@@ -146,6 +146,7 @@
 import Social from '../components/Social.vue'
 import Copyright from '../components/Copyright.vue'
 import LocalePicker from '../components/LocalePicker.vue'
+import { SIGNUP } from '../graphql/mutations'
 
 export default {
   name: 'SignUp',
@@ -198,18 +199,20 @@ export default {
         const isValid = this.$refs.form.validate()
         if (isValid) {
           const { firstName, lastName, email, password } = this.formModel
-          const response = await this.$Auth.signUp({
-            username: email,
+          const variables = {
+            email,
             password,
-            attributes: {
-              family_name: lastName,
-              given_name: firstName,
-              email,
-              locale: this.$i18n.locale,
-            },
+            givenName: firstName,
+            familyName: lastName,
+            locale: this.$i18n.locale,
+          }
+          const { data } = await this.$apollo.mutate({
+            mutation: SIGNUP,
+            variables,
           })
-          this.$logger.info('Registered user', response.user)
-          const username = response.user && response.user.username
+          const user = data.signup
+          this.$logger.info('Registered user', user)
+          const username = (user && user.email) || null
           // set username to sessionStorage and check on Welcome page mounted
           // moved from on apollo cache, removed on page reload
           sessionStorage.setItem('Cognito-registered-username', username)

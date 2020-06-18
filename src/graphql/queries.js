@@ -38,7 +38,8 @@ export const GET_INVITE_USER_TO_ORG = gql`
       email
       givenName
       familyName
-      language
+      picture
+      locale
     }
   }
 `
@@ -53,7 +54,7 @@ export const GET_ORGS = gql`
         givenName
         familyName
         picture
-        language
+        locale
       }
       role
       defaultRequisite
@@ -103,16 +104,21 @@ export const GET_PROFILE = gql`
       givenName
       familyName
       picture
-      initialized
-      language
+      locale
+      isGreeted
       account {
+        id
         customerId
         subscriptionId
         subscriptionStatus
         latestInvoiceId
-        plan
-        planProduct
-        planPrice
+        price
+        productId
+        priceId
+        canTrial
+        periodEnd
+        cancelAtPeriodEnd
+        org
       }
     }
   }

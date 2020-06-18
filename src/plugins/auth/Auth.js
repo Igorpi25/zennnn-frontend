@@ -100,29 +100,6 @@ export default class Auth {
     })
   }
 
-  signUp ({ username, password, attributes }) {
-    if (!this.userPool) {
-      return Promise.reject(new Error('No user pool.'))
-    }
-    if (!username || !password) {
-      return Promise.reject(new Error('Username or password not defined.'))
-    }
-    const attrs = []
-    Object.keys(attributes).map(key => {
-      const attr = { Name: key, Value: attributes[key] }
-      attrs.push(attr)
-    })
-    return new Promise((resolve, reject) => {
-      this.userPool.signUp(username, password, attrs, null, (err, data) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(data)
-        }
-      })
-    })
-  }
-
   resendSignUp (username) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))

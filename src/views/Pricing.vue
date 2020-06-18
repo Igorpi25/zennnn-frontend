@@ -51,8 +51,7 @@
       <div class="pb-20">
         <PriceList
           :is-logged-in="isLoggedIn"
-          :select-text="selectText"
-          :contact-text="contactText"
+          :org-id="orgId"
         />
       </div>
     </main>
@@ -64,7 +63,7 @@
 <script>
 import PriceList from '../components/PriceList.vue'
 import Footer from '../components/Footer.vue'
-import { GET_IS_LOGGED_IN } from '../graphql/queries'
+import { GET_IS_LOGGED_IN, GET_PROFILE } from '../graphql/queries'
 
 export default {
   name: 'Pricing',
@@ -90,6 +89,10 @@ export default {
     isLoggedIn: {
       query: GET_IS_LOGGED_IN,
     },
+    getProfile: {
+      query: GET_PROFILE,
+      fetchPolicy: 'cache-only',
+    },
   },
   data () {
     return {
@@ -99,6 +102,11 @@ export default {
       selectText: 'Выбрать',
       contactText: 'Связаться',
     }
+  },
+  computed: {
+    orgId () {
+      return this.getProfile && this.getProfile.account && this.getProfile.account.org
+    },
   },
 }
 </script>

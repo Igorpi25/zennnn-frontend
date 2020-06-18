@@ -292,7 +292,7 @@ export default {
               query: GET_PROFILE,
               fetchPolicy: 'network-only',
             })
-            if (getProfile.initialized) {
+            if (!getProfile.isGreeted) {
               const { data: { getOrgs } } = await apolloClient.query({
                 query: GET_ORGS,
                 fetchPolicy: 'cache-first',

@@ -195,6 +195,46 @@ const routes = [
     ],
   },
   {
+    path: '/z-:orgId?/payment',
+    name: 'payment',
+    meta: { requiresAuth: true },
+    component: Payment,
+    beforeEnter: async (to, from, next) => {
+      try {
+        const { data: { getOrgs } } = await apolloClient.query({
+          query: GET_ORGS,
+          fetchPolicy: 'cache-first',
+        })
+        if (!getOrgs || getOrgs.length === 0) {
+          throw new Error('Not found')
+        }
+        const orgId = to.params.orgId
+        if (!orgId) {
+          const [org] = getOrgs
+          if (org && org.id) {
+            localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
+            next({ name: 'specs', params: { orgId: org.id } })
+          } else {
+            localStorage.removeItem(CURRENT_ORG_STORE_KEY)
+            throw new Error('Not found')
+          }
+        } else if (getOrgs.some(el => el.id === orgId)) {
+          localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
+          next()
+        } else {
+          localStorage.removeItem(CURRENT_ORG_STORE_KEY)
+          throw new Error('Not found')
+        }
+      } catch (error) {
+        if (error.message === 'Not found') {
+          next('not-found')
+        } else {
+          next(false)
+        }
+      }
+    },
+  },
+  {
     path: '/invitations/:invitationId',
     name: 'invitation',
     component: Invitation,
@@ -236,12 +276,6 @@ const routes = [
     path: '/pricing',
     name: 'pricing',
     component: Pricing,
-  },
-  {
-    path: '/payment',
-    name: 'payment',
-    meta: { requiresAuth: true },
-    component: Payment,
   },
   {
     path: '/paper/:specId',

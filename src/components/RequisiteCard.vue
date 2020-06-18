@@ -167,10 +167,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    isWelcome: {
-      type: Boolean,
-      default: false,
-    },
     showFillLaterButton: {
       type: Boolean,
       default: false,
@@ -220,7 +216,7 @@ export default {
     },
     goBack () {
       if (this.showFillLaterButton) {
-        this.$router.push({ name: 'home' })
+        this.$router.push({ name: 'home' }).catch(() => {})
       } else {
         this.$router.go(-1)
       }

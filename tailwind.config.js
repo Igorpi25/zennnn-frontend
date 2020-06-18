@@ -24,6 +24,7 @@ module.exports = {
       white: '#ffffff',
       transparent: 'transparent',
       current: 'currentColor',
+      'gray-10': '#F0F0F0',
       'gray-50': '#F7F7F7',
       'gray-75': '#E4E4E4',
       'gray-100': '#AAAAAA',
@@ -43,6 +44,7 @@ module.exports = {
       'blue-700': '#345DEE', // landing color
       'blue-800': '#2F52D4', // landing hover color
       'pink-500': '#FF005E', // error, IN_PROCESSING
+      'pink-600': '#E00052',
       'green-500': '#08DC1B', // success, IN_STOCK
       'yellow-300': '#EAD377', // input warning
       'yellow-400': '#D7C370', // checkbox error text
@@ -117,6 +119,7 @@ module.exports = {
     borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
     boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
     overflow: ['responsive', 'hover'],
+    visibility: ['group-hover'],
   },
   plugins: [],
 }

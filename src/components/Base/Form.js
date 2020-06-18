@@ -90,11 +90,16 @@ export default {
       this.inputs = this.inputs.filter(i => i._uid !== found._uid)
       this.$delete(this.errorBag, found._uid)
     },
-    validate () {
+    validate (focusFirst) {
       let result = 0
+      let isFirstErrorFocused = false
       this.inputs.forEach(input => {
         const errorsCount = input.validate(true)
         result = result + errorsCount
+        if (errorsCount && focusFirst && !isFirstErrorFocused) {
+          input.focus()
+          isFirstErrorFocused = true
+        }
       })
       return result === 0
     },

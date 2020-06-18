@@ -486,7 +486,7 @@ export default {
           for (const err of error.graphQLErrors) {
             const { message } = err
             if (message === 'ForbiddenError: Insufficient access rights') {
-              alert(this.$t('alert.insufficientAccess'))
+              // alert(this.$t('alert.insufficientAccess'))
             }
           }
         } else {
