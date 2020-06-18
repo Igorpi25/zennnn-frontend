@@ -85,9 +85,6 @@ export default {
 </script>
 
 <style lang="postcss">
-[data-theme="light"] .locale-picker__menu {
-  box-shadow: none!important;
-}
 .locale-picker__menu > ul {
   position: relative;
   margin-top: 8px;
