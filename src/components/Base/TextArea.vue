@@ -1,10 +1,6 @@
 <template>
   <div
-    :class="[
-      'rounded relative flex items-center focus:outline-none transition-colors duration-100 ease-out',
-      'focus-within:shadow-blue-500 text-white text-base bg-gray-800',
-      { 'opacity-40 cursor-not-allowed': disabled },
-    ]"
+    :class="compContentClass"
   >
     <label
       v-if="!singleLine"
@@ -64,6 +60,7 @@
 import debounce from 'lodash.debounce'
 
 import validatable from '@/mixins/validatable'
+import { mergeClasses } from '../../util/helpers'
 
 export default {
   name: 'TextArea',
@@ -122,6 +119,19 @@ export default {
     }
   },
   computed: {
+    compContentClass () {
+      const classes = [
+        'rounded relative flex items-center focus:outline-none transition-colors duration-100 ease-out',
+        'focus-within:shadow-blue-500 text-white text-base bg-gray-800',
+      ]
+      if (this.disabled) {
+        classes.push('opacity-40 cursor-not-allowed')
+      }
+      if (this.contentClass) {
+        return mergeClasses(classes, this.contentClass)
+      }
+      return classes
+    },
     stateColorClass () {
       return this.stateIcon && this.stateColor === 'warn' && !this.internalValue
         ? 'text-yellow-500'
