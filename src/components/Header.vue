@@ -242,7 +242,7 @@
         @close="systemMessageDialog = false"
       >
         <template v-if="isOwner" v-slot:actions>
-          <Button>
+          <Button :to="{ name: 'payment', params: { orgId } }">
             {{ $t('systemMessageModal.goToPayment') }}
           </Button>
         </template>
