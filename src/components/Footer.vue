@@ -82,7 +82,7 @@
               <i class="zi-vk text-2xl text-gray-200 float-right" />
             </a>
           </div>
-          <div class="px-4 sm:px-0">
+          <div class="pb-5 px-4 sm:px-0">
             <a href="#" class="focus:outline-none focus:text-blue-500 hover:text-blue-500">
               Github
               <div class="text-gray-200 float-right">
@@ -98,12 +98,19 @@
               </div>
             </a>
           </div>
+          <div class="px-4 sm:px-0">
+            <a :href="`mailto:${mailTo}`" class="focus:outline-none focus:text-blue-500 hover:text-blue-500">
+              {{ mailTo }}
+            </a>
+          </div>
         </div>
       </div>
     </div>
     <div class="container container--sm h-20 flex items-center justify-between sm:justify-end">
       <div class="flex justify-end sm:w-2/3">
-        <img src="@/assets/img/logo-dark.svg" alt="Logo">
+        <router-link :to="{ name: 'home' }" class="select-none focus:outline-none">
+          <img src="@/assets/img/logo-dark.svg" alt="Logo">
+        </router-link>
         <div class="w-px h-6 bg-gray-400 ml-3 sm:ml-6" />
       </div>
       <div class="flex items-center sm:w-1/3 pl-3 sm:pl-6">
@@ -122,6 +129,9 @@ export default {
     Copyright,
   },
   computed: {
+    mailTo () {
+      return process.env.VUE_APP_MAILTO
+    },
     aboutLinks () {
       return [
         {
