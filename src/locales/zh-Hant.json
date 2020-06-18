@@ -2,6 +2,10 @@
   "app": {
     "userAgreement": "用戶服務協議 "
   },
+  "home": {},
+  "payment": {},
+  "pricing": {},
+  "footer": {},
   "passwordRestore": {
     "accessRecoveryHead": "找回密碼，",
     "accessRecoverySubhead": "請輸入電子郵件。",
@@ -13,7 +17,7 @@
     "submit": "找回密碼"
   },
   "passwordRestoreConfirm": {
-    "changePasswordHead": "重設密碼，",
+    "changePasswordHead": "重設密碼",
     "changePasswordSubhead": "請輸入新密碼",
     "newPassword": "輸入新密碼",
     "newPasswordConfirm": "確認新密碼",
@@ -84,7 +88,7 @@
     "emailNotRecieved": "未收到電子郵件？",
     "hasAccount": "用戶已註冊。",
     "signin": "登入",
-    "resend": "再次發送電子郵件。"
+    "resend": "再次發送電子郵件"
   },
   "deals": {
     "createSpecDialogHeader": "請選客戶與繼續",
@@ -92,7 +96,7 @@
     "createSpecDialogSearchPlaceholder": "開始打字",
     "createSpecDialogAddClient": "創建新客戶",
     "createSpecDialogWithoutClient": "稍後添加客戶",
-    "createSpecDialogAd": "添加客戶",
+    "createSpecDialogAdd": "添加客戶",
     "createDeal": "創建新交易",
     "clientUcn": "客戶編碼",
     "clientName": "客戶名稱",
@@ -210,8 +214,20 @@
     "dealNo": "交易編號",
     "simpleInterface": "簡約界面",
     "simpleInterfaceHint": "填寫交易資料時候請保持開通簡約界面，這樣可以更簡單一步一步操作。",
+    "extraTitle": "其他備註",
+    "extraPlaceholder": "貨物說明",
+    "extraHint": "例如：裝箱單和其他文件中將包括特殊的貨物標記，通知或HS代碼。",
+    "chatMembers": "聊天成員",
+    "chatMessages": "留言信息",
+    "chatStart": "聊天室",
+    "linkAttachFile": "上傳文件",
+    "linkSave": "保存鏈接",
+    "linkAdd": "添加鏈接",
+    "linkFile": "將文件拖放到此處",
+    "packPriceCalc": "將單獨零件的價格合併到總價格中嗎？",
     "specNo": "明細表 #",
-    "shippingClient": "客户",
+    "shippingClient": "客戶",
+    "shippingClientAdd": "添加客戶",
     "prices": "價格",
     "warehouse": "倉庫資料",
     "description": "描述",
@@ -322,7 +338,50 @@
     "importerSubtitle": "（如跟客戶不同）",
     "inEnglish": "（英文）",
     "vat": "VAT（納稅人識別號）",
-    "copyLink": "複製連結"
+    "copyLink": "複製連結",
+    "companyNotSetted": "您尚未保存任何公司的詳細信息",
+    "clientNotSetted": "開始輸入客戶名稱或創建一個新名稱",
+    "deliveryAddressLabel": "收貨地址與聯繫方式",
+    "deliveryAddressFromClient": "用客戶記錄中的數據",
+    "deliveryAddressFromClientHint": "您沒有指定交貨方式與條件",
+    "deliveryAddressSet": "指定",
+    "deliveryAddressFromImporter": "符合進口商的註冊地址",
+    "deliveryAddressFromImporterHint": "進口商的公司詳細信息為空",
+    "fromLabel": "發貨地點",
+    "viaLabel": "中間站",
+    "toLabel": "目的地",
+    "deliveryPlaceholder": "城市，國家（港口，火車站）",
+    "methodOfDispatchPlaceholder": "您未選發貨方式",
+    "termsPlaceholder": "請選交貨條件",
+    "packingExtraTitle": "其他備註",
+    "packingNotelabel": "貨物說明",
+    "packingNotePlaceholder": "例如：裝箱單和其他文件中將包括特殊的貨物標記，通知或HS代碼。",
+    "clientAddLabel": "公司名稱",
+    "clientAddCreateAndAttach": "創建新客戶與聯交易",
+    "clientAddCreate": "創建",
+    "clientAddEdit": "編輯",
+    "clientAddNotCreated": "不存在",
+    "legalPerson": "公司",
+    "privatePerson": "私人",
+    "otherPerson": "其他組織",
+    "preprintTitle": "草案",
+    "printTitle": "打印",
+    "printInvoice": "發票",
+    "printPackingList": "包裝單",
+    "printContract": "合同（國際）",
+    "printContractAppendix": "合同附件（國際）",
+    "printInvoiceHint": "發票平時應打印成五份，給對方每位一份。",
+    "printAuto": "自動創建",
+    "printVisibleAll": "給所有人看",
+    "printVisibleOnlyClient": "只給客戶看",
+    "printHidden": "暗藏",
+    "printEdit": "編輯",
+    "printDownload": "下載",
+    "printShare": "分享",
+    "printFavoriteDocs": "收藏",
+    "printInternationalDocs": "國際文檔",
+    "printRegionalDocs": "國內文檔",
+    "printPages": "0 頁 | {n} 頁"
   },
   "paper": {
     "cargoInfo": "貨物信息",
@@ -471,6 +530,7 @@
     "clientCardPatterns": "客戶登記表模板",
     "legalPerson": "公司",
     "privatePerson": "私人",
+    "other": "其他組織",
     "language": "語言",
     "languageAndRegion": "語言與地區",
     "languageDescription": "短信與電子郵件語言"
@@ -487,9 +547,9 @@
       "familyName": "姓",
       "middleName": "附名",
       "companyName": "公司名稱",
-      "passportId": "護照號嗎",
       "legalAddress": "註冊地址",
       "legalAddressPostcode": "註冊地址郵政編碼",
+      "privateMailingAddress": "郵政地址",
       "mailingAddress": "郵政地址",
       "mailingAddressPostcode": "郵政編碼",
       "phone": "電話",
@@ -519,6 +579,7 @@
       "note": "備註",
       "tags": "標籤",
       "tagsDesc": "（被逗號隔開）",
+      "branchAddress": "註冊地址",
       "password": "密碼",
       "language": "語言"
     },
@@ -623,7 +684,8 @@
       "swift": "賬號：",
       "fullName": "SWIFT:",
       "position": "法人姓名：",
-      "signatureStamp": "法人職位："
+      "signatureStamp": "法人職位：",
+      "": "簽字 / 蓋章："
     }
   },
   "print": {
@@ -711,6 +773,7 @@
     "myCompanies": "我司清單",
     "fillRequisites": "填寫公司資料"
   },
+  "systemMessageModal": {},
   "comments": {
     "enterComment": "添加評論",
     "enterReply": "回復",
@@ -882,6 +945,7 @@
     "CFR": "CFR",
     "CIF": "CIF"
   },
+  "branchType": {},
   "productStatus": {
     "IN_DRAFT": "預計",
     "IN_PROCESSING": "咨詢當中",
