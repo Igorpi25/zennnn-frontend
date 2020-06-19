@@ -25,7 +25,7 @@
         :content-class="contentClass"
         :input-class="inputClass"
         :label-class="labelClass"
-        :state-icon="stateIcon"
+        :state-icon="searchable && search && internalInput ? null : stateIcon"
         :state-icon-on-validate="stateIconOnValidate"
         :state-color="stateColor"
         :slot-class="slotClass"

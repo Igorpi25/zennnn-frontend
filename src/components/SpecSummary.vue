@@ -223,9 +223,7 @@
                 class="cursor-pointer"
                 @click="removeEmailAccess(a.email)"
               >
-                <Icon size="18">
-                  {{ icons.mdiClose }}
-                </Icon>
+                <i class="zi-close text-lg" />
               </div>
             </v-slide-x-transition>
           </div>
@@ -237,8 +235,6 @@
 
 <script>
 import cloneDeep from 'clone-deep'
-
-import { mdiClose, mdiPlusThick } from '@mdi/js'
 
 import ContractListModal from '@/components/ContractListModal.vue'
 import ContractConfiguratorModal from '@/components/ContractConfiguratorModal.vue'
@@ -313,10 +309,6 @@ export default {
       paperList: false,
       paperConfigurator: false,
       create: false,
-      icons: {
-        mdiClose,
-        mdiPlusThick,
-      },
     }
   },
   computed: {

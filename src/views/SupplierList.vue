@@ -112,8 +112,6 @@
 </template>
 
 <script>
-import { mdiPlusCircleOutline, mdiMagnify } from '@mdi/js'
-
 import { LIST_SUPPLIERS } from '@/graphql/queries'
 import { DELETE_SUPPLIER } from '@/graphql/mutations'
 
@@ -139,10 +137,6 @@ export default {
       createLoading: false,
       deleteLoading: null,
       errors: [],
-      icons: {
-        mdiMagnify,
-        mdiPlusCircleOutline,
-      },
     }
   },
   computed: {

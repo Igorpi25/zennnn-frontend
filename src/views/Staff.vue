@@ -238,13 +238,6 @@
 </template>
 
 <script>
-import {
-  mdiMagnify,
-  mdiChevronUp,
-  mdiChevronDown,
-  mdiPlusCircleOutline,
-} from '@mdi/js'
-
 import StaffCreateModal from '../components/StaffCreateModal.vue'
 import { LIST_ORG_INVITATIONS, LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
@@ -296,12 +289,6 @@ export default {
       createStaffDialog: false,
       expanded: [],
       errors: [],
-      icons: {
-        mdiMagnify,
-        mdiChevronUp,
-        mdiChevronDown,
-        mdiPlusCircleOutline,
-      },
     }
   },
   computed: {
