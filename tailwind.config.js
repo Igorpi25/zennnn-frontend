@@ -43,13 +43,14 @@ module.exports = {
       'blue-600': '#5C78B1', // primary hover color
       'blue-700': '#345DEE', // landing color
       'blue-800': '#2F52D4', // landing hover color
+      'blue-900': '#4C51BF', // custom price color
       'pink-500': '#FF005E', // error, IN_PROCESSING
       'pink-600': '#E00052',
+      'purple-500': '#EF20E6',
       'green-500': '#08DC1B', // success, IN_STOCK
       'yellow-300': '#EAD377', // input warning
       'yellow-400': '#D7C370', // checkbox error text
       'yellow-500': '#FDB600', // warning, IN_PRODUCTION
-      'purple-500': '#4C51BF', // custom price color
       'red-500': '#FF212D',
       'red-600': '#FF121F', // spec total client debt text
       'red-900': '#3D242D', // error color

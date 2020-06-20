@@ -1,56 +1,46 @@
 <template>
   <div>
-    <div
-      ref="defaultActivator"
-      class="relative flex items-center"
-      @click="toggleMenu"
-    >
-      <v-scale-transition>
-        <div
-          v-if="newCommentsCount > 0"
-          :style="badgeStyles"
-          style="background-color: #ff4800"
-          class="absolute rounded-full flex justify-center items-center text-xs text-white"
-        >
-          <span v-if="!sm">
-            {{ newCommentsCount > 99 ? '99+' : newCommentsCount }}
-          </span>
-        </div>
-      </v-scale-transition>
-      <i :class="['zi-chat cursor-pointer select-none', sm ? 'text-sm' : 'text-xl']" />
-    </div>
+    <!-- TODO: scrollt to new on open -->
     <v-menu
       v-model="isMenuActive"
-      :activator="activator || $refs.defaultActivator"
       :close-on-content-click="false"
-      :open-on-click="false"
       :left="left"
       :top="top"
       :right="right"
       :bottom="bottom"
       :offset-x="offsetX"
       :offset-y="offsetY"
-      min-width="320px"
-      max-height="420px"
+      min-width="320"
+      max-width="320"
+      max-height="75vh"
     >
+      <template v-slot:activator="{ on }">
+        <slot name="activator" :on="on">
+          <div
+            class="relative flex items-center"
+            v-on="on"
+          >
+            <v-scale-transition>
+              <div
+                v-if="newCommentsCount > 0"
+                :style="badgeStyles"
+                class="absolute rounded-full flex justify-center items-center text-xs text-white bg-purple-500"
+              >
+                <span v-if="!sm">
+                  {{ newCommentsCount > 99 ? '99+' : newCommentsCount }}
+                </span>
+              </div>
+            </v-scale-transition>
+            <i class="zi-chat cursor-pointer select-none text-2xl" />
+          </div>
+        </slot>
+      </template>
       <div
-        :class="['px-4 py-5', light ? 'paper-theme' : 'bg-gray']"
+        :class="['px-5 py-5', light ? 'bg-white' : 'bg-gray-400']"
       >
-        <div>
-          <CommentInput
-            ref="commentInput"
-            v-model="comment"
-            :loading="addCommentLoading"
-            :light="light"
-            :label="$t('comments.enterComment')"
-            :class="{ 'pb-4': discussions.length > 0 }"
-            @submit="addComment"
-          />
-        </div>
         <div
-          v-for="(item, index) in discussions"
+          v-for="(item) in discussions"
           :key="item.id"
-          :class="{ 'pb-4': discussions.length - 1 > index }"
         >
           <Comment
             :item="item"
@@ -58,6 +48,16 @@
             :is-product="isProduct"
             :spec-id="specId"
             :product-id="productId"
+          />
+        </div>
+        <div>
+          <CommentInput
+            ref="commentInput"
+            v-model="comment"
+            :loading="addCommentLoading"
+            :light="light"
+            :label="$t('comments.enterComment')"
+            @submit="addComment"
           />
         </div>
       </div>
@@ -212,7 +212,7 @@ export default {
         }).sort((a, b) => {
           const aDate = this.$parseDate(a.updatedAt)
           const bDate = this.$parseDate(b.updatedAt)
-          return aDate > bDate ? -1 : aDate < bDate ? 1 : 0
+          return aDate > bDate ? 1 : aDate < bDate ? -1 : 0
         })
     },
   },
@@ -313,18 +313,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.paper-theme {
-  background-color: #f4f4f4;
-}
-.paper-theme textarea {
-  color: #494949!important;
-}
-.paper-theme .text-area--outlined .text-area__slot {
-  border-color: #d6d6d6!important;
-}
-.paper-theme .text-area--focused.text-area--outlined .text-area__slot {
-  background-color: #fdfdfd!important;
-}
-</style>>

@@ -1,4 +1,4 @@
-import { mergeClasses } from '../../util/helpers'
+import { mergeClasses, convertToUnit } from '../../util/helpers'
 
 export default {
   name: 'Button',
@@ -26,6 +26,7 @@ export default {
       type: String,
       default: 'w-full flex items-center justify-center',
     },
+    minWidth: [String, Number],
   },
   computed: {
     staticClass () {
@@ -155,6 +156,9 @@ export default {
     }
     if (tag === 'button') {
       data.attrs.disabled = this.disabled || this.loading
+    }
+    if (this.minWidth) {
+      data.style = { minWidth: convertToUnit(this.minWidth) }
     }
     return h(tag, data, children)
   },
