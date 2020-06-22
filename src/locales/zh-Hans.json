@@ -1,12 +1,39 @@
 {
   "app": {
+    "title": "国际批发贸易服务第一平台",
+    "description": "我们为您提供革命性的国际批发服务，具有远程供应链管理与简易的控制国际贸易。 包括自动处理基本的进出口手续，财务，产品分享等等，公司所有的运营活动和管理过程都集中在这个系统中。",
     "userAgreement": "用户服务协议"
   },
-  "home": {},
+  "home": {
+    "title": "国际批发贸易第一平台",
+    "subtitle1": "简单",
+    "subtitle2": "多种语言",
+    "subtitle3": "强大",
+    "cty": "30天免费体验"
+  },
   "payment": {},
   "pricing": {},
-  "footer": {},
+  "footer": {
+    "about": "关于",
+    "faq": "常问问题",
+    "stack": "技术栈",
+    "terms": "使用条款",
+    "privacy": "隐私政策",
+    "modules": "扩展模块",
+    "tariffs": "套餐",
+    "jobs": "空缺",
+    "coordinates": "联络人",
+    "blog": "博客",
+    "subscriptionManagement": "订阅",
+    "training": "学习",
+    "vk": "VK",
+    "feedback": "联系我们"
+  },
   "passwordRestore": {
+    "title": "找回访问权限",
+    "subtitle": "请输入用于进入系统的电子邮件地址。",
+    "hint": "如果您的收件箱中没有电子邮件，请检查垃圾邮件文件夹或再次按发送电子邮件。",
+    "emailLabel": "电子邮件地址（ZENNNN登录名）",
     "accessRecoveryHead": "找回密码，",
     "accessRecoverySubhead": "请输入邮箱地址。",
     "recoveryByEmail": "通过电子邮箱找回密码",
@@ -34,6 +61,7 @@
     "submit": "找回用户名"
   },
   "signin": {
+    "title": "国际批发贸易第一平台",
     "subtitle": "简单。 多种语言。 强大。",
     "formTitle": "登录",
     "noAccount": "尚未注册？",
@@ -361,6 +389,7 @@
     "clientAddCreate": "创建",
     "clientAddEdit": "编辑",
     "clientAddNotCreated": "不存在",
+    "clientAddNoData": "无可用数据",
     "legalPerson": "公司",
     "privatePerson": "私人",
     "otherPerson": "其他组织",
@@ -435,9 +464,16 @@
     "contactPerson": "联系人",
     "inn": "纳税人识别号(VAT)",
     "suppliersDebt": "我司债务 （往供应商）",
-    "currentDealsAmount": "与供应商的当前交易量。"
+    "currentDealsAmount": "与供应商的当前交易量。",
+    "dealsAmountHint": "与供应商进行的所有交易的总商品成本。",
+    "turnoverHint": "所有交易对供应商的总债务。",
+    "tags": "标签",
+    "usn": "应商编号"
   },
   "supplier": {
+    "createTitle": "创建新供应商",
+    "editTitle": "供应商资料",
+    "created": "已创建",
     "supplierCard": "供应商登记表",
     "edit": "编辑",
     "supplierCardPatterns": "供应商登记表模板",
@@ -781,6 +817,9 @@
   "header": {
     "requisites": "公司资料",
     "myCompanies": "我的账户",
+    "dictionary": "词典",
+    "inbox": "收件",
+    "tariffs": "套餐",
     "signin": "登录",
     "signout": "登出",
     "role": {
@@ -884,6 +923,7 @@
     "removeEmployee": "是否删除此员工？"
   },
   "rule": {
+    "phone": "电话号码不正确",
     "onlyLatin": "只允许使用拉丁字母和符号",
     "required": "请填写",
     "requiredSelect": "请选",
@@ -944,7 +984,12 @@
     "CFR": "CFR",
     "CIF": "CIF"
   },
-  "branchType": {},
+  "branchType": {
+    "OFFICE": "办公室",
+    "PRODUCTION": "工厂",
+    "WAREHOUSE": "仓库",
+    "SHOP": "店铺"
+  },
   "productStatus": {
     "IN_DRAFT": "预计",
     "IN_PROCESSING": "咨询当中",

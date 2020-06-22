@@ -1,12 +1,39 @@
 {
   "app": {
+    "title": "國際批發貿易服務第一平台",
+    "description": "我們為您提供革命性的國際批發服務，具有遠程供應鏈管理與簡易的控制國際貿易。包括自動處理基本的進出口手續，財務，產品分享等等，公司所有的運營活動和管理過程都集中在這個系統中。",
     "userAgreement": "用戶服務協議 "
   },
-  "home": {},
+  "home": {
+    "title": "國際批發貿易第一平台",
+    "subtitle1": "簡單",
+    "subtitle2": "多種語言",
+    "subtitle3": "強大",
+    "cty": "30天免費體驗"
+  },
   "payment": {},
   "pricing": {},
-  "footer": {},
+  "footer": {
+    "about": "關於",
+    "faq": "常問問題",
+    "stack": "技術棧",
+    "terms": "使用條款",
+    "privacy": "隱私政策",
+    "modules": "擴展模塊",
+    "tariffs": "套餐",
+    "jobs": "空缺",
+    "coordinates": "聯絡人",
+    "blog": "博客",
+    "subscriptionManagement": "訂閱",
+    "training": "學習",
+    "vk": "VK",
+    "feedback": "聯繫我們"
+  },
   "passwordRestore": {
+    "title": "找回訪問權限",
+    "subtitle": "請輸入用於進入系統的電子郵件地址。",
+    "hint": "如果您的收件箱中沒有電子郵件，請檢查垃圾郵件文件夾或再次按發送電子郵件。",
+    "emailLabel": "電子郵件地址（ZENNNN登錄名）",
     "accessRecoveryHead": "找回密碼，",
     "accessRecoverySubhead": "請輸入電子郵件。",
     "recoveryByEmail": "通過電子郵箱找回密碼",
@@ -34,6 +61,7 @@
     "submit": "找回用戶名"
   },
   "signin": {
+    "title": "國際批發貿易第一平台",
     "subtitle": "簡單。 多種語言。 強大。",
     "formTitle": "登入",
     "noAccount": "尚未註冊？",
@@ -361,6 +389,7 @@
     "clientAddCreate": "創建",
     "clientAddEdit": "編輯",
     "clientAddNotCreated": "不存在",
+    "clientAddNoData": "無可用數據",
     "legalPerson": "公司",
     "privatePerson": "私人",
     "otherPerson": "其他組織",
@@ -435,9 +464,16 @@
     "contactPerson": "聯系人",
     "inn": "納稅人識別號 (VAT)",
     "suppliersDebt": "我司債務 （往供應商）",
-    "currentDealsAmount": "與供應商的當前交易量。"
+    "currentDealsAmount": "與供應商的當前交易量。",
+    "dealsAmountHint": "與供應商進行的所有交易的總商品成本。",
+    "turnoverHint": "所有交易對供應商的總債務。",
+    "tags": "標籤",
+    "usn": "供應商編號"
   },
   "supplier": {
+    "createTitle": "創建新供應商",
+    "editTitle": "供應商資料",
+    "created": "已創造",
     "supplierCard": "供應商登記表",
     "edit": "編輯",
     "supplierCardPatterns": "供應商登記表模板",
@@ -782,6 +818,9 @@
   "header": {
     "requisites": "公司資料",
     "myCompanies": "我的賬戶",
+    "dictionary": "詞典",
+    "inbox": "收件",
+    "tariffs": "套餐",
     "signin": "登入",
     "signout": "登出",
     "role": {
@@ -885,6 +924,7 @@
     "removeEmployee": "是否刪除此員工？"
   },
   "rule": {
+    "phone": "電話號碼不正確",
     "onlyLatin": "只允許使用拉丁字母和符號",
     "required": "請填寫",
     "requiredSelect": "請選",
@@ -945,7 +985,12 @@
     "CFR": "CFR",
     "CIF": "CIF"
   },
-  "branchType": {},
+  "branchType": {
+    "OFFICE": "辦公室",
+    "PRODUCTION": "工廠",
+    "WAREHOUSE": "倉庫",
+    "SHOP": "店鋪"
+  },
   "productStatus": {
     "IN_DRAFT": "預計",
     "IN_PROCESSING": "咨詢當中",
