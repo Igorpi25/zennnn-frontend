@@ -284,7 +284,7 @@ export default {
       this.postcode = ''
       this.countriesSearch = ''
       this.cardElement.clear()
-      this.billingAddress && this.$refs.form.reset()
+      this.billingAddress && this.$refs.form && this.$refs.form.reset()
     },
     showCardError (event) {
       if (event) {
