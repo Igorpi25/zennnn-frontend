@@ -2,10 +2,10 @@
   <div class="flex items-center">
     <v-menu
       v-model="menu"
+      :content-class="light ? 'locale-picker__menu locale-picker__menu--light' : 'locale-picker__menu'"
       :nudge-bottom="nudgeBottom"
       bottom
       left
-      content-class="locale-picker__menu"
     >
       <template v-slot:activator="{ on }">
         <div
@@ -23,7 +23,10 @@
       </template>
       <template>
         <ul
-          class="border-gray-400 text-sm text-gray-100 bg-gray-400 py-2"
+          :class="[
+            'text-sm rounded py-2',
+            light ? 'border-white text-gray-900 bg-white' : 'border-gray-400 text-gray-100 bg-gray-400'
+          ]"
           role="menu"
         >
           <li
@@ -31,9 +34,10 @@
             :key="locale.value"
             :value="locale.value"
             :class="[
-              'flex items-center h-9 px-2 cursor-pointer hover:bg-gray-300 focus:outline-none focus:bg-gray-300',
+              light ? 'hover:bg-gray-50 focus:bg-gray-50' : 'hover:bg-gray-300 focus:bg-gray-300',
+              'flex items-center h-9 px-2 cursor-pointer focus:outline-none',
               'transition-colors duration-100 ease-out',
-              { 'text-white': locale.value === $i18n.locale }
+              locale.value === $i18n.locale && light ? 'text-gray-900 font-semibold' : locale.value === $i18n.locale ? 'text-white' : '',
             ]"
             tabindex="0"
             role="menuitem"
@@ -63,6 +67,7 @@ export default {
       type: [String, Number],
       default: 40,
     },
+    light: Boolean,
   },
   data () {
     return {
@@ -85,9 +90,16 @@ export default {
 </script>
 
 <style lang="postcss">
+[data-theme="light"] .locale-picker__menu {
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15)!important;
+}
+.locale-picker__menu {
+  margin-top: 8px;
+  overflow: visible;
+  contain: initial;
+}
 .locale-picker__menu > ul {
   position: relative;
-  margin-top: 8px;
 }
 .locale-picker__menu > ul::after {
   border-color: transparent;
@@ -103,8 +115,5 @@ export default {
   border-width: 0 5px 5px 5px;
   border-bottom-color: inherit;
 }
-.locale-picker__menu > ul {
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-}
+.locale-picker__menu--light {}
 </style>

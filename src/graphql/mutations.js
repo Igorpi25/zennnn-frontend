@@ -11,21 +11,15 @@ import {
   BANK_DETAIL_FRAGMENT,
 } from './typeDefs'
 
-export const CREATE_PAYMENT_SUBSCRIPTION = gql`
-  mutation CreatePaymentSubscription($paymentMethodId: String!, $priceId: String!) {
-    createPaymentSubscription(paymentMethodId: $paymentMethodId, priceId: $priceId)
+export const UPDATE_PAYMENT_SUBSCRIPTION = gql`
+  mutation UpdatePaymentSubscription($priceId: String!, $paymentMethodId: String) {
+    updatePaymentSubscription(priceId: $priceId, paymentMethodId: $paymentMethodId)
   }
 `
 
 export const CREATE_PROMO_SUBSCRIPTION = gql`
   mutation CreatePromoSubscription($paymentMethodId: String!) {
     createPromoSubscription(paymentMethodId: $paymentMethodId)
-  }
-`
-
-export const CHANGE_PAYMENT_SUBSCRIPTION = gql`
-  mutation ChangePaymentSubscription($priceId: String!) {
-    changePaymentSubscription(priceId: $priceId)
   }
 `
 
@@ -59,6 +53,12 @@ export const DETACH_PAYMENT_METHOD = gql`
   }
 `
 
+export const SET_BILLING_ADDRESS = gql`
+  mutation SetBillingAddress($country: String!, $city: String!, $street: String!, $postcode: String!) {
+    setBillingAddress(country: $country, city: $city, street: $street, postcode: $postcode)
+  }
+`
+
 export const SIGNUP = gql`
   mutation Signup($givenName: String!, $familyName: String!, $email: String!, $password: String!, $locale: String!, $priceId: String) {
     signup(givenName: $givenName, familyName: $familyName, email: $email, password: $password, locale: $locale, priceId: $priceId) {
@@ -77,7 +77,8 @@ export const SIGNUP = gql`
         price
         productId
         priceId
-        canTrial
+        canPromo
+        hasBillingAddress
         periodEnd
         cancelAtPeriodEnd
         org

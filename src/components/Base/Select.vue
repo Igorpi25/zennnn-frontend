@@ -94,7 +94,7 @@
       offset-y
     >
       <ul
-        :class="['select-picker', { 'select-picker--dense': solo || dense }]"
+        :class="['select-picker', { 'select-picker--dense': solo || dense }, { 'pt-2 pb-3': padded }]"
         role="menu"
       >
         <li
@@ -270,6 +270,10 @@ export default {
     size: [Number, String],
     readonly: Boolean,
     hideNoData: Boolean,
+    padded: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {

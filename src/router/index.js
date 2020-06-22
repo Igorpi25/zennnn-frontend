@@ -7,14 +7,15 @@ import OrgLayout from '../views/OrgLayout.vue'
 import { i18n } from '../plugins'
 import { checkAuth } from '../plugins/auth/checkAuth'
 import { apolloClient } from '../plugins/apollo'
-import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
+import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS, GET_PROFILE } from '../graphql/queries'
 
 import { CURRENT_LANG_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
 
 const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
 const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 const Pricing = () => import(/* webpackChunkName: "home" */ '../views/Pricing.vue')
-const Payment = () => import(/* webpackChunkName: "home" */ '../views/Payment.vue')
+const Payment = () => import(/* webpackChunkName: "main" */ '../views/Payment.vue')
+const Subscription = () => import(/* webpackChunkName: "main" */ '../views/Subscription.vue')
 const RequisiteList = () => import(/* webpackChunkName: "main" */ '../views/RequisiteList.vue')
 const RequisiteItem = () => import(/* webpackChunkName: "main" */ '../views/RequisiteItem.vue')
 // const OrgLayout = () => import(/* webpackChunkName: "main" */ '../views/OrgLayout.vue')
@@ -195,35 +196,81 @@ const routes = [
     ],
   },
   {
-    path: '/z-:orgId?/payment',
+    path: '/pricing',
+    name: 'pricing',
+    meta: { scrollToTop: true },
+    component: Pricing,
+    beforeEnter: async (to, from, next) => {
+      try {
+        const loggedIn = await checkAuth()
+        if (loggedIn) {
+          await apolloClient.query({
+            query: GET_ORGS,
+            fetchPolicy: 'cache-first',
+          })
+          await apolloClient.query({
+            query: GET_PROFILE,
+            fetchPolicy: 'cache-first',
+          })
+        }
+        next()
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log('Error on navigation to pricing.', error)
+        next()
+      }
+    },
+  },
+  {
+    path: '/payment/:type(change|promo|invoice)',
     name: 'payment',
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, scrollToTop: true },
     component: Payment,
     beforeEnter: async (to, from, next) => {
       try {
-        const { data: { getOrgs } } = await apolloClient.query({
+        await apolloClient.query({
           query: GET_ORGS,
           fetchPolicy: 'cache-first',
         })
-        if (!getOrgs || getOrgs.length === 0) {
-          throw new Error('Not found')
-        }
-        const orgId = to.params.orgId
+        const { data: { getProfile } } = await apolloClient.query({
+          query: GET_PROFILE,
+          fetchPolicy: 'cache-first',
+        })
+        const orgId = getProfile && getProfile.account && getProfile.account.org
         if (!orgId) {
-          const [org] = getOrgs
-          if (org && org.id) {
-            localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
-            next({ name: 'specs', params: { orgId: org.id } })
-          } else {
-            localStorage.removeItem(CURRENT_ORG_STORE_KEY)
-            throw new Error('Not found')
-          }
-        } else if (getOrgs.some(el => el.id === orgId)) {
-          localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
-          next()
+          next(false)
         } else {
-          localStorage.removeItem(CURRENT_ORG_STORE_KEY)
-          throw new Error('Not found')
+          next()
+        }
+      } catch (error) {
+        if (error.message === 'Not found') {
+          next('not-found')
+        } else {
+          next(false)
+        }
+      }
+    },
+  },
+  {
+    path: '/subscription',
+    name: 'subscription',
+    meta: { requiresAuth: true, scrollToTop: true },
+    component: Subscription,
+    beforeEnter: async (to, from, next) => {
+      try {
+        await apolloClient.query({
+          query: GET_ORGS,
+          fetchPolicy: 'cache-first',
+        })
+        const { data: { getProfile } } = await apolloClient.query({
+          query: GET_PROFILE,
+          fetchPolicy: 'cache-first',
+        })
+        const orgId = getProfile && getProfile.account && getProfile.account.org
+        if (!orgId) {
+          next(false)
+        } else {
+          next()
         }
       } catch (error) {
         if (error.message === 'Not found') {
@@ -271,11 +318,6 @@ const routes = [
     path: '/about',
     name: 'about',
     component: About,
-  },
-  {
-    path: '/pricing',
-    name: 'pricing',
-    component: Pricing,
   },
   {
     path: '/paper/:specId',
@@ -439,7 +481,7 @@ router.beforeEach(async (to, from, next) => {
   } else {
     // set light theme permanently
     const fromUndef = from.name === null && from.path === '/'
-    if (fromUndef && (to.name === 'paper' || to.name === 'about' || to.name === 'pricing' || to.name === 'payment')) {
+    if (fromUndef && (to.name === 'paper' || to.name === 'about' || to.name === 'pricing' || to.name === 'payment' || to.name === 'subscription')) {
       setTheme('light')
       return next()
     }
@@ -449,7 +491,7 @@ router.beforeEach(async (to, from, next) => {
 
 router.beforeResolve((to, from, next) => {
   let theme = 'dark'
-  if (to.name === 'paper' || to.name === 'about' || to.name === 'pricing' || to.name === 'payment') {
+  if (to.name === 'paper' || to.name === 'about' || to.name === 'pricing' || to.name === 'payment' || to.name === 'subscription') {
     theme = 'light'
   }
   // set theme meta && attribute

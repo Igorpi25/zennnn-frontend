@@ -1,7 +1,7 @@
 <template>
   <div class="tariff-card leading-snug bg-white overflow-hidden rounded-md flex flex-wrap sm:justify-center">
     <div
-      v-for="(item, i) of plans"
+      v-for="(item, i) of products"
       :key="i"
       :class="{ 'bg-gray-50': item.name === 'Advanced' }"
       class="tariff-card__item w-full sm:w-1/2 lg:w-1/4 flex flex-col px-8 pt-8"
@@ -28,7 +28,12 @@
       </div>
       <div style="min-height: 164px">
         <div class="pb-4">
-          {{ item.econ }}
+          <div v-if="item.isCustomPrice">
+            {{ $t('pricing.premiumEcon') }}
+          </div>
+          <div v-else>
+            {{ $t('pricing.inMonth') }}, &nbsp; <span class="text-yellow-500">{{ $t('pricing.econ') }}</span>
+          </div>
         </div>
         <div class="text-gray-200">
           {{ item.priceMonthly }}
@@ -112,12 +117,17 @@ export default {
       return this.prices.find(el => el.id === this.selectedPriceId) || {}
     },
     selectedProduct () {
-      return this.plans.find(el => el.id === this.selectedProductId) || {}
+      return this.products.find(el => el.id === this.selectedProductId) || {}
     },
-    plans () {
+    products () {
       const currencyRate = this.currencyRates[this.localeCurrency]
       const getPriceInCurrency = (rate) => this.localeCurrency !== 'USD'
-        ? Math.round((rate * currencyRate)).toLocaleString(this.$i18n.locale, { minimumFractionDigits: 0, maximumFractionDigits: 2, style: 'currency', currency: this.localeCurrency })
+        ? this.$n(Math.round((rate * currencyRate)), {
+          style: 'currency',
+          currency: this.localeCurrency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })
         : null
       const prices = {}
       const products = {}
@@ -132,65 +142,61 @@ export default {
           mId: prices['Start Monthly'],
           aId: prices['Start Annual'],
           name: 'Start',
-          title: 'Старт',
-          team: 'до 3-х',
+          title: this.$t('pricing.start'),
+          team: this.$t('pricing.startUpTo'),
           mPriceInCurrency: getPriceInCurrency(30),
           mPrice: '$30',
           aPriceInCurrency: getPriceInCurrency(15),
           aPriceTotal: '$180',
           aPrice: '$15',
-          priceMonthly: '$30 / месяц, при оплате ежемесячно',
-          econ: 'в месяц, экономия 50% при оплате за год',
-          description: 'Все необходимые функции для начала работы в международной торговле',
-          feats: ['Отправка уведомлений на эл. почту'],
-          to: this.isLoggedIn ? { name: 'payment', params: { orgId: this.orgId }, query: { product: products.Start } } : { name: 'signup' },
+          priceMonthly: this.$t('pricing.monthlyPrice', { price: '$30' }),
+          description: this.$t('pricing.startDescription'),
+          feats: [this.$t('pricing.feat1')],
+          to: !this.isLoggedIn ? { name: 'signup', query: { price: prices['Start Annual'] } } : null,
         },
         {
           id: products.Standard,
           mId: prices['Standard Monthly'],
           aId: prices['Standard Annual'],
           name: 'Standard',
-          title: 'Стандарт',
+          title: this.$t('pricing.standard'),
           team: '4-10',
           mPriceInCurrency: getPriceInCurrency(198),
           mPrice: '$198',
           aPriceInCurrency: getPriceInCurrency(99),
           aPriceTotal: '$1188',
           aPrice: '$99',
-          priceMonthly: '$198 в месяц, при оплате ежемесячно',
-          econ: 'в месяц, экономия 50% при оплате за год',
-          description: 'Полноценная работа офиса на удаленке',
-          feats: ['Отправка уведомлений на эл. почту'],
-          to: this.isLoggedIn ? { name: 'payment', params: { orgId: this.orgId }, query: { product: products.Standard } } : { name: 'signup' },
+          priceMonthly: this.$t('pricing.monthlyPrice', { price: '$198' }),
+          description: this.$t('pricing.standardDescription'),
+          feats: [this.$t('pricing.feat1')],
+          to: !this.isLoggedIn ? { name: 'signup', query: { price: prices['Standard Annual'] } } : null,
         },
         {
           id: products.Advanced,
           mId: prices['Advanced Monthly'],
           aId: prices['Advanced Annual'],
           name: 'Advanced',
-          title: 'Продвинутый',
+          title: this.$t('pricing.advanced'),
           team: '11+',
           mPriceInCurrency: getPriceInCurrency(398),
           mPrice: '$398',
           aPriceInCurrency: getPriceInCurrency(199),
           aPriceTotal: '$2388',
           aPrice: '$199',
-          priceMonthly: '$398 в месяц, при оплате ежемесячно',
-          econ: 'в месяц, экономия 50% при оплате за год',
-          description: 'Идеально подойдет малому и среднему бизнесу для повышения дохода компании',
-          feats: ['Оформление аккаунта в соответствии с фирменным стилем компании', 'Настраиваемая реклама на странице кабинета клиента', 'Отправка СМС уведомлений'],
-          to: this.isLoggedIn ? { name: 'payment', params: { orgId: this.orgId }, query: { product: products.Advanced } } : { name: 'signup' },
+          priceMonthly: this.$t('pricing.monthlyPrice', { price: '$398' }),
+          description: this.$t('pricing.advancedDescription'),
+          feats: [this.$t('pricing.feat2'), this.$t('pricing.feat3'), this.$t('pricing.feat4')],
+          to: !this.isLoggedIn ? { name: 'signup', query: { price: prices['Advanced Annual'] } } : null,
         },
         {
           id: products.Premium || 'Premium',
           isCustomPrice: true,
           name: 'Premium',
-          title: 'Премиум',
+          title: this.$t('pricing.premium'),
           team: '25+',
           aPrice: '$~',
-          econ: 'Индивидуальная цена зависит от условий обслуживания',
-          description: 'Индивидуальный подход — индивидуален во всем',
-          feats: ['Помощь всей компании перейти на логику ZENNNN', 'Поддержка 24/7', 'Серверная инфраструктура', 'Оформление аккаунта в соответствии с фирменным стилем компании', 'Настраиваемая реклама на странице кабинета клиента', 'Синяя галочка «Авторизовано ZENNNN»', 'Отправка СМС уведомлений'],
+          description: this.$t('pricing.premiumDescription'),
+          feats: [this.$t('pricing.feat5'), this.$t('pricing.feat6'), this.$t('pricing.feat7'), this.$t('pricing.feat2'), this.$t('pricing.feat3'), this.$t('pricing.feat8'), this.$t('pricing.feat4')],
         },
       ]
     },
@@ -198,8 +204,8 @@ export default {
       switch (this.$i18n.locale) {
         case 'fr': return 'EUR'
         case 'ru': return 'RUB'
-        case 'zh-Hans':
-        case 'zh-Hant': return 'CNY'
+        case 'zh-Hans': return 'CNY'
+        case 'zh-Hant': return 'HKD'
         default: return 'USD'
       }
     },
@@ -221,10 +227,13 @@ export default {
     onClick (item) {
       this.selectedProductId = item.id
       this.$emit('select', item)
+      if (this.isLoggedIn && !item.isCustomPrice) {
+        this.$router.push({ name: 'payment', params: { type: 'change' }, query: { product: item.id, interval: 'annual' } })
+      }
     },
     async getRates () {
       try {
-        const response = await this.$axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,RUB,EUR,GBP')
+        const response = await this.$axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
         if (response.data) {
           this.currencyRates = response.data.rates
         }

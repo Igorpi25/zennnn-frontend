@@ -1,5 +1,5 @@
 .select-picker {
-  @apply text-gray-100 bg-gray-900 text-left py-1;
+  @apply text-gray-100 bg-gray-900 text-left;
 }
 [data-theme="light"] .select-picker {
   background-color: #fff;
@@ -38,10 +38,6 @@
 .select-menu.v-menu__content {
   border-top-left-radius: 0!important;
   border-top-right-radius: 0!important;
-}
-.select-menu.v-menu__content .select-picker {
-  padding-top: 8px;
-  padding-bottom: 12px;
 }
 .select-menu.v-menu__content {
   @apply shadow-blue-500;

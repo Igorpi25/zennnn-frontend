@@ -1,5 +1,53 @@
 <template>
+  <div v-if="noDialog">
+    <Form
+      ref="form"
+      v-model="formValidity"
+      @submit="onSubmit"
+    >
+      <TextField
+        ref="name"
+        v-model="name"
+        :label="$t('pricing.nameLabel')"
+        :placeholder="$t('pricing.namePlaceholder')"
+        :rules="[rules.required]"
+        type="text"
+        class="pb-4"
+        name="full-name"
+        validate-on-blur
+        content-class="bg-white shadow-gray-75"
+        input-class="placeholder-gray-100 text-gray-900"
+        label-class="text-black"
+      />
+      <TextField
+        v-model="email"
+        :label="$t('pricing.emailLabel')"
+        placeholder="example@mail.com"
+        :rules="[rules.required, rules.email]"
+        class="pb-6"
+        type="email"
+        autocomplete="on"
+        name="email"
+        validate-on-blur
+        content-class="bg-white shadow-gray-75"
+        input-class="placeholder-gray-100 text-gray-900"
+        label-class="text-black"
+      />
+    </Form>
+    <div>
+      <Button
+        :loading="loading"
+        :disabled="formValidity"
+        :merge-class="formValidity ? 'bg-gray-100 text-white cursor-not-allowed' : ''"
+        min-width="185"
+        @click="onSubmit"
+      >
+      {{ $t('pricing.send') }}
+      </Button>
+    </div>
+  </div>
   <v-dialog
+    v-else
     v-model="dialog"
     max-width="458"
     content-class="relative text-gray-900 bg-white"
@@ -86,6 +134,9 @@ import { PREMIUM_CONTACT } from '../graphql/mutations'
 
 export default {
   name: 'PriceContactForm',
+  props: {
+    noDialog: Boolean,
+  },
   data () {
     return {
       dialog: false,
@@ -105,6 +156,10 @@ export default {
         setTimeout(() => {
           if (this.$refs.name) this.$refs.name.focus()
         }, 200)
+      } else {
+        setTimeout(() => {
+          if (this.$refs.form) this.$refs.form.reset()
+        }, 200)
       }
     },
   },
@@ -120,12 +175,15 @@ export default {
           },
           fetchPolicy: 'no-cache',
         })
+        this.dialog = false
+        setTimeout(() => {
+          if (this.$refs.form) this.$refs.form.reset()
+        }, 200)
       } catch (error) {
         const message = error.message
         this.$notify({ color: 'error', text: message })
       } finally {
         this.loading = false
-        this.dialog = false
       }
     },
   },
