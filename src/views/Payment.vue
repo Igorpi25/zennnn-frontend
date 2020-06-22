@@ -103,6 +103,7 @@
           :items="products"
           :padded="false"
           :input-class="selectedProduct ? 'placeholder-gray-100 text-gray-900 font-semibold text-right' : 'placeholder-gray-100'"
+          :disabled="isInvoice"
           readonly
           return-object
           item-value="id"
@@ -141,7 +142,21 @@
           {{ $t('payment.selectPaymentType') }}:
         </h3>
         <div
-          v-if="isPromo"
+          v-if="isInvoice"
+          class="border-blue-500 bg-white h-14 flex items-center justify-between rounded-md cursor-pointer border-2 border-transparent p-4"
+        >
+          <div class="sm:w-64">{{ $t('payment.invoiceAmount') }}</div>
+          <div class="hidden sm:block md:w-64 mx-8">
+            <div class="h-px bg-gray-75 w-full" />
+          </div>
+          <div class="flex items-center w-full">
+            <span class="font-bold">{{ invoiceProduct.price }}</span>
+            <span v-if="invoiceProduct.priceInCurrency" class="pl-1">~</span>
+            <span v-if="invoiceProduct.priceInCurrency" class="pl-1">{{ invoiceProduct.priceInCurrency }}</span>
+          </div>
+        </div>
+        <div
+          v-else-if="isPromo"
           class="border-blue-500 bg-white h-14 flex items-center justify-between rounded-md cursor-pointer border-2 border-transparent p-4"
         >
           <div class="sm:w-64">{{ $t('payment.extendMonth') }}</div>
@@ -227,7 +242,12 @@
         <div class="flex justify-between text-xl sm:text-2xl pt-10 pr-4 mr-xs">
           <div class="sm:w-64">{{ $t('payment.total') }}:</div>
           <div class="hidden sm:block md:w-64 mx-8" />
-          <div v-if="isPromo" class="flex items-center w-full pl-4 ml-xs">
+          <div v-if="isInvoice" class="flex items-center w-full pl-4 ml-xs">
+            <span class="font-bold">{{ invoiceProduct.price }}</span>
+            <span v-if="invoiceProduct.priceInCurrency" class="pl-1">~</span>
+            <span v-if="invoiceProduct.priceInCurrency" class="pl-1">{{ invoiceProduct.priceInCurrency }}</span>
+          </div>
+          <div v-else-if="isPromo" class="flex items-center w-full pl-4 ml-xs">
             <span class="font-bold">{{ promoProduct.price }}</span>
             <span v-if="promoProduct.priceInCurrency" class="pl-1">~</span>
             <span v-if="promoProduct.priceInCurrency" class="pl-1">{{ promoProduct.priceInCurrency }}</span>
@@ -354,17 +374,43 @@ export default {
     promoProduct () {
       const currencyRate = this.currencyRates[this.localeCurrency]
       const priceInCurrency = this.localeCurrency !== 'USD'
-        ? Math.round((1 * currencyRate)).toLocaleString(this.$i18n.locale, { minimumFractionDigits: 0, maximumFractionDigits: 2, style: 'currency', currency: this.localeCurrency })
+        ? this.$n(Math.round(1 * currencyRate), {
+          style: 'currency',
+          currency: this.localeCurrency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })
         : null
       return {
         price: '$1',
         priceInCurrency,
       }
     },
+    invoiceProduct () {
+      const invoiceAmount = Number(this.$route.query.amount || 0)
+      const currencyRate = this.currencyRates[this.localeCurrency]
+      const priceInCurrency = this.localeCurrency !== 'USD'
+        ? this.$n(Math.round(invoiceAmount * currencyRate), {
+          style: 'currency',
+          currency: this.localeCurrency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })
+        : null
+      return {
+        price: this.$n(Math.round(invoiceAmount * currencyRate), {
+          style: 'currency',
+          currency: 'USD',
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        }),
+        priceInCurrency,
+      }
+    },
     products () {
       const currencyRate = this.currencyRates[this.localeCurrency]
       const getPriceInCurrency = (rate) => this.localeCurrency !== 'USD'
-        ? this.$n(Math.round((rate * currencyRate)), {
+        ? this.$n(Math.round(rate * currencyRate), {
           style: 'currency',
           currency: this.localeCurrency,
           minimumFractionDigits: 0,
@@ -439,6 +485,9 @@ export default {
     },
     isPromo () {
       return this.paymentType === 'promo'
+    },
+    isInvoice () {
+      return this.paymentType === 'invoice'
     },
     productName () {
       if (

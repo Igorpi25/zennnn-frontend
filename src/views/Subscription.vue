@@ -60,7 +60,7 @@
             <div class="">
               <div class="h-6 text-lg font-semibold mb-xs">{{ productName }}</div>
               <!-- CHANGE PLAN DIALOG -->
-              <div v-if="(canChange || canSelect) && !isCanceled">
+              <div v-if="(canChange || canSelect)">
                 <v-dialog
                   v-model="changeDialog"
                   max-width="458"
@@ -408,7 +408,7 @@ export default {
   apollo: {
     getProfile: {
       query: GET_PROFILE,
-      fetchPolicy: 'cache-first',
+      fetchPolicy: 'network-only',
     },
     listPaymentMethods: {
       query: LIST_PAYMENT_METHODS,
@@ -473,12 +473,10 @@ export default {
     canChange () {
       return this.profile.account &&
         (this.profile.account.subscriptionId &&
-          (this.profile.account.subscriptionStatus === 'active' || this.profile.account.subscriptionStatus === 'trialing') &&
-          !(this.profile.account.price === 'Trial' || this.profile.account.price === 'Promo'))
+          (this.profile.account.subscriptionStatus === 'active' || this.profile.account.subscriptionStatus === 'trialing'))
     },
     canSelect () {
-      return this.profile.account &&
-        (!this.profile.account.subscriptionId || this.profile.account.price === 'Trial' || this.profile.account.price === 'Promo')
+      return this.profile.account && this.profile.account.subscriptionId
     },
     canCancel () {
       return this.profile.account && !this.profile.account.cancelAtPeriodEnd
@@ -494,6 +492,7 @@ export default {
   mounted () {
     if (this.$route.query.state === 'success') {
       this.successDialog = true
+      this.$router.push({ query: {} })
     }
     this.getRates()
     const observer = this.$apollo.subscribe({
@@ -522,7 +521,7 @@ export default {
   },
   methods: {
     openInvoice (invoice) {
-      this.$router.push({ name: 'payment', params: { type: 'invoice' }, query: { invoiceId: invoice.id } })
+      this.$router.push({ name: 'payment', params: { type: 'invoice' }, query: { invoiceId: invoice.id, invoiceNo: invoice.number, amount: (invoice.amount_due / 100).toFixed(2) } })
     },
     showSuccess (name) {
       this.successProductName = name
