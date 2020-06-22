@@ -41,7 +41,7 @@
               v-model="formValidity"
               :title="$t('signup.registration')"
               :error-message.sync="errorMessage"
-              class="form--max-w-sm mx-auto m-0 pt-8 md:pt-12 pb-10 px-0 md:px-12"
+              class="mx-auto m-0 pt-8 md:pt-12 pb-10 px-0 md:px-12"
             >
               <div class="w-full">
                 <TextField
@@ -83,18 +83,11 @@
                 >
                   <template v-slot:append>
                     <div
-                      class="cursor-pointer select-none"
+                      class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
                       @click="showPassword = !showPassword"
                     >
-                      <Icon
-                        v-if="showPassword"
-                        color="#9A9A9A"
-                        style="transform:rotateY(-180deg)"
-                      >{{ icons.mdiEyeOutline }}</Icon>
-                      <Icon
-                        v-else
-                        color="#9A9A9A"
-                      >{{ icons.mdiEyeOffOutline }}</Icon>
+                      <i v-if="showPassword" class="zi-eye align-middle" />
+                      <i v-else class=" zi-eye-off align-middle" style="font-size: 28px" />
                     </div>
                   </template>
                 </TextField>
@@ -137,8 +130,6 @@
 </template>
 
 <script>
-import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
-
 import Header from '@/components/Header.vue'
 import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
@@ -174,10 +165,6 @@ export default {
         lastName: '',
         email: '',
         password: '',
-      },
-      icons: {
-        mdiEyeOutline,
-        mdiEyeOffOutline,
       },
       rules: {
         required: v => !!v || this.$t('rule.required'),

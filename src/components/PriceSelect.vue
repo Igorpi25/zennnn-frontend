@@ -7,14 +7,8 @@
       />
     </span>
     <div class="bg-gray-50 flex px-8 py-5">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M21.8174 3.06641C22.208 2.67578 21.9307 2 21.376 2H2.62671C2.07204 2 1.7908 2.67188 2.18532 3.06641L10.4389 11.3203V20.4375H6.8453C6.23985 20.4375 5.75159 20.9258 5.75159 21.5312C5.75159 21.7891 5.96252 22 6.22032 22H17.7824C18.0402 22 18.2511 21.7891 18.2511 21.5312C18.2511 20.9258 17.7629 20.4375 17.1574 20.4375H13.5638V11.3203L21.8174 3.06641Z" fill="black"/>
-        <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="2" width="20" height="20">
-        <path d="M21.8174 3.06641C22.208 2.67578 21.9307 2 21.376 2H2.62671C2.07204 2 1.7908 2.67188 2.18532 3.06641L10.4389 11.3203V20.4375H6.8453C6.23985 20.4375 5.75159 20.9258 5.75159 21.5312C5.75159 21.7891 5.96252 22 6.22032 22H17.7824C18.0402 22 18.2511 21.7891 18.2511 21.5312C18.2511 20.9258 17.7629 20.4375 17.1574 20.4375H13.5638V11.3203L21.8174 3.06641Z" fill="white"/>
-        </mask>
-        <g mask="url(#mask0)">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H24V24H0V0Z" fill="#7E99D0"/>
-        </g>
+      <svg class="text-blue-500" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.8174 1.06641C20.208 0.675781 19.9307 0 19.376 0H0.626708C0.072041 0 -0.209198 0.671875 0.185318 1.06641L8.43891 9.32031V18.4375H4.8453C4.23985 18.4375 3.75159 18.9258 3.75159 19.5312C3.75159 19.7891 3.96252 20 4.22032 20H15.7824C16.0402 20 16.2511 19.7891 16.2511 19.5312C16.2511 18.9258 15.7629 18.4375 15.1574 18.4375H11.5638V9.32031L19.8174 1.06641Z" fill="currentColor"/>
       </svg>
       <div class="text-lg font-semibold text-gray-900 pl-4">
         {{ changePrice ? $t('payment.changePlanTitle') : $t('payment.selectPlan') }}
@@ -22,14 +16,14 @@
     </div>
     <div class="p-8">
       <div
-        v-for="(item, i) of plans"
+        v-for="(item, i) of products"
         :key="i"
-        :class="{ 'mb-2': i + 1 < plans.length }"
+        :class="{ 'mb-2': i + 1 < products.length }"
         class="flex items-center w-full bg-gray-50 rounded-md px-6 py-4"
       >
         <div class="w-1/2 sm:w-1/3 leading-tight">
-          <div class="text-gray-300 font-semibold pb-2">{{ item.name }}</div>
-          <div v-if="item.active" class="text-sm text-green-500">
+          <div class="text-gray-300 font-semibold pb-2">{{ item.title }}</div>
+          <div v-if="item.current" class="text-sm text-green-500">
             {{ $t('payment.currentPlan') }}
           </div>
           <div v-else class="text-sm">
@@ -84,7 +78,6 @@ export default {
     currentProductId: String,
     currentPriceId: String,
     changePrice: Boolean,
-    initProductId: String,
   },
   apollo: {
     listPrices: {
@@ -107,12 +100,17 @@ export default {
       return this.prices.find(el => el.id === this.selectedPriceId) || {}
     },
     selectedProduct () {
-      return this.plans.find(el => el.id === this.selectedProductId) || {}
+      return this.products.find(el => el.id === this.selectedProductId) || {}
     },
-    plans () {
+    products () {
       const currencyRate = this.currencyRates[this.localeCurrency]
       const getPriceInCurrency = (rate) => this.localeCurrency !== 'USD'
-        ? Math.round((rate * currencyRate)).toLocaleString(this.$i18n.locale, { minimumFractionDigits: 0, maximumFractionDigits: 2, style: 'currency', currency: this.localeCurrency })
+        ? this.$n(Math.round((rate * currencyRate)), {
+          style: 'currency',
+          currency: this.localeCurrency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })
         : null
       const prices = {}
       const products = {}
@@ -131,69 +129,54 @@ export default {
           mId: prices['Start Monthly'],
           aId: prices['Start Annual'],
           name: 'Start',
-          title: 'Старт',
-          team: 'до 3-х',
+          title: this.$t('pricing.start'),
           mPriceInCurrency: getPriceInCurrency(30),
           mPrice: '$30',
           aPriceInCurrency: getPriceInCurrency(15),
           aPriceTotal: '$180',
           aPrice: '$15',
-          priceMonthly: '$30 / месяц, при оплате ежемесячно',
-          econ: 'в месяц, экономия 50% при оплате за год',
-          description: 'Все необходимые функции для начала работы в международной торговле',
-          feats: ['Отправка уведомлений на эл. почту'],
-          active: this.currentProductId === products.Start,
+          current: this.currentProductId === products.Start,
           annotation: `${isAnnually ? '$15' : '$30'}<br>${this.$t('payment.monthly').toLowerCase()}`,
+          to: { name: 'payment', params: { type: 'change', product: products.Start } },
         },
         {
           id: products.Standard,
           mId: prices['Standard Monthly'],
           aId: prices['Standard Annual'],
           name: 'Standard',
-          title: 'Стандарт',
-          team: '4-10',
+          title: this.$t('pricing.standard'),
           mPriceInCurrency: getPriceInCurrency(198),
           mPrice: '$198',
           aPriceInCurrency: getPriceInCurrency(99),
           aPriceTotal: '$1188',
           aPrice: '$99',
-          priceMonthly: '$198 в месяц, при оплате ежемесячно',
-          econ: 'в месяц, экономия 50% при оплате за год',
-          description: 'Полноценная работа офиса на удаленке',
-          feats: ['Отправка уведомлений на эл. почту'],
-          active: this.currentProductId === products.Standard,
+          current: this.currentProductId === products.Standard,
           annotation: `${isAnnually ? '$99' : '$198'}<br>${this.$t('payment.monthly').toLowerCase()}`,
+          to: { name: 'payment', params: { type: 'change', product: products.Standard } },
         },
         {
           id: products.Advanced,
           mId: prices['Advanced Monthly'],
           aId: prices['Advanced Annual'],
           name: 'Advanced',
-          title: 'Продвинутый',
-          team: '11+',
+          title: this.$t('pricing.advanced'),
           mPriceInCurrency: getPriceInCurrency(398),
           mPrice: '$398',
           aPriceInCurrency: getPriceInCurrency(199),
           aPriceTotal: '$2388',
           aPrice: '$199',
-          priceMonthly: '$398 в месяц, при оплате ежемесячно',
-          econ: 'в месяц, экономия 50% при оплате за год',
-          description: 'Идеально подойдет малому и среднему бизнесу для повышения дохода компании',
-          feats: ['Оформление аккаунта в соответствии с фирменным стилем компании', 'Настраиваемая реклама на странице кабинета клиента', 'Отправка СМС уведомлений'],
-          active: this.currentProductId === products.Advanced,
+          current: this.currentProductId === products.Advanced,
           annotation: `${isAnnually ? '$199' : '$398'}<br>${this.$t('payment.monthly').toLowerCase()}`,
+          to: { name: 'payment', params: { type: 'change', product: products.Advanced } },
         },
         {
-          id: products.Premium || 'Premium',
+          id: products.Premium,
           isCustomPrice: true,
           name: 'Premium',
-          title: 'Премиум',
-          team: '25+',
+          title: this.$t('pricing.premium'),
           aPrice: '$~',
-          econ: 'Индивидуальная цена зависит от условий обслуживания',
-          description: 'Индивидуальный подход — индивидуален во всем',
-          feats: ['Помощь всей компании перейти на логику ZENNNN', 'Поддержка 24/7', 'Серверная инфраструктура', 'Оформление аккаунта в соответствии с фирменным стилем компании', 'Настраиваемая реклама на странице кабинета клиента', 'Синяя галочка «Авторизовано ZENNNN»', 'Отправка СМС уведомлений'],
           annotation: this.$t('payment.personalPrice'),
+          to: { name: 'payment', params: { type: 'change', product: products.Premium } },
         },
       ]
     },
@@ -201,8 +184,8 @@ export default {
       switch (this.$i18n.locale) {
         case 'fr': return 'EUR'
         case 'ru': return 'RUB'
-        case 'zh-Hans':
-        case 'zh-Hant': return 'CNY'
+        case 'zh-Hans': return 'CNY'
+        case 'zh-Hant': return 'HKD'
         default: return 'USD'
       }
     },
@@ -210,10 +193,6 @@ export default {
   watch: {
     selectedProduct (val) {
       this.$emit('update:selected', val)
-      if (this.initProductId && !this.isBooted && val.id) {
-        this.$emit('select', val)
-        this.isBooted = true
-      }
     },
   },
   created () {
@@ -223,20 +202,16 @@ export default {
     if (this.currentProductId) {
       this.selectedProductId = this.currentProductId
     }
-    if (this.initProductId) {
-      this.selectedProductId = this.initProductId
-    }
   },
   methods: {
     onClick (item) {
-      // TODO: on premiuim show contact dialog
       if (item.isCustomPrice) return
       this.selectedProductId = item.id
       this.$emit('select', item)
     },
     async getRates () {
       try {
-        const response = await this.$axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,RUB,EUR,GBP')
+        const response = await this.$axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
         if (response.data) {
           this.currencyRates = response.data.rates
         }

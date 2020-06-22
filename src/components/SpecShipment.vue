@@ -445,7 +445,6 @@
 </template>
 
 <script>
-import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import { ShipmentType } from '../graphql/enums'
 
 export default {
@@ -468,10 +467,6 @@ export default {
     return {
       shipmentTypeSearch: '',
       ShipmentType,
-      icons: {
-        mdiChevronUp,
-        mdiChevronDown,
-      },
     }
   },
   computed: {

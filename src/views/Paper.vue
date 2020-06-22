@@ -80,25 +80,25 @@
               </button>
             </div>
             <div class="pr-2">
-              <button
-                ref="topSpecCommentsActivator"
-                class="w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
-                @click="$refs.topSpecComments.toggleMenu()"
+              <Comments
+                :items="spec.comments"
+                :spec-id="specId"
+                :right="$vuetify.breakpoint.mdAndDown"
+                :left="$vuetify.breakpoint.lgAndUp"
+                :offset-x="$vuetify.breakpoint.lgAndUp"
+                is-paper
               >
-                <div class="h-10 w-10 flex items-center justify-center">
-                  <Comments
-                    ref="topSpecComments"
-                    :activator="$refs.topSpecCommentsActivator"
-                    :items="spec.comments"
-                    :spec-id="specId"
-                    :right="$vuetify.breakpoint.mdAndDown"
-                    :left="$vuetify.breakpoint.lgAndUp"
-                    :offset-x="$vuetify.breakpoint.lgAndUp"
-                    class="text-blue-500 pointer-events-none"
-                    is-paper
-                  />
-                </div>
-              </button>
+                <template v-slot:activator="{ on }">
+                  <button
+                    class="w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
+                    v-on="on"
+                  >
+                    <div class="h-10 w-10 flex items-center justify-center">
+                      <i class="zi-chat text-blue-500 text-2xl" />
+                    </div>
+                  </button>
+                </template>
+              </Comments>
             </div>
             <div class="pr-2">
               <button
@@ -461,29 +461,29 @@
                 </button>
               </div>
               <div class="w-full md:w-auto p-2 md:ml-auto">
-                <button
-                  ref="bottomSpecCommentsActivator"
-                  style="min-width: 85px"
-                  class="w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
-                  @click="$refs.bottomSpecComments.toggleMenu()"
+                <Comments
+                  :activator="$refs.bottomSpecCommentsActivator"
+                  :items="spec.comments"
+                  :spec-id="specId"
+                  :right="$vuetify.breakpoint.mdAndDown"
+                  :left="$vuetify.breakpoint.lgAndUp"
+                  :offset-x="$vuetify.breakpoint.lgAndUp"
+                  is-paper
                 >
-                  <div class="h-12 flex items-center px-3">
-                    <Comments
-                      ref="bottomSpecComments"
-                      :activator="$refs.bottomSpecCommentsActivator"
-                      :items="spec.comments"
-                      :spec-id="specId"
-                      :right="$vuetify.breakpoint.mdAndDown"
-                      :left="$vuetify.breakpoint.lgAndUp"
-                      :offset-x="$vuetify.breakpoint.lgAndUp"
-                      class="text-gray-100 mr-2 pointer-events-none"
-                      is-paper
-                    />
-                    <span class="text-blue-500 whitespace-nowrap leading-tight">
-                      {{ $t('paper.comment') }}
-                    </span>
-                  </div>
-                </button>
+                  <template v-slot:activator="{ on }">
+                    <button
+                      min-width="85"
+                      class="w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
+                      v-on="on"
+                    >
+                      <div class="h-12 flex items-center px-3">
+                        <span class="text-blue-500 whitespace-nowrap leading-tight">
+                          {{ $t('paper.comment') }}
+                        </span>
+                      </div>
+                    </button>
+                  </template>
+                </Comments>
               </div>
             </div>
           </div>

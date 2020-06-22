@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { mdiPlusCircleOutline, mdiStar, mdiStarOutline } from '@mdi/js'
+import { mdiStar, mdiStarOutline } from '@mdi/js'
 
 import { LIST_ORG_REQUISITES, GET_ORGS } from '../graphql/queries'
 import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '../graphql/mutations'
@@ -86,7 +86,6 @@ export default {
   data () {
     return {
       icons: {
-        mdiPlusCircleOutline,
         mdiStar,
         mdiStarOutline,
       },

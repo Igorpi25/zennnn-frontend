@@ -161,6 +161,7 @@
             :placeholder="$t('placeholder.startTyping')"
             :search.sync="clientSearch"
             :items="clients"
+            :rules="[rules.required]"
             label-no-wrap
             searchable
             return-object
@@ -168,6 +169,7 @@
             item-value="id"
             item-text="fullName"
             state-icon
+            state-color="none"
             @input="v => createSpecClient = v"
             @click:prepend-item="createClient"
           >
@@ -179,11 +181,6 @@
             </template>
             <template v-slot:prepend>
               <i class="zi-magnifier text-gray-200" />
-            </template>
-            <template v-slot:append>
-              <div class="text-green-500 select-none">
-                <Icon v-if="createSpecClient" size="12">{{ icons.mdiCheck }}</Icon>
-              </div>
             </template>
           </Select>
         </div>
@@ -238,8 +235,6 @@
 </template>
 
 <script>
-import { mdiPlusCircleOutline, mdiMagnify, mdiCheck } from '@mdi/js'
-
 import {
   Role,
   Typename,
@@ -300,10 +295,8 @@ export default {
       createWithoutClientLoading: false,
       createWithClientLoading: false,
       deleteLoading: null,
-      icons: {
-        mdiCheck,
-        mdiMagnify,
-        mdiPlusCircleOutline,
+      rules: {
+        required: v => !!v || this.$t('rule.required'),
       },
     }
   },

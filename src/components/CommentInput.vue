@@ -1,44 +1,49 @@
 <template>
   <div>
-    <TextArea
-      ref="input"
-      :value="comment"
-      :disabled="loading"
-      :placeholder="label"
-      hide-details
-      outlined
-      auto-grow
-      rows="2"
-      class="shadow-gray-75"
-      content-class="bg-gray-50 focus-within:bg-white"
-      @input="onInput"
-      @focus-change="onFocusChange"
-      @keydown.native.enter="handleMeta"
-    />
     <div
-      v-if="hasFocus"
-      class="flex pt-4"
+      v-if="isFocused"
+      class="flex pb-3"
     >
+      <div class="flex-grow" />
       <Button
         outlined
-        borderless
-        merge-class="text-gray-150 hover:text-gray-200 h-10"
+        :merge-class="light ? 'text-gray-900 border-gray-100 h-8' : 'text-white border-gray-200 h-8'"
+        content-class="w-full flex items-center justify-center text-xs"
+        class="mr-2"
+        min-width="68"
         @click="blur"
       >
         {{ $t('action.cancel') }}
       </Button>
-      <div class="flex-grow" />
       <Button
         :disabled="!comment"
         :loading="loading"
-        outlined
-        borderless
-        merge-class="h-10"
+        :merge-class="!comment ? ['h-8', light ? 'bg-gray-100 text-gray-75' : 'bg-gray-300'] : 'h-8'"
+        content-class="w-full flex items-center justify-center text-xs"
+        min-width="68"
         @click="submitComment"
       >
         {{ $t('comments.post') }}
       </Button>
     </div>
+    <textarea
+      ref="input"
+      :value="comment"
+      :disabled="loading"
+      :placeholder="label"
+      :class="[
+        'px-xs',
+        'placeholder-blue-500',
+        'w-full appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out',
+        light ? 'text-gray-900 focus:placeholder-gray-100' : 'text-white focus:placeholder-gray-200',
+      ]"
+      rows="1"
+      style="resize:none"
+      @input="onInput"
+      @focus="onFocus"
+      @blur="onBlur"
+      @keydown.enter="handleMeta"
+    />
   </div>
 </template>
 
@@ -66,7 +71,7 @@ export default {
   data () {
     return {
       comment: '',
-      hasFocus: false,
+      isFocused: false,
     }
   },
   watch: {
@@ -77,29 +82,41 @@ export default {
   methods: {
     clear () {
       this.comment = ''
+      this.$emit('input', '')
+      this.$nextTick(this.calculateHeight)
     },
     handleMeta (e) {
       if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
         this.submitComment()
       }
     },
-    onInput (val) {
+    calculateHeight () {
+      const textArea = this.$refs.input
+      textArea.style.height = '0'
+
+      const height = textArea.scrollHeight
+      const minHeight = parseInt(1, 10) * 24
+
+      textArea.style.height = Math.max(minHeight, height) + 'px'
+    },
+    onInput (e) {
+      const val = e.target.value
       this.comment = val
       this.$emit('input', val)
+      this.$nextTick(this.calculateHeight)
     },
-    onFocusChange (val) {
-      if (val) {
-        this.hasFocus = true
-      } else {
-        if (!this.comment) {
-          this.hasFocus = false
-        }
+    onFocus (val) {
+      this.isFocused = true
+    },
+    onBlur () {
+      if (!this.comment) {
+        this.isFocused = false
       }
     },
     blur () {
       this.clear()
-      this.$refs.input.$refs.input.blur()
-      this.hasFocus = false
+      this.$refs.input.blur()
+      this.isFocused = false
     },
     submitComment () {
       if (!this.comment) return

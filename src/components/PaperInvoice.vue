@@ -107,7 +107,7 @@
               is-product
               is-paper
               left
-              class="inline-block align-middle mr-sm text-gray-200 focus:text-gray-300 hover:text-gray-300 transition-colors duration-100 ease-out"
+              class="inline-block align-middle mr-sm text-gray-200 focus:text-gray-400 hover:text-gray-400 transition-colors duration-100 ease-out"
             />
           </td>
           <td class="bg-white p-2 rounded-r-md text-center">

@@ -85,7 +85,7 @@ export default {
     },
     rows: {
       type: [String, Number],
-      default: null,
+      default: 1,
     },
     minlength: String,
     maxlength: String,
@@ -182,7 +182,7 @@ export default {
     if (this.autofocus) {
       this.$refs.input.focus()
     }
-    this.autoGrow && this.calculateHeight()
+    this.autoGrow && this.$nextTick(this.calculateHeight)
   },
   methods: {
     emitChange () {

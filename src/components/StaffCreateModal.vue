@@ -17,7 +17,7 @@
               ref="emailForm"
               :error-message.sync="emailErrorMessage"
               lazy-validation
-              class="form--max-w-sm mx-auto m-0 pt-8 md:pt-12 pb-10 px-4"
+              class="mx-auto m-0 pt-8 md:pt-12 pb-10 px-4"
             >
               <div class="w-full">
                 <TextField
@@ -25,18 +25,21 @@
                   v-model="emailFormModel.email"
                   :label="$t('staff.login')"
                   :rules="[rules.required, rules.email]"
+                  placeholder="example@mail.com"
+                  validate-on-blur
                   type="email"
                   name="email"
                   @input="emailErrorMessage = ''"
                 />
               </div>
-              <Button
-                :loading="emailFormLoading"
-                class="mt-10 mx-auto"
-                @click="getInviteUser"
-              >
-                <span>{{ $t('staff.next') }}</span>
-              </Button>
+              <div class="pt-10 text-right">
+                <Button
+                  :loading="emailFormLoading"
+                  @click="getInviteUser"
+                >
+                  <span>{{ $t('staff.next') }}</span>
+                </Button>
+              </div>
             </Form>
           </v-window-item>
           <v-window-item :value="2">
@@ -44,15 +47,17 @@
               ref="inviteForm"
               :error-message.sync="inviteErrorMessage"
               lazy-validation
-              class="form--max-w-sm mx-auto m-0 pt-8 md:pt-12 pb-10 px-4"
+              class="mx-auto m-0 pt-8 md:pt-12 pb-10 px-4"
             >
               <div class="w-full">
                 <TextField
                   ref="givenNameInput"
                   v-model="inviteFormModel.givenName"
                   :label="$t('staff.firstName')"
+                  :placeholder="$t('staff.firstName')"
                   :rules="[rules.required]"
                   :readonly="!!inviteUser"
+                  validate-on-blur
                   name="firstName"
                   autofocus
                 />
@@ -61,8 +66,10 @@
                 <TextField
                   v-model="inviteFormModel.familyName"
                   :label="$t('staff.lastName')"
+                  :placeholder="$t('staff.lastName')"
                   :rules="[rules.required]"
                   :readonly="!!inviteUser"
+                  validate-on-blur
                   name="lastName"
                 />
               </div>
@@ -70,18 +77,13 @@
                 <Select
                   v-model="inviteFormModel.role"
                   :label="$t('staff.access')"
+                  :placeholder="$t('staff.access')"
                   :items="roles"
                   :rules="[rules.requiredSelect]"
+                  validate-on-blur
                   flat
                   class="text-base mr-2 md:p-0 leading-normal max-w-sm"
-                >
-                  <template v-slot:append="{ isMenuOpen, toggle }">
-                    <div class="cursor-pointer" @click="toggle">
-                      <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-                      <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-                    </div>
-                  </template>
-                </Select>
+                />
               </div>
               <div
                 v-if="!inviteUser"
@@ -90,35 +92,28 @@
                 <Select
                   v-model="inviteFormModel.locale"
                   :label="$t('companyDetail.label.language')"
+                  :placeholder="$t('companyDetail.label.language')"
                   :items="langs"
                   :rules="[rules.requiredSelect]"
+                  validate-on-blur
                   flat
                   class="text-base mr-2 md:p-0 leading-normal max-w-sm"
-                >
-                  <template v-slot:append="{ isMenuOpen, toggle }">
-                    <div class="cursor-pointer" @click="toggle">
-                      <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-                      <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-                    </div>
-                  </template>
-                </Select>
+                />
               </div>
-              <div class="w-full">
+              <div class="flex justify-between w-full pt-10">
                 <Button
                   :loading="inviteFormLoading"
-                  class="mt-10 mx-auto"
-                  @click="submit"
-                >
-                  <span>{{ $t('staff.invite') }}</span>
-                </Button>
-              </div>
-              <div class="w-full text-center">
-                <Button
-                  :loading="inviteFormLoading"
-                  merge-class="mt-5 text-gray-100 hover:text-white"
+                  outlined
+                  merge-class="border-gray-100"
                   @click="invitationStep = 1"
                 >
                   <span>{{ $t('staff.back') }}</span>
+                </Button>
+                <Button
+                  :loading="inviteFormLoading"
+                  @click="submit"
+                >
+                  <span>{{ $t('staff.invite') }}</span>
                 </Button>
               </div>
             </Form>
@@ -129,14 +124,13 @@
         class="absolute top-0 right-0 mt-2 mr-3 text-gray-100 hover:text-white cursor-pointer"
         @click="dialog = false"
       >
-        <Icon>{{ icons.mdiClose }}</Icon>
+        <i class="zi-close text-2xl" />
       </span>
     </div>
   </v-dialog>
 </template>
 
 <script>
-import { mdiChevronUp, mdiChevronDown, mdiClose } from '@mdi/js'
 import { ziUserPlus } from '../assets/icons'
 import { Role } from '../graphql/enums'
 import { GET_INVITE_USER_TO_ORG } from '../graphql/queries'
@@ -170,9 +164,6 @@ export default {
       roleMenu: false,
       icons: {
         ziUserPlus,
-        mdiChevronUp,
-        mdiChevronDown,
-        mdiClose,
       },
       rules: {
         required: v => !!v || this.$t('rule.required'),
@@ -234,7 +225,7 @@ export default {
     },
     async getInviteUser () {
       try {
-        if (this.$refs.emailForm.validate()) {
+        if (this.$refs.emailForm.validate(true)) {
           this.emailFormLoading = true
           this.resetInviteForm()
           const { data } = await this.$apollo.query({
@@ -277,7 +268,7 @@ export default {
     async submit (e) {
       e.preventDefault()
       try {
-        if (this.$refs.inviteForm.validate()) {
+        if (this.$refs.inviteForm.validate(true)) {
           this.inviteFormLoading = true
           const input = {
             invitationEmail: this.emailFormModel.email,

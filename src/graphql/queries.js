@@ -115,7 +115,8 @@ export const GET_PROFILE = gql`
         price
         productId
         priceId
-        canTrial
+        canPromo
+        hasBillingAddress
         periodEnd
         cancelAtPeriodEnd
         org

@@ -1,32 +1,27 @@
 <template>
-  <div
-    class="p-4 rounded shadow-md"
-    :style="{ 'border-color': light ? '#E5E5E5' : '#474747', borderWidth: '1px', borderStyle: 'solid' }"
-  >
+  <div>
     <CommentCard
       :item="item"
       :light="light"
     />
-    <div
-      class="border-b my-2"
-      :style="{ 'border-color': light ? '#E5E5E5' : '#474747', borderWidth: '1px', borderStyle: 'solid' }"
-    />
-    <div>
+    <div class="pt-4 pl-4">
       <CommentCard
         v-for="c in item.comments"
         :key="c.id"
         :item="c"
         :light="light"
       />
-      <CommentInput
+      <!-- <CommentInput
         ref="commentInput"
         v-model="comment"
         :loading="commentSubmitLoading"
+        :light="light"
         :label="$t('comments.enterReply')"
         class="mt-3"
         @submit="commentSubmit"
-      />
+      /> -->
     </div>
+    <div :class="['border-b my-4', light ? 'border-gray-75' : 'border-gray-200']" />
   </div>
 </template>
 
@@ -38,13 +33,13 @@ import {
   REPLY_TO_PAPER_PRODUCT_COMMENT,
 } from '../graphql/mutations'
 import CommentCard from './CommentCard'
-import CommentInput from './CommentInput'
+// import CommentInput from './CommentInput'
 
 export default {
   name: 'Comment',
   components: {
     CommentCard,
-    CommentInput,
+    // CommentInput,
   },
   props: {
     item: {

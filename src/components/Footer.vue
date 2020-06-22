@@ -122,18 +122,34 @@
 
 <script>
 import Copyright from '../components/Copyright.vue'
+import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 
 export default {
   name: 'Footer',
   components: {
     Copyright,
   },
+  apollo: {
+    isLoggedIn: {
+      query: GET_IS_LOGGED_IN,
+    },
+    getProfile: {
+      query: GET_PROFILE,
+      fetchPolicy: 'cache-only',
+      skip () {
+        return !this.isLoggedIn
+      },
+    },
+  },
   computed: {
+    hasSubscription () {
+      return this.getProfile && this.getProfile.account && this.getProfile.account.subscriptionId
+    },
     mailTo () {
       return process.env.VUE_APP_MAILTO
     },
     aboutLinks () {
-      return [
+      const items = [
         {
           text: this.$t('footer.about'),
           to: { name: 'about' },
@@ -159,9 +175,10 @@ export default {
           href: '#',
         },
       ]
+      return items
     },
     extLinks () {
-      return [
+      const items = [
         {
           text: this.$t('footer.tariffs'),
           to: { name: 'pricing' },
@@ -183,6 +200,14 @@ export default {
           href: '#',
         },
       ]
+      if (this.hasSubscription) {
+        items.push({
+          text: this.$t('footer.subscriptionManagement'),
+          to: { name: 'subscription' },
+          href: '#',
+        })
+      }
+      return items
     },
   },
 }

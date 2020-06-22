@@ -11,17 +11,6 @@
     </td>
     <td class="pl-4 text-base text-gray-100">
       {{ index }}
-      <!-- <div>
-        <Comments
-          :items="item.comments"
-          :product-id="item.id"
-          :spec-id="specId"
-          is-product
-          sm
-          right
-          class="inline-block"
-        />
-      </div> -->
     </td>
     <td class="text-center pl-1">
       <ProductImage
@@ -105,7 +94,7 @@
           <TextField
             :value="purchasePrice"
             :placeholder="$t('placeholder.emptyNumber')"
-            :input-class="hasCustomPurchasePrice ? 'text-purple-500' : null"
+            :input-class="hasCustomPurchasePrice ? 'text-blue-900' : null"
             lazy
             solo
             number
@@ -128,7 +117,7 @@
           <TextField
             :value="clientPrice"
             :placeholder="$t('placeholder.emptyNumber')"
-            :input-class="hasCustomClientPrice ? 'text-purple-500' : null"
+            :input-class="hasCustomClientPrice ? 'text-blue-900' : null"
             lazy
             solo
             number
@@ -332,18 +321,59 @@
       </template>
       <template v-else>
         <td class="px-6">
-          <!-- TODO -->
+          <div v-if="commentators.length === 1" class="flex items-center">
+            <div class="w-8 h-8 flex items-center flex-shrink-0 mr-sm">
+              <div class="w-full h-full rounded-full flex items-center justify-center border border-gray-200">
+                <i class="zi-user text-2xl text-gray-200" />
+              </div>
+            </div>
+            <div class="flex-grow text-sm truncate">
+              {{ commentators[0][1] }}
+            </div>
+          </div>
+          <div v-else-if="commentators.length > 0" class="flex">
+            <!-- TODO: should stacked -->
+            <div
+              v-for="([key, value]) in commentators"
+              :key="key"
+              :title="value || ''"
+            >
+              <div class="w-8 h-8 flex items-center flex-shrink-0 mr-xs">
+                <div class="w-full h-full rounded-full flex items-center justify-center border border-gray-200">
+                  <i class="zi-user text-2xl text-gray-200" />
+                </div>
+              </div>
+            </div>
+          </div>
         </td>
-        <td class="px-5">
-          <!-- TODO -->
+        <td class="px-5 text-sm whitespace-no-wrap">
+          <template v-if="item.comments && item.comments.length > 0">
+            <span class="mr-sm">{{ $t('shipping.chatMessages') }}:</span>
+            <span
+              :class="[newCommentsCount ? 'bg-purple-500 text-white' : 'bg-gray-800 bg-opacity-90']"
+              class="font-semibold h-5 inline-flex items-center justify-center rounded-xl px-1 pt-px"
+              style="min-width: 20px"
+            >{{ item.comments.length }}</span>
+          </template>
         </td>
         <td class="text-center px-5">
-          <button
-            ref="comment-activator"
-            class="h-8 w-32 inline-block rounded text-blue-500 border border-gray-400 hover:border-blue-500 focus:border-blue-500 focus:outline-none select-none transition-colors duration-100 ease-out"
+          <Comments
+            :items="item.comments"
+            :product-id="item.id"
+            :spec-id="specId"
+            is-product
+            left
+            class="inline-block"
           >
-            {{ $t('shipping.chatStart') }}
-          </button>
+            <template v-slot:activator="{ on }">
+              <button
+                class="h-8 w-32 inline-block rounded text-blue-500 border border-gray-400 hover:border-blue-500 focus:border-blue-500 focus:outline-none select-none transition-colors duration-100 ease-out"
+                v-on="on"
+              >
+                {{ $t('shipping.chatStart') }}
+              </button>
+            </template>
+          </Comments>
         </td>
       </template>
     </template>
@@ -366,12 +396,12 @@
 import { InvoiceProfitType, Role } from '../graphql/enums'
 import product from '../mixins/product'
 import { isLink } from '../util/helpers'
-// import Comments from './Comments'
+import Comments from './Comments'
 
 export default {
   name: 'InvoiceProduct',
   components: {
-    // Comments,
+    Comments,
   },
   mixins: [product],
   props: {
@@ -407,6 +437,24 @@ export default {
     }
   },
   computed: {
+    commentators () {
+      const result = {}
+      const items = this.item.comments || []
+      items.forEach(item => {
+        result[item.sender] = item.senderName
+      })
+      return Object.entries(result)
+    },
+    newCommentsCount () {
+      let count = 0
+      const items = this.item.comments || []
+      items.forEach(item => {
+        if (!item.viewed) {
+          count++
+        }
+      })
+      return count
+    },
     isOwnerOrManager () {
       return this.role === Role.OWNER || this.role === Role.MANAGER
     },

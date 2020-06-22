@@ -15,10 +15,11 @@
             <span class="text-lg text-white">{{ paperOrgName }}</span>
           </template>
         </div>
+        <slot name="breadcrumbs" />
         <div class="flex-grow" />
         <div class="flex justify-end">
           <!-- Locale picker -->
-          <LocalePicker />
+          <LocalePicker :nudge-bottom="light ? 52 : 40" :light="light" />
           <!-- Menu -->
           <div
             v-if="!loggedIn"
@@ -50,7 +51,7 @@
             <v-menu
               v-model="profileMenu"
               :nudge-bottom="light ? 80 : 56"
-              content-class="header-profile-menu"
+              :content-class=" light ? 'header-profile-menu header-profile-menu--light' : 'header-profile-menu'"
               bottom
               left
             >
@@ -104,7 +105,7 @@
               </template>
               <template>
                 <ul
-                  :class="[light ? 'bg-white text-gray-900' : 'bg-gray-500 text-white']"
+                  :class="['overflow-hidden rounded-b', light ? 'bg-white text-gray-900' : 'bg-gray-500 text-white']"
                   role="menu"
                 >
                   <li
@@ -129,7 +130,7 @@
                     @click="profileAction(item.value)"
                   >
                     <span>{{ item.text }}</span>
-                    <div v-if="item.value === 'payment' && profile.account" class="text-right">
+                    <div v-if="item.value === 'pricing' && profile.account && isOwner" class="text-right">
                       <div
                         v-if="subscriptionStatus"
                         :class="[subscriptionStatus === 'paid' ? 'border-green-500 text-green-500' : subscriptionStatus === 'trial' ? 'border-yellow-500 text-yellow-500' : 'border-pink-500 text-pink-500']"
@@ -142,6 +143,7 @@
                   </li>
                 </ul>
               </template>
+              <div v-if="light" class="header-profile-menu_light-shadow rounded-b" />
             </v-menu>
           </div>
         </div>
@@ -278,6 +280,7 @@ export default {
       type: String,
       default: '',
     },
+    org: String,
   },
   apollo: {
     isLoggedIn: {
@@ -321,7 +324,7 @@ export default {
       return this.isLoggedIn && this.orgId
     },
     orgId () {
-      return this.$route.params.orgId
+      return this.$route.params.orgId || this.org
     },
     currentOrg () {
       const orgs = this.getOrgs || []
@@ -366,7 +369,7 @@ export default {
     profileItems () {
       const items = [
         { value: 'orgsList', text: this.$t('header.myCompanies') },
-        { value: 'payment', text: this.$t('header.tariffs') },
+        { value: 'pricing', text: this.$t('header.tariffs') },
         { value: 'logout', text: this.$t('header.signout') },
       ]
       if (this.currentOrg.role === Role.OWNER || this.currentOrg.role === Role.MANAGER) {
@@ -452,7 +455,7 @@ export default {
           this.orgDialog = true
           break
         case 'requisites': return this.gotToRequisites()
-        case 'payment': return this.goToPayment()
+        case 'pricing': return this.goToPricing()
         case 'logout': return this.onSignOut()
         default: return false
       }
@@ -462,10 +465,10 @@ export default {
       if (this.$route.name === 'requisites') return
       this.$router.push({ name: 'requisites', params: { orgId: this.orgId } })
     },
-    goToPayment () {
+    goToPricing () {
       // prevent NavigationDuplicated error
-      if (this.$route.name === 'payment') return
-      this.$router.push({ name: 'payment', params: { orgId: this.orgId } })
+      if (this.$route.name === 'pricing') return
+      this.$router.push({ name: 'pricing' })
     },
     async onSignOut () {
       const profile = this.profile
