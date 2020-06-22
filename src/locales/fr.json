@@ -1,12 +1,39 @@
 {
   "app": {
+    "title": "Un service pour le commerce de gros international avec accès à distance | ZENNNN",
+    "description": "Bienvenue au service révolutionnaire du commerce de gros international avec possibilité de contrôle à distance et de gestion des achats. Toute l'activité d'exploitation de l'entreprise se situe dans un seul système.",
     "userAgreement": "Conditions&nbsp;d'utilisation"
   },
-  "home": {},
+  "home": {
+    "title": "Service révolutionnaire pour la conduite du commerce international",
+    "subtitle1": "Facile",
+    "subtitle2": "Multilingue",
+    "subtitle3": "Puissant",
+    "cty": "Essayez gratuitement 30 jours"
+  },
   "payment": {},
   "pricing": {},
-  "footer": {},
+  "footer": {
+    "about": "À propos",
+    "faq": "FAQ",
+    "stack": "Pile technologique",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Politique de confidentialité",
+    "modules": "Modules d'extension",
+    "tariffs": "Tarification",
+    "jobs": "Postes vacants",
+    "coordinates": "Contacts",
+    "blog": "Blog",
+    "subscriptionManagement": "Abonnement",
+    "training": "Formation",
+    "vk": "VK",
+    "feedback": "Nous contacter"
+  },
   "passwordRestore": {
+    "title": "Récupération d'accès",
+    "subtitle": "Veuillez saisir l'adresse e-mail que vous utilisez pour accéder au système.",
+    "hint": "Si vous n'avez pas notre e-mail dans votre boîte de réception, veuillez vérifier le dossier Spam ou appuyez à nouveau sur Envoyer un e-mail.",
+    "emailLabel": "Adresse e-mail (connexion ZENNNN)",
     "accessRecoveryHead": "Récupération d'accès,",
     "accessRecoverySubhead": "Entrez les données et obtenez un lien pour changer le mot de passe.",
     "recoveryByEmail": "Récupération par email",
@@ -34,6 +61,7 @@
     "submit": "Obtenir le lien"
   },
   "signin": {
+    "title": "Service révolutionnaire pour la conduite du commerce international",
     "subtitle": "Facile.  Multilingue.<br>Puissant.",
     "formTitle": "S'identifier",
     "noAccount": "Pas de compte?",
@@ -361,6 +389,7 @@
     "clientAddCreate": "Créer",
     "clientAddEdit": "Éditer",
     "clientAddNotCreated": "N'existe pas",
+    "clientAddNoData": "Pas de données disponibles",
     "legalPerson": "Entité légale",
     "privatePerson": "Personne privée",
     "otherPerson": "Autre",
@@ -435,9 +464,16 @@
     "contactPerson": "Contact",
     "inn": "VAT",
     "suppliersDebt": "Votre dette envers l'entreprise",
-    "currentDealsAmount": "Montant actuel des transactions avec le fournisseur."
+    "currentDealsAmount": "Montant actuel des transactions avec le fournisseur.",
+    "dealsAmountHint": "Coût total des marchandises pour toutes les transactions avec le fournisseur.",
+    "turnoverHint": "Dette totale envers le fournisseur pour toutes les transactions.",
+    "tags": "Marque",
+    "usn": "NFU"
   },
   "supplier": {
+    "createTitle": "Créer un nouveau fournisseur",
+    "editTitle": "Détails du fournisseur",
+    "created": "Établi",
     "supplierCard": "Carte du fournisseur",
     "edit": "Éditer",
     "supplierCardPatterns": "Modèle de carte du fournisseur",
@@ -788,6 +824,9 @@
   "header": {
     "requisites": "Détails de l'entreprise",
     "myCompanies": "Mes comptes",
+    "dictionary": "Dictionnaire",
+    "inbox": "Boîte de réception",
+    "tariffs": "Les taux",
     "signin": "S'identifier",
     "signout": "Se déconnecter",
     "role": {
@@ -891,6 +930,7 @@
     "removeEmployee": "Voulez-vous vraiment supprimer l'employé?"
   },
   "rule": {
+    "phone": "Le numéro de téléphone ne corrige pas",
     "onlyLatin": "Seuls les lettres et symboles latins sont autorisés",
     "required": "Remplissez ce champ.",
     "requiredSelect": "veuillez sélectionner",
@@ -951,7 +991,12 @@
     "CFR": "CFR",
     "CIF": "CIF"
   },
-  "branchType": {},
+  "branchType": {
+    "OFFICE": "Bureau",
+    "PRODUCTION": "Usine",
+    "WAREHOUSE": "Entrepôt",
+    "SHOP": "Boutique"
+  },
   "productStatus": {
     "IN_DRAFT": "Attendre",
     "IN_PROCESSING": "En traitement",
