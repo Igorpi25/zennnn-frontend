@@ -131,6 +131,7 @@
           name="firstName"
           autocomplete="on"
           autofocus
+          force-validate
           validate-on-blur
           state-icon
           state-icon-on-validate
@@ -143,6 +144,7 @@
           class="pb-6"
           name="lastName"
           autocomplete="on"
+          force-validate
           validate-on-blur
           state-icon
           state-icon-on-validate
@@ -158,6 +160,7 @@
           name="email"
           autocomplete="on"
           disabled
+          force-validate
           validate-on-blur
           state-icon
           state-icon-on-validate
@@ -183,7 +186,7 @@
               @click="compliteShowPassword = !compliteShowPassword"
             >
               <i v-if="compliteShowPassword" class="zi-eye align-middle" />
-              <i v-else class=" zi-eye-off align-middle" style="font-size: 28px" />
+              <i v-else class="zi-eye-off align-middle" style="font-size: 28px" />
             </div>
           </template>
         </TextField>

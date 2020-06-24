@@ -10,6 +10,7 @@ export default {
     validateOnBlur: Boolean,
     lazyValidation: Boolean,
     hideWarn: Boolean,
+    forceValidate: Boolean,
   },
   data () {
     return {
@@ -47,7 +48,7 @@ export default {
     },
   },
   beforeMount () {
-    this.validateOnBlur || this.lazyValidation || this.validate()
+    (this.validateOnBlur || this.lazyValidation) && this.validate(this.forceValidate)
   },
   created () {
     this.form && this.form.register(this)
