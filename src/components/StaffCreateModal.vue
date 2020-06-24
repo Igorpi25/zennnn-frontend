@@ -102,7 +102,7 @@
               </div>
               <div class="flex justify-between w-full pt-10">
                 <Button
-                  :loading="inviteFormLoading"
+                  :disabled="inviteFormLoading"
                   outlined
                   merge-class="border-gray-100"
                   @click="invitationStep = 1"
