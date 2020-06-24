@@ -152,7 +152,7 @@ export default {
           priceMonthly: this.$t('pricing.monthlyPrice', { price: '$30' }),
           description: this.$t('pricing.startDescription'),
           feats: [this.$t('pricing.feat1')],
-          to: !this.isLoggedIn ? { name: 'signup', query: { price: prices['Start Annual'] } } : null,
+          to: !this.isLoggedIn ? { name: 'signup' } : null,
         },
         {
           id: products.Standard,
@@ -169,7 +169,7 @@ export default {
           priceMonthly: this.$t('pricing.monthlyPrice', { price: '$198' }),
           description: this.$t('pricing.standardDescription'),
           feats: [this.$t('pricing.feat1')],
-          to: !this.isLoggedIn ? { name: 'signup', query: { price: prices['Standard Annual'] } } : null,
+          to: !this.isLoggedIn ? { name: 'signup' } : null,
         },
         {
           id: products.Advanced,
@@ -186,7 +186,7 @@ export default {
           priceMonthly: this.$t('pricing.monthlyPrice', { price: '$398' }),
           description: this.$t('pricing.advancedDescription'),
           feats: [this.$t('pricing.feat2'), this.$t('pricing.feat3'), this.$t('pricing.feat4')],
-          to: !this.isLoggedIn ? { name: 'signup', query: { price: prices['Advanced Annual'] } } : null,
+          to: !this.isLoggedIn ? { name: 'signup' } : null,
         },
         {
           id: products.Premium || 'Premium',

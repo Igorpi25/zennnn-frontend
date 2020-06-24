@@ -13,30 +13,6 @@
     </Header>
     <!-- HEADER / -->
     <!-- / MAIN -->
-    <v-dialog
-      v-model="successDialog"
-      max-width="458"
-      content-class="relative text-gray-200 bg-gray-50 text-center p-8"
-    >
-      <span class="absolute text-right top-0 right-0 pt-2 pr-2">
-        <i
-          class="zi-close text-2xl text-gray-200 hover:text-gray-300 cursor-pointer"
-          @click="successDialog = false"
-        />
-      </span>
-      <div class="py-10">
-        {{ $t('payment.subscriptionPaid', { plan: successProductName }) }}
-      </div>
-      <div>
-        <Button
-          outlined
-          merge-class="border-gray-100"
-          @click="successDialog = false"
-        >
-          {{ $t('payment.please') }}
-        </Button>
-      </div>
-    </v-dialog>
     <main class="container container--xs flex-grow max-w-screen-md mx-auto pt-16 pb-32">
       <h1
         class="text-40 font-bold leading-tight mb-6"
@@ -319,24 +295,13 @@ export default {
   data () {
     return {
       currentPaymentType: 'MONTHLY',
-      retryInvoiceDialog: false,
-      retryInvoice: null,
-      successDialog: false,
-      successProductName: '',
       currencyRates: {},
-      changeDialog: false,
-      changePaymentDialog: false,
       lazySelectedProduct: null,
     }
   },
   computed: {
-    paymentType () {
-      const type = this.$route.params.type
-      if (type === 'promo') {
-        return this.profile.account && this.profile.account.canPromo && this.selectedProduct.name === 'Advanced'
-          ? 'promo' : 'change'
-      }
-      return type
+    orgId () {
+      return this.profile.account && this.profile.account.org
     },
     invoiceId () {
       if (this.paymentType === 'invoice') {
@@ -352,6 +317,18 @@ export default {
     currentPriceId () {
       return this.profile.account && this.profile.account.priceId
     },
+    selectedPriceId () {
+      const key = this.currentPaymentType === 'MONTHLY' ? 'mId' : 'aId'
+      return this.selectedProduct[key]
+    },
+    paymentType () {
+      const type = this.$route.params.type
+      if (type === 'promo') {
+        return this.profile.account && this.profile.account.canPromo && this.selectedProduct.name === 'Advanced'
+          ? 'promo' : 'change'
+      }
+      return type
+    },
     selectedProduct: {
       get () {
         if (this.lazySelectedProduct) return this.lazySelectedProduct
@@ -363,13 +340,6 @@ export default {
       set (val) {
         this.lazySelectedProduct = val
       },
-    },
-    selectedPriceId () {
-      const key = this.currentPaymentType === 'MONTHLY' ? 'mId' : 'aId'
-      return this.selectedProduct[key]
-    },
-    prices () {
-      return this.listPrices || []
     },
     promoProduct () {
       const currencyRate = this.currencyRates[this.localeCurrency]
@@ -406,6 +376,9 @@ export default {
         }),
         priceInCurrency,
       }
+    },
+    prices () {
+      return this.listPrices || []
     },
     products () {
       const currencyRate = this.currencyRates[this.localeCurrency]
@@ -476,9 +449,6 @@ export default {
           members: this.$t('payment.premiumMembers'),
         },
       ]
-    },
-    orgId () {
-      return this.profile.account && this.profile.account.org
     },
     isTrialing () {
       return this.profile.account && this.profile.account.subscriptionStatus === 'trialing'
@@ -557,23 +527,6 @@ export default {
         }
       }
     },
-    retryInvoiceDialog (val) {
-      if (!val) {
-        setTimeout(() => {
-          this.retryInvoice = null
-        }, 150)
-      }
-    },
-    changePaymentDialog (val) {
-      if (val) {
-        const el = document.querySelector('.payment-dialog')
-        if (el) {
-          setTimeout(() => {
-            el.scrollTop = 0
-          }, 0)
-        }
-      }
-    },
   },
   created () {
     this.getRates()
@@ -582,7 +535,6 @@ export default {
     }
   },
   mounted () {
-    this.getRates()
     const observer = this.$apollo.subscribe({
       query: PAYMENT_DATA,
       fetchPolicy: 'no-cache',
@@ -614,10 +566,6 @@ export default {
     onComplete (type) {
       this.$router.push({ name: 'subscription', query: { state: 'success' } })
     },
-    openInvoice (invoice) {
-      this.retryInvoice = invoice
-      this.retryInvoiceDialog = true
-    },
     async getRates () {
       try {
         const response = await this.$axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
@@ -627,19 +575,6 @@ export default {
       } catch (error) {
         this.$logget.info('Error on get currency rates', error)
       }
-    },
-    showSuccess (name) {
-      this.successProductName = name
-      this.successDialog = true
-    },
-    changeComplete () {
-      this.changeDialog = false
-      this.changePaymentDialog = false
-      this.$apollo.queries.listPaymentMethods.refetch()
-    },
-    retryInvoiceComplete () {
-      this.retryInvoiceDialog = false
-      this.$apollo.queries.listPaymentMethods.refetch()
     },
     goBack () {
       this.$router.go(-1)
