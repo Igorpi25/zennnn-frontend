@@ -390,12 +390,20 @@ export default {
           maximumFractionDigits: 2,
         })
         : null
+      const getUsd = (rate) => this.$n(rate, {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      })
       const prices = {}
       const products = {}
+      const amounts = {}
       this.prices.forEach(el => {
         prices[el.nickname] = el.id
         const productName = el.nickname.split(' ')[0]
         products[productName] = el.product
+        amounts[el.nickname] = this.getRoundedPriceFromPenny(el.unit_amount)
       })
       return [
         {
@@ -404,11 +412,11 @@ export default {
           aId: prices['Start Annual'],
           name: 'Start',
           title: this.$t('payment.start'),
-          mPriceInCurrency: getPriceInCurrency(30),
-          mPrice: '$30',
-          aPriceInCurrency: getPriceInCurrency(15),
-          aPriceTotal: '$180',
-          aPrice: '$15',
+          mPriceInCurrency: getPriceInCurrency(amounts['Start Monthly'] || 30),
+          mPrice: getUsd(amounts['Start Monthly'] || 30),
+          aPriceInCurrency: getPriceInCurrency((amounts['Start Annual'] || 180) / 12),
+          aPriceTotal: getUsd(amounts['Start Annual'] || 180),
+          aPrice: getUsd((amounts['Start Annual'] || 180) / 12),
           current: this.currentProductId === products.Start,
           members: this.$t('payment.startMembers'),
         },
@@ -418,11 +426,11 @@ export default {
           aId: prices['Standard Annual'],
           name: 'Standard',
           title: this.$t('payment.standard'),
-          mPriceInCurrency: getPriceInCurrency(198),
-          mPrice: '$198',
-          aPriceInCurrency: getPriceInCurrency(99),
-          aPriceTotal: '$1188',
-          aPrice: '$99',
+          mPriceInCurrency: getPriceInCurrency(amounts['Standard Monthly'] || 198),
+          mPrice: getUsd(amounts['Standard Monthly'] || 198),
+          aPriceInCurrency: getPriceInCurrency((amounts['Standard Annual'] || 1188) / 12),
+          aPriceTotal: getUsd(amounts['Standard Annual'] || 1188),
+          aPrice: getUsd((amounts['Standard Annual'] || 1188) / 12),
           current: this.currentProductId === products.Standard,
           members: this.$t('payment.standardMembers'),
         },
@@ -432,11 +440,11 @@ export default {
           aId: prices['Advanced Annual'],
           name: 'Advanced',
           title: this.$t('payment.advanced'),
-          mPriceInCurrency: getPriceInCurrency(398),
-          mPrice: '$398',
-          aPriceInCurrency: getPriceInCurrency(199),
-          aPriceTotal: '$2388',
-          aPrice: '$199',
+          mPriceInCurrency: getPriceInCurrency(amounts['Advanced Monthly'] || 398),
+          mPrice: getUsd(amounts['Advanced Monthly'] || 398),
+          aPriceInCurrency: getPriceInCurrency((amounts['Advanced Annual'] || 2388) / 12),
+          aPriceTotal: getUsd(amounts['Advanced Annual'] || 2388),
+          aPrice: getUsd((amounts['Advanced Annual'] || 2388) / 12),
           current: this.currentProductId === products.Advanced,
           members: this.$t('payment.advancedMembers'),
         },
@@ -578,6 +586,11 @@ export default {
     },
     goBack () {
       this.$router.go(-1)
+    },
+    getRoundedPriceFromPenny (value) {
+      value = +value
+      if (Number.isNaN(value)) return 0
+      return Math.round(value / 100)
     },
   },
 }
