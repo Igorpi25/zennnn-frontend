@@ -31,6 +31,7 @@
         <Button
           outlined
           merge-class="border-gray-100"
+          min-width="185"
           @click="successDialog = false"
         >
           {{ $t('payment.please') }}
@@ -437,9 +438,6 @@ export default {
     orgId () {
       return this.profile.account && this.profile.account.org
     },
-    isTrialing () {
-      return this.profile.account && this.profile.account.subscriptionStatus === 'trialing'
-    },
     productName () {
       if (
         this.profile.account &&
@@ -481,6 +479,9 @@ export default {
     canCancel () {
       return this.profile.account && !this.profile.account.cancelAtPeriodEnd
     },
+    isTrialing () {
+      return this.profile.account && this.profile.account.subscriptionStatus === 'trialing'
+    },
     isCanceled () {
       return this.profile.account &&
         (this.profile.account.subscriptionId && this.profile.account.cancelAtPeriodEnd && !(this.profile.account.price === 'Trial' || this.profile.account.price === 'Promo'))
@@ -489,12 +490,14 @@ export default {
       return this.getProfile || {}
     },
   },
+  created () {
+    this.getRates()
+  },
   mounted () {
     if (this.$route.query.state === 'success') {
       this.successDialog = true
       this.$router.push({ query: {} })
     }
-    this.getRates()
     const observer = this.$apollo.subscribe({
       query: PAYMENT_DATA,
       fetchPolicy: 'no-cache',

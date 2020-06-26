@@ -206,9 +206,6 @@ export default {
             familyName: lastName,
             locale: this.$i18n.locale,
           }
-          if (this.$route.query.price) {
-            variables.priceId = this.$route.query.price
-          }
           const { data } = await this.$apollo.mutate({
             mutation: SIGNUP,
             variables,
