@@ -18,10 +18,10 @@
           <span class="text-32 font-semibold">
             {{ item.aPrice }}
           </span>
-          <template v-if="item.mPriceInCurrency">
+          <template v-if="item.aPriceInCurrency">
             <span>~</span>
             <span>
-              {{ item.mPriceInCurrency }}
+              {{ item.aPriceInCurrency }}
             </span>
           </template>
         </div>
@@ -129,12 +129,20 @@ export default {
           maximumFractionDigits: 2,
         })
         : null
+      const getUsd = (rate) => this.$n(rate, {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      })
       const prices = {}
       const products = {}
+      const amounts = {}
       this.prices.forEach(el => {
         prices[el.nickname] = el.id
         const productName = el.nickname.split(' ')[0]
         products[productName] = el.product
+        amounts[el.nickname] = this.getRoundedPriceFromPenny(el.unit_amount)
       })
       return [
         {
@@ -144,12 +152,12 @@ export default {
           name: 'Start',
           title: this.$t('pricing.start'),
           team: this.$t('pricing.startUpTo'),
-          mPriceInCurrency: getPriceInCurrency(30),
-          mPrice: '$30',
-          aPriceInCurrency: getPriceInCurrency(15),
-          aPriceTotal: '$180',
-          aPrice: '$15',
-          priceMonthly: this.$t('pricing.monthlyPrice', { price: '$30' }),
+          mPriceInCurrency: getPriceInCurrency(amounts['Start Monthly'] || 30),
+          mPrice: getUsd(amounts['Start Monthly'] || 30),
+          aPriceInCurrency: getPriceInCurrency((amounts['Start Annual'] || 180) / 12),
+          aPriceTotal: getUsd(amounts['Start Annual'] || 180),
+          aPrice: getUsd((amounts['Start Annual'] || 180) / 12),
+          priceMonthly: this.$t('pricing.monthlyPrice', { price: getUsd(amounts['Start Monthly'] || 30) }),
           description: this.$t('pricing.startDescription'),
           feats: [this.$t('pricing.feat1')],
           to: !this.isLoggedIn ? { name: 'signup' } : null,
@@ -161,12 +169,12 @@ export default {
           name: 'Standard',
           title: this.$t('pricing.standard'),
           team: '4-10',
-          mPriceInCurrency: getPriceInCurrency(198),
-          mPrice: '$198',
-          aPriceInCurrency: getPriceInCurrency(99),
-          aPriceTotal: '$1188',
-          aPrice: '$99',
-          priceMonthly: this.$t('pricing.monthlyPrice', { price: '$198' }),
+          mPriceInCurrency: getPriceInCurrency(amounts['Standard Monthly'] || 198),
+          mPrice: getUsd(amounts['Standard Monthly'] || 198),
+          aPriceInCurrency: getPriceInCurrency((amounts['Standard Annual'] || 1188) / 12),
+          aPriceTotal: getUsd(amounts['Standard Annual'] || 1188),
+          aPrice: getUsd((amounts['Standard Annual'] || 1188) / 12),
+          priceMonthly: this.$t('pricing.monthlyPrice', { price: getUsd(amounts['Standard Monthly'] || 198) }),
           description: this.$t('pricing.standardDescription'),
           feats: [this.$t('pricing.feat1')],
           to: !this.isLoggedIn ? { name: 'signup' } : null,
@@ -178,12 +186,12 @@ export default {
           name: 'Advanced',
           title: this.$t('pricing.advanced'),
           team: '11+',
-          mPriceInCurrency: getPriceInCurrency(398),
-          mPrice: '$398',
-          aPriceInCurrency: getPriceInCurrency(199),
-          aPriceTotal: '$2388',
-          aPrice: '$199',
-          priceMonthly: this.$t('pricing.monthlyPrice', { price: '$398' }),
+          mPriceInCurrency: getPriceInCurrency(amounts['Advanced Monthly'] || 398),
+          mPrice: getUsd(amounts['Advanced Monthly'] || 398),
+          aPriceInCurrency: getPriceInCurrency((amounts['Advanced Annual'] || 2388) / 12),
+          aPriceTotal: getUsd(amounts['Advanced Annual'] || 2388),
+          aPrice: getUsd((amounts['Advanced Annual'] || 2388) / 12),
+          priceMonthly: this.$t('pricing.monthlyPrice', { price: getUsd(amounts['Advanced Monthly'] || 398) }),
           description: this.$t('pricing.advancedDescription'),
           feats: [this.$t('pricing.feat2'), this.$t('pricing.feat3'), this.$t('pricing.feat4')],
           to: !this.isLoggedIn ? { name: 'signup' } : null,

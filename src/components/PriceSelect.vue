@@ -112,8 +112,15 @@ export default {
           maximumFractionDigits: 2,
         })
         : null
+      const getUsd = (rate) => this.$n(rate, {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      })
       const prices = {}
       const products = {}
+      const amounts = {}
       let isAnnually = false
       this.prices.forEach(el => {
         prices[el.nickname] = el.id
@@ -122,6 +129,7 @@ export default {
         if (el.id === this.currentPriceId && el.nickname.includes('Annual')) {
           isAnnually = true
         }
+        amounts[el.nickname] = this.getRoundedPriceFromPenny(el.unit_amount)
       })
       return [
         {
@@ -130,11 +138,11 @@ export default {
           aId: prices['Start Annual'],
           name: 'Start',
           title: this.$t('pricing.start'),
-          mPriceInCurrency: getPriceInCurrency(30),
-          mPrice: '$30',
-          aPriceInCurrency: getPriceInCurrency(15),
-          aPriceTotal: '$180',
-          aPrice: '$15',
+          mPriceInCurrency: getPriceInCurrency(amounts['Start Monthly'] || 30),
+          mPrice: getUsd(amounts['Start Monthly'] || 30),
+          aPriceInCurrency: getPriceInCurrency((amounts['Start Annual'] || 180) / 12),
+          aPriceTotal: getUsd(amounts['Start Annual'] || 180),
+          aPrice: getUsd((amounts['Start Annual'] || 180) / 12),
           current: this.currentProductId === products.Start,
           annotation: `${isAnnually ? '$15' : '$30'}<br>${this.$t('payment.monthly').toLowerCase()}`,
           to: { name: 'payment', params: { type: 'change', product: products.Start } },
@@ -145,11 +153,11 @@ export default {
           aId: prices['Standard Annual'],
           name: 'Standard',
           title: this.$t('pricing.standard'),
-          mPriceInCurrency: getPriceInCurrency(198),
-          mPrice: '$198',
-          aPriceInCurrency: getPriceInCurrency(99),
-          aPriceTotal: '$1188',
-          aPrice: '$99',
+          mPriceInCurrency: getPriceInCurrency(amounts['Standard Monthly'] || 198),
+          mPrice: getUsd(amounts['Standard Monthly'] || 198),
+          aPriceInCurrency: getPriceInCurrency((amounts['Standard Annual'] || 1188) / 12),
+          aPriceTotal: getUsd(amounts['Standard Annual'] || 1188),
+          aPrice: getUsd((amounts['Standard Annual'] || 1188) / 12),
           current: this.currentProductId === products.Standard,
           annotation: `${isAnnually ? '$99' : '$198'}<br>${this.$t('payment.monthly').toLowerCase()}`,
           to: { name: 'payment', params: { type: 'change', product: products.Standard } },
@@ -160,11 +168,11 @@ export default {
           aId: prices['Advanced Annual'],
           name: 'Advanced',
           title: this.$t('pricing.advanced'),
-          mPriceInCurrency: getPriceInCurrency(398),
-          mPrice: '$398',
-          aPriceInCurrency: getPriceInCurrency(199),
-          aPriceTotal: '$2388',
-          aPrice: '$199',
+          mPriceInCurrency: getPriceInCurrency(amounts['Advanced Monthly'] || 398),
+          mPrice: getUsd(amounts['Advanced Monthly'] || 398),
+          aPriceInCurrency: getPriceInCurrency((amounts['Advanced Annual'] || 2388) / 12),
+          aPriceTotal: getUsd(amounts['Advanced Annual'] || 2388),
+          aPrice: getUsd((amounts['Advanced Annual'] || 2388) / 12),
           current: this.currentProductId === products.Advanced,
           annotation: `${isAnnually ? '$199' : '$398'}<br>${this.$t('payment.monthly').toLowerCase()}`,
           to: { name: 'payment', params: { type: 'change', product: products.Advanced } },
