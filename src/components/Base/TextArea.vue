@@ -1,226 +1,149 @@
 <template>
-  <InputBase
-    :is-dirty="!!internalValue"
-    :has-error="hasError"
-    :has-state-icon="hasStateIcon"
-    :hide-details="hideDetails"
-    :detail-text="errorText"
-    :class="[
-      'text-area',
-      {
-        'is-disabled': disabled,
-        'is-readonly': readonly,
-        'text-area--single-line': singleLine,
-        'text-area--outlined': outlined,
-        'text-area--squared': squared,
-        'text-area--solo': solo,
-        'text-area--focused': hasFocus,
-        'text-area--transparent': transparent
-      }
-    ]"
+  <div
+    :class="compContentClass"
   >
-    <div class="text-area__controls">
-      <div class="text-area__slot">
-        <label
-          v-if="!solo"
-          :for="inputId"
-          :class="[
-            'text-area__label',
-            { 'text-area__label--active': isLabelActive }
-          ]"
-        >
-          {{ label }}
-        </label>
-        <div
-          v-if="$slots.prepend"
-          class="text-area__prepend"
-        >
-          <slot name="prepend" />
-        </div>
-        <textarea
-          ref="input"
-          v-model="internalValue"
-          :id="inputId"
-          :name="name"
-          :required="required"
-          :readonly="readonly"
-          :disabled="disabled"
-          :cols="cols"
-          :rows="rows"
-          :maxlength="maxlength"
-          :minlength="minlength"
-          :autofocus="autofocus"
-          :placeholder="placeholder"
-          :class="[placeholderClass, inputClass]"
-          @input="calculateHeight"
-          @focus="onFocus"
-          @blur="onBlur"
-        />
-        <div
-          v-if="$slots.append"
-          class="text-area__append"
-        >
-          <slot name="append" />
-        </div>
-      </div>
-      <div class="text-area__append-outer">
-        <slot name="append-outer" />
-        <div
-          v-if="hasStateIcon"
-          class="text-area__state-icon"
-        >
-          <Icon v-if="hasError" color="#808080">
-            {{ icons.mdiCloseCircle }}
-          </Icon>
-          <Icon v-else color="#808080">
-            {{ icons.mdiCheckCircle }}
-          </Icon>
-        </div>
-      </div>
-      <div
-        v-if="hideDetails && hasError"
-        class="absolute text-red text-xs"
-        style="bottom:-18px;"
+    <label
+      v-if="!singleLine"
+      :for="computedId"
+      :class="[
+        'block leading-5 text-base text-gray-200 text-right whitespace-no-wrap py-2',
+      ]"
+    >
+      {{ label }}
+    </label>
+    <div class="relative w-full">
+      <textarea
+        ref="input"
+        v-model="internalValue"
+        :id="computedId"
+        :name="name"
+        :required="required"
+        :readonly="readonly"
+        :disabled="disabled"
+        :cols="cols"
+        :rows="rows"
+        :maxlength="maxlength"
+        :minlength="minlength"
+        :autofocus="autofocus"
+        :placeholder="placeholder"
+        :class="[
+          'w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out',
+          'placeholder-gray-200 px-sm py-3',
+          { 'cursor-not-allowed': disabled },
+          { 'cursor-wait': !disabled && loading },
+          { 'pr-7': hasState },
+          inputClass,
+        ]"
+        style="resize:none"
+        @input="onInput"
+        @focus="onFocus"
+        @blur="onBlur"
+        @change="onChange"
+      />
+      <span
+        v-if="hasState"
+        class="absolute top-0 right-0  pt-4 pr-4"
+        :class="stateColorClass"
       >
-        <span>{{ errorText }}</span>
-      </div>
+        <svg v-if="stateColorClass === 'text-yellow-500' && stateColor === 'warn'" width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="4" cy="4" r="4" fill="currentColor" />
+        </svg>
+        <svg v-else width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" d="M1.41421 1L6.07107 5.65685L4.65685 7.07107L0 2.41421L1.41421 1Z M10.3137 1.41421L4.65685 7.07107L3.24264 5.65685L8.8995 0L10.3137 1.41421Z" />
+        </svg>
+      </span>
     </div>
-  </InputBase>
+  </div>
 </template>
 
 <script>
 import debounce from 'lodash.debounce'
 
-import { mdiCloseCircle, mdiCheckCircle } from '@mdi/js'
-
-import focusable from '@/mixins/focusable'
 import validatable from '@/mixins/validatable'
+import { mergeClasses } from '../../util/helpers'
 
 export default {
   name: 'TextArea',
-  inject: {
-    form: {
-      default: null,
-    },
-  },
-  mixins: [focusable, validatable],
+  mixins: [validatable],
   props: {
-    autoGrow: {
-      type: Boolean,
-      default: false,
-    },
     value: {
       type: [String, Number],
       default: null,
     },
-    rules: {
-      type: Array,
-    },
-    label: {
-      type: String,
-      default: '',
-    },
+    label: String,
     type: {
       type: String,
       default: 'text',
     },
-    name: {
-      type: String,
-      default: null,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    readonly: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
+    name: String,
+    required: Boolean,
+    readonly: Boolean,
+    disabled: Boolean,
     cols: {
-      type: String,
+      type: [String, Number],
       default: null,
     },
     rows: {
       type: [String, Number],
-      default: null,
+      default: 1,
     },
-    minlength: {
-      type: String,
-      default: null,
-    },
-    maxlength: {
-      type: String,
-      default: null,
-    },
-    autofocus: {
-      type: Boolean,
-      default: false,
-    },
-    placeholder: {
-      type: String,
-      default: null,
-    },
-    clearable: {
-      type: Boolean,
-      default: false,
-    },
-    hideDetails: {
-      type: Boolean,
-      default: false,
-    },
-    stateIcon: {
-      type: Boolean,
-      default: false,
-    },
-    outlined: {
-      type: Boolean,
-      default: false,
-    },
-    squared: {
-      type: Boolean,
-      default: false,
-    },
-    solo: {
-      type: Boolean,
-      default: false,
-    },
-    singleLine: {
-      type: Boolean,
-      default: false,
-    },
-    transparent: {
-      type: Boolean,
-      default: false,
-    },
+    minlength: String,
+    maxlength: String,
+    autofocus: Boolean,
+    placeholder: String,
+    clearable: Boolean,
+    hideDetails: Boolean,
+    autoGrow: Boolean,
+    singleLine: Boolean,
     debounce: {
       type: Number,
       default: 0,
+    },
+    contentClass: {
+      type: [String, Object],
+      default: '',
     },
     inputClass: {
       type: [String, Object],
       default: '',
     },
+    loading: Boolean,
+    lazy: Boolean,
+    stateIcon: Boolean,
+    stateColor: String,
   },
   data () {
     return {
-      // TODO input registrator
-      inputId: 'textarea' + Math.round(Math.random() * 100000),
+      hasFocus: false,
       lazyValue: this.value,
-      icons: {
-        mdiCloseCircle,
-        mdiCheckCircle,
-      },
     }
   },
   computed: {
-    placeholderClass () {
-      return this.squared
-        ? 'placeholder-white focus:placeholder-gray-lighter'
-        : 'placeholder-gray-lighter'
+    compContentClass () {
+      const classes = [
+        'rounded relative flex items-center focus:outline-none transition-colors duration-100 ease-out',
+        'focus-within:shadow-blue-500 text-white text-base bg-gray-800',
+      ]
+      if (this.disabled) {
+        classes.push('opacity-40 cursor-not-allowed')
+      }
+      if (this.contentClass) {
+        return mergeClasses(classes, this.contentClass)
+      }
+      return classes
+    },
+    stateColorClass () {
+      return this.stateIcon && this.stateColor === 'warn' && !this.internalValue
+        ? 'text-yellow-500'
+        : this.hasState
+          ? 'text-green-500'
+          : ''
+    },
+    hasState () {
+      return (this.stateIcon && this.internalValue) || (this.stateIcon && this.stateColor === 'warn')
+    },
+    computedId () {
+      return this.id || `input-${this._uid}`
     },
     internalValue: {
       get () {
@@ -229,18 +152,17 @@ export default {
       set (val) {
         const value = val || null
         this.lazyValue = value
-        if (this.debounce) {
-          this.debounceInput()
-        } else {
-          this.$emit('input', value)
+        if (!this.lazy) {
+          if (this.debounce) {
+            this.debounceInput()
+          } else {
+            this.$emit('input', value)
+          }
         }
       },
     },
     isLabelActive () {
       return this.hasFocus || this.internalValue || this.placeholder
-    },
-    hasStateIcon () {
-      return this.form && this.form.wasValidated && this.stateIcon
     },
   },
   watch: {
@@ -255,20 +177,12 @@ export default {
     if (this.debounce) {
       this.debounceInput = debounce(this.emitChange, this.debounce)
     }
-    if (this.form) {
-      this.form.register(this)
-    }
   },
   mounted () {
     if (this.autofocus) {
       this.$refs.input.focus()
     }
-    this.autoGrow && this.calculateHeight()
-  },
-  beforeDestroy () {
-    if (this.form) {
-      this.form.unregister(this)
-    }
+    this.autoGrow && this.$nextTick(this.calculateHeight)
   },
   methods: {
     emitChange () {
@@ -282,6 +196,22 @@ export default {
       const minHeight = parseInt(this.rows, 10) * 24
 
       textArea.style.height = Math.max(minHeight, height) + 'px'
+    },
+    onInput () {
+      if (this.autoGrow) {
+        this.calculateHeight()
+      }
+    },
+    onChange () {
+      if (this.lazy) {
+        this.emitChange()
+      }
+    },
+    onFocus () {
+      this.hasFocus = true
+    },
+    onBlur () {
+      this.hasFocus = false
     },
   },
 }

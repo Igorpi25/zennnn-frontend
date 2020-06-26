@@ -1,42 +1,41 @@
 <template>
-  <div class="modal">
-    <div class="modal-header">
-      <Icon size="28">{{ icons.ziAlert }}</Icon>
-      <span class="ml-3">
-        {{ title || $t('alert.attention') }}
-      </span>
+  <div class="bg-gray-400 relative">
+    <div class="absolute top-0 right-0 mt-2 mr-2">
+      <i
+        class="zi-close text-2xl text-gray-200 hover:text-gray-100 cursor-pointer"
+        @click="$emit('cancel')"
+      />
     </div>
-    <div class="modal-body text-center text-sm sm:text-left sm:text-base">
-      <div class="pb-8">
+    <div class="text-center text-base sm:text-left p-8">
+      <div class="py-10">
         <p>
           {{ text }}
         </p>
-        <p v-if="postScriptum" class="pt-5">
+        <p v-if="postScriptum" class="pt-4">
           {{ postScriptum }}
         </p>
       </div>
-      <div class="sm:pb-8 flex flex-col sm:flex-row justify-between items-center text-base">
+      <div class="flex flex-col sm:flex-row sm:items-center">
         <Button
-          outline
-          width="140"
-          class="mb-3 sm:mb-0"
+          outlined
+          class="sm:flex-1 mb-3 sm:mb-0 sm:mr-2 whitespace-no-wrap"
+          merge-class="border-gray-200"
           @click="$emit('dontSave')"
         >
           <span>{{ dontSaveButton || $t('action.dontSave') }}</span>
         </Button>
 
         <Button
-          outline
-          width="140"
-          class="mb-3 sm:mb-0"
+          outlined
+          class="sm:flex-1 mb-3 sm:mb-0 sm:mx-2 whitespace-no-wrap"
+          merge-class="border-gray-200"
           @click="$emit('cancel')"
         >
           <span>{{ cancelButton || $t('action.cancel') }}</span>
         </Button>
 
         <Button
-          width="140"
-          class="mb-3 sm:mb-0"
+          class="sm:flex-1 mb-3 sm:mb-0 sm:ml-2 whitespace-no-wrap"
           @click="$emit('save')"
         >
           <span>{{ saveButton || $t('action.save') }}</span>
@@ -86,25 +85,3 @@ export default {
   },
 }
 </script>
-
-<style lang="postcss" scoped>
-  .modal {
-    position: relative;
-    @apply bg-gray text-lg;
-  }
-  .modal-header {
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    color: #aaaaaa;
-    @apply bg-gray-darkest;
-  }
-  .modal-body {
-    padding: 20px;
-    color: #aaaaaa;
-  }
-  @screen sm {
-    .modal-header {padding: 25px;}
-    .modal-body {padding: 30px 40px;}
-  }
-</style>

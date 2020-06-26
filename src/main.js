@@ -13,6 +13,8 @@ import './components'
 // Tailwindcss
 import './assets/css/main.css'
 
+import './registerServiceWorker'
+
 Vue.config.productionTip = false
 
 function runApp () {
@@ -26,9 +28,7 @@ function runApp () {
 }
 
 // Intl polyfill https://github.com/andyearnshaw/Intl.js
-if (typeof Intl === 'object' && Intl.NumberFormat.prototype.formatToParts) {
-  runApp()
-} else {
+if (!global.Intl) {
   require.ensure([
     'intl',
     'intl/locale-data/jsonp/en.js',
@@ -38,7 +38,7 @@ if (typeof Intl === 'object' && Intl.NumberFormat.prototype.formatToParts) {
     'intl/locale-data/jsonp/ru.js',
     'intl/locale-data/jsonp/uk.js',
   ], function (require) {
-    window.Intl = require('intl')
+    require('intl')
     require('intl/locale-data/jsonp/en.js')
     require('intl/locale-data/jsonp/fr.js')
     require('intl/locale-data/jsonp/zh-Hans.js')
@@ -47,4 +47,6 @@ if (typeof Intl === 'object' && Intl.NumberFormat.prototype.formatToParts) {
     require('intl/locale-data/jsonp/uk.js')
     runApp()
   }, 'intl')
+} else {
+  runApp()
 }

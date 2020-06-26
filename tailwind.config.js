@@ -1,32 +1,30 @@
 module.exports = {
+  purge: [
+    './src/**/*.html',
+    './src/**/*.vue',
+    './src/**/*.jsx',
+    './src/components/Base/*.js',
+  ],
   theme: {
     container: {
       center: true,
     },
     colors: {
       primary: '#5a8199',
-      'primary-accent': '#6996B2',
-      secondary: '#16a0ce',
-      accent1: 'var(--base-accent1)',
-      accent2: 'var(--base-accent2)',
-      accent3: 'var(--base-accent3)',
-      black: '#000000',
-      'chaos-black': '#0F0F0F',
-      white: '#ffffff',
-      'gray-lightest': '#9F9F9F',
       'gray-lighter': '#868686',
       'gray-light': '#777777',
       gray: '#393939',
       'gray-dark': '#545454',
-      'gray-darker': '#303132',
       'gray-darkest': '#2A2B2D',
-      'logo-mobile': '#CACACA',
-      'logo-desktop': '#1E0E00',
       error: '#c4321d',
       red: '#BF3A40',
       green: '#48BB78',
       orange: '#fb8c00',
+      black: '#000000',
+      white: '#ffffff',
       transparent: 'transparent',
+      current: 'currentColor',
+      'gray-10': '#F0F0F0',
       'gray-50': '#F7F7F7',
       'gray-75': '#E4E4E4',
       'gray-100': '#AAAAAA',
@@ -38,46 +36,92 @@ module.exports = {
       'gray-500': '#353535',
       'gray-600': '#2F2F2F',
       'gray-700': '#282828',
-      'gray-800': '#222222',
+      'gray-800': '#232323',
       'gray-900': '#1E1E1E',
       'blue-400': '#2F80ED',
       'blue-500': '#7E99D0', // primary color
       'blue-600': '#5C78B1', // primary hover color
       'blue-700': '#345DEE', // landing color
       'blue-800': '#2F52D4', // landing hover color
+      'blue-900': '#4C51BF', // custom price color
       'pink-500': '#FF005E', // error, IN_PROCESSING
+      'pink-600': '#E00052',
+      'purple-500': '#EF20E6',
       'green-500': '#08DC1B', // success, IN_STOCK
+      'yellow-300': '#EAD377', // input warning
+      'yellow-400': '#D7C370', // checkbox error text
       'yellow-500': '#FDB600', // warning, IN_PRODUCTION
       'red-500': '#FF212D',
+      'red-600': '#FF121F', // spec total client debt text
+      'red-900': '#3D242D', // error color
     },
     fontFamily: {
-      'myriad': ['MyriadPro', 'sans-serif'],
+      myriad: ['MyriadPro', 'sans-serif'],
       'myriad-cond': ['MyriadPro-Cond', 'sans-serif'],
-      'montserrat': ['Montserrat', 'sans-serif'],
+      montserrat: ['Montserrat', 'sans-serif'],
     },
     boxShadow: {
-      primary: '0 0 0 1px #5a8199',
+      'gray-75': '0 0 0 1px #E4E4E4',
       'blue-500': '0 0 0 1px #7E99D0',
+      'blue-600': '0 0 0 1px #5C78B1',
+      'yellow-300': '0 0 0 1px #EAD377',
       default: '0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06)',
       md: '0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06)',
       lg: '0px 4px 10px rgba(0, 0, 0, 0.25)',
     },
+    letterSpacing: {
+      tight: '-.025em',
+      normal: '0',
+      wide: '.025em',
+      wider: '.05em',
+      widest: '.15em',
+    },
     extend: {
-      spacing: {
-        '2px': '2px',
-        'xs': '2px',
-        'sm': '10px',
-        'lg': '30px',
-        '9': '2.25rem',
+      fontSize: {
+        28: '28px',
+        32: '32px',
+        40: '40px',
+        56: '56px',
       },
-      height: {
-        '9': '2.25rem',
+      spacing: {
+        xs: '2px',
+        sm: '10px',
+        md: '14px',
+        lg: '30px',
+        7: '1.75rem',
+        9: '2.25rem',
+        11: '2.75rem',
+        14: '3.5rem',
+        18: '4.5rem',
+        36: '9rem',
+        38: '9.5rem',
       },
       opacity: {
-        '35': '.35',
+        10: '.1',
+        20: '.2',
+        30: '.3',
+        35: '.35',
+        40: '.4',
+        90: '.9',
+      },
+      zIndex: {
+        1: '1',
+        2: '2',
+      },
+      transitionProperty: {
+        'colors-and-opacity': 'background-color, border-color, color, fill, stroke, opacity',
+      },
+      borderRadius: {
+        xl: '50px',
       },
     },
   },
-  variants: {},
+  variants: {
+    backgroundColor: ['responsive', 'hover', 'focus', 'focus-within'],
+    borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
+    boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
+    overflow: ['responsive', 'hover'],
+    visibility: ['group-hover'],
+  },
   plugins: [],
 }

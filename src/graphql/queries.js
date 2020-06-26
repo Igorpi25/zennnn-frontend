@@ -4,17 +4,32 @@ import {
   INVOICE_FRAGMENT,
   PRODUCT_FRAGMENT,
   CLIENT_FRAGMENT,
-  CLIENT_TEMPLATE_FRAGMENT,
   SUPPLIER_FRAGMENT,
-  SUPPLIER_TEMPLATE_FRAGMENT,
-  SUPPLIER_SHOP_FRAGMENT,
-  SUPPLIER_SHOP_TEMPLATE_FRAGMENT,
+  SUPPLIER_BRANCH_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
   ORG_CONTRACT_FRAGMENT,
   PAPER_SPEC_FRAGMENT,
   PAPER_INVOICE_FRAGMENT,
   PAPER_PRODUCT_FRAGMENT,
 } from './typeDefs'
+
+export const LIST_PRICES = gql`
+  query ListPrices {
+    listPrices
+  }
+`
+
+export const LIST_PAYMENT_METHODS = gql`
+  query ListPaymentMethods {
+    listPaymentMethods
+  }
+`
+
+export const LIST_PAYMENT_INVOICES = gql`
+  query ListPaymentInvoices {
+    listPaymentInvoices
+  }
+`
 
 export const GET_INVITE_USER_TO_ORG = gql`
   query GetInviteUserToOrg($orgId: ID!, $email: String!) {
@@ -23,7 +38,8 @@ export const GET_INVITE_USER_TO_ORG = gql`
       email
       givenName
       familyName
-      language
+      picture
+      locale
     }
   }
 `
@@ -38,7 +54,7 @@ export const GET_ORGS = gql`
         givenName
         familyName
         picture
-        language
+        locale
       }
       role
       defaultRequisite
@@ -74,6 +90,12 @@ export const GET_IS_SPEC_SYNC = gql`
   }
 `
 
+export const SPEC_SIMPLE_UI_OFF = gql`
+  query SpecSimpleUIOff {
+    specSimpleUIOff @client
+  }
+`
+
 export const GET_PROFILE = gql`
   query GetProfile {
     getProfile {
@@ -82,8 +104,23 @@ export const GET_PROFILE = gql`
       givenName
       familyName
       picture
-      initialized
-      language
+      locale
+      isGreeted
+      account {
+        id
+        customerId
+        subscriptionId
+        subscriptionStatus
+        latestInvoiceId
+        price
+        productId
+        priceId
+        canPromo
+        hasBillingAddress
+        periodEnd
+        cancelAtPeriodEnd
+        org
+      }
     }
   }
 `
@@ -95,21 +132,23 @@ export const GET_SPECS = gql`
       client {
         id
         uid
-        customUid
         clientType
         createdAt
         updatedAt
         # legal
         companyName
-        phone
-        fax
-        # natural
-        firstName
-        lastName
-        middleName
+        phone {
+          phone
+        }
+        fax {
+          phone
+        }
+        # private
         passportId
-        mobilePhone
-        additionalPhone
+        mobilePhone {
+          phone
+        }
+        fullName
       }
     }
   }
@@ -131,21 +170,23 @@ export const GET_SPEC = gql`
       client {
         id
         uid
-        customUid
         clientType
         createdAt
         updatedAt
         # legal
         companyName
-        phone
-        fax
-        # natural
-        firstName
-        lastName
-        middleName
+        phone {
+          phone
+        }
+        fax {
+          phone
+        }
+        # private
         passportId
-        mobilePhone
-        additionalPhone
+        mobilePhone {
+          phone
+        }
+        fullName
       }
     }
   }
@@ -164,13 +205,21 @@ export const GET_CLIENT = gql`
   query GetClient($id: ID!) {
     getClient(id: $id) {
       ...ClientFragment
-      template {
-        ...ClientTemplateFragment
-      }
     }
   }
   ${CLIENT_FRAGMENT}
-  ${CLIENT_TEMPLATE_FRAGMENT}
+`
+
+export const GET_CLIENT_GROUP = gql`
+  query GetClientGroup($orgId: ID!, $groupId: ID!) {
+    getClientGroup(orgId: $orgId, groupId: $groupId) {
+      id
+      uid
+      LEGAL
+      PRIVATE
+      OTHER
+    }
+  }
 `
 
 export const LIST_CLIENTS = gql`
@@ -178,25 +227,10 @@ export const LIST_CLIENTS = gql`
     listClients(orgId: $orgId) {
       items {
         ...ClientFragment
-        template {
-          ...ClientTemplateFragment
-        }
       }
     }
   }
   ${CLIENT_FRAGMENT}
-  ${CLIENT_TEMPLATE_FRAGMENT}
-`
-
-export const LIST_CLIENT_TEMPLATES = gql`
-  query ListClientTemplates($orgId: ID!) {
-    listClientTemplates(orgId: $orgId) {
-      items {
-        ...ClientTemplateFragment
-      }
-    }
-  }
-  ${CLIENT_TEMPLATE_FRAGMENT}
 `
 
 export const SEARCH_CLIENTS = gql`
@@ -204,35 +238,29 @@ export const SEARCH_CLIENTS = gql`
     searchClients(orgId: $orgId, search: $search) {
       items {
         ...ClientFragment
-        template {
-          ...ClientTemplateFragment
-        }
       }
     }
   }
   ${CLIENT_FRAGMENT}
-  ${CLIENT_TEMPLATE_FRAGMENT}
+`
+
+export const GET_ORG_NEXT_SUPPLIER_UID = gql`
+  query GetOrgNextSupplierUid($orgId: ID!) {
+    getOrgNextSupplierUid(orgId: $orgId)
+  }
 `
 
 export const GET_SUPPLIER = gql`
   query GetSupplier($id: ID!) {
     getSupplier(id: $id) {
       ...SupplierFragment
-      template {
-        ...SupplierTemplateFragment
-      }
-      shops {
-        ...SupplierShopFragment
-        template {
-          ...SupplierShopTemplateFragment
-        }
+      branches {
+        ...SupplierBranchFragment
       }
     }
   }
   ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
 export const LIST_SUPPLIERS = gql`
@@ -240,33 +268,14 @@ export const LIST_SUPPLIERS = gql`
     listSuppliers(orgId: $orgId) {
       items {
         ...SupplierFragment
-        template {
-          ...SupplierTemplateFragment
-        }
-        shops {
-          ...SupplierShopFragment
-          template {
-            ...SupplierShopTemplateFragment
-          }
+        branches {
+          ...SupplierBranchFragment
         }
       }
     }
   }
   ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
-`
-
-export const LIST_SUPPLIER_TEMPLATES = gql`
-  query ListSupplierTemplates($orgId: ID!) {
-    listSupplierTemplates(orgId: $orgId) {
-      items {
-        ...SupplierTemplateFragment
-      }
-    }
-  }
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
 export const SEARCH_SUPPLIERS = gql`
@@ -274,15 +283,12 @@ export const SEARCH_SUPPLIERS = gql`
     searchSuppliers(orgId: $orgId, search: $search) {
       items {
         ...SupplierFragment
-        template {
-          ...SupplierTemplateFragment
-        }
       }
     }
   }
   ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
 `
+
 export const GET_ORG_REQUISITE = gql`
   query GetOrgRequisite($id: ID!) {
     getOrgRequisite(id: $id) {

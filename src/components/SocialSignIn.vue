@@ -77,7 +77,7 @@ export default {
         this.clearGoogleWindowTimer()
         window.removeEventListener('googlesignin', this.onGoogleSignInFinish, false)
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: this.$t('message.authByGoogleError'),
         })
       }

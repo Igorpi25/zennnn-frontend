@@ -3,6 +3,7 @@
     ref="menu"
     v-model="menu"
     :close-on-content-click="false"
+    :nudge-bottom="8"
     transition="scale-transition"
     min-width="290px"
     offset-y
@@ -19,7 +20,7 @@
       :first-day-of-week="firstDayOfWeek"
       :next-icon="icons.mdiChevronRight"
       :prev-icon="icons.mdiChevronLeft"
-      color="#5a8199"
+      color="#7E99D0"
       no-title
       dark
       @input="input"
@@ -68,11 +69,3 @@ export default {
   },
 }
 </script>
-
-<style>
-/* override vuetify datepicker */
-.v-picker button:active,
-.v-picker button:focus {
-  outline: none;
-}
-</style>

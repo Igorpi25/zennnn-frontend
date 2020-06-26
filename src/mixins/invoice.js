@@ -8,7 +8,7 @@ import {
 } from '@mdi/js'
 
 import { GET_SPEC } from '../graphql/queries'
-import { UPDATE_INVOICE, CREATE_PRODUCT } from '../graphql/mutations'
+import { UPDATE_INVOICE, CREATE_PRODUCT, CREATE_PRODUCT_WITH_INVOICE } from '../graphql/mutations'
 import {
   InvoiceProfitType,
   SpecCurrency,
@@ -84,14 +84,6 @@ export default {
           value: el,
         }
       })
-    },
-    tabs () {
-      return [
-        { value: 1, text: this.$t('shipping.prices'), width: 130 },
-        { value: 2, text: this.$t('shipping.warehouse'), width: 130 },
-        { value: 3, text: this.$t('shipping.description'), width: 130 },
-        { value: 4, text: this.$t('shipping.link'), width: 130 },
-      ]
     },
     items () {
       return (this.invoice && this.invoice.products) || []
@@ -175,14 +167,57 @@ export default {
         this.isScrollStart = false
       }, 300)
     },
-    async createProduct () {
+    addProduct (input) {
+      if (this.create) {
+        this.createProductWithInvoice(input)
+      } else {
+        this.createProduct(input)
+      }
+    },
+    async createProduct (input) {
       try {
         this.createLoading = true
         const variables = {
           invoiceId: this.invoiceItem.id,
         }
+        if (input) {
+          variables.input = {
+            name: input.name,
+            article: input.article,
+          }
+        }
         await this.$apollo.mutate({
           mutation: CREATE_PRODUCT,
+          variables,
+          fetchPolicy: 'no-cache',
+        })
+      } catch (error) {
+        this.errors = error.errors || []
+        this.$logger.warn('Error: ', error)
+        // Analytics.record({
+        //   name: 'CreateProductError',
+        //   attributes: {
+        //     error: error
+        //   }
+        // })
+      } finally {
+        this.createLoading = false
+      }
+    },
+    async createProductWithInvoice (input) {
+      try {
+        this.createLoading = true
+        const variables = {
+          specId: this.$route.params.specId,
+        }
+        if (input) {
+          variables.input = {
+            name: input.name,
+            article: input.article,
+          }
+        }
+        await this.$apollo.mutate({
+          mutation: CREATE_PRODUCT_WITH_INVOICE,
           variables,
           fetchPolicy: 'no-cache',
         })

@@ -7,10 +7,6 @@ import {
 import StorageHelper from './StorageHelper'
 import Logger from '../logger/Logger'
 
-import { apolloClient } from '../apollo'
-import { GET_PROFILE } from '../../graphql/queries'
-import { LOGIN } from '../../graphql/mutations'
-
 const USER_ADMIN_SCOPE = 'aws.cognito.signin.user.admin'
 const logger = new Logger('Auth')
 
@@ -33,62 +29,7 @@ export default class Auth {
     this.userPool = new CognitoUserPool(userPoolData)
     this.user = null
   }
-  /**
-   * After signin tokens sets to Memory storage,
-   * after Login operation will be re setup to local storage
-   * @return - A promise resolves to set current authenticated User profile to cache
-   */
-  login () {
-    return new Promise((resolve, reject) => {
-      apolloClient.mutate({
-        mutation: LOGIN,
-      }).then(loginResult => {
-        if (loginResult && loginResult.data && loginResult.data.login) {
-          apolloClient.cache.writeQuery({
-            query: GET_PROFILE,
-            data: {
-              getProfile: loginResult.data.login,
-            },
-          })
-        }
-        apolloClient.cache.writeData({
-          data: {
-            isLoggedIn: true,
-          },
-        })
-        resolve()
-      }).catch(error => {
-        logger.warn('Login Error', error)
-        reject(error)
-      })
-    })
-  }
-  /**
-   * Check auth of current user
-   * @return {boolean} - logged in
-   */
-  async checkAuth () {
-    try {
-      const session = await this.currentSession()
-      const loggedIn = !!session
-      let localData = {
-        isLoggedIn: loggedIn,
-      }
-      if (loggedIn) {
-        // check profile
-        await apolloClient.query({
-          query: GET_PROFILE,
-          fetchPolicy: 'cache-first',
-        })
-      }
-      // set isLoggedIn to cache
-      apolloClient.cache.writeData({ data: localData })
-      return true
-    } catch (error) {
-      logger.debug('check auth error: ', error)
-      return false
-    }
-  }
+
   signIn (username, password) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
@@ -108,21 +49,15 @@ export default class Auth {
     return new Promise((resolve, reject) => {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: (result) => {
-          this.login()
-            .then(() => {
-              // set keys from memory storage to local storage
-              for (let [k, v] of this._memoryStorage.storageItemsMap()) {
-                this._storage.setItem(k, v)
-              }
-              // clear memory storage
-              this._memoryStorage.clear()
-              // recreate user with local storage
-              this._createCognitoUser(username)
-              resolve(result)
-            })
-            .catch(err => {
-              reject(err)
-            })
+          // set keys from memory storage to local storage
+          for (const [k, v] of this._memoryStorage.storageItemsMap()) {
+            this._storage.setItem(k, v)
+          }
+          // clear memory storage
+          this._memoryStorage.clear()
+          // recreate user with local storage
+          this._createCognitoUser(username)
+          resolve(result)
         },
         onFailure: (err) => {
           reject(err)
@@ -134,8 +69,8 @@ export default class Auth {
           // authentication.
 
           // store userAttributes on global variable
-          cognitoUser['challengeName'] = 'NEW_PASSWORD_REQUIRED'
-          cognitoUser['challengeParam'] = {
+          cognitoUser.challengeName = 'NEW_PASSWORD_REQUIRED'
+          cognitoUser.challengeParam = {
             userAttributes,
             requiredAttributes,
           }
@@ -145,6 +80,7 @@ export default class Auth {
       })
     })
   }
+
   completeNewPassword (user, password, requiredAttributes) {
     if (!password) { return Promise.reject(new Error('Password cannot be empty')) }
 
@@ -163,28 +99,7 @@ export default class Auth {
       })
     })
   }
-  signUp (username, password, attrs) {
-    if (!this.userPool) {
-      return Promise.reject(new Error('No user pool.'))
-    }
-    if (!username || !password) {
-      return Promise.reject(new Error('Username or password not defined.'))
-    }
-    let attributes = []
-    Object.keys(attrs).map(key => {
-      const attr = { Name: key, Value: attrs[key] }
-      attributes.push(attr)
-    })
-    return new Promise((resolve, reject) => {
-      this.userPool.signUp(username, password, attributes, null, (err, data) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(data)
-        }
-      })
-    })
-  }
+
   resendSignUp (username) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
@@ -203,6 +118,7 @@ export default class Auth {
       })
     })
   }
+
   forgotPassword (username) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
@@ -222,7 +138,8 @@ export default class Auth {
       })
     })
   }
-  forgotPasswordConfirm (username, code, password) {
+
+  forgotPasswordSubmit (username, code, password) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
@@ -241,7 +158,8 @@ export default class Auth {
       })
     })
   }
-  signOut (opts) { // eslint-disable-line
+
+  async signOut (opts) { // eslint-disable-line
     this._cleanCachedItems()
     if (this.userPool) {
       const user = this.userPool.getCurrentUser()
@@ -256,6 +174,7 @@ export default class Auth {
       logger.debug('no Congito User pool')
     }
   }
+
   /**
    * Get current authenticated user
    * @return - A promise resolves to current authenticated CognitoUser if success
@@ -322,13 +241,14 @@ export default class Auth {
         } else {
           logger.debug(
             `Unable to get the user data because the ${USER_ADMIN_SCOPE} ` +
-              `is not in the scopes of the access token`,
+              'is not in the scopes of the access token',
           )
           return resolve(user)
         }
       })
     })
   }
+
   /**
    * Get current user's session
    * @return - A promise resolves to session object if success
@@ -338,7 +258,7 @@ export default class Auth {
     logger.debug('Getting current session')
     // Purposely not calling the reject method here because we don't need a console error
     if (!this.userPool) {
-      return Promise.reject() //eslint-disable-line
+      return Promise.reject() // eslint-disable-line
     }
 
     return new Promise((resolve, reject) => {
@@ -361,6 +281,7 @@ export default class Auth {
         })
     })
   }
+
   /**
    * Get the corresponding user session
    * @param {Object} user - The CognitoUser object
@@ -384,6 +305,7 @@ export default class Auth {
       })
     })
   }
+
   attributesToObject (attributes) {
     const obj = {}
     if (attributes) {
@@ -399,10 +321,12 @@ export default class Auth {
     }
     return obj
   }
+
   _cleanCachedItems () {
     this._memoryStorage.clear()
     this._storage.clear()
   }
+
   _createCognitoUser (username, forceMemoryStorage) {
     const userData = {
       Username: username,
@@ -413,7 +337,6 @@ export default class Auth {
     } else {
       userData.Storage = this._storage
     }
-    userData.Storage = this._storage
 
     const user = new CognitoUser(userData)
     return user

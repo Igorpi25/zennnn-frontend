@@ -6,7 +6,7 @@
       :id="id"
       :placeholder="compPlaceholder"
       :class="[
-        'editable placeholder-primary focus:placeholder-gray-lighter',
+        'editable placeholder-blue-500 focus:placeholder-gray-150',
         {
           'editable--focused': isFocused,
           'editable--outlined': outlined,
@@ -31,7 +31,7 @@
       :id="id"
       :placeholder="compPlaceholder"
       :class="[
-        'editable placeholder-primary focus:placeholder-gray-lighter',
+        'editable placeholder-blue-500 focus:placeholder-gray-150',
         {
           'editable--focused': isFocused,
           'editable--outlined': outlined,
@@ -474,7 +474,7 @@ div[contenteditable=true]:empty::before {
   line-height: 1.5;
   width: 100%;
   border-radius: 4px;
-  @apply truncate text-primary bg-transparent;
+  @apply truncate text-blue-500 bg-transparent;
 }
 
 .editable--focused {
@@ -502,10 +502,10 @@ div[contenteditable=true]:empty::before {
 }
 
 div.editable::placeholder {
-  @apply text-primary;
+  @apply text-blue-500;
 }
 
 div.editable:focus::placeholder {
-  @apply text-gray-lighter;
+  @apply text-gray-150;
 }
 </style>

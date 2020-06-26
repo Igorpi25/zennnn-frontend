@@ -4,25 +4,98 @@ import {
   INVOICE_FRAGMENT,
   PRODUCT_FRAGMENT,
   CLIENT_FRAGMENT,
-  CLIENT_TEMPLATE_FRAGMENT,
   SUPPLIER_FRAGMENT,
-  SUPPLIER_TEMPLATE_FRAGMENT,
-  SUPPLIER_SHOP_FRAGMENT,
-  SUPPLIER_SHOP_TEMPLATE_FRAGMENT,
+  SUPPLIER_BRANCH_FRAGMENT,
   ORG_CONTRACT_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
+  BANK_DETAIL_FRAGMENT,
 } from './typeDefs'
 
-export const LOGIN = gql`
-  mutation Login {
-    login {
+export const UPDATE_PAYMENT_SUBSCRIPTION = gql`
+  mutation UpdatePaymentSubscription($priceId: String!, $paymentMethodId: String) {
+    updatePaymentSubscription(priceId: $priceId, paymentMethodId: $paymentMethodId)
+  }
+`
+
+export const CREATE_PROMO_SUBSCRIPTION = gql`
+  mutation CreatePromoSubscription($paymentMethodId: String!) {
+    createPromoSubscription(paymentMethodId: $paymentMethodId)
+  }
+`
+
+export const CANCEL_PAYMENT_SUBSCRIPTION = gql`
+  mutation CancelPaymentSubscription {
+    cancelPaymentSubscription
+  }
+`
+
+export const RETRY_INVOICE_WITH_NEW_PAYMENT_METHOD = gql`
+  mutation RetryInvoiceWithNewPaymentMethod($paymentMethodId: String!, $invoiceId: String!) {
+    retryInvoiceWithNewPaymentMethod(paymentMethodId: $paymentMethodId, invoiceId: $invoiceId)
+  }
+`
+
+export const SET_DEFAULT_PAYMENT_METHOD = gql`
+  mutation SetDefaultPaymentMethod($paymentMethodId: String!) {
+    setDefaultPaymentMethod(paymentMethodId: $paymentMethodId)
+  }
+`
+
+export const ATTACH_PAYMENT_METHOD = gql`
+  mutation AttachPaymentMethod($paymentMethodId: String!, $setDefault: Boolean) {
+    attachPaymentMethod(paymentMethodId: $paymentMethodId, setDefault: $setDefault)
+  }
+`
+
+export const DETACH_PAYMENT_METHOD = gql`
+  mutation DetachPaymentMethod($paymentMethodId: String!) {
+    detachPaymentMethod(paymentMethodId: $paymentMethodId)
+  }
+`
+
+export const SET_BILLING_ADDRESS = gql`
+  mutation SetBillingAddress($country: String!, $city: String!, $street: String!, $postcode: String!) {
+    setBillingAddress(country: $country, city: $city, street: $street, postcode: $postcode)
+  }
+`
+
+export const SIGNUP = gql`
+  mutation Signup($givenName: String!, $familyName: String!, $email: String!, $password: String!, $locale: String!, $priceId: String) {
+    signup(givenName: $givenName, familyName: $familyName, email: $email, password: $password, locale: $locale, priceId: $priceId) {
       id
       email
       givenName
       familyName
       picture
-      initialized
+      locale
+      account {
+        id
+        customerId
+        subscriptionId
+        subscriptionStatus
+        latestInvoiceId
+        price
+        productId
+        priceId
+        canPromo
+        hasBillingAddress
+        periodEnd
+        cancelAtPeriodEnd
+        org
+      }
     }
+  }
+`
+
+export const NOTE_GREETING = gql`
+  mutation NoteGreeting {
+    noteGreeting
+  }
+`
+
+export const PREMIUM_CONTACT = gql`
+  mutation PremiumContact($name: String!, $email: String!) {
+    premiumContact(name: $name, email: $email)
   }
 `
 
@@ -37,6 +110,16 @@ export const GET_IMAGE_UPLOAD_URL = gql`
     getImageUploadUrl(orgId: $orgId, filename: $filename) {
       uploadUrl
       downloadUrl
+    }
+  }
+`
+
+export const GET_FILE_UPLOAD_URL = gql`
+  mutation GetFileUploadUrl($orgId: ID!, $filename: String!) {
+    getFileUploadUrl(orgId: $orgId, filename: $filename) {
+      uploadUrl
+      downloadUrl
+      contentType
     }
   }
 `
@@ -66,8 +149,8 @@ export const DELETE_SPEC = gql`
 `
 
 export const CREATE_INVOICE = gql`
-  mutation CreateInvoice($specId: ID!) {
-    createInvoice(specId: $specId) {
+  mutation CreateInvoice($specId: ID!, $input: CreateInvoiceInput) {
+    createInvoice(specId: $specId, input: $input) {
       ...InvoiceFragment
       products {
         ...ProductFragment
@@ -79,7 +162,7 @@ export const CREATE_INVOICE = gql`
 `
 
 export const UPDATE_INVOICE = gql`
-  mutation UpdateInvoice($id: ID!, $input: InvoiceInput!) {
+  mutation UpdateInvoice($id: ID!, $input: UpdateInvoiceInput!) {
     updateInvoice(id: $id, input: $input) {
       ...InvoiceFragment
     }
@@ -88,11 +171,24 @@ export const UPDATE_INVOICE = gql`
 `
 
 export const CREATE_PRODUCT = gql`
-  mutation CreateProduct($invoiceId: ID!) {
-    createProduct(invoiceId: $invoiceId) {
+  mutation CreateProduct($invoiceId: ID!, $input: ProductInput) {
+    createProduct(invoiceId: $invoiceId, input: $input) {
       ...ProductFragment
     }
   }
+  ${PRODUCT_FRAGMENT}
+`
+
+export const CREATE_PRODUCT_WITH_INVOICE = gql`
+  mutation CreateProductWithInvoice($specId: ID!, $input: ProductInput) {
+    createProductWithInvoice(specId: $specId, input: $input) {
+      ...InvoiceFragment
+      products {
+        ...ProductFragment
+      }
+    }
+  }
+  ${INVOICE_FRAGMENT}
   ${PRODUCT_FRAGMENT}
 `
 
@@ -183,29 +279,21 @@ export const SET_INVOICE_SUPPLIER = gql`
 `
 
 export const CREATE_CLIENT = gql`
-  mutation CreateClient($orgId: ID!, $input: CreateClientInput!) {
-    createClient(orgId: $orgId, input: $input) {
+  mutation CreateClient($orgId: ID!, $groupId: ID, $input: CreateClientInput!) {
+    createClient(orgId: $orgId, groupId: $groupId, input: $input) {
       ...ClientFragment
-      template {
-        ...ClientTemplateFragment
-      }
     }
   }
   ${CLIENT_FRAGMENT}
-  ${CLIENT_TEMPLATE_FRAGMENT}
 `
 
 export const UPDATE_CLIENT = gql`
   mutation UpdateClient($id: ID!, $input: UpdateClientInput!) {
     updateClient(id: $id, input: $input) {
       ...ClientFragment
-      template {
-        ...ClientTemplateFragment
-      }
     }
   }
   ${CLIENT_FRAGMENT}
-  ${CLIENT_TEMPLATE_FRAGMENT}
 `
 
 export const DELETE_CLIENT = gql`
@@ -214,61 +302,30 @@ export const DELETE_CLIENT = gql`
   }
 `
 
-export const CREATE_CLIENT_TEMPLATE = gql`
-  mutation CreateClientTemplate($orgId: ID!, $fromClient: ID, $input: CreateClientTemplateInput!) {
-    createClientTemplate(orgId: $orgId, fromClient: $fromClient, input: $input) {
-      ...ClientTemplateFragment
-    }
-  }
-  ${CLIENT_TEMPLATE_FRAGMENT}
-`
-
-export const DELETE_CLIENT_TEMPLATE = gql`
-  mutation DeleteClientTemplate($id: ID!) {
-    deleteClientTemplate(id: $id)
-  }
-`
-
 export const CREATE_SUPPLIER = gql`
   mutation CreateSupplier($orgId: ID!, $input: CreateSupplierInput!) {
     createSupplier(orgId: $orgId, input: $input) {
       ...SupplierFragment
-      template {
-        ...SupplierTemplateFragment
-      }
-      shops {
-        ...SupplierShopFragment
-        template {
-          ...SupplierShopTemplateFragment
-        }
+      branches {
+        ...SupplierBranchFragment
       }
     }
   }
   ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
 export const UPDATE_SUPPLIER = gql`
   mutation UpdateSupplier($id: ID!, $input: UpdateSupplierInput!) {
     updateSupplier(id: $id, input: $input) {
       ...SupplierFragment
-      template {
-        ...SupplierTemplateFragment
-      }
-      shops {
-        ...SupplierShopFragment
-        template {
-          ...SupplierShopTemplateFragment
-        }
+      branches {
+        ...SupplierBranchFragment
       }
     }
   }
   ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
 export const DELETE_SUPPLIER = gql`
@@ -277,50 +334,27 @@ export const DELETE_SUPPLIER = gql`
   }
 `
 
-export const CREATE_SUPPLIER_SHOP = gql`
-  mutation CreateSupplierShop($supplierId: ID!, $input: SupplierShopInput!) {
-    createSupplierShop(supplierId: $supplierId, input: $input) {
-      ...SupplierShopFragment
-      template {
-        ...SupplierShopTemplateFragment
-      }
+export const CREATE_SUPPLIER_BRANCH = gql`
+  mutation CreateSupplierBranch($supplierId: ID!, $input: SupplierBranchInput!) {
+    createSupplierBranch(supplierId: $supplierId, input: $input) {
+      ...SupplierBranchFragment
     }
   }
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
-export const UPDATE_SUPPLIER_SHOP = gql`
-  mutation UpdateSupplierShop($id: ID!, $input: SupplierShopInput!) {
-    updateSupplierShop(id: $id, input: $input) {
-      ...SupplierShopFragment
-      template {
-        ...SupplierShopTemplateFragment
-      }
+export const UPDATE_SUPPLIER_BRANCH = gql`
+  mutation UpdateSupplierBranch($id: ID!, $input: SupplierBranchInput!) {
+    updateSupplierBranch(id: $id, input: $input) {
+      ...SupplierBranchFragment
     }
   }
-  ${SUPPLIER_SHOP_FRAGMENT}
-  ${SUPPLIER_SHOP_TEMPLATE_FRAGMENT}
+  ${SUPPLIER_BRANCH_FRAGMENT}
 `
 
-export const DELETE_SUPPLIER_SHOP = gql`
+export const DELETE_SUPPLIER_BRANCH = gql`
   mutation DeleteSupplierShop($id: ID!) {
-    deleteSupplierShop(id: $id)
-  }
-`
-
-export const CREATE_SUPPLIER_TEMPLATE = gql`
-  mutation CreateSupplierTemplate($orgId: ID!, $fromSupplier: ID, $input: CreateSupplierTemplateInput!) {
-    createSupplierTemplate(orgId: $orgId, fromSupplier: $fromSupplier, input: $input) {
-      ...SupplierTemplateFragment
-    }
-  }
-  ${SUPPLIER_TEMPLATE_FRAGMENT}
-`
-
-export const DELETE_SUPPLIER_TEMPLATE = gql`
-  mutation DeleteSupplierTemplate($id: ID!) {
-    deleteSupplierTemplate(id: $id)
+    deleteSupplierBranch(id: $id)
   }
 `
 
@@ -345,6 +379,30 @@ export const UPDATE_REQUISITE = gql`
 export const DELETE_REQUISITE = gql`
   mutation DeleteRequisite($id: ID!) {
     deleteRequisite(id: $id)
+  }
+`
+
+export const CREATE_COMPANY_BANK_DETAIL = gql`
+  mutation CreateCompanyBankDetail($companyId: ID!, $input: BankDetailInput!) {
+    createCompanyBankDetail(companyId: $companyId, input: $input) {
+      ...BankDetailFragment
+    }
+  }
+  ${BANK_DETAIL_FRAGMENT}
+`
+
+export const UPDATE_COMPANY_BANK_DETAIL = gql`
+  mutation UpdateCompanyBankDetail($companyId: ID!, $id: ID!, $input: BankDetailInput!) {
+    updateCompanyBankDetail(companyId: $companyId, id: $id, input: $input) {
+      ...BankDetailFragment
+    }
+  }
+  ${BANK_DETAIL_FRAGMENT}
+`
+
+export const DELETE_COMPANY_BANK_DETAIL = gql`
+  mutation DeleteCompanyBankDetail($companyId: ID!, $id: ID!) {
+    deleteCompanyBankDetail(companyId: $companyId, id: $id)
   }
 `
 
@@ -525,6 +583,18 @@ export const SET_SPEC_CONTAINER_SIZE = gql`
 export const SET_SPEC_CONTAINER_CUSTOM_CAPACITY = gql`
   mutation SetSpecContainerCustomCapacity($specId: ID!, $containerId: ID!, $capacity: Float, $shrink: Float) {
     setSpecContainerCustomCapacity(specId: $specId, containerId: $containerId, capacity: $capacity, shrink: $shrink)
+  }
+`
+
+export const INIT_SPEC_SIMPLE_UI = gql`
+  mutation InitSpecSimpleUI {
+    initSpecSimpleUI @client
+  }
+`
+
+export const SET_SPEC_SIMPLE_UI = gql`
+  mutation SetSpecSimpleUI($value: Boolean) {
+    setSpecSimpleUI(value: $value) @client
   }
 `
 

@@ -10,9 +10,11 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemo
 import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from '../../graphql'
 import { GET_BACKEND_VERSION } from '../../graphql/queries'
-import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY } from '../../config/globals'
-import { Auth, Logger, i18n } from '../index'
+import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../../config/globals'
+import { Auth, Logger, i18n, store } from '../index'
 import router from '../../router'
+import { getUsername } from '../../graphql/resolvers'
+import systemMessageBus from '../notify/systemMessageBus'
 
 const logger = new Logger('Apollo')
 
@@ -75,6 +77,8 @@ const authLink = setContext(async (request, { headers }) => {
   let token = null
   let sid = null
   if (
+    operationName === 'Signup' ||
+    operationName === 'ListPrices' ||
     operationName === 'GetPaperSpec' ||
     operationName === 'AddCommentToPaperSpec' ||
     operationName === 'ReplyToPaperSpecComment' ||
@@ -96,9 +100,9 @@ const authLink = setContext(async (request, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `${token}` : '',
+      Authorization: token ? `Bearer ${token}` : '',
       sid,
-      lang: i18n.locale,
+      locale: i18n.locale,
     },
   }
 })
@@ -141,7 +145,7 @@ export const wsLink = new WebSocketLink({
       const token = session.getIdToken().getJwtToken()
       const sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
       return {
-        authToken: token || '',
+        authToken: token ? `Bearer ${token}` : '',
         sid,
       }
     },
@@ -150,7 +154,7 @@ export const wsLink = new WebSocketLink({
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    for (let err of graphQLErrors) {
+    for (const err of graphQLErrors) {
       const { message, locations, path, extensions } = err
       const code = extensions && extensions.code
       switch (code) {
@@ -169,8 +173,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
           logger.warn(
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
           )
-          if (message && message.includes('Forbidden')) {
-            router.app.$notify({ color: 'orange', text: 'Forbidden' })
+          if (message === 'ForbiddenError: Insufficient access rights') {
+            systemMessageBus.$emit('system-message', message)
+          } else if (message && message.includes('Forbidden')) {
+            router.app.$notify({ color: 'warn', text: 'Forbidden' })
           }
       }
     }
@@ -201,14 +207,21 @@ export const apolloClient = new ApolloClient({
   connectToDevTools: true,
 })
 
-const data = {
-  isLoggedIn: false,
-  isSpecSync: false,
-  loggedInUser: null,
+const setData = async () => {
+  const username = await getUsername()
+  const key = `${username}.${SPEC_SIMPLE_UI_OFF_STORE_KEY}`
+  const specSimpleUIOff = await store.getItem(key)
+  const data = {
+    isLoggedIn: false,
+    isSpecSync: false,
+    specSimpleUIOff,
+    loggedInUser: null,
+  }
+  cache.writeData({ data })
 }
 
-cache.writeData({ data })
-apolloClient.onResetStore(() => cache.writeData({ data }))
+setData()
+apolloClient.onResetStore(() => setData())
 
 Vue.use(VueApollo)
 

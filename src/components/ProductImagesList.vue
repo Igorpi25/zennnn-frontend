@@ -17,7 +17,7 @@
           <v-img
             :src="`${img}${ICON_IMAGE_POSTFIX}`"
             :class="[
-              'rounded-sm h-6 w-6',
+              'rounded-sm h-8 w-8',
             ]"
             aspect-ratio="1"
           >
@@ -39,7 +39,7 @@
     >
       <template v-slot:menu-activator>
         <div class="flex justify-center items-center">
-          <span class="font-medium text-gray-lightest">
+          <span class="font-medium text-gray-100">
           +{{ otherImages.length }}
           </span>
         </div>
@@ -52,8 +52,6 @@
       :uploading.sync="uploading"
       show-preview
       check-download-url
-      class="text-primary"
-      style="width:24px; height:24px;"
       @update="addImage"
     />
   </div>

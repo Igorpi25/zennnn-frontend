@@ -1,13 +1,13 @@
 <template>
   <div class="content">
-    <StatusBar></StatusBar>
+    <Header />
     <section class="h-full flex flex-grow">
       <div class="container">
         <div class="flex flex-col md:flex-row">
           <div class="w-full flex flex-col-reverse justify-end md:flex-col">
             <div class="pt-10 md:pt-12">
               <h1 class="hidden md:block">
-                <span class="text-gray-lightest mr-2 inline md:block">
+                <span class="text-gray-100 mr-2 inline md:block">
                   {{ $t('signup.hello') }}
                 </span>
                 <span class="text-white inline sm:block" style="max-width:552px;">
@@ -16,21 +16,18 @@
               </h1>
               <p class="text-white mb-0 md:mb-5" style="max-width:460px;">
                 <span>{{ $t('signup.compliteRegistration') }}</span>&nbsp;
-                <span class="text-gray-lightest">
+                <span class="text-gray-100">
                   {{ $t('signup.registerContent') }}
                 </span>
               </p>
             </div>
             <div class="flex-grow">
+              <span>{{ $t('signup.hasAccount') }}</span>
               <Button
-                outline
-                secondary
+                outlined
                 class="mx-auto md:mx-0 md:mt-0 mt-8 md:mt-24"
                 @click="$router.push({name: 'signin'})"
               >
-                <template v-slot:text>
-                  <span>{{ $t('signup.hasAccount') }}</span>
-                </template>
                 <span>{{ $t('signup.signin') }}</span>
               </Button>
             </div>
@@ -44,13 +41,7 @@
               v-model="formValidity"
               :title="$t('signup.registration')"
               :error-message.sync="errorMessage"
-              rounded
-              shadow
-              class="form--max-w-sm mx-auto m-0"
-              body-class="pt-8 md:pt-12 pb-10 px-0 md:px-12"
-              header
-              header-icon="circle"
-              header-class="px-6 hidden md:flex"
+              class="mx-auto m-0 pt-8 md:pt-12 pb-10 px-0 md:px-12"
             >
               <div class="w-full">
                 <TextField
@@ -68,7 +59,6 @@
                   :label="$t('signup.lastName')"
                   :rules="[rules.required]"
                   name="lastName"
-                  state-icon
                 />
               </div>
               <div class="w-full">
@@ -80,7 +70,6 @@
                   type="email"
                   name="email"
                   readonly
-                  state-icon
                 />
               </div>
               <div class="w-full">
@@ -91,53 +80,39 @@
                   :rules="[rules.required, rules.passwordMinLength]"
                   name="password"
                   minlength="8"
-                  state-icon
                 >
-                  <template v-slot:append-outer>
+                  <template v-slot:append>
                     <div
-                      class="cursor-pointer select-none"
+                      class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
                       @click="showPassword = !showPassword"
                     >
-                      <Icon
-                        v-if="showPassword"
-                        color="#9A9A9A"
-                        style="transform:rotateY(-180deg)"
-                      >{{ icons.mdiEyeOutline }}</Icon>
-                      <Icon
-                        v-else
-                        color="#9A9A9A"
-                      >{{ icons.mdiEyeOffOutline }}</Icon>
+                      <i v-if="showPassword" class="zi-eye align-middle" />
+                      <i v-else class=" zi-eye-off align-middle" style="font-size: 28px" />
                     </div>
                   </template>
                 </TextField>
               </div>
-              <div class="relative mx-auto text-secondary">
+              <div class="relative mx-auto text-gray-300">
                 <!-- TODO fix position -->
                 <Checkbox
                   :rules="[rules.required]"
                   secondary
                 >
-                  <span class="ml-3 float-left text-gray-light">
+                  <span class="ml-3 float-left text-gray-200">
                     {{ $t('signup.acceptPolicyAndTerms') }}&nbsp;
-                    <a class="text-secondary" href="#">{{ $t('signup.privacyPolicy') }}</a>
+                    <a class="text-gray-300" href="#">{{ $t('signup.privacyPolicy') }}</a>
                     &nbsp;{{ $t('preposition.and') }}&nbsp;
-                    <a class="text-secondary" href="#">{{ $t('signup.termsOfUse') }}</a>
+                    <a class="text-gray-300" href="#">{{ $t('signup.termsOfUse') }}</a>
                   </span>
                 </Checkbox>
                 <div class="flex justify-center">
                   <Button
-                    :disabled="formValidity || loading"
-                    large
-                    secondary
+                    :disabled="formValidity"
+                    :loading="loading"
                     class="mt-5 flex justify-center"
                     @click="onSubmit"
                   >
-                    <span v-if="loading">
-                      {{ $t('action.loading') }}
-                    </span>
-                    <span v-else>
-                      {{ $t('signup.submit') }}
-                    </span>
+                    {{ $t('signup.submit') }}
                   </Button>
                 </div>
               </div>
@@ -155,9 +130,7 @@
 </template>
 
 <script>
-import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
-
-import StatusBar from '@/components/StatusBar.vue'
+import Header from '@/components/Header.vue'
 import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
 
@@ -166,7 +139,7 @@ import { Auth } from '../plugins'
 export default {
   name: 'Registration',
   components: {
-    StatusBar,
+    Header,
     Social,
     Copyright,
   },
@@ -192,10 +165,6 @@ export default {
         lastName: '',
         email: '',
         password: '',
-      },
-      icons: {
-        mdiEyeOutline,
-        mdiEyeOffOutline,
       },
       rules: {
         required: v => !!v || this.$t('rule.required'),

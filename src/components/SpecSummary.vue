@@ -1,11 +1,11 @@
 <template>
-  <div class="spec-summary">
+  <div>
 
     <v-dialog
       v-model="paperList"
       max-width="443"
     >
-      <PaperListModal
+      <ContractListModal
         :items="papers"
         @close="paperList = false"
         @openPaper="openContract"
@@ -21,7 +21,7 @@
       scrollable
       persistent
     >
-      <PaperConfiguratorModal
+      <ContractConfiguratorModal
         :blank="blank"
         :create="create"
         @update="contractCreated"
@@ -32,12 +32,13 @@
     <v-dialog
       v-model="printDialog"
       :fullscreen="$vuetify.breakpoint.smAndDown"
-      content-class="dialog-full-height bg-gray-800"
-      max-width="900"
+      content-class="dialog-full-height overflow-scroll-touch"
+      max-width="1130"
       scrollable
       persistent
     >
       <PrintSettings
+        :ready-to-print="spec.readyToPrint"
         :org-id="orgId"
         :spec-id="spec.id"
         :requisite-id="spec.requisite"
@@ -54,356 +55,8 @@
       />
     </v-dialog>
 
-    <div>
-      <h4 class="text-lg mb-4">
-        {{ $t('shipping.summaryTitle') }}
-      </h4>
-      <div class="spec-summary__wrapper flex-col lg:flex-row">
-        <div class="spec-summary__info" v-if="isOwnerOrManager || isWarehouseman">
-          <div v-if="containers.length > 0" class="relative pb-5">
-            <div
-              v-if="spec.shipped"
-              class="spec-summary__container__image spec-summary__container__image--shipped w-full"
-              style="top: -16px; left: -20px; width: 350px; background-size: contain; height: auto; z-index: 1;"
-            />
-            <template
-              v-for="(container, i) of containers"
-            >
-              <div
-                v-if="!container.full"
-                :key="`unloaded-${i}`"
-                class="spec-summary__container"
-              >
-                <div
-                  class="spec-summary__container__image"
-                  :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
-                  :style="{
-                    width: (container.loaded || 0) + '%',
-                    height: container.size === '_20' ? '85px' : '48px'
-                  }"
-                />
-                <img
-                  v-if="container.size === '_20'"
-                  width="210"
-                  height="85"
-                  src="/img/container-empty.svg"
-                  alt="Container"
-                >
-                <img
-                  v-else
-                  width="210"
-                  height="48"
-                  src="/img/container-empty-sm.svg"
-                  alt="Container"
-                >
-              </div>
-              <div
-                v-else
-                :key="`loaded-${i}`"
-              >
-                <div
-                  class="spec-summary__container"
-                >
-                  <div
-                    class="spec-summary__container__image"
-                    :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
-                    :style="{
-                      width: '100%',
-                      height: container.size === '_20' ? '85px' : '48px'
-                    }"
-                  />
-                  <div class="spec-summary__container__label">
-                    {{ container.full }} x {{ container.size.replace('_', '') }}′{{ container.mode.replace('_', '') }}
-                  </div>
-                  <img
-                    v-if="container.size === '_20'"
-                    width="210"
-                    height="85"
-                    src="/img/container-empty.svg"
-                    alt="Container"
-                  >
-                  <img
-                    v-else
-                    width="210"
-                    height="48"
-                    src="/img/container-empty-sm.svg"
-                    alt="Container"
-                  >
-                </div>
-                <div class="spec-summary__container py-2 flex justify-center text-white">
-                  <Icon>{{ icons.mdiPlusThick }}</Icon>
-                </div>
-                <div
-                  class="spec-summary__container"
-                >
-                  <div
-                    class="spec-summary__container__image"
-                    :class="[container.size === '_20' ? 'spec-summary__container__image--full' : 'spec-summary__container__image--full-sm']"
-                    :style="{
-                      width: (container.loaded || 0) + '%',
-                      height: container.size === '_20' ? '85px' : '48px'
-                    }"
-                  />
-                  <img
-                    v-if="container.size === '_20'"
-                    width="210"
-                    height="85"
-                    src="/img/container-empty.svg"
-                    alt="Container"
-                  >
-                  <img
-                    v-else
-                    width="210"
-                    height="48"
-                    src="/img/container-empty-sm.svg"
-                    alt="Container"
-                  >
-                </div>
-              </div>
-            </template>
-          </div>
-          <div>
-            <ul class="leaders">
-              <li
-                v-for="(c, i) in containers"
-                :key="i"
-              >
-                <span>
-                  <select
-                    v-if="isOwnerOrManager"
-                    :value="`${c.size}${c.mode}`"
-                    :disabled="setContainerSizeLoading"
-                    name="container-size"
-                    class="simple-select"
-                    @change="setContainerSize(c.id, $event)"
-                  >
-                    <option value="_20_DC">
-                      <span class="leaders__num cursor-pointer" style="padding-right:0">
-                        20{{ $t('shipping.containerMeasure') }}DC
-                      </span>
-                    </option>
-                    <option value="_40_HC">
-                      <span class="leaders__num cursor-pointer" style="padding-right:0">
-                        40{{ $t('shipping.containerMeasure') }}HC
-                      </span>
-                    </option>
-                    <option value="_45_HC">
-                      <span class="leaders__num cursor-pointer" style="padding-right:0">
-                        45{{ $t('shipping.containerMeasure') }}HC
-                      </span>
-                    </option>
-                  </select>
-                  <span v-else>
-                    {{ `${c.size ? c.size.slice(1) : ''}${$t('shipping.containerMeasure')}${c.mode ? c.mode.slice(1) : ''}` }}
-                  </span>
-                  {{ ` ${$t('shipping.container')} ${$t('shipping.containerLoaded')}` }}
-                </span>
-                <span class="leaders__num">
-                  {{ c.loaded || 0 }}%
-                </span>
-              </li>
-              <li>
-                <span>{{ $t('shipping.estimateDate') }}</span>
-                <span class="leaders__num">
-                  {{ spec.estimateShippingDate ? $d($parseDate(spec.estimateShippingDate), 'short') : '-' }}
-                </span>
-              </li>
-              <li>
-                <span>{{ $t('shipping.totalVolume') }}</span>
-                <span class="leaders__num">
-                  {{ $n(spec.totalVolume || 0) }} {{ $t('measure.m') }}<sup>3</sup>
-                </span>
-              </li>
-              <li>
-                <span>{{ $t('shipping.totalWeight') }}</span>
-                <span class="leaders__num">
-                  {{ $n(spec.totalWeight || 0) }} {{ $t('measure.kg') }}
-                </span>
-              </li>
-              <li>
-                <span>{{ $t('shipping.qtyOfPackages') }}</span>
-                <span class="leaders__num">
-                  {{ $n(spec.qtyOfPackages || 0) }}
-                </span>
-              </li>
-            </ul>
-            <ToggleButton
-              v-if="isOwnerOrManager"
-              :value="spec.shipped"
-              class="my-6"
-              @input="updateSpec({ shipped: $event })"
-            >
-              <span>{{ $t('shipping.setShipped') }}</span>
-            </ToggleButton>
-          </div>
-        </div>
-        <div class="spec-summary__cost" v-if="isOwnerOrManager || isAccountant">
-          <div class="spec-summary__cost__card">
-            <ul>
-              <li class="flex">
-                <span class="flex-shrink-0">
-                  {{ $t('shipping.finalCost') }} {{ $t(`currency.${currency}.symbol`) }}
-                </span>
-                <div class="flex-grow dots" />
-                <!-- TODO to custom component or Intl polyfill -->
-                <!-- i18n-n has Error formatter.formatToParts is not a function. -->
-                <!-- <span class="flex">
-                  <div class="text-white">{{ $n(spec.finalCost, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalCost, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.finalCost, 'decimal').slice(-2) }}</div>
-                </span> -->
-                <i18n-n :value="spec.finalCost || 0" format="decimal" class="flex items-baseline">
-                  <template v-slot:integer="slotProps">
-                    <div class="text-white">{{ slotProps.integer }}</div>
-                  </template>
-                  <template v-slot:group="slotProps">
-                    <div class="text-sm">{{ slotProps.group }}</div>
-                  </template>
-                  <template v-slot:fraction="slotProps">
-                    <div class="text-sm">{{ slotProps.fraction }}</div>
-                  </template>
-                </i18n-n>
-              </li>
-              <li class="flex">
-                <span class="flex-shrink-0">
-                  {{ $t('shipping.finalObtainCost') }} {{ $t(`currency.${currency}.symbol`) }}
-                </span>
-                <div class="flex-grow dots" />
-                <!-- <span class="flex">
-                  <div class="text-white">{{ $n(spec.finalObtainCost, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.finalObtainCost, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.finalObtainCost, 'decimal').slice(-2) }}</div>
-                </span> -->
-                <i18n-n :value="spec.finalObtainCost || 0" format="decimal" class="flex items-baseline">
-                  <template v-slot:integer="slotProps">
-                    <div class="text-white">{{ slotProps.integer }}</div>
-                  </template>
-                  <template v-slot:group="slotProps">
-                    <div class="text-sm">{{ slotProps.group }}</div>
-                  </template>
-                  <template v-slot:fraction="slotProps">
-                    <div class="text-sm">{{ slotProps.fraction }}</div>
-                  </template>
-                </i18n-n>
-              </li>
-              <li class="flex">
-                <span class="flex-shrink-0">
-                  {{ $t('shipping.profit') }}  {{ $t(`currency.${currency}.symbol`) }}
-                </span>
-                <div class="flex-grow dots" />
-                <!-- <span class="flex">
-                  <div style="color: #00ff16;">{{ $n(spec.profit, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.profit, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.profit, 'decimal').slice(-2) }}</div>
-                </span> -->
-                <i18n-n :value="spec.profit || 0" format="decimal" class="flex items-baseline">
-                  <template v-slot:integer="slotProps">
-                    <div :style="{ color: spec.profit > 0 ? '#00ff16' : '#ffffff' }">{{ slotProps.integer }}</div>
-                  </template>
-                  <template v-slot:group="slotProps">
-                    <div class="text-sm">{{ slotProps.group }}</div>
-                  </template>
-                  <template v-slot:fraction="slotProps">
-                    <div class="text-sm">{{ slotProps.fraction }}</div>
-                  </template>
-                </i18n-n>
-              </li>
-            </ul>
-          </div>
-          <div class="spec-summary__cost__card" style="background-image: linear-gradient(to top, #272727 0%, #272727 80%, #1d1d1b 95%, #1d1d1b 100%);">
-            <ul>
-              <li class="flex">
-                <span class="flex-shrink-0">
-                  {{ $t('shipping.totalPrepay') }} {{ $t(`currency.${currency}.symbol`) }}
-                </span>
-                <div class="flex-grow dots" />
-                <!-- <span class="flex">
-                  <div class="text-white">{{ $n(spec.totalPrepay, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalPrepay, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.totalPrepay, 'decimal').slice(-2) }}</div>
-                </span> -->
-                <i18n-n :value="spec.totalPrepay || 0" format="decimal" class="flex items-baseline">
-                  <template v-slot:integer="slotProps">
-                    <div class="text-white">{{ slotProps.integer }}</div>
-                  </template>
-                  <template v-slot:group="slotProps">
-                    <div class="text-sm">{{ slotProps.group }}</div>
-                  </template>
-                  <template v-slot:fraction="slotProps">
-                    <div class="text-sm">{{ slotProps.fraction }}</div>
-                  </template>
-                </i18n-n>
-              </li>
-              <li class="flex">
-                <span class="flex-shrink-0">
-                  {{ $t('shipping.totalClientDebt') }} {{ $t(`currency.${currency}.symbol`) }}
-                </span>
-                <div class="flex-grow dots" />
-                <!-- <span class="flex">
-                  <div style="color: #ff2900;">{{ $n(spec.totalClientDebt, 'integer') }}</div>
-                  <div style="padding-left: 1px; letter-spacing: -1px">{{ $n(spec.totalClientDebt, 'decimal').slice(-3, -2) }}</div>
-                  <div class="text-sm">{{ $n(spec.totalClientDebt, 'decimal').slice(-2) }}</div>
-                </span> -->
-                <i18n-n :value="spec.totalClientDebt || 0" format="decimal" class="flex items-baseline">
-                  <template v-slot:integer="slotProps">
-                    <div :style="{ color: spec.totalClientDebt > 0 ? '#ff2900' : '#ffffff' }">{{ slotProps.integer }}</div>
-                  </template>
-                  <template v-slot:group="slotProps">
-                    <div class="text-sm">{{ slotProps.group }}</div>
-                  </template>
-                  <template v-slot:fraction="slotProps">
-                    <div class="text-sm">{{ slotProps.fraction }}</div>
-                  </template>
-                </i18n-n>
-              </li>
-            </ul>
-          </div>
-          <div class="flex items-center bg-gray-700 rounded-md p-5 mt-4" v-if="isOwnerOrManager">
-            <div class="flex-grow text-gray-100">
-              <span>{{ $t('shipping.documentRate') }}</span>
-              <select
-                :value="currency"
-                :class="[
-                  'simple-select text-sm ml-px'
-                ]"
-                @change="updateSpec({ currency: $event.target.value })"
-              >
-                <option
-                  v-for="curr of currencies"
-                  :key="curr.value"
-                  :value="curr.value"
-                >
-                  {{ curr.text }}
-                </option>
-              </select>
-            </div>
-            <div class="w-20 mr-2">
-              <TextField
-                :value="spec.currencyRate"
-                :placeholder="$t('placeholder.emptyNumber')"
-                :disabled="isCurrencyDisabled"
-                lazy
-                type="number"
-                inputmode="decimal"
-                format-style="decimal"
-                solo
-                squared
-                hide-details
-                class="text-sm text-field_nd"
-                input-class="h-8 text-primary placeholder-gray-200"
-                @input="updateSpec({ currencyRate: $event })"
-              />
-            </div>
-            <div class="text-gray-200">
-              {{ $t(`currency.USD.iso-4217`) }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="py-10" v-if="isOwnerOrManager">
-      <div class="flex flex-wrap">
+    <div v-if="isOwnerOrManager">
+      <div class="flex flex-wrap lg:flex-no-wrap pb-8">
         <!-- Delivery -->
         <SpecShipment
           :item="spec.shipment"
@@ -421,85 +74,81 @@
       </div>
     </div>
 
-    <div class="pb-10" v-if="isOwnerOrManager">
-      <h4 class="text-xl font-semibold leading-6 mb-4">
+    <div class="pb-12" v-if="isOwnerOrManager">
+      <h4 class="text-white text-xl font-semibold leading-6 mb-4">
         {{ $t('shipping.actions') }}
       </h4>
       <div class="bg-gray-700 rounded-md p-3 select-none">
         <div class="flex flex-wrap lg:justify-between">
           <div class="w-full md:w-auto p-2">
-            <a
+            <Button
               :href="`/paper/${$route.params.specId}`"
-              style="min-width: 85px"
               target="_blank"
-              class="w-full inline-block rounded-md border border-gray-400 select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
+              outlined
+              class="w-full"
+              content-class="w-full flex items-center"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-eay text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.previewAsCustomer') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="zi-eye text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.previewAsCustomer') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <a
-              href="#"
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
-              @click.prevent="openPaperList"
+            <Button
+              outlined
+              borderless
+              class="w-full"
+              content-class="w-full flex items-center"
+              @click="openPaperList"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-settings text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.paperConfigurator') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="zi-setting text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.paperConfigurator') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <a
-              href="#"
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
-              @click.prevent="printDialog = true"
+            <Button
+              outlined
+              borderless
+              class="w-full"
+              content-class="w-full flex items-center"
+              @click="printDialog = true"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-printer text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.print') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="zi-print text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.print') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <a
-              href="#"
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent select-none focus:outline-none focus:border-primary hover:border-primary transition-colors duration-100 ease-out"
-              @click.prevent="accessControlDialog = true"
+            <Button
+              outlined
+              borderless
+              class="w-full"
+              content-class="w-full flex items-center"
+              @click="accessControlDialog = true"
             >
-              <div class="h-12 flex items-center px-2">
-                <i class="icon-add-user text-2xl mr-2" />
-                <span class="text-primary whitespace-nowrap">
-                  {{ $t('shipping.inviteCustomer') }}
-                </span>
-              </div>
-            </a>
+              <template v-slot:icon>
+                <i class="zi-user-plus text-gray-100 text-2xl" />
+              </template>
+              {{ $t('shipping.inviteCustomer') }}
+            </Button>
           </div>
           <div class="w-full md:w-auto p-2">
-            <button
+            <Button
+              outlined
+              borderless
               disabled
-              style="min-width: 85px"
-              class="w-full inline-block rounded-md border border-transparent pointer-events-none"
+              class="w-full"
+              content-class="w-full flex items-center"
             >
-              <div class="h-12 flex items-center px-2 text-gray-400">
-                <i class="icon-mail text-2xl mr-2" />
-                <span class="whitespace-nowrap">
-                  {{ $t('shipping.notifyCustomer') }}
-                </span>
-              </div>
-            </button>
+              <template v-slot:icon>
+                <i class="zi-email text-2xl" />
+              </template>
+              {{ $t('shipping.notifyCustomer') }}
+            </Button>
           </div>
         </div>
       </div>
@@ -513,18 +162,16 @@
         <h3 class="pb-3 font-semibold">{{ $t('shipping.access') }}</h3>
         <Spinner v-if="linkAccessLoading" />
         <template v-else>
-          <!-- <ToggleButton
+          <!-- <SwitchInput
             :value="linkAccess"
             class="mb-2"
             @input="updateLinkAccess"
           >
             <span>{{ $t('shipping.linkAccess') }}</span>
-          </ToggleButton> -->
+          </SwitchInput> -->
           <TextField
             ref="linkInput"
             :value="link"
-            hide-details
-            squared
             readonly
             solo
             class="mb-1"
@@ -548,7 +195,7 @@
             required
           />
           <Button
-            :disabled="sendAccessLinkLoading"
+            :loading="sendAccessLinkLoading"
             @click="sendLinkAccessToEmail(emailAccessInput)"
           >
             {{ $t('shipping.sendEmail') }}
@@ -576,9 +223,7 @@
                 class="cursor-pointer"
                 @click="removeEmailAccess(a.email)"
               >
-                <Icon size="18">
-                  {{ icons.mdiClose }}
-                </Icon>
+                <i class="zi-close text-lg" />
               </div>
             </v-slide-x-transition>
           </div>
@@ -591,11 +236,8 @@
 <script>
 import cloneDeep from 'clone-deep'
 
-import { mdiClose, mdiPlusThick } from '@mdi/js'
-import { ziSettings, ziPaperPlane, ziPrint, ziShare } from '@/assets/icons'
-
-import PaperListModal from '@/components/PaperListModal.vue'
-import PaperConfiguratorModal from '@/components/PaperConfiguratorModal.vue'
+import ContractListModal from '@/components/ContractListModal.vue'
+import ContractConfiguratorModal from '@/components/ContractConfiguratorModal.vue'
 import PrintSettings from '../components/PrintSettings.vue'
 import SpecShipment from '../components/SpecShipment.vue'
 import SpecCustoms from '../components/SpecCustoms.vue'
@@ -614,13 +256,13 @@ import {
 } from '../graphql/mutations'
 import { DEFAULT_CURRENCY } from '../config/globals'
 
-import specPdf from '../components/specPdf'
+import printInvoice from '../components/printInvoice'
 
 export default {
   name: 'SpecSummary',
   components: {
-    PaperListModal,
-    PaperConfiguratorModal,
+    ContractListModal,
+    ContractConfiguratorModal,
     PrintSettings,
     SpecShipment,
     SpecCustoms,
@@ -667,14 +309,6 @@ export default {
       paperList: false,
       paperConfigurator: false,
       create: false,
-      icons: {
-        mdiClose,
-        mdiPlusThick,
-        ziSettings,
-        ziPaperPlane,
-        ziPrint,
-        ziShare,
-      },
     }
   },
   computed: {
@@ -733,17 +367,20 @@ export default {
       }
     },
   },
+  mounted () {
+    if (process.env.NODE_ENV === 'development' && this.$route.hash === '#print') {
+      this.printDialog = true
+    }
+  },
   methods: {
     async doPrint (requisite, client, shipment, customs) {
       try {
         this.printLoading = true
-        const defaultLang = this.$i18n.fallbackLocale
-        const clientLang = client.language || defaultLang
-        const method = clientLang === 'zh-Hans' || clientLang === 'zh-Hant' ? 'download' : 'open'
-        await specPdf(this.spec, requisite, client, shipment, customs, method, false)
+        const method = 'print'
+        await printInvoice(this.spec, requisite, client, shipment, customs, method, false)
       } catch (error) {
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: `Error creating PDF: ${error.message}`,
         })
         throw new Error(error)
@@ -863,13 +500,13 @@ export default {
         })
         this.emailAccessInput = ''
         this.$notify({
-          color: 'green',
+          color: 'success',
           text: this.$t('message.emailSent', { email }),
         })
         return result
       } catch (error) {
         this.$notify({
-          color: 'red',
+          color: 'error',
           text: this.$t('message.failedToSent'),
         })
         throw new Error(error)
@@ -891,7 +528,7 @@ export default {
         const successful = document.execCommand('copy')
         if (successful) {
           this.$notify({
-            color: 'green',
+            color: 'success',
             text: this.$t('message.linkCopied'),
           })
         } else {
@@ -900,7 +537,7 @@ export default {
       } catch (error) {
         this.$logger.info('Copy link error: ', error)
         this.$notify({
-          color: 'orange',
+          color: 'warn',
           text: this.$t('message.linkNotCopied'),
         })
       }
@@ -1022,114 +659,3 @@ export default {
   },
 }
 </script>
-
-<style lang="postcss" scoped>
-.spec-summary {
-  padding: 50px 0 50px;
-}
-
-.spec-summary__wrapper {
-  @apply flex justify-between;
-}
-
-.spec-summary__info {
-  max-width: 320px;
-}
-
-.spec-summary__cost {
-  @apply flex-grow;
-  max-width: 490px;
-}
-.spec-summary__cost__card {
-  padding: 18px 14px;
-  background-color: #272727;
-  border-radius: 4px;
-  font-size: 16px;
-}
-@screen sm {
-  .spec-summary__cost__card {
-    font-size: 18px;
-    padding: 40px 60px;
-  }
-}
-
-.spec-summary__actions {
-  width: 100%;
-  padding-top: 16px;
-  padding-bottom: 20px;
-}
-.spec-summary__actions > button {
-  display: flex;
-}
-.spec-summary__actions > button:not(:last-child) {
-  margin-bottom: 25px;
-}
-
-@screen lg {
-  .spec-summary__actions {
-    width: 180px;
-  }
-  .spec-summary__cost {
-    @apply mx-4;
-  }
-  .spec-summary__info {
-    width: 320px;
-  }
-}
-.spec-summary__container {
-  width: 210px;
-  @apply relative;
-}
-.spec-summary__container__label {
-  @apply absolute inset-0 w-full h-full font-bold text-2xl text-white;
-  @apply flex items-center justify-center;
-}
-/* TODO image import on component */
-.spec-summary__container__image {
-  @apply absolute inset-0 w-full h-full bg-cover bg-left bg-no-repeat;
-}
-.spec-summary__container__image--full {
-  background-image: url("/img/container-full.png");
-}
-.spec-summary__container__image--full-sm {
-  background-image: url("/img/container-full-40.png");
-}
-.spec-summary__container__image--shipped {
-  background-image: url("/img/container-shipped.png");
-}
-
-.spec-summary__info ul.leaders span:first-child,
-.spec-summary__info ul.leaders span + span {
-  @apply bg-gray-900;
-}
-.spec-summary__cost ul.leaders span:first-child,
-.spec-summary__cost ul.leaders span + span {
-  background-color: #272727;
-}
-
-.spec-summary .leaders {
-  line-height: 1.625rem;
-  padding: 0;
-  overflow-x: hidden;
-  list-style: none}
-.spec-summary .leaders li:after {
-  float: left;
-  width: 0;
-  white-space: nowrap;
-  content:
- ". . . . . . . . . . . . . . . . . . . . "
- ". . . . . . . . . . . . . . . . . . . . "
- ". . . . . . . . . . . . . . . . . . . . "
- ". . . . . . . . . . . . . . . . . . . . "}
-.spec-summary .leaders span:first-child {
-  padding-right: 0.33em;}
-.spec-summary .leaders span + span {
-  float: right;
-  padding-left: 0.33em;
-  position: relative;
-  z-index: 1
-}
-.spec-summary .leaders__num {
-  @apply text-white font-bold
-}
-</style>

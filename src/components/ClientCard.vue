@@ -1,337 +1,291 @@
 <template>
   <div>
-    <v-dialog
-      v-model="templateListDialog"
-      max-width="480"
-      overlay-color="#0f0f0f"
-      overlay-opacity="0.6"
-    >
-      <TemplateListModal
-        :templates="templates"
-        :current-template="currentTemplate"
-        :visibility="templateListDialog"
-        @delete="deleteClientTemplate"
-        @cancel="restoreTemplate"
-        @close="templateListDialog = false"
-        @set-template="setTemplate"
-      />
-    </v-dialog>
-    <v-dialog
-      v-model="templateSaveDialog"
-      max-width="650"
-      overlay-color="#0f0f0f"
-      overlay-opacity="0.6"
-    >
-      <TemplateSaveModal
-        ref="templateSave"
-        :loading="createTemplateLoading"
-        :visibility="templateSaveDialog"
-        @save="createClientTemplate"
-        @close="templateSaveDialog = false"
-      />
-    </v-dialog>
 
-    <v-dialog
-      v-model="saveBeforeCloseDialog"
-      max-width="520"
+    <div
+      id="container"
+      :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container container--sm']"
     >
-      <SaveBeforeCloseModal
-        :text="$t('label.saveChangesBeforeClose')"
-        :postScriptum="$t('label.saveChangesHint')"
-        @dontSave="$emit('confirm', 1)"
-        @cancel="$emit('confirm', 0)"
-        @save="$emit('confirm', 2)"
-      />
-    </v-dialog>
-
-    <div id="container" :class="[ isComponent ? 'bg-chaos-black rounded-lg relative' : 'container' ]">
       <span
         v-if="isComponent"
-        class="absolute cursor-pointer"
-        :style="{ top: '12px', right: '12px', zIndex: '10' }"
-        @click="$emit('close')"
+        class="absolute top-0 right-0 z-10 pt-3 pr-3"
       >
-        <svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="0.780869" y1="1.3753" x2="8.78087" y2="11.3753" stroke="#9F9F9F" stroke-width="2"/>
-          <line x1="8.78087" y1="1.6247" x2="0.780869" y2="11.6247" stroke="#9F9F9F" stroke-width="2"/>
-        </svg>
+        <i
+          class="zi-close text-2xl text-gray-100 hover:text-white cursor-pointer"
+          @click="$emit('close')"
+        />
       </span>
-      <div :class="[ isComponent ? 'pt-5 px-4' : 'py-12' ]">
-        <div>
-          <header class="header">
-            <span class="header__title">{{ $t('client.clientCard') }}</span>
+      <h1 class="text-2xl text-white font-semibold leading-tight mb-4">
+        {{ create ? $t('client.createTitle') : $t('client.editTitle') }}
+      </h1>
+      <div class="bg-gray-800 rounded-md p-sm mb-12">
+        <div class="lg:h-11 flex flex-wrap lg:flex-no-wrap">
+          <div class="h-11 flex order-last lg:order-none overflow-x-auto overflow-scroll-touch">
             <div
-              v-if="!isComponent"
-              class="header__actions"
+              v-for="(tab, i) in tabs"
+              :aria-selected="clientType === tab.value"
+              :key="tab.value"
+              :class="[
+                'w-full sm:w-auto flex items-center justify-center rounded-t bg-gray-600',
+                'select-none whitespace-no-wrap cursor-pointer',
+                'transition-colors duration-100 ease-in px-10',
+                { 'mr-1': i + 1 < tabs.length },
+                tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',
+                clientType === tab.value ? 'text-white' : 'bg-opacity-30 text-gray-200',
+              ]"
+              :role="tab.disabled ? null : 'tab'"
+              :tabindex="tab.disabled ? null : 0"
+              @click="switchClientType(tab.value)"
+              @keydown.enter.exact="switchClientType(tab.value)"
             >
-              <ToggleButton
-                v-if="!create"
-                :value="editMode"
-                small
-                class="mr-2"
-                @input="toggleEditMode"
-              >
-                <span>{{ $t('client.edit') }}</span>
-              </ToggleButton>
-              <Button
-                text
-                class="inline-block mt-3 md:text-left md:mt-0"
-                @click="showModalList"
-              >
-                <span class="text-sm">{{ $t('client.clientCardPatterns') }}</span>
-              </Button>
+              {{ tab.text }}
             </div>
-          </header>
-          <div class="card__radio-group lg:block">
-            <RadioButton
-              :value="clientType"
-              :label="legalType"
-              :disabled="!editMode"
-              name="person-type"
-              class="mr-6"
-              @input="switchPersonType(legalType)"
-            >
-              <span>{{ $t('client.legalPersonAbr') }}</span>
-            </RadioButton>
-            <RadioButton
-              :value="clientType"
-              :label="naturalType"
-              :disabled="!editMode"
-              name="person-type"
-              @input="switchPersonType(naturalType)"
-            >
-              <span>{{ $t('client.naturalPersonAbr') }}</span>
-            </RadioButton>
           </div>
-          <div class="flex justify-between relative">
-            <TemplateCard
-              ref="LEGAL"
-              template-name="client"
-              :fields="legalFieldsSettings"
-              :item="client"
-              :is-disabled="!editMode"
-              :is-not-active="isNaturalPerson"
-              :class="{ 'template-card': isNaturalPerson }"
-              @update-template="updateTemplate"
-              @update-value="updateValue"
-            >
-              <template v-slot:language>
-                <div class="card__col-right">
-                  <select
-                    :ref="`${legalType}-languageInput`"
-                    :value="client.language"
-                    :disabled="!editMode || !!updateLoading"
-                    required
-                    class="simple-select mx-1"
-                    name="language-select"
-                    @change="updateLanguageInput"
-                  >
-                    <option
-                      v-if="create && !client.language"
-                      value=""
-                    >
-                      {{ $t('placeholder.notChosen') }}
-                    </option>
-                    <option
-                      v-for="opt of langs"
-                      :key="opt.value"
-                      :value="opt.value"
-                    >
-                      <span class="leaders__num cursor-pointer" style="padding-right:0">
-                        {{ opt.text }}
-                      </span>
-                    </option>
-                  </select>
-                  <div
-                    v-if="languageInputError[clientType]"
-                    class="text-xs text-red leading-none mx-2"
-                  >
-                    {{ languageInputError[clientType] }}
-                  </div>
-                </div>
-              </template>
-              <template v-slot:prepend>
-                <RadioButton
-                  :value="clientType"
-                  :label="legalType"
-                  :disabled="!editMode"
-                  center
-                  name="client-type"
-                  @input="switchPersonType(legalType)"
-                >
-                  <span>{{ $t('client.legalPerson') }}</span>
-                </RadioButton>
-              </template>
-              <template v-slot:append>
-                <div :class="['text-center', { 'card__section--faded': isNaturalPerson }]">
-                  <Button
-                    v-if="!editMode"
-                    :disabled="isNaturalPerson || !!updateLoading"
-                    large
-                    class="mb-4 mx-auto"
-                    @click="edit"
-                  >
-                    <span>{{ $t('client.edit') }}</span>
-                  </Button>
-                  <Button
-                    v-else
-                    :disabled="isNaturalPerson || !!updateLoading"
-                    large
-                    class="mb-4 mx-auto"
-                    @click="update(naturalType)"
-                  >
-                    <span>{{ $t('client.save') }}</span>
-                  </Button>
-                  <Button
-                    :disabled="isNaturalPerson"
-                    text
-                    class="mx-auto"
-                    @click="saveAsTemplate"
-                  >
-                    <span class="text-sm">{{ $t('client.saveAsPattern') }}</span>
-                  </Button>
-                </div>
-              </template>
-            </TemplateCard>
-            <TemplateCard
-              ref="NATURAL"
-              template-name="client"
-              :fields="naturalFieldsSettings"
-              :item="client"
-              :is-disabled="!editMode"
-              :is-not-active="!isNaturalPerson"
-              :class="{ 'template-card': !isNaturalPerson }"
-              @update-template="updateTemplate"
-              @update-value="updateValue"
-            >
-              <template v-slot:language>
-                <div class="card__col-right">
-                  <select
-                    :ref="`${naturalType}-languageInput`"
-                    :value="client.language"
-                    :disabled="!editMode || !!updateLoading"
-                    required
-                    class="simple-select mx-1"
-                    name="language-select"
-                    @change="updateLanguageInput"
-                  >
-                    <option
-                      v-if="create && !client.language"
-                      value=""
-                    >
-                      {{ $t('placeholder.notChosen') }}
-                    </option>
-                    <option
-                      v-for="opt of langs"
-                      :key="opt.value"
-                      :value="opt.value"
-                    >
-                      <span class="leaders__num cursor-pointer" style="padding-right:0">
-                        {{ opt.text }}
-                      </span>
-                    </option>
-                  </select>
-                  <div
-                    v-if="languageInputError[clientType]"
-                    class="text-xs text-red leading-none mx-2"
-                  >
-                    {{ languageInputError[clientType] }}
-                  </div>
-                </div>
-              </template>
-              <template v-slot:prepend>
-                <RadioButton
-                  :value="clientType"
-                  :label="naturalType"
-                  :disabled="!editMode"
-                  center
-                  name="client-type"
-                  @input="switchPersonType(naturalType)"
-                >
-                  <span>{{ $t('client.naturalPerson') }}</span>
-                </RadioButton>
-              </template>
-              <template v-slot:append>
-                <div :class="['text-center', { 'card__section--faded': !isNaturalPerson }]">
-                  <Button
-                    v-if="!editMode"
-                    :disabled="!isNaturalPerson || !!updateLoading"
-                    large
-                    class="mb-4 mx-auto"
-                    @click="edit"
-                  >
-                    <span>{{ $t('client.edit') }}</span>
-                  </Button>
-                  <Button
-                    v-else
-                    :disabled="!isNaturalPerson || !!updateLoading"
-                    large
-                    class="mb-4 mx-auto"
-                    @click="update(naturalType)"
-                  >
-                    <span>{{ $t('client.save') }}</span>
-                  </Button>
-                  <Button
-                    :disabled="!isNaturalPerson"
-                    text
-                    class="mx-auto"
-                    @click="saveAsTemplate"
-                  >
-                    <span class="text-sm">{{ $t('client.saveAsPattern') }}</span>
-                  </Button>
-                </div>
-              </template>
-            </TemplateCard>
+          <div class="flex-grow" />
+          <div class="w-full lg:w-auto flex items-center justify-end">
+            <v-slide-x-reverse-transition>
+              <div v-if="!item.isRequiredFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+                <span class="text-pink-500 mr-2">
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="4" cy="4" r="4" fill="currentColor" />
+                  </svg>
+                </span>
+                <span>{{ $t('print.required') }}</span>
+              </div>
+            </v-slide-x-reverse-transition>
+            <v-slide-x-reverse-transition>
+              <div v-if="!item.isOptionalFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+                <span class="text-yellow-500 mr-2">
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="4" cy="4" r="4" fill="currentColor" />
+                  </svg>
+                </span>
+                <span>{{ $t('print.warning') }}</span>
+              </div>
+            </v-slide-x-reverse-transition>
           </div>
-          <button
-            v-if="!isComponent"
-            class="back-to-list-btn"
-            @click="$router.push({
-              name: 'clients',
-              params: {
-                orgId,
-              }
-            }).catch(err => {})"
-          >
-            <Icon class="mr-2">
-              {{ icons.mdiArrowLeft }}
-            </Icon>
-            {{ $t('client.backToClientsList') }}
-          </button>
+        </div>
+        <div
+          v-if="isLegalType"
+          key="legal"
+          class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
+        >
+          <!-- Legal info -->
+          <LegalInfo
+            :loading="loading"
+            :uid="uid"
+            :item="item"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Detail -->
+          <LegalDetail
+            :loading="loading"
+            :item="item"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Contacts -->
+          <ContactList
+            :loading="loading"
+            :items="item.contacts"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <div class="flex flex-wrap pb-5">
+            <div class="w-full lg:w-1/2 lg:pr-5">
+              <!-- ShippingInfo -->
+              <ShippingInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                @update="updateValue"
+              />
+            </div>
+            <div class="w-full lg:w-1/2 lg:pl-5">
+              <!-- ExtraInfo -->
+              <ExtraInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                @update="updateValue"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          v-else-if="isPrivateType"
+          key="private"
+          class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
+        >
+          <!-- Private info -->
+          <PrivateInfo
+            :loading="loading"
+            :uid="uid"
+            :item="item"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Detail -->
+          <PrivateDetail
+            :loading="loading"
+            :item="item"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Contacts -->
+          <ContactList
+            :loading="loading"
+            :items="item.contacts"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <div class="flex flex-wrap pb-5">
+            <div class="w-full lg:w-1/2 lg:pr-5">
+              <!-- ShippingInfo -->
+              <ShippingInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                is-private
+                @update="updateValue"
+              />
+            </div>
+            <div class="w-full lg:w-1/2 lg:pl-5">
+              <!-- ShippingInfo -->
+              <ExtraInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                is-private
+                @update="updateValue"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          v-else-if="isOtherType"
+          key="other"
+          class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-5 pt-6"
+        >
+          <!-- Legal info -->
+          <LegalInfo
+            :loading="loading"
+            :uid="uid"
+            :item="item"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Detail -->
+          <LegalDetail
+            :loading="loading"
+            :item="item"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <!-- Contacts -->
+          <ContactList
+            :loading="loading"
+            :items="item.contacts"
+            :is-expanded="!create"
+            :create="create && !isComponent"
+            @update="updateValue"
+          />
+          <!-- Divider -->
+          <div class="mt-10 border-t border-gray-400" />
+          <div class="flex flex-wrap pb-5">
+            <div class="w-full lg:w-1/2 lg:pr-5">
+              <!-- ShippingInfo -->
+              <ShippingInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                @update="updateValue"
+              />
+            </div>
+            <div class="w-full lg:w-1/2 lg:pl-5">
+              <!-- ExtraInfo -->
+              <ExtraInfo
+                :loading="loading"
+                :item="item"
+                :is-expanded="!create"
+                :create="create && !isComponent"
+                @update="updateValue"
+              />
+            </div>
+          </div>
         </div>
       </div>
+      <Button
+        v-if="create && isComponent"
+        :loading="updateLoading"
+        outlined
+        merge-class="w-40"
+        @click="createFromItem"
+      >
+        {{ $t('client.save') }}
+      </Button>
     </div>
+
   </div>
 </template>
 
 <script>
 // TODO install in dependencies
 import cloneDeep from 'clone-deep'
-import deepEqual from 'deep-equal'
+import { validateLegalClient, validatePrivateClient } from '../util/validation'
 
-import { mdiArrowLeft } from '@mdi/js'
-
-import { ClientType } from '@/graphql/enums'
-import { GET_CLIENT, GET_ORG_NEXT_CLIENT_UID, LIST_CLIENT_TEMPLATES } from '@/graphql/queries'
+import { ClientType } from '../graphql/enums'
+import { GET_CLIENT, GET_CLIENT_GROUP, GET_ORG_NEXT_CLIENT_UID } from '../graphql/queries'
 import {
   CREATE_CLIENT,
   UPDATE_CLIENT,
-  CREATE_CLIENT_TEMPLATE,
-  DELETE_CLIENT_TEMPLATE,
-} from '@/graphql/mutations'
+} from '../graphql/mutations'
+import { replaceAt } from '../util/helpers'
 
-import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
-import TemplateSaveModal from '@/components/TemplateSaveModal.vue'
-import TemplateListModal from '@/components/TemplateListModal.vue'
-import TemplateCard from '@/components/TemplateCard.vue'
+import LegalInfo from './CompanyDetail/LegalInfo.vue'
+import LegalDetail from './CompanyDetail/LegalDetail.vue'
+import ContactList from './CompanyDetail/ContactList.vue'
+import ShippingInfo from './CompanyDetail/ShippingInfo.vue'
+import ExtraInfo from './CompanyDetail/ExtraInfo.vue'
+import PrivateInfo from './CompanyDetail/PrivateInfo.vue'
+import PrivateDetail from './CompanyDetail/PrivateDetail.vue'
 
 export default {
   name: 'ClientCard',
   components: {
-    SaveBeforeCloseModal,
-    TemplateSaveModal,
-    TemplateListModal,
-    TemplateCard,
+    LegalInfo,
+    LegalDetail,
+    ContactList,
+    ShippingInfo,
+    ExtraInfo,
+    PrivateInfo,
+    PrivateDetail,
   },
   props: {
     orgId: {
@@ -348,27 +302,11 @@ export default {
     },
   },
   apollo: {
-    listClientTemplates: {
-      query: LIST_CLIENT_TEMPLATES,
-      variables () {
-        return {
-          orgId: this.orgId,
-        }
-      },
-      fetchPolicy: 'cache-and-network',
-    },
     getOrgNextClientUid: {
       query: GET_ORG_NEXT_CLIENT_UID,
       variables () {
         return {
           orgId: this.orgId,
-        }
-      },
-      result ({ data, loading }) {
-        if (loading) return
-        if (data) {
-          this.client.uid = data.getOrgNextClientUid
-          this.clientClone.uid = data.getOrgNextClientUid
         }
       },
       skip () {
@@ -380,7 +318,7 @@ export default {
       query: GET_CLIENT,
       variables () {
         return {
-          id: this.$route.params.clientId,
+          id: this.clientId,
         }
       },
       result ({ data, loading }) {
@@ -392,687 +330,245 @@ export default {
       },
       fetchPolicy: 'cache-and-network',
     },
+    getClientGroup: {
+      query: GET_CLIENT_GROUP,
+      variables () {
+        return {
+          orgId: this.$route.params.orgId,
+          groupId: this.$route.params.groupId,
+        }
+      },
+      skip () {
+        return !this.$route.params.groupId
+      },
+      fetchPolicy: 'cache-and-network',
+    },
   },
   data () {
     return {
-      languageInputError: {},
-      wasValidate: false,
-      saveBeforeCloseDialog: false,
-      templateChanged: false,
-      createTemplateLoading: false,
-      deleteTemplateLoading: null,
-      loading: false,
-      updateLoading: null,
-      templateListDialog: false,
-      templateSaveDialog: false,
-      clientType: null,
-      isExpanded: false,
-      editMode: false,
-      expanded: [],
-      legalFieldsSettings: {
-        customUid: {
-          disabled: true,
-          defaultValueKey: 'uid',
-          label: 'uid',
-          placeholder: 'uid',
-        },
-        companyName: {
-          ref: 'legalCompanyNameInput',
-          rules: [v => !!v || this.$t('rule.required')],
-          rows: 2,
-        },
-        legalAddress: {
-          rows: 2,
-        },
-        legalAddressPostcode: {
-          placeholder: 'postcode',
-        },
-        mailingAddress: {
-          rows: 2,
-        },
-        mailingAddressPostcode: {
-          placeholder: 'postcode',
-        },
-        phone: {},
-        fax: {},
-        email: {},
-        itn: {},
-        iec: {},
-        psrn: {
-          section: true,
-        },
-        bankName: {},
-        bankAddress: {},
-        bankAccountNumber: {
-          placeholder: 'bankAccountNumberAbr',
-        },
-        correspondentAccountNumber: {
-          placeholder: 'correspondentAccountNumberAbr',
-        },
-        bic: {},
-        okpo: {},
-        swift: {},
-        ownerFullName: {},
-        ownerJobPosition: {},
-        contactPerson: {},
-        consignee: {
-          section: true,
-          subtitle: 'shippingInfo',
-        },
-        shippingAddress: {
-          label: 'deliveryAddress',
-          placeholder: 'deliveryAddress',
-          rows: 2,
-        },
-        importerContactPerson: {
-          label: 'contactPerson',
-          placeholder: 'contactPerson',
-        },
-        contactMobilePhone: {
-          label: 'mobilePhone',
-          placeholder: 'mobilePhone',
-        },
-        importerFax: {
-          label: 'fax',
-          placeholder: 'fax',
-        },
-        importerEmail: {
-          label: 'email',
-          placeholder: 'email',
-        },
-        legalTypeNote: {
-          label: 'note',
-          placeholder: 'note',
-          section: true,
-          subtitle: 'note',
-          rows: 3,
-        },
-        language: {
-          labelReadonly: true,
-          section: true,
-          subtitle: 'language',
-          labelHint: 'languageDescription',
-        },
-      },
-      naturalFieldsSettings: {
-        customUid: {
-          disabled: true,
-          defaultValueKey: 'uid',
-          label: 'uid',
-          placeholder: 'uid',
-        },
-        firstName: {
-          ref: 'naturalFirstNameInput',
-          rules: [v => !!v || this.$t('rule.required')],
-        },
-        lastName: {
-          ref: 'naturalLastNameInput',
-          rules: [v => !!v || this.$t('rule.required')],
-        },
-        middleName: {},
-        passportId: {},
-        mobilePhone: {},
-        additionalPhone: {},
-        naturalEmail: {
-          label: 'email',
-          placeholder: 'email',
-        },
-        address: {
-          rows: 2,
-        },
-        deliveryAddress: {
-          rows: 2,
-        },
-        naturalTypeNote: {
-          label: 'note',
-          placeholder: 'note',
-          section: true,
-          subtitle: 'note',
-          rows: 3,
-        },
-        language: {
-          labelReadonly: true,
-          section: true,
-          subtitle: 'language',
-          labelHint: 'languageDescription',
-        },
-      },
-      client: {
-        id: null,
-        uid: null,
-        clientType: null,
-        language: '',
-        template: {},
-      },
-      clientClone: {},
-      icons: {
-        mdiArrowLeft,
-      },
+      internalClientType: ClientType.LEGAL,
+      updateLoading: false,
+      item: {},
     }
   },
   computed: {
-    langs () {
-      return [
-        { value: 'en', text: 'English' },
-        { value: 'zh-Hans', text: '简体' },
-        { value: 'zh-Hant', text: '繁体' },
-        { value: 'fr', text: 'Français' },
-        { value: 'ru', text: 'Русский' },
-        { value: 'uk', text: 'Український' },
-      ]
+    loading () {
+      return this.$apollo.queries.getClient.loading
     },
-    fieldsKeys () {
-      return [
-        ...this.legalFieldsKeys,
-        ...this.naturalFieldsKeys,
-      ]
+    clientId () {
+      return this.$route.params.clientId
     },
-    templateFieldsKeys () {
-      const fields = this.fieldsKeys.filter(k => k !== 'language')
-      return [
-        ...fields,
-        'templateName',
-      ]
+    clientType () {
+      if (this.isComponent) return this.internalClientType
+      return this.getClientTypeFromNumeric(this.$route.query.clientType)
     },
-    legalFieldsKeys () {
-      return Object.keys(this.legalFieldsSettings)
-    },
-    naturalFieldsKeys () {
-      return Object.keys(this.naturalFieldsSettings)
-    },
-    safeClientType () {
-      return this.clientType || ClientType.NATURAL
-    },
-    hasDeepChange () {
-      return !deepEqual(this.client, this.clientClone)
-    },
-    currentTemplate () {
-      let result = null
-      const template = (this.client && this.client.template) || {}
-      if (
-        (
-          template.templateName === null ||
-          template.templateName === 'default'
-        ) &&
-        this.templateFieldsKeys.filter(el => el !== 'templateName').every(k => !template[k])
-      ) {
-        return 'default'
+    uid () {
+      if (this.item.uid) {
+        return this.item.uid
       }
-      let cTemplate = {}
-      this.templateFieldsKeys.forEach(k => {
-        cTemplate[k] = template[k] || null
-      })
-      for (const t of this.templates) {
-        let c = {}
-        this.templateFieldsKeys.forEach(k => {
-          c[k] = t[k] || null
-        })
-        if (deepEqual(cTemplate, c)) {
-          result = t.id
-          break
-        }
+      let nextUid = ''
+      if (this.getClientGroup && this.getClientGroup.id) {
+        nextUid = this.getClientGroup.uid
+      } else {
+        nextUid = this.getOrgNextClientUid || ''
       }
-      return result
+      if (this.clientType === ClientType.OTHER) {
+        nextUid = replaceAt(nextUid, 0, 'C')
+      } else if (this.clientType === ClientType.PRIVATE) {
+        nextUid = replaceAt(nextUid, 0, 'B')
+      }
+      return nextUid
     },
-    templates () {
-      return (this.listClientTemplates && this.listClientTemplates.items) || []
+    tabs () {
+      return [
+        {
+          value: ClientType.LEGAL,
+          text: this.$t('client.legalPerson'),
+        },
+        {
+          value: ClientType.PRIVATE,
+          text: this.$t('client.privatePerson'),
+        },
+        {
+          value: ClientType.OTHER,
+          text: this.$t('client.other'),
+        },
+      ]
     },
-    legalType () {
-      return ClientType.LEGAL
+    isLegalType () {
+      return this.clientType === ClientType.LEGAL
     },
-    naturalType () {
-      return ClientType.NATURAL
+    isPrivateType () {
+      return this.clientType === ClientType.PRIVATE
     },
-    isLegalPerson () {
-      return this.clientType === this.legalType
-    },
-    isNaturalPerson () {
-      return this.clientType === this.naturalType
+    isOtherType () {
+      return this.clientType === ClientType.OTHER
     },
   },
   watch: {
-    saveBeforeCloseDialog (val) {
-      if (!val) {
-        this.$emit('confirm', 0)
-        this.$off('confirm')
-      }
+    '$route' (to, from) {
+      if (this.isComponent) return
+      this.$apollo.queries.getClientGroup.refetch()
     },
-    templateListDialog (val) {
-      if (!this.create && !val && this.templateChanged) {
-        this.update(this.clientType)
-        this.templateChanged = false
-      }
-    },
-    templateSaveDialog (val) {
-      if (val) {
-        setTimeout(() => {
-          this.$refs.templateSave.focusInput()
-        }, 0)
-      }
-    },
-  },
-  created () {
-    this.editMode = this.create
-    if (this.create) {
-      this.reset()
-    }
   },
   methods: {
-    async toggleEditMode () {
-      if (this.editMode && this.hasDeepChange) {
-        const r = await this.openConfirmDialog()
-        if (r) {
-          if (r === 2) {
-            this.wasValidate = true
-            const isValid = this.validate(true)
-            if (!isValid) {
-              this.saveBeforeCloseDialog = false
-              this.$vuetify.goTo('#container')
-              this.editMode = false
-              this.$nextTick(() => {
-                this.editMode = true
-              })
-              return
-            }
-            try {
-              await this.update(this.clientType, false)
-              this.saveBeforeCloseDialog = false
-            } catch (error) {
-              this.$logger.warn('Error: ', error)
-            }
-          } else {
-            this.setData(this.clientClone)
-            this.resetValidation()
-            this.editMode = false
-            this.saveBeforeCloseDialog = false
-          }
-        } else {
-          this.editMode = false
-          this.$nextTick(() => {
-            this.editMode = true
-          })
-          this.saveBeforeCloseDialog = false
-        }
-      } else {
-        this.editMode = !this.editMode
+    getClientTypeFromNumeric (type) {
+      switch (type) {
+        case 1:
+        case '1': return ClientType.LEGAL
+        case 2:
+        case '2': return ClientType.PRIVATE
+        case 3:
+        case '3': return ClientType.OTHER
+        default: return ClientType.LEGAL
       }
     },
-    async checkChangesBeforeLeave (next) {
-      if (this.hasDeepChange) {
-        const r = await this.openConfirmDialog()
-        if (r) {
-          if (r === 2) {
-            this.wasValidate = true
-            const isValid = this.validate(true)
-            if (!isValid) {
-              this.saveBeforeCloseDialog = false
-              this.$vuetify.goTo('#container')
-              return next(false)
-            }
-            try {
-              await this.update(this.clientType, false)
-              return next()
-            } catch (error) {
-              this.$logger.warn('Error: ', error)
-              return next(false)
-            }
-          } else {
-            return next()
-          }
-        } else {
-          this.saveBeforeCloseDialog = false
-          return next(false)
-        }
-      } else {
-        return next()
+    getClientTypeNumeric (type) {
+      switch (type) {
+        case ClientType.LEGAL: return 1
+        case ClientType.PRIVATE: return 2
+        case ClientType.OTHER: return 3
+        default: return 1
       }
-    },
-    async openConfirmDialog () {
-      this.saveBeforeCloseDialog = true
-      return new Promise((resolve) => {
-        this.$on('confirm', result => {
-          resolve(result)
-        })
-      })
     },
     reset () {
-      this.clientType = this.naturalType
-      this.client = {
-        id: null,
-        uid: null,
-        clientType: null,
-        language: '',
-        template: {},
-      }
-      this.languageInputError = {}
-      this.clientClone = cloneDeep(this.client)
+      this.item = {}
       this.$apollo.queries.getOrgNextClientUid.refetch()
     },
-    validate (focus) {
-      if (!this.wasValidate) return
-      const type = this.clientType
-      const validateFields = []
-      let errorsCount = 0
-      let fields = []
-      const refs = this.$refs[type].$refs
-      if (type === this.naturalType) {
-        fields = this.naturalFieldsSettings
-      } else {
-        fields = this.legalFieldsSettings
-      }
-      for (const [, v] of Object.entries(fields)) {
-        if (v.rules) {
-          const field = refs[v.ref][0]
-          if (field) {
-            validateFields.push(field)
+    setData (item) {
+      if (!item) return
+      this.item = cloneDeep(item)
+    },
+    switchClientType (type) {
+      if (this.create && this.isComponent) {
+        this.internalClientType = type
+        const clone = this.item
+        this.reset()
+        this.$nextTick(() => {
+          let v = {}
+          if (type === ClientType.PRIVATE) {
+            v = validatePrivateClient(clone)
+          } else {
+            v = validateLegalClient(clone)
           }
-        }
-      }
-      let firstNotValidInput = null
-      validateFields.forEach(el => {
-        const errCount = el.validate()
-        if (errCount && !firstNotValidInput) {
-          firstNotValidInput = el.$refs.input
-        }
-        errorsCount += errCount
-      })
-      // validate language input separately
-      const languageInputValidity = this.validateLanguageInput()
-      if (!languageInputValidity.valid) {
-        errorsCount += 1
-        if (!firstNotValidInput) {
-          firstNotValidInput = languageInputValidity.el
-        }
-      }
-      if (focus && errorsCount && firstNotValidInput) {
-        this.$vuetify.goTo(firstNotValidInput)
-        const delay = this.isComponent ? 0 : 200
-        setTimeout(() => {
-          firstNotValidInput.focus()
-        }, delay)
-      }
-      return !errorsCount
-    },
-    validateLanguageInput () {
-      const type = this.clientType
-      const el = this.$refs[`${type}-languageInput`]
-      if (!el.validity.valid) {
-        const message = this.$t('rule.requiredSelect')
-        this.$set(this.languageInputError, type, message)
-        return { message, el, valid: false }
-      } else {
-        this.$set(this.languageInputError, type, '')
-        return { valid: true }
-      }
-    },
-    resetValidation () {
-      const type = this.clientType
-      const validateFields = []
-      let fields = []
-      const refs = this.$refs[type].$refs
-      if (type === this.naturalType) {
-        fields = this.naturalFieldsSettings
-      } else {
-        fields = this.legalFieldsSettings
-      }
-      for (const [, v] of Object.entries(fields)) {
-        if (v.rules) {
-          const field = refs[v.ref][0]
-          if (field) {
-            validateFields.push(field)
-          }
-        }
-      }
-      validateFields.forEach(el => {
-        el.resetValidation()
-      })
-    },
-    updateLanguageInput (e) {
-      const v = e.target.value
-      const validity = this.validateLanguageInput()
-      if (validity.valid) {
-        this.updateValue('language', v)
-      }
-    },
-    async update (type, redirectAfterCreate = true) {
-      this.wasValidate = true
-      // TODO: validate input Uniq number
-      const isValid = this.validate(true)
-      if (!isValid) {
+          this.setData(Object.assign(clone, v))
+        })
         return
       }
-      try {
-        let input = {
-          clientType: this.clientType,
-          template: {},
+      if (this.clientType === type) return
+      const group = this.getClientGroup || {}
+      const groupId = group.id
+      const clientId = group[type]
+      const clientType = this.getClientTypeNumeric(type)
+      if (groupId && clientId) {
+        this.$router.push({ name: 'client', params: { groupId, clientId }, query: { clientType } }).catch(() => {})
+      } else {
+        this.$router.push({ name: 'client-create', params: { groupId }, query: { clientType } }).catch(() => {})
+      }
+      this.reset()
+    },
+    updateValue (input) {
+      if (this.create) {
+        if (this.isComponent) {
+          const newItem = Object.assign({}, this.item, input)
+          let v = {}
+          if (this.internalClientType === ClientType.PRIVATE) {
+            v = validatePrivateClient(newItem)
+          } else {
+            v = validateLegalClient(newItem)
+          }
+          this.item = Object.assign({}, newItem, v)
+        } else {
+          this.createClient(input, true)
         }
-        this.fieldsKeys.forEach(key => {
-          input[key] = this.client[key] || null
-        })
-        const template = this.client.template || {}
-        this.templateFieldsKeys.forEach(key => {
-          input.template[key] = template[key] || null
-        })
+      } else {
+        this.updateClient(input)
+      }
+    },
+    createFromItem () {
+      const item = {}
+      for (const [k, v] of Object.entries(this.item)) {
+        if (k !== 'isRequiredFilled' && k !== 'isOptionalFilled') {
+          item[k] = v
+        }
+      }
+      this.createClient(item)
+    },
+    async createClient (input, redirectAfterCreate = true) {
+      try {
+        this.updateLoading = true
+        input.clientType = this.clientType
 
-        const query = this.create ? CREATE_CLIENT : UPDATE_CLIENT
+        const variables = {
+          orgId: this.orgId,
+          groupId: this.getClientGroup && this.getClientGroup.id,
+          input,
+        }
 
-        const variables = this.create
-          ? { orgId: this.orgId, input }
-          : { id: this.client.id, input }
-
-        this.updateLoading = type
         const response = await this.$apollo.mutate({
-          mutation: query,
+          mutation: CREATE_CLIENT,
           variables,
         })
         if (response && response.data) {
-          const data = this.create
-            ? response.data.createClient
-            : response.data.updateClient
-          this.setData(data)
+          this.$apollo.queries.getClientGroup.refetch()
+          const data = response.data.createClient
           if (this.isComponent) {
-            const action = this.create ? 'create' : 'update'
-            this.$emit(action, data)
+            this.$emit('create', data)
           } else {
-            this.editMode = false
-            if (this.create && redirectAfterCreate) {
-              this.$router.push({
+            if (redirectAfterCreate) {
+              this.$notify(this.$t('client.created'))
+              this.$router.replace({
                 name: 'client',
                 params: {
                   orgId: this.orgId,
                   clientId: data.id,
+                  groupId: data.groupId,
+                },
+                query: {
+                  clientType: this.getClientTypeNumeric(data.clientType),
                 },
               })
-            } else {
-              this.$vuetify.goTo('#container')
             }
           }
         }
       } catch (error) {
         this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'error',
+          text: error.message,
+        })
         throw new Error(error)
       } finally {
-        this.updateLoading = null
+        this.updateLoading = false
       }
     },
-    setData (item) {
-      if (!item) return
-      this.clientType = item.clientType
-      this.client = cloneDeep(item)
-      this.clientClone = cloneDeep(this.client)
-    },
-    async createClientTemplate (templateName) {
+    async updateClient (input) {
       try {
-        this.createTemplateLoading = true
-        let input = {}
-        const template = this.client.template || {}
-        this.templateFieldsKeys.forEach(key => {
-          input[key] = template[key] || null
-        })
-        input.templateName = templateName
-        const fromClient = !this.create
-          ? this.client.id
-          : null
+        this.updateLoading = true
 
-        await this.$apollo.mutate({
-          mutation: CREATE_CLIENT_TEMPLATE,
-          variables: {
-            orgId: this.orgId,
-            fromClient,
-            input,
-          },
+        const variables = { id: this.clientId, input }
+
+        const response = await this.$apollo.mutate({
+          mutation: UPDATE_CLIENT,
+          variables,
         })
-        this.$apollo.queries.listClientTemplates.refetch()
-        this.client.template.templateName = templateName
-        this.templateSaveDialog = false
+        if (response && response.data) {
+          const data = response.data.updateClient
+          if (this.isComponent) {
+            this.$emit('update', data)
+          }
+        }
       } catch (error) {
+        this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'error',
+          text: error.message,
+        })
         throw new Error(error)
       } finally {
-        this.createTemplateLoading = false
+        this.updateLoading = false
       }
-    },
-    async deleteClientTemplate (id) {
-      try {
-        this.deleteTemplateLoading = id
-        await this.$apollo.mutate({
-          mutation: DELETE_CLIENT_TEMPLATE,
-          variables: { id },
-        })
-        this.$apollo.queries.listClientTemplates.refetch()
-      } catch (error) {
-        throw new Error(error)
-      } finally {
-        this.deleteTemplateLoading = null
-      }
-    },
-    edit () {
-      this.editMode = true
-      // this.$vuetify.goTo('#container')
-    },
-    switchPersonType (type) {
-      this.clientType = type
-    },
-    updateTemplate (key, value) {
-      if (!this.client.template.hasOwnProperty(key)) {
-        this.$set(this.client.template, key, value)
-      } else {
-        this.client.template[key] = value
-      }
-    },
-    updateValue (key, value) {
-      this.validate()
-      if (!this.client.hasOwnProperty(key)) {
-        this.$set(this.client, key, value)
-      } else {
-        this.client[key] = value
-      }
-    },
-    saveAsTemplate () {
-      this.templateSaveDialog = true
-    },
-    showModalList () {
-      this.templateListDialog = true
-    },
-    restoreTemplate () {
-      this.client.template = this.templateCopy || { id: this.client.id }
-      this.templateCopy = null
-      this.templateListDialog = false
-      this.templateChanged = false
-    },
-    setTemplate (id) {
-      this.templateCopy = Object.assign({}, this.client.template)
-      const template = this.templates.find(t => t.id === id)
-      if (template) {
-        let temp = Object.assign({}, template, { id: this.client.template.id })
-        delete temp.__typename
-        this.client.template = temp
-      } else if (id === 'default') {
-        this.client.template = { id: this.client.id }
-      }
-      this.templateChanged = true
-      this.templateListDialog = false
     },
   },
 }
 </script>
-
-<style lang="postcss" scoped>
-  .header {
-    @apply mb-3 text-sm items-center;
-  }
-  .header__title {
-    font-size: 24px;
-    @apply mb-6 block font-bold text-center text-gray-lighter;
-  }
-  .header__actions {
-    @apply flex flex-col justify-around items-center;
-  }
-  .card__radio-group {
-    display: flex;
-    margin-top: 60px;
-    margin-left: 30px;
-  }
-  .card__add-address-btn {
-    height: 26px;
-    margin-left: -30px;
-    @apply flex justify-start items-center;
-    @apply pl-1 pr-6;
-    @apply border rounded-full text-sm;
-  }
-  .back-to-list-btn {
-    @apply flex items-center;
-    @apply py-2 pl-3 pr-6 mx-auto mt-20;
-    @apply border rounded-full text-sm;
-  }
-  .back-to-list-btn:focus {
-    @apply outline-none;
-  }
-  .template-card {
-    display: none;
-  }
-  .template-card__triangle {
-    width: 0;
-    height: 0;
-  }
-
-  @screen md {
-    .header {
-      @apply flex;
-    }
-    .header__title {
-      @apply mr-2 mb-0 inline text-base font-normal;
-    }
-    .header__actions {
-      @apply flex-row justify-start;
-    }
-    .card__radio-group {
-      display: none;
-    }
-    .card__add-address-btn {
-      margin-left: 0;
-    }
-    .back-to-list-btn {
-      @apply flex items-center;
-      @apply py-2 pl-3 pr-6 mx-0 mt-6;
-      @apply border rounded-full text-sm;
-    }
-    .template-card {
-      display: block;
-    }
-    .template-card__triangle {
-      width: 14px;
-      height: 14px;
-      transform: rotate(45deg);
-      background-color: #0F0F0F;
-      position: absolute;
-      top: -7px;
-      left: 95px;
-    }
-  }
-
-  @screen lg {
-    .header__actions {
-      width: 33%;
-    }
-  }
-</style>

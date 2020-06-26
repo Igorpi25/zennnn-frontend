@@ -1,260 +1,235 @@
 <template>
-  <div class="content">
-    <StatusBar></StatusBar>
-    <section>
-      <div class="container">
-        <Button
-          outline
-          secondary
-          class="mb-5 mt-8 mx-auto md:mx-0 md:ml-auto"
-          @click="$router.push({name: 'signup'})"
-        >
-          <template v-slot:text>
-            <span>{{ $t('signin.noAccount') }}</span>
-          </template>
-          <span>{{ $t('signin.signup') }}</span>
-        </Button>
-        <div class="mb-8">
-          <div class="w-full">
-            <h1 class="headline">
-              <span>{{ $t('signin.welcomeHead') }}</span>
-              <span>{{ $t('signin.welcomeSubhead') }}&nbsp;
-                <span class="block sm:inline">{{ $t('signin.welcomeContent') }}</span>
-              </span>
-            </h1>
-            <Form
-              ref="form"
-              :error-message.sync="errorMessage"
-              lazy-validation
-              rounded
-              shadow
-              class="form--max-w-md"
-              body-class="px-0 md:p-8 pt-8 py-1 md:py-8"
-              append-class="flex-col sm:flex-row items-center"
-            >
-              <template v-slot:alert>
-                <Alert
-                  :value="!!infoMessage"
-                  :text="infoMessage"
-                  color="primary"
-                />
-              </template>
-              <div class="w-full sm:w-1/2 sm:pr-2">
-                <TextField
-                  v-model="formModel.login"
-                  :label="$t('signin.login')"
-                  :rules="[rules.required, rules.email]"
-                  type="email"
-                  name="login"
-                  autofocus
-                />
-              </div>
-              <div class="w-full sm:w-1/2 sm:pl-2">
-                <TextField
-                  v-model="formModel.password"
-                  :label="$t('signin.password')"
-                  :type="showPassword ? 'text' : 'password'"
-                  :rules="[rules.required, rules.passwordMinLength]"
-                  name="password"
-                  minlength="8"
-                >
-                  <template v-slot:append-outer>
-                    <div
-                      class="cursor-pointer select-none"
-                      @click="showPassword = !showPassword"
-                    >
-                      <Icon
-                        v-if="showPassword"
-                        color="#9A9A9A"
-                        style="transform:rotateY(-180deg)"
-                      >{{ icons.mdiEyeOutline }}</Icon>
-                      <Icon
-                        v-else
-                        color="#9A9A9A"
-                      >{{ icons.mdiEyeOffOutline }}</Icon>
-                    </div>
-                  </template>
-                </TextField>
-                <div>
-                  <router-link
-                    class="button button--secondary button--text"
-                    :to="{ name: 'password-restore' }">
-                    {{ $t('signin.forgotPassword') }}
-                  </router-link>
-                </div>
-              </div>
-              <template v-slot:append>
-                <Button
-                  :disabled="loading"
-                  large
-                  secondary
-                  @click="onSubmit"
-                >
-                  <span v-if="loading">
-                    {{ $t('action.loading') }}
-                  </span>
-                  <span v-else>
-                    {{ $t('signin.submit') }}
-                  </span>
-                </Button>
-                <!-- <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-no-wrap">
-                  <span>{{ $t('preposition.or') }}</span>&nbsp;
-                  <span>{{ $t('preposition.through') }}</span>
-                </div> -->
-                <SocialSignIn />
-              </template>
-            </Form>
-          </div>
+  <div class="flex-grow flex">
+    <div class="auth-left container flex-shrink-0 hidden sm:flex flex-col bg-gray-700">
+      <div class="signin--top flex-grow lg:pl-8">
+        <div class="auth-left--bg absolute pointer-events-none bottom-0 left-0 top-0" style="right: 50%" />
+        <div class="pt-2 pb-12 lg:pl-12">
+          <router-link to="/" class="focus:outline-none">
+            <img src="@/assets/img/logo-dark.svg" alt="Logo">
+          </router-link>
         </div>
-        <div class="mb:mb-8 mt-8">
-          <Social />
+        <div class="pt-1 lg:pl-12">
+          <h2
+            v-html="$t('signin.title')"
+            class="text-4xl text-gray-100 font-semibold leading-tight pb-4"
+          />
+          <h3 class="text-2xl text-gray-200 leading-relaxed" v-html="$t('signin.subtitle')" />
         </div>
       </div>
-    </section>
-    <Copyright />
-    <div class="content-background content-background--main" />
+      <Social class="mb-2 py-6 md:pb-8 lg:pl-20" />
+    </div>
+    <div class="container flex-grow flex flex-col">
+      <div class="relative">
+        <div class="sm:absolute sm:top-0 sm:right-0">
+          <div class="max-w-sm mx-auto sm:max-w-none sm:mx-0 flex items-center justify-between sm:justify-end flex-wrap sm:flex-no-wrap text-gray-200 lg:pr-20 pt-6 sm:pt-8">
+            <router-link to="/" class="focus:outline-none">
+              <img src="@/assets/img/logo-dark.svg" alt="Logo" class="sm:hidden">
+            </router-link>
+            <LocalePicker nudge-bottom="24" class="sm:pr-4" />
+            <div class="sm:inline-block w-full sm:w-auto text-center py-5 sm:py-0">
+              <span class="pr-1">{{ $t('signin.noAccount') }}</span>
+              <router-link
+                :to="{ name: 'signup' }"
+                class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+              >
+                <span>{{ $t('signin.signup') }}</span>
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="signin--top flex flex-col justify-center sm:block w-full max-w-sm flex-grow mx-auto sm:mx-0 lg:ml-24">
+        <h1 class="pb-10 font-semibold text-2xl">
+          {{ $t('signin.formTitle') }}
+        </h1>
+        <Form
+          ref="form"
+          v-model="formValidity"
+          @submit="onSubmit"
+        >
+          <TextField
+            v-model="formModel.login"
+            :placeholder="$t('signin.login')"
+            :rules="[rules.required, rules.email]"
+            class="pb-6"
+            type="email"
+            autocomplete="on"
+            name="login"
+            autofocus
+            validate-on-blur
+          />
+          <TextField
+            v-model="formModel.password"
+            :placeholder="$t('signin.password')"
+            :type="showPassword ? 'text' : 'password'"
+            :rules="[rules.required, rules.passwordMinLength]"
+            class="pb-6"
+            name="password"
+            autocomplete="on"
+            minlength="8"
+            validate-on-blur
+          >
+            <template v-slot:append>
+              <div
+                class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
+                @click="showPassword = !showPassword"
+              >
+                <i v-if="showPassword" class="zi-eye align-middle" />
+                <i v-else class=" zi-eye-off align-middle" style="font-size: 28px" />
+              </div>
+            </template>
+          </TextField>
+          <div class="pb-6">
+            <router-link
+              :to="{ name: 'password-restore' }"
+              class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+            >
+              {{ $t('signin.forgotPassword') }}
+            </router-link>
+          </div>
+          <Button
+            :disabled="formValidity"
+            :loading="loading"
+            class="w-full sm:w-48"
+            @click="onSubmit"
+          >
+            {{ $t('signin.submit') }}
+          </Button>
+        </Form>
+      </div>
+      <div class="py-5 md:pb-8 lg:pl-24">
+        <Social class="sm:hidden justify-center mb-1 pb-6" />
+        <Copyright class="mx-auto text-center sm:text-left sm:mx-0" />
+      </div>
+    </div>
     <v-dialog
       v-model="compliteFormDialog"
-      max-width="360"
+      max-width="385"
       persistent
+      content-class="p-5 bg-gray-900"
     >
       <Form
         ref="compliteForm"
         v-model="compliteFormValidity"
         :title="$t('signup.registration')"
         :error-message.sync="compliteErrorMessage"
-        rounded
-        shadow
-        class="form--max-w-sm mx-auto"
-        body-class="pt-6 pb-8 px-6"
-        header
-        header-icon="circle"
-        header-class="px-4"
+        class="mx-auto"
       >
-        <div class="w-full pb-4">
+        <div class="w-full pb-6">
           <p class="text-white">
             <span>{{ $t('signup.compliteRegistration') }}</span>&nbsp;
-            <span class="text-gray-lightest">
+            <span class="text-gray-100">
               {{ $t('signup.registerContent') }}
             </span>
           </p>
         </div>
-        <div class="w-full">
-          <TextField
-            v-model="compliteFormModel.firstName"
-            :label="$t('signup.firstName')"
-            :rules="[rules.required]"
-            name="firstName"
-            autofocus
-            state-icon
-          />
-        </div>
-        <div class="w-full">
-          <TextField
-            v-model="compliteFormModel.lastName"
-            :label="$t('signup.lastName')"
-            :rules="[rules.required]"
-            name="lastName"
-            state-icon
-          />
-        </div>
-        <div class="w-full">
-          <TextField
-            :value="compliteFormModel.email"
-            :label="$t('signin.login')"
-            :rules="[rules.required]"
-            type="email"
-            name="email"
-            disabled
-            state-icon
-          />
-        </div>
-        <div class="w-full">
-          <TextField
-            v-model="compliteFormModel.password"
-            :label="$t('signup.password')"
-            :type="compliteShowPassword ? 'text' : 'password'"
-            :rules="[rules.required, rules.passwordMinLength]"
-            name="password"
-            minlength="8"
-            state-icon
-          >
-            <template v-slot:append-outer>
-              <div
-                class="cursor-pointer select-none"
-                @click="compliteShowPassword = !compliteShowPassword"
-              >
-                <Icon
-                  v-if="compliteShowPassword"
-                  color="#9A9A9A"
-                  style="transform:rotateY(-180deg)"
-                >{{ icons.mdiEyeOutline }}</Icon>
-                <Icon
-                  v-else
-                  color="#9A9A9A"
-                >{{ icons.mdiEyeOffOutline }}</Icon>
-              </div>
-            </template>
-          </TextField>
-        </div>
-        <div class="relative mx-auto text-secondary">
-          <!-- TODO fix position -->
-          <Checkbox
-            :rules="[rules.required]"
-            secondary
-          >
-            <span class="ml-3 float-left text-gray-light">
-              {{ $t('signup.acceptPolicyAndTerms') }}&nbsp;
-              <a class="text-secondary" href="#">{{ $t('signup.privacyPolicy') }}</a>
-              &nbsp;{{ $t('preposition.and') }}&nbsp;
-              <a class="text-secondary" href="#">{{ $t('signup.termsOfUse') }}</a>
-            </span>
-          </Checkbox>
-          <div class="flex justify-center">
-            <Button
-              :disabled="compliteFormValidity || compliteLoading"
-              large
-              secondary
-              class="mt-5 flex justify-center"
-              @click="completeNewPassword"
+        <TextField
+          v-model="compliteFormModel.firstName"
+          :placeholder="$t('signup.firstName')"
+          :rules="[rules.required]"
+          class="pb-6"
+          name="firstName"
+          autocomplete="on"
+          autofocus
+          force-validate
+          validate-on-blur
+          state-icon
+          state-icon-on-validate
+          required
+        />
+        <TextField
+          v-model="compliteFormModel.lastName"
+          :placeholder="$t('signup.lastName')"
+          :rules="[rules.required]"
+          class="pb-6"
+          name="lastName"
+          autocomplete="on"
+          force-validate
+          validate-on-blur
+          state-icon
+          state-icon-on-validate
+          required
+        />
+        <TextField
+          ref="email"
+          v-model="compliteFormModel.email"
+          :placeholder="$t('signin.login')"
+          :rules="[rules.required, rules.email]"
+          class="pb-6"
+          type="email"
+          name="email"
+          autocomplete="on"
+          disabled
+          force-validate
+          validate-on-blur
+          state-icon
+          state-icon-on-validate
+          required
+        />
+        <TextField
+          v-model="compliteFormModel.password"
+          :placeholder="$t('signup.password')"
+          :type="compliteShowPassword ? 'text' : 'password'"
+          :rules="[rules.required, rules.passwordMinLength]"
+          class="pb-6"
+          name="password"
+          autocomplete="on"
+          minlength="8"
+          validate-on-blur
+          state-icon
+          state-icon-on-validate
+          required
+        >
+          <template v-slot:append>
+            <div
+              class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
+              @click="compliteShowPassword = !compliteShowPassword"
             >
-              <span v-if="compliteLoading">
-                {{ $t('action.loading') }}
-              </span>
-              <span v-else>
-                {{ $t('signup.submit') }}
-              </span>
-            </Button>
-          </div>
-        </div>
+              <i v-if="compliteShowPassword" class="zi-eye align-middle" />
+              <i v-else class="zi-eye-off align-middle" style="font-size: 28px" />
+            </div>
+          </template>
+        </TextField>
+        <Checkbox
+          :rules="[rules.check]"
+          lazy-validation
+          class="pb-6"
+        >
+          <span class="ml-3 float-left" v-html="policyHtml" />
+        </Checkbox>
+        <Button
+          :disabled="compliteFormValidity"
+          :loading="compliteLoading"
+          class="w-full sm:w-48"
+          @click="completeNewPassword"
+        >
+          {{ $t('signup.submit') }}
+        </Button>
       </Form>
     </v-dialog>
   </div>
 </template>
 
 <script>
-import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
-
-import StatusBar from '@/components/StatusBar.vue'
-import SocialSignIn from '@/components/SocialSignIn.vue'
-import Social from '@/components/Social.vue'
-import Copyright from '@/components/Copyright.vue'
+import Social from '../components/Social.vue'
+import Copyright from '../components/Copyright.vue'
+import LocalePicker from '../components/LocalePicker.vue'
 
 import { apolloClient } from '../plugins/apollo'
 
 import { GET_PROFILE, GET_ORGS } from '../graphql/queries'
-import { COMPLITE_REGISTRATION } from '../graphql/mutations'
+import { COMPLITE_REGISTRATION, INIT_SPEC_SIMPLE_UI } from '../graphql/mutations'
 
 export default {
   name: 'SignIn',
   components: {
-    StatusBar,
-    SocialSignIn,
     Social,
     Copyright,
+    LocalePicker,
   },
   data () {
     return {
+      formValidity: false,
       compliteFormValidity: false,
       loading: false,
       infoMessage: '',
@@ -274,16 +249,19 @@ export default {
         password: '',
       },
       compliteShowPassword: false,
-      icons: {
-        mdiEyeOutline,
-        mdiEyeOffOutline,
-      },
       rules: {
+        check: v => !!v || this.$t('signup.check'),
         required: v => !!v || this.$t('rule.required'),
         email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
         passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
       },
     }
+  },
+  computed: {
+    policyHtml () {
+      return `${this.$t('signup.acceptPolicyAndTerms')}&nbsp;<a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none" href="#">
+        ${this.$t('signup.privacyPolicy')}</a> ${this.$t('preposition.and')}&nbsp;<a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none" href="#">${this.$t('signup.termsOfUse')}</a>`
+    },
   },
   methods: {
     async onSubmit (e) {
@@ -304,12 +282,20 @@ export default {
             // TODO: save user to cache and redirect to Registration.vue view
             // this.$router.push({ name: 'registration', query: this.$route.query })
           } else {
+            apolloClient.cache.writeData({
+              data: {
+                isLoggedIn: true,
+              },
+            })
+            await this.$apollo.mutate({
+              mutation: INIT_SPEC_SIMPLE_UI,
+            })
             this.$logger.info('Logged in user', user)
             const { data: { getProfile } } = await apolloClient.query({
               query: GET_PROFILE,
-              fetchPolicy: 'cache-only',
+              fetchPolicy: 'network-only',
             })
-            if (getProfile.initialized) {
+            if (!getProfile.isGreeted) {
               const { data: { getOrgs } } = await apolloClient.query({
                 query: GET_ORGS,
                 fetchPolicy: 'cache-first',
@@ -322,9 +308,9 @@ export default {
               })
             } else {
               if (this.$route.query.redirect) {
-                this.$router.replace({ path: this.$route.query.redirect })
+                this.$router.replace({ path: this.$route.query.redirect }).catch(() => {})
               } else {
-                this.$router.replace({ name: 'home' })
+                this.$router.replace({ name: 'home' }).catch(() => {})
               }
             }
           }
@@ -336,8 +322,14 @@ export default {
         }
         this.errorMessage = message
         this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'error',
+          text: message,
+        })
       } finally {
-        this.loading = false
+        setTimeout(() => {
+          this.loading = false
+        }, 100)
       }
     },
     async completeNewPassword (e) {
@@ -371,10 +363,34 @@ export default {
       } catch (error) {
         this.compliteErrorMessage = error.message || error
         this.$logger.warn('Error: ', error)
+        this.$notify({
+          color: 'error',
+          text: this.compliteErrorMessage,
+        })
       } finally {
-        this.compliteLoading = false
+        setTimeout(() => {
+          this.compliteLoading = false
+        }, 100)
       }
     },
   },
 }
 </script>
+
+<style lang="postcss" scoped>
+@screen sm {
+ .signin--top {
+    padding-top: 25vh;
+  }
+}
+@screen lg {
+ .signin--top {
+    padding-top: 30vh;
+  }
+}
+@screen xl {
+ .signin--top {
+    padding-top: 34vh;
+  }
+}
+</style>

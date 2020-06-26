@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <StatusBar></StatusBar>
+    <Header />
     <section>
       <div class="container">
         <div>
@@ -20,14 +20,7 @@
                 :title="$t('loginRestore.recoveryByPhone')"
                 :error-message.sync="errorMessage"
                 lazy-validation
-                rounded
-                shadow
-                class="form--max-w-md"
-                body-class="px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8 mb-16 md:mb-0"
-                header
-                header-icon="dots"
-                header-class="hidden md:flex"
-                append-class="flex-col sm:flex-row items-center"
+                class="form--max-w-md px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8 mb-16 md:mb-0"
               >
                 <div class="w-full sm:w-1/2 sm:pr-2">
                   <TextField
@@ -49,8 +42,8 @@
                     maxlength="6"
                   />
                   <Button
-                    text
-                    secondary
+                    outlined
+                    borderless
                     @click.prevent
                   >
                     <span>{{ $t('loginRestore.resendCode') }}</span>
@@ -58,17 +51,10 @@
                 </div>
                 <template v-slot:append>
                   <Button
-                    large
-                    secondary
-                    :disabled="loading"
+                    :loading="loading"
                     @click="onSubmit"
                   >
-                    <span v-if="loading">
-                      {{ $t('action.loading') }}
-                    </span>
-                    <span v-else>
-                      {{ $t('loginRestore.submit') }}
-                    </span>
+                    {{ $t('loginRestore.submit') }}
                   </Button>
                   <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-no-wrap">
                     <span>{{ $t('preposition.or') }}</span>&nbsp;
@@ -92,7 +78,7 @@
 </template>
 
 <script>
-import StatusBar from '@/components/StatusBar.vue'
+import Header from '@/components/Header.vue'
 import SocialSignIn from '@/components/SocialSignIn.vue'
 import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
@@ -100,7 +86,7 @@ import Copyright from '@/components/Copyright.vue'
 export default {
   name: 'LoginRestore',
   components: {
-    StatusBar,
+    Header,
     SocialSignIn,
     Social,
     Copyright,

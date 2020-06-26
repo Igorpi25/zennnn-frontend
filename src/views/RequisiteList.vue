@@ -1,24 +1,21 @@
 <template>
   <div class="container container--sm">
-    <div class="py-10">
+    <div class="pt-4 pb-10">
 
-       <div class="overflow-x-auto">
+      <div class="overflow-x-auto overflow-scroll-touch pb-4">
         <DataTable
           :headers="headers"
           :items="items"
           table-width="100%"
           table-class="table-fixed"
-          thead-class="text-accent2 border-b border-accent2 bg-gray-900"
         >
           <template v-slot:items="{ items }">
             <tr
               v-for="(item) in items"
               :key="item.id"
-              class="items bg-gray-900 hover:bg-accent3 border-none"
+              class="cursor-pointer"
             >
-              <td
-                class="text-center align-middle"
-              >
+              <td class="text-center align-middle">
                 <div
                   class="cursor-pointer select-none inline-block align-middle"
                   @click="setDefaultRequisite(item.id)"
@@ -28,33 +25,32 @@
                   </Icon>
                 </div>
               </td>
-              <td @click="goToRequisite(item)">{{ item.name }}</td>
-              <td @click="goToRequisite(item)">{{ item.nameEng }}</td>
-              <td @click="goToRequisite(item)">{{ item.ownerFullName }}</td>
-              <td @click="goToRequisite(item)">{{ item.ownerJobPosition }}</td>
-              <td
-                class="text-center align-middle"
-              >
-                <div
-                  class="cursor-pointer inline-block align-middle"
+              <td @click="goToRequisite(item)" class="truncate">{{ item.companyNameLocal }}</td>
+              <td @click="goToRequisite(item)" class="truncate">{{ item.companyName }}</td>
+              <td @click="goToRequisite(item)" class="truncate">{{ item.ownerFullName }}</td>
+              <td @click="goToRequisite(item)" class="truncate">{{ item.ownerJobPosition }}</td>
+              <td>
+                <button
+                  class="flex items-center text-2xl text-gray-200 focus:text-gray-100 focus:outline-none hover:text-gray-100 select-none"
                   @click="deleteRequisite(item.id)"
                 >
-                  <i class="icon-delete text-lg text-gray-200" />
-                </div>
+                  <i class="zi-delete" />
+                </button>
               </td>
             </tr>
           </template>
         </DataTable>
       </div>
       <Button
-        outline
-        class="mt-6"
+        block
+        outlined
+        class="mt-4"
         @click="$router.push({
           name: 'requisite-create'
         })"
       >
         <template v-slot:icon>
-          <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+          <i class="zi-plus-outline text-gray-100 text-2xl" />
         </template>
         <span>{{ $t('requisites.addRequisites') }}</span>
       </Button>
@@ -63,7 +59,7 @@
 </template>
 
 <script>
-import { mdiPlusCircleOutline, mdiStar, mdiStarOutline } from '@mdi/js'
+import { mdiStar, mdiStarOutline } from '@mdi/js'
 
 import { LIST_ORG_REQUISITES, GET_ORGS } from '../graphql/queries'
 import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '../graphql/mutations'
@@ -90,7 +86,6 @@ export default {
   data () {
     return {
       icons: {
-        mdiPlusCircleOutline,
         mdiStar,
         mdiStarOutline,
       },
@@ -107,16 +102,21 @@ export default {
     },
     headers () {
       return [
-        { text: '', value: 'current', bgcolor: 'tansparent', align: 'center', width: 36, minWidth: 36 },
-        { text: this.$t('requisites.companyName'), value: 'name', bgcolor: 'tansparent', align: 'left', width: 200, minWidth: 200 },
-        { text: this.$t('requisites.companyNameEng'), value: 'nameEng', bgcolor: 'tansparent', align: 'left', width: 240, minWidth: 240 },
-        { text: this.$t('requisites.fullName'), value: 'ownerFullName', bgcolor: 'tansparent', align: 'left', width: 160, minWidth: 160 },
-        { text: this.$t('requisites.position'), value: 'ownerJobPosition', bgcolor: 'tansparent', align: 'left', width: 120, minWidth: 120 },
-        { text: '', value: 'action', bgcolor: 'tansparent', width: 48, minWidth: 48 },
+        { text: '', value: 'current', align: 'center', width: 36, minWidth: 36 },
+        { text: this.$t('requisites.companyNameEng'), value: 'companyName', align: 'left', width: 200, minWidth: 200 },
+        { text: this.$t('requisites.companyName'), value: 'companyNameLocal', align: 'left', width: 240, minWidth: 240 },
+        { text: this.$t('requisites.fullName'), value: 'ownerFullName', align: 'left', width: 160, minWidth: 160 },
+        { text: this.$t('requisites.position'), value: 'ownerJobPosition', align: 'left', width: 120, minWidth: 120 },
+        { text: '', value: 'action', width: 48, minWidth: 48 },
       ]
     },
     items () {
-      return this.listOrgRequisites || []
+      return (this.listOrgRequisites || []).map(item => {
+        return {
+          ...item,
+          ownerFullName: item.companyOwner && item.companyOwner.fullName,
+        }
+      })
     },
   },
   methods: {

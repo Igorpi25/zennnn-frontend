@@ -1,190 +1,156 @@
 <template>
-  <div class="w-full pb-4 md:w-1/2 lg:w-2/6 md:pl-3 md:max-w-sm">
-    <h4 class="text-xl font-semibold leading-6 mb-4">
+  <div class="w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3">
+    <h4 class="text-white text-xl font-semibold leading-6 mb-4">
       {{ $t('shipping.customsAndTaxes') }}
     </h4>
-    <div class="bg-gray-700 rounded-md py-1 px-2">
-      <div class="px-1 pb-1">
+    <div class="bg-gray-700 text-gray-200 rounded-md pt-2 pb-5 px-sm">
+      <div class="pb-2">
         <Select
           :value="item.countryOfOrigin"
           :placeholder="$t('shipping.countryOfOrigin')"
           :search.sync="countriesSearch"
           :items="shipmentCountries"
+          dense
           searchable
-          solo
-          squared
           hide-details
-          class="text-sm select_nd"
-          input-class="h-8 text-primary placeholder-gray-200"
+          prepend-slot-class="w-auto pl-2"
           @input="$emit('update', { customs: { countryOfOrigin: $event } })"
         >
-          <template v-slot:append="{ isMenuOpen, toggle }">
-            <div class="text-primary cursor-pointer select-none" @click="toggle">
-              <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-              <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-            </div>
+          <template v-slot:prepend>
+            <img
+              v-if="item.countryOfOrigin"
+              :src="`/static/flags/${item.countryOfOrigin}.svg`"
+              :alt="item.countryOfOrigin"
+              class="w-6 rounded-sm mr-4"
+            >
+            <img
+              v-else
+              src="@/assets/icons/earth.svg"
+              class="h-5 w-6 rounded-full mr-4"
+            >
+          </template>
+          <template v-slot:item="{ item }">
+            <img
+              :src="`/static/flags/${item.value}.svg`"
+              class="w-6 rounded-sm mr-4"
+            >
+            <span>{{ item.text }}</span>
           </template>
         </Select>
       </div>
-      <div class="flex items-center pb-1">
-        <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.termsLabel')">
+      <div class="flex items-center pb-2">
+        <div class="pl-sm pr-1 w-3/5 truncate" :title="$t('shipping.termsLabel')">
           {{ $t('shipping.termsLabel') }}:
         </div>
-        <div class="px-1 w-2/5">
+        <div class="w-2/5">
           <Select
             :value="item.terms"
             :placeholder="$t('placeholder.notChosen')"
             :search.sync="termsSearch"
             :items="customsTerms"
             :disabled="isTermsDisabled"
+            dense
             searchable
-            solo
-            squared
-            hide-details
-            class="text-sm select_nd"
-            input-class="h-8 text-primary placeholder-gray-200"
             @input="$emit('update', { customs: { terms: $event } })"
-          >
-            <template v-slot:append="{ isMenuOpen, toggle }">
-              <div class="text-primary cursor-pointer select-none" @click="toggle">
-                <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-                <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-              </div>
-            </template>
-          </Select>
+          />
         </div>
       </div>
       <div class="flex items-center">
-        <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.costLabel')">
+        <div class="pl-sm pr-1 w-3/5 truncate" :title="$t('shipping.costLabel')">
           {{ $t('shipping.costLabel') }}:
         </div>
-        <div class="px-1 w-2/5">
+        <div class="w-2/5">
           <TextField
             :value="item.cost"
             :placeholder="$t('placeholder.emptyNumber')"
             lazy
-            type="number"
-            inputmode="decimal"
-            format-style="currency"
-            solo
-            squared
-            hide-details
-            class="text-sm text-field_nd"
-            input-class="h-8 text-primary placeholder-gray-200"
+            dense
+            number
+            number-format="currency"
+            slot-class="w-auto"
             @input="$emit('update', { customs: { cost: $event } })"
           >
             <template v-slot:append>
-              {{ $t(`currency.USD.symbol`) }}
+              <span class="text-base text-white pl-xs pr-sm">
+                {{ $t(`currency.USD.symbol`) }}
+              </span>
             </template>
           </TextField>
         </div>
       </div>
-      <div class="border-t border-gray-900 my-3 mx-2" />
-      <div class="flex items-center pb-1">
-        <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.discountLabel')">
+      <div class="border-t border-gray-900 my-4 mx-5" />
+      <div class="flex items-center pb-2">
+        <div class="pl-sm pr-1 w-3/5 truncate" :title="$t('shipping.discountLabel')">
           {{ $t('shipping.discountLabel') }}:
         </div>
-        <div class="px-1 w-2/5">
+        <div class="w-2/5">
           <TextField
             :value="item.discount"
             :placeholder="$t('placeholder.emptyNumber')"
             lazy
-            type="number"
-            inputmode="decimal"
-            format-style="currency"
-            solo
-            squared
-            hide-details
-            class="text-sm text-field_nd"
-            input-class="h-8 text-primary placeholder-gray-200"
+            dense
+            number
+            number-format="currency"
+            slot-class="w-auto"
             @input="$emit('update', { customs: { discount: $event } })"
           >
             <template v-slot:append>
-              {{ $t(`currency.USD.symbol`) }}
+              <span class="text-base text-white pl-xs pr-sm">
+                {{ $t(`currency.USD.symbol`) }}
+              </span>
             </template>
           </TextField>
         </div>
       </div>
-      <div class="flex items-center pb-1">
-        <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.vatLabel')">
+      <div class="flex items-center pb-2">
+        <div class="pl-sm pr-1 w-3/5 truncate" :title="$t('shipping.vatLabel')">
           {{ $t('shipping.vatLabel') }}:
         </div>
-        <div class="px-1 w-2/5">
+        <div class="w-2/5">
           <Select
             :placeholder="$t('placeholder.notChosen')"
             :items="[]"
+            dense
             disabled
-            solo
             squared
             hide-details
-            class="text-sm select_nd"
-            input-class="h-8 text-primary placeholder-gray-200"
-          >
-            <template v-slot:append="{ isMenuOpen }">
-              <div class="text-gray-darkest cursor-not-allowed">
-                <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-                <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-              </div>
-            </template>
-          </Select>
+          />
         </div>
       </div>
       <div class="flex items-center">
-        <div class="pl-2 pr-1 w-3/5 truncate" :title="$t('shipping.incomeTaxLabel')">
+        <div class="pl-sm pr-1 w-3/5 truncate" :title="$t('shipping.incomeTaxLabel')">
           {{ $t('shipping.incomeTaxLabel') }}:
         </div>
-        <div class="px-1 w-2/5">
+        <div class="w-2/5">
           <Select
             :placeholder="$t('placeholder.notChosen')"
             :items="[]"
+            dense
             disabled
-            solo
-            squared
-            hide-details
-            class="text-sm select_nd"
-            input-class="h-8 text-primary placeholder-gray-200"
-          >
-            <template v-slot:append="{ isMenuOpen }">
-              <div class="text-gray-darkest cursor-not-allowed">
-                <Icon v-if="isMenuOpen">{{ icons.mdiChevronUp }}</Icon>
-                <Icon v-else>{{ icons.mdiChevronDown }}</Icon>
-              </div>
-            </template>
-          </Select>
+          />
         </div>
       </div>
     </div>
     <!-- Cost -->
-    <h4 class="text-xl font-semibold leading-6 mb-4 mt-8">
-      {{ $t('shipping.amount') }}
-    </h4>
-    <div class="bg-gray-700 rounded-md py-1 px-2">
-      <div class="px-1 py-3 mb-1 text-lg text-center font-bold">
-        {{ $n(amount || 0, 'decimal') }} {{ $t(`currency.USD.symbol`) }}
+    <div class="bg-gray-700 rounded-md py-5 px-sm mt-5">
+      <div class="text-white text-lg text-center font-bold px-2 pt-sm pb-6">
+        {{ $n(amount || 0, 'fixed') }} {{ $t(`currency.USD.symbol`) }}
       </div>
-      <div class="px-1 pb-1">
+      <div class="pb-2">
         <TextArea
           :value="amountInWords"
           :debounce="250"
           :placeholder="$t('shipping.amountInWords')"
           rows="2"
-          squared
-          hide-details
-          class="text-sm text-area_nd"
-          input-class="text-primary placeholder-gray-200"
           @input="$emit('update', { amountInWords: $event })"
         />
       </div>
-      <div class="px-1">
+      <div>
         <TextArea
           :value="amountInWordsClientLang"
           :debounce="250"
           :placeholder="$t('shipping.amountInWordsClientLang')"
           rows="2"
-          squared
-          hide-details
-          class="text-sm text-area_nd"
-          input-class="text-primary placeholder-gray-200"
           @input="$emit('update', { amountInWordsClientLang: $event })"
         />
       </div>
@@ -193,7 +159,6 @@
 </template>
 
 <script>
-import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import { CustomsTerms, CustomsTermsMore, ShipmentType } from '../graphql/enums'
 import Countries from '../config/countries-iso3.json'
 
@@ -219,10 +184,6 @@ export default {
     return {
       termsSearch: '',
       countriesSearch: '',
-      icons: {
-        mdiChevronUp,
-        mdiChevronDown,
-      },
     }
   },
   computed: {
