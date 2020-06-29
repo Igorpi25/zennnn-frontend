@@ -13,7 +13,7 @@
     </Header>
     <!-- HEADER / -->
     <!-- / MAIN -->
-    <main class="container container--xs flex-grow max-w-screen-md mx-auto pt-16 pb-32">
+    <main class="container container--xs flex-grow max-w-screen-md mx-auto pt-16 pb-32" style="padding-left: 16px; padding-right: 16px;">
       <h1
         class="text-40 font-bold leading-tight mb-6"
       >
@@ -143,8 +143,8 @@
             <span class="font-bold">{{ promoProduct.price }}</span>
             <span v-if="promoProduct.priceInCurrency" class="pl-1">~</span>
             <span v-if="promoProduct.priceInCurrency" class="pl-1">{{ promoProduct.priceInCurrency }}</span>
-            <span class="pl-1">{{ $t('payment.forMonth') }}</span>
-            <div class="relative h-8 flex items-center rounded-md font-semibold text-white bg-yellow-400 border-yellow-400 ml-6 px-2">
+            <span class="whitespace-no-wrap pl-1">{{ $t('payment.forMonth') }}</span>
+            <div class="whitespace-no-wrap relative h-8 flex items-center rounded-md font-semibold text-white bg-yellow-400 border-yellow-400 ml-6 px-2">
               {{ $t('payment.bonusMonth') }}
               <div class="absolute left-0 top-0 transform translate-y-1/2 border-transparent -ml-2" style="border-width: 8px 8px 8px 0; border-right-color: inherit;" />
             </div>
@@ -207,8 +207,8 @@
               <span class="pl-1">/</span>
               <span v-if="selectedProduct.aPriceInCurrency" class="pl-1">~</span>
               <span class="pl-1">{{ selectedProduct.aPriceInCurrency || selectedProduct.aPrice }}</span>
-              <span class="pl-1">{{ $t('payment.inMonth') }}</span>
-              <div class="relative sm:h-8 flex items-center rounded-md font-semibold text-white bg-yellow-400 border-yellow-400 ml-6 px-2">
+              <span class="whitespace-no-wrap pl-1">{{ $t('payment.inMonth') }}</span>
+              <div class="whitespace-no-wrap relative sm:h-8 flex items-center rounded-md font-semibold text-white bg-yellow-400 border-yellow-400 ml-6 px-2">
                 {{ $t('payment.econ') }}
                 <div class="hidden sm:block absolute left-0 top-0 transform translate-y-1/2 border-transparent -ml-2" style="border-width: 8px 8px 8px 0; border-right-color: inherit;" />
               </div>
