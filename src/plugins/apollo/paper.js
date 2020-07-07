@@ -55,7 +55,7 @@ const wsLink = new WebSocketLink({
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    for (let err of graphQLErrors) {
+    for (const err of graphQLErrors) {
       const { message, locations, path, extensions } = err
       const code = extensions && extensions.code
       switch (code) {
@@ -64,7 +64,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
           )
           if (message && message.includes('Forbidden')) {
-            router.app.$notify({ color: 'orange', text: 'Forbidden' })
+            router.app.$notify({ color: 'warn', text: 'Forbidden' })
           }
       }
     }

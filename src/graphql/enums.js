@@ -26,7 +26,8 @@ export const ProductStatus = {
 
 export const ClientType = {
   LEGAL: 'LEGAL',
-  NATURAL: 'NATURAL',
+  PRIVATE: 'PRIVATE',
+  OTHER: 'OTHER',
 }
 
 export const SpecCurrency = {
@@ -35,6 +36,25 @@ export const SpecCurrency = {
   RUB: 'RUB',
   EUR: 'EUR',
   UAH: 'UAH',
+}
+
+export const ContactType = {
+  EMAIL: 'EMAIL',
+  QQ: 'QQ',
+  WE_CHAT: 'WE_CHAT',
+  MESSENGER: 'MESSENGER',
+  VIBER: 'VIBER',
+  TELEGRAM: 'TELEGRAM',
+  WHATSAPP: 'WHATSAPP',
+  KAKAO_TALK: 'KAKAO_TALK',
+  SKYPE: 'SKYPE',
+}
+
+export const BranchType = {
+  OFFICE: 'OFFICE',
+  PRODUCTION: 'PRODUCTION',
+  WAREHOUSE: 'WAREHOUSE',
+  SHOP: 'SHOP',
 }
 
 export const ShipmentType = {
@@ -102,4 +122,54 @@ export const Operation = {
   DELETE_CLIENT: 'DELETE_CLIENT',
   SET_REQUISITES: 'SET_REQUISITES',
   UPDATE_REQUISITES: 'UPDATE_REQUISITES',
+}
+
+export const emptyInvoice = {
+  id: null,
+  supplier: null,
+  invoiceStatus: null,
+  invoiceNo: null,
+  purchaseDate: null,
+  shippingDate: null,
+  profitType: null,
+  profitPercent: null,
+  profitForAll: true,
+  discount: null,
+  discountInCurrency: null,
+  prepayment: null,
+  prepaymentInCurrency: null,
+  prepaymentDate: null,
+  obtainCost: null,
+  obtainCostDate: null,
+  clientDebt: null,
+  clientDebtInCurrency: null,
+  clientDebtDate: null,
+  totalClientAmount: null,
+  totalPurchaseAmount: null,
+  totalNet: null,
+  totalGross: null,
+  totalVolume: null,
+  totalWeight: null,
+  totalPkgQty: null,
+  createdAt: null,
+  updatedAt: null,
+  __typename: Typename.INVOICE,
+  products: [],
+}
+
+export const emptyProduct = {
+  id: null,
+  productStatus: null,
+  name: null,
+  article: null,
+  qty: null,
+  unit: null,
+  cost: null,
+  store: null,
+  info: null,
+  link: null,
+  comments: [],
+  createdAt: null,
+  updatedAt: null,
+  __typename: Typename.PRODUCT,
 }

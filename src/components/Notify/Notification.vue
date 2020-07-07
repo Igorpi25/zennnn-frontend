@@ -3,8 +3,10 @@
     :value="true"
     :color="color"
     :text="text"
+    :icon="icon"
     :close="close"
-    class="px-3 py-2 shadow-md rounded-lg"
+    class="pointer-events-auto shadow-md"
+    min-width="220"
     @input="remove"
   />
 </template>
@@ -17,18 +19,16 @@ export default {
       type: String,
       default: 'primary',
     },
-    close: {
+    icon: {
       type: Boolean,
-      default: false,
+      default: true,
     },
+    close: Boolean,
     timeout: {
       type: Number,
       default: 0,
     },
-    text: {
-      type: String,
-      default: '',
-    },
+    text: String,
   },
   data () {
     return {

@@ -2,7 +2,7 @@
   <div
     v-scroll="onScroll"
     ref="productsTable"
-    class="data-table-wrapper border-t border-white bg-gray-50 rounded-b-md"
+    class="overflow-x-auto overflow-scroll-touch border-t border-white bg-gray-50 rounded-b-md"
     @mouseenter="isMouseOver = true"
     @mouseleave="isMouseOver = false"
     @touchstart="isScrollStart = true"
@@ -73,8 +73,8 @@
             <div v-else class="h-12 w-12" style="border-radius: 5px; background: rgb(196, 196, 196, 0.2);" />
           </td>
           <td class="bg-white p-2">
-            <div class="min-h-5 truncate pb-xs" style="min-width: 250px;">{{ item.name }} {{ item.article }}</div>
-            <div class="text-gray-100 truncate min-h-5">
+            <div class="truncate pb-xs" style="min-width: 250px; min-height: 1.25rem;">{{ item.name }} {{ item.article }}</div>
+            <div class="text-gray-100 truncate" style="min-height: 1.25rem;">
               {{ item.description }}
             </div>
           </td>
@@ -91,12 +91,12 @@
               {{ $te(`productStatus.${item.productStatus}`) ? $t(`productStatus.${item.productStatus}`) : '' }}
             </div>
           </td>
-          <td class="bg-white p-2 text-right">{{ $n(item.price || 0, 'decimal') }}</td>
+          <td class="bg-white p-2 text-right">{{ $n(item.price || 0, 'fixed') }}</td>
           <td class="bg-white py-2 pl-2 pr-1 text-right">{{ $n(item.qty || 0) }}</td>
           <td class="bg-white py-2 pl-1 pr-2">
             {{ $te(`unit.${item.unit}`) ? $t(`unit.${item.unit}`) : '' }}
           </td>
-          <td class="bg-white p-2 text-right">{{ $n(item.amount || 0, 'decimal') }}</td>
+          <td class="bg-white p-2 text-right">{{ $n(item.amount || 0, 'fixed') }}</td>
           <td class="bg-white p-2 text-right">{{ $n(item.pkgQty || 0) }}</td>
           <td class="bg-white p-2 text-right">{{ item.pkgNo || '-' }}</td>
           <td class="bg-white px-1 text-right">
@@ -107,11 +107,11 @@
               is-product
               is-paper
               left
-              class="inline-block align-middle mr-sm text-gray-75 hover:text-gray-100 transition-colors duration-100 ease-out"
+              class="inline-block align-middle mr-sm text-gray-200 focus:text-gray-400 hover:text-gray-400 transition-colors duration-100 ease-out"
             />
           </td>
           <td class="bg-white p-2 rounded-r-md text-center">
-            <i class="icon-arroe-bottom-1 text-xs text-gray-75" />
+            <i class="zi-open-in-new text-gray-75 text-2xl align-middle" />
           </td>
         </tr>
       </tbody>
@@ -119,52 +119,52 @@
         <tr class="text-sm">
           <td colspan="5" class="py-2 pr-2 text-gray-100 text-right">
             <div class="h-6">
-              <span>{{ $t('preview.total') }}</span>&nbsp;
+              <span>{{ $t('paper.total') }}</span>&nbsp;
               <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}:</span>
             </div>
             <div class="h-6">
-              <span>{{ $t('preview.discount') }}</span>&nbsp;
+              <span>{{ $t('paper.discount') }}</span>&nbsp;
               <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}:</span>
             </div>
             <div class="h-6">
-              <span>{{ $t('preview.prepay') }}</span>&nbsp;
+              <span>{{ $t('paper.prepay') }}</span>&nbsp;
               <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}:</span>
             </div>
             <div class="h-6">
-              <span>{{ $t('preview.residue') }}</span>&nbsp;
+              <span>{{ $t('paper.residue') }}</span>&nbsp;
               <span class="pl-1">{{ $t(`currency.${currency}.symbol`) }}:</span>
             </div>
           </td>
-          <td colspan="3" class="py-2">
+          <td colspan="3" class="py-2 pr-2">
             <div class="h-6 flex">
               <div class="flex-grow text-gray-100 dots" />
               <div class="flex-shrink-0">
-                {{ $n(invoice.totalClientAmount || 0, 'decimal') }}
+                {{ $n(invoice.totalClientAmount || 0, 'fixed') }}
               </div>
             </div>
             <div class="h-6 flex">
               <div class="flex-grow text-gray-100 dots" />
               <div class="flex-shrink-0">
-                {{ $n(invoice.discount || 0, 'decimal') }}
+                {{ $n(invoice.discount || 0, 'fixed') }}
               </div>
             </div>
             <div class="h-6 flex">
               <div class="flex-grow text-gray-100 dots" />
               <div class="flex-shrink-0">
-                {{ $n(invoice.prepayment || 0, 'decimal') }}
+                {{ $n(invoice.prepayment || 0, 'fixed') }}
               </div>
             </div>
             <div class="h-6 flex">
               <div class="flex-grow text-gray-100 dots" />
               <div class="flex-shrink-0">
-                {{ $n(invoice.clientDebt || 0, 'decimal') }}
+                {{ $n(invoice.clientDebt || 0, 'fixed') }}
               </div>
             </div>
           </td>
           <td colspan="4" class="py-2 pl-5 text-gray-100">
             <div class="h-6">
               <span v-if="!invoice.discount">
-                ({{ $t('preview.noDiscount') }})
+                ({{ $t('paper.noDiscount') }})
               </span>
             </div>
             <div class="h-6" />
@@ -236,17 +236,17 @@ export default {
   computed: {
     headers () {
       return [
-        { text: this.$t('preview.itemNo'), value: 'number', align: 'center', width: 48 },
-        { text: this.$t('preview.photo'), value: 'photo', align: 'left', width: 58 },
-        { text: this.$t('preview.name'), value: 'name', align: 'left', width: 250 },
-        { text: this.$t('preview.status'), value: 'status', align: 'left', width: 120 },
-        { text: `${this.$t('preview.price')}(${this.$t(`currency.${this.currency}.symbol`)})`, align: 'right', value: 'price', width: 96 },
-        { text: this.$t('preview.qty'), value: 'qty', align: 'right', width: 65 },
-        { text: this.$t('preview.unit'), value: 'unit', align: 'left', width: 60 },
-        { text: `${this.$t('preview.cost')}(${this.$t(`currency.${this.currency}.symbol`)})`, value: 'cost', align: 'right', width: 116 },
-        { text: this.$t('preview.qtyOfPackages'), value: 'pkgQty', align: 'right', width: 70 },
-        { text: this.$t('preview.packageNo'), value: 'pkgNo', align: 'right', width: 70 },
-        { text: this.$t('preview.notes'), value: 'note', align: 'left', width: 66 },
+        { text: this.$t('paper.itemNo'), value: 'number', align: 'center', width: 48 },
+        { text: this.$t('paper.photo'), value: 'photo', align: 'left', width: 58 },
+        { text: this.$t('paper.name'), value: 'name', align: 'left', width: 250 },
+        { text: this.$t('paper.status'), value: 'status', align: 'left', width: 120 },
+        { text: `${this.$t('paper.price')}(${this.$t(`currency.${this.currency}.symbol`)})`, align: 'right', value: 'price', width: 96 },
+        { text: this.$t('paper.qty'), value: 'qty', align: 'right', width: 65 },
+        { text: this.$t('paper.unit'), value: 'unit', align: 'left', width: 60 },
+        { text: `${this.$t('paper.cost')}(${this.$t(`currency.${this.currency}.symbol`)})`, value: 'cost', align: 'right', width: 116 },
+        { text: this.$t('paper.qtyOfPackages'), value: 'pkgQty', align: 'right', width: 70 },
+        { text: this.$t('paper.packageNo'), value: 'pkgNo', align: 'right', width: 70 },
+        { text: this.$t('paper.notes'), value: 'note', align: 'left', width: 66 },
         { text: '', value: 'actions', width: 48 },
       ]
     },

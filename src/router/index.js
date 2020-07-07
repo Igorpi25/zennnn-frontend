@@ -1,31 +1,41 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import RequisiteList from '../views/RequisiteList.vue'
-import RequisiteItem from '../views/RequisiteItem.vue'
+// TODO: Uncaught TypeError: y.b is not a constructor
 import OrgLayout from '../views/OrgLayout.vue'
-import Specs from '../views/Specs.vue'
-import Spec from '../views/Spec.vue'
-import ClientItem from '../views/ClientItem.vue'
-import ClientList from '../views/ClientList.vue'
-import SupplierItem from '..//views/SupplierItem.vue'
-import SupplierList from '../views/SupplierList.vue'
-import Staff from '../views/Staff.vue'
-import Preview from '../views/Preview.vue'
-import Invitation from '../views/Invitation.vue'
-import SignIn from '../views/SignIn.vue'
-import Registration from '../views/Registration.vue'
-import SignUp from '../views/SignUp.vue'
-import Welcome from '../views/Welcome.vue'
-import PasswordRestore from '../views/PasswordRestore.vue'
-import PasswordRestoreConfirm from '../views/PasswordRestoreConfirm.vue'
-import NotFound from '../views/NotFound.vue'
 
-import { Auth, i18n } from '../plugins'
+import { i18n } from '../plugins'
+import { checkAuth } from '../plugins/auth/checkAuth'
 import { apolloClient } from '../plugins/apollo'
-import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
+import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS, GET_PROFILE } from '../graphql/queries'
 
 import { CURRENT_LANG_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
+
+const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+const Pricing = () => import(/* webpackChunkName: "home" */ '../views/Pricing.vue')
+const Payment = () => import(/* webpackChunkName: "main" */ '../views/Payment.vue')
+const Subscription = () => import(/* webpackChunkName: "main" */ '../views/Subscription.vue')
+const RequisiteList = () => import(/* webpackChunkName: "main" */ '../views/RequisiteList.vue')
+const RequisiteItem = () => import(/* webpackChunkName: "main" */ '../views/RequisiteItem.vue')
+// const OrgLayout = () => import(/* webpackChunkName: "main" */ '../views/OrgLayout.vue')
+const Specs = () => import(/* webpackChunkName: "main" */ '../views/Specs.vue')
+const Spec = () => import(/* webpackChunkName: "main" */ '../views/Spec.vue')
+const ClientItem = () => import(/* webpackChunkName: "main" */ '../views/ClientItem.vue')
+const ClientList = () => import(/* webpackChunkName: "main" */ '../views/ClientList.vue')
+const SupplierItem = () => import(/* webpackChunkName: "main" */ '../views/SupplierItem.vue')
+const SupplierList = () => import(/* webpackChunkName: "main" */ '../views/SupplierList.vue')
+const Staff = () => import(/* webpackChunkName: "main" */ '../views/Staff.vue')
+const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
+const Invitation = () => import(/* webpackChunkName: "main" */ '../views/Invitation.vue')
+const SignIn = () => import(/* webpackChunkName: "common" */ '../views/SignIn.vue')
+const Registration = () => import(/* webpackChunkName: "common" */ '../views/Registration.vue')
+const SignUp = () => import(/* webpackChunkName: "common" */ '../views/SignUp.vue')
+const Welcome = () => import(/* webpackChunkName: "common" */ '../views/Welcome.vue')
+const PasswordRestore = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestore.vue')
+const PasswordRestoreConfirm = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestoreConfirm.vue')
+const Print = () => import(/* webpackChunkName: "common" */ '../views/Print.vue')
+const NotFound = () => import(/* webpackChunkName: "common" */ '../views/NotFound.vue')
 
 Vue.use(VueRouter)
 
@@ -33,9 +43,20 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    redirect: () => {
-      const orgId = localStorage.getItem(CURRENT_ORG_STORE_KEY) || ''
-      return { name: 'specs', params: { orgId } }
+    component: Home,
+    beforeEnter: async (to, from, next) => {
+      try {
+        const loggedIn = await checkAuth()
+        if (!loggedIn) {
+          return next()
+        }
+        const orgId = localStorage.getItem(CURRENT_ORG_STORE_KEY) || ''
+        return next({ name: 'specs', params: { orgId } })
+      } catch (error) {
+        // eslint-disable-next-line
+        console.warn('Error on / before route enter', error.message)
+        next()
+      }
     },
   },
   {
@@ -116,14 +137,14 @@ const routes = [
         component: ClientList,
       },
       {
-        path: 'clients/create',
+        path: 'clients/:groupId?/create',
         name: 'client-create',
         meta: { requiresAuth: true, scrollToTop: true },
         props: { create: true },
         component: ClientItem,
       },
       {
-        path: 'clients/:clientId',
+        path: 'clients/:groupId/:clientId',
         name: 'client',
         meta: { requiresAuth: true, scrollToTop: true },
         component: ClientItem,
@@ -175,6 +196,92 @@ const routes = [
     ],
   },
   {
+    path: '/pricing',
+    name: 'pricing',
+    meta: { scrollToTop: true },
+    component: Pricing,
+    beforeEnter: async (to, from, next) => {
+      try {
+        const loggedIn = await checkAuth()
+        if (loggedIn) {
+          await apolloClient.query({
+            query: GET_ORGS,
+            fetchPolicy: 'cache-first',
+          })
+          await apolloClient.query({
+            query: GET_PROFILE,
+            fetchPolicy: 'cache-first',
+          })
+        }
+        next()
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log('Error on navigation to pricing.', error)
+        next()
+      }
+    },
+  },
+  {
+    path: '/payment/:type(change|promo|invoice)',
+    name: 'payment',
+    meta: { requiresAuth: true, scrollToTop: true },
+    component: Payment,
+    beforeEnter: async (to, from, next) => {
+      try {
+        await apolloClient.query({
+          query: GET_ORGS,
+          fetchPolicy: 'cache-first',
+        })
+        const { data: { getProfile } } = await apolloClient.query({
+          query: GET_PROFILE,
+          fetchPolicy: 'cache-first',
+        })
+        const orgId = getProfile && getProfile.account && getProfile.account.org
+        if (!orgId) {
+          next(false)
+        } else {
+          next()
+        }
+      } catch (error) {
+        if (error.message === 'Not found') {
+          next('not-found')
+        } else {
+          next(false)
+        }
+      }
+    },
+  },
+  {
+    path: '/subscription',
+    name: 'subscription',
+    meta: { requiresAuth: true, scrollToTop: true },
+    component: Subscription,
+    beforeEnter: async (to, from, next) => {
+      try {
+        await apolloClient.query({
+          query: GET_ORGS,
+          fetchPolicy: 'cache-first',
+        })
+        const { data: { getProfile } } = await apolloClient.query({
+          query: GET_PROFILE,
+          fetchPolicy: 'cache-first',
+        })
+        const orgId = getProfile && getProfile.account && getProfile.account.org
+        if (!orgId) {
+          next(false)
+        } else {
+          next()
+        }
+      } catch (error) {
+        if (error.message === 'Not found') {
+          next('not-found')
+        } else {
+          next(false)
+        }
+      }
+    },
+  },
+  {
     path: '/invitations/:invitationId',
     name: 'invitation',
     component: Invitation,
@@ -185,7 +292,7 @@ const routes = [
           throw new Error('No valid link')
         }
 
-        const loggedIn = await Auth.checkAuth()
+        const loggedIn = await checkAuth()
         if (!loggedIn) {
           return next({ name: 'signin', query: { redirect: `/invitations/${id}` } })
         }
@@ -202,21 +309,43 @@ const routes = [
 
         next()
       } catch (error) {
-        router.app.$notify({ color: 'red', text: error.message || '' })
+        router.app.$notify({ color: 'error', text: error.message || '' })
         next('/not-found')
       }
     },
   },
   {
+    path: '/about',
+    name: 'about',
+    component: About,
+  },
+  {
     path: '/paper/:specId',
-    name: 'preview',
-    component: Preview,
+    name: 'paper',
+    component: Paper,
     meta: { scrollToTop: true },
     beforeEnter: (to, from, next) => {
       if (to.query.sid) {
         localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid)
-        return next({ name: 'preview', params: { specId: to.params.specId }, query: {} })
+        return next({ name: 'paper', params: { specId: to.params.specId }, query: {} })
       }
+      next()
+    },
+  },
+  {
+    path: '/print/:docNo',
+    name: 'print',
+    component: Print,
+    beforeEnter: (to, from, next) => {
+      if (!to.params.docNo || !window.opener) {
+        return next(false)
+      }
+      router.app.$notify({
+        color: 'primary',
+        text: i18n.t('message.documentGenerateLoading'),
+        timeout: 0,
+        close: false,
+      })
       next()
     },
   },
@@ -250,15 +379,15 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (to.query.username) {
         if (to.query.state === 'success') {
-          router.app.$notify({ color: 'green', text: i18n.t('message.emailConfirmed') })
+          router.app.$notify({ color: 'success', text: i18n.t('message.emailConfirmed') })
         } else if (to.query.state === 'confirmed') {
-          router.app.$notify({ color: 'orange', text: i18n.t('message.emailAlreadyConfirmed') })
+          router.app.$notify({ color: 'warn', text: i18n.t('message.emailAlreadyConfirmed') })
         } else if (to.query.state === 'error') {
-          router.app.$notify({ color: 'red', text: to.query.message })
+          router.app.$notify({ color: 'error', text: to.query.message })
           // Add message to Analytics
         }
       }
-      next('/')
+      next('/signin')
     },
   },
   {
@@ -276,8 +405,8 @@ const routes = [
         next()
       } else {
         // Incorrect request to restore password
-        router.app.$notify({ color: 'red', text: i18n.t('message.incorrectRestorePassword') })
-        next('/')
+        router.app.$notify({ color: 'error', text: i18n.t('message.incorrectRestorePassword') })
+        next('/signin')
       }
     },
   },
@@ -329,14 +458,8 @@ router.beforeEach(async (to, from, next) => {
       i18n.locale = lang
     }
   }
-  // set theme attribute
-  if (to.name === 'preview') {
-    document.body.dataset.theme = 'light'
-  } else {
-    document.body.dataset.theme = 'dark'
-  }
   // check auth
-  const loggedIn = await Auth.checkAuth()
+  const loggedIn = await checkAuth()
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
@@ -356,8 +479,31 @@ router.beforeEach(async (to, from, next) => {
       next()
     }
   } else {
+    // set light theme permanently
+    const fromUndef = from.name === null && from.path === '/'
+    if (fromUndef && (to.name === 'paper' || to.name === 'about' || to.name === 'pricing' || to.name === 'payment' || to.name === 'subscription')) {
+      setTheme('light')
+      return next()
+    }
     next() // make sure to always call next()!
   }
 })
+
+router.beforeResolve((to, from, next) => {
+  let theme = 'dark'
+  if (to.name === 'paper' || to.name === 'about' || to.name === 'pricing' || to.name === 'payment' || to.name === 'subscription') {
+    theme = 'light'
+  }
+  // set theme meta && attribute
+  setTheme(theme)
+  next()
+})
+
+const setTheme = (theme) => {
+  const themeColor = theme === 'dark' ? '#1E1E1E' : '#ffffff'
+  document.body.dataset.theme = theme
+  document.head.querySelector('meta[name="theme-color"]')
+    .setAttribute('content', themeColor)
+}
 
 export default router

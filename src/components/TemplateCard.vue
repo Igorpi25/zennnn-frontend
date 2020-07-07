@@ -21,7 +21,7 @@
           >
             <div
               v-if="field.subtitle"
-              class="text-gray-lightest px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
+              class="text-gray-100 px-2 pb-4 text-center text-base font-semibold leading-snug tracking-wide"
             >
               {{ $t(`${templateName}.${field.subtitle}`) }}
             </div>
@@ -53,8 +53,6 @@
                     :disabled="isDisabled"
                     :value="item.template && item.template[key]"
                     :placeholder="(item.template && item.template[key]) || $t(`${templateName}.placeholder.${field.placeholder || key}`)"
-                    squared
-                    hide-details
                     class="pt-0 template-card__label"
                     input-class="text-gray-300 focus:text-white placeholder-gray-300"
                     @input="$emit('update-template', key, $event)"
@@ -143,7 +141,7 @@ export default {
 
 <style lang="postcss" scoped>
 .card {
-  @apply w-full bg-chaos-black;
+  @apply w-full bg-gray-900;
   padding: 20px 0 25px;
 }
 .card__section--faded {

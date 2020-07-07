@@ -6,12 +6,13 @@ import {
   mdiPlus,
   mdiSync,
 } from '@mdi/js'
-import { Role } from '../graphql/enums'
+import { Role, ProductStatus } from '../graphql/enums'
 import {
   GET_SPEC,
   SEARCH_CLIENTS,
   SEARCH_SUPPLIERS,
   GET_IS_SPEC_SYNC,
+  SPEC_SIMPLE_UI_OFF,
 } from '../graphql/queries'
 import {
   CREATE_INVOICE,
@@ -23,11 +24,15 @@ import {
   SET_SPEC_EXPANDED_INVOICES,
   ADD_SPEC_EXPANDED_INVOICES,
   REMOVE_SPEC_EXPANDED_INVOICES,
+  SET_SPEC_SIMPLE_UI,
 } from '../graphql/mutations'
 import { getSpecExpandedInvoices, getSpecActiveTab } from '../graphql/resolvers'
 
 export default {
   apollo: {
+    specSimpleUIOff: {
+      query: SPEC_SIMPLE_UI_OFF,
+    },
     isSpecSync: {
       query: GET_IS_SPEC_SYNC,
     },
@@ -100,10 +105,67 @@ export default {
       },
       invoiceScrollId: '',
       invoiceScrollLeft: 0,
-      invoiceActiveTab: 1,
+      invoiceActiveTab: 0,
     }
   },
   computed: {
+    isInvoiceSummaryVisible () {
+      return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct || this.hasFilledProductQty)
+    },
+    isInfoVisible () {
+      return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct)
+    },
+    isCostVisible () {
+      return this.specSimpleUIOff || (this.hasFilledProduct)
+    },
+    isSummaryVisible () {
+      return this.specSimpleUIOff || (this.hasInvoiceShippingDate && this.hasFilledProduct)
+    },
+    hasInvoiceShippingDate () {
+      const invoices = this.spec.invoices || []
+      return invoices.some(el => el.shippingDate)
+    },
+    hasFilledProduct () {
+      const invoices = this.spec.invoices || []
+      return invoices.some(i => {
+        const products = i.products || []
+        return products.some(el => {
+          return el.productStatus === ProductStatus.IN_PROCESSING ||
+            el.productStatus === ProductStatus.IN_PRODUCTION ||
+            el.productStatus === ProductStatus.IN_STOCK
+        })
+      })
+    },
+    hasFilledProductQty () {
+      const invoices = this.spec.invoices || []
+      return invoices.some(i => {
+        const products = i.products || []
+        return products.some(el => el.qty)
+      })
+    },
+    specSimpleUI () {
+      return !this.specSimpleUIOff
+    },
+    emptyId () {
+      return `empty-${this.spec.id}`
+    },
+    isEmpty () {
+      return this.items.length === 1 && this.items[0].id === this.emptyId
+    },
+    specTitleText () {
+      return `
+         ${this.$t('shipping.dealNo')}
+         ${this.spec.specNo} ${this.$t('preposition.from')}
+         ${this.$d(this.$parseDate(this.spec.createdAt), 'short')}
+      `
+    },
+    specTitleHtml () {
+      return `
+        ${this.$t('shipping.dealNo')}
+        &nbsp;${this.spec.specNo} ${this.$t('preposition.from')}
+        &nbsp;${this.$d(this.$parseDate(this.spec.createdAt), 'short')}
+      `
+    },
     orgId () {
       return this.$route.params.orgId
     },
@@ -159,6 +221,14 @@ export default {
     },
   },
   methods: {
+    async toggleSpecSimpleUI (value) {
+      await this.$apollo.mutate({
+        mutation: SET_SPEC_SIMPLE_UI,
+        variables: {
+          value: !value,
+        },
+      })
+    },
     setScrollLeft (scrollLeft, invoiceId) {
       this.invoiceScrollId = invoiceId
       this.invoiceScrollLeft = scrollLeft
@@ -168,7 +238,7 @@ export default {
       if (!specId || this.isBooted) return
       this.isBooted = true
       const activeTab = await getSpecActiveTab(specId)
-      this.invoiceActiveTab = activeTab || 1
+      this.invoiceActiveTab = activeTab || this.defaultTab
       const expanded = await getSpecExpandedInvoices(specId)
       if (!expanded) {
         const [invoice] = spec.invoices || []
@@ -260,7 +330,7 @@ export default {
       return item.fullName || ''
     },
     getSupplierName (item) {
-      return item.companyNameSl || ''
+      return item.companyName || ''
     },
     expand (id) {
       if (this.expanded.includes(id)) {
@@ -284,14 +354,19 @@ export default {
       this.expanded = ids
       this.setExpandedInvoices(ids)
     },
-    async createInvoice () {
+    async createInvoice (input) {
       try {
         this.createLoading = true
+        const variables = {
+          specId: this.specId,
+        }
+        if (input) {
+          variables.input = input
+        }
         const { data } = await this.$apollo.mutate({
           mutation: CREATE_INVOICE,
-          variables: {
-            specId: this.specId,
-          },
+          variables,
+          fetchPolicy: 'no-cache',
         })
         const id = data && data.createInvoice && data.createInvoice.id
         if (id) {

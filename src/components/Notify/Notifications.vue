@@ -1,18 +1,28 @@
 <template>
-  <div class="notifications">
-    <div>
-      <div class="notifications__content">
+  <div
+    class="fixed top-0 inset-x-0 flex justify-center pointer-events-none pt-8 px-3"
+    style="z-index: 999"
+  >
+    <transition-group
+      tag="div"
+      name="notification-transition"
+      class="flex flex-col-reverse"
+    >
+      <div
+        v-for="item in items"
+        :key="item.id"
+        class="bg-gray-700 rounded-md mb-3"
+      >
         <Notification
-          v-for="item in items"
-          :key="item.id"
           :color="item.color"
           :text="item.text"
+          :icon="item.icon"
           :close="item.close"
           :timeout="item.timeout"
           @remove="remove(item.id)"
         />
       </div>
-    </div>
+    </transition-group>
   </div>
 </template>
 
@@ -54,31 +64,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.notifications {
-  position: fixed;
-  top: 40px;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 999;
-}
-.notifications > div {
-  max-width: 320px;
-  width: 100%;
-}
-.notifications__content {
-  display: flex;
-  flex-direction: column-reverse;
-}
-.notifications .alert {
-  pointer-events: auto;
-}
-.notifications__content .alert:not(:first-child) {
-  margin-bottom: 12px;
-}
-</style>

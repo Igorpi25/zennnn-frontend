@@ -1,168 +1,37 @@
-.select {
-  padding-top: 10px;
-  min-width: 64px;
-}
-.select__controls {
-  @apply relative w-full flex items-center;
-}
-.select__slot {
-  @apply relative w-full flex items-center;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-.select__slot:before {
-  @apply absolute left-0 right-auto w-full;
-  @apply border-t border-solid border-gray-light;
-  content: "";
-  bottom: -1px;
-}
-.select__label {
-  @apply absolute left-0 right-auto;
-  @apply pointer-events-none truncate;
-  @apply text-gray-lighter;
-  /* investigate position problem */
-  top: 10px;
-  height: 1.25em;
-  max-width: 90%;
-  transform-origin: top left;
-  transition: .3s cubic-bezier(0.25, 0.8, 0.5, 1);
-}
-.select__label--active {
-  @apply text-gray-light;
-  max-width: 133%;
-  transform: translateY(-18px) scale(0.75);
-}
-
-.select input {
-  @apply appearance-none outline-none w-full;
-  @apply bg-accent1 text-white;
-}
-
-.select__append-outer {
-  @apply flex items-center;
-}
-.select__append-outer > div {
-  @apply ml-2;
-}
-
-.select__state-icon {
-  margin-left: 8px;
-}
-
-.select.has-error .select__label {
-  @apply text-error;
-}
-.select.has-error .select__slot:before {
-  @apply border-error;
-}
-.select.has-error.select--outlined .select__slot {
-  @apply border-red;
-}
-
-.select--outlined {
-  @apply leading-none text-base;
-}
-.select--outlined .select__slot {
-  padding: 0 8px;
-  border-color: #4b4b4b;
-  @apply border rounded-sm;
-}
-.select--outlined .select__slot:before {
-  border: none;
-}
-.select--outlined input {
-  @apply text-primary;
-}
-.select--focused.select--outlined .select__slot {
-  @apply bg-gray-darkest;
-}
-.select--focused.select--colored .select__slot {
-  @apply bg-gray-darkest;
-}
-.select--outlined input {
-  background: transparent;
-}
-
-.select--squared {
-  @apply text-base;
-}
-.select--squared .select__slot {
-  padding: 0 8px;
-  border-color: #4b4b4b;
-  @apply border;
-}
-.select--squared .select__slot:before {
-  border: none;
-}
-.select--squared input {
-  @apply text-white;
-}
-.select--focused.select--squared .select__slot {
-  @apply bg-gray-darkest;
-}
-.select--squared input {
-  background: transparent;
-}
-
-.select--borderless .select__slot,
-.select--borderless .text-field__slot {
-  border: none!important;
-}
-.select--colored input {
-  background: transparent;
-}
-.select--colored input {
-  @apply text-primary;
-}
-
-.select--solo {
-  @apply pt-1;
-}
-
-.select__prepend {
-  margin-right: 6px;
-}
-.select__append {
-  margin-left: 6px;
-}
-
-.select .v-menu__content {
-  border-top-left-radius: 0!important;
-  border-top-right-radius: 0!important;
-}
 .select-picker {
-  color: #aaaaaa;
-  @apply py-1 bg-gray text-left;
+  @apply text-gray-100 bg-gray-900 text-left;
+}
+[data-theme="light"] .select-picker {
+  background-color: #fff;
+  color: #1e1e1e;
 }
 .select-picker__item {
-  min-height: 28px;
-  @apply flex items-center cursor-pointer px-2 outline-none;
+  @apply h-9 flex items-center cursor-pointer px-2 outline-none;
+}
+.select-picker.select-picker--dense .select-picker__item {
+  height: 32px;
 }
 .select-picker__item--selected {
-  @apply text-primary;
+  @apply text-white;
+}
+[data-theme="light"] .select-picker__item--selected {
+  color: #1e1e1e;
+  background-color: #F7F7F7;
 }
 .select-picker__item:not(.select-picker__item--disabled).v-list-item--highlighted,
 .select-picker__item:not(.select-picker__item--disabled):hover {
-  @apply bg-gray-darker;
+  @apply bg-gray-600;
+}
+[data-theme="light"] .select-picker__item:not(.select-picker__item--disabled).v-list-item--highlighted,
+[data-theme="light"] .select-picker__item:not(.select-picker__item--disabled):hover {
+  background-color: #E4E4E4!important;
 }
 .select-picker__item--disabled {
   @apply cursor-default;
 }
 
-/* nd */
-
-.select_nd .select__slot {
-  background-color: #222222;
-  border-radius: 4px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: transparent!important;
-}
-.select_nd.select--active .select__slot {
-  background-color: #1e1e1e!important;
-  border-color: #5a8199!important;
-}
-.select_nd.select--menu-active .select__slot {
+.select.select--menu-active .text-field__content,
+.combo-input.combo-input--menu-active .text-field__content {
   border-bottom-left-radius: 0!important;
   border-bottom-right-radius: 0!important;
 }
@@ -170,30 +39,29 @@
   border-top-left-radius: 0!important;
   border-top-right-radius: 0!important;
 }
-.select-menu.v-menu__content .select-picker {
-  padding-top: 0!important;
-  padding-bottom: 0!important;
-}
-.select-menu:not(.select-menu--flat).v-menu__content {
-  border: 1px solid #5a8199;
-}
-.select-menu:not(.select-menu--flat).v-menu__content .select-picker__item {
-  background-color: #1e1e1e!important;
-  height: 32px;
+.select-menu.v-menu__content {
+  @apply shadow-blue-500;
 }
 .select-menu:not(.select-menu--flat).v-menu__content .select-picker__item:not(.select-picker__item--disabled).v-list-item--highlighted,
 .select-menu:not(.select-menu--flat).v-menu__content .select-picker__item:not(.select-picker__item--disabled):hover {
-  background-color: #353535!important;
-}
-.select_nd input {
-  color: #5a8199!important;
-}
-.select_nd input:focus {
-  color: #ffffff!important;
-}
-.select_nd input:disabled,
-.select_nd input:disabled::placeholder {
-  color: #2f2f2f!important;
+  @apply bg-gray-500;
 }
 
-/* nd */
+/* Simple select */
+.simple-select {
+  position: relative;
+  display: inline-block;
+  -webkit-appearance: none;
+  background: transparent;
+  padding-left: .15em;
+  padding-right: .65em;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.49307 0.464478L7.14993 6.12133L5.73571 7.53555L0.0788574 1.87869L1.49307 0.464478Z' fill='%235a8199'/%3E%3Cpath d='M11.3926 1.87869L5.73571 7.53555L4.3215 6.12133L9.97835 0.464478L11.3926 1.87869Z' fill='%235a8199'/%3E%3C/svg%3E%0A");
+	background-repeat: no-repeat, repeat;
+	/* arrow icon position (1em from the right, 50% vertical) , then gradient position */
+	background-position: right .1em top 50%, 0 0;
+	/* icon size, then gradient */
+	background-size: .5em auto, 100%;
+}
+.simple-select:disabled {
+  background: none;
+}

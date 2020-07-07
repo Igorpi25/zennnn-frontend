@@ -1,41 +1,63 @@
 <template>
-  <InputBase
-    :is-dirty="!!internalValue"
-    :has-error="hasError"
-    :hide-details="hideDetails"
-    :detail-text="errorText"
-    :class="[
-      'checkbox',
-      {'checkbox--secondary': secondary},
-      {'checkbox--vertical': verticalAlign},
-      {'checkbox--horizontal': horizontalAlign},
-    ]"
-  >
-    <div class="checkbox__slot">
-      <div class="checkbox__input">
+  <div :class="{ 'opacity-40': disabled }">
+    <div class="flex items-start">
+      <div
+        class="flex-shrink-0 relative w-5 h-5"
+        style="border-radius: 3px;"
+      >
+        <div
+          :class="[
+            'transition-colors duration-100 ease-out',
+            'relative w-full h-full flex border-2',
+            checked ? 'border-blue-500' : borderColor ? borderColor : 'border-gray-300',
+            { [bgColor || 'bg-blue-500']: checked },
+            { 'shadow-blue-600': hasFocus },
+          ]"
+          style="border-radius: 3px;"
+        >
+          <v-fade-transition>
+            <div v-show="checked" class="absolute inset-0 flex items-center justify-center">
+              <svg
+                width="14"
+                height="10"
+                viewBox="0 0 14 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M2.01953 3.68994L6.23828 7.81494L12.582 1.50244" stroke="white" stroke-width="3"/>
+              </svg>
+            </div>
+          </v-fade-transition>
+        </div>
         <input
           ref="input"
-          type="checkbox"
           v-model="internalValue"
-          :id="inputId"
+          :id="computedId"
           :name="name"
           :required="required"
           :readonly="readonly"
           :disabled="disabled"
-          @change="checkField"
+          :class="[
+            'absolute opacity-0 select-none top-0 left-0 w-5 h-5',
+            disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+          ]"
+          type="checkbox"
+          role="checkbox"
+          aria-hidden="true"
+          @focus="hasFocus = true"
+          @blur="hasFocus = false"
         >
-        <i class="checkbox__icon">
-          <div class="icon__item">
-            <svg v-if="checked" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><title>checkbox</title><path d="M7,3a4,4,0,1,0,4,4A4,4,0,0,0,7,3Zm0,7a3,3,0,1,1,3-3A3,3,0,0,1,7,10Z" style="fill:#5a8199"/><circle cx="7" cy="7" r="3" style="fill:#16a0ce"/><path d="M0,0V14H14V0H0ZM12,12H2V2H12V12Z" style="fill:currentColor"/></svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><title>checkbox-empty</title><path d="M0,0V14H14V0H0ZM12,12H2V2H12V12Z" style="fill:currentColor"/></svg>
-          </div>
-        </i>
       </div>
-      <label :for="inputId" class="cursor-pointer">
+      <label :for="computedId" :class="[disabled ? 'cursor-not-allowed' : 'cursor-pointer', 'select-none leading-tight']">
         <slot />
       </label>
     </div>
-  </InputBase>
+    <div v-if="!hideDetails" class="h-6 pt-2 leading-tight text-sm text-yellow-400">
+      <v-slide-y-transition>
+        <span v-show="errorText">{{ errorText }}</span>
+      </v-slide-y-transition>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -43,66 +65,33 @@ import validatable from '@/mixins/validatable'
 
 export default {
   name: 'Checkbox',
-  inject: {
-    form: {
-      default: null,
-    },
-  },
   mixins: [validatable],
   props: {
     value: {
       type: Boolean,
       default: false,
     },
-    rules: {
-      type: Array,
-    },
-    label: {
-      type: String,
-      default: '',
-    },
-    name: {
-      type: String,
-      default: null,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    readonly: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    hideDetails: {
-      type: Boolean,
-      default: false,
-    },
-    horizontalAlign: {
-      type: Boolean,
-      default: false,
-    },
-    verticalAlign: {
-      type: Boolean,
-      default: false,
-    },
-    secondary: {
-      type: Boolean,
-      default: false,
-    },
+    label: String,
+    borderColor: String,
+    bgColor: String,
+    id: String,
+    name: String,
+    required: Boolean,
+    readonly: Boolean,
+    disabled: Boolean,
+    hideDetails: Boolean,
   },
   data () {
     return {
+      hasFocus: false,
       checked: false,
-      // TODO input registrator
-      inputId: 'input' + Math.round(Math.random() * 100000),
       lazyValue: this.value,
     }
   },
   computed: {
+    computedId () {
+      return this.id || `input-${this._uid}`
+    },
     internalValue: {
       get () {
         return this.lazyValue
@@ -122,16 +111,6 @@ export default {
       },
       immediate: true,
     },
-  },
-  created () {
-    if (this.form) {
-      this.form.register(this)
-    }
-  },
-  beforeDestroy () {
-    if (this.form) {
-      this.form.unregister(this)
-    }
   },
 }
 </script>

@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="spec">
     <component
+      ref="spec"
       v-if="roleInProject"
       :is="componentName"
     />
@@ -10,13 +11,13 @@
 <script>
 import deepmerge from 'deepmerge'
 
-import OwnerSpec from '@/components/Owner/Spec.vue'
-import ManagerSpec from '@/components/Manager/Spec.vue'
-import AccountantSpec from '@/components/Accountant/Spec.vue'
-import WarehousemanSpec from '@/components/Warehouseman/Spec.vue'
-import FreelancerSpec from '@/components/Freelancer/Spec.vue'
+import Owner from '@/components/Spec/Owner.vue'
+import Manager from '@/components/Spec/Manager.vue'
+import Accountant from '@/components/Spec/Accountant.vue'
+import Warehouseman from '@/components/Spec/Warehouseman.vue'
+import Freelancer from '@/components/Spec/Freelancer.vue'
 
-import { Role, Typename, Operation } from '../graphql/enums'
+import { Role, Typename, Operation, emptyInvoice, emptyProduct } from '../graphql/enums' // eslint-disable-line
 import {
   SPEC_FRAGMENT,
   INVOICE_FRAGMENT,
@@ -35,11 +36,11 @@ import { SPEC_DELTA } from '../graphql/subscriptions'
 export default {
   name: 'Spec',
   components: {
-    OwnerSpec,
-    ManagerSpec,
-    AccountantSpec,
-    WarehousemanSpec,
-    FreelancerSpec,
+    Owner,
+    Manager,
+    Accountant,
+    Warehouseman,
+    Freelancer,
   },
   apollo: {
     roleInProject: {
@@ -72,11 +73,11 @@ export default {
     },
     componentName () {
       switch (this.roleInProject) {
-        case Role.OWNER: return 'OwnerSpec'
-        case Role.MANAGER: return 'ManagerSpec'
-        case Role.ACCOUNTANT: return 'AccountantSpec'
-        case Role.WAREHOUSEMAN: return 'WarehousemanSpec'
-        case Role.FREELANCER: return 'FreelancerSpec'
+        case Role.OWNER: return 'Owner'
+        case Role.MANAGER: return 'Manager'
+        case Role.ACCOUNTANT: return 'Accountant'
+        case Role.WAREHOUSEMAN: return 'Warehouseman'
+        case Role.FREELANCER: return 'Freelancer'
         default: return null
       }
     },
@@ -123,7 +124,16 @@ export default {
           })
 
           if (!parentInvoice.products.some(el => el.id === delta.payload.id)) {
-            parentInvoice.products.push(delta.payload)
+            const products = parentInvoice.products
+            const emptyId = `empty-${delta.parentId}`
+            const emptyIndex = products.findIndex(el => el.id === emptyId)
+            if (emptyIndex !== -1) {
+              products.splice(emptyIndex, 1, delta.payload)
+              products.push(Object.assign({}, emptyProduct, { id: emptyId }))
+              parentInvoice.products = products
+            } else {
+              parentInvoice.products.push(delta.payload)
+            }
 
             setTimeout(() => {
               apolloClient.writeFragment({
@@ -132,7 +142,7 @@ export default {
                 fragmentName: 'InvoiceProductsFragment',
                 data: parentInvoice,
               })
-            }, 0)
+            }, 75)
           }
         }
 
@@ -165,7 +175,7 @@ export default {
         }
 
         if (operation === Operation.DELETE_PRODUCT) {
-          let parentInvoice = apolloClient.readFragment({
+          const parentInvoice = apolloClient.readFragment({
             id: `${Typename.INVOICE}:${delta.parentId}`,
             fragment: INVOICE_PRODUCTS_FRAGMENT,
             fragmentName: 'InvoiceProductsFragment',
@@ -194,7 +204,22 @@ export default {
           })
 
           if (!parentSpec.invoices.some(el => el.id === delta.payload.id)) {
-            parentSpec.invoices.push(delta.payload)
+            const invoices = parentSpec.invoices
+            const emptyId = `empty-${delta.parentId}`
+            const emptyIndex = invoices.findIndex(el => el.id === emptyId)
+            if (emptyIndex !== -1) {
+              if (parentSpec.invoices.length === 1) {
+                this.$refs.spec.expanded = [delta.payload.id]
+                this.$refs.spec.setExpandedInvoices([delta.payload.id])
+              }
+              const product = Object.assign({}, emptyProduct, { id: `empty-${delta.payload.id}` })
+              const invoice = Object.assign({}, delta.payload, { products: [product] })
+              invoices.splice(emptyIndex, 1, invoice)
+              invoices.push(Object.assign({}, emptyInvoice, { id: emptyId, products: [product, product] }))
+              parentSpec.invoices = invoices
+            } else {
+              parentSpec.invoices.push(delta.payload)
+            }
 
             apolloClient.writeFragment({
               id: `${Typename.SPEC}:${delta.parentId}`,
@@ -223,7 +248,7 @@ export default {
         }
 
         if (operation === Operation.DELETE_INVOICE) {
-          let parentSpec = apolloClient.readFragment({
+          const parentSpec = apolloClient.readFragment({
             id: `${Typename.SPEC}:${delta.parentId}`,
             fragment: SPEC_INVOICES_FRAGMENT,
             fragmentName: 'SpecInvoicesFragment',

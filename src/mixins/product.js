@@ -30,11 +30,11 @@ export default {
     }
   },
   computed: {
-    productStatus () {
+    productStatusColor () {
       return this.item.productStatus === ProductStatus.IN_STOCK
-        ? 'status-indicator__bordered--green' : this.item.productStatus === ProductStatus.IN_PRODUCTION
-          ? 'status-indicator__bordered--orange' : this.item.productStatus === ProductStatus.IN_PROCESSING
-            ? 'status-indicator__bordered--pink' : 'bg-transparent'
+        ? 'bg-green-500' : this.item.productStatus === ProductStatus.IN_PRODUCTION
+          ? 'bg-yellow-500' : this.item.productStatus === ProductStatus.IN_PROCESSING
+            ? 'bg-pink-500' : ''
     },
     unitsItems () {
       const units = ['pcs', 'roll', 'time', 'm', 'l', 'm3', 'set', 'm2', 'kg', 'pack']
@@ -84,6 +84,13 @@ export default {
     },
   },
   methods: {
+    createOrUpdateProduct (input) {
+      if (this.create) {
+        this.$emit('create', input)
+      } else {
+        this.updateProduct(input)
+      }
+    },
     async updateProduct (input) {
       try {
         const id = this.item.id

@@ -169,13 +169,13 @@ export function focusElement (id, isEnd) {
  * @param {HTMLElement} target element
  */
 export const getAllTextnodes = (target) => {
-  let treeWalker = document.createTreeWalker(
+  const treeWalker = document.createTreeWalker(
     target,
     NodeFilter.SHOW_TEXT,
     null,
     false,
   )
-  let nodeList = []
+  const nodeList = []
   while (treeWalker.nextNode()) {
     const node = treeWalker.currentNode
     nodeList.push(node)
@@ -209,7 +209,7 @@ export const getCaretPosition = (target) => {
 export const getCaretData = (target, position) => {
   if (!target) return
   let node
-  let nodes = getAllTextnodes(target)
+  const nodes = getAllTextnodes(target)
   for (let n = 0; n < nodes.length; n++) {
     if (position > nodes[n].nodeValue.length && nodes[n + 1]) {
       // remove amount from the position, go to next node
@@ -362,11 +362,50 @@ export const event = (name) => {
 }
 
 /**
+ * Unformat number with decimal
+ * @param {string|number} value
+ * @param {string|number} decimal
+ * @returns {number}
+ */
+export const unformatNumber = (value, decimal) => {
+  if (value === null) return null
+  // Check to number
+  const n = Number(value)
+  value = !isNaN(n) ? n : value
+  // Return the value as-is if it's already a number:
+  if (typeof value === 'number') return value
+  const s = toStr(value)
+  const negative = s.indexOf('-') === 0 ? -1 : 1
+  const parts = s.split(decimal)
+  const i = onlyNumbers(parts[0])
+  const d = onlyNumbers(parts[1])
+  return parseFloat(`${i}.${d}`) * negative
+}
+
+/**
+ * Clear string to only numbers
+ * @param {string|number} value
+ * @returns {number}
+ */
+const onlyNumbers = (value) => {
+  return toStr(value).replace(/\D+/g, '') || '0'
+}
+
+/**
+ * To string
+ * @param {string|number} value
+ * @returns {number}
+ */
+const toStr = (value) => {
+  return value ? value.toString() : ''
+}
+
+/**
  * Unformat number
  * @param {string|number} value
  * @returns {number}
  */
-export const unformat = (value) => {
+export const unformat = (value, decimal) => {
   if (value === null) return null
   // Fails silently (need decent errors):
   value = value || 0
@@ -375,7 +414,7 @@ export const unformat = (value) => {
   if (typeof value === 'number') return value
 
   // Decimal can be ',' or '.'
-  const decimal = '(,|.)'
+  decimal = decimal || '(,|.)'
 
   // Build regex to strip out everything except digits, decimal point and minus sign:
   const regex = new RegExp('[^0-9-' + decimal + ']', ['g'])
@@ -465,6 +504,106 @@ export const toFixed = (value, precision) => {
 export const checkPrecision = (val, base) => {
   val = Math.round(Math.abs(val))
   return isNaN(val) ? base : val
+}
+
+/**
+ * Check string for link
+ * @param {string} value string
+ * @returns {boolean}
+ */
+export const isLink = (value) => {
+  if (!value || typeof value !== 'string') return false
+  const isLink = new RegExp('^(http(s)?://)([^\\s]+)')
+  value.replace(new RegExp('\\s'), '')
+  return isLink.test(value)
+}
+
+/**
+ * Normalized classes array
+ * @param {string,Array} c classes
+ * @returns {Array} result
+ */
+export const classToArray = (c) => {
+  if (!c) return []
+  const a = Array.isArray(c) ? c.slice() : (c || '').split(' ')
+  return a.reduce((acc, curr) => {
+    if (curr) {
+      const s = (curr || '').split(' ').filter(el => el)
+      return [...acc, ...s]
+    } else {
+      return acc
+    }
+  }, [])
+}
+
+/**
+ * Clear tailwindcss classes
+ * @param {string,Array,null,undefined} source source classes
+ * @param {string,Array} dest destination classes
+ * @returns {string,Array,undefined} result
+ */
+export const clearClasses = (source, dest) => {
+  if (!dest) return source
+  const isSourceArray = Array.isArray(source)
+  const aDest = classToArray(dest)
+  let aSource = classToArray(source)
+  const colorRe = new RegExp('(text|bg|border|placeholder)-(white|black|transparent|current|(gray|blue|pink|green|yellow|purple|red)-\\d+)$')
+  const textSizeRe = new RegExp('(28|xs|sm|base|lg|\\dxl)$')
+  const clearRe = new RegExp('(text|bg|border|placeholder|w|h|p|px|py|pb|pl|pt|pr|m|mx|my|mb|ml|mt|mr)-')
+  for (const el of aDest) {
+    if (clearRe.test(el)) {
+      const split = el.split('-')
+      let reString = `^${split[0]}-`
+      if (colorRe.test(el)) {
+        reString += '(white|black|transparent|current|(gray|blue|pink|green|yellow|purple|red)-\\d+)$'
+      } else if (split.length === 2) {
+        reString += !isNaN(Number(split[1]))
+          ? '\\d+'
+          : textSizeRe.test(split[1])
+            ? '(28|xs|sm|base|lg|\\dxl)$'
+            : `\\w{1,${split[1].length}}`
+      } else if (split.length === 3) {
+        reString += split[1] === 'opacity' ? 'opacity-' : `\\w{1,${split[1].length}}-`
+        reString += isNaN(Number(split[2])) ? `\\w{1,${split[2].length}}` : '\\d+'
+      }
+      const re = new RegExp(reString)
+      aSource = aSource.filter(s => !re.test(s))
+    }
+  }
+  if (isSourceArray) {
+    return aSource.filter(el => el)
+  } else {
+    return aSource.join(' ').replace(/\s+/g, ' ').trim()
+  }
+}
+
+/**
+ * Merge tailwindcss classes
+ * @param {string,Array,null,undefined} source source classes
+ * @param {string,Array} dest destination classes
+ * @returns {string,Array,undefined} result
+ */
+export const mergeClasses = (source, dest) => {
+  if (!dest) return source
+  const aSource = clearClasses(source, dest)
+  if (Array.isArray(aSource)) {
+    return [...aSource, ...classToArray(dest)]
+  } else {
+    const d = Array.isArray(dest) ? dest.join(' ') : dest
+    return `${aSource} ${d}`.replace(/\s+/g, ' ').trim()
+  }
+}
+
+/**
+ * Replace char at index
+ * @param {string} str source string
+ * @param {number} index destination classes
+ * @param {string} replacement replace value
+ * @returns {string} result
+ */
+export const replaceAt = (str, index, replacement) => {
+  if (!str) return str
+  return str.substring(0, index) + replacement + str.substring(index + 1)
 }
 
 /**

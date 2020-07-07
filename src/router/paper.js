@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Preview from '../views/Preview.vue'
+import Paper from '../views/Paper.vue'
 import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -9,9 +9,9 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/:orgId/:specId',
-    name: 'preview',
+    name: 'paper',
     meta: { requiresAuth: true },
-    component: Preview,
+    component: Paper,
   },
   {
     path: '*',
