@@ -11,10 +11,11 @@
       :width="tableWidth || null"
       :class="[
         'border-separate bg-gray-800 rounded-md',
-        { 'px-sm pb-2': !flat },
+        { 'px-sm': !flat },
+        { 'pb-2': !flat && computedItems.length !== 0 },
         tableClass,
       ]"
-      :style="{ 'border-spacing': flat ? '0 1px' : '0 4px' }"
+      :style="{ borderSpacing: flat ? '0 1px' : '0 4px' }"
     >
       <thead
         v-if="!hideHeaders"
@@ -68,27 +69,26 @@
           </template>
         </tr>
       </thead>
-      <tbody>
-        <slot name="items" :items="computedItems">
-          <tr
-            v-if="computedItems.length === 0"
-            :class="itemsRowClass"
+      <thead v-if="computedItems.length === 0 && !hideNoData">
+        <tr>
+          <td
+            :colspan="headers.length"
+            class="text-gray-200 text-center"
           >
-            <td
-              :colspan="headers.length"
-              :class="itemsCellClass"
-              class="text-center"
-            >
+            <slot name="no-data">
               <span v-if="items.length === 0">
                 {{ $t('dataTable.noData') }}
               </span>
               <span v-else>
                 {{ $t('dataTable.noResult') }}
               </span>
-            </td>
-          </tr>
+            </slot>
+          </td>
+        </tr>
+      </thead>
+      <tbody v-else>
+        <slot name="items" :items="computedItems">
           <tr
-            v-else
             v-for="(item, index) in items"
             :key="index"
             :class="itemsRowClass"
@@ -220,6 +220,7 @@ export default {
         mustSort: false,
       }),
     },
+    hideNoData: Boolean,
   },
   data () {
     return {

@@ -701,7 +701,8 @@
     "dealsAmountHint": "Total cost of goods for all the deals with the supplier.",
     "turnoverHint": "Total debt to the supplier for all the deals.",
     "tags": "Tag",
-    "usn": "USN"
+    "usn": "USN",
+    "noData": "There are no suppliers in our database, start with clicking Create a supplier."
   },
   "supplier": {
     "createTitle": "Create new supplier",

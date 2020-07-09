@@ -351,7 +351,7 @@
             <span class="mr-sm">{{ $t('shipping.chatMessages') }}:</span>
             <span
               :class="[newCommentsCount ? 'bg-purple-500 text-white' : 'bg-gray-800 bg-opacity-90']"
-              class="font-semibold h-5 inline-flex items-center justify-center rounded-xl px-1 pt-px"
+              class="font-semibold h-5 inline-flex items-center justify-center rounded-50 px-1 pt-px"
               style="min-width: 20px"
             >{{ item.comments.length }}</span>
           </template>

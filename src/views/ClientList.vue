@@ -15,7 +15,7 @@
             <i class="zi-magnifier text-2xl text-gray-100"></i>
           </template>
         </TextField>
-        <div class="h-11 flex overflow-x-auto overflow-scroll-touch pl-4">
+        <div class="h-11 flex overflow-x-auto overflow-scroll-touch md:pl-4">
           <div
             v-for="(tab, i) in tabs"
             :aria-selected="clientType === tab.value"
@@ -44,8 +44,9 @@
           :items="items"
           :search="search"
           table-width="100%"
-          table-class="table-fixed"
+          table-class="table-fixed rounded-tl-none md:rounded-tl-md rounded-tr-none sm:rounded-tr-md md:rounded-tr-none"
           hoverable
+          hide-no-data
         >
           <template v-slot:header.debt-content>
             <v-tooltip top>
@@ -98,6 +99,11 @@
 
         </DataTable>
       </div>
+      <div
+        v-if="items.length === 0"
+        v-html="$t('clients.noData')"
+        class="text-center text-gray-200 leading-tight py-4"
+      />
       <Button
         block
         outlined
