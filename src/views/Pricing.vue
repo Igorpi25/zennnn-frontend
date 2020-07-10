@@ -28,6 +28,7 @@
           {{ $t('pricing.title') }}
         </div>
         <div class="flex-grow flex items-center justify-end">
+          <LocalePicker :nudge-bottom="52" light class="sm:pr-4" />
           <router-link
             :to="{ name: 'signin' }"
             class="hidden sm:block text-blue-500 select-none focus:outline-none focus:text-blue-600 hover:text-blue-600 mr-3 sm:mr-8"
@@ -164,6 +165,7 @@
 import PriceList from '../components/PriceList.vue'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
+import LocalePicker from '../components/LocalePicker.vue'
 
 import { GET_IS_LOGGED_IN, GET_PROFILE } from '../graphql/queries'
 
@@ -173,6 +175,7 @@ export default {
     PriceList,
     Header,
     Footer,
+    LocalePicker,
   },
   metaInfo: {
     style: [
