@@ -545,6 +545,9 @@ export default {
           'latestInvoicePaymentIntentStatus',
           subscription.latest_invoice.payment_intent.status,
         )
+        // TODO: error after trial end on correct card
+        // eslint-disable-next-line
+        console.log('subscription.latest_invoice', subscription.latest_invoice)
         throw { error: { message: this.$t('payment.cardDeclined') } } // eslint-disable-line no-throw-literal
       } else {
         return { subscription, priceId, paymentMethodId }

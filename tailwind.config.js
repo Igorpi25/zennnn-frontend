@@ -47,7 +47,9 @@ module.exports = {
       'pink-500': '#FF005E', // error, IN_PROCESSING
       'pink-600': '#E00052',
       'purple-500': '#EF20E6',
+      'green-400': '#13F626',
       'green-500': '#08DC1B', // success, IN_STOCK
+      'green-600': '#07C517',
       'yellow-300': '#EAD377', // input warning
       'yellow-400': '#D7C370', // checkbox error text
       'yellow-500': '#FDB600', // warning, IN_PRODUCTION
@@ -91,8 +93,10 @@ module.exports = {
         7: '1.75rem',
         9: '2.25rem',
         11: '2.75rem',
+        13: '3.25rem',
         14: '3.5rem',
         18: '4.5rem',
+        26: '6.5rem',
         36: '9rem',
         38: '9.5rem',
       },
@@ -112,12 +116,16 @@ module.exports = {
         'colors-and-opacity': 'background-color, border-color, color, fill, stroke, opacity',
       },
       borderRadius: {
-        xl: '50px',
+        20: '20px',
+        50: '50px',
+      },
+      inset: {
+        '1/2': '50%',
       },
     },
   },
   variants: {
-    backgroundColor: ['responsive', 'hover', 'focus', 'focus-within'],
+    backgroundColor: ['responsive', 'hover', 'focus', 'focus-within', 'even'],
     borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
     boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
     overflow: ['responsive', 'hover'],

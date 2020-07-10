@@ -31,6 +31,7 @@
           table-width="100%"
           table-class="table-fixed"
           hoverable
+          hide-no-data
         >
           <template v-slot:header.status="{ header }">
             <td
@@ -127,6 +128,11 @@
           </template>
         </DataTable>
       </div>
+      <div
+        v-if="items.length === 0"
+        v-html="$t('deals.noData')"
+        class="text-center text-gray-200 leading-tight py-4"
+      />
       <Button
         v-if="canCreateSpec"
         block
