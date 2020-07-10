@@ -93,6 +93,7 @@ module.exports = {
         7: '1.75rem',
         9: '2.25rem',
         11: '2.75rem',
+        13: '3.25rem',
         14: '3.5rem',
         18: '4.5rem',
         26: '6.5rem',
@@ -124,7 +125,7 @@ module.exports = {
     },
   },
   variants: {
-    backgroundColor: ['responsive', 'hover', 'focus', 'focus-within'],
+    backgroundColor: ['responsive', 'hover', 'focus', 'focus-within', 'even'],
     borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
     boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
     overflow: ['responsive', 'hover'],

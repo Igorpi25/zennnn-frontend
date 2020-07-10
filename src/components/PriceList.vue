@@ -8,7 +8,9 @@
     >
       <div class="flex items-center justify-between font-semibold pb-lg">
         <div class="text-xl">{{ item.title }}</div>
-        <div class="h-9 flex items-center text-gray-200 bg-gray-50 rounded-50 px-2">
+        <div
+          :class="['h-9 flex items-center text-gray-200 rounded-50 px-2', item.name === 'Advanced' ? 'bg-white' : 'bg-gray-50']"
+        >
           <i class="zi-users text-2xl mr-2" />
           <span>{{ item.team }}</span>
         </div>
