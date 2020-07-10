@@ -26,6 +26,7 @@
             table-width="100%"
             table-class="table-fixed"
             hoverable
+            hide-no-data
           >
             <template v-slot:header.debt-content>
               <v-tooltip top>
@@ -93,6 +94,11 @@
 
           </DataTable>
         </div>
+        <div
+          v-if="items.length === 0"
+          v-html="$t('suppliers.noData')"
+          class="text-center text-gray-200 leading-tight py-4"
+        />
         <Button
           block
           outlined

@@ -38,7 +38,7 @@
         </Button>
       </div>
     </v-dialog>
-    <main class="container container--xs flex-grow max-w-screen-md mx-auto pt-16 pb-32">
+    <main class="container container--xs flex-grow max-w-screen-md mx-auto pt-16 pb-32" style="padding-left: 16px; padding-right: 16px;">
       <h1
         class="text-40 font-bold leading-tight mb-6"
       >
