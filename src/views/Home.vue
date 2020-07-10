@@ -290,6 +290,7 @@ export default {
 .banner {
   background: linear-gradient(155.21deg, #242424 26.85%, #1E1E1E 124.44%);
   filter: drop-shadow(10px 20px 20px rgba(0, 0, 0, 0.35));
+  transform: translateZ(0);
   border-radius: 6px;
 }
 .home-main--top {
@@ -299,6 +300,7 @@ export default {
   width: 100%;
   border-radius: 12px;
   filter: drop-shadow(20px 50px 30px rgba(0, 0, 0, 0.35));
+  transform: translateZ(0);
 }
 img.home-list {
   z-index: -1;
@@ -309,12 +311,14 @@ img.home-tabs {
   bottom: 40%;
   width: 23%;
   filter: drop-shadow(0px -10px 15px rgba(0, 0, 0, 0.25)) drop-shadow(8px 40px 25px rgba(0, 0, 0, 0.35));
+  transform: translateZ(0);
 }
 img.home-container {
   right: 0;
   bottom: 16%;
   width: 21.7%;
   filter: drop-shadow(0px -10px 15px rgba(0, 0, 0, 0.25)) drop-shadow(8px 40px 25px rgba(0, 0, 0, 0.35));
+  transform: translateZ(0);
 }
 @screen sm {
  .home-main--top {
