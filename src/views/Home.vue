@@ -79,54 +79,52 @@
       </div>
       <div class="flex flex-wrap leading-tight pt-8 pb-20 px-2 sm:px-18">
         <div class="w-full lg:w-1/2 lg:pr-md pb-12 lg:pb-0">
-          <div class="relative">
-            <v-img
-              :aspect-ratio="2.5"
-              src="/static/img/home-banner-1.png"
-              contain
-              class="banner"
-            />
-            <div class="absolute inset-0 flex">
-              <router-link
-                to="/about"
-                class="w-1/2 px-8 md:pl-13 pt-8 xl:pt-12"
-              >
-                <div v-html="$t('home.about')" class="text-xl lg:text-28 text-white pb-4" />
-                <i class="zi-arrow-right text-blue-500 text-3xl" />
-              </router-link>
-              <div class="w-1/2">
-                <img
-                  src="/static/img/home-iphones.png"
-                  class="banner-image-1 bg-right-bottom absolute right-0 bottom-0"
-                >
+          <router-link to="/about" class="group">
+            <div class="relative">
+              <v-img
+                :aspect-ratio="2.5"
+                src="/static/img/home-banner-1.png"
+                contain
+                class="banner"
+              />
+              <div class="absolute inset-0 flex">
+                <div class="w-1/2 px-8 md:pl-13 pt-8 xl:pt-12">
+                  <div v-html="$t('home.about')" class="text-xl lg:text-28 text-white pb-4" />
+                  <i class="absolute transform group-hover:translate-x-2 transition-transform duration-100 ease-out zi-arrow-right text-blue-500 text-3xl" />
+                </div>
+                <div class="w-1/2">
+                  <img
+                    src="/static/img/home-iphones.png"
+                    class="banner-image-1 bg-right-bottom absolute right-0 bottom-0"
+                  >
+                </div>
               </div>
             </div>
-          </div>
+          </router-link>
         </div>
         <div class="w-full lg:w-1/2 lg:pl-md">
-          <div class="relative">
-            <v-img
-              :aspect-ratio="2.5"
-              src="/static/img/home-banner-2.png"
-              contain
-              class="banner"
-            />
-            <div class="absolute inset-0 flex">
-              <router-link
-                to="/about#video"
-                class="w-1/2 px-8 md:pl-13 pt-8 xl:pt-12"
-              >
-                <div v-html="$t('home.video')" class="text-xl lg:text-28 text-white pb-4" />
-                <i class="zi-arrow-right text-blue-500 text-3xl" />
-              </router-link>
-              <div class="w-1/2">
-                <img
-                  src="/static/img/home-imac.png"
-                  class="banner-image-2 bg-right-bottom absolute right-0 bottom-0"
-                >
+          <router-link to="/about#video" class="group">
+            <div class="relative">
+              <v-img
+                :aspect-ratio="2.5"
+                src="/static/img/home-banner-2.png"
+                contain
+                class="banner"
+              />
+              <div class="absolute inset-0 flex">
+                <div class="w-1/2 px-8 md:pl-13 pt-8 xl:pt-12">
+                  <div v-html="$t('home.video')" class="text-xl lg:text-28 text-white pb-4" />
+                  <i class="absolute transform group-hover:translate-x-2 transition-transform duration-100 ease-out zi-arrow-right text-blue-500 text-3xl" />
+                </div>
+                <div class="w-1/2">
+                  <img
+                    src="/static/img/home-imac.png"
+                    class="banner-image-2 bg-right-bottom absolute right-0 bottom-0"
+                  >
+                </div>
               </div>
             </div>
-          </div>
+          </router-link>
         </div>
       </div>
       <div class="flex flex-wrap sm:text-lg leading-tight px-2 sm:px-18">
