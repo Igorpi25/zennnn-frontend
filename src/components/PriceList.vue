@@ -34,7 +34,7 @@
             {{ $t('pricing.premiumEcon') }}
           </div>
           <div v-else>
-            {{ $t('pricing.inMonth') }}, &nbsp; <span class="text-yellow-500">{{ $t('pricing.econ') }}</span>
+            {{ $t('pricing.inMonth') }}, &nbsp; <span class="text-yellow-500" v-html="$t('pricing.econ')" />
           </div>
         </div>
         <div class="text-gray-200">
@@ -65,9 +65,7 @@
           {{ $t('pricing.select') }}
         </Button>
       </div>
-      <div class="text-sm text-gray-200" style="min-height: 90px">
-        {{ item.description }}
-      </div>
+      <div class="text-sm text-gray-200" style="min-height: 90px" v-html="item.description" />
       <div class="border-b border-gray-50 my-5" />
       <div
         v-for="(feat, fi) of item.feats"
@@ -75,9 +73,7 @@
         class="flex pb-6"
       >
         <i class="zi-check text-2xl text-blue-500 -ml-2 pr-2" />
-        <span>
-          {{ feat }}
-        </span>
+        <span v-html="feat" />
       </div>
     </div>
   </div>

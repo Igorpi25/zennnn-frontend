@@ -96,7 +96,7 @@
             </thead>
             <tbody>
               <tr v-for="(item, i) in specs" :key="i" class="h-16 even:bg-white">
-                <td class="whitespace-no-wrap text-left rounded-l-md px-8">{{ item.text }}</td>
+                <td class="whitespace-no-wrap text-left rounded-l-md px-8" v-html="item.text" />
                 <td class="text-gray-200 px-6">
                   <img v-if="item.start === 'infinite'" src="@/assets/img/infinite.svg" class="mx-auto">
                   <span v-else-if="item.start === 'na'">&mdash;</span>
@@ -132,10 +132,8 @@
               <img :src="require(`@/assets/img/solid/${item.icon}`)">
             </div>
             <div class="leading-tight text-gray-900 pt-4">
-              <div>{{ item.title }}</div>
-              <div v-if="item.subtitle" class="text-gray-200">
-                {{ item.subtitle }}
-              </div>
+              <div v-html="item.title" />
+              <div v-if="item.subtitle" class="text-gray-200" v-html="item.subtitle" />
             </div>
           </div>
         </div>
@@ -148,9 +146,9 @@
             :key="i"
           >
             <div class="text-gray-900 pb-16">
-              <span class="text-2xl leading-tight pb-4">{{ item.title }}</span>
+              <span class="text-2xl leading-tight pb-4" v-html="item.title" />
               <br><br>
-              <p>{{ item.text }}</p>
+              <p v-html="item.text" />
             </div>
           </li>
         </ul>
