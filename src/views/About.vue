@@ -77,7 +77,6 @@
                       <img
                         src="@/assets/img/saas.svg"
                         alt="SaaS"
-                        style="filter: drop-shadow(8.63192px 8.63192px 50px rgba(0, 0, 0, 0.1));"
                         class="w-full h-full"
                       >
                     </div>
@@ -605,9 +604,8 @@
                 src="/static/img/iphone11.png"
                 alt="mobile"
                 lazy-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAoCAYAAAD+MdrbAAAACXBIWXMAABCcAAAQnAEmzTo0AAAFAElEQVRIx51XSU8sVRSuQEIiczPTQDc91NBVPTJPkSEQ5rERYgJ7fplbF8aFS3cmgjuDW3kLFy9qNEbfW9y6ft+p6qKBZlCSL/dU9a3vnvGeg2Hgb2pq6hK4npubu1tYWLhbXl6+W1lZuVtdXRXUZK41mXtmZ2cFk5OT3+H7KrkMvPjcNE2dSqX0xMSELhQKuqWlReOnCM3NzRGamprk3SetrbpUKutKZUKn02ltWZaGQtvG2tratyQ8PDz8eHV15Z+efqYcx1GDg4NqaGhIMDw8rAYGBuQd0dvbqwrForq8vFQXFxf+8fHxR3yjNzY2vjK2trZuyQ5T1fz8vD87N+dvb2/rg4MDvbOzo3d3dzWfYapeX18X4EMNkzX3Tk9P+9BMkQN7rw18dNvd3a07OjpUe3u7j1W3tbXpVpjU2dkZgXu6uroi8DkWixE+ZGpNJa4NsN7yoVQqqVwup23b1p7n6Xw+r2M9PTxICLk+ByiiSH50dHRtVKvVX/jBSDzuAxr+0vE4Ede9IOwBeGBPKD8GfwOZogzCGwMOfUcT0pmMMh1XW7m8zlqOpuy4BZ1FwBjFV6D6+/sZ2Bua/BPVNU1L2Q5MBizbEdg5VwgzmcxrqBFeGyfV6p80GYS+4xWhVV6IKJuWrdPIz3Q686KGdYQ/GKenp38LoWX5JLKdABY0zWbfpB32ZX368uzs7L1xcnLyBwmz0NCGdhYJsZrwY2p8XCroNUBLn0E5Pz//zdjf3/+ZOUXHpus3BRvfBOyvEf7KtPmLGlq27ecKJfGdWyjrXL6Ed7lXiekWmhwS/h750KIPkdQBHAEOkaJ/CdyPu0B8CK53BpLxPfMwIHT0PalVJ78MEEqUo9KLxboZFEUzGRCanslkYdKb/fgosREUnhKkTZDcb0zox4l9E2gohJZyvAKCgeTGKkn9Rg2fIYSGrhdVRybY+P81zIYms4bpv/9A9jyhmIrca1AJAUR+mvRPCFkpCL/yvLx2cbm6Li4H9AheuJSZb/CxaE+XyIrnZzUkoee6ahJdD+1QoxNKB0S/YCeT25vucIsVCRoriemVvvdz4yiLD50A3HhfXvRpui7qqXqyxhoGhJ4meHWlgqJ/5MfAhw0y4Ckhe7EbNimai7YqpnOl6WIyTPVgNv1Ijevuw4eErOWRkRE1NjamR4FkMqnHcRdyrWlHOZkcFyQSCc29RChLG32gISKpAl9lIjP5zI9qrbQzbJv1/TpssdJGH2jIU6hVIgEtR0eFKJlMSDutNXmujYDfHhLyJUxSKTSje2SDFVWDm0jAQPHQeoTvVF9fX13a4PpCk5JKYX6x81Hm7c1nO3zGniDKdRFmgteCgvvwXkNUhCoVi7qIcS6PauFaQELn85CLBfyOfm2ZD3s1fBx2xqeEmGcU04OVUqlUZMUgKTLTp1wuizbM02iaCAPXkBB1q/hREVpy6OTKZ5YdP6r1j6BC0kIurmEhwF30obSAzc3NiBAa+UxqEnGlhiQmES8LkkbJbAbmA36tp8h8iIHzx+7wgsVGn+BES1AzrvYz3c80s36AgHBvb+97A5Pp1xh3qeGHpaUl+suHTOjHIHEUYUwLqHnfK5bphg/MWwzzXxgw7VN2fszOTGjFpA5mxHhDYOYWcP+gyDJ/85B/4KKy/CcwMzNTQVS/4UUALX2cRPBEjaFeZmyCMsH3sMwnFhcXeXl8CQ6XXP8C+YpxMXclRHgAAAAASUVORK5CYII="
-                class="w-full h-full"
+                class="w-full h-full about-iphone"
                 contain
-                style="filter: drop-shadow(-20px 10px 40px rgba(0, 0, 0, 0.25));"
               />
             </div>
             <div class="absolute right-0" style="width: 240px;">
@@ -618,9 +616,8 @@
                 src="/static/img/huawei.png"
                 alt="mobile"
                 lazy-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAqCAYAAACz+XvQAAAACXBIWXMAABCcAAAQnAEmzTo0AAAFgUlEQVRIx6VXS08bVxi11E1KEkggEGJj/JiXPR7b2BgbEwMhUVASJWJTwDhsswgt2CTqqu0uqyzi/oCqpd1Sqetuqq6qSF1X6qYlP6DrVvHYvj3njsceO4ZQFenoju/ju+d7X3w+/O0f1PI7lccvy+Wd+s5O5dVOpVInKpXH9e1yub61tV3/aHOzvrm5Vd/edn4T2P8K61/i7IvD55/qlOWr1g6XM5lsO5vNips3b4rFxUVRyOdFvoNcLifm5+clFhZyIr+wgNEB95ZKJZHJZLC38Ndnn3+h+J7u7X3HiY2Njb+fPHnSuHfvXuPWrVuN27dvN9bW1uS3OxKrq6uNlZWVxhrWy+VyY3d3t/Hw4cN/CoWCOHz27KWvWq19TyZg11xeXm5jbD948EA8evRIYKPE/fv3BYSKu3fvivX1dTlCsFjCXgJMm9TuoFr7lgKPg8EZMTo6al+5cqV99epVMTU1Ja5fv96HwTn+lnNTUzzTVFVV1GqH38AhB8czMzMClG2ygDrC7/eLkZERcfnyZXHp0qVTwXXiwoULzdnZWVE7fHbkOzioHgcCfhGJRGwNtyhKVExOToqxsVEBxoKMz8L4+DiFNsPhsCsQDAMBEZwN2RFFE4Si6UKLxYVmxEUkGhXcjAvfgTsfDAalyjDfkVSZNtQ03Y6ZCUHoEGbETHxbQlVxgaKcCgqC0KamaXSKwzAIG6oUmEg6wiCUoLAoGPIgx2HgGpg2aa5qzWVIgapmG3FTCnShamezcxlCYIvf+wfVnzsMA0LTDTtupaSaMYyaEZP2OY3ZAENH4H71teMUCMSkHe0Y+31CBgUiZFr8BsNfnDiEl6OKapvprEgAigJDn+LZQXCvw1AKfO2xoWob0rsIFx1hA/udBzr2gp1rw5+6ArFoG1g0dE0Yhi5isdi5EI/HqbYbh27qBYSq67aZnBMMnXgy3Q2VszzsdYqKEXH4YzeXGTYyXOBdQpFpqJwrbGBLV+VfezZEYJNZ3CJS/C2i/yFsKBh14YdepjCwkW6IR3nredh5AlumHmz4dV+mxBKWDOj32W4QHoGDqZeQDP+XwF5xAEPzbIZy3rWdZ8+7AlG+dAjUEYNsNqzc6C8SrOBLS0XBwsEsosPMVEbmPLOjJ1DtFygDm4FqmsKyLGFidMHgZeVhBtH7qJ3dStRzijqgMqoNq4zBmhi3ZDVmn3AQkiHk5He4L5yGOyUYdBgi5Vwwrdiv2eD5CCArqk14w2ogbI665Qu32W7CcyMF8tUgXwkYqaqsldJ2yjsM+3qK3x+QXY9qhqGOYRiy53q728TEhJhAh5PA97Vr17rj2NhYr+t9sr8vVQYTO5VKSTX5XuHGixcvdnvvWb2ZfTkUColDty/fuHGDvdj2vgo4x4Z/HuBsk+rj5QCV951qw56SSGeEiQKRzCxIvLeEYY3OQu/utdGuQGYKHEH76bohK/GwCk3je8E52Zf7neIXc3Nz9p07d2R20JbDqjYvYXlTHSEyHtm7w30CwTCAJgVmdjKZlJlBloNw2Q8y7TLUhjDk24+vUjIZ1j86DUmyY1ySrem0CycOvU5h18NtbR4axtAF13uQXa8d7Tily5AqQ9VmOp1u41DbPTzYLjVPQaDNUCzasVi87el6R769vY+Pp6enBYS9LRaLLVSWFtSTI5zTBdZbsLFcw2G8FCIthFoLKvPV8JaZgrD5yre1vf2U3Z8vVvcByYcmL2FtHATf41xzH6PjwMjIh9LGlce7G/zP4oP0XOZFsbj0+8rK6ptSafnP0jJQKr1ZXCyedPBHB3IOaycIrxPsO8GZk3yh8NtcJvvc5/3LZHPTlpWMJKxkyExYISuZCmfnc+F5AGOI6HyHuZZIWBL4jszn8pOunH8BidDAdkhPdVIAAAAASUVORK5CYII="
-                class="w-full h-full"
+                class="w-full h-full about-huawei"
                 contain
-                style="filter: drop-shadow(0px 4px 50px rgba(0, 0, 0, 0.25));"
               />
             </div>
           </div>
@@ -1349,6 +1346,18 @@ export default {
 .about-saas {
   max-width: 160px;
   z-index: 1;
+}
+.about-saas > img {
+  filter: drop-shadow(8.6px 8.6px 50px rgba(0, 0, 0, 0.1));
+  transform: translateZ(0);
+}
+.about-iphone {
+  filter: drop-shadow(-20px 10px 40px rgba(0, 0, 0, 0.25));
+  transform: translateZ(0);
+}
+.about-huawei {
+  filter: drop-shadow(0px 4px 50px rgba(0, 0, 0, 0.25));
+  transform: translateZ(0);
 }
 @screen sm {
   .head-title {

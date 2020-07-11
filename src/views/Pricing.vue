@@ -28,6 +28,7 @@
           {{ $t('pricing.title') }}
         </div>
         <div class="flex-grow flex items-center justify-end">
+          <LocalePicker :nudge-bottom="52" light class="sm:pr-4" />
           <router-link
             :to="{ name: 'signin' }"
             class="hidden sm:block text-blue-500 select-none focus:outline-none focus:text-blue-600 hover:text-blue-600 mr-3 sm:mr-8"
@@ -95,7 +96,7 @@
             </thead>
             <tbody>
               <tr v-for="(item, i) in specs" :key="i" class="h-16 even:bg-white">
-                <td class="whitespace-no-wrap text-left rounded-l-md px-8">{{ item.text }}</td>
+                <td class="whitespace-no-wrap text-left rounded-l-md px-8" v-html="item.text" />
                 <td class="text-gray-200 px-6">
                   <img v-if="item.start === 'infinite'" src="@/assets/img/infinite.svg" class="mx-auto">
                   <span v-else-if="item.start === 'na'">&mdash;</span>
@@ -131,10 +132,8 @@
               <img :src="require(`@/assets/img/solid/${item.icon}`)">
             </div>
             <div class="leading-tight text-gray-900 pt-4">
-              <div>{{ item.title }}</div>
-              <div v-if="item.subtitle" class="text-gray-200">
-                {{ item.subtitle }}
-              </div>
+              <div v-html="item.title" />
+              <div v-if="item.subtitle" class="text-gray-200" v-html="item.subtitle" />
             </div>
           </div>
         </div>
@@ -147,9 +146,9 @@
             :key="i"
           >
             <div class="text-gray-900 pb-16">
-              <span class="text-2xl leading-tight pb-4">{{ item.title }}</span>
+              <span class="text-2xl leading-tight pb-4" v-html="item.title" />
               <br><br>
-              <p>{{ item.text }}</p>
+              <p v-html="item.text" />
             </div>
           </li>
         </ul>
@@ -164,6 +163,7 @@
 import PriceList from '../components/PriceList.vue'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
+import LocalePicker from '../components/LocalePicker.vue'
 
 import { GET_IS_LOGGED_IN, GET_PROFILE } from '../graphql/queries'
 
@@ -173,6 +173,7 @@ export default {
     PriceList,
     Header,
     Footer,
+    LocalePicker,
   },
   metaInfo: {
     style: [

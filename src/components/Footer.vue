@@ -106,14 +106,14 @@
         </div>
       </div>
     </div>
-    <div class="container container--sm h-20 flex items-center justify-between sm:justify-end">
-      <div class="flex justify-end sm:w-2/3">
+    <div class="container container--sm h-20 flex items-center">
+      <div class="flex md:pl-6">
         <router-link :to="{ name: 'home' }" class="select-none focus:outline-none">
           <img src="@/assets/img/logo-dark.svg" alt="Logo">
         </router-link>
-        <div class="w-px h-6 bg-gray-400 ml-3 sm:ml-6" />
+        <div class="w-px h-6 bg-gray-400 ml-6" />
       </div>
-      <div class="flex items-center sm:w-1/3 pl-3 sm:pl-6">
+      <div class="flex items-center pl-6">
         <Copyright hide-user-agreement />
       </div>
     </div>

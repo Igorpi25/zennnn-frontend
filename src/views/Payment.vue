@@ -108,9 +108,7 @@
           <div class="w-full sm:w-1/2 sm:pr-5">
             <PriceContactForm no-dialog />
           </div>
-          <div class="w-full sm:w-1/2 sm:pl-5 pt-8">
-            {{ $t('payment.contactHint') }}
-          </div>
+          <div class="w-full sm:w-1/2 sm:pl-5 pt-8" v-html="$t('payment.contactHint')" />
         </div>
       </div>
       <div v-else class="text-black">
