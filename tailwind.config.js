@@ -130,6 +130,7 @@ module.exports = {
     boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
     overflow: ['responsive', 'hover'],
     visibility: ['group-hover'],
+    translate: ['responsive', 'hover', 'focus', 'group-hover'],
   },
   plugins: [],
 }

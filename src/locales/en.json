@@ -272,8 +272,8 @@
     "submit": "Get link"
   },
   "passwordRestoreConfirm": {
-    "changePasswordHead": "Password Change",
-    "changePasswordSubhead": "Enter new password.",
+    "changePasswordHead": "Password Change,",
+    "changePasswordSubhead": "enter new password",
     "newPassword": "New password",
     "newPasswordConfirm": "Confirm password",
     "submit": "Change"
@@ -347,7 +347,7 @@
     "emailNotRecieved": "Haven't received an email?",
     "hasAccount": "I have an account.",
     "signin": "Log In",
-    "resend": "Resend"
+    "resend": "Resend."
   },
   "deals": {
     "createSpecDialogHeader": "Add a Client",

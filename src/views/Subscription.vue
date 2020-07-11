@@ -128,9 +128,7 @@
             <div class="font-semibold text-lg pb-sm">
               {{ $t('payment.cancelTitle') }}
             </div>
-            <div class="py-10">
-              {{ $t('payment.cancelText') }}
-            </div>
+            <div class="py-10" v-html="$t('payment.cancelText')" />
             <div class="flex flex-wrap sm:flex-no-wrap sm:justify-between">
               <Button
                 :loading="cancelSubscriptionLoading"
