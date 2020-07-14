@@ -130,7 +130,7 @@
                     @click="profileAction(item.value)"
                   >
                     <span>{{ item.text }}</span>
-                    <div v-if="item.value === 'pricing' && profile.account && isOwner" class="text-right">
+                    <div v-if="item.value === 'pricing' && profile.account && isOwner" class="text-right ml-2">
                       <div
                         v-if="subscriptionStatus"
                         :class="[subscriptionStatus === 'paid' ? 'border-green-500 text-green-500' : subscriptionStatus === 'trial' ? 'border-yellow-500 text-yellow-500' : 'border-pink-500 text-pink-500']"
