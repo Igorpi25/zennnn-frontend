@@ -423,57 +423,31 @@ export default {
     updateCompanyNameMatch (val) {
       this.isCompanyNameMatch = val
       const input = { isCompanyNameMatch: val }
-      if (val) {
-        input.companyNameLocal = this.item.companyName
-      }
       this.updateData(input)
     },
     updateCompanyName (val) {
       const input = { companyName: val }
-      if (this.isCompanyNameMatch) {
-        input.companyNameLocal = val
-      }
       this.updateData(input)
     },
     updateMailingAddressMatch (val) {
       this.isMailingAddressMatch = val
       const input = { isMailingAddressMatch: val }
-      if (val) {
-        input.mailingAddress = this.item.legalAddress
-        input.mailingAddressPostcode = this.item.legalAddressPostcode
-        if (this.item.isDeliveryAddressMatch) {
-          input.deliveryAddress = this.item.legalAddress
-          input.deliveryAddressPostcode = this.item.legalAddressPostcode
-        }
-      }
       this.updateData(input)
     },
     updateLegalAddress (val) {
       const input = { legalAddress: val }
-      if (this.isMailingAddressMatch) {
-        input.mailingAddress = val
-      }
       this.updateData(input)
     },
     updateLegalAddressPostcode (val) {
       const input = { legalAddressPostcode: val }
-      if (this.isMailingAddressMatch) {
-        input.mailingAddressPostcode = val
-      }
       this.updateData(input)
     },
     updateMailingAddress (val) {
       const input = { mailingAddress: val }
-      if (this.item.isDeliveryAddressMatch) {
-        input.deliveryAddress = val
-      }
       this.updateData(input)
     },
     updateMailingAddressPostcode (val) {
       const input = { mailingAddressPostcode: val }
-      if (this.item.isDeliveryAddressMatch) {
-        input.deliveryAddressPostcode = val
-      }
       this.updateData(input)
     },
     updateCompanyOwner (personInput) {
