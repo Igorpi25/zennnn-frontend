@@ -137,7 +137,12 @@
                         class="border h-6 inline-flex items-center rounded-md text-sm font-semibold text-white px-2 mb-xs"
                         style="border-radius: 11px"
                       >
-                        {{ $t(`payment.${subscriptionStatus}`) }}
+                        <span v-if="subscriptionStatus === 'paid' && productName">
+                          {{ productName }}
+                        </span>
+                        <span v-else>
+                          {{ $t(`payment.${subscriptionStatus}`) }}
+                        </span>
                       </div>
                     </div>
                   </li>
