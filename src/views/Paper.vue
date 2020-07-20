@@ -94,7 +94,16 @@
                     v-on="on"
                   >
                     <div class="h-10 w-10 flex items-center justify-center">
-                      <i class="zi-chat text-blue-500 text-2xl" />
+                      <i class="relative zi-chat text-blue-500 text-2xl">
+                        <div
+                          v-if="hasNewComments"
+                          :class="[
+                            'absolute top-0 right-0 w-sm h-sm rounded-full border-2 bg-gray-50 border-gray-50 transition-colors duration-100 ease-out -mt-xs -mr-1',
+                          ]"
+                        >
+                          <div class="w-full h-full bg-purple-500 rounded-full" />
+                        </div>
+                      </i>
                     </div>
                   </button>
                 </template>
@@ -560,6 +569,10 @@ export default {
     }
   },
   computed: {
+    hasNewComments () {
+      const comments = this.spec.comments || []
+      return comments.some(item => !item.clientViewed)
+    },
     specId () {
       return this.$route.params.specId
     },

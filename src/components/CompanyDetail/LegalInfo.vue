@@ -234,16 +234,10 @@ export default {
     updateCompanyNameMatch (val) {
       this.isCompanyNameMatch = val
       const input = { isCompanyNameMatch: val }
-      if (val) {
-        input.companyNameLocal = this.item.companyName
-      }
       this.updateData(input)
     },
     updateCompanyName (val) {
       const input = { companyName: val }
-      if (this.isCompanyNameMatch) {
-        input.companyNameLocal = val
-      }
       this.updateData(input)
     },
     updateContactPerson (personInput) {

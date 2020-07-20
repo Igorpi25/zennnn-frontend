@@ -33,6 +33,13 @@
           </v-tooltip>
         </div>
         <div class="flex items-center text-gray-300">
+          <Comments
+            v-if="spec.client"
+            :items="spec.comments"
+            :spec-id="specId"
+            left
+            class="text-gray-300 focus:text-gray-100 hover:text-gray-100 transition-colors duration-100 ease-out mr-4"
+          />
           <span v-if="spec.client">
             {{ `${$t('shipping.shippingClient')}: ${spec.client.uid} ${spec.client.fullName}` }}
           </span>
@@ -263,12 +270,6 @@
         </template>
         <span>{{ $t('shipping.addInvoice') }}</span>
       </Button>
-      <div class="flex-grow" />
-      <Comments
-        :items="spec.comments"
-        :spec-id="specId"
-        left
-      />
     </div> -->
 
     <v-slide-y-transition hide-on-leave>
@@ -305,7 +306,7 @@ import InvoiceHeader from '../InvoiceHeader.vue'
 import InvoiceContent from '../InvoiceContent.vue'
 import SpecSummary from '../SpecSummary.vue'
 import ClientCard from '../ClientCard.vue'
-// import Comments from '../Comments.vue'
+import Comments from '../Comments.vue'
 import SpecShipping from '../SpecShipping.vue'
 import SpecCost from '../SpecCost.vue'
 
@@ -323,7 +324,7 @@ export default {
     InvoiceContent,
     SpecSummary,
     ClientCard,
-    // Comments,
+    Comments,
     SpecShipping,
     SpecCost,
   },

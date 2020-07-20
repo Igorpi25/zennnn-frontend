@@ -196,10 +196,6 @@ export default {
     updateDeliveryAddressMatch (val) {
       this.isDeliveryAddressMatch = val
       const input = { isDeliveryAddressMatch: val }
-      if (val) {
-        input.deliveryAddress = this.item.mailingAddress
-        input.deliveryAddressPostcode = this.item.mailingAddressPostcode
-      }
       this.updateData(input)
     },
     updateContactPerson (personInput) {

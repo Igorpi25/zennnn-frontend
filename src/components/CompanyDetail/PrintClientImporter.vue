@@ -159,7 +159,7 @@ export default {
   },
   data () {
     return {
-      itemLazy: {},
+      lazyItem: {},
       search: '',
       rules: {
         required: v => !!v || this.$t('rule.required'),

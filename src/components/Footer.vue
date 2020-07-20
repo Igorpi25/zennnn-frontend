@@ -191,10 +191,10 @@ export default {
           text: this.$t('footer.coordinates'),
           href: '#',
         },
-        {
-          text: 'https://status.miro.com',
-          href: '#',
-        },
+        // {
+        //   text: 'https://status.miro.com',
+        //   href: '#',
+        // },
         {
           text: this.$t('footer.blog'),
           href: '#',

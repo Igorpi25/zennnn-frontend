@@ -130,14 +130,19 @@
                     @click="profileAction(item.value)"
                   >
                     <span>{{ item.text }}</span>
-                    <div v-if="item.value === 'pricing' && profile.account && isOwner" class="text-right">
+                    <div v-if="item.value === 'pricing' && profile.account && isOwner" class="text-right ml-2">
                       <div
                         v-if="subscriptionStatus"
                         :class="[subscriptionStatus === 'paid' ? 'border-green-500 text-green-500' : subscriptionStatus === 'trial' ? 'border-yellow-500 text-yellow-500' : 'border-pink-500 text-pink-500']"
                         class="border h-6 inline-flex items-center rounded-md text-sm font-semibold text-white px-2 mb-xs"
                         style="border-radius: 11px"
                       >
-                        {{ $t(`payment.${subscriptionStatus}`) }}
+                        <span v-if="subscriptionStatus === 'paid' && productName">
+                          {{ productName }}
+                        </span>
+                        <span v-else>
+                          {{ $t(`payment.${subscriptionStatus}`) }}
+                        </span>
                       </div>
                     </div>
                   </li>
