@@ -20,7 +20,7 @@
         {{ $d($parseDate(item.updatedAt), 'time') }}, {{ $d($parseDate(item.updatedAt), 'short') }}
       </div>
     </div>
-    <div class="leading-tight">
+    <div class="leading-tight pl-8 ml-sm">
       {{ item.comment }}
     </div>
   </div>

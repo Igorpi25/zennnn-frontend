@@ -1,8 +1,26 @@
 <template>
   <div>
+    <textarea
+      ref="input"
+      :value="comment"
+      :disabled="loading"
+      :placeholder="label"
+      :class="[
+        'px-xs',
+        'placeholder-blue-500',
+        'w-full appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out',
+        light ? 'text-gray-900 focus:placeholder-gray-100' : 'text-white focus:placeholder-gray-200',
+      ]"
+      rows="1"
+      style="resize:none"
+      @input="onInput"
+      @focus="onFocus"
+      @blur="onBlur"
+      @keydown.enter="handleMeta"
+    />
     <div
       v-if="isFocused"
-      class="flex pb-3"
+      class="flex pt-3"
     >
       <div class="flex-grow" />
       <Button
@@ -26,24 +44,6 @@
         {{ $t('comments.post') }}
       </Button>
     </div>
-    <textarea
-      ref="input"
-      :value="comment"
-      :disabled="loading"
-      :placeholder="label"
-      :class="[
-        'px-xs',
-        'placeholder-blue-500',
-        'w-full appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out',
-        light ? 'text-gray-900 focus:placeholder-gray-100' : 'text-white focus:placeholder-gray-200',
-      ]"
-      rows="1"
-      style="resize:none"
-      @input="onInput"
-      @focus="onFocus"
-      @blur="onBlur"
-      @keydown.enter="handleMeta"
-    />
   </div>
 </template>
 

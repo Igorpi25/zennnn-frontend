@@ -50,8 +50,18 @@
                 >
                   <i
                     v-if="tab.icon"
-                    :class="['text-2xl', tab.icon]"
-                  />
+                    :class="['relative text-2xl', tab.icon]"
+                  >
+                    <div
+                      v-if="tab.value === 5 && hasNewComments"
+                      :class="[
+                        'absolute top-0 right-0 -mt-xs -mr-1 w-sm h-sm rounded-full border-2 bg-gray-600 border-gray-600 transition-colors duration-100 ease-out',
+                        activeTab === tab.value ? 'bg-gray-600' : 'border-gray-700',
+                      ]"
+                    >
+                      <div class="w-full h-full bg-purple-500 rounded-full" />
+                    </div>
+                  </i>
                   <span>
                     {{ tab.text }}
                   </span>
@@ -245,6 +255,13 @@ export default {
     hideSummary: Boolean,
   },
   computed: {
+    hasNewComments () {
+      const products = this.invoice.products || []
+      return products.some(item => {
+        const comments = item.comments || []
+        return comments.some(c => !c.viewed)
+      })
+    },
     isAmountVisible () {
       return this.role === Role.OWNER || this.role === Role.MANAGER || this.role === Role.ACCOUNTANT
     },
