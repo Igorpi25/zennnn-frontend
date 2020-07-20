@@ -164,7 +164,7 @@
           :to="{ name: 'payment', params: { type: 'promo' } }"
           class="ml-4"
         >
-          {{ $t('payment.extend') }}
+          {{ $t('payment.proceed') }}
         </Button>
       </div>
       <!-- PAYMENT METHODS LIST -->
