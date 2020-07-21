@@ -64,7 +64,7 @@
     "selectedPlan": "Chosen plan",
     "contactTitle": "Contact us",
     "contactHint": "Please leave your contacts and we will reach out to you as soon as possible to look closely at your needs and offer the best way of using ZENNNN.",
-    "subscriptionPaid": "Thank you, the {} plan was successfully paid.",
+    "subscriptionPaid": "Thank you, the {plan} plan was successfully paid.",
     "please": "Please",
     "selectPaymentMethod": "Choose the payment method",
     "selectPaymentType": "Choose the subscription",
