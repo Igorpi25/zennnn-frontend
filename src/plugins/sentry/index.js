@@ -6,7 +6,7 @@ import pkg from '../../../package.json'
 const dsn = process.env.VUE_APP_SENTRY_DSN
 const release = pkg.version
 const revision = process.env.COMMIT_HASH || ''
-const environment = process.env.VUE_APP_SENTRY_ENV || process.env.NODE_ENV
+const environment = process.env.VUE_APP_SENTRY_ENV
 
 if (process.env.NODE_ENV === 'production' && dsn) {
   Sentry.init({
