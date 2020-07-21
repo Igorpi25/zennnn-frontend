@@ -24,6 +24,7 @@ module.exports = {
       white: '#ffffff',
       transparent: 'transparent',
       current: 'currentColor',
+      // gray
       'gray-10': '#F0F0F0',
       'gray-50': '#F7F7F7',
       'gray-75': '#E4E4E4',
@@ -38,21 +39,29 @@ module.exports = {
       'gray-700': '#282828',
       'gray-800': '#232323',
       'gray-900': '#1E1E1E',
+      // blue
+      // TODO: change color pallet, blue-300 > blue-500
+      'blue-300': '#6377A0',
       'blue-400': '#2F80ED',
       'blue-500': '#7E99D0', // primary color
       'blue-600': '#5C78B1', // primary hover color
       'blue-700': '#345DEE', // landing color
       'blue-800': '#2F52D4', // landing hover color
       'blue-900': '#4C51BF', // custom price color
+      // pink
       'pink-500': '#FF005E', // error, IN_PROCESSING
       'pink-600': '#E00052',
+      // purple
       'purple-500': '#EF20E6',
+      // green
       'green-400': '#13F626',
       'green-500': '#08DC1B', // success, IN_STOCK
       'green-600': '#07C517',
+      // yellow
       'yellow-300': '#EAD377', // input warning
       'yellow-400': '#D7C370', // checkbox error text
       'yellow-500': '#FDB600', // warning, IN_PRODUCTION
+      // red
       'red-500': '#FF212D',
       'red-600': '#FF121F', // spec total client debt text
       'red-900': '#3D242D', // error color
