@@ -86,10 +86,24 @@
           </td>
         </tr>
       </thead>
+      <thead v-if="computedItems.length === 0 && items.length > 0">
+        <tr>
+          <td
+            :colspan="headers.length"
+            class="text-gray-200 text-center"
+          >
+            <slot name="no-result">
+              <span>
+                {{ $t('dataTable.noResult') }}
+              </span>
+            </slot>
+          </td>
+        </tr>
+      </thead>
       <tbody v-else>
         <slot name="items" :items="computedItems">
           <tr
-            v-for="(item, index) in items"
+            v-for="(item, index) in computedItems"
             :key="index"
             :class="itemsRowClass"
           >

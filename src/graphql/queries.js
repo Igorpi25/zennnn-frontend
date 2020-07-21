@@ -128,31 +128,32 @@ export const GET_PROFILE = gql`
 export const GET_SPECS = gql`
   query GetSpecs($orgId: ID!) {
     getSpecs(orgId: $orgId) {
-      ...SpecFragment
+      id
+      specStatus
+      isMoneyRecieved
+      isExpensesPaid
+      finalCost
+      margin
+      specNo
+      shipped
+      hasNewComment
+      createdAt
+      updatedAt
       client {
         id
+        groupId
         uid
         clientType
+        locale
         createdAt
         updatedAt
-        # legal
-        companyName
-        phone {
-          phone
-        }
-        fax {
-          phone
-        }
-        # private
-        passportId
-        mobilePhone {
-          phone
-        }
         fullName
+        contactPerson
+        mobilePhone
+        email
       }
     }
   }
-  ${SPEC_FRAGMENT}
 `
 
 export const GET_SPEC = gql`

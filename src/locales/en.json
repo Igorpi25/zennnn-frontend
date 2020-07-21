@@ -363,6 +363,7 @@
     "clientName": "Client name",
     "clientPhone": "Phone number",
     "specNo": "Contract number (Shipping No.)",
+    "number": "No.",
     "createdAt": "Created",
     "moneyRecieved": "Client paid",
     "expensesPaid": "Expenses paid",
@@ -380,7 +381,8 @@
     "marginHint": "Deal Margin Amount.",
     "zHint": "Z sign shows if your client has a ZENNNN account.",
     "contactPerson": "Representative",
-    "contact": "Contacts"
+    "contact": "Contacts",
+    "numberHint": "Number of deal. Generated automatically and used in all subsequent documents."
   },
   "staff": {
     "createStaff": "Create an employee",
