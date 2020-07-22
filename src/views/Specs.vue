@@ -364,6 +364,7 @@ export default {
           orgId: this.orgId,
         }
       },
+      fetchPolicy: 'cache-and-network',
     },
     getOrgs: {
       query: GET_ORGS,
