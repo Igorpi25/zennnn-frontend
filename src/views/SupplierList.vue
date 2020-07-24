@@ -203,13 +203,13 @@ export default {
     headers () {
       return [
         { text: '', value: 'zAccount', width: 50, sortable: false },
-        { text: this.$t('suppliers.companyName'), value: 'companyName', align: 'left', width: 232, minWidth: 232, sortable: true },
+        { text: this.$t('suppliers.companyName'), value: 'companyName', align: 'left', width: 222, minWidth: 222, sortable: true },
         { text: '', value: 'dealsCount', width: 46, sortable: true },
         { text: '', value: 'prepayment', align: 'right', width: 100, sortable: true },
         { text: '', value: 'debt', align: 'right', width: 100, sortable: true },
         { text: '', value: 'turnover', align: 'right', width: 100, sortable: true },
         { text: this.$t('suppliers.contactPerson'), value: 'contactPerson', align: 'left', width: 186, class: 'pl-8 pr-2', sortable: true },
-        { text: this.$t('suppliers.tags'), value: 'tagsString', align: 'left', width: 136, sortable: true },
+        { text: this.$t('suppliers.tags'), value: 'tagsString', align: 'left', width: 126, sortable: true },
         { text: '', value: 'mobilePhone', align: 'left', width: 60, minWidth: 60, sortable: true },
         { text: this.$t('suppliers.usn'), value: 'uid', align: 'right', width: 60, minWidth: 60, class: 'whitespace-no-wrap', sortable: true },
         { text: '', value: 'actions', width: 54 },
