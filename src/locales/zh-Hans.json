@@ -12,7 +12,11 @@
     "cty": "30天免费体验"
   },
   "payment": {},
-  "pricing": {},
+  "pricing": {
+    "specCount": "数据库中的记录数",
+    "next": "从2020年10月份开始",
+    "faqTitle": "常问问题"
+  },
   "footer": {
     "about": "关于",
     "faq": "常问问题",
