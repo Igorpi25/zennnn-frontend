@@ -1,5 +1,5 @@
 .data-table thead td {
-  @apply leading-tight;
+  @apply leading-tight relative;
 }
 .data-table td {
   @apply h-12;
@@ -25,6 +25,7 @@
   outline: none;
 }
 .data-table thead .data-table-header__icon {
+  position: absolute;
   opacity: 0;
   @apply inline-flex align-middle text-gray-200 text-2xl;
   transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
