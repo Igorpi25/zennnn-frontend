@@ -237,6 +237,25 @@ export const SUPPLIER_FRAGMENT = gql`
   ${ATTACH_FILE_FRAGMENT}
 `
 
+export const SUPPLIER_ITEM_FRAGMENT = gql`
+  fragment SupplierItemFragment on SupplierItem {
+    id
+    uid
+    locale
+    createdAt
+    updatedAt
+    companyName
+    contactPerson
+    mobilePhone
+    email
+    tags
+    dealsCount
+    prepayment
+    debt
+    turnover
+  }
+`
+
 export const INVOICE_FRAGMENT = gql`
   fragment InvoiceFragment on Invoice {
     id
@@ -383,6 +402,27 @@ export const CLIENT_FRAGMENT = gql`
   ${PHONE_FRAGMENT}
   ${CONTACT_FRAGMENT}
   ${ATTACH_FILE_FRAGMENT}
+`
+
+export const CLIENT_ITEM_FRAGMENT = gql`
+  fragment ClientItemFragment on ClientItem {
+    id
+    groupId
+    uid
+    clientType
+    locale
+    createdAt
+    updatedAt
+    fullName
+    contactPerson
+    mobilePhone
+    email
+    tags
+    dealsCount
+    prepayment
+    debt
+    turnover
+  }
 `
 
 export const SPEC_FRAGMENT = gql`

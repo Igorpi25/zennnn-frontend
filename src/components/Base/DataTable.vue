@@ -28,7 +28,6 @@
         <tr>
           <template
             v-for="(header, index) in headers"
-            :class="tdHeadClass"
           >
             <slot
               :name="`header.${header.value}`"
@@ -43,7 +42,6 @@
                   minWidth: convertToUnit(header.minWidth) || null
                 }"
                 :class="[
-                  'p-1',
                     header.align === 'left' ? 'text-left' : header.align === 'right' ? 'text-right' : 'text-center',
                   { 'sortable cursor-pointer': header.sortable },
                   header.sortable && internalOptions.sortBy.includes(header.value)
@@ -53,17 +51,18 @@
                 ]"
                 @click="header.sortable ? sort(header.value) : {}"
               >
-               <slot
-                :name="`header.${header.value}-content`"
-                :value="header.value"
-                :header="header"
-               >
-                <span>{{ header.text }}</span>
-               </slot>
-                <i
-                  v-if="header.sortable"
-                  class="data-table-header__icon zi-arrow-bottom-sort"
-                />
+                <slot
+                  :name="`header.${header.value}-content`"
+                  :value="header.value"
+                  :header="header"
+                >
+                  <span>{{ header.text }}</span>
+                </slot>
+                <span v-if="header.sortable" class="absolute inset-y-0 inline-flex items-center">
+                  <i
+                    class="data-table-header__icon zi-arrow-bottom-sort"
+                  />
+                </span>
               </td>
             </slot>
           </template>

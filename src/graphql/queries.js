@@ -4,7 +4,9 @@ import {
   INVOICE_FRAGMENT,
   PRODUCT_FRAGMENT,
   CLIENT_FRAGMENT,
+  CLIENT_ITEM_FRAGMENT,
   SUPPLIER_FRAGMENT,
+  SUPPLIER_ITEM_FRAGMENT,
   SUPPLIER_BRANCH_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
   ORG_CONTRACT_FRAGMENT,
@@ -148,8 +150,8 @@ export const GET_SPECS = gql`
         createdAt
         updatedAt
         fullName
-        contactPerson
-        mobilePhone
+        contactPersonFullName
+        contactPhone
         email
       }
     }
@@ -227,11 +229,11 @@ export const LIST_CLIENTS = gql`
   query ListClients($orgId: ID!) {
     listClients(orgId: $orgId) {
       items {
-        ...ClientFragment
+        ...ClientItemFragment
       }
     }
   }
-  ${CLIENT_FRAGMENT}
+  ${CLIENT_ITEM_FRAGMENT}
 `
 
 export const SEARCH_CLIENTS = gql`
@@ -268,15 +270,11 @@ export const LIST_SUPPLIERS = gql`
   query ListSuppliers($orgId: ID!) {
     listSuppliers(orgId: $orgId) {
       items {
-        ...SupplierFragment
-        branches {
-          ...SupplierBranchFragment
-        }
+        ...SupplierItemFragment
       }
     }
   }
-  ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_BRANCH_FRAGMENT}
+  ${SUPPLIER_ITEM_FRAGMENT}
 `
 
 export const SEARCH_SUPPLIERS = gql`
