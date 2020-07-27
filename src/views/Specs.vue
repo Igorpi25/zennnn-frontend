@@ -121,9 +121,7 @@
               <template v-slot:activator="{ on }">
                 <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
               </template>
-              <span>
-                {{ $t('deals.numberHint') }}
-              </span>
+              <span v-html="$t('deals.numberHint')" />
             </v-tooltip>
           </template>
           <template v-slot:items="{ items }">

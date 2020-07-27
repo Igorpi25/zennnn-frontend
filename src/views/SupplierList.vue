@@ -39,7 +39,7 @@
                 </span>
               </v-tooltip>
             </template>
-            <template v-slot:header.prepayment-content>
+            <template v-slot:header.cost-content>
               <span class="inline-block align-middle mr-xs">
                 <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M4.9 19.512V17.912C3.8 17.812 2.7 17.512 2 17.212L2.5 15.212C3.2 15.612 4.2 16.012 5.4 16.012C6.4 16.012 7.1 15.612 7.1 14.912C7.1 14.212 6.5 13.812 5.3 13.412C3.5 12.812 2.2 11.912 2.2 10.212C2.1 8.71196 3.2 7.51196 5 7.11196V5.51196H6.7V7.01196C7.9 7.01196 8.6 7.31196 9.2 7.51196L8.7 9.51196C8.3 9.31196 7.5 8.91196 6.2 8.91196C5.1 8.91196 4.7 9.41196 4.7 9.91196C4.7 10.512 5.3 10.812 6.8 11.412C8.9 12.112 9.7 13.112 9.7 14.612C9.7 16.112 8.6 17.412 6.6 17.812V19.512H4.9Z" fill="#404040"/>
@@ -71,7 +71,7 @@
                 </span>
               </v-tooltip>
             </template>
-            <template v-slot:header.turnover-content>
+            <template v-slot:header.totalCost-content>
               <span class="inline-block align-middle mr-xs">
                 <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M11.0729 19.5713V17.9713C9.87285 17.8713 8.77285 17.5713 8.17285 17.2713L8.67285 15.2713C9.37285 15.6713 10.3729 16.0713 11.5729 16.0713C12.5729 16.0713 13.2729 15.6713 13.2729 14.9713C13.2729 14.2713 12.6729 13.8713 11.4729 13.4713C9.67285 12.8713 8.37285 11.9713 8.37285 10.2713C8.37285 8.77129 9.47285 7.57129 11.2729 7.17129V5.57129H12.9729V7.07129C14.1729 7.17129 14.8729 7.37129 15.4729 7.67129L14.8729 9.57129C14.4729 9.37129 13.6729 8.97129 12.3729 8.97129C11.2729 8.97129 10.8729 9.47129 10.8729 9.97129C10.8729 10.5713 11.4729 10.8713 12.9729 11.4713C15.0729 12.1713 15.8729 13.1713 15.8729 14.6713C15.8729 16.1713 14.7729 17.4713 12.7729 17.8713V19.5713H11.0729Z" fill="#404040"/>
@@ -88,7 +88,7 @@
                 </span>
               </v-tooltip>
             </template>
-            <template v-slot:header.mobilePhone-content>
+            <template v-slot:header.contactPhone-content>
               <span class="inline-block align-middle">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
@@ -108,10 +108,10 @@
                 <td></td>
                 <td class="truncate">{{ item.companyName }}</td>
                 <td class="truncate text-right">{{ $n(item.dealsCount || 0) }}</td>
-                <td class="truncate text-right">{{ $n(item.prepayment || 0) }}</td>
+                <td class="truncate text-right">{{ $n(item.cost || 0) }}</td>
                 <td :class="['truncate text-right', { 'text-pink-500': item.debt > 0 }]">{{ $n(item.debt || 0) }}</td>
-                <td class="truncate text-right">{{ $n(item.turnover || 0) }}</td>
-                <td class="truncate pl-8 pr-2">{{ item.contactPerson }}</td>
+                <td class="truncate text-right">{{ $n(item.totalCost || 0) }}</td>
+                <td class="truncate pl-8 pr-2">{{ item.contactPersonFullName }}</td>
                 <td class="truncate">
                   <div
                     v-for="(tag, i) in item.tags"
@@ -122,9 +122,9 @@
                   </div>
                 </td>
                 <td class="truncate pointer-events-none" @click.stop>
-                  <span v-if="item.mobilePhone" class="pointer-events-auto">
+                  <span v-if="item.contactPhone" class="pointer-events-auto">
                     <a
-                      :href="`tel:${item.mobilePhone}`"
+                      :href="`tel:${item.contactPhone}`"
                       class="inline-block align-middle text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none"
                     >
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -205,12 +205,12 @@ export default {
         { text: '', value: 'zAccount', width: 50, sortable: false },
         { text: this.$t('suppliers.companyName'), value: 'companyName', align: 'left', width: 222, minWidth: 222, sortable: true },
         { text: '', value: 'dealsCount', width: 46, sortable: true },
-        { text: '', value: 'prepayment', align: 'right', width: 100, sortable: true },
+        { text: '', value: 'cost', align: 'right', width: 100, sortable: true },
         { text: '', value: 'debt', align: 'right', width: 100, sortable: true },
-        { text: '', value: 'turnover', align: 'right', width: 100, sortable: true },
-        { text: this.$t('suppliers.contactPerson'), value: 'contactPerson', align: 'left', width: 186, class: 'pl-8 pr-2', sortable: true },
+        { text: '', value: 'totalCost', align: 'right', width: 100, sortable: true },
+        { text: this.$t('suppliers.contactPerson'), value: 'contactPersonFullName', align: 'left', width: 186, class: 'pl-8 pr-2', sortable: true },
         { text: this.$t('suppliers.tags'), value: 'tagsString', align: 'left', width: 126, sortable: true },
-        { text: '', value: 'mobilePhone', align: 'left', width: 60, minWidth: 60, sortable: true },
+        { text: '', value: 'contactPhone', align: 'left', width: 60, minWidth: 60, sortable: true },
         { text: this.$t('suppliers.usn'), value: 'uid', align: 'right', width: 60, minWidth: 60, class: 'whitespace-no-wrap', sortable: true },
         { text: '', value: 'actions', width: 54 },
       ]
