@@ -702,7 +702,8 @@
     "suppliersDebt": "Your debt to the company",
     "currentDealsAmount": "Current amount of deals with supplier.",
     "dealsAmountHint": "Total cost of goods for all the deals with the supplier.",
-    "turnoverHint": "Total debt to the supplier for all the deals.",
+    "totalDebtHint": "Total debt to the supplier for all the deals.",
+    "turnoverHint": "Total turnover with the supplier for all deals.",
     "tags": "Tag",
     "usn": "USN",
     "noData": "There are no suppliers in our database, start with clicking Create a supplier."
