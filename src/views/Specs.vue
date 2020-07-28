@@ -609,7 +609,11 @@ export default {
         if (operation === Operation.INSERT_SPEC) {
           const { getSpecs } = apolloClient.readQuery({
             query: GET_SPECS,
-            variables: { orgId: this.orgId },
+            variables: {
+              orgId: this.orgId,
+              clientsIds: this.filter.clientsIds,
+              clientType: this.clientTypeEnum,
+            },
           })
 
           if (!getSpecs.some(el => el.id === data.delta.payload.id)) {
@@ -617,7 +621,11 @@ export default {
 
             apolloClient.writeQuery({
               query: GET_SPECS,
-              variables: { orgId: this.orgId },
+              variables: {
+                orgId: this.orgId,
+                clientsIds: this.filter.clientsIds,
+                clientType: this.clientTypeEnum,
+              },
               data: {
                 getSpecs,
               },
@@ -636,7 +644,11 @@ export default {
         if (operation === Operation.DELETE_SPEC) {
           const { getSpecs } = apolloClient.readQuery({
             query: GET_SPECS,
-            variables: { orgId: this.orgId },
+            variables: {
+              orgId: this.orgId,
+              clientsIds: this.filter.clientsIds,
+              clientType: this.clientTypeEnum,
+            },
           })
 
           const index = getSpecs.findIndex(el => el.id === data.delta.payload.id)
@@ -645,7 +657,11 @@ export default {
             getSpecs.splice(index, 1)
             apolloClient.writeQuery({
               query: GET_SPECS,
-              variables: { orgId: this.orgId },
+              variables: {
+                orgId: this.orgId,
+                clientsIds: this.filter.clientsIds,
+                clientType: this.clientTypeEnum,
+              },
               data: {
                 getSpecs,
               },
@@ -726,7 +742,11 @@ export default {
 
             this.$apollo.provider.defaultClient.writeQuery({
               query: GET_SPECS,
-              variables: { orgId: this.orgId },
+              variables: {
+                orgId: this.orgId,
+                clientsIds: this.filter.clientsIds,
+                clientType: this.clientTypeEnum,
+              },
               data: {
                 getSpecs,
               },
@@ -767,7 +787,11 @@ export default {
         })
         const { getSpecs } = this.$apollo.provider.defaultClient.readQuery({
           query: GET_SPECS,
-          variables: { orgId: this.orgId },
+          variables: {
+            orgId: this.orgId,
+            clientsIds: this.filter.clientsIds,
+            clientType: this.clientTypeEnum,
+          },
         })
 
         const index = getSpecs.findIndex(el => el.id === id)
