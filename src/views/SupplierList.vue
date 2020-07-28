@@ -74,7 +74,7 @@
                   <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
                 </template>
                 <span>
-                  {{ $t('suppliers.suppliersDebt') }}
+                  {{ $t('suppliers.totalDebtHint') }}
                 </span>
               </v-tooltip>
             </template>
