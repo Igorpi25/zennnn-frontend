@@ -128,8 +128,8 @@ export const GET_PROFILE = gql`
 `
 
 export const GET_SPECS = gql`
-  query GetSpecs($orgId: ID!) {
-    getSpecs(orgId: $orgId) {
+  query GetSpecs($orgId: ID!, $clientsIds: [ID!], $clientType: ClientType) {
+    getSpecs(orgId: $orgId, clientsIds: $clientsIds, clientType: $clientType) {
       id
       specStatus
       isMoneyRecieved
@@ -234,6 +234,25 @@ export const LIST_CLIENTS = gql`
     }
   }
   ${CLIENT_ITEM_FRAGMENT}
+`
+
+export const GET_CLIENTS_BY_ID = gql`
+  query GetClientsById($orgId: ID!, $ids: [ID!]) {
+    getClientsById(orgId: $orgId, ids: $ids) {
+      items {
+        id
+        groupId
+        uid
+        clientType
+        createdAt
+        updatedAt
+        contactPerson {
+          fullName
+        }
+        tags
+      }
+    }
+  }
 `
 
 export const SEARCH_CLIENTS = gql`

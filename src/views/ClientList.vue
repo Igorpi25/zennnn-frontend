@@ -7,12 +7,19 @@
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          class="w-full md:w-64 flex-shrink-0 pb-4"
+          class="w-full flex-shrink-0 md:max-w-md pb-4 md:pr-8"
           content-class="input-transparent"
           input-class="placeholder-blue-500"
+          append-slot-class="w-auto"
         >
           <template v-slot:prepend>
             <i class="zi-magnifier text-2xl text-gray-100"></i>
+          </template>
+          <template v-slot:append v-if="search">
+            <i
+              class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+              @click="search = null"
+            />
           </template>
         </TextField>
         <div class="h-11 flex overflow-x-auto overflow-scroll-touch md:pl-4">
@@ -137,7 +144,7 @@
             >
               <td></td>
               <td class="truncate">{{ item.fullName }}</td>
-              <td class="text-center">
+              <td class="text-center pointer-events-none" @click.stop="goToClientSpecs(item)">
                 <i class="zi-magnifier align-middle text-2xl text-gray-200 cursor-pointer pointer-events-auto" />
               </td>
               <td class="truncate text-right">{{ $n(item.dealsCount || 0) }}</td>
@@ -330,7 +337,7 @@ export default {
           orgId: this.$route.params.orgId,
         },
         query: {
-          clientId: item.id,
+          clients: [item.id],
         },
       })
     },
