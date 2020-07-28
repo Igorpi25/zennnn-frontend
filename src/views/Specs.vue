@@ -6,20 +6,86 @@
       <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-4">
         <TextField
           v-model="search"
-          :placeholder="$t('placeholder.pageSearch')"
-          class="w-full sm:w-64 pb-4 sm:pb-0"
-          content-class="input-transparent"
+          :placeholder="clientsFilter.length === 0 ? $t('placeholder.pageSearch') : ''"
+          class="w-full pb-4 sm:pb-0 sm:pr-8"
+          content-class="input-transparent overflow-x-auto"
           input-class="placeholder-blue-500"
+          prepend-slot-class="w-auto"
+          append-slot-class="w-auto"
         >
           <template v-slot:prepend>
-            <i class="zi-magnifier text-2xl text-gray-100"></i>
+            <span class="w-10 flex items-center justify-center flex-shrink-0">
+              <i class="zi-magnifier text-2xl text-gray-100"></i>
+            </span>
+            <span class="text-base text-white pr-2">
+              <span
+                v-for="filter in clientsFilter"
+                :key="filter.value"
+                class="h-6 inline-flex items-center rounded-lg bg-gray-400 whitespace-no-wrap pl-1 mr-1"
+              >
+                <span class="flex-grow pl-xs -mr-xs">
+                  {{ filter.text }}
+                </span>
+                <i
+                  class="w-6 flex-shrink-0 zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+                  @click="clearClientFilter(filter.value)"
+                />
+              </span>
+            </span>
+          </template>
+          <template v-slot:append v-if="search || clientsFilter.length > 0">
+            <i
+              class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+              @click="clearFilters"
+            />
           </template>
         </TextField>
         <div class="flex w-full sm:w-auto items-center justify-end">
-          <span class="pr-2 whitespace-no-wrap">
-            {{ $t('label.noSort') }}
-          </span>
-          <i class="zi-filter text-2xl text-gray-200" />
+          <v-menu
+            v-model="filterMenu"
+            :content-class="'locale-picker__menu'"
+            :nudge-bottom="25"
+            bottom
+            left
+          >
+            <template v-slot:activator="{ on }">
+              <div
+                class="flex items-center cursor-pointer whitespace-no-wrap focus:text-gray-75 hover:text-gray-75"
+                v-on="on"
+              >
+                <span class="pr-2">
+                  {{ clientType }}
+                </span>
+                <i class="zi-filter text-2xl text-gray-200" />
+              </div>
+            </template>
+            <template>
+              <ul
+                :class="[
+                  'rounded py-2',
+                  'border-gray-400 text-gray-100 bg-gray-400'
+                ]"
+                role="menu"
+              >
+                <li
+                  v-for="item in clientTypes"
+                  :key="item.value"
+                  :value="item.value"
+                  :class="[
+                    'hover:bg-gray-300 focus:bg-gray-300',
+                    'flex items-center h-9 cursor-pointer focus:outline-none px-5',
+                    'transition-colors duration-100 ease-out',
+                    { 'text-white': item.value === filter.clientType },
+                  ]"
+                  tabindex="0"
+                  role="menuitem"
+                  @click="changeClientType(item.value)"
+                >
+                  <span>{{ item.text }}</span>
+                </li>
+              </ul>
+            </template>
+          </v-menu>
         </div>
       </div>
 
@@ -121,9 +187,7 @@
               <template v-slot:activator="{ on }">
                 <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
               </template>
-              <span>
-                {{ $t('deals.numberHint') }}
-              </span>
+              <span v-html="$t('deals.numberHint')" />
             </v-tooltip>
           </template>
           <template v-slot:items="{ items }">
@@ -324,9 +388,10 @@ import {
   Typename,
   Operation,
   SpecStatus,
+  ClientType,
 } from '../graphql/enums'
 import { SPEC_FRAGMENT } from '../graphql/typeDefs'
-import { GET_SPECS, GET_ORGS, SEARCH_CLIENTS } from '../graphql/queries'
+import { GET_SPECS, GET_ORGS, SEARCH_CLIENTS, GET_CLIENTS_BY_ID } from '../graphql/queries'
 import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
 import { SPECS_DELTA } from '../graphql/subscriptions'
 
@@ -359,6 +424,8 @@ export default {
       variables () {
         return {
           orgId: this.orgId,
+          clientsIds: this.filter.clientsIds,
+          clientType: this.clientTypeEnum,
         }
       },
       fetchPolicy: 'cache-and-network',
@@ -366,6 +433,16 @@ export default {
     getOrgs: {
       query: GET_ORGS,
       fetchPolicy: 'cache-only',
+    },
+    getClientsById: {
+      query: GET_CLIENTS_BY_ID,
+      fetchPolicy: 'cache-and-network',
+      variables () {
+        return {
+          orgId: this.orgId,
+          ids: this.filter.clientsIds,
+        }
+      },
     },
   },
   data () {
@@ -383,9 +460,61 @@ export default {
       rules: {
         required: v => !!v || this.$t('rule.required'),
       },
+      filterMenu: false,
+      filter: {
+        clientsIds: [],
+        clientType: null,
+      },
     }
   },
   computed: {
+    clientTypes () {
+      return [
+        {
+          text: this.$t('label.noSort'),
+          value: null,
+        },
+        {
+          text: this.$t('client.legalPerson'),
+          value: 1,
+        },
+        {
+          text: this.$t('client.privatePerson'),
+          value: 2,
+        },
+        {
+          text: this.$t('client.other'),
+          value: 3,
+        },
+      ]
+    },
+    clientType () {
+      switch (this.filter.clientType) {
+        case 1: return this.$t('client.legalPerson')
+        case 2: return this.$t('client.privatePerson')
+        case 3: return this.$t('client.other')
+        default: return this.$t('label.noSort')
+      }
+    },
+    clientTypeEnum () {
+      switch (this.filter.clientType) {
+        case 1: return ClientType.LEGAL
+        case 2: return ClientType.PRIVATE
+        case 3: return ClientType.OTHER
+        default: return null
+      }
+    },
+    clientsFilter () {
+      return this.filter.clientsIds.map(id => {
+        const clients = (this.getClientsById && this.getClientsById.items) || []
+        const client = clients.find(item => item.id === id) || {}
+        const text = ((client.contactPerson && client.contactPerson.fullName) || client.uid) || ''
+        return {
+          text,
+          value: id,
+        }
+      })
+    },
     clients () {
       return (this.searchClients && this.searchClients.items) || []
     },
@@ -449,8 +578,20 @@ export default {
         }, 300)
       }
     },
+    filter: {
+      handler: 'updateFiltersQuery',
+      deep: true,
+    },
   },
   mounted () {
+    if (this.$route.query.clients) {
+      this.filter.clientsIds = !Array.isArray(this.$route.query.clients) ? [this.$route.query.clients] : this.$route.query.clients
+    }
+    const clientType = Number.parseInt(this.$route.query.clientType, 10) || null
+    if (clientType) {
+      this.filter.clientType = clientType
+    }
+
     const observer = this.$apollo.subscribe({
       query: SPECS_DELTA,
       fetchPolicy: 'no-cache',
@@ -518,6 +659,23 @@ export default {
     })
   },
   methods: {
+    changeClientType (value) {
+      this.filter.clientType = value
+    },
+    clearClientFilter (id) {
+      this.filter.clientsIds = this.filter.clientsIds.filter(el => el !== id)
+    },
+    clearFilters () {
+      this.search = null
+      this.filter.clientsIds = []
+    },
+    updateFiltersQuery () {
+      const query = { clients: this.filter.clientsIds }
+      if (this.filter.clientType) {
+        query.clientType = this.filter.clientType
+      }
+      this.$router.push({ query }).catch(() => {})
+    },
     goToSpec (specId) {
       this.$router.push({
         name: 'spec',
@@ -556,7 +714,11 @@ export default {
 
           const { getSpecs } = this.$apollo.provider.defaultClient.readQuery({
             query: GET_SPECS,
-            variables: { orgId: this.orgId },
+            variables: {
+              orgId: this.orgId,
+              clientsIds: this.filter.clientsIds,
+              clientType: this.clientTypeEnum,
+            },
           })
 
           if (!getSpecs.some(el => el.id === spec.id)) {
@@ -614,7 +776,11 @@ export default {
           getSpecs.splice(index, 1)
           this.$apollo.provider.defaultClient.writeQuery({
             query: GET_SPECS,
-            variables: { orgId: this.orgId },
+            variables: {
+              orgId: this.orgId,
+              clientsIds: this.filter.clientsIds,
+              clientType: this.clientTypeEnum,
+            },
             data: {
               getSpecs,
             },

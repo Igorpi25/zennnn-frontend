@@ -7,12 +7,19 @@
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          class="w-full md:w-64 flex-shrink-0 pb-4"
+          class="w-full flex-shrink-0 md:max-w-md pb-4 md:pr-8"
           content-class="input-transparent"
           input-class="placeholder-blue-500"
+          append-slot-class="w-auto"
         >
           <template v-slot:prepend>
             <i class="zi-magnifier text-2xl text-gray-100"></i>
+          </template>
+          <template v-slot:append v-if="search">
+            <i
+              class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+              @click="search = null"
+            />
           </template>
         </TextField>
         <div class="h-11 flex overflow-x-auto overflow-scroll-touch md:pl-4">
@@ -118,7 +125,7 @@
               </span>
             </v-tooltip>
           </template>
-          <template v-slot:header.mobilePhone-content>
+          <template v-slot:header.contactPhone-content>
             <span class="inline-block align-middle">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
@@ -137,14 +144,14 @@
             >
               <td></td>
               <td class="truncate">{{ item.fullName }}</td>
-              <td class="text-center">
+              <td class="text-center pointer-events-none" @click.stop="goToClientSpecs(item)">
                 <i class="zi-magnifier align-middle text-2xl text-gray-200 cursor-pointer pointer-events-auto" />
               </td>
               <td class="truncate text-right">{{ $n(item.dealsCount || 0) }}</td>
               <td class="truncate text-right">{{ $n(item.prepayment || 0) }}</td>
               <td :class="['truncate text-right', { 'text-pink-500': item.debt > 0 }]">{{ $n(item.debt || 0) }}</td>
               <td class="truncate text-right">{{ $n(item.turnover || 0) }}</td>
-              <td class="truncate pl-8 pr-2">{{ item.contactPerson }}</td>
+              <td class="truncate pl-8 pr-2">{{ item.contactPersonFullName }}</td>
               <td class="truncate">
                 <div
                   v-for="(tag, i) in item.tags"
@@ -155,9 +162,9 @@
                 </div>
               </td>
               <td class="truncate pointer-events-none" @click.stop>
-                <span v-if="item.mobilePhone" class="pointer-events-auto">
+                <span v-if="item.contactPhone" class="pointer-events-auto">
                   <a
-                    :href="`tel:${item.mobilePhone}`"
+                    :href="`tel:${item.contactPhone}`"
                     class="inline-block align-middle text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none"
                   >
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -270,8 +277,8 @@ export default {
           text: this.clientTypeEnum === ClientType.PRIVATE ? this.$t('clients.clientName') : this.$t('clients.companyName'),
           value: 'fullName',
           align: 'left',
-          width: 200,
-          minWidth: 200,
+          width: 190,
+          minWidth: 190,
           sortable: true,
         },
         { text: '', value: 'dealsSearch', width: 32, sortable: false },
@@ -279,9 +286,9 @@ export default {
         { text: '', value: 'prepayment', align: 'right', width: 100, sortable: true },
         { text: '', value: 'debt', align: 'right', width: 100, sortable: true },
         { text: '', value: 'turnover', align: 'right', width: 100, sortable: true },
-        { text: this.$t('clients.contactPerson'), value: 'contactPerson', align: 'left', width: 186, class: 'pl-8 pr-2', sortable: true },
-        { text: this.$t('clients.tags'), value: 'tagsString', align: 'left', width: 136, sortable: true },
-        { text: '', value: 'mobilePhone', align: 'left', width: 60, minWidth: 60, sortable: true },
+        { text: this.$t('clients.contactPerson'), value: 'contactPersonFullName', align: 'left', width: 186, class: 'pl-8 pr-2', sortable: true },
+        { text: this.$t('clients.tags'), value: 'tagsString', align: 'left', width: 126, sortable: true },
+        { text: '', value: 'contactPhone', align: 'left', width: 60, minWidth: 60, sortable: true },
         { text: this.$t('clients.ucn'), value: 'uid', align: 'right', width: 60, minWidth: 60, class: 'whitespace-no-wrap', sortable: true },
         { text: '', value: 'actions', width: 54 },
       ]
@@ -330,7 +337,7 @@ export default {
           orgId: this.$route.params.orgId,
         },
         query: {
-          clientId: item.id,
+          clients: [item.id],
         },
       })
     },

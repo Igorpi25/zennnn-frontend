@@ -16,11 +16,19 @@
             params: item.params,
           }"
           :exact="item.exact"
-          active-class="text-white border-blue-500 relative"
-          class="focus:outline-none focus:text-white hover:text-white border-b-2 border-transparent whitespace-no-wrap text-xl leading-6 h-full flex items-center duration-100 ease-out"
-          style="transition-property: color;"
+          v-slot="{ href, route, navigate, isActive, isExactActive }"
         >
-          {{ item.text }}
+          <a
+            :href="href"
+            :class="[
+              'focus:outline-none focus:text-white hover:text-white border-b-2 border-transparent whitespace-no-wrap text-xl leading-6 h-full flex items-center duration-100 ease-out',
+              { 'text-white border-blue-500 relative': isActive || isExactActive || ($route.name === 'specs' && item.name === $route.name && $route.params.orgId && ($route.query.clients || $route.query.clientType)) },
+            ]"
+            style="transition-property: color;"
+            @click="navigate"
+          >
+            {{ item.text }}
+          </a>
         </router-link>
       </div>
       <div

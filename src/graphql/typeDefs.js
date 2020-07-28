@@ -245,14 +245,14 @@ export const SUPPLIER_ITEM_FRAGMENT = gql`
     createdAt
     updatedAt
     companyName
-    contactPerson
-    mobilePhone
+    contactPersonFullName
+    contactPhone
     email
     tags
     dealsCount
-    prepayment
+    cost
     debt
-    turnover
+    totalCost
   }
 `
 
@@ -414,8 +414,8 @@ export const CLIENT_ITEM_FRAGMENT = gql`
     createdAt
     updatedAt
     fullName
-    contactPerson
-    mobilePhone
+    contactPersonFullName
+    contactPhone
     email
     tags
     dealsCount
