@@ -893,7 +893,7 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
     let pdfFonts
     if (clientLang === 'zh-Hans') {
       font = 'NotoSansCJKsc'
-      const response = await axios.get(`${process.env.VUE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKsc.json`)
+      const response = await axios.get(`${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKsc.json`)
       pdfFonts = {
         vfs: response.data,
       }
@@ -907,7 +907,7 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
       }
     } else if (clientLang === 'zh-Hant') {
       font = 'NotoSansCJKtc'
-      const response = await axios.get(`${process.env.VUE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKtc.json`)
+      const response = await axios.get(`${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKtc.json`)
       pdfFonts = {
         vfs: response.data,
       }
