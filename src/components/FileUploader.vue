@@ -433,10 +433,10 @@ export default {
         this.axiosSource = null
       }
     },
-    async checkImageExists (s3Src, src) {
+    async checkImageExists (src) {
       try {
-        const response = await this.$axios.head(s3Src)
-        if (response && response.statusText === 'OK') {
+        const response = await this.$axios.head(src)
+        if (response && response.status === 200) {
           this.clearSrcCheckTimer()
           if (this.cancelledUploads.includes(src)) return
           this.emitSrc(src)
@@ -446,11 +446,10 @@ export default {
       }
     },
     startSrcCheckTimer (src) {
-      const s3Src = src.replace(process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME, process.env.VUE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME)
       this.clearSrcCheckTimer()
       this.checkLoading = true
       this.timerId = setInterval(() => {
-        this.checkImageExists(s3Src, src)
+        this.checkImageExists(src)
         this.$logger.info('image src checking...')
       }, this.checkDelay)
       this.timeoutId = setTimeout(() => {

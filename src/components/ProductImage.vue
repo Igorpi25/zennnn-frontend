@@ -213,12 +213,11 @@ export default {
       this.currentImageIndex = index
     },
     async setMainImageName (src) {
-      const s3Src = src.replace(process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME, process.env.VUE_APP_S3_IMAGE_DOWNLOAD_HOSTNAME)
       this.currentImageFilename = ''
       try {
         this.currentImageFilenameLoading = true
-        const response = await this.$axios.head(s3Src)
-        if (response && response.statusText === 'OK') {
+        const response = await this.$axios.head(src)
+        if (response && response.status === 200) {
           const filename = response.headers[IMAGE_FILENAME_METADATA]
           this.currentImageFilename = filename
             ? decodeURIComponent(escape(window.atob(filename)))
