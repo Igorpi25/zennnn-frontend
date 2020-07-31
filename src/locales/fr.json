@@ -362,6 +362,7 @@
     "clientName": "Nom de client ",
     "clientPhone": "Numéro de téléphone",
     "specNo": "Numéro de contrat (N ° d'expédition)",
+    "number": "No.",
     "createdAt": "Créé",
     "moneyRecieved": "Client payé",
     "expensesPaid": "Dépenses payées",
@@ -699,7 +700,7 @@
     "suppliersDebt": "Votre dette envers l'entreprise",
     "currentDealsAmount": "Montant actuel des transactions avec le fournisseur.",
     "dealsAmountHint": "Coût total des marchandises pour toutes les transactions avec le fournisseur.",
-    "turnoverHint": "Dette totale envers le fournisseur pour toutes les transactions.",
+    "totalDebtHint": "Dette totale envers le fournisseur pour toutes les transactions.",
     "tags": "Marque",
     "usn": "NFU",
     "noData": "Il n'y a pas encore de fournisseurs dans votre base de données,<br>commencez par cliquer sur le bouton \"Créer un fournisseur\"."
