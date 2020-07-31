@@ -5,7 +5,7 @@
     "userAgreement": "Terms&nbsp;of&nbsp;use"
   },
   "home": {
-    "title": "Revolutionary service for conducting international trade.",
+    "title": "Back office for international trade",
     "subtitle1": "Truly",
     "subtitle2": "Madly",
     "subtitle3": "Deeply",
@@ -241,7 +241,7 @@
     "q16": "If a ZENNNN user shares information with me, who else can see it?",
     "a16": "All the data which can be shared inside the system has its settings: available to one person, available to everyone, unavailable.",
     "q17": "Your system has the same functions as many others. Why should I choose ZENNNN?",
-    "a17": "Because people use numbers to calculate and letters to write. The first device used for calculation was wooden abacus, then calculator, then ECM, specialized software and now it's ZENNNN. We are really concerned about the question how we can improve existing tools of conducting accounting and financial management to get rid of numbers in the future."
+    "a17": "As people use numbers to calculate and letters to write, functionality of computer systems is pretty similar.  The difference is in the efficiency of the tool. The first device used for calculation was wooden abacus, then calculator, then ECM, specialized software and now it's ZENNNN. Joking aside, we are really concerned about the question how we can improve existing tools of conducting accounting and financial management to get rid of numbers in the future."
   },
   "footer": {
     "about": "About",
@@ -702,7 +702,8 @@
     "suppliersDebt": "Your debt to the company",
     "currentDealsAmount": "Current amount of deals with supplier.",
     "dealsAmountHint": "Total cost of goods for all the deals with the supplier.",
-    "turnoverHint": "Total debt to the supplier for all the deals.",
+    "totalDebtHint": "Total debt to the supplier for all the deals.",
+    "turnoverHint": "Total turnover with the supplier for all deals.",
     "tags": "Tag",
     "usn": "USN",
     "noData": "There are no suppliers in our database, start with clicking Create a supplier."
