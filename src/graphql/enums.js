@@ -1,3 +1,10 @@
+export const InvitationStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  CANCELED: 'CANCELED',
+}
+
 export const InvoiceProfitType = {
   MARGIN: 'MARGIN',
   COMMISSION: 'COMMISSION',

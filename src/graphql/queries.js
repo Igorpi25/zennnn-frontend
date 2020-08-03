@@ -382,15 +382,26 @@ export const LIST_STAFF = gql`
         specs {
           id
           specStatus
-          moneyPaid
-          moneyReceived
+          isMoneyRecieved
+          isExpensesPaid
           profit
           percent
           finalCost
           finalObtainCost
           specNo
           clientFullName
+          shipped
         }
+      }
+      invitations {
+        id
+        invitationEmail
+        invitationGivenName
+        invitationFamilyName
+        invitationRole
+        status
+        createdAt
+        updatedAt
       }
     }
   }
