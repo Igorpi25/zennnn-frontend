@@ -30,6 +30,7 @@
             :headers="headers"
             :items="items"
             :search="search"
+            :custom-filter="customFilter"
             table-width="100%"
             table-class="table-fixed"
             hoverable
@@ -235,6 +236,18 @@ export default {
     },
   },
   methods: {
+    customFilter (value, search) {
+      if (search != null && value != null && typeof value !== 'boolean') {
+        const words = search
+          .split(',')
+          .map(s => s.trim().toLocaleLowerCase())
+          .filter(s => !!s)
+        const v = value.toString().toLocaleLowerCase()
+        return words.every(w => v.indexOf(w) !== -1)
+      } else {
+        return false
+      }
+    },
     goToSupplier (supplierId) {
       this.$router.push({
         name: 'supplier',
