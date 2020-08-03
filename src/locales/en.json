@@ -414,7 +414,8 @@
     "inviteUpdatedAt": "Updated On",
     "staffName": "Name of an Employee",
     "accessControl": "Enable",
-    "invitationFrom": "Invitation date"
+    "invitationFrom": "Invitation date",
+    "noData": "There are no employees yet, start with clicking Invite."
   },
   "requisites": {
     "companyName": "Company name",
