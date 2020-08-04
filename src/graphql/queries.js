@@ -379,6 +379,10 @@ export const LIST_STAFF = gql`
         percent
         totalPrepay
         totalClientDebt
+        revenue
+        totalItemsCost
+        totalMargin
+        diff
         specs {
           id
           specStatus
@@ -391,6 +395,10 @@ export const LIST_STAFF = gql`
           specNo
           clientFullName
           shipped
+          revenue
+          totalItemsCost
+          totalMargin
+          diff
         }
       }
       invitations {

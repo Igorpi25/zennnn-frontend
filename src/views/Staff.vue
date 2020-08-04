@@ -68,10 +68,12 @@
                       {{ $t('staff.invitationFrom') }}: {{ $d($parseDate(item.createdAt), 'short') }}
                     </span>
                   </td>
-                  <td v-if="item.isStaff" :class="['truncate text-right', { 'text-green-500': item.profit > 0 }, { 'text-pink-500' :item.profit < 0 }]">{{ $n(item.profit || 0, 'fixed') }}</td>
+                  <td v-if="item.isStaff" :class="['truncate text-right', { 'text-green-500': item.diff > 0 }, { 'text-pink-500' :item.diff < 0 }]">
+                    {{ $n(item.diff || 0) }}
+                  </td>
                   <td :colspan="item.isStaff ? 1 : 2" class="truncate text-right" :class="{ 'bg-gray-400': item.isInvitation }">
                     <span v-if="item.isStaff">
-                      {{ $n(item.percent) }}%
+                      {{ $n(item.totalMargin) }}%
                     </span>
                     <span v-else class="pl-8">
                       {{ item.invitationEmail }}
@@ -79,12 +81,12 @@
                   </td>
                   <td v-if="item.isStaff" class="truncate text-right">
                     <span>
-                      {{ $n(item.finalObtainCost || 0) }}
+                      {{ $n(item.revenue || 0) }}
                     </span>
                   </td>
                   <td class="truncate text-right" :class="{ 'bg-gray-400': item.isInvitation }">
                     <span v-if="item.isStaff">
-                      {{ $n(item.finalCost || 0) }}
+                      {{ $n(item.totalItemsCost || 0) }}
                     </span>
                     <span v-else class="text-left block align-middle pl-12" :class="[item.status === InvitationStatus.PENDING ? 'text-yellow-500' : item.status === InvitationStatus.DECLINED ? 'text-pink-500' : item.status === InvitationStatus.ACCEPTED ? 'text-green-500' : '']">
                       {{ item.status | statusFilter }}
@@ -188,16 +190,16 @@
                                 </div>
                               </td>
                               <td :width="subHeaders[1].width" :style="{ width: subHeaders[1].width, minWidth: subHeaders[1].width }" :class="['bg-gray-700 truncate text-right']">
-                                {{ $n(subItem.profit || 0) }}
+                                {{ $n(subItem.diff || 0) }}
                               </td>
                               <td :width="subHeaders[2].width" :style="{ width: subHeaders[2].width, minWidth: subHeaders[2].width }" class="bg-gray-700 truncate text-right">
-                                {{ $n(subItem.percent) }}%
+                                {{ $n(subItem.totalMargin) }}%
                               </td>
                               <td :width="subHeaders[3].width" :style="{ width: subHeaders[3].width, minWidth: subHeaders[3].width }" class="bg-gray-700 truncate text-right">
-                                {{ $n(subItem.finalObtainCost || 0) }}
+                                {{ $n(subItem.revenue || 0) }}
                               </td>
                               <td :width="subHeaders[4].width" :style="{ width: subHeaders[4].width, minWidth: subHeaders[4].width }" class="bg-gray-700 truncate text-right">
-                                {{ $n(subItem.finalCost || 0) }}
+                                {{ $n(subItem.totalItemsCost || 0) }}
                               </td>
                               <td :width="subHeaders[5].width" :style="{ width: subHeaders[5].width, minWidth: subHeaders[5].width }" class="bg-gray-700 truncate text-left leading-tight pl-16">
                                 <span class="whitespace-no-wrap pl-5">
@@ -210,7 +212,19 @@
                                 </span>
                               </td>
                               <td :width="subHeaders[7].width" :style="{ width: subHeaders[7].width, minWidth: subHeaders[7].width }" class="bg-gray-700 text-right">
-                                <i class="zi-magnifier align-middle text-2xl text-gray-200 cursor-pointer -mr-3" @click="goToSpec(subItem)" />
+                                <router-link
+                                  :to="{
+                                    name: 'spec',
+                                    params: {
+                                      orgId,
+                                      specId: subItem.id,
+                                    },
+                                  }"
+                                  tabindex="-1"
+                                  class="align-middle text-2xl text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100 -mr-3"
+                                >
+                                  <i class="zi-magnifier align-middle" />
+                                </router-link>
                               </td>
                               <td :width="subHeaders[8].width" :style="{ width: subHeaders[8].width, minWidth: subHeaders[8].width }" class="bg-gray-700 text-center" :class="{ 'rounded-br-md': i + 1 === subItems.length }">
                                 <span v-if="subItem.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-blue-400"></span>
@@ -278,6 +292,7 @@ export default {
           orgId: this.orgId,
         }
       },
+      fetchPolicy: 'cache-and-network',
     },
   },
   data () {
@@ -327,10 +342,10 @@ export default {
     headers () {
       return [
         { text: this.$t('staff.inWork'), value: 'inWorkCount', align: 'right', width: 100, minWidth: 100, sortable: true },
-        { text: this.$t('staff.diff'), value: 'profit', align: 'right', width: 105, minWidth: 105, sortable: true },
-        { text: this.$t('staff.percent'), value: 'diffPercent', align: 'right', width: 66, minWidth: 66, sortable: true },
-        { text: this.$t('staff.revenue'), value: 'finalObtainCost', align: 'right', width: 118, minWidth: 118, sortable: true },
-        { text: this.$t('staff.costOfGoods'), value: 'finalCost', align: 'right', width: 140, minWidth: 140, sortable: true },
+        { text: this.$t('staff.diff'), value: 'diff', align: 'right', width: 105, minWidth: 105, sortable: true },
+        { text: this.$t('staff.percent'), value: 'margin', align: 'right', width: 66, minWidth: 66, sortable: true },
+        { text: this.$t('staff.revenue'), value: 'revenue', align: 'right', width: 118, minWidth: 118, sortable: true },
+        { text: this.$t('staff.costOfGoods'), value: 'totalItemsCost', align: 'right', width: 140, minWidth: 140, sortable: true },
         { text: this.$t('staff.staffName'), value: 'fullName', align: 'left', width: 280, minWidth: 280, class: 'whitespace-no-wrap pl-16', sortable: true },
         { text: this.$t('staff.access'), value: 'access', align: 'left', width: 139, minWidth: 139, class: 'whitespace-no-wrap', sortable: true },
         { text: '', value: 'actions', width: 40, minWidth: 40 },
@@ -340,10 +355,10 @@ export default {
     subHeaders () {
       return [
         { text: '', value: 'status', align: 'right', width: '100px', minWidth: '100px' },
-        { text: '', value: 'profit', align: 'right', width: '105px', minWidth: '105px' },
-        { text: '', value: 'diffPercent', align: 'right', width: '66px', minWidth: '66px' },
-        { text: '', value: 'finalObtainCost', align: 'right', width: '118px', minWidth: '118px' },
-        { text: '', value: 'finalCost', align: 'right', width: '140px', minWidth: '140px' },
+        { text: '', value: 'diff', align: 'right', width: '105px', minWidth: '105px' },
+        { text: '', value: 'margin', align: 'right', width: '66px', minWidth: '66px' },
+        { text: '', value: 'revenue', align: 'right', width: '118px', minWidth: '118px' },
+        { text: '', value: 'totalItemsCost', align: 'right', width: '140px', minWidth: '140px' },
         { text: '', value: 'specNo', align: 'left', width: '280px', minWidth: '280px', class: 'whitespace-no-wrap pl-16' },
         { text: '', value: 'clientFullName', align: 'left', width: '139px', minWidth: '139px', class: 'whitespace-no-wrap' },
         { text: '', value: 'actions', width: '40px', minWidth: '40px' },
