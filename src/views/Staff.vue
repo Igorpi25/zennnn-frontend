@@ -47,7 +47,11 @@
             </template>
             <template v-slot:items="{ items }">
               <template v-for="(item, index) in items">
-                <tr :key="item.id" :class="{ 'text-white expanded': expanded.includes(index) }">
+                <tr
+                  :key="item.id"
+                  :class="[{ 'hover:bg-gray-500 cursor-pointer': item.isStaff }, { 'text-white expanded': expanded.includes(index) }]"
+                  @click="item.isStaff ? toggle(index) : false"
+                >
                   <td :colspan="item.isStaff ? 1 : 2" :class="{ 'bg-gray-400': item.isInvitation }">
                     <div v-if="item.isStaff" class="flex items-center justify-between">
                       <div
@@ -96,6 +100,13 @@
                     {{ item.fullName }}
                   </td>
                   <td class="truncate text-left" :class="{ 'bg-gray-400': item.isInvitation }">{{ item.role | roleFilter }}</td>
+                  <td :class="{ 'bg-gray-400': item.isInvitation }">
+                    <SwitchInput
+                      hide-details
+                      disabled
+                      @click.stop.prevent
+                    />
+                  </td>
                   <td class="text-center" :class="{ 'bg-gray-400': item.isInvitation }">
                     <div
                       v-if="deleteUserLoading === item.id"
@@ -111,14 +122,14 @@
                       <button
                         v-if="item.isStaff"
                         class="flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
-                        @click="deleteUser(item.id)"
+                        @click.stop.prevent="deleteUser(item.id)"
                       >
                         <i class="zi-delete" />
                       </button>
                       <button
                         v-else
                         class="flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
-                        @click="cancelInvitation(item.id)"
+                        @click.stop.prevent="cancelInvitation(item.id)"
                       >
                         <i class="zi-delete" />
                       </button>
@@ -128,7 +139,6 @@
                     <button
                       v-if="item.isStaff"
                       class="flex items-center text-2xl text-blue-500 focus:text-blue-600 hover:text-blue-600 focus:outline-none select-none mx-auto"
-                      @click="toggle(index)"
                     >
                       <i
                         v-if="expanded.includes(index)"
@@ -154,13 +164,20 @@
                         }"
                         class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 -mt-1"
                       />
+                      <div
+                        v-if="!item.specs || item.specs.length === 0"
+                        v-html="$t('dataTable.noData')"
+                        class="bg-gray-700 rounded-b-md text-center text-gray-200 leading-tight py-4 -mt-1"
+                      />
                       <DataTable
+                        v-if="item.specs && item.specs.length > 0"
                         :headers="subHeaders"
                         :items="item.specs"
                         hide-headers
                         table-width="100%"
                         table-class="table-fixed -mt-1"
                         flat
+                        hide-no-data
                       >
                         <template v-slot:items="{ items: subItems }">
                           <template v-for="(subItem, i) in subItems">
@@ -346,8 +363,9 @@ export default {
         { text: this.$t('staff.percent'), value: 'margin', align: 'right', width: 66, minWidth: 66, sortable: true },
         { text: this.$t('staff.revenue'), value: 'revenue', align: 'right', width: 118, minWidth: 118, sortable: true },
         { text: this.$t('staff.costOfGoods'), value: 'totalItemsCost', align: 'right', width: 140, minWidth: 140, sortable: true },
-        { text: this.$t('staff.staffName'), value: 'fullName', align: 'left', width: 280, minWidth: 280, class: 'whitespace-no-wrap pl-16', sortable: true },
-        { text: this.$t('staff.access'), value: 'access', align: 'left', width: 139, minWidth: 139, class: 'whitespace-no-wrap', sortable: true },
+        { text: this.$t('staff.staffName'), value: 'fullName', align: 'left', width: 220, minWidth: 220, class: 'whitespace-no-wrap pl-16', sortable: true },
+        { text: this.$t('staff.access'), value: 'access', align: 'left', width: 132, minWidth: 132, class: 'whitespace-no-wrap', sortable: true },
+        { text: this.$t('staff.accessControl'), value: 'accessControl', align: 'left', width: 75, minWidth: 75, class: 'whitespace-no-wrap', sortable: false },
         { text: '', value: 'actions', width: 40, minWidth: 40 },
         { text: '', value: 'expand', width: 50, minWidth: 50 },
       ]
@@ -359,8 +377,8 @@ export default {
         { text: '', value: 'margin', align: 'right', width: '66px', minWidth: '66px' },
         { text: '', value: 'revenue', align: 'right', width: '118px', minWidth: '118px' },
         { text: '', value: 'totalItemsCost', align: 'right', width: '140px', minWidth: '140px' },
-        { text: '', value: 'specNo', align: 'left', width: '280px', minWidth: '280px', class: 'whitespace-no-wrap pl-16' },
-        { text: '', value: 'clientFullName', align: 'left', width: '139px', minWidth: '139px', class: 'whitespace-no-wrap' },
+        { text: '', value: 'specNo', align: 'left', width: '220px', minWidth: '220px', class: 'whitespace-no-wrap pl-16' },
+        { text: '', value: 'clientFullName', align: 'left', width: '207px', minWidth: '207px', class: 'whitespace-no-wrap' },
         { text: '', value: 'actions', width: '40px', minWidth: '40px' },
         { text: '', value: 'expand', width: '50px', minWidth: '50px' },
       ]

@@ -373,25 +373,16 @@ export const LIST_STAFF = gql`
         picture
         role
         inWorkCount
-        finalCost
-        finalObtainCost
-        profit
-        percent
-        totalPrepay
-        totalClientDebt
         revenue
         totalItemsCost
         totalMargin
         diff
+        specStatus
         specs {
           id
           specStatus
           isMoneyRecieved
           isExpensesPaid
-          profit
-          percent
-          finalCost
-          finalObtainCost
           specNo
           clientFullName
           shipped
