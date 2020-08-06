@@ -377,6 +377,7 @@ export const LIST_STAFF = gql`
         totalItemsCost
         totalMargin
         diff
+        specStatus
         specs {
           id
           specStatus
