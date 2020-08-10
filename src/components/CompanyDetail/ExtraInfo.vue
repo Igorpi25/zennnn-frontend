@@ -193,11 +193,25 @@ export default {
     attachFile (val) {
       const files = [...this.files, val]
       this.lazyFiles = files
-      this.updateData({ files })
+      const inputFiles = files.map(el => {
+        return {
+          filename: el.filename,
+          contentType: el.contentType,
+          url: el.url,
+        }
+      })
+      this.updateData({ files: inputFiles })
     },
     removeFile (i) {
       this.lazyFiles.splice(i, 1)
-      this.updateData({ files: this.lazyFiles })
+      const inputFiles = this.lazyFiles.map(el => {
+        return {
+          filename: el.filename,
+          contentType: el.contentType,
+          url: el.url,
+        }
+      })
+      this.updateData({ files: inputFiles })
     },
     updateTags (e) {
       const value = e.target.value || ''

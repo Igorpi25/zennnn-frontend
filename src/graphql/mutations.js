@@ -105,25 +105,6 @@ export const COMPLITE_REGISTRATION = gql`
   }
 `
 
-export const GET_IMAGE_UPLOAD_URL = gql`
-  mutation GetImageUploadUrl($orgId: ID!, $filename: String!) {
-    getImageUploadUrl(orgId: $orgId, filename: $filename) {
-      uploadUrl
-      downloadUrl
-    }
-  }
-`
-
-export const GET_FILE_UPLOAD_URL = gql`
-  mutation GetFileUploadUrl($orgId: ID!, $filename: String!) {
-    getFileUploadUrl(orgId: $orgId, filename: $filename) {
-      uploadUrl
-      downloadUrl
-      contentType
-    }
-  }
-`
-
 export const CREATE_SPEC = gql`
   mutation CreateSpec($orgId: ID!, $clientId: ID) {
     createSpec(orgId: $orgId, clientId: $clientId) {
@@ -231,18 +212,22 @@ export const UPDATE_PRODUCT_STORE = gql`
 export const UPDATE_PRODUCT_INFO = gql`
   mutation UpdateProductInfo($id: ID!, $input: ProductInfoInput!) {
     updateProductInfo(id: $id, input: $input) {
-      images
+      images {
+        url
+        filename
+        contentType
+      }
       description
     }
   }
 `
 export const ADD_PRODUCT_IMAGE = gql`
-  mutation AddProductImage($id: ID!, $inputImages: [String!]!, $unshift: Boolean) {
+  mutation AddProductImage($id: ID!, $inputImages: [AttachFileInput!]!, $unshift: Boolean) {
     addProductImage(id: $id, inputImages: $inputImages, unshift: $unshift)
   }
 `
 export const REMOVE_PRODUCT_IMAGE = gql`
-  mutation RemoveProductImage($id: ID!, $inputImages: [String!]!) {
+  mutation RemoveProductImage($id: ID!, $inputImages: [AttachFileInput!]!) {
     removeProductImage(id: $id, inputImages: $inputImages)
   }
 `
