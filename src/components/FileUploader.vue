@@ -17,7 +17,7 @@
     >
       <slot
         name="drag"
-        :loading="getUploadUrlLoading || uploadLoading || checkLoading"
+        :loading="getUploadUrlLoading || uploadLoading"
         :is-drag-over="isDragOver || hovered"
       >
         <div
@@ -61,7 +61,7 @@
             ]"
           />
           <div
-            v-if="(isDragOver || hovered) && !(getUploadUrlLoading || uploadLoading || checkLoading)"
+            v-if="(isDragOver || hovered) && !(getUploadUrlLoading || uploadLoading)"
             class="absolute inset-0 flex justify-center items-center text-white"
           >
             <Icon :size="isDragOver ? 18 : hoveredIconSize">
@@ -71,7 +71,7 @@
         </div>
       </slot>
     </div>
-    <template v-if="getUploadUrlLoading || uploadLoading || checkLoading">
+    <template v-if="getUploadUrlLoading || uploadLoading">
       <div
         v-if="showPreview && filePreview"
         key="preview"
@@ -99,13 +99,12 @@
       >
         <v-progress-circular
           :value="uploadPercentage"
-          :indeterminate="checkLoading"
           size="28"
         />
       </div>
       <v-scale-transition>
         <div
-          v-if="uploadLoading || checkLoading"
+          v-if="uploadLoading"
           key="cancel"
           class="absolute inset-0 flex justify-center items-center pointer-events-none"
         >
@@ -133,12 +132,11 @@
 <script>
 import axios from 'axios'
 import { mdiPlusThick, mdiClose, mdiMagnifyPlusOutline } from '@mdi/js'
-import { GET_IMAGE_UPLOAD_URL, GET_FILE_UPLOAD_URL } from '../graphql/mutations'
 import {
   ICON_IMAGE_POSTFIX,
   UPLOAD_FILE_SIZE_MB,
-  IMAGE_FILENAME_METADATA,
 } from '../config/globals'
+import { Auth } from '../plugins'
 
 export default {
   name: 'FileUploader',
@@ -183,30 +181,15 @@ export default {
       type: Boolean,
       default: false,
     },
-    checkDownloadUrl: {
-      type: Boolean,
-      default: false,
-    },
-    checkTimeout: {
-      type: Number,
-      default: 300000, // 5 min
-    },
-    checkDelay: {
-      type: Number,
-      default: 1000,
-    },
   },
   data () {
     return {
       internalSrc: '',
-      uploadSrc: null,
       filePreview: null,
       file: null,
       files: [],
-      cancelledUploads: [],
       getUploadUrlLoading: false,
       uploadLoading: false,
-      checkLoading: false,
       isDragOver: false,
       icons: {
         mdiPlusThick,
@@ -292,10 +275,6 @@ export default {
       })
     },
     cancelUpload () {
-      if (!this.cancelledUploads.includes(this.uploadSrc)) {
-        this.cancelledUploads.push(this.uploadSrc)
-      }
-      this.clearSrcCheckTimer()
       if (this.axiosSource) {
         this.axiosSource.cancel('Operation canceled by the user.')
       }
@@ -306,16 +285,15 @@ export default {
       this.uploadPercentage = 0
       this.getUploadUrlLoading = false
       this.uploadLoading = false
-      this.checkLoading = false
       this.$refs.input.value = ''
       this.$emit('update:uploading', false)
     },
-    emitSrc (src) {
+    emitSrc (data) {
       // set filePreview to internalSrc, on src update will be replced
       if (this.filePreview) {
         this.internalSrc = this.filePreview
       }
-      this.$emit('update', src)
+      this.$emit('update', data)
       this.clear()
     },
     /*
@@ -366,64 +344,69 @@ export default {
         if (!file) return
         this.getUploadUrlLoading = true
         this.$emit('update:uploading', true)
-        const mutation = this.uploadType === 'image' ? GET_IMAGE_UPLOAD_URL : GET_FILE_UPLOAD_URL
-        const result = await this.$apollo.mutate({
-          mutation,
-          variables: {
-            orgId: this.$route.params.orgId,
-            filename: file.name,
-          },
-        })
-        const { data } = result
-        const uploadData = this.uploadType === 'image' ? data.getImageUploadUrl : data.getFileUploadUrl
-        this.uploadSrc = uploadData.downloadUrl
-        await this.upload(uploadData, file)
+        await this.upload(file)
       } catch (error) {
         throw new Error(error)
       } finally {
         this.getUploadUrlLoading = false
       }
     },
-    async upload (uploadData, file) {
+    async upload (file) {
+      let token = null
+      try {
+        const session = await Auth.currentSession()
+        token = session.getIdToken().getJwtToken()
+      } catch (error) {} // eslint-disable-line
+
       try {
         this.uploadLoading = true
-        const { uploadUrl, downloadUrl } = uploadData
-        this.$logger.info('Upload file', file, uploadData)
+        this.$logger.info('Upload file', file)
         if (!file) return
-        const filename = window.btoa(unescape(encodeURIComponent(file.name)))
         this.axiosSource = axios.CancelToken.source()
-        await this.axios.put(uploadUrl, file, {
+        const uploadUrl = process.env.VUE_APP_UPLAOD_ENDPOINT
+        const formData = new FormData()
+        formData.append('file', file)
+        const response = await this.axios.put(uploadUrl, formData, {
           headers: {
-            'Content-Type': file.type,
-            [IMAGE_FILENAME_METADATA]: filename,
+            Authorization: token ? `Bearer ${token}` : '',
+          },
+          params: {
+            org_id: this.$route.params.orgId,
           },
           onUploadProgress: (progressEvent) => {
-            this.uploadPercentage = Math.floor(progressEvent.loaded / progressEvent.total * 100)
+            const ratio = progressEvent.loaded / progressEvent.total
+            if (this.uploadType === 'image') {
+              const percent = Math.ceil(ratio * 100)
+              this.uploadPercentage = percent > 97 ? 97 : percent
+            } else {
+              this.uploadPercentage = Math.ceil(ratio * 100)
+            }
           },
           cancelToken: this.axiosSource.token,
         })
-        if (this.cancelledUploads.includes(downloadUrl)) return
-        if (this.checkDownloadUrl) {
-          this.checkLoading = true
-          this.startSrcCheckTimer(downloadUrl)
+        const data = response && response.data
+        if (!data) throw new Error('Upload error.')
+        this.uploadPercentage = 100
+        this.$logger.info('Upload response', data)
+        if (this.uploadType === 'file') {
+          this.$emit('uploaded', data)
+          return data
         } else {
-          if (this.uploadType === 'file') {
-            const data = {
-              filename: file.name,
-              contentType: uploadData.contentType,
-              url: downloadUrl,
-            }
-            this.$emit('uploaded', data)
-            return data
-          } else {
-            this.emitSrc(downloadUrl)
-          }
+          this.emitSrc(data)
         }
-        return downloadUrl
       } catch (error) {
         if (axios.isCancel(error)) {
           this.$logger.info('Request canceled', error.message)
+        } else if (error.response && error.response.data && error.response.data.error && error.response.data.error.message) {
+          this.$notify({
+            color: 'error',
+            text: error.response.data.error.message,
+          })
         } else {
+          this.$notify({
+            color: 'error',
+            text: error.message,
+          })
           throw new Error(error)
         }
       } finally {
@@ -432,36 +415,6 @@ export default {
         this.$emit('update:uploading', false)
         this.axiosSource = null
       }
-    },
-    async checkImageExists (src) {
-      try {
-        const response = await this.$axios.head(src)
-        if (response && response.status === 200) {
-          this.clearSrcCheckTimer()
-          if (this.cancelledUploads.includes(src)) return
-          this.emitSrc(src)
-        }
-      } catch (error) {
-        this.$logger.info('Image head error', error)
-      }
-    },
-    startSrcCheckTimer (src) {
-      this.clearSrcCheckTimer()
-      this.checkLoading = true
-      this.timerId = setInterval(() => {
-        this.checkImageExists(src)
-        this.$logger.info('image src checking...')
-      }, this.checkDelay)
-      this.timeoutId = setTimeout(() => {
-        this.clearSrcCheckTimer()
-      }, this.checkTimeout)
-    },
-    clearSrcCheckTimer () {
-      this.checkLoading = false
-      clearInterval(this.timerId)
-      clearTimeout(this.timeoutId)
-      this.timerId = null
-      this.timeoutId = null
     },
   },
 }

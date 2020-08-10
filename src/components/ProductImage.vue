@@ -18,7 +18,6 @@
             :hovered="menu"
             :src="previewImage"
             show-preview
-            check-download-url
             @update="addImage"
           />
           <div
@@ -47,7 +46,7 @@
         <div class="flex-grow truncate">
           <Spinner v-if="currentImageFilenameLoading" />
           <span v-else>
-            {{ currentImageFilename || currentImage }}
+            {{ currentImage.filename || currentImage.url }}
           </span>
         </div>
       </div>
@@ -60,8 +59,8 @@
       >
         <v-img
           v-for="(img, i) in imagesList"
-          :key="img"
-          :src="`${img}${ICON_IMAGE_POSTFIX}`"
+          :key="img.url"
+          :src="`${img.url}${ICON_IMAGE_POSTFIX}`"
           :class="[
             'rounded-sm h-8 w-8 mr-1 sortable-source focus:outline-none',
             { 'border border-solid border-white': i === currentImageIndex },
@@ -81,7 +80,7 @@
         <div class="w-full rounded overflow-hidden">
           <v-img
             :src="previewImageSrc"
-            :key="currentImage"
+            :key="currentImage.url"
             class="w-full"
             aspect-ratio="1"
           >
@@ -112,7 +111,7 @@
 
 <script>
 import { mdiTrashCanOutline } from '@mdi/js'
-import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX, IMAGE_FILENAME_METADATA } from '../config/globals'
+import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
 import { ADD_PRODUCT_IMAGE, REMOVE_PRODUCT_IMAGE, UPDATE_PRODUCT_INFO } from '../graphql/mutations'
 
 import Sortable from '../plugins/draggable/Sortable'
@@ -171,29 +170,19 @@ export default {
       return this.images || []
     },
     previewImage () {
-      return this.imagesList[0]
+      return this.imagesList[0] && this.imagesList[0].url
     },
     previewImageSrc () {
       if (!this.currentImage) return ''
-      return `${this.currentImage}${PREVIEW_IMAGE_POSTFIX}`
+      return `${this.currentImage.url}${PREVIEW_IMAGE_POSTFIX}`
     },
     iconImageSrc () {
-      if (!this.currentImage) return ''
-      return `${this.previewImage}${ICON_IMAGE_POSTFIX}`
+      if (!this.previewImage) return ''
+      return `${this.previewImage.url}${ICON_IMAGE_POSTFIX}`
     },
     currentImage () {
       const index = this.currentImageIndex || 0
-      return this.imagesList[index]
-    },
-  },
-  watch: {
-    currentImage: {
-      handler (val) {
-        if (val) {
-          this.setMainImageName(val)
-        }
-      },
-      immediate: true,
+      return this.imagesList[index] || {}
     },
   },
   methods: {
@@ -212,23 +201,6 @@ export default {
       }
       this.currentImageIndex = index
     },
-    async setMainImageName (src) {
-      this.currentImageFilename = ''
-      try {
-        this.currentImageFilenameLoading = true
-        const response = await this.$axios.head(src)
-        if (response && response.status === 200) {
-          const filename = response.headers[IMAGE_FILENAME_METADATA]
-          this.currentImageFilename = filename
-            ? decodeURIComponent(escape(window.atob(filename)))
-            : ''
-        }
-      } catch (error) {
-        this.$logger.info('error to try get filename', error)
-      } finally {
-        this.currentImageFilenameLoading = false
-      }
-    },
     async updateImages (images) {
       try {
         this.updateImagesLoading = true
@@ -239,20 +211,18 @@ export default {
         })
       } catch (error) {
         this.$logger.warn('Error: ', error)
-        // Analytics.record({
-        //   name: 'UpdateProductError',
-        //   attributes: {
-        //     error: error
-        //   }
-        // })
       } finally {
         this.updateImagesLoading = false
       }
     },
-    async removeImage (src) {
+    async removeImage (file) {
       try {
-        this.removeLoading = src
-        const inputImages = [src]
+        this.removeLoading = file.url
+        const inputImages = [{
+          url: file.url,
+          filename: file.filename,
+          contentType: file.contentType,
+        }]
         await this.$apollo.mutate({
           mutation: REMOVE_PRODUCT_IMAGE,
           variables: { id: this.productId, inputImages },
@@ -261,32 +231,20 @@ export default {
         this.setCurrentIndex(newIndex)
       } catch (error) {
         this.$logger.warn('Error: ', error)
-        // Analytics.record({
-        //   name: 'UpdateProductError',
-        //   attributes: {
-        //     error: error
-        //   }
-        // })
       } finally {
         this.removeLoading = null
       }
     },
-    async addImage (src) {
+    async addImage (file) {
       try {
         this.addLoading = true
-        const inputImages = [src]
+        const inputImages = [file]
         await this.$apollo.mutate({
           mutation: ADD_PRODUCT_IMAGE,
           variables: { id: this.productId, inputImages, unshift: true },
         })
       } catch (error) {
         this.$logger.warn('Error: ', error)
-        // Analytics.record({
-        //   name: 'UpdateProductError',
-        //   attributes: {
-        //     error: error
-        //   }
-        // })
       } finally {
         this.addLoading = false
       }

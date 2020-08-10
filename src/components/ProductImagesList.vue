@@ -4,7 +4,7 @@
   >
     <div
       v-for="(img) in leadImages"
-      :key="img"
+      :key="img.url"
       class="flex items-center"
     >
       <ProductImage
@@ -15,7 +15,7 @@
       >
         <template v-slot:menu-activator>
           <v-img
-            :src="`${img}${ICON_IMAGE_POSTFIX}`"
+            :src="`${img.url}${ICON_IMAGE_POSTFIX}`"
             :class="[
               'rounded-sm h-8 w-8',
             ]"
@@ -51,7 +51,6 @@
       :loading="loading"
       :uploading.sync="uploading"
       show-preview
-      check-download-url
       @update="addImage"
     />
   </div>
@@ -107,10 +106,10 @@ export default {
     },
   },
   methods: {
-    async addImage (src) {
+    async addImage (file) {
       try {
         this.loading = true
-        const inputImages = [src]
+        const inputImages = [file]
         await this.$apollo.mutate({
           mutation: ADD_PRODUCT_IMAGE,
           variables: { id: this.productId, inputImages },
@@ -121,12 +120,6 @@ export default {
         })
       } catch (error) {
         this.$logger.warn('Error: ', error)
-        // Analytics.record({
-        //   name: 'UpdateProductError',
-        //   attributes: {
-        //     error: error
-        //   }
-        // })
       } finally {
         this.loading = false
       }

@@ -197,7 +197,6 @@
                       hoveredIconSize="18"
                       rounded
                       show-preview
-                      check-download-url
                       style="width:32px; height:32px"
                       @update="updateOrgImage($event, item.id)"
                     />
@@ -425,8 +424,9 @@ export default {
     toggleMenu () {
       this.profileMenu = !this.profileMenu
     },
-    async updateOrgImage (src, orgId) {
+    async updateOrgImage (file, orgId) {
       try {
+        const src = file.url
         await this.$apollo.mutate({
           mutation: SET_ORG_AVATAR,
           variables: { orgId, avatar: src },

@@ -87,6 +87,14 @@ export const CUSTOMS_FRAGMENT = gql`
   }
 `
 
+export const ATTACH_FILE_FRAGMENT = gql`
+  fragment AttachFileFragment on AttachFile {
+    url
+    filename
+    contentType
+  }
+`
+
 export const PRODUCT_FRAGMENT = gql`
   fragment ProductFragment on Product {
     id
@@ -118,7 +126,9 @@ export const PRODUCT_FRAGMENT = gql`
       pkgNo
     }
     info {
-      images
+      images {
+        ...AttachFileFragment
+      }
       description
     }
     link {
@@ -131,6 +141,7 @@ export const PRODUCT_FRAGMENT = gql`
     updatedAt
   }
   ${COMMENT_FRAGMENT}
+  ${ATTACH_FILE_FRAGMENT}
 `
 
 export const PERSON_FRAGMENT = gql`
@@ -155,14 +166,6 @@ export const CONTACT_FRAGMENT = gql`
   fragment ContactFragment on Contact {
     contactType
     contact
-  }
-`
-
-export const ATTACH_FILE_FRAGMENT = gql`
-  fragment AttachFileFragment on AttachFile {
-    url
-    filename
-    contentType
   }
 `
 
@@ -644,7 +647,9 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
     pkgQty
     pkgNo
     # info
-    images
+    images {
+      ...AttachFileFragment
+    }
     description
     # link
     url
@@ -653,6 +658,7 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
     costAmount
   }
   ${COMMENT_FRAGMENT}
+  ${ATTACH_FILE_FRAGMENT}
 `
 
 export const PAPER_INVOICE_FRAGMENT = gql`

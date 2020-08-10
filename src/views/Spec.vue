@@ -154,7 +154,13 @@ export default {
               }
               if (key === 'images') {
                 const merge = (_, source) => {
-                  return source || []
+                  const images = source || []
+                  return images.map(el => {
+                    return {
+                      ...el,
+                      __typename: 'AttachFile',
+                    }
+                  })
                 }
                 return merge
               }
