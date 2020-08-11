@@ -63,7 +63,7 @@
                   </div>
                   <div class="absolute inset-0 overflow-hidden" style="border-radius: 5px;">
                     <v-img
-                      :src="item.images[0]"
+                      :src="item.images[0] && item.images[0].url"
                       aspect-ratio="1"
                     />
                   </div>
