@@ -179,7 +179,7 @@ export default {
       },
       result ({ data, loading }) {
         if (loading) return
-        this.setData(data.getSupplier)
+        this.setData(data && data.getSupplier)
       },
       skip () {
         return this.create

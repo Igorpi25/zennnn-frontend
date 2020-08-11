@@ -287,7 +287,6 @@ export default {
       },
       fetchPolicy: 'cache-and-network',
     },
-
   },
   data () {
     return {

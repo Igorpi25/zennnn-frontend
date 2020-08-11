@@ -182,7 +182,7 @@ export default {
       },
       result ({ data, loading }) {
         if (loading) return
-        this.setData(data.getOrgRequisite)
+        this.setData(data && data.getOrgRequisite)
       },
       skip () {
         return this.create

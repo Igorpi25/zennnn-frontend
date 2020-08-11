@@ -550,7 +550,7 @@ export default {
       },
       result ({ data, loading }) {
         if (!loading && !this.isBooted) {
-          const spec = data.getPaperSpec || {}
+          const spec = (data && data.getPaperSpec) || {}
           this.updateExpanded(spec)
         }
       },
