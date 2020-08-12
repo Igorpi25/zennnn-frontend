@@ -191,14 +191,63 @@
                       :loading="updateOrgImageLoading[item.id]"
                       :uploading.sync="updateOrgImageUploading[item.id]"
                       :src="item.picture"
-                      :hovered="updateOrgImageHovered[item.id]"
-                      hoveredIcon="mdiPlusThick"
-                      hoveredIconSize="18"
                       rounded
-                      show-preview
-                      style="width: 32px; height: 32px;"
+                      class="w-8 h-8"
                       @update="updateOrgImage($event, item.id)"
-                    />
+                    >
+                      <template v-slot:drag="{ internalSrc, isDragOver, loading }">
+                        <div class="w-8 h-8 rounded-full">
+                          <div
+                            v-if="!internalSrc"
+                            :class="[
+                              'bg-gray-800 border border-dashed border-transparent w-full h-full flex justify-center items-center text-gray-300 hover:text-gray-100 rounded-full',
+                              { 'border-gray-300': isDragOver },
+                            ]"
+                          >
+                            <i>
+                              <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="0.773926" y="5.50012" width="11" height="1" stroke="currentColor"/>
+                                <rect x="6.77393" y="0.500122" width="11" height="1" transform="rotate(90 6.77393 0.500122)" stroke="currentColor"/>
+                              </svg>
+                            </i>
+                          </div>
+                          <div
+                            v-else
+                            :class="[
+                              'w-full h-full rounded-full',
+                            ]"
+                          >
+                            <v-img
+                              :src="item.picture"
+                              aspect-ratio="1"
+                              class="rounded-full"
+                            >
+                              <template v-slot:placeholder>
+                                <div class="flex justify-center items-center w-full h-full">
+                                  <Spinner />
+                                </div>
+                              </template>
+                            </v-img>
+                            <div
+                              v-if="isDragOver || updateOrgImageHovered[item.id]"
+                              :class="[
+                                'border border-transparent border-dashed absolute inset-0 w-full h-full bg-black opacity-35 rounded-full',
+                                { 'border-white': isDragOver },
+                              ]"
+                            />
+                            <div
+                              v-if="(isDragOver || updateOrgImageHovered[item.id]) && !loading"
+                              class="absolute inset-0 flex justify-center items-center text-white"
+                            >
+                              <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="0.773926" y="5.50012" width="11" height="1" stroke="currentColor"/>
+                                <rect x="6.77393" y="0.500122" width="11" height="1" transform="rotate(90 6.77393 0.500122)" stroke="currentColor"/>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      </template>
+                    </FileUploader>
                   </div>
                   <div
                     v-else-if="item.picture"
