@@ -30,12 +30,12 @@
             @input="onContactTypeSelect"
           >
             <template v-slot:prepend>
-              <div class="w-6 mr-2">
+              <div class="w-6 inline-flex justify-center mr-2">
                 <img :src="require(`@/assets/img/contacts/${currentIcon}.svg`)">
               </div>
             </template>
             <template v-slot:item="{ item }">
-              <div class="w-6 ml-1 mr-12">
+              <div class="w-6 inline-flex justify-center ml-1 mr-12">
                 <img :src="require(`@/assets/img/contacts/${item.icon}.svg`)">
               </div>
               <span class="text-gray-200">{{ item.text }}</span>
@@ -151,6 +151,11 @@ export default {
           text: 'Skype',
           value: ContactType.SKYPE,
           icon: 'skype',
+        },
+        {
+          text: 'Email',
+          value: ContactType.EMAIL,
+          icon: 'email',
         },
       ]
     },

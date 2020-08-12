@@ -87,6 +87,14 @@ export const CUSTOMS_FRAGMENT = gql`
   }
 `
 
+export const ATTACH_FILE_FRAGMENT = gql`
+  fragment AttachFileFragment on AttachFile {
+    url
+    filename
+    contentType
+  }
+`
+
 export const PRODUCT_FRAGMENT = gql`
   fragment ProductFragment on Product {
     id
@@ -118,7 +126,9 @@ export const PRODUCT_FRAGMENT = gql`
       pkgNo
     }
     info {
-      images
+      images {
+        ...AttachFileFragment
+      }
       description
     }
     link {
@@ -131,6 +141,7 @@ export const PRODUCT_FRAGMENT = gql`
     updatedAt
   }
   ${COMMENT_FRAGMENT}
+  ${ATTACH_FILE_FRAGMENT}
 `
 
 export const PERSON_FRAGMENT = gql`
@@ -155,14 +166,6 @@ export const CONTACT_FRAGMENT = gql`
   fragment ContactFragment on Contact {
     contactType
     contact
-  }
-`
-
-export const ATTACH_FILE_FRAGMENT = gql`
-  fragment AttachFileFragment on AttachFile {
-    url
-    filename
-    contentType
   }
 `
 
@@ -235,6 +238,25 @@ export const SUPPLIER_FRAGMENT = gql`
   ${PHONE_FRAGMENT}
   ${CONTACT_FRAGMENT}
   ${ATTACH_FILE_FRAGMENT}
+`
+
+export const SUPPLIER_ITEM_FRAGMENT = gql`
+  fragment SupplierItemFragment on SupplierItem {
+    id
+    uid
+    locale
+    createdAt
+    updatedAt
+    companyName
+    contactPersonFullName
+    contactPhone
+    email
+    tags
+    dealsCount
+    cost
+    debt
+    totalCost
+  }
 `
 
 export const INVOICE_FRAGMENT = gql`
@@ -383,6 +405,27 @@ export const CLIENT_FRAGMENT = gql`
   ${PHONE_FRAGMENT}
   ${CONTACT_FRAGMENT}
   ${ATTACH_FILE_FRAGMENT}
+`
+
+export const CLIENT_ITEM_FRAGMENT = gql`
+  fragment ClientItemFragment on ClientItem {
+    id
+    groupId
+    uid
+    clientType
+    locale
+    createdAt
+    updatedAt
+    fullName
+    contactPersonFullName
+    contactPhone
+    email
+    tags
+    dealsCount
+    prepayment
+    debt
+    turnover
+  }
 `
 
 export const SPEC_FRAGMENT = gql`
@@ -604,7 +647,9 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
     pkgQty
     pkgNo
     # info
-    images
+    images {
+      ...AttachFileFragment
+    }
     description
     # link
     url
@@ -613,6 +658,7 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
     costAmount
   }
   ${COMMENT_FRAGMENT}
+  ${ATTACH_FILE_FRAGMENT}
 `
 
 export const PAPER_INVOICE_FRAGMENT = gql`

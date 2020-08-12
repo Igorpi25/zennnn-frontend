@@ -22,7 +22,7 @@
           <Button
             v-if="!isComponent"
             outlined
-            style="min-width: 120px;"
+            min-width="120"
             @click="goBack"
           >
             <span>{{ showFillLaterButton ? $t('requisite.fillLater') : $t('requisite.back') }}</span>
@@ -182,7 +182,7 @@ export default {
       },
       result ({ data, loading }) {
         if (loading) return
-        this.setData(data.getOrgRequisite)
+        this.setData(data && data.getOrgRequisite)
       },
       skip () {
         return this.create

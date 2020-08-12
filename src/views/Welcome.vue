@@ -2,7 +2,7 @@
   <div class="content">
     <Header />
     <section class="flex-grow container relative welcome--top">
-      <h2 class="text-32 text-gray-75 font-semibold leading-none pb-6">
+      <h2 class="text-32 text-light-gray-400 font-semibold leading-none pb-6">
         {{ $t('welcome.title') }}
       </h2>
       <div class="w-full md:w-1/2">
@@ -11,7 +11,7 @@
         <div v-if="username" class="pb-6">
           <Button
             :loading="loading"
-            style="min-width: 120px;"
+            min-width="120"
             @click.prevent="resendSignUp"
           >
             <span>{{ $t('welcome.resend') }}</span>

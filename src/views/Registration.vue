@@ -10,11 +10,11 @@
                 <span class="text-gray-100 mr-2 inline md:block">
                   {{ $t('signup.hello') }}
                 </span>
-                <span class="text-white inline sm:block" style="max-width:552px;">
+                <span class="text-white inline sm:block" style="max-width: 552px;">
                   {{ $t('signup.helloContent') }}
                 </span>
               </h1>
-              <p class="text-white mb-0 md:mb-5" style="max-width:460px;">
+              <p class="text-white mb-0 md:mb-5" style="max-width: 460px;">
                 <span>{{ $t('signup.compliteRegistration') }}</span>&nbsp;
                 <span class="text-gray-100">
                   {{ $t('signup.registerContent') }}
@@ -87,7 +87,7 @@
                       @click="showPassword = !showPassword"
                     >
                       <i v-if="showPassword" class="zi-eye align-middle" />
-                      <i v-else class=" zi-eye-off align-middle" style="font-size: 28px" />
+                      <i v-else class=" zi-eye-off align-middle text-28" />
                     </div>
                   </template>
                 </TextField>

@@ -2,7 +2,7 @@
   <div class="flex-grow flex">
     <div class="auth-left container flex-shrink-0 hidden sm:flex flex-col bg-gray-700">
       <div class="signin--top flex-grow lg:pl-8">
-        <div class="auth-left--bg absolute pointer-events-none bottom-0 left-0 top-0" style="right: 50%" />
+        <div class="auth-left--bg absolute pointer-events-none bottom-0 left-0 top-0 right-1/2" />
         <div class="pt-2 pb-12 lg:pl-12">
           <router-link to="/" class="focus:outline-none">
             <img src="@/assets/img/logo-dark.svg" alt="Logo">
@@ -75,7 +75,7 @@
                 @click="showPassword = !showPassword"
               >
                 <i v-if="showPassword" class="zi-eye align-middle" />
-                <i v-else class=" zi-eye-off align-middle" style="font-size: 28px" />
+                <i v-else class=" zi-eye-off align-middle text-28" />
               </div>
             </template>
           </TextField>
@@ -186,7 +186,7 @@
               @click="compliteShowPassword = !compliteShowPassword"
             >
               <i v-if="compliteShowPassword" class="zi-eye align-middle" />
-              <i v-else class="zi-eye-off align-middle" style="font-size: 28px" />
+              <i v-else class="zi-eye-off align-middle text-28" />
             </div>
           </template>
         </TextField>

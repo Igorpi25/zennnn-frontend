@@ -28,13 +28,12 @@
         :placeholder="placeholder"
         :class="[
           'w-full text-current appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out',
-          'placeholder-gray-200 px-sm py-3',
+          'placeholder-gray-200 resize-none px-sm py-3',
           { 'cursor-not-allowed': disabled },
           { 'cursor-wait': !disabled && loading },
           { 'pr-7': hasState },
           inputClass,
         ]"
-        style="resize:none"
         @input="onInput"
         @focus="onFocus"
         @blur="onBlur"

@@ -1,8 +1,24 @@
 <template>
   <div>
+    <textarea
+      ref="input"
+      :value="comment"
+      :disabled="loading"
+      :placeholder="label"
+      :class="[
+        'px-xs placeholder-blue-500 resize-none',
+        'w-full appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out',
+        light ? 'text-gray-900 focus:placeholder-gray-100' : 'text-white focus:placeholder-gray-200',
+      ]"
+      rows="1"
+      @input="onInput"
+      @focus="onFocus"
+      @blur="onBlur"
+      @keydown.enter="handleMeta"
+    />
     <div
       v-if="isFocused"
-      class="flex pb-3"
+      class="flex pt-3"
     >
       <div class="flex-grow" />
       <Button
@@ -18,7 +34,7 @@
       <Button
         :disabled="!comment"
         :loading="loading"
-        :merge-class="!comment ? ['h-8', light ? 'bg-gray-100 text-gray-75' : 'bg-gray-300'] : 'h-8'"
+        :merge-class="!comment ? ['h-8', light ? 'bg-gray-100 text-light-gray-400' : 'bg-gray-300'] : 'h-8'"
         content-class="w-full flex items-center justify-center text-xs"
         min-width="68"
         @click="submitComment"
@@ -26,24 +42,6 @@
         {{ $t('comments.post') }}
       </Button>
     </div>
-    <textarea
-      ref="input"
-      :value="comment"
-      :disabled="loading"
-      :placeholder="label"
-      :class="[
-        'px-xs',
-        'placeholder-blue-500',
-        'w-full appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out',
-        light ? 'text-gray-900 focus:placeholder-gray-100' : 'text-white focus:placeholder-gray-200',
-      ]"
-      rows="1"
-      style="resize:none"
-      @input="onInput"
-      @focus="onFocus"
-      @blur="onBlur"
-      @keydown.enter="handleMeta"
-    />
   </div>
 </template>
 

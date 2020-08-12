@@ -89,7 +89,7 @@
                     <path d="M20.0255 7.61465C19.9148 3.53146 16.5588 0.243652 12.4494 0.243652C10.5615 0.243652 8.7527 0.94209 7.35606 2.2102C6.15264 3.30286 5.33945 4.73943 5.02103 6.31317C3.88337 6.55781 2.84495 7.14628 2.04152 8.01239C1.06005 9.07064 0.519531 10.4487 0.519531 11.8927C0.519531 15.0399 3.07994 17.6003 6.22713 17.6003C6.23458 17.6003 6.24194 17.6002 6.24733 17.6002H7.20958V15.7288H6.23959L6.22178 15.729C4.10894 15.7261 2.39088 14.0063 2.39088 11.8927C2.39088 9.90689 3.9392 8.22731 5.91583 8.06911L6.69245 8.00695L6.772 7.23197C7.0713 4.31479 9.51208 2.11495 12.4494 2.11495C15.5965 2.11495 18.157 4.67536 18.157 7.82254V9.45998H19.5137C21.242 9.45998 22.6481 10.8661 22.6481 12.5945C22.6481 14.3228 21.242 15.7289 19.5137 15.7289L17.8762 15.7286V17.6001H19.4832C19.4934 17.6002 19.5035 17.6004 19.5137 17.6004C22.2739 17.6004 24.5195 15.3547 24.5195 12.5945C24.5195 10.007 22.5463 7.87171 20.0255 7.61465Z" fill="currentColor"/>
                   </svg>
                 </div>
-                <div style="font-size: 13px;">
+                <div class="text-13">
                   {{ $t('companyDetail.placeholder.attachFile') }}
                 </div>
               </div>
@@ -193,11 +193,25 @@ export default {
     attachFile (val) {
       const files = [...this.files, val]
       this.lazyFiles = files
-      this.updateData({ files })
+      const inputFiles = files.map(el => {
+        return {
+          filename: el.filename,
+          contentType: el.contentType,
+          url: el.url,
+        }
+      })
+      this.updateData({ files: inputFiles })
     },
     removeFile (i) {
       this.lazyFiles.splice(i, 1)
-      this.updateData({ files: this.lazyFiles })
+      const inputFiles = this.lazyFiles.map(el => {
+        return {
+          filename: el.filename,
+          contentType: el.contentType,
+          url: el.url,
+        }
+      })
+      this.updateData({ files: inputFiles })
     },
     updateTags (e) {
       const value = e.target.value || ''

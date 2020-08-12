@@ -4,7 +4,7 @@
     <Header light :org="orgId">
       <template v-slot:breadcrumbs>
         <div class="flex items-center pl-2 sm:pl-6">
-          <i class="hidden sm:block zi-chevron-up text-2xl text-gray-75 transform rotate-90" />
+          <i class="hidden sm:block zi-chevron-up text-2xl text-light-gray-400 transform rotate-90" />
           <div class="hidden sm:block ml-2 sm:ml-6">
             {{ $t('payment.title') }}
           </div>
@@ -24,14 +24,14 @@
         <div class="flex sm:flex-1 items-center w-full">
           <div class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0" :class="{ 'bg-gray-100': !profile.picture }">
             <img v-if="profile.picture" :src="profile.picture" alt="Avatar" class="w-full h-full object-cover">
-            <i v-else class="zi-user text-3xl text-gray-75" />
+            <i v-else class="zi-user text-3xl text-light-gray-400" />
           </div>
           <div class="pl-4">
             <div class="text-lg font-medium">{{ `${profile.givenName} ${profile.familyName}` }}</div>
             <div class="text-gray-100">{{ profile.email }}</div>
           </div>
         </div>
-        <div class="sm:flex-1 w-full sm:max-w-xs border-t sm:border-t-0 sm:border-l border-gray-75 pt-4 mt-4 sm:mt-0 sm:pt-0 sm:ml-6 sm:pl-6">
+        <div class="sm:flex-1 w-full sm:max-w-xs border-t sm:border-t-0 sm:border-l border-light-gray-400 pt-4 mt-4 sm:mt-0 sm:pt-0 sm:ml-6 sm:pl-6">
           <div class="flex justify-between">
             <div>
               <div class="h-6 text-lg font-semibold mb-xs">{{ productName }}</div>
@@ -84,7 +84,7 @@
           return-object
           item-value="id"
           item-text="title"
-          content-class="bg-white shadow-gray-75"
+          content-class="bg-white shadow-light-gray-400"
           prepend-slot-class="w-auto flex-grow text-base text-gray-900"
         >
           <template v-if="selectedProduct" v-slot:prepend>
@@ -100,7 +100,7 @@
           </template>
         </Select>
       </div>
-      <div class="border-b border-gray-75 my-16" />
+      <div class="border-b border-light-gray-400 my-16" />
       <!-- PAYMENT TYPE -->
       <div v-if="selectedProduct && selectedProduct.name === 'Premium'">
         <h3 class="text-2xl pb-4">{{ $t('payment.contactTitle') }}:</h3>
@@ -121,7 +121,7 @@
         >
           <div class="sm:w-64">{{ $t('payment.invoiceAmount') }}</div>
           <div class="hidden sm:block md:w-64 mx-8">
-            <div class="h-px bg-gray-75 w-full" />
+            <div class="h-px bg-light-gray-400 w-full" />
           </div>
           <div class="flex items-center w-full">
             <span class="font-bold">{{ invoiceProduct.price }}</span>
@@ -135,7 +135,7 @@
         >
           <div class="sm:w-64">{{ $t('payment.extendMonth') }}</div>
           <div class="hidden sm:block md:w-64 mx-8">
-            <div class="h-px bg-gray-75 w-full" />
+            <div class="h-px bg-light-gray-400 w-full" />
           </div>
           <div class="flex items-center w-full">
             <span class="font-bold">{{ promoProduct.price }}</span>
@@ -169,7 +169,7 @@
               <span class="ml-4">{{ $t('payment.monthly') }}</span>
             </RadioInput>
             <div class="hidden sm:block md:w-64 mx-8">
-              <div class="h-px bg-gray-75 w-full" />
+              <div class="h-px bg-light-gray-400 w-full" />
             </div>
             <div class="flex flex-wrap sm:flex-no-wrap justify-end sm:justify-start items-center w-full">
               <span class="font-bold">{{ selectedProduct.mPrice }}</span>
@@ -198,7 +198,7 @@
               <span class="ml-4">{{ $t('payment.annual') }}</span>
             </RadioInput>
             <div class="hidden sm:block md:w-64 mx-8">
-              <div class="h-px bg-gray-75 w-full" />
+              <div class="h-px bg-light-gray-400 w-full" />
             </div>
             <div class="flex flex-wrap sm:flex-no-wrap justify-end sm:justify-start items-center w-full">
               <span class="font-bold">{{ selectedProduct.aPriceTotal }}</span>
@@ -237,7 +237,7 @@
       </div>
       <v-expand-transition>
         <div v-show="selectedProduct && selectedProduct.name !== 'Premium'">
-          <div class="border-b border-gray-75 my-16" />
+          <div class="border-b border-light-gray-400 my-16" />
           <PaymentCard
             :default-payment-method-id="defaultPm && defaultPm.id"
             :payment-type="paymentType"

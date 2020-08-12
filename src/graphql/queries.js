@@ -4,7 +4,9 @@ import {
   INVOICE_FRAGMENT,
   PRODUCT_FRAGMENT,
   CLIENT_FRAGMENT,
+  CLIENT_ITEM_FRAGMENT,
   SUPPLIER_FRAGMENT,
+  SUPPLIER_ITEM_FRAGMENT,
   SUPPLIER_BRANCH_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
   ORG_CONTRACT_FRAGMENT,
@@ -126,33 +128,34 @@ export const GET_PROFILE = gql`
 `
 
 export const GET_SPECS = gql`
-  query GetSpecs($orgId: ID!) {
-    getSpecs(orgId: $orgId) {
-      ...SpecFragment
+  query GetSpecs($orgId: ID!, $clientsIds: [ID!], $clientType: ClientType) {
+    getSpecs(orgId: $orgId, clientsIds: $clientsIds, clientType: $clientType) {
+      id
+      specStatus
+      isMoneyRecieved
+      isExpensesPaid
+      finalCost
+      margin
+      specNo
+      shipped
+      hasNewComment
+      createdAt
+      updatedAt
       client {
         id
+        groupId
         uid
         clientType
+        locale
         createdAt
         updatedAt
-        # legal
-        companyName
-        phone {
-          phone
-        }
-        fax {
-          phone
-        }
-        # private
-        passportId
-        mobilePhone {
-          phone
-        }
         fullName
+        contactPersonFullName
+        contactPhone
+        email
       }
     }
   }
-  ${SPEC_FRAGMENT}
 `
 
 export const GET_SPEC = gql`
@@ -226,11 +229,30 @@ export const LIST_CLIENTS = gql`
   query ListClients($orgId: ID!) {
     listClients(orgId: $orgId) {
       items {
-        ...ClientFragment
+        ...ClientItemFragment
       }
     }
   }
-  ${CLIENT_FRAGMENT}
+  ${CLIENT_ITEM_FRAGMENT}
+`
+
+export const GET_CLIENTS_BY_ID = gql`
+  query GetClientsById($orgId: ID!, $ids: [ID!]) {
+    getClientsById(orgId: $orgId, ids: $ids) {
+      items {
+        id
+        groupId
+        uid
+        clientType
+        createdAt
+        updatedAt
+        contactPerson {
+          fullName
+        }
+        tags
+      }
+    }
+  }
 `
 
 export const SEARCH_CLIENTS = gql`
@@ -267,15 +289,11 @@ export const LIST_SUPPLIERS = gql`
   query ListSuppliers($orgId: ID!) {
     listSuppliers(orgId: $orgId) {
       items {
-        ...SupplierFragment
-        branches {
-          ...SupplierBranchFragment
-        }
+        ...SupplierItemFragment
       }
     }
   }
-  ${SUPPLIER_FRAGMENT}
-  ${SUPPLIER_BRANCH_FRAGMENT}
+  ${SUPPLIER_ITEM_FRAGMENT}
 `
 
 export const SEARCH_SUPPLIERS = gql`
@@ -355,24 +373,34 @@ export const LIST_STAFF = gql`
         picture
         role
         inWorkCount
-        finalCost
-        finalObtainCost
-        profit
-        percent
-        totalPrepay
-        totalClientDebt
+        revenue
+        totalItemsCost
+        totalMargin
+        diff
+        specStatus
         specs {
           id
           specStatus
-          moneyPaid
-          moneyReceived
-          profit
-          percent
-          finalCost
-          finalObtainCost
+          isMoneyRecieved
+          isExpensesPaid
           specNo
           clientFullName
+          shipped
+          revenue
+          totalItemsCost
+          totalMargin
+          diff
         }
+      }
+      invitations {
+        id
+        invitationEmail
+        invitationGivenName
+        invitationFamilyName
+        invitationRole
+        status
+        createdAt
+        updatedAt
       }
     }
   }

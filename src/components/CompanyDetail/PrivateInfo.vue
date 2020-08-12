@@ -291,13 +291,6 @@ export default {
     updatePersonMatch (val) {
       this.isPersonMatch = val
       const input = { isPersonMatch: val }
-      if (val) {
-        input.person = {
-          firstName: this.contactPerson.firstName,
-          lastName: this.contactPerson.lastName,
-          middleName: this.person.middleName,
-        }
-      }
       this.updateData(input)
     },
     updateContactPerson (personInput) {
@@ -306,19 +299,10 @@ export default {
         lastName: this.contactPerson.lastName,
       }, personInput)
       const input = { contactPerson: value }
-      if (this.isPersonMatch) {
-        input.person = {
-          firstName: value.firstName,
-          lastName: value.lastName,
-          middleName: this.person.middleName,
-        }
-      }
       this.updateData(input)
     },
     updatePerson (input) {
       const value = Object.assign({}, {
-        firstName: this.person.firstName,
-        lastName: this.person.lastName,
         middleName: this.person.middleName,
       }, input)
       this.updateData({ person: value })

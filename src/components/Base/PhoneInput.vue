@@ -56,8 +56,10 @@
               :src="`/static/flags/${item.value}.svg`"
               class="w-6 rounded-sm mr-2"
             >
-            <span class="text-white pr-1">{{ item.code }}</span>
-            <span class="text-gray-200">{{ item.placeholder }}</span>
+            <span class="text-white pr-1">
+              {{ item.country }}
+            </span>
+            <span class="text-gray-200">{{ item.code }}</span>
           </template>
         </Select>
       </template>
@@ -183,8 +185,10 @@ export default {
           const codeUnformatted = this.phonesUnformatted[k]
           const placeholder = phonesPlaceholder[k]
           const mask = phonesMask[k]
+          const country = this.$te(`countries.${k}`, 'en') ? this.$t(`countries.${k}`, 'en') : k
           return {
             code,
+            country: this.$te(`countries.${k}`) ? this.$t(`countries.${k}`) : country,
             codeUnformatted,
             placeholder,
             mask,

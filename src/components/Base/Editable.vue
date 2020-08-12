@@ -6,7 +6,7 @@
       :id="id"
       :placeholder="compPlaceholder"
       :class="[
-        'editable placeholder-blue-500 focus:placeholder-gray-150',
+        'editable placeholder-blue-500 focus:placeholder-light-gray-800',
         {
           'editable--focused': isFocused,
           'editable--outlined': outlined,
@@ -31,7 +31,7 @@
       :id="id"
       :placeholder="compPlaceholder"
       :class="[
-        'editable placeholder-blue-500 focus:placeholder-gray-150',
+        'editable placeholder-blue-500 focus:placeholder-light-gray-800',
         {
           'editable--focused': isFocused,
           'editable--outlined': outlined,
@@ -481,7 +481,7 @@ div[contenteditable=true]:empty::before {
   overflow: visible;
   text-overflow: clip;
   white-space: normal;
-  @apply bg-gray-darkest;
+  @apply bg-gray-700;
 }
 .editable--outlined {
   border: 1px solid #E0E0E0;
@@ -506,6 +506,6 @@ div.editable::placeholder {
 }
 
 div.editable:focus::placeholder {
-  @apply text-gray-150;
+  @apply text-light-gray-800;
 }
 </style>

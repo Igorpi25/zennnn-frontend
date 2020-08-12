@@ -3,7 +3,7 @@
 
     <StaffCreateModal
       v-model="createStaffDialog"
-      @update="refetchInvitations"
+      @update="refetchItems"
     />
 
     <div class="container container--sm">
@@ -14,80 +14,110 @@
           <TextField
             v-model="search"
             :placeholder="$t('placeholder.pageSearch')"
-            class="w-full sm:w-64"
-            content-class="input-transparent"
+            class="w-full flex-shrink-0 md:max-w-md pb-4 md:pr-8"
+            content-class="bg-transparent"
             input-class="placeholder-blue-500"
+            append-slot-class="w-auto"
           >
             <template v-slot:prepend>
               <i class="zi-magnifier text-2xl text-gray-100"></i>
             </template>
+            <template v-slot:append v-if="search">
+              <i
+                class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+                @click="search = null"
+              />
+            </template>
           </TextField>
         </div>
 
-        <div class="overflow-x-auto pb-4">
+        <div class="overflow-x-auto overflow-scroll-touch pb-4">
           <DataTable
             :headers="headers"
             :items="items"
             :search="search"
             table-width="100%"
             table-class="table-fixed"
+            hide-no-data
           >
-            <template v-slot:header.status="{ header }">
-              <td
-                :width="header.width + 'px'"
-                class="px-3"
-              >
-                <div class="ml-6 w-3 h-3 rounded-full border border-gray-400" />
-              </td>
+            <template v-slot:header.inWorkCount-content>
+              <span class="truncate inline-block max-w-full align-middle pl-6">
+                {{ $t('staff.inWork') }}
+              </span>
             </template>
-            <template v-slot:header.debt="{ header }">
-              <td
-                :width="header.width + 'px'"
-                class="px-3"
-              >
-                ($→)
-              </td>
+            <template v-slot:header.fullName-content="{ header }">
+              <span class="truncate inline-block align-middle" :style="{ maxWidth: (header.width - 24) + 'px' }">
+                {{ header.text }}
+              </span>
             </template>
-            <template v-slot:header.fullName="{ header }">
-              <td
-                :width="header.width + 'px'"
-                class="text-left pl-10"
-              >
-                {{ $t('staff.fullName') }}
-              </td>
+            <template v-slot:header.role-content="{ header }">
+              <span class="truncate inline-block align-middle" :style="{ maxWidth: (header.width - 24) + 'px' }">
+                {{ header.text }}
+              </span>
             </template>
-
-             <template v-slot:items="{ items }">
-              <template v-for="(item, index) in items">
-                <tr :key="item.id">
-                  <td class="relative px-3">
-                    <span
-                      :class="[
-                        'ml-6 w-3 h-3 rounded-full',
-                        item.specStatus === SpecStatus.IN_STOCK
-                          ? 'bg-green-500' : item.specStatus === SpecStatus.IN_PRODUCTION
-                            ? 'bg-yellow-500' : item.specStatus === SpecStatus.IN_PROCESSING
-                              ? 'bg-pink-500' : 'bg-gray-800'
-                      ]"
-                    >
-                    </span>
-                  </td>
-                  <td>
-                    <span class="flex item-center">
-                      <span>{{ item.inWorkCount }}</span>
-                    </span>
-                  </td>
-                  <td class="text-right">{{ $n(item.profit || 0, 'fixed') }}</td>
-                  <td class="text-right">{{ $n(item.percent) }}%</td>
-                  <td class="text-right">{{ $n(item.finalObtainCost || 0, 'fixed') }}</td>
-                  <td class="text-right">{{ $n(item.finalCost || 0, 'fixed') }}</td>
-                  <td class="text-left">
-                    <div class="pl-2 leading-tight">
-                      {{ item.givenName }} {{ item.familyName }}
+            <template v-slot:items="{ items }">
+              <template v-for="(item) in items">
+                <tr
+                  :key="item.id"
+                  :class="[{ 'hover:bg-gray-500 cursor-pointer': item.isStaff }, { 'text-white expanded': expanded.includes(item.id) }]"
+                  @click="item.isStaff ? toggle(item.id) : false"
+                >
+                  <td :colspan="item.isStaff ? 1 : 2" :class="{ 'bg-gray-400': item.isInvitation }">
+                    <div v-if="item.isStaff" class="flex items-center justify-between">
+                      <div
+                        :class="[
+                          'w-3 h-3 rounded-full ml-5 mr-3',
+                          item.specStatus === SpecStatus.IN_STOCK
+                            ? 'bg-green-500' : item.specStatus === SpecStatus.IN_PRODUCTION
+                              ? 'bg-yellow-500' : item.specStatus === SpecStatus.IN_PROCESSING
+                                ? 'bg-pink-500' : 'bg-gray-800'
+                        ]"
+                      >
+                      </div>
+                      <div class="truncate">
+                        {{ item.inWorkCount }}
+                      </div>
                     </div>
+                    <span v-else class="whitespace-no-wrap pl-4">
+                      {{ $t('staff.invitationFrom') }}: {{ $d($parseDate(item.createdAt), 'short') }}
+                    </span>
                   </td>
-                  <td class="text-left">{{ item.role | roleFilter }}</td>
-                  <td class="text-center">
+                  <td v-if="item.isStaff" :class="['truncate text-right', { 'text-green-500': item.diff > 0 }, { 'text-pink-500' :item.diff < 0 }]">
+                    {{ $n(item.diff || 0) }}
+                  </td>
+                  <td :colspan="item.isStaff ? 1 : 2" class="truncate text-right" :class="{ 'bg-gray-400': item.isInvitation }">
+                    <span v-if="item.isStaff">
+                      {{ $n(item.totalMargin) }}%
+                    </span>
+                    <span v-else class="pl-8">
+                      {{ item.invitationEmail }}
+                    </span>
+                  </td>
+                  <td v-if="item.isStaff" class="truncate text-right">
+                    <span>
+                      {{ $n(item.revenue || 0) }}
+                    </span>
+                  </td>
+                  <td class="truncate text-right" :class="{ 'bg-gray-400': item.isInvitation }">
+                    <span v-if="item.isStaff">
+                      {{ $n(item.totalItemsCost || 0) }}
+                    </span>
+                    <span v-else class="text-left block align-middle pl-12" :class="[item.status === InvitationStatus.PENDING ? 'text-yellow-500' : item.status === InvitationStatus.DECLINED ? 'text-pink-500' : item.status === InvitationStatus.ACCEPTED ? 'text-green-500' : '']">
+                      {{ item.status | statusFilter }}
+                    </span>
+                  </td>
+                  <td class="truncate text-left leading-tight pl-16" :class="{ 'bg-gray-400': item.isInvitation }">
+                    {{ item.fullName }}
+                  </td>
+                  <td class="truncate text-left" :class="{ 'bg-gray-400': item.isInvitation }">{{ item.role | roleFilter }}</td>
+                  <td :class="{ 'bg-gray-400': item.isInvitation }">
+                    <SwitchInput
+                      hide-details
+                      disabled
+                      @click.stop.prevent
+                    />
+                  </td>
+                  <td class="text-center" :class="{ 'bg-gray-400': item.isInvitation }">
                     <div
                       v-if="deleteUserLoading === item.id"
                       class="flex items-center justify-center"
@@ -98,129 +128,147 @@
                         width="2"
                       />
                     </div>
-                    <button
-                      v-else
-                      class="flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
-                      @click="deleteUser(item.id)"
-                    >
-                      <i class="zi-delete" />
-                    </button>
+                    <template v-else>
+                      <button
+                        v-if="item.isStaff"
+                        class="flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
+                        @click.stop.prevent="deleteUser(item.id)"
+                      >
+                        <i class="zi-delete" />
+                      </button>
+                      <button
+                        v-else
+                        class="flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
+                        @click.stop.prevent="cancelInvitation(item.id)"
+                      >
+                        <i class="zi-delete" />
+                      </button>
+                    </template>
                   </td>
-                  <td>
+                  <td :class="{ 'bg-gray-400': item.isInvitation }">
                     <button
-                      class="flex items-center text-2xl text-blue-500 focus:text-blue-600 hover:text-blue-600 focus:outline-none select-none"
-                      @click="toggle(index)"
+                      v-if="item.isStaff"
+                      class="flex items-center text-2xl text-blue-500 focus:text-blue-600 hover:text-blue-600 focus:outline-none select-none mx-auto"
                     >
                       <i
-                        v-if="expanded.includes(index)"
-                        class="zi-chevron-up"
+                        v-if="expanded.includes(item.id)"
+                        class="zi-chevron-down"
                       />
                       <i
                         v-else
-                        class="zi-chevron-down"
+                        class="zi-chevron-up transform rotate-90"
                       />
                     </button>
                   </td>
                 </tr>
-                <template v-if="expanded.includes(index)" class="expanded">
+                <template v-if="expanded.includes(item.id)">
                   <tr
-                    v-for="specItem in item.specs"
-                    :key="`expand-${index}-${specItem.id}`"
-                    class="cursor-default"
+                    :key="`expand-${item.id}`"
+                    class="expand bg-gray-700"
+                    style="background-color: #282828;"
                   >
-                    <!-- <td :colspan="headers.length" class="bg-gray-900">
+                    <td :colspan="headers.length" class="relative p-0">
+                      <div
+                        class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-dark -mt-1"
+                      />
+                      <div
+                        v-if="!item.specs || item.specs.length === 0"
+                        v-html="$t('dataTable.noData')"
+                        class="bg-gray-700 rounded-b-md text-center text-gray-200 leading-tight py-4 -mt-1"
+                      />
                       <DataTable
-                        :headers="headers"
+                        v-if="item.specs && item.specs.length > 0"
+                        :headers="subHeaders"
                         :items="item.specs"
                         hide-headers
                         table-width="100%"
-                        table-class="table-fixed"
-                        items-row-class="bg-gray-900"
-                        items-cell-class="bg-gray-900"
-                      />
-                    </td> -->
-                    <td class="text-right relative px-3">
-                      <span
-                        :class="[
-                          'ml-6 w-3 h-3 rounded-full',
-                          specItem.specStatus === SpecStatus.IN_STOCK
-                            ? 'bg-green-500' : specItem.specStatus === SpecStatus.IN_PRODUCTION
-                              ? 'bg-yellow-500' : specItem.specStatus === SpecStatus.IN_PROCESSING
-                                ? 'bg-pink-500' : 'bg-gray-800'
-                        ]"
+                        table-class="table-fixed -mt-1"
+                        flat
+                        hide-no-data
                       >
-                      </span>
+                        <template v-slot:items="{ items: subItems }">
+                          <template v-for="(subItem, i) in subItems">
+                            <tr class="bg-gray-700" :key="subItem.id" style="background-color: #282828;">
+                              <td :width="subHeadersMap['status'].width" :style="{ width: subHeadersMap['status'].width, minWidth: subHeadersMap['status'].width }" class="bg-gray-700" :class="{ 'rounded-bl-md': i + 1 === subItems.length }">
+                                <div class="flex items-center justify-between">
+                                  <div class="w-3 h-3 flex items-center justify-center ml-5 mr-3">
+                                    <div
+                                      :class="[
+                                        'w-2 h-2 rounded-full',
+                                        subItem.specStatus === SpecStatus.IN_STOCK
+                                          ? 'bg-green-500' : subItem.specStatus === SpecStatus.IN_PRODUCTION
+                                            ? 'bg-yellow-500' : subItem.specStatus === SpecStatus.IN_PROCESSING
+                                              ? 'bg-pink-500' : 'bg-gray-800'
+                                      ]"
+                                    >
+                                    </div>
+                                  </div>
+                                  <div class="flex">
+                                    <div class="w-6 text-right">
+                                      <span v-if="subItem.isMoneyRecieved">+$</span>
+                                    </div>
+                                    <div class="w-6 text-right">
+                                      <span v-if="subItem.isExpensesPaid">-$</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td :width="subHeadersMap['diff'].width" :style="{ width: subHeadersMap['diff'].width, minWidth: subHeadersMap['diff'].width }" :class="['bg-gray-700 truncate text-right']">
+                                {{ $n(subItem.diff || 0) }}
+                              </td>
+                              <td :width="subHeadersMap['margin'].width" :style="{ width: subHeadersMap['margin'].width, minWidth: subHeadersMap['margin'].width }" class="bg-gray-700 truncate text-right">
+                                {{ $n(subItem.totalMargin) }}%
+                              </td>
+                              <td :width="subHeadersMap['revenue'].width" :style="{ width: subHeadersMap['revenue'].width, minWidth: subHeadersMap['revenue'].width }" class="bg-gray-700 truncate text-right">
+                                {{ $n(subItem.revenue || 0) }}
+                              </td>
+                              <td :width="subHeadersMap['totalItemsCost'].width" :style="{ width: subHeadersMap['totalItemsCost'].width, minWidth: subHeadersMap['totalItemsCost'].width }" class="bg-gray-700 truncate text-right">
+                                {{ $n(subItem.totalItemsCost || 0) }}
+                              </td>
+                              <td :width="subHeadersMap['specNo'].width" :style="{ width: subHeadersMap['specNo'].width, minWidth: subHeadersMap['specNo'].width }" class="bg-gray-700 truncate text-left leading-tight pl-16">
+                                <span class="whitespace-no-wrap pl-5">
+                                  {{ subItem.specNo || '' }}
+                                </span>
+                              </td>
+                              <td :width="subHeadersMap['clientFullName'].width" :style="{ width: subHeadersMap['clientFullName'].width, minWidth: subHeadersMap['clientFullName'].width }" class="bg-gray-700 truncate text-left">
+                                <span class="whitespace-no-wrap pl-5">
+                                  {{ subItem.clientFullName }}
+                                </span>
+                              </td>
+                              <td :width="subHeadersMap['actions'].width" :style="{ width: subHeadersMap['actions'].width, minWidth: subHeadersMap['actions'].width }" class="bg-gray-700 text-right">
+                                <router-link
+                                  :to="{
+                                    name: 'spec',
+                                    params: {
+                                      orgId,
+                                      specId: subItem.id,
+                                    },
+                                  }"
+                                  tabindex="-1"
+                                  class="align-middle text-2xl text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100 -mr-3"
+                                >
+                                  <i class="zi-magnifier align-middle" />
+                                </router-link>
+                              </td>
+                              <td :width="subHeadersMap['shipped'].width" :style="{ width: subHeadersMap['shipped'].width, minWidth: subHeadersMap['shipped'].width }" class="bg-gray-700 text-center" :class="{ 'rounded-br-md': i + 1 === subItems.length }">
+                                <span v-if="subItem.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-blue-400"></span>
+                              </td>
+                            </tr>
+                          </template>
+                        </template>
+                      </DataTable>
                     </td>
-                    <td class="text-center relative">
-                      <strong>
-                        <!-- +$</strong>&nbsp;&nbsp;<strong>-$ -->
-                      </strong>
-                    </td>
-                    <td class="text-right">{{ $n(specItem.profit || 0, 'fixed') }}</td>
-                    <td class="text-right">{{ $n(specItem.percent) }}%</td>
-                    <td class="text-right">{{ $n(specItem.finalObtainCost || 0, 'fixed') }}</td>
-                    <td class="text-right">{{ $n(specItem.finalCost || 0, 'fixed') }}</td>
-                    <td class="text-left">
-                      <div class="pl-2">
-                        {{ specItem.specNo || '' }}
-                      </div>
-                    </td>
-                    <td class="text-left">{{ specItem.clientFullName }}</td>
-                    <td></td>
-                    <td></td>
                   </tr>
                 </template>
               </template>
             </template>
           </DataTable>
         </div>
-        <h4 class="text-xl font-semibold text-white mt-12">
-          {{ $t('staff.invitations') }}
-        </h4>
-        <div class="overflow-x-auto overflow-scroll-touch pb-4">
-          <DataTable
-            :headers="invitationsHeaders"
-            :items="invitations"
-            table-width="100%"
-            table-class="table-fixed"
-          >
-            <template v-slot:item.invitationEmail="{ item }">
-              <td class="truncate">
-                <span>{{ item.invitationEmail }}</span>
-              </td>
-            </template>
-            <template v-slot:item.invitationRole="{ item }">
-              <td class="leading-tight">
-                {{ item.invitationRole | roleFilter }}
-              </td>
-            </template>
-            <template v-slot:item.status="{ item }">
-              <td>
-                {{ item.status | statusFilter }}
-              </td>
-            </template>
-            <template v-slot:item.createdAt="{ item }">
-              <td>
-                {{ $d($parseDate(item.createdAt), 'short') }}
-              </td>
-            </template>
-            <template v-slot:item.updatedAt="{ item }">
-              <td>
-                {{ $d($parseDate(item.updatedAt), 'short') }}
-              </td>
-            </template>
-            <template v-slot:item.actions="{ item }">
-              <td>
-                <button
-                  class="flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
-                  @click="cancelInvitation(item.id)"
-                >
-                  <i class="zi-delete" />
-                </button>
-              </td>
-            </template>
-          </DataTable>
-        </div>
+        <div
+          v-if="items.length === 0"
+          v-html="$t('staff.noData')"
+          class="text-center text-gray-200 leading-tight py-4"
+        />
         <Button
           block
           outlined
@@ -239,9 +287,9 @@
 
 <script>
 import StaffCreateModal from '../components/StaffCreateModal.vue'
-import { LIST_ORG_INVITATIONS, LIST_STAFF } from '../graphql/queries'
+import { LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
-import { SpecStatus } from '../graphql/enums'
+import { SpecStatus, InvitationStatus } from '../graphql/enums'
 import { i18n } from '../plugins'
 import { confirmDialog } from '../util/helpers'
 
@@ -268,19 +316,13 @@ export default {
           orgId: this.orgId,
         }
       },
-    },
-    listOrgInvitations: {
-      query: LIST_ORG_INVITATIONS,
-      variables () {
-        return {
-          orgId: this.orgId,
-        }
-      },
+      fetchPolicy: 'cache-and-network',
     },
   },
   data () {
     return {
       SpecStatus,
+      InvitationStatus,
       deleteUserLoading: null,
       search: '',
       loading: false,
@@ -294,52 +336,81 @@ export default {
   computed: {
     items () {
       const items = (this.listStaff && this.listStaff.items) || []
-      return items.map(item => {
+      const invitations = (this.listStaff && this.listStaff.invitations) || []
+      const staffItems = items.map(item => {
         return {
           ...item,
           // for search
           fullName: `${item.givenName} ${item.familyName}`,
+          isStaff: true,
         }
       })
+      const invitationsItems = invitations.map(item => {
+        return {
+          ...item,
+          // for search
+          fullName: `${item.invitationGivenName} ${item.invitationFamilyName}`,
+          role: item.invitationRole,
+          isInvitation: true,
+        }
+      })
+      return [
+        ...staffItems,
+        ...invitationsItems,
+      ]
     },
     orgId () {
       return this.$route.params.orgId
     },
-    invitations () {
-      return this.listOrgInvitations || []
-    },
     headers () {
       return [
-        { text: '', value: 'status', align: 'left', width: 45, sortable: true },
-        { text: this.$t('staff.inWork'), value: 'inWorkCount', align: 'left', width: 80, minWidth: 80, sortable: true },
-        { text: this.$t('staff.diff'), value: 'profit', align: 'right', width: 120, minWidth: 120 },
-        { text: this.$t('staff.percent'), value: 'diffPercent', align: 'right', width: 80, minWidth: 80, sortable: true },
-        { text: this.$t('staff.revenue'), value: 'finalObtainCost', align: 'right', width: 120, sortable: true },
-        { text: this.$t('staff.costOfGoods'), value: 'finalCost', align: 'right', width: 120, sortable: true },
-        { text: this.$t('staff.fullName'), value: 'fullName', align: 'left', width: 180, minWidth: 180 },
-        { text: this.$t('staff.access'), value: 'access', align: 'left', width: 120, minWidth: 120 },
-        { text: '', value: 'actions', width: 48 },
-        { text: '', value: 'expand', width: 32 },
+        { text: this.$t('staff.inWork'), value: 'inWorkCount', align: 'right', width: 100, minWidth: 100, sortable: true },
+        { text: this.$t('staff.diff'), value: 'diff', align: 'right', width: 105, minWidth: 105, sortable: true },
+        { text: this.$t('staff.percent'), value: 'totalMargin', align: 'right', width: 66, minWidth: 66, sortable: true },
+        { text: this.$t('staff.revenue'), value: 'revenue', align: 'right', width: 118, minWidth: 118, sortable: true },
+        { text: this.$t('staff.costOfGoods'), value: 'totalItemsCost', align: 'right', width: 140, minWidth: 140, sortable: true },
+        { text: this.$t('staff.staffName'), value: 'fullName', align: 'left', width: 220, minWidth: 220, class: 'whitespace-no-wrap pl-16', sortable: true },
+        { text: this.$t('staff.access'), value: 'role', align: 'left', width: 132, minWidth: 132, class: 'whitespace-no-wrap', sortable: true },
+        { text: this.$t('staff.accessControl'), value: 'accessControl', align: 'left', width: 75, minWidth: 75, class: 'whitespace-no-wrap', sortable: false },
+        { text: '', value: 'actions', width: 40, minWidth: 40 },
+        { text: '', value: 'expand', width: 50, minWidth: 50 },
       ]
     },
-    invitationsHeaders () {
+    subHeaders () {
       return [
-        { text: this.$t('staff.inviteGivenName'), width: 160, align: 'left', value: 'invitationGivenName' },
-        { text: this.$t('staff.inviteFamilyName'), width: 160, align: 'left', value: 'invitationFamilyName' },
-        { text: this.$t('staff.inviteEmail'), width: 200, align: 'left', value: 'invitationEmail' },
-        { text: this.$t('staff.inviteRole'), width: 120, align: 'left', value: 'invitationRole' },
-        { text: this.$t('staff.inviteStatus'), width: 100, align: 'left', value: 'status' },
-        { text: this.$t('staff.inviteCreatedAt'), width: 100, align: 'left', value: 'createdAt' },
-        { text: this.$t('staff.inviteUpdatedAt'), width: 100, align: 'left', value: 'updatedAt' },
-        { text: '', value: 'actions', width: 48 },
-        { text: '', value: 'expand', width: 32 },
+        { text: '', value: 'status', align: 'right', width: '100px', minWidth: '100px' },
+        { text: '', value: 'diff', align: 'right', width: '105px', minWidth: '105px' },
+        { text: '', value: 'margin', align: 'right', width: '66px', minWidth: '66px' },
+        { text: '', value: 'revenue', align: 'right', width: '118px', minWidth: '118px' },
+        { text: '', value: 'totalItemsCost', align: 'right', width: '140px', minWidth: '140px' },
+        { text: '', value: 'specNo', align: 'left', width: '220px', minWidth: '220px', class: 'whitespace-no-wrap pl-16' },
+        { text: '', value: 'clientFullName', align: 'left', width: '207px', minWidth: '207px', class: 'whitespace-no-wrap' },
+        { text: '', value: 'actions', width: '40px', minWidth: '40px' },
+        { text: '', value: 'shipped', width: '50px', minWidth: '50px' },
       ]
+    },
+    subHeadersMap () {
+      const headers = this.subHeaders || []
+      const result = {}
+      headers.forEach(item => {
+        result[item.value] = item
+      })
+      return result
     },
   },
   methods: {
+    goToSpec (item) {
+      this.$router.push({
+        name: 'spec',
+        params: {
+          orgId: this.$route.params.orgId,
+          specId: item.id,
+        },
+      })
+    },
     // TODO: update on after mutation
-    refetchInvitations () {
-      this.$apollo.queries.listOrgInvitations.refetch()
+    refetchItems () {
+      this.$apollo.queries.listStaff.refetch()
     },
     async cancelInvitation (id) {
       try {
@@ -347,7 +418,7 @@ export default {
           mutation: CANCEL_INVITATION,
           variables: { id },
         })
-        this.refetchInvitations()
+        this.refetchItems()
       } catch (error) {
         throw new Error(error)
       }
@@ -392,12 +463,12 @@ export default {
         this.deleteUserLoading = null
       }
     },
-    toggle (index) {
-      if (this.expanded.indexOf(index) > -1) {
-        const expIndex = this.expanded.indexOf(index)
+    toggle (id) {
+      if (this.expanded.indexOf(id) > -1) {
+        const expIndex = this.expanded.indexOf(id)
         this.expanded.splice(expIndex, 1)
       } else {
-        this.expanded.push(index)
+        this.expanded.push(id)
       }
     },
   },

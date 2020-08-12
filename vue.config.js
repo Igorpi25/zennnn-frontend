@@ -50,6 +50,7 @@ module.exports = {
     const definePlugin = new webpack.DefinePlugin({
       'process.env': {
         FRONTEND_VERSION: JSON.stringify(version),
+        COMMIT_HASH: JSON.stringify(commitHash),
       },
     })
     const copyPlugin = new CopyWebpackPlugin(

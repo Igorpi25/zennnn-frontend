@@ -158,7 +158,7 @@
       v-model="accessControlDialog"
       max-width="320px"
     >
-      <div class="p-4 bg-gray" style="color: #aaa;">
+      <div class="p-4 bg-gray-400 text-gray-100">
         <h3 class="pb-3 font-semibold">{{ $t('shipping.access') }}</h3>
         <Spinner v-if="linkAccessLoading" />
         <template v-else>
@@ -174,7 +174,7 @@
             :value="link"
             readonly
             solo
-            class="mb-1"
+            class="pb-3"
           />
           <Button
             @click="copyLink"
@@ -193,6 +193,7 @@
             label="Email"
             type="email"
             required
+            class="pb-3"
           />
           <Button
             :loading="sendAccessLinkLoading"
@@ -287,7 +288,6 @@ export default {
       },
       fetchPolicy: 'cache-and-network',
     },
-
   },
   data () {
     return {
