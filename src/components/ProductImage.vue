@@ -160,6 +160,8 @@
             class="absolute inset-x-0 top-0 h-20 rounded-t overflow-hidden pointer-events-none bg-gradient-dark-half"
           >
             <a
+              :href="`${currentImage.url}-original`"
+              target="_blank"
               class="absolute right-0 top-0 pointer-events-auto cursor-pointer text-2xl text-light-gray-400 hover:text-white focus:text-white focus:outline-none pt-sm pr-sm"
             >
               <i class="zi-full-screen" />
@@ -291,6 +293,49 @@ export default {
     },
   },
   methods: {
+    // openPS (index) {
+    //   const pswpElement = document.querySelector('.pswp')
+    //   const items = this.imagesList.map(el => {
+    //     return {
+    //       src: `${el.url}`,
+    //       w: 768,
+    //       h: 768,
+    //       title: el.filename || el.url,
+    //     }
+    //   })
+    //   const options = {
+    //     index,
+    //     // getThumbBoundsFn: (index) => {
+    //     //   // See Options -> getThumbBoundsFn section of documentation for more info
+    //     //   const thumbnail = items[index].el.getElementsByTagName('img')[0] // find thumbnail
+    //     //   const pageYScroll = window.pageYOffset || document.documentElement.scrollTop
+    //     //   const rect = thumbnail.getBoundingClientRect()
+    //     //   return { x: rect.left, y: rect.top + pageYScroll, w: rect.width }
+    //     // },
+    //     history: false,
+    //     // Buttons/elements
+    //     closeEl: true,
+    //     captionEl: true,
+    //     fullscreenEl: true,
+    //     zoomEl: true,
+    //     shareEl: false,
+    //     counterEl: true,
+    //     arrowEl: true,
+    //     preloaderEl: true,
+    //     // Tap on sliding area should close gallery
+    //     tapToClose: true,
+    //     // PhotoSwipe element opacity and image scale will be animated
+    //     showHideOpacity: true,
+    //   }
+    //   // Pass data to PhotoSwipe and initialize it
+    //   this.photoswipe = new PhotoSwipe(
+    //     pswpElement,
+    //     PhotoSwipeUIDefault,
+    //     items,
+    //     options,
+    //   )
+    //   this.photoswipe.init()
+    // },
     prev () {
       if (this.imagesList.length === 0) return
       const val = this.currentImageIndex - 1
