@@ -2,7 +2,7 @@
   <div
     v-scroll="onScroll"
     ref="productsTable"
-    class="overflow-x-auto overflow-scroll-touch border-t border-white bg-gray-50 rounded-b-md"
+    class="overflow-x-auto overflow-scroll-touch border-t border-white bg-light-gray-100 rounded-b-md"
     @mouseenter="isMouseOver = true"
     @mouseleave="isMouseOver = false"
     @touchstart="isScrollStart = true"
@@ -10,8 +10,7 @@
   >
     <table
       width="100%"
-      style="border-spacing: 0 8px"
-      class="w-full table-fixed border-separate px-2"
+      class="w-full table-fixed border-separate border-spacing-y-2 px-2"
     >
       <thead class="text-sm text-gray-100">
         <tr>
@@ -54,27 +53,27 @@
                 <div class="relative h-12 w-12 cursor-pointer">
                   <div
                     class="absolute h-12 w-12"
-                    style="top: 0.15rem; left: 0.15rem; border-radius: 5px; background: rgb(196, 196, 196, 0.4);"
+                    style="top: 0.15rem; left: 0.15rem; border-radius: 5px; background: rgba(196, 196, 196, 0.4);"
                   >
                     <div
                       class="absolute h-12 w-12"
-                      style="top: 0.15rem; left: 0.15rem; border-radius: 5px; background: rgb(196, 196, 196, 0.2);"
+                      style="top: 0.15rem; left: 0.15rem; border-radius: 5px; background: rgba(196, 196, 196, 0.2);"
                     />
                   </div>
                   <div class="absolute inset-0 overflow-hidden" style="border-radius: 5px;">
                     <v-img
-                      :src="item.images[0]"
+                      :src="item.images[0] && item.images[0].url"
                       aspect-ratio="1"
                     />
                   </div>
                 </div>
               </template>
             </ProductImage>
-            <div v-else class="h-12 w-12" style="border-radius: 5px; background: rgb(196, 196, 196, 0.2);" />
+            <div v-else class="h-12 w-12" style="border-radius: 5px; background: rgba(196, 196, 196, 0.2);" />
           </td>
           <td class="bg-white p-2">
-            <div class="truncate pb-xs" style="min-width: 250px; min-height: 1.25rem;">{{ item.name }} {{ item.article }}</div>
-            <div class="text-gray-100 truncate" style="min-height: 1.25rem;">
+            <div class="truncate pb-xs" style="min-width: 250px; min-height: 20px;">{{ item.name }} {{ item.article }}</div>
+            <div class="text-gray-100 truncate" style="min-height: 20px;">
               {{ item.description }}
             </div>
           </td>
@@ -111,7 +110,7 @@
             />
           </td>
           <td class="bg-white p-2 rounded-r-md text-center">
-            <i class="zi-open-in-new text-gray-75 text-2xl align-middle" />
+            <i class="zi-open-in-new text-light-gray-400 text-2xl align-middle" />
           </td>
         </tr>
       </tbody>

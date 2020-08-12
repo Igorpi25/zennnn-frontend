@@ -11,7 +11,7 @@
             >
               <img src="@/assets/img/logo-light.svg" alt="Logo">
             </router-link>
-            <nav class="hidden md:flex items-center leading-5" style="color: #BDBDBD;">
+            <nav class="hidden md:flex items-center leading-5 text-light-gray-700">
               <a
                 v-for="(item, i) of navItems"
                 :key="i"
@@ -36,15 +36,12 @@
       <v-scale-transition hide-on-leave>
         <div
           v-if="isInfoAlertActive"
-          :style="{ transform: `translateY(${infoAlertTop}px)` }"
-          class="info-alert z-10 fixed inset-x-0 top-0"
+          :style="infoAlertStyle"
+          class="about-info-alert z-10 fixed inset-x-0 top-0"
         >
-          <div class="container container--xs info-alert__container">
+          <div class="container container--xs about-info-alert__container">
             <div class="relative">
-              <div
-                class="absolute right-0 w-full flex items-center rounded-md px-4 py-3"
-                style="background: #FFF2AD; min-height: 48px;"
-              >
+              <div class="about-info-alert__content absolute right-0 w-full flex items-center rounded-md px-4 py-3">
                 <img src="@/assets/img/info.svg" alt="info" class="flex-shrink-0 self-start mr-4">
                 <div
                   v-html="'ZENNNN — самый удобный сервис для удаленной работы с&nbsp;поставщиками со&nbsp;всего мира.'"
@@ -70,7 +67,7 @@
           <div class="container container--xs">
             <div class="pt-32 md:pt-6">
               <div class="flex">
-                <h1 class="head-title font-bold flex-shrink-0 mt-sm mb-5">бэк-офис ZENNNN</h1>
+                <h1 class="about-head-title font-bold flex-shrink-0 mt-sm mb-5">бэк-офис ZENNNN</h1>
                 <div class="w-full pb-5">
                   <div class="relative h-full md:static">
                     <div class="about-saas absolute left-0 md:top-0 md:right-0 bottom-0 md:bottom-auto md:right-auto md:pt-10 pl-3 md:pl-5">
@@ -84,7 +81,7 @@
                 </div>
               </div>
             </div>
-            <h2 style="font-size: 58px; line-height: 71px;" class="font-bold pb-10 mb-1">
+            <h2 class="about-head-subtitle font-bold pb-10 mb-1">
               Пер&shy;вый.<br>Муль&shy;ти&shy;я&shy;зыч&shy;ный.<br>Мощ&shy;ный.
             </h2>
           </div>
@@ -122,7 +119,7 @@
               />
             </div>
           </div>
-          <div class="container container--xs flex flex-wrap lg:flex-no-wrap pb-16 leading-normal text-gray-150">
+          <div class="container container--xs flex flex-wrap lg:flex-no-wrap pb-16 leading-normal text-light-gray-800">
             <div class="w-full lg:w-1/2 lg:w-1/4 flex flex-col lg:pr-4">
               <div class="flex-grow flex mb-2 lg:mb-0">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
@@ -175,12 +172,12 @@
               <router-link
                 :to="{ name: 'signup' }"
                 class="inline-flex items-center text-xl leading-6 rounded-50 font-semibold text-white bg-blue-700 px-10 select-none focus:outline-none focus:bg-blue-800 hover:bg-blue-800"
-                style="height: 3.875rem;"
+                style="height: 62px;"
               >
                 <span class="px-1">7 дней бесплатно</span>
               </router-link>
             </div>
-            <div class="w-full md:w-1/2 flex items-end justify-center text-sm leading-normal text-gray-150 pl-6">
+            <div class="w-full md:w-1/2 flex items-end justify-center text-sm leading-normal text-light-gray-800 pl-6">
               <div class="mt-auto relative">
                 <div class="absolute -ml-sm">*</div>
                 <span>
@@ -198,14 +195,14 @@
       <!-- HERO / -->
       <!-- / DIVIDER -->
       <div class="py-6">
-        <div class="w-px mx-auto bg-gray-140" style="height: 50px;"></div>
+        <div class="w-px mx-auto bg-light-gray-900" style="height: 50px;"></div>
       </div>
       <!-- DIVIDER / -->
     </div>
     <main>
       <!-- / VIDEO -->
       <div id="video">
-        <h3 class="section-title font-bold text-center mx-auto mt-10" style="max-width: 772px;">
+        <h3 class="about-section-title font-bold text-center mx-auto mt-10" style="max-width: 772px;">
           <span v-html="video.title" />
         </h3>
         <div class="w-15 h-px py-xs my-6 mx-auto bg-blue-700" />
@@ -214,15 +211,15 @@
           <div style="max-width: 1000px;">
             <div style="padding-bottom: 20.2%;" />
           </div>
-          <div style="background: linear-gradient(180deg, #F4F4F4 0%, rgba(244, 244, 244, 0) 100%);">
+          <div class="about-section-gradient">
             <div style="max-width: 1000px;">
               <div style="padding-bottom: 36%;" />
             </div>
           </div>
           <div class="absolute inset-0 flex justify-center mx-4 md:mx-6">
             <div
-              style="box-shadow: 20px 50px 60px rgba(0, 0, 0, 0.15); border-radius: 12px; max-width: 1000px;"
-              class="relative bg-gray-900 overflow-hidden w-full h-full"
+              style="max-width: 1000px;"
+              class="relative bg-gray-900 overflow-hidden w-full h-full rounded-12 shadow-large"
             >
               <div class="absolute inset-0">
                 <!-- <iframe v-if="isVideoActivated" class="w-full h-full" width="1206" height="678" src="https://www.youtube.com/embed/LMFUvAmbwS0?rel=0&controls=2&color=red&modestbranding=1&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
@@ -231,7 +228,7 @@
               <transition name="fade">
                 <div
                   v-if="!isVideoActivated"
-                  class="video absolute inset-0 flex items-center justify-center cursor-pointer bg-gray-900"
+                  class="about-video absolute inset-0 flex items-center justify-center cursor-pointer bg-gray-900"
                   @click="playVideo"
                 >
                   <img
@@ -239,7 +236,7 @@
                     alt="video-preview"
                     style="height: 50%; min-height: 140px;"
                   >
-                  <div class="video-play absolute inset-0 flex items-center justify-center">
+                  <div class="about-video__play absolute inset-0 flex items-center justify-center">
                     <svg width="121" height="121" viewBox="0 0 121 121" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle opacity="0.2" cx="60.7686" cy="60.0278" r="60" fill="#C4C4C4"/>
                       <path d="M86.0371 57.4298C88.0371 58.5845 88.0371 61.4712 86.0371 62.6259L50.0371 83.4105C48.0371 84.5652 45.5371 83.1218 45.5371 80.8124L45.5371 39.2432C45.5371 36.9338 48.0371 35.4904 50.0371 36.6451L86.0371 57.4298Z" fill="white"/>
@@ -258,12 +255,12 @@
           <div class="w-full flex-shrink-0" style="max-width: 532px;">
             <h3
               v-html="security.title"
-              class="section-title font-bold"
+              class="about-section-title font-bold"
             />
             <div class="w-15 h-px py-xs my-6 bg-blue-700" />
             <div
               v-html="security.text"
-              class="text-lg leading-relaxed text-gray-140"
+              class="text-lg leading-relaxed text-light-gray-900"
             />
           </div>
           <div class="flex-grow flex lg:justify-center px-6 pt-5 lg:pt-2">
@@ -291,7 +288,7 @@
               />
               <p
                 v-html="item.text"
-                class="leading-relaxed text-gray-140"
+                class="leading-relaxed text-light-gray-900"
               />
             </div>
           </div>
@@ -299,11 +296,11 @@
       </div>
       <!-- SECURITY / -->
       <!-- / FEATURE -->
-      <div id="feature" class="relative pt-24" style="background: #F8F8F8;">
+      <div id="feature" class="about-section-bg relative pt-24">
         <div>
           <div class="container container--xs flex w-full overflow-x-auto mb-8">
             <nav class="tabs relative inline-flex justify-center mx-auto text-2xl text-black font-bold leading-7">
-              <div class="absolute bottom-0 inset-x-0 h-px mx-5" style="background: #C4C4C4;" />
+              <div class="absolute bottom-0 inset-x-0 h-px bg-light-gray-600 mx-5" />
               <a
                 v-for="feature of features"
                 :key="feature.value"
@@ -312,8 +309,7 @@
               >
                 <span
                   v-html="feature.title"
-                  class="inline-block"
-                  style="margin-bottom: 30px;"
+                  class="inline-block mb-xl"
                 />
                 <div
                   :class="{ 'bg-blue-700': activeFeature === feature.value }"
@@ -331,15 +327,15 @@
                 class="pb-24"
               >
                 <div
-                  class="text-lg text-gray-140 w-full text-center mx-auto px-4 lg:px-0 pb-3"
+                  class="text-lg text-light-gray-900 w-full text-center mx-auto px-4 lg:px-0 pb-3"
                   style="max-width: 986px; line-height: 32px; min-height: 174px;"
                 >
                   {{ feature.text }}
                 </div>
                 <div class="px-4 pb-12">
                   <div
-                    style="max-width: 830px; border-radius: 12px; box-shadow: 20px 50px 60px rgba(0, 0, 0, 0.15);"
-                    class="overflow-hidden mx-auto"
+                    style="max-width: 830px;"
+                    class="overflow-hidden mx-auto rounded-12 shadow-large"
                   >
                     <v-img
                       :src="`/static/img/${feature.img}`"
@@ -364,7 +360,7 @@
                   <div
                     :class="[
                       'rounded-full',
-                      activeFeature === n ? 'w-full h-full bg-gray-900' : 'w-2 h-2 bg-gray-140',
+                      activeFeature === n ? 'w-full h-full bg-gray-900' : 'w-2 h-2 bg-light-gray-900',
                     ]"
                   >
                   </div>
@@ -381,12 +377,12 @@
           <div class="w-full flex-shrink-0" style="max-width: 849px;">
             <h3
               v-html="issue.title"
-              class="section-title font-bold"
+              class="about-section-title font-bold"
             />
             <div class="w-15 h-px py-xs my-6 bg-blue-700" />
           </div>
           <div class="order-first xl:order-none flex-grow h-0 relative">
-            <div class="cloud-lock absolute xl:left-0 bottom-0 right-0 xl:right-auto xl:-mb-16">
+            <div class="about-cloud-lock absolute xl:left-0 bottom-0 right-0 xl:right-auto xl:-mb-16">
               <img src="@/assets/img/cloud-lock.svg" alt="cloud" class="ml-auto w-56 md:w-64 xl:w-auto">
             </div>
           </div>
@@ -410,7 +406,7 @@
               />
               <p
                 v-html="item.text"
-                class="leading-relaxed text-gray-140"
+                class="leading-relaxed text-light-gray-900"
               />
             </div>
           </div>
@@ -418,7 +414,7 @@
       </div>
       <!-- ISSUE / -->
       <!-- / ADVANCE FREATURE -->
-      <div class="relative pt-24" style="background: #F8F8F8;">
+      <div class="about-section-bg relative pt-24">
         <div class="pb-10">
           <v-window v-model="activeAdvanceFeature">
             <v-window-item
@@ -433,13 +429,13 @@
                 style="max-width: 510px; min-height: 88px; font-size: 36px; line-height: 44px;"
               />
               <div class="w-15 h-px py-xs my-5 mx-auto bg-blue-700" />
-              <div class="text-lg text-gray-140 w-full text-center mx-auto px-4 md:px-0" style="max-width: 646px; line-height: 32px; min-height: 128px;">
+              <div class="text-lg text-light-gray-900 w-full text-center mx-auto px-4 md:px-0" style="max-width: 646px; line-height: 32px; min-height: 128px;">
                 {{ feature.text }}
               </div>
               <div class="px-4 pb-12">
                 <div
-                  style="max-width: 830px; border-radius: 12px; box-shadow: 20px 50px 60px rgba(0, 0, 0, 0.15);"
-                  class="overflow-hidden mx-auto"
+                  style="max-width: 830px;"
+                  class="overflow-hidden mx-auto rounded-12 shadow-large"
                 >
                   <v-img
                     :src="`/static/img/${feature.img}`"
@@ -464,7 +460,7 @@
                 <div
                   :class="[
                     'rounded-full',
-                    activeAdvanceFeature === n ? 'w-full h-full bg-gray-900' : 'w-2 h-2 bg-gray-140',
+                    activeAdvanceFeature === n ? 'w-full h-full bg-gray-900' : 'w-2 h-2 bg-light-gray-900',
                   ]"
                 >
                 </div>
@@ -480,7 +476,7 @@
           <div class="w-full flex-shrink-0" style="max-width: 578px;">
             <h3
               v-html="power.title"
-              class="section-title font-bold"
+              class="about-section-title font-bold"
             />
             <div class="w-15 h-px py-xs my-6 bg-blue-700" />
           </div>
@@ -509,7 +505,7 @@
               />
               <p
                 v-html="item.text"
-                class="leading-relaxed text-gray-140"
+                class="leading-relaxed text-light-gray-900"
               />
             </div>
           </div>
@@ -517,7 +513,7 @@
       </div>
       <!-- POWER / -->
       <!-- / CLIENT CABINET -->
-      <div class="relative pt-24 pb-48" style="background: #F8F8F8;">
+      <div class="about-section-bg relative pt-24 pb-48">
         <div class="flex flex-wrap px-4">
           <div class="w-full md:w-1/2"></div>
           <div class="w-full md:w-1/2 relative">
@@ -528,11 +524,11 @@
         </div>
         <div class="container container--xs flex pt-32 pb-10 lg:mt-6">
           <div class="w-full flex-shrink-0" style="max-width: 518px;">
-            <h3 class="section-title font-bold">
+            <h3 class="about-section-title font-bold">
               Кабинет клиента
             </h3>
             <div class="w-15 h-px py-xs my-6 bg-blue-700" />
-            <div class="text-lg leading-relaxed text-gray-140">
+            <div class="text-lg leading-relaxed text-light-gray-900">
               На время сделки у вашего клиента появится свой личный кабинет.Система вовлекает клиента в работу над заказом и упрощает все процессы, с ним связанные, — в течение сделки кабинет клиента хранит информацию о сроках оплаты и доставки, показывает статус товара, позволяет комментировать работу менеджеров, загружать фотографии товара и распечатывать все необходимые документы самостоятельно.
             </div>
           </div>
@@ -566,7 +562,7 @@
       <!-- / ACTION -->
       <div class="relative" style="top: -88px;">
         <div class="container container--xs">
-          <div class="flex flex-col items-center text-center bg-gray-900 py-20 px-3" style="border-radius: 12px;">
+          <div class="flex flex-col items-center text-center bg-gray-900 rounded-12 py-20 px-3">
             <h3 class="text-4xl leading-tight font-bold text-white" style="max-width: 1010px">
               Станьте одним из первых поль&shy;зо&shy;ва&shy;те&shy;лей мощнейшего проекта в меж&shy;ду&shy;на&shy;род&shy;ной торговле
             </h3>
@@ -581,7 +577,7 @@
             <router-link
               :to="{ name: 'signup' }"
               class="inline-flex items-center justify-center text-xl leading-6 rounded-50 font-semibold text-white bg-blue-700 select-none focus:outline-none focus:bg-blue-800 hover:bg-blue-800 text-center w-full sm:w-auto px-2 sm:px-10"
-              style="height: 3.875rem;"
+              style="height: 62px;"
             >
               <span class="px-1">Начать бесплатное тестирование</span>
             </router-link>
@@ -628,7 +624,7 @@
               <img src="@/assets/img/logo-light.svg" alt="Logo" style="height: 46px;">
             </div>
             <div class="w-15 h-px py-xs my-6 bg-blue-700" />
-            <div class="text-lg leading-relaxed text-gray-140 pb-8">
+            <div class="text-lg leading-relaxed text-light-gray-900 pb-8">
               {{ userInterface.text }}
             </div>
           </div>
@@ -650,16 +646,16 @@
       <!-- / REVIEW -->
       <div id="review" class="py-32 bg-gray-900">
         <div class="container container--xs flex flex-col md:flex-row relative py-5">
-          <div class="absolute right-0 px-4" style="top: -90px; transform: translateY(-100%);">
+          <div class="absolute right-0 transform -translate-y-full px-4" style="top: -90px;">
             <img src="@/assets/img/quote-open.svg" alt="quote" class="w-48 lg:w-auto">
           </div>
           <div class="pb-6 md:pb-0 mr-4 lg:mr-16 xl:mr-32" style="max-width: 245px;">
-            <div class="section-title text-white font-bold pb-12">
+            <div class="about-section-title text-white font-bold pb-12">
               Отзывы наших клиентов
             </div>
             <div class="flex">
               <button
-                class="cursor-pointer text-gray-75 mr-10 select-none focus:outline-none focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
+                class="cursor-pointer text-light-gray-400 mr-10 select-none focus:outline-none focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
                 @click="$refs.reviewWindow.prev()"
               >
                 <svg width="20" height="33" viewBox="0 0 20 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -667,7 +663,7 @@
                 </svg>
               </button>
               <button
-                class="cursor-pointer text-gray-75 select-none focus:outline-none focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
+                class="cursor-pointer text-light-gray-400 select-none focus:outline-none focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
                 @click="$refs.reviewWindow.next()"
               >
                 <svg width="19" height="33" viewBox="0 0 19 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -696,8 +692,8 @@
                     </g>
                   </svg>
                   <div
-                    class="absolute left-0 top-0 w-full max-h-full text-lg leading-relaxed overflow-y-scroll pl-5 sm:pl-10 pr-5 sm:pr-8 pt-4 sm:pt-10"
-                    style="color: #E0E0E0; bottom: 44px;"
+                    class="absolute left-0 top-0 w-full max-h-full text-lg leading-relaxed overflow-y-scroll text-light-gray-500 pl-5 sm:pl-10 pr-5 sm:pr-8 pt-4 sm:pt-10"
+                    style="bottom: 44px;"
                   >
                     <span>{{ review.text }}</span>
                   </div>
@@ -714,7 +710,7 @@
                       <div class="text-white text-xl leading-6 font-bold">
                         {{ review.author }}
                       </div>
-                      <div class="text-gray-140 leading-5">
+                      <div class="text-light-gray-900 leading-5">
                         {{ review.position }}
                       </div>
                     </div>
@@ -729,9 +725,9 @@
       </div>
       <!-- REVIEW / -->
       <!-- / TEAM -->
-      <div class="py-24" style="background: #F4F4F4;">
+      <div class="bg-light-gray-200 py-24">
         <div class="container container--xs pt-sm">
-          <h3 class="section-title font-bold">
+          <h3 class="about-section-title font-bold">
             Cильная команда<br>практиков
           </h3>
           <div class="w-15 h-px py-xs my-6 bg-blue-700" />
@@ -743,8 +739,7 @@
                 class="pb-4 sm:pr-5 w-full sm:w-auto"
               >
                 <div
-                  class="flex items-center bg-white text-black px-sm py-3"
-                  style="box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08); border-radius: 10px;"
+                  class="flex items-center bg-white text-black rounded-10 shadow-medium px-sm py-3"
                 >
                   <img
                     :src="require(`@/assets/img/flags/countries/${member.country}.svg`)"
@@ -765,14 +760,14 @@
       <div class="bg-gray-900 py-20">
         <div class="container container--xs pt-5 pb-sm">
           <div class="flex flex-col items-center text-center">
-            <h3 class="section-title font-bold text-white" style="max-width: 643px">
+            <h3 class="about-section-title font-bold text-white" style="max-width: 643px;">
               Убедитесь, что ZENNNN полезен вашему бизнесу
             </h3>
             <div class="w-15 h-px py-xs my-6 bg-blue-700" />
             <div class="text-white text-xl pb-10">
               Если бы биты и пиксели умели любить,<br>ZENNNN стал бы первой программой, которая полюбила человека.
             </div>
-            <div class="text-white text-xl pb-10 mb-3" style="max-width: 910px">
+            <div class="text-white text-xl pb-10 mb-3" style="max-width: 910px;">
               За время взаимодействия с ZENNNN деятельность Вашей компании станет прозрачной, наладится управленческий учёт, а на своих должностях останутся только самые эффективные сотрудники
             </div>
             <router-link
@@ -789,7 +784,7 @@
       </div>
       <!-- ADVANCE ACTION / -->
     </main>
-    <footer class="text-black leading-6 py-6" style="background: #F2F2F2;">
+    <footer class="about-footer text-black leading-6 py-6">
       <div class="text-center py-1 px-4">
         <span class="inline-block sm:inline">Copyright © 2015-2019 ZENNNN.</span> <span class="inline-block sm:inline">All rights reserved.</span>
       </div>
@@ -1188,6 +1183,12 @@ export default {
       ],
     }
   },
+  computed: {
+    infoAlertStyle () {
+      const val = `translateY(${this.infoAlertTop}px)`
+      return { '-webkit-transform': val, '-ms-transform': val, transform: val }
+    },
+  },
   watch: {
     isScrollingUp () {
       this.savedScroll = this.savedScroll || this.currentScroll
@@ -1300,25 +1301,24 @@ export default {
 }
 </script>
 
-<style scoped lang="postcss">
-.info-alert {
+<style lang="postcss" scoped>
+.about-info-alert {
   will-change: transform;
   transition: transform .2s cubic-bezier(.4,0,.2,1);
 }
-.info-alert__container {
+.about-info-alert__container {
   padding-left: 4px!important;
 }
-@screen xl {
-  .info-alert__container {
-    padding-left: 28px!important;
-  }
+.about-info-alert__content {
+  background: #FFF2AD;
+  min-height: 48px;
 }
 
-.video .video-play circle {
+.about-video .about-video__play circle {
   will-change: opacity;
   transition: opacity 0.1s cubic-bezier(0.61, 1, 0.88, 1);
 }
-.video:hover .video-play circle {
+.about-video:hover .about-video__play circle {
   opacity: .35;
 }
 .about-imac {
@@ -1327,14 +1327,25 @@ export default {
   right: 0;
   height: 725px;
 }
-.head-title {
+.about-head-title {
   font-size: 20px;
   line-height: 32px;
 }
-.section-title {
+.about-head-subtitle {
+  font-size: 58px;
+  line-height: 71px;
+}
+.about-section-title {
   font-size: 46px;
   line-height: 56px;
 }
+.about-section-gradient {
+  background: linear-gradient(180deg, #F4F4F4 0%, rgba(244, 244, 244, 0) 100%);
+}
+.about-section-bg {
+  background: #F8F8F8;
+}
+
 .about-devices {
   left: 0;
   top: 0;
@@ -1359,8 +1370,13 @@ export default {
   filter: drop-shadow(0px 4px 50px rgba(0, 0, 0, 0.25));
   transform: translateZ(0);
 }
+
+.about-footer {
+  background: #F2F2F2;
+}
+
 @screen sm {
-  .head-title {
+  .about-head-title {
     font-size: 26px;
   }
 }
@@ -1392,12 +1408,15 @@ export default {
   .about-imac {
     left: 57%;
   }
-  .cloud-lock {
+  .about-cloud-lock {
     right: -40px;
+  }
+  .about-info-alert__container {
+    padding-left: 28px!important;
   }
 }
 @media (min-width: 1366px) {
-  .cloud-lock {
+  .about-cloud-lock {
     right: -60px;
   }
 }
@@ -1405,14 +1424,18 @@ export default {
 .text-22 {
   font-size: 22px;
 }
-.h-13 {
-  height: 3.25rem;
+.rounded-10 {
+  border-radius: 10px;
 }
-.w-15 {
-  width: 3.75rem;
+.rounded-12 {
+  border-radius: 12px;
 }
-.rounded-50 {
-  border-radius: 50px;
+
+.shadow-medium {
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+}
+.shadow-large {
+  box-shadow: 20px 50px 60px rgba(0, 0, 0, 0.15);
 }
 .shadow-outline {
   box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.1);

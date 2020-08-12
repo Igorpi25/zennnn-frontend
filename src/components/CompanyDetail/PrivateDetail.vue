@@ -91,7 +91,7 @@
                 <template v-slot:activator="{ on }">
                   <div
                     class="w-1/2 pr-sm"
-                    style="max-width: 232px"
+                    style="max-width: 232px;"
                     v-on="on"
                   >
                     <TextField
@@ -119,7 +119,7 @@
                 <template v-slot:activator="{ on }">
                   <div
                     class="w-1/2 pr-sm"
-                    style="max-width: 232px"
+                    style="max-width: 232px;"
                     v-on="on"
                   >
                     <TextField

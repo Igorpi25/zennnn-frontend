@@ -46,7 +46,7 @@ export default {
       fetchPolicy: 'cache-only',
       result ({ data, loading }) {
         if (!loading && !this.isBooted) {
-          const spec = data.getSpec || {}
+          const spec = (data && data.getSpec) || {}
           this.updateExpandedAndActiveTab(spec)
         }
       },

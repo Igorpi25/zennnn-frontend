@@ -293,7 +293,7 @@
           <div class="paper-title__title">
             <span>{{ $t('contract.specification') }} №A0000-26082020-1</span>
             <span class="block"> {{ $t('contract.to') }}
-              <span class="text-gray-150">{{ contract.title }}</span>
+              <span class="text-light-gray-800">{{ contract.title }}</span>
             </span>
           </div>
           <div class="paper-title__info">

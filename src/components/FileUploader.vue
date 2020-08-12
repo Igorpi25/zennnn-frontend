@@ -1,5 +1,5 @@
 <template>
-  <div :class="['relative', { 'w-8 h-8': uploadType === 'image' }]">
+  <div class="relative">
     <div
       ref="drop"
       :class="[
@@ -18,56 +18,23 @@
       <slot
         name="drag"
         :loading="getUploadUrlLoading || uploadLoading"
-        :is-drag-over="isDragOver || hovered"
+        :is-drag-over="isDragOver"
+        :internal-src="internalSrc"
       >
         <div
           v-if="!internalSrc"
           :class="[
-            'w-full h-full border flex justify-center items-center',
-            'hover:border-gray-150 hover:text-gray-150',
+            'bg-gray-800 w-full h-full border border-dashed border-transparent flex justify-center items-center text-gray-300 hover:text-gray-100',
+            { 'border-gray-300': isDragOver },
             rounded ? 'rounded-full' : 'rounded',
-            isDragOver ? 'border-gray-150 border-solid text-gray-150' : 'border-dashed'
           ]"
         >
-          <Icon>
-            {{ icons.mdiPlusThick }}
-          </Icon>
-        </div>
-        <div
-          v-else
-          :class="[
-            'w-full h-full',
-            rounded ? 'rounded-full' : 'rounded'
-          ]"
-        >
-          <slot name="preview">
-            <v-img
-              :src="iconImageSrc"
-              aspect-ratio="1"
-            >
-              <template v-slot:placeholder>
-                <div class="flex justify-center items-center w-full h-full">
-                  <Spinner />
-                </div>
-              </template>
-            </v-img>
-          </slot>
-          <div
-            v-if="isDragOver || hovered"
-            :class="[
-              'absolute inset-0 w-full h-full bg-black opacity-35',
-              rounded ? 'rounded-full' : 'rounded',
-              { 'border border-white border-dashed' : isDragOver }
-            ]"
-          />
-          <div
-            v-if="(isDragOver || hovered) && !(getUploadUrlLoading || uploadLoading)"
-            class="absolute inset-0 flex justify-center items-center text-white"
-          >
-            <Icon :size="isDragOver ? 18 : hoveredIconSize">
-              {{ isDragOver ? icons.mdiPlusThick : icons[hoveredIcon] }}
-            </Icon>
-          </div>
+          <i>
+            <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0.773926" y="5.50012" width="11" height="1" stroke="currentColor"/>
+              <rect x="6.77393" y="0.500122" width="11" height="1" transform="rotate(90 6.77393 0.500122)" stroke="currentColor"/>
+            </svg>
+          </i>
         </div>
       </slot>
     </div>
@@ -108,14 +75,10 @@
           key="cancel"
           class="absolute inset-0 flex justify-center items-center pointer-events-none"
         >
-          <div
-            class="cursor-pointer pointer-events-auto hover:text-white"
+          <i
+            class="zi-close text-2xl cursor-pointer pointer-events-auto hover:text-white"
             @click="cancelUpload"
-          >
-            <Icon>
-              {{ icons.mdiClose }}
-            </Icon>
-          </div>
+          />
         </div>
       </v-scale-transition>
     </template>
@@ -123,7 +86,7 @@
       ref="input"
       :accept="fileAccept"
       type="file"
-      style="position:absolute; clip:rect(0,0,0,0); width:0; height:0;"
+      style="position: absolute; clip: rect(0,0,0,0); width: 0; height: 0;"
       @change="onChange"
     >
   </div>
@@ -131,7 +94,6 @@
 
 <script>
 import axios from 'axios'
-import { mdiPlusThick, mdiClose, mdiMagnifyPlusOutline } from '@mdi/js'
 import {
   ICON_IMAGE_POSTFIX,
   UPLOAD_FILE_SIZE_MB,
@@ -153,18 +115,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    hovered: {
-      type: Boolean,
-      default: false,
-    },
-    hoveredIcon: {
-      type: String,
-      default: 'mdiMagnifyPlusOutline',
-    },
-    hoveredIconSize: {
-      type: [String, Number],
-      default: 28,
-    },
     loading: {
       type: Boolean,
       default: true,
@@ -172,10 +122,6 @@ export default {
     src: {
       type: String,
       default: '',
-    },
-    showPreview: {
-      type: Boolean,
-      default: false,
     },
     rounded: {
       type: Boolean,
@@ -191,17 +137,15 @@ export default {
       getUploadUrlLoading: false,
       uploadLoading: false,
       isDragOver: false,
-      icons: {
-        mdiPlusThick,
-        mdiClose,
-        mdiMagnifyPlusOutline,
-      },
       dragAndDropCapable: false,
       uploadPercentage: 0,
     }
   },
 
   computed: {
+    showPreview () {
+      return this.uploadType === 'image'
+    },
     iconImageSrc () {
       if (this.filePreview) return this.filePreview
       if (!this.internalSrc) return null

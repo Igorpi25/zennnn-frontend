@@ -10,27 +10,22 @@ module.exports = {
       center: true,
     },
     colors: {
-      primary: '#5a8199',
-      'gray-lighter': '#868686',
-      'gray-light': '#777777',
-      gray: '#393939',
-      'gray-dark': '#545454',
-      'gray-darkest': '#2A2B2D',
-      error: '#c4321d',
-      red: '#BF3A40',
-      green: '#48BB78',
-      orange: '#fb8c00',
       black: '#000000',
       white: '#ffffff',
       transparent: 'transparent',
       current: 'currentColor',
+      // gray light
+      'light-gray-100': '#F7F7F7',
+      'light-gray-200': '#F4F4F4',
+      'light-gray-300': '#F0F0F0',
+      'light-gray-400': '#E4E4E4',
+      'light-gray-500': '#E0E0E0',
+      'light-gray-600': '#C4C4C4',
+      'light-gray-700': '#BDBDBD',
+      'light-gray-800': '#878787',
+      'light-gray-900': '#828282',
       // gray
-      'gray-10': '#F0F0F0',
-      'gray-50': '#F7F7F7',
-      'gray-75': '#E4E4E4',
       'gray-100': '#AAAAAA',
-      'gray-140': '#828282', // used in landing
-      'gray-150': '#878787', // used in landing
       'gray-200': '#676767', // IN_DRAFT
       'gray-300': '#585858',
       'gray-400': '#404040',
@@ -72,13 +67,14 @@ module.exports = {
       montserrat: ['Montserrat', 'sans-serif'],
     },
     boxShadow: {
-      'gray-75': '0 0 0 1px #E4E4E4',
+      'light-gray-400': '0 0 0 1px #E4E4E4',
       'blue-500': '0 0 0 1px #7E99D0',
       'blue-600': '0 0 0 1px #5C78B1',
       'yellow-300': '0 0 0 1px #EAD377',
       default: '0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06)',
       md: '0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06)',
-      lg: '0px 4px 10px rgba(0, 0, 0, 0.25)',
+      lg: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+      xl: '0px 0px 20px rgba(0, 0, 0, 0.1)',
     },
     letterSpacing: {
       tight: '-.025em',
@@ -89,6 +85,7 @@ module.exports = {
     },
     extend: {
       fontSize: {
+        13: '13px',
         28: '28px',
         32: '32px',
         40: '40px',
@@ -98,12 +95,14 @@ module.exports = {
         xs: '2px',
         sm: '10px',
         md: '14px',
-        lg: '30px',
+        lg: '18px',
+        xl: '30px',
         7: '1.75rem',
         9: '2.25rem',
         11: '2.75rem',
         13: '3.25rem',
         14: '3.5rem',
+        15: '3.75rem',
         18: '4.5rem',
         26: '6.5rem',
         36: '9rem',
@@ -115,6 +114,7 @@ module.exports = {
         30: '.3',
         35: '.35',
         40: '.4',
+        80: '.8',
         90: '.9',
       },
       zIndex: {
@@ -122,6 +122,7 @@ module.exports = {
         2: '2',
       },
       transitionProperty: {
+        'color': 'color',
         'colors-and-opacity': 'background-color, border-color, color, fill, stroke, opacity',
       },
       borderRadius: {

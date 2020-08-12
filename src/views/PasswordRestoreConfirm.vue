@@ -2,7 +2,7 @@
   <div class="content">
     <Header />
     <section class="flex-grow container welcome--top">
-      <h2 class="text-32 text-gray-75 font-semibold leading-none pb-6">
+      <h2 class="text-32 text-light-gray-400 font-semibold leading-none pb-6">
         {{ $t('passwordRestoreConfirm.changePasswordHead') }}
       </h2>
       <div class="w-full md:w-1/2">
@@ -32,7 +32,7 @@
                   @click="showPassword = !showPassword"
                 >
                   <i v-if="showPassword" class="zi-eye align-middle" />
-                  <i v-else class=" zi-eye-off align-middle" style="font-size: 28px" />
+                  <i v-else class=" zi-eye-off align-middle text-28" />
                 </div>
               </template>
             </TextField>
@@ -54,7 +54,7 @@
                   @click="showConfirmPassword = !showConfirmPassword"
                 >
                   <i v-if="showConfirmPassword" class="zi-eye align-middle" />
-                  <i v-else class=" zi-eye-off align-middle" style="font-size: 28px" />
+                  <i v-else class=" zi-eye-off align-middle text-28" />
                 </div>
               </template>
             </TextField>
@@ -63,7 +63,7 @@
         <div class="pb-6">
           <Button
             :loading="loading"
-            style="min-width: 120px;"
+            min-width="120"
             @click.prevent="onSubmit"
           >
             <span>{{$t('passwordRestoreConfirm.submit') }}</span>

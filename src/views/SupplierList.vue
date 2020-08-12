@@ -9,7 +9,7 @@
             v-model="search"
             :placeholder="$t('placeholder.pageSearch')"
             class="w-full md:max-w-md"
-            content-class="input-transparent"
+            content-class="bg-transparent"
             input-class="placeholder-blue-500"
             append-slot-class="w-auto"
           >

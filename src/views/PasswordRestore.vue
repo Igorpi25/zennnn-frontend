@@ -2,7 +2,7 @@
   <div class="content">
     <Header />
     <section class="flex-grow container welcome--top">
-      <h2 class="text-32 text-gray-75 font-semibold leading-none pb-6">
+      <h2 class="text-32 text-light-gray-400 font-semibold leading-none pb-6">
         {{ $t('passwordRestore.accessRecoveryHead') }}
       </h2>
       <div class="w-full md:w-1/2">
@@ -32,7 +32,7 @@
         <div class="pb-6">
           <Button
             :loading="loading"
-            style="min-width: 120px;"
+            min-width="120"
             @click.prevent="onSubmit"
           >
             <span>{{ $t('welcome.resend') }}</span>

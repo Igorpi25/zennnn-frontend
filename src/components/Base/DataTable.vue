@@ -13,9 +13,9 @@
         'border-separate bg-gray-800 rounded-md',
         { 'px-sm': !flat },
         { 'pb-2': !flat && computedItems.length !== 0 },
+        flat ? 'border-spacing-y-px' : 'border-spacing-y-1',
         tableClass,
       ]"
-      :style="{ borderSpacing: flat ? '0 1px' : '0 4px' }"
     >
       <thead
         v-if="!hideHeaders"

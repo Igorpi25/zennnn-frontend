@@ -116,10 +116,7 @@
         <div
           v-for="(item, i) in items"
           :key="i"
-          :class="{ 'mb-1': i + 1 < items.length }"
-          :style="{
-            boxShadow: item.id ? '0px 4px 10px rgba(0, 0, 0, 0.1)' : '0px 0px 20px rgba(0, 0, 0, 0.1)',
-          }"
+          :class="[item.id ? 'shadow-lg' : 'shadow-xl', { 'mb-1': i + 1 < items.length }]"
         >
           <template v-if="item.id === emptyId">
             <InvoiceHeader
@@ -175,7 +172,7 @@
     </div>
 
     <div class="flex flex-wrap lg:flex-no-wrap pb-8">
-      <div class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3" style="max-width: 746px">
+      <div class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3" style="max-width: 746px;">
         <v-slide-y-transition hide-on-leave>
           <SpecShipping
             v-if="isInfoVisible"
@@ -192,17 +189,17 @@
                   @change="setContainerSize(container.id, $event)"
                 >
                   <option value="_20_DC">
-                    <span class="leaders__num cursor-pointer" style="padding-right:0">
+                    <span class="cursor-pointer">
                       20'DC
                     </span>
                   </option>
                   <option value="_40_HC">
-                    <span class="leaders__num cursor-pointer" style="padding-right:0">
+                    <span class="cursor-pointer">
                       40'HC
                     </span>
                   </option>
                   <option value="_45_HC">
-                    <span class="leaders__num cursor-pointer" style="padding-right:0">
+                    <span class="cursor-pointer">
                       45'HC
                     </span>
                   </option>

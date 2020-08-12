@@ -323,7 +323,7 @@ export default {
       },
       result ({ data, loading }) {
         if (loading) return
-        this.setData(data.getClient)
+        this.setData(data && data.getClient)
       },
       skip () {
         return this.create

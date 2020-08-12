@@ -14,8 +14,7 @@
             </h2>
             <div
               v-if="spec.shipped"
-              class="inline-block text-xs align-middle mr-sm px-sm bg-blue-400 text-white"
-              style="border-radius: 50px"
+              class="inline-block text-xs align-middle mr-sm px-sm bg-blue-400 text-white rounded-50"
             >
               {{ $t('paper.shipped') }}
             </div>
@@ -26,7 +25,7 @@
                 disabled
                 class="w-full inline-block rounded-md border border-transparent pointer-events-none"
               >
-                <div class="h-10 w-10 flex items-center justify-center text-gray-75">
+                <div class="h-10 w-10 flex items-center justify-center text-light-gray-400">
                   <i class="zi-user-plus text-2xl" />
                 </div>
               </button>
@@ -35,7 +34,7 @@
               <button
                 :disabled="printLoading"
                 :class="{ 'hover:border-blue-500': !printLoading }"
-                class="relative w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                class="relative w-full inline-block bg-light-gray-100 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
                 @click="printPdf"
               >
                 <div
@@ -57,7 +56,7 @@
               <button
                 :disabled="downloadLoading"
                 :class="{ 'hover:border-blue-500': !downloadLoading }"
-                class="relative w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                class="relative w-full inline-block bg-light-gray-100 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
                 @click="downloadPdf"
               >
                 <div
@@ -90,7 +89,7 @@
               >
                 <template v-slot:activator="{ on }">
                   <button
-                    class="w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
+                    class="w-full inline-block bg-light-gray-100 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
                     v-on="on"
                   >
                     <div class="h-10 w-10 flex items-center justify-center">
@@ -98,7 +97,7 @@
                         <div
                           v-if="hasNewComments"
                           :class="[
-                            'absolute top-0 right-0 w-sm h-sm rounded-full border-2 bg-gray-50 border-gray-50 transition-colors duration-100 ease-out -mt-xs -mr-1',
+                            'absolute top-0 right-0 w-sm h-sm rounded-full border-2 bg-light-gray-100 border-light-gray-100 transition-colors duration-100 ease-out -mt-xs -mr-1',
                           ]"
                         >
                           <div class="w-full h-full bg-purple-500 rounded-full" />
@@ -111,7 +110,7 @@
             </div>
             <div class="pr-2">
               <button
-                class="w-full inline-block bg-gray-50 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
+                class="w-full inline-block bg-light-gray-100 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
                 @click="toggleExpandAll"
               >
                 <div class="h-10 w-10 flex items-center justify-center">
@@ -131,8 +130,7 @@
           >
             <div
               :class="{ 'rounded-b-md': !expanded.includes(item.id) }"
-              style="background: #F0F0F0;"
-              class="h-12 flex items-center px-3 sm:px-5 rounded-t-md select-none cursor-pointer"
+              class="h-12 flex items-center px-3 sm:px-5 rounded-t-md select-none cursor-pointer bg-light-gray-300"
               @click="expand(item.id)"
             >
               <div
@@ -187,7 +185,7 @@
               <!-- Summary -->
               <div class="flex flex-wrap sm:flex-no-wrap -mx-2 pb-4">
                 <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
-                  <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
+                  <div class="flex flex-col justify-between bg-light-gray-100 rounded-md py-4 px-5 leading-6 h-full">
                     <div class="flex text-gray-100 pb-2">
                       <i class="zi-calendar text-2xl mr-2" />
                       <span>
@@ -200,7 +198,7 @@
                   </div>
                 </div>
                 <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
-                  <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
+                  <div class="flex flex-col justify-between bg-light-gray-100 rounded-md py-4 px-5 leading-6 h-full">
                     <div class="flex text-gray-100 pb-2">
                       <i class="zi-cup text-2xl mr-2" />
                       <span>
@@ -213,7 +211,7 @@
                   </div>
                 </div>
                 <div class="w-1/2 sm:w-1/4 px-2">
-                  <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
+                  <div class="flex flex-col justify-between bg-light-gray-100 rounded-md py-4 px-5 leading-6 h-full">
                     <div class="flex text-gray-100 pb-2">
                       <i class="zi-boxes text-2xl mr-2" />
                       <span>
@@ -226,7 +224,7 @@
                   </div>
                 </div>
                 <div class="w-1/2 sm:w-1/4 px-2">
-                  <div class="flex flex-col justify-between bg-gray-50 rounded-md py-4 px-5 leading-6 h-full">
+                  <div class="flex flex-col justify-between bg-light-gray-100 rounded-md py-4 px-5 leading-6 h-full">
                     <div class="flex text-gray-100 pb-2">
                       <i class="zi-massa text-2xl mr-2" />
                       <span>
@@ -241,8 +239,8 @@
               </div>
 
               <!-- Containers -->
-              <div class="relative sm:flex bg-gray-50 rounded-md overflow-hidden">
-                <div class="flex-grow py-lg leading-4">
+              <div class="relative sm:flex bg-light-gray-100 rounded-md overflow-hidden">
+                <div class="flex-grow py-xl leading-4">
                   <div
                     v-for="(container, i) of containers"
                     :key="i"
@@ -309,8 +307,8 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="spec.shipped" class="spec-shipped flex-shrink-0 relative bg-gray-75">
-                  <div class="absolute inset-0 flex h-full items-center border-gray-50 pointer-events-none">
+                <div v-if="spec.shipped" class="spec-shipped flex-shrink-0 relative bg-light-gray-400">
+                  <div class="absolute inset-0 flex h-full items-center border-light-gray-100 pointer-events-none">
                     <div class="spec-shipped__arrow"></div>
                   </div>
                   <div class="h-full flex items-center justify-center">
@@ -337,7 +335,7 @@
               <h4 class="text-xl font-semibold leading-6 mb-4">
                 {{ $t('paper.financialInfo') }}
               </h4>
-              <div class="bg-gray-50 rounded-md leading-5 p-5">
+              <div class="bg-light-gray-100 rounded-md leading-5 p-5">
                 <div class="flex rounded-md bg-white pl-4 pr-3 py-3 mb-1">
                   <div class="flex-grow text-gray-100">
                     {{ $t('paper.costOfGood') }}
@@ -383,7 +381,7 @@
               </div>
               <div
                 v-if="spec.terms || spec.sentFrom"
-                class="bg-gray-50 rounded-md text-center px-5 mt-4 py-6"
+                class="bg-light-gray-100 rounded-md text-center px-5 mt-4 py-6"
               >
                 <span v-if="spec.terms">
                   {{ spec.terms }}&nbsp;
@@ -396,15 +394,15 @@
           </div>
 
           <!-- Actions -->
-          <div class="bg-gray-50 rounded-md p-3 select-none">
+          <div class="bg-light-gray-100 rounded-md p-3 select-none">
             <div class="flex flex-wrap md:flex-no-wrap">
               <div class="w-full md:w-auto p-2">
                 <button
-                  style="min-width: 85px"
+                  style="min-width: 85px;"
                   disabled
-                  class="w-full inline-block rounded-md border border-gray-75 pointer-events-none"
+                  class="w-full inline-block rounded-md border border-light-gray-400 pointer-events-none"
                 >
-                  <div class="h-12 flex items-center px-3 text-gray-75">
+                  <div class="h-12 flex items-center px-3 text-light-gray-400">
                     <i class="zi-user-plus text-xl mr-2" />
                     <span class="whitespace-nowrap leading-tight">
                       {{ $t('paper.share') }}
@@ -416,8 +414,8 @@
                 <button
                   :disabled="printLoading"
                   :class="{ 'hover:border-blue-500': !printLoading }"
-                  style="min-width: 85px"
-                  class="relative w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                  style="min-width: 85px;"
+                  class="relative w-full inline-block rounded-md border border-light-gray-400 select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
                   @click="printPdf"
                 >
                   <div
@@ -442,8 +440,8 @@
                 <button
                   :disabled="downloadLoading"
                   :class="{ 'hover:border-blue-500': !downloadLoading }"
-                  style="min-width: 85px"
-                  class="relative w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
+                  style="min-width: 85px;"
+                  class="relative w-full inline-block rounded-md border border-light-gray-400 select-none focus:outline-none focus:border-blue-500 transition-colors duration-100 ease-out"
                   @click="downloadPdf"
                 >
                   <div
@@ -482,7 +480,7 @@
                   <template v-slot:activator="{ on }">
                     <button
                       min-width="85"
-                      class="w-full inline-block rounded-md border border-gray-75 select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
+                      class="w-full inline-block rounded-md border border-light-gray-400 select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
                       v-on="on"
                     >
                       <div class="h-12 flex items-center px-3">
@@ -550,7 +548,7 @@ export default {
       },
       result ({ data, loading }) {
         if (!loading && !this.isBooted) {
-          const spec = data.getPaperSpec || {}
+          const spec = (data && data.getPaperSpec) || {}
           this.updateExpanded(spec)
         }
       },

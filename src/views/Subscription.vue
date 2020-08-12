@@ -4,7 +4,7 @@
     <Header light :org="orgId">
       <template v-slot:breadcrumbs>
         <div class="flex items-center pl-2 sm:pl-6">
-          <i class="hidden sm:block zi-chevron-up text-2xl text-gray-75 transform rotate-90" />
+          <i class="hidden sm:block zi-chevron-up text-2xl text-light-gray-400 transform rotate-90" />
           <div class="hidden sm:block ml-2 sm:ml-6">
             {{ $t('payment.subscriptionManagement') }}
           </div>
@@ -16,7 +16,7 @@
     <v-dialog
       v-model="successDialog"
       max-width="458"
-      content-class="relative text-gray-200 bg-gray-50 text-center p-8"
+      content-class="relative text-gray-200 bg-light-gray-100 text-center p-8"
     >
       <span class="absolute text-right top-0 right-0 pt-2 pr-2">
         <i
@@ -49,14 +49,14 @@
         <div class="flex sm:flex-1 items-center w-full">
           <div class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0" :class="{ 'bg-gray-100': !profile.picture }">
             <img v-if="profile.picture" :src="profile.picture" alt="Avatar" class="w-full h-full object-cover">
-            <i v-else class="zi-user text-3xl text-gray-75" />
+            <i v-else class="zi-user text-3xl text-light-gray-400" />
           </div>
           <div class="pl-4">
             <div class="text-lg font-medium">{{ `${profile.givenName} ${profile.familyName}` }}</div>
             <div class="text-gray-100">{{ profile.email }}</div>
           </div>
         </div>
-        <div class="sm:flex-1 w-full sm:max-w-xs border-t sm:border-t-0 sm:border-l border-gray-75 pt-4 mt-4 sm:mt-0 sm:pt-0 sm:ml-6 sm:pl-6">
+        <div class="sm:flex-1 w-full sm:max-w-xs border-t sm:border-t-0 sm:border-l border-light-gray-400 pt-4 mt-4 sm:mt-0 sm:pt-0 sm:ml-6 sm:pl-6">
           <div class="flex justify-between">
             <div class="">
               <div class="h-6 text-lg font-semibold mb-xs">{{ productName }}</div>
@@ -108,7 +108,7 @@
         <v-dialog
           v-model="cancelSubscriptionDialog"
           max-width="458"
-          content-class="relative text-gray-200 bg-gray-50 p-8 pt-6"
+          content-class="relative text-gray-200 bg-light-gray-100 p-8 pt-6"
         >
           <template v-slot:activator="{ on }">
             <button
@@ -169,7 +169,7 @@
       </div>
       <!-- PAYMENT METHODS LIST -->
       <div v-if="paymentMethods.length > 0 || defaultPm">
-        <div class="border-b border-gray-75 mt-16 mb-16" />
+        <div class="border-b border-light-gray-400 mt-16 mb-16" />
         <h3 class="text-2xl pb-6">
           {{ $t('payment.paymentMethod') }}
         </h3>
@@ -178,7 +178,7 @@
             {{ $t('payment.defaultCard') }}
           </h4>
           <div class="overflow-x-auto overflow-scroll-touch pb-10">
-            <table class="w-full border-separate text-gray-200" style="border-spacing: 0 4px">
+            <table class="w-full border-separate text-gray-200 border-spacing-y-1">
               <tbody>
                 <tr
                   class="h-12 bg-white hover:bg-transparent group"
@@ -222,7 +222,7 @@
             {{ $t('payment.otherCards') }}
           </h4>
           <div class="overflow-x-auto overflow-scroll-touch pb-10">
-            <table class="w-full border-separate text-gray-200" style="border-spacing: 0 4px">
+            <table class="w-full border-separate text-gray-200 border-spacing-y-1">
               <tbody>
                 <tr
                   v-for="item in paymentMethods"
@@ -290,7 +290,7 @@
           <v-dialog
             v-model="addPaymentMethodDialog"
             max-width="746"
-            content-class="bg-gray-50 px-5 pt-8"
+            content-class="bg-light-gray-100 px-5 pt-8"
           >
             <template v-slot:activator="{ on }">
               <Button
@@ -308,12 +308,12 @@
       </div>
       <!-- PAYMENT INVOICES LIST -->
       <div v-if="paymentInvoices.length > 0" class="pb-10">
-        <div class="border-b border-gray-75 mt-16 mb-16" />
+        <div class="border-b border-light-gray-400 mt-16 mb-16" />
         <h3 class="text-2xl pb-6">
           {{ $t('payment.invoices') }}
         </h3>
-        <div class="overflow-x-auto overflow-scroll-touch rounded-md px-sm pb-2" style="background-color: #f0f0f0">
-          <table class="w-full table-fixed border-separate text-gray-200" style="border-spacing: 0 4px">
+        <div class="overflow-x-auto overflow-scroll-touch rounded-md bg-light-gray-300 px-sm pb-2">
+          <table class="w-full table-fixed border-separate text-gray-200 border-spacing-y-1">
             <thead>
               <tr class="h-12 text-gray-100">
                 <td width="146" class="px-4">{{ $t('payment.invoiceNumber') }}</td>
@@ -328,7 +328,7 @@
               <tr
                 v-for="item in listPaymentInvoices"
                 :key="item.id"
-                class="h-12 bg-gray-50 hover:bg-white group"
+                class="h-12 bg-light-gray-100 hover:bg-white group"
               >
                 <td class="rounded-l-md px-4">{{ item.number }}</td>
                 <td class="whitespace-no-wrap pl-4 pr-2">

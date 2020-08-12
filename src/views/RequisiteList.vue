@@ -7,7 +7,7 @@
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
           class="w-full sm:w-64"
-          content-class="input-transparent"
+          content-class="bg-transparent"
           input-class="placeholder-blue-500"
         >
           <template v-slot:prepend>

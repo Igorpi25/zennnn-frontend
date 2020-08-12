@@ -8,7 +8,7 @@
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
           class="w-full flex-shrink-0 md:max-w-md pb-4 md:pr-8"
-          content-class="input-transparent"
+          content-class="bg-transparent"
           input-class="placeholder-blue-500"
           append-slot-class="w-auto"
         >
