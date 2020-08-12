@@ -295,9 +295,9 @@
       content-class="bg-gray-400"
     >
       <div ref="createSpecContainer" class="relative">
-        <div class="bg-gray-500 flex text-lg text-white font-semibold px-8 py-6">
-          <i class="zi-user-plus text-3xl text-blue-500 mr-2" />
-          <div class="w-64">
+        <div class="bg-gray-500 flex items-center text-lg text-white font-semibold px-8 py-5">
+          <i class="zi-user-plus text-3xl text-blue-500 mr-4" />
+          <div>
             {{ $t('deals.createSpecDialogHeader') }}
           </div>
         </div>
@@ -354,7 +354,7 @@
           </Button>
         </div>
         <span
-          class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-3 mr-3"
+          class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
           @click="createSpecDialog = false"
         >
           <i class="zi-close" />

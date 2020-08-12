@@ -1,40 +1,39 @@
 <template>
   <v-dialog
     v-model="dialog"
-    :max-width="460"
+    :max-width="458"
   >
     <div class="relative bg-gray-400">
-      <div class="flex items-center text-gray-100 bg-gray-500 p-6">
-        <Icon size="30" class="mr-2">
-          {{ icons.ziUserPlus }}
-        </Icon>
-        <span>{{ $t('staff.addStaff') }}</span>
+      <div class="bg-gray-500 flex items-center text-lg text-white font-semibold px-8 py-5">
+        <i class="zi-user-plus text-3xl text-blue-500 mr-4" />
+        <div>
+          {{ $t('staff.addStaff') }}
+        </div>
       </div>
-      <div class="text-gray-100">
+      <div class="text-gray-100 px-8 pt-6 pb-8">
         <v-window v-model="invitationStep">
           <v-window-item :value="1">
             <Form
               ref="emailForm"
               :error-message.sync="emailErrorMessage"
               lazy-validation
-              class="mx-auto m-0 pt-8 md:pt-12 pb-10 px-4"
             >
-              <div class="w-full">
-                <TextField
-                  ref="email"
-                  v-model="emailFormModel.email"
-                  :label="$t('staff.login')"
-                  :rules="[rules.required, rules.email]"
-                  placeholder="example@mail.com"
-                  validate-on-blur
-                  type="email"
-                  name="email"
-                  @input="emailErrorMessage = ''"
-                />
-              </div>
-              <div class="pt-10 text-right">
+              <TextField
+                ref="email"
+                v-model="emailFormModel.email"
+                :label="$t('staff.login')"
+                :rules="[rules.required, rules.email]"
+                placeholder="example@mail.com"
+                validate-on-blur
+                type="email"
+                name="email"
+                class="pb-6"
+                @input="emailErrorMessage = ''"
+              />
+              <div class="text-right">
                 <Button
                   :loading="emailFormLoading"
+                  min-width="120"
                   @click="getInviteUser"
                 >
                   <span>{{ $t('staff.next') }}</span>
@@ -47,70 +46,63 @@
               ref="inviteForm"
               :error-message.sync="inviteErrorMessage"
               lazy-validation
-              class="mx-auto m-0 pt-8 md:pt-12 pb-10 px-4"
             >
-              <div class="w-full">
-                <TextField
-                  ref="givenNameInput"
-                  v-model="inviteFormModel.givenName"
-                  :label="$t('staff.firstName')"
-                  :placeholder="$t('staff.firstName')"
-                  :rules="[rules.required]"
-                  :readonly="!!inviteUser"
-                  validate-on-blur
-                  name="firstName"
-                  autofocus
-                />
-              </div>
-              <div class="w-full">
-                <TextField
-                  v-model="inviteFormModel.familyName"
-                  :label="$t('staff.lastName')"
-                  :placeholder="$t('staff.lastName')"
-                  :rules="[rules.required]"
-                  :readonly="!!inviteUser"
-                  validate-on-blur
-                  name="lastName"
-                />
-              </div>
-              <div class="w-full">
-                <Select
-                  v-model="inviteFormModel.role"
-                  :label="$t('staff.access')"
-                  :placeholder="$t('staff.access')"
-                  :items="roles"
-                  :rules="[rules.requiredSelect]"
-                  validate-on-blur
-                  flat
-                  class="text-base mr-2 md:p-0 leading-normal max-w-sm"
-                />
-              </div>
-              <div
-                v-if="!inviteUser"
-                class="w-full"
-              >
-                <Select
-                  v-model="inviteFormModel.locale"
-                  :label="$t('companyDetail.label.language')"
-                  :placeholder="$t('companyDetail.label.language')"
-                  :items="langs"
-                  :rules="[rules.requiredSelect]"
-                  validate-on-blur
-                  flat
-                  class="text-base mr-2 md:p-0 leading-normal max-w-sm"
-                />
-              </div>
-              <div class="flex justify-between w-full pt-10">
+              <TextField
+                ref="givenNameInput"
+                v-model="inviteFormModel.givenName"
+                :label="$t('staff.firstName')"
+                :placeholder="$t('staff.firstName')"
+                :rules="[rules.required]"
+                :readonly="!!inviteUser"
+                validate-on-blur
+                name="firstName"
+                autofocus
+                class="pb-2"
+              />
+              <TextField
+                v-model="inviteFormModel.familyName"
+                :label="$t('staff.lastName')"
+                :placeholder="$t('staff.lastName')"
+                :rules="[rules.required]"
+                :readonly="!!inviteUser"
+                validate-on-blur
+                name="lastName"
+                class="pb-2"
+              />
+              <Select
+                v-model="inviteFormModel.role"
+                :label="$t('staff.access')"
+                :placeholder="$t('staff.access')"
+                :items="roles"
+                :rules="[rules.requiredSelect]"
+                validate-on-blur
+                flat
+                class="pb-2"
+              />
+              <Select
+                v-model="inviteFormModel.locale"
+                :label="$t('companyDetail.label.language')"
+                :placeholder="$t('companyDetail.label.language')"
+                :items="langs"
+                :rules="[rules.requiredSelect]"
+                validate-on-blur
+                flat
+                class="pb-6"
+              />
+              <div class="flex flex-wrap sm:flex-no-wrap justify-between">
                 <Button
                   :disabled="inviteFormLoading"
+                  :merge-class="inviteFormLoading ? 'text-gray-300 border-gray-200' : 'border-gray-200'"
                   outlined
-                  merge-class="border-gray-100"
+                  class="w-full sm:w-1/2 order-1 sm:order-none sm:mr-3"
                   @click="invitationStep = 1"
                 >
                   <span>{{ $t('staff.back') }}</span>
                 </Button>
                 <Button
                   :loading="inviteFormLoading"
+                  block
+                  class="w-full sm:w-1/2  mb-4 sm:mb-0 sm:ml-3"
                   @click="submit"
                 >
                   <span>{{ $t('staff.invite') }}</span>
@@ -121,17 +113,16 @@
         </v-window>
       </div>
       <span
-        class="absolute top-0 right-0 mt-2 mr-3 text-gray-100 hover:text-white cursor-pointer"
+        class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
         @click="dialog = false"
       >
-        <i class="zi-close text-2xl" />
+        <i class="zi-close" />
       </span>
     </div>
   </v-dialog>
 </template>
 
 <script>
-import { ziUserPlus } from '../assets/icons'
 import { Role } from '../graphql/enums'
 import { GET_INVITE_USER_TO_ORG } from '../graphql/queries'
 import { INVITE_USER_TO_ORG } from '../graphql/mutations'
@@ -162,9 +153,6 @@ export default {
         locale: '',
       },
       roleMenu: false,
-      icons: {
-        ziUserPlus,
-      },
       rules: {
         required: v => !!v || this.$t('rule.required'),
         requiredSelect: v => !!v || this.$t('rule.requiredSelect'),
