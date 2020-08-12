@@ -120,18 +120,11 @@
             <tr>
               <td colspan="4">
                 <div
-                  :style="{
-                    background: 'linear-gradient(180deg, #1E1E1E 0%, rgba(30, 30, 30, 0) 100%)',
-                    height: '88px',
-                  }"
-                  class="absolute inset-x-0 top-0 pointer-events-none opacity-50 -mt-1"
+                  style="height: 88px;"
+                  class="absolute inset-x-0 top-0 pointer-events-none opacity-50 bg-gradient-dark -mt-1"
                 />
                 <div
-                  :style="{
-                    background: 'linear-gradient(180deg, #1E1E1E 0%, rgba(30, 30, 30, 0) 100%)',
-                    transform: 'rotate(180deg)',
-                  }"
-                  class="h-12 absolute inset-x-0 bottom-0 pointer-events-none opacity-50"
+                  class="h-12 absolute inset-x-0 bottom-0 pointer-events-none opacity-50 bg-gradient-dark transform rotate-180"
                 />
               </td>
               <td :colspan="activeTab === 2 ? 2 : 3">

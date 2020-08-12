@@ -6,7 +6,7 @@
         @click="$emit('close')"
       />
     </span>
-    <div class="bg-gray-50 flex px-8 py-5">
+    <div class="bg-light-gray-100 flex px-8 py-5">
       <svg class="text-blue-500" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M19.8174 1.06641C20.208 0.675781 19.9307 0 19.376 0H0.626708C0.072041 0 -0.209198 0.671875 0.185318 1.06641L8.43891 9.32031V18.4375H4.8453C4.23985 18.4375 3.75159 18.9258 3.75159 19.5312C3.75159 19.7891 3.96252 20 4.22032 20H15.7824C16.0402 20 16.2511 19.7891 16.2511 19.5312C16.2511 18.9258 15.7629 18.4375 15.1574 18.4375H11.5638V9.32031L19.8174 1.06641Z" fill="currentColor"/>
       </svg>
@@ -19,7 +19,7 @@
         v-for="(item, i) of products"
         :key="i"
         :class="{ 'mb-2': i + 1 < products.length }"
-        class="flex items-center w-full bg-gray-50 rounded-md px-6 py-4"
+        class="flex items-center w-full bg-light-gray-100 rounded-md px-6 py-4"
       >
         <div class="w-1/2 sm:w-1/3 leading-tight">
           <div class="text-gray-300 font-semibold pb-2">{{ item.title }}</div>

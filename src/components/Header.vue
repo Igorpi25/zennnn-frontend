@@ -1,5 +1,5 @@
 <template>
-  <div :class="light ? 'bg-gray-50 border-b border-gray-75' : 'bg-gray-400'">
+  <div :class="light ? 'bg-light-gray-100 border-b border-light-gray-400' : 'bg-gray-400'">
     <div class="container">
       <div :class="[light ? 'h-20' : 'h-14', 'flex']">
         <!-- Logo -->
@@ -64,7 +64,7 @@
                     { '' : !light && profileMenu },
                     light && profileMenu
                       ? 'bg-white hover:bg-white' : light && !profileMenu
-                        ? 'hover:bg-gray-75' : !light && profileMenu
+                        ? 'hover:bg-light-gray-400' : !light && profileMenu
                           ? 'bg-gray-500 hover:bg-gray-500' : 'hover:bg-gray-200',
                   ]"
                   v-on="on"
@@ -123,7 +123,7 @@
                     v-for="item in profileItems"
                     :key="item.value"
                     :value="item.value"
-                    :class="[light ? 'hover:bg-gray-10 focus:bg-gray-10' : 'hover:bg-gray-300 focus:bg-gray-300']"
+                    :class="[light ? 'hover:bg-light-gray-300 focus:bg-light-gray-300' : 'hover:bg-gray-300 focus:bg-gray-300']"
                     class="flex items-center justify-between h-10 px-3 cursor-pointer focus:outline-none transition-colors duration-100 ease-out"
                     tabindex="0"
                     role="menuitem"
@@ -135,7 +135,7 @@
                         v-if="subscriptionStatus"
                         :class="[subscriptionStatus === 'paid' ? 'border-green-500 text-green-500' : subscriptionStatus === 'trial' ? 'border-yellow-500 text-yellow-500' : 'border-pink-500 text-pink-500']"
                         class="border h-6 inline-flex items-center rounded-md text-sm font-semibold text-white px-2 mb-xs"
-                        style="border-radius: 11px"
+                        style="border-radius: 11px;"
                       >
                         <span v-if="subscriptionStatus === 'paid' && productName">
                           {{ productName }}
@@ -158,28 +158,27 @@
       v-model="orgDialog"
       max-width="480px"
     >
-      <div class="bg-gray">
-        <div class="p-6 flex items-center bg-gray-darkest">
+      <div class="bg-gray-400">
+        <div class="p-6 flex items-center bg-gray-700">
           <span class="text-gray-100">{{ $t('header.myCompanies') }}</span>
         </div>
-        <ul class="list-none text-white overflow-y-auto" style="max-height:520px;">
+        <ul class="list-none text-white overflow-y-auto" style="max-height: 520px;">
           <template v-for="(item, i) in orgsByRole">
             <li
               v-if="item.header"
               :key="`header${i}`"
-              class="px-3 pt-2 text-sm text-gray-150 font-bold"
+              class="px-3 pt-2 text-sm text-light-gray-800 font-bold"
             >
               {{ item.text }}
             </li>
             <li
               v-else
               :key="`${item.id}${i}`"
-              class="px-3 py-2 text-sm hover:bg-gray-dark relative"
+              class="px-3 py-2 text-sm hover:bg-gray-300 relative"
             >
               <div
                 v-if="item.id === orgId"
-                class="absolute top-0 left-0 h-full bg-gray-100"
-                style="width: 2px"
+                class="absolute top-0 left-0 h-full bg-gray-100 w-xs"
               />
               <div class="flex items-center">
                 <div class="flex-shrink-0 w-9">
@@ -197,7 +196,7 @@
                       hoveredIconSize="18"
                       rounded
                       show-preview
-                      style="width:32px; height:32px"
+                      style="width: 32px; height: 32px;"
                       @update="updateOrgImage($event, item.id)"
                     />
                   </div>
@@ -224,7 +223,7 @@
                     <div class="text-sm">{{ item.name }}</div>
                     <div
                       v-text="`${item.owner.givenName} ${item.owner.familyName}`"
-                      class="text-xs text-gray-150"
+                      class="text-xs text-light-gray-800"
                     />
                   </div>
                 </div>

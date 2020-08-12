@@ -40,7 +40,7 @@
       </div>
     </template>
     <div
-      :class="[light ? 'bg-paper' : 'bg-gray-500']"
+      :class="[light ? 'bg-white' : 'bg-gray-400']"
     >
       <div class="text-gray-200 truncate h-8 px-1 flex items-center">
         <div class="flex-grow truncate">
@@ -93,16 +93,14 @@
         </div>
         <div
           v-if="removable"
-          class="absolute inset-x-0 top-0 h-20 m-1 rounded-t overflow-hidden pointer-event-none"
-          style="background: linear-gradient(0deg, rgba(30, 30, 30, 0) 0%, rgba(30, 30, 30, 0.56) 100%);"
+          class="absolute inset-x-0 top-0 h-20 m-1 rounded-t overflow-hidden pointer-event-none bg-gradient-dark-half"
         >
-          <div
-            class="absolute pointer-events-auto cursor-pointer"
-            style="top:12px; right:12px"
-            @click="removeImage(currentImage)"
+          <a
+            class="absolute right-0 top-0 pointer-events-auto cursor-pointer text-2xl text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none pt-sm pr-sm"
+            @click.prevent="removeImage(currentImage)"
           >
-            <Icon color="#c1c1c1" size="22">{{ icons.mdiTrashCanOutline }}</Icon>
-          </div>
+            <i class="zi-delete" />
+          </a>
         </div>
       </div>
     </div>
@@ -110,7 +108,6 @@
 </template>
 
 <script>
-import { mdiTrashCanOutline } from '@mdi/js'
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
 import { ADD_PRODUCT_IMAGE, REMOVE_PRODUCT_IMAGE, UPDATE_PRODUCT_INFO } from '../graphql/mutations'
 
@@ -160,9 +157,6 @@ export default {
       currentImageFilenameLoading: false,
       currentImageFilename: '',
       currentImageIndex: 0,
-      icons: {
-        mdiTrashCanOutline,
-      },
     }
   },
   computed: {
@@ -252,12 +246,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.bg-paper {
-  background-color: #f4f4f4;
-}
-.draggable-mirror {
-  z-index: 500!important;
-}
-</style>

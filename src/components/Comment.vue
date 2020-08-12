@@ -21,7 +21,7 @@
         @submit="commentSubmit"
       /> -->
     </div>
-    <div :class="['border-b my-4', light ? 'border-gray-75' : 'border-gray-200']" />
+    <div :class="['border-b my-4', light ? 'border-light-gray-400' : 'border-gray-200']" />
   </div>
 </template>
 

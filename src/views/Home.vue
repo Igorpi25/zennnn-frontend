@@ -32,7 +32,7 @@
     <main class="container container--sm home-main--top flex-grow">
       <h1
         v-html="$t('home.title')"
-        class="text-4xl sm:text-56 text-gray-75 text-center font-semibold leading-tight mb-10"
+        class="text-4xl sm:text-56 text-light-gray-400 text-center font-semibold leading-tight mb-10"
       />
       <div class="flex flex-wrap justify-center pb-12">
         <div

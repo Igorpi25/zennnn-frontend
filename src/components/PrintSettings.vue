@@ -48,7 +48,7 @@
           <Button
             :disabled="!validationState.isRequiredFilled"
             :loading="loading"
-            style="min-width: 200px;"
+            min-width="200"
             @click="print"
           >
             {{ $t('shipping.doPrint') }}
@@ -329,7 +329,7 @@
       <div class="flex flex-col sm:flex-row">
         <Button
           outlined
-          style="min-width: 200px"
+          min-width="200"
           @click="$emit('close')"
         >
           {{ $t('shipping.cancelPrint') }}
@@ -359,7 +359,7 @@
         <Button
           :disabled="!validationState.isRequiredFilled"
           :loading="loading"
-          style="min-width: 200px"
+          min-width="200"
           @click="print"
         >
           {{ $t('shipping.doPrint') }}

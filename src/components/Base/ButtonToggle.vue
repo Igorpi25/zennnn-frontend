@@ -47,10 +47,12 @@ export default {
       return 'bg-gray-600 text-gray-200 border-l border-t border-b border-gray-900'
     },
     activeStyles () {
-      return { boxShadow: 'inset 0px 2px 1px rgba(0, 0, 0, 0.7)' }
+      const val = 'inset 0px 2px 1px rgba(0, 0, 0, 0.7)'
+      return { '-webkit-box-shadow': val, 'box-shadow': val }
     },
     inActiveStyles () {
-      return { boxShadow: '0px 2px 1px #1E1E1E' }
+      const val = '0px 2px 1px #1E1E1E'
+      return { '-webkit-box-shadow': val, 'box-shadow': val }
     },
     computedId () {
       return this.id || `input-${this._uid}`

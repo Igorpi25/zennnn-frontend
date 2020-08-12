@@ -8,22 +8,22 @@
     >
       <template v-slot:breadcrumbs>
         <div class="flex items-center pl-2 sm:pl-6">
-          <i class="hidden sm:block zi-chevron-up text-2xl text-gray-75 transform rotate-90" />
+          <i class="hidden sm:block zi-chevron-up text-2xl text-light-gray-400 transform rotate-90" />
           <div class="hidden sm:block ml-2 sm:ml-6">
             {{ $t('pricing.title') }}
           </div>
         </div>
       </template>
     </Header>
-    <header v-else class="border-b border-gray-75">
+    <header v-else class="border-b border-light-gray-400">
       <div class="h-20 flex items-center container container--sm">
         <router-link
           :to="{ name: 'home' }"
           class="flex-shrink-0 select-none focus:outline-none mr-2 sm:mr-6"
         >
-          <img src="@/assets/img/logo-light.svg" alt="Logo" style="height: 18px">
+          <img src="@/assets/img/logo-light.svg" alt="Logo" class="h-lg">
         </router-link>
-        <i class="hidden sm:block zi-chevron-up text-2xl text-gray-75 transform rotate-90" />
+        <i class="hidden sm:block zi-chevron-up text-2xl text-light-gray-400 transform rotate-90" />
         <div class="hidden sm:block ml-2 sm:ml-6">
           {{ $t('pricing.title') }}
         </div>

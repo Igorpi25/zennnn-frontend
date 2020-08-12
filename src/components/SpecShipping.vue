@@ -74,8 +74,8 @@
           >
             <div
               v-if="container.full"
+              style="min-height: 160px;"
               class="text-sm text-gray-200"
-              style="min-width: 160px"
             >
               <div>
                 <span class="text-white text-xl font-semibold pr-1">{{ container.full }}</span>
@@ -106,7 +106,7 @@
             >
               <i class="zi-plus text-4xl text-gray-400" />
             </div>
-            <div class="text-sm text-gray-200" style="min-width: 160px">
+            <div class="text-sm text-gray-200" style="min-height: 160px;">
               <div>
                 <span class="text-white text-xl font-semibold pl-1">{{ `${container.size.replace('_', '')}'${container.mode.replace('_', '')}` }}</span>
               </div>

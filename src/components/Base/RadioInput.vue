@@ -2,11 +2,7 @@
   <div :class="{ 'opacity-40': disabled }">
     <div class="flex items-start">
       <div
-        class="flex-shrink-0 relative rounded-full"
-        :style="{
-          width: '18px',
-          height: '18px',
-        }"
+        class="flex-shrink-0 relative rounded-full w-lg h-lg"
       >
         <div
           :class="[
@@ -33,13 +29,9 @@
           :readonly="readonly"
           :disabled="disabled"
           :class="[
-            'absolute opacity-0 select-none top-0 left-0',
+            'absolute opacity-0 select-none top-0 left-0 w-lg h-lg',
             disabled ? 'cursor-not-allowed' : 'cursor-pointer',
           ]"
-          :style="{
-            width: '18px',
-            height: '18px',
-          }"
           type="radio"
           tabindex="0"
           aria-hidden="true"

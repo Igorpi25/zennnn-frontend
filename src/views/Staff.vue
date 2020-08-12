@@ -15,7 +15,7 @@
             v-model="search"
             :placeholder="$t('placeholder.pageSearch')"
             class="w-full flex-shrink-0 md:max-w-md pb-4 md:pr-8"
-            content-class="input-transparent"
+            content-class="bg-transparent"
             input-class="placeholder-blue-500"
             append-slot-class="w-auto"
           >
@@ -159,10 +159,7 @@
                   >
                     <td :colspan="headers.length" class="relative p-0">
                       <div
-                        :style="{
-                          background: 'linear-gradient(180deg, #1E1E1E 0%, rgba(30, 30, 30, 0) 100%)',
-                        }"
-                        class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 -mt-1"
+                        class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-dark -mt-1"
                       />
                       <div
                         v-if="!item.specs || item.specs.length === 0"

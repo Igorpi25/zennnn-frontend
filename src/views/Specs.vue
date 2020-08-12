@@ -8,7 +8,7 @@
           v-model="search"
           :placeholder="clientsFilter.length === 0 ? $t('placeholder.pageSearch') : ''"
           class="w-full pb-4 sm:pb-0 sm:pr-8"
-          content-class="input-transparent overflow-x-auto"
+          content-class="bg-transparent overflow-x-auto"
           input-class="placeholder-blue-500"
           prepend-slot-class="w-auto"
           append-slot-class="w-auto"
@@ -50,7 +50,7 @@
           >
             <template v-slot:activator="{ on }">
               <div
-                class="flex items-center cursor-pointer whitespace-no-wrap focus:text-gray-75 hover:text-gray-75"
+                class="flex items-center cursor-pointer whitespace-no-wrap focus:text-light-gray-400 hover:text-light-gray-400"
                 v-on="on"
               >
                 <span class="pr-2">
@@ -226,7 +226,7 @@
                     <template v-slot:activator="{ on }">
                       <span v-on="on">
                         <i class="zi-number text-2xl text-gray-200 align-middle" />
-                        <span v-if="item.specNoCount" class="align-middle text-gray-75">
+                        <span v-if="item.specNoCount" class="align-middle text-light-gray-400">
                           - {{ item.specNoCount }}
                         </span>
                       </span>

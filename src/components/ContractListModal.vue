@@ -121,7 +121,7 @@ export default {
     display: flex;
     flex-direction: column;
     position: relative;
-    @apply bg-gray;
+    @apply bg-gray-400;
   }
   .modal-header {
     width: 100%;
@@ -131,7 +131,7 @@ export default {
     display: flex;
     align-items: center;
     color: #aaaaaa;
-    @apply bg-gray-darkest;
+    @apply bg-gray-700;
   }
   .modal-body {
     height: 382px;

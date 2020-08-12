@@ -46,8 +46,7 @@
         <div
           v-for="(item, i) in items"
           :key="item.id"
-          :class="{ 'mb-1': i + 1 < items.length }"
-          style="box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);"
+          :class="['shadow-xl', { 'mb-1': i + 1 < items.length }]"
         >
           <InvoiceHeader
             :item="item"

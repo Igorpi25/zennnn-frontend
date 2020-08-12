@@ -34,7 +34,7 @@
             :key="locale.value"
             :value="locale.value"
             :class="[
-              light ? 'hover:bg-gray-50 focus:bg-gray-50' : 'hover:bg-gray-300 focus:bg-gray-300',
+              light ? 'hover:bg-light-gray-100 focus:bg-light-gray-100' : 'hover:bg-gray-300 focus:bg-gray-300',
               'flex items-center h-9 px-2 cursor-pointer focus:outline-none',
               'transition-colors duration-100 ease-out',
               locale.value === $i18n.locale && light ? 'text-gray-900 font-semibold' : locale.value === $i18n.locale ? 'text-white' : '',

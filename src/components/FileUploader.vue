@@ -24,9 +24,9 @@
           v-if="!internalSrc"
           :class="[
             'w-full h-full border flex justify-center items-center',
-            'hover:border-gray-150 hover:text-gray-150',
+            'hover:border-light-gray-800 hover:text-light-gray-800',
             rounded ? 'rounded-full' : 'rounded',
-            isDragOver ? 'border-gray-150 border-solid text-gray-150' : 'border-dashed'
+            isDragOver ? 'border-light-gray-800 border-solid text-light-gray-800' : 'border-dashed'
           ]"
         >
           <Icon>
@@ -123,7 +123,7 @@
       ref="input"
       :accept="fileAccept"
       type="file"
-      style="position:absolute; clip:rect(0,0,0,0); width:0; height:0;"
+      style="position: absolute; clip: rect(0,0,0,0); width: 0; height: 0;"
       @change="onChange"
     >
   </div>

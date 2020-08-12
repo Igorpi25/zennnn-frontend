@@ -3,13 +3,13 @@
     <div
       v-for="(item, i) of products"
       :key="i"
-      :class="{ 'bg-gray-50': item.name === 'Advanced' }"
+      :class="{ 'bg-light-gray-100': item.name === 'Advanced' }"
       class="tariff-card__item w-full sm:w-1/2 lg:w-1/4 flex flex-col px-8 pt-8"
     >
-      <div class="flex items-center justify-between font-semibold pb-lg">
+      <div class="flex items-center justify-between font-semibold pb-xl">
         <div class="text-xl">{{ item.title }}</div>
         <div
-          :class="['h-9 flex items-center text-gray-200 rounded-50 px-2', item.name === 'Advanced' ? 'bg-white' : 'bg-gray-50']"
+          :class="['h-9 flex items-center text-gray-200 rounded-50 px-2', item.name === 'Advanced' ? 'bg-white' : 'bg-light-gray-100']"
         >
           <i class="zi-users text-2xl mr-2" />
           <span>{{ item.team }}</span>
@@ -28,7 +28,7 @@
           </template>
         </div>
       </div>
-      <div style="min-height: 164px">
+      <div style="min-height: 164px;">
         <div class="pb-4">
           <div v-if="item.isCustomPrice">
             {{ $t('pricing.premiumEcon') }}
@@ -65,8 +65,8 @@
           {{ $t('pricing.select') }}
         </Button>
       </div>
-      <div class="text-sm text-gray-200" style="min-height: 90px" v-html="item.description" />
-      <div class="border-b border-gray-50 my-5" />
+      <div class="text-sm text-gray-200" style="min-height: 90px;" v-html="item.description" />
+      <div class="border-b border-light-gray-100 my-5" />
       <div
         v-for="(feat, fi) of item.feats"
         :key="`feat-${fi}`"

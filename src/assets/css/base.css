@@ -1,20 +1,26 @@
 html, body {
-  @apply h-full;
+  height: 100%;
 }
 body {
-  @apply p-0 m-0;
+  padding: 0;
+  margin: 0;
   @apply font-myriad;
-  @apply bg-gray-900 text-gray-100;
+  @apply bg-gray-900;
+  @apply text-gray-100;
 }
 
 #app {
-  @apply antialiased;
-  @apply flex flex-col min-h-full;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   /* -webkit-tap-highlight-color: rgba(0, 0, 0, 0); */
 }
 
 [data-theme="light"] {
-  @apply bg-white text-gray-900;
+  @apply bg-white;
+  @apply text-gray-900;
 }
 
 img {
@@ -43,4 +49,30 @@ form input:-webkit-autofill:hover,
 form input:-webkit-autofill:focus,
 form input:-webkit-autofill:active {
   -webkit-transition-delay: 99999s;
+}
+
+/* override dialog height */
+.dialog-full-height {
+  max-height: 100% !important;
+}
+
+/* override vuetify datepicker */
+.v-picker button:active,
+.v-picker button:focus {
+  outline: none;
+}
+
+/* override vuetify tooltip */
+.v-tooltip__content {
+  background-color: #585858!important;
+  color: #AAA!important;
+  border-radius: 6px!important;
+  line-height: 1.25!important;
+  padding: 20px!important;
+  opacity: 1!important;
+}
+
+/* override draggable */
+.draggable-mirror {
+  z-index: 500!important;
 }

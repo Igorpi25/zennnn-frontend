@@ -30,8 +30,8 @@
         v-if="paymentMethod === 'DEFAULT'"
         role="alert"
         :class="[cardElementError ? 'opacity-100' : 'opacity-0']"
+        style="min-height: 20px;"
         class="opacity-0 text-red-500 leading-tight transition-opacity duration-100 ease-in px-1"
-        style="min-height: 20px"
       >
         {{ cardElementError }}
       </div>
@@ -53,21 +53,21 @@
           <form @submit.prevent.stop>
             <div
               :id="cardInputId"
-              :class="[isCardElementFocused ? 'shadow-blue-500' : 'shadow-gray-75']"
+              :class="[isCardElementFocused ? 'shadow-blue-500' : 'shadow-light-gray-400']"
               class="h-12 bg-white rounded transition-colors duration-150 ease-in-out px-4 py-3 mb-1"
             />
             <div
               role="alert"
               :class="[cardElementError ? 'opacity-100' : 'opacity-0']"
+              style="min-height: 20px;"
               class="opacity-0 text-red-500 leading-tight transition-opacity duration-100 ease-in px-1"
-              style="min-height: 20px"
             >
               {{ cardElementError }}
             </div>
           </form>
         </div>
         <template  v-if="billingAddress">
-          <div class="border-b border-gray-75 mt-10 mb-16" />
+          <div class="border-b border-light-gray-400 mt-10 mb-16" />
           <div class="text-black">
             <h3 class="text-2xl pb-6">
               {{ $t('payment.paymentInfo') }}:
@@ -90,7 +90,7 @@
                   searchable
                   item-value="value"
                   item-text="text"
-                  content-class="bg-white shadow-gray-75"
+                  content-class="bg-white shadow-light-gray-400"
                   input-class="placeholder-gray-100 text-gray-900"
                   label-class="text-black"
                 />
@@ -102,7 +102,7 @@
                   :placeholder="$t('payment.cityPlaceholder')"
                   :rules="[rules.required]"
                   validate-on-blur
-                  content-class="bg-white shadow-gray-75"
+                  content-class="bg-white shadow-light-gray-400"
                   input-class="placeholder-gray-100 text-gray-900"
                   label-class="text-black"
                 />
@@ -114,7 +114,7 @@
                   :placeholder="$t('payment.streetPlaceholder')"
                   :rules="[rules.required]"
                   validate-on-blur
-                  content-class="bg-white shadow-gray-75"
+                  content-class="bg-white shadow-light-gray-400"
                   input-class="placeholder-gray-100 text-gray-900"
                   label-class="text-black"
                 />
@@ -126,7 +126,7 @@
                   :placeholder="$t('payment.postcodePlaceholder')"
                   :rules="[rules.required]"
                   validate-on-blur
-                  content-class="bg-white shadow-gray-75"
+                  content-class="bg-white shadow-light-gray-400"
                   input-class="placeholder-gray-100 text-gray-900"
                   label-class="text-black"
                 />
@@ -136,7 +136,7 @@
         </template>
       </div>
     </v-expand-transition>
-    <div class="flex bg-gray-50 border-t border-gray-75 mt-10 py-10">
+    <div class="flex bg-light-gray-100 border-t border-light-gray-400 mt-10 py-10">
       <Checkbox
         v-if="isNewPaymentMethod"
         v-model="attachPaymentMethodSetDefault"
