@@ -117,6 +117,8 @@ export function deepEqual (a, b) {
   return props.every(p => deepEqual(a[p], b[p]))
 }
 
+export function wrapInArray (v) { return v != null ? Array.isArray(v) ? v : [v] : [] }
+
 /**
  * Convert to unit
  * @param {string,number,null,undefined} str value to convert

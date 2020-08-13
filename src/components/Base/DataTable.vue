@@ -104,7 +104,6 @@
           <tr
             v-for="(item, index) in computedItems"
             :key="index"
-            :class="itemsRowClass"
           >
             <template v-for="header in headers">
               <slot
@@ -117,7 +116,6 @@
                   :class="[
                     'p-1',
                     header.align === 'left' ? 'text-left' : header.align === 'right' ? 'text-right' : 'text-center',
-                    itemsCellClass,
                   ]"
                 >
                   {{ item[header.value] }}
@@ -136,7 +134,7 @@
 
 <script>
 
-import { convertToUnit, getObjectValueByPath, defaultFilter, sortItems, deepEqual } from '@/util/helpers'
+import { convertToUnit, getObjectValueByPath, defaultFilter, sortItems, deepEqual, wrapInArray } from '@/util/helpers'
 
 function filterFn (item, search, filter) {
   return (header) => {
@@ -169,14 +167,6 @@ export default {
     flat: Boolean,
     hoverable: Boolean,
     hideHeaders: Boolean,
-    itemsRowClass: {
-      type: String,
-      default: null,
-    },
-    itemsCellClass: {
-      type: String,
-      default: null,
-    },
     tableWidth: {
       type: [String, Number],
       default: '',
@@ -203,10 +193,6 @@ export default {
       type: [String, Array, Object],
       default: '',
     },
-    tdClass: {
-      type: [String, Array, Object],
-      default: '',
-    },
     search: String,
     customFilter: {
       type: Function,
@@ -220,34 +206,47 @@ export default {
       type: Number,
       default: 10,
     },
-    options: {
-      type: Object,
-      default: () => ({
-        page: 1,
-        itemsPerPage: 10,
-        sortBy: [],
-        sortDesc: [],
-        groupBy: [],
-        groupDesc: [],
-        multiSort: false,
-        mustSort: false,
-      }),
+    options: Object,
+    sortBy: {
+      type: [String, Array],
+      default: () => [],
+    },
+    sortDesc: {
+      type: [Boolean, Array],
+      default: () => [],
     },
     hideNoData: Boolean,
   },
   data () {
+    const internalOptions = {
+      page: this.page,
+      itemsPerPage: this.itemsPerPage,
+      sortBy: wrapInArray(this.sortBy),
+      sortDesc: wrapInArray(this.sortDesc),
+      groupBy: [],
+      groupDesc: [],
+      multiSort: false,
+      mustSort: false,
+    }
+    if (this.options) {
+      Object.assign(internalOptions, this.options)
+    }
+
+    const { sortBy, sortDesc, groupBy, groupDesc } = internalOptions
+    const sortDiff = sortBy.length - sortDesc.length
+    const groupDiff = groupBy.length - groupDesc.length
+
+    if (sortDiff > 0) {
+      internalOptions.sortDesc.push(...Array(sortDiff).fill(false))
+    }
+
+    if (groupDiff > 0) {
+      internalOptions.groupDesc.push(...Array(groupDiff).fill(false))
+    }
+
     return {
       serverItemsLength: -1,
-      internalOptions: {
-        page: this.page,
-        itemsPerPage: this.itemsPerPage,
-        sortBy: this.options.sortBy,
-        sortDesc: this.options.sortDesc,
-        groupBy: this.options.groupBy,
-        groupDesc: this.options.groupDesc,
-        mustSort: this.options.mustSort,
-        multiSort: this.options.multiSort,
-      },
+      internalOptions,
     }
   },
   computed: {
@@ -292,6 +291,32 @@ export default {
         items = this.sortItems(items)
       }
       return items
+    },
+  },
+  watch: {
+    page (page) {
+      this.updateOptions({ page })
+    },
+    'internalOptions.page' (page) {
+      this.$emit('update:page', page)
+    },
+    itemsPerPage (itemsPerPage) {
+      this.updateOptions({ itemsPerPage })
+    },
+    'internalOptions.itemsPerPage' (itemsPerPage) {
+      this.$emit('update:items-per-page', itemsPerPage)
+    },
+    sortBy (sortBy) {
+      this.updateOptions({ sortBy: wrapInArray(sortBy) })
+    },
+    'internalOptions.sortBy' (sortBy, old) {
+      !deepEqual(sortBy, old) && this.$emit('update:sort-by', Array.isArray(this.sortBy) ? sortBy : sortBy[0])
+    },
+    sortDesc (sortDesc) {
+      this.updateOptions({ sortDesc: wrapInArray(sortDesc) })
+    },
+    'internalOptions.sortDesc' (sortDesc, old) {
+      !deepEqual(sortDesc, old) && this.$emit('update:sort-desc', Array.isArray(this.sortDesc) ? sortDesc : sortDesc[0])
     },
   },
   methods: {
