@@ -29,6 +29,8 @@
             :headers="headers"
             :items="items"
             :search="search"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
             :custom-filter="customFilter"
             table-width="100%"
             table-class="table-fixed"
@@ -121,7 +123,7 @@
                 <td class="truncate pl-8 pr-2">{{ item.contactPersonFullName }}</td>
                 <td class="truncate">
                   <div
-                    v-for="(tag, i) in item.tags"
+                    v-for="(tag, i) in item.tagsArray"
                     :key="i"
                     class="inline-flex items-center h-6 px-1 bg-blue-500 bg-opacity-40 rounded-lg mr-1"
                   >
@@ -182,7 +184,7 @@
 import { LIST_SUPPLIERS } from '@/graphql/queries'
 import { DELETE_SUPPLIER } from '@/graphql/mutations'
 
-import { confirmDialog } from '@/util/helpers'
+import { confirmDialog, wrapInArray } from '@/util/helpers'
 
 export default {
   name: 'Suppliers',
@@ -199,7 +201,9 @@ export default {
   },
   data () {
     return {
-      search: '',
+      sortBy: [],
+      sortDesc: [],
+      search: undefined,
       loading: false,
       createLoading: false,
       deleteLoading: null,
@@ -216,9 +220,9 @@ export default {
         { text: '', value: 'debt', align: 'right', width: 100, sortable: true },
         { text: '', value: 'totalCost', align: 'right', width: 100, sortable: true },
         { text: this.$t('suppliers.contactPerson'), value: 'contactPersonFullName', align: 'left', width: 186, class: 'pl-8 pr-2', sortable: true },
-        { text: this.$t('suppliers.tags'), value: 'tagsString', align: 'left', width: 126, sortable: true },
+        { text: this.$t('suppliers.tags'), value: 'tags', align: 'left', width: 126, sortable: true },
         { text: '', value: 'contactPhone', align: 'left', width: 60, minWidth: 60, sortable: true },
-        { text: this.$t('suppliers.usn'), value: 'uid', align: 'right', width: 60, minWidth: 60, class: 'whitespace-no-wrap', sortable: true },
+        { text: this.$t('suppliers.usn'), value: 'usn', align: 'right', width: 60, minWidth: 60, class: 'whitespace-no-wrap', sortable: true },
         { text: '', value: 'actions', width: 54 },
       ]
     },
@@ -228,13 +232,56 @@ export default {
         const tags = item.tags || []
         return {
           ...item,
-          tags,
-          tagsString: tags.join(','),
+          tags: tags.join(','),
+          tagsArray: tags,
+          usn: item.uid,
         }
       })
     },
   },
+  created () {
+    if (this.$route.query.q) {
+      this.search = this.$route.query.q
+    }
+    if (this.$route.query.sort) {
+      this.sortBy = wrapInArray(this.$route.query.sort)
+      const desc = this.$route.query.desc === true || this.$route.query.desc === 'true'
+      this.sortDesc = [!!(this.$route.query.sort && desc)]
+    }
+    // on search on server, escape input string
+    this.$watch('search', (val, old) => {
+      if (val === old) return
+      this.updateRouteQuery()
+    })
+    this.$watch('sortBy', this.updateRouteQuery)
+    this.$watch('sortDesc', this.updateRouteQuery)
+    this.$watch('$route.query', (query, old) => {
+      if (query.q !== this.search) {
+        this.search = query.q
+      }
+      if (query.sort !== this.sortBy[0]) {
+        this.sortBy = query.sort ? wrapInArray(query.sort) : []
+      }
+      this.sortDesc = this.sortBy.length > 0 ? [query.desc === true || query.desc === 'true'] : []
+    })
+  },
   methods: {
+    updateRouteQuery () {
+      const query = {}
+      if (this.search) {
+        query.q = this.search
+      }
+      if (this.sortBy[0]) {
+        query.sort = this.sortBy[0]
+      }
+      if (this.sortDesc[0]) {
+        query.desc = true
+      }
+      this.$router.replace({
+        path: this.$route.path,
+        query,
+      }).catch(() => {})
+    },
     customFilter (value, search) {
       if (search != null && value != null && typeof value !== 'boolean') {
         const words = search
