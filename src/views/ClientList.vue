@@ -3,12 +3,12 @@
     <div class="pt-4 pb-10">
       <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
 
-      <div class="flex items-end flex-wrap md:flex-no-wrap justify-between">
+      <div class="flex items-end flex-wrap lg:flex-no-wrap justify-between">
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
           :content-class="[search ? 'shadow-blue-500' : '', 'bg-transparent']"
-          class="w-full flex-shrink-0 md:max-w-md pb-4 md:pr-8"
+          class="w-full lg:w-auto lg:flex-grow md:max-w-md pb-4 lg:pr-8"
           input-class="placeholder-blue-500"
         >
           <template v-slot:prepend>
@@ -21,7 +21,7 @@
             />
           </template>
         </TextField>
-        <div class="h-11 flex overflow-x-auto overflow-scroll-touch md:pl-4">
+        <div class="h-11 flex lg:inline-flex overflow-x-auto overflow-scroll-touch">
           <div
             v-for="(tab, i) in tabs"
             :aria-selected="clientType === tab.value"
@@ -39,7 +39,24 @@
             @click="switchClientType(tab.value)"
             @keydown.enter.exact="switchClientType(tab.value)"
           >
-            {{ tab.text }}
+            <span
+              class="relative"
+            >
+              <div class="absolute top-0 right-0 text-13 font-semibold transform translate-x-full -mt-1 -mr-1">
+                <v-scale-transition origin="center center">
+                  <div
+                    v-if="search && clientType !== tab.value && filteredItemsLength[tab.value] > 0"
+                    style="min-width: 1rem;"
+                    class="h-4 flex justify-center items-center relative rounded-full text-white bg-purple-500 px-xs"
+                  >
+                    <span>
+                      {{ filteredItemsLength[tab.value] > 99 ? '99+' : filteredItemsLength[tab.value] }}
+                    </span>
+                  </div>
+                </v-scale-transition>
+              </div>
+              {{ tab.text }}
+            </span>
           </div>
         </div>
       </div>
@@ -49,6 +66,8 @@
           :headers="headers"
           :items="items"
           :search="search"
+          :sort-by.sync="sortBy"
+          :sort-desc.sync="sortDesc"
           :custom-filter="customFilter"
           table-width="100%"
           table-class="table-fixed rounded-tl-none md:rounded-tl-md rounded-tr-none sm:rounded-tr-md md:rounded-tr-none"
@@ -154,7 +173,7 @@
               <td class="truncate pl-8 pr-2">{{ item.contactPersonFullName }}</td>
               <td class="truncate">
                 <div
-                  v-for="(tag, i) in item.tags"
+                  v-for="(tag, i) in item.tagsArray"
                   :key="i"
                   class="inline-flex items-center h-6 px-1 bg-gray-400 rounded-lg mr-1"
                 >
@@ -218,7 +237,7 @@ import { ClientType } from '../graphql/enums'
 import { LIST_CLIENTS } from '../graphql/queries'
 import { DELETE_CLIENT } from '../graphql/mutations'
 
-import { confirmDialog } from '../util/helpers'
+import { confirmDialog, wrapInArray, getObjectValueByPath } from '../util/helpers'
 
 export default {
   name: 'ClientList',
@@ -235,7 +254,10 @@ export default {
   },
   data () {
     return {
-      search: '',
+      sortBy: [],
+      sortDesc: [],
+      clientType: 1,
+      search: undefined,
       loading: false,
       createLoading: false,
       deleteLoading: null,
@@ -258,9 +280,6 @@ export default {
           text: this.$t('client.other'),
         },
       ]
-    },
-    clientType () {
-      return Number.parseInt(this.$route.query.clientType, 10) || 1
     },
     clientTypeEnum () {
       switch (this.clientType) {
@@ -287,26 +306,111 @@ export default {
         { text: '', value: 'debt', align: 'right', width: 100, sortable: true },
         { text: '', value: 'turnover', align: 'right', width: 100, sortable: true },
         { text: this.$t('clients.contactPerson'), value: 'contactPersonFullName', align: 'left', width: 186, class: 'pl-8 pr-2', sortable: true },
-        { text: this.$t('clients.tags'), value: 'tagsString', align: 'left', width: 126, sortable: true },
+        { text: this.$t('clients.tags'), value: 'tags', align: 'left', width: 126, sortable: true },
         { text: '', value: 'contactPhone', align: 'left', width: 60, minWidth: 60, sortable: true },
-        { text: this.$t('clients.ucn'), value: 'uid', align: 'right', width: 60, minWidth: 60, class: 'whitespace-no-wrap', sortable: true },
+        { text: this.$t('clients.ucn'), value: 'ucn', align: 'right', width: 60, minWidth: 60, class: 'whitespace-no-wrap', sortable: true },
         { text: '', value: 'actions', width: 54 },
       ]
     },
-    items () {
+    compItems () {
       const items = (this.listClients && this.listClients.items) || []
-      const itemsMapped = items.map(item => {
+      return items.map(item => {
         const tags = item.tags || []
         return {
           ...item,
-          tags,
-          tagsString: tags.join(','),
+          tags: tags.join(','),
+          tagsArray: tags,
+          ucn: item.uid,
         }
       })
-      return itemsMapped.filter(el => el.clientType === this.clientTypeEnum)
+    },
+    items () {
+      return this.compItems.filter(el => el.clientType === this.clientTypeEnum)
+    },
+    filteredLegalItems () {
+      const items = this.compItems.filter(el => el.clientType === ClientType.LEGAL)
+      return this.filterItems(items, this.search)
+    },
+    filteredPrivateItems () {
+      const items = this.compItems.filter(el => el.clientType === ClientType.PRIVATE)
+      return this.filterItems(items, this.search)
+    },
+    filteredOtherItems () {
+      const items = this.compItems.filter(el => el.clientType === ClientType.OTHER)
+      return this.filterItems(items, this.search)
+    },
+    filteredItemsLength () {
+      return {
+        1: this.filteredLegalItems.length,
+        2: this.filteredPrivateItems.length,
+        3: this.filteredOtherItems.length,
+      }
     },
   },
+  created () {
+    if (this.$route.query.clientType) {
+      this.clientType = Number.parseInt(this.$route.query.clientType, 10) || 1
+    }
+    if (this.$route.query.q) {
+      this.search = this.$route.query.q
+    }
+    if (this.$route.query.sort) {
+      this.sortBy = wrapInArray(this.$route.query.sort)
+      const desc = this.$route.query.desc === true || this.$route.query.desc === 'true'
+      this.sortDesc = [!!(this.$route.query.sort && desc)]
+    }
+    // on search on server, escape input string
+    this.$watch('search', (val, old) => {
+      if (val === old) return
+      this.updateRouteQuery()
+    })
+    this.$watch('sortBy', this.updateRouteQuery)
+    this.$watch('sortDesc', this.updateRouteQuery)
+    this.$watch('$route.query', (query, old) => {
+      const clientType = Number.parseInt(this.$route.query.clientType, 10) || 1
+      if (clientType !== this.clientType) {
+        this.clientType = clientType
+      }
+      if (query.q !== this.search) {
+        this.search = query.q
+      }
+      if (query.sort !== this.sortBy[0]) {
+        this.sortBy = query.sort ? wrapInArray(query.sort) : []
+      }
+      this.sortDesc = this.sortBy.length > 0 ? [query.desc === true || query.desc === 'true'] : []
+    })
+  },
   methods: {
+    filterItems (items, search) {
+      let filtered = items
+      search = typeof search === 'string' ? search.trim() : null
+      if (search) {
+        filtered = items.filter(item => this.headers.some(header => {
+          const value = getObjectValueByPath(item, header.value)
+          return this.customFilter(value, search, item)
+        }))
+      }
+      return filtered
+    },
+    updateRouteQuery () {
+      const query = {}
+      if (this.clientType > 1) {
+        query.clientType = this.clientType
+      }
+      if (this.search) {
+        query.q = this.search
+      }
+      if (this.sortBy[0]) {
+        query.sort = this.sortBy[0]
+      }
+      if (this.sortDesc[0]) {
+        query.desc = true
+      }
+      this.$router.replace({
+        path: this.$route.path,
+        query,
+      }).catch(() => {})
+    },
     customFilter (value, search) {
       if (search != null && value != null && typeof value !== 'boolean') {
         const words = search
@@ -320,7 +424,9 @@ export default {
       }
     },
     switchClientType (type) {
-      this.$router.push({ query: { clientType: type } }).catch(() => {})
+      if (type === this.clientType) return
+      this.clientType = type
+      this.updateRouteQuery()
     },
     getClientTypeNumeric (type) {
       switch (type) {
