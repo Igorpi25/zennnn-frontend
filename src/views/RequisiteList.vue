@@ -6,12 +6,18 @@
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          class="w-full sm:w-64"
-          content-class="bg-transparent"
+          :content-class="[search ? 'shadow-blue-500' : '', 'bg-transparent']"
+          class="w-full md:max-w-md"
           input-class="placeholder-blue-500"
         >
           <template v-slot:prepend>
             <i class="zi-magnifier text-2xl text-gray-100"></i>
+          </template>
+          <template v-slot:append v-if="search">
+            <i
+              class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+              @click="search = null"
+            />
           </template>
         </TextField>
       </div>

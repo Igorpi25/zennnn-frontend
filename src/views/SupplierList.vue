@@ -8,10 +8,9 @@
           <TextField
             v-model="search"
             :placeholder="$t('placeholder.pageSearch')"
+            :content-class="[search ? 'shadow-blue-500' : '', 'bg-transparent']"
             class="w-full md:max-w-md"
-            content-class="bg-transparent"
             input-class="placeholder-blue-500"
-            append-slot-class="w-auto"
           >
             <template v-slot:prepend>
               <i class="zi-magnifier text-2xl text-gray-100"></i>

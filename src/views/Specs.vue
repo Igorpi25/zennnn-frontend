@@ -7,17 +7,16 @@
         <TextField
           v-model="search"
           :placeholder="clientsFilter.length === 0 ? $t('placeholder.pageSearch') : ''"
+          :content-class="[search || clientsFilter.length > 0 ? 'shadow-blue-500' : '', 'bg-transparent overflow-x-auto']"
           class="w-full pb-4 sm:pb-0 sm:pr-8"
-          content-class="bg-transparent overflow-x-auto"
           input-class="placeholder-blue-500"
           prepend-slot-class="w-auto"
-          append-slot-class="w-auto"
         >
           <template v-slot:prepend>
             <span class="w-10 flex items-center justify-center flex-shrink-0">
               <i class="zi-magnifier text-2xl text-gray-100"></i>
             </span>
-            <span class="text-base text-white pr-2">
+            <span v-if="clientsFilter.length > 0" class="text-base text-white pr-2">
               <span
                 v-for="filter in clientsFilter"
                 :key="filter.value"
