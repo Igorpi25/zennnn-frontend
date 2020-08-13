@@ -35,17 +35,19 @@
             :headers="headers"
             :items="items"
             :search="search"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
             table-width="100%"
             table-class="table-fixed"
             hide-no-data
           >
-            <template v-slot:header.inWorkCount-content>
+            <template v-slot:header.processing-content>
               <span class="truncate inline-block max-w-full align-middle pl-6">
                 {{ $t('staff.inWork') }}
               </span>
             </template>
             <template v-slot:header.fullName-content="{ header }">
-              <span class="truncate inline-block align-middle" :style="{ maxWidth: (header.width - 24) + 'px' }">
+              <span class="truncate inline-block align-middle" :style="{ maxWidth: (header.width - 88) + 'px' }">
                 {{ header.text }}
               </span>
             </template>
@@ -74,7 +76,7 @@
                       >
                       </div>
                       <div class="truncate">
-                        {{ item.inWorkCount }}
+                        {{ item.processing }}
                       </div>
                     </div>
                     <span v-else class="whitespace-no-wrap pl-4">
@@ -290,7 +292,7 @@ import { LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
 import { SpecStatus, InvitationStatus } from '../graphql/enums'
 import { i18n } from '../plugins'
-import { confirmDialog } from '../util/helpers'
+import { confirmDialog, wrapInArray } from '../util/helpers'
 
 export default {
   name: 'Staff',
@@ -323,7 +325,9 @@ export default {
       SpecStatus,
       InvitationStatus,
       deleteUserLoading: null,
-      search: '',
+      sortBy: [],
+      sortDesc: [],
+      search: undefined,
       loading: false,
       createLoading: false,
       deleteLoading: null,
@@ -363,7 +367,7 @@ export default {
     },
     headers () {
       return [
-        { text: this.$t('staff.inWork'), value: 'inWorkCount', align: 'right', width: 100, minWidth: 100, sortable: true },
+        { text: this.$t('staff.inWork'), value: 'processing', align: 'right', width: 100, minWidth: 100, sortable: true },
         { text: this.$t('staff.diff'), value: 'diff', align: 'right', width: 105, minWidth: 105, sortable: true },
         { text: this.$t('staff.percent'), value: 'totalMargin', align: 'right', width: 66, minWidth: 66, sortable: true },
         { text: this.$t('staff.revenue'), value: 'revenue', align: 'right', width: 118, minWidth: 118, sortable: true },
@@ -397,7 +401,49 @@ export default {
       return result
     },
   },
+  created () {
+    if (this.$route.query.q) {
+      this.search = this.$route.query.q
+    }
+    if (this.$route.query.sort) {
+      this.sortBy = wrapInArray(this.$route.query.sort)
+      const desc = this.$route.query.desc === true || this.$route.query.desc === 'true'
+      this.sortDesc = [!!(this.$route.query.sort && desc)]
+    }
+    // on search on server, escape input string
+    this.$watch('search', (val, old) => {
+      if (val === old) return
+      this.updateRouteQuery()
+    })
+    this.$watch('sortBy', this.updateRouteQuery)
+    this.$watch('sortDesc', this.updateRouteQuery)
+    this.$watch('$route.query', (query, old) => {
+      if (query.q !== this.search) {
+        this.search = query.q
+      }
+      if (query.sort !== this.sortBy[0]) {
+        this.sortBy = query.sort ? wrapInArray(query.sort) : []
+      }
+      this.sortDesc = this.sortBy.length > 0 ? [query.desc === true || query.desc === 'true'] : []
+    })
+  },
   methods: {
+    updateRouteQuery () {
+      const query = {}
+      if (this.search) {
+        query.q = this.search
+      }
+      if (this.sortBy[0]) {
+        query.sort = this.sortBy[0]
+      }
+      if (this.sortDesc[0]) {
+        query.desc = true
+      }
+      this.$router.replace({
+        path: this.$route.path,
+        query,
+      }).catch(() => {})
+    },
     goToSpec (item) {
       this.$router.push({
         name: 'spec',

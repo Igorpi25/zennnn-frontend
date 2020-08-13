@@ -372,7 +372,7 @@ export const LIST_STAFF = gql`
         familyName
         picture
         role
-        inWorkCount
+        processing
         revenue
         totalItemsCost
         totalMargin
