@@ -104,53 +104,68 @@
             </template>
 
             <template v-slot:items="{ items }">
-              <tr
-                v-for="(item, index) in items"
-                :key="index"
-                class="cursor-pointer"
-                tabindex="0"
-                @click="goToSupplier(item.id)"
-                @keydown.enter.exact.self="goToSupplier(item.id)"
-              >
-                <td></td>
-                <td class="truncate">{{ item.companyName }}</td>
-                <td class="truncate text-right">{{ $n(item.dealsCount || 0) }}</td>
-                <td class="truncate text-right">{{ $n(item.cost || 0) }}</td>
-                <td :class="['truncate text-right', { 'text-pink-500': item.debt > 0 }]">{{ $n(item.debt || 0) }}</td>
-                <td class="truncate text-right">{{ $n(item.totalCost || 0) }}</td>
-                <td class="truncate pl-8 pr-2">{{ item.contactPersonFullName }}</td>
-                <td class="truncate">
-                  <div
-                    v-for="(tag, i) in item.tagsArray"
-                    :key="i"
-                    class="inline-flex items-center h-6 px-1 bg-blue-500 bg-opacity-40 rounded-lg mr-1"
+              <template v-for="(item, index) in items">
+                <tr
+                  v-if="item.group"
+                  :key="item.group"
+                  :style="{ background: 'transparent' }"
+                >
+                  <td
+                    :colspan="headers.length"
+                    :style="{ height: '32px', paddingLeft: '51px' }"
+                    class="text-gray-200 text-base leading-tight align-bottom p-0"
                   >
-                    {{ tag }}
-                  </div>
-                </td>
-                <td class="truncate pointer-events-none" @click.stop>
-                  <span v-if="item.contactPhone" class="pointer-events-auto">
-                    <a
-                      :href="`tel:${item.contactPhone}`"
-                      class="inline-block align-middle text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none"
+                    <span class="text-white">{{ item.group }}</span> ({{ item.groupItemsCount }})
+                  </td>
+                </tr>
+                <tr
+                  v-else
+                  :key="index"
+                  class="cursor-pointer"
+                  tabindex="0"
+                  @click="goToSupplier(item.id)"
+                  @keydown.enter.exact.self="goToSupplier(item.id)"
+                >
+                  <td></td>
+                  <td class="truncate">{{ item.companyName }}</td>
+                  <td class="truncate text-right">{{ $n(item.dealsCount || 0) }}</td>
+                  <td class="truncate text-right">{{ $n(item.cost || 0) }}</td>
+                  <td :class="['truncate text-right', { 'text-pink-500': item.debt > 0 }]">{{ $n(item.debt || 0) }}</td>
+                  <td class="truncate text-right">{{ $n(item.totalCost || 0) }}</td>
+                  <td class="truncate pl-8 pr-2">{{ item.contactPersonFullName }}</td>
+                  <td class="truncate">
+                    <div
+                      v-for="(tag, i) in item.tagsArray"
+                      :key="i"
+                      class="inline-flex items-center h-6 px-1 bg-blue-500 bg-opacity-40 rounded-lg mr-1"
                     >
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
-                      </svg>
-                    </a>
-                    <i class="zi-action text-2xl text-gray-200 align-middle cursor-default ml-1" />
-                  </span>
-                </td>
-                <td class="truncate text-right">{{ item.uid }}</td>
-                <td class="text-center pointer-events-none" @click.prevent.stop>
-                  <button
-                    class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-auto"
-                    @click="deleteSupplier(item.id)"
-                  >
-                    <i class="zi-delete" />
-                  </button>
-                </td>
-              </tr>
+                      {{ tag }}
+                    </div>
+                  </td>
+                  <td class="truncate pointer-events-none" @click.stop>
+                    <span v-if="item.contactPhone" class="pointer-events-auto">
+                      <a
+                        :href="`tel:${item.contactPhone}`"
+                        class="inline-block align-middle text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none"
+                      >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
+                        </svg>
+                      </a>
+                      <i class="zi-action text-2xl text-gray-200 align-middle cursor-default ml-1" />
+                    </span>
+                  </td>
+                  <td class="truncate text-right">{{ item.uid }}</td>
+                  <td class="text-center pointer-events-none" @click.prevent.stop>
+                    <button
+                      class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-auto"
+                      @click="deleteSupplier(item.id)"
+                    >
+                      <i class="zi-delete" />
+                    </button>
+                  </td>
+                </tr>
+              </template>
             </template>
 
           </DataTable>
@@ -237,8 +252,8 @@ export default {
       ]
     },
     items () {
-      const items = (this.listSuppliers && this.listSuppliers.items) || []
-      return items.map(item => {
+      const suppliers = (this.listSuppliers && this.listSuppliers.items) || []
+      const items = suppliers.map(item => {
         const tags = item.tags || []
         return {
           ...item,
@@ -247,6 +262,36 @@ export default {
           usn: item.uid,
         }
       })
+      if (items.length > 0 && this.sortBy.length === 0 && this.sortDesc.length === 0 && !this.search) {
+        const re = /[A-ZА-ЯҐЄІЇ\u4e00-\u9fff]|[\u3400-\u4dbf]|[\u{20000}-\u{2a6df}]|[\u{2a700}-\u{2b73f}]|[\u{2b740}-\u{2b81f}]|[\u{2b820}-\u{2ceaf}]|[\uf900-\ufaff]|[\u3300-\u33ff]|[\ufe30-\ufe4f]|[\uf900-\ufaff]|[\u{2f800}-\u{2fa1f}]/u
+        const others = []
+        const grouped = items.reduce((acc, curr) => {
+          const name = curr.companyName || ''
+          const char = name.charAt(0).toLocaleUpperCase()
+          if (re.test(char)) {
+            if (Object.prototype.hasOwnProperty.call(acc, char)) {
+              acc[char].push(curr)
+            } else {
+              acc[char] = [curr]
+            }
+          } else {
+            others.push(curr)
+          }
+          return acc
+        }, {})
+        const result = []
+        Object.keys(grouped).sort().map(k => {
+          const groupItems = grouped[k]
+          const g = { group: k, groupItemsCount: groupItems.length }
+          result.push(g, ...groupItems)
+        })
+        if (others.length > 0) {
+          result.push({ group: '#', groupItemsCount: others.length })
+          result.push(...others)
+        }
+        return result
+      }
+      return items
     },
   },
   created () {
