@@ -66,7 +66,7 @@
           </svg>
         </router-link>
       </div>
-      <div v-if="!isLoggedIn" class="flex flex-col sm:flex-row items-center justify-between bg-white rounded-md p-4 mb-12" style="box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1);">
+      <div v-if="!isLoggedIn" class="flex flex-col sm:flex-row items-center justify-between bg-white rounded-md shadow-lg p-4 mb-12">
         <div class="text-lg text-black leading-snug pl-2 pb-4 sm:pb-0">
           <span v-html="$t('pricing.oneUsdTitle')" class="font-bold mr-1" />
           <span>{{ $t('pricing.oneUsdSubtitle') }}</span>
