@@ -39,17 +39,17 @@
             table-class="table-fixed"
             hide-no-data
           >
-            <template v-slot:header.processing-content>
+            <template v-slot:[`header.processing-content`]>
               <span class="truncate inline-block max-w-full align-middle pl-6">
                 {{ $t('staff.inWork') }}
               </span>
             </template>
-            <template v-slot:header.fullName-content="{ header }">
+            <template v-slot:[`header.fullName-content`]="{ header }">
               <span class="truncate inline-block align-middle" :style="{ maxWidth: (header.width - 88) + 'px' }">
                 {{ header.text }}
               </span>
             </template>
-            <template v-slot:header.role-content="{ header }">
+            <template v-slot:[`header.role-content`]="{ header }">
               <span class="truncate inline-block align-middle" :style="{ maxWidth: (header.width - 24) + 'px' }">
                 {{ header.text }}
               </span>

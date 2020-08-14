@@ -107,14 +107,14 @@
           hoverable
           hide-no-data
         >
-          <template v-slot:header.status="{ header }">
+          <template v-slot:[`header.status`]="{ header }">
             <td
               :width="header.width + 'px'"
             >
               <div class="ml-6 w-3 h-3 rounded-full border border-gray-400" />
             </td>
           </template>
-          <template v-slot:header.isMoneyRecieved="{ header }">
+          <template v-slot:[`header.isMoneyRecieved`]="{ header }">
             <td :width="header.width + 'px'">
               <div class="flex items-center">
                 <svg class="mr-xs" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -132,7 +132,7 @@
               </div>
             </td>
           </template>
-          <template v-slot:header.isExpensesPaid="{ header }">
+          <template v-slot:[`header.isExpensesPaid`]="{ header }">
             <td :width="header.width + 'px'">
               <div class="flex items-center">
                 <svg class="mr-xs" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -151,7 +151,7 @@
               </div>
             </td>
           </template>
-          <template v-slot:header.finalCost-content="{ header }">
+          <template v-slot:[`header.finalCost-content`]="{ header }">
             <td :width="header.width + 'px'">
               <span class="inline-block align-middle mr-xs">
                 <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -171,7 +171,7 @@
               </v-tooltip>
             </td>
           </template>
-          <template v-slot:header.margin-content="{ header }">
+          <template v-slot:[`header.margin-content`]="{ header }">
             <td :width="header.width + 'px'">
               <span class="inline-block align-middle mr-xs">%</span>
               <v-tooltip top max-width="158">
@@ -184,10 +184,10 @@
               </v-tooltip>
             </td>
           </template>
-          <template v-slot:header.hasNewComment="{ header }">
+          <template v-slot:[`header.hasNewComment`]="{ header }">
             <td :width="header.width + 'px'" />
           </template>
-           <template v-slot:header.specNo-content="{ header }">
+           <template v-slot:[`header.specNo-content`]="{ header }">
             <span>
               {{ header.text }}
             </span>
