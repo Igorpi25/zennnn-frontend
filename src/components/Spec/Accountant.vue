@@ -10,8 +10,22 @@
     </div>
     <div class="py-10">
       <div class="flex flex-wrap items-center justify-between pb-4">
-        <h1 class="text-2xl text-white font-semibold">
-          {{ $t('shipping.title') }}
+        <h1 class="text-2xl text-white font-semibold relative">
+          <span class="pr-6">
+            {{ $t('shipping.title') }}
+          </span>
+          <v-fade-transition>
+            <div
+              v-if="loading"
+              class="absolute top-0 right-0 text-gray-200"
+            >
+              <v-progress-circular
+                indeterminate
+                size="20"
+                width="2"
+              />
+            </div>
+          </v-fade-transition>
         </h1>
         <div class="text-gray-300">
           <span v-if="spec.client">
@@ -28,6 +42,7 @@
             <div class="inline-block text-2xl pl-sm pr-3 md:pr-md">
               <button
                 v-if="expanded.length === 0"
+                :disabled="dataLoading"
                 class="flex items-center text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
                 @click="expandAll"
               >
@@ -35,6 +50,7 @@
               </button>
               <button
                 v-else
+                :disabled="dataLoading"
                 class="flex items-center text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
                 @click="collapseAll"
               >
@@ -43,7 +59,11 @@
             </div>
           </div>
         </div>
+        <div v-if="dataLoading" class="flex items-center justify-center h-12 text-gray-200 bg-gray-700 rounded">
+          {{ `${$t('action.loading')}...` }}
+        </div>
         <div
+          v-else
           v-for="(item, i) in items"
           :key="item.id"
           :class="['shadow-xl', { 'mb-1': i + 1 < items.length }]"
