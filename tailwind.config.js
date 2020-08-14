@@ -132,6 +132,12 @@ module.exports = {
       inset: {
         '1/2': '50%',
       },
+      gridTemplateColumns: {
+        // Complex site-specific column configuration
+        '2-264': 'repeat(2, 264px)',
+        '3-264': 'repeat(3, 264px)',
+        '4-264': 'repeat(4, 264px)',
+      },
     },
   },
   variants: {

@@ -26,15 +26,17 @@
         {{ $t('requisites.title') }}
       </div>
 
-      <div class="flex flex-wrap py-10 -mx-3" role="menu">
+      <div
+        role="menu"
+        class="grid sm:grid-cols-2-264 lg:grid-cols-3-264 xl:grid-cols-4-264 col-gap-6 row-gap-8 justify-center sm:justify-between py-10"
+      >
         <div
           v-for="item in filteredItems"
           :key="item.id"
-          class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 cursor-pointer px-3 pb-6"
+          class="cursor-pointer"
         >
           <div
-            class="bg-gray-800 bg-opacity-90 rounded-md focus:outline-none focus:shadow-blue-500 hover:shadow-blue-500 px-sm pt-4 pb-sm mx-auto"
-            style="max-width: 264px;"
+            class="bg-gray-800 bg-opacity-90 rounded-md focus:outline-none focus:shadow-blue-500 hover:shadow-blue-500 px-sm pt-4 pb-sm"
             role="menuitem"
             tabindex="0"
             @click="goToRequisite(item)"
@@ -106,10 +108,9 @@
             </div>
           </div>
         </div>
-        <div class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-3 pb-6" style="min-height: 476px;">
+        <div style="min-height: 476px;" class="h-full">
           <div
-            class="border border-gray-400 focus:outline-none focus:border-blue-500 hover:border-blue-500 rounded-md h-full flex items-center justify-center cursor-pointer mx-auto"
-            style="max-width: 264px;"
+            class="border border-gray-400 focus:outline-none focus:border-blue-500 hover:border-blue-500 rounded-md h-full flex items-center justify-center cursor-pointer"
             role="menuitem"
             tabindex="0"
             @click="$router.push({ name: 'requisite-create' })"
@@ -132,8 +133,6 @@
 </template>
 
 <script>
-import { mdiStar, mdiStarOutline } from '@mdi/js'
-
 import { LIST_ORG_REQUISITES, GET_ORGS } from '../graphql/queries'
 import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '../graphql/mutations'
 
@@ -158,11 +157,7 @@ export default {
   },
   data () {
     return {
-      search: '',
-      icons: {
-        mdiStar,
-        mdiStarOutline,
-      },
+      search: undefined,
       deleteLoading: null,
     }
   },
@@ -195,7 +190,27 @@ export default {
       return filtered
     },
   },
+  created () {
+    if (this.$route.query.q) {
+      this.search = this.$route.query.q
+    }
+    // on search on server, escape input string
+    this.$watch('search', (val, old) => {
+      if (val === old) return
+      this.updateRouteQuery()
+    })
+  },
   methods: {
+    updateRouteQuery () {
+      const query = {}
+      if (this.search) {
+        query.q = this.search
+      }
+      this.$router.replace({
+        path: this.$route.path,
+        query,
+      }).catch(() => {})
+    },
     goToRequisite (item) {
       this.$router.push({
         name: 'requisite',
