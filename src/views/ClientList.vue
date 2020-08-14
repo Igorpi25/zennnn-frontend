@@ -1,8 +1,6 @@
 <template>
   <div class="container container--sm">
     <div class="pt-4 pb-10">
-      <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
-
       <div class="flex items-end flex-wrap lg:flex-no-wrap justify-between">
         <TextField
           v-model="search"
@@ -208,7 +206,17 @@
         </DataTable>
       </div>
       <div
-        v-if="items.length === 0"
+        v-if="items.length === 0 && loading"
+        class="text-center text-gray-200 leading-tight py-4"
+      >
+        <v-progress-circular
+          indeterminate
+          size="24"
+          width="2"
+        />
+      </div>
+      <div
+        v-else-if="items.length === 0"
         v-html="$t('clients.noData')"
         class="text-center text-gray-200 leading-tight py-4"
       />
@@ -258,13 +266,15 @@ export default {
       sortDesc: [],
       clientType: 1,
       search: undefined,
-      loading: false,
       createLoading: false,
       deleteLoading: null,
       errors: [],
     }
   },
   computed: {
+    loading () {
+      return this.$apollo.queries.listClients.loading
+    },
     tabs () {
       return [
         {

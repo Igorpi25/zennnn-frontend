@@ -23,7 +23,21 @@
       </div>
 
       <div class="font-semibold text-white text-2xl leading-tight">
-        {{ $t('requisites.title') }}
+        <span class="mr-1">
+          {{ $t('requisites.title') }}
+        </span>
+        <v-fade-transition>
+          <div
+            v-if="loading"
+            class="inline-block text-gray-200"
+          >
+            <v-progress-circular
+              indeterminate
+              size="20"
+              width="2"
+            />
+          </div>
+        </v-fade-transition>
       </div>
 
       <div
@@ -162,6 +176,9 @@ export default {
     }
   },
   computed: {
+    loading () {
+      return this.$apollo.queries.listOrgRequisites.loading
+    },
     orgId () {
       return this.$route.params.orgId
     },

@@ -8,8 +8,6 @@
 
     <div class="container container--sm">
       <div class="pt-4 pb-10">
-        <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
-
         <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-4">
           <TextField
             v-model="search"
@@ -266,7 +264,17 @@
           </DataTable>
         </div>
         <div
-          v-if="items.length === 0"
+          v-if="items.length === 0 && loading"
+          class="text-center text-gray-200 leading-tight py-4"
+        >
+          <v-progress-circular
+            indeterminate
+            size="24"
+            width="2"
+          />
+        </div>
+        <div
+          v-else-if="items.length === 0"
           v-html="$t('staff.noData')"
           class="text-center text-gray-200 leading-tight py-4"
         />
@@ -328,7 +336,6 @@ export default {
       sortBy: [],
       sortDesc: [],
       search: undefined,
-      loading: false,
       createLoading: false,
       deleteLoading: null,
       createStaffDialog: false,
@@ -337,6 +344,9 @@ export default {
     }
   },
   computed: {
+    loading () {
+      return this.$apollo.queries.listStaff.loading
+    },
     items () {
       const items = (this.listStaff && this.listStaff.items) || []
       const invitations = (this.listStaff && this.listStaff.invitations) || []
