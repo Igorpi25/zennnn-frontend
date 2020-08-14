@@ -2,9 +2,9 @@
   <div class="container container--sm">
     <div
       v-if="isSpecSync"
-      class="fixed opacity-50 simple-rotation-anim mr-4 mb-6"
+      class="fixed bottom-0 right-0 z-20 opacity-50 text-2xl mr-2 sm:mr-4 mb-6"
     >
-      <Icon>
+      <Icon class="animate-spin">
         {{ icons.mdiSync }}
       </Icon>
     </div>
