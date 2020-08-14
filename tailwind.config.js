@@ -141,6 +141,7 @@ module.exports = {
     overflow: ['responsive', 'hover'],
     visibility: ['group-hover'],
     translate: ['responsive', 'hover', 'focus', 'group-hover'],
+    textColor: ['group-hover', 'responsive', 'hover', 'focus']
   },
   plugins: [],
 }

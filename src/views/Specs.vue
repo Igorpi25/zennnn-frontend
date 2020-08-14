@@ -49,13 +49,22 @@
           >
             <template v-slot:activator="{ on }">
               <div
-                class="flex items-center cursor-pointer whitespace-no-wrap focus:text-light-gray-400 hover:text-light-gray-400"
+                class="group flex items-center cursor-pointer whitespace-no-wrap"
                 v-on="on"
               >
-                <span class="pr-2">
+                <span class="text-gray-100 group-hover:text-light-gray-400 pr-2">
                   {{ clientType }}
                 </span>
-                <i class="zi-filter text-2xl text-gray-200" />
+                <i class="zi-filter relative text-2xl text-gray-200 group-hover:text-gray-100">
+                  <div
+                    v-if="hasFilter"
+                    :class="[
+                      'absolute top-0 right-0 -mt-xs -mr-1 w-sm h-sm rounded-full border-2 bg-gray-900 border-gray-900 transition-colors duration-100 ease-out',
+                    ]"
+                  >
+                    <div class="w-full h-full bg-blue-500 rounded-full" />
+                  </div>
+                </i>
               </div>
             </template>
             <template>
@@ -93,6 +102,8 @@
           :headers="headers"
           :items="items"
           :search="search"
+          :sort-by.sync="sortBy"
+          :sort-desc.sync="sortDesc"
           table-width="100%"
           table-class="table-fixed"
           hoverable
@@ -396,7 +407,7 @@ import { SPECS_DELTA } from '../graphql/subscriptions'
 
 import ClientCard from '../components/ClientCard.vue'
 
-import { confirmDialog } from '@/util/helpers'
+import { confirmDialog, wrapInArray } from '@/util/helpers'
 
 export default {
   name: 'Specs',
@@ -451,7 +462,9 @@ export default {
       createSpecClient: null,
       createSpecDialog: false,
       SpecStatus,
-      search: '',
+      sortBy: [],
+      sortDesc: [],
+      search: undefined,
       loading: false,
       createWithoutClientLoading: false,
       createWithClientLoading: false,
@@ -467,6 +480,9 @@ export default {
     }
   },
   computed: {
+    hasFilter () {
+      return this.filter.clientType
+    },
     clientTypes () {
       return [
         {
@@ -577,12 +593,8 @@ export default {
         }, 300)
       }
     },
-    filter: {
-      handler: 'updateFiltersQuery',
-      deep: true,
-    },
   },
-  mounted () {
+  created () {
     if (this.$route.query.clients) {
       this.filter.clientsIds = !Array.isArray(this.$route.query.clients) ? [this.$route.query.clients] : this.$route.query.clients
     }
@@ -590,7 +602,41 @@ export default {
     if (clientType) {
       this.filter.clientType = clientType
     }
-
+    if (this.$route.query.q) {
+      this.search = this.$route.query.q
+    }
+    if (this.$route.query.sort) {
+      this.sortBy = wrapInArray(this.$route.query.sort)
+      const desc = this.$route.query.desc === true || this.$route.query.desc === 'true'
+      this.sortDesc = [!!(this.$route.query.sort && desc)]
+    }
+    // on search on server, escape input string
+    this.$watch('search', (val, old) => {
+      if (val === old) return
+      this.updateRouteQuery()
+    })
+    this.$watch('sortBy', this.updateRouteQuery)
+    this.$watch('sortDesc', this.updateRouteQuery)
+    this.$watch('$route.query', (query, old) => {
+      // TODO: deep equal query 'clients' and 'filter.clientsIds'
+      if (!query.clients) {
+        this.filter.clientsIds = []
+      }
+      const clientType = Number.parseInt(query.clientType, 10) || null
+      if (clientType !== this.filter.clientType) {
+        this.filter.clientType = clientType
+      }
+      if (query.q !== this.search) {
+        this.search = query.q
+      }
+      if (query.sort !== this.sortBy[0]) {
+        this.sortBy = query.sort ? wrapInArray(query.sort) : []
+      }
+      this.sortDesc = this.sortBy.length > 0 ? [query.desc === true || query.desc === 'true'] : []
+    })
+    this.$watch('filter', this.updateRouteQuery, { deep: true })
+  },
+  mounted () {
     const observer = this.$apollo.subscribe({
       query: SPECS_DELTA,
       fetchPolicy: 'no-cache',
@@ -674,6 +720,28 @@ export default {
     })
   },
   methods: {
+    updateRouteQuery () {
+      const query = {}
+      if (this.filter.clientsIds.length > 0) {
+        query.clients = this.filter.clientsIds
+      }
+      if (this.filter.clientType) {
+        query.clientType = this.filter.clientType
+      }
+      if (this.search) {
+        query.q = this.search
+      }
+      if (this.sortBy[0]) {
+        query.sort = this.sortBy[0]
+      }
+      if (this.sortDesc[0]) {
+        query.desc = true
+      }
+      this.$router.replace({
+        path: this.$route.path,
+        query,
+      }).catch(() => {})
+    },
     changeClientType (value) {
       this.filter.clientType = value
     },
@@ -683,13 +751,6 @@ export default {
     clearFilters () {
       this.search = null
       this.filter.clientsIds = []
-    },
-    updateFiltersQuery () {
-      const query = { clients: this.filter.clientsIds }
-      if (this.filter.clientType) {
-        query.clientType = this.filter.clientType
-      }
-      this.$router.push({ query }).catch(() => {})
     },
     goToSpec (specId) {
       this.$router.push({
