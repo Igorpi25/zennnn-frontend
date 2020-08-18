@@ -35,6 +35,8 @@
             :search="search"
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
+            :group-by="['type']"
+            :group-desc="[true]"
             table-width="100%"
             table-class="table-fixed"
             hide-no-data
@@ -57,6 +59,7 @@
             <template v-slot:items="{ items }">
               <template v-for="(item) in items">
                 <tr
+                  v-if="!item.group"
                   :key="item.id"
                   :class="[{ 'hover:bg-gray-500 cursor-pointer': item.isStaff }, { 'text-white expanded': expanded.includes(item.id) }]"
                   @click="item.isStaff ? toggle(item.id) : false"
@@ -102,13 +105,13 @@
                       {{ $n(item.totalItemsCost || 0) }}
                     </span>
                     <span v-else class="text-left block align-middle pl-12" :class="[item.status === InvitationStatus.PENDING ? 'text-yellow-500' : item.status === InvitationStatus.DECLINED ? 'text-pink-500' : item.status === InvitationStatus.ACCEPTED ? 'text-green-500' : '']">
-                      {{ item.status | statusFilter }}
+                      {{ item.statusText }}
                     </span>
                   </td>
                   <td class="truncate text-left leading-tight pl-16" :class="{ 'bg-gray-400': item.isInvitation }">
                     {{ item.fullName }}
                   </td>
-                  <td class="truncate text-left" :class="{ 'bg-gray-400': item.isInvitation }">{{ item.role | roleFilter }}</td>
+                  <td class="truncate text-left" :class="{ 'bg-gray-400': item.isInvitation }">{{ item.role }}</td>
                   <td :class="{ 'bg-gray-400': item.isInvitation }">
                     <SwitchInput
                       hide-details
@@ -299,23 +302,12 @@ import StaffCreateModal from '../components/StaffCreateModal.vue'
 import { LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
 import { SpecStatus, InvitationStatus } from '../graphql/enums'
-import { i18n } from '../plugins'
 import { confirmDialog, wrapInArray } from '../util/helpers'
 
 export default {
   name: 'Staff',
   components: {
     StaffCreateModal,
-  },
-  filters: {
-    roleFilter: function (val) {
-      return i18n.te(`role.${val}`)
-        ? i18n.t(`role.${val}`) : val
-    },
-    statusFilter: function (val) {
-      return i18n.te(`invitationStatus.${val}`)
-        ? i18n.t(`invitationStatus.${val}`) : val
-    },
   },
   apollo: {
     listStaff: {
@@ -348,6 +340,14 @@ export default {
       return this.$apollo.queries.listStaff.loading
     },
     items () {
+      const roleFilter = (val) => {
+        return this.$te(`role.${val}`)
+          ? this.$t(`role.${val}`) : val
+      }
+      const statusFilter = (val) => {
+        return this.$te(`invitationStatus.${val}`)
+          ? this.$t(`invitationStatus.${val}`) : val
+      }
       const items = (this.listStaff && this.listStaff.items) || []
       const invitations = (this.listStaff && this.listStaff.invitations) || []
       const staffItems = items.map(item => {
@@ -356,6 +356,8 @@ export default {
           // for search
           fullName: `${item.givenName} ${item.familyName}`,
           isStaff: true,
+          type: 'staff',
+          role: roleFilter(item.role),
         }
       })
       const invitationsItems = invitations.map(item => {
@@ -363,8 +365,10 @@ export default {
           ...item,
           // for search
           fullName: `${item.invitationGivenName} ${item.invitationFamilyName}`,
-          role: item.invitationRole,
           isInvitation: true,
+          type: 'invitations',
+          role: roleFilter(item.invitationRole),
+          statusText: statusFilter(item.status),
         }
       })
       return [

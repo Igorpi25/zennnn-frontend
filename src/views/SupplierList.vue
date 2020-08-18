@@ -30,6 +30,9 @@
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :custom-filter="customFilter"
+            :group-by="groupBy"
+            :group-desc="groupDesc"
+            :custom-group="customGroup"
             table-width="100%"
             table-class="table-fixed"
             hoverable
@@ -107,7 +110,7 @@
               <template v-for="(item, index) in items">
                 <tr
                   v-if="item.group"
-                  :key="item.group"
+                  :key="item.groupName"
                   :style="{ background: 'transparent' }"
                 >
                   <td
@@ -115,7 +118,7 @@
                     :style="{ height: '32px', paddingLeft: '51px' }"
                     class="text-gray-200 text-base leading-tight align-bottom p-0"
                   >
-                    <span class="text-white">{{ item.group }}</span> ({{ item.groupItemsCount }})
+                    <span class="text-white">{{ item.groupName }}</span> ({{ item.groupItemsCount }})
                   </td>
                 </tr>
                 <tr
@@ -236,6 +239,12 @@ export default {
     loading () {
       return this.$apollo.queries.listSuppliers.loading
     },
+    groupBy () {
+      return this.sortBy.length === 0 || this.sortBy[0] === 'companyName' ? ['companyName'] : []
+    },
+    groupDesc () {
+      return this.groupBy[0] === 'companyName' ? this.sortDesc : []
+    },
     headers () {
       return [
         { text: '', value: 'zAccount', width: 50, sortable: false },
@@ -252,8 +261,8 @@ export default {
       ]
     },
     items () {
-      const suppliers = (this.listSuppliers && this.listSuppliers.items) || []
-      const items = suppliers.map(item => {
+      const items = (this.listSuppliers && this.listSuppliers.items) || []
+      return items.map(item => {
         const tags = item.tags || []
         return {
           ...item,
@@ -262,36 +271,6 @@ export default {
           usn: item.uid,
         }
       })
-      if (items.length > 0 && this.sortBy.length === 0 && this.sortDesc.length === 0 && !this.search) {
-        const re = /[A-ZА-ЯҐЄІЇ\u4e00-\u9fff]|[\u3400-\u4dbf]|[\u{20000}-\u{2a6df}]|[\u{2a700}-\u{2b73f}]|[\u{2b740}-\u{2b81f}]|[\u{2b820}-\u{2ceaf}]|[\uf900-\ufaff]|[\u3300-\u33ff]|[\ufe30-\ufe4f]|[\uf900-\ufaff]|[\u{2f800}-\u{2fa1f}]/u
-        const others = []
-        const grouped = items.reduce((acc, curr) => {
-          const name = curr.companyName || ''
-          const char = name.charAt(0).toLocaleUpperCase()
-          if (re.test(char)) {
-            if (Object.prototype.hasOwnProperty.call(acc, char)) {
-              acc[char].push(curr)
-            } else {
-              acc[char] = [curr]
-            }
-          } else {
-            others.push(curr)
-          }
-          return acc
-        }, {})
-        const result = []
-        Object.keys(grouped).sort().map(k => {
-          const groupItems = grouped[k]
-          const g = { group: k, groupItemsCount: groupItems.length }
-          result.push(g, ...groupItems)
-        })
-        if (others.length > 0) {
-          result.push({ group: '#', groupItemsCount: others.length })
-          result.push(...others)
-        }
-        return result
-      }
-      return items
     },
   },
   created () {
@@ -321,6 +300,44 @@ export default {
     })
   },
   methods: {
+    customGroup (items, groupBy, groupDesc) {
+      const key = groupBy[0]
+      const desc = groupDesc[0]
+      const re = /[A-ZА-ЯҐЄІЇ\u4e00-\u9fff]|[\u3400-\u4dbf]|[\u{20000}-\u{2a6df}]|[\u{2a700}-\u{2b73f}]|[\u{2b740}-\u{2b81f}]|[\u{2b820}-\u{2ceaf}]|[\uf900-\ufaff]|[\u3300-\u33ff]|[\ufe30-\ufe4f]|[\uf900-\ufaff]|[\u{2f800}-\u{2fa1f}]/u
+      const others = []
+      const grouped = items.reduce((acc, curr) => {
+        const name = curr[key] || ''
+        const char = name.charAt(0).toLocaleUpperCase()
+        if (re.test(char)) {
+          if (Object.prototype.hasOwnProperty.call(acc, char)) {
+            acc[char].push(curr)
+          } else {
+            acc[char] = [curr]
+          }
+        } else {
+          others.push(curr)
+        }
+        return acc
+      }, {})
+      const result = []
+      let sorted = Object.keys(grouped).sort()
+      if (desc) {
+        sorted = sorted.reverse()
+      }
+      sorted.map(k => {
+        const groupItems = grouped[k]
+        const group = { name: k, items: groupItems }
+        result.push(group)
+      })
+      if (others.length > 0) {
+        if (desc) {
+          result.unshift({ name: '#', items: others })
+        } else {
+          result.push({ name: '#', items: others })
+        }
+      }
+      return result
+    },
     updateRouteQuery () {
       const query = {}
       if (this.search) {
