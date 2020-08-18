@@ -37,7 +37,7 @@
             />
           </template>
         </TextField>
-        <div class="flex w-full sm:w-auto items-center justify-end">
+        <div class="flex w-full sm:w-auto items-center justify-end" style="min-width: 165px;">
           <v-menu
             v-model="filterMenu"
             :content-class="'locale-picker__menu'"
@@ -51,7 +51,7 @@
                 v-on="on"
               >
                 <span class="text-gray-100 group-hover:text-light-gray-400 pr-2">
-                  {{ clientType }}
+                  {{ currentFilterText }}
                 </span>
                 <i class="zi-filter relative text-2xl text-gray-200 group-hover:text-gray-100">
                   <div
@@ -74,14 +74,14 @@
                 role="menu"
               >
                 <li
-                  v-for="item in clientTypes"
+                  v-for="item in filters"
                   :key="item.value"
                   :value="item.value"
                   :class="[
                     'hover:bg-gray-300 focus:bg-gray-300',
                     'flex items-center h-9 cursor-pointer focus:outline-none px-5',
                     'transition-colors duration-100 ease-out',
-                    { 'text-white': item.value === filter.clientType },
+                    { 'text-white': item.value === currentFilter },
                   ]"
                   tabindex="0"
                   role="menuitem"
@@ -102,6 +102,9 @@
           :search="search"
           :sort-by.sync="sortBy"
           :sort-desc.sync="sortDesc"
+          :group-by="groupBy"
+          :group-desc="groupDesc"
+          :custom-group="customGroup"
           table-width="100%"
           table-class="table-fixed"
           hoverable
@@ -199,82 +202,97 @@
             </v-tooltip>
           </template>
           <template v-slot:items="{ items }">
-            <tr
-              v-for="(item) in items"
-              :key="item.id"
-              class="cursor-pointer"
-              tabindex="0"
-              @click="goToSpec(item.id)"
-              @keydown.enter.exact.self="goToSpec(item.id)"
-            >
-              <td class="relative">
-                <div
-                  :class="[
-                    'ml-6 w-3 h-3 rounded-full',
-                    item.specStatus === SpecStatus.IN_STOCK
-                    ? 'bg-green-500' : item.specStatus === SpecStatus.IN_PRODUCTION
-                      ? 'bg-yellow-500' : item.specStatus === SpecStatus.IN_PROCESSING
-                        ? 'bg-pink-500' : 'bg-gray-800'
-                  ]"
-                />
-              </td>
-              <td class="text-center">
-                <i v-if="item.isMoneyRecieved" class="zi-check text-2xl text-gray-200 align-middle" />
-              </td>
-              <td class="text-center">
-                <i v-if="item.isExpensesPaid" class="zi-check text-2xl text-gray-200 align-middle" />
-              </td>
-              <td class="truncate text-right">{{ $n(item.finalCost || 0) }}</td>
-              <td class="truncate text-right text-gray-200">{{ item.margin || 0 }}%</td>
-              <td class="truncate pl-6 pr-2">{{ item.client.fullName }}</td>
-              <td class="truncate pr-2">{{ item.client.contactPersonFullName }}</td>
-              <td class="truncate pl-3">
-                <span>
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on }">
-                      <span v-on="on">
-                        <i class="zi-number text-2xl text-gray-200 align-middle" />
-                        <span v-if="item.specNoCount" class="align-middle text-light-gray-400">
-                          - {{ item.specNoCount }}
-                        </span>
-                      </span>
-                    </template>
-                    <span>
-                      {{ item.specNo }}
-                    </span>
-                  </v-tooltip>
-                </span>
-              </td>
-              <td>
-                {{ $d($parseDate(item.createdAt), 'short') }}
-              </td>
-              <td class="truncate pointer-events-none" @click.stop>
-                <span v-if="item.client.contactPhone" class="pointer-events-auto">
-                  <a
-                    :href="`tel:${item.client.contactPhone}`"
-                    class="inline-block align-middle text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none"
-                  >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
-                    </svg>
-                  </a>
-                  <i class="zi-action text-2xl text-gray-200 align-middle cursor-default ml-1" />
-                </span>
-              </td>
-              <td class="truncate text-right">{{ (item.client.uid) }}</td>
-              <td class="text-center pointer-events-none" @click.prevent.stop>
-                <button
-                  class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-auto"
-                  @click="deleteSpec(item.id)"
+            <template v-for="(item) in items">
+              <tr
+                v-if="item.group"
+                :key="item.groupName"
+                :style="{ background: 'transparent' }"
+              >
+                <td
+                  :colspan="headers.length"
+                  :style="{ height: '32px', paddingLeft: '51px' }"
+                  class="text-gray-200 text-base leading-tight align-bottom p-0"
                 >
-                  <i class="zi-delete" />
-                </button>
-              </td>
-              <td>
-                <span v-if="item.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-blue-400"></span>
-              </td>
-              <td :class="{ 'bg-purple-500': item.hasNewComment }"></td>
-            </tr>
+                  <span class="text-white">{{ item.groupName }}</span> <span class="text-gray-200">({{ item.groupItemsCount }})</span>
+                </td>
+              </tr>
+              <tr
+                v-else
+                :key="item.id"
+                class="cursor-pointer"
+                tabindex="0"
+                @click="goToSpec(item.id)"
+                @keydown.enter.exact.self="goToSpec(item.id)"
+              >
+                <td class="relative">
+                  <div
+                    :class="[
+                      'ml-6 w-3 h-3 rounded-full',
+                      item.specStatus === SpecStatus.IN_STOCK
+                      ? 'bg-green-500' : item.specStatus === SpecStatus.IN_PRODUCTION
+                        ? 'bg-yellow-500' : item.specStatus === SpecStatus.IN_PROCESSING
+                          ? 'bg-pink-500' : 'bg-gray-800'
+                    ]"
+                  />
+                </td>
+                <td class="text-center">
+                  <i v-if="item.isMoneyRecieved" class="zi-check text-2xl text-gray-200 align-middle" />
+                </td>
+                <td class="text-center">
+                  <i v-if="item.isExpensesPaid" class="zi-check text-2xl text-gray-200 align-middle" />
+                </td>
+                <td class="truncate text-right">{{ $n(item.finalCost || 0) }}</td>
+                <td class="truncate text-right text-gray-200">{{ item.margin || 0 }}%</td>
+                <td class="truncate pl-6 pr-2">{{ item.client.fullName }}</td>
+                <td class="truncate pr-2">{{ item.client.contactPersonFullName }}</td>
+                <td class="truncate pl-3">
+                  <span>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <span v-on="on">
+                          <i class="zi-number text-2xl text-gray-200 align-middle" />
+                          <span v-if="item.specNoCount" class="align-middle text-light-gray-400">
+                            - {{ item.specNoCount }}
+                          </span>
+                        </span>
+                      </template>
+                      <span>
+                        {{ item.specNo }}
+                      </span>
+                    </v-tooltip>
+                  </span>
+                </td>
+                <td>
+                  {{ $d($parseDate(item.createdAt), 'short') }}
+                </td>
+                <td class="truncate pointer-events-none" @click.stop>
+                  <span v-if="item.client.contactPhone" class="pointer-events-auto">
+                    <a
+                      :href="`tel:${item.client.contactPhone}`"
+                      class="inline-block align-middle text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none"
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
+                      </svg>
+                    </a>
+                    <i class="zi-action text-2xl text-gray-200 align-middle cursor-default ml-1" />
+                  </span>
+                </td>
+                <td class="truncate text-right">{{ (item.client.uid) }}</td>
+                <td class="text-center pointer-events-none" @click.prevent.stop>
+                  <button
+                    class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-auto"
+                    @click="deleteSpec(item.id)"
+                  >
+                    <i class="zi-delete" />
+                  </button>
+                </td>
+                <td>
+                  <span v-if="item.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-blue-400"></span>
+                </td>
+                <td :class="{ 'bg-purple-500': item.hasNewComment }"></td>
+              </tr>
+            </template>
           </template>
         </DataTable>
       </div>
@@ -483,7 +501,9 @@ export default {
       filter: {
         clientsIds: [],
         clientType: null,
+        group: false,
       },
+      currentFilter: null,
     }
   },
   computed: {
@@ -491,9 +511,9 @@ export default {
       return this.$apollo.queries.getSpecs.loading
     },
     hasFilter () {
-      return this.filter.clientType
+      return this.filter.clientType || this.filter.group
     },
-    clientTypes () {
+    filters () {
       return [
         {
           text: this.$t('label.noSort'),
@@ -511,13 +531,24 @@ export default {
           text: this.$t('client.other'),
           value: 3,
         },
+        {
+          text: this.$t('deals.byEmployees'),
+          value: 4,
+        },
       ]
     },
-    clientType () {
-      switch (this.filter.clientType) {
+    groupBy () {
+      return this.filter.group ? ['employeeId'] : null
+    },
+    groupDesc () {
+      return this.filter.group ? [false] : null
+    },
+    currentFilterText () {
+      switch (this.currentFilter) {
         case 1: return this.$t('client.legalPerson')
         case 2: return this.$t('client.privatePerson')
         case 3: return this.$t('client.other')
+        case 4: return this.$t('deals.byEmployees')
         default: return this.$t('label.noSort')
       }
     },
@@ -609,8 +640,13 @@ export default {
       this.filter.clientsIds = !Array.isArray(this.$route.query.clients) ? [this.$route.query.clients] : this.$route.query.clients
     }
     const clientType = Number.parseInt(this.$route.query.clientType, 10) || null
+    if (this.$route.query.group) {
+      this.filter.group = true
+      this.currentFilter = 4
+    }
     if (clientType) {
       this.filter.clientType = clientType
+      this.currentFilter = clientType
     }
     if (this.$route.query.q) {
       this.search = this.$route.query.q
@@ -632,6 +668,7 @@ export default {
       if (!query.clients) {
         this.filter.clientsIds = []
       }
+      this.filter.group = !!query.group
       const clientType = Number.parseInt(query.clientType, 10) || null
       if (clientType !== this.filter.clientType) {
         this.filter.clientType = clientType
@@ -730,10 +767,44 @@ export default {
     })
   },
   methods: {
+    customGroup (items, groupBy) {
+      const key = groupBy[0]
+      const others = []
+      const grouped = items.reduce((acc, curr) => {
+        const id = curr[key]
+        if (id) {
+          if (Object.prototype.hasOwnProperty.call(acc, id)) {
+            acc[id].push(curr)
+          } else {
+            acc[id] = [curr]
+          }
+        } else {
+          others.push(curr)
+        }
+        return acc
+      }, {})
+      const result = []
+      Object.keys(grouped).sort().map(k => {
+        const groupItems = grouped[k]
+        const item = groupItems[0]
+        const fullName = item.employeeFullName || ''
+        const role = this.$te(`role.${item.employeeRole}`) ? this.$t(`role.${item.employeeRole}`) : item.employeeRole || ''
+        const name = `${fullName} (${role})`
+        const group = { name, items: groupItems }
+        result.push(group)
+      })
+      if (others.length > 0) {
+        result.push({ groupName: '#', items: others })
+      }
+      return result
+    },
     updateRouteQuery () {
       const query = {}
       if (this.filter.clientsIds.length > 0) {
         query.clients = this.filter.clientsIds
+      }
+      if (this.filter.group) {
+        query.group = true
       }
       if (this.filter.clientType) {
         query.clientType = this.filter.clientType
@@ -753,7 +824,14 @@ export default {
       }).catch(() => {})
     },
     changeClientType (value) {
-      this.filter.clientType = value
+      this.currentFilter = value
+      if (value === 4) {
+        this.filter.clientType = null
+        this.filter.group = true
+      } else {
+        this.filter.clientType = value
+        this.filter.group = false
+      }
     },
     clearClientFilter (id) {
       this.filter.clientsIds = this.filter.clientsIds.filter(el => el !== id)

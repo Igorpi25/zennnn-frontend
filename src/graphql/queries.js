@@ -139,6 +139,9 @@ export const GET_SPECS = gql`
       specNo
       shipped
       hasNewComment
+      employeeId
+      employeeFullName
+      employeeRole
       createdAt
       updatedAt
       client {

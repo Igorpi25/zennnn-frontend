@@ -25,7 +25,7 @@
               {
                 'text-white border-blue-500 relative': isActive || isExactActive || ($route.name === 'specs'
                   && item.name === $route.name && $route.params.orgId
-                  && ($route.query.clients || $route.query.clientType || $route.query.q ||  $route.query.sort || $route.query.desc))
+                  && ($route.query.clients || $route.query.clientType || $route.query.q ||  $route.query.sort || $route.query.desc || $route.query.group))
               },
             ]"
             @click="navigate"

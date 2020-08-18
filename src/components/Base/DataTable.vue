@@ -101,29 +101,43 @@
       </thead>
       <tbody v-else>
         <slot name="items" :items="computedItems">
-          <tr
-            v-for="(item, index) in computedItems"
-            :key="index"
-          >
-            <template v-for="header in headers">
-              <slot
-                :name="`item.${header.value}`"
-                :value="item[header.value]"
-                :item="item"
+          <template v-for="(item, index) in computedItems">
+            <tr
+              v-if="item.group"
+              :key="item.groupName"
+              :style="{ background: 'transparent' }"
+            >
+              <td
+                :colspan="headers.length"
+                :style="{ height: '32px', paddingLeft: '51px' }"
+                class="text-gray-200 text-base leading-tight align-bottom p-0"
               >
-                <td
-                  :key="`${index}-${header.value}`"
-                  :class="[
-                    'p-1',
-                    header.align === 'left' ? 'text-left' : header.align === 'right' ? 'text-right' : 'text-center',
-                  ]"
+                <span class="text-white">{{ item.groupName }}</span> <span class="text-gray-200">({{ item.groupItemsCount }})</span>
+              </td>
+            </tr>
+            <tr
+              v-else
+              :key="index"
+            >
+              <template v-for="header in headers">
+                <slot
+                  :name="`item.${header.value}`"
+                  :value="item[header.value]"
+                  :item="item"
                 >
-                  {{ item[header.value] }}
-                </td>
-              </slot>
-
-            </template>
-          </tr>
+                  <td
+                    :key="`${index}-${header.value}`"
+                    :class="[
+                      'p-1',
+                      header.align === 'left' ? 'text-left' : header.align === 'right' ? 'text-right' : 'text-center',
+                    ]"
+                  >
+                    {{ item[header.value] }}
+                  </td>
+                </slot>
+              </template>
+            </tr>
+          </template>
         </slot>
         <slot name="expanded" />
         <slot name="footer" />
@@ -159,6 +173,25 @@ function searchTableItems (
     filtered = filtered.filter(item => headersWithCustomFilters.every(filterFn(item, search, defaultFilter)))
   }
   return filtered
+}
+
+function groupItems (items, groupBy, groupDesc) {
+  const key = groupBy[0]
+  const groups = []
+  let current = null
+  for (var i = 0; i < items.length; i++) {
+    const item = items[i]
+    const val = getObjectValueByPath(item, key)
+    if (current !== val) {
+      current = val
+      groups.push({
+        name: val,
+        items: [],
+      })
+    }
+    groups[groups.length - 1].items.push(item)
+  }
+  return groups
 }
 
 export default {
@@ -215,6 +248,18 @@ export default {
       type: [Boolean, Array],
       default: () => [],
     },
+    groupBy: {
+      type: [String, Array],
+      default: () => [],
+    },
+    groupDesc: {
+      type: [Boolean, Array],
+      default: () => [],
+    },
+    customGroup: {
+      type: Function,
+      default: groupItems,
+    },
     hideNoData: Boolean,
   },
   data () {
@@ -223,8 +268,8 @@ export default {
       itemsPerPage: this.itemsPerPage,
       sortBy: wrapInArray(this.sortBy),
       sortDesc: wrapInArray(this.sortDesc),
-      groupBy: [],
-      groupDesc: [],
+      groupBy: wrapInArray(this.groupBy),
+      groupDesc: wrapInArray(this.groupDesc),
       multiSort: false,
       mustSort: false,
     }
@@ -261,6 +306,9 @@ export default {
         ? 1
         : Math.ceil(this.itemsLength / this.internalOptions.itemsPerPage) // TODO: can't use items.length here
     },
+    isGrouped () {
+      return !!this.internalOptions.groupBy.length
+    },
     computedHeaders () {
       if (!this.headers) return []
       const headers = this.headers
@@ -290,6 +338,17 @@ export default {
       if (!this.disableSort && this.serverItemsLength <= 0) {
         items = this.sortItems(items)
       }
+      if (this.isGrouped) {
+        const group = this.groupItems(items)
+        if (group) {
+          const groupItems = []
+          group.map(el => {
+            const group = { group: true, groupName: el.name, groupItemsCount: el.items.length }
+            groupItems.push(group, ...el.items)
+          })
+          return groupItems
+        }
+      }
       return items
     },
   },
@@ -317,6 +376,18 @@ export default {
     },
     'internalOptions.sortDesc' (sortDesc, old) {
       !deepEqual(sortDesc, old) && this.$emit('update:sort-desc', Array.isArray(this.sortDesc) ? sortDesc : sortDesc[0])
+    },
+    groupBy (groupBy) {
+      this.updateOptions({ groupBy: wrapInArray(groupBy) })
+    },
+    'internalOptions.groupBy' (groupBy, old) {
+      !deepEqual(groupBy, old) && this.$emit('update:group-by', Array.isArray(this.groupBy) ? groupBy : groupBy[0])
+    },
+    groupDesc (groupDesc) {
+      this.updateOptions({ groupDesc: wrapInArray(groupDesc) })
+    },
+    'internalOptions.groupDesc' (groupDesc, old) {
+      !deepEqual(groupDesc, old) && this.$emit('update:group-desc', Array.isArray(this.groupDesc) ? groupDesc : groupDesc[0])
     },
   },
   methods: {
@@ -352,6 +423,17 @@ export default {
 
       return { by, desc, page }
     },
+    group (key) {
+      const { by: groupBy, desc: groupDesc, page } = this.toggle(
+        key,
+        this.internalOptions.groupBy,
+        this.internalOptions.groupDesc,
+        this.internalOptions.page,
+        true,
+        false,
+      )
+      this.updateOptions({ groupBy, groupDesc, page })
+    },
     sort (key) {
       if (Array.isArray(key)) return this.sortArray(key)
 
@@ -383,9 +465,18 @@ export default {
       }
     },
     sortItems (items) {
-      const sortBy = this.internalOptions.groupBy.concat(this.internalOptions.sortBy)
-      const sortDesc = this.internalOptions.groupDesc.concat(this.internalOptions.sortDesc)
+      let sortBy = this.internalOptions.sortBy
+      let sortDesc = this.internalOptions.sortDesc
+
+      if (this.internalOptions.groupBy.length) {
+        sortBy = [...this.internalOptions.groupBy, ...sortBy]
+        sortDesc = [...this.internalOptions.groupDesc, ...sortDesc]
+      }
+
       return this.customSortWithHeaders(items, sortBy, sortDesc, this.locale)
+    },
+    groupItems (items) {
+      return this.customGroup(items, this.internalOptions.groupBy, this.internalOptions.groupDesc)
     },
     customSortWithHeaders (items, sortBy, sortDesc, locale) {
       return sortItems(items, sortBy, sortDesc, locale, this.columnSorters)
