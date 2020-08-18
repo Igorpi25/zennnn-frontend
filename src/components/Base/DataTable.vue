@@ -60,7 +60,7 @@
                 </slot>
                 <span v-if="header.sortable" class="absolute inset-y-0 inline-flex items-center">
                   <i
-                    class="data-table-header__icon zi-arrow-bottom-sort"
+                    class="data-table-header__icon zi-arrow-top-sort"
                   />
                 </span>
               </td>
