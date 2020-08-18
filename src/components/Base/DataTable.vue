@@ -248,6 +248,10 @@ export default {
       type: [Boolean, Array],
       default: () => [],
     },
+    customSort: {
+      type: Function,
+      default: sortItems,
+    },
     groupBy: {
       type: [String, Array],
       default: () => [],
@@ -479,7 +483,7 @@ export default {
       return this.customGroup(items, this.internalOptions.groupBy, this.internalOptions.groupDesc)
     },
     customSortWithHeaders (items, sortBy, sortDesc, locale) {
-      return sortItems(items, sortBy, sortDesc, locale, this.columnSorters)
+      return this.customSort(items, sortBy, sortDesc, locale, this.columnSorters)
     },
     customFilterWithColumns (items, search) {
       return searchTableItems(items, search, this.headersWithCustomFilters, this.headersWithoutCustomFilters, this.customFilter)

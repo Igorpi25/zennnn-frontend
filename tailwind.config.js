@@ -123,6 +123,7 @@ module.exports = {
       },
       transitionProperty: {
         'color': 'color',
+        'bg-and-color': 'background-color, color',
         'colors-and-opacity': 'background-color, border-color, color, fill, stroke, opacity',
       },
       borderRadius: {

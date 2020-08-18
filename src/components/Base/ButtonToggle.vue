@@ -6,7 +6,7 @@
         :key="item.value"
         :style="item.value === internalValue ? activeStyles : inActiveStyles"
         :class="[
-          'h-10 w-32 focus:outline-none transition-all duration-75 ease-in-out hover:text-white focus:text-white',
+          'h-10 w-32 transition-bg-and-color duration-75 ease-in-out hover:text-white focus:text-white focus:outline-none',
           { 'rounded-l-md': i === 0 },
           { 'rounded-r-md': i === items.length - 1 },
           item.value === internalValue ? activeClasses : inActiveClasses

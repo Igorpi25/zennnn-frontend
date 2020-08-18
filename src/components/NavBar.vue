@@ -23,9 +23,9 @@
             :class="[
               'focus:outline-none focus:text-white hover:text-white border-b-2 border-transparent whitespace-no-wrap text-xl leading-6 h-full flex items-center duration-100 transition-color ease-out',
               {
-                'text-white border-blue-500 relative': isActive || isExactActive || ($route.name === 'specs'
-                  && item.name === $route.name && $route.params.orgId
-                  && ($route.query.clients || $route.query.clientType || $route.query.q ||  $route.query.sort || $route.query.desc || $route.query.group))
+                'text-white border-blue-500 relative': isActive || isExactActive || ($route.name === 'specs' &&
+                  item.name === $route.name && $route.params.orgId &&
+                  ($route.query.clients || $route.query.clientType || $route.query.q ||  $route.query.sort || $route.query.desc || $route.query.group))
               },
             ]"
             @click="navigate"
