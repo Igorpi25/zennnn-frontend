@@ -210,7 +210,7 @@
               >
                 <td
                   :colspan="headers.length"
-                  :style="{ height: '32px', paddingLeft: '51px' }"
+                  :style="{ height: '32px', paddingLeft: '26px' }"
                   class="text-gray-200 text-base leading-tight align-bottom p-0"
                 >
                   <span class="text-white">{{ item.groupName }}</span> <span class="text-gray-200">({{ item.groupItemsCount }})</span>
@@ -794,7 +794,7 @@ export default {
         result.push(group)
       })
       if (others.length > 0) {
-        result.push({ groupName: '#', items: others })
+        result.push({ name: '#', items: others })
       }
       return result
     },
