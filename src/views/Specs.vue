@@ -784,7 +784,16 @@ export default {
         return acc
       }, {})
       const result = []
-      Object.keys(grouped).sort().map(k => {
+      const roles = Object.keys(Role).reduce((acc, curr, index) => {
+        return { ...acc, [curr]: index + 1 }
+      }, {})
+      // sort by roles
+      const keys = Object.keys(grouped).sort((a, b) => {
+        const itemA = grouped[a][0]
+        const itemB = grouped[b][0]
+        return roles[itemA.employeeRole] - roles[itemB.employeeRole]
+      })
+      keys.map(k => {
         const groupItems = grouped[k]
         const item = groupItems[0]
         const fullName = item.employeeFullName || ''
