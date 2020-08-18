@@ -97,7 +97,7 @@
                 :placeholder="$t('shipping.shippingDate')"
                 solo
                 readonly
-                class="lg:flex-shrink-0 w-full sm:w-38 mr-2"
+                class="lg:flex-shrink-0 w-full sm:w-36 mr-2"
               >
                 <template v-slot:prepend>
                   <i class="zi-calendar text-2xl" />
