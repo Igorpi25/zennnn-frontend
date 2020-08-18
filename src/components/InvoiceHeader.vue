@@ -118,6 +118,9 @@
       </span>
     </div>
     <div class="flex-grow" />
+    <div v-if="hasNewComments" class="px-2 lg:pl-4 lg:pr-6">
+      <div class="w-2 h-2 rounded-full bg-purple-500" />
+    </div>
     <button
       v-if="!create"
       class="flex items-center text-2xl text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
@@ -206,6 +209,14 @@ export default {
     }
   },
   computed: {
+    hasNewComments () {
+      if (!this.isOwnerOrManager && this.create && this.isEmpty) return false
+      const products = this.item.products || []
+      return products.some(item => {
+        const comments = item.comments || []
+        return comments.some(c => !c.viewed)
+      })
+    },
     isOwnerOrManager () {
       return this.role === Role.OWNER || this.role === Role.OWNER
     },
