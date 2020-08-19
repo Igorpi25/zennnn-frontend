@@ -1,4 +1,7 @@
 module.exports = {
+  future: {
+    removeDeprecatedGapUtilities: true,
+  },
   purge: [
     './src/**/*.html',
     './src/**/*.vue',
@@ -82,6 +85,11 @@ module.exports = {
       wide: '.025em',
       wider: '.05em',
       widest: '.15em',
+    },
+    gradientColorStops: {
+      'gray-900': 'rgba(30, 30, 30, 1)',
+      'gray-900-a-0': 'rgba(30, 30, 30, 0)',
+      'gray-900-a-50': 'rgba(30, 30, 30, 0.5)',
     },
     extend: {
       fontSize: {

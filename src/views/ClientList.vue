@@ -19,7 +19,7 @@
             />
           </template>
         </TextField>
-        <div class="h-11 flex lg:inline-flex overflow-x-auto overflow-scroll-touch">
+        <div class="h-11 flex lg:inline-flex overflow-x-auto scrolling-touch">
           <div
             v-for="(tab, i) in tabs"
             :aria-selected="clientType === tab.value"
@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <div class="overflow-x-auto overflow-scroll-touch pb-4">
+      <div class="overflow-x-auto scrolling-touch pb-4">
         <DataTable
           :headers="headers"
           :items="items"

@@ -22,7 +22,7 @@
           </TextField>
         </div>
 
-        <div class="overflow-x-auto overflow-scroll-touch pb-4">
+        <div class="overflow-x-auto scrolling-touch pb-4">
           <DataTable
             :headers="headers"
             :items="items"

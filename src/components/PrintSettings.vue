@@ -1,7 +1,7 @@
 <template>
   <div
     ref="container"
-    class="flex flex-col relative w-full overflow-y-auto overflow-scroll-touch max-h-screen text-gray-100 bg-gray-800 px-sm py-6"
+    class="flex flex-col relative w-full overflow-y-auto scrolling-touch max-h-screen text-gray-100 bg-gray-800 px-sm py-6"
   >
     <span
       class="absolute top-0 right-0 z-10 pt-1 pr-1"
@@ -390,7 +390,7 @@
       :fullscreen="$vuetify.breakpoint.xs"
       scrollable
       max-width="1110"
-      content-class="dialog-full-height overflow-scroll-touch"
+      content-class="dialog-full-height scrolling-touch"
     >
       <ClientCard
         ref="clientCard"

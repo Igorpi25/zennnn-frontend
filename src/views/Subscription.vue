@@ -177,7 +177,7 @@
           <h4 class="text-gray-200 mb-3">
             {{ $t('payment.defaultCard') }}
           </h4>
-          <div class="overflow-x-auto overflow-scroll-touch pb-10">
+          <div class="overflow-x-auto scrolling-touch pb-10">
             <table class="w-full border-separate text-gray-200 border-spacing-y-1">
               <tbody>
                 <tr
@@ -221,7 +221,7 @@
           <h4 class="text-gray-200 mb-3">
             {{ $t('payment.otherCards') }}
           </h4>
-          <div class="overflow-x-auto overflow-scroll-touch pb-10">
+          <div class="overflow-x-auto scrolling-touch pb-10">
             <table class="w-full border-separate text-gray-200 border-spacing-y-1">
               <tbody>
                 <tr
@@ -312,7 +312,7 @@
         <h3 class="text-2xl pb-6">
           {{ $t('payment.invoices') }}
         </h3>
-        <div class="overflow-x-auto overflow-scroll-touch rounded-md bg-light-gray-300 px-sm pb-2">
+        <div class="overflow-x-auto scrolling-touch rounded-md bg-light-gray-300 px-sm pb-2">
           <table class="w-full table-fixed border-separate text-gray-200 border-spacing-y-1">
             <thead>
               <tr class="h-12 text-gray-100">

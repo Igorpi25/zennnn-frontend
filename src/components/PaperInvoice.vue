@@ -2,7 +2,7 @@
   <div
     v-scroll="onScroll"
     ref="productsTable"
-    class="overflow-x-auto overflow-scroll-touch border-t border-white bg-light-gray-100 rounded-b-md"
+    class="overflow-x-auto scrolling-touch border-t border-white bg-light-gray-100 rounded-b-md"
     @mouseenter="isMouseOver = true"
     @mouseleave="isMouseOver = false"
     @touchstart="isScrollStart = true"

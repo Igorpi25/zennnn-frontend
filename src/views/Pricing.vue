@@ -83,7 +83,7 @@
       </div>
       <div class="pb-20">
         <h2 class="font-semibold text-32 leading-tight pb-10">{{ $t('pricing.specsTitle') }}</h2>
-        <div class="overflow-x-auto overflow-scroll-touch">
+        <div class="overflow-x-auto scrolling-touch">
           <table width="100%" class="w-full leading-tight text-gray-900 text-center">
             <thead>
               <tr class="h-16 text-xl text-gray-100">

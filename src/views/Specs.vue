@@ -95,7 +95,7 @@
         </div>
       </div>
 
-      <div class="overflow-x-auto overflow-scroll-touch pb-4">
+      <div class="overflow-x-auto scrolling-touch pb-4">
         <DataTable
           :headers="headers"
           :items="items"
@@ -404,7 +404,7 @@
       :fullscreen="$vuetify.breakpoint.smAndDown"
       scrollable
       max-width="1110"
-      content-class="dialog-full-height overflow-scroll-touch"
+      content-class="dialog-full-height scrolling-touch"
     >
       <ClientCard
         ref="clientCard"

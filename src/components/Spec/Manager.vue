@@ -303,7 +303,7 @@
       :fullscreen="$vuetify.breakpoint.xs"
       scrollable
       max-width="1110"
-      content-class="dialog-full-height overflow-scroll-touch"
+      content-class="dialog-full-height scrolling-touch"
     >
       <ClientCard
         ref="clientCard"

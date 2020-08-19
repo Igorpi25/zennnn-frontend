@@ -28,7 +28,7 @@
           </TextField>
         </div>
 
-        <div class="overflow-x-auto overflow-scroll-touch pb-4">
+        <div class="overflow-x-auto scrolling-touch pb-4">
           <DataTable
             :headers="headers"
             :items="items"
@@ -171,7 +171,7 @@
                   >
                     <td :colspan="headers.length" class="relative p-0">
                       <div
-                        class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-dark -mt-1"
+                        class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
                       />
                       <div
                         v-if="!item.specs || item.specs.length === 0"

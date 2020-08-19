@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div class="absolute bottom-0 inset-x-0 border-b border-gray-500" />
-    <div class="container container--sm flex h-16 overflow-x-auto overflow-scroll-touch">
+    <div class="container container--sm flex h-16 overflow-x-auto scrolling-touch">
       <div
         v-for="(item, i) in items"
         :key="item.name"

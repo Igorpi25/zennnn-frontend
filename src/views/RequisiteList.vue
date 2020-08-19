@@ -42,7 +42,7 @@
 
       <div
         role="menu"
-        class="grid sm:grid-cols-2-264 lg:grid-cols-3-264 xl:grid-cols-4-264 col-gap-6 row-gap-8 justify-center sm:justify-between py-10"
+        class="grid sm:grid-cols-2-264 lg:grid-cols-3-264 xl:grid-cols-4-264 gap-x-6 gap-y-8 justify-center sm:justify-between py-10"
       >
         <div
           v-for="item in filteredItems"
