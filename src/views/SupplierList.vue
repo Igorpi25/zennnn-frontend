@@ -136,13 +136,15 @@
                   <td :class="['truncate text-right', { 'text-pink-500': item.debt > 0 }]">{{ $n(item.debt || 0) }}</td>
                   <td class="truncate text-right">{{ $n(item.totalCost || 0) }}</td>
                   <td class="truncate pl-8 pr-2">{{ item.contactPersonFullName }}</td>
-                  <td class="truncate">
-                    <div
-                      v-for="(tag, i) in item.tagsArray"
-                      :key="i"
-                      class="inline-flex items-center h-6 px-1 bg-blue-500 bg-opacity-40 rounded-lg mr-1"
-                    >
-                      {{ tag }}
+                  <td class="whitespace-no-wrap pr-4">
+                    <div class="overflow-x-scroll scrolling-touch scrollbar-hidden flex items-center align-middle rounded-lg space-x-1">
+                      <div
+                        v-for="(tag, i) in item.tagsArray"
+                        :key="i"
+                        class="h-6 inline-flex items-center bg-blue-500 bg-opacity-40 rounded-lg px-1"
+                      >
+                        {{ tag }}
+                      </div>
                     </div>
                   </td>
                   <td class="truncate pointer-events-none" @click.stop>
