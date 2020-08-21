@@ -64,7 +64,14 @@
                     <v-img
                       :src="item.images[0] && item.images[0].url"
                       aspect-ratio="1"
-                    />
+                      style="border-radius: 5px;"
+                    >
+                      <template v-slot:placeholder>
+                        <div class="flex justify-center items-center w-full h-full">
+                          <Spinner />
+                        </div>
+                      </template>
+                    </v-img>
                   </div>
                 </div>
               </template>

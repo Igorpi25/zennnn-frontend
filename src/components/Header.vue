@@ -12,7 +12,7 @@
           </router-link>
           <template v-if="$route.name === 'paper' && paperOrgName">
             <span class="w-px h-5 bg-gray-300 mx-5" />
-            <span class="text-lg text-white">{{ paperOrgName }}</span>
+            <span class="text-lg text-white leading-none">{{ paperOrgName }}</span>
           </template>
         </div>
         <slot name="breadcrumbs" />
@@ -33,7 +33,9 @@
               <div class="flex items-center h-full text-gray-100">
                 <div class="hidden sm:block w-px h-5 bg-gray-300 mx-3" />
                 <div class="flex items-center h-full px-2 hover:bg-gray-200 transition-colors duration-100 ease-out">
-                  <span>{{ $t('header.signin') }}</span>
+                  <span :class="{ 'hidden sm:block': $route.name === 'paper' && paperOrgName }">
+                    {{ $t('header.signin') }}
+                  </span>
                   <Icon
                     :class="[light ? 'text-gray-200' : 'text-gray-100', 'text-32 ml-2']"
                   >

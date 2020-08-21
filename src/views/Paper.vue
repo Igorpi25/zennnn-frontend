@@ -143,7 +143,7 @@
                 ]"
               />
               <div class="select-text">
-                <div class="text-gray-400 font-semibold">
+                <div class="text-gray-400 font-semibold leading-tight">
                   <span>{{ item.invoiceNo || '-' }}</span>&nbsp;
                   <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
                   <span>{{ item.createdAt ? $d($parseDate(item.createdAt), 'short') : '-' }}</span>&nbsp;
