@@ -19,6 +19,11 @@
           thead-class="text-sm"
           flat
         >
+          <template v-slot:[`header.atWhouse-content`]="{ header }">
+            <span class="inline-block truncate align-middle" style="max-width: 78px;">
+              {{ header.text }}
+            </span>
+          </template>
           <template v-slot:top>
             <div class="flex">
               <div
@@ -195,7 +200,7 @@
                   </span>
                 </td>
                 <td class="text-left" colspan="2">
-                  <span class="relative z-1">
+                  <span class="relative whitespace-no-wrap z-1">
                     <span class="text-gray-300">{{ $t('measure.pkg') }}</span>
                   </span>
                 </td>
