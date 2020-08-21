@@ -143,7 +143,7 @@
                 ]"
               />
               <div class="select-text">
-                <div class="text-gray-400 font-semibold">
+                <div class="text-gray-400 font-semibold leading-tight">
                   <span>{{ item.invoiceNo || '-' }}</span>&nbsp;
                   <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
                   <span>{{ item.createdAt ? $d($parseDate(item.createdAt), 'short') : '-' }}</span>&nbsp;
@@ -256,7 +256,7 @@
                       <div :class="['spec-container relative my-2', { 'spec-container--lg': container.size === '_40' || container.size === '_45' }]">
                         <div class="spec-container__progress w-full h-full">
                           <div
-                            style="width: 100%"
+                            style="width: 100%;"
                             class="relative w-0 h-full"
                           >
                             <div class="absolute top-0 left-0 bg-blue-500 w-full h-full" />

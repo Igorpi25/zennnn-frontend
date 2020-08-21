@@ -139,6 +139,9 @@ export const GET_SPECS = gql`
       specNo
       shipped
       hasNewComment
+      employeeId
+      employeeFullName
+      employeeRole
       createdAt
       updatedAt
       client {
@@ -372,7 +375,7 @@ export const LIST_STAFF = gql`
         familyName
         picture
         role
-        inWorkCount
+        processing
         revenue
         totalItemsCost
         totalMargin

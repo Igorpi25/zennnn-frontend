@@ -32,7 +32,7 @@
     <v-dialog
       v-model="printDialog"
       :fullscreen="$vuetify.breakpoint.smAndDown"
-      content-class="dialog-full-height overflow-scroll-touch"
+      content-class="dialog-full-height scrolling-touch"
       max-width="1130"
       scrollable
       persistent

@@ -97,7 +97,7 @@
                 :placeholder="$t('shipping.shippingDate')"
                 solo
                 readonly
-                class="lg:flex-shrink-0 w-full sm:w-38 mr-2"
+                class="lg:flex-shrink-0 w-full sm:w-36 mr-2"
               >
                 <template v-slot:prepend>
                   <i class="zi-calendar text-2xl" />
@@ -118,6 +118,9 @@
       </span>
     </div>
     <div class="flex-grow" />
+    <div v-if="hasNewComments" class="px-2 lg:pl-4 lg:pr-6">
+      <div class="w-2 h-2 rounded-full bg-purple-500" />
+    </div>
     <button
       v-if="!create"
       class="flex items-center text-2xl text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
@@ -142,7 +145,7 @@
       :fullscreen="$vuetify.breakpoint.smAndDown"
       scrollable
       max-width="1110"
-      content-class="dialog-full-height overflow-scroll-touch"
+      content-class="dialog-full-height scrolling-touch"
     >
       <SupplierCard
         ref="supplierCard"
@@ -206,6 +209,14 @@ export default {
     }
   },
   computed: {
+    hasNewComments () {
+      if (!this.isOwnerOrManager && this.create && this.isEmpty) return false
+      const products = this.item.products || []
+      return products.some(item => {
+        const comments = item.comments || []
+        return comments.some(c => !c.viewed)
+      })
+    },
     isOwnerOrManager () {
       return this.role === Role.OWNER || this.role === Role.OWNER
     },

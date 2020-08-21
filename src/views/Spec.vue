@@ -4,6 +4,7 @@
       ref="spec"
       v-if="roleInProject"
       :is="componentName"
+      :loading="loading"
     />
   </div>
 </template>
@@ -68,6 +69,9 @@ export default {
     }
   },
   computed: {
+    loading () {
+      return this.$apollo.queries.getSpec.loading
+    },
     specId () {
       return this.$route.params.specId
     },

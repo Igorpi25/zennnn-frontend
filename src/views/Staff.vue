@@ -8,16 +8,13 @@
 
     <div class="container container--sm">
       <div class="pt-4 pb-10">
-        <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
-
         <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-4">
           <TextField
             v-model="search"
             :placeholder="$t('placeholder.pageSearch')"
+            :content-class="[search ? 'shadow-blue-500' : '', 'bg-transparent']"
             class="w-full flex-shrink-0 md:max-w-md pb-4 md:pr-8"
-            content-class="bg-transparent"
             input-class="placeholder-blue-500"
-            append-slot-class="w-auto"
           >
             <template v-slot:prepend>
               <i class="zi-magnifier text-2xl text-gray-100"></i>
@@ -31,26 +28,30 @@
           </TextField>
         </div>
 
-        <div class="overflow-x-auto overflow-scroll-touch pb-4">
+        <div class="overflow-x-auto scrolling-touch pb-4">
           <DataTable
             :headers="headers"
             :items="items"
             :search="search"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
+            :group-by="['type']"
+            :group-desc="[true]"
             table-width="100%"
             table-class="table-fixed"
             hide-no-data
           >
-            <template v-slot:header.inWorkCount-content>
+            <template v-slot:[`header.processing-content`]>
               <span class="truncate inline-block max-w-full align-middle pl-6">
                 {{ $t('staff.inWork') }}
               </span>
             </template>
-            <template v-slot:header.fullName-content="{ header }">
-              <span class="truncate inline-block align-middle" :style="{ maxWidth: (header.width - 24) + 'px' }">
+            <template v-slot:[`header.fullName-content`]="{ header }">
+              <span class="truncate inline-block align-middle" :style="{ maxWidth: (header.width - 88) + 'px' }">
                 {{ header.text }}
               </span>
             </template>
-            <template v-slot:header.role-content="{ header }">
+            <template v-slot:[`header.role-content`]="{ header }">
               <span class="truncate inline-block align-middle" :style="{ maxWidth: (header.width - 24) + 'px' }">
                 {{ header.text }}
               </span>
@@ -58,6 +59,7 @@
             <template v-slot:items="{ items }">
               <template v-for="(item) in items">
                 <tr
+                  v-if="!item.group"
                   :key="item.id"
                   :class="[{ 'hover:bg-gray-500 cursor-pointer': item.isStaff }, { 'text-white expanded': expanded.includes(item.id) }]"
                   @click="item.isStaff ? toggle(item.id) : false"
@@ -75,7 +77,7 @@
                       >
                       </div>
                       <div class="truncate">
-                        {{ item.inWorkCount }}
+                        {{ item.processing }}
                       </div>
                     </div>
                     <span v-else class="whitespace-no-wrap pl-4">
@@ -103,13 +105,13 @@
                       {{ $n(item.totalItemsCost || 0) }}
                     </span>
                     <span v-else class="text-left block align-middle pl-12" :class="[item.status === InvitationStatus.PENDING ? 'text-yellow-500' : item.status === InvitationStatus.DECLINED ? 'text-pink-500' : item.status === InvitationStatus.ACCEPTED ? 'text-green-500' : '']">
-                      {{ item.status | statusFilter }}
+                      {{ item.statusText }}
                     </span>
                   </td>
                   <td class="truncate text-left leading-tight pl-16" :class="{ 'bg-gray-400': item.isInvitation }">
                     {{ item.fullName }}
                   </td>
-                  <td class="truncate text-left" :class="{ 'bg-gray-400': item.isInvitation }">{{ item.role | roleFilter }}</td>
+                  <td class="truncate text-left" :class="{ 'bg-gray-400': item.isInvitation }">{{ item.role }}</td>
                   <td :class="{ 'bg-gray-400': item.isInvitation }">
                     <SwitchInput
                       hide-details
@@ -169,7 +171,7 @@
                   >
                     <td :colspan="headers.length" class="relative p-0">
                       <div
-                        class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-dark -mt-1"
+                        class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
                       />
                       <div
                         v-if="!item.specs || item.specs.length === 0"
@@ -265,7 +267,17 @@
           </DataTable>
         </div>
         <div
-          v-if="items.length === 0"
+          v-if="items.length === 0 && loading"
+          class="text-center text-gray-200 leading-tight py-4"
+        >
+          <v-progress-circular
+            indeterminate
+            size="24"
+            width="2"
+          />
+        </div>
+        <div
+          v-else-if="items.length === 0"
           v-html="$t('staff.noData')"
           class="text-center text-gray-200 leading-tight py-4"
         />
@@ -290,23 +302,12 @@ import StaffCreateModal from '../components/StaffCreateModal.vue'
 import { LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
 import { SpecStatus, InvitationStatus } from '../graphql/enums'
-import { i18n } from '../plugins'
-import { confirmDialog } from '../util/helpers'
+import { confirmDialog, wrapInArray } from '../util/helpers'
 
 export default {
   name: 'Staff',
   components: {
     StaffCreateModal,
-  },
-  filters: {
-    roleFilter: function (val) {
-      return i18n.te(`role.${val}`)
-        ? i18n.t(`role.${val}`) : val
-    },
-    statusFilter: function (val) {
-      return i18n.te(`invitationStatus.${val}`)
-        ? i18n.t(`invitationStatus.${val}`) : val
-    },
   },
   apollo: {
     listStaff: {
@@ -324,8 +325,9 @@ export default {
       SpecStatus,
       InvitationStatus,
       deleteUserLoading: null,
-      search: '',
-      loading: false,
+      sortBy: [],
+      sortDesc: [],
+      search: undefined,
       createLoading: false,
       deleteLoading: null,
       createStaffDialog: false,
@@ -334,7 +336,18 @@ export default {
     }
   },
   computed: {
+    loading () {
+      return this.$apollo.queries.listStaff.loading
+    },
     items () {
+      const roleFilter = (val) => {
+        return this.$te(`role.${val}`)
+          ? this.$t(`role.${val}`) : val
+      }
+      const statusFilter = (val) => {
+        return this.$te(`invitationStatus.${val}`)
+          ? this.$t(`invitationStatus.${val}`) : val
+      }
       const items = (this.listStaff && this.listStaff.items) || []
       const invitations = (this.listStaff && this.listStaff.invitations) || []
       const staffItems = items.map(item => {
@@ -343,6 +356,8 @@ export default {
           // for search
           fullName: `${item.givenName} ${item.familyName}`,
           isStaff: true,
+          type: 'staff',
+          role: roleFilter(item.role),
         }
       })
       const invitationsItems = invitations.map(item => {
@@ -350,8 +365,10 @@ export default {
           ...item,
           // for search
           fullName: `${item.invitationGivenName} ${item.invitationFamilyName}`,
-          role: item.invitationRole,
           isInvitation: true,
+          type: 'invitations',
+          role: roleFilter(item.invitationRole),
+          statusText: statusFilter(item.status),
         }
       })
       return [
@@ -364,7 +381,7 @@ export default {
     },
     headers () {
       return [
-        { text: this.$t('staff.inWork'), value: 'inWorkCount', align: 'right', width: 100, minWidth: 100, sortable: true },
+        { text: this.$t('staff.inWork'), value: 'processing', align: 'right', width: 100, minWidth: 100, sortable: true },
         { text: this.$t('staff.diff'), value: 'diff', align: 'right', width: 105, minWidth: 105, sortable: true },
         { text: this.$t('staff.percent'), value: 'totalMargin', align: 'right', width: 66, minWidth: 66, sortable: true },
         { text: this.$t('staff.revenue'), value: 'revenue', align: 'right', width: 118, minWidth: 118, sortable: true },
@@ -398,7 +415,49 @@ export default {
       return result
     },
   },
+  created () {
+    if (this.$route.query.q) {
+      this.search = this.$route.query.q
+    }
+    if (this.$route.query.sort) {
+      this.sortBy = wrapInArray(this.$route.query.sort)
+      const desc = this.$route.query.desc === true || this.$route.query.desc === 'true'
+      this.sortDesc = [!!(this.$route.query.sort && desc)]
+    }
+    // on search on server, escape input string
+    this.$watch('search', (val, old) => {
+      if (val === old) return
+      this.updateRouteQuery()
+    })
+    this.$watch('sortBy', this.updateRouteQuery)
+    this.$watch('sortDesc', this.updateRouteQuery)
+    this.$watch('$route.query', (query, old) => {
+      if (query.q !== this.search) {
+        this.search = query.q
+      }
+      if (query.sort !== this.sortBy[0]) {
+        this.sortBy = query.sort ? wrapInArray(query.sort) : []
+      }
+      this.sortDesc = this.sortBy.length > 0 ? [query.desc === true || query.desc === 'true'] : []
+    })
+  },
   methods: {
+    updateRouteQuery () {
+      const query = {}
+      if (this.search) {
+        query.q = this.search
+      }
+      if (this.sortBy[0]) {
+        query.sort = this.sortBy[0]
+      }
+      if (this.sortDesc[0]) {
+        query.desc = true
+      }
+      this.$router.replace({
+        path: this.$route.path,
+        query,
+      }).catch(() => {})
+    },
     goToSpec (item) {
       this.$router.push({
         name: 'spec',

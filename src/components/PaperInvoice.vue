@@ -2,7 +2,7 @@
   <div
     v-scroll="onScroll"
     ref="productsTable"
-    class="overflow-x-auto overflow-scroll-touch border-t border-white bg-light-gray-100 rounded-b-md"
+    class="overflow-x-auto scrolling-touch border-t border-white bg-light-gray-100 rounded-b-md"
     @mouseenter="isMouseOver = true"
     @mouseleave="isMouseOver = false"
     @touchstart="isScrollStart = true"
@@ -64,7 +64,14 @@
                     <v-img
                       :src="item.images[0] && item.images[0].url"
                       aspect-ratio="1"
-                    />
+                      style="border-radius: 5px;"
+                    >
+                      <template v-slot:placeholder>
+                        <div class="flex justify-center items-center w-full h-full">
+                          <Spinner />
+                        </div>
+                      </template>
+                    </v-img>
                   </div>
                 </div>
               </template>

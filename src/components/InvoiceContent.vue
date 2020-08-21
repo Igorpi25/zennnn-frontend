@@ -3,7 +3,7 @@
     <div
       v-scroll="onScroll"
       ref="productsTable"
-      class="overflow-x-auto overflow-scroll-touch"
+      class="overflow-x-auto scrolling-touch"
       @mouseenter="isMouseOver = true"
       @mouseleave="isMouseOver = false"
       @touchstart="isScrollStart = true"
@@ -19,6 +19,11 @@
           thead-class="text-sm"
           flat
         >
+          <template v-slot:[`header.atWhouse-content`]="{ header }">
+            <span class="inline-block truncate align-middle" style="max-width: 78px;">
+              {{ header.text }}
+            </span>
+          </template>
           <template v-slot:top>
             <div class="flex">
               <div
@@ -27,7 +32,7 @@
                   width: fixedHeadersWidth + 'px',
                 }"
               />
-              <div class="h-11 flex-grow flex overflow-x-auto overflow-scroll-touch relative z-1 -mb-px">
+              <div class="h-11 flex-grow flex overflow-x-auto scrolling-touch relative z-1 -mb-px">
                 <div
                   v-for="(tab, i) in tabs"
                   :aria-selected="activeTab === tab.value"
@@ -121,10 +126,10 @@
               <td colspan="4">
                 <div
                   style="height: 88px;"
-                  class="absolute inset-x-0 top-0 pointer-events-none opacity-50 bg-gradient-dark -mt-1"
+                  class="absolute inset-x-0 top-0 pointer-events-none opacity-50 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
                 />
                 <div
-                  class="h-12 absolute inset-x-0 bottom-0 pointer-events-none opacity-50 bg-gradient-dark transform rotate-180"
+                  class="h-12 absolute inset-x-0 bottom-0 pointer-events-none opacity-50 bg-gradient-to-t from-gray-900 to-gray-900-a-0"
                 />
               </td>
               <td :colspan="activeTab === 2 ? 2 : 3">
@@ -195,7 +200,7 @@
                   </span>
                 </td>
                 <td class="text-left" colspan="2">
-                  <span class="relative z-1">
+                  <span class="relative whitespace-no-wrap z-1">
                     <span class="text-gray-300">{{ $t('measure.pkg') }}</span>
                   </span>
                 </td>

@@ -12,7 +12,7 @@
           </router-link>
           <template v-if="$route.name === 'paper' && paperOrgName">
             <span class="w-px h-5 bg-gray-300 mx-5" />
-            <span class="text-lg text-white">{{ paperOrgName }}</span>
+            <span class="text-lg text-white leading-none">{{ paperOrgName }}</span>
           </template>
         </div>
         <slot name="breadcrumbs" />
@@ -33,10 +33,11 @@
               <div class="flex items-center h-full text-gray-100">
                 <div class="hidden sm:block w-px h-5 bg-gray-300 mx-3" />
                 <div class="flex items-center h-full px-2 hover:bg-gray-200 transition-colors duration-100 ease-out">
-                  <span>{{ $t('header.signin') }}</span>
+                  <span :class="{ 'hidden sm:block': $route.name === 'paper' && paperOrgName }">
+                    {{ $t('header.signin') }}
+                  </span>
                   <Icon
-                    size="32"
-                    :class="[light ? 'text-gray-200' : 'text-gray-100', 'ml-2']"
+                    :class="[light ? 'text-gray-200' : 'text-gray-100', 'text-32 ml-2']"
                   >
                     {{ icons.mdiAccountCircle }}
                   </Icon>
@@ -96,7 +97,7 @@
                     >
                     <Icon
                       v-else
-                      size="32"
+                      class="text-32"
                     >
                       {{ icons.mdiAccountCircle }}
                     </Icon>
@@ -277,7 +278,7 @@
                   </div>
                 </div>
                 <div class="flex-shrink-0 w-6 cursor-pointer" @click.prevent.stop="addFavorites(item.id)">
-                  <Icon size="24">
+                  <Icon class="text-2xl">
                     {{ favorites.includes(item.id) ? icons.mdiStar : icons.mdiStarOutline }}
                   </Icon>
                 </div>

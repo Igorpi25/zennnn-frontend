@@ -14,7 +14,12 @@
     </td>
     <td class="text-center pl-1">
       <ProductImage
-        v-if="!create"
+        v-if="isOwnerOrManager && create"
+        upload
+        @upload-start="$emit('create', {})"
+      />
+      <ProductImage
+        v-else
         :product-id="item.id"
         :images="info.images"
         :upload="isOwnerOrManager"
@@ -352,7 +357,7 @@
             <span
               :class="[newCommentsCount ? 'bg-purple-500 text-white' : 'bg-gray-800 bg-opacity-90']"
               class="font-semibold h-5 inline-flex items-center justify-center rounded-50 px-1 pt-px"
-              style="min-width: 20px"
+              style="min-width: 20px;"
             >{{ item.comments.length }}</span>
           </template>
         </td>

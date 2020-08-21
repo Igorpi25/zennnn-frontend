@@ -97,6 +97,7 @@
         :class="['select-picker', { 'select-picker--dense': solo || dense }, { 'pt-2 pb-3': padded }]"
         role="menu"
       >
+        <slot name="menu-prepend-item" />
         <li
           v-if="$slots['prepend-item']"
           key="select-prepend-item"
@@ -551,7 +552,7 @@ export default {
     },
     closeConditional (e) {
       // Close on label click
-      if (this.$refs.input.$refs.label && this.$refs.input.$refs.label.contains(e.target)) {
+      if (this.$refs.input && this.$refs.input.$refs.label && this.$refs.input.$refs.label.contains(e.target)) {
         this.closeMenu()
         return
       }

@@ -1,23 +1,20 @@
 <template>
   <div class="container container--sm">
     <div class="pt-4 pb-10">
-      <div v-if="loading">{{ `${$t('action.loading')}...` }}</div>
-
       <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-4">
         <TextField
           v-model="search"
           :placeholder="clientsFilter.length === 0 ? $t('placeholder.pageSearch') : ''"
+          :content-class="[search || clientsFilter.length > 0 ? 'shadow-blue-500' : '', 'bg-transparent overflow-x-auto']"
           class="w-full pb-4 sm:pb-0 sm:pr-8"
-          content-class="bg-transparent overflow-x-auto"
           input-class="placeholder-blue-500"
           prepend-slot-class="w-auto"
-          append-slot-class="w-auto"
         >
           <template v-slot:prepend>
             <span class="w-10 flex items-center justify-center flex-shrink-0">
               <i class="zi-magnifier text-2xl text-gray-100"></i>
             </span>
-            <span class="text-base text-white pr-2">
+            <span v-if="clientsFilter.length > 0" class="text-base text-white pr-2">
               <span
                 v-for="filter in clientsFilter"
                 :key="filter.value"
@@ -40,7 +37,7 @@
             />
           </template>
         </TextField>
-        <div class="flex w-full sm:w-auto items-center justify-end">
+        <div class="flex w-full sm:w-auto items-center justify-end" style="min-width: 165px;">
           <v-menu
             v-model="filterMenu"
             :content-class="'locale-picker__menu'"
@@ -50,13 +47,22 @@
           >
             <template v-slot:activator="{ on }">
               <div
-                class="flex items-center cursor-pointer whitespace-no-wrap focus:text-light-gray-400 hover:text-light-gray-400"
+                class="group flex items-center cursor-pointer whitespace-no-wrap"
                 v-on="on"
               >
-                <span class="pr-2">
-                  {{ clientType }}
+                <span class="text-gray-100 group-hover:text-light-gray-400 pr-2">
+                  {{ currentFilterText }}
                 </span>
-                <i class="zi-filter text-2xl text-gray-200" />
+                <i class="zi-filter relative text-2xl text-gray-200 group-hover:text-gray-100">
+                  <div
+                    v-if="hasFilter"
+                    :class="[
+                      'absolute top-0 right-0 -mt-xs -mr-1 w-sm h-sm rounded-full border-2 bg-gray-900 border-gray-900 transition-colors duration-100 ease-out',
+                    ]"
+                  >
+                    <div class="w-full h-full bg-blue-500 rounded-full" />
+                  </div>
+                </i>
               </div>
             </template>
             <template>
@@ -68,14 +74,14 @@
                 role="menu"
               >
                 <li
-                  v-for="item in clientTypes"
+                  v-for="item in filters"
                   :key="item.value"
                   :value="item.value"
                   :class="[
                     'hover:bg-gray-300 focus:bg-gray-300',
                     'flex items-center h-9 cursor-pointer focus:outline-none px-5',
                     'transition-colors duration-100 ease-out',
-                    { 'text-white': item.value === filter.clientType },
+                    { 'text-white': item.value === currentFilter },
                   ]"
                   tabindex="0"
                   role="menuitem"
@@ -89,24 +95,29 @@
         </div>
       </div>
 
-      <div class="overflow-x-auto overflow-scroll-touch pb-4">
+      <div class="overflow-x-auto scrolling-touch pb-4">
         <DataTable
           :headers="headers"
           :items="items"
           :search="search"
+          :sort-by.sync="sortBy"
+          :sort-desc.sync="sortDesc"
+          :group-by="groupBy"
+          :group-desc="groupDesc"
+          :custom-group="customGroup"
           table-width="100%"
           table-class="table-fixed"
           hoverable
           hide-no-data
         >
-          <template v-slot:header.status="{ header }">
+          <template v-slot:[`header.status`]="{ header }">
             <td
               :width="header.width + 'px'"
             >
               <div class="ml-6 w-3 h-3 rounded-full border border-gray-400" />
             </td>
           </template>
-          <template v-slot:header.isMoneyRecieved="{ header }">
+          <template v-slot:[`header.isMoneyRecieved`]="{ header }">
             <td :width="header.width + 'px'">
               <div class="flex items-center">
                 <svg class="mr-xs" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,7 +135,7 @@
               </div>
             </td>
           </template>
-          <template v-slot:header.isExpensesPaid="{ header }">
+          <template v-slot:[`header.isExpensesPaid`]="{ header }">
             <td :width="header.width + 'px'">
               <div class="flex items-center">
                 <svg class="mr-xs" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -143,7 +154,7 @@
               </div>
             </td>
           </template>
-          <template v-slot:header.finalCost-content="{ header }">
+          <template v-slot:[`header.finalCost-content`]="{ header }">
             <td :width="header.width + 'px'">
               <span class="inline-block align-middle mr-xs">
                 <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -163,7 +174,7 @@
               </v-tooltip>
             </td>
           </template>
-          <template v-slot:header.margin-content="{ header }">
+          <template v-slot:[`header.margin-content`]="{ header }">
             <td :width="header.width + 'px'">
               <span class="inline-block align-middle mr-xs">%</span>
               <v-tooltip top max-width="158">
@@ -176,10 +187,10 @@
               </v-tooltip>
             </td>
           </template>
-          <template v-slot:header.hasNewComment="{ header }">
+          <template v-slot:[`header.hasNewComment`]="{ header }">
             <td :width="header.width + 'px'" />
           </template>
-           <template v-slot:header.specNo-content="{ header }">
+           <template v-slot:[`header.specNo-content`]="{ header }">
             <span>
               {{ header.text }}
             </span>
@@ -191,87 +202,112 @@
             </v-tooltip>
           </template>
           <template v-slot:items="{ items }">
-            <tr
-              v-for="(item) in items"
-              :key="item.id"
-              class="cursor-pointer"
-              tabindex="0"
-              @click="goToSpec(item.id)"
-              @keydown.enter.exact.self="goToSpec(item.id)"
-            >
-              <td class="relative">
-                <div
-                  :class="[
-                    'ml-6 w-3 h-3 rounded-full',
-                    item.specStatus === SpecStatus.IN_STOCK
-                    ? 'bg-green-500' : item.specStatus === SpecStatus.IN_PRODUCTION
-                      ? 'bg-yellow-500' : item.specStatus === SpecStatus.IN_PROCESSING
-                        ? 'bg-pink-500' : 'bg-gray-800'
-                  ]"
-                />
-              </td>
-              <td class="text-center">
-                <i v-if="item.isMoneyRecieved" class="zi-check text-2xl text-gray-200 align-middle" />
-              </td>
-              <td class="text-center">
-                <i v-if="item.isExpensesPaid" class="zi-check text-2xl text-gray-200 align-middle" />
-              </td>
-              <td class="truncate text-right">{{ $n(item.finalCost || 0) }}</td>
-              <td class="truncate text-right text-gray-200">{{ item.margin || 0 }}%</td>
-              <td class="truncate pl-6 pr-2">{{ item.client.fullName }}</td>
-              <td class="truncate pr-2">{{ item.client.contactPersonFullName }}</td>
-              <td class="truncate pl-3">
-                <span>
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on }">
-                      <span v-on="on">
-                        <i class="zi-number text-2xl text-gray-200 align-middle" />
-                        <span v-if="item.specNoCount" class="align-middle text-light-gray-400">
-                          - {{ item.specNoCount }}
-                        </span>
-                      </span>
-                    </template>
-                    <span>
-                      {{ item.specNo }}
-                    </span>
-                  </v-tooltip>
-                </span>
-              </td>
-              <td>
-                {{ $d($parseDate(item.createdAt), 'short') }}
-              </td>
-              <td class="truncate pointer-events-none" @click.stop>
-                <span v-if="item.client.contactPhone" class="pointer-events-auto">
-                  <a
-                    :href="`tel:${item.client.contactPhone}`"
-                    class="inline-block align-middle text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none"
-                  >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
-                    </svg>
-                  </a>
-                  <i class="zi-action text-2xl text-gray-200 align-middle cursor-default ml-1" />
-                </span>
-              </td>
-              <td class="truncate text-right">{{ (item.client.uid) }}</td>
-              <td class="text-center pointer-events-none" @click.prevent.stop>
-                <button
-                  class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-auto"
-                  @click="deleteSpec(item.id)"
+            <template v-for="(item) in items">
+              <tr
+                v-if="item.group"
+                :key="item.groupName"
+                :style="{ background: 'transparent' }"
+              >
+                <td
+                  :colspan="headers.length"
+                  :style="{ height: '32px', paddingLeft: '26px' }"
+                  class="text-gray-200 text-base leading-tight align-bottom p-0"
                 >
-                  <i class="zi-delete" />
-                </button>
-              </td>
-              <td>
-                <span v-if="item.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-blue-400"></span>
-              </td>
-              <td :class="{ 'bg-purple-500': item.hasNewComment }"></td>
-            </tr>
+                  <span class="text-white">{{ item.groupName }}</span> <span class="text-gray-200">({{ item.groupItemsCount }})</span>
+                </td>
+              </tr>
+              <tr
+                v-else
+                :key="item.id"
+                class="cursor-pointer"
+                tabindex="0"
+                @click="goToSpec(item.id)"
+                @keydown.enter.exact.self="goToSpec(item.id)"
+              >
+                <td class="relative">
+                  <div
+                    :class="[
+                      'ml-6 w-3 h-3 rounded-full',
+                      item.specStatus === SpecStatus.IN_STOCK
+                      ? 'bg-green-500' : item.specStatus === SpecStatus.IN_PRODUCTION
+                        ? 'bg-yellow-500' : item.specStatus === SpecStatus.IN_PROCESSING
+                          ? 'bg-pink-500' : 'bg-gray-800'
+                    ]"
+                  />
+                </td>
+                <td class="text-center">
+                  <i v-if="item.isMoneyRecieved" class="zi-check text-2xl text-gray-200 align-middle" />
+                </td>
+                <td class="text-center">
+                  <i v-if="item.isExpensesPaid" class="zi-check text-2xl text-gray-200 align-middle" />
+                </td>
+                <td class="truncate text-right">{{ $n(item.finalCost || 0) }}</td>
+                <td class="truncate text-right text-gray-200">{{ item.margin || 0 }}%</td>
+                <td class="truncate pl-6 pr-2">{{ item.client.fullName }}</td>
+                <td class="truncate pr-2">{{ item.client.contactPersonFullName }}</td>
+                <td class="truncate pl-3">
+                  <span>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <span v-on="on">
+                          <i class="zi-number text-2xl text-gray-200 align-middle" />
+                          <span v-if="item.specNoCount" class="align-middle text-light-gray-400">
+                            - {{ item.specNoCount }}
+                          </span>
+                        </span>
+                      </template>
+                      <span>
+                        {{ item.specNo }}
+                      </span>
+                    </v-tooltip>
+                  </span>
+                </td>
+                <td>
+                  {{ $d($parseDate(item.createdAt), 'short') }}
+                </td>
+                <td class="truncate pointer-events-none" @click.stop>
+                  <span v-if="item.client.contactPhone" class="pointer-events-auto">
+                    <a
+                      :href="`tel:${item.client.contactPhone}`"
+                      class="inline-block align-middle text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none"
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
+                      </svg>
+                    </a>
+                    <i class="zi-action text-2xl text-gray-200 align-middle cursor-default ml-1" />
+                  </span>
+                </td>
+                <td class="truncate text-right">{{ (item.client.uid) }}</td>
+                <td class="text-center pointer-events-none" @click.prevent.stop>
+                  <button
+                    class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-auto"
+                    @click="deleteSpec(item.id)"
+                  >
+                    <i class="zi-delete" />
+                  </button>
+                </td>
+                <td>
+                  <span v-if="item.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-blue-400"></span>
+                </td>
+                <td :class="{ 'bg-purple-500': item.hasNewComment }"></td>
+              </tr>
+            </template>
           </template>
         </DataTable>
       </div>
       <div
-        v-if="items.length === 0"
+        v-if="items.length === 0 && loading"
+        class="text-center text-gray-200 leading-tight py-4"
+      >
+        <v-progress-circular
+          indeterminate
+          size="24"
+          width="2"
+        />
+      </div>
+      <div
+        v-else-if="items.length === 0"
         v-html="$t('deals.noData')"
         class="text-center text-gray-200 leading-tight py-4"
       />
@@ -295,9 +331,9 @@
       content-class="bg-gray-400"
     >
       <div ref="createSpecContainer" class="relative">
-        <div class="bg-gray-500 flex text-lg text-white font-semibold px-8 py-6">
-          <i class="zi-user-plus text-3xl text-blue-500 mr-2" />
-          <div class="w-64">
+        <div class="bg-gray-500 flex items-center text-lg text-white font-semibold px-8 py-5">
+          <i class="zi-user-plus text-3xl text-blue-500 mr-4" />
+          <div>
             {{ $t('deals.createSpecDialogHeader') }}
           </div>
         </div>
@@ -354,7 +390,7 @@
           </Button>
         </div>
         <span
-          class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-3 mr-3"
+          class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
           @click="createSpecDialog = false"
         >
           <i class="zi-close" />
@@ -368,7 +404,7 @@
       :fullscreen="$vuetify.breakpoint.smAndDown"
       scrollable
       max-width="1110"
-      content-class="dialog-full-height overflow-scroll-touch"
+      content-class="dialog-full-height scrolling-touch"
     >
       <ClientCard
         ref="clientCard"
@@ -397,7 +433,7 @@ import { SPECS_DELTA } from '../graphql/subscriptions'
 
 import ClientCard from '../components/ClientCard.vue'
 
-import { confirmDialog } from '@/util/helpers'
+import { confirmDialog, wrapInArray } from '@/util/helpers'
 
 export default {
   name: 'Specs',
@@ -452,8 +488,9 @@ export default {
       createSpecClient: null,
       createSpecDialog: false,
       SpecStatus,
-      search: '',
-      loading: false,
+      sortBy: [],
+      sortDesc: [],
+      search: undefined,
       createWithoutClientLoading: false,
       createWithClientLoading: false,
       deleteLoading: null,
@@ -464,11 +501,19 @@ export default {
       filter: {
         clientsIds: [],
         clientType: null,
+        group: false,
       },
+      currentFilter: null,
     }
   },
   computed: {
-    clientTypes () {
+    loading () {
+      return this.$apollo.queries.getSpecs.loading
+    },
+    hasFilter () {
+      return this.filter.clientType || this.filter.group
+    },
+    filters () {
       return [
         {
           text: this.$t('label.noSort'),
@@ -486,13 +531,24 @@ export default {
           text: this.$t('client.other'),
           value: 3,
         },
+        {
+          text: this.$t('deals.byEmployees'),
+          value: 4,
+        },
       ]
     },
-    clientType () {
-      switch (this.filter.clientType) {
+    groupBy () {
+      return this.filter.group ? ['employeeId'] : null
+    },
+    groupDesc () {
+      return this.filter.group ? [false] : null
+    },
+    currentFilterText () {
+      switch (this.currentFilter) {
         case 1: return this.$t('client.legalPerson')
         case 2: return this.$t('client.privatePerson')
         case 3: return this.$t('client.other')
+        case 4: return this.$t('deals.byEmployees')
         default: return this.$t('label.noSort')
       }
     },
@@ -578,20 +634,56 @@ export default {
         }, 300)
       }
     },
-    filter: {
-      handler: 'updateFiltersQuery',
-      deep: true,
-    },
   },
-  mounted () {
+  created () {
     if (this.$route.query.clients) {
       this.filter.clientsIds = !Array.isArray(this.$route.query.clients) ? [this.$route.query.clients] : this.$route.query.clients
     }
     const clientType = Number.parseInt(this.$route.query.clientType, 10) || null
+    if (this.$route.query.group) {
+      this.filter.group = true
+      this.currentFilter = 4
+    }
     if (clientType) {
       this.filter.clientType = clientType
+      this.currentFilter = clientType
     }
-
+    if (this.$route.query.q) {
+      this.search = this.$route.query.q
+    }
+    if (this.$route.query.sort) {
+      this.sortBy = wrapInArray(this.$route.query.sort)
+      const desc = this.$route.query.desc === true || this.$route.query.desc === 'true'
+      this.sortDesc = [!!(this.$route.query.sort && desc)]
+    }
+    // on search on server, escape input string
+    this.$watch('search', (val, old) => {
+      if (val === old) return
+      this.updateRouteQuery()
+    })
+    this.$watch('sortBy', this.updateRouteQuery)
+    this.$watch('sortDesc', this.updateRouteQuery)
+    this.$watch('$route.query', (query, old) => {
+      // TODO: deep equal query 'clients' and 'filter.clientsIds'
+      if (!query.clients) {
+        this.filter.clientsIds = []
+      }
+      this.filter.group = !!query.group
+      const clientType = Number.parseInt(query.clientType, 10) || null
+      if (clientType !== this.filter.clientType) {
+        this.filter.clientType = clientType
+      }
+      if (query.q !== this.search) {
+        this.search = query.q
+      }
+      if (query.sort !== this.sortBy[0]) {
+        this.sortBy = query.sort ? wrapInArray(query.sort) : []
+      }
+      this.sortDesc = this.sortBy.length > 0 ? [query.desc === true || query.desc === 'true'] : []
+    })
+    this.$watch('filter', this.updateRouteQuery, { deep: true })
+  },
+  mounted () {
     const observer = this.$apollo.subscribe({
       query: SPECS_DELTA,
       fetchPolicy: 'no-cache',
@@ -675,8 +767,80 @@ export default {
     })
   },
   methods: {
+    customGroup (items, groupBy) {
+      const key = groupBy[0]
+      const others = []
+      const grouped = items.reduce((acc, curr) => {
+        const id = curr[key]
+        if (id) {
+          if (Object.prototype.hasOwnProperty.call(acc, id)) {
+            acc[id].push(curr)
+          } else {
+            acc[id] = [curr]
+          }
+        } else {
+          others.push(curr)
+        }
+        return acc
+      }, {})
+      const result = []
+      const roles = Object.keys(Role).reduce((acc, curr, index) => {
+        return { ...acc, [curr]: index + 1 }
+      }, {})
+      // sort by roles
+      const keys = Object.keys(grouped).sort((a, b) => {
+        const itemA = grouped[a][0]
+        const itemB = grouped[b][0]
+        return roles[itemA.employeeRole] - roles[itemB.employeeRole]
+      })
+      keys.map(k => {
+        const groupItems = grouped[k]
+        const item = groupItems[0]
+        const fullName = item.employeeFullName || ''
+        const role = this.$te(`role.${item.employeeRole}`) ? this.$t(`role.${item.employeeRole}`) : item.employeeRole || ''
+        const name = `${fullName} (${role})`
+        const group = { name, items: groupItems }
+        result.push(group)
+      })
+      if (others.length > 0) {
+        result.push({ name: '#', items: others })
+      }
+      return result
+    },
+    updateRouteQuery () {
+      const query = {}
+      if (this.filter.clientsIds.length > 0) {
+        query.clients = this.filter.clientsIds
+      }
+      if (this.filter.group) {
+        query.group = true
+      }
+      if (this.filter.clientType) {
+        query.clientType = this.filter.clientType
+      }
+      if (this.search) {
+        query.q = this.search
+      }
+      if (this.sortBy[0]) {
+        query.sort = this.sortBy[0]
+      }
+      if (this.sortDesc[0]) {
+        query.desc = true
+      }
+      this.$router.replace({
+        path: this.$route.path,
+        query,
+      }).catch(() => {})
+    },
     changeClientType (value) {
-      this.filter.clientType = value
+      this.currentFilter = value
+      if (value === 4) {
+        this.filter.clientType = null
+        this.filter.group = true
+      } else {
+        this.filter.clientType = value
+        this.filter.group = false
+      }
     },
     clearClientFilter (id) {
       this.filter.clientsIds = this.filter.clientsIds.filter(el => el !== id)
@@ -684,13 +848,6 @@ export default {
     clearFilters () {
       this.search = null
       this.filter.clientsIds = []
-    },
-    updateFiltersQuery () {
-      const query = { clients: this.filter.clientsIds }
-      if (this.filter.clientType) {
-        query.clientType = this.filter.clientType
-      }
-      this.$router.push({ query }).catch(() => {})
     },
     goToSpec (specId) {
       this.$router.push({

@@ -29,7 +29,7 @@
           :value="countryCode"
           :activator="$refs.input"
           :search.sync="phoneSearch"
-          :items="phonesItems"
+          :items="filteredPhonesItems"
           :patterns="codeInputPatterns"
           :size="compSize"
           :readonly="readonly"
@@ -45,6 +45,31 @@
           @menu="v => isPhoneMenuActive = v"
           @input="onCountryCodeSelect"
         >
+          <template v-slot:menu-prepend-item>
+            <li
+              class="v-list-item bg-gray-900 sticky top-0 flex items-center outline-none p-2 -mt-2"
+              tabindex="0"
+              role="menuitem"
+            >
+              <TextField
+                v-model="countrySearch"
+                :placeholder="$t('placeholder.startTyping')"
+                :content-class="['bg-transparent', countrySearch ? 'shadow-blue-500' : '', '']"
+                class="w-full"
+                @click.prevent.stop
+              >
+                <template v-slot:prepend>
+                  <i class="zi-magnifier text-2xl text-gray-100"></i>
+                </template>
+                <template v-slot:append v-if="countrySearch">
+                  <i
+                    class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+                    @click.prevent.stop="countrySearch = null"
+                  />
+                </template>
+              </TextField>
+            </li>
+          </template>
           <template v-slot:prepend>
             <img
               :src="`/static/flags/${countryCode}.svg`"
@@ -73,6 +98,7 @@ import debounce from 'lodash.debounce'
 import phonesPlaceholder from '../../config/countries-phones-placeholder.json'
 import phonesMask from '../../config/countries-phones-mask.json'
 import phonesCode from '../../config/countries-phones-code.json'
+import { defaultFilter } from '../../util/helpers'
 
 export default {
   name: 'PhoneInput',
@@ -107,6 +133,7 @@ export default {
       lazyValue: undefined,
       countryCode: undefined,
       phoneSearch: '',
+      countrySearch: '',
       isPhoneMenuActive: false,
     }
   },
@@ -171,15 +198,6 @@ export default {
     },
     phonesItems () {
       return Object.entries(phonesCode)
-        .sort((a, b) => {
-          if (a[1] > b[1]) {
-            return 1
-          }
-          if (a[1] < b[1]) {
-            return -1
-          }
-          return 0
-        })
         .map(([k, v]) => {
           const code = phonesCode[k]
           const codeUnformatted = this.phonesUnformatted[k]
@@ -189,12 +207,30 @@ export default {
           return {
             code,
             country: this.$te(`countries.${k}`) ? this.$t(`countries.${k}`) : country,
+            countryName: country,
             codeUnformatted,
             placeholder,
             mask,
             value: k,
           }
         })
+        .sort((a, b) => {
+          const name1 = a.country
+          const name2 = b.country
+          if (name1 > name2) {
+            return 1
+          }
+          if (name1 < name2) {
+            return -1
+          }
+          return 0
+        })
+    },
+    filteredPhonesItems () {
+      if (this.countrySearch) {
+        return this.phonesItems.filter(item => Object.values(item).some(el => defaultFilter(el, this.countrySearch)))
+      }
+      return this.phonesItems
     },
   },
   watch: {

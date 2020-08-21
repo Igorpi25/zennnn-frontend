@@ -19,16 +19,11 @@
         <div :class="{ 'lg:w-1/2 lg:pr-5': isRequisite }">
           <div class="pb-2">
             <TextField
-              :value="item.importerCompanyName"
+              :value="consignee"
               :label="$t('companyDetail.label.consignee')"
               :placeholder="$t('companyDetail.placeholder.consignee')"
               :loading="loading"
-              :debounce="500"
-              :lazy="create"
-              :rules="compRules"
-              state-icon
-              state-color="none"
-              @input="updateData({ 'importerCompanyName': $event })"
+              readonly
             />
           </div>
           <div class="pb-2">
@@ -169,6 +164,9 @@ export default {
     }
   },
   computed: {
+    consignee () {
+      return this.item.companyNameLocal || this.item.companyName
+    },
     hasStateIcon () {
       return !(this.isPrivate || this.isRequisite)
     },

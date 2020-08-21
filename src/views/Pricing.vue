@@ -66,7 +66,7 @@
           </svg>
         </router-link>
       </div>
-      <div v-if="!isLoggedIn" class="flex flex-col sm:flex-row items-center justify-between bg-white rounded-md p-4 mb-12" style="box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1);">
+      <div v-if="!isLoggedIn" class="flex flex-col sm:flex-row items-center justify-between bg-white rounded-md shadow-lg p-4 mb-12">
         <div class="text-lg text-black leading-snug pl-2 pb-4 sm:pb-0">
           <span v-html="$t('pricing.oneUsdTitle')" class="font-bold mr-1" />
           <span>{{ $t('pricing.oneUsdSubtitle') }}</span>
@@ -83,7 +83,7 @@
       </div>
       <div class="pb-20">
         <h2 class="font-semibold text-32 leading-tight pb-10">{{ $t('pricing.specsTitle') }}</h2>
-        <div class="overflow-x-auto overflow-scroll-touch">
+        <div class="overflow-x-auto scrolling-touch">
           <table width="100%" class="w-full leading-tight text-gray-900 text-center">
             <thead>
               <tr class="h-16 text-xl text-gray-100">

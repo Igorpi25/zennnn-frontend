@@ -1,4 +1,7 @@
 module.exports = {
+  future: {
+    removeDeprecatedGapUtilities: true,
+  },
   purge: [
     './src/**/*.html',
     './src/**/*.vue',
@@ -83,6 +86,11 @@ module.exports = {
       wider: '.05em',
       widest: '.15em',
     },
+    gradientColorStops: {
+      'gray-900': 'rgba(30, 30, 30, 1)',
+      'gray-900-a-0': 'rgba(30, 30, 30, 0)',
+      'gray-900-a-50': 'rgba(30, 30, 30, 0.5)',
+    },
     extend: {
       fontSize: {
         13: '13px',
@@ -123,6 +131,7 @@ module.exports = {
       },
       transitionProperty: {
         'color': 'color',
+        'bg-and-color': 'background-color, color',
         'colors-and-opacity': 'background-color, border-color, color, fill, stroke, opacity',
       },
       borderRadius: {
@@ -131,6 +140,12 @@ module.exports = {
       },
       inset: {
         '1/2': '50%',
+      },
+      gridTemplateColumns: {
+        // Complex site-specific column configuration
+        '2-264': 'repeat(2, 264px)',
+        '3-264': 'repeat(3, 264px)',
+        '4-264': 'repeat(4, 264px)',
       },
     },
   },
@@ -141,6 +156,7 @@ module.exports = {
     overflow: ['responsive', 'hover'],
     visibility: ['group-hover'],
     translate: ['responsive', 'hover', 'focus', 'group-hover'],
+    textColor: ['group-hover', 'responsive', 'hover', 'focus']
   },
   plugins: [],
 }

@@ -382,7 +382,8 @@
     "zHint": "Z sign shows if your client has a ZENNNN account.",
     "contactPerson": "Representative",
     "contact": "Contacts",
-    "numberHint": "Number of deal. Generated automatically and used in all subsequent documents."
+    "numberHint": "Number of deal. Generated automatically and used in all subsequent documents.",
+    "byEmployees": "By employees"
   },
   "staff": {
     "createStaff": "Create an employee",

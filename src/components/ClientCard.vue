@@ -19,7 +19,7 @@
       </h1>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
         <div class="lg:h-11 flex flex-wrap lg:flex-no-wrap">
-          <div class="h-11 flex order-last lg:order-none overflow-x-auto overflow-scroll-touch">
+          <div class="h-11 flex order-last lg:order-none overflow-x-auto scrolling-touch">
             <div
               v-for="(tab, i) in tabs"
               :aria-selected="clientType === tab.value"

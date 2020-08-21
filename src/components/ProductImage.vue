@@ -5,6 +5,7 @@
     :nudge-width="400"
     :max-width="400"
     :disabled="!imageSrc || uploading"
+    :light="light"
     open-on-hover
     offset-x
   >
@@ -17,6 +18,7 @@
             :uploading.sync="uploading"
             :src="imageSrc"
             class="w-8 h-8"
+            @upload-start="$emit('upload-start', true)"
             @update="addImage"
           >
             <template v-slot:drag="{ internalSrc, isDragOver, loading }">
@@ -157,7 +159,7 @@
             </v-img>
           </div>
           <div
-            class="absolute inset-x-0 top-0 h-20 rounded-t overflow-hidden pointer-events-none bg-gradient-dark-half"
+            class="absolute inset-x-0 top-0 h-20 rounded-t overflow-hidden pointer-events-none bg-gradient-to-b from-gray-900-a-50 to-gray-900-a-0"
           >
             <a
               :href="`${currentImage.url}-original`"
@@ -168,7 +170,7 @@
             </a>
           </div>
           <div class="absolute inset-x-0 bottom-0 h-20 rounded-b overflow-hidden pointer-events-none text-gray-100">
-            <div class="absolute inset-0 bg-gradient-dark-half transform rotate-180" />
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900-a-50 to-gray-900-a-0" />
             <div v-if="imagesList.length > 1" class="absolute inset-x-0 bottom-0 text-center leading-tight pb-2">
               <span class="text-white">{{ currentImageIndex + 1 }}</span> / <span>{{ imagesList.length }}</span>
             </div>
@@ -219,10 +221,7 @@ export default {
     FileUploader,
   },
   props: {
-    productId: {
-      type: String,
-      required: true,
-    },
+    productId: String,
     images: {
       type: Array,
       default: undefined,
@@ -366,6 +365,7 @@ export default {
       this.currentImageIndex = index
     },
     async updateImages (images) {
+      if (!this.productId) return
       try {
         this.updateImagesLoading = true
         const input = {
@@ -388,6 +388,7 @@ export default {
       }
     },
     async addImage (file) {
+      if (!this.productId) return
       try {
         this.addLoading = true
         const inputImages = [file]
