@@ -14,7 +14,12 @@
     </td>
     <td class="text-center pl-1">
       <ProductImage
-        v-if="!create"
+        v-if="isOwnerOrManager && create"
+        upload
+        @upload-start="$emit('create', {})"
+      />
+      <ProductImage
+        v-else
         :product-id="item.id"
         :images="info.images"
         :upload="isOwnerOrManager"

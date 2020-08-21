@@ -288,6 +288,7 @@ export default {
         if (!file) return
         this.getUploadUrlLoading = true
         this.$emit('update:uploading', true)
+        this.$emit('upload-start', true)
         await this.upload(file)
       } catch (error) {
         throw new Error(error)

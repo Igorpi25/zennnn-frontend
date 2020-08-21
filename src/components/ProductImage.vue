@@ -5,6 +5,7 @@
     :nudge-width="400"
     :max-width="400"
     :disabled="!imageSrc || uploading"
+    :light="light"
     open-on-hover
     offset-x
   >
@@ -17,6 +18,7 @@
             :uploading.sync="uploading"
             :src="imageSrc"
             class="w-8 h-8"
+            @upload-start="$emit('upload-start', true)"
             @update="addImage"
           >
             <template v-slot:drag="{ internalSrc, isDragOver, loading }">
@@ -219,10 +221,7 @@ export default {
     FileUploader,
   },
   props: {
-    productId: {
-      type: String,
-      required: true,
-    },
+    productId: String,
     images: {
       type: Array,
       default: undefined,
@@ -366,6 +365,7 @@ export default {
       this.currentImageIndex = index
     },
     async updateImages (images) {
+      if (!this.productId) return
       try {
         this.updateImagesLoading = true
         const input = {
@@ -388,6 +388,7 @@ export default {
       }
     },
     async addImage (file) {
+      if (!this.productId) return
       try {
         this.addLoading = true
         const inputImages = [file]
