@@ -653,7 +653,6 @@ const genItemBody = (invoices, clientLang) => {
   invoices.filter(el => !el.id.startsWith('empty-')).forEach(invoice => {
     // filter dummy products
     const products = (invoice.products || []).filter(el => !el.id.startsWith('empty-'))
-    console.log('products', products)
     products.forEach(product => {
       index++
       const price = (product.cost && product.cost.price) || product.costPrice || 0
