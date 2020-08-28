@@ -649,13 +649,20 @@ const genShipmentBody = (shipment, customs, clientLang) => {
 const genItemBody = (invoices, clientLang) => {
   let index = 0
   const items = []
-  invoices.forEach(invoice => {
-    const products = invoice.products || []
+  // filter dummy invoices
+  invoices.filter(el => !el.id.startsWith('empty-')).forEach(invoice => {
+    // filter dummy products
+    const products = (invoice.products || []).filter(el => !el.id.startsWith('empty-'))
+    console.log('products', products)
     products.forEach(product => {
       index++
       const price = (product.cost && product.cost.price) || product.costPrice || 0
       const amount = (product.cost && product.cost.amount) || product.costAmount || 0
-      let name = product.name || ''
+      const lang = clientLang.replace('-', '')
+      const nameWord = product.name || {}
+      const wordDefaultLang = nameWord.defaultLang
+      // TODO: en translate on all other locales? (стул / chair)
+      let name = nameWord[lang] || nameWord[wordDefaultLang] || nameWord.en || ''
       if (product.article) {
         name += ` / ${product.article}`
       }

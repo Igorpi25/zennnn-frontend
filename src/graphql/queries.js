@@ -15,6 +15,42 @@ import {
   PAPER_PRODUCT_FRAGMENT,
 } from './typeDefs'
 
+export const LIST_WORDS = gql`
+  query ListWords($orgId: ID!) {
+    listWords(orgId: $orgId) {
+      items {
+        id
+        status
+        defaultLocale
+        en
+        fr
+        ru
+        uk
+        zhHans
+        zhHant
+      }
+    }
+  }
+`
+
+export const SEARCH_WORDS = gql`
+  query SearchWords($orgId: ID!, $search: String!, $locale: String!) {
+    searchWords(orgId: $orgId, search: $search, locale: $locale) {
+      items {
+        id
+        status
+        defaultLocale
+        en
+        fr
+        ru
+        uk
+        zhHans
+        zhHant
+      }
+    }
+  }
+`
+
 export const LIST_PRICES = gql`
   query ListPrices {
     listPrices

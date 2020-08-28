@@ -79,7 +79,9 @@
             <div v-else class="h-12 w-12" style="border-radius: 5px; background: rgba(196, 196, 196, 0.2);" />
           </td>
           <td class="bg-white p-2">
-            <div class="truncate pb-xs" style="min-width: 250px; min-height: 20px;">{{ item.name }} {{ item.article }}</div>
+            <div class="truncate pb-xs" style="min-width: 250px; min-height: 20px;">
+              {{ item.name && (item.name[wordLocale] || item.name[item.name.defaultLocale]) }} {{ item.article }}
+            </div>
             <div class="text-gray-100 truncate" style="min-height: 20px;">
               {{ item.description }}
             </div>
@@ -240,6 +242,10 @@ export default {
     }
   },
   computed: {
+    wordLocale () {
+      const locale = this.$i18n.locale
+      return locale.replace('-', '')
+    },
     headers () {
       return [
         { text: this.$t('paper.itemNo'), value: 'number', align: 'center', width: 48 },

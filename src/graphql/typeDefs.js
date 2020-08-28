@@ -99,7 +99,17 @@ export const PRODUCT_FRAGMENT = gql`
   fragment ProductFragment on Product {
     id
     productStatus
-    name
+    name {
+      id
+      status
+      defaultLocale
+      en
+      fr
+      ru
+      uk
+      zhHans
+      zhHant
+    }
     article
     qty
     unit
@@ -631,7 +641,17 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
   fragment PaperProductFragment on PaperProduct {
     id
     productStatus
-    name
+    name {
+      id
+      status
+      defaultLocale
+      en
+      fr
+      ru
+      uk
+      zhHans
+      zhHant
+    }
     article
     qty
     unit

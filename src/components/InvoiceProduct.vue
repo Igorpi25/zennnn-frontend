@@ -28,17 +28,46 @@
       />
     </td>
     <td class="pr-sm">
-      <TextField
+      <!-- <TextField
         v-if="isOwnerOrManager"
         :value="item.name"
         :placeholder="$t('shipping.name')"
         :lazy="create"
         solo
         @input="createOrUpdateProduct({ name: $event })"
-      />
+      /> -->
+      <Autocomplete
+        v-if="isOwnerOrManager"
+        :value="item.name"
+        :placeholder="$t('shipping.name')"
+        :lazy="create"
+        :search.sync="wordSearch"
+        :items="words"
+        :item-text="wordLocale"
+        :default-item-text="item.name && item.name.defaultLocale"
+        item-value="id"
+        solo
+        searchable
+        @click:prepend-item="wordDialog = true"
+        @input="createOrUpdateProduct({ name: $event })"
+      >
+        <template v-slot:prepend-item>
+          <span class="flex items-center jusitfy-center text-blue-500">
+            <i class="zi-plus-outline text-2xl mr-1" />
+            <span>{{ $t('words.addWord') }}</span>
+          </span>
+        </template>
+      </Autocomplete>
       <span v-else class="pl-sm">
         {{ item.name }}
       </span>
+      <WordCreateDialog
+        v-if="isOwnerOrManager"
+        v-model="wordDialog"
+        :org-id="orgId"
+        :product-id="item.id"
+        @create="onWordCreate"
+      />
     </td>
     <td class="pr-sm">
       <TextField
@@ -399,14 +428,18 @@
 
 <script>
 import { InvoiceProfitType, Role } from '../graphql/enums'
+import { SEARCH_WORDS } from '../graphql/queries'
 import product from '../mixins/product'
 import { isLink } from '../util/helpers'
-import Comments from './Comments'
+
+import Comments from './Comments.vue'
+import WordCreateDialog from './WordCreateDialog.vue'
 
 export default {
   name: 'InvoiceProduct',
   components: {
     Comments,
+    WordCreateDialog,
   },
   mixins: [product],
   props: {
@@ -436,12 +469,42 @@ export default {
     },
     create: Boolean,
   },
+  apollo: {
+    searchWords: {
+      query: SEARCH_WORDS,
+      variables () {
+        return {
+          orgId: this.orgId,
+          search: this.wordSearch,
+          locale: this.wordLocale,
+        }
+      },
+      fetchPolicy: 'cache-and-network',
+      skip () {
+        return !this.wordSearch
+      },
+      debounce: 300,
+    },
+  },
   data () {
     return {
+      wordDialog: false,
       isLinkUrlFocus: false,
+      wordSearch: '',
     }
   },
   computed: {
+    orgId () {
+      return this.$route.params.orgId
+    },
+    wordLocale () {
+      const locale = this.$i18n.locale
+      return locale.replace('-', '')
+    },
+    words () {
+      const items = (this.searchWords && this.searchWords.items) || []
+      return items
+    },
     commentators () {
       const result = {}
       const items = this.item.comments || []
@@ -477,6 +540,16 @@ export default {
     },
     isInvoiceProfitTypeCommission () {
       return this.profitType === InvoiceProfitType.COMMISSION
+    },
+  },
+  methods: {
+    async onWordCreate (result) {
+      this.wordDialog = false
+      try {
+        await this.createOrUpdateProduct({ name: result.id })
+      } catch (error) {
+        throw new Error(error)
+      }
     },
   },
 }
