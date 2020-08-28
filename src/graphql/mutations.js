@@ -11,6 +11,22 @@ import {
   BANK_DETAIL_FRAGMENT,
 } from './typeDefs'
 
+export const CREATE_WORD = gql`
+  mutation CreateWord($orgId: ID!, $input: CreateWordInput!) {
+    createWord(orgId: $orgId, input: $input) {
+      id
+      status
+      defaultLocale
+      en
+      fr
+      ru
+      uk
+      zhHans
+      zhHant
+    }
+  }
+`
+
 export const UPDATE_PAYMENT_SUBSCRIPTION = gql`
   mutation UpdatePaymentSubscription($priceId: String!, $paymentMethodId: String) {
     updatePaymentSubscription(priceId: $priceId, paymentMethodId: $paymentMethodId)

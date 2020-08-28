@@ -22,27 +22,33 @@
         </TextField>
       </div>
 
-      <div class="font-semibold text-white text-2xl leading-tight">
-        <span class="mr-1">
+      <div class="font-semibold text-white text-2xl leading-tight whitespace-no-wrap overflow-x-auto scrolling-touch pb-4">
+        <span class="relative">
           {{ $t('requisites.title') }}
+          <v-fade-transition>
+            <div
+              v-if="loading"
+              class="absolute right-0 -mr-6 inline-block text-gray-200"
+            >
+              <v-progress-circular
+                indeterminate
+                size="20"
+                width="2"
+              />
+            </div>
+          </v-fade-transition>
         </span>
-        <v-fade-transition>
-          <div
-            v-if="loading"
-            class="inline-block text-gray-200"
-          >
-            <v-progress-circular
-              indeterminate
-              size="20"
-              width="2"
-            />
-          </div>
-        </v-fade-transition>
+        <router-link
+          :to="{ name: 'dictionary', params: { orgId } }"
+          class="text-gray-200 hover:text-white focus:text-white focus:outline-none transition-colors duration-75 ease-out ml-10"
+        >
+          {{ $t('header.dictionary') }}
+        </router-link>
       </div>
 
       <div
         role="menu"
-        class="grid sm:grid-cols-2-264 lg:grid-cols-3-264 xl:grid-cols-4-264 gap-x-6 gap-y-8 justify-center sm:justify-between py-10"
+        class="grid sm:grid-cols-2-264 lg:grid-cols-3-264 xl:grid-cols-4-264 gap-x-6 gap-y-8 justify-center sm:justify-between pt-6 pb-10"
       >
         <div
           v-for="item in filteredItems"
