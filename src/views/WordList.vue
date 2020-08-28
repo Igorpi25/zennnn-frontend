@@ -297,7 +297,6 @@ export default {
   },
   methods: {
     onWordCreate (result) {
-      console.log('result', result)
       this.wordDialog = false
       this.$apollo.queries.listWords.refetch()
     },
