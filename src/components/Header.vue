@@ -422,6 +422,7 @@ export default {
     profileItems () {
       const items = [
         { value: 'orgsList', text: this.$t('header.myCompanies') },
+        { value: 'dictionary', text: this.$t('header.dictionary') },
         { value: 'pricing', text: this.$t('header.tariffs') },
         { value: 'logout', text: this.$t('header.signout') },
       ]
@@ -508,13 +509,19 @@ export default {
         case 'orgsList':
           this.orgDialog = true
           break
-        case 'requisites': return this.gotToRequisites()
+        case 'dictionary': return this.goToDictionary()
+        case 'requisites': return this.goToRequisites()
         case 'pricing': return this.goToPricing()
         case 'logout': return this.onSignOut()
         default: return false
       }
     },
-    gotToRequisites () {
+    goToDictionary () {
+      // prevent NavigationDuplicated error
+      if (this.$route.name === 'dictionary') return
+      this.$router.push({ name: 'dictionary', params: { orgId: this.orgId } })
+    },
+    goToRequisites () {
       // prevent NavigationDuplicated error
       if (this.$route.name === 'requisites') return
       this.$router.push({ name: 'requisites', params: { orgId: this.orgId } })
