@@ -47,6 +47,7 @@
         :dense="dense"
         :loading="loading"
         :size="size"
+        :style="compStyle"
         autocomplete="off"
         force-update
         @input="onInput"
@@ -275,6 +276,7 @@ export default {
       type: Boolean,
       default: true,
     },
+    activeStyle: Object,
   },
   data () {
     return {
@@ -286,6 +288,13 @@ export default {
     }
   },
   computed: {
+    compStyle () {
+      let result = {}
+      if (this.activeStyle) {
+        result = this.isActive ? this.activeStyle : {}
+      }
+      return result
+    },
     computedId () {
       return this.id || `input-${this._uid}`
     },

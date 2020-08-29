@@ -1133,7 +1133,8 @@
     "add": "Add",
     "cancel": "Cancel",
     "noData": "Your dictionary is still empty,<br>add some word and its translation.",
-    "more": "More"
+    "more": "More",
+    "noTranslation": "no translation"
   },
   "welcomeModal": {
     "head": "Welcome to ZENNNN",

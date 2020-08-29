@@ -660,8 +660,11 @@ const genItemBody = (invoices, clientLang) => {
       const lang = clientLang.replace('-', '')
       const nameWord = product.name || {}
       const wordDefaultLang = nameWord.defaultLang
-      // TODO: en translate on all other locales? (стул / chair)
-      let name = nameWord[lang] || nameWord[wordDefaultLang] || nameWord.en || ''
+      let name = nameWord.en || ''
+      if (clientLang !== 'en') {
+        const s = nameWord[lang] || nameWord[wordDefaultLang] || ''
+        name += name && s ? ` / ${s}` : s || ''
+      }
       if (product.article) {
         name += ` / ${product.article}`
       }

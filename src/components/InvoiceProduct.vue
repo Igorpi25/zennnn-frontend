@@ -28,26 +28,23 @@
       />
     </td>
     <td class="pr-sm">
-      <!-- <TextField
+      <Select
         v-if="isOwnerOrManager"
         :value="item.name"
-        :placeholder="$t('shipping.name')"
-        :lazy="create"
-        solo
-        @input="createOrUpdateProduct({ name: $event })"
-      /> -->
-      <Autocomplete
-        v-if="isOwnerOrManager"
-        :value="item.name"
-        :placeholder="$t('shipping.name')"
+        :placeholder="hasNoTranslation ? $t('words.noTranslation') : $t('shipping.name')"
         :lazy="create"
         :search.sync="wordSearch"
         :items="words"
         :item-text="wordLocale"
-        :default-item-text="item.name && item.name.defaultLocale"
+        :has-arrow-icon="false"
+        :input-class="hasNoTranslation ? 'placeholder-yellow-300': ''"
+        :active-style="{ width: '180px', zIndex: 10 }"
+        min-width="180px"
+        max-width="180px"
         item-value="id"
         solo
         searchable
+        class="relative"
         @click:prepend-item="wordDialog = true"
         @input="createOrUpdateProduct({ name: $event })"
       >
@@ -57,7 +54,7 @@
             <span>{{ $t('words.addWord') }}</span>
           </span>
         </template>
-      </Autocomplete>
+      </Select>
       <span v-else class="pl-sm">
         {{ item.name }}
       </span>
@@ -496,6 +493,9 @@ export default {
   computed: {
     orgId () {
       return this.$route.params.orgId
+    },
+    hasNoTranslation () {
+      return this.item.name && !this.item.name[this.wordLocale]
     },
     wordLocale () {
       const locale = this.$i18n.locale
