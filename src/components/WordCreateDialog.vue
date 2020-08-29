@@ -10,97 +10,57 @@
         </div>
       </div>
       <div class="text-gray-100 p-5">
-        <div class="flex flex-wrap sm:flex-no-wrap pb-6">
-          <div class="w-full sm:w-1/2 sm:pr-5 pb-8 sm:pb-0">
+        <div
+          class="grid grid-rows-1 sm:grid-cols-2 sm:grid-rows-3 sm:grid-flow-col gap-8"
+        >
+          <template v-for="(item, index) in locales">
+            <Form
+              ref="form"
+              v-if="index === 0"
+              v-model="formValidity"
+              :key="index"
+            >
+              <TextField
+                v-model="model[item.key]"
+                :ref="item.value"
+                :key="item.value"
+                :placeholder="item.text"
+                :rules="item.rules"
+                required
+                validate-on-blur
+                state-icon
+                state-icon-on-validate
+                prepend-slot-class="w-auto"
+              >
+                <template v-slot:prepend>
+                  <img
+                    :src="require(`@/assets/img/flags/round/${item.value}.svg`)"
+                    class="h-6 w-6 rounded-full ml-sm mr-5"
+                  >
+                </template>
+              </TextField>
+            </Form>
             <TextField
-              v-model="model.en"
-              :placeholder="localesMap.en.text"
-              validate-on-blur
-              class="w-full pb-8"
+              v-else
+              v-model="model[item.key]"
+              :key="item.value"
+              :placeholder="item.text"
+              :rules="item.rules"
+              state-icon
+              state-icon-on-validate
+              state-color="none"
               prepend-slot-class="w-auto"
             >
               <template v-slot:prepend>
                 <img
-                  :src="require(`@/assets/img/flags/round/${localesMap.en.value}.svg`)"
+                  :src="require(`@/assets/img/flags/round/${item.value}.svg`)"
                   class="h-6 w-6 rounded-full ml-sm mr-5"
                 >
               </template>
             </TextField>
-            <TextField
-              v-model="model.zhHans"
-              :placeholder="localesMap.zhHans.text"
-              validate-on-blur
-              class="w-full pb-8"
-              prepend-slot-class="w-auto"
-            >
-              <template v-slot:prepend>
-                <img
-                  :src="require(`@/assets/img/flags/round/${localesMap.zhHans.value}.svg`)"
-                  class="h-6 w-6 rounded-full ml-sm mr-5"
-                >
-              </template>
-            </TextField>
-            <TextField
-              v-model="model.zhHant"
-              :placeholder="localesMap.zhHant.text"
-              validate-on-blur
-              class="w-full"
-              prepend-slot-class="w-auto"
-            >
-              <template v-slot:prepend>
-                <img
-                  :src="require(`@/assets/img/flags/round/${localesMap.zhHant.value}.svg`)"
-                  class="h-6 w-6 rounded-full ml-sm mr-5"
-                >
-              </template>
-            </TextField>
-          </div>
-          <div class="w-full sm:w-1/2 sm:pl-5">
-            <TextField
-              v-model="model.fr"
-              :placeholder="localesMap.fr.text"
-              validate-on-blur
-              class="w-full pb-8"
-              prepend-slot-class="w-auto"
-            >
-              <template v-slot:prepend>
-                <img
-                  :src="require(`@/assets/img/flags/round/${localesMap.fr.value}.svg`)"
-                  class="h-6 w-6 rounded-full ml-sm mr-5"
-                >
-              </template>
-            </TextField>
-            <TextField
-              v-model="model.ru"
-              :placeholder="localesMap.ru.text"
-              validate-on-blur
-              class="w-full pb-8"
-              prepend-slot-class="w-auto"
-            >
-              <template v-slot:prepend>
-                <img
-                  :src="require(`@/assets/img/flags/round/${localesMap.ru.value}.svg`)"
-                  class="h-6 w-6 rounded-full ml-sm mr-5"
-                >
-              </template>
-            </TextField>
-            <TextField
-              v-model="model.uk"
-              :placeholder="localesMap.uk.text"
-              validate-on-blur
-              class="w-full"
-              prepend-slot-class="w-auto"
-            >
-              <template v-slot:prepend>
-                <img
-                  :src="require(`@/assets/img/flags/round/${localesMap.uk.value}.svg`)"
-                  class="h-6 w-6 rounded-full ml-sm mr-5"
-                >
-              </template>
-            </TextField>
-          </div>
+          </template>
         </div>
-        <div v-if="hasNavigateToDictionary" class="pb-8">
+        <div v-if="hasNavigateToDictionary" class="flex pl-sm pt-5">
           <router-link
             :to="{ name: 'dictionary', params: { orgId } }"
             class="inline-flex items-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
@@ -109,18 +69,20 @@
             <span>{{ $t('header.dictionary') }}</span>
           </router-link>
         </div>
-        <div class="flex justify-between">
+        <div class="flex justify-between pt-8">
           <Button
             :disabled="loading"
             min-width="120"
             outlined
-            merge-class="border-gray-200"
+            merge-class="border-gray-200 h-10 text-sm"
             @click="dialog = false"
           >
             <span>{{ $t('words.cancel') }}</span>
           </Button>
           <Button
             :loading="loading"
+            :disabled="formValidity"
+            merge-class="h-10 text-sm"
             min-width="120"
             @click="createWord"
           >
@@ -156,13 +118,14 @@ export default {
     return {
       loading: false,
       dialog: this.value,
+      formValidity: false,
       model: {
-        en: '',
-        zhHans: '',
-        zhHant: '',
-        fr: '',
-        ru: '',
-        uk: '',
+        en: undefined,
+        zhHans: undefined,
+        zhHant: undefined,
+        fr: undefined,
+        ru: undefined,
+        uk: undefined,
       },
       rules: {
         required: v => !!v || this.$t('rule.required'),
@@ -178,18 +141,20 @@ export default {
       return this.$route.name !== 'dictionary'
     },
     locales () {
-      return LOCALES_LIST.map(el => {
+      const locale = this.$i18n.locale
+      const items = LOCALES_LIST.map(el => {
         return {
           ...el,
+          rules: [this.rules.required],
           key: el.value.replace('-', ''),
         }
       })
-    },
-    localesMap () {
-      return this.locales.reduce((acc, curr) => {
-        acc[curr.key] = { ...curr }
-        return acc
-      }, {})
+      const index = items.findIndex(el => el.value === locale)
+      // move default locale input to start
+      if (index > 0) {
+        items.splice(0, 0, items.splice(index, 1)[0])
+      }
+      return items
     },
   },
   watch: {
@@ -198,10 +163,38 @@ export default {
     },
     dialog (val) {
       this.$emit('input', val)
+      if (val) {
+        this.onOpen()
+      } else {
+        this.onClose()
+      }
     },
   },
   methods: {
+    onOpen () {
+      setTimeout(() => {
+        if (this.$refs[this.$i18n.locale] && this.$refs[this.$i18n.locale][0]) {
+          this.$refs[this.$i18n.locale][0].focus()
+        }
+      }, 100)
+    },
+    onClose () {
+      setTimeout(() => {
+        this.model = {
+          en: undefined,
+          zhHans: undefined,
+          zhHant: undefined,
+          fr: undefined,
+          ru: undefined,
+          uk: undefined,
+        }
+        if (this.$refs.form && this.$refs.form[0]) {
+          this.$refs.form[0].reset()
+        }
+      }, 250)
+    },
     async createWord () {
+      if (!this.$refs.form[0].validate(true)) return
       try {
         this.loading = true
         const input = {
@@ -222,16 +215,6 @@ export default {
         throw new Error(error)
       } finally {
         this.loading = false
-        setTimeout(() => {
-          this.model = {
-            en: '',
-            zhHans: '',
-            zhHant: '',
-            fr: '',
-            ru: '',
-            uk: '',
-          }
-        }, 200)
       }
     },
   },
