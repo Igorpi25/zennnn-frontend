@@ -153,6 +153,12 @@ export default {
         if (operation === Operation.UPDATE_PRODUCT) {
           const mergeOptions = {
             customMerge: (key) => {
+              if (key === 'name') {
+                const merge = (_, source) => {
+                  return source
+                }
+                return merge
+              }
               if (key === 'comments') {
                 return commentsMerge
               }
