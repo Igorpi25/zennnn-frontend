@@ -141,28 +141,57 @@
               <tr
                 v-else
                 :key="index"
-                class="cursor-pointer text-white"
+                class="cursor-pointer"
+                :class="{ 'text-white expanded': expanded.includes(item.id) }"
                 tabindex="0"
+                @click="toggle(item.id)"
               >
                 <td
                   v-for="header in headers"
                   :key="header.value"
                   :class="['truncate px-3', { 'text-right': header.value === 'more' }]"
                 >
-                  <button
-                    v-if="header.value === 'more'"
-                    disabled
-                    class="flex items-center text-2xl text-gray-200 select-none ml-auto"
-                  >
-                    <i
-                      class="zi-chevron-up transform rotate-90"
-                    />
-                  </button>
+                  <span v-if="header.value === 'more'" class="inline-flex items-center justify-end align-middle">
+                    <button
+                      class="flex items-center jusitfy-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none cursor-pointer mr-2"
+                      @click.prevent.stop="openEditItem(item)"
+                    >
+                      <i class="zi-edit text-xl" />
+                    </button>
+                    <button
+                      class="flex items-center text-2xl text-blue-500 focus:text-blue-600 hover:text-blue-600 focus:outline-none select-none ml-auto"
+                    >
+                      <i
+                        v-if="expanded.includes(item.id)"
+                        class="zi-chevron-down"
+                      />
+                      <i
+                        v-else
+                        class="zi-chevron-up transform rotate-90"
+                      />
+                    </button>
+                  </span>
                   <span v-else>
                     {{ item[header.key] }}
                   </span>
                 </td>
               </tr>
+              <template v-if="expanded.includes(item.id)">
+                <tr
+                  :key="`expand-${item.id}`"
+                  class="expand bg-transparent"
+                  style="background-color: transparent;"
+                >
+                  <td :colspan="headers.length" class="relative p-0">
+                    <div
+                      class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
+                    />
+                    <div class="flex items-center bg-gray-700 rounded-b-md -mt-2 px-3" style="min-height: 48px;">
+                      <div></div>
+                    </div>
+                  </td>
+                </tr>
+              </template>
             </template>
           </template>
 
@@ -187,7 +216,7 @@
         block
         outlined
         class="mt-4"
-        @click="wordDialog = true"
+        @click="wordCreateDialog = true"
       >
         <template v-slot:icon>
           <i class="zi-edit text-gray-100 text-2xl" />
@@ -195,10 +224,17 @@
         <span>{{ $t('words.addWord') }}</span>
       </Button>
     </div>
-    <WordCreateDialog
-      v-model="wordDialog"
+    <WordDialog
+      v-model="wordCreateDialog"
       :org-id="orgId"
+      create
       @create="onWordCreate"
+    />
+    <WordDialog
+      v-model="wordEditDialog"
+      :org-id="orgId"
+      :item="editItem"
+      @update="onWordUpdate"
     />
   </div>
 </template>
@@ -208,12 +244,12 @@ import { LIST_WORDS } from '../graphql/queries'
 
 import { LOCALES_LIST } from '../config/globals'
 
-import WordCreateDialog from '../components/WordCreateDialog.vue'
+import WordDialog from '../components/WordDialog.vue'
 
 export default {
   name: 'WordList',
   components: {
-    WordCreateDialog,
+    WordDialog,
   },
   apollo: {
     listWords: {
@@ -230,7 +266,10 @@ export default {
     return {
       search: undefined,
       deleteLoading: null,
-      wordDialog: false,
+      wordCreateDialog: false,
+      wordEditDialog: false,
+      expanded: [],
+      editItem: {},
     }
   },
   computed: {
@@ -296,9 +335,26 @@ export default {
     },
   },
   methods: {
+    openEditItem (item) {
+      this.editItem = item
+      this.$nextTick(() => {
+        this.wordEditDialog = true
+      })
+    },
+    toggle (id) {
+      if (this.expanded.indexOf(id) > -1) {
+        const expIndex = this.expanded.indexOf(id)
+        this.expanded.splice(expIndex, 1)
+      } else {
+        this.expanded.push(id)
+      }
+    },
     onWordCreate (result) {
-      this.wordDialog = false
+      this.wordCreateDialog = false
       this.$apollo.queries.listWords.refetch()
+    },
+    onWordUpdate () {
+      this.wordEditDialog = false
     },
     customGroup (items, groupBy, groupDesc) {
       const key = groupBy[0]

@@ -58,10 +58,8 @@
         <template v-if="$slots.prepend" v-slot:prepend>
           <slot name="prepend" />
         </template>
-        <template v-if="$slots.append" v-slot:append>
-          <slot name="append" />
-        </template>
-        <template v-if="hasArrowIcon" v-slot:append>
+        <template v-if="$slots.append || $scopedSlots.append || hasArrowIcon" v-slot:append>
+          <slot name="append" :open="isActive" />
           <button
             v-if="hasArrowIcon"
             :disabled="disabled"

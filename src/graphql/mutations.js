@@ -27,6 +27,22 @@ export const CREATE_WORD = gql`
   }
 `
 
+export const UPDATE_WORD = gql`
+  mutation UpdateWord($orgId: ID!, $input: UpdateWordInput!) {
+    updateWord(orgId: $orgId, input: $input) {
+      id
+      status
+      defaultLocale
+      en
+      fr
+      ru
+      uk
+      zhHans
+      zhHant
+    }
+  }
+`
+
 export const UPDATE_PAYMENT_SUBSCRIPTION = gql`
   mutation UpdatePaymentSubscription($priceId: String!, $paymentMethodId: String) {
     updatePaymentSubscription(priceId: $priceId, paymentMethodId: $paymentMethodId)

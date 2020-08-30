@@ -45,7 +45,8 @@
         solo
         searchable
         class="relative"
-        @click:prepend-item="wordDialog = true"
+        append-slot-class="w-auto pr-sm"
+        @click:prepend-item="wordCreateDialog = true"
         @input="createOrUpdateProduct({ name: $event })"
       >
         <template v-slot:prepend-item>
@@ -54,16 +55,34 @@
             <span>{{ $t('words.addWord') }}</span>
           </span>
         </template>
+        <template v-slot:append="{ open }">
+          <button
+            v-if="open && hasWord"
+            class="flex items-center jusitfy-center text-blue-500 focus:outline-none cursor-pointer"
+            @click="wordEditDialog = true"
+          >
+            <i class="zi-edit text-xl" />
+          </button>
+        </template>
       </Select>
       <span v-else class="pl-sm">
         {{ item.name }}
       </span>
-      <WordCreateDialog
+      <WordDialog
         v-if="isOwnerOrManager"
-        v-model="wordDialog"
+        v-model="wordCreateDialog"
         :org-id="orgId"
         :product-id="item.id"
+        create
         @create="onWordCreate"
+      />
+      <WordDialog
+        v-if="isOwnerOrManager && hasWord"
+        v-model="wordEditDialog"
+        :org-id="orgId"
+        :product-id="item.id"
+        :item="item.name"
+        @update="onWordUpdate"
       />
     </td>
     <td class="pr-sm">
@@ -430,13 +449,13 @@ import product from '../mixins/product'
 import { isLink } from '../util/helpers'
 
 import Comments from './Comments.vue'
-import WordCreateDialog from './WordCreateDialog.vue'
+import WordDialog from './WordDialog.vue'
 
 export default {
   name: 'InvoiceProduct',
   components: {
     Comments,
-    WordCreateDialog,
+    WordDialog,
   },
   mixins: [product],
   props: {
@@ -485,7 +504,8 @@ export default {
   },
   data () {
     return {
-      wordDialog: false,
+      wordCreateDialog: false,
+      wordEditDialog: false,
       isLinkUrlFocus: false,
       wordSearch: '',
     }
@@ -496,6 +516,9 @@ export default {
     },
     hasNoTranslation () {
       return this.item.name && !this.item.name[this.wordLocale]
+    },
+    hasWord () {
+      return this.item.name && this.item.name.id
     },
     wordLocale () {
       const locale = this.$i18n.locale
@@ -544,12 +567,15 @@ export default {
   },
   methods: {
     async onWordCreate (result) {
-      this.wordDialog = false
+      this.wordCreateDialog = false
       try {
         await this.createOrUpdateProduct({ name: result.id })
       } catch (error) {
         throw new Error(error)
       }
+    },
+    async onWordUpdate () {
+      this.wordEditDialog = false
     },
   },
 }

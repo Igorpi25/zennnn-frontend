@@ -6,7 +6,7 @@
     <div class="relative bg-gray-400">
       <div class="flex items-center justify-center text-lg text-white font-semibold p-8 pb-2">
         <div class="text-white text-xl font-semibold">
-          {{ $t('words.addWordTitle') }}
+          {{ create ? $t('words.addWordTitle') : $t('words.editWord') }}
         </div>
       </div>
       <div class="text-gray-100 p-5">
@@ -27,9 +27,7 @@
                 :placeholder="item.text"
                 :rules="item.rules"
                 required
-                validate-on-blur
                 state-icon
-                state-icon-on-validate
                 prepend-slot-class="w-auto"
               >
                 <template v-slot:prepend>
@@ -77,16 +75,16 @@
             merge-class="border-gray-200 h-10 text-sm"
             @click="dialog = false"
           >
-            <span>{{ $t('words.cancel') }}</span>
+            <span>{{ $t('action.cancel') }}</span>
           </Button>
           <Button
             :loading="loading"
             :disabled="formValidity"
             merge-class="h-10 text-sm"
             min-width="120"
-            @click="createWord"
+            @click="onSubmit"
           >
-            <span>{{ $t('words.add') }}</span>
+            <span>{{ create ? $t('action.add') : $t('action.apply') }}</span>
           </Button>
         </div>
       </div>
@@ -102,12 +100,14 @@
 
 <script>
 import { LOCALES_LIST } from '../config/globals'
-import { CREATE_WORD } from '../graphql/mutations'
+import { CREATE_WORD, UPDATE_WORD } from '../graphql/mutations'
 
 export default {
-  name: 'WordCreateDialog',
+  name: 'WordDialog',
   props: {
     value: Boolean,
+    create: Boolean,
+    item: Object,
     orgId: {
       type: String,
       required: true,
@@ -172,11 +172,24 @@ export default {
   },
   methods: {
     onOpen () {
+      if (!this.create) {
+        this.$nextTick(() => {
+          const item = this.item || {}
+          this.model = {
+            en: item.en,
+            zhHans: item.zhHans,
+            zhHant: item.zhHant,
+            fr: item.fr,
+            ru: item.ru,
+            uk: item.uk,
+          }
+        })
+      }
       setTimeout(() => {
         if (this.$refs[this.$i18n.locale] && this.$refs[this.$i18n.locale][0]) {
           this.$refs[this.$i18n.locale][0].focus()
         }
-      }, 100)
+      }, 75)
     },
     onClose () {
       setTimeout(() => {
@@ -192,6 +205,13 @@ export default {
           this.$refs.form[0].reset()
         }
       }, 250)
+    },
+    onSubmit () {
+      if (this.create) {
+        this.createWord()
+      } else {
+        this.updateWord()
+      }
     },
     async createWord () {
       if (!this.$refs.form[0].validate(true)) return
@@ -211,6 +231,31 @@ export default {
         })
         const result = response && response.data && response.data.createWord
         this.$emit('create', result)
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.loading = false
+      }
+    },
+    async updateWord () {
+      const id = this.item && this.item.id
+      if (!id) return
+      if (!this.$refs.form[0].validate(true)) return
+      try {
+        this.loading = true
+        const input = {
+          id,
+          ...this.model,
+        }
+        const response = await this.$apollo.mutate({
+          mutation: UPDATE_WORD,
+          variables: {
+            orgId: this.orgId,
+            input,
+          },
+        })
+        const result = response && response.data && response.data.updateWord
+        this.$emit('update', result)
       } catch (error) {
         throw new Error(error)
       } finally {
