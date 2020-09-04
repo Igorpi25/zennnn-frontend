@@ -28,27 +28,26 @@
       />
     </td>
     <td class="pr-sm">
-      <!-- <TextField
+      <Select
         v-if="isOwnerOrManager"
-        :value="item.name"
-        :placeholder="$t('shipping.name')"
-        :lazy="create"
-        solo
-        @input="createOrUpdateProduct({ name: $event })"
-      /> -->
-      <Autocomplete
-        v-if="isOwnerOrManager"
-        :value="item.name"
-        :placeholder="$t('shipping.name')"
+        :value="wordItem"
+        :placeholder="hasNoTranslation ? $t('words.noTranslation') : $t('shipping.name')"
         :lazy="create"
         :search.sync="wordSearch"
         :items="words"
-        :item-text="wordLocale"
-        :default-item-text="item.name && item.name.defaultLocale"
+        :has-arrow-icon="false"
+        :input-class="hasNoTranslation ? 'placeholder-yellow-300': ''"
+        :active-style="{ width: '180px', zIndex: 10 }"
+        min-width="180px"
+        max-width="180px"
         item-value="id"
+        item-text="text"
         solo
         searchable
-        @click:prepend-item="wordDialog = true"
+        no-filter
+        class="relative"
+        append-slot-class="w-auto pr-sm"
+        @click:prepend-item="wordCreateDialog = true"
         @input="createOrUpdateProduct({ name: $event })"
       >
         <template v-slot:prepend-item>
@@ -57,16 +56,34 @@
             <span>{{ $t('words.addWord') }}</span>
           </span>
         </template>
-      </Autocomplete>
+        <template v-slot:append="{ open }">
+          <button
+            v-if="open && canEdit"
+            class="flex items-center jusitfy-center text-blue-500 focus:outline-none cursor-pointer"
+            @click="wordEditDialog = true"
+          >
+            <i class="zi-edit text-xl" />
+          </button>
+        </template>
+      </Select>
       <span v-else class="pl-sm">
-        {{ item.name }}
+        {{ wordItem.text }}
       </span>
-      <WordCreateDialog
+      <WordDialog
         v-if="isOwnerOrManager"
-        v-model="wordDialog"
+        v-model="wordCreateDialog"
         :org-id="orgId"
         :product-id="item.id"
+        create
         @create="onWordCreate"
+      />
+      <WordDialog
+        v-if="isOwnerOrManager && canEdit"
+        v-model="wordEditDialog"
+        :org-id="orgId"
+        :product-id="item.id"
+        :item="item.name"
+        @update="onWordUpdate"
       />
     </td>
     <td class="pr-sm">
@@ -427,19 +444,19 @@
 </template>
 
 <script>
-import { InvoiceProfitType, Role } from '../graphql/enums'
+import { InvoiceProfitType, Role, WordStatus } from '../graphql/enums'
 import { SEARCH_WORDS } from '../graphql/queries'
 import product from '../mixins/product'
 import { isLink } from '../util/helpers'
 
 import Comments from './Comments.vue'
-import WordCreateDialog from './WordCreateDialog.vue'
+import WordDialog from './WordDialog.vue'
 
 export default {
   name: 'InvoiceProduct',
   components: {
     Comments,
-    WordCreateDialog,
+    WordDialog,
   },
   mixins: [product],
   props: {
@@ -476,7 +493,7 @@ export default {
         return {
           orgId: this.orgId,
           search: this.wordSearch,
-          locale: this.wordLocale,
+          locale: this.$i18n.locale,
         }
       },
       fetchPolicy: 'cache-and-network',
@@ -488,7 +505,8 @@ export default {
   },
   data () {
     return {
-      wordDialog: false,
+      wordCreateDialog: false,
+      wordEditDialog: false,
       isLinkUrlFocus: false,
       wordSearch: '',
     }
@@ -497,13 +515,55 @@ export default {
     orgId () {
       return this.$route.params.orgId
     },
-    wordLocale () {
-      const locale = this.$i18n.locale
-      return locale.replace('-', '')
+    hasNoTranslation () {
+      return this.item.name && !this.wordItem[this.$i18n.locale]
+    },
+    hasWord () {
+      return this.item.name && this.item.name.id
+    },
+    canEdit () {
+      const word = this.item.name || {}
+      return this.hasWord && word.status === WordStatus.DRAFT
+    },
+    wordItem () {
+      const word = this.item.name || {}
+      const values = word.values || []
+      const translations = word.translations || []
+      const result = {}
+      translations.forEach(el => {
+        result[el.locale] = el.text
+      })
+      values.forEach(el => {
+        if (el.text) {
+          result[el.locale] = el.text
+        }
+      })
+      const text = result[this.$i18n.locale] || result[word.defaultLocale]
+      return {
+        ...word,
+        text,
+      }
     },
     words () {
       const items = (this.searchWords && this.searchWords.items) || []
-      return items
+      return items.map(word => {
+        const values = word.values || []
+        const translations = word.translations || []
+        const result = {}
+        translations.forEach(el => {
+          result[el.locale] = el.text
+        })
+        values.forEach(el => {
+          if (el.text) {
+            result[el.locale] = el.text
+          }
+        })
+        const text = result[this.$i18n.locale] || result[word.defaultLocale]
+        return {
+          ...word,
+          text,
+        }
+      })
     },
     commentators () {
       const result = {}
@@ -544,12 +604,15 @@ export default {
   },
   methods: {
     async onWordCreate (result) {
-      this.wordDialog = false
+      this.wordCreateDialog = false
       try {
         await this.createOrUpdateProduct({ name: result.id })
       } catch (error) {
         throw new Error(error)
       }
+    },
+    async onWordUpdate () {
+      this.wordEditDialog = false
     },
   },
 }

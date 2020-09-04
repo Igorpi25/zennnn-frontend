@@ -31,6 +31,12 @@ export const ProductStatus = {
   IN_STOCK: 'IN_STOCK',
 }
 
+export const WordStatus = {
+  DRAFT: 'DRAFT',
+  DUPLICATE: 'DUPLICATE',
+  APPROVED: 'APPROVED',
+}
+
 export const ClientType = {
   LEGAL: 'LEGAL',
   PRIVATE: 'PRIVATE',

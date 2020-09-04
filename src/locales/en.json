@@ -1130,10 +1130,11 @@
   "words": {
     "addWord": "Add word",
     "addWordTitle": "Add a word",
-    "add": "Add",
-    "cancel": "Cancel",
+    "editWord": "Edit word",
     "noData": "Your dictionary is still empty,<br>add some word and its translation.",
-    "more": "More"
+    "more": "More",
+    "noTranslation": "no translation",
+    "translate": "Translate"
   },
   "welcomeModal": {
     "head": "Welcome to ZENNNN",
@@ -1235,6 +1236,7 @@
     "apply": "Apply",
     "save": "Save",
     "create": "Create",
+    "add": "Add",
     "loading": "Loading",
     "collapse": "Hide",
     "collapseAll": "Hide all",

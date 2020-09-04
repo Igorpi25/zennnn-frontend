@@ -657,11 +657,25 @@ const genItemBody = (invoices, clientLang) => {
       index++
       const price = (product.cost && product.cost.price) || product.costPrice || 0
       const amount = (product.cost && product.cost.amount) || product.costAmount || 0
-      const lang = clientLang.replace('-', '')
-      const nameWord = product.name || {}
-      const wordDefaultLang = nameWord.defaultLang
-      // TODO: en translate on all other locales? (стул / chair)
-      let name = nameWord[lang] || nameWord[wordDefaultLang] || nameWord.en || ''
+      const lang = clientLang
+      const word = product.name || {}
+      const wordDefaultLocale = word.defaultLocale
+      const wordValues = word.values || []
+      const wordTranslations = word.translations || []
+      const result = {}
+      wordTranslations.forEach(el => {
+        result[el.locale] = el.text
+      })
+      wordValues.forEach(el => {
+        if (el.text) {
+          result[el.locale] = el.text
+        }
+      })
+      let name = result.en || ''
+      if (clientLang !== 'en') {
+        const s = result[lang] || result[wordDefaultLocale] || ''
+        name += name && s ? ` / ${s}` : s || ''
+      }
       if (product.article) {
         name += ` / ${product.article}`
       }

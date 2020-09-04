@@ -47,6 +47,7 @@
         :dense="dense"
         :loading="loading"
         :size="size"
+        :style="compStyle"
         autocomplete="off"
         force-update
         @input="onInput"
@@ -57,10 +58,8 @@
         <template v-if="$slots.prepend" v-slot:prepend>
           <slot name="prepend" />
         </template>
-        <template v-if="$slots.append" v-slot:append>
-          <slot name="append" />
-        </template>
-        <template v-if="hasArrowIcon" v-slot:append>
+        <template v-if="$slots.append || $scopedSlots.append || hasArrowIcon" v-slot:append>
+          <slot name="append" :open="isActive" />
           <button
             v-if="hasArrowIcon"
             :disabled="disabled"
@@ -275,6 +274,7 @@ export default {
       type: Boolean,
       default: true,
     },
+    activeStyle: Object,
   },
   data () {
     return {
@@ -286,6 +286,13 @@ export default {
     }
   },
   computed: {
+    compStyle () {
+      let result = {}
+      if (this.activeStyle) {
+        result = this.isActive ? this.activeStyle : {}
+      }
+      return result
+    },
     computedId () {
       return this.id || `input-${this._uid}`
     },

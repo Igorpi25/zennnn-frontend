@@ -141,26 +141,67 @@
               <tr
                 v-else
                 :key="index"
-                class="cursor-pointer text-white"
+                class="cursor-pointer"
+                :class="{ 'text-white expanded': expanded.includes(item.id) }"
                 tabindex="0"
+                @click="toggle(item.id)"
               >
                 <td
                   v-for="header in headers"
                   :key="header.value"
                   :class="['truncate px-3', { 'text-right': header.value === 'more' }]"
                 >
-                  <button
-                    v-if="header.value === 'more'"
-                    disabled
-                    class="flex items-center text-2xl text-gray-200 select-none ml-auto"
-                  >
-                    <i
-                      class="zi-chevron-up transform rotate-90"
-                    />
-                  </button>
-                  <span v-else>
-                    {{ item[header.key] }}
+                  <span v-if="header.value === 'more'" class="inline-flex items-center justify-end align-middle">
+                    <button
+                      class="flex items-center jusitfy-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none cursor-pointer mr-2"
+                      @click.prevent.stop="openEditItem(item)"
+                    >
+                      <i class="zi-edit text-xl" />
+                    </button>
+                    <button
+                      class="flex items-center text-2xl text-blue-500 focus:text-blue-600 hover:text-blue-600 focus:outline-none select-none ml-auto"
+                    >
+                      <i
+                        v-if="expanded.includes(item.id)"
+                        class="zi-chevron-down"
+                      />
+                      <i
+                        v-else
+                        class="zi-chevron-up transform rotate-90"
+                      />
+                    </button>
                   </span>
+                  <span v-else class="inline-flex items-center">
+                    <span class="flex-grow">
+                      {{ getHeaderValue(item, header.key).text }}
+                    </span>
+                    <i
+                      v-if="getHeaderValue(item, header.key).googleCloudTranslate"
+                      class="text-gray-200 flex-shrink-0 ml-1"
+                    >
+                      <Icon>
+                        {{ icons.mdiGoogleTranslate }}
+                      </Icon>
+                    </i>
+                  </span>
+                </td>
+              </tr>
+              <tr
+                v-if="expanded.includes(item.id)"
+                :key="`expand-${item.id}`"
+                class="expand bg-transparent"
+                style="background-color: transparent;"
+              >
+                <td :colspan="headers.length" class="relative p-0">
+                  <div
+                    class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
+                  />
+                  <div class="flex items-center bg-gray-700 rounded-b-md h-full py-2 -mt-2 px-3" style="min-height: 48px;">
+                    <WordSpecs
+                      :org-id="orgId"
+                      :word-id="item.id"
+                    />
+                  </div>
                 </td>
               </tr>
             </template>
@@ -187,7 +228,7 @@
         block
         outlined
         class="mt-4"
-        @click="wordDialog = true"
+        @click="wordCreateDialog = true"
       >
         <template v-slot:icon>
           <i class="zi-edit text-gray-100 text-2xl" />
@@ -195,25 +236,36 @@
         <span>{{ $t('words.addWord') }}</span>
       </Button>
     </div>
-    <WordCreateDialog
-      v-model="wordDialog"
+    <WordDialog
+      v-model="wordCreateDialog"
       :org-id="orgId"
+      create
       @create="onWordCreate"
+    />
+    <WordDialog
+      v-model="wordEditDialog"
+      :org-id="orgId"
+      :item="editItem"
+      @update="onWordUpdate"
     />
   </div>
 </template>
 
 <script>
+import { mdiGoogleTranslate } from '@mdi/js'
+
 import { LIST_WORDS } from '../graphql/queries'
 
 import { LOCALES_LIST } from '../config/globals'
 
-import WordCreateDialog from '../components/WordCreateDialog.vue'
+import WordDialog from '../components/WordDialog.vue'
+import WordSpecs from '../components/WordSpecs.vue'
 
 export default {
   name: 'WordList',
   components: {
-    WordCreateDialog,
+    WordDialog,
+    WordSpecs,
   },
   apollo: {
     listWords: {
@@ -230,7 +282,13 @@ export default {
     return {
       search: undefined,
       deleteLoading: null,
-      wordDialog: false,
+      wordCreateDialog: false,
+      wordEditDialog: false,
+      expanded: [],
+      editItem: {},
+      icons: {
+        mdiGoogleTranslate,
+      },
     }
   },
   computed: {
@@ -240,15 +298,11 @@ export default {
     orgId () {
       return this.$route.params.orgId
     },
-    wordLocale () {
-      const locale = this.$i18n.locale
-      return locale.replace('-', '')
-    },
     locales () {
       const items = LOCALES_LIST.map(el => {
         return {
           ...el,
-          key: el.value.replace('-', ''),
+          key: el.value,
         }
       })
       const currentLocale = this.$i18n.locale
@@ -289,16 +343,51 @@ export default {
       return (this.listWords && this.listWords.items) || []
     },
     groupBy () {
-      return [this.wordLocale]
+      return [this.$i18n.locale]
     },
     groupDesc () {
       return [false]
     },
   },
   methods: {
+    getHeaderValue (item, key) {
+      const values = item.values || []
+      const translations = item.translations || []
+      const value = values.find(el => el.locale === key)
+      if (value && value.text) {
+        return {
+          text: value.text,
+        }
+      } else {
+        const translation = translations.find(el => el.locale === key)
+        const translationText = translation && translation.text
+        const googleCloudTranslate = !!translationText
+        return {
+          text: translationText,
+          googleCloudTranslate,
+        }
+      }
+    },
+    openEditItem (item) {
+      this.editItem = item
+      this.$nextTick(() => {
+        this.wordEditDialog = true
+      })
+    },
+    toggle (id) {
+      if (this.expanded.indexOf(id) > -1) {
+        const expIndex = this.expanded.indexOf(id)
+        this.expanded.splice(expIndex, 1)
+      } else {
+        this.expanded.push(id)
+      }
+    },
     onWordCreate (result) {
-      this.wordDialog = false
+      this.wordCreateDialog = false
       this.$apollo.queries.listWords.refetch()
+    },
+    onWordUpdate () {
+      this.wordEditDialog = false
     },
     customGroup (items, groupBy, groupDesc) {
       const key = groupBy[0]
@@ -306,7 +395,9 @@ export default {
       const re = /[A-ZА-ЯҐЄІЇ\u4e00-\u9fff]|[\u3400-\u4dbf]|[\u{20000}-\u{2a6df}]|[\u{2a700}-\u{2b73f}]|[\u{2b740}-\u{2b81f}]|[\u{2b820}-\u{2ceaf}]|[\uf900-\ufaff]|[\u3300-\u33ff]|[\ufe30-\ufe4f]|[\uf900-\ufaff]|[\u{2f800}-\u{2fa1f}]/u
       const others = []
       const grouped = items.reduce((acc, curr) => {
-        const name = curr[key] || ''
+        const values = curr.values || []
+        const nameObj = values.find(el => el.locale === key) || {}
+        const name = nameObj.text || ''
         const char = name.charAt(0).toLocaleUpperCase()
         if (re.test(char)) {
           if (Object.prototype.hasOwnProperty.call(acc, char)) {

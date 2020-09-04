@@ -80,7 +80,7 @@
           </td>
           <td class="bg-white p-2">
             <div class="truncate pb-xs" style="min-width: 250px; min-height: 20px;">
-              {{ item.name && (item.name[wordLocale] || item.name[item.name.defaultLocale]) }} {{ item.article }}
+              {{ getWordText(item.name) }} {{ item.article }}
             </div>
             <div class="text-gray-100 truncate" style="min-height: 20px;">
               {{ item.description }}
@@ -242,10 +242,6 @@ export default {
     }
   },
   computed: {
-    wordLocale () {
-      const locale = this.$i18n.locale
-      return locale.replace('-', '')
-    },
     headers () {
       return [
         { text: this.$t('paper.itemNo'), value: 'number', align: 'center', width: 48 },
@@ -279,6 +275,21 @@ export default {
     }
   },
   methods: {
+    getWordText (item) {
+      const word = item || {}
+      const values = word.values || []
+      const translations = word.translations || []
+      const result = {}
+      translations.forEach(el => {
+        result[el.locale] = el.text
+      })
+      values.forEach(el => {
+        if (el.text) {
+          result[el.locale] = el.text
+        }
+      })
+      return result[this.$i18n.locale] || result[word.defaultLocale]
+    },
     convertToUnit (val) {
       return convertToUnit(val)
     },
