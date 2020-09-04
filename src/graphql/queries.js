@@ -13,6 +13,7 @@ import {
   PAPER_SPEC_FRAGMENT,
   PAPER_INVOICE_FRAGMENT,
   PAPER_PRODUCT_FRAGMENT,
+  WORD_TRANSLATION_FRAGMENT,
 } from './typeDefs'
 
 export const LIST_WORDS = gql`
@@ -22,15 +23,16 @@ export const LIST_WORDS = gql`
         id
         status
         defaultLocale
-        en
-        fr
-        ru
-        uk
-        zhHans
-        zhHant
+        values {
+          ...WordTranslationFragment
+        }
+        translations {
+          ...WordTranslationFragment
+        }
       }
     }
   }
+  ${WORD_TRANSLATION_FRAGMENT}
 `
 
 export const SEARCH_WORDS = gql`
@@ -40,15 +42,34 @@ export const SEARCH_WORDS = gql`
         id
         status
         defaultLocale
-        en
-        fr
-        ru
-        uk
-        zhHans
-        zhHant
+        values {
+          ...WordTranslationFragment
+        }
+        translations {
+          ...WordTranslationFragment
+        }
       }
     }
   }
+  ${WORD_TRANSLATION_FRAGMENT}
+`
+
+export const GET_WORD_SPECS = gql`
+  query GetWordSpecs($orgId: ID!, $id: ID!) {
+    getWordSpecs(orgId: $orgId, id: $id) {
+      specId
+      specNo
+    }
+  }
+`
+
+export const TRANSLATE_WORD = gql`
+  query TranslateWord($orgId: ID!, $text: String!, $sourceLang: String!) {
+    translateWord(orgId: $orgId, text: $text, sourceLang: $sourceLang) {
+      ...WordTranslationFragment
+    }
+  }
+  ${WORD_TRANSLATION_FRAGMENT}
 `
 
 export const LIST_PRICES = gql`

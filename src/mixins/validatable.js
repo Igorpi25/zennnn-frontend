@@ -102,7 +102,7 @@ export default {
       this.internalValue = ''
       this.clearError()
       this.clearWarn()
-      if (this.validateOnBlur) {
+      if (this.validateOnBlur || this.lazyValidation) {
         this.hasFocused = false
         this.valid = false
       }

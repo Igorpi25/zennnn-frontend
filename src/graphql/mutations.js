@@ -9,6 +9,7 @@ import {
   ORG_CONTRACT_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
   BANK_DETAIL_FRAGMENT,
+  WORD_TRANSLATION_FRAGMENT,
 } from './typeDefs'
 
 export const CREATE_WORD = gql`
@@ -17,14 +18,15 @@ export const CREATE_WORD = gql`
       id
       status
       defaultLocale
-      en
-      fr
-      ru
-      uk
-      zhHans
-      zhHant
+      values {
+        ...WordTranslationFragment
+      }
+      translations {
+        ...WordTranslationFragment
+      }
     }
   }
+  ${WORD_TRANSLATION_FRAGMENT}
 `
 
 export const UPDATE_WORD = gql`
@@ -33,14 +35,15 @@ export const UPDATE_WORD = gql`
       id
       status
       defaultLocale
-      en
-      fr
-      ru
-      uk
-      zhHans
-      zhHant
+      values {
+        ...WordTranslationFragment
+      }
+      translations {
+        ...WordTranslationFragment
+      }
     }
   }
+  ${WORD_TRANSLATION_FRAGMENT}
 `
 
 export const UPDATE_PAYMENT_SUBSCRIPTION = gql`

@@ -10,62 +10,74 @@
         </div>
       </div>
       <div class="text-gray-100 p-5">
-        <div
+        <Form
+          ref="form"
           class="grid grid-rows-1 sm:grid-cols-2 sm:grid-rows-3 sm:grid-flow-col gap-8"
         >
-          <template v-for="(item, index) in locales">
-            <Form
-              ref="form"
-              v-if="index === 0"
-              v-model="formValidity"
-              :key="index"
-            >
-              <TextField
-                v-model="model[item.key]"
-                :ref="item.value"
-                :key="item.value"
-                :placeholder="item.text"
-                :rules="item.rules"
-                required
-                state-icon
-                prepend-slot-class="w-auto"
+          <TextField
+            v-for="item in locales"
+            :value="model[item.key]"
+            :ref="item.value"
+            :key="item.value"
+            :placeholder="item.text"
+            :rules="item.value === defaultLocale ? [rules.required] : undefined"
+            :state-icon="item.value === defaultLocale"
+            :required="item.value === defaultLocale"
+            :state-color="item.value === defaultLocale ? undefined : 'none'"
+            force-update
+            lazy-validation
+            content-class="pr-sm"
+            state-icon-user
+            prepend-slot-class="w-auto"
+            append-slot-class="w-auto"
+            @blur="onBlur(item.key)"
+            @input="onInput(item.key, $event)"
+          >
+            <template v-slot:prepend>
+              <img
+                :src="require(`@/assets/img/flags/round/${item.value}.svg`)"
+                class="h-6 w-6 rounded-full ml-sm mr-5"
               >
-                <template v-slot:prepend>
-                  <img
-                    :src="require(`@/assets/img/flags/round/${item.value}.svg`)"
-                    class="h-6 w-6 rounded-full ml-sm mr-5"
-                  >
-                </template>
-              </TextField>
-            </Form>
-            <TextField
-              v-else
-              v-model="model[item.key]"
-              :key="item.value"
-              :placeholder="item.text"
-              :rules="item.rules"
-              state-icon
-              state-icon-on-validate
-              state-color="none"
-              prepend-slot-class="w-auto"
+            </template>
+            <template
+              v-if="item.value !== defaultLocale"
+              v-slot:append
             >
-              <template v-slot:prepend>
-                <img
-                  :src="require(`@/assets/img/flags/round/${item.value}.svg`)"
-                  class="h-6 w-6 rounded-full ml-sm mr-5"
-                >
-              </template>
-            </TextField>
-          </template>
-        </div>
-        <div v-if="hasNavigateToDictionary" class="flex pl-sm pt-5">
+              <i v-if="googleTranslateIconMap[item.key]">
+                <Icon>
+                  {{ icons.mdiGoogleTranslate }}
+                </Icon>
+              </i>
+              <div v-else-if="model[item.key]" class="px-1">
+                <i class="text-blue-500">
+                  <svg  width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.5754 8.01019C11.5124 8.31943 12.402 8.88729 13.1424 9.66794C14.3403 10.9308 15 12.5667 15 14.2742V15H0V14.2742C0 12.5667 0.659693 10.9308 1.85753 9.66797C2.59793 8.88737 3.48754 8.31947 4.42456 8.01019C3.49101 7.16821 2.90322 5.94991 2.90322 4.59677C2.90322 2.06211 4.96536 0 7.50002 0C10.0347 0 12.0968 2.06211 12.0968 4.59677C12.0968 5.94991 11.509 7.16821 10.5754 8.01019ZM7.49998 1.45161C5.76575 1.45161 4.35483 2.86254 4.35483 4.59677C4.35483 6.33101 5.76575 7.74193 7.49998 7.74193C9.23422 7.74193 10.6451 6.33101 10.6451 4.59677C10.6451 2.86254 9.23422 1.45161 7.49998 1.45161ZM6.04837 9.19355C4.06324 9.19355 1.86298 11.0122 1.50275 13.5484H13.4972C13.137 11.0122 10.9367 9.19355 8.95159 9.19355H6.04837Z" fill="currentColor" />
+                  </svg>
+                </i>
+              </div>
+            </template>
+          </TextField>
+        </Form>
+        <div :class="['flex px-sm pt-5', hasNavigateToDictionary ? 'justify-between' : 'justify-end']">
           <router-link
+            v-if="hasNavigateToDictionary"
             :to="{ name: 'dictionary', params: { orgId } }"
-            class="inline-flex items-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+            class="inline-flex items-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none mr-2"
           >
             <i class="zi-edit text-2xl mr-sm" />
             <span>{{ $t('header.dictionary') }}</span>
           </router-link>
+          <button
+            class="inline-flex justify-end items-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+            @click="translateWord"
+          >
+            <i class="text-2xl mr-sm">
+              <Icon>
+                {{ icons.mdiGoogleTranslate }}
+              </Icon>
+            </i>
+            <span>{{ $t('words.translate') }}</span>
+          </button>
         </div>
         <div class="flex justify-between pt-8">
           <Button
@@ -79,7 +91,6 @@
           </Button>
           <Button
             :loading="loading"
-            :disabled="formValidity"
             merge-class="h-10 text-sm"
             min-width="120"
             @click="onSubmit"
@@ -99,8 +110,11 @@
 </template>
 
 <script>
+import { mdiGoogleTranslate } from '@mdi/js'
+
 import { LOCALES_LIST } from '../config/globals'
 import { CREATE_WORD, UPDATE_WORD } from '../graphql/mutations'
+import { TRANSLATE_WORD } from '../graphql/queries'
 
 export default {
   name: 'WordDialog',
@@ -121,8 +135,8 @@ export default {
       formValidity: false,
       model: {
         en: undefined,
-        zhHans: undefined,
-        zhHant: undefined,
+        'zh-Hans': undefined,
+        'zh-Hant': undefined,
         fr: undefined,
         ru: undefined,
         uk: undefined,
@@ -130,12 +144,46 @@ export default {
       rules: {
         required: v => !!v || this.$t('rule.required'),
       },
+      icons: {
+        mdiGoogleTranslate,
+      },
+      translationsResult: [],
+      isTranslationsUpdated: false,
     }
   },
   computed: {
-    wordLocale () {
-      const locale = this.$i18n.locale
-      return locale.replace('-', '')
+    defaultLocale () {
+      if (this.create) {
+        return this.$i18n.locale
+      } else {
+        return this.item && this.item.defaultLocale
+      }
+    },
+    googleTranslateIconMap () {
+      const result = {}
+      LOCALES_LIST.forEach(el => {
+        const key = el.value
+        result[key] = this.translations[key] && this.model[key] === this.translations[key]
+      })
+      return result
+    },
+    values () {
+      const values = (this.item && this.item.values) || []
+      const result = {}
+      LOCALES_LIST.forEach(el => {
+        const v = values.find(v => v.locale === el.value)
+        result[el.value] = (v && v.text) || undefined
+      })
+      return result
+    },
+    translations () {
+      const translations = this.create || this.isTranslationsUpdated ? this.translationsResult : (this.item && this.item.translations) || []
+      const result = {}
+      LOCALES_LIST.forEach(el => {
+        const tr = translations.find(tr => tr.locale === el.value)
+        result[el.value] = (tr && tr.text) || undefined
+      })
+      return result
     },
     hasNavigateToDictionary () {
       return this.$route.name !== 'dictionary'
@@ -145,8 +193,7 @@ export default {
       const items = LOCALES_LIST.map(el => {
         return {
           ...el,
-          rules: [this.rules.required],
-          key: el.value.replace('-', ''),
+          key: el.value,
         }
       })
       const index = items.findIndex(el => el.value === locale)
@@ -171,17 +218,33 @@ export default {
     },
   },
   methods: {
+    onInput (key, value) {
+      this.model[key] = value
+    },
+    onBlur (key) {
+      if (!this.model[key] && this.translations[key]) {
+        this.model[key] = this.translations[key]
+      }
+    },
     onOpen () {
+      this.isTranslationsUpdated = false
       if (!this.create) {
         this.$nextTick(() => {
-          const item = this.item || {}
+          const values = (this.item && this.item.values) || []
+          const translations = (this.item && this.item.translations) || []
+          const valuesMap = {}
+          LOCALES_LIST.forEach(el => {
+            const v = values.find(val => val.locale === el.value)
+            const tr = translations.find(tr => tr.locale === el.value)
+            valuesMap[el.value] = (v && v.text) || (tr && tr.text) || undefined
+          })
           this.model = {
-            en: item.en,
-            zhHans: item.zhHans,
-            zhHant: item.zhHant,
-            fr: item.fr,
-            ru: item.ru,
-            uk: item.uk,
+            en: valuesMap.en,
+            'zh-Hans': valuesMap['zh-Hans'],
+            'zh-Hant': valuesMap['zh-Hant'],
+            fr: valuesMap.fr,
+            ru: valuesMap.ru,
+            uk: valuesMap.uk,
           }
         })
       }
@@ -189,37 +252,85 @@ export default {
         if (this.$refs[this.$i18n.locale] && this.$refs[this.$i18n.locale][0]) {
           this.$refs[this.$i18n.locale][0].focus()
         }
-      }, 75)
+      }, 250)
     },
     onClose () {
       setTimeout(() => {
         this.model = {
           en: undefined,
-          zhHans: undefined,
-          zhHant: undefined,
+          'zh-Hans': undefined,
+          'zh-Hant': undefined,
           fr: undefined,
           ru: undefined,
           uk: undefined,
         }
-        if (this.$refs.form && this.$refs.form[0]) {
-          this.$refs.form[0].reset()
+        if (this.$refs.form) {
+          this.$refs.form.reset()
         }
       }, 250)
     },
     onSubmit () {
+      const isValid = this.$refs.form.validate(true)
+      if (!isValid) return
       if (this.create) {
         this.createWord()
       } else {
         this.updateWord()
       }
     },
+    async translateWord () {
+      const isValid = this.$refs.form.validate(true)
+      if (!isValid) return
+      const text = this.model[this.defaultLocale]
+      try {
+        this.translateLoading = true
+        const response = await this.$apollo.query({
+          query: TRANSLATE_WORD,
+          variables: {
+            orgId: this.orgId,
+            text,
+            sourceLang: this.defaultLocale,
+          },
+        })
+        const result = (response && response.data && response.data.translateWord) || []
+        this.$logger.info('Translate result', result)
+        const translations = result.map(el => {
+          const key = el.locale
+          if (!this.model[key] || this.model[key] === this.translations[key]) {
+            this.model[key] = el.text
+          }
+          return {
+            locale: el.locale,
+            text: el.text,
+          }
+        })
+        this.translationsResult = translations
+        this.isTranslationsUpdated = true
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.translateLoading = false
+      }
+    },
     async createWord () {
-      if (!this.$refs.form[0].validate(true)) return
       try {
         this.loading = true
         const input = {
-          ...this.model,
-          defaultLocale: this.wordLocale,
+          defaultLocale: this.$i18n.locale,
+          values: [],
+        }
+        LOCALES_LIST.forEach(el => {
+          const locale = el.value
+          const text = this.model[locale] && this.model[locale] === this.translations[locale]
+            ? null
+            : this.model[el.value] || null
+          input.values.push({
+            locale,
+            text,
+          })
+        })
+        if (this.isTranslationsUpdated) {
+          input.translations = this.translationsResult
         }
         const response = await this.$apollo.mutate({
           mutation: CREATE_WORD,
@@ -240,12 +351,24 @@ export default {
     async updateWord () {
       const id = this.item && this.item.id
       if (!id) return
-      if (!this.$refs.form[0].validate(true)) return
       try {
         this.loading = true
         const input = {
           id,
-          ...this.model,
+          values: [],
+        }
+        LOCALES_LIST.forEach(el => {
+          const locale = el.value
+          const text = this.model[locale] && this.model[locale] === this.translations[locale]
+            ? null
+            : this.model[el.value] || null
+          input.values.push({
+            locale,
+            text,
+          })
+        })
+        if (this.isTranslationsUpdated) {
+          input.translations = this.translationsResult
         }
         const response = await this.$apollo.mutate({
           mutation: UPDATE_WORD,

@@ -30,20 +30,21 @@
     <td class="pr-sm">
       <Select
         v-if="isOwnerOrManager"
-        :value="item.name"
+        :value="wordItem"
         :placeholder="hasNoTranslation ? $t('words.noTranslation') : $t('shipping.name')"
         :lazy="create"
         :search.sync="wordSearch"
         :items="words"
-        :item-text="wordLocale"
         :has-arrow-icon="false"
         :input-class="hasNoTranslation ? 'placeholder-yellow-300': ''"
         :active-style="{ width: '180px', zIndex: 10 }"
         min-width="180px"
         max-width="180px"
         item-value="id"
+        item-text="text"
         solo
         searchable
+        no-filter
         class="relative"
         append-slot-class="w-auto pr-sm"
         @click:prepend-item="wordCreateDialog = true"
@@ -57,7 +58,7 @@
         </template>
         <template v-slot:append="{ open }">
           <button
-            v-if="open && hasWord"
+            v-if="open && canEdit"
             class="flex items-center jusitfy-center text-blue-500 focus:outline-none cursor-pointer"
             @click="wordEditDialog = true"
           >
@@ -66,7 +67,7 @@
         </template>
       </Select>
       <span v-else class="pl-sm">
-        {{ item.name }}
+        {{ wordItem.text }}
       </span>
       <WordDialog
         v-if="isOwnerOrManager"
@@ -77,7 +78,7 @@
         @create="onWordCreate"
       />
       <WordDialog
-        v-if="isOwnerOrManager && hasWord"
+        v-if="isOwnerOrManager && canEdit"
         v-model="wordEditDialog"
         :org-id="orgId"
         :product-id="item.id"
@@ -443,7 +444,7 @@
 </template>
 
 <script>
-import { InvoiceProfitType, Role } from '../graphql/enums'
+import { InvoiceProfitType, Role, WordStatus } from '../graphql/enums'
 import { SEARCH_WORDS } from '../graphql/queries'
 import product from '../mixins/product'
 import { isLink } from '../util/helpers'
@@ -492,7 +493,7 @@ export default {
         return {
           orgId: this.orgId,
           search: this.wordSearch,
-          locale: this.wordLocale,
+          locale: this.$i18n.locale,
         }
       },
       fetchPolicy: 'cache-and-network',
@@ -515,18 +516,54 @@ export default {
       return this.$route.params.orgId
     },
     hasNoTranslation () {
-      return this.item.name && !this.item.name[this.wordLocale]
+      return this.item.name && !this.wordItem[this.$i18n.locale]
     },
     hasWord () {
       return this.item.name && this.item.name.id
     },
-    wordLocale () {
-      const locale = this.$i18n.locale
-      return locale.replace('-', '')
+    canEdit () {
+      const word = this.item.name || {}
+      return this.hasWord && word.status === WordStatus.DRAFT
+    },
+    wordItem () {
+      const word = this.item.name || {}
+      const values = word.values || []
+      const translations = word.translations || []
+      const result = {}
+      translations.forEach(el => {
+        result[el.locale] = el.text
+      })
+      values.forEach(el => {
+        if (el.text) {
+          result[el.locale] = el.text
+        }
+      })
+      const text = result[this.$i18n.locale] || result[word.defaultLocale]
+      return {
+        ...word,
+        text,
+      }
     },
     words () {
       const items = (this.searchWords && this.searchWords.items) || []
-      return items
+      return items.map(word => {
+        const values = word.values || []
+        const translations = word.translations || []
+        const result = {}
+        translations.forEach(el => {
+          result[el.locale] = el.text
+        })
+        values.forEach(el => {
+          if (el.text) {
+            result[el.locale] = el.text
+          }
+        })
+        const text = result[this.$i18n.locale] || result[word.defaultLocale]
+        return {
+          ...word,
+          text,
+        }
+      })
     },
     commentators () {
       const result = {}

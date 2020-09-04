@@ -74,6 +74,8 @@ export default {
     stateIcon: Boolean,
     stateIconOnValidate: Boolean,
     stateColor: String,
+    // TODO: need slot for replace any state icon
+    stateIconUser: Boolean,
     slotClass: {
       type: String,
       default: 'w-10',
@@ -548,26 +550,31 @@ export default {
       let color = 'text-pink-500'
       const isValid = !this.hasError && !this.hasWarn && this.valid
       if (isValid) {
-        color = 'text-green-500'
+        color = this.stateIconUser ? 'text-blue-500' : 'text-green-500'
       } else if (this.stateColor === 'none') {
         color = 'text-transparent'
       } else if (!this.required || this.stateColor === 'warn') {
         color = 'text-yellow-500'
       }
+      const validIconPath = this.stateIconUser
+        ? 'M10.5754 8.01019C11.5124 8.31943 12.402 8.88729 13.1424 9.66794C14.3403 10.9308 15 12.5667 15 14.2742V15H0V14.2742C0 12.5667 0.659693 10.9308 1.85753 9.66797C2.59793 8.88737 3.48754 8.31947 4.42456 8.01019C3.49101 7.16821 2.90322 5.94991 2.90322 4.59677C2.90322 2.06211 4.96536 0 7.50002 0C10.0347 0 12.0968 2.06211 12.0968 4.59677C12.0968 5.94991 11.509 7.16821 10.5754 8.01019ZM7.49998 1.45161C5.76575 1.45161 4.35483 2.86254 4.35483 4.59677C4.35483 6.33101 5.76575 7.74193 7.49998 7.74193C9.23422 7.74193 10.6451 6.33101 10.6451 4.59677C10.6451 2.86254 9.23422 1.45161 7.49998 1.45161ZM6.04837 9.19355C4.06324 9.19355 1.86298 11.0122 1.50275 13.5484H13.4972C13.137 11.0122 10.9367 9.19355 8.95159 9.19355H6.04837Z'
+        : 'M1.41421 1L6.07107 5.65685L4.65685 7.07107L0 2.41421L1.41421 1Z M10.3137 1.41421L4.65685 7.07107L3.24264 5.65685L8.8995 0L10.3137 1.41421Z'
+      const validIconWidth = this.stateIconUser ? 15 : 11
+      const validIconHeight = this.stateIconUser ? 15 : 9
       const svgData = {
         class: color,
         attrs: {
           xmlns: 'http://www.w3.org/2000/svg',
           fill: 'none',
-          width: isValid ? 11 : 8,
-          height: isValid ? 9 : 8,
-          viewBox: isValid ? '0 0 11 9' : '0 0 8 8',
+          width: isValid ? validIconWidth : 8,
+          height: isValid ? validIconHeight : 8,
+          viewBox: isValid ? `0 0 ${validIconWidth} ${validIconHeight}` : '0 0 8 8',
         },
       }
       if (isValid) {
         svg.push(this.$createElement('svg', svgData, [this.$createElement('path', {
           attrs: {
-            d: 'M1.41421 1L6.07107 5.65685L4.65685 7.07107L0 2.41421L1.41421 1Z M10.3137 1.41421L4.65685 7.07107L3.24264 5.65685L8.8995 0L10.3137 1.41421Z',
+            d: validIconPath,
             fill: 'currentColor',
           },
         })]))
