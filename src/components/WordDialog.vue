@@ -71,6 +71,13 @@
             class="inline-flex justify-end items-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
             @click="translateWord"
           >
+            <v-progress-circular
+              v-if="translateLoading"
+              indeterminate
+              size="16"
+              width="2"
+              class="mr-1"
+            />
             <i class="text-2xl mr-sm">
               <Icon>
                 {{ icons.mdiGoogleTranslate }}
@@ -147,6 +154,7 @@ export default {
       icons: {
         mdiGoogleTranslate,
       },
+      translateLoading: false,
       translationsResult: [],
       isTranslationsUpdated: false,
     }
@@ -307,6 +315,10 @@ export default {
         this.translationsResult = translations
         this.isTranslationsUpdated = true
       } catch (error) {
+        this.$notify({
+          color: 'error',
+          text: error.message,
+        })
         throw new Error(error)
       } finally {
         this.translateLoading = false

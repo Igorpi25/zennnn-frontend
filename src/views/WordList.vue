@@ -173,10 +173,10 @@
                   </span>
                   <span v-else class="inline-flex items-center">
                     <span class="flex-grow">
-                      {{ getHeaderValue(item, header.key).text }}
+                      {{ item[header.key] }}
                     </span>
                     <i
-                      v-if="getHeaderValue(item, header.key).googleCloudTranslate"
+                      v-if="item[`${header.key}_ct`]"
                       class="text-gray-200 flex-shrink-0 ml-1"
                     >
                       <Icon>
@@ -340,7 +340,25 @@ export default {
       return [...locales, more]
     },
     items () {
-      return (this.listWords && this.listWords.items) || []
+      const items = (this.listWords && this.listWords.items) || []
+      return items.map(item => {
+        const result = item
+        const values = item.values || []
+        const translations = item.translations || []
+        LOCALES_LIST.forEach(locale => {
+          const key = locale.value
+          const value = values.find(v => v.locale === key)
+          if (value && value.text) {
+            result[key] = value.text
+          } else {
+            const translation = translations.find(tr => tr.locale === key)
+            const translationText = translation && translation.text
+            result[key] = translationText
+            result[`${key}_ct`] = !!translationText
+          }
+        })
+        return item
+      })
     },
     groupBy () {
       return [this.$i18n.locale]
@@ -350,24 +368,6 @@ export default {
     },
   },
   methods: {
-    getHeaderValue (item, key) {
-      const values = item.values || []
-      const translations = item.translations || []
-      const value = values.find(el => el.locale === key)
-      if (value && value.text) {
-        return {
-          text: value.text,
-        }
-      } else {
-        const translation = translations.find(el => el.locale === key)
-        const translationText = translation && translation.text
-        const googleCloudTranslate = !!translationText
-        return {
-          text: translationText,
-          googleCloudTranslate,
-        }
-      }
-    },
     openEditItem (item) {
       this.editItem = item
       this.$nextTick(() => {
@@ -395,9 +395,7 @@ export default {
       const re = /[A-ZА-ЯҐЄІЇ\u4e00-\u9fff]|[\u3400-\u4dbf]|[\u{20000}-\u{2a6df}]|[\u{2a700}-\u{2b73f}]|[\u{2b740}-\u{2b81f}]|[\u{2b820}-\u{2ceaf}]|[\uf900-\ufaff]|[\u3300-\u33ff]|[\ufe30-\ufe4f]|[\uf900-\ufaff]|[\u{2f800}-\u{2fa1f}]/u
       const others = []
       const grouped = items.reduce((acc, curr) => {
-        const values = curr.values || []
-        const nameObj = values.find(el => el.locale === key) || {}
-        const name = nameObj.text || ''
+        const name = curr[key] || ''
         const char = name.charAt(0).toLocaleUpperCase()
         if (re.test(char)) {
           if (Object.prototype.hasOwnProperty.call(acc, char)) {
