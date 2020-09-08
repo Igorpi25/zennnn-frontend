@@ -1,12 +1,5 @@
 import gql from 'graphql-tag'
 
-export const WORD_TRANSLATION_FRAGMENT = gql`
-  fragment WordTranslationFragment on WordTranslation {
-    locale
-    text
-  }
-`
-
 export const COMMENT_FRAGMENT = gql`
   fragment CommentFragment on Comment {
     id
@@ -111,10 +104,12 @@ export const PRODUCT_FRAGMENT = gql`
       status
       defaultLocale
       values {
-        ...WordTranslationFragment
+        locale
+        text
       }
       translations {
-        ...WordTranslationFragment
+        locale
+        text
       }
     }
     article
@@ -159,7 +154,6 @@ export const PRODUCT_FRAGMENT = gql`
   }
   ${COMMENT_FRAGMENT}
   ${ATTACH_FILE_FRAGMENT}
-  ${WORD_TRANSLATION_FRAGMENT}
 `
 
 export const PERSON_FRAGMENT = gql`
@@ -654,10 +648,12 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
       status
       defaultLocale
       values {
-        ...WordTranslationFragment
+        locale
+        text
       }
       translations {
-        ...WordTranslationFragment
+        locale
+        text
       }
     }
     article
@@ -687,7 +683,6 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
   }
   ${COMMENT_FRAGMENT}
   ${ATTACH_FILE_FRAGMENT}
-  ${WORD_TRANSLATION_FRAGMENT}
 `
 
 export const PAPER_INVOICE_FRAGMENT = gql`

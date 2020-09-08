@@ -1,8 +1,6 @@
 
 import gql from 'graphql-tag'
 
-import { WORD_TRANSLATION_FRAGMENT } from './typeDefs'
-
 export const LIST_WORDS = gql`
   query ListWords($filters: ListWordsFilters) {
     listWords(filters: $filters) {
@@ -11,10 +9,12 @@ export const LIST_WORDS = gql`
         status
         defaultLocale
         values {
-          ...WordTranslationFragment
+          locale
+          text
         }
         translations {
-          ...WordTranslationFragment
+          locale
+          text
         }
         products {
           id
@@ -29,14 +29,13 @@ export const LIST_WORDS = gql`
       }
     }
   }
-  ${WORD_TRANSLATION_FRAGMENT}
 `
 
 export const TRANSLATE_WORD = gql`
   query TranslateWord($text: String!, $sourceLang: String!) {
     translateWord(text: $text, sourceLang: $sourceLang) {
-      ...WordTranslationFragment
+      locale
+      text
     }
   }
-  ${WORD_TRANSLATION_FRAGMENT}
 `

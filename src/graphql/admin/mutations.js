@@ -1,8 +1,6 @@
 
 import gql from 'graphql-tag'
 
-import { WORD_TRANSLATION_FRAGMENT } from './typeDefs'
-
 export const CREATE_WORD = gql`
   mutation CreateWord($input: CreateWordInput!) {
     createWord(input: $input) {
@@ -10,14 +8,15 @@ export const CREATE_WORD = gql`
       status
       defaultLocale
       values {
-        ...WordTranslationFragment
+        locale
+        text
       }
       translations {
-        ...WordTranslationFragment
+        locale
+        text
       }
     }
   }
-  ${WORD_TRANSLATION_FRAGMENT}
 `
 
 export const UPDATE_WORD = gql`
@@ -27,14 +26,15 @@ export const UPDATE_WORD = gql`
       status
       defaultLocale
       values {
-        ...WordTranslationFragment
+        locale
+        text
       }
       translations {
-        ...WordTranslationFragment
+        locale
+        text
       }
     }
   }
-  ${WORD_TRANSLATION_FRAGMENT}
 `
 
 export const APPROVE_WORDS = gql`
@@ -50,12 +50,13 @@ export const MERGE_WORDS = gql`
       status
       defaultLocale
       values {
-        ...WordTranslationFragment
+        locale
+        text
       }
       translations {
-        ...WordTranslationFragment
+        locale
+        text
       }
     }
   }
-  ${WORD_TRANSLATION_FRAGMENT}
 `
