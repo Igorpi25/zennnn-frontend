@@ -130,7 +130,7 @@ module.exports = {
         2: '2',
       },
       transitionProperty: {
-        'color': 'color',
+        color: 'color',
         'bg-and-color': 'background-color, color',
         'colors-and-opacity': 'background-color, border-color, color, fill, stroke, opacity',
       },
@@ -156,7 +156,7 @@ module.exports = {
     overflow: ['responsive', 'hover'],
     visibility: ['group-hover'],
     translate: ['responsive', 'hover', 'focus', 'group-hover'],
-    textColor: ['group-hover', 'responsive', 'hover', 'focus']
+    textColor: ['group-hover', 'responsive', 'hover', 'focus'],
   },
   plugins: [],
 }

@@ -1,11 +1,11 @@
 import Vue from 'vue'
-import App from './PaperApp.vue'
-import router from './router/paper'
+import App from './AdminApp.vue'
+import router from './router/admin'
 import {
   i18n,
   vuetify,
   apolloProvider,
-} from './plugins/paper'
+} from './plugins/admin'
 
 // Base components
 import './components'

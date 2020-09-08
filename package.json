@@ -1,16 +1,16 @@
 {
   "name": "zennnn-frontend",
-  "version": "0.32.1",
+  "version": "0.33.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint --mode production",
-    "build:paper": "vue-cli-service build src/paper.js --dest dist_paper --mode paper",
+    "build:admin": "vue-cli-service build src/admin.js --dest dist_admin --mode admin",
     "build:stable": "vue-cli-service build --mode stable",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
-    "serve:paper": "vue-cli-service serve src/paper.js --mode paper.dev"
+    "serve:admin": "vue-cli-service serve src/admin.js --mode admin.dev"
   },
   "dependencies": {
     "@mdi/js": "^4.9.95",
