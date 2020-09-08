@@ -26,15 +26,15 @@ npm run lint
 
 ### Compiles and hot-reloads Paper app for development
 ```
-npm run serve:paper
+npm run serve:admin
 ```
-Builds Paper app for development with `--mode paper.dev`, using `.env`, `.env.paper.dev` and `.env.paper.dev.local` if they are present.
+Builds Admin app for development with `--mode admin.dev`, using `.env`, `.env.admin.dev` and `.env.admin.dev.local` if they are present.
 
 ### Compiles and minifies Paper app for production
 ```
-npm run build:paper
+npm run build:admin
 ```
-Builds Paper app for production with `--mode paper`, using `.env`, `.env.paper` and `.env.paper.local` if they are present.
+Builds Paper app for production with `--mode admin`, using `.env`, `.env.admin` and `.env.admin.local` if they are present.
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -6,7 +6,7 @@
     <div class="relative bg-gray-400">
       <div class="flex items-center justify-center text-lg text-white font-semibold p-8 pb-2">
         <div class="text-white text-xl font-semibold">
-          {{ create ? $t('words.addWordTitle') : $t('words.editWord') }}
+          {{ create ? $t('words.addWordTitle') : isMerge ? $t('words.mergeWords') : $t('words.editWord') }}
         </div>
       </div>
       <div class="text-gray-100 p-5">
@@ -58,7 +58,7 @@
             </template>
           </TextField>
         </Form>
-        <div :class="['flex px-sm pt-5', hasNavigateToDictionary ? 'justify-between' : 'justify-end']">
+        <div :class="['flex px-sm pt-5', hasNavigateToDictionary || isAdmin ? 'justify-between' : 'justify-end']">
           <router-link
             v-if="hasNavigateToDictionary"
             :to="{ name: 'dictionary', params: { orgId } }"
@@ -67,6 +67,30 @@
             <i class="zi-edit text-2xl mr-sm" />
             <span>{{ $t('header.dictionary') }}</span>
           </router-link>
+          <div v-else-if="isAdmin">
+            <div class="flex items-center">
+              <span class="w-1/2 text-right mr-1">{{ $t('words.defaultLanguage') }}:</span>
+              <Select
+                v-model="defaultLocaleLazy"
+                :items="locales"
+                :has-arrow-icon="false"
+                solo
+                hide-details
+                class="w-1/2"
+              />
+            </div>
+            <div v-if="isMerge" class="flex items-center">
+              <span class="w-1/2 text-right mr-1">{{ $t('words.status') }}:</span>
+              <Select
+                v-model="statusLazy"
+                :items="statuses"
+                :has-arrow-icon="false"
+                solo
+                hide-details
+                class="w-1/2"
+              />
+            </div>
+          </div>
           <button
             class="inline-flex justify-end items-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
             @click="translateWord"
@@ -121,7 +145,9 @@ import { mdiGoogleTranslate } from '@mdi/js'
 
 import { LOCALES_LIST } from '../config/globals'
 import { CREATE_WORD, UPDATE_WORD } from '../graphql/mutations'
+import { CREATE_WORD as ADMIN_CREATE_WORD, UPDATE_WORD as ADMIN_UPDATE_WORD } from '../graphql/admin/mutations'
 import { TRANSLATE_WORD } from '../graphql/queries'
+import { TRANSLATE_WORD as ADMIN_TRANSLATE_WORD } from '../graphql/admin/queries'
 
 export default {
   name: 'WordDialog',
@@ -134,6 +160,8 @@ export default {
       required: true,
     },
     productId: String,
+    isAdmin: Boolean,
+    isMerge: Boolean,
   },
   data () {
     return {
@@ -157,10 +185,15 @@ export default {
       translateLoading: false,
       translationsResult: [],
       isTranslationsUpdated: false,
+      defaultLocaleLazy: this.$i18n.locale,
+      statusLazy: '',
     }
   },
   computed: {
     defaultLocale () {
+      if (this.isAdmin) {
+        return this.defaultLocaleLazy
+      }
       if (this.create) {
         return this.$i18n.locale
       } else {
@@ -194,7 +227,7 @@ export default {
       return result
     },
     hasNavigateToDictionary () {
-      return this.$route.name !== 'dictionary'
+      return this.$route.name !== 'dictionary' && !this.isAdmin
     },
     locales () {
       const locale = this.$i18n.locale
@@ -210,6 +243,18 @@ export default {
         items.splice(0, 0, items.splice(index, 1)[0])
       }
       return items
+    },
+    statuses () {
+      return [
+        {
+          text: this.$t('words.DRAFT'),
+          value: 'DRAFT',
+        },
+        {
+          text: this.$t('words.APPROVED'),
+          value: 'APPROVED',
+        },
+      ]
     },
   },
   watch: {
@@ -236,6 +281,8 @@ export default {
     },
     onOpen () {
       this.isTranslationsUpdated = false
+      this.defaultLocaleLazy = this.create ? this.$i18n.locale : this.item && this.item.defaultLocale
+      this.statusLazy = this.item && this.item.status
       if (!this.create) {
         this.$nextTick(() => {
           const values = (this.item && this.item.values) || []
@@ -280,7 +327,27 @@ export default {
     onSubmit () {
       const isValid = this.$refs.form.validate(true)
       if (!isValid) return
-      if (this.create) {
+      if (this.isMerge) {
+        const input = {
+          status: this.statusLazy,
+          defaultLocale: this.defaultLocale,
+          values: [],
+        }
+        LOCALES_LIST.forEach(el => {
+          const locale = el.value
+          const text = this.model[locale] && this.model[locale] === this.translations[locale]
+            ? null
+            : this.model[el.value] || null
+          input.values.push({
+            locale,
+            text,
+          })
+        })
+        if (this.isTranslationsUpdated) {
+          input.translations = this.translationsResult
+        }
+        this.$emit('update', input)
+      } else if (this.create) {
         this.createWord()
       } else {
         this.updateWord()
@@ -292,8 +359,9 @@ export default {
       const text = this.model[this.defaultLocale]
       try {
         this.translateLoading = true
+        const query = this.isAdmin ? ADMIN_TRANSLATE_WORD : TRANSLATE_WORD
         const response = await this.$apollo.query({
-          query: TRANSLATE_WORD,
+          query,
           variables: {
             orgId: this.orgId,
             text,
@@ -328,7 +396,7 @@ export default {
       try {
         this.loading = true
         const input = {
-          defaultLocale: this.$i18n.locale,
+          defaultLocale: this.isAdmin ? this.defaultLocale : this.$i18n.locale,
           values: [],
         }
         LOCALES_LIST.forEach(el => {
@@ -344,13 +412,17 @@ export default {
         if (this.isTranslationsUpdated) {
           input.translations = this.translationsResult
         }
+        const mutation = this.isAdmin ? ADMIN_CREATE_WORD : CREATE_WORD
+        const variables = {
+          input,
+        }
+        if (!this.isAdmin) {
+          variables.orgId = this.orgId
+          variables.productId = this.productId
+        }
         const response = await this.$apollo.mutate({
-          mutation: CREATE_WORD,
-          variables: {
-            orgId: this.orgId,
-            productId: this.productId,
-            input,
-          },
+          mutation,
+          variables,
         })
         const result = response && response.data && response.data.createWord
         this.$emit('create', result)
@@ -382,12 +454,19 @@ export default {
         if (this.isTranslationsUpdated) {
           input.translations = this.translationsResult
         }
+        if (this.isAdmin) {
+          input.defaultLocale = this.defaultLocale
+        }
+        const mutation = this.isAdmin ? ADMIN_UPDATE_WORD : UPDATE_WORD
+        const variables = {
+          input,
+        }
+        if (!this.isAdmin) {
+          variables.orgId = this.orgId
+        }
         const response = await this.$apollo.mutate({
-          mutation: UPDATE_WORD,
-          variables: {
-            orgId: this.orgId,
-            input,
-          },
+          mutation,
+          variables,
         })
         const result = response && response.data && response.data.updateWord
         this.$emit('update', result)

@@ -1,0 +1,140 @@
+{
+  "signin": {
+    "title": "Революционный сервис для ведения международной торговли",
+    "subtitle": "Простой. Мультиязычный.<br>Мощный.",
+    "formTitle": "Войти",
+    "noAccount": "Нет аккаунта?",
+    "signup": "Зарегистрируйтесь",
+    "welcomeHead": "С возвращением в ZENNNN,",
+    "welcomeSubhead": "войдите,",
+    "welcomeContent": "чтобы продолжить работу.",
+    "login": "Логин (эл. почта)",
+    "password": "Пароль",
+    "forgotPassword": "Забыли пароль?",
+    "doNotRememberLogin": "Не помню логин",
+    "rememberMe": "Запомнить меня",
+    "submit": "Войти"
+  },
+  "words": {
+    "addWord": "Добавить слово",
+    "addWordTitle": "Добавьте слово",
+    "editWord": "Редактировать слово",
+    "mergeWords": "Объединить слова",
+    "noData": "В вашем словаре пока пусто,<br>добавьте какое-нибудь слово и его перевод.",
+    "more": "Еще",
+    "noTranslation": "нет перевода",
+    "translate": "Перевести",
+    "defaultLanguage": "Язык по умолчанию",
+    "status": "Статус",
+    "noFilter": "Без фильтра",
+    "approve": "Одобрить",
+    "merge": "Объединить"
+  },
+  "header": {
+    "requisites": "Реквизиты компаний",
+    "myCompanies": "Мои аккаунты",
+    "dictionary": "Словарь",
+    "inbox": "Входящие",
+    "tariffs": "Тарифы",
+    "signin": "Войти",
+    "signout": "Выйти",
+    "trial": "Пробный",
+    "promo": "Промо",
+    "start": "Старт",
+    "standard": "Стандарт",
+    "advanced": "Про",
+    "premium": "Премиум",
+    "expired": "Истек"
+  },
+  "dataTable": {
+    "noData": "Отсутствуют данные",
+    "noResult": "Не найдено подходящих записей",
+    "ariaLabel": {}
+  },
+  "select": {
+    "noData": "Отсутствуют данные",
+    "noResult": "Не найдено подходящих записей"
+  },
+  "action": {
+    "cancel": "Отмена",
+    "apply": "Применить",
+    "save": "Сохранить",
+    "create": "Создать",
+    "add": "Добавить",
+    "loading": "Загрузка",
+    "collapse": "Свернуть",
+    "collapseAll": "Свернуть все",
+    "expand": "Развернуть",
+    "expandAll": "Развернуть все",
+    "dontSave": "Не сохранять",
+    "createPatternName": "Придумайте название шаблону"
+  },
+  "message": {
+    "notSavedWarning": "Уверены, что хотите закрыть окно без сохранения изменений?",
+    "userNotConfirmed": "Пользователь не подтвержден, ссылка с подтверждением у вас на email.",
+    "linkCopied": "Ссылка скопирована в буфер обмена.",
+    "linkNotCopied": "Не удалось скопировать ссылку в буфер обмена.",
+    "emailResent": "Письмо отправлено повторно.",
+    "failedToSent": "Не удалось отправить.",
+    "authByGoogle": "Идет авторизация через google.",
+    "authByGoogleError": "Не удалось получить данные профиля с google.",
+    "emailSent": "На адрес электронной почты {email} направлено письмо.",
+    "passwordChanged": "Пароль изменен.",
+    "emailConfirmed": "Email подтвержден.",
+    "emailAlreadyConfirmed": "Email был подтвержден ранее.",
+    "incorrectRestorePassword": "Не корректный запрос смены пароля.",
+    "documentGenerateLoading": "Документ генерируется, пожалуйста подождите..."
+  },
+  "alert": {
+    "insufficientAccess": "У вас недостаточно прав доступа",
+    "attention": "Внимание!",
+    "removeDeal": "Вы действительно хотите удалить сделку?",
+    "removeInvoice": "Вы действительно хотите удалить накладную?",
+    "removeProduct": "Вы действительно хотите удалить товар?",
+    "removeClient": "Вы действительно хотите удалить клиента?",
+    "removeSupplier": "Вы действительно хотите удалить поставщика?",
+    "removeRequisites": "Вы действительно хотите удалить реквизиты?",
+    "removeContract": "Вы действительно хотите удалить документ?",
+    "removeEmployee": "Вы действительно хотите удалить сотрудника?"
+  },
+  "rule": {
+    "phone": "Номер телефона некорректного формата",
+    "onlyLatin": "Используйте латинские буквы (A—Z) и спецсимволы",
+    "required": "Заполните это поле.",
+    "requiredSelect": "Выберите из списка.",
+    "email": "Почта не корректного формата.",
+    "passwordsDoNotMatch": "Введенные пароли не совпадают.",
+    "minLength": "Используйте не менее {n} символов."
+  },
+  "preposition": {
+    "from": "от",
+    "and": "и",
+    "or": "или",
+    "through": "через"
+  },
+  "label": {
+    "noSort": "Без сортировки",
+    "saveAsPattern": "Сохранить как шаблон",
+    "template": "Шаблоны",
+    "defaultTemplateName": "Шаблон по умолчанию",
+    "saveChangesBeforeClose": "Сохранить изменения в документе перед закрытием?",
+    "saveDocChangesBeforeClose": "Сохранить изменения в документе {doc} перед закрытием?",
+    "saveChangesHint": "Если не сохранить, изменения будут утрачены!"
+  },
+  "placeholder": {
+    "notIndicated": "не указано",
+    "notChosen": "не выбрано",
+    "emptyDate": "--.--.----",
+    "emptyText": "----",
+    "emptyNumber": "-",
+    "pageSearch": "быстрый поиск по странице",
+    "startTyping": "Начните печатать"
+  },
+  "role": {
+    "OWNER": "Директор",
+    "MANAGER": "Менеджер",
+    "ACCOUNTANT": "Бухгалтер",
+    "WAREHOUSEMAN": "Работник склада",
+    "FREELANCER": "Фрилансер"
+  }
+}

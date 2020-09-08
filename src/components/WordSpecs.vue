@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap w-full h-full relative">
+  <div class="flex flex-wrap w-full relative">
     <div
       v-for="item in items"
       :key="item.specId"
@@ -19,7 +19,7 @@
       </v-fade-transition>
       <router-link
         :to="{ name: 'spec', params: { specId: item.specId, orgId } }"
-        class="group inline-flex pt-1"
+        class="group inline-flex py-1"
       >
         <span class="flex-grow truncate text-gray-100 group-hover:text-white mr-1">
           {{ item.specNo }}
