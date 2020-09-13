@@ -3,7 +3,7 @@
     <div
       v-for="item in items"
       :key="item.specId"
-      class="w-full sm:w-1/2 lg:w-1/4 text-gray-100"
+      class="w-1/4 text-gray-100"
     >
       <v-fade-transition>
         <div
@@ -19,12 +19,12 @@
       </v-fade-transition>
       <router-link
         :to="{ name: 'spec', params: { specId: item.specId, orgId } }"
-        class="group inline-flex py-1"
+        class="group inline-flex max-w-full py-1"
       >
-        <span class="flex-grow truncate text-gray-100 group-hover:text-white mr-1">
+        <span class="flex-grow truncate text-gray-100 group-hover:text-white">
           {{ item.specNo }}
         </span>
-        <i class="flex-shrink-0 zi-magnifier align-middle text-2xl text-gray-200 group-hover:text-gray-100" />
+        <i class="flex-shrink-0 zi-magnifier align-middle text-2xl text-gray-200 group-hover:text-gray-100 mx-1" />
       </router-link>
     </div>
   </div>

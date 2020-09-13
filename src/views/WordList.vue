@@ -193,15 +193,14 @@
                 style="background-color: transparent;"
               >
                 <td :colspan="headers.length" class="relative p-0">
-                  <div class="table w-full flex items-center bg-gray-700 rounded-b-md h-full py-2 px-3 -mt-2" style="min-height: 56px;">
+                  <div class="bg-gray-700 rounded-b-md py-2 px-3 -mt-1" style="min-height: 52px;">
                     <WordSpecs
                       :org-id="orgId"
                       :word-id="item.id"
                     />
                   </div>
                   <div
-                    class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0"
-                    style="top: -8px;"
+                    class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
                   />
                 </td>
               </tr>

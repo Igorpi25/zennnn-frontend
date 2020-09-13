@@ -319,28 +319,27 @@
                   style="background-color: transparent;"
                 >
                   <td :colspan="headers.length" class="relative p-0">
-                    <div
-                      class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
-                    />
-                    <div class="flex items-center bg-gray-700 rounded-b-md h-full py-2 -mt-2 px-3" style="min-height: 48px;">
-                      <div class="flex flex-wrap w-full h-full relative">
+                    <div class="bg-gray-700 rounded-b-md py-2 px-3 -mt-1" style="min-height: 52px;">
+                      <div class="w-full flex flex-wrap">
                         <div
                           v-for="p in item.products"
                           :key="p.id"
-                          class="w-full sm:w-1/2 lg:w-1/4 text-gray-100"
+                          class="w-1/4 text-gray-100"
                         >
-                          <div class="flex">
+                          <div class="flex py-1">
                             <WordProduct
                               :images="p.images"
                             />
-                            <div class="flex flex-col leading-none overflow-hidden">
+                            <div class="flex items-center leading-none overflow-hidden">
                               <div class="truncate" style="min-height: 16px;">{{ p.article }}</div>
-                              <div class="truncate text-sm text-gray-200">{{ p.description }}</div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                    <div
+                      class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
+                    />
                   </td>
                 </tr>
               </template>

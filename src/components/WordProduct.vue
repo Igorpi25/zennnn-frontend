@@ -10,9 +10,9 @@
     offset-x
   >
     <template v-slot:activator="{ on }">
-      <div v-on="on" class="inline-block align-middle pr-2">
+      <div v-on="on" class="inline-flex align-middle pr-2">
         <div
-          class="w-7 h-7 rounded inline-block"
+          class="w-7 h-7 rounded"
         >
           <v-img
             v-if="imageSrc"
@@ -26,6 +26,7 @@
               </div>
             </template>
           </v-img>
+          <div v-else class="w-full h-full rounded bg-gray-600" />
         </div>
       </div>
     </template>
