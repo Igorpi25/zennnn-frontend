@@ -23,12 +23,9 @@ export const LIST_WORDS = gql`
         status
         defaultLocale
         values {
-          locale
-          text
-        }
-        translations {
-          locale
-          text
+          k
+          v
+          tr
         }
       }
     }
@@ -43,12 +40,9 @@ export const SEARCH_WORDS = gql`
         status
         defaultLocale
         values {
-          locale
-          text
-        }
-        translations {
-          locale
-          text
+          k
+          v
+          tr
         }
       }
     }
@@ -67,8 +61,9 @@ export const GET_WORD_SPECS = gql`
 export const TRANSLATE_WORD = gql`
   query TranslateWord($orgId: ID!, $text: String!, $sourceLang: String!) {
     translateWord(orgId: $orgId, text: $text, sourceLang: $sourceLang) {
-      locale
-      text
+      k
+      v
+      tr
     }
   }
 `

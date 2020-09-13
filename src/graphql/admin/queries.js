@@ -9,12 +9,9 @@ export const LIST_WORDS = gql`
         status
         defaultLocale
         values {
-          locale
-          text
-        }
-        translations {
-          locale
-          text
+          k
+          v
+          tr
         }
         products {
           id
@@ -34,8 +31,9 @@ export const LIST_WORDS = gql`
 export const TRANSLATE_WORD = gql`
   query TranslateWord($text: String!, $sourceLang: String!) {
     translateWord(text: $text, sourceLang: $sourceLang) {
-      locale
-      text
+      k
+      v
+      tr
     }
   }
 `

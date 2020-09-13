@@ -528,14 +528,11 @@ export default {
     wordItem () {
       const word = this.item.name || {}
       const values = word.values || []
-      const translations = word.translations || []
       const result = {}
-      translations.forEach(el => {
-        result[el.locale] = el.text
-      })
       values.forEach(el => {
-        if (el.text) {
-          result[el.locale] = el.text
+        const v = el.v || el.tr
+        if (v) {
+          result[el.k] = v
         }
       })
       const text = result[this.$i18n.locale] || result[word.defaultLocale]
@@ -548,14 +545,11 @@ export default {
       const items = (this.searchWords && this.searchWords.items) || []
       return items.map(word => {
         const values = word.values || []
-        const translations = word.translations || []
         const result = {}
-        translations.forEach(el => {
-          result[el.locale] = el.text
-        })
         values.forEach(el => {
-          if (el.text) {
-            result[el.locale] = el.text
+          const v = el.v || el.tr
+          if (v) {
+            result[el.k] = v
           }
         })
         const text = result[this.$i18n.locale] || result[word.defaultLocale]

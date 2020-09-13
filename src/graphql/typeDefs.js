@@ -104,12 +104,9 @@ export const PRODUCT_FRAGMENT = gql`
       status
       defaultLocale
       values {
-        locale
-        text
-      }
-      translations {
-        locale
-        text
+        k
+        v
+        tr
       }
     }
     article
@@ -648,12 +645,9 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
       status
       defaultLocale
       values {
-        locale
-        text
-      }
-      translations {
-        locale
-        text
+        k
+        v
+        tr
       }
     }
     article

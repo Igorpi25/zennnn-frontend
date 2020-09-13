@@ -84,7 +84,7 @@
                   </span>
                   <i class="zi-filter relative text-2xl text-gray-200 group-hover:text-gray-100">
                     <div
-                      v-if="filters.status"
+                      v-if="currentFilter"
                       :class="[
                         'absolute top-0 right-0 -mt-xs -mr-1 w-sm h-sm rounded-full border-2 bg-gray-900 border-gray-900 transition-colors duration-100 ease-out',
                       ]"
@@ -110,11 +110,11 @@
                       'hover:bg-gray-300 focus:bg-gray-300',
                       'flex items-center h-9 cursor-pointer focus:outline-none px-5',
                       'transition-colors duration-100 ease-out',
-                      { 'text-white': item.value === filters.status },
+                      { 'text-white': item.value === currentFilter },
                     ]"
                     tabindex="0"
                     role="menuitem"
-                    @click="filters.status = item.value"
+                    @click="currentFilter = item.value"
                   >
                     <span>{{ item.text }}</span>
                   </li>
@@ -297,8 +297,8 @@
                         />
                       </button>
                     </span>
-                    <span v-else class="inline-flex items-center">
-                      <span class="flex-grow">
+                    <span v-else class="inline-flex items-center max-w-full">
+                      <span class="flex-grow truncate">
                         {{ item[header.key] }}
                       </span>
                       <i
@@ -333,9 +333,9 @@
                             <WordProduct
                               :images="p.images"
                             />
-                            <div class="flex flex-col leading-none">
+                            <div class="flex flex-col leading-none overflow-hidden">
                               <div class="truncate" style="min-height: 16px;">{{ p.article }}</div>
-                              <div class="truncate text-sm text-gray-200">asd{{ p.description }}</div>
+                              <div class="truncate text-sm text-gray-200">{{ p.description }}</div>
                             </div>
                           </div>
                         </div>
@@ -425,7 +425,7 @@ export default {
       variables () {
         return {
           filters: {
-            status: this.filters.status,
+            status: this.statusFilter,
           },
         }
       },
@@ -438,9 +438,6 @@ export default {
   data () {
     return {
       loggedOut: false,
-      filters: {
-        status: null,
-      },
       orgId: '',
       search: undefined,
       deleteLoading: null,
@@ -459,14 +456,28 @@ export default {
       mergeLoading: false,
       filterMenu: false,
       mergeItem: {},
+      currentFilter: null,
     }
   },
   computed: {
     currentFilterText () {
-      switch (this.filters.status) {
+      switch (this.currentFilter) {
         case 'DRAFT': return this.$t('words.DRAFT')
         case 'APPROVED': return this.$t('words.APPROVED')
+        case 'DUPLICATES': return this.$t('words.DUPLICATES')
         default: return this.$t('words.noFilter')
+      }
+    },
+    filters () {
+      return {
+        status: this.statusFilter,
+      }
+    },
+    statusFilter () {
+      switch (this.currentFilter) {
+        case 'DRAFT': return 'DRAFT'
+        case 'APPROVED': return 'APPROVED'
+        default: return null
       }
     },
     filtersItems () {
@@ -482,6 +493,10 @@ export default {
         {
           text: this.$t('words.APPROVED'),
           value: 'APPROVED',
+        },
+        {
+          text: this.$t('words.DUPLICATES'),
+          value: 'DUPLICATES',
         },
       ]
     },
@@ -532,27 +547,41 @@ export default {
     },
     items () {
       const items = (this.listWords && this.listWords.items) || []
+      if (this.currentFilter === 'DUPLICATES') {
+        const map = items.map(item => {
+          let duplicatesSearch = ''
+          const result = item
+          const values = item.values || []
+          LOCALES_LIST.forEach(locale => {
+            const key = locale.value
+            const value = values.find(v => v.k === key)
+            if (value) {
+              result[key] = value.v || value.tr || ''
+              result[`${key}_ct`] = !value.v && value.tr
+              duplicatesSearch += `${result[key]}~`
+            }
+          })
+          result.duplicatesSearch = duplicatesSearch
+          return result
+        })
+        return map
+      }
       return items.map(item => {
         const result = item
         const values = item.values || []
-        const translations = item.translations || []
         LOCALES_LIST.forEach(locale => {
           const key = locale.value
-          const value = values.find(v => v.locale === key)
-          if (value && value.text) {
-            result[key] = value.text
-          } else {
-            const translation = translations.find(tr => tr.locale === key)
-            const translationText = translation && translation.text
-            result[key] = translationText
-            result[`${key}_ct`] = !!translationText
+          const value = values.find(v => v.k === key)
+          if (value) {
+            result[key] = value.v || value.tr || ''
+            result[`${key}_ct`] = !value.v && value.tr
           }
         })
-        return item
+        return result
       })
     },
     groupBy () {
-      return [this.$i18n.locale]
+      return this.currentFilter === 'DUPLICATES' ? ['duplicatesSearch'] : [this.$i18n.locale]
     },
     groupDesc () {
       return [false]
@@ -573,7 +602,7 @@ export default {
         el.checked = false
       }
     },
-    'filters.status' () {
+    'currentFilter' () {
       this.selected = []
     },
     search (val) {
@@ -612,34 +641,19 @@ export default {
     },
     openMergeItem () {
       const items = this.items.filter(item => this.selected.includes(item.id))
-      const valuesMap = {}
       const status = items.some(el => el.status === 'APPROVED') ? 'APPROVED' : 'DRAFT'
-      let defaultLocale = null
-      items.forEach(item => {
-        LOCALES_LIST.forEach(locale => {
-          const key = locale.value
-          if (item[key] && !valuesMap[key]) {
-            valuesMap[key] = item[key]
-          }
-        })
-        if (defaultLocale !== this.$i18n.locale) {
-          defaultLocale = item.defaultLocale
-        }
-      })
-      const item = {
-        status,
-        defaultLocale,
-        values: [],
+      let itemIndex = 0
+      if (status === 'APPROVED') {
+        itemIndex = items.findIndex(el => el.status === 'APPROVED')
+      } else {
+        // TODO: set value with max values?
+        itemIndex = 0
       }
-      LOCALES_LIST.forEach(locale => {
-        const key = locale.value
-        if (valuesMap[key]) {
-          item.values.push({
-            locale: key,
-            text: valuesMap[key],
-          })
-        }
-      })
+      const defaultItem = items[itemIndex]
+      const item = {
+        defaultLocale: defaultItem.defaultLocale,
+        values: defaultItem.values.slice(),
+      }
       this.mergeItem = item
       this.$nextTick(() => {
         this.wordMergeDialog = true
@@ -668,20 +682,29 @@ export default {
     },
     customGroup (items, groupBy, groupDesc) {
       const key = groupBy[0]
+      const isDuplicatesSearch = key === 'duplicatesSearch'
       const desc = groupDesc[0]
       const re = /[A-ZА-ЯҐЄІЇ\u4e00-\u9fff]|[\u3400-\u4dbf]|[\u{20000}-\u{2a6df}]|[\u{2a700}-\u{2b73f}]|[\u{2b740}-\u{2b81f}]|[\u{2b820}-\u{2ceaf}]|[\uf900-\ufaff]|[\u3300-\u33ff]|[\ufe30-\ufe4f]|[\uf900-\ufaff]|[\u{2f800}-\u{2fa1f}]/u
       const others = []
       const grouped = items.reduce((acc, curr) => {
         const name = curr[key] || ''
-        const char = name.charAt(0).toLocaleUpperCase()
-        if (re.test(char)) {
-          if (Object.prototype.hasOwnProperty.call(acc, char)) {
-            acc[char].push(curr)
+        if (isDuplicatesSearch) {
+          if (Object.prototype.hasOwnProperty.call(acc, name)) {
+            acc[name].push(curr)
           } else {
-            acc[char] = [curr]
+            acc[name] = [curr]
           }
         } else {
-          others.push(curr)
+          const char = name.charAt(0).toLocaleUpperCase()
+          if (re.test(char)) {
+            if (Object.prototype.hasOwnProperty.call(acc, char)) {
+              acc[char].push(curr)
+            } else {
+              acc[char] = [curr]
+            }
+          } else {
+            others.push(curr)
+          }
         }
         return acc
       }, {})
@@ -693,7 +716,13 @@ export default {
       sorted.map(k => {
         const groupItems = grouped[k]
         const group = { name: k, items: groupItems }
-        result.push(group)
+        if (isDuplicatesSearch) {
+          if (groupItems.length > 1) {
+            result.push(group)
+          }
+        } else {
+          result.push(group)
+        }
       })
       if (others.length > 0) {
         if (desc) {
@@ -722,7 +751,7 @@ export default {
           },
           update: (store, { data: { approveWords } }) => {
             // Read the data from our cache for this query.
-            const data = store.readQuery({ query: LIST_WORDS, variables: { filters: this.filters } })
+            const data = store.readQuery({ query: LIST_WORDS, variables: { filters: { status: this.statusFilter } } })
             // Add our tag from the mutation to the end
             selected.forEach(id => {
               const index = data.listWords.items.findIndex(el => el.id === id)
@@ -731,7 +760,7 @@ export default {
               }
             })
             // Write our data back to the cache.
-            store.writeQuery({ query: LIST_WORDS, variables: { filters: this.filters }, data })
+            store.writeQuery({ query: LIST_WORDS, variables: { filters: { status: this.statusFilter } }, data })
           },
         })
         this.selected = []

@@ -30,7 +30,8 @@
     "approve": "Approve",
     "merge": "Merge",
     "DRAFT": "Draft",
-    "APPROVED": "Approved"
+    "APPROVED": "Approved",
+    "DUPLICATES": "Duplicates"
   },
   "header": {
     "requisites": "Company details",

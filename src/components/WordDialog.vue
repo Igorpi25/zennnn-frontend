@@ -79,17 +79,6 @@
                 class="w-1/2"
               />
             </div>
-            <div v-if="isMerge" class="flex items-center">
-              <span class="w-1/2 text-right mr-1">{{ $t('words.status') }}:</span>
-              <Select
-                v-model="statusLazy"
-                :items="statuses"
-                :has-arrow-icon="false"
-                solo
-                hide-details
-                class="w-1/2"
-              />
-            </div>
           </div>
           <button
             class="inline-flex justify-end items-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
@@ -168,14 +157,7 @@ export default {
       loading: false,
       dialog: this.value,
       formValidity: false,
-      model: {
-        en: undefined,
-        'zh-Hans': undefined,
-        'zh-Hant': undefined,
-        fr: undefined,
-        ru: undefined,
-        uk: undefined,
-      },
+      model: {},
       rules: {
         required: v => !!v || this.$t('rule.required'),
       },
@@ -183,10 +165,8 @@ export default {
         mdiGoogleTranslate,
       },
       translateLoading: false,
-      translationsResult: [],
-      isTranslationsUpdated: false,
+      translations: {},
       defaultLocaleLazy: this.$i18n.locale,
-      statusLazy: '',
     }
   },
   computed: {
@@ -205,24 +185,6 @@ export default {
       LOCALES_LIST.forEach(el => {
         const key = el.value
         result[key] = this.translations[key] && this.model[key] === this.translations[key]
-      })
-      return result
-    },
-    values () {
-      const values = (this.item && this.item.values) || []
-      const result = {}
-      LOCALES_LIST.forEach(el => {
-        const v = values.find(v => v.locale === el.value)
-        result[el.value] = (v && v.text) || undefined
-      })
-      return result
-    },
-    translations () {
-      const translations = this.create || this.isTranslationsUpdated ? this.translationsResult : (this.item && this.item.translations) || []
-      const result = {}
-      LOCALES_LIST.forEach(el => {
-        const tr = translations.find(tr => tr.locale === el.value)
-        result[el.value] = (tr && tr.text) || undefined
       })
       return result
     },
@@ -280,28 +242,29 @@ export default {
       }
     },
     onOpen () {
-      this.isTranslationsUpdated = false
       this.defaultLocaleLazy = this.create ? this.$i18n.locale : this.item && this.item.defaultLocale
-      this.statusLazy = this.item && this.item.status
       if (!this.create) {
         this.$nextTick(() => {
           const values = (this.item && this.item.values) || []
-          const translations = (this.item && this.item.translations) || []
           const valuesMap = {}
+          const trMap = {}
           LOCALES_LIST.forEach(el => {
-            const v = values.find(val => val.locale === el.value)
-            const tr = translations.find(tr => tr.locale === el.value)
-            valuesMap[el.value] = (v && v.text) || (tr && tr.text) || undefined
+            const v = values.find(val => val.k === el.value) || {}
+            valuesMap[el.value] = v.v || v.tr || undefined
+            trMap[el.value] = v.tr || undefined
           })
-          this.model = {
-            en: valuesMap.en,
-            'zh-Hans': valuesMap['zh-Hans'],
-            'zh-Hant': valuesMap['zh-Hant'],
-            fr: valuesMap.fr,
-            ru: valuesMap.ru,
-            uk: valuesMap.uk,
-          }
+          this.model = valuesMap
+          this.translations = trMap
         })
+      } else {
+        const valuesMap = {}
+        const trMap = {}
+        LOCALES_LIST.forEach(el => {
+          valuesMap[el.value] = undefined
+          trMap[el.value] = undefined
+        })
+        this.model = valuesMap
+        this.translations = trMap
       }
       setTimeout(() => {
         if (this.$refs[this.$i18n.locale] && this.$refs[this.$i18n.locale][0]) {
@@ -311,14 +274,8 @@ export default {
     },
     onClose () {
       setTimeout(() => {
-        this.model = {
-          en: undefined,
-          'zh-Hans': undefined,
-          'zh-Hant': undefined,
-          fr: undefined,
-          ru: undefined,
-          uk: undefined,
-        }
+        this.model = {}
+        this.translations = {}
         if (this.$refs.form) {
           this.$refs.form.reset()
         }
@@ -329,22 +286,8 @@ export default {
       if (!isValid) return
       if (this.isMerge) {
         const input = {
-          status: this.statusLazy,
           defaultLocale: this.defaultLocale,
-          values: [],
-        }
-        LOCALES_LIST.forEach(el => {
-          const locale = el.value
-          const text = this.model[locale] && this.model[locale] === this.translations[locale]
-            ? null
-            : this.model[el.value] || null
-          input.values.push({
-            locale,
-            text,
-          })
-        })
-        if (this.isTranslationsUpdated) {
-          input.translations = this.translationsResult
+          values: this.getValues(),
         }
         this.$emit('update', input)
       } else if (this.create) {
@@ -370,18 +313,13 @@ export default {
         })
         const result = (response && response.data && response.data.translateWord) || []
         this.$logger.info('Translate result', result)
-        const translations = result.map(el => {
-          const key = el.locale
+        result.forEach(el => {
+          const key = el.k
           if (!this.model[key] || this.model[key] === this.translations[key]) {
-            this.model[key] = el.text
+            this.model[key] = el.tr
           }
-          return {
-            locale: el.locale,
-            text: el.text,
-          }
+          this.translations[key] = el.tr
         })
-        this.translationsResult = translations
-        this.isTranslationsUpdated = true
       } catch (error) {
         this.$notify({
           color: 'error',
@@ -397,20 +335,7 @@ export default {
         this.loading = true
         const input = {
           defaultLocale: this.isAdmin ? this.defaultLocale : this.$i18n.locale,
-          values: [],
-        }
-        LOCALES_LIST.forEach(el => {
-          const locale = el.value
-          const text = this.model[locale] && this.model[locale] === this.translations[locale]
-            ? null
-            : this.model[el.value] || null
-          input.values.push({
-            locale,
-            text,
-          })
-        })
-        if (this.isTranslationsUpdated) {
-          input.translations = this.translationsResult
+          values: this.getValues(),
         }
         const mutation = this.isAdmin ? ADMIN_CREATE_WORD : CREATE_WORD
         const variables = {
@@ -439,20 +364,7 @@ export default {
         this.loading = true
         const input = {
           id,
-          values: [],
-        }
-        LOCALES_LIST.forEach(el => {
-          const locale = el.value
-          const text = this.model[locale] && this.model[locale] === this.translations[locale]
-            ? null
-            : this.model[el.value] || null
-          input.values.push({
-            locale,
-            text,
-          })
-        })
-        if (this.isTranslationsUpdated) {
-          input.translations = this.translationsResult
+          values: this.getValues(),
         }
         if (this.isAdmin) {
           input.defaultLocale = this.defaultLocale
@@ -475,6 +387,27 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    getValues () {
+      const result = []
+      LOCALES_LIST.forEach(el => {
+        const k = el.value
+        const tr = this.translations[k]
+        const v = this.model[k] && this.model[k] === tr
+          ? null
+          : this.model[k] || null
+        const r = {
+          k,
+          v,
+        }
+        if (tr) {
+          r.tr = tr
+        }
+        if (k && (v || tr)) {
+          result.push(r)
+        }
+      })
+      return result
     },
   },
 }

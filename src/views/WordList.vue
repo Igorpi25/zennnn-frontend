@@ -171,8 +171,8 @@
                       />
                     </button>
                   </span>
-                  <span v-else class="inline-flex items-center">
-                    <span class="flex-grow">
+                  <span v-else class="inline-flex items-center max-w-full">
+                    <span class="flex-grow truncate">
                       {{ item[header.key] }}
                     </span>
                     <i
@@ -345,20 +345,15 @@ export default {
       return items.map(item => {
         const result = item
         const values = item.values || []
-        const translations = item.translations || []
         LOCALES_LIST.forEach(locale => {
           const key = locale.value
-          const value = values.find(v => v.locale === key)
-          if (value && value.text) {
-            result[key] = value.text
-          } else {
-            const translation = translations.find(tr => tr.locale === key)
-            const translationText = translation && translation.text
-            result[key] = translationText
-            result[`${key}_ct`] = !!translationText
+          const value = values.find(v => v.k === key)
+          if (value) {
+            result[key] = value.v || value.tr || ''
+            result[`${key}_ct`] = !value.v && value.tr
           }
         })
-        return item
+        return result
       })
     },
     groupBy () {

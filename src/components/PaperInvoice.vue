@@ -278,14 +278,11 @@ export default {
     getWordText (item) {
       const word = item || {}
       const values = word.values || []
-      const translations = word.translations || []
       const result = {}
-      translations.forEach(el => {
-        result[el.locale] = el.text
-      })
       values.forEach(el => {
-        if (el.text) {
-          result[el.locale] = el.text
+        const v = el.v || el.tr
+        if (v) {
+          result[el.k] = v
         }
       })
       return result[this.$i18n.locale] || result[word.defaultLocale]

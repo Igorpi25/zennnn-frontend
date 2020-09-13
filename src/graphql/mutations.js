@@ -18,12 +18,9 @@ export const CREATE_WORD = gql`
       status
       defaultLocale
       values {
-        locale
-        text
-      }
-      translations {
-        locale
-        text
+        k
+        v
+        tr
       }
     }
   }
@@ -36,12 +33,9 @@ export const UPDATE_WORD = gql`
       status
       defaultLocale
       values {
-        locale
-        text
-      }
-      translations {
-        locale
-        text
+        k
+        v
+        tr
       }
     }
   }

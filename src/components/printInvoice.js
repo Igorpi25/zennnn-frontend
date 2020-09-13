@@ -661,14 +661,11 @@ const genItemBody = (invoices, clientLang) => {
       const word = product.name || {}
       const wordDefaultLocale = word.defaultLocale
       const wordValues = word.values || []
-      const wordTranslations = word.translations || []
       const result = {}
-      wordTranslations.forEach(el => {
-        result[el.locale] = el.text
-      })
       wordValues.forEach(el => {
-        if (el.text) {
-          result[el.locale] = el.text
+        const v = el.v || el.tr
+        if (v) {
+          result[el.k] = v
         }
       })
       let name = result.en || ''
