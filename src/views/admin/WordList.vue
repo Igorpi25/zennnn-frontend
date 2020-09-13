@@ -558,7 +558,8 @@ export default {
             if (value) {
               result[key] = value.v || value.tr || ''
               result[`${key}_ct`] = !value.v && value.tr
-              duplicatesSearch += `${result[key]}~`
+              const search = result[key].trim().toLocaleLowerCase()
+              duplicatesSearch += `${search}~`
             }
           })
           result.duplicatesSearch = duplicatesSearch
