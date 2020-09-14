@@ -143,6 +143,7 @@ export default {
   props: {
     value: Boolean,
     create: Boolean,
+    initValue: String,
     item: Object,
     orgId: {
       type: String,
@@ -263,6 +264,9 @@ export default {
           valuesMap[el.value] = undefined
           trMap[el.value] = undefined
         })
+        if (this.initValue) {
+          valuesMap[this.$i18n.locale] = this.initValue
+        }
         this.model = valuesMap
         this.translations = trMap
       }

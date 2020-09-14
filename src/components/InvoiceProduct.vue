@@ -47,7 +47,7 @@
         no-filter
         class="relative"
         append-slot-class="w-auto pr-sm"
-        @click:prepend-item="wordCreateDialog = true"
+        @click:prepend-item="openWordCreateDialog"
         @input="createOrUpdateProduct({ name: $event })"
       >
         <template v-slot:prepend-item>
@@ -74,6 +74,7 @@
         v-model="wordCreateDialog"
         :org-id="orgId"
         :product-id="item.id"
+        :init-value="wordCreateText"
         create
         @create="onWordCreate"
       />
@@ -509,6 +510,7 @@ export default {
       wordEditDialog: false,
       isLinkUrlFocus: false,
       wordSearch: '',
+      wordCreateText: '',
     }
   },
   computed: {
@@ -596,7 +598,18 @@ export default {
       return this.profitType === InvoiceProfitType.COMMISSION
     },
   },
+  watch: {
+    wordCreateDialog (val) {
+      if (!val) {
+        this.wordCreateText = ''
+      }
+    },
+  },
   methods: {
+    openWordCreateDialog () {
+      this.wordCreateText = this.wordSearch || ''
+      this.wordCreateDialog = true
+    },
     async onWordCreate (result) {
       this.wordCreateDialog = false
       try {
