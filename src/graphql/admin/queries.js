@@ -38,3 +38,21 @@ export const TRANSLATE_WORD = gql`
     }
   }
 `
+
+export const SEARCH_WORDS = gql`
+  query SearchWords($search: String!) {
+    searchWords(search: $search) {
+      items {
+        id
+        status
+        defaultLocale
+        values {
+          k
+          v
+          tr
+        }
+        isHidden
+      }
+    }
+  }
+`

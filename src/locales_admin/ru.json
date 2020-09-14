@@ -29,7 +29,10 @@
     "noFilter": "Без фильтра",
     "approve": "Одобрить",
     "merge": "Объединить",
-    "hide": "Скрыть"
+    "hide": "Скрыть",
+    "addNewWord": "Новый",
+    "addToWord": "Добавить в",
+    "word": "Слово"
   },
   "header": {
     "requisites": "Реквизиты компаний",

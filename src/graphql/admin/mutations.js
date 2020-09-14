@@ -57,3 +57,15 @@ export const HIDE_WORDS = gql`
     hideWords(ids: $ids)
   }
 `
+
+export const CREATE_WORD_WITH_PRODUCTS = gql`
+  mutation CreateWordWithProducts($productsIds: [ID!], $input: CreateWordInput!) {
+    createWordWithProducts(productsIds: $productsIds, input: $input)
+  }
+`
+
+export const ADD_PRODUCTS_TO_WORD = gql`
+  mutation addProductsToWord($productsIds: [ID!], $wordId: ID!) {
+    addProductsToWord(productsIds: $productsIds, wordId: $wordId)
+  }
+`

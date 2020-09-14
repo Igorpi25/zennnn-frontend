@@ -151,17 +151,6 @@
                   {{ $t('words.approve') }}
                 </Button>
                 <Button
-                  :loading="mergeLoading"
-                  :disabled="selected.length < 2"
-                  merge-class="h-8 text-sm"
-                  content-class="w-full flex items-center justify-center px-2"
-                  outlined
-                  borderless
-                  @click="openMergeItem"
-                >
-                  {{ $t('words.merge') }}
-                </Button>
-                <Button
                   :loading="hideLoading"
                   :disabled="selected.length === 0"
                   merge-class="h-8 text-sm"
@@ -172,6 +161,24 @@
                 >
                   {{ $t('words.hide') }}
                 </Button>
+                <Button
+                  :loading="mergeLoading"
+                  :disabled="selected.length < 2"
+                  merge-class="h-8 text-sm"
+                  content-class="w-full flex items-center justify-center px-2"
+                  outlined
+                  borderless
+                  @click="openMergeItem"
+                >
+                  {{ $t('words.merge') }}
+                </Button>
+                <div class="flex-grow" />
+                <!-- <v-progress-circular
+                  v-if="loading"
+                  indeterminate
+                  size="18"
+                  width="2"
+                /> -->
               </div>
             </template>
             <template v-slot:[`header.status`]="{ header }">
@@ -331,22 +338,11 @@
                 >
                   <td :colspan="headers.length" class="relative p-0">
                     <div class="bg-gray-700 rounded-b-md py-2 px-3 -mt-1" style="min-height: 52px;">
-                      <div class="w-full flex flex-wrap">
-                        <div
-                          v-for="p in item.products"
-                          :key="p.id"
-                          class="w-1/4 text-gray-100"
-                        >
-                          <div class="flex py-1">
-                            <WordProduct
-                              :images="p.images"
-                            />
-                            <div class="flex items-center leading-none overflow-hidden">
-                              <div class="truncate" style="min-height: 16px;">{{ p.article }}</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <WordProducts
+                        :word="item"
+                        :items="item.products"
+                        @refetch="refetchListWords"
+                      />
                     </div>
                     <div
                       class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
@@ -403,8 +399,9 @@
         v-model="wordMergeDialog"
         :org-id="orgId"
         :item="mergeItem"
+        :title="$t('words.mergeWords')"
         is-admin
-        is-merge
+        submit-result
         @update="onWordMerge"
       />
     </div>
@@ -418,14 +415,14 @@ import { LIST_WORDS } from '../../graphql/admin/queries'
 import { APPROVE_WORDS, HIDE_WORDS, MERGE_WORDS } from '../../graphql/admin/mutations'
 import { LOCALES_LIST } from '../../config/globals'
 
-import WordProduct from '../../components/WordProduct.vue'
+import WordProducts from '../../components/WordProducts.vue'
 import LocalePicker from '../../components/LocalePicker.vue'
 import WordDialog from '../../components/WordDialog.vue'
 
 export default {
   name: 'WordList',
   components: {
-    WordProduct,
+    WordProducts,
     LocalePicker,
     WordDialog,
   },
@@ -629,6 +626,9 @@ export default {
     },
   },
   methods: {
+    refetchListWords () {
+      this.$apollo.queries.listWords.refetch()
+    },
     onSelectAll (e) {
       const target = e.target
       if (target.checked || target.indeterminate) {
@@ -694,6 +694,10 @@ export default {
         this.selected = []
         this.$apollo.queries.listWords.refetch()
       } catch (error) {
+        this.$notify({
+          color: 'error',
+          text: error.message,
+        })
         throw new Error(error)
       } finally {
         this.mergeLoading = false
@@ -784,6 +788,10 @@ export default {
         })
         this.selected = []
       } catch (error) {
+        this.$notify({
+          color: 'error',
+          text: error.message,
+        })
         throw new Error(error)
       } finally {
         this.approveLoading = false
@@ -819,6 +827,10 @@ export default {
         })
         this.selected = []
       } catch (error) {
+        this.$notify({
+          color: 'error',
+          text: error.message,
+        })
         throw new Error(error)
       } finally {
         this.hideLoading = false

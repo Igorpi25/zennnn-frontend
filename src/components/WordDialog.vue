@@ -6,7 +6,7 @@
     <div class="relative bg-gray-400">
       <div class="flex items-center justify-center text-lg text-white font-semibold p-8 pb-2">
         <div class="text-white text-xl font-semibold">
-          {{ create ? $t('words.addWordTitle') : isMerge ? $t('words.mergeWords') : $t('words.editWord') }}
+          {{ title ? title : create ? $t('words.addWordTitle') : $t('words.editWord') }}
         </div>
       </div>
       <div class="text-gray-100 p-5">
@@ -115,7 +115,7 @@
             min-width="120"
             @click="onSubmit"
           >
-            <span>{{ create ? $t('action.add') : $t('action.apply') }}</span>
+            <span>{{ actionText ? actionText : create ? $t('action.add') : $t('action.apply') }}</span>
           </Button>
         </div>
       </div>
@@ -150,8 +150,10 @@ export default {
       required: true,
     },
     productId: String,
+    title: String,
+    actionText: String,
     isAdmin: Boolean,
-    isMerge: Boolean,
+    submitResult: Boolean,
   },
   data () {
     return {
@@ -288,7 +290,7 @@ export default {
     onSubmit () {
       const isValid = this.$refs.form.validate(true)
       if (!isValid) return
-      if (this.isMerge) {
+      if (this.submitResult) {
         const input = {
           defaultLocale: this.defaultLocale,
           values: this.getValues(),
