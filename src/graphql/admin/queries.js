@@ -23,6 +23,7 @@ export const LIST_WORDS = gql`
             contentType
           }
         }
+        isHidden
       }
     }
   }

@@ -51,3 +51,9 @@ export const MERGE_WORDS = gql`
     }
   }
 `
+
+export const HIDE_WORDS = gql`
+  mutation HideWords($ids: [ID!]) {
+    hideWords(ids: $ids)
+  }
+`

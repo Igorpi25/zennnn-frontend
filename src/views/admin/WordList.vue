@@ -161,6 +161,17 @@
                 >
                   {{ $t('words.merge') }}
                 </Button>
+                <Button
+                  :loading="hideLoading"
+                  :disabled="selected.length === 0"
+                  merge-class="h-8 text-sm"
+                  content-class="w-full flex items-center justify-center px-2"
+                  outlined
+                  borderless
+                  @click="hideWords"
+                >
+                  {{ $t('words.hide') }}
+                </Button>
               </div>
             </template>
             <template v-slot:[`header.status`]="{ header }">
@@ -258,7 +269,7 @@
                   v-else
                   :key="index"
                   class="cursor-pointer"
-                  :class="{ 'text-white expanded': expanded.includes(item.id) }"
+                  :class="{ 'text-white expanded': expanded.includes(item.id), 'text-gray-300': item.isHidden }"
                   tabindex="0"
                 >
                   <td
@@ -404,7 +415,7 @@
 import { mdiGoogleTranslate, mdiAccountCircle } from '@mdi/js'
 
 import { LIST_WORDS } from '../../graphql/admin/queries'
-import { APPROVE_WORDS, MERGE_WORDS } from '../../graphql/admin/mutations'
+import { APPROVE_WORDS, HIDE_WORDS, MERGE_WORDS } from '../../graphql/admin/mutations'
 import { LOCALES_LIST } from '../../config/globals'
 
 import WordProduct from '../../components/WordProduct.vue'
@@ -423,9 +434,7 @@ export default {
       query: LIST_WORDS,
       variables () {
         return {
-          filters: {
-            status: this.statusFilter,
-          },
+          filters: this.filters,
         }
       },
       skip () {
@@ -456,6 +465,7 @@ export default {
       filterMenu: false,
       mergeItem: {},
       currentFilter: null,
+      hideLoading: false,
     }
   },
   computed: {
@@ -464,12 +474,14 @@ export default {
         case 'DRAFT': return this.$t('words.DRAFT')
         case 'APPROVED': return this.$t('words.APPROVED')
         case 'DUPLICATES': return this.$t('words.DUPLICATES')
+        case 'SHOW_HIDDENS': return this.$t('words.SHOW_HIDDENS')
         default: return this.$t('words.noFilter')
       }
     },
     filters () {
       return {
         status: this.statusFilter,
+        showHiddens: this.showHiddensFilter,
       }
     },
     statusFilter () {
@@ -478,6 +490,9 @@ export default {
         case 'APPROVED': return 'APPROVED'
         default: return null
       }
+    },
+    showHiddensFilter () {
+      return this.currentFilter === 'SHOW_HIDDENS'
     },
     filtersItems () {
       return [
@@ -496,6 +511,10 @@ export default {
         {
           text: this.$t('words.DUPLICATES'),
           value: 'DUPLICATES',
+        },
+        {
+          text: this.$t('words.SHOW_HIDDENS'),
+          value: 'SHOW_HIDDENS',
         },
       ]
     },
@@ -751,7 +770,7 @@ export default {
           },
           update: (store, { data: { approveWords } }) => {
             // Read the data from our cache for this query.
-            const data = store.readQuery({ query: LIST_WORDS, variables: { filters: { status: this.statusFilter } } })
+            const data = store.readQuery({ query: LIST_WORDS, variables: { filters: this.filters } })
             // Add our tag from the mutation to the end
             selected.forEach(id => {
               const index = data.listWords.items.findIndex(el => el.id === id)
@@ -760,7 +779,7 @@ export default {
               }
             })
             // Write our data back to the cache.
-            store.writeQuery({ query: LIST_WORDS, variables: { filters: { status: this.statusFilter } }, data })
+            store.writeQuery({ query: LIST_WORDS, variables: { filters: this.filters }, data })
           },
         })
         this.selected = []
@@ -768,6 +787,41 @@ export default {
         throw new Error(error)
       } finally {
         this.approveLoading = false
+      }
+    },
+    async hideWords () {
+      if (this.selected.length === 0) return
+      const selected = this.selected.slice()
+      try {
+        this.hideLoading = true
+        await this.$apollo.mutate({
+          mutation: HIDE_WORDS,
+          variables: {
+            ids: selected,
+          },
+          update: (store, { data: { approveWords } }) => {
+            // Read the data from our cache for this query.
+            const data = store.readQuery({ query: LIST_WORDS, variables: { filters: this.filters } })
+            // Add our tag from the mutation to the end
+            if (this.filters.showHiddens) {
+              selected.forEach(id => {
+                const index = data.listWords.items.findIndex(el => el.id === id)
+                if (index !== -1) {
+                  data.listWords.items[index].isHidden = true
+                }
+              })
+            } else {
+              data.listWords.items = data.listWords.items.filter(el => !selected.includes(el.id))
+            }
+            // Write our data back to the cache.
+            store.writeQuery({ query: LIST_WORDS, variables: { filters: this.filters }, data })
+          },
+        })
+        this.selected = []
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        this.hideLoading = false
       }
     },
   },
