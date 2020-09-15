@@ -19,6 +19,7 @@ const Subscription = () => import(/* webpackChunkName: "main" */ '../views/Subsc
 const WordList = () => import(/* webpackChunkName: "main" */ '../views/WordList.vue')
 const RequisiteList = () => import(/* webpackChunkName: "main" */ '../views/RequisiteList.vue')
 const RequisiteItem = () => import(/* webpackChunkName: "main" */ '../views/RequisiteItem.vue')
+const ItemList = () => import(/* webpackChunkName: "main" */ '../views/ItemList.vue')
 // const OrgLayout = () => import(/* webpackChunkName: "main" */ '../views/OrgLayout.vue')
 const Specs = () => import(/* webpackChunkName: "main" */ '../views/Specs.vue')
 const Spec = () => import(/* webpackChunkName: "main" */ '../views/Spec.vue')
@@ -199,6 +200,12 @@ const routes = [
         name: 'requisite',
         meta: { requiresAuth: true, scrollToTop: true },
         component: RequisiteItem,
+      },
+      {
+        path: 'goods',
+        name: 'items',
+        meta: { requiresAuth: true },
+        component: ItemList,
       },
     ],
   },

@@ -1136,6 +1136,22 @@
     "noTranslation": "no translation",
     "translate": "Translate"
   },
+  "goods": {
+    "createProduct": "Create a Product",
+    "empty": "Empty",
+    "selected": "Selected",
+    "products": "products | product | products",
+    "myProducts": "My Products",
+    "supplierProducts": "Supplier Products",
+    "noData": "There are no products in our database,<br>start with clicking Create a product.",
+    "photo": "Photo",
+    "name": "Name & model",
+    "currency": "Currency / Unit",
+    "price": "Price",
+    "priceHint": "Price...",
+    "sold": "Sold (шт)",
+    "show": "Show"
+  },
   "welcomeModal": {
     "head": "Welcome to ZENNNN",
     "title": "It’s amazing that you signed up on Z!",
