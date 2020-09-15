@@ -34,12 +34,6 @@
           </a>
         </router-link>
       </div>
-      <div
-        v-if="ownerOrManager"
-        class="px-5 text-gray-400 border-b-2 border-transparent whitespace-no-wrap text-xl leading-6 h-full flex items-center cursor-default"
-      >
-        {{ $t('navbar.goods') }}
-      </div>
     </div>
   </div>
 </template>
@@ -93,6 +87,13 @@ export default {
         items.push({
           name: 'staff',
           text: this.$t('navbar.staff'),
+          params: { orgId: this.orgId },
+        })
+      }
+      if (this.ownerOrManager) {
+        items.push({
+          name: 'items',
+          text: this.$t('navbar.goods'),
           params: { orgId: this.orgId },
         })
       }

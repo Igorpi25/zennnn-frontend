@@ -462,6 +462,21 @@ export const LIST_STAFF = gql`
   }
 `
 
+export const LIST_ITEMS = gql`
+  query ListItems($orgId: ID!) {
+    listItems(orgId: $orgId) {
+      items {
+        id
+        createdBy
+        removedFromOwner
+        currentOwner
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+
 export const GET_SPEC_LINK_ACCESS = gql`
   query GetSpecLinkAccess($id: ID!) {
     getSpecLinkAccess(id: $id)
