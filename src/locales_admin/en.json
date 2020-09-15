@@ -36,7 +36,8 @@
     "DRAFT": "Draft",
     "APPROVED": "Approved",
     "DUPLICATES": "Duplicates",
-    "SHOW_HIDDENS": "All"
+    "HIDDEN": "Hidden",
+    "ALL": "All"
   },
   "header": {
     "requisites": "Company details",

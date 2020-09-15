@@ -124,6 +124,51 @@
           </div>
         </div>
 
+        <div
+          class="sticky top-0 bg-gray-800 rounded-t-md px-sm flex items-center h-12 space-x-2"
+          style="z-index: 1;"
+        >
+          <Button
+            :loading="approveLoading"
+            :disabled="selected.length === 0"
+            merge-class="h-8 text-sm"
+            content-class="w-full flex items-center justify-center px-2"
+            outlined
+            borderless
+            @click="approveWords"
+          >
+            {{ $t('words.approve') }}
+          </Button>
+          <Button
+            :loading="hideLoading"
+            :disabled="selected.length === 0"
+            merge-class="h-8 text-sm"
+            content-class="w-full flex items-center justify-center px-2"
+            outlined
+            borderless
+            @click="hideWords"
+          >
+            {{ $t('words.hide') }}
+          </Button>
+          <Button
+            :loading="mergeLoading"
+            :disabled="selected.length < 2"
+            merge-class="h-8 text-sm"
+            content-class="w-full flex items-center justify-center px-2"
+            outlined
+            borderless
+            @click="openMergeItem"
+          >
+            {{ $t('words.merge') }}
+          </Button>
+          <div class="flex-grow" />
+          <v-progress-circular
+            v-if="queryLoading"
+            indeterminate
+            size="18"
+            width="2"
+          />
+        </div>
         <div class="overflow-x-auto scrolling-touch pb-4">
           <DataTable
             :headers="headers"
@@ -137,50 +182,6 @@
             hoverable
             hide-no-data
           >
-            <template v-slot:top>
-              <div class="bg-gray-800 rounded-t-md px-sm flex items-center h-12 space-x-2">
-                <Button
-                  :loading="approveLoading"
-                  :disabled="selected.length === 0"
-                  merge-class="h-8 text-sm"
-                  content-class="w-full flex items-center justify-center px-2"
-                  outlined
-                  borderless
-                  @click="approveWords"
-                >
-                  {{ $t('words.approve') }}
-                </Button>
-                <Button
-                  :loading="hideLoading"
-                  :disabled="selected.length === 0"
-                  merge-class="h-8 text-sm"
-                  content-class="w-full flex items-center justify-center px-2"
-                  outlined
-                  borderless
-                  @click="hideWords"
-                >
-                  {{ $t('words.hide') }}
-                </Button>
-                <Button
-                  :loading="mergeLoading"
-                  :disabled="selected.length < 2"
-                  merge-class="h-8 text-sm"
-                  content-class="w-full flex items-center justify-center px-2"
-                  outlined
-                  borderless
-                  @click="openMergeItem"
-                >
-                  {{ $t('words.merge') }}
-                </Button>
-                <div class="flex-grow" />
-                <!-- <v-progress-circular
-                  v-if="loading"
-                  indeterminate
-                  size="18"
-                  width="2"
-                /> -->
-              </div>
-            </template>
             <template v-slot:[`header.status`]="{ header }">
               <td :width="header.width" class="text-left p-0">
                 <input
@@ -438,10 +439,20 @@ export default {
         return this.loggedOut
       },
       fetchPolicy: 'cache-and-network',
+      watchLoading (isLoading) {
+        if (isLoading) {
+          this.queryLoading = true
+        } else {
+          setTimeout(() => {
+            this.queryLoading = false
+          }, 200)
+        }
+      },
     },
   },
   data () {
     return {
+      queryLoading: false,
       loggedOut: false,
       orgId: '',
       search: undefined,
@@ -471,14 +482,16 @@ export default {
         case 'DRAFT': return this.$t('words.DRAFT')
         case 'APPROVED': return this.$t('words.APPROVED')
         case 'DUPLICATES': return this.$t('words.DUPLICATES')
-        case 'SHOW_HIDDENS': return this.$t('words.SHOW_HIDDENS')
+        case 'HIDDEN': return this.$t('words.HIDDEN')
+        case 'ALL': return this.$t('words.ALL')
         default: return this.$t('words.noFilter')
       }
     },
     filters () {
       return {
         status: this.statusFilter,
-        showHiddens: this.showHiddensFilter,
+        showHiddens: this.currentFilter === 'HIDDEN',
+        all: this.currentFilter === 'ALL',
       }
     },
     statusFilter () {
@@ -487,9 +500,6 @@ export default {
         case 'APPROVED': return 'APPROVED'
         default: return null
       }
-    },
-    showHiddensFilter () {
-      return this.currentFilter === 'SHOW_HIDDENS'
     },
     filtersItems () {
       return [
@@ -510,8 +520,12 @@ export default {
           value: 'DUPLICATES',
         },
         {
-          text: this.$t('words.SHOW_HIDDENS'),
-          value: 'SHOW_HIDDENS',
+          text: this.$t('words.HIDDEN'),
+          value: 'HIDDEN',
+        },
+        {
+          text: this.$t('words.ALL'),
+          value: 'ALL',
         },
       ]
     },
@@ -626,8 +640,9 @@ export default {
     },
   },
   methods: {
-    refetchListWords () {
-      this.$apollo.queries.listWords.refetch()
+    async refetchListWords () {
+      this.queryLoading = true
+      await this.$apollo.queries.listWords.refetch()
     },
     onSelectAll (e) {
       const target = e.target
@@ -653,7 +668,7 @@ export default {
     },
     onWordCreate (result) {
       this.wordCreateDialog = false
-      this.$apollo.queries.listWords.refetch()
+      this.refetchListWords()
     },
     onWordUpdate () {
       this.wordEditDialog = false
@@ -692,7 +707,7 @@ export default {
           },
         })
         this.selected = []
-        this.$apollo.queries.listWords.refetch()
+        this.refetchListWords()
       } catch (error) {
         this.$notify({
           color: 'error',
