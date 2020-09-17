@@ -337,8 +337,17 @@ const routes = [
     path: '/paper/:specId',
     name: 'paper',
     component: Paper,
-    meta: { scrollToTop: true },
-    beforeEnter: (to, from, next) => {
+    meta: { requiresAuth: true, scrollToTop: true },
+    beforeEnter: async (to, from, next) => {
+      try {
+        await apolloClient.query({
+          query: GET_ORGS,
+          fetchPolicy: 'cache-first',
+        })
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log('Error on navigation to overview.', error)
+      }
       if (to.query.sid) {
         localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid)
         return next({ name: 'paper', params: { specId: to.params.specId }, query: {} })
@@ -480,7 +489,7 @@ router.beforeEach(async (to, from, next) => {
     if (!loggedIn) {
       next({
         name: 'signin',
-        query: to.fullPath && to.fullPath !== '/' && to.fullPath !== '/signin'
+        query: to.fullPath && (to.fullPath !== '/' || to.fullPath !== '/signin')
           ? { redirect: to.fullPath } : {},
       })
     } else {
