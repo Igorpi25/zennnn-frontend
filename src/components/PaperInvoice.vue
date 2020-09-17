@@ -99,7 +99,9 @@
               {{ $te(`productStatus.${item.productStatus}`) ? $t(`productStatus.${item.productStatus}`) : '' }}
             </div>
           </td>
-          <td class="bg-white p-2 text-right">{{ $n(item.price || 0, 'fixed') }}</td>
+          <td class="bg-white p-2 text-right">
+            {{ $n(getClientPrice(item) || 0, 'fixed') }}
+          </td>
           <td class="bg-white py-2 pl-2 pr-1 text-right">{{ $n(item.qty || 0) }}</td>
           <td class="bg-white py-2 pl-1 pr-2">
             {{ $te(`unit.${item.unit}`) ? $t(`unit.${item.unit}`) : '' }}
@@ -197,7 +199,7 @@ import Scroll from '../directives/Scroll'
 
 import { ProductStatus } from '../graphql/enums'
 import { DEFAULT_CURRENCY } from '../config/globals'
-import { convertToUnit } from '../util/helpers'
+import { convertToUnit, isNumber } from '../util/helpers'
 
 export default {
   name: 'PaperInvoice',
@@ -242,6 +244,9 @@ export default {
     }
   },
   computed: {
+    profitForAll () {
+      return this.invoice && this.invoice.profitForAll
+    },
     headers () {
       return [
         { text: this.$t('paper.itemNo'), value: 'number', align: 'center', width: 48 },
@@ -275,6 +280,14 @@ export default {
     }
   },
   methods: {
+    getClientPrice (item) {
+      if (this.profitForAll) {
+        return item.price
+      }
+      return isNumber(item.customPrice)
+        ? item.customPrice
+        : item.price
+    },
     getWordText (item) {
       const word = item || {}
       const values = word.values || []

@@ -660,6 +660,7 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
     updatedAt
     # cost
     price
+    customPrice
     amount
     # store
     pkgQty
@@ -683,6 +684,7 @@ export const PAPER_INVOICE_FRAGMENT = gql`
   fragment PaperInvoiceFragment on PaperInvoice {
     id
     invoiceStatus
+    profitForAll
     invoiceNo
     shippingDate
     discount
