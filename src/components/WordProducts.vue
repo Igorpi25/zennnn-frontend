@@ -199,7 +199,7 @@ export default {
           if (this.$refs['word-select']) {
             this.$refs['word-select'].focus()
           }
-        }, 375)
+        }, 450)
       }
     },
   },

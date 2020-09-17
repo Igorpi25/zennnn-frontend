@@ -77,15 +77,9 @@ const authLink = setContext(async (request, { headers }) => {
   let token = null
   let sid = null
   if (
+    operationName === 'PriceContact' ||
     operationName === 'Signup' ||
-    operationName === 'ListPrices' ||
-    operationName === 'GetPaperSpec' ||
-    operationName === 'AddCommentToPaperSpec' ||
-    operationName === 'ReplyToPaperSpecComment' ||
-    operationName === 'AddCommentToPaperProduct' ||
-    operationName === 'ReplyToPaperProductComment' ||
-    operationName === 'MarkPaperSpecCommentsAsViewed' ||
-    operationName === 'MarkPaperProductCommentsAsViewed'
+    operationName === 'ListPrices'
   ) {
     sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
     try {
