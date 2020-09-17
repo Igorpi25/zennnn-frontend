@@ -30,9 +30,10 @@
     "approve": "Одобрить",
     "merge": "Объединить",
     "hide": "Скрыть",
-    "addNewWord": "Новый",
-    "addToWord": "Добавить в",
-    "word": "Слово"
+    "newWord": "Новое слово",
+    "addNewWord": "Создать новое слово",
+    "addToWord": "Добавить в...",
+    "wordFromDictionary": "Слово из словаря"
   },
   "header": {
     "requisites": "Реквизиты компаний",

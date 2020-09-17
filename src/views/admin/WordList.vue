@@ -131,10 +131,8 @@
           <Button
             :loading="approveLoading"
             :disabled="selected.length === 0"
-            merge-class="h-8 text-sm"
+            merge-class="h-8 text-sm ml-sm"
             content-class="w-full flex items-center justify-center px-2"
-            outlined
-            borderless
             @click="approveWords"
           >
             {{ $t('words.approve') }}

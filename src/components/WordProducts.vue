@@ -40,7 +40,7 @@
           outlined
           @click="newWordDialog = true"
         >
-          {{ $t('words.addNewWord') }}
+          {{ $t('words.newWord') }}
         </Button>
       </div>
     </v-expand-transition>
@@ -72,7 +72,7 @@
               :placeholder="$t('placeholder.startTyping')"
               :search.sync="wordSearch"
               :items="words"
-              :label="$t('words.word')"
+              :label="$t('words.wordFromDictionary')"
               item-value="id"
               item-text="text"
               searchable
@@ -199,7 +199,7 @@ export default {
           if (this.$refs['word-select']) {
             this.$refs['word-select'].focus()
           }
-        }, 300)
+        }, 375)
       }
     },
   },
