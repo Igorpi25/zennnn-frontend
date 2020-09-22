@@ -47,6 +47,7 @@
               :images="item.images"
               :upload="false"
               :removable="false"
+              :caption="item.description"
               light
             >
               <template v-slot:menu-activator>

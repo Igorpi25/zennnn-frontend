@@ -15,6 +15,7 @@
     <td class="text-center pl-1">
       <ProductImage
         v-if="isOwnerOrManager && create"
+        :caption="info.description"
         upload
         @upload-start="$emit('create', {})"
       />
@@ -25,6 +26,7 @@
         :upload="isOwnerOrManager"
         :removable="isOwnerOrManager"
         :sortable="isOwnerOrManager"
+        :caption="info.description"
       />
     </td>
     <td class="pr-sm">
@@ -289,6 +291,7 @@
               :images="info.images"
               :upload="isOwnerOrManager"
               :removable="isOwnerOrManager"
+              :caption="info.description"
             />
           </div>
         </td>

@@ -199,8 +199,11 @@
             </div>
           </div>
         </div>
-        <div :class="['font-semibold pt-4 pb-1', light ? 'text-gray-900' : 'text-white']">
+        <div :class="['font-semibold pt-4', light ? 'text-gray-900' : 'text-white']">
           {{ currentImage.filename || currentImage.url }}
+        </div>
+        <div v-if="caption" :class="['leading-tight pt-1', light ? 'text-gray-200' : 'text-light-gray-400']">
+          {{ caption }}
         </div>
       </div>
     </div>
@@ -240,6 +243,7 @@ export default {
     },
     sortable: Boolean,
     light: Boolean,
+    caption: String,
   },
   data () {
     return {
