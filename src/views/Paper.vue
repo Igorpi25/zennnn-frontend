@@ -873,9 +873,10 @@ export default {
       this.isBooted = true
       const expanded = await getSpecExpandedInvoices(specId, PAPER_STORE_KEY_PREFIX)
       if (!expanded) {
-        const [invoice] = spec.invoices || []
-        if (invoice && invoice.id) {
-          this.expanded = [invoice.id]
+        const invoices = spec.invoices || []
+        const ids = invoices.map(el => el.id)
+        if (ids.length > 0) {
+          this.expanded = ids
           await this.setExpandedInvoices(this.expanded)
         }
       } else {
