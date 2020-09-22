@@ -52,6 +52,11 @@
         @click:prepend-item="openWordCreateDialog"
         @input="createOrUpdateProduct({ name: $event })"
       >
+        <template v-slot:item="{ item }">
+          <span class="truncate">
+            {{ item.text }}
+          </span>
+        </template>
         <template v-slot:prepend-item>
           <span class="flex items-center jusitfy-center text-blue-500">
             <i class="zi-plus-outline text-2xl mr-1" />
