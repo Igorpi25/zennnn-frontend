@@ -425,6 +425,14 @@ const routes = [
       next(false)
     },
   },
+  // alias for policy, for link in documents
+  {
+    path: '/privacy',
+    beforeEnter: (to, from, next) => {
+      window.location = '/docs/PRIVACY%20POLICY.pdf'
+      next(false)
+    },
+  },
   {
     path: '/cloud',
     beforeEnter: (to, from, next) => {
