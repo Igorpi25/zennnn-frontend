@@ -460,6 +460,14 @@ const routes = [
       next(false)
     },
   },
+  // alias for policy_iap, for link in documents
+  {
+    path: '/privacy_iap',
+    beforeEnter: (to, from, next) => {
+      window.location = '/docs/IAP%20PRIVACY%20POLICY.pdf'
+      next(false)
+    },
+  },
   {
     path: '*',
     name: 'not-found',
