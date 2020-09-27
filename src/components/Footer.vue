@@ -164,11 +164,11 @@ export default {
         },
         {
           text: this.$t('footer.terms'),
-          href: '#',
+          to: '/agreenemt',
         },
         {
           text: this.$t('footer.privacy'),
-          href: '#',
+          to: '/policy',
         },
         {
           text: this.$t('footer.modules'),
