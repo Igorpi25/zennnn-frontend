@@ -433,6 +433,72 @@ const routes = [
       }
     },
   },
+  // docs
+  {
+    path: '/agreenemt',
+    beforeEnter: (to, from, next) => {
+      window.location = '/docs/AGREEMENT.pdf'
+      next(false)
+    },
+  },
+  {
+    path: '/policy',
+    beforeEnter: (to, from, next) => {
+      window.location = '/docs/PRIVACY%20POLICY.pdf'
+      next(false)
+    },
+  },
+  // alias for policy, for link in documents
+  {
+    path: '/privacy',
+    beforeEnter: (to, from, next) => {
+      window.location = '/docs/PRIVACY%20POLICY.pdf'
+      next(false)
+    },
+  },
+  {
+    path: '/cloud',
+    beforeEnter: (to, from, next) => {
+      window.location = '/docs/ZENNNN%20CLOUD%20HOSTING.pdf'
+      next(false)
+    },
+  },
+  {
+    path: '/security',
+    beforeEnter: (to, from, next) => {
+      window.location = '/docs/SECURITY%20POLICY.pdf'
+      next(false)
+    },
+  },
+  {
+    path: '/dicslosure',
+    beforeEnter: (to, from, next) => {
+      window.location = '/docs/RESPONSIBLE%20DISCLOSURE.pdf'
+      next(false)
+    },
+  },
+  {
+    path: '/acceptable',
+    beforeEnter: (to, from, next) => {
+      window.location = '/docs/ACCEPTABLE%20USE%20POLICY%20(CLOUD).pdf'
+      next(false)
+    },
+  },
+  {
+    path: '/policy_iap',
+    beforeEnter: (to, from, next) => {
+      window.location = '/docs/IAP%20PRIVACY%20POLICY.pdf'
+      next(false)
+    },
+  },
+  // alias for policy_iap, for link in documents
+  {
+    path: '/privacy_iap',
+    beforeEnter: (to, from, next) => {
+      window.location = '/docs/IAP%20PRIVACY%20POLICY.pdf'
+      next(false)
+    },
+  },
   {
     path: '*',
     name: 'not-found',
