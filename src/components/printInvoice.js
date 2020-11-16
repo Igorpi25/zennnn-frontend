@@ -649,13 +649,30 @@ const genShipmentBody = (shipment, customs, clientLang) => {
 const genItemBody = (invoices, clientLang) => {
   let index = 0
   const items = []
-  invoices.forEach(invoice => {
-    const products = invoice.products || []
+  // filter dummy invoices
+  invoices.filter(el => !el.id.startsWith('empty-')).forEach(invoice => {
+    // filter dummy products
+    const products = (invoice.products || []).filter(el => !el.id.startsWith('empty-'))
     products.forEach(product => {
       index++
       const price = (product.cost && product.cost.price) || product.costPrice || 0
       const amount = (product.cost && product.cost.amount) || product.costAmount || 0
-      let name = product.name || ''
+      const lang = clientLang
+      const word = product.name || {}
+      const wordDefaultLocale = word.defaultLocale
+      const wordValues = word.values || []
+      const result = {}
+      wordValues.forEach(el => {
+        const v = el.v || el.tr
+        if (v) {
+          result[el.k] = v
+        }
+      })
+      let name = result.en || ''
+      if (clientLang !== 'en') {
+        const s = result[lang] || result[wordDefaultLocale] || ''
+        name += name && s ? ` / ${s}` : s || ''
+      }
       if (product.article) {
         name += ` / ${product.article}`
       }

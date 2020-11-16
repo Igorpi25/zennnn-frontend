@@ -13,6 +13,7 @@
           :upload="false"
           :removable="removable"
           :current-index="index"
+          :caption="caption"
         >
           <template v-slot:menu-activator="{ isOpen }">
             <div class="h-8 w-8 rounded relative">
@@ -94,6 +95,7 @@ export default {
       type: Boolean,
       default: true,
     },
+    caption: String,
   },
   data () {
     return {

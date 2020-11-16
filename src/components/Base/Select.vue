@@ -47,6 +47,7 @@
         :dense="dense"
         :loading="loading"
         :size="size"
+        :style="compStyle"
         autocomplete="off"
         force-update
         @input="onInput"
@@ -57,10 +58,8 @@
         <template v-if="$slots.prepend" v-slot:prepend>
           <slot name="prepend" />
         </template>
-        <template v-if="$slots.append" v-slot:append>
-          <slot name="append" />
-        </template>
-        <template v-if="hasArrowIcon" v-slot:append>
+        <template v-if="$slots.append || $scopedSlots.append || hasArrowIcon" v-slot:append>
+          <slot name="append" :open="isActive" />
           <button
             v-if="hasArrowIcon"
             :disabled="disabled"
@@ -97,6 +96,7 @@
         :class="['select-picker', { 'select-picker--dense': solo || dense }, { 'pt-2 pb-3': padded }]"
         role="menu"
       >
+        <slot name="menu-prepend-item" />
         <li
           v-if="$slots['prepend-item']"
           key="select-prepend-item"
@@ -274,6 +274,7 @@ export default {
       type: Boolean,
       default: true,
     },
+    activeStyle: Object,
   },
   data () {
     return {
@@ -285,6 +286,13 @@ export default {
     }
   },
   computed: {
+    compStyle () {
+      let result = {}
+      if (this.activeStyle) {
+        result = this.isActive ? this.activeStyle : {}
+      }
+      return result
+    },
     computedId () {
       return this.id || `input-${this._uid}`
     },
@@ -551,7 +559,7 @@ export default {
     },
     closeConditional (e) {
       // Close on label click
-      if (this.$refs.input.$refs.label && this.$refs.input.$refs.label.contains(e.target)) {
+      if (this.$refs.input && this.$refs.input.$refs.label && this.$refs.input.$refs.label.contains(e.target)) {
         this.closeMenu()
         return
       }

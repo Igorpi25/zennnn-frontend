@@ -4,6 +4,7 @@
       ref="spec"
       v-if="roleInProject"
       :is="componentName"
+      :loading="loading"
     />
   </div>
 </template>
@@ -68,6 +69,9 @@ export default {
     }
   },
   computed: {
+    loading () {
+      return this.$apollo.queries.getSpec.loading
+    },
     specId () {
       return this.$route.params.specId
     },
@@ -149,6 +153,12 @@ export default {
         if (operation === Operation.UPDATE_PRODUCT) {
           const mergeOptions = {
             customMerge: (key) => {
+              if (key === 'name') {
+                const merge = (_, source) => {
+                  return source
+                }
+                return merge
+              }
               if (key === 'comments') {
                 return commentsMerge
               }

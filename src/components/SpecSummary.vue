@@ -32,7 +32,7 @@
     <v-dialog
       v-model="printDialog"
       :fullscreen="$vuetify.breakpoint.smAndDown"
-      content-class="dialog-full-height overflow-scroll-touch"
+      content-class="dialog-full-height scrolling-touch"
       max-width="1130"
       scrollable
       persistent
@@ -87,6 +87,7 @@
               outlined
               class="w-full"
               content-class="w-full flex items-center"
+              @click="onOverview"
             >
               <template v-slot:icon>
                 <i class="zi-eye text-gray-100 text-2xl" />
@@ -255,7 +256,7 @@ import {
   SET_SPEC_CONTAINER_SIZE,
   SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
 } from '../graphql/mutations'
-import { DEFAULT_CURRENCY } from '../config/globals'
+import { DEFAULT_CURRENCY, PAPER_ORG_ID_STORE_KEY } from '../config/globals'
 
 import printInvoice from '../components/printInvoice'
 
@@ -373,6 +374,9 @@ export default {
     }
   },
   methods: {
+    onOverview () {
+      sessionStorage.setItem(PAPER_ORG_ID_STORE_KEY, this.orgId)
+    },
     async doPrint (requisite, client, shipment, customs) {
       try {
         this.printLoading = true

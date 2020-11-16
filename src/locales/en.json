@@ -382,7 +382,8 @@
     "zHint": "Z sign shows if your client has a ZENNNN account.",
     "contactPerson": "Representative",
     "contact": "Contacts",
-    "numberHint": "Number of deal. Generated automatically and used in all subsequent documents."
+    "numberHint": "Number of deal. Generated automatically and used in all subsequent documents.",
+    "byEmployees": "By employees"
   },
   "staff": {
     "createStaff": "Create an employee",
@@ -1126,6 +1127,31 @@
     "required": "Required",
     "warning": "Recommended"
   },
+  "words": {
+    "addWord": "Add word",
+    "addWordTitle": "Add a word",
+    "editWord": "Edit word",
+    "noData": "Your dictionary is still empty,<br>add some word and its translation.",
+    "more": "More",
+    "noTranslation": "no translation",
+    "translate": "Translate"
+  },
+  "goods": {
+    "createProduct": "Create a Product",
+    "empty": "Empty",
+    "selected": "Selected",
+    "products": "products | product | products",
+    "myProducts": "My Products",
+    "supplierProducts": "Supplier Products",
+    "noData": "There are no products in our database,<br>start with clicking Create a product.",
+    "photo": "Photo",
+    "name": "Name & model",
+    "currency": "Currency / Unit",
+    "price": "Price",
+    "priceHint": "Price...",
+    "sold": "Sold (шт)",
+    "show": "Show"
+  },
   "welcomeModal": {
     "head": "Welcome to ZENNNN",
     "title": "It’s amazing that you signed up on Z!",
@@ -1226,6 +1252,7 @@
     "apply": "Apply",
     "save": "Save",
     "create": "Create",
+    "add": "Add",
     "loading": "Loading",
     "collapse": "Hide",
     "collapseAll": "Hide all",

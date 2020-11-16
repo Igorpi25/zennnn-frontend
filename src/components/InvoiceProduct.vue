@@ -14,26 +14,85 @@
     </td>
     <td class="text-center pl-1">
       <ProductImage
-        v-if="!create"
+        v-if="isOwnerOrManager && create"
+        :caption="info.description"
+        upload
+        @upload-start="$emit('create', {})"
+      />
+      <ProductImage
+        v-else
         :product-id="item.id"
         :images="info.images"
         :upload="isOwnerOrManager"
         :removable="isOwnerOrManager"
         :sortable="isOwnerOrManager"
+        :caption="info.description"
       />
     </td>
     <td class="pr-sm">
-      <TextField
+      <Select
         v-if="isOwnerOrManager"
-        :value="item.name"
-        :placeholder="$t('shipping.name')"
+        :value="wordItem"
+        :placeholder="hasNoTranslation ? $t('words.noTranslation') : $t('shipping.name')"
         :lazy="create"
+        :search.sync="wordSearch"
+        :items="words"
+        :has-arrow-icon="false"
+        :input-class="hasNoTranslation ? 'placeholder-yellow-300': ''"
+        :active-style="{ width: '180px', zIndex: 10 }"
+        min-width="180px"
+        max-width="180px"
+        item-value="id"
+        item-text="text"
         solo
+        searchable
+        no-filter
+        class="relative"
+        append-slot-class="w-auto pr-sm"
+        @click:prepend-item="openWordCreateDialog"
         @input="createOrUpdateProduct({ name: $event })"
-      />
+      >
+        <template v-slot:item="{ item }">
+          <span class="truncate">
+            {{ item.text }}
+          </span>
+        </template>
+        <template v-slot:prepend-item>
+          <span class="flex items-center jusitfy-center text-blue-500">
+            <i class="zi-plus-outline text-2xl mr-1" />
+            <span>{{ $t('words.addWord') }}</span>
+          </span>
+        </template>
+        <template v-slot:append="{ open }">
+          <button
+            v-if="open && canEdit"
+            class="flex items-center jusitfy-center text-blue-500 focus:outline-none cursor-pointer"
+            @click="wordEditDialog = true"
+          >
+            <i class="zi-edit text-xl" />
+          </button>
+        </template>
+      </Select>
       <span v-else class="pl-sm">
-        {{ item.name }}
+        {{ wordItem.text }}
       </span>
+      <WordDialog
+        v-if="isOwnerOrManager"
+        v-model="wordCreateDialog"
+        :org-id="orgId"
+        :product-id="item.id"
+        :init-value="wordCreateText"
+        create
+        @create="onWordCreate"
+      />
+      <WordDialog
+        v-if="isOwnerOrManager && canEdit"
+        v-model="wordEditDialog"
+        :org-id="orgId"
+        :product-id="item.id"
+        :item="item.name"
+        @update="onWordUpdate"
+      />
     </td>
     <td class="pr-sm">
       <TextField
@@ -237,6 +296,7 @@
               :images="info.images"
               :upload="isOwnerOrManager"
               :removable="isOwnerOrManager"
+              :caption="info.description"
             />
           </div>
         </td>
@@ -352,7 +412,7 @@
             <span
               :class="[newCommentsCount ? 'bg-purple-500 text-white' : 'bg-gray-800 bg-opacity-90']"
               class="font-semibold h-5 inline-flex items-center justify-center rounded-50 px-1 pt-px"
-              style="min-width: 20px"
+              style="min-width: 20px;"
             >{{ item.comments.length }}</span>
           </template>
         </td>
@@ -393,15 +453,19 @@
 </template>
 
 <script>
-import { InvoiceProfitType, Role } from '../graphql/enums'
+import { InvoiceProfitType, Role, WordStatus } from '../graphql/enums'
+import { SEARCH_WORDS } from '../graphql/queries'
 import product from '../mixins/product'
 import { isLink } from '../util/helpers'
-import Comments from './Comments'
+
+import Comments from './Comments.vue'
+import WordDialog from './WordDialog.vue'
 
 export default {
   name: 'InvoiceProduct',
   components: {
     Comments,
+    WordDialog,
   },
   mixins: [product],
   props: {
@@ -431,12 +495,80 @@ export default {
     },
     create: Boolean,
   },
+  apollo: {
+    searchWords: {
+      query: SEARCH_WORDS,
+      variables () {
+        return {
+          orgId: this.orgId,
+          search: this.wordSearch,
+          locale: this.$i18n.locale,
+        }
+      },
+      fetchPolicy: 'cache-and-network',
+      skip () {
+        return !this.wordSearch
+      },
+      debounce: 300,
+    },
+  },
   data () {
     return {
+      wordCreateDialog: false,
+      wordEditDialog: false,
       isLinkUrlFocus: false,
+      wordSearch: '',
+      wordCreateText: '',
     }
   },
   computed: {
+    orgId () {
+      return this.$route.params.orgId
+    },
+    hasNoTranslation () {
+      return this.item.name && !this.wordItem[this.$i18n.locale]
+    },
+    hasWord () {
+      return this.item.name && this.item.name.id
+    },
+    canEdit () {
+      const word = this.item.name || {}
+      return this.hasWord && word.status === WordStatus.DRAFT
+    },
+    wordItem () {
+      const word = this.item.name || {}
+      const values = word.values || []
+      const result = {}
+      values.forEach(el => {
+        const v = el.v || el.tr
+        if (v) {
+          result[el.k] = v
+        }
+      })
+      const text = result[this.$i18n.locale] || result[word.defaultLocale]
+      return {
+        ...word,
+        text,
+      }
+    },
+    words () {
+      const items = (this.searchWords && this.searchWords.items) || []
+      return items.map(word => {
+        const values = word.values || []
+        const result = {}
+        values.forEach(el => {
+          const v = el.v || el.tr
+          if (v) {
+            result[el.k] = v
+          }
+        })
+        const text = result[this.$i18n.locale] || result[word.defaultLocale]
+        return {
+          ...word,
+          text,
+        }
+      })
+    },
     commentators () {
       const result = {}
       const items = this.item.comments || []
@@ -472,6 +604,30 @@ export default {
     },
     isInvoiceProfitTypeCommission () {
       return this.profitType === InvoiceProfitType.COMMISSION
+    },
+  },
+  watch: {
+    wordCreateDialog (val) {
+      if (!val) {
+        this.wordCreateText = ''
+      }
+    },
+  },
+  methods: {
+    openWordCreateDialog () {
+      this.wordCreateText = this.wordSearch || ''
+      this.wordCreateDialog = true
+    },
+    async onWordCreate (result) {
+      this.wordCreateDialog = false
+      try {
+        await this.createOrUpdateProduct({ name: result.id })
+      } catch (error) {
+        throw new Error(error)
+      }
+    },
+    async onWordUpdate () {
+      this.wordEditDialog = false
     },
   },
 }

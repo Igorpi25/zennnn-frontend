@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Header :paper-org-name="spec.orgName" />
+    <Header :paper-org-name="spec.orgName" :org="orgId" />
     <div class="container container--sm mb-12">
       <div class="pt-8 pb-16">
         <div class="flex flex-col sm:flex-row items-center justify-between pb-6">
@@ -143,7 +143,7 @@
                 ]"
               />
               <div class="select-text">
-                <div class="text-gray-400 font-semibold">
+                <div class="text-gray-400 font-semibold leading-tight">
                   <span>{{ item.invoiceNo || '-' }}</span>&nbsp;
                   <span class="text-sm">{{ $t('preposition.from') }}</span>&nbsp;
                   <span>{{ item.createdAt ? $d($parseDate(item.createdAt), 'short') : '-' }}</span>&nbsp;
@@ -256,7 +256,7 @@
                       <div :class="['spec-container relative my-2', { 'spec-container--lg': container.size === '_40' || container.size === '_45' }]">
                         <div class="spec-container__progress w-full h-full">
                           <div
-                            style="width: 100%"
+                            style="width: 100%;"
                             class="relative w-0 h-full"
                           >
                             <div class="absolute top-0 left-0 bg-blue-500 w-full h-full" />
@@ -512,7 +512,7 @@ import Comments from '../components/Comments'
 import PaperInvoice from '../components/PaperInvoice'
 
 import { Typename, Operation, InvoiceStatus } from '../graphql/enums'
-import { GET_PAPER_SPEC } from '../graphql/queries'
+import { GET_PAPER_SPEC, GET_PROFILE } from '../graphql/queries'
 import {
   SET_SPEC_EXPANDED_INVOICES,
   ADD_SPEC_EXPANDED_INVOICES,
@@ -526,7 +526,7 @@ import {
   PAPER_SPEC_INVOICES_FRAGMENT,
   PAPER_INVOICE_PRODUCTS_FRAGMENT,
 } from '../graphql/typeDefs'
-import { PAPER_STORE_KEY_PREFIX, DEFAULT_CURRENCY } from '../config/globals'
+import { PAPER_STORE_KEY_PREFIX, DEFAULT_CURRENCY, PAPER_ORG_ID_STORE_KEY } from '../config/globals'
 import { getSpecExpandedInvoices } from '../graphql/resolvers'
 import printInvoice from '../components/printInvoice'
 
@@ -539,6 +539,10 @@ export default {
     PaperInvoice,
   },
   apollo: {
+    getProfile: {
+      query: GET_PROFILE,
+      fetchPolicy: 'network-only',
+    },
     getPaperSpec: {
       query: GET_PAPER_SPEC,
       variables () {
@@ -564,9 +568,16 @@ export default {
       isBooted: false,
       expanded: [],
       menuCurrency: false,
+      sessionOrgId: '',
     }
   },
   computed: {
+    profile () {
+      return this.getProfile || {}
+    },
+    orgId () {
+      return this.sessionOrgId || (this.profile.account && this.profile.account.org)
+    },
     hasNewComments () {
       const comments = this.spec.comments || []
       return comments.some(item => !item.clientViewed)
@@ -607,6 +618,11 @@ export default {
         this.removeExpandedInvoices(removedIds)
       }
     },
+  },
+  created () {
+    const overviewOrgId = sessionStorage.getItem(PAPER_ORG_ID_STORE_KEY)
+    this.sessionOrgId = overviewOrgId || ''
+    sessionStorage.removeItem(PAPER_ORG_ID_STORE_KEY)
   },
   mounted () {
     const commentsMerge = (target, source) => {
@@ -857,9 +873,10 @@ export default {
       this.isBooted = true
       const expanded = await getSpecExpandedInvoices(specId, PAPER_STORE_KEY_PREFIX)
       if (!expanded) {
-        const [invoice] = spec.invoices || []
-        if (invoice && invoice.id) {
-          this.expanded = [invoice.id]
+        const invoices = spec.invoices || []
+        const ids = invoices.map(el => el.id)
+        if (ids.length > 0) {
+          this.expanded = ids
           await this.setExpandedInvoices(this.expanded)
         }
       } else {

@@ -15,6 +15,59 @@ import {
   PAPER_PRODUCT_FRAGMENT,
 } from './typeDefs'
 
+export const LIST_WORDS = gql`
+  query ListWords($orgId: ID!) {
+    listWords(orgId: $orgId) {
+      items {
+        id
+        status
+        defaultLocale
+        values {
+          k
+          v
+          tr
+        }
+      }
+    }
+  }
+`
+
+export const SEARCH_WORDS = gql`
+  query SearchWords($orgId: ID!, $search: String!, $locale: String!) {
+    searchWords(orgId: $orgId, search: $search, locale: $locale) {
+      items {
+        id
+        status
+        defaultLocale
+        values {
+          k
+          v
+          tr
+        }
+      }
+    }
+  }
+`
+
+export const GET_WORD_SPECS = gql`
+  query GetWordSpecs($orgId: ID!, $id: ID!) {
+    getWordSpecs(orgId: $orgId, id: $id) {
+      specId
+      specNo
+    }
+  }
+`
+
+export const TRANSLATE_WORD = gql`
+  query TranslateWord($orgId: ID!, $text: String!, $sourceLang: String!) {
+    translateWord(orgId: $orgId, text: $text, sourceLang: $sourceLang) {
+      k
+      v
+      tr
+    }
+  }
+`
+
 export const LIST_PRICES = gql`
   query ListPrices {
     listPrices
@@ -139,6 +192,9 @@ export const GET_SPECS = gql`
       specNo
       shipped
       hasNewComment
+      employeeId
+      employeeFullName
+      employeeRole
       createdAt
       updatedAt
       client {
@@ -372,7 +428,7 @@ export const LIST_STAFF = gql`
         familyName
         picture
         role
-        inWorkCount
+        processing
         revenue
         totalItemsCost
         totalMargin
@@ -399,6 +455,21 @@ export const LIST_STAFF = gql`
         invitationFamilyName
         invitationRole
         status
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+
+export const LIST_ITEMS = gql`
+  query ListItems($orgId: ID!) {
+    listItems(orgId: $orgId) {
+      items {
+        id
+        createdBy
+        removedFromOwner
+        currentOwner
         createdAt
         updatedAt
       }

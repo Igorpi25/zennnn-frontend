@@ -10,6 +10,7 @@
       :bottom="bottom"
       :offset-x="offsetX"
       :offset-y="offsetY"
+      :light="light"
       min-width="320"
       max-width="320"
       max-height="75vh"

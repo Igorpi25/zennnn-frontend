@@ -16,8 +16,10 @@ const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 const Pricing = () => import(/* webpackChunkName: "home" */ '../views/Pricing.vue')
 const Payment = () => import(/* webpackChunkName: "main" */ '../views/Payment.vue')
 const Subscription = () => import(/* webpackChunkName: "main" */ '../views/Subscription.vue')
+const WordList = () => import(/* webpackChunkName: "main" */ '../views/WordList.vue')
 const RequisiteList = () => import(/* webpackChunkName: "main" */ '../views/RequisiteList.vue')
 const RequisiteItem = () => import(/* webpackChunkName: "main" */ '../views/RequisiteItem.vue')
+const ItemList = () => import(/* webpackChunkName: "main" */ '../views/ItemList.vue')
 // const OrgLayout = () => import(/* webpackChunkName: "main" */ '../views/OrgLayout.vue')
 const Specs = () => import(/* webpackChunkName: "main" */ '../views/Specs.vue')
 const Spec = () => import(/* webpackChunkName: "main" */ '../views/Spec.vue')
@@ -175,6 +177,12 @@ const routes = [
         component: Staff,
       },
       {
+        path: 'dictionary',
+        name: 'dictionary',
+        meta: { requiresAuth: true },
+        component: WordList,
+      },
+      {
         path: 'requisites',
         name: 'requisites',
         meta: { requiresAuth: true },
@@ -192,6 +200,12 @@ const routes = [
         name: 'requisite',
         meta: { requiresAuth: true, scrollToTop: true },
         component: RequisiteItem,
+      },
+      {
+        path: 'goods',
+        name: 'items',
+        meta: { requiresAuth: true },
+        component: ItemList,
       },
     ],
   },
@@ -323,8 +337,17 @@ const routes = [
     path: '/paper/:specId',
     name: 'paper',
     component: Paper,
-    meta: { scrollToTop: true },
-    beforeEnter: (to, from, next) => {
+    meta: { requiresAuth: true, scrollToTop: true },
+    beforeEnter: async (to, from, next) => {
+      try {
+        await apolloClient.query({
+          query: GET_ORGS,
+          fetchPolicy: 'cache-first',
+        })
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log('Error on navigation to overview.', error)
+      }
       if (to.query.sid) {
         localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid)
         return next({ name: 'paper', params: { specId: to.params.specId }, query: {} })
@@ -493,7 +516,7 @@ const router = new VueRouter({
     if (savedPosition) {
       return savedPosition
     } else {
-      return { x: 0, y: 0 }
+      return {}
     }
   },
   routes,
@@ -532,7 +555,7 @@ router.beforeEach(async (to, from, next) => {
     if (!loggedIn) {
       next({
         name: 'signin',
-        query: to.fullPath && to.fullPath !== '/' && to.fullPath !== '/signin'
+        query: to.fullPath && (to.fullPath !== '/' || to.fullPath !== '/signin')
           ? { redirect: to.fullPath } : {},
       })
     } else {

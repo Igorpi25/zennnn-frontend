@@ -54,6 +54,7 @@ export function sortItems (
   customSorters,
 ) {
   if (sortBy === null || !sortBy.length) return items
+  const stringCollator = new Intl.Collator(locale, { sensitivity: 'accent', usage: 'sort' })
 
   return items.sort((a, b) => {
     for (let i = 0; i < sortBy.length; i++) {
@@ -82,11 +83,8 @@ export function sortItems (
       [sortA, sortB] = [sortA, sortB].map(s => (s || '').toString().toLocaleLowerCase())
 
       if (sortA !== sortB) {
-        const sortResult = (!isNaN(sortA) && !isNaN(sortB))
-          ? Number(sortA) - Number(sortB)
-          : sortA.localeCompare(sortB, locale)
-
-        if (sortResult) return sortResult
+        if (!isNaN(sortA) && !isNaN(sortB)) return Number(sortA) - Number(sortB)
+        return stringCollator.compare(sortA, sortB)
       }
     }
 
@@ -116,6 +114,8 @@ export function deepEqual (a, b) {
 
   return props.every(p => deepEqual(a[p], b[p]))
 }
+
+export function wrapInArray (v) { return v != null ? Array.isArray(v) ? v : [v] : [] }
 
 /**
  * Convert to unit

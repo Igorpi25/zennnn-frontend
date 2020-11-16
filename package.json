@@ -1,16 +1,16 @@
 {
   "name": "zennnn-frontend",
-  "version": "0.30.2",
+  "version": "0.36.7",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint --mode production",
-    "build:paper": "vue-cli-service build src/paper.js --dest dist_paper --mode paper",
+    "build:admin": "vue-cli-service build src/admin.js --dest dist_admin --mode admin",
     "build:stable": "vue-cli-service build --mode stable",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
-    "serve:paper": "vue-cli-service serve src/paper.js --mode paper.dev"
+    "serve:admin": "vue-cli-service serve src/admin.js --mode admin.dev"
   },
   "dependencies": {
     "@mdi/js": "^4.9.95",
@@ -67,7 +67,7 @@
     "prerender-spa-plugin": "^3.4.0",
     "sass": "^1.23.6",
     "sass-loader": "^8.0.0",
-    "tailwindcss": "^1.6.2",
+    "tailwindcss": "^1.7.1",
     "vue-cli-plugin-axios": "0.0.4",
     "vue-cli-plugin-i18n": "^1.0.1",
     "vue-template-compiler": "^2.6.11"

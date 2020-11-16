@@ -99,7 +99,16 @@ export const PRODUCT_FRAGMENT = gql`
   fragment ProductFragment on Product {
     id
     productStatus
-    name
+    name {
+      id
+      status
+      defaultLocale
+      values {
+        k
+        v
+        tr
+      }
+    }
     article
     qty
     unit
@@ -631,7 +640,16 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
   fragment PaperProductFragment on PaperProduct {
     id
     productStatus
-    name
+    name {
+      id
+      status
+      defaultLocale
+      values {
+        k
+        v
+        tr
+      }
+    }
     article
     qty
     unit
@@ -642,6 +660,7 @@ export const PAPER_PRODUCT_FRAGMENT = gql`
     updatedAt
     # cost
     price
+    customPrice
     amount
     # store
     pkgQty
@@ -665,6 +684,7 @@ export const PAPER_INVOICE_FRAGMENT = gql`
   fragment PaperInvoiceFragment on PaperInvoice {
     id
     invoiceStatus
+    profitForAll
     invoiceNo
     shippingDate
     discount

@@ -543,7 +543,7 @@
                 width="787"
                 height="690"
               >
-                <div class="absolute right-0" style="top: 31px; left: 31px; height: 58.8%">
+                <div class="absolute right-0" style="top: 31px; left: 31px; height: 58.8%;">
                   <v-img
                     :src="$vuetify.breakpoint.width > 1440 ? '/static/img/client-cabinet_lg.png' : '/static/img/client-cabinet.png'"
                     alt="client"
@@ -563,11 +563,11 @@
       <div class="relative" style="top: -88px;">
         <div class="container container--xs">
           <div class="flex flex-col items-center text-center bg-gray-900 rounded-12 py-20 px-3">
-            <h3 class="text-4xl leading-tight font-bold text-white" style="max-width: 1010px">
+            <h3 class="text-4xl leading-tight font-bold text-white" style="max-width: 1010px;">
               Станьте одним из первых поль&shy;зо&shy;ва&shy;те&shy;лей мощнейшего проекта в меж&shy;ду&shy;на&shy;род&shy;ной торговле
             </h3>
             <div class="w-15 h-px py-xs my-6 bg-blue-700" />
-            <div class="text-xl leading-normal text-white opacity-50 pb-8" style="max-width: 600px">
+            <div class="text-xl leading-normal text-white opacity-50 pb-8" style="max-width: 600px;">
               Бесплатный пробный доступ предоставляется на 7 дней. Этого времени хватит, чтобы оценить удобство сервиса и навсегда полюбить ZENNNN.
             </div>
             <div

@@ -41,7 +41,7 @@
   opacity: 1;
   @apply text-white;
 }
-.data-table thead td.sortable.active.asc .data-table-header__icon {
+.data-table thead td.sortable.active.desc .data-table-header__icon {
   transform: rotate(-180deg);
 }
 

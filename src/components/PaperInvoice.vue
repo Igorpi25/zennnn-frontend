@@ -2,7 +2,7 @@
   <div
     v-scroll="onScroll"
     ref="productsTable"
-    class="overflow-x-auto overflow-scroll-touch border-t border-white bg-light-gray-100 rounded-b-md"
+    class="overflow-x-auto scrolling-touch border-t border-white bg-light-gray-100 rounded-b-md"
     @mouseenter="isMouseOver = true"
     @mouseleave="isMouseOver = false"
     @touchstart="isScrollStart = true"
@@ -47,6 +47,7 @@
               :images="item.images"
               :upload="false"
               :removable="false"
+              :caption="item.description"
               light
             >
               <template v-slot:menu-activator>
@@ -64,7 +65,14 @@
                     <v-img
                       :src="item.images[0] && item.images[0].url"
                       aspect-ratio="1"
-                    />
+                      style="border-radius: 5px;"
+                    >
+                      <template v-slot:placeholder>
+                        <div class="flex justify-center items-center w-full h-full">
+                          <Spinner />
+                        </div>
+                      </template>
+                    </v-img>
                   </div>
                 </div>
               </template>
@@ -72,7 +80,9 @@
             <div v-else class="h-12 w-12" style="border-radius: 5px; background: rgba(196, 196, 196, 0.2);" />
           </td>
           <td class="bg-white p-2">
-            <div class="truncate pb-xs" style="min-width: 250px; min-height: 20px;">{{ item.name }} {{ item.article }}</div>
+            <div class="truncate pb-xs" style="min-width: 250px; min-height: 20px;">
+              {{ getWordText(item.name) }} {{ item.article }}
+            </div>
             <div class="text-gray-100 truncate" style="min-height: 20px;">
               {{ item.description }}
             </div>
@@ -90,7 +100,9 @@
               {{ $te(`productStatus.${item.productStatus}`) ? $t(`productStatus.${item.productStatus}`) : '' }}
             </div>
           </td>
-          <td class="bg-white p-2 text-right">{{ $n(item.price || 0, 'fixed') }}</td>
+          <td class="bg-white p-2 text-right">
+            {{ $n(getClientPrice(item) || 0, 'fixed') }}
+          </td>
           <td class="bg-white py-2 pl-2 pr-1 text-right">{{ $n(item.qty || 0) }}</td>
           <td class="bg-white py-2 pl-1 pr-2">
             {{ $te(`unit.${item.unit}`) ? $t(`unit.${item.unit}`) : '' }}
@@ -188,7 +200,7 @@ import Scroll from '../directives/Scroll'
 
 import { ProductStatus } from '../graphql/enums'
 import { DEFAULT_CURRENCY } from '../config/globals'
-import { convertToUnit } from '../util/helpers'
+import { convertToUnit, isNumber } from '../util/helpers'
 
 export default {
   name: 'PaperInvoice',
@@ -233,6 +245,9 @@ export default {
     }
   },
   computed: {
+    profitForAll () {
+      return this.invoice && this.invoice.profitForAll
+    },
     headers () {
       return [
         { text: this.$t('paper.itemNo'), value: 'number', align: 'center', width: 48 },
@@ -266,6 +281,26 @@ export default {
     }
   },
   methods: {
+    getClientPrice (item) {
+      if (this.profitForAll) {
+        return item.price
+      }
+      return isNumber(item.customPrice)
+        ? item.customPrice
+        : item.price
+    },
+    getWordText (item) {
+      const word = item || {}
+      const values = word.values || []
+      const result = {}
+      values.forEach(el => {
+        const v = el.v || el.tr
+        if (v) {
+          result[el.k] = v
+        }
+      })
+      return result[this.$i18n.locale] || result[word.defaultLocale]
+    },
     convertToUnit (val) {
       return convertToUnit(val)
     },

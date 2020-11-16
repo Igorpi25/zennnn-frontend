@@ -1,7 +1,7 @@
 <template>
   <div
     class="fixed top-0 inset-x-0 flex justify-center pointer-events-none pt-8 px-3"
-    style="z-index: 999"
+    style="z-index: 999;"
   >
     <transition-group
       tag="div"

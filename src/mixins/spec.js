@@ -29,6 +29,9 @@ import {
 import { getSpecExpandedInvoices, getSpecActiveTab } from '../graphql/resolvers'
 
 export default {
+  props: {
+    loading: Boolean,
+  },
   apollo: {
     specSimpleUIOff: {
       query: SPEC_SIMPLE_UI_OFF,
@@ -109,6 +112,9 @@ export default {
     }
   },
   computed: {
+    dataLoading () {
+      return this.items.length === 0 && this.loading
+    },
     isInvoiceSummaryVisible () {
       return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct || this.hasFilledProductQty)
     },
