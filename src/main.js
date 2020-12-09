@@ -5,8 +5,12 @@ import router from './router'
 
 // Plugins
 import i18n from './plugins/i18n'
+import auth from './plugins/auth'
 import notify from './plugins/notify'
 import breakpoint from './plugins/breakpoint'
+import logger from './plugins/logger'
+import store from './plugins/localforage'
+import isoDate from './plugins/date-fns'
 
 // Base components
 import './components'
@@ -20,8 +24,12 @@ function runApp () {
   createApp(App)
     .use(router)
     .use(i18n)
+    .use(auth)
     .use(notify)
     .use(breakpoint)
+    .use(logger)
+    .use(store)
+    .use(isoDate)
     .mount('#app')
 }
 

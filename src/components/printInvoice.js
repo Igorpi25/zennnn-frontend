@@ -1,7 +1,7 @@
 import axios from 'axios'
 import parseISO from 'date-fns/parseISO'
 import fromUnixTime from 'date-fns/fromUnixTime'
-import { i18n } from '../plugins'
+import { i18n } from '../plugins/i18n'
 import { ShipmentType, ClientType } from '../graphql/enums'
 import Countries from '../config/countries-iso3.json'
 

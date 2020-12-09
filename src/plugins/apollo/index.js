@@ -11,13 +11,14 @@ import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from '../../graphql'
 import { GET_BACKEND_VERSION } from '../../graphql/queries'
 import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../../config/globals'
-import { Auth, store } from '../index'
 import router from '../../router'
 import { getUsername } from '../../graphql/resolvers'
 import systemMessageBus from '../notify/systemMessageBus'
+import { store } from '../localforage'
 import { notify } from '../notify'
-import Logger from '../logger'
-import i18n from '../i18n'
+import { Logger } from '../logger'
+import { i18n } from '../i18n'
+import { auth } from '../auth'
 
 const logger = new Logger('Apollo')
 
@@ -86,11 +87,11 @@ const authLink = setContext(async (request, { headers }) => {
   ) {
     sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
     try {
-      const session = await Auth.currentSession()
+      const session = await auth.currentSession()
       token = session.getIdToken().getJwtToken()
     } catch (error) {} // eslint-disable-line
   } else {
-    const session = await Auth.currentSession()
+    const session = await auth.currentSession()
     token = session.getIdToken().getJwtToken()
   }
   // return the headers to the context so httpLink can read them
@@ -99,7 +100,7 @@ const authLink = setContext(async (request, { headers }) => {
       ...headers,
       Authorization: token ? `Bearer ${token}` : '',
       sid,
-      locale: i18n.global.locale,
+      locale: i18n.locale,
     },
   }
 })
@@ -138,7 +139,7 @@ export const wsLink = new WebSocketLink({
     reconnect: true,
     lazy: true,
     connectionParams: async () => {
-      const session = await Auth.currentSession()
+      const session = await auth.currentSession()
       const token = session.getIdToken().getJwtToken()
       const sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
       return {
@@ -159,7 +160,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
           // error code is set to UNAUTHENTICATED
           // when AuthenticationError thrown in resolver
           cache.reset()
-          Auth.signOut()
+          auth.signOut()
           router.push({
             name: 'signin',
             query: router.currentRoute.fullPath && router.currentRoute.fullPath !== '/'

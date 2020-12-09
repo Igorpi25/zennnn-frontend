@@ -18,7 +18,7 @@ function loadLocaleMessages () {
   return messages
 }
 
-const i18n = createI18n({
+const i18nPlugin = createI18n({
   locale: localStorage.getItem(CURRENT_LOCALE_STORE_KEY) || 'en',
   fallbackLocale: 'en',
   messages: loadLocaleMessages(),
@@ -32,4 +32,6 @@ const i18n = createI18n({
   },
 })
 
-export default i18n
+export default i18nPlugin
+
+export const i18n = i18nPlugin.global

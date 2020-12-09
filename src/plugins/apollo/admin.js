@@ -7,9 +7,9 @@ import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { typeDefs, resolvers } from '../../graphql/admin'
-import { Auth } from '../admin'
+import { auth } from '../auth/admin'
 import { notify } from '../notify'
-import Logger from '../logger'
+import { Logger } from '../logger'
 
 const logger = new Logger('Apollo')
 
@@ -18,7 +18,7 @@ const cache = new InMemoryCache()
 const authLink = setContext(async (_, { headers }) => {
   let token = null
   try {
-    const session = await Auth.currentSession()
+    const session = await auth.currentSession()
     token = session.getIdToken().getJwtToken()
   } catch (error) {} // eslint-disable-line
   // return the headers to the context so httpLink can read them

@@ -81,7 +81,7 @@ export default {
         this.successMessage = ''
         const isValid = this.$refs.form.validate()
         if (isValid) {
-          const response = await this.$Auth.forgotPassword(this.formModel.email)
+          const response = await this.$auth.forgotPassword(this.formModel.email)
           this.$logger.info('Password restore response', response)
           if (response) {
             this.successMessage = this.$t('message.emailSent', { email: this.formModel.email })

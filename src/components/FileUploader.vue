@@ -98,7 +98,6 @@ import {
   ICON_IMAGE_POSTFIX,
   UPLOAD_FILE_SIZE_MB,
 } from '../config/globals'
-import { Auth } from '../plugins'
 
 export default {
   name: 'FileUploader',
@@ -299,7 +298,7 @@ export default {
     async upload (file) {
       let token = null
       try {
-        const session = await Auth.currentSession()
+        const session = await this.$auth.currentSession()
         token = session.getIdToken().getJwtToken()
       } catch (error) {} // eslint-disable-line
 

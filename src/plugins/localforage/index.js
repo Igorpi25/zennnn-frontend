@@ -1,7 +1,11 @@
 import localforage from 'localforage'
 
-const store = localforage.createInstance({
+export const store = localforage.createInstance({
   name: 'zennnn',
 })
 
-export default store
+export default {
+  install (app) {
+    app.config.globalProperties.$store = store
+  },
+}

@@ -1,4 +1,5 @@
-import { Auth, store } from '../plugins'
+import { store } from '../plugins/localforage'
+import { auth } from '../plugins/auth'
 import {
   SPEC_ACTIVE_TAB_STORE_KEY,
   SPEC_EXPANDED_INVOICES_STORE_KEY,
@@ -11,7 +12,7 @@ export const getUsername = async (defaultUsername = '') => {
   defaultUsername = defaultUsername || 'Username'
   let username = defaultUsername
   try {
-    const session = await Auth.currentSession()
+    const session = await auth.currentSession()
     if (session) {
       const payload = session.accessToken && session.accessToken.payload
       username = (payload && payload.username) || defaultUsername

@@ -4,7 +4,7 @@ import Login from '../views/admin/Login.vue'
 import WordList from '../views/admin/WordList.vue'
 import NotFound from '../views/NotFound.vue'
 
-import { Auth } from '../plugins/admin'
+import { auth } from '../plugins/auth/admin'
 
 /**
  * Check auth of current user
@@ -12,7 +12,7 @@ import { Auth } from '../plugins/admin'
  */
 export const checkAuth = async () => {
   try {
-    const session = await Auth.currentSession()
+    const session = await auth.currentSession()
     const loggedIn = !!session.getIdToken().getJwtToken()
     return loggedIn
   } catch (error) {

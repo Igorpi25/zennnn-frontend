@@ -177,7 +177,7 @@ export default {
         this.errorMessage = ''
         const isValid = this.$refs.form.validate()
         if (isValid) {
-          const user = await this.$Auth.signIn(this.formModel.login, this.formModel.password)
+          const user = await this.$auth.signIn(this.formModel.login, this.formModel.password)
           if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
             this.user = user
             this.compliteFormModel.username = user.username
@@ -215,9 +215,9 @@ export default {
         const isValid = this.$refs.compliteForm.validate()
         if (isValid) {
           const { username, password } = this.compliteFormModel
-          const loggedUser = await this.$Auth.completeNewPassword(this.user, password)
+          const loggedUser = await this.$auth.completeNewPassword(this.user, password)
           this.$logger.info('Registered complite user', loggedUser)
-          await this.$Auth.signIn(username, password)
+          await this.$auth.signIn(username, password)
           if (this.$route.query.redirect) {
             this.$router.replace({ path: this.$route.query.redirect })
           } else {

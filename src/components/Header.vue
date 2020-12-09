@@ -537,7 +537,7 @@ export default {
       // TODO with Cache and FederatedInfo
       // const federatedInfo = Cache.getItem('federatedInfo')
       const isGoogleUser = username.startsWith('Google_')
-      const response = await this.$Auth.signOut()
+      const response = await this.$auth.signOut()
       // falsy isLoggedIn in cache before route to signin
       this.$apollo.provider.clients.defaultClient.cache.writeData({
         data: { isLoggedIn: false },

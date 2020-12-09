@@ -5,7 +5,7 @@ import {
   AuthenticationDetails,
 } from 'amazon-cognito-identity-js'
 import StorageHelper from './StorageHelper'
-import Logger from '../logger'
+import { Logger } from '../logger'
 
 const USER_ADMIN_SCOPE = 'aws.cognito.signin.user.admin'
 const logger = new Logger('Auth')

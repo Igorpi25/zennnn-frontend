@@ -1,4 +1,4 @@
-import Auth from './index'
+import { auth } from './index'
 import { apolloClient } from '../apollo'
 import { GET_PROFILE } from '../../graphql/queries'
 import { delay } from '../../util/helpers'
@@ -9,7 +9,7 @@ import { delay } from '../../util/helpers'
  */
 export const checkAuth = async () => {
   try {
-    const session = await Auth.currentSession()
+    const session = await auth.currentSession()
     // console.log('CHECK AUTH', session)
     // console.log('CHECK AUTH')
     // const loggedIn = !!session

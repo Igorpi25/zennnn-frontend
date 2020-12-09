@@ -134,7 +134,7 @@ import Header from '@/components/Header.vue'
 import Social from '@/components/Social.vue'
 import Copyright from '@/components/Copyright.vue'
 
-import { Auth } from '../plugins'
+import { auth } from '../plugins/auth'
 
 export default {
   name: 'Registration',
@@ -145,7 +145,7 @@ export default {
   },
   beforeRouteEnter: (to, from, next) => {
     try {
-      Auth.currentSessionUser()
+      auth.currentSessionUser()
       next()
     } catch (error) {
       // eslint-disable-next-line
@@ -174,7 +174,7 @@ export default {
     }
   },
   created () {
-    this.user = Auth.currentSessionUser()
+    this.user = this.$auth.currentSessionUser()
     this.formModel.firstName = this.user.given_name || ''
     this.formModel.lastName = this.user.family_name || ''
     this.formModel.email = this.user.email
@@ -193,9 +193,9 @@ export default {
             family_name: lastName,
             locale: this.$i18n.locale,
           }
-          const loggedUser = await this.$Auth.completeNewPassword(this.user, password, attrs)
+          const loggedUser = await this.$auth.completeNewPassword(this.user, password, attrs)
           this.$logger.info('Registered complite user', loggedUser)
-          await this.$Auth.signIn(email, password)
+          await this.$auth.signIn(email, password)
           if (this.$route.query.redirect) {
             this.$router.replace({ path: this.$route.query.redirect })
           } else {

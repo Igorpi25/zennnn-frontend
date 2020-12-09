@@ -271,7 +271,7 @@ export default {
         this.errorMessage = ''
         const isValid = this.$refs.form.validate()
         if (isValid) {
-          const user = await this.$Auth.signIn(this.formModel.login, this.formModel.password)
+          const user = await this.$auth.signIn(this.formModel.login, this.formModel.password)
           if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
             this.user = user
             const attrs = user.challengeParam.userAttributes
@@ -344,9 +344,9 @@ export default {
             given_name: firstName,
             family_name: lastName,
           }
-          const loggedUser = await this.$Auth.completeNewPassword(this.user, password, attrs)
+          const loggedUser = await this.$auth.completeNewPassword(this.user, password, attrs)
           this.$logger.info('Registered complite user', loggedUser)
-          await this.$Auth.signIn(email, password)
+          await this.$auth.signIn(email, password)
           await this.$apollo.mutate({
             mutation: COMPLITE_REGISTRATION,
             variables: {

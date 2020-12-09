@@ -56,7 +56,7 @@ export default {
         this.googleLoading = true
         // TODO
         // not implemented
-        const credentials = await this.$Auth.federatedSignIn({ provider: 'Google' })
+        const credentials = await this.$auth.federatedSignIn({ provider: 'Google' })
         // eslint-disable-next-line
         console.log(credentials)
       } catch (error) {
@@ -102,8 +102,8 @@ export default {
       try {
         // TODO
         // not implemented
-        const cognitoUser = await this.$Auth.currentAuthenticatedUser()
-        const currentSession = await this.$Auth.currentSession()
+        const cognitoUser = await this.$auth.currentAuthenticatedUser()
+        const currentSession = await this.$auth.currentSession()
         cognitoUser.refreshSession(currentSession.refreshToken, (err, session) => {
           // eslint-disable-next-line
           console.log('session', err, session)

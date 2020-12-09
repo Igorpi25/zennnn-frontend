@@ -770,7 +770,7 @@ export default {
       return result
     },
     async logout () {
-      await this.$Auth.signOut()
+      await this.$auth.signOut()
       this.loggedOut = true
       this.$apollo.provider.clients.defaultClient.resetStore()
       this.$router.push({ name: 'login' })

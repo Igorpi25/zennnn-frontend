@@ -56,7 +56,7 @@ export default {
       try {
         if (!this.username) throw new Error('User name not setted on "resendSignUp".')
         this.loading = true
-        await this.$Auth.resendSignUp(this.username)
+        await this.$auth.resendSignUp(this.username)
         this.$notify({ color: 'success', text: this.$t('message.emailResent') })
       } catch (error) {
         this.$notify({ color: 'warn', text: this.$t('message.failedToSent') })

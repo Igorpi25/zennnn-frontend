@@ -1,32 +1,34 @@
-import Logger from './Logger'
+import { default as LoggerClass } from './Logger'
 
 const level = process.env.NODE_ENV === 'production' ? 'WARN' : 'INFO'
 
-// global logger instance
-const _instance = new Logger(null, level)
+export const Logger = LoggerClass
 
-export const logger = {
+// global logger instance
+export const logger = new LoggerClass(null, level)
+
+const loggerPlugin = {
   install (app) {
     app.config.globalProperties.$logger = {
       get () {
         return {
           log: (...msg) => {
-            _instance.log(...msg)
+            logger.log(...msg)
           },
           error: (...msg) => {
-            _instance.error(...msg)
+            logger.error(...msg)
           },
           warn: (...msg) => {
-            _instance.warn(...msg)
+            logger.warn(...msg)
           },
           info: (...msg) => {
-            _instance.info(...msg)
+            logger.info(...msg)
           },
           debug: (...msg) => {
-            _instance.debug(...msg)
+            logger.debug(...msg)
           },
           verbose: (...msg) => {
-            _instance.verbose(...msg)
+            logger.verbose(...msg)
           },
         }
       },
@@ -34,4 +36,4 @@ export const logger = {
   },
 }
 
-export default Logger
+export default loggerPlugin

@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 // TODO: Uncaught TypeError: y.b is not a constructor
 import OrgLayout from '../views/OrgLayout.vue'
 
-import i18n from '../plugins/i18n'
+import { i18n } from '../plugins/i18n'
 import { notify } from '../plugins/notify'
 import { checkAuth } from '../plugins/auth/checkAuth'
 import { apolloClient } from '../plugins/apollo'
@@ -365,7 +365,7 @@ const routes = [
       }
       notify.show({
         color: 'primary',
-        text: i18n.global.t('message.documentGenerateLoading'),
+        text: i18n.t('message.documentGenerateLoading'),
         timeout: 0,
         close: false,
       })
@@ -402,9 +402,9 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (to.query.username) {
         if (to.query.state === 'success') {
-          notify.show({ color: 'success', text: i18n.global.t('message.emailConfirmed') })
+          notify.show({ color: 'success', text: i18n.t('message.emailConfirmed') })
         } else if (to.query.state === 'confirmed') {
-          notify.show({ color: 'warn', text: i18n.global.t('message.emailAlreadyConfirmed') })
+          notify.show({ color: 'warn', text: i18n.t('message.emailAlreadyConfirmed') })
         } else if (to.query.state === 'error') {
           notify.show({ color: 'error', text: to.query.message })
           // Add message to Analytics
@@ -428,7 +428,7 @@ const routes = [
         next()
       } else {
         // Incorrect request to restore password
-        notify.show({ color: 'error', text: i18n.global.t('message.incorrectRestorePassword') })
+        notify.show({ color: 'error', text: i18n.t('message.incorrectRestorePassword') })
         next('/signin')
       }
     },
@@ -529,7 +529,7 @@ router.beforeEach(async (to, from, next) => {
     const userLang = navigator.language || navigator.userLanguage || ''
     // is not default lang
     if (!userLang.startsWith(defaultLang)) {
-      const supportedLangs = i18n.global.availableLocales
+      const supportedLangs = i18n.availableLocales
       let lang = userLang.split('-')[0] || ''
       if (!supportedLangs.includes(lang)) {
         // default for not supported langs
@@ -543,7 +543,7 @@ router.beforeEach(async (to, from, next) => {
         }
       }
       localStorage.setItem(CURRENT_LOCALE_STORE_KEY, lang)
-      i18n.global.locale = lang
+      i18n.locale = lang
     }
   }
   // check auth

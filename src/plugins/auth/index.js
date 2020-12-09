@@ -1,21 +1,15 @@
-import Vue from 'vue'
-import Auth from './Auth'
+import { default as AuthClass } from './Auth'
 
-const _instance = new Auth()
+export const auth = new AuthClass()
 
 const AuthPlugin = {
-  install (Vue) {
-    if (AuthPlugin.installed) return
-    Object.defineProperties(Vue.prototype, {
-      $Auth: {
-        get () {
-          return _instance
-        },
+  install (app) {
+    app.config.globalProperties.$auth = {
+      get () {
+        return auth
       },
-    })
+    }
   },
 }
 
-Vue.use(AuthPlugin)
-
-export default _instance
+export default AuthPlugin

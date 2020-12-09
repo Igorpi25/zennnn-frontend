@@ -118,7 +118,7 @@ export default {
         this.errorMessage = ''
         const isValid = this.$refs.form.validate()
         if (isValid) {
-          const user = await this.$Auth.signIn(this.model.email, this.model.password)
+          const user = await this.$auth.signIn(this.model.email, this.model.password)
           this.$logger.info('Logged in user', user)
           this.$router.push({ name: 'home' })
         }
