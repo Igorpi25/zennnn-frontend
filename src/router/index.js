@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 // TODO: Uncaught TypeError: y.b is not a constructor
 import OrgLayout from '../views/OrgLayout.vue'
@@ -500,18 +499,17 @@ const routes = [
     },
   },
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: NotFound,
   },
 ]
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   scrollBehavior (to, from, savedPosition) {
     if (to.matched.some((m) => m.meta.scrollToTop)) {
-      return { x: 0, y: 0 }
+      return { left: 0, top: 0 }
     }
     if (savedPosition) {
       return savedPosition

@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 import Login from '../views/admin/Login.vue'
 import WordList from '../views/admin/WordList.vue'
@@ -55,15 +54,14 @@ const routes = [
     component: WordList,
   },
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: NotFound,
   },
 ]
 
-const router = new VueRouter({
-  mode: 'history',
-  base: '/admin/',
+const router = createRouter({
+  history: createWebHistory('/admin/'),
   routes,
 })
 
