@@ -15,12 +15,12 @@ export default {
   // components: {
   //   PhotoSwipeWrapper,
   // },
-  metaInfo () {
-    return {
-      htmlAttrs: {
-        lang: this.$i18n.locale,
-      },
-    }
-  },
+  // metaInfo () {
+  //   return {
+  //     htmlAttrs: {
+  //       lang: this.$i18n.locale,
+  //     },
+  //   }
+  // },
 }
 </script>

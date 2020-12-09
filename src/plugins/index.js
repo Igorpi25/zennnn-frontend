@@ -1,4 +1,3 @@
-import './vue-meta'
 import './date-fns'
 import './notify'
 import './axios'

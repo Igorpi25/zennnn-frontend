@@ -399,11 +399,11 @@ export default {
     PaymentCard,
     PriceSelect,
   },
-  metaInfo: {
-    style: [
-      { cssText: 'body { background-color: #F7F7F7!important }', type: 'text/css' },
-    ],
-  },
+  // metaInfo: {
+  //   style: [
+  //     { cssText: 'body { background-color: #F7F7F7!important }', type: 'text/css' },
+  //   ],
+  // },
   apollo: {
     getProfile: {
       query: GET_PROFILE,
