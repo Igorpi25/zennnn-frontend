@@ -9,7 +9,7 @@ import { GET_BACKEND_VERSION } from '../../graphql/queries'
 import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../../config/globals'
 import router from '../../router'
 import { getUsername } from '../../graphql/resolvers'
-import systemMessageBus from '../notify/systemMessageBus'
+import emitter from '../mitt'
 import { store } from '../localforage'
 import { notify } from '../notify'
 import { Logger } from '../logger'
@@ -122,7 +122,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
           )
           if (message === 'ForbiddenError: Insufficient access rights') {
-            systemMessageBus.$emit('system-message', message)
+            emitter.emit('system-message', message)
           } else if (message && message.includes('Forbidden')) {
             notify.show({ color: 'warn', text: 'Forbidden' })
           }
