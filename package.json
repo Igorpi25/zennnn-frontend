@@ -43,8 +43,7 @@
     "vue-apollo": "^3.0.4",
     "vue-i18n": "^9.0.0-beta.10",
     "vue-meta": "^2.4.0",
-    "vue-router": "^4.0.1",
-    "vuetify": "^2.1.10"
+    "vue-router": "^4.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.9",
@@ -64,11 +63,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.1.0",
     "eslint-plugin-vue": "^7.2.0",
-    "fibers": "^4.0.2",
     "postcss-import": "^12.0.1",
     "prerender-spa-plugin": "^3.4.0",
-    "sass": "^1.23.6",
-    "sass-loader": "^8.0.0",
     "tailwindcss": "^1.7.1"
   },
   "browserslist": [
