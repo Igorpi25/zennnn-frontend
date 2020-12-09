@@ -30,7 +30,7 @@
       v-model="requisiteDialog"
       scrollable
       max-width="1024"
-      :fullscreen="$vuetify.breakpoint.xs"
+      :fullscreen="$breakpoint.xs"
     >
       <RequisiteCard
         ref="requisiteCard"

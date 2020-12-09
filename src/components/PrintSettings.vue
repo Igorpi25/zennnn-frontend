@@ -370,7 +370,7 @@
     <v-dialog
       ref="requisiteDialog"
       v-model="requisiteDialog"
-      :fullscreen="$vuetify.breakpoint.xs"
+      :fullscreen="$breakpoint.xs"
       scrollable
       max-width="1024"
       content-class="text-gray-100"
@@ -387,7 +387,7 @@
     <v-dialog
       ref="clientDialog"
       v-model="clientDialog"
-      :fullscreen="$vuetify.breakpoint.xs"
+      :fullscreen="$breakpoint.xs"
       scrollable
       max-width="1110"
       content-class="dialog-full-height scrolling-touch"

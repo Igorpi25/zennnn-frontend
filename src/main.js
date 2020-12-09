@@ -6,6 +6,7 @@ import router from './router'
 // Plugins
 import i18n from './plugins/i18n'
 import notify from './plugins/notify'
+import breakpoint from './plugins/breakpoint'
 
 // Base components
 import './components'
@@ -20,6 +21,7 @@ function runApp () {
     .use(router)
     .use(i18n)
     .use(notify)
+    .use(breakpoint)
     .mount('#app')
 }
 

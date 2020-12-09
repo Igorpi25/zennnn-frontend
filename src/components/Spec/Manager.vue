@@ -300,7 +300,7 @@
     <v-dialog
       ref="clientDialog"
       v-model="clientDialog"
-      :fullscreen="$vuetify.breakpoint.xs"
+      :fullscreen="$breakpoint.xs"
       scrollable
       max-width="1110"
       content-class="dialog-full-height scrolling-touch"

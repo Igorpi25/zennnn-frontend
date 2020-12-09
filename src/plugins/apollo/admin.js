@@ -7,8 +7,9 @@ import { setContext } from 'apollo-link-context'
 import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { typeDefs, resolvers } from '../../graphql/admin'
-import { Auth, Logger } from '../admin'
+import { Auth } from '../admin'
 import { notify } from '../notify'
+import Logger from '../logger'
 
 const logger = new Logger('Apollo')
 

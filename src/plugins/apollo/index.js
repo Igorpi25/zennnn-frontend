@@ -11,11 +11,13 @@ import { getMainDefinition } from 'apollo-utilities'
 import { typeDefs, resolvers } from '../../graphql'
 import { GET_BACKEND_VERSION } from '../../graphql/queries'
 import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../../config/globals'
-import { Auth, Logger, i18n, store } from '../index'
+import { Auth, store } from '../index'
 import router from '../../router'
 import { getUsername } from '../../graphql/resolvers'
 import systemMessageBus from '../notify/systemMessageBus'
 import { notify } from '../notify'
+import Logger from '../logger'
+import i18n from '../i18n'
 
 const logger = new Logger('Apollo')
 
@@ -97,7 +99,7 @@ const authLink = setContext(async (request, { headers }) => {
       ...headers,
       Authorization: token ? `Bearer ${token}` : '',
       sid,
-      locale: i18n.locale,
+      locale: i18n.global.locale,
     },
   }
 })

@@ -88,7 +88,7 @@
           <div class="about-devices block relative md:absolute">
             <div class="absolute right-0" style="bottom: 85px; left: 105px;">
               <v-img
-                :src="$vuetify.breakpoint.width > 1440 ? '/static/img/main-deals_lg.png' : '/static/img/main-deals.png'"
+                :src="$breakpoint.width > 1440 ? '/static/img/main-deals_lg.png' : '/static/img/main-deals.png'"
                 alt="deals"
                 lazy-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAABCcAAAQnAEmzTo0AAACuklEQVQ4y12Ty3bTQAyG8yBx0sR3j+3x3U5aaOmitKVLOCxgy4F34Bze215I/FIcJ7DQ0Yxm9I0uo5XjONN2u52CIJhCSHAlvu/P2pvyPJ+6rp+yLJvSNJ2MMcvaZnbK0mzabDbTCkB2b3ZskoQTYxgXIBnntuQ0s2ywz3LLcOa6rrkoCq6qSrWItRb2Ss8B5JWzdsj19pTnGaVZTmXVUFnWVDcDFWVFtiipaXuytoC9JEAIQNVFUam9aRr45wQgrdZrhz3X4eNx4JfXN0RTcFnVXLcDdMMAct20SzQi5wjlDEAGkAGcI0TK+92GD4eBn54+chwngOZ6OY5jLUHddCiBXYAX+ElXZXmVMoA3qKGAXHfPYRgwGsFxFCnQmGSuK2qZpdgbhUhEZq65PJCgB1fAG32h6QZG3eCQ6x51hc41EtkXZQ3bCSaQZi5F27YKv6S83+PA8v3jM7+//8B93zEacIpkTk0hVbukLeddf+C26/h4e6fgfyKUS3EcMf4exwg/QsryqqQiqcs+DEOVa9v5+yxNWa/X7HmeAiUt6aDURR6SC2d9XosIqJwbIbBzQ+RsibBAVwUmDZHLEoVEKy+LTUScMU1qF4g8LPdkLT4LEKOHrgaYlghfaAtnTyfn1PVQAZKFAAQsaymHSY1GG5mYE2suKe9dlz99/sXffvzm7z//8MPzV667W35++8JZmgAaqeM5UlkPw4Dm9ZrVgCYObYMIT02h3W5H3fGR7h5eIK/U9O8whhYjd6AkiQkNIEBUEDEhYh01EaRLViRJTqMnQNSQwsAnz91RCCffcylODCEa6JSKasDaX8Bil1kWoMD9ALYwou1mS0tTjEl1WkxqNcXEZNgbraHUS7TWCyL/VurqolTiK4Isl384wjACOAI04vXR94NZ+6qRlmpARwBHOI6o/Si+/8tf9P378y8MWXEAAAAASUVORK5CYII="
                 class="w-full h-full"
@@ -545,7 +545,7 @@
               >
                 <div class="absolute right-0" style="top: 31px; left: 31px; height: 58.8%;">
                   <v-img
-                    :src="$vuetify.breakpoint.width > 1440 ? '/static/img/client-cabinet_lg.png' : '/static/img/client-cabinet.png'"
+                    :src="$breakpoint.width > 1440 ? '/static/img/client-cabinet_lg.png' : '/static/img/client-cabinet.png'"
                     alt="client"
                     lazy-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAYAAAAvxDzwAAAACXBIWXMAABCcAAAQnAEmzTo0AAAB9UlEQVQ4y4VTbYsaQQz2p6pFrqj4zb95lFIKpWDPlqvuuq+zMztvO0mTeGM9Wu6Eh8lkkyd5knE2n8/DarXC/X4Pm80G1+s17nY73G63+PDwgMvlAj8QFov/Y/txi8vFUnI4f5ZSCtY5PJ3OcD6fsSgKLMsSL5cLdk2Fn54MPj55RJgwxgmn6YpE8D6gUgYHbVENRu4zRAxAwaqroWk7rOsam6YRdF2LVaNQGYfBe0r4F9yMtQ6d80jN4QwAiBBQ9S3UVUWVBhzHkQKcBBujKdGJzxiDWms5B4pjGLprihlGLZ0LIXWJ5fMRfnz7gj5E9ESUpU0kkwuyHWMUTCLXiw2JvpFCk0axb4RqKODnr89UnSWMGEIQjMlhpAS2mSj7WQETsswUaKaaTkh/CYvfR/j+9VFmwVI4SYKTp8pBFsL33GEm4+755Hi2b4R1eYLi+UiSw22GTB69Jhjy2etcrRX0fX+TzWRsy1J4y9cKESJVdta+kOVkJ2Rt20rn7FNK4eFwoFfQyYK4AYYsRQhJe6974MB7MIF+IclJ2ebvmezqs/eEEZuugOpSyYPOyG/S2tdys4J73ytCXnujamibFogAiEhAMoFkASW8CyIEIgQh5GdRdCW+1eF7MHczdDRD0FYnmomA/g0CtmlGibb4JmjTcvLvD7CLHLEeUgGpAAAAAElFTkSuQmCC"
                     class="w-full h-full"
@@ -1242,7 +1242,9 @@ export default {
     goTo (index) {
       const nav = this.navItems[index]
       const id = nav ? `#${nav.sectionId}` : null
-      this.$vuetify.goTo(id)
+      if (id) {
+        document.querySelector(id).scrollIntoView()
+      }
     },
     playVideo () {
       this.isVideoActivated = true

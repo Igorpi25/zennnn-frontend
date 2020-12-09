@@ -82,9 +82,9 @@
               <Comments
                 :items="spec.comments"
                 :spec-id="specId"
-                :right="$vuetify.breakpoint.mdAndDown"
-                :left="$vuetify.breakpoint.lgAndUp"
-                :offset-x="$vuetify.breakpoint.lgAndUp"
+                :right="$breakpoint.mdAndDown"
+                :left="$breakpoint.lgAndUp"
+                :offset-x="$breakpoint.lgAndUp"
                 is-paper
               >
                 <template v-slot:activator="{ on }">
@@ -472,9 +472,9 @@
                   :activator="$refs.bottomSpecCommentsActivator"
                   :items="spec.comments"
                   :spec-id="specId"
-                  :right="$vuetify.breakpoint.mdAndDown"
-                  :left="$vuetify.breakpoint.lgAndUp"
-                  :offset-x="$vuetify.breakpoint.lgAndUp"
+                  :right="$breakpoint.mdAndDown"
+                  :left="$breakpoint.lgAndUp"
+                  :offset-x="$breakpoint.lgAndUp"
                   is-paper
                 >
                   <template v-slot:activator="{ on }">

@@ -15,7 +15,7 @@
 
     <v-dialog
       v-model="paperConfigurator"
-      :fullscreen="$vuetify.breakpoint.xs || $vuetify.breakpoint.sm"
+      :fullscreen="$breakpoint.xs || $breakpoint.sm"
       content-class="dialog-full-height rounded-none paper-configurator-dialog"
       max-width="906"
       scrollable
@@ -31,7 +31,7 @@
 
     <v-dialog
       v-model="printDialog"
-      :fullscreen="$vuetify.breakpoint.smAndDown"
+      :fullscreen="$breakpoint.smAndDown"
       content-class="dialog-full-height scrolling-touch"
       max-width="1130"
       scrollable
