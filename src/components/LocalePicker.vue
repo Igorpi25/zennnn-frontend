@@ -57,8 +57,7 @@
 </template>
 
 <script>
-// TODO: rename to CURRENT_LOCALE_STORE_KEY
-import { CURRENT_LANG_STORE_KEY, LOCALES_LIST } from '../config/globals'
+import { CURRENT_LOCALE_STORE_KEY, LOCALES_LIST } from '../config/globals'
 
 export default {
   name: 'LocalePicker',
@@ -81,7 +80,7 @@ export default {
   },
   methods: {
     changeLocale (locale) {
-      localStorage.setItem(CURRENT_LANG_STORE_KEY, locale)
+      localStorage.setItem(CURRENT_LOCALE_STORE_KEY, locale)
       this.$i18n.locale = locale
       this.menu = false
     },

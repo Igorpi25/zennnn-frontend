@@ -15,6 +15,7 @@ import { Auth, Logger, i18n, store } from '../index'
 import router from '../../router'
 import { getUsername } from '../../graphql/resolvers'
 import systemMessageBus from '../notify/systemMessageBus'
+import { notify } from '../notify'
 
 const logger = new Logger('Apollo')
 
@@ -170,7 +171,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
           if (message === 'ForbiddenError: Insufficient access rights') {
             systemMessageBus.$emit('system-message', message)
           } else if (message && message.includes('Forbidden')) {
-            router.app.$notify({ color: 'warn', text: 'Forbidden' })
+            notify.show({ color: 'warn', text: 'Forbidden' })
           }
       }
     }

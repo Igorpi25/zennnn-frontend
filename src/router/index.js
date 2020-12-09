@@ -3,12 +3,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 // TODO: Uncaught TypeError: y.b is not a constructor
 import OrgLayout from '../views/OrgLayout.vue'
 
-import { i18n } from '../plugins'
+import i18n from '../plugins/i18n'
+import { notify } from '../plugins/notify'
 import { checkAuth } from '../plugins/auth/checkAuth'
 import { apolloClient } from '../plugins/apollo'
 import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS, GET_PROFILE } from '../graphql/queries'
 
-import { CURRENT_LANG_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
+import { CURRENT_LOCALE_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
 
 const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
 const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
@@ -322,7 +323,7 @@ const routes = [
 
         next()
       } catch (error) {
-        router.app.$notify({ color: 'error', text: error.message || '' })
+        notify.show({ color: 'error', text: error.message || '' })
         next('/not-found')
       }
     },
@@ -362,9 +363,9 @@ const routes = [
       if (!to.params.docNo || !window.opener) {
         return next(false)
       }
-      router.app.$notify({
+      notify.show({
         color: 'primary',
-        text: i18n.t('message.documentGenerateLoading'),
+        text: i18n.global.t('message.documentGenerateLoading'),
         timeout: 0,
         close: false,
       })
@@ -401,11 +402,11 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (to.query.username) {
         if (to.query.state === 'success') {
-          router.app.$notify({ color: 'success', text: i18n.t('message.emailConfirmed') })
+          notify.show({ color: 'success', text: i18n.global.t('message.emailConfirmed') })
         } else if (to.query.state === 'confirmed') {
-          router.app.$notify({ color: 'warn', text: i18n.t('message.emailAlreadyConfirmed') })
+          notify.show({ color: 'warn', text: i18n.global.t('message.emailAlreadyConfirmed') })
         } else if (to.query.state === 'error') {
-          router.app.$notify({ color: 'error', text: to.query.message })
+          notify.show({ color: 'error', text: to.query.message })
           // Add message to Analytics
         }
       }
@@ -427,7 +428,7 @@ const routes = [
         next()
       } else {
         // Incorrect request to restore password
-        router.app.$notify({ color: 'error', text: i18n.t('message.incorrectRestorePassword') })
+        notify.show({ color: 'error', text: i18n.global.t('message.incorrectRestorePassword') })
         next('/signin')
       }
     },
@@ -522,13 +523,13 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   // browser language detect
-  const localLang = localStorage.getItem(CURRENT_LANG_STORE_KEY)
+  const localLang = localStorage.getItem(CURRENT_LOCALE_STORE_KEY)
   if (!localLang) {
     const defaultLang = process.env.VUE_APP_I18N_LOCALE || 'en'
     const userLang = navigator.language || navigator.userLanguage || ''
     // is not default lang
     if (!userLang.startsWith(defaultLang)) {
-      const supportedLangs = i18n.availableLocales
+      const supportedLangs = i18n.global.availableLocales
       let lang = userLang.split('-')[0] || ''
       if (!supportedLangs.includes(lang)) {
         // default for not supported langs
@@ -541,8 +542,8 @@ router.beforeEach(async (to, from, next) => {
           }
         }
       }
-      localStorage.setItem(CURRENT_LANG_STORE_KEY, lang)
-      i18n.locale = lang
+      localStorage.setItem(CURRENT_LOCALE_STORE_KEY, lang)
+      i18n.global.locale = lang
     }
   }
   // check auth
@@ -584,6 +585,10 @@ router.beforeResolve((to, from, next) => {
   // set theme meta && attribute
   setTheme(theme)
   next()
+})
+
+router.beforeEach(() => {
+  notify.clear()
 })
 
 const setTheme = (theme) => {

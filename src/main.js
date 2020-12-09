@@ -1,14 +1,11 @@
-import { createApp, h } from 'vue'
+import { createApp } from 'vue'
+
 import App from './App.vue'
 import router from './router'
-import {
-  i18n,
-  vuetify,
-  apolloProvider,
-} from './plugins'
 
-// Base components
-import './components'
+// Plugins
+import i18n from './plugins/i18n'
+import notify from './plugins/notify'
 
 // Tailwindcss
 import './assets/css/main.css'
@@ -16,12 +13,11 @@ import './assets/css/main.css'
 import './registerServiceWorker'
 
 function runApp () {
-  createApp({
-    i18n,
-    vuetify,
-    apolloProvider,
-    render: () => h(App),
-  }).use(router).mount('#app')
+  createApp(App)
+    .use(router)
+    .use(i18n)
+    .use(notify)
+    .mount('#app')
 }
 
 // Intl polyfill https://github.com/andyearnshaw/Intl.js

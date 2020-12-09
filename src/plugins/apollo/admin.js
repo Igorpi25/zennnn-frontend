@@ -8,7 +8,7 @@ import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { typeDefs, resolvers } from '../../graphql/admin'
 import { Auth, Logger } from '../admin'
-import router from '../../router/admin'
+import { notify } from '../notify'
 
 const logger = new Logger('Apollo')
 
@@ -46,7 +46,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
           )
           if (message && message.includes('Forbidden')) {
-            router.app.$notify({ color: 'warn', text: 'Forbidden' })
+            notify.show({ color: 'warn', text: 'Forbidden' })
           }
       }
     }

@@ -1,24 +1,17 @@
-import Vue from 'vue'
-import App from './AdminApp.vue'
-import router from './router/admin'
-import {
-  i18n,
-  vuetify,
-  apolloProvider,
-} from './plugins/admin'
+import { createApp } from 'vue'
 
-// Base components
-import './components'
+import App from './App.vue'
+import router from './router'
+
+// Plugins
+import i18n from './plugins/i18n'
+import notify from './plugins/notify'
 
 // Tailwindcss
 import './assets/css/main.css'
 
-Vue.config.productionTip = false
-
-new Vue({
-  router,
-  i18n,
-  vuetify,
-  apolloProvider,
-  render: h => h(App),
-}).$mount('#app')
+createApp(App)
+  .use(router)
+  .use(i18n)
+  .use(notify)
+  .mount('#app')

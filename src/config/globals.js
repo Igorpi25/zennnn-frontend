@@ -2,7 +2,7 @@ export const DEFAULT_CURRENCY = 'CNY'
 
 export const CURRENT_ORG_STORE_KEY = 'zCurrentOrg:'
 
-export const CURRENT_LANG_STORE_KEY = 'zCurrentLang:'
+export const CURRENT_LOCALE_STORE_KEY = 'zCurrentLocale:'
 
 export const VIEWED_COMMENTS_STORE_KEY_PREFIX = 'zViewedComments'
 
@@ -24,6 +24,8 @@ export const SPEC_ACTIVE_TAB_STORE_KEY = 'active-tab'
 export const SPEC_EXPANDED_INVOICES_STORE_KEY = 'expanded-invoices'
 export const PAPER_STORE_KEY_PREFIX = 'paper'
 export const SPEC_SIMPLE_UI_OFF_STORE_KEY = 'spec-simple-ui-off'
+
+export const AVAILABLE_LOCALES = ['en', 'zh-Hans', 'zh-Hant', 'fr', 'ru', 'uk']
 
 export const LOCALES_LIST = [
   { value: 'en', text: 'English' },
