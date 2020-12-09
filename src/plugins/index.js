@@ -1,6 +1,5 @@
 import './date-fns'
 import './notify'
-import './axios'
 import './sentry'
 export { default as Logger } from './logger'
 export { default as i18n } from './i18n'

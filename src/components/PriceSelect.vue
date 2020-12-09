@@ -65,6 +65,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 import { LIST_PRICES } from '../graphql/queries'
 import PriceContactForm from './PriceContactForm.vue'
 
@@ -219,7 +221,7 @@ export default {
     },
     async getRates () {
       try {
-        const response = await this.$axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
+        const response = await axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
         if (response.data) {
           this.currencyRates = response.data.rates
         }

@@ -256,6 +256,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import PaymentCard from '../components/PaymentCard.vue'
@@ -574,7 +576,7 @@ export default {
     },
     async getRates () {
       try {
-        const response = await this.$axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
+        const response = await axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
         if (response.data) {
           this.currencyRates = response.data.rates
         }
