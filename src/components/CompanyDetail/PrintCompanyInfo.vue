@@ -7,7 +7,7 @@
           :menu-attach="$refs.container"
           :label="$t('requisite.label.companyName')"
           :placeholder="$t('shipping.companyNotSetted')"
-          :search.sync="search"
+          v-model:search="search"
           :items="items"
           :rules="[rules.required]"
           state-icon

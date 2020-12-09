@@ -58,7 +58,7 @@ const draggableComponent = {
     this._draggable.on('drag:stop', this.onDragStop)
     // this._draggable.on('mirror:destroy', () => console.log('mirror:destroy'))
   },
-  beforeDestroy () {
+  beforeUnmount () {
     if (this._draggable !== undefined) {
       this._draggable.destroy()
     }

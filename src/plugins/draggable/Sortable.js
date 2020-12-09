@@ -42,7 +42,7 @@ const sortableComponent = {
       this.initialize()
     }
   },
-  beforeDestroy () {
+  beforeUnmount () {
     if (this._sortable !== undefined) {
       this._sortable.destroy()
     }

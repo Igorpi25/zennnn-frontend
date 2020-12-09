@@ -81,7 +81,7 @@
       <Form
         ref="compliteForm"
         v-model="compliteFormValidity"
-        :error-message.sync="compliteErrorMessage"
+        v-model:error-message="compliteErrorMessage"
         class="mx-auto"
       >
         <TextField

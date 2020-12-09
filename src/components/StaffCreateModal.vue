@@ -15,7 +15,7 @@
           <v-window-item :value="1">
             <Form
               ref="emailForm"
-              :error-message.sync="emailErrorMessage"
+              v-model:error-message="emailErrorMessage"
               lazy-validation
             >
               <TextField
@@ -44,7 +44,7 @@
           <v-window-item :value="2">
             <Form
               ref="inviteForm"
-              :error-message.sync="inviteErrorMessage"
+              v-model:error-message="inviteErrorMessage"
               lazy-validation
             >
               <TextField

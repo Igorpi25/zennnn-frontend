@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { createApp, h } from 'vue'
 import App from './App.vue'
 import router from './router'
 import {
@@ -15,16 +15,13 @@ import './assets/css/main.css'
 
 import './registerServiceWorker'
 
-Vue.config.productionTip = false
-
 function runApp () {
-  new Vue({
-    router,
+  createApp({
     i18n,
     vuetify,
     apolloProvider,
-    render: h => h(App),
-  }).$mount('#app')
+    render: () => h(App),
+  }).use(router).mount('#app')
 }
 
 // Intl polyfill https://github.com/andyearnshaw/Intl.js

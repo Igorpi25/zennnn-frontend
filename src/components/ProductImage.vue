@@ -15,7 +15,7 @@
           <FileUploader
             v-if="upload"
             :loading="addLoading"
-            :uploading.sync="uploading"
+            v-model:uploading="uploading"
             :src="imageSrc"
             class="w-8 h-8"
             @upload-start="$emit('upload-start', true)"

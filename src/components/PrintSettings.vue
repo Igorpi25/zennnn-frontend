@@ -90,7 +90,7 @@
         </h5>
         <PrintClient
           class="pt-3"
-          :search.sync="clientSearch"
+          v-model:search="clientSearch"
           :client="specClient"
           :clients="clients"
           :readonly="!hasClient"
@@ -151,7 +151,7 @@
                 :menu-attach="$refs.container"
                 :label="$t('shipping.countryOfOrigin')"
                 :placeholder="$t('companyDetail.placeholder.citizenship')"
-                :search.sync="countriesSearch"
+                v-model:search="countriesSearch"
                 :items="shipmentCountries"
                 :rules="[rules.required]"
                 lazy-validation
@@ -190,7 +190,7 @@
                   :menu-attach="$refs.container"
                   :label="$t('shipping.termsLabel')"
                   :placeholder="$t('shipping.termsPlaceholder')"
-                  :search.sync="termsSearch"
+                  v-model:search="termsSearch"
                   :items="customsTerms"
                   :disabled="isTermsDisabled"
                   :rules="[rules.required]"

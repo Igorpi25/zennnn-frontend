@@ -35,7 +35,7 @@
         :value="wordItem"
         :placeholder="hasNoTranslation ? $t('words.noTranslation') : $t('shipping.name')"
         :lazy="create"
-        :search.sync="wordSearch"
+        v-model:search="wordSearch"
         :items="words"
         :has-arrow-icon="false"
         :input-class="hasNoTranslation ? 'placeholder-yellow-300': ''"

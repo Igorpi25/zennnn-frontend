@@ -52,7 +52,7 @@
         <Select
           :value="item.activeType"
           :placeholder="$t('shipping.shipmentType')"
-          :search.sync="shipmentTypeSearch"
+          v-model:search="shipmentTypeSearch"
           :items="shipmentTypes"
           dense
           searchable

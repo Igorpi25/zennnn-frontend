@@ -70,7 +70,7 @@
           </label>
           <FileUploader
             :loading="attachFileLoading"
-            :uploading.sync="fileUploadLoading"
+            v-model:uploading="fileUploadLoading"
             :file-accept="attachFileAccept"
             upload-type="file"
             @uploaded="attachFile"

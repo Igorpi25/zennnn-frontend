@@ -61,7 +61,7 @@
             <Select
               :value="spec.client"
               :placeholder="$t('shipping.shippingClientAdd')"
-              :search.sync="clientSearch"
+              v-model:search="clientSearch"
               :items="clients"
               :has-arrow-icon="false"
               flat

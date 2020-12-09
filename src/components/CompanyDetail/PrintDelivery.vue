@@ -69,7 +69,7 @@
           :menu-attach="$refs.container"
           :label="$t('shipping.shipmentType')"
           :placeholder="$t('shipping.methodOfDispatchPlaceholder')"
-          :search.sync="shipmentTypeSearch"
+          v-model:search="shipmentTypeSearch"
           :items="shipmentTypes"
           :rules="[rules.required]"
           state-icon

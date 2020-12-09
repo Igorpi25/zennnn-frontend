@@ -63,7 +63,7 @@
       <Select
         :value="item.supplier"
         :placeholder="$t('shipping.supplierName')"
-        :search.sync="supplierSearch"
+        v-model:search="supplierSearch"
         :items="suppliers"
         :has-arrow-icon="false"
         solo

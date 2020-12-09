@@ -47,7 +47,7 @@
           <div class="pb-2">
             <Select
               :value="item.citizenship"
-              :search.sync="countriesSearch"
+              v-model:search="countriesSearch"
               :items="countries"
               :label="$t('companyDetail.label.citizenship')"
               :placeholder="$t('companyDetail.placeholder.citizenship')"

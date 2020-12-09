@@ -58,7 +58,7 @@
       v-if="upload"
       ref="fileUploader"
       :loading="loading"
-      :uploading.sync="uploading"
+      v-model:uploading="uploading"
       class="w-8 h-8"
       @update="addImage"
     />

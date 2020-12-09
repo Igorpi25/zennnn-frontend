@@ -70,7 +70,7 @@
               ref="word-select"
               :value="selectedItemId"
               :placeholder="$t('placeholder.startTyping')"
-              :search.sync="wordSearch"
+              v-model:search="wordSearch"
               :items="words"
               :label="$t('words.wordFromDictionary')"
               item-value="id"

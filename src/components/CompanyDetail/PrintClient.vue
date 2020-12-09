@@ -7,7 +7,7 @@
           :menu-attach="$refs.container"
           :label="$t('clients.companyName')"
           :placeholder="$t('shipping.clientNotSetted')"
-          :search.sync="search"
+          v-model:search="search"
           :items="clients"
           :rules="[rules.required]"
           searchable

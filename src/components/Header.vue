@@ -190,7 +190,7 @@
                   >
                     <FileUploader
                       :loading="updateOrgImageLoading[item.id]"
-                      :uploading.sync="updateOrgImageUploading[item.id]"
+                      v-model:uploading="updateOrgImageUploading[item.id]"
                       :src="item.picture"
                       rounded
                       class="w-8 h-8"

@@ -112,7 +112,7 @@
         ref="compliteForm"
         v-model="compliteFormValidity"
         :title="$t('signup.registration')"
-        :error-message.sync="compliteErrorMessage"
+        v-model:error-message="compliteErrorMessage"
         class="mx-auto"
       >
         <div class="w-full pb-6">

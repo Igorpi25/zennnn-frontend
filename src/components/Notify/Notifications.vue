@@ -39,7 +39,7 @@ export default {
       items: [],
     }
   },
-  beforeDestroy () {
+  beforeUnmount () {
     this.clear()
   },
   methods: {

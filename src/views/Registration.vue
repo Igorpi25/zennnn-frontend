@@ -40,7 +40,7 @@
               ref="form"
               v-model="formValidity"
               :title="$t('signup.registration')"
-              :error-message.sync="errorMessage"
+              v-model:error-message="errorMessage"
               class="mx-auto m-0 pt-8 md:pt-12 pb-10 px-0 md:px-12"
             >
               <div class="w-full">

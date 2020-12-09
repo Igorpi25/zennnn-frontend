@@ -24,7 +24,7 @@
             <Form
               ref="form"
               :title="$t('signinByPhone.loginByPhone')"
-              :error-message.sync="errorMessage"
+              v-model:error-message="errorMessage"
               lazy-validation
               class="form--max-w-md px-0 md:p-8 pt-8 py-1 md:py-8 flex-col sm:flex-row items-center"
             >

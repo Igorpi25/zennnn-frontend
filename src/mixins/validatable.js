@@ -53,7 +53,7 @@ export default {
   created () {
     this.form && this.form.register(this)
   },
-  beforeDestroy () {
+  beforeUnmount () {
     this.form && this.form.unregister(this)
   },
   methods: {

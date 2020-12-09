@@ -8,7 +8,7 @@
         <Select
           :value="item.countryOfOrigin"
           :placeholder="$t('shipping.countryOfOrigin')"
-          :search.sync="countriesSearch"
+          v-model:search="countriesSearch"
           :items="shipmentCountries"
           dense
           searchable
@@ -46,7 +46,7 @@
           <Select
             :value="item.terms"
             :placeholder="$t('placeholder.notChosen')"
-            :search.sync="termsSearch"
+            v-model:search="termsSearch"
             :items="customsTerms"
             :disabled="isTermsDisabled"
             dense

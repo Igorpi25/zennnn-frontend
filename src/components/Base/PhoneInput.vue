@@ -28,7 +28,7 @@
         <Select
           :value="countryCode"
           :activator="$refs.input"
-          :search.sync="phoneSearch"
+          v-model:search="phoneSearch"
           :items="filteredPhonesItems"
           :patterns="codeInputPatterns"
           :size="compSize"

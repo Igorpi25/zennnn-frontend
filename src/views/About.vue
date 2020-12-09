@@ -1207,7 +1207,7 @@ export default {
       this.goTo(0)
     }
   },
-  beforeDestroy () {
+  beforeUnmount () {
     if (this.player) {
       this.player.destroy()
     }

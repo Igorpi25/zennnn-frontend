@@ -81,7 +81,7 @@
               <div class="w-full sm:w-1/2 sm:pr-3 pb-6">
                 <Select
                   v-model="country"
-                  :search.sync="countriesSearch"
+                  v-model:search="countriesSearch"
                   :items="countries"
                   :label="$t('payment.countryLabel')"
                   :placeholder="$t('payment.countryPlaceholder')"

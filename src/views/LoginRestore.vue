@@ -18,7 +18,7 @@
               <Form
                 ref="form"
                 :title="$t('loginRestore.recoveryByPhone')"
-                :error-message.sync="errorMessage"
+                v-model:error-message="errorMessage"
                 lazy-validation
                 class="form--max-w-md px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8 mb-16 md:mb-0"
               >
