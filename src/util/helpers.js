@@ -1,4 +1,4 @@
-export function filterObjectOnKeys (obj, keys) {
+export const filterObjectOnKeys = (obj, keys) => {
   const filtered = {}
 
   for (let i = 0; i < keys.length; i++) {
@@ -12,47 +12,62 @@ export function filterObjectOnKeys (obj, keys) {
   return filtered
 }
 
-export function getObjectValueByPath (obj, path, fallback) {
-  // credit: http://stackoverflow.com/questions/6491463/accessing-nested-javascript-objects-with-string-key#comment55278413_6491621
-  if (obj == null || !path || typeof path !== 'string') return fallback
-  if (obj[path] !== undefined) return obj[path]
-  path = path.replace(/\[(\w+)\]/g, '.$1') // convert indexes to properties
-
-  path = path.replace(/^\./, '') // strip a leading dot
-
-  return getNestedValue(obj, path.split('.'), fallback)
-}
-
-export function getNestedValue (obj, path, fallback) {
+export const getNestedValue = (obj, path, fallback) => {
   const last = path.length - 1
+
   if (last < 0) return obj === undefined ? fallback : obj
 
   for (let i = 0; i < last; i++) {
     if (obj == null) {
       return fallback
     }
-
     obj = obj[path[i]]
   }
 
   if (obj == null) return fallback
+
   return obj[path[last]] === undefined ? fallback : obj[path[last]]
 }
 
-export function defaultFilter (value, search) {
+export const getObjectValueByPath = (obj, path, fallback) => {
+  // credit: http://stackoverflow.com/questions/6491463/accessing-nested-javascript-objects-with-string-key#comment55278413_6491621
+  if (obj == null || !path || typeof path !== 'string') return fallback
+  if (obj[path] !== undefined) return obj[path]
+  path = path.replace(/\[(\w+)\]/g, '.$1') // convert indexes to properties
+  path = path.replace(/^\./, '') // strip a leading dot
+  return getNestedValue(obj, path.split('.'), fallback)
+}
+
+export const getPropertyFromItem = (item, property, fallback) => {
+  if (property == null) return item === undefined ? fallback : item
+
+  if (item !== Object(item)) return fallback === undefined ? item : fallback
+
+  if (typeof property === 'string') return getObjectValueByPath(item, property, fallback)
+
+  if (Array.isArray(property)) return getNestedValue(item, property, fallback)
+
+  if (typeof property !== 'function') return fallback
+
+  const value = property(item, fallback)
+
+  return typeof value === 'undefined' ? fallback : value
+}
+
+export const defaultFilter = (value, search) => {
   return value != null &&
     search != null &&
     typeof value !== 'boolean' &&
     value.toString().toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) !== -1
 }
 
-export function sortItems (
+export const sortItems = (
   items,
   sortBy,
   sortDesc,
   locale,
   customSorters,
-) {
+) => {
   if (sortBy === null || !sortBy.length) return items
   const stringCollator = new Intl.Collator(locale, { sensitivity: 'accent', usage: 'sort' })
 
@@ -92,7 +107,7 @@ export function sortItems (
   })
 }
 
-export function deepEqual (a, b) {
+export const deepEqual = (a, b) => {
   if (a === b) return true
 
   if (a instanceof Date && b instanceof Date) {
@@ -115,7 +130,7 @@ export function deepEqual (a, b) {
   return props.every(p => deepEqual(a[p], b[p]))
 }
 
-export function wrapInArray (v) { return v != null ? Array.isArray(v) ? v : [v] : [] }
+export const wrapInArray = (v) => { return v != null ? Array.isArray(v) ? v : [v] : [] }
 
 /**
  * Convert to unit
@@ -131,6 +146,36 @@ export const convertToUnit = (str, unit = 'px') => {
   } else {
     return `${Number(str)}${unit}`
   }
+}
+
+/** Used to parse event name. */
+const optionsModifierRE = /(?:Once|Passive|Capture)$/
+
+/**
+ * Parse event name to type and modifiers.
+ * @param {string} name The value to parse.
+ * @returns {Array} Returns an array that contains type and modifiers.
+ */
+export const parseEventName = (name) => {
+  let options
+  if (optionsModifierRE.test(name)) {
+    options = {}
+    let m
+    while ((m = name.match(optionsModifierRE))) {
+      name = name.slice(0, name.length - m[0].length)
+      options[m[0].toLowerCase()] = true
+    }
+  }
+  return [name.slice(2).toLowerCase(), options]
+}
+
+/**
+ * Makes the first character of a string uppercase.
+ * @param {string} str The value to transforme.
+ * @returns {string} Returns transformed string.
+ */
+export const upperFirst = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
 /**
@@ -152,7 +197,7 @@ export const uuid = () => {
  * @param {number} id id of element
  * @param {boolean} isEnd if true, set position to end
  */
-export function focusElement (id, isEnd) {
+export const focusElement = (id, isEnd) => {
   setTimeout(() => {
     const el = document.getElementById(id)
     if (el) {
@@ -228,7 +273,7 @@ export const getCaretData = (target, position) => {
  * @param {HTMLElement} target element
  * @param {number} position cursor position
  */
-export function setCaretPosition (target, position) {
+export const setCaretPosition = (target, position) => {
   if (!target) return
   const d = getCaretData(target, position)
   if (!d.node) return
@@ -247,7 +292,7 @@ export function setCaretPosition (target, position) {
  * Set caret to end position
  * @param {HTMLElement} target element
  */
-export function setCaretToEnd (target) {
+export const setCaretToEnd = (target) => {
   target.focus()
   if (document.createRange) {
     const range = document.createRange()
@@ -281,10 +326,17 @@ export const insertText = (content) => {
 export const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 /**
+ * Promise delay
+ * @param {number} ms delay
+ * @returns {Promise}
+ */
+export const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+/**
  * Copy text to clipboard
  * @param {string} text value to copy
  */
-export function copyToClipboard (text) {
+export const copyToClipboard = (text) => {
   return new Promise((resolve, reject) => {
     const el = document.createElement('textarea')
     el.value = text
@@ -343,7 +395,7 @@ export const confirmDialog = (msg) => {
  * @returns {Event}
  */
 export const setCursor = (el, position) => {
-  const setSelectionRange = function () { el.setSelectionRange(position, position) }
+  const setSelectionRange = () => el.setSelectionRange(position, position)
   if (el === document.activeElement) {
     setSelectionRange()
     setTimeout(setSelectionRange, 1) // Android Fix
@@ -611,7 +663,7 @@ export const replaceAt = (str, index, replacement) => {
  * @param {any} value
  * @returns {boolean}
  */
-export function isString (value) {
+export const isString = (value) => {
   return typeof value === 'string' || value instanceof String
 }
 
@@ -620,7 +672,7 @@ export function isString (value) {
  * @param {any} value
  * @returns {boolean}
  */
-export function isNumber (value) {
+export const isNumber = (value) => {
   return typeof value === 'number' && isFinite(value)
 }
 
@@ -629,7 +681,7 @@ export function isNumber (value) {
  * @param {any} value
  * @returns {boolean}
  */
-export function isArray (value) {
+export const isArray = (value) => {
   return value && typeof value === 'object' && value.constructor === Array
 }
 
@@ -638,6 +690,6 @@ export function isArray (value) {
  * @param {any} value
  * @returns {boolean}
  */
-export function isObject (value) {
+export const isObject = (value) => {
   return value && typeof value === 'object' && value.constructor === Object
 }
