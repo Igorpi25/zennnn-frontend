@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { DefaultApolloClient } from '@vue/apollo-composable'
 
 import App from './App.vue'
 import router from './router'
@@ -6,6 +7,7 @@ import router from './router'
 // Plugins
 import i18n from './plugins/i18n'
 import auth from './plugins/auth'
+import apolloClient from './plugins/apollo'
 import notify from './plugins/notify'
 import breakpoint from './plugins/breakpoint'
 import logger from './plugins/logger'
@@ -25,6 +27,7 @@ function runApp () {
     .use(router)
     .use(i18n)
     .use(auth)
+    .provide(DefaultApolloClient, apolloClient)
     .use(notify)
     .use(breakpoint)
     .use(logger)

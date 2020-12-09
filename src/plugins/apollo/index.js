@@ -1,13 +1,9 @@
-import Vue from 'vue'
-import VueApollo from 'vue-apollo'
-import { ApolloClient } from 'apollo-client'
-import { ApolloLink, split } from 'apollo-link'
-import { createHttpLink } from 'apollo-link-http'
-import { setContext } from 'apollo-link-context'
-import { onError } from 'apollo-link-error'
-import { WebSocketLink } from 'apollo-link-ws'
-import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory'
-import { getMainDefinition } from 'apollo-utilities'
+import { ApolloClient, ApolloLink, split, createHttpLink, InMemoryCache } from '@apollo/client/core'
+import { WebSocketLink } from '@apollo/client/link/ws'
+import { setContext } from '@apollo/client/link/context'
+import { onError } from '@apollo/client/link/error'
+import { getMainDefinition } from '@apollo/client/utilities'
+
 import { typeDefs, resolvers } from '../../graphql'
 import { GET_BACKEND_VERSION } from '../../graphql/queries'
 import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../../config/globals'
@@ -22,59 +18,13 @@ import { auth } from '../auth'
 
 const logger = new Logger('Apollo')
 
-// hardcoded TODO with https://www.apollographql.com/docs/react/data/fragments/#fragments-on-unions-and-interfaces
-const fragmentMatcher = new IntrospectionFragmentMatcher({
-  introspectionQueryResultData: {
-    __schema: {
-      types: [
-        {
-          kind: 'UNION',
-          name: 'SpecDeltaObject',
-          possibleTypes: [
-            {
-              name: 'Spec',
-            },
-            {
-              name: 'Invoice',
-            },
-            {
-              name: 'Product',
-            },
-            {
-              name: 'Client',
-            },
-            {
-              name: 'RequisiteItems',
-            },
-            {
-              name: 'PayloadFields',
-            },
-          ],
-        },
-        {
-          kind: 'UNION',
-          name: 'SpecPaperDeltaObject',
-          possibleTypes: [
-            {
-              name: 'PaperSpec',
-            },
-            {
-              name: 'PaperInvoice',
-            },
-            {
-              name: 'PaperProduct',
-            },
-            {
-              name: 'PayloadFields',
-            },
-          ],
-        },
-      ],
-    },
-  },
-})
+// hardcoded TODO with https://www.apollographql.com/docs/react/data/fragments/#defining-possibletypes-manually
+const possibleTypes = {
+  SpecDeltaObject: ['Spec', 'Invoice', 'Product', 'Client', 'RequisiteItems', 'PayloadFields'],
+  SpecPaperDeltaObject: ['PaperSpec', 'PaperInvoice', 'PaperProduct', 'PayloadFields'],
+}
 
-const cache = new InMemoryCache({ fragmentMatcher })
+const cache = new InMemoryCache({ possibleTypes })
 
 const authLink = setContext(async (request, { headers }) => {
   const operationName = request.operationName
@@ -221,10 +171,4 @@ const setData = async () => {
 setData()
 apolloClient.onResetStore(() => setData())
 
-Vue.use(VueApollo)
-
-const apolloProvider = new VueApollo({
-  defaultClient: apolloClient,
-})
-
-export default apolloProvider
+export default apolloClient
