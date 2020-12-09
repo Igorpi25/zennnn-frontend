@@ -13,7 +13,7 @@
           v-on="on"
         >
           <img
-            :src="require(`@/assets/img/flags/round/${$i18n.locale}.svg`)"
+            :src="require(`@/assets/img/flags/locale/${$i18n.locale}.svg`)"
             :class="[
               'h-6 w-6 rounded-full mr-1',
             ]"
@@ -44,7 +44,7 @@
             @click="changeLocale(locale.value)"
           >
             <img
-              :src="require(`@/assets/img/flags/round/${locale.value}.svg`)"
+              :src="require(`@/assets/img/flags/locale/${locale.value}.svg`)"
               :alt="locale.text"
               class="h-6 w-6 rounded-full mr-2"
             >

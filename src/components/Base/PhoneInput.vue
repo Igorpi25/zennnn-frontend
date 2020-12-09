@@ -72,13 +72,13 @@
           </template>
           <template v-slot:prepend>
             <img
-              :src="`/static/flags/${countryCode}.svg`"
+              :src="require(`@/assets/img/flags/square/${countryCode}.svg`)"
               class="w-6 rounded-sm mr-2"
             >
           </template>
           <template v-slot:item="{ item }">
             <img
-              :src="`/static/flags/${item.value}.svg`"
+              :src="require(`@/assets/img/flags/square/${item.value}.svg`)"
               class="w-6 rounded-sm mr-2"
             >
             <span class="text-white pr-1">

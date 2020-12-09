@@ -742,7 +742,7 @@
                   class="flex items-center bg-white text-black rounded-10 shadow-medium px-sm py-3"
                 >
                   <img
-                    :src="require(`@/assets/img/flags/countries/${member.country}.svg`)"
+                    :src="require(`@/assets/img/flags/rounded/${member.country}.svg`)"
                     :alt="member.country"
                     class="w-8 h-8 ml-1 mr-sm"
                   >

@@ -19,7 +19,7 @@
           <template v-slot:prepend>
             <img
               v-if="item.countryOfOrigin"
-              :src="`/static/flags/${item.countryOfOrigin}.svg`"
+              :src="require(`@/assets/img/flags/square/${item.countryOfOrigin}.svg`)"
               :alt="item.countryOfOrigin"
               class="w-6 rounded-sm mr-4"
             >
@@ -31,7 +31,7 @@
           </template>
           <template v-slot:item="{ item }">
             <img
-              :src="`/static/flags/${item.value}.svg`"
+              :src="require(`@/assets/img/flags/square/${item.value}.svg`)"
               class="w-6 rounded-sm mr-4"
             >
             <span>{{ item.text }}</span>

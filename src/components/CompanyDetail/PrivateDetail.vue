@@ -64,7 +64,7 @@
               <template v-slot:prepend>
                 <img
                   v-if="item.citizenship"
-                  :src="`/static/flags/${item.citizenship}.svg`"
+                  :src="require(`@/assets/img/flags/square/${item.citizenship}.svg`)"
                   class="w-6 rounded-sm mr-4"
                 >
                 <img
@@ -75,7 +75,7 @@
               </template>
               <template v-slot:item="{ item }">
                 <img
-                  :src="`/static/flags/${item.value}.svg`"
+                  :src="require(`@/assets/img/flags/square/${item.value}.svg`)"
                   class="w-6 rounded-sm mr-4"
                 >
                 <span>{{ item.text }}</span>

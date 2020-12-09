@@ -35,7 +35,7 @@
           >
             <template v-slot:prepend>
               <img
-                :src="require(`@/assets/img/flags/round/${item.value}.svg`)"
+                :src="require(`@/assets/img/flags/locale/${item.value}.svg`)"
                 class="h-6 w-6 rounded-full ml-sm mr-5"
               >
             </template>

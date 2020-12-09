@@ -7,6 +7,9 @@ import router from './router'
 import i18n from './plugins/i18n'
 import notify from './plugins/notify'
 
+// Base components
+import './components'
+
 // Tailwindcss
 import './assets/css/main.css'
 

@@ -3,6 +3,9 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
+// Base components
+import './components'
+
 // Plugins
 import i18n from './plugins/i18n'
 import notify from './plugins/notify'
