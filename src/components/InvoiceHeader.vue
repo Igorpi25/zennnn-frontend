@@ -21,7 +21,7 @@
         invoiceStatusColor,
       ]"
     />
-    <div v-if="isOwnerOrManager" class="flex flex-wrap md:flex-no-wrap lg:flex-grow w-full md:w-auto">
+    <div v-if="isOwnerOrManager" class="flex flex-wrap md:flex-nowrap lg:flex-grow w-full md:w-auto">
       <TextField
         :value="item.invoiceNo"
         :debounce="250"

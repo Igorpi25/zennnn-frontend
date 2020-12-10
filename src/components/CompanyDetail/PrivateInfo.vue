@@ -156,7 +156,7 @@
             @input="updatePerson({ lastName: $event })"
           />
           <div class="relative flex-shrink-0 relative pl-sm">
-            <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
+            <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
               {{ $t('companyDetail.label.matches') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
@@ -213,7 +213,7 @@
           </template>
         </DatePicker>
         <div class="w-1/2 pl-4 opacity-40">
-          <label class="block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
+          <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
             {{ $t('companyDetail.label.avatar') }}
           </label>
           <div class="h-10 flex justify-start relative pl-12">
@@ -226,7 +226,7 @@
         </div>
       </div>
       <div>
-        <label class="block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
+        <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
           {{ $t('companyDetail.label.ucn') }}
         </label>
         <div class="h-10 flex items-center text-white mb-2 px-sm">

@@ -3,7 +3,7 @@
     <h4 class="text-white text-xl font-semibold leading-6 mb-4">
       {{ $t('shipping.forDeliver') }}
     </h4>
-    <div class="bg-gray-700 rounded-t-md flex flex-wrap lg:flex-no-wrap items-center mb-1 py-2 px-sm">
+    <div class="bg-gray-700 rounded-t-md flex flex-wrap lg:flex-nowrap items-center mb-1 py-2 px-sm">
       <div class="w-full pb-5 lg:p-0 lg:w-1/3">
         <TextField
           :value="item.sentFrom"

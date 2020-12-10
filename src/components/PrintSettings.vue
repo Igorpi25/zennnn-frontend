@@ -24,7 +24,7 @@
         </div>
         <div class="flex flex-wrap items-center justify-center sm:justify-end flex-grow order-last sm:order-none pr-4">
           <v-slide-x-reverse-transition>
-            <div v-if="!validationState.isRequiredFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+            <div v-if="!validationState.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
               <span class="text-pink-500 mr-2">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
@@ -34,7 +34,7 @@
             </div>
           </v-slide-x-reverse-transition>
           <v-slide-x-reverse-transition>
-            <div v-if="!validationState.isOptionalFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+            <div v-if="!validationState.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
               <span class="text-yellow-500 mr-2">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
@@ -270,9 +270,9 @@
             <div class="pt-9 pb-2">
               <div class="h-10 flex items-center">
                 <div class="text-white w-full flex items-baseline">
-                  <div class="text-2xl whitespace-no-wrap">{{ $t('shipping.invoiceAmount') }}</div>
+                  <div class="text-2xl whitespace-nowrap">{{ $t('shipping.invoiceAmount') }}</div>
                   <div class="flex-grow dots" />
-                  <div class="text-2xl whitespace-no-wrap">{{ $n(amount || 0, 'fixed') }} {{ $t(`currency.USD.symbol`) }}</div>
+                  <div class="text-2xl whitespace-nowrap">{{ $n(amount || 0, 'fixed') }} {{ $t(`currency.USD.symbol`) }}</div>
                 </div>
               </div>
             </div>
@@ -289,7 +289,7 @@
         <div class="flex flex-wrap pt-3">
           <div class="w-full sm:w-1/2 sm:pr-5">
             <div class="pb-2">
-              <label class="block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
+              <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
                 {{ $t('shipping.amountInWords') }}
               </label>
               <TextArea
@@ -306,7 +306,7 @@
           </div>
           <div class="w-full sm:w-1/2 sm:pl-5">
             <div class="pb-2">
-              <label class="block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
+              <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
                 {{ $t('shipping.amountInWordsClientLang') }}
               </label>
               <TextArea
@@ -336,7 +336,7 @@
         </Button>
         <div class="flex flex-wrap items-center justify-center sm:justify-end flex-grow order-first sm:order-none pr-4">
           <v-slide-x-reverse-transition>
-            <div v-if="!validationState.isRequiredFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+            <div v-if="!validationState.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
               <span class="text-pink-500 mr-2">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
@@ -346,7 +346,7 @@
             </div>
           </v-slide-x-reverse-transition>
           <v-slide-x-reverse-transition>
-            <div v-if="!validationState.isOptionalFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+            <div v-if="!validationState.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
               <span class="text-yellow-500 mr-2">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="4" cy="4" r="4" fill="currentColor" />

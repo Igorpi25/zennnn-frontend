@@ -1,68 +1,98 @@
+const plugin = require('tailwindcss/plugin')
+
+// Removed from v2 'scrolling-touch' and 'scrolling-auto' utilities
+// Added with plugin, for use it in '@apply'
+const scrollingTouchUtilities = plugin(function ({ addUtilities }) {
+  const newUtilities = {
+    '.scrolling-touch': {
+      '-webkit-overflow-scrolling': 'touch',
+    },
+    '.scrolling-auto': {
+      '-webkit-overflow-scrolling': 'auto',
+    },
+  }
+
+  addUtilities(newUtilities)
+})
+
 module.exports = {
-  future: {
-    removeDeprecatedGapUtilities: true,
+  darkMode: 'class',
+  purge: {
+    mode: 'layers',
+    layers: ['utilities'],
+    content: [
+      './src/**/*.html',
+      './src/**/*.vue',
+      './src/**/*.jsx',
+      './src/components/Base/**/*.js',
+    ],
   },
-  purge: [
-    './src/**/*.html',
-    './src/**/*.vue',
-    './src/**/*.jsx',
-    './src/components/Base/*.js',
-  ],
   theme: {
     container: {
       center: true,
+      padding: {
+        DEFAULT: '1rem',
+      },
     },
     colors: {
       black: '#000000',
       white: '#ffffff',
       transparent: 'transparent',
       current: 'currentColor',
-      // gray light
-      'light-gray-100': '#F7F7F7',
-      'light-gray-200': '#F4F4F4',
-      'light-gray-300': '#F0F0F0',
-      'light-gray-400': '#E4E4E4',
-      'light-gray-500': '#E0E0E0',
-      'light-gray-600': '#C4C4C4',
-      'light-gray-700': '#BDBDBD',
-      'light-gray-800': '#878787',
-      'light-gray-900': '#828282',
-      // gray
-      'gray-100': '#AAAAAA',
-      'gray-200': '#676767', // IN_DRAFT
-      'gray-300': '#585858',
-      'gray-400': '#404040',
-      'gray-500': '#353535',
-      'gray-600': '#2F2F2F',
-      'gray-700': '#282828',
-      'gray-800': '#232323',
-      'gray-900': '#1E1E1E',
-      // blue
+      'light-gray': {
+        100: '#F7F7F7',
+        200: '#F4F4F4',
+        300: '#F0F0F0',
+        400: '#E4E4E4',
+        500: '#E0E0E0',
+        600: '#C4C4C4',
+        700: '#BDBDBD',
+        800: '#878787',
+        900: '#828282',
+      },
+      gray: {
+        100: '#AAAAAA',
+        200: '#676767', // IN_DRAFT
+        300: '#585858',
+        400: '#404040',
+        500: '#353535',
+        600: '#2F2F2F',
+        700: '#282828',
+        800: '#232323',
+        900: '#1E1E1E',
+      },
       // TODO: change color pallet, blue-300 > blue-500
-      'blue-300': '#6377A0',
-      'blue-400': '#2F80ED',
-      'blue-500': '#7E99D0', // primary color
-      'blue-600': '#5C78B1', // primary hover color
-      'blue-700': '#345DEE', // landing color
-      'blue-800': '#2F52D4', // landing hover color
-      'blue-900': '#4C51BF', // custom price color
-      // pink
-      'pink-500': '#FF005E', // error, IN_PROCESSING
-      'pink-600': '#E00052',
-      // purple
-      'purple-500': '#EF20E6',
-      // green
-      'green-400': '#13F626',
-      'green-500': '#08DC1B', // success, IN_STOCK
-      'green-600': '#07C517',
-      // yellow
-      'yellow-300': '#EAD377', // input warning
-      'yellow-400': '#D7C370', // checkbox error text
-      'yellow-500': '#FDB600', // warning, IN_PRODUCTION
-      // red
-      'red-500': '#FF212D',
-      'red-600': '#FF121F', // spec total client debt text
-      'red-900': '#3D242D', // error color
+      blue: {
+        300: '#6377A0',
+        400: '#2F80ED',
+        500: '#7E99D0', // primary color
+        600: '#5C78B1', // primary hover color
+        700: '#345DEE', // landing color
+        800: '#2F52D4', // landing hover color
+        900: '#4C51BF', // custom price color
+      },
+      pink: {
+        500: '#FF005E', // error, IN_PROCESSING
+        600: '#E00052',
+      },
+      purple: {
+        500: '#EF20E6',
+      },
+      green: {
+        400: '#13F626',
+        500: '#08DC1B', // success, IN_STOCK
+        600: '#07C517',
+      },
+      yellow: {
+        300: '#EAD377', // input warning
+        400: '#D7C370', // checkbox error text
+        500: '#FDB600', // warning, IN_PRODUCTION
+      },
+      red: {
+        500: '#FF212D',
+        600: '#FF121F', // spec total client debt text
+        900: '#3D242D', // error color
+      },
     },
     fontFamily: {
       myriad: ['MyriadPro', 'sans-serif'],
@@ -70,14 +100,25 @@ module.exports = {
       montserrat: ['Montserrat', 'sans-serif'],
     },
     boxShadow: {
-      'light-gray-400': '0 0 0 1px #E4E4E4',
-      'blue-500': '0 0 0 1px #7E99D0',
-      'blue-600': '0 0 0 1px #5C78B1',
-      'yellow-300': '0 0 0 1px #EAD377',
-      default: '0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06)',
+      DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06)',
       md: '0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06)',
       lg: '0px 4px 10px rgba(0, 0, 0, 0.1)',
       xl: '0px 0px 20px rgba(0, 0, 0, 0.1)',
+      // drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.25)); // comment right menu shadow
+      '2xl': '0px 4px 30px 0 rgba(0, 0, 0, 0.15)', // tooltip and menu shadows (light)
+      '3xl': '0px 4px 30px 0 rgba(0, 0, 0, 0.25)', // tooltip and menu shadows
+      '4xl': '6px 6px 60px 0 rgba(0, 0, 0, 0.16)', // image preview menu shadow (light)
+      '5xl': '0px 4px 120px 0 rgba(0, 0, 0, 0.5)', // image preview menu shadow?
+      1: '0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12)',
+      2: '0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)',
+      3: '0 3px 3px -2px rgba(0,0,0,.2),0 3px 4px 0 rgba(0,0,0,.14),0 1px 8px 0 rgba(0,0,0,.12)',
+      4: '0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)',
+      5: '0 3px 5px -1px rgba(0,0,0,.2),0 5px 8px 0 rgba(0,0,0,.14),0 1px 14px 0 rgba(0,0,0,.12)',
+      6: '0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12)',
+      7: '0 4px 5px -2px rgba(0,0,0,.2),0 7px 10px 1px rgba(0,0,0,.14),0 2px 16px 1px rgba(0,0,0,.12)',
+      8: '0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)',
+      24: '9 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12)',
+      none: 'none',
     },
     letterSpacing: {
       tight: '-.025em',
@@ -92,6 +133,17 @@ module.exports = {
       'gray-900-a-50': 'rgba(30, 30, 30, 0.5)',
     },
     extend: {
+      keyframes: {
+        shake: {
+          'from, to': { transform: 'translate3d(0, 0, 0)' },
+          '59%': { transform: 'translate3d(0, 0, 0)' },
+          '60%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+          '70%, 90%': { transform: 'translate3d(-2px, 0, 0)' },
+        },
+      },
+      animation: {
+        shake: 'shake .6s cubic-bezier(0.25, 0.8, 0.5, 1)',
+      },
       fontSize: {
         13: '13px',
         28: '28px',
@@ -133,8 +185,13 @@ module.exports = {
         color: 'color',
         'bg-and-color': 'background-color, color',
         'colors-and-opacity': 'background-color, border-color, color, fill, stroke, opacity',
+        'padding-bottom': 'padding-bottom',
+      },
+      transitionTimingFunction: {
+        'out-quart': 'cubic-bezier(0.25, 0.8, 0.5, 1)',
       },
       borderRadius: {
+        3: '3px',
         20: '20px',
         50: '50px',
       },
@@ -150,13 +207,17 @@ module.exports = {
     },
   },
   variants: {
-    backgroundColor: ['responsive', 'hover', 'focus', 'focus-within', 'even'],
-    borderColor: ['responsive', 'hover', 'focus', 'focus-within'],
-    boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
+    cursor: ['responsive', 'disabled'],
+    fontWeight: ['responsive', 'hover', 'focus', 'dark'],
+    backgroundColor: ['responsive', 'hover', 'focus', 'disabled', 'dark', 'even'],
+    borderColor: ['responsive', 'hover', 'focus', 'disabled', 'dark'],
+    boxShadow: ['responsive', 'hover', 'focus', 'dark'],
     overflow: ['responsive', 'hover'],
     visibility: ['group-hover'],
     translate: ['responsive', 'hover', 'focus', 'group-hover'],
-    textColor: ['group-hover', 'responsive', 'hover', 'focus'],
+    textColor: ['responsive', 'hover', 'focus', 'group-hover', 'disabled', 'dark'],
   },
-  plugins: [],
+  plugins: [
+    scrollingTouchUtilities,
+  ],
 }

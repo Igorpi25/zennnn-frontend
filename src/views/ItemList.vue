@@ -1,7 +1,7 @@
 <template>
   <div class="container container--sm">
     <div class="pt-4 pb-10">
-      <div class="flex items-end flex-wrap lg:flex-no-wrap justify-between xl:justify-start">
+      <div class="flex items-end flex-wrap lg:flex-nowrap justify-between xl:justify-start">
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
@@ -26,7 +26,7 @@
             :key="tab.value"
             :class="[
               'w-full sm:w-auto flex items-center justify-center rounded-t',
-              'select-none whitespace-no-wrap cursor-pointer',
+              'select-none whitespace-nowrap cursor-pointer',
               'transition-colors duration-100 ease-in px-10',
               { 'mr-1': i + 1 < tabs.length },
               tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',

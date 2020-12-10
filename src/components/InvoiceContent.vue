@@ -39,7 +39,7 @@
                   :key="tab.value"
                   :class="[
                     'flex items-center justify-center rounded-t bg-gray-600 px-2',
-                    'select-none whitespace-no-wrap cursor-pointer',
+                    'select-none whitespace-nowrap cursor-pointer',
                     'transition-colors duration-100 ease-out',
                     { 'mr-1': i + 1 < tabs.length },
                     tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',
@@ -200,7 +200,7 @@
                   </span>
                 </td>
                 <td class="text-left" colspan="2">
-                  <span class="relative whitespace-no-wrap z-1">
+                  <span class="relative whitespace-nowrap z-1">
                     <span class="text-gray-300">{{ $t('measure.pkg') }}</span>
                   </span>
                 </td>
@@ -334,7 +334,7 @@ export default {
         { text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`, value: 'size', align: 'center', width: '140%', class: 'bg-gray-600 relative z-1 leading-none pr-sm py-0' },
         { text: this.$t('shipping.packageQty'), value: 'pkgQty', width: 62, align: 'right', class: 'bg-gray-600 relative z-1 leading-none pr-sm pr-sm py-0' },
         { text: this.$t('shipping.packageNo'), value: 'pkgNo', width: 62, align: 'right', class: 'bg-gray-600 relative z-1 leading-none pr-sm py-0' },
-        { text: this.$t('shipping.atWhouse'), value: 'atWhouse', width: 32, align: 'right', class: 'bg-gray-600 relative z-2 leading-none whitespace-no-wrap pr-sm py-0' },
+        { text: this.$t('shipping.atWhouse'), value: 'atWhouse', width: 32, align: 'right', class: 'bg-gray-600 relative z-2 leading-none whitespace-nowrap pr-sm py-0' },
         { text: '', value: 'action', width: 48, class: 'bg-gray-600 relative z-1' },
       ]
     },

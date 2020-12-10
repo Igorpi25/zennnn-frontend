@@ -58,7 +58,7 @@
         <router-link
           v-if="hasSubscription"
           :to="{ name: 'subscription' }"
-          class="inline-flex items-center focus:outline-none text-blue-500 hover:text-blue-600 focus:text-blue-600 select-none whitespace-no-wrap"
+          class="inline-flex items-center focus:outline-none text-blue-500 hover:text-blue-600 focus:text-blue-600 select-none whitespace-nowrap"
         >
           <span class="mr-2">{{ $t('footer.subscriptionManagement') }}</span>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -87,7 +87,7 @@
           <table width="100%" class="w-full leading-tight text-gray-900 text-center">
             <thead>
               <tr class="h-16 text-xl text-gray-100">
-                <td class="whitespace-no-wrap text-left px-8">{{ $t('pricing.specCount') }}</td>
+                <td class="whitespace-nowrap text-left px-8">{{ $t('pricing.specCount') }}</td>
                 <td class="px-6">{{ $t('pricing.start') }}</td>
                 <td class="px-6">{{ $t('pricing.standard') }}</td>
                 <td class="text-gray-900 px-6">{{ $t('pricing.advanced') }}</td>
@@ -96,7 +96,7 @@
             </thead>
             <tbody>
               <tr v-for="(item, i) in specs" :key="i" class="h-16 even:bg-white">
-                <td class="whitespace-no-wrap text-left rounded-l-md px-8" v-html="item.text" />
+                <td class="whitespace-nowrap text-left rounded-l-md px-8" v-html="item.text" />
                 <td class="text-gray-200 px-6">
                   <img v-if="item.start === 'infinite'" src="@/assets/img/infinite.svg" class="mx-auto">
                   <span v-else-if="item.start === 'na'">&mdash;</span>

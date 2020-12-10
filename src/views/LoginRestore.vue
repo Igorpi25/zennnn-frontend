@@ -56,7 +56,7 @@
                   >
                     {{ $t('loginRestore.submit') }}
                   </Button>
-                  <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-no-wrap">
+                  <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-nowrap">
                     <span>{{ $t('preposition.or') }}</span>&nbsp;
                     <span class="lowercase">{{ $t('loginRestore.signin') }}</span>&nbsp;
                     <span>{{ $t('preposition.through') }}</span>

@@ -8,7 +8,7 @@
 
     <div class="container container--sm">
       <div class="pt-4 pb-10">
-        <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-4">
+        <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-4">
           <TextField
             v-model="search"
             :placeholder="$t('placeholder.pageSearch')"
@@ -80,7 +80,7 @@
                         {{ item.processing }}
                       </div>
                     </div>
-                    <span v-else class="whitespace-no-wrap pl-4">
+                    <span v-else class="whitespace-nowrap pl-4">
                       {{ $t('staff.invitationFrom') }}: {{ $d($parseDate(item.createdAt), 'short') }}
                     </span>
                   </td>
@@ -228,12 +228,12 @@
                                 {{ $n(subItem.totalItemsCost || 0) }}
                               </td>
                               <td :width="subHeadersMap['specNo'].width" :style="{ width: subHeadersMap['specNo'].width, minWidth: subHeadersMap['specNo'].width }" class="bg-gray-700 truncate text-left leading-tight pl-16">
-                                <span class="whitespace-no-wrap pl-5">
+                                <span class="whitespace-nowrap pl-5">
                                   {{ subItem.specNo || '' }}
                                 </span>
                               </td>
                               <td :width="subHeadersMap['clientFullName'].width" :style="{ width: subHeadersMap['clientFullName'].width, minWidth: subHeadersMap['clientFullName'].width }" class="bg-gray-700 truncate text-left">
-                                <span class="whitespace-no-wrap pl-5">
+                                <span class="whitespace-nowrap pl-5">
                                   {{ subItem.clientFullName }}
                                 </span>
                               </td>
@@ -389,9 +389,9 @@ export default {
         { text: this.$t('staff.percent'), value: 'totalMargin', align: 'right', width: 66, minWidth: 66, sortable: true },
         { text: this.$t('staff.revenue'), value: 'revenue', align: 'right', width: 118, minWidth: 118, sortable: true },
         { text: this.$t('staff.costOfGoods'), value: 'totalItemsCost', align: 'right', width: 140, minWidth: 140, sortable: true },
-        { text: this.$t('staff.staffName'), value: 'fullName', align: 'left', width: 220, minWidth: 220, class: 'whitespace-no-wrap pl-16', sortable: true },
-        { text: this.$t('staff.access'), value: 'role', align: 'left', width: 132, minWidth: 132, class: 'whitespace-no-wrap', sortable: true },
-        { text: this.$t('staff.accessControl'), value: 'accessControl', align: 'left', width: 75, minWidth: 75, class: 'whitespace-no-wrap', sortable: false },
+        { text: this.$t('staff.staffName'), value: 'fullName', align: 'left', width: 220, minWidth: 220, class: 'whitespace-nowrap pl-16', sortable: true },
+        { text: this.$t('staff.access'), value: 'role', align: 'left', width: 132, minWidth: 132, class: 'whitespace-nowrap', sortable: true },
+        { text: this.$t('staff.accessControl'), value: 'accessControl', align: 'left', width: 75, minWidth: 75, class: 'whitespace-nowrap', sortable: false },
         { text: '', value: 'actions', width: 40, minWidth: 40 },
         { text: '', value: 'expand', width: 50, minWidth: 50 },
       ]
@@ -403,8 +403,8 @@ export default {
         { text: '', value: 'margin', align: 'right', width: '66px', minWidth: '66px' },
         { text: '', value: 'revenue', align: 'right', width: '118px', minWidth: '118px' },
         { text: '', value: 'totalItemsCost', align: 'right', width: '140px', minWidth: '140px' },
-        { text: '', value: 'specNo', align: 'left', width: '220px', minWidth: '220px', class: 'whitespace-no-wrap pl-16' },
-        { text: '', value: 'clientFullName', align: 'left', width: '207px', minWidth: '207px', class: 'whitespace-no-wrap' },
+        { text: '', value: 'specNo', align: 'left', width: '220px', minWidth: '220px', class: 'whitespace-nowrap pl-16' },
+        { text: '', value: 'clientFullName', align: 'left', width: '207px', minWidth: '207px', class: 'whitespace-nowrap' },
         { text: '', value: 'actions', width: '40px', minWidth: '40px' },
         { text: '', value: 'shipped', width: '50px', minWidth: '50px' },
       ]

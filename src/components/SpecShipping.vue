@@ -5,7 +5,7 @@
     </h4>
 
     <!-- Summary -->
-    <div class="flex flex-wrap sm:flex-no-wrap -mx-2 pb-4">
+    <div class="flex flex-wrap sm:flex-nowrap -mx-2 pb-4">
       <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
         <div class="flex flex-col justify-between bg-gray-700 rounded-md py-4 px-5 leading-6 h-full">
           <div class="flex text-gray-200 pb-2">

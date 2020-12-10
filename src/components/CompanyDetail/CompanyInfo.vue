@@ -18,7 +18,7 @@
             @input="updateCompanyName"
           />
           <div class="relative flex-shrink-0 relative pl-sm">
-            <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
+            <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
               {{ $t('companyDetail.label.englishOnly') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
@@ -64,7 +64,7 @@
           </Alert>
         </div>
       </div>
-      <div class="flex flex-wrap lg:flex-no-wrap pb-2">
+      <div class="flex flex-wrap lg:flex-nowrap pb-2">
         <PhoneInput
           :value="item.phone"
           :locale="item.locale"
@@ -219,7 +219,7 @@
             @input="updateMailingAddressPostcode"
           />
           <div class="relative flex-shrink-0 relative pl-sm">
-            <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
+            <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
               {{ $t('companyDetail.label.matches') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">

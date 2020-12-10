@@ -141,8 +141,8 @@
             <span class="font-bold">{{ promoProduct.price }}</span>
             <span v-if="promoProduct.priceInCurrency" class="pl-1">~</span>
             <span v-if="promoProduct.priceInCurrency" class="pl-1">{{ promoProduct.priceInCurrency }}</span>
-            <span class="whitespace-no-wrap pl-1">{{ $t('payment.forMonth') }}</span>
-            <div class="whitespace-no-wrap relative h-8 flex items-center rounded-md font-semibold text-white bg-yellow-400 border-yellow-400 ml-6 px-2">
+            <span class="whitespace-nowrap pl-1">{{ $t('payment.forMonth') }}</span>
+            <div class="whitespace-nowrap relative h-8 flex items-center rounded-md font-semibold text-white bg-yellow-400 border-yellow-400 ml-6 px-2">
               {{ $t('payment.bonusMonth') }}
               <div class="absolute left-0 top-0 transform translate-y-1/2 border-transparent -ml-2" style="border-width: 8px 8px 8px 0; border-right-color: inherit;" />
             </div>
@@ -171,7 +171,7 @@
             <div class="hidden sm:block md:w-64 mx-8">
               <div class="h-px bg-light-gray-400 w-full" />
             </div>
-            <div class="flex flex-wrap sm:flex-no-wrap justify-end sm:justify-start items-center w-full">
+            <div class="flex flex-wrap sm:flex-nowrap justify-end sm:justify-start items-center w-full">
               <span class="font-bold">{{ selectedProduct.mPrice }}</span>
               <span v-if="selectedProduct.mPriceInCurrency" class="pl-1">~</span>
               <span v-if="selectedProduct.mPriceInCurrency" class="pl-1">{{ selectedProduct.mPriceInCurrency }}</span>
@@ -200,13 +200,13 @@
             <div class="hidden sm:block md:w-64 mx-8">
               <div class="h-px bg-light-gray-400 w-full" />
             </div>
-            <div class="flex flex-wrap sm:flex-no-wrap justify-end sm:justify-start items-center w-full">
+            <div class="flex flex-wrap sm:flex-nowrap justify-end sm:justify-start items-center w-full">
               <span class="font-bold">{{ selectedProduct.aPriceTotal }}</span>
               <span class="pl-1">/</span>
               <span v-if="selectedProduct.aPriceInCurrency" class="pl-1">~</span>
               <span class="pl-1">{{ selectedProduct.aPriceInCurrency || selectedProduct.aPrice }}</span>
-              <span class="whitespace-no-wrap pl-1">{{ $t('payment.inMonth') }}</span>
-              <div class="whitespace-no-wrap relative sm:h-8 flex items-center rounded-md font-semibold text-white bg-yellow-400 border-yellow-400 ml-6 px-2">
+              <span class="whitespace-nowrap pl-1">{{ $t('payment.inMonth') }}</span>
+              <div class="whitespace-nowrap relative sm:h-8 flex items-center rounded-md font-semibold text-white bg-yellow-400 border-yellow-400 ml-6 px-2">
                 {{ $t('payment.econ') }}
                 <div class="hidden sm:block absolute left-0 top-0 transform translate-y-1/2 border-transparent -ml-2" style="border-width: 8px 8px 8px 0; border-right-color: inherit;" />
               </div>
@@ -226,7 +226,7 @@
             <span v-if="promoProduct.priceInCurrency" class="pl-1">~</span>
             <span v-if="promoProduct.priceInCurrency" class="pl-1">{{ promoProduct.priceInCurrency }}</span>
           </div>
-          <div v-else class="flex flex-wrap sm:flex-no-wrap justify-end sm:justify-start items-center w-full pl-4 ml-xs">
+          <div v-else class="flex flex-wrap sm:flex-nowrap justify-end sm:justify-start items-center w-full pl-4 ml-xs">
             <span class="font-bold">{{ currentPaymentType === 'ANNUALLY' ? selectedProduct.aPriceTotal : selectedProduct.mPrice }}</span>
             <span v-if="currentPaymentType === 'ANNUALLY'" class="pl-1">/</span>
             <span v-if="selectedProduct.mPriceInCurrency || selectedProduct.aPriceInCurrency" class="pl-1">~</span>

@@ -6,7 +6,7 @@
       v-if="!singleLine"
       :for="computedId"
       :class="[
-        'block leading-5 text-base text-gray-200 text-right whitespace-no-wrap py-2',
+        'block leading-5 text-base text-gray-200 text-right whitespace-nowrap py-2',
       ]"
     >
       {{ label }}

@@ -1,7 +1,7 @@
 <template>
   <div class="container container--sm">
     <div class="pt-4 pb-10">
-      <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-4">
+      <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-4">
         <TextField
           v-model="search"
           :placeholder="clientsFilter.length === 0 ? $t('placeholder.pageSearch') : ''"
@@ -18,7 +18,7 @@
               <span
                 v-for="filter in clientsFilter"
                 :key="filter.value"
-                class="h-6 inline-flex items-center rounded-lg bg-gray-400 whitespace-no-wrap pl-1 mr-1"
+                class="h-6 inline-flex items-center rounded-lg bg-gray-400 whitespace-nowrap pl-1 mr-1"
               >
                 <span class="flex-grow pl-xs -mr-xs">
                   {{ filter.text }}
@@ -47,7 +47,7 @@
           >
             <template v-slot:activator="{ on }">
               <div
-                class="group flex items-center cursor-pointer whitespace-no-wrap"
+                class="group flex items-center cursor-pointer whitespace-nowrap"
                 v-on="on"
               >
                 <span class="text-gray-100 group-hover:text-light-gray-400 pr-2">
@@ -598,12 +598,12 @@ export default {
         { text: '', value: 'isExpensesPaid', align: 'left', width: 50, sortable: false },
         { text: '', value: 'finalCost', align: 'right', width: 100, sortable: true },
         { text: '', value: 'margin', align: 'right', width: 58, sortable: true },
-        { text: this.$t('deals.clientName'), value: 'client.fullName', align: 'left', width: 230, minWidth: 230, class: 'whitespace-no-wrap text-left pl-6', sortable: true },
+        { text: this.$t('deals.clientName'), value: 'client.fullName', align: 'left', width: 230, minWidth: 230, class: 'whitespace-nowrap text-left pl-6', sortable: true },
         { text: this.$t('deals.contactPerson'), value: 'client.contactPersonFullName', align: 'left', width: 152, sortable: true },
-        { text: this.$t('deals.number'), value: 'specNo', align: 'left', width: 80, minWidth: 80, class: 'whitespace-no-wrap', sortable: true },
-        { text: this.$t('deals.createdAt'), value: 'createdAt', align: 'left', width: 100, minWidth: 100, class: 'whitespace-no-wrap', sortable: true },
-        { text: this.$t('deals.contact'), value: 'client.contactPhone', align: 'left', width: 85, class: 'whitespace-no-wrap', sortable: true },
-        { text: this.$t('deals.clientUcn'), value: 'client.uid', align: 'right', width: 60, class: 'whitespace-no-wrap', sortable: true },
+        { text: this.$t('deals.number'), value: 'specNo', align: 'left', width: 80, minWidth: 80, class: 'whitespace-nowrap', sortable: true },
+        { text: this.$t('deals.createdAt'), value: 'createdAt', align: 'left', width: 100, minWidth: 100, class: 'whitespace-nowrap', sortable: true },
+        { text: this.$t('deals.contact'), value: 'client.contactPhone', align: 'left', width: 85, class: 'whitespace-nowrap', sortable: true },
+        { text: this.$t('deals.clientUcn'), value: 'client.uid', align: 'right', width: 60, class: 'whitespace-nowrap', sortable: true },
         { text: '', value: 'actions', width: 54 },
         { text: '', value: 'isShipped', width: 28 },
         { text: '', value: 'hasNewComment', width: 5 },

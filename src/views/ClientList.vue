@@ -1,7 +1,7 @@
 <template>
   <div class="container container--sm">
     <div class="pt-4 pb-10">
-      <div class="flex items-end flex-wrap lg:flex-no-wrap justify-between">
+      <div class="flex items-end flex-wrap lg:flex-nowrap justify-between">
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
@@ -26,7 +26,7 @@
             :key="tab.value"
             :class="[
               'w-full sm:w-auto flex items-center justify-center rounded-t',
-              'select-none whitespace-no-wrap cursor-pointer',
+              'select-none whitespace-nowrap cursor-pointer',
               'transition-colors duration-100 ease-in px-10',
               { 'mr-1': i + 1 < tabs.length },
               tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',
@@ -186,7 +186,7 @@
                 <td :class="['truncate text-right', { 'text-pink-500': item.debt > 0 }]">{{ $n(item.debt || 0) }}</td>
                 <td class="truncate text-right">{{ $n(item.turnover || 0) }}</td>
                 <td class="truncate pl-8 pr-2">{{ item.contactPersonFullName }}</td>
-                <td class="whitespace-no-wrap pr-4">
+                <td class="whitespace-nowrap pr-4">
                   <div class="overflow-x-scroll scrolling-touch scrollbar-hidden flex items-center align-middle rounded-lg space-x-1">
                     <div
                       v-for="(tag, i) in item.tagsArray"
@@ -349,7 +349,7 @@ export default {
         { text: this.$t('clients.contactPerson'), value: 'contactPersonFullName', align: 'left', width: 186, class: 'pl-8 pr-2', sortable: true },
         { text: this.$t('clients.tags'), value: 'tags', align: 'left', width: 126, sortable: true },
         { text: '', value: 'contactPhone', align: 'left', width: 60, minWidth: 60, sortable: true },
-        { text: this.$t('clients.ucn'), value: 'ucn', align: 'right', width: 60, minWidth: 60, class: 'whitespace-no-wrap', sortable: true },
+        { text: this.$t('clients.ucn'), value: 'ucn', align: 'right', width: 60, minWidth: 60, class: 'whitespace-nowrap', sortable: true },
         { text: '', value: 'actions', width: 54 },
       ]
     },

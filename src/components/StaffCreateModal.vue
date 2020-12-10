@@ -89,7 +89,7 @@
                 flat
                 class="pb-6"
               />
-              <div class="flex flex-wrap sm:flex-no-wrap justify-between">
+              <div class="flex flex-wrap sm:flex-nowrap justify-between">
                 <Button
                   :disabled="inviteFormLoading"
                   :merge-class="inviteFormLoading ? 'text-gray-300 border-gray-200' : 'border-gray-200'"

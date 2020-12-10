@@ -174,7 +174,7 @@
 
         <!-- Info -->
         <div>
-          <div class="flex flex-wrap lg:flex-no-wrap pb-10">
+          <div class="flex flex-wrap lg:flex-nowrap pb-10">
 
             <!-- Cargo Info -->
             <div class="w-full flex-grow lg:w-auto pb-10 lg:pb-0 lg:pr-3">
@@ -183,7 +183,7 @@
               </h4>
 
               <!-- Summary -->
-              <div class="flex flex-wrap sm:flex-no-wrap -mx-2 pb-4">
+              <div class="flex flex-wrap sm:flex-nowrap -mx-2 pb-4">
                 <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
                   <div class="flex flex-col justify-between bg-light-gray-100 rounded-md py-4 px-5 leading-6 h-full">
                     <div class="flex text-gray-100 pb-2">
@@ -395,7 +395,7 @@
 
           <!-- Actions -->
           <div class="bg-light-gray-100 rounded-md p-3 select-none">
-            <div class="flex flex-wrap md:flex-no-wrap">
+            <div class="flex flex-wrap md:flex-nowrap">
               <div class="w-full md:w-auto p-2">
                 <button
                   style="min-width: 85px;"

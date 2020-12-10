@@ -18,7 +18,7 @@
         {{ create ? $t('client.createTitle') : $t('client.editTitle') }}
       </h1>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
-        <div class="lg:h-11 flex flex-wrap lg:flex-no-wrap">
+        <div class="lg:h-11 flex flex-wrap lg:flex-nowrap">
           <div class="h-11 flex order-last lg:order-none overflow-x-auto scrolling-touch">
             <div
               v-for="(tab, i) in tabs"
@@ -26,7 +26,7 @@
               :key="tab.value"
               :class="[
                 'w-full sm:w-auto flex items-center justify-center rounded-t bg-gray-600',
-                'select-none whitespace-no-wrap cursor-pointer',
+                'select-none whitespace-nowrap cursor-pointer',
                 'transition-colors duration-100 ease-in px-10',
                 { 'mr-1': i + 1 < tabs.length },
                 tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',
@@ -43,7 +43,7 @@
           <div class="flex-grow" />
           <div class="w-full lg:w-auto flex items-center justify-end">
             <v-slide-x-reverse-transition>
-              <div v-if="!item.isRequiredFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+              <div v-if="!item.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
                 <span class="text-pink-500 mr-2">
                   <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="4" cy="4" r="4" fill="currentColor" />
@@ -53,7 +53,7 @@
               </div>
             </v-slide-x-reverse-transition>
             <v-slide-x-reverse-transition>
-              <div v-if="!item.isOptionalFilled" class="flex items-center whitespace-no-wrap pr-5 pb-1">
+              <div v-if="!item.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
                 <span class="text-yellow-500 mr-2">
                   <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="4" cy="4" r="4" fill="currentColor" />

@@ -29,7 +29,7 @@
     <div class="container flex-grow flex flex-col">
       <div class="relative">
         <div class="sm:absolute sm:top-0 sm:right-0">
-          <div class="max-w-sm mx-auto sm:max-w-none sm:mx-0 flex items-center justify-between sm:justify-end flex-wrap sm:flex-no-wrap text-gray-200 lg:pr-20 pt-6 sm:pt-8">
+          <div class="max-w-sm mx-auto sm:max-w-none sm:mx-0 flex items-center justify-between sm:justify-end flex-wrap sm:flex-nowrap text-gray-200 lg:pr-20 pt-6 sm:pt-8">
             <router-link to="/">
               <img src="@/assets/img/logo-dark.svg" alt="Logo" class="sm:hidden">
             </router-link>

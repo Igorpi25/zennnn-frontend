@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="pb-2">
-      <label class="block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
+      <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
         {{ $t('companyDetail.label.branchType') }}
       </label>
       <div class="flex justify-end items-center">

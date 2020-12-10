@@ -406,7 +406,7 @@
             </div>
           </div>
         </td>
-        <td class="px-5 text-sm whitespace-no-wrap">
+        <td class="px-5 text-sm whitespace-nowrap">
           <template v-if="item.comments && item.comments.length > 0">
             <span class="mr-sm">{{ $t('shipping.chatMessages') }}:</span>
             <span

@@ -129,7 +129,7 @@
               {{ $t('payment.cancelTitle') }}
             </div>
             <div class="py-10" v-html="$t('payment.cancelText')" />
-            <div class="flex flex-wrap sm:flex-no-wrap sm:justify-between">
+            <div class="flex flex-wrap sm:flex-nowrap sm:justify-between">
               <Button
                 :loading="cancelSubscriptionLoading"
                 block
@@ -331,7 +331,7 @@
                 class="h-12 bg-light-gray-100 hover:bg-white group"
               >
                 <td class="rounded-l-md px-4">{{ item.number }}</td>
-                <td class="whitespace-no-wrap pl-4 pr-2">
+                <td class="whitespace-nowrap pl-4 pr-2">
                   <span class="pr-4">
                     {{ $d($parseDate(item.period_start * 1000)) }}
                   </span>

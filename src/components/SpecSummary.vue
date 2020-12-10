@@ -56,7 +56,7 @@
     </v-dialog>
 
     <div v-if="isOwnerOrManager">
-      <div class="flex flex-wrap lg:flex-no-wrap pb-8">
+      <div class="flex flex-wrap lg:flex-nowrap pb-8">
         <!-- Delivery -->
         <SpecShipment
           :item="spec.shipment"

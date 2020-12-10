@@ -119,7 +119,7 @@
               />
             </div>
           </div>
-          <div class="container container--xs flex flex-wrap lg:flex-no-wrap pb-16 leading-normal text-light-gray-800">
+          <div class="container container--xs flex flex-wrap lg:flex-nowrap pb-16 leading-normal text-light-gray-800">
             <div class="w-full lg:w-1/2 lg:w-1/4 flex flex-col lg:pr-4">
               <div class="flex-grow flex mb-2 lg:mb-0">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
@@ -167,7 +167,7 @@
               </div>
             </div>
           </div>
-          <div class="container container--xs flex flex-wrap md:flex-no-wrap">
+          <div class="container container--xs flex flex-wrap md:flex-nowrap">
             <div class="w-full md:w-1/2 pb-4 md:pb-0 text-center md:text-left">
               <router-link
                 :to="{ name: 'signup' }"
@@ -251,7 +251,7 @@
       <!-- VIDEO / -->
       <!-- / SECURITY -->
       <div id="security" class="container container--xs pt-16 sm:pt-20 pb-16">
-        <div class="flex flex-wrap lg:flex-no-wrap pt-6 pb-6">
+        <div class="flex flex-wrap lg:flex-nowrap pt-6 pb-6">
           <div class="w-full flex-shrink-0" style="max-width: 532px;">
             <h3
               v-html="security.title"

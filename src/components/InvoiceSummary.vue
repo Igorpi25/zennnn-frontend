@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap lg:flex-no-wrap justify-between bg-gray-600 rounded-b py-2 px-3 md:px-5">
+  <div class="flex flex-wrap lg:flex-nowrap justify-between bg-gray-600 rounded-b py-2 px-3 md:px-5">
 
     <div v-if="isOwnerOrManager" class="w-full lg:max-w-xs">
       <div class="pt-2 pb-4">
@@ -48,7 +48,7 @@
         :class="{ 'opacity-0': isInvoiceProfitTypeMargin }"
         class="flex-grow transition-opacity duration-75 ease-in-out sm:pr-4"
       >
-        <label class="block leading-5 text-base text-gray-200 text-right whitespace-no-wrap py-2 pr-sm">
+        <label class="block leading-5 text-base text-gray-200 text-right whitespace-nowrap py-2 pr-sm">
           {{ $t('shipping.discount') }}
         </label>
         <TextField
@@ -69,13 +69,13 @@
             <span class="text-base text-gray-100 pl-xs pr-sm">{{ $t(`currency.${currency}.symbol`) }}</span>
           </template>
         </TextField>
-        <div v-else class="h-8 flex items-center justify-end leading-none whitespace-no-wrap text-white pr-sm">
+        <div v-else class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
           <span class="text-white">{{ $n(item.discount, 'fixed') }}</span>
           <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
         </div>
       </div>
       <div class="sm:pl-4">
-        <label class="block leading-5 text-base text-gray-200 text-right whitespace-no-wrap py-2 pr-sm">
+        <label class="block leading-5 text-base text-gray-200 text-right whitespace-nowrap py-2 pr-sm">
           {{ $t('shipping.prepay') }}
         </label>
         <TextField
@@ -96,7 +96,7 @@
             <span class="text-base text-gray-100 pl-xs pr-sm">{{ $t(`currency.${currency}.symbol`) }}</span>
           </template>
         </TextField>
-        <div v-else class="h-8 flex items-center justify-end leading-none whitespace-no-wrap text-white pr-sm">
+        <div v-else class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
           <span class="text-white">{{ $n(item.prepayment, 'fixed') }}</span>
           <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
         </div>
@@ -124,10 +124,10 @@
 
     <div class="w-full md:w-auto lg:w-full lg:max-w-xs flex justify-end lg:pl-sm">
       <div class="flex-grow sm:pr-4">
-        <label class="block leading-5 text-base text-gray-200 text-right whitespace-no-wrap py-2 pr-sm">
+        <label class="block leading-5 text-base text-gray-200 text-right whitespace-nowrap py-2 pr-sm">
           {{ $t('shipping.obtainCost') }}
         </label>
-        <div class="h-8 flex items-center justify-end leading-none whitespace-no-wrap text-white pr-sm">
+        <div class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
           <span class="text-white">{{ $n(item.obtainCost, 'fixed') }}</span>
           <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
         </div>
@@ -150,10 +150,10 @@
         </DatePicker>
       </div>
       <div class="sm:pl-4">
-        <label class="block leading-5 text-base text-gray-200 text-right whitespace-no-wrap py-2 pr-sm">
+        <label class="block leading-5 text-base text-gray-200 text-right whitespace-nowrap py-2 pr-sm">
           {{ $t('shipping.clientDebt') }}
         </label>
-        <div class="h-8 flex items-center justify-end leading-none whitespace-no-wrap text-white pr-sm">
+        <div class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
           <span class="text-white">{{ $n(item.clientDebt, 'fixed') }}</span>
           <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
         </div>

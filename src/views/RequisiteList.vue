@@ -2,7 +2,7 @@
   <div class="container container--sm">
     <div class="pt-4 pb-10">
 
-      <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-6">
+      <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-6">
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
@@ -22,7 +22,7 @@
         </TextField>
       </div>
 
-      <div class="font-semibold text-white text-2xl leading-tight whitespace-no-wrap overflow-x-auto scrolling-touch pb-4">
+      <div class="font-semibold text-white text-2xl leading-tight whitespace-nowrap overflow-x-auto scrolling-touch pb-4">
         <span class="relative">
           {{ $t('requisites.title') }}
           <v-fade-transition>

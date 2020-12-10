@@ -17,7 +17,7 @@
     <v-expand-transition>
       <div v-show="expanded" class="pt-4">
         <div v-if="!isRequisite" class="pb-2">
-          <label class="block text-base text-gray-100 whitespace-no-wrap leading-5 py-2">
+          <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
             {{ $t('companyDetail.label.note') }}
           </label>
           <TextArea
@@ -56,14 +56,14 @@
             @change="updateTags"
           >
             <template v-slot:label>
-              <label class="block leading-5 text-base text-gray-100 whitespace-no-wrap py-2">
+              <label class="block leading-5 text-base text-gray-100 whitespace-nowrap py-2">
                 <span>{{ $t('companyDetail.label.tags') }}</span> <span class="text-gray-200">{{ $t('companyDetail.label.tagsDesc') }}</span>
               </label>
             </template>
           </TextField>
         </div>
         <div v-if="!isRequisite" class="inline-block pt-">
-          <label class="block leading-5 text-base text-gray-100 whitespace-no-wrap py-2">
+          <label class="block leading-5 text-base text-gray-100 whitespace-nowrap py-2">
             <span>
               {{ $t('companyDetail.label.attachFile') }}
             </span>

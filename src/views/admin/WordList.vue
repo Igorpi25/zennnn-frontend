@@ -48,7 +48,7 @@
     <div class="container container--sm pb-12">
       <div class="pt-4 pb-10">
 
-        <div class="flex flex-wrap sm:flex-no-wrap items-center justify-between pb-8">
+        <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-8">
           <TextField
             v-model="search"
             :placeholder="$t('placeholder.pageSearch')"
@@ -76,7 +76,7 @@
             >
               <template v-slot:activator="{ on }">
                 <div
-                  class="group flex items-center cursor-pointer whitespace-no-wrap"
+                  class="group flex items-center cursor-pointer whitespace-nowrap"
                   v-on="on"
                 >
                   <span class="text-gray-100 group-hover:text-light-gray-400 pr-2">

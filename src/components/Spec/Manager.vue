@@ -191,7 +191,7 @@
       </div>
     </div>
 
-    <div class="flex flex-wrap lg:flex-no-wrap pb-8">
+    <div class="flex flex-wrap lg:flex-nowrap pb-8">
       <div class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3" style="max-width: 746px;">
         <v-slide-y-transition hide-on-leave>
           <SpecShipping

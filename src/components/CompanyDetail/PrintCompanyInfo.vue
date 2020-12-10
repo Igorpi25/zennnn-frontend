@@ -55,7 +55,7 @@
           @input="updateData({ legalAddress: $event })"
         />
       </div>
-      <div class="flex flex-wrap lg:flex-no-wrap pb-2">
+      <div class="flex flex-wrap lg:flex-nowrap pb-2">
         <PhoneInput
           :value="item.phone"
           :label="$t('companyDetail.label.phone')"

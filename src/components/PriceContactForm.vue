@@ -104,7 +104,7 @@
           label-class="text-black"
         />
       </Form>
-      <div class="flex flex-wrap sm:flex-no-wrap sm:justify-between">
+      <div class="flex flex-wrap sm:flex-nowrap sm:justify-between">
         <Button
           block
           outlined

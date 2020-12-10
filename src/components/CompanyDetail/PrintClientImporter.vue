@@ -70,7 +70,7 @@
       </div>
     </div>
     <div class="w-full lg:w-1/2 lg:pl-5">
-      <div class="flex flex-wrap lg:flex-no-wrap pb-2">
+      <div class="flex flex-wrap lg:flex-nowrap pb-2">
         <PhoneInput
           :value="item.importerPhone"
           :locale="item.locale"

@@ -482,7 +482,7 @@ export default {
           },
         }
       }
-      let classes = 'text-base text-gray-100 whitespace-no-wrap relative py-xs pr-xs'
+      let classes = 'text-base text-gray-100 whitespace-nowrap relative py-xs pr-xs'
       // merge props classes
       if (this.labelClass) {
         classes = mergeClasses(classes, this.labelClass)
