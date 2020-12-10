@@ -176,7 +176,8 @@ export default {
       }
     },
     listeners () {
-      return { ...this.$listeners, input: this.input, change: this.change }
+      // return { ...this.$listeners, input: this.input, change: this.change }
+      return { input: this.input, change: this.change }
     },
     internalValue: {
       get () {

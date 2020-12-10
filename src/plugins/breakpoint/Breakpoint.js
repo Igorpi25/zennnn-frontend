@@ -1,4 +1,4 @@
-export class Breakpoint {
+export default class Breakpoint {
   constructor (options = {}) {
     this.xs = false
     this.sm = false
@@ -45,7 +45,7 @@ export class Breakpoint {
     window.addEventListener(
       'resize',
       this._onResize.bind(this),
-      { passive: true }
+      { passive: true },
     )
   }
 
@@ -131,7 +131,7 @@ export class Breakpoint {
     if (typeof document === 'undefined') return 0 // SSR
     return Math.max(
       document.documentElement.clientWidth || 0,
-      window.innerWidth || 0
+      window.innerWidth || 0,
     )
   }
 
@@ -139,7 +139,7 @@ export class Breakpoint {
     if (typeof document === 'undefined') return 0 // SSR
     return Math.max(
       document.documentElement.clientHeight || 0,
-      window.innerHeight || 0
+      window.innerHeight || 0,
     )
   }
 }

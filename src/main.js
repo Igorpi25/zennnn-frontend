@@ -15,7 +15,7 @@ import store from './plugins/localforage'
 import isoDate from './plugins/date-fns'
 
 // Base components
-import './components'
+import BaseComponents from './components'
 
 // Tailwindcss
 import './assets/css/main.css'
@@ -33,6 +33,7 @@ function runApp () {
     .use(logger)
     .use(store)
     .use(isoDate)
+    .use(BaseComponents)
     .mount('#app')
 }
 

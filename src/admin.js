@@ -5,7 +5,7 @@ import App from './AdminApp.vue'
 import router from './router/admin'
 
 // Base components
-import './components'
+import BaseComponents from './components'
 
 // Plugins
 import i18n from './plugins/i18n/admin'
@@ -28,4 +28,5 @@ createApp(App)
   .use(breakpoint)
   .use(logger)
   .use(isoDate)
+  .use(BaseComponents)
   .mount('#app')

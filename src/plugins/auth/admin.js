@@ -1,4 +1,4 @@
-import { default as AuthClass } from './Auth'
+import AuthClass from './Auth'
 
 export const auth = new AuthClass({
   userPoolId: process.env.VUE_APP_ADMIN_AWS_COGNITO_USER_POOL_ID,

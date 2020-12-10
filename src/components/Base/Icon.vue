@@ -14,7 +14,10 @@ export default {
       height: 24,
       viewBox: '0 0 24 24',
     }
-    const icon = this.$slots.default[0].text
+    const node = this.$slots.default ? this.$slots.default() : []
+    const children = node[0] && node[0].children
+    const icon = typeof children === 'string' ? children : undefined
+
     if (icon) {
       return h('svg', {
         attrs,

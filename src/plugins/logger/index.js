@@ -1,4 +1,4 @@
-import { default as LoggerClass } from './Logger'
+import LoggerClass from './Logger'
 
 const level = process.env.NODE_ENV === 'production' ? 'WARN' : 'INFO'
 
