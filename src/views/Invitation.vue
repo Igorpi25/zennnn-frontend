@@ -33,21 +33,29 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { CHECK_INVITATION } from '../graphql/queries'
 import { ACCEPT_INVITATION, DECLINE_INVITATION } from '../graphql/mutations'
 
 export default {
   name: 'Invitation',
-  apollo: {
-    checkInvitation: {
-      query: CHECK_INVITATION,
-      variables () {
-        return {
-          id: this.invitationId,
-        }
-      },
+  setup () {
+    const route = useRoute()
+    const invitationId = route.params.invitationId
+
+    const { result } = useQuery(CHECK_INVITATION, () => ({
+      id: invitationId,
+    }), {
       fetchPolicy: 'cache-only',
-    },
+    })
+    const checkInvitation = useResult(result)
+
+    return {
+      invitationId,
+      checkInvitation,
+    }
   },
   data () {
     return {
@@ -56,9 +64,6 @@ export default {
     }
   },
   computed: {
-    invitationId () {
-      return this.$route.params.invitationId
-    },
     company () {
       if (!this.checkInvitation) return ''
       return this.checkInvitation.orgName

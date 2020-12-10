@@ -307,6 +307,8 @@
 </template>
 
 <script>
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { mdiStar, mdiStarOutline, mdiAccountCircle } from '@mdi/js'
 
 import { Role } from '../graphql/enums'
@@ -335,21 +337,26 @@ export default {
     },
     org: String,
   },
-  apollo: {
-    isLoggedIn: {
-      query: GET_IS_LOGGED_IN,
-    },
-    getProfile: {
-      query: GET_PROFILE,
+  setup () {
+    const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
+    const isLoggedIn = useResult(result1)
+
+    const { result: result2 } = useQuery(GET_PROFILE)
+    const getProfile = useResult(result2, null, {
+      enabled: isLoggedIn.value,
       fetchPolicy: 'cache-only',
-      skip () {
-        return !this.isLoggedIn
-      },
-    },
-    getOrgs: {
-      query: GET_ORGS,
+    })
+
+    const { result: result3 } = useQuery(GET_ORGS)
+    const getOrgs = useResult(result3, null, {
       fetchPolicy: 'cache-only',
-    },
+    })
+
+    return {
+      isLoggedIn,
+      getProfile,
+      getOrgs,
+    }
   },
   data () {
     return {

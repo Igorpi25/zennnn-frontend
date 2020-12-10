@@ -121,6 +121,8 @@
 </template>
 
 <script>
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import Copyright from '../components/Copyright.vue'
 import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 
@@ -129,17 +131,20 @@ export default {
   components: {
     Copyright,
   },
-  apollo: {
-    isLoggedIn: {
-      query: GET_IS_LOGGED_IN,
-    },
-    getProfile: {
-      query: GET_PROFILE,
+  setup () {
+    const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
+    const isLoggedIn = useResult(result1)
+
+    const { result: result2 } = useQuery(GET_PROFILE)
+    const getProfile = useResult(result2, null, {
+      enabled: isLoggedIn.value,
       fetchPolicy: 'cache-only',
-      skip () {
-        return !this.isLoggedIn
-      },
-    },
+    })
+
+    return {
+      isLoggedIn,
+      getProfile,
+    }
   },
   computed: {
     hasSubscription () {

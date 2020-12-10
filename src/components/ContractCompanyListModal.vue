@@ -32,6 +32,9 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { mdiPlusCircleOutline } from '@mdi/js'
 import { ziGear } from '@/assets/icons'
 
@@ -39,24 +42,25 @@ import { LIST_ORG_REQUISITES } from '../graphql/queries'
 
 export default {
   name: 'ContractCompanyListModal',
-  apollo: {
-    listOrgRequisites: {
-      query: LIST_ORG_REQUISITES,
-      variables () {
-        return {
-          orgId: this.orgId,
-        }
-      },
-      result ({ data, loading }) {
-        if (loading) this.loading = true
-        if (data) this.loading = false
-      },
+  setup () {
+    const route = useRoute()
+    const orgId = route.params.orgId
+
+    const { result, loading } = useQuery(LIST_ORG_REQUISITES, () => ({
+      orgId: orgId,
+    }), {
       fetchPolicy: 'cache-and-network',
-    },
+    })
+    const listOrgRequisites = useResult(result)
+
+    return {
+      orgId,
+      loading,
+      listOrgRequisites,
+    }
   },
   data () {
     return {
-      loading: false,
       icons: {
         ziGear,
         mdiPlusCircleOutline,
@@ -64,9 +68,6 @@ export default {
     }
   },
   computed: {
-    orgId () {
-      return this.$route.params.orgId
-    },
     requisiteList () {
       return this.listOrgRequisites
     },

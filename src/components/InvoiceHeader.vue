@@ -160,6 +160,10 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { InvoiceStatus, Role } from '../graphql/enums'
 import { SEARCH_SUPPLIERS } from '../graphql/queries'
 import { SET_INVOICE_SUPPLIER } from '../graphql/mutations'
@@ -184,25 +188,29 @@ export default {
     create: Boolean,
     isEmpty: Boolean,
   },
-  apollo: {
-    searchSuppliers: {
-      query: SEARCH_SUPPLIERS,
-      variables () {
-        return {
-          orgId: this.orgId,
-          search: this.supplierSearch,
-        }
-      },
+  setup () {
+    const route = useRoute()
+    const orgId = route.params.orgId
+    const supplierSearch = ref('')
+
+    const { result } = useQuery(SEARCH_SUPPLIERS, () => ({
+      orgId: orgId,
+      search: supplierSearch.value,
+    }), {
+      enabled: () => supplierSearch.value,
       fetchPolicy: 'cache-and-network',
-      skip () {
-        return !this.supplierSearch
-      },
       debounce: 300,
-    },
+    })
+    const searchSuppliers = useResult(result)
+
+    return {
+      orgId,
+      supplierSearch,
+      searchSuppliers,
+    }
   },
   data () {
     return {
-      supplierSearch: '',
       supplierDialog: false,
       createSupplierInvoice: null,
       invoiceSupplierSetLoading: false,
@@ -219,9 +227,6 @@ export default {
     },
     isOwnerOrManager () {
       return this.role === Role.OWNER || this.role === Role.OWNER
-    },
-    orgId () {
-      return this.$route.params.orgId
     },
     invoiceStatusColor () {
       return this.item.invoiceStatus === InvoiceStatus.IN_STOCK

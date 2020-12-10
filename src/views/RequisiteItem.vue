@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { GET_IS_LOGGED_IN, GET_PROFILE } from '../graphql/queries'
 import { NOTE_GREETING } from '../graphql/mutations'
 import RequisiteCard from '../components/RequisiteCard.vue'
@@ -36,17 +38,20 @@ export default {
       default: false,
     },
   },
-  apollo: {
-    isLoggedIn: {
-      query: GET_IS_LOGGED_IN,
-    },
-    getProfile: {
-      query: GET_PROFILE,
+  setup () {
+    const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
+    const isLoggedIn = useResult(result1)
+
+    const { result: result2 } = useQuery(GET_PROFILE)
+    const getProfile = useResult(result2, null, {
+      enabled: isLoggedIn.value,
       fetchPolicy: 'cache-only',
-      skip () {
-        return !this.isLoggedIn
-      },
-    },
+    })
+
+    return {
+      isLoggedIn,
+      getProfile,
+    }
   },
   data () {
     return {

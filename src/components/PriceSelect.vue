@@ -66,6 +66,7 @@
 
 <script>
 import axios from 'axios'
+import { useQuery, useResult } from '@vue/apollo-composable'
 
 import { LIST_PRICES } from '../graphql/queries'
 import PriceContactForm from './PriceContactForm.vue'
@@ -81,10 +82,13 @@ export default {
     currentPriceId: String,
     changePrice: Boolean,
   },
-  apollo: {
-    listPrices: {
-      query: LIST_PRICES,
-    },
+  setup () {
+    const { result } = useQuery(LIST_PRICES)
+    const listPrices = useResult(result)
+
+    return {
+      listPrices,
+    }
   },
   data () {
     return {

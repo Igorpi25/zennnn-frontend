@@ -11,6 +11,8 @@
 
 <script>
 import deepmerge from 'deepmerge'
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
 
 import Owner from '@/components/Spec/Owner.vue'
 import Manager from '@/components/Spec/Manager.vue'
@@ -43,25 +45,30 @@ export default {
     Warehouseman,
     Freelancer,
   },
-  apollo: {
-    roleInProject: {
-      query: GET_ROLE_IN_PROJECT,
-      variables () {
-        return {
-          specId: this.specId,
-        }
-      },
+  setup () {
+    const route = useRoute()
+    const specId = route.params.specId
+
+    const { result: result1 } = useQuery(GET_ROLE_IN_PROJECT, () => ({
+      specId: specId,
+    }), {
       fetchPolicy: 'cache-only',
-    },
-    getSpec: {
-      query: GET_SPEC,
-      variables () {
-        return {
-          id: this.specId,
-        }
-      },
+    })
+    const roleInProject = useResult(result1)
+
+    const { result: result2, loading } = useQuery(GET_SPEC, () => ({
+      id: specId,
+    }), {
       fetchPolicy: 'cache-and-network',
-    },
+    })
+    const getSpec = useResult(result2)
+
+    return {
+      specId,
+      loading,
+      roleInProject,
+      getSpec,
+    }
   },
   data () {
     return {
@@ -69,12 +76,6 @@ export default {
     }
   },
   computed: {
-    loading () {
-      return this.$apollo.queries.getSpec.loading
-    },
-    specId () {
-      return this.$route.params.specId
-    },
     componentName () {
       switch (this.roleInProject) {
         case Role.OWNER: return 'Owner'

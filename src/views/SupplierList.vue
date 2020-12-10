@@ -209,6 +209,9 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { LIST_SUPPLIERS } from '@/graphql/queries'
 import { DELETE_SUPPLIER } from '@/graphql/mutations'
 
@@ -216,16 +219,22 @@ import { confirmDialog, wrapInArray } from '@/util/helpers'
 
 export default {
   name: 'Suppliers',
-  apollo: {
-    listSuppliers: {
-      query: LIST_SUPPLIERS,
-      variables () {
-        return {
-          orgId: this.$route.params.orgId,
-        }
-      },
+  setup () {
+    const route = useRoute()
+    const orgId = route.params.orgId
+
+    const { result, loading } = useQuery(LIST_SUPPLIERS, () => ({
+      orgId: orgId,
+    }), {
       fetchPolicy: 'cache-and-network',
-    },
+    })
+    const listSuppliers = useResult(result)
+
+    return {
+      orgId,
+      loading,
+      listSuppliers,
+    }
   },
   data () {
     return {
@@ -238,9 +247,6 @@ export default {
     }
   },
   computed: {
-    loading () {
-      return this.$apollo.queries.listSuppliers.loading
-    },
     groupBy () {
       return this.sortBy.length === 0 || this.sortBy[0] === 'companyName' ? ['companyName'] : []
     },
@@ -389,7 +395,7 @@ export default {
             const data = store.readQuery({
               query: LIST_SUPPLIERS,
               variables: {
-                orgId: this.$route.params.orgId,
+                orgId: orgId,
               },
             })
             const index = data.listSuppliers.items.findIndex(item => item.id === id)
@@ -399,7 +405,7 @@ export default {
             store.writeQuery({
               query: LIST_SUPPLIERS,
               variables: {
-                orgId: this.$route.params.orgId,
+                orgId: orgId,
               },
               data,
             })

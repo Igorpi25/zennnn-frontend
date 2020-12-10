@@ -160,6 +160,8 @@
 </template>
 
 <script>
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import PriceList from '../components/PriceList.vue'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
@@ -189,17 +191,20 @@ export default {
   //     { vmid: 'og:image', property: 'og:image', content: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png` },
   //   ],
   // },
-  apollo: {
-    isLoggedIn: {
-      query: GET_IS_LOGGED_IN,
-    },
-    getProfile: {
-      query: GET_PROFILE,
+  setup () {
+    const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
+    const isLoggedIn = useResult(result1)
+
+    const { result: result2 } = useQuery(GET_PROFILE)
+    const getProfile = useResult(result2, null, {
+      enabled: isLoggedIn.value,
       fetchPolicy: 'cache-first',
-      skip () {
-        return !this.isLoggedIn
-      },
-    },
+    })
+
+    return {
+      isLoggedIn,
+      getProfile,
+    }
   },
   computed: {
     orgId () {

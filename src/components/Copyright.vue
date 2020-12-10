@@ -8,6 +8,9 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { GET_BACKEND_VERSION } from '../graphql/queries'
 
 export default {
@@ -15,22 +18,23 @@ export default {
   props: {
     hideUserAgreement: Boolean,
   },
-  apollo: {
-    backendVersion: {
-      query: GET_BACKEND_VERSION,
-    },
-  },
-  data () {
+  setup () {
+    const { result } = useQuery(GET_BACKEND_VERSION)
+    const backendVersion = useResult(result)
+
+    const frontendVersion = ref(process.env.FRONTEND_VERSION || '')
+
+    const version = computed(() => {
+      return backendVersion.value
+        ? `front/${frontendVersion.value} | backend/${backendVersion.value}`
+        : `front/${frontendVersion.value}`
+    })
+
     return {
-      frontendVersion: process.env.FRONTEND_VERSION || '',
+      version,
+      backendVersion,
+      frontendVersion,
     }
-  },
-  computed: {
-    version () {
-      return this.backendVersion
-        ? `front/${this.frontendVersion} | backend/${this.backendVersion}`
-        : `front/${this.frontendVersion}`
-    },
   },
 }
 </script>

@@ -405,6 +405,9 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import Countries from '../config/countries-iso3.json'
 
 import PrintCompanyInfo from './CompanyDetail/PrintCompanyInfo.vue'
@@ -429,35 +432,6 @@ export default {
     PrintClientImporter,
     RequisiteCard,
     ClientCard,
-  },
-  apollo: {
-    searchClients: {
-      query: SEARCH_CLIENTS,
-      variables () {
-        return {
-          orgId: this.orgId,
-          search: this.clientSearch,
-        }
-      },
-      fetchPolicy: 'cache-and-network',
-      skip () {
-        return !this.clientSearch
-      },
-      debounce: 300,
-    },
-    listOrgRequisites: {
-      query: LIST_ORG_REQUISITES,
-      variables () {
-        return {
-          orgId: this.orgId,
-        }
-      },
-      result ({ data, loading }) {
-        if (loading) this.requisiteLoading = true
-        if (data) this.requisiteLoading = false
-      },
-      fetchPolicy: 'cache-and-network',
-    },
   },
   props: {
     orgId: String,
@@ -492,6 +466,33 @@ export default {
     amountInWords: String,
     amountInWordsClientLang: String,
   },
+  setup (props) {
+    const clientSearch = ref('')
+
+    const { result: result1 } = useQuery(SEARCH_CLIENTS, () => ({
+      orgId: props.orgId,
+      search: clientSearch.value,
+    }), {
+      enabled: () => clientSearch.value,
+      fetchPolicy: 'cache-and-network',
+      debounce: 300,
+    })
+    const searchClients = useResult(result1)
+
+    const { result: result2, loading: requisiteLoading } = useQuery(LIST_ORG_REQUISITES, () => ({
+      orgId: props.orgId,
+    }), {
+      fetchPolicy: 'cache-and-network',
+    })
+    const listOrgRequisites = useResult(result2)
+
+    return {
+      clientSearch,
+      searchClients,
+      requisiteLoading,
+      listOrgRequisites,
+    }
+  },
   data () {
     return {
       customsCountryOfOriginValue: undefined,
@@ -502,7 +503,6 @@ export default {
       warningFieldsCount: 0,
       countriesSearch: '',
       clientDialog: false,
-      clientSearch: '',
       updateClientLoading: false,
       requisiteSearch: '',
       requisiteDialog: false,

@@ -153,6 +153,9 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { LIST_ORG_REQUISITES, GET_ORGS } from '../graphql/queries'
 import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '../graphql/mutations'
 
@@ -160,20 +163,25 @@ import { confirmDialog, defaultFilter, getObjectValueByPath } from '@/util/helpe
 
 export default {
   name: 'RequisiteList',
-  apollo: {
-    getOrgs: {
-      query: GET_ORGS,
-      fetchPolicy: 'cache-only',
-    },
-    listOrgRequisites: {
-      query: LIST_ORG_REQUISITES,
-      variables () {
-        return {
-          orgId: this.orgId,
-        }
-      },
+  setup () {
+    const route = useRoute()
+    const orgId = route.params.orgId
+
+    const { result: result1 } = useQuery(GET_ORGS, null, { fetchPolicy: 'cache-only' })
+    const getOrgs = useResult(result1)
+
+    const { result: result2, loading } = useQuery(LIST_ORG_REQUISITES, () => ({
+      orgId: orgId,
+    }), {
       fetchPolicy: 'cache-and-network',
-    },
+    })
+    const listOrgRequisites = useResult(result2)
+
+    return {
+      loading,
+      getOrgs,
+      listOrgRequisites,
+    }
   },
   data () {
     return {
@@ -182,12 +190,6 @@ export default {
     }
   },
   computed: {
-    loading () {
-      return this.$apollo.queries.listOrgRequisites.loading
-    },
-    orgId () {
-      return this.$route.params.orgId
-    },
     currentOrg () {
       const orgs = this.getOrgs || []
       return orgs.find(el => el.id === this.orgId) || {}

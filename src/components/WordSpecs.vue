@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { useQuery, useResult } from '@vue/apollo-composable'
 import { GET_WORD_SPECS } from '../graphql/queries'
 
 export default {
@@ -41,25 +42,19 @@ export default {
       required: true,
     },
   },
-  apollo: {
-    getWordSpecs: {
-      query: GET_WORD_SPECS,
-      variables () {
-        return {
-          orgId: this.orgId,
-          id: this.wordId,
-        }
-      },
+  setup (props) {
+    const { result, loading } = useQuery(GET_WORD_SPECS, () => ({
+      orgId: props.orgId,
+      id: props.wordId,
+    }), {
       fetchPolicy: 'cache-and-network',
-    },
-  },
-  computed: {
-    loading () {
-      return this.$apollo.queries.getWordSpecs && this.$apollo.queries.getWordSpecs.loading
-    },
-    items () {
-      return this.getWordSpecs || []
-    },
+    })
+    const items = useResult(result, [], data => data.getWordSpecs)
+
+    return {
+      loading,
+      items,
+    }
   },
 }
 </script>

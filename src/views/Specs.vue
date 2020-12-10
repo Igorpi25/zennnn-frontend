@@ -419,6 +419,10 @@
 </template>
 
 <script>
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import {
   Role,
   Typename,
@@ -440,51 +444,70 @@ export default {
   components: {
     ClientCard,
   },
-  apollo: {
-    searchClients: {
-      query: SEARCH_CLIENTS,
-      variables () {
-        return {
-          orgId: this.orgId,
-          search: this.clientSearch,
-        }
-      },
+  setup () {
+    const route = useRoute()
+    const orgId = route.params.orgId
+    const clientSearch = ref('')
+    const filter = ref({
+      clientsIds: [],
+      clientType: null,
+      group: false,
+    })
+
+    const { result: result1 } = useQuery(SEARCH_CLIENTS, () => ({
+      orgId: orgId,
+      search: clientSearch.value,
+    }), {
+      enabled: () => clientSearch.value,
       fetchPolicy: 'cache-and-network',
-      skip () {
-        return !this.clientSearch
-      },
       debounce: 300,
-    },
-    getSpecs: {
-      query: GET_SPECS,
-      variables () {
-        return {
-          orgId: this.orgId,
-          clientsIds: this.filter.clientsIds,
-          clientType: this.clientTypeEnum,
-        }
-      },
+    })
+    const searchClients = useResult(result1)
+
+    const { result: result2, loading } = useQuery(GET_SPECS, () => ({
+      orgId: orgId,
+      clientsIds: filter.value.clientsIds,
+      clientType: clientTypeEnum.value,
+    }), {
       fetchPolicy: 'cache-and-network',
-    },
-    getOrgs: {
-      query: GET_ORGS,
-      fetchPolicy: 'cache-only',
-    },
-    getClientsById: {
-      query: GET_CLIENTS_BY_ID,
+    })
+    const getSpecs = useResult(result2)
+
+    const { result: result3 } = useQuery(GET_ORGS, null, { fetchPolicy: 'cache-only' })
+    const getOrgs = useResult(result3)
+
+    const { result: result4 } = useQuery(GET_CLIENTS_BY_ID, () => ({
+      orgId: orgId,
+      ids: filter.value.clientsIds,
+    }), {
       fetchPolicy: 'cache-and-network',
-      variables () {
-        return {
-          orgId: this.orgId,
-          ids: this.filter.clientsIds,
-        }
-      },
-    },
+    })
+    const getClientsById = useResult(result4)
+
+    const clientTypeEnum = computed(() =>{
+      switch (filter.value.clientType) {
+        case 1: return ClientType.LEGAL
+        case 2: return ClientType.PRIVATE
+        case 3: return ClientType.OTHER
+        default: return null
+      }
+    })
+
+    return {
+      orgId,
+      clientSearch,
+      filter,
+      loading,
+      searchClients,
+      getSpecs,
+      getOrgs,
+      getClientsById,
+      clientTypeEnum,
+    }
   },
   data () {
     return {
       clientDialog: false,
-      clientSearch: '',
       createSpecClient: null,
       createSpecDialog: false,
       SpecStatus,
@@ -498,18 +521,10 @@ export default {
         required: v => !!v || this.$t('rule.required'),
       },
       filterMenu: false,
-      filter: {
-        clientsIds: [],
-        clientType: null,
-        group: false,
-      },
       currentFilter: null,
     }
   },
   computed: {
-    loading () {
-      return this.$apollo.queries.getSpecs.loading
-    },
     hasFilter () {
       return this.filter.clientType || this.filter.group
     },
@@ -552,14 +567,6 @@ export default {
         default: return this.$t('label.noSort')
       }
     },
-    clientTypeEnum () {
-      switch (this.filter.clientType) {
-        case 1: return ClientType.LEGAL
-        case 2: return ClientType.PRIVATE
-        case 3: return ClientType.OTHER
-        default: return null
-      }
-    },
     clientsFilter () {
       return this.filter.clientsIds.map(id => {
         const clients = (this.getClientsById && this.getClientsById.items) || []
@@ -583,9 +590,6 @@ export default {
       const orgs = this.getOrgs || []
       const org = orgs.find(el => el.id === this.orgId) || {}
       return org.role || null
-    },
-    orgId () {
-      return this.$route.params.orgId
     },
     headers () {
       return [

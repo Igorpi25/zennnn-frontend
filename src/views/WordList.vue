@@ -254,6 +254,9 @@
 <script>
 import { mdiGoogleTranslate } from '@mdi/js'
 
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { LIST_WORDS } from '../graphql/queries'
 
 import { LOCALES_LIST } from '../config/globals'
@@ -267,16 +270,22 @@ export default {
     WordDialog,
     WordSpecs,
   },
-  apollo: {
-    listWords: {
-      query: LIST_WORDS,
-      variables () {
-        return {
-          orgId: this.orgId,
-        }
-      },
+  setup () {
+    const route = useRoute()
+    const orgId = route.params.orgId
+
+    const { result, loading } = useQuery(LIST_WORDS, () => ({
+      orgId: orgId,
+    }), {
       fetchPolicy: 'cache-and-network',
-    },
+    })
+    const listWords = useResult(result)
+
+    return {
+      orgId,
+      loading,
+      listWords,
+    }
   },
   data () {
     return {
@@ -292,12 +301,6 @@ export default {
     }
   },
   computed: {
-    loading () {
-      return this.$apollo.queries.listWords.loading
-    },
-    orgId () {
-      return this.$route.params.orgId
-    },
     locales () {
       const items = LOCALES_LIST.map(el => {
         return {

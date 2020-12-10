@@ -120,6 +120,10 @@
 <script>
 // TODO install in dependencies
 import cloneDeep from 'clone-deep'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { validateSupplier } from '../util/validation'
 
 import { GET_SUPPLIER, GET_ORG_NEXT_SUPPLIER_UID } from '../graphql/queries'
@@ -157,61 +161,59 @@ export default {
       default: false,
     },
   },
-  apollo: {
-    getOrgNextSupplierUid: {
-      query: GET_ORG_NEXT_SUPPLIER_UID,
-      variables () {
-        return {
-          orgId: this.orgId,
-        }
-      },
-      skip () {
-        return !this.create
-      },
+  setup (props) {
+    const route = useRoute()
+    const supplierId = route.params.supplierId
+    const item = ref({})
+
+    const { result: result1 } = useQuery(GET_ORG_NEXT_SUPPLIER_UID, () => ({
+      orgId: props.orgId,
+    }), {
+      enabled: () => props.create,
       fetchPolicy: 'network-only',
-    },
-    getSupplier: {
-      query: GET_SUPPLIER,
-      variables () {
-        return {
-          id: this.supplierId,
-        }
-      },
-      result ({ data, loading }) {
+    })
+    const getOrgNextSupplierUid = useResult(result1)
+
+    const { result: result2, loading } = useQuery(GET_SUPPLIER, () => ({
+      id: supplierId,
+    }), {
+      enabled: () => !props.create,
+      onResult: ({ data, loading }) => {
         if (loading) return
-        this.setData(data && data.getSupplier)
-      },
-      skip () {
-        return this.create
+        setData(data && data.getSupplier)
       },
       fetchPolicy: 'cache-and-network',
-    },
+    })
+    const getSupplier = useResult(result2)
+
+    const setData = (data) => {
+      if (!data) return
+      item.value = cloneDeep(data)
+    }
+
+    return {
+      item,
+      supplierId,
+      getOrgNextSupplierUid,
+      loading,
+      getSupplier,
+      setData,
+    }
   },
   data () {
     return {
       updateLoading: false,
-      item: {},
     }
   },
   computed: {
-    loading () {
-      return this.$apollo.queries.getSupplier.loading
-    },
     uid () {
       if (this.item.uid) {
         return this.item.uid
       }
       return this.getOrgNextSupplierUid || ''
     },
-    supplierId () {
-      return this.$route.params.supplierId
-    },
   },
   methods: {
-    setData (item) {
-      if (!item) return
-      this.item = cloneDeep(item)
-    },
     updateValue (input) {
       if (this.create) {
         if (this.isComponent) {

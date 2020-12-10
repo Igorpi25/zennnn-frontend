@@ -505,6 +505,9 @@
 
 <script>
 import deepmerge from 'deepmerge'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
 import Header from '../components/Header'
 import Copyright from '../components/Copyright'
@@ -538,25 +541,68 @@ export default {
     Comments,
     PaperInvoice,
   },
-  apollo: {
-    getProfile: {
-      query: GET_PROFILE,
+  setup () {
+    const route = useRoute()
+    const specId = route.params.specId
+    const isBooted = ref(false)
+    const expanded = ref([])
+
+    const { result: result1 } = useQuery(GET_PROFILE, null, {
       fetchPolicy: 'network-only',
-    },
-    getPaperSpec: {
-      query: GET_PAPER_SPEC,
-      variables () {
-        return {
-          id: this.specId,
-        }
-      },
-      result ({ data, loading }) {
-        if (!loading && !this.isBooted) {
+    })
+    const getProfile = useResult(result1)
+
+    const { result: result2 } = useQuery(GET_PAPER_SPEC, () => ({
+      id: specId,
+    }), {
+      onResult: ({ data, loading }) => {
+        if (!loading && !isBooted.value) {
           const spec = (data && data.getPaperSpec) || {}
-          this.updateExpanded(spec)
+          updateExpanded(spec)
         }
       },
-    },
+    })
+    const getPaperSpec = useResult(result2)
+
+    // Methods
+    const updateExpanded = async (spec) => {
+      const specId = spec && spec.id
+      if (!specId || isBooted.value) return
+      isBooted.value = true
+      const _expanded = await getSpecExpandedInvoices(specId, PAPER_STORE_KEY_PREFIX)
+      if (!_expanded) {
+        const invoices = spec.invoices || []
+        const ids = invoices.map(el => el.id)
+        if (ids.length > 0) {
+          expanded.value = ids
+          await setExpandedInvoices({
+            specId: specId,
+            ids: expanded.value,
+            prefix: PAPER_STORE_KEY_PREFIX,
+          })
+        }
+      } else {
+        expanded.value = _expanded || []
+      }
+    }
+
+    const { mutate: setExpandedInvoices } = useMutation(SET_SPEC_EXPANDED_INVOICES)
+
+    const { mutate: addExpandedInvoices } = useMutation(ADD_SPEC_EXPANDED_INVOICES)
+
+    const { mutate: removeExpandedInvoices } = useMutation(ADD_SPEC_EXPANDED_INVOICES)
+
+    return {
+      specId,
+      isBooted,
+      expanded,
+      getProfile,
+      getPaperSpec,
+      updateExpanded,
+      setExpandedInvoices,
+      addExpandedInvoices,
+      removeExpandedInvoices,
+    }
   },
   data () {
     return {
@@ -565,8 +611,6 @@ export default {
       InvoiceStatus,
       invoiceScrollId: '',
       invoiceScrollLeft: 0,
-      isBooted: false,
-      expanded: [],
       menuCurrency: false,
       sessionOrgId: '',
     }
@@ -581,9 +625,6 @@ export default {
     hasNewComments () {
       const comments = this.spec.comments || []
       return comments.some(item => !item.clientViewed)
-    },
-    specId () {
-      return this.$route.params.specId
     },
     spec () {
       return this.getPaperSpec || {}
@@ -615,7 +656,11 @@ export default {
             removedIds.push(v.id)
           }
         })
-        this.removeExpandedInvoices(removedIds)
+        this.removeExpandedInvoices({
+          specId: this.specId,
+          ids: removedIds,
+          prefix: PAPER_STORE_KEY_PREFIX,
+        })
       }
     },
   },
@@ -867,60 +912,22 @@ export default {
       this.invoiceScrollId = invoiceId
       this.invoiceScrollLeft = scrollLeft
     },
-    async updateExpanded (spec) {
-      const specId = spec && spec.id
-      if (!specId || this.isBooted) return
-      this.isBooted = true
-      const expanded = await getSpecExpandedInvoices(specId, PAPER_STORE_KEY_PREFIX)
-      if (!expanded) {
-        const invoices = spec.invoices || []
-        const ids = invoices.map(el => el.id)
-        if (ids.length > 0) {
-          this.expanded = ids
-          await this.setExpandedInvoices(this.expanded)
-        }
-      } else {
-        this.expanded = expanded || []
-      }
-    },
-    async setExpandedInvoices (ids) {
-      await this.$apollo.mutate({
-        mutation: SET_SPEC_EXPANDED_INVOICES,
-        variables: {
-          specId: this.specId,
-          ids,
-          prefix: PAPER_STORE_KEY_PREFIX,
-        },
-      })
-    },
-    async addExpandedInvoices (ids) {
-      await this.$apollo.mutate({
-        mutation: ADD_SPEC_EXPANDED_INVOICES,
-        variables: {
-          specId: this.specId,
-          ids,
-          prefix: PAPER_STORE_KEY_PREFIX,
-        },
-      })
-    },
-    async removeExpandedInvoices (ids) {
-      await this.$apollo.mutate({
-        mutation: REMOVE_SPEC_EXPANDED_INVOICES,
-        variables: {
-          specId: this.specId,
-          ids,
-          prefix: PAPER_STORE_KEY_PREFIX,
-        },
-      })
-    },
     expand (id) {
       if (this.expanded.includes(id)) {
         const index = this.expanded.indexOf(id)
         this.expanded.splice(index, 1)
-        this.removeExpandedInvoices([id])
+        this.removeExpandedInvoices({
+          specId: this.specId,
+          ids: [id],
+          prefix: PAPER_STORE_KEY_PREFIX,
+        })
       } else {
         this.expanded.push(id)
-        this.addExpandedInvoices([id])
+        this.addExpandedInvoices({
+          specId: this.specId,
+          ids: [id],
+          prefix: PAPER_STORE_KEY_PREFIX,
+        })
       }
     },
     toggleExpandAll () {
@@ -932,7 +939,11 @@ export default {
     },
     collapseAll () {
       this.expanded = []
-      this.setExpandedInvoices([])
+      this.setExpandedInvoices({
+        specId: this.specId,
+        ids: [],
+        prefix: PAPER_STORE_KEY_PREFIX,
+      })
     },
     expandAll () {
       const invoices = this.items
@@ -940,7 +951,11 @@ export default {
         return [...acc, curr.id]
       }, [])
       this.expanded = ids
-      this.setExpandedInvoices(ids)
+      this.setExpandedInvoices({
+        specId: this.specId,
+        ids,
+        prefix: PAPER_STORE_KEY_PREFIX,
+      })
     },
   },
 }

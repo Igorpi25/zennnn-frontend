@@ -298,6 +298,9 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import StaffCreateModal from '../components/StaffCreateModal.vue'
 import { LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
@@ -309,16 +312,22 @@ export default {
   components: {
     StaffCreateModal,
   },
-  apollo: {
-    listStaff: {
-      query: LIST_STAFF,
-      variables () {
-        return {
-          orgId: this.orgId,
-        }
-      },
+  setup () {
+    const route = useRoute()
+    const orgId = route.params.orgId
+
+    const { result, loading } = useQuery(LIST_STAFF, () => ({
+      orgId: orgId,
+    }), {
       fetchPolicy: 'cache-and-network',
-    },
+    })
+    const listStaff = useResult(result)
+
+    return {
+      orgId,
+      loading,
+      listStaff,
+    }
   },
   data () {
     return {
@@ -336,9 +345,6 @@ export default {
     }
   },
   computed: {
-    loading () {
-      return this.$apollo.queries.listStaff.loading
-    },
     items () {
       const roleFilter = (val) => {
         return this.$te(`role.${val}`)
@@ -375,9 +381,6 @@ export default {
         ...staffItems,
         ...invitationsItems,
       ]
-    },
-    orgId () {
-      return this.$route.params.orgId
     },
     headers () {
       return [

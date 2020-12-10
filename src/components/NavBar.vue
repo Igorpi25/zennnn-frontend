@@ -39,16 +39,22 @@
 </template>
 
 <script>
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { GET_ORGS } from '../graphql/queries'
 import { Role } from '../graphql/enums'
 
 export default {
   name: 'NavBar',
-  apollo: {
-    getOrgs: {
-      query: GET_ORGS,
+  setup () {
+    const { result } = useQuery(GET_ORGS, null, {
       fetchPolicy: 'cache-only',
-    },
+    })
+    const getOrgs = useResult(result)
+
+    return {
+      getOrgs,
+    }
   },
   computed: {
     orgId () {

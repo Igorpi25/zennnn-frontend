@@ -383,6 +383,7 @@
 
 <script>
 import axios from 'axios'
+import { useQuery, useResult } from '@vue/apollo-composable'
 
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
@@ -406,19 +407,21 @@ export default {
   //     { cssText: 'body { background-color: #F7F7F7!important }', type: 'text/css' },
   //   ],
   // },
-  apollo: {
-    getProfile: {
-      query: GET_PROFILE,
-      fetchPolicy: 'network-only',
-    },
-    listPaymentMethods: {
-      query: LIST_PAYMENT_METHODS,
-      fetchPolicy: 'no-cache',
-    },
-    listPaymentInvoices: {
-      query: LIST_PAYMENT_INVOICES,
-      fetchPolicy: 'no-cache',
-    },
+  setup () {
+    const { result: result1 } = useQuery(GET_PROFILE, null, { fetchPolicy: 'network-only' })
+    const getProfile = useResult(result1)
+
+    const { result: result2 } = useQuery(LIST_PAYMENT_METHODS, null, { fetchPolicy: 'no-cache' })
+    const listPaymentMethods = useResult(result2)
+
+    const { result: result3 } = useQuery(LIST_PAYMENT_INVOICES, null, { fetchPolicy: 'no-cache' })
+    const listPaymentInvoices = useResult(result3)
+
+    return {
+      getProfile,
+      listPaymentMethods,
+      listPaymentInvoices,
+    }
   },
   data () {
     return {

@@ -261,6 +261,9 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { ClientType } from '../graphql/enums'
 import { LIST_CLIENTS } from '../graphql/queries'
 import { DELETE_CLIENT } from '../graphql/mutations'
@@ -269,16 +272,21 @@ import { confirmDialog, wrapInArray, getObjectValueByPath } from '../util/helper
 
 export default {
   name: 'ClientList',
-  apollo: {
-    listClients: {
-      query: LIST_CLIENTS,
-      variables () {
-        return {
-          orgId: this.$route.params.orgId,
-        }
-      },
+  setup () {
+    const route = useRoute()
+    const orgId = route.params.orgId
+
+    const { result, loading } = useQuery(LIST_CLIENTS, () => ({
+      orgId: orgId,
+    }), {
       fetchPolicy: 'cache-and-network',
-    },
+    })
+    const listClients = useResult(result)
+
+    return {
+      loading,
+      listClients,
+    }
   },
   data () {
     return {
@@ -292,9 +300,6 @@ export default {
     }
   },
   computed: {
-    loading () {
-      return this.$apollo.queries.listClients.loading
-    },
     tabs () {
       return [
         {

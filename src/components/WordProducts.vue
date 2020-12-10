@@ -126,6 +126,9 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import WordProduct from './WordProduct.vue'
 import WordDialog from './WordDialog.vue'
 import { SEARCH_WORDS } from '../graphql/admin/queries'
@@ -144,24 +147,25 @@ export default {
       default: () => ([]),
     },
   },
-  apollo: {
-    searchWords: {
-      query: SEARCH_WORDS,
-      variables () {
-        return {
-          search: this.wordSearch,
-        }
-      },
+  setup () {
+    const wordSearch = ref('')
+
+    const { result } = useQuery(SEARCH_WORDS, () => ({
+      search: wordSearch.value,
+    }), {
+      enabled: () => wordSearch.value,
       fetchPolicy: 'cache-and-network',
-      skip () {
-        return !this.wordSearch
-      },
       debounce: 300,
-    },
+    })
+    const searchWords = useResult(result)
+
+    return {
+      wordSearch,
+      searchWords,
+    }
   },
   data () {
     return {
-      wordSearch: '',
       selectedItemId: null,
       selected: [],
       newWordDialog: false,

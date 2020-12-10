@@ -453,6 +453,11 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { InvoiceProfitType, Role, WordStatus } from '../graphql/enums'
 import { SEARCH_WORDS } from '../graphql/queries'
 import product from '../mixins/product'
@@ -495,36 +500,38 @@ export default {
     },
     create: Boolean,
   },
-  apollo: {
-    searchWords: {
-      query: SEARCH_WORDS,
-      variables () {
-        return {
-          orgId: this.orgId,
-          search: this.wordSearch,
-          locale: this.$i18n.locale,
-        }
-      },
+  setup () {
+    const { locale } = useI18n()
+    const route = useRoute()
+    const orgId = route.params.orgId
+    const wordSearch = ref('')
+
+    const { result } = useQuery(SEARCH_WORDS, () => ({
+      orgId: orgId,
+      search: wordSearch.value,
+      locale: locale.value,
+    }), {
+      enabled: () => wordSearch.value,
       fetchPolicy: 'cache-and-network',
-      skip () {
-        return !this.wordSearch
-      },
       debounce: 300,
-    },
+    })
+    const searchWords = useResult(result)
+
+    return {
+      orgId,
+      wordSearch,
+      searchWords,
+    }
   },
   data () {
     return {
       wordCreateDialog: false,
       wordEditDialog: false,
       isLinkUrlFocus: false,
-      wordSearch: '',
       wordCreateText: '',
     }
   },
   computed: {
-    orgId () {
-      return this.$route.params.orgId
-    },
     hasNoTranslation () {
       return this.item.name && !this.wordItem[this.$i18n.locale]
     },

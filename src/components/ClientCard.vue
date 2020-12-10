@@ -258,6 +258,10 @@
 <script>
 // TODO install in dependencies
 import cloneDeep from 'clone-deep'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { validateLegalClient, validatePrivateClient } from '../util/validation'
 
 import { ClientType } from '../graphql/enums'
@@ -301,63 +305,64 @@ export default {
       default: false,
     },
   },
-  apollo: {
-    getOrgNextClientUid: {
-      query: GET_ORG_NEXT_CLIENT_UID,
-      variables () {
-        return {
-          orgId: this.orgId,
-        }
-      },
-      skip () {
-        return !this.create
-      },
+  setup (props) {
+    const route = useRoute()
+    const clientId = route.params.clientId
+    const groupId = route.params.groupId
+    const item = ref({})
+
+    const { result: result1 } = useQuery(GET_ORG_NEXT_CLIENT_UID, () => ({
+      orgId: props.orgId,
+    }), {
+      enabled: () => props.create,
       fetchPolicy: 'network-only',
-    },
-    getClient: {
-      query: GET_CLIENT,
-      variables () {
-        return {
-          id: this.clientId,
-        }
-      },
-      result ({ data, loading }) {
+    })
+    const getOrgNextClientUid = useResult(result1)
+
+    const { result: result2, loading } = useQuery(GET_CLIENT, () => ({
+      id: clientId,
+    }), {
+      enabled: () => !props.create,
+      onResult: ({ data, loading }) => {
         if (loading) return
-        this.setData(data && data.getClient)
-      },
-      skip () {
-        return this.create
+        setData(data && data.getClient)
       },
       fetchPolicy: 'cache-and-network',
-    },
-    getClientGroup: {
-      query: GET_CLIENT_GROUP,
-      variables () {
-        return {
-          orgId: this.$route.params.orgId,
-          groupId: this.$route.params.groupId,
-        }
-      },
-      skip () {
-        return !this.$route.params.groupId
-      },
+    })
+    const getClient = useResult(result2)
+
+    const { result: result3 } = useQuery(GET_CLIENT_GROUP, () => ({
+      orgId: props.orgId,
+      groupId: groupId,
+    }), {
+      enabled: () => groupId,
       fetchPolicy: 'cache-and-network',
-    },
+    })
+    const getClientGroup = useResult(result3)
+
+    // Methods
+    const setData = (data) => {
+      if (!data) return
+      item.value = cloneDeep(data)
+    }
+
+    return {
+      item,
+      clientId,
+      getOrgNextClientUid,
+      loading,
+      getClient,
+      getClientGroup,
+      setData,
+    }
   },
   data () {
     return {
       internalClientType: ClientType.LEGAL,
       updateLoading: false,
-      item: {},
     }
   },
   computed: {
-    loading () {
-      return this.$apollo.queries.getClient.loading
-    },
-    clientId () {
-      return this.$route.params.clientId
-    },
     clientType () {
       if (this.isComponent) return this.internalClientType
       return this.getClientTypeFromNumeric(this.$route.query.clientType)
@@ -434,10 +439,6 @@ export default {
     reset () {
       this.item = {}
       this.$apollo.queries.getOrgNextClientUid.refetch()
-    },
-    setData (item) {
-      if (!item) return
-      this.item = cloneDeep(item)
     },
     switchClientType (type) {
       if (this.create && this.isComponent) {

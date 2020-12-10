@@ -410,6 +410,9 @@
 <script>
 import { mdiGoogleTranslate, mdiAccountCircle } from '@mdi/js'
 
+import { computed, ref, watch } from 'vue'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { LIST_WORDS } from '../../graphql/admin/queries'
 import { APPROVE_WORDS, HIDE_WORDS, MERGE_WORDS } from '../../graphql/admin/mutations'
 import { LOCALES_LIST } from '../../config/globals'
@@ -425,33 +428,57 @@ export default {
     LocalePicker,
     WordDialog,
   },
-  apollo: {
-    listWords: {
-      query: LIST_WORDS,
-      variables () {
-        return {
-          filters: this.filters,
-        }
-      },
-      skip () {
-        return this.loggedOut
-      },
+  setup () {
+    const loggedOut = ref(false)
+    const queryLoading = ref(false)
+    const currentFilter = ref(null)
+
+    const filters = computed(() => {
+      return {
+        status: statusFilter.value,
+        showHiddens: currentFilter.value === 'HIDDEN',
+        all: currentFilter.value === 'ALL',
+      }
+    })
+
+    const statusFilter = computed(() => {
+      switch (currentFilter.value) {
+        case 'DRAFT': return 'DRAFT'
+        case 'APPROVED': return 'APPROVED'
+        default: return null
+      }
+    })
+
+    const { result, loading } = useQuery(LIST_WORDS, () => ({
+      filters: filters.value,
+    }), {
+      enabled: () => !loggedOut.value,
       fetchPolicy: 'cache-and-network',
-      watchLoading (isLoading) {
-        if (isLoading) {
-          this.queryLoading = true
-        } else {
-          setTimeout(() => {
-            this.queryLoading = false
-          }, 200)
-        }
-      },
-    },
+    })
+    const listWords = useResult(result)
+
+    watch(loading, (val) => {
+      if (val) {
+        queryLoading.value = true
+      } else {
+        setTimeout(() => {
+          queryLoading.value = false
+        }, 200)
+      }
+    })
+
+    return {
+      loggedOut,
+      queryLoading,
+      currentFilter,
+      filter,
+      statusFilter,
+      loading,
+      listWords,
+    }
   },
   data () {
     return {
-      queryLoading: false,
-      loggedOut: false,
       orgId: '',
       search: undefined,
       deleteLoading: null,
@@ -470,7 +497,6 @@ export default {
       mergeLoading: false,
       filterMenu: false,
       mergeItem: {},
-      currentFilter: null,
       hideLoading: false,
     }
   },
@@ -483,20 +509,6 @@ export default {
         case 'HIDDEN': return this.$t('words.HIDDEN')
         case 'ALL': return this.$t('words.ALL')
         default: return this.$t('words.noFilter')
-      }
-    },
-    filters () {
-      return {
-        status: this.statusFilter,
-        showHiddens: this.currentFilter === 'HIDDEN',
-        all: this.currentFilter === 'ALL',
-      }
-    },
-    statusFilter () {
-      switch (this.currentFilter) {
-        case 'DRAFT': return 'DRAFT'
-        case 'APPROVED': return 'APPROVED'
-        default: return null
       }
     },
     filtersItems () {
@@ -526,9 +538,6 @@ export default {
           value: 'ALL',
         },
       ]
-    },
-    loading () {
-      return this.$apollo.queries.listWords.loading
     },
     locales () {
       const items = LOCALES_LIST.map(el => {

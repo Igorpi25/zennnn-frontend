@@ -237,6 +237,8 @@
 
 <script>
 import cloneDeep from 'clone-deep'
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
 
 import ContractListModal from '@/components/ContractListModal.vue'
 import ContractConfiguratorModal from '@/components/ContractConfiguratorModal.vue'
@@ -279,16 +281,21 @@ export default {
       required: true,
     },
   },
-  apollo: {
-    listOrgContracts: {
-      query: LIST_ORG_CONTRACTS,
-      variables () {
-        return {
-          orgId: this.orgId,
-        }
-      },
+  setup () {
+    const route = useRoute()
+    const orgId = route.params.orgId
+
+    const { result } = useQuery(LIST_ORG_CONTRACTS, () => ({
+      orgId: orgId,
+    }), {
       fetchPolicy: 'cache-and-network',
-    },
+    })
+    const listOrgContracts = useResult(result)
+
+    return {
+      orgId,
+      listOrgContracts,
+    }
   },
   data () {
     return {
@@ -338,9 +345,6 @@ export default {
     },
     link () {
       return `${window.location.protocol}//${window.location.host}/paper/${this.specId}`
-    },
-    orgId () {
-      return this.$route.params.orgId
     },
     specId () {
       return this.$route.params.specId

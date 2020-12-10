@@ -1,3 +1,7 @@
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
+
 import {
   mdiPlusCircleOutline,
   mdiChevronLeft,
@@ -32,56 +36,114 @@ export default {
   props: {
     loading: Boolean,
   },
-  apollo: {
-    specSimpleUIOff: {
-      query: SPEC_SIMPLE_UI_OFF,
-    },
-    isSpecSync: {
-      query: GET_IS_SPEC_SYNC,
-    },
-    getSpec: {
-      query: GET_SPEC,
-      variables () {
-        return {
-          id: this.specId,
+  setup () {
+    const route = useRoute()
+    const orgId = route.params.orgId
+    const specId = route.params.orgId
+    const clientSearch = ref('')
+    const supplierSearch = ref('')
+    const isBooted = ref(false)
+    const expanded = ref([])
+    const invoiceActiveTab = ref(0)
+
+    const { result: result1 } = useQuery(SPEC_SIMPLE_UI_OFF)
+    const specSimpleUIOff = useResult(result1)
+
+    const { result: result2 } = useQuery(GET_IS_SPEC_SYNC)
+    const isSpecSync = useResult(result2)
+
+    const { result: result3 } = useQuery(GET_SPEC, () => ({
+      id: specId,
+    }), {
+      onResult: ({ data, loading }) => {
+        if (!loading && !isBooted.value) {
+          const spec = (data && data.getSpec) || {}
+          updateExpandedAndActiveTab(spec)
         }
       },
       fetchPolicy: 'cache-only',
-      result ({ data, loading }) {
-        if (!loading && !this.isBooted) {
-          const spec = (data && data.getSpec) || {}
-          this.updateExpandedAndActiveTab(spec)
-        }
-      },
-    },
-    searchClients: {
-      query: SEARCH_CLIENTS,
-      variables () {
-        return {
-          orgId: this.orgId,
-          search: this.clientSearch,
-        }
-      },
+    })
+    const getSpec = useResult(result3)
+
+    const { result: result4 } = useQuery(SEARCH_CLIENTS, () => ({
+      orgId: orgId,
+      search: clientSearch.value,
+    }), {
+      enabled: () => clientSearch.value,
       fetchPolicy: 'cache-and-network',
-      skip () {
-        return !this.clientSearch
-      },
       debounce: 300,
-    },
-    searchSuppliers: {
-      query: SEARCH_SUPPLIERS,
-      variables () {
-        return {
-          orgId: this.orgId,
-          search: this.supplierSearch,
-        }
-      },
+    })
+    const searchClients = useResult(result4)
+
+    const { result: result5 } = useQuery(SEARCH_SUPPLIERS, () => ({
+      orgId: orgId,
+      search: supplierSearch.value,
+    }), {
+      enabled: () => supplierSearch.value,
       fetchPolicy: 'cache-and-network',
-      skip () {
-        return !this.supplierSearch
-      },
       debounce: 300,
-    },
+    })
+    const searchSuppliers = useResult(result5)
+
+    // Methods
+    const updateExpandedAndActiveTab = async (spec) => {
+      const specId = spec && spec.id
+      if (!specId || isBooted.value) return
+      isBooted.value = true
+      const activeTab = await getSpecActiveTab(specId)
+      invoiceActiveTab.value = activeTab || 1 // this.defaultTab
+      const _expanded = await getSpecExpandedInvoices(specId)
+      if (!_expanded) {
+        const [invoice] = spec.invoices || []
+        if (invoice && invoice.id) {
+          expanded.value = [invoice.id]
+          await setExpandedInvoices(expanded.value)
+        }
+      } else {
+        expanded.value = _expanded || []
+      }
+    }
+
+    const { mutate: setExpandedInvoicesMutate } = useMutation(SET_SPEC_EXPANDED_INVOICES)
+    const setExpandedInvoices = async (ids) => {
+      await setExpandedInvoicesMutate({ specId: specId, ids })
+    }
+
+    const { mutate: addExpandedInvoicesMutate } = useMutation(ADD_SPEC_EXPANDED_INVOICES)
+    const addExpandedInvoices = async (ids) => {
+      await addExpandedInvoicesMutate({ specId: specId, ids })
+    }
+
+    const { mutate: removeExpandedInvoicesMutate } = useMutation(REMOVE_SPEC_EXPANDED_INVOICES)
+    const removeExpandedInvoices = async (ids) => {
+      await removeExpandedInvoicesMutate({ specId: specId, ids })
+    }
+
+    const { mutate: setInvoiceActiveTabMutate } = useMutation(SET_SPEC_ACTIVE_TAB)
+    const setInvoiceActiveTab = async (value) => {
+      invoiceActiveTab.value = value
+      await setInvoiceActiveTabMutate({ specId: specId, tab: value })
+    }
+
+    return {
+      orgId,
+      specId,
+      clientSearch,
+      supplierSearch,
+      isBooted,
+      expanded,
+      invoiceActiveTab,
+      specSimpleUIOff,
+      isSpecSync,
+      getSpec,
+      searchClients,
+      searchSuppliers,
+      updateExpandedAndActiveTab,
+      setExpandedInvoices,
+      addExpandedInvoices,
+      removeExpandedInvoices,
+      setInvoiceActiveTab,
+    }
   },
   data () {
     return {
@@ -90,12 +152,8 @@ export default {
       createLoading: null,
       updateLoading: null,
       deleteLoading: null,
-      isBooted: false,
       errors: [],
-      expanded: [],
       supplierDialog: false,
-      clientSearch: '',
-      supplierSearch: '',
       menuPurchaseDate: {},
       menuShippingDate: {},
       icons: {
@@ -172,12 +230,6 @@ export default {
         &nbsp;${this.$d(this.$parseDate(this.spec.createdAt), 'short')}
       `
     },
-    orgId () {
-      return this.$route.params.orgId
-    },
-    specId () {
-      return this.$route.params.specId
-    },
     spec () {
       return this.getSpec || {}
     },
@@ -238,60 +290,6 @@ export default {
     setScrollLeft (scrollLeft, invoiceId) {
       this.invoiceScrollId = invoiceId
       this.invoiceScrollLeft = scrollLeft
-    },
-    async updateExpandedAndActiveTab (spec) {
-      const specId = spec && spec.id
-      if (!specId || this.isBooted) return
-      this.isBooted = true
-      const activeTab = await getSpecActiveTab(specId)
-      this.invoiceActiveTab = activeTab || this.defaultTab
-      const expanded = await getSpecExpandedInvoices(specId)
-      if (!expanded) {
-        const [invoice] = spec.invoices || []
-        if (invoice && invoice.id) {
-          this.expanded = [invoice.id]
-          await this.setExpandedInvoices(this.expanded)
-        }
-      } else {
-        this.expanded = expanded || []
-      }
-    },
-    async setExpandedInvoices (ids) {
-      await this.$apollo.mutate({
-        mutation: SET_SPEC_EXPANDED_INVOICES,
-        variables: {
-          specId: this.specId,
-          ids,
-        },
-      })
-    },
-    async addExpandedInvoices (ids) {
-      await this.$apollo.mutate({
-        mutation: ADD_SPEC_EXPANDED_INVOICES,
-        variables: {
-          specId: this.specId,
-          ids,
-        },
-      })
-    },
-    async removeExpandedInvoices (ids) {
-      await this.$apollo.mutate({
-        mutation: REMOVE_SPEC_EXPANDED_INVOICES,
-        variables: {
-          specId: this.specId,
-          ids,
-        },
-      })
-    },
-    async setInvoiceActiveTab (value) {
-      this.invoiceActiveTab = value
-      await this.$apollo.mutate({
-        mutation: SET_SPEC_ACTIVE_TAB,
-        variables: {
-          specId: this.specId,
-          tab: value,
-        },
-      })
     },
     getInvoiceSupplier (item) {
       const supplier = item.supplier || {}

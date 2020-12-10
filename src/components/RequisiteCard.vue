@@ -128,6 +128,10 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
 import debounce from 'lodash.debounce'
 // TODO install in dependencies
 import cloneDeep from 'clone-deep'
@@ -172,36 +176,43 @@ export default {
       default: false,
     },
   },
-  apollo: {
-    getOrgRequisite: {
-      query: GET_ORG_REQUISITE,
-      variables () {
-        return {
-          id: this.reqId,
-        }
-      },
-      result ({ data, loading }) {
+  setup () {
+    const route = useRoute()
+    const reqId = route.params.reqId
+    const item = ref({})
+
+    const { result } = useQuery(GET_ORG_REQUISITE, () => ({
+      id: reqId,
+    }), {
+      enabled: () => !props.create,
+      onResult: ({ data, loading }) => {
         if (loading) return
-        this.setData(data && data.getOrgRequisite)
-      },
-      skip () {
-        return this.create
+        setData(data && data.getClient)
       },
       fetchPolicy: 'cache-and-network',
-    },
+    })
+    const getOrgRequisite = useResult(result)
+
+    const setData = (data) => {
+      if (!data) return
+      item.value = cloneDeep(data)
+    }
+
+    return {
+      item,
+      reqId,
+      getOrgRequisite,
+      setData,
+    }
   },
   data () {
     return {
       updateLoading: false,
-      item: {},
     }
   },
   computed: {
     loading () {
       return this.$apollo.queries.getOrgRequisite.loading
-    },
-    reqId () {
-      return this.$route.params.reqId
     },
   },
   created () {
@@ -220,10 +231,6 @@ export default {
       } else {
         this.$router.go(-1)
       }
-    },
-    setData (item) {
-      if (!item) return
-      this.item = cloneDeep(item)
     },
     updateValue (input) {
       if (this.create) {
