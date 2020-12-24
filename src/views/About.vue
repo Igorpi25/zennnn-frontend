@@ -33,7 +33,7 @@
         </div>
       </header>
       <!-- HEADER / -->
-      <v-scale-transition hide-on-leave>
+      <transition name="scale-transition" @leave="el => { el.style.display = 'none' }">
         <div
           v-if="isInfoAlertActive"
           :style="infoAlertStyle"
@@ -60,7 +60,7 @@
             </div>
           </div>
         </div>
-      </v-scale-transition>
+      </transition>
       <!-- / HERO -->
       <div class="md:relative flex-grow flex items-end pb-3">
         <div class="w-full md:pt-12">
@@ -87,7 +87,7 @@
           </div>
           <div class="about-devices block relative md:absolute">
             <div class="absolute right-0" style="bottom: 85px; left: 105px;">
-              <v-img
+              <Image
                 :src="$breakpoint.width > 1440 ? '/static/img/main-deals_lg.png' : '/static/img/main-deals.png'"
                 alt="deals"
                 lazy-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAABCcAAAQnAEmzTo0AAACuklEQVQ4y12Ty3bTQAyG8yBx0sR3j+3x3U5aaOmitKVLOCxgy4F34Bze215I/FIcJ7DQ0Yxm9I0uo5XjONN2u52CIJhCSHAlvu/P2pvyPJ+6rp+yLJvSNJ2MMcvaZnbK0mzabDbTCkB2b3ZskoQTYxgXIBnntuQ0s2ywz3LLcOa6rrkoCq6qSrWItRb2Ss8B5JWzdsj19pTnGaVZTmXVUFnWVDcDFWVFtiipaXuytoC9JEAIQNVFUam9aRr45wQgrdZrhz3X4eNx4JfXN0RTcFnVXLcDdMMAct20SzQi5wjlDEAGkAGcI0TK+92GD4eBn54+chwngOZ6OY5jLUHddCiBXYAX+ElXZXmVMoA3qKGAXHfPYRgwGsFxFCnQmGSuK2qZpdgbhUhEZq65PJCgB1fAG32h6QZG3eCQ6x51hc41EtkXZQ3bCSaQZi5F27YKv6S83+PA8v3jM7+//8B93zEacIpkTk0hVbukLeddf+C26/h4e6fgfyKUS3EcMf4exwg/QsryqqQiqcs+DEOVa9v5+yxNWa/X7HmeAiUt6aDURR6SC2d9XosIqJwbIbBzQ+RsibBAVwUmDZHLEoVEKy+LTUScMU1qF4g8LPdkLT4LEKOHrgaYlghfaAtnTyfn1PVQAZKFAAQsaymHSY1GG5mYE2suKe9dlz99/sXffvzm7z//8MPzV667W35++8JZmgAaqeM5UlkPw4Dm9ZrVgCYObYMIT02h3W5H3fGR7h5eIK/U9O8whhYjd6AkiQkNIEBUEDEhYh01EaRLViRJTqMnQNSQwsAnz91RCCffcylODCEa6JSKasDaX8Bil1kWoMD9ALYwou1mS0tTjEl1WkxqNcXEZNgbraHUS7TWCyL/VurqolTiK4Isl384wjACOAI04vXR94NZ+6qRlmpARwBHOI6o/Si+/8tf9P378y8MWXEAAAAASUVORK5CYII="
@@ -98,7 +98,7 @@
               />
             </div>
             <div class="absolute right-0 bottom-0" style="left: 33px;">
-              <v-img
+              <Image
                 src="/static/img/ipad.png"
                 alt="ipad"
                 lazy-src="data:image/png;base64,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"
@@ -109,7 +109,7 @@
               />
             </div>
             <div class="absolute left-0 bottom-0">
-              <v-img
+              <Image
                 src="/static/img/mobile-login.png"
                 alt="mobile"
                 lazy-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAqCAYAAACz+XvQAAAACXBIWXMAABCcAAAQnAEmzTo0AAAE+0lEQVRIx7VXzW8bRRT3NUpiDiVtHNtrr+Pvtb1uk8ZxTJSmISEhTuq119+ICxeOcESgkKQICQmpUlGN2pIWkBCIvwJxQkJIaQstVHAB5wBnkEFO5/HerMfeOrHrBmHpp5l9O/Pb9zXvjS0W/G1e0jYKxeLVSqVaK5cr18qVSo2jXKnper6WzeZqGU2radlsTc/nuYxQKBSvGWsKV7ScvkBclhdW117z+f3g8/nA6/WCrwWa+1GuKAqEw2FQCDiPRCIIxYASgWA4AN6AF0KhMGRzum7Z3Lx0QBs1LftPsVhsEkqlUrNcLjfT6XQzEAgci2Aw2HS5peZL+ivNV19+/W+37IZiqbRvKRQKDdJgeXmZra+vs9XVVba2tsY2NzbY4uIiw80MNx9BCCH7vSwzvcjKiRXmDQWhWq0eWFCjBpnr8XiY2+0mAMHlcoEsy9zsgEDANOfPaK5/knm8HkZKIeFvnJA20VdjsRjE43GgUVVVjijOI9E4KBEVEQMlqnKQLKxEcV8IgoEgJ6xUq/U2IZlGZDMzM5BIJCCVSkEymYSpqWk4d34ezk7PgXougWPqsWcKBmp+lJA0JBNo3o2A39fDZL6PK9MyuY5ByTdckgRuWeb+I7+ZYfhU7gPuczY5OQmVSqVuyefzDYfdDpIkMafTCSeBw+HgyqDJvxqEDge9YEgKJwHtlTEP8eT8iYR6g75CahOxQGvhoIToHjfTsjmw6Hqu4UFfbWAir6ysAGFqagrshhsG1xBNxjPPkBA1RI0oUhRlSnJy8KDamU3WiNDwoZ07lrQSJj9VUFouy+bQZBEUEtBxOwkoQyjFsOT9zoNCmgVDIRYKhXiJMoNkeM77AskE4R/ch6ShjMWh1wZRMI4DERmFpMtkcmwv/z0pZdCHPLGxih+2g4JnlrXOpTBjILSyQpyUg7aG2AYYlXfyG5V/ueOfvqDiQYSUh9iT6m1Ch32CTUyMg33CRnMOZ+vEDJaHMhGihpTYTgki8VmmqAkIKmchHDvPEQjHwYUVReLp4e4JSXIJwo6Gsoxqeyb5Atnj5SCHj58+9UScOX1K+LDO81BCktmFTZZaysHcRUKWI7WkQ+r5AiQv5mFuKQ/P4bwb88tFSF7IMI+oh7ms1vAFo7B1fZ9dvv0Qdm49gN1bP3Ls7D2Adz/5Ca5++Qtc+eJneOe2IdvFNbRuZ+8+XP74Ibz14XcsGI5BqVTsEL5Z+5Zt37wHWzfuwNs37nJsXb8Du3v34P3P7sN7n/4A2zfvHnm//dH38MYH33QIucmSCxILG4zMTC5qbcy1xsRCBmYvPC5rr0EXzcyn8ZSZWgCdZdv4GLOdeRbMGO967iPrBAWPC48yRpf1S42B00YQUgn6bz1FFhrq/y/hcdWlV9URsqci7Fe+jhBWepjcXQvN7ZVkovcMZDIvZVjjROmnDii6oRjpUkVzU//uIjRdRYwUMu6GQgNxXxQjfYTmRwi7TXZjTlFxpQ2iuJp7R3evoXX0AcdxhE6jLzBxeReXdjKdrmoEqugk45d7XEdAQupFHZMzmcxfNpuNBEz0WFrUMpU+wKjfIAkTBC1/c7QseETuKhZLdcuL6+mvn7FaYXh4+NBqtTKrdRSsowicj+I4MjJiBpfxNW1Y2dDQ0OHY2Bjgf5jPLcsrqwreo/cxckxVCaoAGGPcDDC956B90WjskRqPf6Xl8rZ/AUGC+89yjW1pAAAAAElFTkSuQmCC"
@@ -319,8 +319,8 @@
             </nav>
           </div>
           <div>
-            <v-window v-model="activeFeature">
-              <v-window-item
+            <Window v-model="activeFeature">
+              <WindowItem
                 v-for="feature of features"
                 :key="feature.value"
                 :value="feature.value"
@@ -337,7 +337,7 @@
                     style="max-width: 830px;"
                     class="overflow-hidden mx-auto rounded-12 shadow-large"
                   >
-                    <v-img
+                    <Image
                       :src="`/static/img/${feature.img}`"
                       :alt="feature.title"
                       :aspect-ratio="1.627"
@@ -347,8 +347,8 @@
                     />
                   </div>
                 </div>
-              </v-window-item>
-            </v-window>
+              </WindowItem>
+            </Window>
             <div class="absolute inset-x bottom-0 w-full flex justify-center pb-24">
               <div class="flex justify-center">
                 <div
@@ -416,8 +416,8 @@
       <!-- / ADVANCE FREATURE -->
       <div class="about-section-bg relative pt-24">
         <div class="pb-10">
-          <v-window v-model="activeAdvanceFeature">
-            <v-window-item
+          <Window v-model="activeAdvanceFeature">
+            <WindowItem
               v-for="feature of advanceFeatures"
               :key="feature.value"
               :value="feature.value"
@@ -437,7 +437,7 @@
                   style="max-width: 830px;"
                   class="overflow-hidden mx-auto rounded-12 shadow-large"
                 >
-                  <v-img
+                  <Image
                     :src="`/static/img/${feature.img}`"
                     :alt="feature.title"
                     :aspect-ratio="1.627"
@@ -447,8 +447,8 @@
                   />
                 </div>
               </div>
-            </v-window-item>
-          </v-window>
+            </WindowItem>
+          </Window>
           <div class="absolute inset-x bottom-0 w-full flex justify-center pb-32">
             <div class="flex justify-center">
               <div
@@ -534,7 +534,7 @@
           </div>
           <div class="flex-grow about-imac__wrapper">
             <div class="about-imac absolute hidden lg:block">
-              <v-img
+              <Image
                 src="/static/img/imac.png"
                 alt="imac"
                 lazy-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAASCAYAAABb0P4QAAAACXBIWXMAABCcAAAQnAEmzTo0AAABqElEQVQ4y+2Ty0rDQBRAh07SJH3E4lZN0/T9ik1aWwXX2tbiA0QXfoKILuzCT9CFuPQL/AIbBKFL3fgFuhKk6EZXgto21zullarQhY+VDhxmcif33HsXQyil9wggdhfgOO4Nnuff4XQ6P2IjbUEQQJKkS8IEhBAbgW/QyRdF8ZYJ231B+4uydlfYYEK7v8oX+Rf+LaHD4fgxIb6YBhEFsSkgaEekDpLk6tFyudy2x+MFhtvtYecW0mR4vXKPF1keAp/Pd0MCahgYWiACQS0KoWAMIuEERCNJiEVTkIjroPqDtqaFbT1tAiMzngMjMwFZowC57CRM5KagkJ9m50eiKNqRX9FO/EqwFlBDFootFFsoPg6H4nX8fh4dUUEZC7BiT1ignk4Zx3rasMb1rIVyC+U108yfZs3CIRm0XJIsxWP6AwraqaQB8Vj6TvYOywOTVH+I9sBuKHZFcSye3RVnK0vl0gLMlRehgpSK81CcqSyzOxyTx86oaeQpdkZxXIoxx6cCW5vVzn5+dsGtrqxtYNI+FthDdo1M7gBj61eX1xz7p7q9Q359vQJniU6TYFWMRAAAAABJRU5ErkJggg=="
@@ -544,7 +544,7 @@
                 height="690"
               >
                 <div class="absolute right-0" style="top: 31px; left: 31px; height: 58.8%;">
-                  <v-img
+                  <Image
                     :src="$breakpoint.width > 1440 ? '/static/img/client-cabinet_lg.png' : '/static/img/client-cabinet.png'"
                     alt="client"
                     lazy-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAYAAAAvxDzwAAAACXBIWXMAABCcAAAQnAEmzTo0AAAB9UlEQVQ4y4VTbYsaQQz2p6pFrqj4zb95lFIKpWDPlqvuuq+zMztvO0mTeGM9Wu6Eh8lkkyd5knE2n8/DarXC/X4Pm80G1+s17nY73G63+PDwgMvlAj8QFov/Y/txi8vFUnI4f5ZSCtY5PJ3OcD6fsSgKLMsSL5cLdk2Fn54MPj55RJgwxgmn6YpE8D6gUgYHbVENRu4zRAxAwaqroWk7rOsam6YRdF2LVaNQGYfBe0r4F9yMtQ6d80jN4QwAiBBQ9S3UVUWVBhzHkQKcBBujKdGJzxiDWms5B4pjGLprihlGLZ0LIXWJ5fMRfnz7gj5E9ESUpU0kkwuyHWMUTCLXiw2JvpFCk0axb4RqKODnr89UnSWMGEIQjMlhpAS2mSj7WQETsswUaKaaTkh/CYvfR/j+9VFmwVI4SYKTp8pBFsL33GEm4+755Hi2b4R1eYLi+UiSw22GTB69Jhjy2etcrRX0fX+TzWRsy1J4y9cKESJVdta+kOVkJ2Rt20rn7FNK4eFwoFfQyYK4AYYsRQhJe6974MB7MIF+IclJ2ebvmezqs/eEEZuugOpSyYPOyG/S2tdys4J73ytCXnujamibFogAiEhAMoFkASW8CyIEIgQh5GdRdCW+1eF7MHczdDRD0FYnmomA/g0CtmlGibb4JmjTcvLvD7CLHLEeUgGpAAAAAElFTkSuQmCC"
@@ -553,7 +553,7 @@
                     max-width="724"
                   />
                 </div>
-              </v-img>
+              </Image>
             </div>
           </div>
         </div>
@@ -596,7 +596,7 @@
               <img src="@/assets/img/cog.svg" alt="cog">
             </div>
             <div class="absolute left-0" style="padding-top: 100px; width: 240px;">
-              <v-img
+              <Image
                 src="/static/img/iphone11.png"
                 alt="mobile"
                 lazy-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAoCAYAAAD+MdrbAAAACXBIWXMAABCcAAAQnAEmzTo0AAAFAElEQVRIx51XSU8sVRSuQEIiczPTQDc91NBVPTJPkSEQ5rERYgJ7fplbF8aFS3cmgjuDW3kLFy9qNEbfW9y6ft+p6qKBZlCSL/dU9a3vnvGeg2Hgb2pq6hK4npubu1tYWLhbXl6+W1lZuVtdXRXUZK41mXtmZ2cFk5OT3+H7KrkMvPjcNE2dSqX0xMSELhQKuqWlReOnCM3NzRGamprk3SetrbpUKutKZUKn02ltWZaGQtvG2tratyQ8PDz8eHV15Z+efqYcx1GDg4NqaGhIMDw8rAYGBuQd0dvbqwrForq8vFQXFxf+8fHxR3yjNzY2vjK2trZuyQ5T1fz8vD87N+dvb2/rg4MDvbOzo3d3dzWfYapeX18X4EMNkzX3Tk9P+9BMkQN7rw18dNvd3a07OjpUe3u7j1W3tbXpVpjU2dkZgXu6uroi8DkWixE+ZGpNJa4NsN7yoVQqqVwup23b1p7n6Xw+r2M9PTxICLk+ByiiSH50dHRtVKvVX/jBSDzuAxr+0vE4Ede9IOwBeGBPKD8GfwOZogzCGwMOfUcT0pmMMh1XW7m8zlqOpuy4BZ1FwBjFV6D6+/sZ2Bua/BPVNU1L2Q5MBizbEdg5VwgzmcxrqBFeGyfV6p80GYS+4xWhVV6IKJuWrdPIz3Q686KGdYQ/GKenp38LoWX5JLKdABY0zWbfpB32ZX368uzs7L1xcnLyBwmz0NCGdhYJsZrwY2p8XCroNUBLn0E5Pz//zdjf3/+ZOUXHpus3BRvfBOyvEf7KtPmLGlq27ecKJfGdWyjrXL6Ed7lXiekWmhwS/h750KIPkdQBHAEOkaJ/CdyPu0B8CK53BpLxPfMwIHT0PalVJ78MEEqUo9KLxboZFEUzGRCanslkYdKb/fgosREUnhKkTZDcb0zox4l9E2gohJZyvAKCgeTGKkn9Rg2fIYSGrhdVRybY+P81zIYms4bpv/9A9jyhmIrca1AJAUR+mvRPCFkpCL/yvLx2cbm6Li4H9AheuJSZb/CxaE+XyIrnZzUkoee6ahJdD+1QoxNKB0S/YCeT25vucIsVCRoriemVvvdz4yiLD50A3HhfXvRpui7qqXqyxhoGhJ4meHWlgqJ/5MfAhw0y4Ckhe7EbNimai7YqpnOl6WIyTPVgNv1Ijevuw4eErOWRkRE1NjamR4FkMqnHcRdyrWlHOZkcFyQSCc29RChLG32gISKpAl9lIjP5zI9qrbQzbJv1/TpssdJGH2jIU6hVIgEtR0eFKJlMSDutNXmujYDfHhLyJUxSKTSje2SDFVWDm0jAQPHQeoTvVF9fX13a4PpCk5JKYX6x81Hm7c1nO3zGniDKdRFmgteCgvvwXkNUhCoVi7qIcS6PauFaQELn85CLBfyOfm2ZD3s1fBx2xqeEmGcU04OVUqlUZMUgKTLTp1wuizbM02iaCAPXkBB1q/hREVpy6OTKZ5YdP6r1j6BC0kIurmEhwF30obSAzc3NiBAa+UxqEnGlhiQmES8LkkbJbAbmA36tp8h8iIHzx+7wgsVGn+BES1AzrvYz3c80s36AgHBvb+97A5Pp1xh3qeGHpaUl+suHTOjHIHEUYUwLqHnfK5bphg/MWwzzXxgw7VN2fszOTGjFpA5mxHhDYOYWcP+gyDJ/85B/4KKy/CcwMzNTQVS/4UUALX2cRPBEjaFeZmyCMsH3sMwnFhcXeXl8CQ6XXP8C+YpxMXclRHgAAAAASUVORK5CYII="
@@ -608,7 +608,7 @@
               <div class="absolute" style="bottom: -60px; right: 0; width: 140px; z-index: -1;">
                 <img src="@/assets/img/cog.svg" alt="cog">
               </div>
-              <v-img
+              <Image
                 src="/static/img/huawei.png"
                 alt="mobile"
                 lazy-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAqCAYAAACz+XvQAAAACXBIWXMAABCcAAAQnAEmzTo0AAAFgUlEQVRIx6VXS08bVxi11E1KEkggEGJj/JiXPR7b2BgbEwMhUVASJWJTwDhsswgt2CTqqu0uqyzi/oCqpd1Sqetuqq6qSF1X6qYlP6DrVvHYvj3njsceO4ZQFenoju/ju+d7X3w+/O0f1PI7lccvy+Wd+s5O5dVOpVInKpXH9e1yub61tV3/aHOzvrm5Vd/edn4T2P8K61/i7IvD55/qlOWr1g6XM5lsO5vNips3b4rFxUVRyOdFvoNcLifm5+clFhZyIr+wgNEB95ZKJZHJZLC38Ndnn3+h+J7u7X3HiY2Njb+fPHnSuHfvXuPWrVuN27dvN9bW1uS3OxKrq6uNlZWVxhrWy+VyY3d3t/Hw4cN/CoWCOHz27KWvWq19TyZg11xeXm5jbD948EA8evRIYKPE/fv3BYSKu3fvivX1dTlCsFjCXgJMm9TuoFr7lgKPg8EZMTo6al+5cqV99epVMTU1Ja5fv96HwTn+lnNTUzzTVFVV1GqH38AhB8czMzMClG2ygDrC7/eLkZERcfnyZXHp0qVTwXXiwoULzdnZWVE7fHbkOzioHgcCfhGJRGwNtyhKVExOToqxsVEBxoKMz8L4+DiFNsPhsCsQDAMBEZwN2RFFE4Si6UKLxYVmxEUkGhXcjAvfgTsfDAalyjDfkVSZNtQ03Y6ZCUHoEGbETHxbQlVxgaKcCgqC0KamaXSKwzAIG6oUmEg6wiCUoLAoGPIgx2HgGpg2aa5qzWVIgapmG3FTCnShamezcxlCYIvf+wfVnzsMA0LTDTtupaSaMYyaEZP2OY3ZAENH4H71teMUCMSkHe0Y+31CBgUiZFr8BsNfnDiEl6OKapvprEgAigJDn+LZQXCvw1AKfO2xoWob0rsIFx1hA/udBzr2gp1rw5+6ArFoG1g0dE0Yhi5isdi5EI/HqbYbh27qBYSq67aZnBMMnXgy3Q2VszzsdYqKEXH4YzeXGTYyXOBdQpFpqJwrbGBLV+VfezZEYJNZ3CJS/C2i/yFsKBh14YdepjCwkW6IR3nredh5AlumHmz4dV+mxBKWDOj32W4QHoGDqZeQDP+XwF5xAEPzbIZy3rWdZ8+7AlG+dAjUEYNsNqzc6C8SrOBLS0XBwsEsosPMVEbmPLOjJ1DtFygDm4FqmsKyLGFidMHgZeVhBtH7qJ3dStRzijqgMqoNq4zBmhi3ZDVmn3AQkiHk5He4L5yGOyUYdBgi5Vwwrdiv2eD5CCArqk14w2ogbI665Qu32W7CcyMF8tUgXwkYqaqsldJ2yjsM+3qK3x+QXY9qhqGOYRiy53q728TEhJhAh5PA97Vr17rj2NhYr+t9sr8vVQYTO5VKSTX5XuHGixcvdnvvWb2ZfTkUColDty/fuHGDvdj2vgo4x4Z/HuBsk+rj5QCV951qw56SSGeEiQKRzCxIvLeEYY3OQu/utdGuQGYKHEH76bohK/GwCk3je8E52Zf7neIXc3Nz9p07d2R20JbDqjYvYXlTHSEyHtm7w30CwTCAJgVmdjKZlJlBloNw2Q8y7TLUhjDk24+vUjIZ1j86DUmyY1ySrem0CycOvU5h18NtbR4axtAF13uQXa8d7Tily5AqQ9VmOp1u41DbPTzYLjVPQaDNUCzasVi87el6R769vY+Pp6enBYS9LRaLLVSWFtSTI5zTBdZbsLFcw2G8FCIthFoLKvPV8JaZgrD5yre1vf2U3Z8vVvcByYcmL2FtHATf41xzH6PjwMjIh9LGlce7G/zP4oP0XOZFsbj0+8rK6ptSafnP0jJQKr1ZXCyedPBHB3IOaycIrxPsO8GZk3yh8NtcJvvc5/3LZHPTlpWMJKxkyExYISuZCmfnc+F5AGOI6HyHuZZIWBL4jszn8pOunH8BidDAdkhPdVIAAAAASUVORK5CYII="
@@ -673,12 +673,12 @@
             </div>
           </div>
           <div class="flex-grow">
-            <v-window
+            <Window
               v-model="activeReview"
               ref="reviewWindow"
               continuous
             >
-              <v-window-item
+              <WindowItem
                 v-for="review of reviews"
                 :key="review.value"
                 :value="review.value"
@@ -716,8 +716,8 @@
                     </div>
                   </div>
                 </div>
-              </v-window-item>
-            </v-window>
+              </WindowItem>
+            </Window>
             <!-- <div class="relative mx-20">
             </div> -->
           </div>

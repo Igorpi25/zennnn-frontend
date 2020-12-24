@@ -124,7 +124,7 @@
                       v-if="deleteUserLoading === item.id"
                       class="flex items-center justify-center"
                     >
-                      <v-progress-circular
+                      <Progress
                         indeterminate
                         size="18"
                         width="2"
@@ -270,7 +270,7 @@
           v-if="items.length === 0 && loading"
           class="text-center text-gray-200 leading-tight py-4"
         >
-          <v-progress-circular
+          <Progress
             indeterminate
             size="24"
             width="2"
@@ -281,7 +281,7 @@
           v-html="$t('staff.noData')"
           class="text-center text-gray-200 leading-tight py-4"
         />
-        <Button
+        <Btn
           block
           outlined
           class="mt-4"
@@ -291,7 +291,7 @@
             <i class="zi-user-plus text-gray-100 text-2xl" />
           </template>
           <span>{{ $t('staff.addStaff') }}</span>
-        </Button>
+        </Btn>
       </div>
     </div>
   </div>

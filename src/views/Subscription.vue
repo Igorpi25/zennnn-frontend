@@ -13,7 +13,7 @@
     </Header>
     <!-- HEADER / -->
     <!-- / MAIN -->
-    <v-dialog
+    <Modal
       v-model="successDialog"
       max-width="458"
       content-class="relative text-gray-200 bg-light-gray-100 text-center p-8"
@@ -28,16 +28,16 @@
         {{ $t('payment.subscriptionPaid', { plan: successProductName }) }}
       </div>
       <div>
-        <Button
+        <Btn
           outlined
           merge-class="border-gray-100"
           min-width="185"
           @click="successDialog = false"
         >
           {{ $t('payment.please') }}
-        </Button>
+        </Btn>
       </div>
-    </v-dialog>
+    </Modal>
     <main class="container container--xs flex-grow max-w-screen-md mx-auto pt-16 pb-32" style="padding-left: 16px; padding-right: 16px;">
       <h1
         class="text-40 font-bold leading-tight mb-6"
@@ -62,7 +62,7 @@
               <div class="h-6 text-lg font-semibold mb-xs">{{ productName }}</div>
               <!-- CHANGE PLAN DIALOG -->
               <div v-if="(canChange || canSelect)">
-                <v-dialog
+                <Modal
                   v-model="changeDialog"
                   max-width="458"
                   eager
@@ -83,7 +83,7 @@
                     @close="changeDialog = false"
                     @select="goToPayment"
                   />
-                </v-dialog>
+                </Modal>
               </div>
               <div v-else class="text-gray-100">{{ $t('payment.tariffTitle') }}</div>
             </div>
@@ -105,7 +105,7 @@
       </div>
       <!-- CANCEL SUBSCRIPTION -->
       <div v-if="canChange && canCancel" class="text-right py-2 px-3">
-        <v-dialog
+        <Modal
           v-model="cancelSubscriptionDialog"
           max-width="458"
           content-class="relative text-gray-200 bg-light-gray-100 p-8 pt-6"
@@ -130,7 +130,7 @@
             </div>
             <div class="py-10" v-html="$t('payment.cancelText')" />
             <div class="flex flex-wrap sm:flex-nowrap sm:justify-between">
-              <Button
+              <Btn
                 :loading="cancelSubscriptionLoading"
                 block
                 class="mb-3 sm:mb-0 sm:mr-3"
@@ -138,8 +138,8 @@
                 @click="cancelSubscription"
               >
               {{ $t('payment.cancelSubscription') }}
-              </Button>
-              <Button
+              </Btn>
+              <Btn
                 block
                 outlined
                 class="sm:ml-3"
@@ -147,10 +147,10 @@
                 @click="cancelSubscriptionDialog = false"
               >
                 {{ $t('payment.notCancel') }}
-              </Button>
+              </Btn>
             </div>
           </div>
-        </v-dialog>
+        </Modal>
       </div>
       <!-- PROMO -->
       <div
@@ -160,12 +160,12 @@
         <div class="text-lg text-black leading-snug pl-2 pb-4 sm:pb-0">
           <span v-html="$t('payment.oneUSD')" class="mr-1" />
         </div>
-        <Button
+        <Btn
           :to="{ name: 'payment', params: { type: 'promo' } }"
           class="ml-4"
         >
           {{ $t('payment.proceed') }}
-        </Button>
+        </Btn>
       </div>
       <!-- PAYMENT METHODS LIST -->
       <div v-if="paymentMethods.length > 0 || defaultPm">
@@ -230,7 +230,7 @@
                   class="h-12 bg-white hover:bg-transparent group"
                 >
                   <td width="52" class="rounded-l-md text-gray-100 px-4">
-                    <v-progress-circular
+                    <Progress
                       v-if="setDefaultPaymentMethodLoading === item.id"
                       indeterminate
                       size="20"
@@ -267,7 +267,7 @@
                   </td>
                   <td class="px-4">{{ item.card.exp_month.toString().padStart(2, '0') }}/{{ item.card.exp_year }}</td>
                   <td width="56" class="rounded-r-md text-gray-100 px-4">
-                    <v-progress-circular
+                    <Progress
                       v-if="detachPaymentMethodLoading === item.id"
                       indeterminate
                       size="20"
@@ -287,23 +287,23 @@
           </div>
         </template>
         <div class="text-right">
-          <v-dialog
+          <Modal
             v-model="addPaymentMethodDialog"
             max-width="746"
             content-class="bg-light-gray-100 px-5 pt-8"
           >
             <template v-slot:activator="{ on }">
-              <Button
+              <Btn
                 v-on="on"
               >
                 {{ $t('payment.addCard') }}
-              </Button>
+              </Btn>
             </template>
             <PaymentCard
               payment-type="newPaymentMethod"
               @complete="addPaymentMethodComplete"
             />
-          </v-dialog>
+          </Modal>
         </div>
       </div>
       <!-- PAYMENT INVOICES LIST -->

@@ -14,7 +14,7 @@
         </button>
       </div>
     </div>
-    <v-expand-transition>
+    <ExpandTransition>
       <div v-show="expanded" :class="['pt-4', { 'lg:flex': isRequisite }]">
         <div :class="{ 'lg:w-1/2 lg:pr-5': isRequisite }">
           <div class="pb-2">
@@ -137,7 +137,7 @@
           </div>
         </div>
       </div>
-    </v-expand-transition>
+    </ExpandTransition>
   </div>
 </template>
 

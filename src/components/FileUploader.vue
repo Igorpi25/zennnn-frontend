@@ -64,12 +64,12 @@
         key="loader"
         class="absolute inset-0 flex justify-center items-center pointer-events-none"
       >
-        <v-progress-circular
+        <Progress
           :value="uploadPercentage"
           size="28"
         />
       </div>
-      <v-scale-transition>
+      <transition name="scale-transition">
         <div
           v-if="uploadLoading"
           key="cancel"
@@ -80,7 +80,7 @@
             @click="cancelUpload"
           />
         </div>
-      </v-scale-transition>
+      </transition>
     </template>
     <input
       ref="input"

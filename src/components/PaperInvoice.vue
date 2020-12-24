@@ -62,7 +62,7 @@
                     />
                   </div>
                   <div class="absolute inset-0 overflow-hidden" style="border-radius: 5px;">
-                    <v-img
+                    <Image
                       :src="item.images[0] && item.images[0].url"
                       aspect-ratio="1"
                       style="border-radius: 5px;"
@@ -72,7 +72,7 @@
                           <Spinner />
                         </div>
                       </template>
-                    </v-img>
+                    </Image>
                   </div>
                 </div>
               </template>

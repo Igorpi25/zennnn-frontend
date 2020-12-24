@@ -87,14 +87,14 @@
               {{ $t('signin.forgotPassword') }}
             </router-link>
           </div>
-          <Button
+          <Btn
             :disabled="formValidity"
             :loading="loading"
             class="w-full sm:w-48"
             @click="onSubmit"
           >
             {{ $t('signin.submit') }}
-          </Button>
+          </Btn>
         </Form>
       </div>
       <div class="py-5 md:pb-8 lg:pl-24">
@@ -102,7 +102,7 @@
         <Copyright class="mx-auto text-center sm:text-left sm:mx-0" />
       </div>
     </div>
-    <v-dialog
+    <Modal
       v-model="compliteFormDialog"
       max-width="385"
       persistent
@@ -197,16 +197,16 @@
         >
           <span class="ml-3 float-left" v-html="policyHtml" />
         </Checkbox>
-        <Button
+        <Btn
           :disabled="compliteFormValidity"
           :loading="compliteLoading"
           class="w-full sm:w-48"
           @click="completeNewPassword"
         >
           {{ $t('signup.submit') }}
-        </Button>
+        </Btn>
       </Form>
-    </v-dialog>
+    </Modal>
   </div>
 </template>
 

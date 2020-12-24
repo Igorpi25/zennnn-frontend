@@ -42,7 +42,7 @@
           </div>
           <div class="flex-grow" />
           <div class="w-full lg:w-auto flex items-center justify-end">
-            <v-slide-x-reverse-transition>
+            <transition name="slide-x-reverse-transition">
               <div v-if="!item.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
                 <span class="text-pink-500 mr-2">
                   <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,8 +51,8 @@
                 </span>
                 <span>{{ $t('print.required') }}</span>
               </div>
-            </v-slide-x-reverse-transition>
-            <v-slide-x-reverse-transition>
+            </transition>
+            <transition name="slide-x-reverse-transition">
               <div v-if="!item.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
                 <span class="text-yellow-500 mr-2">
                   <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,7 +61,7 @@
                 </span>
                 <span>{{ $t('print.warning') }}</span>
               </div>
-            </v-slide-x-reverse-transition>
+            </transition>
           </div>
         </div>
         <div
@@ -241,7 +241,7 @@
           </div>
         </div>
       </div>
-      <Button
+      <Btn
         v-if="create && isComponent"
         :loading="updateLoading"
         outlined
@@ -249,7 +249,7 @@
         @click="createFromItem"
       >
         {{ $t('client.save') }}
-      </Button>
+      </Btn>
     </div>
 
   </div>

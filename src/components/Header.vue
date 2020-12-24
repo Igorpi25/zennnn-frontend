@@ -49,7 +49,7 @@
             v-else
             class="flex items-center"
           >
-            <v-menu
+            <Menu
               v-model="profileMenu"
               :nudge-bottom="light ? 80 : 56"
               :content-class=" light ? 'header-profile-menu header-profile-menu--light' : 'header-profile-menu'"
@@ -150,12 +150,12 @@
                 </ul>
               </template>
               <div v-if="light" class="header-profile-menu_light-shadow rounded-b" />
-            </v-menu>
+            </Menu>
           </div>
         </div>
       </div>
     </div>
-    <v-dialog
+    <Modal
       v-model="orgDialog"
       max-width="480px"
     >
@@ -218,7 +218,7 @@
                               'w-full h-full rounded-full',
                             ]"
                           >
-                            <v-img
+                            <Image
                               :src="item.picture"
                               aspect-ratio="1"
                               class="rounded-full"
@@ -228,7 +228,7 @@
                                   <Spinner />
                                 </div>
                               </template>
-                            </v-img>
+                            </Image>
                             <div
                               v-if="isDragOver || updateOrgImageHovered[item.id]"
                               :class="[
@@ -287,8 +287,8 @@
           </template>
         </ul>
       </div>
-    </v-dialog>
-    <v-dialog
+    </Modal>
+    <Modal
       v-model="systemMessageDialog"
       max-width="500"
     >
@@ -297,12 +297,12 @@
         @close="systemMessageDialog = false"
       >
         <template v-if="isOwner" v-slot:actions>
-          <Button :to="{ name: 'payment', params: { orgId } }">
+          <Btn :to="{ name: 'payment', params: { orgId } }">
             {{ $t('systemMessageModal.goToPayment') }}
-          </Button>
+          </Btn>
         </template>
       </SystemMessageModal>
-    </v-dialog>
+    </Modal>
   </div>
 </template>
 

@@ -14,7 +14,7 @@
         </button>
       </div>
     </div>
-    <v-expand-transition>
+    <ExpandTransition>
       <div v-show="expanded" class="pt-4">
         <div v-if="!isRequisite" class="pb-2">
           <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
@@ -139,7 +139,7 @@
           </div>
         </div>
       </div>
-    </v-expand-transition>
+    </ExpandTransition>
   </div>
 </template>
 

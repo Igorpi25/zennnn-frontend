@@ -29,7 +29,7 @@
       </ul>
     </div>
     <div class="modal-footer">
-      <Button
+      <Btn
         outlined
         class="my-5 ml-8"
         @click="$emit('createPaper')"
@@ -38,7 +38,7 @@
           <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
         </template>
         <span>{{ $t('contract.createPaper') }}</span>
-      </Button>
+      </Btn>
     </div>
     <span class="close-btn" @click="$emit('close')">
       &times;

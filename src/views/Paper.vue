@@ -41,7 +41,7 @@
                   v-if="printLoading"
                   class="absolute inset-0 flex items-center justify-center text-blue-500"
                 >
-                  <v-progress-circular
+                  <Progress
                     indeterminate
                     size="20"
                     width="2"
@@ -63,7 +63,7 @@
                   v-if="downloadLoading"
                   class="absolute inset-0 flex items-center justify-center text-blue-500"
                 >
-                  <v-progress-circular
+                  <Progress
                     indeterminate
                     size="20"
                     width="2"
@@ -422,7 +422,7 @@
                     v-if="printLoading"
                     class="absolute inset-0 flex items-center justify-center text-blue-500"
                   >
-                    <v-progress-circular
+                    <Progress
                       indeterminate
                       size="24"
                       width="2"
@@ -448,7 +448,7 @@
                     v-if="downloadLoading"
                     class="absolute inset-0 flex items-center justify-center text-blue-500"
                   >
-                    <v-progress-circular
+                    <Progress
                       indeterminate
                       size="24"
                       width="2"

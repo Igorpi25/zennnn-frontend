@@ -1,5 +1,5 @@
 <template>
-  <v-dialog
+  <Modal
     v-model="dialog"
     :max-width="710"
   >
@@ -84,7 +84,7 @@
             class="inline-flex justify-end items-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
             @click="translateWord"
           >
-            <v-progress-circular
+            <Progress
               v-if="translateLoading"
               indeterminate
               size="16"
@@ -100,7 +100,7 @@
           </button>
         </div>
         <div class="flex justify-between pt-8">
-          <Button
+          <Btn
             :disabled="loading"
             min-width="120"
             outlined
@@ -108,15 +108,15 @@
             @click="dialog = false"
           >
             <span>{{ $t('action.cancel') }}</span>
-          </Button>
-          <Button
+          </Btn>
+          <Btn
             :loading="loading"
             merge-class="h-10 text-sm"
             min-width="120"
             @click="onSubmit"
           >
             <span>{{ actionText ? actionText : create ? $t('action.add') : $t('action.apply') }}</span>
-          </Button>
+          </Btn>
         </div>
       </div>
       <span
@@ -126,7 +126,7 @@
         <i class="zi-close" />
       </span>
     </div>
-  </v-dialog>
+  </Modal>
 </template>
 
 <script>

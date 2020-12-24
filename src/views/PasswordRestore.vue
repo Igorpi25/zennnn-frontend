@@ -30,13 +30,13 @@
           </Form>
         </div>
         <div class="pb-6">
-          <Button
+          <Btn
             :loading="loading"
             min-width="120"
             @click.prevent="onSubmit"
           >
             <span>{{ $t('welcome.resend') }}</span>
-          </Button>
+          </Btn>
         </div>
         <p v-html="$t('passwordRestore.hint')" class="text-gray-200 leading-tight pb-6" />
       </div>

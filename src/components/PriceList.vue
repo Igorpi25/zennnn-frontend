@@ -44,17 +44,17 @@
       <div class="pb-4">
         <PriceContactForm v-if="item.isCustomPrice">
           <template v-slot:activator="{ on }">
-            <Button
+            <Btn
               block
               outlined
               merge-class="border-gray-100"
               v-on="on"
             >
               {{ $t('pricing.contact') }}
-            </Button>
+            </Btn>
           </template>
         </PriceContactForm>
-        <Button
+        <Btn
           v-else
           :to="item.to || null"
           block
@@ -63,7 +63,7 @@
           @click.prevent="onClick(item)"
         >
           {{ $t('pricing.select') }}
-        </Button>
+        </Btn>
       </div>
       <div class="text-sm text-gray-200" style="min-height: 90px;" v-html="item.description" />
       <div class="border-b border-light-gray-100 my-5" />

@@ -41,7 +41,13 @@
               class="relative"
             >
               <div class="absolute top-0 right-0 text-13 font-semibold transform translate-x-full -mt-1 -mr-1">
-                <v-scale-transition origin="center center">
+                <transition
+                  @before-enter="el => {
+                    el.style.transformOrigin = 'center center'
+                    el.style.webkitTransformOrigin = 'center center'
+                  }"
+                  name="scale-transition"
+                >
                   <div
                     v-if="search && clientType !== tab.value && filteredItemsLength[tab.value] > 0"
                     style="min-width: 1rem;"
@@ -51,7 +57,7 @@
                       {{ filteredItemsLength[tab.value] > 99 ? '99+' : filteredItemsLength[tab.value] }}
                     </span>
                   </div>
-                </v-scale-transition>
+                </transition>
               </div>
               {{ tab.text }}
             </span>
@@ -76,25 +82,25 @@
           hide-no-data
         >
           <template v-slot:[`header.dealsSearch-content`]>
-            <v-tooltip top max-width="162">
+            <Tooltip top max-width="162">
               <template v-slot:activator="{ on }">
                 <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
               </template>
               <span>
                 {{ $t('clients.dealsSearchHint') }}
               </span>
-            </v-tooltip>
+            </Tooltip>
           </template>
           <template v-slot:[`header.dealsCount-content`]>
             <i class="zi-bag text-2xl text-400 align-middle" />
-            <v-tooltip top>
+            <Tooltip top>
               <template v-slot:activator="{ on }">
                 <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
               </template>
               <span>
                 {{ $t('clients.currentDealsAmount') }}
               </span>
-            </v-tooltip>
+            </Tooltip>
           </template>
           <template v-slot:[`header.prepayment-content`]>
             <span class="inline-block align-middle mr-xs">
@@ -103,14 +109,14 @@
                 <path d="M17 7.51196C14.2 7.51196 12 9.71196 12 12.512C12 15.312 14.2 17.512 17 17.512C19.8 17.512 22 15.312 22 12.512C22 9.71196 19.8 7.51196 17 7.51196ZM20.2 13.112H17.6V15.812H16.4V13.112H13.8V11.912H16.4V9.31196H17.6V12.012H20.2V13.112Z" fill="#404040"/>
               </svg>
             </span>
-            <v-tooltip top max-width="152">
+            <Tooltip top max-width="152">
               <template v-slot:activator="{ on }">
                 <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
               </template>
               <span>
                 {{ $t('clients.totalPrepaymentHint') }}
               </span>
-            </v-tooltip>
+            </Tooltip>
           </template>
           <template v-slot:[`header.debt-content`]>
             <span class="inline-block align-middle mr-xs">
@@ -119,14 +125,14 @@
                 <path d="M17 7.51196C14.2 7.51196 12 9.71196 12 12.512C12 15.312 14.2 17.512 17 17.512C19.8 17.512 22 15.312 22 12.512C22 9.71196 19.8 7.51196 17 7.51196ZM19.7 13.112H14.3V11.912H19.7V13.112Z" fill="#404040"/>
               </svg>
             </span>
-            <v-tooltip top max-width="200">
+            <Tooltip top max-width="200">
               <template v-slot:activator="{ on }">
                 <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
               </template>
               <span>
                 {{ $t('clients.debtHint') }}
               </span>
-            </v-tooltip>
+            </Tooltip>
           </template>
           <template v-slot:[`header.turnover-content`]>
             <span class="inline-block align-middle mr-xs">
@@ -136,14 +142,14 @@
                 <path d="M7.97241 23.7714C8.87241 24.1714 9.77241 24.3714 10.6724 24.4714C16.8724 25.0714 22.4724 21.1714 23.7724 15.0714C24.2724 12.6714 24.0724 10.3714 23.2724 8.27142C22.9724 7.77142 22.5724 7.57142 22.1724 7.87142C21.8724 8.07142 21.6724 8.47142 21.8724 8.77142C22.3724 10.0714 22.5724 11.3714 22.5724 12.8714C22.3724 17.9714 18.3724 22.3714 13.3724 22.9714C11.7724 23.1714 10.1724 22.9714 8.77241 22.4714L9.07241 21.7714L4.87241 21.1714C4.57241 21.1714 4.47241 21.4714 4.67241 21.6714L7.77241 24.5714L7.97241 23.7714Z" fill="#404040"/>
               </svg>
             </span>
-            <v-tooltip top max-width="135">
+            <Tooltip top max-width="135">
               <template v-slot:activator="{ on }">
                 <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
               </template>
               <span>
                 {{ $t('clients.turnoverHint') }}
               </span>
-            </v-tooltip>
+            </Tooltip>
           </template>
           <template v-slot:[`header.contactPhone-content`]>
             <span class="inline-block align-middle">
@@ -229,7 +235,7 @@
         v-if="items.length === 0 && loading"
         class="text-center text-gray-200 leading-tight py-4"
       >
-        <v-progress-circular
+        <Progress
           indeterminate
           size="24"
           width="2"
@@ -240,7 +246,7 @@
         v-html="$t('clients.noData')"
         class="text-center text-gray-200 leading-tight py-4"
       />
-      <Button
+      <Btn
         block
         outlined
         class="mt-4"
@@ -255,7 +261,7 @@
           <i class="zi-user-plus text-gray-100 text-2xl" />
         </template>
         <span>{{ $t('clients.createClient') }}</span>
-      </Button>
+      </Btn>
     </div>
   </div>
 </template>

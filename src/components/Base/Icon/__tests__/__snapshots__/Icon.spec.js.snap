@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Icon.js should have correct size style on size prop 1`] = `
+<i class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px" role="img" aria-hidden="true" style="font-size: 20px; height: 20px; width: 20px;">
+    <g fill="currentColor">
+      <path d="M18 12a6 6 0 11-12 0 6 6 0 0112 0z"></path>
+    </g>
+  </svg></i>
+`;
+
+exports[`Icon.js should render component and match snapshot 1`] = `<i class="icon"></i>`;
+
+exports[`Icon.js should render specified tag when using tag prop and match snapshot 1`] = `<span class="icon"></span>`;
+
+exports[`Icon.js should set size class from helper prop and match snapshot 1`] = `<i class="icon text-lg"></i>`;
+
+exports[`Icon.js should set size class from helper prop and match snapshot 2`] = `<i class="icon text-2xl"></i>`;
+
+exports[`Icon.js should set size class from helper prop and match snapshot 3`] = `<i class="icon text-3xl"></i>`;

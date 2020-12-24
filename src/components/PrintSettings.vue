@@ -23,7 +23,7 @@
           </p>
         </div>
         <div class="flex flex-wrap items-center justify-center sm:justify-end flex-grow order-last sm:order-none pr-4">
-          <v-slide-x-reverse-transition>
+          <transition name="slide-x-reverse-transition">
             <div v-if="!validationState.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
               <span class="text-pink-500 mr-2">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -32,8 +32,8 @@
               </span>
               <span>{{ $t('print.required') }}</span>
             </div>
-          </v-slide-x-reverse-transition>
-          <v-slide-x-reverse-transition>
+          </transition>
+          <transition name="slide-x-reverse-transition">
             <div v-if="!validationState.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
               <span class="text-yellow-500 mr-2">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,17 +42,17 @@
               </span>
               <span>{{ $t('print.warning') }}</span>
             </div>
-          </v-slide-x-reverse-transition>
+          </transition>
         </div>
         <div class="flex items-center">
-          <Button
+          <Btn
             :disabled="!validationState.isRequiredFilled"
             :loading="loading"
             min-width="200"
             @click="print"
           >
             {{ $t('shipping.doPrint') }}
-          </Button>
+          </Btn>
         </div>
       </div>
     </div>
@@ -327,15 +327,15 @@
     <!-- Footer -->
     <div class="px-5">
       <div class="flex flex-col sm:flex-row">
-        <Button
+        <Btn
           outlined
           min-width="200"
           @click="$emit('close')"
         >
           {{ $t('shipping.cancelPrint') }}
-        </Button>
+        </Btn>
         <div class="flex flex-wrap items-center justify-center sm:justify-end flex-grow order-first sm:order-none pr-4">
-          <v-slide-x-reverse-transition>
+          <transition name="slide-x-reverse-transition">
             <div v-if="!validationState.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
               <span class="text-pink-500 mr-2">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -344,8 +344,8 @@
               </span>
               <span>{{ $t('print.required') }}</span>
             </div>
-          </v-slide-x-reverse-transition>
-          <v-slide-x-reverse-transition>
+          </transition>
+          <transition name="slide-x-reverse-transition">
             <div v-if="!validationState.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
               <span class="text-yellow-500 mr-2">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -354,20 +354,20 @@
               </span>
               <span>{{ $t('print.warning') }}</span>
             </div>
-          </v-slide-x-reverse-transition>
+          </transition>
         </div>
-        <Button
+        <Btn
           :disabled="!validationState.isRequiredFilled"
           :loading="loading"
           min-width="200"
           @click="print"
         >
           {{ $t('shipping.doPrint') }}
-        </Button>
+        </Btn>
       </div>
     </div>
 
-    <v-dialog
+    <Modal
       ref="requisiteDialog"
       v-model="requisiteDialog"
       :fullscreen="$breakpoint.xs"
@@ -383,8 +383,8 @@
         @close="requisiteDialog = false"
         @create="setCreatedRequisite"
       />
-    </v-dialog>
-    <v-dialog
+    </Modal>
+    <Modal
       ref="clientDialog"
       v-model="clientDialog"
       :fullscreen="$breakpoint.xs"
@@ -400,7 +400,7 @@
         @close="clientDialog = false"
         @create="setSpecClient($event && $event.id)"
       />
-    </v-dialog>
+    </Modal>
   </div>
 </template>
 

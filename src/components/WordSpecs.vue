@@ -5,18 +5,18 @@
       :key="item.specId"
       class="w-1/4 text-gray-100"
     >
-      <v-fade-transition>
+      <transition name="fade-transition">
         <div
           v-show="loading"
           class="absolute inset-0 text-gray-200 flex items-center justify-center cursor-wait"
         >
-          <v-progress-circular
+          <Progress
             indeterminate
             size="24"
             width="2"
           />
         </div>
-      </v-fade-transition>
+      </transition>
       <router-link
         :to="{ name: 'spec', params: { specId: item.specId, orgId } }"
         class="group inline-flex max-w-full py-1"

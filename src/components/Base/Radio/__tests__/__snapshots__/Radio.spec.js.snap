@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Radio.js should render checked component and match snapshot 1`] = `
+<div class="radio radio--active">
+  <!---->
+  <div class="radio__control">
+    <div class="radio__control__input"><input modelvalue="radio-1" id="radio-1" class="radio__input" type="radio" role="radio" aria-checked="true">
+      <div class="radio__control__icon"><i class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="16px" width="16px" role="img" aria-hidden="true" style="font-size: 16px; height: 16px; width: 16px;">
+            <g fill="currentColor">
+              <path d="M18 12a6 6 0 11-12 0 6 6 0 0112 0z"></path>
+            </g>
+          </svg></i></div>
+    </div><label for="radio-1" class="radio__label">Label</label>
+  </div>
+  <!---->
+</div>
+`;
+
+exports[`Radio.js should render component and match snapshot 1`] = `
+<div class="radio">
+  <!---->
+  <div class="radio__control">
+    <div class="radio__control__input"><input modelvalue="" id="radio-1" class="radio__input" type="radio" role="radio" aria-checked="false">
+      <div class="radio__control__icon"><i class="icon" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="16px" width="16px" role="img" aria-hidden="true" style="font-size: 16px; height: 16px; width: 16px;">
+            <g fill="currentColor">
+              <path d="M18 12a6 6 0 11-12 0 6 6 0 0112 0z"></path>
+            </g>
+          </svg></i></div>
+    </div><label for="radio-1" class="radio__label">Label</label>
+  </div>
+  <!---->
+</div>
+`;
+
+exports[`Radio.js should render component with disabled prop and match snapshot 1`] = `
+<div class="radio radio--disabled">
+  <!---->
+  <div class="radio__control">
+    <div class="radio__control__input"><input modelvalue="" disabled="" id="radio-1" class="radio__input" type="radio" role="radio" aria-checked="false">
+      <div class="radio__control__icon"><i class="icon" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="16px" width="16px" role="img" aria-hidden="true" style="font-size: 16px; height: 16px; width: 16px;">
+            <g fill="currentColor">
+              <path d="M18 12a6 6 0 11-12 0 6 6 0 0112 0z"></path>
+            </g>
+          </svg></i></div>
+    </div><label for="radio-1" class="radio__label">Label</label>
+  </div>
+  <!---->
+</div>
+`;
+
+exports[`Radio.js should render component with label prop and match snapshot 1`] = `
+<div class="radio"><label id="label-1" for="radio-1" aria-hidden="false" class="label">
+    <div class="label__wrapper">
+      <div class="label__content__wrapper">
+        <div class="label__content">Input label</div>
+      </div>
+      <!---->
+    </div>
+  </label>
+  <div class="radio__control">
+    <div class="radio__control__input"><input modelvalue="" id="radio-1" class="radio__input" type="radio" role="radio" aria-checked="false">
+      <div class="radio__control__icon"><i class="icon" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="16px" width="16px" role="img" aria-hidden="true" style="font-size: 16px; height: 16px; width: 16px;">
+            <g fill="currentColor">
+              <path d="M18 12a6 6 0 11-12 0 6 6 0 0112 0z"></path>
+            </g>
+          </svg></i></div>
+    </div><label for="radio-1" class="radio__label">Radio label</label>
+  </div>
+  <!---->
+</div>
+`;
+
+exports[`Radio.js should render component with name, required, readonly props and match snapshot 1`] = `
+<div class="radio radio--readonly">
+  <!---->
+  <div class="radio__control">
+    <div class="radio__control__input"><input modelvalue="" name="simple-input" required="" readonly="" id="radio-1" class="radio__input" type="radio" role="radio" aria-checked="false">
+      <div class="radio__control__icon"><i class="icon" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="16px" width="16px" role="img" aria-hidden="true" style="font-size: 16px; height: 16px; width: 16px;">
+            <g fill="currentColor">
+              <path d="M18 12a6 6 0 11-12 0 6 6 0 0112 0z"></path>
+            </g>
+          </svg></i></div>
+    </div><label for="radio-1" class="radio__label">Label</label>
+  </div>
+  <!---->
+</div>
+`;
+
+exports[`Radio.js should render focused component and match snapshot 1`] = `
+<div class="radio radio--focused">
+  <!---->
+  <div class="radio__control">
+    <div class="radio__control__input"><input modelvalue="" id="radio-1" class="radio__input" type="radio" role="radio" aria-checked="false" value="">
+      <div class="radio__control__icon"><i class="icon" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="16px" width="16px" role="img" aria-hidden="true" style="font-size: 16px; height: 16px; width: 16px;">
+            <g fill="currentColor">
+              <path d="M18 12a6 6 0 11-12 0 6 6 0 0112 0z"></path>
+            </g>
+          </svg></i></div>
+    </div><label for="radio-1" class="radio__label">Label</label>
+  </div>
+  <!---->
+</div>
+`;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- TODO: scrollt to new on open -->
-    <v-menu
+    <Menu
       v-model="isMenuActive"
       :close-on-content-click="false"
       :left="left"
@@ -21,7 +21,7 @@
             class="relative flex items-center"
             v-on="on"
           >
-            <v-scale-transition>
+            <transition name="scale-transition">
               <div
                 v-if="newCommentsCount > 0"
                 :style="badgeStyles"
@@ -31,7 +31,7 @@
                   {{ newCommentsCount > 99 ? '99+' : newCommentsCount }}
                 </span>
               </div>
-            </v-scale-transition>
+            </transition>
             <i class="zi-chat cursor-pointer select-none text-2xl" />
           </div>
         </slot>
@@ -62,7 +62,7 @@
           />
         </div>
       </div>
-    </v-menu>
+    </Menu>
   </div>
 </template>
 

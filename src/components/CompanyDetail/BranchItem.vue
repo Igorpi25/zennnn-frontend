@@ -5,14 +5,14 @@
         {{ $t('companyDetail.label.branchType') }}
       </label>
       <div class="flex justify-end items-center">
-        <v-fade-transition>
+        <transition name="fade-transition">
           <div v-if="isWarehouse" class="flex items-center pr-1">
-            <v-tooltip top max-width="180" nudge-right="60">
+            <Tooltip top max-width="180" nudge-right="60">
               <template v-slot:activator="{ on }">
                 <i class="zi-help align-middle text-base text-blue-500 cursor-pointer" v-on="on" />
               </template>
               <span v-html="$t('companyDetail.hint.branchDeliveryAddress')" />
-            </v-tooltip>
+            </Tooltip>
             <div class="pr-4">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 22C12 22 20 18 20 12V4L12 2L4 4V12C4 18 12 22 12 22Z" fill="#FDB600" stroke="#FDB600" stroke-linecap="round" stroke-linejoin="round"/>
@@ -21,7 +21,7 @@
               </svg>
             </div>
           </div>
-        </v-fade-transition>
+        </transition>
         <Select
           :value="internalItem.branchType"
           :items="branchTypeItems"

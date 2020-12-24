@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <v-dialog
+    <Modal
       v-model="paperList"
       max-width="443"
     >
@@ -11,9 +11,9 @@
         @openPaper="openContract"
         @createPaper="createContract"
       />
-    </v-dialog>
+    </Modal>
 
-    <v-dialog
+    <Modal
       v-model="paperConfigurator"
       :fullscreen="$breakpoint.xs || $breakpoint.sm"
       content-class="dialog-full-height rounded-none paper-configurator-dialog"
@@ -27,9 +27,9 @@
         @update="contractCreated"
         @close="paperConfigurator = false"
       />
-    </v-dialog>
+    </Modal>
 
-    <v-dialog
+    <Modal
       v-model="printDialog"
       :fullscreen="$breakpoint.smAndDown"
       content-class="dialog-full-height scrolling-touch"
@@ -53,7 +53,7 @@
         @close="printDialog = false"
         @print="doPrint"
       />
-    </v-dialog>
+    </Modal>
 
     <div v-if="isOwnerOrManager">
       <div class="flex flex-wrap lg:flex-nowrap pb-8">
@@ -81,7 +81,7 @@
       <div class="bg-gray-700 rounded-md p-3 select-none">
         <div class="flex flex-wrap lg:justify-between">
           <div class="w-full md:w-auto p-2">
-            <Button
+            <Btn
               :href="`/paper/${$route.params.specId}`"
               target="_blank"
               outlined
@@ -93,10 +93,10 @@
                 <i class="zi-eye text-gray-100 text-2xl" />
               </template>
               {{ $t('shipping.previewAsCustomer') }}
-            </Button>
+            </Btn>
           </div>
           <div class="w-full md:w-auto p-2">
-            <Button
+            <Btn
               outlined
               borderless
               class="w-full"
@@ -107,10 +107,10 @@
                 <i class="zi-setting text-gray-100 text-2xl" />
               </template>
               {{ $t('shipping.paperConfigurator') }}
-            </Button>
+            </Btn>
           </div>
           <div class="w-full md:w-auto p-2">
-            <Button
+            <Btn
               outlined
               borderless
               class="w-full"
@@ -121,10 +121,10 @@
                 <i class="zi-print text-gray-100 text-2xl" />
               </template>
               {{ $t('shipping.print') }}
-            </Button>
+            </Btn>
           </div>
           <div class="w-full md:w-auto p-2">
-            <Button
+            <Btn
               outlined
               borderless
               class="w-full"
@@ -135,10 +135,10 @@
                 <i class="zi-user-plus text-gray-100 text-2xl" />
               </template>
               {{ $t('shipping.inviteCustomer') }}
-            </Button>
+            </Btn>
           </div>
           <div class="w-full md:w-auto p-2">
-            <Button
+            <Btn
               outlined
               borderless
               disabled
@@ -149,13 +149,13 @@
                 <i class="zi-email text-2xl" />
               </template>
               {{ $t('shipping.notifyCustomer') }}
-            </Button>
+            </Btn>
           </div>
         </div>
       </div>
     </div>
 
-    <v-dialog
+    <Modal
       v-model="accessControlDialog"
       max-width="320px"
     >
@@ -177,11 +177,11 @@
             solo
             class="pb-3"
           />
-          <Button
+          <Btn
             @click="copyLink"
           >
             {{ $t('shipping.copyLink') }}
-          </Button>
+          </Btn>
         </template>
         <template>
           <h4 class="pt-5">
@@ -196,12 +196,12 @@
             required
             class="pb-3"
           />
-          <Button
+          <Btn
             :loading="sendAccessLinkLoading"
             @click="sendLinkAccessToEmail(emailAccessInput)"
           >
             {{ $t('shipping.sendEmail') }}
-          </Button>
+          </Btn>
         </template>
         <Spinner v-if="emailAccessLoading" />
         <div v-else class="py-4">
@@ -216,7 +216,7 @@
             <div class="flex-grow">
               {{ a.email }}
             </div>
-            <v-slide-x-transition mode="out-in">
+            <transition name="slide-x-transition" mode="out-in">
               <div v-if="removeEmailAccessLoading === a.email">
                 <Spinner />
               </div>
@@ -227,11 +227,11 @@
               >
                 <i class="zi-close text-lg" />
               </div>
-            </v-slide-x-transition>
+            </transition>
           </div>
         </div>
       </div>
-    </v-dialog>
+    </Modal>
   </div>
 </template>
 

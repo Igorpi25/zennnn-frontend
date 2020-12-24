@@ -61,13 +61,13 @@
           </Form>
         </div>
         <div class="pb-6">
-          <Button
+          <Btn
             :loading="loading"
             min-width="120"
             @click.prevent="onSubmit"
           >
             <span>{{$t('passwordRestoreConfirm.submit') }}</span>
-          </Button>
+          </Btn>
         </div>
       </div>
     </section>

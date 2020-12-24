@@ -1,0 +1,95 @@
+@layer components {
+  .window {
+    @apply relative flex-initial max-w-full transition duration-300 ease-out-quart;
+  }
+  .window__container {
+    height: inherit;
+    position: relative;
+    transition: .3s cubic-bezier(.25, .8, .50, 1);
+  }
+  .window__container--is-active {
+    overflow: hidden;
+  }
+  .window__prev, .window__next {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    position: absolute;
+    margin: 0 16px;
+    top: calc(50% - 20px);
+    z-index: 1;
+  }
+  .window__prev .btn:hover, .window__next .btn:hover {
+    background: none;
+  }
+  .window__prev {
+    left: 0;
+  }
+  .window__next {
+    right: 0;
+  }
+  .window--show-arrows-on-hover {
+    overflow: hidden;
+  }
+  .window--show-arrows-on-hover .window__next,
+  .window--show-arrows-on-hover .window__prev {
+    transition: 0.2s ease;
+  }
+  .window--show-arrows-on-hover .window__prev {
+    transform: translateX(-200%);
+  }
+  .window--show-arrows-on-hover .window__next {
+    transform: translateX(200%);
+  }
+  .window--show-arrows-on-hover:hover .window__next,
+  .window--show-arrows-on-hover:hover .window__prev {
+    transform: translateX(0);
+  }
+  
+  /* Transition */
+  .window-x-transition-enter-active,
+  .window-x-transition-leave-active,
+  .window-x-reverse-transition-enter-active,
+  .window-x-reverse-transition-leave-active,
+  .window-y-transition-enter-active,
+  .window-y-transition-leave-active,
+  .window-y-reverse-transition-enter-active,
+  .window-y-reverse-transition-leave-active {
+    transition: .3s cubic-bezier(.25, .8, .50, 1);
+  }
+  .window-x-transition-leave-from,
+  .window-x-transition-leave-to,
+  .window-x-reverse-transition-leave-from,
+  .window-x-reverse-transition-leave-to,
+  .window-y-transition-leave-from,
+  .window-y-transition-leave-to,
+  .window-y-reverse-transition-leave-from,
+  .window-y-reverse-transition-leave-to {
+    position: absolute !important;
+    top: 0;
+    width: 100%;
+  }
+  .window-x-transition-enter-from {
+    transform: translateX(100%);
+  }
+  .window-x-transition-leave-to {
+    transform: translateX(-100%);
+  }
+  .window-x-reverse-transition-enter-from {
+    transform: translateX(-100%);
+  }
+  .window-x-reverse-transition-leave-to {
+    transform: translateX(100%);
+  }
+  .window-y-transition-enter-from {
+    transform: translateY(100%);
+  }
+  .window-y-transition-leave-to {
+    transform: translateY(-100%);
+  }
+  .window-y-reverse-transition-enter-from {
+    transform: translateY(-100%);
+  }
+  .window-y-reverse-transition-leave-to {
+    transform: translateY(100%);
+  }
+}

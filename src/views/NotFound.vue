@@ -28,14 +28,14 @@
               <span class="inline">{{ $t('notFound.title') }}</span>&nbsp;
               <span class="block md:inline">{{ $t('notFound.subtitle') }}</span>
             </p>
-            <Button
+            <Btn
               outlined
               borderless
               class="mt-8 mx-auto"
               @click="$router.push({ name: 'home' })"
             >
               <span>{{ $t('notFound.toHome') }}</span>
-            </Button>
+            </Btn>
           </div>
         </div>
       </div>

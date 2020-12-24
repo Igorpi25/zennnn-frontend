@@ -3,7 +3,7 @@
     <Header />
     <section>
       <div class="container">
-        <Button
+        <Btn
           outlined
           class="mb-5 mt-8 flex justify-center sm:justify-end"
           @click="$router.push({name: 'signup'})"
@@ -12,7 +12,7 @@
             <span>{{ $t('signin.noAccount') }}</span>
           </template>
           <span>{{ $t('signin.signup') }}</span>
-        </Button>
+        </Btn>
         <div class="mb-8">
           <div class="w-full">
             <h1 class="headline">
@@ -47,21 +47,21 @@
                   minlength="6"
                   maxlength="6"
                 />
-                <Button
+                <Btn
                   outlined
                   borderless
                   @click.prevent
                 >
                   <span>{{ $t('signinByPhone.resendCode') }}</span>
-                </Button>
+                </Btn>
               </div>
               <template v-slot:append>
-                <Button
+                <Btn
                   :loading="loading"
                   @click="onSubmit"
                 >
                   {{ $t('signinByPhone.submit') }}
-                </Button>
+                </Btn>
                 <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-nowrap">
                   <span>{{ $t('preposition.or') }}</span>&nbsp;
                   <span>{{ $t('preposition.through') }}</span>

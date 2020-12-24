@@ -67,7 +67,7 @@
             </template>
           </TextField>
           <div class="flex w-full sm:w-auto items-center justify-end" style="min-width: 165px;">
-            <v-menu
+            <Menu
               v-model="filterMenu"
               :content-class="'locale-picker__menu'"
               :nudge-bottom="25"
@@ -120,7 +120,7 @@
                   </li>
                 </ul>
               </template>
-            </v-menu>
+            </Menu>
           </div>
         </div>
 
@@ -128,7 +128,7 @@
           class="sticky top-0 bg-gray-800 rounded-t-md px-sm flex items-center h-12 space-x-2"
           style="z-index: 1;"
         >
-          <Button
+          <Btn
             :loading="approveLoading"
             :disabled="selected.length === 0"
             merge-class="h-8 text-sm ml-sm"
@@ -136,8 +136,8 @@
             @click="approveWords"
           >
             {{ $t('words.approve') }}
-          </Button>
-          <Button
+          </Btn>
+          <Btn
             :loading="hideLoading"
             :disabled="selected.length === 0"
             merge-class="h-8 text-sm"
@@ -147,8 +147,8 @@
             @click="hideWords"
           >
             {{ $t('words.hide') }}
-          </Button>
-          <Button
+          </Btn>
+          <Btn
             :loading="mergeLoading"
             :disabled="selected.length < 2"
             merge-class="h-8 text-sm"
@@ -158,9 +158,9 @@
             @click="openMergeItem"
           >
             {{ $t('words.merge') }}
-          </Button>
+          </Btn>
           <div class="flex-grow" />
-          <v-progress-circular
+          <Progress
             v-if="queryLoading"
             indeterminate
             size="18"
@@ -357,7 +357,7 @@
           v-if="items.length === 0 && loading"
           class="text-center text-gray-200 leading-tight py-4"
         >
-          <v-progress-circular
+          <Progress
             indeterminate
             size="24"
             width="2"
@@ -368,7 +368,7 @@
           v-html="$t('words.noData')"
           class="text-center text-gray-200 leading-tight py-4"
         />
-        <Button
+        <Btn
           block
           outlined
           class="mt-4"
@@ -378,7 +378,7 @@
             <i class="zi-edit text-gray-100 text-2xl" />
           </template>
           <span>{{ $t('words.addWord') }}</span>
-        </Button>
+        </Btn>
       </div>
       <WordDialog
         v-model="wordCreateDialog"

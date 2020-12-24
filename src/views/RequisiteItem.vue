@@ -6,14 +6,14 @@
       :create="create"
       :show-fill-later-button="showFillLaterButton"
     />
-    <v-dialog
+    <Modal
       v-model="showWelcomeDialog"
       max-width="500"
     >
       <WelcomeModal
         @close="showWelcomeDialog = false"
       />
-    </v-dialog>
+    </Modal>
 
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <v-menu
+  <Menu
     v-model="menu"
     :close-on-content-click="false"
     :nudge-width="400"
@@ -43,7 +43,7 @@
                     'w-full h-full rounded',
                   ]"
                 >
-                  <v-img
+                  <Image
                     :src="iconImageSrc"
                     aspect-ratio="1"
                     class="rounded"
@@ -53,7 +53,7 @@
                         <Spinner />
                       </div>
                     </template>
-                  </v-img>
+                  </Image>
                   <div
                     v-if="isDragOver || menu"
                     :class="[
@@ -88,7 +88,7 @@
             v-else
             class="w-8 h-8 rounded inline-block"
           >
-            <v-img
+            <Image
               v-if="imageSrc"
               :src="iconImageSrc"
               aspect-ratio="1"
@@ -99,7 +99,7 @@
                   <Spinner />
                 </div>
               </template>
-            </v-img>
+            </Image>
           </div>
         </slot>
       </div>
@@ -123,7 +123,7 @@
         class="inline-flex overflow-x-auto focus:outline-none space-x-2 pb-4 pr-6"
         @input="sortImages"
       >
-        <v-img
+        <Image
           v-for="(img, i) in imagesList"
           :key="img.url"
           :src="`${img.url}${ICON_IMAGE_POSTFIX}`"
@@ -139,13 +139,13 @@
               <Spinner />
             </div>
           </template>
-        </v-img>
+        </Image>
       </Sortable>
       <div v-else class="h-5" />
       <div class="w-full">
         <div class="relative">
           <div class="w-full rounded">
-            <v-img
+            <Image
               :src="previewImageSrc"
               :key="currentImage.url"
               class="w-full rounded"
@@ -156,7 +156,7 @@
                   <Spinner />
                 </div>
               </template>
-            </v-img>
+            </Image>
           </div>
           <div
             class="absolute inset-x-0 top-0 h-20 rounded-t overflow-hidden pointer-events-none bg-gradient-to-b from-gray-900-a-50 to-gray-900-a-0"
@@ -207,7 +207,7 @@
         </div>
       </div>
     </div>
-  </v-menu>
+  </Menu>
 </template>
 
 <script>

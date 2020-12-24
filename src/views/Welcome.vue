@@ -9,13 +9,13 @@
         <p v-html="$t('welcome.subtitle')" class="pb-6" />
         <p v-if="username" class="text-2xl text-white pb-10">{{ username }}</p>
         <div v-if="username" class="pb-6">
-          <Button
+          <Btn
             :loading="loading"
             min-width="120"
             @click.prevent="resendSignUp"
           >
             <span>{{ $t('welcome.resend') }}</span>
-          </Button>
+          </Btn>
         </div>
         <p v-html="$t('welcome.hint')" class="text-gray-200 leading-tight pb-6" />
       </div>

@@ -41,21 +41,21 @@
                     minlength="6"
                     maxlength="6"
                   />
-                  <Button
+                  <Btn
                     outlined
                     borderless
                     @click.prevent
                   >
                     <span>{{ $t('loginRestore.resendCode') }}</span>
-                  </Button>
+                  </Btn>
                 </div>
                 <template v-slot:append>
-                  <Button
+                  <Btn
                     :loading="loading"
                     @click="onSubmit"
                   >
                     {{ $t('loginRestore.submit') }}
-                  </Button>
+                  </Btn>
                   <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-nowrap">
                     <span>{{ $t('preposition.or') }}</span>&nbsp;
                     <span class="lowercase">{{ $t('loginRestore.signin') }}</span>&nbsp;

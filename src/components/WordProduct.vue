@@ -1,5 +1,5 @@
 <template>
-  <v-menu
+  <Menu
     v-model="menu"
     :close-on-content-click="false"
     :nudge-width="400"
@@ -14,7 +14,7 @@
         <div
           class="w-7 h-7 rounded"
         >
-          <v-img
+          <Image
             v-if="imageSrc"
             :src="iconImageSrc"
             aspect-ratio="1"
@@ -25,7 +25,7 @@
                 <Spinner />
               </div>
             </template>
-          </v-img>
+          </Image>
           <div v-else class="w-full h-full rounded bg-gray-600" />
         </div>
       </div>
@@ -46,7 +46,7 @@
       <div class="w-full">
         <div class="relative">
           <div class="w-full rounded">
-            <v-img
+            <Image
               :src="previewImageSrc"
               :key="currentImage.url"
               class="w-full rounded"
@@ -57,7 +57,7 @@
                   <Spinner />
                 </div>
               </template>
-            </v-img>
+            </Image>
           </div>
           <div
             class="absolute inset-x-0 top-0 h-20 rounded-t overflow-hidden pointer-events-none bg-gradient-to-b from-gray-900-a-50 to-gray-900-a-0"
@@ -105,7 +105,7 @@
         </div>
       </div>
     </div>
-  </v-menu>
+  </Menu>
 </template>
 
 <script>

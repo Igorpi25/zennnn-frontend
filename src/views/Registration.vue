@@ -23,13 +23,13 @@
             </div>
             <div class="flex-grow">
               <span>{{ $t('signup.hasAccount') }}</span>
-              <Button
+              <Btn
                 outlined
                 class="mx-auto md:mx-0 md:mt-0 mt-8 md:mt-24"
                 @click="$router.push({name: 'signin'})"
               >
                 <span>{{ $t('signup.signin') }}</span>
-              </Button>
+              </Btn>
             </div>
             <div class="hidden md:flex">
               <Social />
@@ -106,14 +106,14 @@
                   </span>
                 </Checkbox>
                 <div class="flex justify-center">
-                  <Button
+                  <Btn
                     :disabled="formValidity"
                     :loading="loading"
                     class="mt-5 flex justify-center"
                     @click="onSubmit"
                   >
                     {{ $t('signup.submit') }}
-                  </Button>
+                  </Btn>
                 </div>
               </div>
             </Form>

@@ -25,7 +25,7 @@
               >
                 <i class="zi-close text-white" />
               </div>
-              <v-img
+              <Image
                 :key="img.url"
                 :src="`${img.url}${ICON_IMAGE_POSTFIX}`"
                 class="rounded"
@@ -36,7 +36,7 @@
                     <Spinner />
                   </div>
                 </template>
-              </v-img>
+              </Image>
               <div v-if="isOpen" class="absolute inset-0 w-full h-full bg-black opacity-35 rounded" />
               <div v-if="isOpen" class="absolute inset-0 w-full h-full flex items-center justify-center">
                 <i class="zi-magnifier text-2xl text-white" />

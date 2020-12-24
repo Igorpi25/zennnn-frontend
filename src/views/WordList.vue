@@ -31,18 +31,18 @@
         </router-link>
         <span class="relative">
           {{ $t('header.dictionary') }}
-          <v-fade-transition>
+          <transition name="fade-transition">
             <div
               v-if="loading"
               class="absolute right-0 -mr-6 inline-block text-gray-200"
             >
-              <v-progress-circular
+              <Progress
                 indeterminate
                 size="20"
                 width="2"
               />
             </div>
-          </v-fade-transition>
+          </transition>
         </span>
       </div>
 
@@ -213,7 +213,7 @@
         v-if="items.length === 0 && loading"
         class="text-center text-gray-200 leading-tight py-4"
       >
-        <v-progress-circular
+        <Progress
           indeterminate
           size="24"
           width="2"
@@ -224,7 +224,7 @@
         v-html="$t('words.noData')"
         class="text-center text-gray-200 leading-tight py-4"
       />
-      <Button
+      <Btn
         block
         outlined
         class="mt-4"
@@ -234,7 +234,7 @@
           <i class="zi-edit text-gray-100 text-2xl" />
         </template>
         <span>{{ $t('words.addWord') }}</span>
-      </Button>
+      </Btn>
     </div>
     <WordDialog
       v-model="wordCreateDialog"

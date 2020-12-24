@@ -14,18 +14,18 @@
           <span class="pr-6">
             {{ $t('shipping.title') }}
           </span>
-          <v-fade-transition>
+          <transition name="fade-transition">
             <div
               v-if="loading"
               class="absolute top-0 right-0 text-gray-200"
             >
-              <v-progress-circular
+              <Progress
                 indeterminate
                 size="20"
                 width="2"
               />
             </div>
-          </v-fade-transition>
+          </transition>
         </h1>
         <div class="flex items-center text-white">
           <SwitchInput
@@ -37,14 +37,14 @@
               {{ $t('shipping.simpleInterface') }}
             </span>
           </SwitchInput>
-          <v-tooltip top max-width="320" nudge-right="130">
+          <Tooltip top max-width="320" nudge-right="130">
             <template v-slot:activator="{ on }">
               <i class="zi-help text-blue-500 cursor-pointer" v-on="on" />
             </template>
             <span>
               {{ $t('shipping.simpleInterfaceHint') }}
             </span>
-          </v-tooltip>
+          </Tooltip>
         </div>
         <div class="flex items-center text-gray-300">
           <Comments
@@ -146,7 +146,7 @@
               create
               @update="createInvoice"
             />
-            <v-expand-transition>
+            <ExpandTransition>
               <InvoiceContent
                 v-if="isEmpty"
                 :currency="spec.currency"
@@ -161,7 +161,7 @@
                 @change:scrollLeft="setScrollLeft"
                 @update:currency="updateSpec({ currency: $event })"
               />
-            </v-expand-transition>
+            </ExpandTransition>
           </template>
           <template v-else>
             <InvoiceHeader
@@ -171,7 +171,7 @@
               @update="updateInvoice"
               @click="expand"
             />
-            <v-expand-transition>
+            <ExpandTransition>
               <InvoiceContent
                 v-if="expanded.includes(item.id)"
                 :currency="spec.currency"
@@ -185,7 +185,7 @@
                 @change:scrollLeft="setScrollLeft"
                 @update:currency="updateSpec({ currency: $event })"
               />
-            </v-expand-transition>
+            </ExpandTransition>
           </template>
         </div>
       </div>
@@ -193,7 +193,7 @@
 
     <div class="flex flex-wrap lg:flex-nowrap pb-8">
       <div class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3" style="max-width: 746px;">
-        <v-slide-y-transition hide-on-leave>
+        <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
           <SpecShipping
             v-if="isInfoVisible"
             :spec="spec"
@@ -234,35 +234,35 @@
               </div>
             </template>
           </SpecShipping>
-        </v-slide-y-transition>
+        </transition>
       </div>
       <div class="w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3">
-        <v-slide-y-transition hide-on-leave>
+        <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
           <SpecCost
             v-if="isCostVisible"
             :role="Role.MANAGER"
             :spec="spec"
             @update-spec="updateSpec"
           />
-        </v-slide-y-transition>
+        </transition>
       </div>
     </div>
 
-    <v-slide-y-transition hide-on-leave>
+    <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
       <div
         v-if="isSummaryVisible"
         class="pb-8"
       >
         <h4 class="text-white text-xl font-semibold leading-6 mb-4">
           <span class="mr-1">{{ $t('shipping.extraTitle') }}</span>
-          <v-tooltip top max-width="240" nudge-right="90">
+          <Tooltip top max-width="240" nudge-right="90">
             <template v-slot:activator="{ on }">
               <i class="zi-help align-middle text-blue-500 text-xl cursor-pointer" v-on="on" />
             </template>
             <span>
               {{ $t('shipping.extraHint') }}
             </span>
-          </v-tooltip>
+          </Tooltip>
         </h4>
         <div class="flex">
           <div class="w-full flex-grow lg:w-auto lg:pr-3">
@@ -275,10 +275,10 @@
           <div class="hidden lg:block w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3" />
         </div>
       </div>
-    </v-slide-y-transition>
+    </transition>
 
     <!-- <div class="flex pt-5">
-      <Button
+      <Btn
         outlined
         @click="createInvoice"
       >
@@ -286,18 +286,18 @@
           <i class="zi-plus text-lg block align-middle" />
         </template>
         <span>{{ $t('shipping.addInvoice') }}</span>
-      </Button>
+      </Btn>
     </div> -->
 
-    <v-slide-y-transition hide-on-leave>
+    <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
       <SpecSummary
         v-if="isSummaryVisible"
         :spec="spec"
         :role="Role.MANAGER"
       />
-    </v-slide-y-transition>
+    </transition>
 
-    <v-dialog
+    <Modal
       ref="clientDialog"
       v-model="clientDialog"
       :fullscreen="$breakpoint.xs"
@@ -313,7 +313,7 @@
         @close="clientDialog = false"
         @create="setCreateSpecClient"
       />
-    </v-dialog>
+    </Modal>
 
   </div>
 </template>

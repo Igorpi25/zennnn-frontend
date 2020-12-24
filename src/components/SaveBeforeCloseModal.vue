@@ -16,30 +16,30 @@
         </p>
       </div>
       <div class="flex flex-col sm:flex-row sm:items-center">
-        <Button
+        <Btn
           outlined
           class="sm:flex-1 mb-3 sm:mb-0 sm:mr-2 whitespace-nowrap"
           merge-class="border-gray-200"
           @click="$emit('dontSave')"
         >
           <span>{{ dontSaveButton || $t('action.dontSave') }}</span>
-        </Button>
+        </Btn>
 
-        <Button
+        <Btn
           outlined
           class="sm:flex-1 mb-3 sm:mb-0 sm:mx-2 whitespace-nowrap"
           merge-class="border-gray-200"
           @click="$emit('cancel')"
         >
           <span>{{ cancelButton || $t('action.cancel') }}</span>
-        </Button>
+        </Btn>
 
-        <Button
+        <Btn
           class="sm:flex-1 mb-3 sm:mb-0 sm:ml-2 whitespace-nowrap"
           @click="$emit('save')"
         >
           <span>{{ saveButton || $t('action.save') }}</span>
-        </Button>
+        </Btn>
       </div>
     </div>
   </div>

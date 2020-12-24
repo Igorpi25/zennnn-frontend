@@ -39,17 +39,17 @@
         <div class="text-right w-1/2 sm:w-1/3 pl-3">
           <PriceContactForm v-if="item.isCustomPrice">
             <template v-slot:activator="{ on }">
-              <Button
+              <Btn
                 block
                 outlined
                 merge-class="border-gray-100 h-10"
                 v-on="on"
               >
                 {{ $t('payment.contact') }}
-              </Button>
+              </Btn>
             </template>
           </PriceContactForm>
-          <Button
+          <Btn
             v-else
             block
             outlined
@@ -57,7 +57,7 @@
             @click.prevent="onClick(item)"
           >
             {{ $t('payment.select') }}
-          </Button>
+          </Btn>
         </div>
       </div>
     </div>

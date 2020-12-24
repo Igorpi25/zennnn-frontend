@@ -1,16 +1,15 @@
 <template>
   <div class="flex items-center">
-    <v-menu
+    <Menu
       v-model="menu"
       :content-class="light ? 'locale-picker__menu locale-picker__menu--light' : 'locale-picker__menu'"
       :nudge-bottom="nudgeBottom"
       bottom
       left
     >
-      <template v-slot:activator="{ on }">
+      <template v-slot:activator>
         <div
           class="flex items-center cursor-pointer pr-1"
-          v-on="on"
         >
           <img
             :src="require(`@/assets/img/flags/locale/${$i18n.locale}.svg`)"
@@ -52,15 +51,17 @@
           </li>
         </ul>
       </template>
-    </v-menu>
+    </Menu>
   </div>
 </template>
 
 <script>
 import { CURRENT_LOCALE_STORE_KEY, LOCALES_LIST } from '../config/globals'
+import Menu from './Base/Menu'
 
 export default {
   name: 'LocalePicker',
+  components: { Menu },
   props: {
     nudgeBottom: {
       type: [String, Number],

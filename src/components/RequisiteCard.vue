@@ -19,19 +19,19 @@
           {{ create ? $t('requisite.createTitle') : $t('requisite.editTitle') }}
         </h1>
         <div class="order-first sm:order-none ml-auto sm:absolute sm:bottom-0 sm:right-0 mb-md">
-          <Button
+          <Btn
             v-if="!isComponent"
             outlined
             min-width="120"
             @click="goBack"
           >
             <span>{{ showFillLaterButton ? $t('requisite.fillLater') : $t('requisite.back') }}</span>
-          </Button>
+          </Btn>
         </div>
       </div>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
         <div class="h-11 flex items-center justify-end text-gray-100">
-          <v-slide-x-reverse-transition>
+          <transition name="slide-x-reverse-transition">
             <div v-if="!item.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
               <span class="text-pink-500 mr-2">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -40,8 +40,8 @@
               </span>
               <span>{{ $t('print.required') }}</span>
             </div>
-          </v-slide-x-reverse-transition>
-          <v-slide-x-reverse-transition>
+          </transition>
+          <transition name="slide-x-reverse-transition">
             <div v-if="!item.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
               <span class="text-yellow-500 mr-2">
                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,7 +50,7 @@
               </span>
               <span>{{ $t('print.warning') }}</span>
             </div>
-          </v-slide-x-reverse-transition>
+          </transition>
         </div>
         <div
           class="bg-gray-600 rounded-md p-5 pt-6"
@@ -113,7 +113,7 @@
           </div>
         </div>
       </div>
-      <Button
+      <Btn
         v-if="isComponent"
         :loading="updateLoading"
         outlined
@@ -121,7 +121,7 @@
         @click="createFromItem"
       >
         {{ create ? $t('action.create') : $t('action.save') }}
-      </Button>
+      </Btn>
     </div>
 
   </div>

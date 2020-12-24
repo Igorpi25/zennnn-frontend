@@ -138,7 +138,7 @@
       />
     </button>
     <div v-else class="w-6 h-6" />
-    <v-dialog
+    <Modal
       v-if="isOwnerOrManager"
       ref="supplierDialog"
       v-model="supplierDialog"
@@ -155,7 +155,7 @@
         @close="supplierDialog = false"
         @create="setCreatedSupplier"
       />
-    </v-dialog>
+    </Modal>
   </div>
 </template>
 

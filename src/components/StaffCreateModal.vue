@@ -1,5 +1,5 @@
 <template>
-  <v-dialog
+  <Modal
     v-model="dialog"
     :max-width="458"
   >
@@ -11,8 +11,8 @@
         </div>
       </div>
       <div class="text-gray-100 px-8 pt-6 pb-8">
-        <v-window v-model="invitationStep">
-          <v-window-item :value="1">
+        <Window v-model="invitationStep">
+          <WindowItem :value="1">
             <Form
               ref="emailForm"
               v-model:error-message="emailErrorMessage"
@@ -31,17 +31,17 @@
                 @input="emailErrorMessage = ''"
               />
               <div class="text-right">
-                <Button
+                <Btn
                   :loading="emailFormLoading"
                   min-width="120"
                   @click="getInviteUser"
                 >
                   <span>{{ $t('staff.next') }}</span>
-                </Button>
+                </Btn>
               </div>
             </Form>
-          </v-window-item>
-          <v-window-item :value="2">
+          </WindowItem>
+          <WindowItem :value="2">
             <Form
               ref="inviteForm"
               v-model:error-message="inviteErrorMessage"
@@ -90,7 +90,7 @@
                 class="pb-6"
               />
               <div class="flex flex-wrap sm:flex-nowrap justify-between">
-                <Button
+                <Btn
                   :disabled="inviteFormLoading"
                   :merge-class="inviteFormLoading ? 'text-gray-300 border-gray-200' : 'border-gray-200'"
                   outlined
@@ -98,19 +98,19 @@
                   @click="invitationStep = 1"
                 >
                   <span>{{ $t('staff.back') }}</span>
-                </Button>
-                <Button
+                </Btn>
+                <Btn
                   :loading="inviteFormLoading"
                   block
                   class="w-full sm:w-1/2  mb-4 sm:mb-0 sm:ml-3"
                   @click="submit"
                 >
                   <span>{{ $t('staff.invite') }}</span>
-                </Button>
+                </Btn>
               </div>
             </Form>
-          </v-window-item>
-        </v-window>
+          </WindowItem>
+        </Window>
       </div>
       <span
         class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
@@ -119,7 +119,7 @@
         <i class="zi-close" />
       </span>
     </div>
-  </v-dialog>
+  </Modal>
 </template>
 
 <script>

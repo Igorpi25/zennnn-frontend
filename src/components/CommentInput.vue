@@ -21,7 +21,7 @@
       class="flex pt-3"
     >
       <div class="flex-grow" />
-      <Button
+      <Btn
         outlined
         :merge-class="light ? 'text-gray-900 border-gray-100 h-8' : 'text-white border-gray-200 h-8'"
         content-class="w-full flex items-center justify-center text-xs"
@@ -30,8 +30,8 @@
         @click="blur"
       >
         {{ $t('action.cancel') }}
-      </Button>
-      <Button
+      </Btn>
+      <Btn
         :disabled="!comment"
         :loading="loading"
         :merge-class="!comment ? ['h-8', light ? 'bg-gray-100 text-light-gray-400' : 'bg-gray-300'] : 'h-8'"
@@ -40,7 +40,7 @@
         @click="submitComment"
       >
         {{ $t('comments.post') }}
-      </Button>
+      </Btn>
     </div>
   </div>
 </template>

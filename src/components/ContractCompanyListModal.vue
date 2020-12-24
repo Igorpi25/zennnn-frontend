@@ -18,7 +18,7 @@
         {{ requisite.name }}
       </li>
     </ul>
-    <Button
+    <Btn
       outlined
       class="mt-4"
       @click="$emit('openRequisiteDialog')"
@@ -27,7 +27,7 @@
         <Icon class="-ml-4 mr-2">{{ icons.mdiPlusCircleOutline }}</Icon>
       </template>
       <span>{{ $t('contract.addRequisites') }}</span>
-    </Button>
+    </Btn>
   </div>
 </template>
 

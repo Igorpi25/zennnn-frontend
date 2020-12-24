@@ -134,7 +134,7 @@
               </td>
               <td :colspan="activeTab === 2 ? 2 : 3">
                 <!-- <div class="flex">
-                  <Button
+                  <Btn
                     outlined
                     borderless
                     @click.prevent="createProduct"
@@ -143,7 +143,7 @@
                       <i class="zi-plus text-xl block align-middle" />
                     </template>
                     <span>{{ $t('shipping.addProduct') }}</span>
-                  </Button>
+                  </Btn>
                 </div> -->
               </td>
 

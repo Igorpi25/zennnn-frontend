@@ -38,7 +38,7 @@
           </template>
         </TextField>
         <div class="flex w-full sm:w-auto items-center justify-end" style="min-width: 165px;">
-          <v-menu
+          <Menu
             v-model="filterMenu"
             :content-class="'locale-picker__menu'"
             :nudge-bottom="25"
@@ -91,7 +91,7 @@
                 </li>
               </ul>
             </template>
-          </v-menu>
+          </Menu>
         </div>
       </div>
 
@@ -124,14 +124,14 @@
                   <path d="M4.9 19.2561V17.6561C3.8 17.5561 2.7 17.2561 2 16.9561L2.5 14.9561C3.2 15.3561 4.2 15.7561 5.4 15.7561C6.4 15.7561 7.1 15.3561 7.1 14.6561C7.1 13.9561 6.5 13.5561 5.3 13.1561C3.5 12.5561 2.2 11.6561 2.2 9.9561C2.1 8.4561 3.2 7.2561 5 6.8561V5.2561H6.7V6.7561C7.9 6.7561 8.6 7.0561 9.2 7.2561L8.7 9.2561C8.3 9.0561 7.5 8.6561 6.2 8.6561C5.1 8.6561 4.7 9.1561 4.7 9.6561C4.7 10.2561 5.3 10.5561 6.8 11.1561C8.9 11.8561 9.7 12.8561 9.7 14.3561C9.7 15.8561 8.6 17.1561 6.6 17.5561V19.2561H4.9Z" fill="#404040"/>
                   <path d="M17 7.2561C14.2 7.2561 12 9.4561 12 12.2561C12 15.0561 14.2 17.2561 17 17.2561C19.8 17.2561 22 15.0561 22 12.2561C22 9.4561 19.8 7.2561 17 7.2561ZM20.2 12.8561H17.6V15.5561H16.4V12.8561H13.8V11.6561H16.4V9.0561H17.6V11.7561H20.2V12.8561Z" fill="#404040"/>
                 </svg>
-                <v-tooltip top>
+                <Tooltip top>
                   <template v-slot:activator="{ on }">
                     <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
                   </template>
                   <span>
                     {{ $t('deals.moneyRecieved') }}
                   </span>
-                </v-tooltip>
+                </Tooltip>
               </div>
             </td>
           </template>
@@ -143,14 +143,14 @@
                   <path d="M17 7.2561C14.2 7.2561 12 9.4561 12 12.2561C12 15.0561 14.2 17.2561 17 17.2561C19.8 17.2561 22 15.0561 22 12.2561C22 9.4561 19.8 7.2561 17 7.2561ZM19.7 12.8561H14.3V11.6561H19.7V12.8561Z" fill="#404040"/>
                 </svg>
 
-                <v-tooltip top>
+                <Tooltip top>
                   <template v-slot:activator="{ on }">
                     <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
                   </template>
                   <span>
                     {{ $t('deals.expensesPaid') }}
                   </span>
-                </v-tooltip>
+                </Tooltip>
               </div>
             </td>
           </template>
@@ -164,27 +164,27 @@
                 </svg>
               </span>
 
-              <v-tooltip top max-width="158">
+              <Tooltip top max-width="158">
                 <template v-slot:activator="{ on }">
                   <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
                 </template>
                 <span>
                   {{ $t('deals.turnoverHint') }}
                 </span>
-              </v-tooltip>
+              </Tooltip>
             </td>
           </template>
           <template v-slot:[`header.margin-content`]="{ header }">
             <td :width="header.width + 'px'">
               <span class="inline-block align-middle mr-xs">%</span>
-              <v-tooltip top max-width="158">
+              <Tooltip top max-width="158">
                 <template v-slot:activator="{ on }">
                   <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
                 </template>
                 <span>
                   {{ $t('deals.marginHint') }}
                 </span>
-              </v-tooltip>
+              </Tooltip>
             </td>
           </template>
           <template v-slot:[`header.hasNewComment`]="{ header }">
@@ -194,12 +194,12 @@
             <span>
               {{ header.text }}
             </span>
-            <v-tooltip top max-width="220">
+            <Tooltip top max-width="220">
               <template v-slot:activator="{ on }">
                 <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
               </template>
               <span v-html="$t('deals.numberHint')" />
-            </v-tooltip>
+            </Tooltip>
           </template>
           <template v-slot:items="{ items }">
             <template v-for="(item) in items">
@@ -247,7 +247,7 @@
                 <td class="truncate pr-2">{{ item.client.contactPersonFullName }}</td>
                 <td class="truncate pl-3">
                   <span>
-                    <v-tooltip top>
+                    <Tooltip top>
                       <template v-slot:activator="{ on }">
                         <span v-on="on">
                           <i class="zi-number text-2xl text-gray-200 align-middle" />
@@ -259,7 +259,7 @@
                       <span>
                         {{ item.specNo }}
                       </span>
-                    </v-tooltip>
+                    </Tooltip>
                   </span>
                 </td>
                 <td>
@@ -300,7 +300,7 @@
         v-if="items.length === 0 && loading"
         class="text-center text-gray-200 leading-tight py-4"
       >
-        <v-progress-circular
+        <Progress
           indeterminate
           size="24"
           width="2"
@@ -311,7 +311,7 @@
         v-html="$t('deals.noData')"
         class="text-center text-gray-200 leading-tight py-4"
       />
-      <Button
+      <Btn
         v-if="canCreateSpec"
         block
         outlined
@@ -322,9 +322,9 @@
           <i class="zi-bag text-gray-100 text-2xl" />
         </template>
         <span>{{ $t('deals.createDeal') }}</span>
-      </Button>
+      </Btn>
     </div>
-    <v-dialog
+    <Modal
       v-if="canCreateSpec"
       v-model="createSpecDialog"
       max-width="458"
@@ -371,7 +371,7 @@
         <div
           class="flex justify-between px-8 pb-8"
         >
-          <Button
+          <Btn
             :disabled="createWithClientLoading"
             :loading="createWithoutClientLoading"
             outlined
@@ -379,15 +379,15 @@
             @click="createSpec(true)"
           >
             {{ $t('deals.createSpecDialogWithoutClient') }}
-          </Button>
-          <Button
+          </Btn>
+          <Btn
             v-if="createSpecClient"
             :disabled="createWithoutClientLoading"
             :loading="createWithClientLoading"
             @click="createSpec()"
           >
             {{ $t('deals.createSpecDialogAdd') }}
-          </Button>
+          </Btn>
         </div>
         <span
           class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
@@ -396,8 +396,8 @@
           <i class="zi-close" />
         </span>
       </div>
-    </v-dialog>
-    <v-dialog
+    </Modal>
+    <Modal
       v-if="canCreateSpec"
       ref="clientDialog"
       v-model="clientDialog"
@@ -414,7 +414,7 @@
         @close="clientDialog = false"
         @create="setCreateSpecClient"
       />
-    </v-dialog>
+    </Modal>
   </div>
 </template>
 

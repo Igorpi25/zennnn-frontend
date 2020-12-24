@@ -35,14 +35,14 @@
           >
             {{ $t('signup.signin') }}
           </router-link>
-          <Button
+          <Btn
             :to="{ name: 'signup' }"
             outlined
             class="text-center leading-none"
             merge-class="border-blue-500 hover:text-blue-600"
           >
             {{ $t('signup.submit') }}
-          </Button>
+          </Btn>
         </div>
       </div>
     </header>
@@ -71,9 +71,9 @@
           <span v-html="$t('pricing.oneUsdTitle')" class="font-bold mr-1" />
           <span>{{ $t('pricing.oneUsdSubtitle') }}</span>
         </div>
-        <Button :to="{ name: 'signup' }" class="flex-shrink-0 ml-4">
+        <Btn :to="{ name: 'signup' }" class="flex-shrink-0 ml-4">
           {{ $t('signup.submit') }}
-        </Button>
+        </Btn>
       </div>
       <div class="pb-20">
         <PriceList

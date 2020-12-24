@@ -36,7 +36,7 @@
         {{ cardElementError }}
       </div>
     </div>
-    <v-expand-transition>
+    <ExpandTransition>
       <div v-show="paymentMethod === 'NEW' || !defaultPaymentMethodId">
         <div class="text-black">
           <h3 class="flex items-center justify-between text-2xl pb-4">
@@ -135,7 +135,7 @@
           </div>
         </template>
       </div>
-    </v-expand-transition>
+    </ExpandTransition>
     <div class="flex bg-light-gray-100 border-t border-light-gray-400 mt-10 py-10">
       <Checkbox
         v-if="isNewPaymentMethod"
@@ -147,7 +147,7 @@
           {{ $t('payment.setAsDefault') }}
         </span>
       </Checkbox>
-      <Button
+      <Btn
         v-else
         outlined
         min-width="120"
@@ -155,15 +155,15 @@
         @click="$emit('back')"
       >
         {{ isNewPaymentMethod ? $t('action.cancel') : $t('payment.back') }}
-      </Button>
+      </Btn>
       <div class="flex-grow" />
-      <Button
+      <Btn
         :loading="loading"
         min-width="120"
         @click="onCardFormSubmit"
       >
         {{ isNewPaymentMethod ? $t('payment.add') : $t('payment.buy') }}
-      </Button>
+      </Btn>
     </div>
   </div>
 </template>

@@ -35,7 +35,7 @@
       />
     </Form>
     <div>
-      <Button
+      <Btn
         :loading="loading"
         :disabled="formValidity"
         :merge-class="formValidity ? 'bg-gray-100 text-white cursor-not-allowed' : ''"
@@ -43,10 +43,10 @@
         @click="onSubmit"
       >
       {{ $t('pricing.send') }}
-      </Button>
+      </Btn>
     </div>
   </div>
-  <v-dialog
+  <Modal
     v-else
     v-model="dialog"
     max-width="458"
@@ -105,7 +105,7 @@
         />
       </Form>
       <div class="flex flex-wrap sm:flex-nowrap sm:justify-between">
-        <Button
+        <Btn
           block
           outlined
           class="mb-3 sm:mb-0 sm:mr-3"
@@ -113,8 +113,8 @@
           @click="dialog = false"
         >
           {{ $t('pricing.cancel') }}
-        </Button>
-        <Button
+        </Btn>
+        <Btn
           :loading="loading"
           :disabled="formValidity"
           :merge-class="formValidity ? 'bg-gray-100 text-white cursor-not-allowed' : ''"
@@ -123,10 +123,10 @@
           @click="onSubmit"
         >
         {{ $t('pricing.send') }}
-        </Button>
+        </Btn>
       </div>
     </div>
-  </v-dialog>
+  </Modal>
 </template>
 
 <script>

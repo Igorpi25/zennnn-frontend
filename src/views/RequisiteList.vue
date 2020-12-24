@@ -25,18 +25,18 @@
       <div class="font-semibold text-white text-2xl leading-tight whitespace-nowrap overflow-x-auto scrolling-touch pb-4">
         <span class="relative">
           {{ $t('requisites.title') }}
-          <v-fade-transition>
+          <transition name="fade-transition">
             <div
               v-if="loading"
               class="absolute right-0 -mr-6 inline-block text-gray-200"
             >
-              <v-progress-circular
+              <Progress
                 indeterminate
                 size="20"
                 width="2"
               />
             </div>
-          </v-fade-transition>
+          </transition>
         </span>
         <router-link
           :to="{ name: 'dictionary', params: { orgId } }"

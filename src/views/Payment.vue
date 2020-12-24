@@ -235,7 +235,7 @@
           </div>
         </div>
       </div>
-      <v-expand-transition>
+      <ExpandTransition>
         <div v-show="selectedProduct && selectedProduct.name !== 'Premium'">
           <div class="border-b border-light-gray-400 my-16" />
           <PaymentCard
@@ -248,7 +248,7 @@
             @complete="onComplete"
           />
         </div>
-      </v-expand-transition>
+      </ExpandTransition>
     </main>
     <!-- MAIN / -->
     <Footer />

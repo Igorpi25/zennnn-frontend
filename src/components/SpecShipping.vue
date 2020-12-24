@@ -61,7 +61,7 @@
     </div>
 
     <!-- Containers -->
-    <v-slide-y-transition hide-on-leave>
+    <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
       <div
         v-if="!hideContainers"
         class="relative sm:flex bg-gray-700 rounded-md overflow-hidden"
@@ -132,7 +132,7 @@
           <slot name="actions" />
         </div>
       </div>
-    </v-slide-y-transition>
+    </transition>
 
   </div>
 </template>

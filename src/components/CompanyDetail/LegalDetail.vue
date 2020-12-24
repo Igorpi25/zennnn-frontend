@@ -6,12 +6,12 @@
           {{ $t('companyDetail.legalDetail') }}
         </span>
         <span class="text-gray-200 mr-1">{{ titleDesc }}</span>
-        <v-tooltip top max-width="332" nudge-right="136">
+        <Tooltip top max-width="332" nudge-right="136">
           <template v-slot:activator="{ on }">
             <i class="zi-help align-middle text-base text-blue-500 cursor-pointer" v-on="on" />
           </template>
           <span v-html="$t('companyDetail.legalDetailHint')" />
-        </v-tooltip>
+        </Tooltip>
       </div>
       <div>
         <button
@@ -23,7 +23,7 @@
         </button>
       </div>
     </div>
-    <v-expand-transition>
+    <ExpandTransition>
       <div v-show="expanded" class="flex flex-wrap pt-2">
         <div class="w-full lg:w-1/2 lg:pr-5">
           <div class="pb-2">
@@ -335,7 +335,7 @@
           </div>
         </div>
       </div>
-    </v-expand-transition>
+    </ExpandTransition>
   </div>
 </template>
 

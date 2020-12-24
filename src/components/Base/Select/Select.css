@@ -1,0 +1,98 @@
+@layer components {
+  .select {
+    @apply relative transition-opacity duration-75 ease-in;
+  }
+  .select--disabled {
+    @apply opacity-40;
+  }
+
+  .select__control {
+    @apply relative flex items-center;
+    @apply transition-colors-and-opacity duration-100 ease-in-out;
+    @apply h-10 bg-white dark:bg-gray-800 rounded px-2;
+  }
+  .select__control--solo {
+    @apply bg-transparent dark:bg-transparent;
+  }
+  .select__control--solo,
+  .select__control--dense {
+    @apply h-8;
+  }
+  .select__control--empty {
+    @apply bg-white dark:bg-gray-800;
+  }
+  .select--focused .select__control--solo {
+    @apply bg-white dark:bg-gray-800;
+  }
+  .select--focused .select__control {
+    @apply ring-1 ring-blue-500;
+  }
+  .select--disabled .select__control {
+    @apply cursor-not-allowed;
+  }
+  .select__control--not-prepend {
+    @apply pl-sm;
+  }
+  .select__control--not-append {
+    @apply pr-sm;
+  }
+  .select--has-error .select__control {
+    @apply ring-1 ring-yellow-300;
+  }
+  .select__control--is-active {
+    @apply ring-1 ring-blue-500;
+  }
+  .select__control--is-menu-active {
+    @apply rounded-b-none;
+  }
+
+  .select__input {
+    @apply w-full appearance-none focus:outline-none truncate;
+    @apply transition-colors duration-100 ease-out;
+    @apply bg-transparent placeholder-gray-100 dark:placeholder-gray-200;
+    @apply dark:text-white disabled:text-gray-200;
+  }
+  .select__input--solo {
+    @apply text-blue-500 dark:text-blue-500;
+  }
+  .select--loading .select__input {
+    @apply cursor-wait;
+  }
+  .select--disabled .select__input {
+    @apply cursor-not-allowed;
+  }
+
+  .select__control__input {
+    @apply flex-grow flex items-center;
+  }
+
+  /* smaller placeholder font */
+  .select__input::placeholder {
+    font-size: 14px;
+  }
+
+  .listbox__option {
+    @apply px-4;
+  }
+  .listbox__option,
+  .menu__item.listbox__option {
+    @apply dark:hover:bg-gray-600;
+  }
+  .menu__item--selected.listbox__option {
+    @apply dark:bg-transparent;
+    @apply dark:hover:bg-gray-600;
+  }
+  .menu__item--active.listbox__option {
+    @apply dark:bg-gray-700 dark:hover:bg-gray-700;
+  }
+  .menu__item--disabled.listbox__option {
+    @apply hover:bg-transparent dark:hover:bg-transparent;
+  }
+
+  .listbox--searching .listbox__option:not(.menu__item--disabled) {
+    @apply text-gray-200 dark:text-gray-200;
+  }
+  .listbox--searching .listbox__option:not(.menu__item--disabled) .listbox__option__mask {
+    @apply text-black dark:text-white;
+  }
+}

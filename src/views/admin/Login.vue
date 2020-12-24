@@ -62,17 +62,17 @@
               </div>
             </template>
           </TextField>
-          <Button
+          <Btn
             :loading="loading"
             class="w-full sm:w-48"
             @click="onSubmit"
           >
             {{ $t('signin.submit') }}
-          </Button>
+          </Btn>
         </Form>
       </div>
     </div>
-    <v-dialog
+    <Modal
       v-model="compliteFormDialog"
       max-width="385"
       persistent
@@ -116,31 +116,31 @@
             </div>
           </template>
         </TextField>
-        <Button
+        <Btn
           :loading="compliteLoading"
           class="w-full sm:w-48"
           @click="completeNewPassword"
         >
           {{ $t('signin.submit') }}
-        </Button>
+        </Btn>
       </Form>
-    </v-dialog>
+    </Modal>
   </div>
 </template>
 
 <script>
 import LocalePicker from '../../components/LocalePicker.vue'
+import Btn from '../../components/Base/Btn'
 import Form from '../../components/Base/Form'
 import TextField from '../../components/Base/TextField'
-import Button from '../../components/Base/Button'
 
 export default {
   name: 'Login',
   components: {
     LocalePicker,
+    Btn,
     Form,
     TextField,
-    Button,
   },
   data () {
     return {

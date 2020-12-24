@@ -1,7 +1,7 @@
 <template>
   <div class="modal">
 
-    <v-dialog
+    <Modal
       v-model="requisiteList"
       max-width="400"
     >
@@ -10,9 +10,9 @@
         @openRequisiteDialog="openRequisiteDialog"
         @chooseRequisite="chooseRequisite"
       />
-    </v-dialog>
+    </Modal>
 
-    <v-dialog
+    <Modal
       v-model="saveBeforeClose"
       max-width="520"
     >
@@ -23,9 +23,9 @@
         @cancel="cancel"
         @save="saveContractChanges"
       />
-    </v-dialog>
+    </Modal>
 
-    <v-dialog
+    <Modal
       ref="requisiteDialog"
       v-model="requisiteDialog"
       scrollable
@@ -40,7 +40,7 @@
         @close="requisiteDialog = false"
         @create="setCreatedRequisite"
       />
-    </v-dialog>
+    </Modal>
 
     <div class="modal-header">
       <Icon size="28">
@@ -67,14 +67,14 @@
                 hide-details
               />
             </span>
-            <v-tooltip top max-width="600">
+            <Tooltip top max-width="600">
               <template v-slot:activator="{ on }">
                 <span class="paper-title__number" v-on="on">A0000-26082020-1</span>
               </template>
               <span class="text-sm">
                 {{ $t('contract.specNumber') }}
               </span>
-            </v-tooltip>
+            </Tooltip>
           </div>
           <div class="paper-title__info">
             <span>
@@ -84,14 +84,14 @@
                 :placeholder="$t('contract.location')"
               />
             </span>
-            <v-tooltip top max-width="340">
+            <Tooltip top max-width="340">
               <template v-slot:activator="{ on }">
                 <span class="mt-8 sm:mt-0" v-on="on">{{ $t('contract.date') }}</span>
               </template>
               <span class="text-sm">
                 {{ $t('contract.paperDate') }}
               </span>
-            </v-tooltip>
+            </Tooltip>
           </div>
           <div class="paper-title__textfield mt-8">
             <TextArea
@@ -184,7 +184,7 @@
               </span>
             </div>
           </div>
-          <Button
+          <Btn
             outlined
             class="mt-4"
             @click="addParagraph(contract.items, index)"
@@ -193,10 +193,10 @@
               <Icon size="16">{{ icons.mdiPlusCircleOutline }}</Icon>
             </template>
             <span class="text-sm">{{ $t('contract.addParagraph') }}</span>
-          </Button>
+          </Btn>
         </div>
 
-        <Button
+        <Btn
           outlined
           class="mt-10"
           @click="addHeading(contract.items)"
@@ -205,7 +205,7 @@
             <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
           </template>
           <span>{{ $t('contract.addHeading') }}</span>
-        </Button>
+        </Btn>
 
         <div class="paper-requisites mt-10">
           <div class="paper-requsites__title heading">
@@ -304,14 +304,14 @@
                 solo
               />
             </span>
-              <v-tooltip top max-width="340">
+              <Tooltip top max-width="340">
                 <template v-slot:activator="{ on }">
                   <span v-on="on">{{ $t('contract.date') }}</span>
                 </template>
                 <span class="text-sm">
                   {{ $t('contract.paperDate') }}
                 </span>
-              </v-tooltip>
+              </Tooltip>
             </div>
           </div>
         <div class="paper-delivery-item mt-10">
@@ -396,7 +396,7 @@
               <i class="zi-close text-2xl" title="Remove" />
             </span>
           </div>
-          <Button
+          <Btn
             outlined
             class="mt-4"
             @click="addParagraph(contract.specItems, index + 1)"
@@ -405,10 +405,10 @@
               <Icon size="16">{{ icons.mdiPlusCircleOutline }}</Icon>
             </template>
             <span class="text-sm">{{ $t('contract.addParagraph') }}</span>
-          </Button>
+          </Btn>
         </div>
 
-        <Button
+        <Btn
           outlined
           class="mt-10"
           @click="addHeading(contract.specItems)"
@@ -417,17 +417,17 @@
             <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
           </template>
           <span>{{ $t('contract.addHeading') }}</span>
-        </Button>
+        </Btn>
       </div>
 
     </div>
     <div class="modal-footer">
-      <Button
+      <Btn
         class="mr-8"
         @click="update"
       >
         <span>{{ $t('action.save') }}</span>
-      </Button>
+      </Btn>
     </div>
     <span
       class="close-btn"

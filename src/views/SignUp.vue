@@ -124,14 +124,14 @@
           >
             <span class="ml-3 float-left" v-html="policyHtml" />
           </Checkbox>
-          <Button
+          <Btn
             :disabled="formValidity"
             :loading="loading"
             class="w-full sm:w-48"
             @click="onSubmit"
           >
             {{ $t('signup.submit') }}
-          </Button>
+          </Btn>
         </Form>
       </div>
       <div class="py-5 md:pb-8 lg:pl-24">

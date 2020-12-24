@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BtnToggle.js should render component and match snapshot 1`] = `<div class="btn-toggle"><button class="btn-toggle__item" style="min-width: 130px;">Item 1</button></div>`;
+
+exports[`BtnToggle.js should render component with disabled item and match snapshot 1`] = `<div class="btn-toggle"><button class="btn-toggle__item" style="min-width: 130px;">Item 1</button><button class="btn-toggle__item" style="min-width: 130px;" disabled="">Item 2</button></div>`;
+
+exports[`BtnToggle.js should render component with disabled prop and match snapshot 1`] = `<div class="btn-toggle btn-toggle--disabled"><button class="btn-toggle__item" style="min-width: 130px;" disabled="">Item 1</button><button class="btn-toggle__item" style="min-width: 130px;" disabled="">Item 2</button></div>`;

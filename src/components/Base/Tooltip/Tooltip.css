@@ -1,0 +1,12 @@
+@layer components {
+  .tooltip__box {
+    @apply pointer-events-none !important;
+    @apply shadow-2xl dark:shadow-lg;
+    @apply text-gray-400;
+  }
+  .tooltip__content {
+    @apply relative z-1 rounded-md bg-gray-400;
+    @apply text-sm leading-tight text-light-gray-500 dark:text-gray-100;
+    @apply p-5;
+  }
+}

@@ -118,7 +118,7 @@
         />
       </div>
       <div v-if="create" class="w-full pt-9">
-        <Button
+        <Btn
           :loading="createLoading"
           block
           outlined
@@ -126,7 +126,7 @@
           @click="$emit('create')"
         >
           {{ $t('companyDetail.addBankDetail') }}
-        </Button>
+        </Btn>
       </div>
     </div>
   </div>

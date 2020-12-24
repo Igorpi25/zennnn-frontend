@@ -17,13 +17,13 @@
           >
             {{ $t('signup.signin') }}
           </router-link>
-          <Button
+          <Btn
             :to="{ name: 'signup' }"
             outlined
             class="text-center leading-none"
           >
             {{ $t('signup.submit') }}
-          </Button>
+          </Btn>
         </div>
       </div>
     </header>
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="flex justify-center">
-        <Button
+        <Btn
           :to="{ name: 'signup' }"
           class="text-center leading-none"
         >
@@ -55,12 +55,12 @@
             <span>{{ $t('home.cty') }}</span>
             <i class="zi-arrow-right text-lg ml-sm" />
           </div>
-        </Button>
+        </Btn>
       </div>
       <div class="relative pt-8 md:pt-16 mt-8 md:mt-0">
         <img width="296" src="/static/img/home-list.png" class="absolute top-0 right-0 home-list">
         <div class="px-4 sm:px-18">
-          <v-img
+          <Image
             :aspect-ratio="1.6"
             src="/static/img/home-main.png"
             alt="image"
@@ -81,7 +81,7 @@
         <div class="w-full lg:w-1/2 lg:pr-md pb-12 lg:pb-0">
           <router-link to="/about" class="group">
             <div class="relative">
-              <v-img
+              <Image
                 :aspect-ratio="2.5"
                 src="/static/img/home-banner-1.png"
                 contain
@@ -105,7 +105,7 @@
         <div class="w-full lg:w-1/2 lg:pl-md">
           <router-link to="/about#video" class="group">
             <div class="relative">
-              <v-img
+              <Image
                 :aspect-ratio="2.5"
                 src="/static/img/home-banner-2.png"
                 contain
@@ -170,12 +170,16 @@
 </template>
 
 <script>
+import Btn from '../components/Base/Btn'
+import Image from '../components/Base/Image'
 import Footer from '../components/Footer.vue'
 import LocalePicker from '../components/LocalePicker.vue'
 
 export default {
   name: 'Home',
   components: {
+    Btn,
+    Image,
     Footer,
     LocalePicker,
   },

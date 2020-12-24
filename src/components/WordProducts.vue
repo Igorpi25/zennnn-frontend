@@ -21,9 +21,9 @@
         </label>
       </div>
     </div>
-    <v-expand-transition>
+    <ExpandTransition>
       <div v-if="selected.length > 0" class="w-full flex justify-end pt-3 pb-2">
-        <Button
+        <Btn
           :loading="addProductsLoading"
           min-width="100px"
           merge-class="h-8 text-sm"
@@ -31,8 +31,8 @@
           @click="addProductsDialog = true"
         >
           {{ $t('words.addToWord') }}
-        </Button>
-        <Button
+        </Btn>
+        <Btn
           :loading="createWordLoading"
           min-width="100px"
           merge-class="h-8 text-sm ml-3"
@@ -41,9 +41,9 @@
           @click="newWordDialog = true"
         >
           {{ $t('words.newWord') }}
-        </Button>
+        </Btn>
       </div>
-    </v-expand-transition>
+    </ExpandTransition>
     <WordDialog
       v-model="newWordDialog"
       :item="word"
@@ -54,7 +54,7 @@
       submit-result
       @update="createWordWithProducts"
     />
-    <v-dialog
+    <Modal
       v-model="addProductsDialog"
       :max-width="458"
     >
@@ -94,7 +94,7 @@
             </Select>
           </div>
           <div class="flex justify-between pt-8">
-            <Button
+            <Btn
               :disabled="addProductsLoading"
               min-width="120"
               outlined
@@ -102,8 +102,8 @@
               @click="addProductsDialog = false"
             >
               <span>{{ $t('action.cancel') }}</span>
-            </Button>
-            <Button
+            </Btn>
+            <Btn
               :loading="addProductsLoading"
               :disabled="!selectedItemId"
               merge-class="h-10 text-sm"
@@ -111,7 +111,7 @@
               @click="addProductsToWord(selectedItemId)"
             >
               <span>{{ $t('action.add') }}</span>
-            </Button>
+            </Btn>
           </div>
         </div>
         <span
@@ -121,7 +121,7 @@
           <i class="zi-close" />
         </span>
       </div>
-    </v-dialog>
+    </Modal>
   </div>
 </template>
 

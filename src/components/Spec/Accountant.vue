@@ -14,18 +14,18 @@
           <span class="pr-6">
             {{ $t('shipping.title') }}
           </span>
-          <v-fade-transition>
+          <transition name="fade-transition">
             <div
               v-if="loading"
               class="absolute top-0 right-0 text-gray-200"
             >
-              <v-progress-circular
+              <Progress
                 indeterminate
                 size="20"
                 width="2"
               />
             </div>
-          </v-fade-transition>
+          </transition>
         </h1>
         <div class="text-gray-300">
           <span v-if="spec.client">
@@ -100,7 +100,7 @@
     </div>
 
     <!-- <div class="flex pt-5">
-      <Button
+      <Btn
         outlined
         @click="createInvoice"
       >
@@ -108,7 +108,7 @@
           <i class="zi-plus text-lg block align-middle" />
         </template>
         <span>{{ $t('shipping.addInvoice') }}</span>
-      </Button>
+      </Btn>
       <div class="flex-grow" />
       <Comments
         :items="spec.comments"

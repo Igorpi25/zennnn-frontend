@@ -10,21 +10,21 @@
           <p>{{ $t('invitation.hint') }}</p>
         </div>
         <div class="flex items-center justify-center">
-          <Button
+          <Btn
             :loading="acceptLoading || declineLoading"
             outlined
             class="mx-1"
             @click="declineInvitation"
           >
             {{ $t('invitation.decline') }}
-          </Button>
-          <Button
+          </Btn>
+          <Btn
             :loading="acceptLoading || declineLoading"
             class="mx-1"
             @click="acceptInvitation"
           >
             {{ $t('invitation.accept') }}
-          </Button>
+          </Btn>
         </div>
       </div>
 

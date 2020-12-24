@@ -14,7 +14,7 @@
         </button>
       </div>
     </div>
-    <v-expand-transition>
+    <ExpandTransition>
       <div v-show="expanded">
         <div
           v-if="items.length > 0"
@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="w-full lg:w-1/2 pt-10 pr-5">
-          <Button
+          <Btn
             :loading="createLoading"
             block
             outlined
@@ -47,10 +47,10 @@
             @click="addData"
           >
             {{ $t('companyDetail.addBranch') }}
-          </Button>
+          </Btn>
         </div>
       </div>
-    </v-expand-transition>
+    </ExpandTransition>
   </div>
 </template>
 
