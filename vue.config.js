@@ -79,7 +79,7 @@ module.exports = {
   //   //
   //   config.plugin('prefetch-index').tap(options => {
   //     options[0].fileBlacklist = options[0].fileBlacklist || [/\.map/]
-  //     options[0].fileBlacklist.push(/(pdfFonts|pdfMake|intl)(.)+?\.js$/)
+  //     options[0].fileBlacklist.push(/(pdfFonts|pdfMake)(.)+?\.js$/)
   //     return options
   //   })
   // },

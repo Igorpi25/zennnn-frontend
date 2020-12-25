@@ -67,3 +67,7 @@ For build `vfs_fonts.js` with custom fonts, see [docs](https://pdfmake.github.io
 For print in `zh-Hans` used custom font `NotoSansCJKsc`, for `zh-Hant` used `NotoSansCJKtc`, others used `MyriadPro`.
 Builded by `gulp buildFonts` custom fonts files for Noto can't import from `.js` files (perhaps due to file size ~44MB). Custom fonts for Noto generated with custom script, to `.json` file and loaded from s3, path to files `<process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME>/pdf/vfs/vfs_fonts_<FONT NAME>.json`.
 TODO: not work `.open()` method with Noto font, blocked by browser.
+
+### Browser support
+IE9/IE10 - not supported.
+IE11/Safari 9 - some utilities and Intl: NumberFormat need polyfills.

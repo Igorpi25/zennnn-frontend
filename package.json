@@ -27,7 +27,6 @@
     "deep-equal": "^2.0.5",
     "deepmerge": "^4.2.2",
     "graphql": "^15.4.0",
-    "intl": "^1.2.5",
     "localforage": "^1.9.0",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
