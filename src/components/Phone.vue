@@ -37,7 +37,7 @@
     <template v-slot:prepend>
       <img
         v-if="codeInput"
-        :src="require(`@/assets/img/flags/square/${codeInput}.svg`)"
+        :src="require(`@/assets/img/flags/square/${codeInput}.svg`).default"
         class="w-6 flex-shrink-0 mr-2"
         aria-hidden="true"
       >
@@ -73,7 +73,7 @@
     <template v-slot:item="{ item }">
       <div class="flex items-center px-2">
         <img
-          :src="require(`@/assets/img/flags/square/${item.value}.svg`)"
+          :src="require(`@/assets/img/flags/square/${item.value}.svg`).default"
           :alt="item.value"
           class="w-6 flex-shrink-0 mr-2"
           aria-hidden="true"

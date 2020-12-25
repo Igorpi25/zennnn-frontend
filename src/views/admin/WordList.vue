@@ -195,7 +195,7 @@
             <template v-slot:[`header.en-content`]="{ header }">
               <span class="inline-flex items-center pt-3">
                 <img
-                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`)"
+                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
                   class="h-6 w-6 rounded-full mr-2"
                 >
                 <span>{{ header.text }}</span>
@@ -204,7 +204,7 @@
             <template v-slot:[`header.fr-content`]="{ header }">
               <span class="inline-flex items-center pt-3">
                 <img
-                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`)"
+                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
                   class="h-6 w-6 rounded-full mr-2"
                 >
                 <span>{{ header.text }}</span>
@@ -213,7 +213,7 @@
             <template v-slot:[`header.zh-Hans-content`]="{ header }">
               <span class="inline-flex items-center pt-3">
                 <img
-                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`)"
+                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
                   class="h-6 w-6 rounded-full mr-2"
                 >
                 <span>{{ header.text }}</span>
@@ -222,7 +222,7 @@
             <template v-slot:[`header.zh-Hant-content`]="{ header }">
               <span class="inline-flex items-center pt-3">
                 <img
-                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`)"
+                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
                   class="h-6 w-6 rounded-full mr-2"
                 >
                 <span>{{ header.text }}</span>
@@ -231,7 +231,7 @@
             <template v-slot:[`header.ru-content`]="{ header }">
               <span class="inline-flex items-center pt-3">
                 <img
-                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`)"
+                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
                   class="h-6 w-6 rounded-full mr-2"
                 >
                 <span>{{ header.text }}</span>
@@ -240,7 +240,7 @@
             <template v-slot:[`header.uk-content`]="{ header }">
               <span class="inline-flex items-center pt-3">
                 <img
-                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`)"
+                  :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
                   class="h-6 w-6 rounded-full mr-2"
                 >
                 <span>{{ header.text }}</span>

@@ -12,7 +12,7 @@
           class="flex items-center cursor-pointer pr-1"
         >
           <img
-            :src="require(`@/assets/img/flags/locale/${$i18n.locale}.svg`)"
+            :src="require(`@/assets/img/flags/locale/${locale}.svg`).default"
             :class="[
               'h-6 w-6 rounded-full mr-1',
             ]"
@@ -43,7 +43,7 @@
             @click="changeLocale(locale.value)"
           >
             <img
-              :src="require(`@/assets/img/flags/locale/${locale.value}.svg`)"
+              :src="require(`@/assets/img/flags/locale/${locale.value}.svg`).default"
               :alt="locale.text"
               class="h-6 w-6 rounded-full mr-2"
             >
@@ -56,6 +56,9 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
 import { CURRENT_LOCALE_STORE_KEY, LOCALES_LIST } from '../config/globals'
 
 import Menu from './Base/Menu'
@@ -70,22 +73,22 @@ export default {
     },
     light: Boolean,
   },
-  data () {
-    return {
-      menu: false,
+  setup () {
+    const menu = ref(false)
+    const { locale } = useI18n()
+
+    const changeLocale = (val) => {
+      localStorage.setItem(CURRENT_LOCALE_STORE_KEY, val)
+      locale.value = val
+      menu.value = false
     }
-  },
-  computed: {
-    locales () {
-      return LOCALES_LIST
-    },
-  },
-  methods: {
-    changeLocale (locale) {
-      localStorage.setItem(CURRENT_LOCALE_STORE_KEY, locale)
-      this.$i18n.locale = locale
-      this.menu = false
-    },
+
+    return {
+      menu,
+      locale,
+      locales: LOCALES_LIST,
+      changeLocale,
+    }
   },
 }
 </script>

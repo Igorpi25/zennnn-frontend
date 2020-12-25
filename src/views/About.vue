@@ -278,7 +278,7 @@
             <div class="flex flex-col">
               <div class="pb-10">
                 <img
-                  :src="require(`@/assets/img/${item.icon}`)"
+                  :src="require(`@/assets/img/${item.icon}`).default"
                   alt="icon"
                 >
               </div>
@@ -396,7 +396,7 @@
             <div class="flex flex-col">
               <div class="pb-10">
                 <img
-                  :src="require(`@/assets/img/${item.icon}`)"
+                  :src="require(`@/assets/img/${item.icon}`).default"
                   alt="icon"
                 >
               </div>
@@ -495,7 +495,7 @@
             <div class="flex flex-col">
               <div class="pb-10">
                 <img
-                  :src="require(`@/assets/img/${item.icon}`)"
+                  :src="require(`@/assets/img/${item.icon}`).default"
                   alt="icon"
                 >
               </div>
@@ -742,7 +742,7 @@
                   class="flex items-center bg-white text-black rounded-10 shadow-medium px-sm py-3"
                 >
                   <img
-                    :src="require(`@/assets/img/flags/rounded/${member.country}.svg`)"
+                    :src="require(`@/assets/img/flags/rounded/${member.country}.svg`).default"
                     :alt="member.country"
                     class="w-8 h-8 ml-1 mr-sm"
                   >

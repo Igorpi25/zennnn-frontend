@@ -135,7 +135,7 @@
             class="flex pb-6"
           >
             <div class="w-8 h-8 flex items-center flex-shrink-0">
-              <img :src="require(`@/assets/img/${item.icon}`)">
+              <img :src="require(`@/assets/img/${item.icon}`).default">
             </div>
             <div v-html="$t(`home.${item.path}`)" class="pl-4 pt-1" />
           </div>
@@ -147,7 +147,7 @@
             class="flex pb-6"
           >
             <div class="w-8 h-8 flex items-center flex-shrink-0">
-              <img :src="require(`@/assets/img/${item.icon}`)">
+              <img :src="require(`@/assets/img/${item.icon}`).default">
             </div>
             <div v-html="$t(`home.${item.path}`)" class="pl-4 pt-1" />
           </div>
@@ -160,7 +160,7 @@
           :key="item.name"
           class="pb-16 px-2 sm:px-12"
         >
-          <img :src="require(`@/assets/img/${item.icon}`)" :alt="item.name">
+          <img :src="require(`@/assets/img/${item.icon}`).default" :alt="item.name">
         </div>
       </div>
     </main>

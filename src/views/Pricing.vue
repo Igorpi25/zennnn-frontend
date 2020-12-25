@@ -129,7 +129,7 @@
             class="text-center w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 pb-20 px-3"
           >
             <div class="w-12 h-12 flex items-center justify-center mx-auto text-blue-500">
-              <img :src="require(`@/assets/img/solid/${item.icon}`)">
+              <img :src="require(`@/assets/img/solid/${item.icon}`).default">
             </div>
             <div class="leading-tight text-gray-900 pt-4">
               <div v-html="item.title" />

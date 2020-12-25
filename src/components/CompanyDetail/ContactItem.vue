@@ -31,12 +31,12 @@
           >
             <template v-slot:prepend>
               <div class="w-6 inline-flex justify-center mr-2">
-                <img :src="require(`@/assets/img/contacts/${currentIcon}.svg`)">
+                <img :src="require(`@/assets/img/contacts/${currentIcon}.svg`).default">
               </div>
             </template>
             <template v-slot:item="{ item }">
               <div class="w-6 inline-flex justify-center ml-1 mr-12">
-                <img :src="require(`@/assets/img/contacts/${item.icon}.svg`)">
+                <img :src="require(`@/assets/img/contacts/${item.icon}.svg`).default">
               </div>
               <span class="text-gray-200">{{ item.text }}</span>
             </template>

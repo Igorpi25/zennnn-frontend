@@ -82,7 +82,7 @@
           <template v-slot:prepend>
             <img
               v-if="item.locale"
-              :src="require(`@/assets/img/flags/locale/${item.locale}.svg`)"
+              :src="require(`@/assets/img/flags/locale/${item.locale}.svg`).default"
               :alt="item.locale"
               class="h-6 w-6 rounded-full mr-4"
             >
@@ -94,7 +94,7 @@
           </template>
           <template v-slot:item="{ item }">
             <img
-              :src="require(`@/assets/img/flags/locale/${item.value}.svg`)"
+              :src="require(`@/assets/img/flags/locale/${item.value}.svg`).default"
               :alt="item.text"
               class="h-6 w-6 rounded-full mr-4"
             >
