@@ -193,12 +193,11 @@
 </template>
 
 <script>
+import { Scroll } from 'uipart'
 import Image from './Base/Image'
 import LoadingSpinner from './Base/LoadingSpinner'
 import ProductImage from './ProductImage.vue'
 import Comments from './Comments'
-
-import Scroll from '../directives/Scroll'
 
 import { ProductStatus } from '../graphql/enums'
 import { DEFAULT_CURRENCY } from '../config/globals'

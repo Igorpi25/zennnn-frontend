@@ -7,6 +7,8 @@ import {
   mdiChevronRight,
 } from '@mdi/js'
 
+import { Scroll } from 'uipart'
+
 import { GET_SPEC, GET_IS_SPEC_SYNC } from '../graphql/queries'
 import { UPDATE_INVOICE, CREATE_PRODUCT, CREATE_PRODUCT_WITH_INVOICE } from '../graphql/mutations'
 import {
@@ -15,8 +17,6 @@ import {
 } from '../graphql/enums'
 
 import { DEFAULT_CURRENCY } from '../config/globals'
-
-import Scroll from '../directives/Scroll'
 
 export default {
   directives: {
