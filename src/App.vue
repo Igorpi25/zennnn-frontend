@@ -1,10 +1,7 @@
 <template>
-  <!-- [data-app] for vuetify components -->
-  <div data-app="true" id="app">
-    <router-view/>
-    <!-- Root element of PhotoSwipe. Must have class pswp. -->
-    <!-- <PhotoSwipeWrapper /> -->
-  </div>
+  <router-view />
+  <!-- Root element of PhotoSwipe. Must have class pswp. -->
+  <!-- <PhotoSwipeWrapper /> -->
 </template>
 
 <script>
