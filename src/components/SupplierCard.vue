@@ -121,7 +121,7 @@
 import cloneDeep from 'clone-deep'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
 
 import { validateSupplier } from '../util/validation'
 
@@ -192,6 +192,9 @@ export default {
       item.value = cloneDeep(data)
     }
 
+    const createSupplierMutate = useMutation(CREATE_SUPPLIER)
+    const updateSupplierMutate = useMutation(UPDATE_SUPPLIER)
+
     return {
       item,
       supplierId,
@@ -199,6 +202,8 @@ export default {
       loading,
       getSupplier,
       setData,
+      createSupplierMutate,
+      updateSupplierMutate,
     }
   },
   data () {
@@ -246,10 +251,8 @@ export default {
 
         const variables = { orgId: this.orgId, input }
 
-        const response = await this.$apollo.mutate({
-          mutation: CREATE_SUPPLIER,
-          variables,
-        })
+        const response = await this.createSupplierMutate(variables)
+
         if (response && response.data) {
           const data = response.data.createSupplier
           if (this.isComponent) {
@@ -284,10 +287,8 @@ export default {
 
         const variables = { id: this.item.id, input }
 
-        const response = await this.$apollo.mutate({
-          mutation: UPDATE_SUPPLIER,
-          variables,
-        })
+        const response = await this.updateSupplierMutate(variables)
+
         if (response && response.data) {
           const data = response.data.updateSupplier
           if (this.isComponent) {

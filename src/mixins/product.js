@@ -1,4 +1,7 @@
 import { mdiChevronUp, mdiChevronDown, mdiClose } from '@mdi/js'
+
+import apolloClient from '../plugins/apollo'
+
 import {
   UPDATE_PRODUCT,
   UPDATE_PRODUCT_COST,
@@ -95,7 +98,7 @@ export default {
       try {
         const id = this.item.id
         this.updateLoading = id
-        await this.$apollo.mutate({
+        await apolloClient.mutate({
           mutation: UPDATE_PRODUCT,
           variables: { id, input },
           fetchPolicy: 'no-cache',
@@ -116,13 +119,12 @@ export default {
       }
     },
     async refetchSpec () {
-      const apolloClient = this.$apollo.provider.defaultClient
       try {
-        apolloClient.cache.writeQuery({
+        apolloClient.writeQuery({
           query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: true },
         })
-        await this.$apollo.query({
+        await apolloClient.query({
           query: GET_SPEC,
           variables: {
             id: this.specId,
@@ -132,7 +134,7 @@ export default {
       } catch (error) {
         this.$logger.warn('Error: ', error)
       } finally {
-        apolloClient.cache.writeQuery({
+        apolloClient.writeQuery({
           query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: false },
         })
@@ -142,7 +144,7 @@ export default {
       try {
         const id = this.item.id
         this.updateLoading = id
-        await this.$apollo.mutate({
+        await apolloClient.mutate({
           mutation: UPDATE_PRODUCT_COST,
           variables: { id, input },
           fetchPolicy: 'no-cache',
@@ -163,7 +165,7 @@ export default {
       try {
         const id = this.item.id
         this.updateLoading = id
-        await this.$apollo.mutate({
+        await apolloClient.mutate({
           mutation: UPDATE_PRODUCT_STORE,
           variables: { id, input },
           fetchPolicy: 'no-cache',
@@ -184,7 +186,7 @@ export default {
       try {
         const id = this.item.id
         this.updateLoading = id
-        await this.$apollo.mutate({
+        await apolloClient.mutate({
           mutation: UPDATE_PRODUCT_INFO,
           variables: { id, input },
           fetchPolicy: 'no-cache',
@@ -205,7 +207,7 @@ export default {
       try {
         const id = this.item.id
         this.updateLoading = id
-        await this.$apollo.mutate({
+        await apolloClient.mutate({
           mutation: UPDATE_PRODUCT_LINK,
           variables: { id, input },
           fetchPolicy: 'no-cache',
@@ -230,7 +232,7 @@ export default {
           return
         }
         this.deleteLoading = id
-        await this.$apollo.mutate({
+        await apolloClient.mutate({
           mutation: DELETE_PRODUCT,
           variables: { id },
         })

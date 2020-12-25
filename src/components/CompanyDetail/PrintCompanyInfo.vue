@@ -255,6 +255,8 @@
 </template>
 
 <script>
+import { useApolloClient } from '@vue/apollo-composable'
+
 import companyDetail from '../../mixins/clientDetail'
 import { UPDATE_COMPANY_BANK_DETAIL } from '../../graphql/mutations'
 
@@ -280,6 +282,14 @@ export default {
       type: Array,
       default: () => ([]),
     },
+  },
+  setup () {
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    return {
+      apolloClient,
+    }
   },
   data () {
     return {
@@ -314,7 +324,7 @@ export default {
     async updateRequisiteBankDetail (companyId, id, input) {
       try {
         this.updateLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: UPDATE_COMPANY_BANK_DETAIL,
           variables: { companyId, id, input },
         })

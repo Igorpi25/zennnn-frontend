@@ -319,6 +319,8 @@
 </template>
 
 <script>
+import { useApolloClient } from '@vue/apollo-composable'
+
 import InvoiceHeader from '../InvoiceHeader.vue'
 import InvoiceContent from '../InvoiceContent.vue'
 import SpecSummary from '../SpecSummary.vue'
@@ -346,6 +348,14 @@ export default {
     SpecCost,
   },
   mixins: [spec],
+  setup () {
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    return {
+      apolloClient,
+    }
+  },
   data () {
     return {
       defaultTab: 1,
@@ -369,7 +379,7 @@ export default {
         const inputMode = `_${split[2]}`
         if (!containerId) return
         this.setContainerSizeLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: SET_SPEC_CONTAINER_SIZE,
           variables: {
             specId: this.spec.id,
@@ -388,7 +398,7 @@ export default {
       try {
         if (!containerId) return
         this.setContainerCustomCapacityLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
           variables: {
             specId: this.spec.id,

@@ -383,7 +383,7 @@
 
 <script>
 import axios from 'axios'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import Btn from '../components/Base/Btn'
 import Modal from '../components/Base/Modal'
@@ -414,19 +414,26 @@ export default {
   //   ],
   // },
   setup () {
-    const { result: result1 } = useQuery(GET_PROFILE, null, { fetchPolicy: 'network-only' })
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    const { result: result1, refetch: getProfileRefetch } = useQuery(GET_PROFILE, null, { fetchPolicy: 'network-only' })
     const getProfile = useResult(result1)
 
-    const { result: result2 } = useQuery(LIST_PAYMENT_METHODS, null, { fetchPolicy: 'no-cache' })
+    const { result: result2, refetch: listPaymentMethodsRefetch } = useQuery(LIST_PAYMENT_METHODS, null, { fetchPolicy: 'no-cache' })
     const listPaymentMethods = useResult(result2)
 
-    const { result: result3 } = useQuery(LIST_PAYMENT_INVOICES, null, { fetchPolicy: 'no-cache' })
+    const { result: result3, refetch: listPaymentInvoicesRefetch } = useQuery(LIST_PAYMENT_INVOICES, null, { fetchPolicy: 'no-cache' })
     const listPaymentInvoices = useResult(result3)
 
     return {
+      apolloClient,
       getProfile,
+      getProfileRefetch,
       listPaymentMethods,
+      listPaymentMethodsRefetch,
       listPaymentInvoices,
+      listPaymentInvoicesRefetch,
     }
   },
   data () {
@@ -507,7 +514,7 @@ export default {
       this.successDialog = true
       this.$router.push({ query: {} })
     }
-    const observer = this.$apollo.subscribe({
+    const observer = this.apolloClient.subscribe({
       query: PAYMENT_DATA,
       fetchPolicy: 'no-cache',
     })
@@ -520,14 +527,14 @@ export default {
         this.$logger.info('payment', operation, payload)
         if (operation === 'invoice.payment_succeeded') {
           // this.$notify({ color: 'success', text: 'Payment success.' })
-          this.$apollo.queries.listPaymentInvoices.refetch()
+          this.listPaymentInvoicesRefetch()
         }
         if (operation === 'invoice.payment_failed') {
           // this.$notify({ color: 'error', text: 'Payment failed.' })
-          this.$apollo.queries.listPaymentInvoices.refetch()
+          this.listPaymentInvoicesRefetch()
         }
         // update profile
-        this.$apollo.queries.getProfile.refetch()
+        this.getProfileRefetch()
       },
     })
   },
@@ -545,19 +552,19 @@ export default {
     },
     addPaymentMethodComplete () {
       this.addPaymentMethodDialog = false
-      this.$apollo.queries.listPaymentMethods.refetch()
+      this.listPaymentMethodsRefetch()
     },
     async cancelSubscription () {
       try {
         this.cancelSubscriptionLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: CANCEL_PAYMENT_SUBSCRIPTION,
           fetchPolicy: 'no-cache',
         })
         this.cancelSubscriptionLoading = false
         this.cancelSubscriptionDialog = false
         // update profile
-        this.$apollo.queries.getProfile.refetch()
+        this.getProfileRefetch()
       } catch (error) {
         this.$notify({ color: 'error', text: error.message })
       }
@@ -565,7 +572,7 @@ export default {
     async setDefaultPaymentMethod (paymentMethodId) {
       try {
         this.setDefaultPaymentMethodLoading = paymentMethodId
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: SET_DEFAULT_PAYMENT_METHOD,
           variables: {
             paymentMethodId,
@@ -573,7 +580,7 @@ export default {
           fetchPolicy: 'no-cache',
         })
         // update query
-        this.$apollo.queries.listPaymentMethods.refetch()
+        this.listPaymentMethodsRefetch()
       } catch (error) {
         this.$notify({ color: 'error', text: error.message })
       } finally {
@@ -583,7 +590,7 @@ export default {
     async detachPaymentMethod (paymentMethodId) {
       try {
         this.detachPaymentMethodLoading = paymentMethodId
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: DETACH_PAYMENT_METHOD,
           variables: {
             paymentMethodId,
@@ -591,7 +598,7 @@ export default {
           fetchPolicy: 'no-cache',
         })
         // update query
-        this.$apollo.queries.listPaymentMethods.refetch()
+        this.listPaymentMethodsRefetch()
       } catch (error) {
         this.$notify({ color: 'error', text: error.message })
       } finally {

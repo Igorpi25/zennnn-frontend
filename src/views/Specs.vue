@@ -421,7 +421,7 @@
 <script>
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import {
   Role,
@@ -461,6 +461,7 @@ export default {
     ClientCard,
   },
   setup () {
+    const { resolveClient } = useApolloClient()
     const route = useRoute()
     const orgId = route.params.orgId
     const clientSearch = ref('')
@@ -510,6 +511,7 @@ export default {
     const getClientsById = useResult(result4)
 
     return {
+      resolveClient,
       orgId,
       clientSearch,
       filter,
@@ -704,12 +706,12 @@ export default {
     this.$watch('filter', this.updateRouteQuery, { deep: true })
   },
   mounted () {
-    const observer = this.$apollo.subscribe({
+    const apolloClient = this.resolveClient()
+
+    const observer = apolloClient.subscribe({
       query: SPECS_DELTA,
       fetchPolicy: 'no-cache',
     })
-
-    const apolloClient = this.$apollo.provider.defaultClient
 
     observer.subscribe({
       next: ({ data }) => {
@@ -891,6 +893,7 @@ export default {
       this.createSpecClient = client
     },
     async createSpec (withoutClient) {
+      const client = this.resolveClient()
       const loading = withoutClient ? 'createWithoutClientLoading' : 'createWithClientLoading'
       this[loading] = true
       try {
@@ -898,14 +901,14 @@ export default {
         if (!withoutClient && this.createSpecClient && this.createSpecClient.id) {
           variables.clientId = this.createSpecClient.id
         }
-        const response = await this.$apollo.mutate({
+        const response = await client.mutate({
           mutation: CREATE_SPEC,
           variables,
         })
         if (response && response.data && response.data.createSpec) {
           const spec = response.data.createSpec
 
-          const { getSpecs } = this.$apollo.provider.defaultClient.readQuery({
+          const { getSpecs } = client.readQuery({
             query: GET_SPECS,
             variables: {
               orgId: this.orgId,
@@ -917,7 +920,7 @@ export default {
           if (!getSpecs.some(el => el.id === spec.id)) {
             getSpecs.push(spec)
 
-            this.$apollo.provider.defaultClient.writeQuery({
+            client.writeQuery({
               query: GET_SPECS,
               variables: {
                 orgId: this.orgId,
@@ -950,19 +953,20 @@ export default {
     },
     async deleteSpec (id) {
       try {
+        const client = this.resolveClient()
         const msg = this.$t('alert.removeDeal')
         const confirm = await confirmDialog(msg)
         if (confirm === 'not_confirmed') {
           return
         }
         this.deleteLoading = id
-        await this.$apollo.mutate({
+        await client.mutate({
           mutation: DELETE_SPEC,
           variables: {
             id,
           },
         })
-        const { getSpecs } = this.$apollo.provider.defaultClient.readQuery({
+        const { getSpecs } = client.readQuery({
           query: GET_SPECS,
           variables: {
             orgId: this.orgId,
@@ -975,7 +979,7 @@ export default {
 
         if (index !== -1) {
           getSpecs.splice(index, 1)
-          this.$apollo.provider.defaultClient.writeQuery({
+          client.writeQuery({
             query: GET_SPECS,
             variables: {
               orgId: this.orgId,

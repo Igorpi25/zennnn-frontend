@@ -131,6 +131,7 @@
 
 <script>
 import { mdiGoogleTranslate } from '@mdi/js'
+import { useApolloClient } from '@vue/apollo-composable'
 
 import { LOCALES_LIST } from '../config/globals'
 import { CREATE_WORD, UPDATE_WORD } from '../graphql/mutations'
@@ -171,6 +172,14 @@ export default {
     actionText: String,
     isAdmin: Boolean,
     submitResult: Boolean,
+  },
+  setup () {
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    return {
+      apolloClient,
+    }
   },
   data () {
     return {
@@ -326,7 +335,7 @@ export default {
       try {
         this.translateLoading = true
         const query = this.isAdmin ? ADMIN_TRANSLATE_WORD : TRANSLATE_WORD
-        const response = await this.$apollo.query({
+        const response = await this.apolloClient.query({
           query,
           variables: {
             orgId: this.orgId,
@@ -368,7 +377,7 @@ export default {
           variables.orgId = this.orgId
           variables.productId = this.productId
         }
-        const response = await this.$apollo.mutate({
+        const response = await this.apolloClient.mutate({
           mutation,
           variables,
         })
@@ -399,7 +408,7 @@ export default {
         if (!this.isAdmin) {
           variables.orgId = this.orgId
         }
-        const response = await this.$apollo.mutate({
+        const response = await this.apolloClient.mutate({
           mutation,
           variables,
         })

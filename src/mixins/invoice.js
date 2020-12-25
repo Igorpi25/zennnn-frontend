@@ -9,6 +9,8 @@ import {
 
 import { Scroll } from 'uipart'
 
+import apolloClient from '../plugins/apollo'
+
 import { GET_SPEC, GET_IS_SPEC_SYNC } from '../graphql/queries'
 import { UPDATE_INVOICE, CREATE_PRODUCT, CREATE_PRODUCT_WITH_INVOICE } from '../graphql/mutations'
 import {
@@ -186,7 +188,7 @@ export default {
             article: input.article,
           }
         }
-        await this.$apollo.mutate({
+        await apolloClient.mutate({
           mutation: CREATE_PRODUCT,
           variables,
           fetchPolicy: 'no-cache',
@@ -216,7 +218,7 @@ export default {
             article: input.article,
           }
         }
-        await this.$apollo.mutate({
+        await apolloClient.mutate({
           mutation: CREATE_PRODUCT_WITH_INVOICE,
           variables,
           fetchPolicy: 'no-cache',
@@ -241,7 +243,7 @@ export default {
       try {
         const id = this.invoiceItem.id
         this.updateLoading = id
-        await this.$apollo.mutate({
+        await apolloClient.mutate({
           mutation: UPDATE_INVOICE,
           variables: {
             id,
@@ -268,13 +270,12 @@ export default {
       }
     },
     async refetchSpec () {
-      const apolloClient = this.$apollo.provider.defaultClient
       try {
-        apolloClient.cache.writeQuery({
+        apolloClient.writeQuery({
           query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: true },
         })
-        await this.$apollo.query({
+        await apolloClient.query({
           query: GET_SPEC,
           variables: {
             id: this.specId,
@@ -284,7 +285,7 @@ export default {
       } catch (error) {
         this.$logger.warn('Error: ', error)
       } finally {
-        apolloClient.cache.writeQuery({
+        apolloClient.writeQuery({
           query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: false },
         })

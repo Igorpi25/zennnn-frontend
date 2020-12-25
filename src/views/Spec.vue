@@ -16,7 +16,7 @@
 <script>
 import deepmerge from 'deepmerge'
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import Owner from '@/components/Spec/Owner.vue'
 // import Manager from '@/components/Spec/Manager.vue'
@@ -53,6 +53,9 @@ export default {
     const route = useRoute()
     const specId = route.params.specId
 
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
     const { result: result1 } = useQuery(GET_ROLE_IN_PROJECT, () => ({
       specId: specId,
     }), {
@@ -68,6 +71,7 @@ export default {
     const getSpec = useResult(result2)
 
     return {
+      apolloClient,
       specId,
       loading,
       roleInProject,
@@ -105,15 +109,15 @@ export default {
       return destination
     }
 
-    const observer = this.$apollo.subscribe({
+    const apolloClient = this.apolloClient
+
+    const observer = apolloClient.subscribe({
       query: SPEC_DELTA,
       variables: {
         specId: this.specId,
       },
       fetchPolicy: 'no-cache',
     })
-
-    const apolloClient = this.$apollo.provider.defaultClient
 
     observer.subscribe({
       next: ({ data }) => {

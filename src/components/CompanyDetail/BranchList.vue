@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import { useApolloClient } from '@vue/apollo-composable'
+
 import { BranchType } from '../../graphql/enums'
 import { GET_SUPPLIER } from '../../graphql/queries'
 import {
@@ -85,6 +87,14 @@ export default {
       type: Array,
       default: () => ([]),
     },
+  },
+  setup () {
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    return {
+      apolloClient,
+    }
   },
   data () {
     return {
@@ -123,7 +133,7 @@ export default {
     async addBranch () {
       try {
         this.createLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: CREATE_SUPPLIER_BRANCH,
           variables: { supplierId: this.supplierId, input: {} },
           update: (store, { data: { createSupplierBranch } }) => {
@@ -153,7 +163,7 @@ export default {
     async updateBranch (id, input) {
       try {
         this.updateLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: UPDATE_SUPPLIER_BRANCH,
           variables: { id, input },
           update: (store, { data: { updateSupplierBranch } }) => {
@@ -186,7 +196,7 @@ export default {
     async deleteBranch (id) {
       try {
         this.deleteLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: DELETE_SUPPLIER_BRANCH,
           variables: { id },
           update: (store) => {

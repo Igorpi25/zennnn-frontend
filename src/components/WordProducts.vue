@@ -127,7 +127,7 @@
 
 <script>
 import { ref } from 'vue'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import { SEARCH_WORDS } from '../graphql/admin/queries'
 import { ADD_PRODUCTS_TO_WORD, CREATE_WORD_WITH_PRODUCTS } from '../graphql/admin/mutations'
@@ -157,6 +157,9 @@ export default {
     },
   },
   setup () {
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
     const wordSearch = ref('')
 
     const { result } = useQuery(SEARCH_WORDS, () => ({
@@ -169,6 +172,7 @@ export default {
     const searchWords = useResult(result)
 
     return {
+      apolloClient,
       wordSearch,
       searchWords,
     }
@@ -226,7 +230,7 @@ export default {
     async createWordWithProducts (input) {
       try {
         this.createWordLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: CREATE_WORD_WITH_PRODUCTS,
           variables: {
             productsIds: this.selected,
@@ -250,7 +254,7 @@ export default {
       if (!wordId) return
       try {
         this.addProductsLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: ADD_PRODUCTS_TO_WORD,
           variables: {
             productsIds: this.selected,

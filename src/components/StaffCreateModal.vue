@@ -123,6 +123,7 @@
 </template>
 
 <script>
+import { useApolloClient } from '@vue/apollo-composable'
 import { Role } from '../graphql/enums'
 import { GET_INVITE_USER_TO_ORG } from '../graphql/queries'
 import { INVITE_USER_TO_ORG } from '../graphql/mutations'
@@ -148,6 +149,14 @@ export default {
   },
   props: {
     value: Boolean,
+  },
+  setup () {
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    return {
+      apolloClient,
+    }
   },
   data () {
     return {
@@ -232,7 +241,7 @@ export default {
         if (this.$refs.emailForm.validate(true)) {
           this.emailFormLoading = true
           this.resetInviteForm()
-          const { data } = await this.$apollo.query({
+          const { data } = await this.apolloClient.query({
             query: GET_INVITE_USER_TO_ORG,
             variables: {
               orgId: this.orgId,
@@ -281,7 +290,7 @@ export default {
             invitationRole: this.inviteFormModel.role,
             invitationLocale: this.inviteFormModel.locale,
           }
-          await this.$apollo.mutate({
+          await this.apolloClient.mutate({
             mutation: INVITE_USER_TO_ORG,
             variables: {
               orgId: this.orgId,

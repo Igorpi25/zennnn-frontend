@@ -211,6 +211,8 @@
 </template>
 
 <script>
+import { useApolloClient } from '@vue/apollo-composable'
+
 import Btn from '../components/Base/Btn'
 import Form from '../components/Base/Form'
 import TextField from '../components/Base/TextField'
@@ -236,6 +238,13 @@ export default {
     Social,
     Copyright,
     LocalePicker,
+  },
+  setup () {
+    const { resolveClient } = useApolloClient()
+
+    return {
+      resolveClient,
+    }
   },
   data () {
     return {
@@ -276,6 +285,7 @@ export default {
   methods: {
     async onSubmit (e) {
       try {
+        const client = this.resolveClient()
         e.preventDefault()
         this.loading = true
         this.errorMessage = ''
@@ -292,11 +302,11 @@ export default {
             // TODO: save user to cache and redirect to Registration.vue view
             // this.$router.push({ name: 'registration', query: this.$route.query })
           } else {
-            apolloClient.cache.writeQuery({
+            apolloClient.writeQuery({
               query: GET_IS_LOGGED_IN,
               data: { isLoggedIn: true },
             })
-            await this.$apollo.mutate({
+            await client.mutate({
               mutation: INIT_SPEC_SIMPLE_UI,
             })
             this.$logger.info('Logged in user', user)
@@ -343,6 +353,7 @@ export default {
     },
     async completeNewPassword (e) {
       try {
+        const client = this.resolveClient()
         e.preventDefault()
         this.compliteLoading = true
         this.compliteErrorMessage = ''
@@ -356,7 +367,7 @@ export default {
           const loggedUser = await this.$auth.completeNewPassword(this.user, password, attrs)
           this.$logger.info('Registered complite user', loggedUser)
           await this.$auth.signIn(email, password)
-          await this.$apollo.mutate({
+          await client.mutate({
             mutation: COMPLITE_REGISTRATION,
             variables: {
               givenName: firstName,

@@ -259,7 +259,7 @@
 import cloneDeep from 'clone-deep'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
 
 import { validateLegalClient, validatePrivateClient } from '../util/validation'
 
@@ -312,7 +312,7 @@ export default {
     const groupId = route.params.groupId
     const item = ref({})
 
-    const { result: result1 } = useQuery(GET_ORG_NEXT_CLIENT_UID, () => ({
+    const { result: result1, refetch: getOrgNextClientUidRefetch } = useQuery(GET_ORG_NEXT_CLIENT_UID, () => ({
       orgId: props.orgId,
     }), {
       enabled: () => props.create,
@@ -332,7 +332,7 @@ export default {
     })
     const getClient = useResult(result2)
 
-    const { result: result3 } = useQuery(GET_CLIENT_GROUP, () => ({
+    const { result: result3, refetch: getClientGroupRefetch } = useQuery(GET_CLIENT_GROUP, () => ({
       orgId: props.orgId,
       groupId: groupId,
     }), {
@@ -347,14 +347,21 @@ export default {
       item.value = cloneDeep(data)
     }
 
+    const { mutate: createClientMutate } = useMutation(CREATE_CLIENT)
+    const { mutate: updateClientMutate } = useMutation(UPDATE_CLIENT)
+
     return {
       item,
       clientId,
       getOrgNextClientUid,
+      getOrgNextClientUidRefetch,
       loading,
       getClient,
       getClientGroup,
+      getClientGroupRefetch,
       setData,
+      createClientMutate,
+      updateClientMutate,
     }
   },
   data () {
@@ -414,7 +421,7 @@ export default {
   watch: {
     '$route' (to, from) {
       if (this.isComponent) return
-      this.$apollo.queries.getClientGroup.refetch()
+      this.getClientGroupRefetch()
     },
   },
   methods: {
@@ -439,7 +446,7 @@ export default {
     },
     reset () {
       this.item = {}
-      this.$apollo.queries.getOrgNextClientUid.refetch()
+      this.getOrgNextClientUidRefetch()
     },
     switchClientType (type) {
       if (this.create && this.isComponent) {
@@ -507,12 +514,10 @@ export default {
           input,
         }
 
-        const response = await this.$apollo.mutate({
-          mutation: CREATE_CLIENT,
-          variables,
-        })
+        const response = await this.createClientMutate(variables)
+
         if (response && response.data) {
-          this.$apollo.queries.getClientGroup.refetch()
+          this.getClientGroupRefetch()
           const data = response.data.createClient
           if (this.isComponent) {
             this.$emit('create', data)
@@ -550,10 +555,8 @@ export default {
 
         const variables = { id: this.clientId, input }
 
-        const response = await this.$apollo.mutate({
-          mutation: UPDATE_CLIENT,
-          variables,
-        })
+        const response = await this.updateClientMutate(variables)
+
         if (response && response.data) {
           const data = response.data.updateClient
           if (this.isComponent) {

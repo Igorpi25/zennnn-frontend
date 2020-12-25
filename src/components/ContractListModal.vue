@@ -48,6 +48,9 @@
 
 <script>
 import { mdiPlusCircleOutline } from '@mdi/js'
+
+import { useApolloClient } from '@vue/apollo-composable'
+
 import { ziGear, ziTrash } from '@/assets/icons'
 
 import { LIST_ORG_CONTRACTS } from '../graphql/queries'
@@ -70,6 +73,13 @@ export default {
       default: () => ([]),
     },
   },
+  setup () {
+    const { resolveClient } = useApolloClient()
+
+    return {
+      resolveClient,
+    }
+  },
   data () {
     return {
       icons: {
@@ -82,12 +92,13 @@ export default {
   methods: {
     async deleteContract (id) {
       try {
+        const client = this.resolveClient()
         const msg = this.$t('alert.removeContract')
         const confirm = await confirmDialog(msg)
         if (confirm === 'not_confirmed') {
           return
         }
-        const response = await this.$apollo.mutate({
+        const response = await client.mutate({
           mutation: DELETE_CONTRACT,
           variables: { id },
           update: (store) => {

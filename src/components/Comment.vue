@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { useApolloClient } from '@vue/apollo-composable'
+
 import {
   REPLY_TO_SPEC_COMMENT,
   REPLY_TO_PRODUCT_COMMENT,
@@ -63,6 +65,13 @@ export default {
       default: '',
     },
   },
+  setup () {
+    const { resolveClient } = useApolloClient()
+
+    return {
+      resolveClient,
+    }
+  },
   data () {
     return {
       commentSubmitLoading: false,
@@ -77,6 +86,7 @@ export default {
   methods: {
     async commentSubmit () {
       try {
+        const client = this.resolveClient()
         const comment = this.comment
         const commentId = this.item.id
         if (!comment) return
@@ -97,7 +107,7 @@ export default {
             ? REPLY_TO_PAPER_SPEC_COMMENT
             : REPLY_TO_SPEC_COMMENT
         }
-        await this.$apollo.mutate({
+        await client.mutate({
           mutation,
           variables,
           fetchPolicy: 'no-cache',

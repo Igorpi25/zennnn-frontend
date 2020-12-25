@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
+import { useQuery, useResult, useMutation, useApolloClient } from '@vue/apollo-composable'
 
 import {
   mdiPlusCircleOutline,
@@ -37,6 +37,7 @@ export default {
     loading: Boolean,
   },
   setup () {
+    const { resolveClient } = useApolloClient()
     const route = useRoute()
     const orgId = route.params.orgId
     const specId = route.params.orgId
@@ -65,7 +66,7 @@ export default {
     })
     const getSpec = useResult(result3)
 
-    const { result: result4 } = useQuery(SEARCH_CLIENTS, () => ({
+    const { result: result4, refetch: searchClientsRefetch } = useQuery(SEARCH_CLIENTS, () => ({
       orgId: orgId,
       search: clientSearch.value,
     }), {
@@ -75,7 +76,7 @@ export default {
     })
     const searchClients = useResult(result4)
 
-    const { result: result5 } = useQuery(SEARCH_SUPPLIERS, () => ({
+    const { result: result5, refetch: searchSuppliersRefetch } = useQuery(SEARCH_SUPPLIERS, () => ({
       orgId: orgId,
       search: supplierSearch.value,
     }), {
@@ -126,6 +127,7 @@ export default {
     }
 
     return {
+      resolveClient,
       orgId,
       specId,
       clientSearch,
@@ -143,6 +145,8 @@ export default {
       addExpandedInvoices,
       removeExpandedInvoices,
       setInvoiceActiveTab,
+      searchClientsRefetch,
+      searchSuppliersRefetch,
     }
   },
   data () {
@@ -280,7 +284,8 @@ export default {
   },
   methods: {
     async toggleSpecSimpleUI (value) {
-      await this.$apollo.mutate({
+      const client = this.resolveClient()
+      await client.mutate({
         mutation: SET_SPEC_SIMPLE_UI,
         variables: {
           value: !value,
@@ -316,13 +321,13 @@ export default {
     setCreateSpecClient (client) {
       this.setSpecClient(client.id)
       this.clientDialog = false
-      this.$apollo.queries.searchClients.refetch()
+      this.searchClientsRefetch()
     },
     setCreatedSupplier (supplier) {
       this.setInvoiceSupplier(this.createSupplierInvoice.id, (supplier && supplier.id))
       this.supplierDialog = false
       this.createSupplierInvoice = null
-      this.$apollo.queries.searchSuppliers.refetch()
+      this.searchSuppliersRefetch()
       setTimeout(() => {
         this.$refs.supplierCard.reset()
         if (this.$refs.supplierDialog.$refs.dialog) {
@@ -360,6 +365,7 @@ export default {
     },
     async createInvoice (input) {
       try {
+        const client = this.resolveClient()
         this.createLoading = true
         const variables = {
           specId: this.specId,
@@ -367,7 +373,7 @@ export default {
         if (input) {
           variables.input = input
         }
-        const { data } = await this.$apollo.mutate({
+        const { data } = await client.mutate({
           mutation: CREATE_INVOICE,
           variables,
           fetchPolicy: 'no-cache',
@@ -385,9 +391,10 @@ export default {
     },
     async updateInvoice (input, invoiceId) {
       try {
+        const client = this.resolveClient()
         const id = invoiceId
         this.updateLoading = true
-        await this.$apollo.mutate({
+        await client.mutate({
           mutation: UPDATE_INVOICE,
           variables: {
             id,
@@ -407,13 +414,13 @@ export default {
       }
     },
     async refetchSpec () {
-      const apolloClient = this.$apollo.provider.defaultClient
+      const client = this.resolveClient()
       try {
-        apolloClient.cache.writeQuery({
+        client.writeQuery({
           query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: true },
         })
-        await this.$apollo.query({
+        await client.query({
           query: GET_SPEC,
           variables: {
             id: this.$route.params.specId,
@@ -423,7 +430,7 @@ export default {
       } catch (error) {
         this.$logger.warn('Error: ', error)
       } finally {
-        apolloClient.cache.writeQuery({
+        client.writeQuery({
           query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: false },
         })
@@ -431,8 +438,9 @@ export default {
     },
     async updateSpec (input) {
       try {
+        const client = this.resolveClient()
         this.updateLoading = true
-        await this.$apollo.mutate({
+        await client.mutate({
           mutation: UPDATE_SPEC,
           variables: {
             id: this.specId,
@@ -451,8 +459,9 @@ export default {
     },
     async setSpecClient (clientId) {
       try {
+        const client = this.resolveClient()
         this.updateLoading = true
-        await this.$apollo.mutate({
+        await client.mutate({
           mutation: SET_SPEC_CLIENT,
           variables: {
             specId: this.specId,
@@ -471,8 +480,9 @@ export default {
     },
     async setInvoiceSupplier (invoiceId, supplierId) {
       try {
+        const client = this.resolveClient()
         this.updateLoading = true
-        await this.$apollo.mutate({
+        await client.mutate({
           mutation: SET_INVOICE_SUPPLIER,
           variables: {
             invoiceId,

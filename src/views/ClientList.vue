@@ -268,7 +268,7 @@
 
 <script>
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
 import { ClientType } from '../graphql/enums'
 import { LIST_CLIENTS } from '../graphql/queries'
@@ -302,9 +302,13 @@ export default {
     })
     const listClients = useResult(result)
 
+    const { mutate: deleteClientMutate } = useMutation(DELETE_CLIENT)
+
     return {
+      orgId,
       loading,
       listClients,
+      deleteClientMutate,
     }
   },
   data () {
@@ -550,7 +554,7 @@ export default {
       this.$router.push({
         name: 'specs',
         params: {
-          orgId: this.$route.params.orgId,
+          orgId: this.orgId,
         },
         query: {
           clients: [item.id],
@@ -565,14 +569,12 @@ export default {
           return
         }
         this.deleteLoading = id
-        const response = await this.$apollo.mutate({
-          mutation: DELETE_CLIENT,
-          variables: { id },
+        const response = await this.deleteClientMutate({ id }, {
           update: (store) => {
             const data = store.readQuery({
               query: LIST_CLIENTS,
               variables: {
-                orgId: this.$route.params.orgId,
+                orgId: this.orgId,
               },
             })
             const index = data.listClients.items.findIndex(item => item.id === id)
@@ -582,7 +584,7 @@ export default {
             store.writeQuery({
               query: LIST_CLIENTS,
               variables: {
-                orgId: this.$route.params.orgId,
+                orgId: this.orgId,
               },
               data,
             })

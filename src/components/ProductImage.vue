@@ -211,6 +211,8 @@
 </template>
 
 <script>
+import { useApolloClient } from '@vue/apollo-composable'
+
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
 import { ADD_PRODUCT_IMAGE, UPDATE_PRODUCT_INFO } from '../graphql/mutations'
 
@@ -250,6 +252,14 @@ export default {
     sortable: Boolean,
     light: Boolean,
     caption: String,
+  },
+  setup () {
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    return {
+      apolloClient,
+    }
   },
   data () {
     return {
@@ -387,7 +397,7 @@ export default {
             }
           }),
         }
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: UPDATE_PRODUCT_INFO,
           variables: { id: this.productId, input },
         })
@@ -402,7 +412,7 @@ export default {
       try {
         this.addLoading = true
         const inputImages = [file]
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: ADD_PRODUCT_IMAGE,
           variables: { id: this.productId, inputImages, unshift: true },
         })

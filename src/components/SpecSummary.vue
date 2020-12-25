@@ -239,7 +239,7 @@
 <script>
 import cloneDeep from 'clone-deep'
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import Btn from './Base/Btn'
 import Modal from './Base/Modal'
@@ -294,7 +294,10 @@ export default {
     const route = useRoute()
     const orgId = route.params.orgId
 
-    const { result } = useQuery(LIST_ORG_CONTRACTS, () => ({
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    const { result, refetch: listOrgContractsRefetch } = useQuery(LIST_ORG_CONTRACTS, () => ({
       orgId: orgId,
     }), {
       fetchPolicy: 'cache-and-network',
@@ -303,7 +306,9 @@ export default {
 
     return {
       orgId,
+      apolloClient,
       listOrgContracts,
+      listOrgContractsRefetch,
     }
   },
   data () {
@@ -413,7 +418,7 @@ export default {
         const inputMode = `_${split[2]}`
         if (!containerId) return
         this.setContainerSizeLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: SET_SPEC_CONTAINER_SIZE,
           variables: {
             specId: this.specId,
@@ -432,7 +437,7 @@ export default {
       try {
         if (!containerId) return
         this.setContainerCustomCapacityLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
           variables: {
             specId: this.specId,
@@ -450,7 +455,7 @@ export default {
     async getEmailAccess () {
       try {
         this.emailAccessLoading = true
-        const { data } = await this.$apollo.query({
+        const { data } = await this.apolloClient.query({
           query: GET_SPEC_EMAIL_ACCESS,
           variables: {
             id: this.specId,
@@ -469,7 +474,7 @@ export default {
         const errors = this.$refs.emailAccessInput.validate()
         if (errors) return
         this.addEmailAccessLoading = true
-        const result = await this.$apollo.mutate({
+        const result = await this.apolloClient.mutate({
           mutation: ADD_EMAIL_ACCESS_TO_SPEC,
           variables: {
             specId: this.specId,
@@ -488,7 +493,7 @@ export default {
     async removeEmailAccess (email) {
       try {
         this.removeEmailAccessLoading = email
-        const result = await this.$apollo.mutate({
+        const result = await this.apolloClient.mutate({
           mutation: REMOVE_EMAIL_ACCESS_TO_SPEC,
           variables: {
             specId: this.specId,
@@ -508,7 +513,7 @@ export default {
         const errors = this.$refs.emailAccessInput.validate()
         if (errors) return
         this.sendAccessLinkLoading = true
-        const result = await this.$apollo.mutate({
+        const result = await this.apolloClient.mutate({
           mutation: SEND_LINK_ACCESS_TO_EMAIL,
           variables: {
             specId: this.specId,
@@ -566,7 +571,7 @@ export default {
     async getLinkAccess () {
       try {
         this.linkAccessLoading = true
-        const { data } = await this.$apollo.query({
+        const { data } = await this.apolloClient.query({
           query: GET_SPEC_LINK_ACCESS,
           variables: {
             id: this.specId,
@@ -597,7 +602,7 @@ export default {
     },
     async openLinkAccess () {
       try {
-        const result = await this.$apollo.mutate({
+        const result = await this.apolloClient.mutate({
           mutation: OPEN_LINK_ACCESS,
           variables: {
             specId: this.specId,
@@ -610,7 +615,7 @@ export default {
     },
     async closeLinkAccess () {
       try {
-        const result = await this.$apollo.mutate({
+        const result = await this.apolloClient.mutate({
           mutation: CLOSE_LINK_ACCESS,
           variables: {
             specId: this.specId,
@@ -624,7 +629,7 @@ export default {
     async updateSpec (input) {
       try {
         this.updateLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: UPDATE_SPEC,
           variables: {
             id: this.spec.id,
@@ -671,7 +676,7 @@ export default {
       this.paperConfigurator = true
     },
     contractCreated () {
-      this.$apollo.queries.listOrgContracts.refetch()
+      this.listOrgContractsRefetch.refetch()
     },
   },
 }

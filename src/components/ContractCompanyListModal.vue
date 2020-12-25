@@ -46,7 +46,7 @@ export default {
     const route = useRoute()
     const orgId = route.params.orgId
 
-    const { result, loading } = useQuery(LIST_ORG_REQUISITES, () => ({
+    const { result, loading, refetch: listOrgRequisitesRefetch } = useQuery(LIST_ORG_REQUISITES, () => ({
       orgId: orgId,
     }), {
       fetchPolicy: 'cache-and-network',
@@ -57,6 +57,7 @@ export default {
       orgId,
       loading,
       listOrgRequisites,
+      listOrgRequisitesRefetch,
     }
   },
   data () {
@@ -74,7 +75,7 @@ export default {
   },
   methods: {
     update () {
-      this.$apollo.queries.listOrgRequisites.refetch()
+      this.listOrgRequisitesRefetch()
     },
   },
 }

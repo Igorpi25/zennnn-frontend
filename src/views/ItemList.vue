@@ -166,6 +166,9 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router'
+// import { useQuery, useResult } from '@vue/apollo-composable'
+
 // import { LIST_ITEMS } from '../graphql/queries'
 
 import { getObjectValueByPath } from '../util/helpers'
@@ -185,17 +188,23 @@ export default {
     DataTable,
     TextField,
   },
-  // apollo: {
-  //   listItems: {
-  //     query: LIST_ITEMS,
-  //     variables () {
-  //       return {
-  //         orgId: this.$route.params.orgId,
-  //       }
-  //     },
-  //     fetchPolicy: 'cache-and-network',
-  //   },
-  // },
+  setup () {
+    const route = useRoute()
+    const orgId = route.params.orgId
+
+    // const { result, loading } = useQuery(LIST_ITEMS, () => ({
+    //   orgId: orgId,
+    // }), {
+    //   fetchPolicy: 'cache-and-network',
+    // })
+    // const listItems = useResult(result)
+
+    return {
+      loading: false,
+      orgId,
+      // listItems,
+    }
+  },
   data () {
     return {
       sortBy: [],
@@ -207,9 +216,6 @@ export default {
     }
   },
   computed: {
-    loading () {
-      return false // this.$apollo.queries.listItems.loading
-    },
     tabs () {
       return [
         {

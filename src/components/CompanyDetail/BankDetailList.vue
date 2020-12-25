@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import { useApolloClient } from '@vue/apollo-composable'
+
 import Btn from '../Base/Btn'
 import ExpandTransition from '../Base/ExpandTransition'
 import BankDetailItem from './BankDetailItem.vue'
@@ -101,6 +103,14 @@ export default {
       type: Array,
       default: () => ([]),
     },
+  },
+  setup () {
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    return {
+      apolloClient,
+    }
   },
   data () {
     return {
@@ -139,7 +149,7 @@ export default {
     async addBankDetail () {
       try {
         this.createLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: CREATE_COMPANY_BANK_DETAIL,
           variables: { companyId: this.reqId, input: {} },
           update: (store, { data: { createCompanyBankDetail } }) => {
@@ -174,7 +184,7 @@ export default {
     async updateBankDetail (id, input) {
       try {
         this.updateLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: UPDATE_COMPANY_BANK_DETAIL,
           variables: { companyId: this.reqId, id, input },
           update: (store, { data: { updateCompanyBankDetail } }) => {
@@ -212,7 +222,7 @@ export default {
     async deleteBankDetail (id) {
       try {
         this.deleteLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: DELETE_COMPANY_BANK_DETAIL,
           variables: { companyId: this.reqId, id },
           update: (store) => {

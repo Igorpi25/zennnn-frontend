@@ -406,7 +406,7 @@
 
 <script>
 import { ref } from 'vue'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import Countries from '../config/countries-iso3.json'
 
@@ -479,6 +479,9 @@ export default {
     amountInWordsClientLang: String,
   },
   setup (props) {
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
     const clientSearch = ref('')
 
     const { result: result1 } = useQuery(SEARCH_CLIENTS, () => ({
@@ -499,6 +502,7 @@ export default {
     const listOrgRequisites = useResult(result2)
 
     return {
+      apolloClient,
       clientSearch,
       searchClients,
       requisiteLoading,
@@ -650,7 +654,7 @@ export default {
     },
     async updateClient (input) {
       try {
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: UPDATE_CLIENT,
           variables: {
             id: this.client.id,
@@ -668,7 +672,7 @@ export default {
     },
     async updateRequisite (input) {
       try {
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: UPDATE_REQUISITE,
           variables: {
             id: this.requisiteId,
@@ -717,7 +721,7 @@ export default {
       if (!clientId) return
       try {
         this.updateClientLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: SET_SPEC_CLIENT,
           variables: {
             specId: this.specId,

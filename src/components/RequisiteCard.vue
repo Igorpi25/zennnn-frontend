@@ -130,7 +130,7 @@
 <script>
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
 import debounce from 'lodash.debounce'
 import cloneDeep from 'clone-deep'
@@ -182,7 +182,10 @@ export default {
     const reqId = route.params.reqId
     const item = ref({})
 
-    const { result } = useQuery(GET_ORG_REQUISITE, () => ({
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    const { result, loading } = useQuery(GET_ORG_REQUISITE, () => ({
       id: reqId,
     }), {
       enabled: () => !props.create,
@@ -199,11 +202,18 @@ export default {
       item.value = cloneDeep(data)
     }
 
+    const { mutate: createRequisiteMutate } = useMutation(CREATE_REQUISITE)
+    const { mutate: updateRequisiteMutate } = useMutation(UPDATE_REQUISITE)
+
     return {
       item,
       reqId,
+      loading,
+      apolloClient,
       getOrgRequisite,
       setData,
+      createRequisiteMutate,
+      updateRequisiteMutate,
     }
   },
   data () {
@@ -211,17 +221,12 @@ export default {
       updateLoading: false,
     }
   },
-  computed: {
-    loading () {
-      return this.$apollo.queries.getOrgRequisite.loading
-    },
-  },
   created () {
     this.fetchOrgs = debounce(this.getOrgs, 1500)
   },
   methods: {
     async getOrgs () {
-      await this.$apollo.query({
+      await this.apolloClient.query({
         query: GET_ORGS,
         fetchPolicy: 'network-only',
       })
@@ -264,14 +269,11 @@ export default {
 
         const variables = { orgId: this.orgId, input }
 
-        const response = await this.$apollo.mutate({
-          mutation: CREATE_REQUISITE,
-          variables,
-        })
+        const response = await this.createRequisiteMutate(variables)
         if (response && response.data) {
           const data = response.data.createRequisite
           // update orgs query, TODO listen sub to update company
-          await this.$apollo.query({
+          await this.apolloClient.query({
             query: GET_ORGS,
             fetchPolicy: 'network-only',
           })
@@ -307,10 +309,7 @@ export default {
 
         const variables = { id: this.item.id, input }
 
-        const response = await this.$apollo.mutate({
-          mutation: UPDATE_REQUISITE,
-          variables,
-        })
+        const response = await this.updateRequisiteMutate(variables)
         if (response && response.data) {
           const data = response.data.updateRequisite
           if (this.isComponent) {

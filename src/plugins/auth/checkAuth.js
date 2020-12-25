@@ -24,7 +24,7 @@ export const checkAuth = async () => {
     // TODO: wihtout delay, in first check data not writen in cache
     await delay(50)
     // set isLoggedIn to cache
-    apolloClient.cache.writeQuery({
+    apolloClient.writeQuery({
       query: GET_IS_LOGGED_IN,
       data: { isLoggedIn: loggedIn },
     })

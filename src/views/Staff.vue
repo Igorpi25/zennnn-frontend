@@ -299,7 +299,7 @@
 
 <script>
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import { LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
@@ -328,7 +328,10 @@ export default {
     const route = useRoute()
     const orgId = route.params.orgId
 
-    const { result, loading } = useQuery(LIST_STAFF, () => ({
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    const { result, loading, refetch: listStaffRefetch } = useQuery(LIST_STAFF, () => ({
       orgId: orgId,
     }), {
       fetchPolicy: 'cache-and-network',
@@ -336,9 +339,11 @@ export default {
     const listStaff = useResult(result)
 
     return {
+      apolloClient,
       orgId,
       loading,
       listStaff,
+      listStaffRefetch,
     }
   },
   data () {
@@ -484,11 +489,11 @@ export default {
     },
     // TODO: update on after mutation
     refetchItems () {
-      this.$apollo.queries.listStaff.refetch()
+      this.listStaffRefetch()
     },
     async cancelInvitation (id) {
       try {
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: CANCEL_INVITATION,
           variables: { id },
         })
@@ -505,14 +510,14 @@ export default {
           return
         }
         this.deleteUserLoading = userId
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: REMOVE_USER_FROM_ORG,
           variables: {
             orgId: this.orgId,
             userId,
           },
         })
-        const { listStaff } = this.$apollo.provider.defaultClient.readQuery({
+        const { listStaff } = this.apolloClient.readQuery({
           query: LIST_STAFF,
           variables: { orgId: this.orgId },
         })
@@ -521,7 +526,7 @@ export default {
 
         if (index !== -1) {
           listStaff.items.splice(index, 1)
-          this.$apollo.provider.defaultClient.writeQuery({
+          this.apolloClient.writeQuery({
             query: LIST_STAFF,
             variables: { orgId: this.orgId },
             data: {

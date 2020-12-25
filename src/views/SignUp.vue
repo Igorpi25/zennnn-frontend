@@ -143,6 +143,8 @@
 </template>
 
 <script>
+import { useMutation } from '@vue/apollo-composable'
+
 import Btn from '../components/Base/Btn'
 import Form from '../components/Base/Form'
 import TextField from '../components/Base/TextField'
@@ -162,6 +164,13 @@ export default {
     Social,
     Copyright,
     LocalePicker,
+  },
+  setup () {
+    const { mutate: signupMutate } = useMutation(SIGNUP)
+
+    return {
+      signupMutate,
+    }
   },
   data () {
     return {
@@ -214,7 +223,7 @@ export default {
             familyName: lastName,
             locale: this.$i18n.locale,
           }
-          const { data } = await this.$apollo.mutate({
+          const { data } = await this.signupMutate({
             mutation: SIGNUP,
             variables,
           })

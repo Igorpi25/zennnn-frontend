@@ -210,7 +210,7 @@
 
 <script>
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import { LIST_SUPPLIERS } from '@/graphql/queries'
 import { DELETE_SUPPLIER } from '@/graphql/mutations'
@@ -233,6 +233,7 @@ export default {
     TextField,
   },
   setup () {
+    const { resolveClient } = useApolloClient()
     const route = useRoute()
     const orgId = route.params.orgId
 
@@ -244,6 +245,7 @@ export default {
     const listSuppliers = useResult(result)
 
     return {
+      resolveClient,
       orgId,
       loading,
       listSuppliers,
@@ -395,13 +397,14 @@ export default {
     },
     async deleteSupplier (id) {
       try {
+        const client = this.resolveClient()
         const msg = this.$t('alert.removeSupplier')
         const confirm = await confirmDialog(msg)
         if (confirm === 'not_confirmed') {
           return
         }
         this.deleteLoading = id
-        const response = await this.$apollo.mutate({
+        const response = await client.mutate({
           mutation: DELETE_SUPPLIER,
           variables: { id },
           update: (store) => {

@@ -66,6 +66,8 @@
 </template>
 
 <script>
+import { useApolloClient } from '@vue/apollo-composable'
+
 import { ICON_IMAGE_POSTFIX } from '../config/globals'
 import { ADD_PRODUCT_IMAGE, REMOVE_PRODUCT_IMAGE } from '../graphql/mutations'
 
@@ -101,6 +103,14 @@ export default {
     },
     caption: String,
   },
+  setup () {
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    return {
+      apolloClient,
+    }
+  },
   data () {
     return {
       ICON_IMAGE_POSTFIX,
@@ -125,7 +135,7 @@ export default {
       try {
         this.loading = true
         const inputImages = [file]
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: ADD_PRODUCT_IMAGE,
           variables: { id: this.productId, inputImages },
         })
@@ -147,7 +157,7 @@ export default {
           filename: file.filename,
           contentType: file.contentType,
         }]
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: REMOVE_PRODUCT_IMAGE,
           variables: { id: this.productId, inputImages },
         })

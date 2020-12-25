@@ -507,7 +507,7 @@
 import deepmerge from 'deepmerge'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
 import Progress from '../components/Base/Progress'
 import Header from '../components/Header'
@@ -548,6 +548,9 @@ export default {
     const specId = route.params.specId
     const isBooted = ref(false)
     const expanded = ref([])
+
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
 
     const { result: result1 } = useQuery(GET_PROFILE, null, {
       fetchPolicy: 'network-only',
@@ -595,6 +598,7 @@ export default {
     const { mutate: removeExpandedInvoices } = useMutation(ADD_SPEC_EXPANDED_INVOICES)
 
     return {
+      apolloClient,
       specId,
       isBooted,
       expanded,
@@ -685,15 +689,15 @@ export default {
       return destination
     }
 
-    const observer = this.$apollo.subscribe({
+    const apolloClient = this.apolloClient
+
+    const observer = apolloClient.subscribe({
       query: PAPER_SPEC_DELTA,
       variables: {
         specId: this.specId,
       },
       fetchPolicy: 'no-cache',
     })
-
-    const apolloClient = this.$apollo.provider.defaultClient
 
     observer.subscribe({
       next: ({ data }) => {

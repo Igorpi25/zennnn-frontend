@@ -411,7 +411,7 @@
 import { mdiGoogleTranslate, mdiAccountCircle } from '@mdi/js'
 
 import { computed, ref, watch } from 'vue'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import { LIST_WORDS } from '../../graphql/admin/queries'
 import { APPROVE_WORDS, HIDE_WORDS, MERGE_WORDS } from '../../graphql/admin/mutations'
@@ -445,6 +445,9 @@ export default {
     const queryLoading = ref(false)
     const currentFilter = ref(null)
 
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
     const filters = computed(() => {
       return {
         status: statusFilter.value,
@@ -461,7 +464,7 @@ export default {
       }
     })
 
-    const { result, loading } = useQuery(LIST_WORDS, () => ({
+    const { result, loading, refetch: listWordsRefetch } = useQuery(LIST_WORDS, () => ({
       filters: filters.value,
     }), {
       enabled: () => !loggedOut.value,
@@ -480,6 +483,7 @@ export default {
     })
 
     return {
+      apolloClient,
       loggedOut,
       queryLoading,
       currentFilter,
@@ -487,6 +491,7 @@ export default {
       statusFilter,
       loading,
       listWords,
+      listWordsRefetch,
     }
   },
   data () {
@@ -661,7 +666,7 @@ export default {
   methods: {
     async refetchListWords () {
       this.queryLoading = true
-      await this.$apollo.queries.listWords.refetch()
+      await this.listWordsRefetch()
     },
     onSelectAll (e) {
       const target = e.target
@@ -718,7 +723,7 @@ export default {
       const selected = this.selected.slice()
       try {
         this.mergeLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: MERGE_WORDS,
           variables: {
             ids: selected,
@@ -793,7 +798,7 @@ export default {
     async logout () {
       await this.$auth.signOut()
       this.loggedOut = true
-      this.$apollo.provider.clients.defaultClient.resetStore()
+      this.apolloClient.resetStore()
       this.$router.push({ name: 'login' })
     },
     async approveWords () {
@@ -801,7 +806,7 @@ export default {
       const selected = this.selected.slice()
       try {
         this.approveLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: APPROVE_WORDS,
           variables: {
             ids: selected,
@@ -836,7 +841,7 @@ export default {
       const selected = this.selected.slice()
       try {
         this.hideLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: HIDE_WORDS,
           variables: {
             ids: selected,

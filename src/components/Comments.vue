@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 import {
@@ -149,6 +149,7 @@ export default {
     },
   },
   setup () {
+    const { resolveClient } = useApolloClient()
     const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
     const isLoggedIn = useResult(result1)
 
@@ -159,6 +160,7 @@ export default {
     })
 
     return {
+      resolveClient,
       isLoggedIn,
       getProfile,
     }
@@ -256,6 +258,7 @@ export default {
   methods: {
     async updateViewedComments (commentsIds) {
       try {
+        const client = this.resolveClient()
         const variables = {}
         if (this.isProduct) {
           variables.productId = this.productId
@@ -271,7 +274,7 @@ export default {
         } else {
           mutation = this.isProduct ? MARK_PRODUCT_COMMENTS_AS_VIEWED : MARK_SPEC_COMMENTS_AS_VIEWED
         }
-        await this.$apollo.mutate({
+        await client.mutate({
           mutation,
           variables,
         })
@@ -290,6 +293,7 @@ export default {
     },
     async addComment () {
       try {
+        const client = this.resolveClient()
         if (!this.comment) return
         this.addCommentLoading = true
         let mutation
@@ -307,7 +311,7 @@ export default {
             ? ADD_COMMENT_TO_PAPER_SPEC
             : ADD_COMMENT_TO_SPEC
         }
-        await this.$apollo.mutate({
+        await client.mutate({
           mutation,
           variables,
           fetchPolicy: 'no-cache',

@@ -154,7 +154,7 @@
 
 <script>
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import { LIST_ORG_REQUISITES, GET_ORGS } from '../graphql/queries'
 import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '../graphql/mutations'
@@ -174,6 +174,9 @@ export default {
     const route = useRoute()
     const orgId = route.params.orgId
 
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
     const { result: result1 } = useQuery(GET_ORGS, null, { fetchPolicy: 'cache-only' })
     const getOrgs = useResult(result1)
 
@@ -185,6 +188,7 @@ export default {
     const listOrgRequisites = useResult(result2)
 
     return {
+      apolloClient,
       loading,
       getOrgs,
       listOrgRequisites,
@@ -259,7 +263,7 @@ export default {
           return
         }
         this.deleteLoading = id
-        const response = await this.$apollo.mutate({
+        const response = await this.apolloClient.mutate({
           mutation: DELETE_REQUISITE,
           variables: { id },
           update: (store) => {
@@ -295,12 +299,12 @@ export default {
     },
     async setDefaultRequisite (id) {
       try {
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: SET_DEFAULT_REQUISITE,
           variables: { orgId: this.orgId, id },
         })
         // update orgs query
-        await this.$apollo.query({
+        await this.apolloClient.query({
           query: GET_ORGS,
           fetchPolicy: 'network-only',
         })

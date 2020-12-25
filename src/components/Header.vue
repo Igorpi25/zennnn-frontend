@@ -51,10 +51,10 @@
           >
             <Menu
               v-model="profileMenu"
-              :nudge-bottom="light ? 80 : 56"
+              :distance="light ? 80 : 56"
               :content-class=" light ? 'header-profile-menu header-profile-menu--light' : 'header-profile-menu'"
-              bottom
-              left
+              :arrow="false"
+              placement="bottom-end"
             >
               <template v-slot:activator="{ on }">
                 <div
@@ -104,51 +104,49 @@
                   </div>
                 </div>
               </template>
-              <template>
-                <ul
-                  :class="['overflow-hidden rounded-b', light ? 'bg-white text-gray-900' : 'bg-gray-500 text-white']"
-                  role="menu"
+              <ul
+                :class="['overflow-hidden rounded-b', light ? 'bg-white text-gray-900' : 'bg-gray-500 text-white']"
+                role="menu"
+              >
+                <li
+                  v-if="username"
+                  :class="[light ? 'text-gray-200' : 'text-gray-100']"
+                  class="flex items-center h-10 px-3 text-xs focus:outline-none"
+                  tabindex="0"
+                  role="menuitem"
                 >
-                  <li
-                    v-if="username"
-                    :class="[light ? 'text-gray-200' : 'text-gray-100']"
-                    class="flex items-center h-10 px-3 text-xs focus:outline-none"
-                    tabindex="0"
-                    role="menuitem"
-                  >
-                    <span>
-                      {{ username }}
-                    </span>
-                  </li>
-                  <li
-                    v-for="item in profileItems"
-                    :key="item.value"
-                    :value="item.value"
-                    :class="[light ? 'hover:bg-light-gray-300 focus:bg-light-gray-300' : 'hover:bg-gray-300 focus:bg-gray-300']"
-                    class="flex items-center justify-between h-10 px-3 cursor-pointer focus:outline-none transition-colors duration-100 ease-out"
-                    tabindex="0"
-                    role="menuitem"
-                    @click="profileAction(item.value)"
-                  >
-                    <span>{{ item.text }}</span>
-                    <div v-if="item.value === 'pricing' && profile.account && isOwner" class="text-right ml-2">
-                      <div
-                        v-if="subscriptionStatus"
-                        :class="[subscriptionStatus === 'paid' ? 'border-green-500 text-green-500' : subscriptionStatus === 'trial' ? 'border-yellow-500 text-yellow-500' : 'border-pink-500 text-pink-500']"
-                        class="border h-6 inline-flex items-center rounded-md text-sm font-semibold text-white px-2 mb-xs"
-                        style="border-radius: 11px;"
-                      >
-                        <span v-if="subscriptionStatus === 'paid' && productName">
-                          {{ productName }}
-                        </span>
-                        <span v-else>
-                          {{ $t(`payment.${subscriptionStatus}`) }}
-                        </span>
-                      </div>
+                  <span>
+                    {{ username }}
+                  </span>
+                </li>
+                <li
+                  v-for="item in profileItems"
+                  :key="item.value"
+                  :value="item.value"
+                  :class="[light ? 'hover:bg-light-gray-300 focus:bg-light-gray-300' : 'hover:bg-gray-300 focus:bg-gray-300']"
+                  class="flex items-center justify-between h-10 px-3 cursor-pointer focus:outline-none transition-colors duration-100 ease-out"
+                  tabindex="0"
+                  role="menuitem"
+                  @click="profileAction(item.value)"
+                >
+                  <span>{{ item.text }}</span>
+                  <div v-if="item.value === 'pricing' && profile.account && isOwner" class="text-right ml-2">
+                    <div
+                      v-if="subscriptionStatus"
+                      :class="[subscriptionStatus === 'paid' ? 'border-green-500 text-green-500' : subscriptionStatus === 'trial' ? 'border-yellow-500 text-yellow-500' : 'border-pink-500 text-pink-500']"
+                      class="border h-6 inline-flex items-center rounded-md text-sm font-semibold text-white px-2 mb-xs"
+                      style="border-radius: 11px;"
+                    >
+                      <span v-if="subscriptionStatus === 'paid' && productName">
+                        {{ productName }}
+                      </span>
+                      <span v-else>
+                        {{ $t(`payment.${subscriptionStatus}`) }}
+                      </span>
                     </div>
-                  </li>
-                </ul>
-              </template>
+                  </div>
+                </li>
+              </ul>
               <div v-if="light" class="header-profile-menu_light-shadow rounded-b" />
             </Menu>
           </div>
@@ -307,7 +305,7 @@
 </template>
 
 <script>
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import { mdiStar, mdiStarOutline, mdiAccountCircle } from '@mdi/js'
 
@@ -350,6 +348,7 @@ export default {
     org: String,
   },
   setup () {
+    const { resolveClient } = useApolloClient()
     const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
     const isLoggedIn = useResult(result1)
 
@@ -365,6 +364,7 @@ export default {
     })
 
     return {
+      resolveClient,
       isLoggedIn,
       getProfile,
       getOrgs,
@@ -495,12 +495,13 @@ export default {
     },
     async updateOrgImage (file, orgId) {
       try {
+        const client = this.resolveClient()
         const src = file.url
-        await this.$apollo.mutate({
+        await client.mutate({
           mutation: SET_ORG_AVATAR,
           variables: { orgId, avatar: src },
         })
-        await this.$apollo.query({
+        await client.query({
           query: GET_ORGS,
           fetchPolicy: 'network-only',
         })
@@ -551,6 +552,7 @@ export default {
       this.$router.push({ name: 'pricing' })
     },
     async onSignOut () {
+      const client = this.resolveClient()
       const profile = this.profile
       const username = profile.username || ''
       // TODO with Cache and FederatedInfo
@@ -558,7 +560,7 @@ export default {
       const isGoogleUser = username.startsWith('Google_')
       const response = await this.$auth.signOut()
       // falsy isLoggedIn in cache before route to signin
-      this.$apollo.provider.clients.defaultClient.cache.writeQuery({
+      client.writeQuery({
         query: GET_IS_LOGGED_IN,
         data: { isLoggedIn: false },
       })
@@ -566,10 +568,10 @@ export default {
       if (!isGoogleUser) {
         this.$router.replace({ name: 'signin' }).then(() => {
           // reset store after redirect to signin
-          this.$apollo.provider.clients.defaultClient.resetStore()
+          client.resetStore()
         })
       } else {
-        this.$apollo.provider.clients.defaultClient.resetStore()
+        client.resetStore()
       }
       // close ws client on logout for update connectionParams
       wsLink.subscriptionClient.close(true)

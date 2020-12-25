@@ -162,7 +162,7 @@
 <script>
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
 import { InvoiceStatus, Role } from '../graphql/enums'
 import { SEARCH_SUPPLIERS } from '../graphql/queries'
@@ -203,7 +203,7 @@ export default {
     const orgId = route.params.orgId
     const supplierSearch = ref('')
 
-    const { result } = useQuery(SEARCH_SUPPLIERS, () => ({
+    const { result, refetch: searchSuppliersRefetch } = useQuery(SEARCH_SUPPLIERS, () => ({
       orgId: orgId,
       search: supplierSearch.value,
     }), {
@@ -213,10 +213,14 @@ export default {
     })
     const searchSuppliers = useResult(result)
 
+    const { mutate: setInvoiceSupplierMutate } = useMutation(SET_INVOICE_SUPPLIER)
+
     return {
       orgId,
       supplierSearch,
       searchSuppliers,
+      searchSuppliersRefetch,
+      setInvoiceSupplierMutate,
     }
   },
   data () {
@@ -261,7 +265,7 @@ export default {
       this.updateSupplier(this.createSupplierInvoice.id, (supplier && supplier.id))
       this.supplierDialog = false
       this.createSupplierInvoice = null
-      this.$apollo.queries.searchSuppliers.refetch()
+      this.searchSuppliersRefetch()
       setTimeout(() => {
         this.$refs.supplierCard.reset()
         if (this.$refs.supplierDialog.$refs.dialog) {
@@ -279,12 +283,9 @@ export default {
     async setInvoiceSupplier (invoiceId, supplierId) {
       try {
         this.invoiceSupplierSetLoading = true
-        await this.$apollo.mutate({
-          mutation: SET_INVOICE_SUPPLIER,
-          variables: {
-            invoiceId,
-            supplierId,
-          },
+        await this.setInvoiceSupplierMutate({
+          invoiceId,
+          supplierId,
         })
       } catch (error) {
         throw new Error(error)

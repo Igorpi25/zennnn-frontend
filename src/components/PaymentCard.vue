@@ -169,6 +169,8 @@
 </template>
 
 <script>
+import { useApolloClient } from '@vue/apollo-composable'
+
 import {
   RETRY_INVOICE_WITH_NEW_PAYMENT_METHOD,
   UPDATE_PAYMENT_SUBSCRIPTION,
@@ -208,6 +210,13 @@ export default {
     invoiceId: String,
     selectedPriceId: String,
     billingAddress: Boolean,
+  },
+  setup () {
+    const { resolveClient } = useApolloClient()
+
+    return {
+      resolveClient,
+    }
   },
   data () {
     return {
@@ -345,6 +354,7 @@ export default {
       }
     },
     async createPaymentMethod (cardElement, priceId) {
+      const client = this.resolveClient()
       this.loading = true
       const props = {
         type: 'card',
@@ -368,7 +378,7 @@ export default {
         this.loading = false
       } else {
         if (this.billingAddress) {
-          const { data: setBillingAddress } = await this.$apollo.mutate({
+          const { data: setBillingAddress } = await client.mutate({
             mutation: SET_BILLING_ADDRESS,
             variables: {
               country: this.country,
@@ -398,8 +408,9 @@ export default {
     },
     async retryInvoiceWithNewPaymentMethod ({ paymentMethodId, invoiceId }) {
       try {
+        const client = this.resolveClient()
         this.loading = true
-        const { data } = await this.$apollo.mutate({
+        const { data } = await client.mutate({
           mutation: RETRY_INVOICE_WITH_NEW_PAYMENT_METHOD,
           variables: {
             paymentMethodId,
@@ -436,8 +447,9 @@ export default {
     },
     async attachPaymentMethod (paymentMethodId) {
       try {
+        const client = this.resolveClient()
         this.loading = true
-        await this.$apollo.mutate({
+        await client.mutate({
           mutation: ATTACH_PAYMENT_METHOD,
           variables: {
             paymentMethodId,
@@ -456,6 +468,7 @@ export default {
     },
     async createSubscription ({ paymentMethodId, priceId }) {
       try {
+        const client = this.resolveClient()
         this.loading = true
         const mutation = this.isPromo ? CREATE_PROMO_SUBSCRIPTION : UPDATE_PAYMENT_SUBSCRIPTION
         const variables = this.isPromo
@@ -466,7 +479,7 @@ export default {
             paymentMethodId,
             priceId,
           }
-        const { data } = await this.$apollo.mutate({
+        const { data } = await client.mutate({
           mutation,
           variables,
           fetchPolicy: 'no-cache',

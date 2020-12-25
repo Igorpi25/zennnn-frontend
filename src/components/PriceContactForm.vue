@@ -130,6 +130,8 @@
 </template>
 
 <script>
+import { useApolloClient } from '@vue/apollo-composable'
+
 import { PREMIUM_CONTACT } from '../graphql/mutations'
 
 import Btn from './Base/Btn'
@@ -147,6 +149,13 @@ export default {
   },
   props: {
     noDialog: Boolean,
+  },
+  setup () {
+    const { resolveClient } = useApolloClient()
+
+    return {
+      resolveClient,
+    }
   },
   data () {
     return {
@@ -177,8 +186,9 @@ export default {
   methods: {
     async onSubmit () {
       try {
+        const client = this.resolveClient()
         this.loading = true
-        await this.$apollo.mutate({
+        await client.mutate({
           mutation: PREMIUM_CONTACT,
           variables: {
             name: this.name,

@@ -34,7 +34,7 @@
 
 <script>
 import { useRoute } from 'vue-router'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import { CHECK_INVITATION } from '../graphql/queries'
 import { ACCEPT_INVITATION, DECLINE_INVITATION } from '../graphql/mutations'
@@ -47,6 +47,9 @@ export default {
     Btn,
   },
   setup () {
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
     const route = useRoute()
     const invitationId = route.params.invitationId
 
@@ -58,6 +61,7 @@ export default {
     const checkInvitation = useResult(result)
 
     return {
+      apolloClient,
       invitationId,
       checkInvitation,
     }
@@ -78,7 +82,7 @@ export default {
     async acceptInvitation () {
       try {
         this.acceptLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: ACCEPT_INVITATION,
           variables: {
             id: this.invitationId,
@@ -95,7 +99,7 @@ export default {
     async declineInvitation () {
       try {
         this.declineLoading = true
-        await this.$apollo.mutate({
+        await this.apolloClient.mutate({
           mutation: DECLINE_INVITATION,
           variables: {
             id: this.invitationId,

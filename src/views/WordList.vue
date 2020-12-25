@@ -284,7 +284,7 @@ export default {
     const route = useRoute()
     const orgId = route.params.orgId
 
-    const { result, loading } = useQuery(LIST_WORDS, () => ({
+    const { result, loading, refetch: listWordsRefetch } = useQuery(LIST_WORDS, () => ({
       orgId: orgId,
     }), {
       fetchPolicy: 'cache-and-network',
@@ -295,6 +295,7 @@ export default {
       orgId,
       loading,
       listWords,
+      listWordsRefetch,
     }
   },
   data () {
@@ -392,7 +393,7 @@ export default {
     },
     onWordCreate (result) {
       this.wordCreateDialog = false
-      this.$apollo.queries.listWords.refetch()
+      this.listWordsRefetch()
     },
     onWordUpdate () {
       this.wordEditDialog = false

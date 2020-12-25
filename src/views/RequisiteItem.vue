@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
 import { GET_IS_LOGGED_IN, GET_PROFILE } from '../graphql/queries'
 import { NOTE_GREETING } from '../graphql/mutations'
@@ -51,9 +51,12 @@ export default {
       fetchPolicy: 'cache-only',
     })
 
+    const { mutate: noteGreetingMutate } = useMutation(NOTE_GREETING)
+
     return {
       isLoggedIn,
       getProfile,
+      noteGreetingMutate,
     }
   },
   data () {
@@ -83,9 +86,7 @@ export default {
   },
   methods: {
     async noteGreeting () {
-      await this.$apollo.mutate({
-        mutation: NOTE_GREETING,
-      })
+      await this.noteGreetingMutate()
     },
   },
 }

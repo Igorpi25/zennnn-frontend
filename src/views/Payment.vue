@@ -257,7 +257,7 @@
 
 <script>
 import axios from 'axios'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import Alert from '../components/Base/Alert'
 import Select from '../components/Base/Select'
@@ -289,7 +289,10 @@ export default {
   //   ],
   // },
   setup () {
-    const { result: result1 } = useQuery(GET_PROFILE, null, { fetchPolicy: 'cache-first' })
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    const { result: result1, refetch: getProfileRefetch } = useQuery(GET_PROFILE, null, { fetchPolicy: 'cache-first' })
     const getProfile = useResult(result1)
 
     const { result: result2 } = useQuery(LIST_PRICES)
@@ -299,7 +302,9 @@ export default {
     const listPaymentMethods = useResult(result3)
 
     return {
+      apolloClient,
       getProfile,
+      getProfileRefetch,
       listPrices,
       listPaymentMethods,
     }
@@ -555,7 +560,7 @@ export default {
     }
   },
   mounted () {
-    const observer = this.$apollo.subscribe({
+    const observer = this.apolloClient.subscribe({
       query: PAYMENT_DATA,
       fetchPolicy: 'no-cache',
     })
@@ -573,7 +578,7 @@ export default {
           // this.$notify({ color: 'error', text: 'Payment failed.' })
         }
         // update profile
-        this.$apollo.queries.getProfile.refetch()
+        this.getProfileRefetch()
       },
     })
   },

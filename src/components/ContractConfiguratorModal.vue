@@ -443,10 +443,10 @@
 import cloneDeep from 'clone-deep'
 import deepEqual from 'deep-equal'
 
+import { useApolloClient } from '@vue/apollo-composable'
+
 import { mdiPlusCircleOutline, mdiClose } from '@mdi/js'
 import { ziGear, ziPencil, ziChevronUpCircle } from '@/assets/icons'
-
-import { apolloClient } from '../plugins/apollo'
 
 import { GET_ORG_REQUISITE } from '../graphql/queries'
 import { CREATE_CONTRACT, UPDATE_CONTRACT } from '../graphql/mutations'
@@ -471,6 +471,13 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  setup () {
+    const { resolveClient } = useApolloClient()
+
+    return {
+      resolveClient,
+    }
   },
   data () {
     return {
@@ -554,6 +561,7 @@ export default {
     },
     async update () {
       try {
+        const client = this.resolveClient()
         const input = {}
 
         if (!this.create) input.id = this.contract.id
@@ -590,7 +598,7 @@ export default {
           ? { orgId: this.orgId, input }
           : { id: this.contract.id, input }
 
-        const response = await this.$apollo.mutate({
+        const response = await client.mutate({
           mutation: query,
           variables,
         })
@@ -614,7 +622,8 @@ export default {
       }, 200)
     },
     async setCurrentRequisite (id) {
-      const { data: { getOrgRequisite } } = await apolloClient.query({
+      const client = this.resolveClient()
+      const { data: { getOrgRequisite } } = await client.query({
         query: GET_ORG_REQUISITE,
         variables: { id },
         fetchPolicy: 'network-only',
