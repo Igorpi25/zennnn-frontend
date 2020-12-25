@@ -1,5 +1,4 @@
-
-import gql from 'graphql-tag'
+import { gql } from '@apollo/client/core'
 
 export const CREATE_WORD = gql`
   mutation CreateWord($input: CreateWordInput!) {
