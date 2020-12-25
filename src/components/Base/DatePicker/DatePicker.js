@@ -7,7 +7,8 @@ import {
 
 import { useI18n } from 'vue-i18n'
 
-import { parse, isValid, lightFormat } from 'date-fns'
+import parse from 'date-fns/parse'
+import isValid from 'date-fns/isValid'
 
 import { convertToUnit } from '../../../utils/convertToUnit'
 
@@ -80,9 +81,9 @@ export default {
       }
     })
 
-    watchEffect(() => (input.value = props.modelValue && isValid(props.modelValue)
-      ? lightFormat(props.modelValue, props.inputFormat)
-      : ''))
+    // watchEffect(() => (input.value = props.modelValue && isValid(props.modelValue)
+    //   ? lightFormat(props.modelValue, props.inputFormat)
+    //   : ''))
 
     const selectYear = (date) => {
       internal.value = date

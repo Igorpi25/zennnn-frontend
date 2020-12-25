@@ -3,17 +3,15 @@ import {
   computed,
 } from 'vue'
 
-import {
-  startOfDecade,
-  eachYearOfInterval,
-  getYear,
-  subYears,
-  addYears,
-  isAfter,
-  isBefore,
-  getDecade,
-  isValid,
-} from 'date-fns'
+import startOfDecade from 'date-fns/startOfDecade'
+import eachYearOfInterval from 'date-fns/eachYearOfInterval'
+import getYear from 'date-fns/getYear'
+import subYears from 'date-fns/subYears'
+import addYears from 'date-fns/addYears'
+import isAfter from 'date-fns/isAfter'
+import isBefore from 'date-fns/isBefore'
+import getDecade from 'date-fns/getDecade'
+import isValid from 'date-fns/isValid'
 
 import DatePickerHeader from './DatePickerHeader'
 
