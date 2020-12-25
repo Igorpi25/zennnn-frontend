@@ -480,6 +480,15 @@ export default {
     })
     const searchClients = useResult(result1)
 
+    const clientTypeEnum = computed(() => {
+      switch (filter.value.clientType) {
+        case 1: return ClientType.LEGAL
+        case 2: return ClientType.PRIVATE
+        case 3: return ClientType.OTHER
+        default: return null
+      }
+    })
+
     const { result: result2, loading } = useQuery(GET_SPECS, () => ({
       orgId: orgId,
       clientsIds: filter.value.clientsIds,
@@ -499,15 +508,6 @@ export default {
       fetchPolicy: 'cache-and-network',
     })
     const getClientsById = useResult(result4)
-
-    const clientTypeEnum = computed(() => {
-      switch (filter.value.clientType) {
-        case 1: return ClientType.LEGAL
-        case 2: return ClientType.PRIVATE
-        case 3: return ClientType.OTHER
-        default: return null
-      }
-    })
 
     return {
       orgId,
