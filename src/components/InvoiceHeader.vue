@@ -41,9 +41,9 @@
         :value="item.purchaseDate"
         @input="$emit('update', { purchaseDate: $event }, item.id)"
       >
-        <template v-slot:activator="{ on }">
+        <template v-slot:activator>
           <div class="text-left">
-            <div v-on="on">
+            <div>
               <TextField
                 :value="item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : null"
                 :placeholder="$t('shipping.purchaseDate')"
@@ -89,9 +89,9 @@
         :value="item.shippingDate"
         @input="$emit('update', { shippingDate: $event }, item.id)"
       >
-        <template v-slot:activator="{ on }">
+        <template v-slot:activator>
           <div class="text-left">
-            <div v-on="on">
+            <div>
               <TextField
                 :value="item.shippingDate ? $d($parseDate(item.shippingDate), 'short') : null"
                 :placeholder="$t('shipping.shippingDate')"
@@ -168,11 +168,21 @@ import { InvoiceStatus, Role } from '../graphql/enums'
 import { SEARCH_SUPPLIERS } from '../graphql/queries'
 import { SET_INVOICE_SUPPLIER } from '../graphql/mutations'
 
+import Modal from './Base/Modal'
+import Select from './Base/Select'
+import Checkbox from './Base/Checkbox'
+import TextField from './Base/TextField'
+import DatePicker from './Base/DatePicker'
 import SupplierCard from './SupplierCard.vue'
 
 export default {
   name: 'InvoiceHeader',
   components: {
+    Modal,
+    Select,
+    Checkbox,
+    TextField,
+    DatePicker,
     SupplierCard,
   },
   props: {

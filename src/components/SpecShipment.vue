@@ -120,8 +120,8 @@
               :value="item.marine.exportDate"
               @input="$emit('update', { shipment: { marine: { exportDate: $event } } })"
             >
-              <template v-slot:activator="{ on }">
-                <div v-on="on">
+              <template v-slot:activator>
+                <div>
                   <TextField
                     :value="item.marine.exportDate ? $d($parseDate(item.marine.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
@@ -233,8 +233,8 @@
               :value="item.railway.exportDate"
               @input="$emit('update', { shipment: { railway: { exportDate: $event } } })"
             >
-              <template v-slot:activator="{ on }">
-                <div v-on="on">
+              <template v-slot:activator>
+                <div>
                   <TextField
                     :value="item.railway.exportDate ? $d($parseDate(item.railway.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
@@ -296,8 +296,8 @@
               :value="item.car.exportDate"
               @input="$emit('update', { shipment: { car: { exportDate: $event } } })"
             >
-              <template v-slot:activator="{ on }">
-                <div v-on="on">
+              <template v-slot:activator>
+                <div>
                   <TextField
                     :value="item.car.exportDate ? $d($parseDate(item.car.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
@@ -447,8 +447,17 @@
 <script>
 import { ShipmentType } from '../graphql/enums'
 
+import Select from './Base/Select'
+import TextField from './Base/TextField'
+import DatePicker from './Base/DatePicker'
+
 export default {
   name: 'SpecShipment',
+  components: {
+    Select,
+    TextField,
+    DatePicker,
+  },
   props: {
     item: {
       type: Object,

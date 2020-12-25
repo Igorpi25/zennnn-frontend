@@ -107,7 +107,7 @@
                   {{ $t('companyDetail.label.matches') }}
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
-                  <SwitchInput
+                  <Switch
                     :value="isMailingAddressMatch"
                     hide-details
                     @input="updateMailingAddressMatch"
@@ -294,7 +294,7 @@
             <div class="lg:pb-20 mr-10" />
           </div>
           <div class="flex items-end pb-2">
-            <PhoneInput
+            <Phone
               :value="item.phone"
               :locale="item.locale"
               :label="$t('companyDetail.label.phone')"
@@ -306,7 +306,7 @@
               class="w-1/2 pr-2"
               @input="updateData({ 'phone': $event })"
             />
-            <PhoneInput
+            <Phone
               :value="item.fax"
               :locale="item.locale"
               :label="$t('companyDetail.label.fax')"
@@ -340,10 +340,23 @@
 </template>
 
 <script>
+import Tooltip from '../Base/Tooltip'
+import Switch from '../Base/Switch'
+import TextField from '../Base/TextField'
+import ExpandTransition from '../Base/ExpandTransition'
+import Phone from '../Phone.vue'
+
 import clientDetail from '../../mixins/clientDetail'
 
 export default {
   name: 'LegalDetail',
+  components: {
+    Tooltip,
+    Switch,
+    TextField,
+    ExpandTransition,
+    Phone,
+  },
   mixins: [clientDetail],
   props: {
     item: {

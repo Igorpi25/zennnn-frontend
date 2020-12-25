@@ -162,8 +162,17 @@
 import { CustomsTerms, CustomsTermsMore, ShipmentType } from '../graphql/enums'
 import Countries from '../config/countries-iso3.json'
 
+import TextField from './Base/TextField'
+import TextArea from './Base/TextArea'
+import Select from './Base/Select'
+
 export default {
   name: 'SpecCustoms',
+  components: {
+    TextField,
+    TextArea,
+    Select,
+  },
   props: {
     shipmentType: {
       type: String,

@@ -39,8 +39,13 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 import { CHECK_INVITATION } from '../graphql/queries'
 import { ACCEPT_INVITATION, DECLINE_INVITATION } from '../graphql/mutations'
 
+import Btn from '../components/Base/Btn'
+
 export default {
   name: 'Invitation',
+  components: {
+    Btn,
+  },
   setup () {
     const route = useRoute()
     const invitationId = route.params.invitationId

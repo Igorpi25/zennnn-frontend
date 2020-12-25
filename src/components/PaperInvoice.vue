@@ -69,7 +69,7 @@
                     >
                       <template v-slot:placeholder>
                         <div class="flex justify-center items-center w-full h-full">
-                          <Spinner />
+                          <LoadingSpinner />
                         </div>
                       </template>
                     </Image>
@@ -193,8 +193,10 @@
 </template>
 
 <script>
-import ProductImage from '../components/ProductImage.vue'
-import Comments from '../components/Comments'
+import Image from './Base/Image'
+import LoadingSpinner from './Base/LoadingSpinner'
+import ProductImage from './ProductImage.vue'
+import Comments from './Comments'
 
 import Scroll from '../directives/Scroll'
 
@@ -205,6 +207,8 @@ import { convertToUnit, isNumber } from '../util/helpers'
 export default {
   name: 'PaperInvoice',
   components: {
+    Image,
+    LoadingSpinner,
     ProductImage,
     Comments,
   },

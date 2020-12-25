@@ -276,8 +276,21 @@ import { DELETE_CLIENT } from '../graphql/mutations'
 
 import { confirmDialog, wrapInArray, getObjectValueByPath } from '../util/helpers'
 
+import Btn from '../components/Base/Btn'
+import Tooltip from '../components/Base/Tooltip'
+import Progress from '../components/Base/Progress'
+import DataTable from '../components/Base/DataTable'
+import TextField from '../components/Base/TextField'
+
 export default {
   name: 'ClientList',
+  components: {
+    Btn,
+    Tooltip,
+    Progress,
+    DataTable,
+    TextField,
+  },
   setup () {
     const route = useRoute()
     const orgId = route.params.orgId

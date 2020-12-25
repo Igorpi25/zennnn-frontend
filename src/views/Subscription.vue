@@ -385,6 +385,9 @@
 import axios from 'axios'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
+import Btn from '../components/Base/Btn'
+import Modal from '../components/Base/Modal'
+import Progress from '../components/Base/Progress'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import PaymentCard from '../components/PaymentCard.vue'
@@ -397,6 +400,9 @@ import { PAYMENT_DATA } from '../graphql/subscriptions'
 export default {
   name: 'Subscription',
   components: {
+    Btn,
+    Modal,
+    Progress,
     Header,
     Footer,
     PaymentCard,

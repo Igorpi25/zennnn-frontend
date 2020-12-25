@@ -3,7 +3,7 @@
 
     <div v-if="isOwnerOrManager" class="w-full lg:max-w-xs">
       <div class="pt-2 pb-4">
-        <ButtonToggle
+        <BtnToggle
           v-model="internalProfitType"
           :items="buttonGroupItems"
           @input="updateInvoice({
@@ -29,7 +29,7 @@
             <span class="text-base text-gray-100 pl-xs pr-sm">%</span>
           </template>
         </TextField>
-        <SwitchInput
+        <Switch
           :value="item.profitForAll"
           hide-details
           @input="updateInvoice({
@@ -37,7 +37,7 @@
           })"
         >
           <span class="text-white">{{ $t('shipping.forAll') }}</span>
-        </SwitchInput>
+        </Switch>
       </div>
     </div>
 
@@ -101,22 +101,10 @@
           <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
         </div>
         <DatePicker
-          :value="item.prepaymentDate"
-          @input="updateInvoice({ prepaymentDate: $event })"
-        >
-          <template v-slot:activator="{ on }">
-            <TextField
-              :value="item.prepaymentDate ? $d($parseDate(item.prepaymentDate), 'short') : null"
-              :placeholder="$t('placeholder.emptyDate')"
-              solo
-              solo-flat
-              align-right
-              readonly
-              input-class="text-sm"
-              v-on="on"
-            />
-          </template>
-        </DatePicker>
+          :model-value="item.prepaymentDate"
+          :placeholder="$t('placeholder.emptyDate')"
+          @update:model-value="updateInvoice({ prepaymentDate: $event })"
+        />
       </div>
     </div>
 
@@ -132,22 +120,10 @@
           <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
         </div>
         <DatePicker
-          :value="item.obtainCostDate"
-          @input="updateInvoice({ obtainCostDate: $event })"
-        >
-          <template v-slot:activator="{ on }">
-            <TextField
-              :value="item.obtainCostDate ? $d($parseDate(item.obtainCostDate), 'short') : null"
-              :placeholder="$t('placeholder.emptyDate')"
-              solo
-              solo-flat
-              align-right
-              readonly
-              input-class="text-sm"
-              v-on="on"
-            />
-          </template>
-        </DatePicker>
+          :model-value="item.obtainCostDate"
+          :placeholder="$t('placeholder.emptyDate')"
+          @update:model-value="updateInvoice({ obtainCostDate: $event })"
+        />
       </div>
       <div class="sm:pl-4">
         <label class="block leading-5 text-base text-gray-200 text-right whitespace-nowrap py-2 pr-sm">
@@ -158,22 +134,10 @@
           <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
         </div>
         <DatePicker
-          :value="item.clientDebtDate"
-          @input="updateInvoice({ clientDebtDate: $event })"
-        >
-          <template v-slot:activator="{ on }">
-            <TextField
-              :value="item.clientDebtDate ? $d($parseDate(item.clientDebtDate), 'short') : null"
-              :placeholder="$t('placeholder.emptyDate')"
-              solo
-              solo-flat
-              align-right
-              readonly
-              input-class="text-sm"
-              v-on="on"
-            />
-          </template>
-        </DatePicker>
+          :model-value="item.clientDebtDate"
+          :placeholder="$t('placeholder.emptyDate')"
+          @update:model-value="updateInvoice({ clientDebtDate: $event })"
+        />
       </div>
     </div>
 
@@ -184,8 +148,19 @@
 import invoice from '../mixins/invoice'
 import { Role } from '../graphql/enums'
 
+import Switch from './Base/Switch'
+import TextField from './Base/TextField'
+import DatePicker from './Base/DatePicker'
+import BtnToggle from './Base/BtnToggle'
+
 export default {
   name: 'InvoiceSummary',
+  components: {
+    Switch,
+    TextField,
+    DatePicker,
+    BtnToggle,
+  },
   mixins: [invoice],
   props: {
     item: {

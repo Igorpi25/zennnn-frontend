@@ -132,8 +132,19 @@
 <script>
 import { PREMIUM_CONTACT } from '../graphql/mutations'
 
+import Btn from './Base/Btn'
+import Form from './Base/Form'
+import TextField from './Base/TextField'
+import Modal from './Base/Modal'
+
 export default {
   name: 'PriceContactForm',
+  components: {
+    Btn,
+    Form,
+    TextField,
+    Modal,
+  },
   props: {
     noDialog: Boolean,
   },

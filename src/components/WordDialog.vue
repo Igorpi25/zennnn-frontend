@@ -138,8 +138,25 @@ import { CREATE_WORD as ADMIN_CREATE_WORD, UPDATE_WORD as ADMIN_UPDATE_WORD } fr
 import { TRANSLATE_WORD } from '../graphql/queries'
 import { TRANSLATE_WORD as ADMIN_TRANSLATE_WORD } from '../graphql/admin/queries'
 
+import Btn from './Base/Btn'
+import Modal from './Base/Modal'
+import Progress from './Base/Progress'
+import Icon from './Base/Icon'
+import Form from './Base/Form'
+import Select from './Base/Select'
+import TextField from './Base/TextField'
+
 export default {
   name: 'WordDialog',
+  components: {
+    Btn,
+    Modal,
+    Progress,
+    Icon,
+    Form,
+    Select,
+    TextField,
+  },
   props: {
     value: Boolean,
     create: Boolean,

@@ -417,6 +417,12 @@ import { LIST_WORDS } from '../../graphql/admin/queries'
 import { APPROVE_WORDS, HIDE_WORDS, MERGE_WORDS } from '../../graphql/admin/mutations'
 import { LOCALES_LIST } from '../../config/globals'
 
+import Btn from '../../components/Base/Btn'
+import Icon from '../../components/Base/Icon'
+import Menu from '../../components/Base/Menu'
+import Progress from '../../components/Base/Progress'
+import DataTable from '../../components/Base/DataTable'
+import TextField from '../../components/Base/TextField'
 import WordProducts from '../../components/WordProducts.vue'
 import LocalePicker from '../../components/LocalePicker.vue'
 import WordDialog from '../../components/WordDialog.vue'
@@ -424,6 +430,12 @@ import WordDialog from '../../components/WordDialog.vue'
 export default {
   name: 'WordList',
   components: {
+    Btn,
+    Icon,
+    Menu,
+    Progress,
+    DataTable,
+    TextField,
     WordProducts,
     LocalePicker,
     WordDialog,

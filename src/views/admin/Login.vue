@@ -129,18 +129,18 @@
 </template>
 
 <script>
-import LocalePicker from '../../components/LocalePicker.vue'
 import Btn from '../../components/Base/Btn'
 import Form from '../../components/Base/Form'
 import TextField from '../../components/Base/TextField'
+import LocalePicker from '../../components/LocalePicker.vue'
 
 export default {
   name: 'Login',
   components: {
-    LocalePicker,
     Btn,
     Form,
     TextField,
+    LocalePicker,
   },
   data () {
     return {

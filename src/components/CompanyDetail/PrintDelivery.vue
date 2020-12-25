@@ -42,8 +42,8 @@
           :value="exportDate"
           @input="updateExportDate"
         >
-          <template v-slot:activator="{ on }">
-            <div v-on="on" style="max-width: 232px;">
+          <template v-slot:activator>
+            <div style="max-width: 232px;">
               <TextField
                 :value="exportDate ? $d($parseDate(exportDate), 'short'): ''"
                 :label="$t('shipping.exportDate')"
@@ -378,8 +378,17 @@
 <script>
 import { ShipmentType, CustomsTerms, CustomsTermsMore } from '../../graphql/enums'
 
+import Select from '../Base/Select'
+import TextField from '../Base/TextField'
+import DatePicker from '../Base/DatePicker'
+
 export default {
   name: 'PrintDelivery',
+  components: {
+    Select,
+    TextField,
+    DatePicker,
+  },
   props: {
     item: {
       type: Object,

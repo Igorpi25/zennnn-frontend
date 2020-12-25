@@ -1,9 +1,13 @@
 <template>
   <div class="spec">
-    <component
+    <!-- <component
       ref="spec"
       v-if="roleInProject"
       :is="componentName"
+      :loading="loading"
+    /> -->
+    <Owner
+      ref="spec"
       :loading="loading"
     />
   </div>
@@ -15,10 +19,10 @@ import { useRoute } from 'vue-router'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
 import Owner from '@/components/Spec/Owner.vue'
-import Manager from '@/components/Spec/Manager.vue'
-import Accountant from '@/components/Spec/Accountant.vue'
-import Warehouseman from '@/components/Spec/Warehouseman.vue'
-import Freelancer from '@/components/Spec/Freelancer.vue'
+// import Manager from '@/components/Spec/Manager.vue'
+// import Accountant from '@/components/Spec/Accountant.vue'
+// import Warehouseman from '@/components/Spec/Warehouseman.vue'
+// import Freelancer from '@/components/Spec/Freelancer.vue'
 
 import { Role, Typename, Operation, emptyInvoice, emptyProduct } from '../graphql/enums' // eslint-disable-line
 import {
@@ -40,10 +44,10 @@ export default {
   name: 'Spec',
   components: {
     Owner,
-    Manager,
-    Accountant,
-    Warehouseman,
-    Freelancer,
+    // Manager,
+    // Accountant,
+    // Warehouseman,
+    // Freelancer,
   },
   setup () {
     const route = useRoute()

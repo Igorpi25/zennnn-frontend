@@ -21,7 +21,7 @@
               {{ $t('companyDetail.label.main') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
-              <SwitchInput
+              <Switch
                 v-model="isMainBankDetail"
                 hide-details
                 @input="$emit('set-main-bank-detail', internalItem.id)"
@@ -133,8 +133,17 @@
 </template>
 
 <script>
+import Btn from '../Base/Btn'
+import Switch from '../Base/Switch'
+import TextField from '../Base/TextField'
+
 export default {
   name: 'BankDetailItem',
+  components: {
+    Btn,
+    Switch,
+    TextField,
+  },
   props: {
     loading: Boolean,
     createLoading: Boolean,

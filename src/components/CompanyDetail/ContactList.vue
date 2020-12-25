@@ -50,13 +50,18 @@
 </template>
 
 <script>
-import ContactItem from './ContactItem.vue'
 import clientDetail from '../../mixins/clientDetail'
 import { ContactType } from '../../graphql/enums'
+
+import Btn from '../Base/Btn'
+import ExpandTransition from '../Base/ExpandTransition'
+import ContactItem from './ContactItem.vue'
 
 export default {
   name: 'ContactList',
   components: {
+    Btn,
+    ExpandTransition,
     ContactItem,
   },
   mixins: [clientDetail],

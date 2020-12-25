@@ -88,7 +88,7 @@
     </div>
     <div class="w-full lg:w-1/2 lg:pl-5">
       <div class="flex flex-wrap lg:flex-nowrap pb-2">
-        <PhoneInput
+        <Phone
           :value="item.phone"
           :locale="item.locale"
           :label="$t('companyDetail.label.phone')"
@@ -114,7 +114,7 @@
         />
       </div>
       <div class="pb-2">
-        <PhoneInput
+        <Phone
           :value="item.fax"
           :locale="item.locale"
           :label="$t('companyDetail.label.fax')"
@@ -149,8 +149,17 @@
 import companyDetail from '../../mixins/clientDetail'
 import { ClientType } from '../../graphql/enums'
 
+import TextField from '../Base/TextField'
+import Select from '../Base/Select'
+import Phone from '../Phone.vue'
+
 export default {
   name: 'PrintClient',
+  components: {
+    TextField,
+    Select,
+    Phone,
+  },
   mixins: [companyDetail],
   props: {
     readonly: Boolean,

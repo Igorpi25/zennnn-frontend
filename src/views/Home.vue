@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-grow flex- flex-col">
+  <div class="flex-grow flex flex-col">
     <!-- / HEADER -->
     <header>
       <div class="h-20 flex items-center container container--sm">

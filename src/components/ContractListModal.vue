@@ -55,8 +55,15 @@ import { DELETE_CONTRACT } from '../graphql/mutations'
 
 import { confirmDialog } from '@/util/helpers'
 
+import Btn from './Base/Btn'
+import Icon from './Base/Icon'
+
 export default {
   name: 'ContractListModal',
+  components: {
+    Btn,
+    Icon,
+  },
   props: {
     items: {
       type: Array,

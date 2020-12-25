@@ -129,14 +129,23 @@
 import { ref } from 'vue'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import WordProduct from './WordProduct.vue'
-import WordDialog from './WordDialog.vue'
 import { SEARCH_WORDS } from '../graphql/admin/queries'
 import { ADD_PRODUCTS_TO_WORD, CREATE_WORD_WITH_PRODUCTS } from '../graphql/admin/mutations'
+
+import Btn from './Base/Btn'
+import Modal from './Base/Modal'
+import Select from './Base/Select'
+import ExpandTransition from './Base/ExpandTransition'
+import WordProduct from './WordProduct.vue'
+import WordDialog from './WordDialog.vue'
 
 export default {
   name: 'WordProducts',
   components: {
+    Btn,
+    Modal,
+    Select,
+    ExpandTransition,
     WordProduct,
     WordDialog,
   },

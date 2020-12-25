@@ -7,7 +7,7 @@ import {
   mdiChevronRight,
 } from '@mdi/js'
 
-import { GET_SPEC } from '../graphql/queries'
+import { GET_SPEC, GET_IS_SPEC_SYNC } from '../graphql/queries'
 import { UPDATE_INVOICE, CREATE_PRODUCT, CREATE_PRODUCT_WITH_INVOICE } from '../graphql/mutations'
 import {
   InvoiceProfitType,
@@ -270,7 +270,8 @@ export default {
     async refetchSpec () {
       const apolloClient = this.$apollo.provider.defaultClient
       try {
-        apolloClient.cache.writeData({
+        apolloClient.cache.writeQuery({
+          query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: true },
         })
         await this.$apollo.query({
@@ -283,7 +284,8 @@ export default {
       } catch (error) {
         this.$logger.warn('Error: ', error)
       } finally {
-        apolloClient.cache.writeData({
+        apolloClient.cache.writeQuery({
+          query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: false },
         })
       }

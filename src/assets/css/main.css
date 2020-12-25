@@ -179,13 +179,6 @@
   [data-popper-root][data-popper-reference-hidden] {
     visibility: hidden;
   }
-  .popper__box__offset {
-    position: absolute;
-    right: 0;
-    top: 0;
-    left: 0;
-    bottom: 0;
-  }
   .popper__box {
     pointer-events: auto;
     position: relative;
@@ -220,19 +213,6 @@
   }
   [data-popper-root][data-popper-placement^='right'] > .popper__box > .popper__arrow {
     left: -4px;
-  }
-
-  [data-popper-root][data-popper-placement^='top'] > .popper__box > .popper__box__offset {
-    bottom: -8px;
-  }
-  [data-popper-root][data-popper-placement^='bottom'] > .popper__box > .popper__box__offset {
-    top: -8px;
-  }
-  [data-popper-root][data-popper-placement^='left'] > .popper__box > .popper__box__offset {
-    right: -8px;
-  }
-  [data-popper-root][data-popper-placement^='right'] > .popper__box > .popper__box__offset {
-    left: -8px;
   }
 
   [data-popper-root][data-popper-placement^='top'] > .popper__box {

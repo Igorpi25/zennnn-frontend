@@ -42,7 +42,10 @@
 </template>
 
 <script>
+import Btn from './Base/Btn'
+
 export default {
   name: 'WelcomeModal',
+  components: { Btn },
 }
 </script>

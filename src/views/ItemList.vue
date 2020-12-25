@@ -170,8 +170,21 @@
 
 import { getObjectValueByPath } from '../util/helpers'
 
+import Btn from '../components/Base/Btn'
+import Tooltip from '../components/Base/Tooltip'
+import Progress from '../components/Base/Progress'
+import DataTable from '../components/Base/DataTable'
+import TextField from '../components/Base/TextField'
+
 export default {
   name: 'ItemList',
+  components: {
+    Btn,
+    Tooltip,
+    Progress,
+    DataTable,
+    TextField,
+  },
   // apollo: {
   //   listItems: {
   //     query: LIST_ITEMS,

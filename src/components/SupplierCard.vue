@@ -118,7 +118,6 @@
 </template>
 
 <script>
-// TODO install in dependencies
 import cloneDeep from 'clone-deep'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -132,6 +131,7 @@ import {
   UPDATE_SUPPLIER,
 } from '../graphql/mutations'
 
+import Btn from './Base/Btn'
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
 import LegalDetail from './CompanyDetail/LegalDetail.vue'
 import ContactList from './CompanyDetail/ContactList.vue'
@@ -141,6 +141,7 @@ import BranchList from './CompanyDetail/BranchList.vue'
 export default {
   name: 'SupplierCard',
   components: {
+    Btn,
     LegalInfo,
     LegalDetail,
     ContactList,

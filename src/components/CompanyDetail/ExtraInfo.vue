@@ -144,12 +144,19 @@
 </template>
 
 <script>
-import FileUploader from '../FileUploader.vue'
 import clientDetail from '../../mixins/clientDetail'
+
+import TextField from '../Base/TextField'
+import TextArea from '../Base/TextArea'
+import ExpandTransition from '../Base/ExpandTransition'
+import FileUploader from '../FileUploader.vue'
 
 export default {
   name: 'ExtraInfo',
   components: {
+    TextField,
+    TextArea,
+    ExpandTransition,
     FileUploader,
   },
   mixins: [clientDetail],

@@ -46,8 +46,13 @@
 </template>
 
 <script>
+import Btn from './Base/Btn'
+
 export default {
   name: 'CommentInput',
+  components: {
+    Btn,
+  },
   props: {
     value: {
       type: String,

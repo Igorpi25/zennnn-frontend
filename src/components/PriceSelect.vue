@@ -71,9 +71,12 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 import { LIST_PRICES } from '../graphql/queries'
 import PriceContactForm from './PriceContactForm.vue'
 
+import Btn from './Base/Btn'
+
 export default {
   name: 'PriceSelect',
   components: {
+    Btn,
     PriceContactForm,
   },
   props: {

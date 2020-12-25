@@ -1,6 +1,6 @@
 import { auth } from './index'
 import { apolloClient } from '../apollo'
-import { GET_PROFILE } from '../../graphql/queries'
+import { GET_PROFILE, GET_IS_LOGGED_IN } from '../../graphql/queries'
 import { delay } from '../../util/helpers'
 
 /**
@@ -24,7 +24,10 @@ export const checkAuth = async () => {
     // TODO: wihtout delay, in first check data not writen in cache
     await delay(50)
     // set isLoggedIn to cache
-    apolloClient.cache.writeData({ data: { isLoggedIn: loggedIn } })
+    apolloClient.cache.writeQuery({
+      query: GET_IS_LOGGED_IN,
+      data: { isLoggedIn: loggedIn },
+    })
     return true
   } catch (error) {
     return false

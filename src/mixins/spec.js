@@ -409,7 +409,8 @@ export default {
     async refetchSpec () {
       const apolloClient = this.$apollo.provider.defaultClient
       try {
-        apolloClient.cache.writeData({
+        apolloClient.cache.writeQuery({
+          query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: true },
         })
         await this.$apollo.query({
@@ -422,7 +423,8 @@ export default {
       } catch (error) {
         this.$logger.warn('Error: ', error)
       } finally {
-        apolloClient.cache.writeData({
+        apolloClient.cache.writeQuery({
+          query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: false },
         })
       }

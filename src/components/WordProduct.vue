@@ -22,7 +22,7 @@
           >
             <template v-slot:placeholder>
               <div class="flex justify-center items-center w-full h-full">
-                <Spinner />
+                <LoadingSpinner />
               </div>
             </template>
           </Image>
@@ -54,7 +54,7 @@
             >
               <template v-slot:placeholder>
                 <div class="flex justify-center items-center w-full h-full">
-                  <Spinner />
+                  <LoadingSpinner />
                 </div>
               </template>
             </Image>
@@ -111,8 +111,17 @@
 <script>
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
 
+import Menu from './Base/Menu'
+import Image from './Base/Image'
+import LoadingSpinner from './Base/LoadingSpinner'
+
 export default {
   name: 'WordProduct',
+  components: {
+    Menu,
+    Image,
+    LoadingSpinner,
+  },
   props: {
     light: Boolean,
     images: {

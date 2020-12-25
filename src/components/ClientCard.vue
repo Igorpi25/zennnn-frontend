@@ -256,7 +256,6 @@
 </template>
 
 <script>
-// TODO install in dependencies
 import cloneDeep from 'clone-deep'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -272,6 +271,7 @@ import {
 } from '../graphql/mutations'
 import { replaceAt } from '../util/helpers'
 
+import Btn from './Base/Btn'
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
 import LegalDetail from './CompanyDetail/LegalDetail.vue'
 import ContactList from './CompanyDetail/ContactList.vue'
@@ -283,6 +283,7 @@ import PrivateDetail from './CompanyDetail/PrivateDetail.vue'
 export default {
   name: 'ClientCard',
   components: {
+    Btn,
     LegalInfo,
     LegalDetail,
     ContactList,

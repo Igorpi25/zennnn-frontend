@@ -133,7 +133,6 @@ import { useRoute } from 'vue-router'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
 import debounce from 'lodash.debounce'
-// TODO install in dependencies
 import cloneDeep from 'clone-deep'
 import { validateCompanyDetail } from '../util/validation'
 
@@ -143,6 +142,7 @@ import {
   UPDATE_REQUISITE,
 } from '../graphql/mutations'
 
+import Btn from './Base/Btn'
 import CompanyInfo from './CompanyDetail/CompanyInfo.vue'
 import BankDetailList from './CompanyDetail/BankDetailList.vue'
 import ContactList from './CompanyDetail/ContactList.vue'
@@ -152,6 +152,7 @@ import ExtraInfo from './CompanyDetail/ExtraInfo.vue'
 export default {
   name: 'RequisiteCard',
   components: {
+    Btn,
     CompanyInfo,
     BankDetailList,
     ContactList,
@@ -176,7 +177,7 @@ export default {
       default: false,
     },
   },
-  setup () {
+  setup (props) {
     const route = useRoute()
     const reqId = route.params.reqId
     const item = ref({})

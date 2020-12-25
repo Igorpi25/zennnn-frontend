@@ -48,8 +48,13 @@
 <script>
 import { ziAlert } from '@/assets/icons'
 
+import Btn from './Base/Btn'
+
 export default {
   name: 'SaveBeforeCloseModal',
+  components: {
+    Btn,
+  },
   props: {
     title: {
       type: String,

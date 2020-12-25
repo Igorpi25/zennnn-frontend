@@ -1,6 +1,7 @@
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 import { typeDefs, resolvers } from '../../graphql/admin'
+import { GET_IS_LOGGED_IN } from '../../graphql/admin/queries'
 import { auth } from '../auth/admin'
 import { notify } from '../notify'
 import { Logger } from '../logger'
@@ -61,11 +62,16 @@ export const apolloClient = new ApolloClient({
   connectToDevTools: true,
 })
 
-const data = {
-  isLoggedIn: false,
-}
+cache.writeQuery({
+  query: GET_IS_LOGGED_IN,
+  data: { isLoggedIn: false },
+})
 
-cache.writeData({ data })
-apolloClient.onResetStore(() => cache.writeData({ data }))
+apolloClient.onResetStore(() => {
+  cache.writeQuery({
+    query: GET_IS_LOGGED_IN,
+    data: { isLoggedIn: false },
+  })
+})
 
 export default apolloClient

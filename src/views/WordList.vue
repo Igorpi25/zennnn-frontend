@@ -261,12 +261,22 @@ import { LIST_WORDS } from '../graphql/queries'
 
 import { LOCALES_LIST } from '../config/globals'
 
+import Btn from '../components/Base/Btn'
+import Icon from '../components/Base/Icon'
+import Progress from '../components/Base/Progress'
+import DataTable from '../components/Base/DataTable'
+import TextField from '../components/Base/TextField'
 import WordDialog from '../components/WordDialog.vue'
 import WordSpecs from '../components/WordSpecs.vue'
 
 export default {
   name: 'WordList',
   components: {
+    Btn,
+    Icon,
+    Progress,
+    DataTable,
+    TextField,
     WordDialog,
     WordSpecs,
   },

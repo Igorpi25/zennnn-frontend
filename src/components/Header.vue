@@ -225,7 +225,7 @@
                             >
                               <template v-slot:placeholder>
                                 <div class="flex justify-center items-center w-full h-full">
-                                  <Spinner />
+                                  <LoadingSpinner />
                                 </div>
                               </template>
                             </Image>
@@ -316,6 +316,10 @@ import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 import { SET_ORG_AVATAR } from '../graphql/mutations'
 import { wsLink } from '../plugins/apollo'
 
+import Icon from './Base/Icon'
+import Menu from './Base/Menu'
+import Modal from './Base/Modal'
+import LoadingSpinner from './Base/LoadingSpinner'
 import FileUploader from './FileUploader.vue'
 import LocalePicker from './LocalePicker.vue'
 import SystemMessageModal from '../components/SystemMessageModal.vue'
@@ -325,6 +329,10 @@ import emitter from '../plugins/mitt'
 export default {
   name: 'Header',
   components: {
+    Icon,
+    Menu,
+    Modal,
+    LoadingSpinner,
     FileUploader,
     LocalePicker,
     SystemMessageModal,
@@ -546,7 +554,8 @@ export default {
       const isGoogleUser = username.startsWith('Google_')
       const response = await this.$auth.signOut()
       // falsy isLoggedIn in cache before route to signin
-      this.$apollo.provider.clients.defaultClient.cache.writeData({
+      this.$apollo.provider.clients.defaultClient.cache.writeQuery({
+        query: GET_IS_LOGGED_IN,
         data: { isLoggedIn: false },
       })
       this.$logger.info('Sign Out: ', response)

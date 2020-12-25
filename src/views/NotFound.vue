@@ -44,7 +44,10 @@
 </template>
 
 <script>
+import Btn from '../components/Base/Btn'
+
 export default {
   name: 'NotFound',
+  components: { Btn },
 }
 </script>

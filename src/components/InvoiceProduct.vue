@@ -272,7 +272,7 @@
             v-if="isOwnerOrManager || isWarehouseman"
             class="h-4 relative"
           >
-            <SwitchInput
+            <Switch
               :value="store.atWhouse"
               hide-details
               small
@@ -463,12 +463,18 @@ import { SEARCH_WORDS } from '../graphql/queries'
 import product from '../mixins/product'
 import { isLink } from '../util/helpers'
 
+import Switch from './Base/Switch'
+import Select from './Base/Select'
+import TextField from './Base/TextField'
 import Comments from './Comments.vue'
 import WordDialog from './WordDialog.vue'
 
 export default {
   name: 'InvoiceProduct',
   components: {
+    Switch,
+    Select,
+    TextField,
     Comments,
     WordDialog,
   },

@@ -128,8 +128,24 @@ import { GET_INVITE_USER_TO_ORG } from '../graphql/queries'
 import { INVITE_USER_TO_ORG } from '../graphql/mutations'
 import { LOCALES_LIST } from '../config/globals'
 
+import Btn from './Base/Btn'
+import Modal from './Base/Modal'
+import Form from './Base/Form'
+import Select from './Base/Select'
+import TextField from './Base/TextField'
+import { Window, WindowItem } from './Base/Window'
+
 export default {
   name: 'StaffCreateModal',
+  components: {
+    Btn,
+    Modal,
+    Form,
+    Select,
+    TextField,
+    Window,
+    WindowItem,
+  },
   props: {
     value: Boolean,
   },

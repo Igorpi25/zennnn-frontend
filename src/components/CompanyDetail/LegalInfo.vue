@@ -32,7 +32,7 @@
         />
       </div>
       <div class="pb-2">
-        <PhoneInput
+        <Phone
           :value="item.mobilePhone"
           :locale="item.locale"
           :label="$t('companyDetail.label.mobilePhone')"
@@ -128,7 +128,7 @@
               {{ $t('companyDetail.label.englishOnly') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
-              <SwitchInput
+              <Switch
                 :value="isCompanyNameMatch"
                 hide-details
                 @input="updateCompanyNameMatch"
@@ -177,8 +177,19 @@
 import { LOCALES_LIST } from '../../config/globals'
 import companyDetail from '../../mixins/clientDetail'
 
+import TextField from '../Base/TextField'
+import Select from '../Base/Select'
+import Switch from '../Base/Switch'
+import Phone from '../Phone.vue'
+
 export default {
   name: 'LegalInfo',
+  components: {
+    TextField,
+    Select,
+    Switch,
+    Phone,
+  },
   mixins: [companyDetail],
   props: {
     uid: String,

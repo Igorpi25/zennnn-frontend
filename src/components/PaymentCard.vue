@@ -8,7 +8,7 @@
       <h3 class="text-black text-2xl pb-6">
         {{ $t('payment.selectPaymentMethod') }}:
       </h3>
-      <RadioInput
+      <Radio
         v-model="paymentMethod"
         value="DEFAULT"
         label="DEFAULT"
@@ -16,8 +16,8 @@
         class="pb-4"
       >
         <span class="ml-3">{{ $t('payment.defaultCard') }}</span>
-      </RadioInput>
-      <RadioInput
+      </Radio>
+      <Radio
         v-model="paymentMethod"
         value="NEW"
         label="NEW"
@@ -25,7 +25,7 @@
         class="pb-4"
       >
         <span class="ml-3">{{ $t('payment.addCard') }}</span>
-      </RadioInput>
+      </Radio>
       <div
         v-if="paymentMethod === 'DEFAULT'"
         role="alert"
@@ -179,8 +179,25 @@ import {
 
 import Countries from '../config/countries-iso3.json'
 
+import Btn from './Base/Btn'
+import Form from './Base/Form'
+import Radio from './Base/Radio'
+import Checkbox from './Base/Checkbox'
+import Select from './Base/Select'
+import TextField from './Base/TextField'
+import ExpandTransition from './Base/ExpandTransition'
+
 export default {
   name: 'PaymentCard',
+  components: {
+    Btn,
+    Form,
+    Radio,
+    Checkbox,
+    Select,
+    TextField,
+    ExpandTransition,
+  },
   props: {
     // TODO: validate, can be "change", "invoice", "promo", "newPaymentMethod"
     paymentType: {

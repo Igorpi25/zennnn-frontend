@@ -162,6 +162,7 @@
 <script>
 import { useQuery, useResult } from '@vue/apollo-composable'
 
+import Btn from '../components/Base/Btn'
 import PriceList from '../components/PriceList.vue'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
@@ -172,6 +173,7 @@ import { GET_IS_LOGGED_IN, GET_PROFILE } from '../graphql/queries'
 export default {
   name: 'Pricing',
   components: {
+    Btn,
     PriceList,
     Header,
     Footer,

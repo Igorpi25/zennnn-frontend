@@ -101,7 +101,7 @@
         <!-- Divider -->
         <div class="my-10 border-t border-gray-400" />
         <!-- IMPORTER -->
-        <SwitchInput
+        <Switch
           v-model="isImporterActive"
           :disabled="!hasClient"
           hide-details
@@ -114,7 +114,7 @@
               {{ $t('shipping.importerSubtitle') }}
             </span>
           </h5>
-        </SwitchInput>
+        </Switch>
         <PrintClientImporter
           class="pt-3"
           :client="specClient"
@@ -410,6 +410,12 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 
 import Countries from '../config/countries-iso3.json'
 
+import Btn from './Base/Btn'
+import Modal from './Base/Modal'
+import Switch from './Base/Switch'
+import Select from './Base/Select'
+import TextField from './Base/TextField'
+import TextArea from './Base/TextArea'
 import PrintCompanyInfo from './CompanyDetail/PrintCompanyInfo.vue'
 import PrintClient from './CompanyDetail/PrintClient.vue'
 import PrintClientImporter from './CompanyDetail/PrintClientImporter.vue'
@@ -426,6 +432,12 @@ import { validateInvoicePrint } from '../util/validation'
 export default {
   name: 'PrintSettings',
   components: {
+    Btn,
+    Modal,
+    Switch,
+    Select,
+    TextField,
+    TextArea,
     PrintCompanyInfo,
     PrintDelivery,
     PrintClient,
@@ -506,7 +518,6 @@ export default {
       updateClientLoading: false,
       requisiteSearch: '',
       requisiteDialog: false,
-      requisiteLoading: false,
       isValid: false,
       ShipmentType,
       rules: {

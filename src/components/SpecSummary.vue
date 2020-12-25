@@ -21,12 +21,13 @@
       scrollable
       persistent
     >
-      <ContractConfiguratorModal
+      <!-- <ContractConfiguratorModal
         :blank="blank"
         :create="create"
         @update="contractCreated"
         @close="paperConfigurator = false"
-      />
+      /> -->
+      TODO
     </Modal>
 
     <Modal
@@ -161,15 +162,15 @@
     >
       <div class="p-4 bg-gray-400 text-gray-100">
         <h3 class="pb-3 font-semibold">{{ $t('shipping.access') }}</h3>
-        <Spinner v-if="linkAccessLoading" />
+        <LoadingSpinner v-if="linkAccessLoading" />
         <template v-else>
-          <!-- <SwitchInput
+          <!-- <Switch
             :value="linkAccess"
             class="mb-2"
             @input="updateLinkAccess"
           >
             <span>{{ $t('shipping.linkAccess') }}</span>
-          </SwitchInput> -->
+          </Switch> -->
           <TextField
             ref="linkInput"
             :value="link"
@@ -203,7 +204,7 @@
             {{ $t('shipping.sendEmail') }}
           </Btn>
         </template>
-        <Spinner v-if="emailAccessLoading" />
+        <LoadingSpinner v-if="emailAccessLoading" />
         <div v-else class="py-4">
           <h4 v-if="emailAccess.length > 0" class="font-semibold">
             {{ $t('shipping.hasAccess') }}
@@ -218,7 +219,7 @@
             </div>
             <transition name="slide-x-transition" mode="out-in">
               <div v-if="removeEmailAccessLoading === a.email">
-                <Spinner />
+                <LoadingSpinner />
               </div>
               <div
                 v-else
@@ -240,8 +241,12 @@ import cloneDeep from 'clone-deep'
 import { useRoute } from 'vue-router'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
+import Btn from './Base/Btn'
+import Modal from './Base/Modal'
+import TextField from './Base/TextField'
+import LoadingSpinner from './Base/LoadingSpinner'
 import ContractListModal from '@/components/ContractListModal.vue'
-import ContractConfiguratorModal from '@/components/ContractConfiguratorModal.vue'
+// import ContractConfiguratorModal from '@/components/ContractConfiguratorModal.vue'
 import PrintSettings from '../components/PrintSettings.vue'
 import SpecShipment from '../components/SpecShipment.vue'
 import SpecCustoms from '../components/SpecCustoms.vue'
@@ -265,8 +270,12 @@ import printInvoice from '../components/printInvoice'
 export default {
   name: 'SpecSummary',
   components: {
+    Btn,
+    Modal,
+    TextField,
+    LoadingSpinner,
     ContractListModal,
-    ContractConfiguratorModal,
+    // ContractConfiguratorModal,
     PrintSettings,
     SpecShipment,
     SpecCustoms,

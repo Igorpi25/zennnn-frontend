@@ -34,7 +34,13 @@
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { GET_WORD_SPECS } from '../graphql/queries'
 
+import Progress from './Base/Progress'
+
 export default {
+  name: 'WordSpecs',
+  components: {
+    Progress,
+  },
   props: {
     orgId: String,
     wordId: {

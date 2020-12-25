@@ -88,11 +88,10 @@
                 :value="item.issueDate"
                 @input="updateData({ 'issueDate': $event })"
               >
-                <template v-slot:activator="{ on }">
+                <template v-slot:activator>
                   <div
                     class="w-1/2 pr-sm"
                     style="max-width: 232px;"
-                    v-on="on"
                   >
                     <TextField
                       :value="item.issueDate ? $d($parseDate(item.issueDate), 'short') : null"
@@ -116,11 +115,10 @@
                 :value="item.expireDate"
                 @input="updateData({ 'expireDate': $event })"
               >
-                <template v-slot:activator="{ on }">
+                <template v-slot:activator>
                   <div
                     class="w-1/2 pr-sm"
                     style="max-width: 232px;"
-                    v-on="on"
                   >
                     <TextField
                       :value="item.expireDate ? $d($parseDate(item.expireDate), 'short') : null"
@@ -222,7 +220,7 @@
                   {{ $t('companyDetail.label.matches') }}
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
-                   <SwitchInput
+                   <Switch
                     :value="isMailingAddressMatch"
                     hide-details
                     @input="updateMailingAddressMatch"
@@ -324,7 +322,7 @@
           </div>
           <div>
             <div class="flex items-end pb-2">
-              <PhoneInput
+              <Phone
                 :value="item.phone"
                 :locale="item.locale"
                 :label="$t('companyDetail.label.phone')"
@@ -337,7 +335,7 @@
                 class="w-1/2 pr-2"
                 @input="updateData({ 'phone': $event })"
               />
-              <PhoneInput
+              <Phone
                 :value="item.fax"
                 :locale="item.locale"
                 :label="$t('companyDetail.label.fax')"
@@ -365,8 +363,25 @@
 import Countries from '../../config/countries-iso3.json'
 import clientDetail from '../../mixins/clientDetail'
 
+import Tooltip from '../Base/Tooltip'
+import Switch from '../Base/Switch'
+import Select from '../Base/Select'
+import TextField from '../Base/TextField'
+import DatePicker from '../Base/DatePicker'
+import ExpandTransition from '../Base/ExpandTransition'
+import Phone from '../Phone.vue'
+
 export default {
   name: 'PrivateDetail',
+  components: {
+    Tooltip,
+    Switch,
+    Select,
+    TextField,
+    DatePicker,
+    ExpandTransition,
+    Phone,
+  },
   mixins: [clientDetail],
   props: {
     item: {

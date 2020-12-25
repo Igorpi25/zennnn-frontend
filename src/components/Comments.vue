@@ -69,8 +69,6 @@
 <script>
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import Comment from './Comment'
-import CommentInput from './CommentInput'
 import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 import {
   ADD_COMMENT_TO_SPEC,
@@ -83,9 +81,14 @@ import {
   MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED,
 } from '../graphql/mutations'
 
+import Menu from './Base/Menu'
+import Comment from './Comment'
+import CommentInput from './CommentInput'
+
 export default {
   name: 'Comments',
   components: {
+    Menu,
     Comment,
     CommentInput,
   },

@@ -11,6 +11,8 @@ import { parse, isValid, lightFormat } from 'date-fns'
 
 import { convertToUnit } from '../../../utils/convertToUnit'
 
+import Btn from '../Btn'
+import Menu from '../Menu'
 import DatePickerYears from './DatePickerYears'
 import DatePickerMonths from './DatePickerMonths'
 import DatePickerDates from './DatePickerDates'
@@ -58,12 +60,12 @@ export default {
 
   emits: ['update:modelValue'],
 
-  setup (props, { emit }) {
+  setup (props, { emit, slots }) {
     const activePicker = ref(props.type.toUpperCase())
     const internal = ref(new Date())
     const input = ref('')
 
-    const { locale } = useI18n()
+    const { locale, d } = useI18n()
 
     const firstDayOfWeek = computed(() => {
       return (locale.value === 'fr' || locale.value === 'ru' || locale.value === 'uk')
@@ -103,6 +105,14 @@ export default {
         disabled: props.disabled,
         tabindex: props.disabled ? -1 : 0,
       })
+    }
+
+    const genActivator = () => {
+      if (slots.activator) return slots.activator()
+      return h(Btn, {
+        outlined: true,
+        small: true,
+      }, isValid(internal.value) ? d(internal.value, 'short') : props.placeholder || 'Date')
     }
 
     const genYearPicker = () => {
@@ -173,16 +183,24 @@ export default {
       genYearPicker,
       genMonthPicker,
       genDayPicker,
+      genActivator,
     }
   },
 
   render () {
-    return h('div', {
-      class: 'bg-gray-400 rounded-md p-2 py-3',
-      style: {
-        width: convertToUnit(this.width),
-        minHeight: convertToUnit(this.minHeight),
+    return h(Menu, {
+      bottom: true,
+    }, {
+      activator: () => this.genActivator(),
+      default: () => {
+        return h('div', {
+          class: 'bg-gray-400 rounded-md p-2 py-3',
+          style: {
+            width: convertToUnit(this.width),
+            minHeight: convertToUnit(this.minHeight),
+          },
+        }, this.genPicker())
       },
-    }, this.genPicker())
+    })
   },
 }

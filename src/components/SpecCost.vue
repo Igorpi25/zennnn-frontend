@@ -94,8 +94,13 @@
 import { DEFAULT_CURRENCY } from '../config/globals'
 import { SpecCurrency, Role } from '../graphql/enums'
 
+import TextField from './Base/TextField'
+
 export default {
   name: 'SpecCost',
+  components: {
+    TextField,
+  },
   props: {
     spec: {
       type: Object,

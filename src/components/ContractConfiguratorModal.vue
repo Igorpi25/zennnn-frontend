@@ -5,11 +5,12 @@
       v-model="requisiteList"
       max-width="400"
     >
-      <ContractCompanyListModal
+      <!-- <ContractCompanyListModal
         ref="requisiteList"
         @openRequisiteDialog="openRequisiteDialog"
         @chooseRequisite="chooseRequisite"
-      />
+      /> -->
+      TODO
     </Modal>
 
     <Modal
@@ -450,14 +451,14 @@ import { apolloClient } from '../plugins/apollo'
 import { GET_ORG_REQUISITE } from '../graphql/queries'
 import { CREATE_CONTRACT, UPDATE_CONTRACT } from '../graphql/mutations'
 
-import ContractCompanyListModal from '@/components/ContractCompanyListModal.vue'
+// import ContractCompanyListModal from '@/components/ContractCompanyListModal.vue'
 import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
 import RequisiteCard from '@/components/RequisiteCard.vue'
 
 export default {
   name: 'ContractConfiguratorModal',
   components: {
-    ContractCompanyListModal,
+    // ContractCompanyListModal,
     SaveBeforeCloseModal,
     RequisiteCard,
   },

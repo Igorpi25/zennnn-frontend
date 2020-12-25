@@ -143,6 +143,10 @@
 </template>
 
 <script>
+import Btn from '../components/Base/Btn'
+import Form from '../components/Base/Form'
+import TextField from '../components/Base/TextField'
+import Checkbox from '../components/Base/Checkbox'
 import Social from '../components/Social.vue'
 import Copyright from '../components/Copyright.vue'
 import LocalePicker from '../components/LocalePicker.vue'
@@ -151,6 +155,10 @@ import { SIGNUP } from '../graphql/mutations'
 export default {
   name: 'SignUp',
   components: {
+    Btn,
+    Form,
+    TextField,
+    Checkbox,
     Social,
     Copyright,
     LocalePicker,

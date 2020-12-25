@@ -793,11 +793,19 @@
 </template>
 
 <script>
+import Image from '../components/Base/Image'
+import { Window, WindowItem } from '../components/Base/Window'
+
 const INFO_ALERT_TOP = 90
 const SCROLL_THRESHOLD = 90
 
 export default {
   name: 'About',
+  components: {
+    Image,
+    Window,
+    WindowItem,
+  },
   // metaInfo: {
   //   link: [
   //     { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900&display=swap&subset=cyrillic' },

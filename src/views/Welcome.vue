@@ -30,12 +30,14 @@
 </template>
 
 <script>
+import Btn from '../components/Base/Btn'
 import Header from '../components/Header.vue'
 import Copyright from '../components/Copyright.vue'
 
 export default {
   name: 'Welcome',
   components: {
+    Btn,
     Header,
     Copyright,
   },

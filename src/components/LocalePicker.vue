@@ -57,6 +57,7 @@
 
 <script>
 import { CURRENT_LOCALE_STORE_KEY, LOCALES_LIST } from '../config/globals'
+
 import Menu from './Base/Menu'
 
 export default {

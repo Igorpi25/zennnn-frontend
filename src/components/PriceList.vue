@@ -84,11 +84,14 @@ import axios from 'axios'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
 import { LIST_PRICES } from '../graphql/queries'
+
+import Btn from './Base/Btn'
 import PriceContactForm from './PriceContactForm.vue'
 
 export default {
   name: 'PriceList',
   components: {
+    Btn,
     PriceContactForm,
   },
   props: {

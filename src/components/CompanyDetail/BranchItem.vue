@@ -87,7 +87,7 @@
         class="flex-grow"
       />
     </div>
-    <PhoneInput
+    <Phone
       :value="internalItem.mobilePhone"
       :locale="locale"
       :label="$t('companyDetail.label.mobilePhone')"
@@ -98,7 +98,7 @@
       class="pb-2"
       @input="updateData('mobilePhone', $event)"
     />
-    <PhoneInput
+    <Phone
       :value="internalItem.workPhone"
       :locale="locale"
       :label="$t('companyDetail.label.phone')"
@@ -136,11 +136,20 @@
 
 <script>
 import { BranchType, ContactType } from '../../graphql/enums'
-import ContactItem from './ContactItem'
+
+import Tooltip from '../Base/Tooltip'
+import Select from '../Base/Select'
+import TextField from '../Base/TextField'
+import Phone from '../Phone.vue'
+import ContactItem from './ContactItem.vue'
 
 export default {
   name: 'BranchItem',
   components: {
+    Tooltip,
+    Select,
+    TextField,
+    Phone,
     ContactItem,
   },
   props: {

@@ -161,8 +161,15 @@ import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '../graphql/mutations'
 
 import { confirmDialog, defaultFilter, getObjectValueByPath } from '@/util/helpers'
 
+import Progress from '../components/Base/Progress'
+import TextField from '../components/Base/TextField'
+
 export default {
   name: 'RequisiteList',
+  components: {
+    Progress,
+    TextField,
+  },
   setup () {
     const route = useRoute()
     const orgId = route.params.orgId

@@ -71,7 +71,7 @@
     </div>
     <div class="w-full lg:w-1/2 lg:pl-5">
       <div class="flex flex-wrap lg:flex-nowrap pb-2">
-        <PhoneInput
+        <Phone
           :value="item.importerPhone"
           :locale="item.locale"
           :label="$t('companyDetail.label.phone')"
@@ -102,7 +102,7 @@
         /> -->
       </div>
       <!-- <div class="pb-2">
-        <PhoneInput
+        <Phone
           :value="item.fax"
           :locale="item.locale"
           :label="$t('companyDetail.label.fax')"
@@ -142,8 +142,15 @@
 <script>
 import companyDetail from '../../mixins/clientDetail'
 
+import TextField from '../Base/TextField'
+import Phone from '../Phone.vue'
+
 export default {
   name: 'PrintClientImporter',
+  components: {
+    TextField,
+    Phone,
+  },
   mixins: [companyDetail],
   props: {
     readonly: Boolean,

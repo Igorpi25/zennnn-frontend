@@ -55,9 +55,6 @@
 </template>
 
 <script>
-import BranchItem from './BranchItem.vue'
-import clientDetail from '../../mixins/clientDetail'
-
 import { BranchType } from '../../graphql/enums'
 import { GET_SUPPLIER } from '../../graphql/queries'
 import {
@@ -66,9 +63,17 @@ import {
   DELETE_SUPPLIER_BRANCH,
 } from '../../graphql/mutations'
 
+import clientDetail from '../../mixins/clientDetail'
+
+import Btn from '../Base/Btn'
+import ExpandTransition from '../Base/ExpandTransition'
+import BranchItem from './BranchItem.vue'
+
 export default {
   name: 'BranchList',
   components: {
+    Btn,
+    ExpandTransition,
     BranchItem,
   },
   mixins: [clientDetail],

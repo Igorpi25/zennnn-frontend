@@ -64,7 +64,7 @@
                   {{ $t('companyDetail.label.matches') }}
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
-                  <SwitchInput
+                  <Switch
                     :value="isDeliveryAddressMatch"
                     hide-details
                     @input="updateDeliveryAddressMatch"
@@ -111,7 +111,7 @@
             />
           </div>
           <div>
-            <PhoneInput
+            <Phone
               :value="item.importerMobilePhone"
               :locale="item.locale"
               :label="$t('companyDetail.label.mobilePhone')"
@@ -144,8 +144,21 @@
 <script>
 import clientDetail from '../../mixins/clientDetail'
 
+import Alert from '../Base/Alert'
+import Switch from '../Base/Switch'
+import TextField from '../Base/TextField'
+import ExpandTransition from '../Base/ExpandTransition'
+import Phone from '../Phone.vue'
+
 export default {
   name: 'ShippingInfo',
+  components: {
+    Alert,
+    Switch,
+    TextField,
+    ExpandTransition,
+    Phone,
+  },
   mixins: [clientDetail],
   props: {
     item: {

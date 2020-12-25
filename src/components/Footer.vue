@@ -124,6 +124,7 @@
 import { useQuery, useResult } from '@vue/apollo-composable'
 
 import Copyright from '../components/Copyright.vue'
+
 import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 
 export default {

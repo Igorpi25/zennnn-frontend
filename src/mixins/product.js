@@ -10,7 +10,7 @@ import {
 import ProductImagesList from '../components/ProductImagesList.vue'
 import ProductImage from '../components/ProductImage.vue'
 import { confirmDialog, isNumber } from '../util/helpers'
-import { GET_SPEC } from '../graphql/queries'
+import { GET_SPEC, GET_IS_SPEC_SYNC } from '../graphql/queries'
 import { ProductStatus } from '../graphql/enums'
 
 export default {
@@ -118,7 +118,8 @@ export default {
     async refetchSpec () {
       const apolloClient = this.$apollo.provider.defaultClient
       try {
-        apolloClient.cache.writeData({
+        apolloClient.cache.writeQuery({
+          query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: true },
         })
         await this.$apollo.query({
@@ -131,7 +132,8 @@ export default {
       } catch (error) {
         this.$logger.warn('Error: ', error)
       } finally {
-        apolloClient.cache.writeData({
+        apolloClient.cache.writeQuery({
+          query: GET_IS_SPEC_SYNC,
           data: { isSpecSync: false },
         })
       }

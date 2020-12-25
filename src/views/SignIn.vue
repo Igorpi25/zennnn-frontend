@@ -211,18 +211,28 @@
 </template>
 
 <script>
+import Btn from '../components/Base/Btn'
+import Form from '../components/Base/Form'
+import TextField from '../components/Base/TextField'
+import Modal from '../components/Base/Modal'
+import Checkbox from '../components/Base/Checkbox'
 import Social from '../components/Social.vue'
 import Copyright from '../components/Copyright.vue'
 import LocalePicker from '../components/LocalePicker.vue'
 
 import { apolloClient } from '../plugins/apollo'
 
-import { GET_PROFILE, GET_ORGS } from '../graphql/queries'
+import { GET_PROFILE, GET_ORGS, GET_IS_LOGGED_IN } from '../graphql/queries'
 import { COMPLITE_REGISTRATION, INIT_SPEC_SIMPLE_UI } from '../graphql/mutations'
 
 export default {
   name: 'SignIn',
   components: {
+    Btn,
+    Form,
+    TextField,
+    Modal,
+    Checkbox,
     Social,
     Copyright,
     LocalePicker,
@@ -282,10 +292,9 @@ export default {
             // TODO: save user to cache and redirect to Registration.vue view
             // this.$router.push({ name: 'registration', query: this.$route.query })
           } else {
-            apolloClient.cache.writeData({
-              data: {
-                isLoggedIn: true,
-              },
+            apolloClient.cache.writeQuery({
+              query: GET_IS_LOGGED_IN,
+              data: { isLoggedIn: true },
             })
             await this.$apollo.mutate({
               mutation: INIT_SPEC_SIMPLE_UI,

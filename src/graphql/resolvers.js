@@ -7,6 +7,7 @@ import {
   SPEC_SIMPLE_UI_OFF_STORE_KEY,
 } from '../config/globals'
 import { emptyInvoice, emptyProduct } from '../graphql/enums'
+import { SPEC_SIMPLE_UI_OFF } from '../graphql/queries'
 
 export const getUsername = async (defaultUsername = '') => {
   defaultUsername = defaultUsername || 'Username'
@@ -69,7 +70,8 @@ const resolvers = {
       const username = await getUsername()
       const key = `${username}.${SPEC_SIMPLE_UI_OFF_STORE_KEY}`
       const value = await store.getItem(key)
-      cache.writeData({
+      cache.writeQuery({
+        query: SPEC_SIMPLE_UI_OFF,
         data: { specSimpleUIOff: !!value },
       })
       return true
@@ -77,7 +79,8 @@ const resolvers = {
     setSpecSimpleUI: async (_, { value }, { cache }) => {
       const username = await getUsername()
       const key = `${username}.${SPEC_SIMPLE_UI_OFF_STORE_KEY}`
-      cache.writeData({
+      cache.writeQuery({
+        query: SPEC_SIMPLE_UI_OFF,
         data: { specSimpleUIOff: value },
       })
       await store.setItem(key, value)

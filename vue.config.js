@@ -52,20 +52,20 @@ module.exports = {
       // extracted common chunks and vendor chunks.
       chunks: ['chunk-vendors', 'chunk-common', 'index'],
     },
-    admin: {
-      // entry for the page
-      entry: 'src/admin.js',
-      // the source template
-      template: 'public/index.html',
-      // output as dist/index.html
-      filename: 'admin/index.html',
-      // when using title option,
-      // template title tag needs to be <title><%= htmlWebpackPlugin.options.title %></title>
-      title: 'ZENNNN | ADMIN',
-      // chunks to include on this page, by default includes
-      // extracted common chunks and vendor chunks.
-      chunks: ['chunk-vendors', 'chunk-common', 'admin'],
-    },
+    // admin: {
+    //   // entry for the page
+    //   entry: 'src/admin.js',
+    //   // the source template
+    //   template: 'public/index.html',
+    //   // output as dist/index.html
+    //   filename: 'admin/index.html',
+    //   // when using title option,
+    //   // template title tag needs to be <title><%= htmlWebpackPlugin.options.title %></title>
+    //   title: 'ZENNNN | ADMIN',
+    //   // chunks to include on this page, by default includes
+    //   // extracted common chunks and vendor chunks.
+    //   chunks: ['chunk-vendors', 'chunk-common', 'admin'],
+    // },
   },
   chainWebpack: config => {
     // remove the prefetch plugin

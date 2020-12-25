@@ -5,7 +5,7 @@ import { onError } from '@apollo/client/link/error'
 import { getMainDefinition } from '@apollo/client/utilities'
 
 import { typeDefs, resolvers } from '../../graphql'
-import { GET_BACKEND_VERSION } from '../../graphql/queries'
+import { GET_BACKEND_VERSION, GET_IS_LOGGED_IN, GET_IS_SPEC_SYNC, SPEC_SIMPLE_UI_OFF } from '../../graphql/queries'
 import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../../config/globals'
 import router from '../../router'
 import { getUsername } from '../../graphql/resolvers'
@@ -156,16 +156,22 @@ export const apolloClient = new ApolloClient({
 })
 
 const setData = async () => {
+  cache.writeQuery({
+    query: GET_IS_LOGGED_IN,
+    data: { isLoggedIn: false },
+  })
+  cache.writeQuery({
+    query: GET_IS_SPEC_SYNC,
+    data: { isSpecSync: false },
+  })
+
   const username = await getUsername()
   const key = `${username}.${SPEC_SIMPLE_UI_OFF_STORE_KEY}`
   const specSimpleUIOff = await store.getItem(key)
-  const data = {
-    isLoggedIn: false,
-    isSpecSync: false,
-    specSimpleUIOff,
-    loggedInUser: null,
-  }
-  cache.writeData({ data })
+  cache.writeQuery({
+    query: SPEC_SIMPLE_UI_OFF,
+    data: { specSimpleUIOff },
+  })
 }
 
 setData()

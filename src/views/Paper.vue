@@ -509,6 +509,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
+import Progress from '../components/Base/Progress'
 import Header from '../components/Header'
 import Copyright from '../components/Copyright'
 import Comments from '../components/Comments'
@@ -519,7 +520,7 @@ import { GET_PAPER_SPEC, GET_PROFILE } from '../graphql/queries'
 import {
   SET_SPEC_EXPANDED_INVOICES,
   ADD_SPEC_EXPANDED_INVOICES,
-  REMOVE_SPEC_EXPANDED_INVOICES,
+  // REMOVE_SPEC_EXPANDED_INVOICES,
 } from '../graphql/mutations'
 import { PAPER_SPEC_DELTA } from '../graphql/subscriptions'
 import {
@@ -536,6 +537,7 @@ import printInvoice from '../components/printInvoice'
 export default {
   name: 'Paper',
   components: {
+    Progress,
     Header,
     Copyright,
     Comments,

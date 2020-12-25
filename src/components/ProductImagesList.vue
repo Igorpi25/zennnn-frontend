@@ -33,7 +33,7 @@
               >
                 <template v-slot:placeholder>
                   <div class="flex justify-center items-center w-full h-full">
-                    <Spinner />
+                    <LoadingSpinner />
                   </div>
                 </template>
               </Image>
@@ -69,12 +69,16 @@
 import { ICON_IMAGE_POSTFIX } from '../config/globals'
 import { ADD_PRODUCT_IMAGE, REMOVE_PRODUCT_IMAGE } from '../graphql/mutations'
 
+import Image from './Base/Image'
+import LoadingSpinner from './Base/LoadingSpinner'
 import ProductImage from './ProductImage.vue'
 import FileUploader from './FileUploader.vue'
 
 export default {
   name: 'ProductImagesList',
   components: {
+    Image,
+    LoadingSpinner,
     ProductImage,
     FileUploader,
   },

@@ -113,7 +113,7 @@
                   </td>
                   <td class="truncate text-left" :class="{ 'bg-gray-400': item.isInvitation }">{{ item.role }}</td>
                   <td :class="{ 'bg-gray-400': item.isInvitation }">
-                    <SwitchInput
+                    <Switch
                       hide-details
                       disabled
                       @click.stop.prevent
@@ -189,8 +189,8 @@
                         hide-no-data
                       >
                         <template v-slot:items="{ items: subItems }">
-                          <template v-for="(subItem, i) in subItems">
-                            <tr class="bg-gray-700" :key="subItem.id" style="background-color: #282828;">
+                          <template v-for="(subItem, i) in subItems" :key="subItem.id">
+                            <tr class="bg-gray-700" style="background-color: #282828;">
                               <td :width="subHeadersMap['status'].width" :style="{ width: subHeadersMap['status'].width, minWidth: subHeadersMap['status'].width }" class="bg-gray-700" :class="{ 'rounded-bl-md': i + 1 === subItems.length }">
                                 <div class="flex items-center justify-between">
                                   <div class="w-3 h-3 flex items-center justify-center ml-5 mr-3">
@@ -301,15 +301,27 @@
 import { useRoute } from 'vue-router'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import StaffCreateModal from '../components/StaffCreateModal.vue'
 import { LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
 import { SpecStatus, InvitationStatus } from '../graphql/enums'
+
 import { confirmDialog, wrapInArray } from '../util/helpers'
+
+import Btn from '../components/Base/Btn'
+import Progress from '../components/Base/Progress'
+import DataTable from '../components/Base/DataTable'
+import TextField from '../components/Base/TextField'
+import Switch from '../components/Base/Switch'
+import StaffCreateModal from '../components/StaffCreateModal.vue'
 
 export default {
   name: 'Staff',
   components: {
+    Btn,
+    Progress,
+    DataTable,
+    TextField,
+    Switch,
     StaffCreateModal,
   },
   setup () {

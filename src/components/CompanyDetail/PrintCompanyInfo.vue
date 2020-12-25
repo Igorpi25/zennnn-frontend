@@ -56,7 +56,7 @@
         />
       </div>
       <div class="flex flex-wrap lg:flex-nowrap pb-2">
-        <PhoneInput
+        <Phone
           :value="item.phone"
           :label="$t('companyDetail.label.phone')"
           :loading="loading"
@@ -84,7 +84,7 @@
         />
       </div>
       <div class="pb-2">
-        <PhoneInput
+        <Phone
           :value="item.fax"
           :label="$t('companyDetail.label.fax')"
           :loading="loading"
@@ -258,8 +258,17 @@
 import companyDetail from '../../mixins/clientDetail'
 import { UPDATE_COMPANY_BANK_DETAIL } from '../../graphql/mutations'
 
+import Select from '../Base/Select'
+import TextField from '../Base/TextField'
+import Phone from '../Phone.vue'
+
 export default {
   name: 'CompanyInfoPrint',
+  components: {
+    Select,
+    TextField,
+    Phone,
+  },
   mixins: [companyDetail],
   props: {
     readonly: Boolean,

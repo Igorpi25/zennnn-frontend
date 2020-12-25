@@ -48,12 +48,18 @@
 </template>
 
 <script>
+import Btn from '../components/Base/Btn'
+import Form from '../components/Base/Form'
+import TextField from '../components/Base/TextField'
 import Header from '../components/Header.vue'
 import Copyright from '../components/Copyright.vue'
 
 export default {
   name: 'PasswordRestore',
   components: {
+    Btn,
+    Form,
+    TextField,
     Header,
     Copyright,
   },

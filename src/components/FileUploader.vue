@@ -99,8 +99,11 @@ import {
   UPLOAD_FILE_SIZE_MB,
 } from '../config/globals'
 
+import Progress from './Base/Progress'
+
 export default {
   name: 'FileUploader',
+  components: { Progress },
   props: {
     fileAccept: {
       type: String,

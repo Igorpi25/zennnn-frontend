@@ -130,15 +130,23 @@
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
-import Social from '@/components/Social.vue'
-import Copyright from '@/components/Copyright.vue'
+import Btn from '../components/Base/Btn'
+import Form from '../components/Base/Form'
+import TextField from '../components/Base/TextField'
+import Checkbox from '../components/Base/Checkbox'
+import Header from '../components/Header.vue'
+import Social from '../components/Social.vue'
+import Copyright from '../components/Copyright.vue'
 
 import { auth } from '../plugins/auth'
 
 export default {
   name: 'Registration',
   components: {
+    Btn,
+    Form,
+    TextField,
+    Checkbox,
     Header,
     Social,
     Copyright,

@@ -32,7 +32,7 @@
         />
       </div>
       <div class="pb-2">
-        <PhoneInput
+        <Phone
           :value="item.mobilePhone"
           :locale="item.locale"
           :label="$t('companyDetail.label.mobilePhone')"
@@ -160,7 +160,7 @@
               {{ $t('companyDetail.label.matches') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
-              <SwitchInput
+              <Switch
                 :value="isPersonMatch"
                 hide-details
                 @input="updatePersonMatch"
@@ -192,8 +192,8 @@
           :value="item.birthdate"
           @input="updateData({ 'birthdate': $event })"
         >
-          <template v-slot:activator="{ on }">
-            <div v-on="on" class="w-1/2 pr-4">
+          <template v-slot:activator>
+            <div class="w-1/2 pr-4">
               <TextField
                 :value="item.birthdate ? $d($parseDate(item.birthdate), 'short') : null"
                 :label="$t('companyDetail.label.birthdate')"
@@ -244,8 +244,23 @@
 import { LOCALES_LIST } from '../../config/globals'
 import companyDetail from '../../mixins/clientDetail'
 
+import Alert from '../Base/Alert'
+import Switch from '../Base/Switch'
+import Select from '../Base/Select'
+import TextField from '../Base/TextField'
+import DatePicker from '../Base/DatePicker'
+import Phone from '../Phone.vue'
+
 export default {
   name: 'PrivateInfo',
+  components: {
+    Alert,
+    Switch,
+    Select,
+    TextField,
+    DatePicker,
+    Phone,
+  },
   mixins: [companyDetail],
   props: {
     uid: String,

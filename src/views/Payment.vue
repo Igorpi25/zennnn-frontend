@@ -158,7 +158,7 @@
             <div v-if="selectedProduct.aId === currentPriceId" class="sm:w-64">
               {{ $t('payment.monthly') }}
             </div>
-            <RadioInput
+            <Radio
               v-else
               v-model="currentPaymentType"
               value="MONTHLY"
@@ -167,7 +167,7 @@
               class="sm:w-64"
             >
               <span class="ml-4">{{ $t('payment.monthly') }}</span>
-            </RadioInput>
+            </Radio>
             <div class="hidden sm:block md:w-64 mx-8">
               <div class="h-px bg-light-gray-400 w-full" />
             </div>
@@ -187,7 +187,7 @@
             <div v-if="selectedProduct.mId === currentPriceId" class="sm:w-64">
               {{ $t('payment.annual') }}
             </div>
-            <RadioInput
+            <Radio
               v-else
               v-model="currentPaymentType"
               value="ANNUALLY"
@@ -196,7 +196,7 @@
               class="sm:w-64"
             >
               <span class="ml-4">{{ $t('payment.annual') }}</span>
-            </RadioInput>
+            </Radio>
             <div class="hidden sm:block md:w-64 mx-8">
               <div class="h-px bg-light-gray-400 w-full" />
             </div>
@@ -259,6 +259,10 @@
 import axios from 'axios'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
+import Alert from '../components/Base/Alert'
+import Select from '../components/Base/Select'
+import Radio from '../components/Base/Radio'
+import ExpandTransition from '../components/Base/ExpandTransition'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import PaymentCard from '../components/PaymentCard.vue'
@@ -270,6 +274,10 @@ import { PAYMENT_DATA } from '../graphql/subscriptions'
 export default {
   name: 'Payment',
   components: {
+    Alert,
+    Select,
+    Radio,
+    ExpandTransition,
     Header,
     Footer,
     PaymentCard,

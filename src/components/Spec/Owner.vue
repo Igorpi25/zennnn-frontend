@@ -28,7 +28,7 @@
           </transition>
         </h1>
         <div class="flex items-center text-white">
-          <SwitchInput
+          <Switch
             :value="specSimpleUI"
             class="inline-flex"
             @input="toggleSpecSimpleUI"
@@ -36,7 +36,7 @@
             <span class="mr-2">
               {{ $t('shipping.simpleInterface') }}
             </span>
-          </SwitchInput>
+          </Switch>
           <Tooltip top max-width="320" nudge-right="130">
             <template v-slot:activator="{ on }">
               <i class="zi-help text-blue-500 cursor-pointer" v-on="on" />
@@ -224,13 +224,13 @@
                     </span>
                   </option>
                 </select>
-                <SwitchInput
+                <Switch
                   :value="spec.shipped"
                   hide-details
                   @input="updateSpec({ shipped: $event })"
                 >
                   {{ $t('shipping.setShipped') }}
-                </SwitchInput>
+                </Switch>
               </div>
             </template>
           </SpecShipping>
@@ -319,6 +319,15 @@
 </template>
 
 <script>
+import Icon from '../Base/Icon'
+import Progress from '../Base/Progress'
+import Tooltip from '../Base/Tooltip'
+import Modal from '../Base/Modal'
+import TextArea from '../Base/TextArea'
+import Select from '../Base/Select'
+import Switch from '../Base/Switch'
+import Checkbox from '../Base/Checkbox'
+import ExpandTransition from '../Base/ExpandTransition'
 import InvoiceHeader from '../InvoiceHeader.vue'
 import InvoiceContent from '../InvoiceContent.vue'
 import SpecSummary from '../SpecSummary.vue'
@@ -337,6 +346,15 @@ import {
 export default {
   name: 'Owner',
   components: {
+    Icon,
+    Progress,
+    Tooltip,
+    Modal,
+    TextArea,
+    Select,
+    Switch,
+    Checkbox,
+    ExpandTransition,
     InvoiceHeader,
     InvoiceContent,
     SpecSummary,

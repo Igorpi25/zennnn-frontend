@@ -59,8 +59,15 @@
 import debounce from 'lodash.debounce'
 import { ContactType } from '../../graphql/enums'
 
+import Select from '../Base/Select'
+import TextField from '../Base/TextField'
+
 export default {
   name: 'ContactItem',
+  components: {
+    Select,
+    TextField,
+  },
   props: {
     create: Boolean,
     loading: Boolean,

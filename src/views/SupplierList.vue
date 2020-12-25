@@ -217,8 +217,21 @@ import { DELETE_SUPPLIER } from '@/graphql/mutations'
 
 import { confirmDialog, wrapInArray } from '@/util/helpers'
 
+import Btn from '../components/Base/Btn'
+import Progress from '../components/Base/Progress'
+import Tooltip from '../components/Base/Tooltip'
+import DataTable from '../components/Base/DataTable'
+import TextField from '../components/Base/TextField'
+
 export default {
   name: 'Suppliers',
+  components: {
+    Btn,
+    Progress,
+    Tooltip,
+    DataTable,
+    TextField,
+  },
   setup () {
     const route = useRoute()
     const orgId = route.params.orgId
@@ -395,7 +408,7 @@ export default {
             const data = store.readQuery({
               query: LIST_SUPPLIERS,
               variables: {
-                orgId: orgId,
+                orgId: this.orgId,
               },
             })
             const index = data.listSuppliers.items.findIndex(item => item.id === id)
@@ -405,7 +418,7 @@ export default {
             store.writeQuery({
               query: LIST_SUPPLIERS,
               variables: {
-                orgId: orgId,
+                orgId: this.orgId,
               },
               data,
             })

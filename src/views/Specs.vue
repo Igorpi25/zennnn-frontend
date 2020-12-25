@@ -435,13 +435,29 @@ import { GET_SPECS, GET_ORGS, SEARCH_CLIENTS, GET_CLIENTS_BY_ID } from '../graph
 import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
 import { SPECS_DELTA } from '../graphql/subscriptions'
 
+import Btn from '../components/Base/Btn'
+import Menu from '../components/Base/Menu'
+import Modal from '../components/Base/Modal'
+import Tooltip from '../components/Base/Tooltip'
+import Progress from '../components/Base/Progress'
+import DataTable from '../components/Base/DataTable'
+import TextField from '../components/Base/TextField'
+import Select from '../components/Base/Select'
 import ClientCard from '../components/ClientCard.vue'
 
-import { confirmDialog, wrapInArray } from '@/util/helpers'
+import { confirmDialog, wrapInArray } from '../util/helpers'
 
 export default {
   name: 'Specs',
   components: {
+    Btn,
+    Menu,
+    Modal,
+    Tooltip,
+    Progress,
+    DataTable,
+    TextField,
+    Select,
     ClientCard,
   },
   setup () {
@@ -484,7 +500,7 @@ export default {
     })
     const getClientsById = useResult(result4)
 
-    const clientTypeEnum = computed(() =>{
+    const clientTypeEnum = computed(() => {
       switch (filter.value.clientType) {
         case 1: return ClientType.LEGAL
         case 2: return ClientType.PRIVATE

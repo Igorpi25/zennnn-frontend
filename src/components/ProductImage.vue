@@ -50,7 +50,7 @@
                   >
                     <template v-slot:placeholder>
                       <div class="flex justify-center items-center w-full h-full">
-                        <Spinner />
+                        <LoadingSpinner />
                       </div>
                     </template>
                   </Image>
@@ -96,7 +96,7 @@
             >
               <template v-slot:placeholder>
                 <div class="flex justify-center items-center w-full h-full">
-                  <Spinner />
+                  <LoadingSpinner />
                 </div>
               </template>
             </Image>
@@ -136,7 +136,7 @@
         >
           <template v-slot:placeholder>
             <div class="flex justify-center items-center w-full h-full">
-              <Spinner />
+              <LoadingSpinner />
             </div>
           </template>
         </Image>
@@ -153,7 +153,7 @@
             >
               <template v-slot:placeholder>
                 <div class="flex justify-center items-center w-full h-full">
-                  <Spinner />
+                  <LoadingSpinner />
                 </div>
               </template>
             </Image>
@@ -214,12 +214,18 @@
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
 import { ADD_PRODUCT_IMAGE, UPDATE_PRODUCT_INFO } from '../graphql/mutations'
 
+import Menu from './Base/Menu'
+import Image from './Base/Image'
+import LoadingSpinner from './Base/LoadingSpinner'
 import Sortable from '../plugins/draggable/Sortable'
 import FileUploader from '../components/FileUploader.vue'
 
 export default {
   name: 'ProductImage',
   components: {
+    Menu,
+    Image,
+    LoadingSpinner,
     Sortable,
     FileUploader,
   },

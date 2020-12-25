@@ -70,7 +70,10 @@
 </template>
 
 <script>
+import Btn from '../Base/Btn'
+import ExpandTransition from '../Base/ExpandTransition'
 import BankDetailItem from './BankDetailItem.vue'
+
 import clientDetail from '../../mixins/clientDetail'
 import { validateCompanyDetail } from '../../util/validation'
 
@@ -84,6 +87,8 @@ import {
 export default {
   name: 'BankDetailList',
   components: {
+    Btn,
+    ExpandTransition,
     BankDetailItem,
   },
   mixins: [clientDetail],

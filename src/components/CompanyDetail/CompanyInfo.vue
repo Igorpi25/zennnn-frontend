@@ -22,7 +22,7 @@
               {{ $t('companyDetail.label.englishOnly') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
-              <SwitchInput
+              <Switch
                 :value="isCompanyNameMatch"
                 hide-details
                 @input="updateCompanyNameMatch"
@@ -65,7 +65,7 @@
         </div>
       </div>
       <div class="flex flex-wrap lg:flex-nowrap pb-2">
-        <PhoneInput
+        <Phone
           :value="item.phone"
           :locale="item.locale"
           :label="$t('companyDetail.label.phone')"
@@ -92,7 +92,7 @@
         />
       </div>
       <div class="pb-2">
-        <PhoneInput
+        <Phone
           :value="item.fax"
           :locale="item.locale"
           :label="$t('companyDetail.label.fax')"
@@ -223,7 +223,7 @@
               {{ $t('companyDetail.label.matches') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
-              <SwitchInput
+              <Switch
                 :value="isMailingAddressMatch"
                 hide-details
                 @input="updateMailingAddressMatch"
@@ -281,7 +281,7 @@
       </div>
       <div class="flex items-end pb-2">
         <div class="h-10 flex-shrink-0 flex items-center pl-sm pr-3">
-          <RadioInput
+          <Radio
             v-model="ownerNameValue"
             name="owner-name"
             label="given-family"
@@ -324,7 +324,7 @@
       </div>
       <div class="flex items-end pb-2">
         <div class="h-10 flex-shrink-0 flex items-center pl-sm pr-3">
-          <RadioInput
+          <Radio
             v-model="ownerNameValue"
             name="owner-name"
             label="name"
@@ -358,8 +358,21 @@
 <script>
 import companyDetail from '../../mixins/clientDetail'
 
+import Alert from '../Base/Alert'
+import Radio from '../Base/Radio'
+import Switch from '../Base/Switch'
+import TextField from '../Base/TextField'
+import Phone from '../Phone.vue'
+
 export default {
   name: 'CompanyInfo',
+  components: {
+    Alert,
+    Radio,
+    Switch,
+    TextField,
+    Phone,
+  },
   mixins: [companyDetail],
   props: {
     item: {

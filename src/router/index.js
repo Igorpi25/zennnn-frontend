@@ -7,9 +7,9 @@ import { i18n } from '../plugins/i18n'
 import { notify } from '../plugins/notify'
 import { checkAuth } from '../plugins/auth/checkAuth'
 import { apolloClient } from '../plugins/apollo'
-import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS, GET_PROFILE } from '../graphql/queries'
+import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS, GET_PROFILE } from '../graphql/queries' // eslint-disable-line
 
-import { CURRENT_LOCALE_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
+import { CURRENT_LOCALE_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals' // eslint-disable-line
 
 const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
 const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
@@ -38,8 +38,6 @@ const PasswordRestore = () => import(/* webpackChunkName: "common" */ '../views/
 const PasswordRestoreConfirm = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestoreConfirm.vue')
 const Print = () => import(/* webpackChunkName: "common" */ '../views/Print.vue')
 const NotFound = () => import(/* webpackChunkName: "common" */ '../views/NotFound.vue')
-
-Vue.use(VueRouter)
 
 const routes = [
   {
@@ -378,6 +376,7 @@ const routes = [
     meta: { requiresNotAuth: true },
     component: SignIn,
   },
+  // TODO: need check
   {
     path: '/registration',
     name: 'registration',
@@ -592,8 +591,12 @@ router.beforeEach(() => {
 })
 
 const setTheme = (theme) => {
+  if (theme === 'dark') {
+    document.querySelector('html').classList.add('dark')
+  } else {
+    document.querySelector('html').classList.remove('dark')
+  }
   const themeColor = theme === 'dark' ? '#1E1E1E' : '#ffffff'
-  document.body.dataset.theme = theme
   document.head.querySelector('meta[name="theme-color"]')
     .setAttribute('content', themeColor)
 }

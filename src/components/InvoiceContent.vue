@@ -96,10 +96,10 @@
           <template v-slot:items="{ items }">
             <template
               v-for="(item, index) in items"
+              :key="index"
             >
               <InvoiceProduct
                 v-if="item.id === `empty-${invoice.id}` && isOwnerOrManager"
-                :key="index"
                 :index="items.length"
                 :active-tab="activeTab"
                 :profit-type="invoiceItem.profitType"
@@ -110,7 +110,6 @@
               />
               <InvoiceProduct
                 v-else
-                :key="index"
                 :item="item"
                 :index="index + 1"
                 :active-tab="activeTab"
@@ -229,6 +228,7 @@
 <script>
 import invoice from '../mixins/invoice'
 
+import DataTable from './Base/DataTable'
 import InvoiceProduct from './InvoiceProduct.vue'
 import InvoiceSummary from './InvoiceSummary.vue'
 import { Role } from '../graphql/enums'
@@ -236,6 +236,7 @@ import { Role } from '../graphql/enums'
 export default {
   name: 'InvoiceContent',
   components: {
+    DataTable,
     InvoiceProduct,
     InvoiceSummary,
   },
