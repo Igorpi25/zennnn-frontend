@@ -94,7 +94,7 @@ function groupItems (items, groupBy, groupDesc) {
   const key = groupBy[0]
   const groups = []
   let current = null
-  for (var i = 0; i < items.length; i++) {
+  for (let i = 0; i < items.length; i++) {
     const item = items[i]
     const val = getObjectValueByPath(item, key)
     if (current !== val) {
@@ -291,7 +291,7 @@ export default {
         const group = _groupItems(items)
         if (group) {
           const groupItems = []
-          group.map(el => {
+          group.forEach(el => {
             const group = { group: true, groupName: el.name, groupItemsCount: el.items.length }
             groupItems.push(group, ...el.items)
           })

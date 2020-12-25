@@ -50,7 +50,8 @@ const sortableComponent = {
   methods: {
     initialize () {
       const containerSelector = this.wrapper
-        ? `#${this.wrapperId} ${this.wrapper}` : `#${this.wrapperId}`
+        ? `#${this.wrapperId} ${this.wrapper}`
+        : `#${this.wrapperId}`
       const draggable = `#${this.wrapperId} ${this.draggable}`
       const opt = {
         draggable,

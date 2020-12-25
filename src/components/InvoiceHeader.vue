@@ -244,9 +244,12 @@ export default {
     },
     invoiceStatusColor () {
       return this.item.invoiceStatus === InvoiceStatus.IN_STOCK
-        ? 'bg-green-500' : this.item.invoiceStatus === InvoiceStatus.IN_PRODUCTION
-          ? 'bg-yellow-500' : this.item.invoiceStatus === InvoiceStatus.IN_PROCESSING
-            ? 'bg-pink-500' : 'bg-gray-800'
+        ? 'bg-green-500'
+        : this.item.invoiceStatus === InvoiceStatus.IN_PRODUCTION
+          ? 'bg-yellow-500'
+          : this.item.invoiceStatus === InvoiceStatus.IN_PROCESSING
+            ? 'bg-pink-500'
+            : 'bg-gray-800'
     },
     suppliers () {
       return (this.searchSuppliers && this.searchSuppliers.items) || []

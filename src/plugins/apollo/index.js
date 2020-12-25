@@ -114,7 +114,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
           router.push({
             name: 'signin',
             query: router.currentRoute.fullPath && router.currentRoute.fullPath !== '/'
-              ? { redirect: router.currentRoute.fullPath } : {},
+              ? { redirect: router.currentRoute.fullPath }
+              : {},
           })
           break
         default:

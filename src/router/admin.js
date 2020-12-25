@@ -20,8 +20,6 @@ export const checkAuth = async () => {
   }
 }
 
-Vue.use(VueRouter)
-
 const routes = [
   {
     path: '/',
@@ -75,7 +73,8 @@ router.beforeEach(async (to, from, next) => {
       next({
         name: 'login',
         query: to.fullPath && (to.fullPath !== '/' || to.fullPath !== '/login')
-          ? { redirect: to.fullPath } : {},
+          ? { redirect: to.fullPath }
+          : {},
       })
     } else {
       next()

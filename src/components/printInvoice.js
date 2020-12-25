@@ -90,29 +90,29 @@ const genBillToBody = (client, clientLang) => {
     ],
     client.clientType === ClientType.LEGAL
       ? [
-        {
-          stack: genLabel('print.addressTelFax', clientLang),
-        },
-        {
-          stack: [
-            {
-              text: genValues(client.legalAddress, client.phone && client.phone.phone, client.fax && client.fax.phone),
-            },
-          ],
-        },
-      ]
+          {
+            stack: genLabel('print.addressTelFax', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: genValues(client.legalAddress, client.phone && client.phone.phone, client.fax && client.fax.phone),
+              },
+            ],
+          },
+        ]
       : [
-        {
-          stack: genLabel('print.addressTelFax', clientLang),
-        },
-        {
-          stack: [
-            {
-              text: genValues(client.legalAddress, client.phone && client.phone.phone, client.fax && client.fax.phone),
-            },
-          ],
-        },
-      ],
+          {
+            stack: genLabel('print.addressTelFax', clientLang),
+          },
+          {
+            stack: [
+              {
+                text: genValues(client.legalAddress, client.phone && client.phone.phone, client.fax && client.fax.phone),
+              },
+            ],
+          },
+        ],
   ]
   if (client.importerActive) {
     items.push([
@@ -195,31 +195,31 @@ const genDeliveryInfoTable = (shipment, clientLang) => {
   ]
   const row = shipment.sentThrough
     ? [
-      {
-        colSpan: 2,
-        text: shipment.sentFrom,
-      },
-      '',
-      {
-        colSpan: 2,
-        text: shipment.sentThrough,
-      },
-      '',
-      {
-        colSpan: 2,
-        text: shipment.sentDestination,
-      },
-    ]
+        {
+          colSpan: 2,
+          text: shipment.sentFrom,
+        },
+        '',
+        {
+          colSpan: 2,
+          text: shipment.sentThrough,
+        },
+        '',
+        {
+          colSpan: 2,
+          text: shipment.sentDestination,
+        },
+      ]
     : [
-      {
-        colSpan: 2,
-        text: shipment.sentFrom,
-      },
-      '',
-      {
-        text: shipment.sentDestination,
-      },
-    ]
+        {
+          colSpan: 2,
+          text: shipment.sentFrom,
+        },
+        '',
+        {
+          text: shipment.sentDestination,
+        },
+      ]
   return {
     widths,
     body: [
@@ -884,15 +884,15 @@ const genAmountInWords = (spec, clientLang) => {
   }
   return result.length > 0
     ? {
-      table: {
-        widths: ['*'],
-        body: result,
-      },
-      layout: {
-        defaultBorder: false,
-      },
-      margin: [0, 12, 0, 0],
-    }
+        table: {
+          widths: ['*'],
+          body: result,
+        },
+        layout: {
+          defaultBorder: false,
+        },
+        margin: [0, 12, 0, 0],
+      }
     : null
 }
 

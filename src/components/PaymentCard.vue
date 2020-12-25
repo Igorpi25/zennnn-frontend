@@ -319,7 +319,8 @@ export default {
         this.$logger.warn(message)
       }
       this.cardElementError = event.error
-        ? event.error.message : ''
+        ? event.error.message
+        : ''
     },
     onCardFormSubmit (e) {
       e.preventDefault()
@@ -473,12 +474,12 @@ export default {
         const mutation = this.isPromo ? CREATE_PROMO_SUBSCRIPTION : UPDATE_PAYMENT_SUBSCRIPTION
         const variables = this.isPromo
           ? {
-            paymentMethodId,
-          }
+              paymentMethodId,
+            }
           : {
-            paymentMethodId,
-            priceId,
-          }
+              paymentMethodId,
+              priceId,
+            }
         const { data } = await client.mutate({
           mutation,
           variables,

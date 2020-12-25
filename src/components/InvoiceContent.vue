@@ -270,25 +270,25 @@ export default {
     tabs () {
       return this.isOwnerOrManager
         ? [
-          { value: 1, text: this.$t('shipping.prices'), width: 130, class: 'flex-1' },
-          { value: 2, text: this.$t('shipping.warehouse'), width: 130, class: 'flex-1' },
-          { value: 3, text: this.$t('shipping.description'), width: 130, class: 'flex-1' },
-          { value: 4, title: this.$t('shipping.link'), icon: 'zi-link', width: 46 },
-          { value: 5, icon: 'zi-chat', width: 46 },
-          { value: 6, icon: 'zi-qc', width: 46, disabled: true },
-        ]
+            { value: 1, text: this.$t('shipping.prices'), width: 130, class: 'flex-1' },
+            { value: 2, text: this.$t('shipping.warehouse'), width: 130, class: 'flex-1' },
+            { value: 3, text: this.$t('shipping.description'), width: 130, class: 'flex-1' },
+            { value: 4, title: this.$t('shipping.link'), icon: 'zi-link', width: 46 },
+            { value: 5, icon: 'zi-chat', width: 46 },
+            { value: 6, icon: 'zi-qc', width: 46, disabled: true },
+          ]
         : this.role === Role.ACCOUNTANT
           ? [
-            { value: 1, text: this.$t('shipping.prices'), width: 130 },
-            { value: 3, text: this.$t('shipping.description'), width: 130 },
-            { value: 4, title: this.$t('shipping.link'), icon: 'zi-link', width: 46 },
-          ]
-          : this.role === Role.WAREHOUSEMAN || this.role === Role.FREELANCER
-            ? [
-              { value: 2, text: this.$t('shipping.warehouse'), width: 130 },
+              { value: 1, text: this.$t('shipping.prices'), width: 130 },
               { value: 3, text: this.$t('shipping.description'), width: 130 },
               { value: 4, title: this.$t('shipping.link'), icon: 'zi-link', width: 46 },
             ]
+          : this.role === Role.WAREHOUSEMAN || this.role === Role.FREELANCER
+            ? [
+                { value: 2, text: this.$t('shipping.warehouse'), width: 130 },
+                { value: 3, text: this.$t('shipping.description'), width: 130 },
+                { value: 4, title: this.$t('shipping.link'), icon: 'zi-link', width: 46 },
+              ]
             : []
     },
     headers () {
@@ -316,7 +316,8 @@ export default {
       return [
         {
           text: this.isInvoiceProfitTypeMargin
-            ? this.$t('shipping.costPrice') : this.$t('shipping.purchaseCost'),
+            ? this.$t('shipping.costPrice')
+            : this.$t('shipping.purchaseCost'),
           value: 'purchasePrice',
           width: 138,
           class: 'bg-gray-600 relative z-1 px-sm',

@@ -115,11 +115,11 @@ export default {
       const currencyRate = this.currencyRates[this.localeCurrency]
       const getPriceInCurrency = (rate) => this.localeCurrency !== 'USD'
         ? this.$n(Math.round((rate * currencyRate)), {
-          style: 'currency',
-          currency: this.localeCurrency,
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2,
-        })
+            style: 'currency',
+            currency: this.localeCurrency,
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+          })
         : null
       const getUsd = (rate) => this.$n(rate, {
         style: 'currency',

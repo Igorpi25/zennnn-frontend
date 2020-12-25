@@ -365,11 +365,13 @@ export default {
     items () {
       const roleFilter = (val) => {
         return this.$te(`role.${val}`)
-          ? this.$t(`role.${val}`) : val
+          ? this.$t(`role.${val}`)
+          : val
       }
       const statusFilter = (val) => {
         return this.$te(`invitationStatus.${val}`)
-          ? this.$t(`invitationStatus.${val}`) : val
+          ? this.$t(`invitationStatus.${val}`)
+          : val
       }
       const items = (this.listStaff && this.listStaff.items) || []
       const invitations = (this.listStaff && this.listStaff.invitations) || []

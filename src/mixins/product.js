@@ -35,9 +35,12 @@ export default {
   computed: {
     productStatusColor () {
       return this.item.productStatus === ProductStatus.IN_STOCK
-        ? 'bg-green-500' : this.item.productStatus === ProductStatus.IN_PRODUCTION
-          ? 'bg-yellow-500' : this.item.productStatus === ProductStatus.IN_PROCESSING
-            ? 'bg-pink-500' : ''
+        ? 'bg-green-500'
+        : this.item.productStatus === ProductStatus.IN_PRODUCTION
+          ? 'bg-yellow-500'
+          : this.item.productStatus === ProductStatus.IN_PROCESSING
+            ? 'bg-pink-500'
+            : ''
     },
     unitsItems () {
       const units = ['pcs', 'roll', 'time', 'm', 'l', 'm3', 'set', 'm2', 'kg', 'pack']

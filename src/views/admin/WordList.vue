@@ -487,7 +487,7 @@ export default {
       loggedOut,
       queryLoading,
       currentFilter,
-      filter,
+      filters,
       statusFilter,
       loading,
       listWords,
@@ -775,7 +775,7 @@ export default {
       if (desc) {
         sorted = sorted.reverse()
       }
-      sorted.map(k => {
+      sorted.forEach(k => {
         const groupItems = grouped[k]
         const group = { name: k, items: groupItems }
         if (isDuplicatesSearch) {

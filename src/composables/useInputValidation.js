@@ -219,9 +219,12 @@ export const useInputValidation = (props, { emit, id, internalValue, isFocused }
     const errorIcon = props.stateErrorIcon || ziCircleFill
     const successColor = props.stateSuccessColor || 'text-green-500'
     const errorColor = props.stateErrorColor === 'none'
-      ? 'text-transparent' : props.stateErrorColor === 'warn' || (!props.required && !props.stateErrorColor)
-        ? 'text-yellow-500' : props.stateErrorColor
-          ? props.stateErrorColor : 'text-pink-500'
+      ? 'text-transparent'
+      : props.stateErrorColor === 'warn' || (!props.required && !props.stateErrorColor)
+        ? 'text-yellow-500'
+        : props.stateErrorColor
+          ? props.stateErrorColor
+          : 'text-pink-500'
     const icon = validationState.value === 'success' ? successIcon : errorIcon
     const color = validationState.value === 'success' ? successColor : errorColor
 

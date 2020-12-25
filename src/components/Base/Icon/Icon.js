@@ -27,9 +27,12 @@ export default (props, { slots }) => {
 
   const fontSizeClass = computed(() => {
     return props.small || props.small === ''
-      ? SIZE_CLASS_MAP.small : props.base || props.base === ''
-        ? SIZE_CLASS_MAP.base : props.large || props.large === ''
-          ? SIZE_CLASS_MAP.large : ''
+      ? SIZE_CLASS_MAP.small
+      : props.base || props.base === ''
+        ? SIZE_CLASS_MAP.base
+        : props.large || props.large === ''
+          ? SIZE_CLASS_MAP.large
+          : ''
   })
 
   const genSvg = () => {

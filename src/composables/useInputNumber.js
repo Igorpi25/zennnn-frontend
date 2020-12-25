@@ -36,8 +36,10 @@ export const useInputNumber = (props, { internalValue, isFocused }) => {
     const isFixed = props.numberFormat === 'currency' || props.numberFormat === 'fixed'
     // precision numbers digits must be between 0 and 20
     const precision = props.numberFormat === 'integer'
-      ? 0 : isFixed
-        ? 2 : 20
+      ? 0
+      : isFixed
+        ? 2
+        : 20
     return precision
   })
 
@@ -51,7 +53,8 @@ export const useInputNumber = (props, { internalValue, isFocused }) => {
   const computedPlaceholder = computed(() => {
     // ignore placeholder on number
     return props.number
-      ? '' : props.placeholder
+      ? ''
+      : props.placeholder
   })
 
   watch(locale, () => {

@@ -815,7 +815,7 @@ export default {
         const itemB = grouped[b][0]
         return roles[itemA.employeeRole] - roles[itemB.employeeRole]
       })
-      keys.map(k => {
+      keys.forEach(k => {
         const groupItems = grouped[k]
         const item = groupItems[0]
         const fullName = item.employeeFullName || ''

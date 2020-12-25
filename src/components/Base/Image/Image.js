@@ -83,16 +83,17 @@ export default {
     const normalisedSrc = computed(() => {
       return props.src && typeof props.src === 'object'
         ? {
-          src: props.src.src,
-          srcset: props.srcset || props.src.srcset,
-          lazySrc: props.lazySrc || props.src.lazySrc,
-          aspect: Number(props.aspectRatio || props.src.aspect),
-        } : {
-          src: props.src,
-          srcset: props.srcset,
-          lazySrc: props.lazySrc,
-          aspect: Number(props.aspectRatio || 0),
-        }
+            src: props.src.src,
+            srcset: props.srcset || props.src.srcset,
+            lazySrc: props.lazySrc || props.src.lazySrc,
+            aspect: Number(props.aspectRatio || props.src.aspect),
+          }
+        : {
+            src: props.src,
+            srcset: props.srcset,
+            lazySrc: props.lazySrc,
+            aspect: Number(props.aspectRatio || 0),
+          }
     })
 
     const cachedSizer = computed(() => {
@@ -244,8 +245,8 @@ export default {
       if (slots.placeholder) {
         const placeholder = isLoading.value
           ? h('div', {
-            class: 'image__placeholder',
-          }, slots.placeholder())
+              class: 'image__placeholder',
+            }, slots.placeholder())
           : undefined
 
         if (!props.transition) return placeholder

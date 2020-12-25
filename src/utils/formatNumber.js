@@ -68,7 +68,8 @@ export const formatNumber = (number, options = {}) => {
     numberDecimal = stringDecimal
   }
   const numberPrecision = (numberDecimal.length > opts.precision) || opts.fixed
-    ? opts.precision : numberDecimal.length
+    ? opts.precision
+    : numberDecimal.length
 
   // Clean up precision
   const usePrecision = checkPrecision(numberPrecision, opts.precision)

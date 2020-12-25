@@ -309,7 +309,7 @@ export default class Auth {
   attributesToObject (attributes) {
     const obj = {}
     if (attributes) {
-      attributes.map(attribute => {
+      attributes.forEach(attribute => {
         if (attribute.Value === 'true') {
           obj[attribute.Name] = true
         } else if (attribute.Value === 'false') {
