@@ -316,9 +316,11 @@ import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 import { SET_ORG_AVATAR } from '../graphql/mutations'
 import { wsLink } from '../plugins/apollo'
 
+import Btn from './Base/Btn'
 import Icon from './Base/Icon'
 import Menu from './Base/Menu'
 import Modal from './Base/Modal'
+import Image from './Base/Image'
 import LoadingSpinner from './Base/LoadingSpinner'
 import FileUploader from './FileUploader.vue'
 import LocalePicker from './LocalePicker.vue'
@@ -329,9 +331,11 @@ import emitter from '../plugins/mitt'
 export default {
   name: 'Header',
   components: {
+    Btn,
     Icon,
     Menu,
     Modal,
+    Image,
     LoadingSpinner,
     FileUploader,
     LocalePicker,
