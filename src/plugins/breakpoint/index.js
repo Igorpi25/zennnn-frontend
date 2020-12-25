@@ -12,10 +12,6 @@ export default {
       },
       scrollBarWidth: 16,
     })
-    app.config.globalProperties.$breakpoint = {
-      get () {
-        return breakpoint
-      },
-    }
+    app.config.globalProperties.$breakpoint = breakpoint
   },
 }

@@ -7,11 +7,7 @@ export const auth = new AuthClass({
 
 const AuthPlugin = {
   install (app) {
-    app.config.globalProperties.$auth = {
-      get () {
-        return auth
-      },
-    }
+    app.config.globalProperties.$auth = auth
   },
 }
 

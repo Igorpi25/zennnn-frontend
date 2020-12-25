@@ -10,27 +10,23 @@ export const logger = new LoggerClass(null, level)
 const loggerPlugin = {
   install (app) {
     app.config.globalProperties.$logger = {
-      get () {
-        return {
-          log: (...msg) => {
-            logger.log(...msg)
-          },
-          error: (...msg) => {
-            logger.error(...msg)
-          },
-          warn: (...msg) => {
-            logger.warn(...msg)
-          },
-          info: (...msg) => {
-            logger.info(...msg)
-          },
-          debug: (...msg) => {
-            logger.debug(...msg)
-          },
-          verbose: (...msg) => {
-            logger.verbose(...msg)
-          },
-        }
+      log: (...msg) => {
+        logger.log(...msg)
+      },
+      error: (...msg) => {
+        logger.error(...msg)
+      },
+      warn: (...msg) => {
+        logger.warn(...msg)
+      },
+      info: (...msg) => {
+        logger.info(...msg)
+      },
+      debug: (...msg) => {
+        logger.debug(...msg)
+      },
+      verbose: (...msg) => {
+        logger.verbose(...msg)
       },
     }
   },
