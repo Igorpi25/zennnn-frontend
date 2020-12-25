@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-// const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { execSync } = require('child_process')
 const pkg = require('./package.json')
 const pkgVersion = pkg.version
@@ -8,7 +8,7 @@ const version = `v${pkgVersion}-${commitHash}`
 // const path = require('path')
 // const PrerenderSPAPlugin = require('prerender-spa-plugin')
 
-// const isAdmin = process.env.VUE_APP_NAME === 'admin'
+const isAdmin = process.env.VUE_APP_NAME === 'admin'
 
 // PrerenderSPAPlugin not working with webpack 5
 //
@@ -87,9 +87,9 @@ module.exports = {
     // webpack 5 not polyfill node crypto
     // crypto used in amazon-cognito-identity-js
     // can polyfill with
-    // resolve.fallback: { "crypto": require.resolve("crypto-browserify") }
+    // resolve.fallback: { crypto: require.resolve('crypto-browserify') }
     //
-    config.resolve.fallback = { 'crypto': false }
+    config.resolve.fallback = { crypto: false }
 
     const definePlugin = new webpack.DefinePlugin({
       'process.env': {
@@ -97,23 +97,18 @@ module.exports = {
         COMMIT_HASH: JSON.stringify(commitHash),
       },
     })
-    // CopyWebpackPlugin updated
     // TODO: replace with pwa plugin
-    //
-    // const copyPlugin = new CopyWebpackPlugin(
-    //   [
-    //     {
-    //       from: 'src/sw.js',
-    //       to: 'service-worker.js',
-    //     },
-    //   ],
-    // )
+    const copyPlugin = new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/sw.js', to: 'service-worker.js' },
+      ],
+    })
     config.plugins.push(definePlugin)
-    // if (!isAdmin) {
-    //   config.plugins.push(copyPlugin)
-    //   if (process.env.NODE_ENV === 'production') {
-    //     config.plugins.push(...productionPlugins)
-    //   }
-    // }
+    if (!isAdmin) {
+      config.plugins.push(copyPlugin)
+      // if (process.env.NODE_ENV === 'production') {
+      //   config.plugins.push(...productionPlugins)
+      // }
+    }
   },
 }
