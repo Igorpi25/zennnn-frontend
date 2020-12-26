@@ -70,13 +70,19 @@
             validate-on-blur
           >
             <template v-slot:append>
-              <div
+              <Icon
+                class="text-gray-500 hover:text-gray-300 pr-1"
+                @click="showPassword = !showPassword"
+              >
+                {{ showPassword ? icons.ziEye : icons.ziEyeOff }}
+              </Icon>
+              <!-- <div
                 class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
                 @click="showPassword = !showPassword"
               >
                 <i v-if="showPassword" class="zi-eye align-middle" />
                 <i v-else class=" zi-eye-off align-middle text-28" />
-              </div>
+              </div> -->
             </template>
           </TextField>
           <div class="pb-6">
@@ -181,13 +187,19 @@
           required
         >
           <template v-slot:append>
-            <div
+            <Icon
+              class="text-gray-500 hover:text-gray-300 pr-1"
+              @click="compliteShowPassword = !compliteShowPassword"
+            >
+              {{ compliteShowPassword ? icons.ziEye : icons.ziEyeOff }}
+            </Icon>
+            <!-- <div
               class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
               @click="compliteShowPassword = !compliteShowPassword"
             >
               <i v-if="compliteShowPassword" class="zi-eye align-middle" />
               <i v-else class="zi-eye-off align-middle text-28" />
-            </div>
+            </div> -->
           </template>
         </TextField>
         <Checkbox
@@ -213,6 +225,12 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
+import { GET_PROFILE, GET_ORGS, GET_IS_LOGGED_IN } from '../graphql/queries'
+import { COMPLITE_REGISTRATION, INIT_SPEC_SIMPLE_UI } from '../graphql/mutations'
+
+import { ziEye, ziEyeOff } from '../assets/icons'
+
+import Icon from '../components/Base/Icon'
 import Btn from '../components/Base/Btn'
 import Form from '../components/Base/Form'
 import TextField from '../components/Base/TextField'
@@ -222,14 +240,10 @@ import Social from '../components/Social.vue'
 import Copyright from '../components/Copyright.vue'
 import LocalePicker from '../components/LocalePicker.vue'
 
-import { apolloClient } from '../plugins/apollo'
-
-import { GET_PROFILE, GET_ORGS, GET_IS_LOGGED_IN } from '../graphql/queries'
-import { COMPLITE_REGISTRATION, INIT_SPEC_SIMPLE_UI } from '../graphql/mutations'
-
 export default {
   name: 'SignIn',
   components: {
+    Icon,
     Btn,
     Form,
     TextField,
@@ -241,9 +255,14 @@ export default {
   },
   setup () {
     const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
 
     return {
-      resolveClient,
+      icons: {
+        ziEye,
+        ziEyeOff,
+      },
+      apolloClient,
     }
   },
   data () {
@@ -285,7 +304,6 @@ export default {
   methods: {
     async onSubmit (e) {
       try {
-        const client = this.resolveClient()
         e.preventDefault()
         this.loading = true
         this.errorMessage = ''
@@ -302,20 +320,20 @@ export default {
             // TODO: save user to cache and redirect to Registration.vue view
             // this.$router.push({ name: 'registration', query: this.$route.query })
           } else {
-            apolloClient.writeQuery({
+            this.apolloClient.writeQuery({
               query: GET_IS_LOGGED_IN,
               data: { isLoggedIn: true },
             })
-            await client.mutate({
+            await this.apolloClient.mutate({
               mutation: INIT_SPEC_SIMPLE_UI,
             })
             this.$logger.info('Logged in user', user)
-            const { data: { getProfile } } = await apolloClient.query({
+            const { data: { getProfile } } = await this.apolloClient.query({
               query: GET_PROFILE,
               fetchPolicy: 'network-only',
             })
             if (!getProfile.isGreeted) {
-              const { data: { getOrgs } } = await apolloClient.query({
+              const { data: { getOrgs } } = await this.apolloClient.query({
                 query: GET_ORGS,
                 fetchPolicy: 'cache-first',
               })
@@ -353,7 +371,6 @@ export default {
     },
     async completeNewPassword (e) {
       try {
-        const client = this.resolveClient()
         e.preventDefault()
         this.compliteLoading = true
         this.compliteErrorMessage = ''
@@ -367,7 +384,7 @@ export default {
           const loggedUser = await this.$auth.completeNewPassword(this.user, password, attrs)
           this.$logger.info('Registered complite user', loggedUser)
           await this.$auth.signIn(email, password)
-          await client.mutate({
+          await this.apolloClient.mutate({
             mutation: COMPLITE_REGISTRATION,
             variables: {
               givenName: firstName,
