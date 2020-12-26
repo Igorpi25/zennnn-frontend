@@ -9,8 +9,6 @@ import {
 
 import { useClientRect, Mask } from 'uipart'
 
-import './TextField.css'
-
 import { useInputProps, useInput } from '../../../composables/useInput'
 import { useInputControlProps, useInputControl } from '../../../composables/useInputControl'
 import { useInputValidationProps, useInputValidation } from '../../../composables/useInputValidation'
@@ -20,6 +18,8 @@ import { useInputMessage } from '../../../composables/useInputMessage'
 
 import uid from '../../../utils/uid'
 import { setCursor } from '../../../utils/dom'
+
+import './TextField.css'
 
 export default {
   name: 'TextField',

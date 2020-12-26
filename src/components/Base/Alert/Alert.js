@@ -9,13 +9,13 @@ import {
   cloneVNode,
 } from 'vue'
 
-import './Alert.css'
-
-import Icon from '../Icon'
-
 import { ziClose, ziInfo } from '../../../assets/icons'
 
 import { convertToUnit } from '../../../utils/convertToUnit'
+
+import Icon from '../Icon'
+
+import './Alert.css'
 
 export default {
   name: 'Alert',

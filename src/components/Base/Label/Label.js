@@ -3,9 +3,9 @@ import {
   ref,
 } from 'vue'
 
-import './Label.css'
-
 import uid from '../../../utils/uid'
+
+import './Label.css'
 
 export default {
   name: 'Label',

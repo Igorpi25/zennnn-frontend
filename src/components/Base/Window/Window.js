@@ -11,13 +11,13 @@ import {
 
 import { useGroupProps, useGroup, Touch } from 'uipart'
 
-import './Window.css'
-
-import Icon from '../Icon'
-
 import { ziArrowLeft, ziArrowRight } from '../../../assets/icons'
 
 import { wrapInArray } from '../../../utils/wrapInArray'
+
+import Icon from '../Icon'
+
+import './Window.css'
 
 export const WindowContext = Symbol('WindowContext')
 

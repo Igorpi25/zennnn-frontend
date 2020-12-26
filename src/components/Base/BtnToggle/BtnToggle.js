@@ -1,8 +1,8 @@
 import { h, ref, watch } from 'vue'
 
-import './BtnToggle.css'
-
 import { convertToUnit } from '../../../utils/convertToUnit'
+
+import './BtnToggle.css'
 
 export default {
   name: 'BtnToggle',

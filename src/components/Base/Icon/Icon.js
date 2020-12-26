@@ -1,8 +1,8 @@
 import { h, computed } from 'vue'
 
-import './Icon.css'
-
 import { convertToUnit } from '../../../utils/convertToUnit'
+
+import './Icon.css'
 
 const SIZE_CLASS_MAP = {
   small: 'text-lg',

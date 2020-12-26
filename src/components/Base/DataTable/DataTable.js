@@ -7,7 +7,7 @@ import {
 
 import { useI18n } from 'vue-i18n'
 
-import './DataTable.css'
+import { ziArrowSortTop } from '../../../assets/icons'
 
 import { convertToUnit } from '../../../utils/convertToUnit'
 import { getObjectValueByPath } from '../../../utils/object'
@@ -17,7 +17,7 @@ import { defaultFilter } from '../../../utils/defaultFilter'
 
 import Icon from '../Icon'
 
-import { ziArrowSortTop } from '../../../assets/icons'
+import './DataTable.css'
 
 function sortItems (
   items,

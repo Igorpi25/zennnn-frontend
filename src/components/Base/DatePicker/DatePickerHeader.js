@@ -2,9 +2,9 @@ import {
   h,
 } from 'vue'
 
-import Icon from '../Icon'
-
 import { ziChevronLeft, ziChevronRight } from '../../../assets/icons'
+
+import Icon from '../Icon'
 
 export default {
   name: 'DatePickerHeader',

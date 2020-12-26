@@ -8,17 +8,17 @@ import {
   withDirectives,
 } from 'vue'
 
-import './Checkbox.css'
-
-import Icon from '../Icon'
-
-import uid from '../../../utils/uid'
-import { deepEqual } from '../../../utils/deepEqual'
+import { ziCheckboxMarked, ziMinus } from '../../../assets/icons'
 
 import { useInputProps, useInput } from '../../../composables/useInput'
 import { useInputValidationProps, useInputValidation } from '../../../composables/useInputValidation'
 
-import { ziCheckboxMarked, ziMinus } from '../../../assets/icons'
+import uid from '../../../utils/uid'
+import { deepEqual } from '../../../utils/deepEqual'
+
+import Icon from '../Icon'
+
+import './Checkbox.css'
 
 export default {
   name: 'Checkbox',

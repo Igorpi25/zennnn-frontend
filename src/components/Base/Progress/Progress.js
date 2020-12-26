@@ -1,8 +1,8 @@
 import { h, reactive, computed } from 'vue'
 
-import './Progress.css'
-
 import { convertToUnit } from '../../../utils/convertToUnit'
+
+import './Progress.css'
 
 export default {
   name: 'Progress',

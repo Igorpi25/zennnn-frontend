@@ -11,9 +11,9 @@ import {
   Scroll,
 } from 'uipart'
 
-import './VScroll.css'
-
 import { convertToUnit } from '../../../utils/convertToUnit'
+
+import './VScroll.css'
 
 export default {
   name: 'VScroll',

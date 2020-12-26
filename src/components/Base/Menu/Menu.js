@@ -20,9 +20,9 @@ import {
   ClickOutside,
 } from 'uipart'
 
-import './Menu.css'
-
 import uid from '../../../utils/uid'
+
+import './Menu.css'
 
 export const MenuContext = Symbol('MenuContext')
 

@@ -12,11 +12,11 @@ import {
 
 import { Intersect } from 'uipart'
 
-import './MenuItem.css'
+import uid from '../../../utils/uid'
 
 import { useMenuContext } from './Menu'
 
-import uid from '../../../utils/uid'
+import './MenuItem.css'
 
 export default {
   name: 'MenuItem',

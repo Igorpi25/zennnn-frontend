@@ -16,9 +16,9 @@ import {
   ClickOutside,
 } from 'uipart'
 
-import './Tooltip.css'
-
 import uid from '../../../utils/uid'
+
+import './Tooltip.css'
 
 export default {
   name: 'Tooltip',

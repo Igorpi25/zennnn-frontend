@@ -18,21 +18,21 @@ import {
   Mask,
 } from 'uipart'
 
-import './Select.css'
-
-import { Menu, MenuItem } from '../Menu'
+import { ziChevronDown, ziMagnifier, ziClose } from '../../../assets/icons'
 
 import { useInputProps, useInput } from '../../../composables/useInput'
 import { useInputControlProps, useInputControl } from '../../../composables/useInputControl'
 import { useInputValidationProps, useInputValidation } from '../../../composables/useInputValidation'
 import { useInputMessage } from '../../../composables/useInputMessage'
 
-import { ziChevronDown, ziMagnifier, ziClose } from '../../../assets/icons'
-
 import uid from '../../../utils/uid'
 import { defaultFilter } from '../../../utils/defaultFilter'
 import { setCursor } from '../../../utils/dom'
 import { getPropertyFromItem } from '../../../utils/object'
+
+import { Menu, MenuItem } from '../Menu'
+
+import './Select.css'
 
 const classNames = (...classes) => classes.filter(Boolean).join(' ')
 

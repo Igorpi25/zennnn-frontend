@@ -9,9 +9,9 @@ import {
   withDirectives,
 } from 'vue'
 
-import './Image.css'
-
 import { useAspectRatioProps, useAspectRatio, dimensions, Intersect } from 'uipart'
+
+import './Image.css'
 
 const { useDimensionsProps, useDimensions } = dimensions()
 

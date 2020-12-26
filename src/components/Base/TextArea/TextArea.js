@@ -10,8 +10,6 @@ import {
 
 import { useClientRect } from 'uipart'
 
-import './TextArea.css'
-
 import { useInputProps, useInput } from '../../../composables/useInput'
 import { useInputControlProps, useInputControl } from '../../../composables/useInputControl'
 import { useInputValidationProps, useInputValidation } from '../../../composables/useInputValidation'
@@ -19,6 +17,8 @@ import { useInputLazyProps, useInputLazy } from '../../../composables/useInputLa
 import { useInputMessage } from '../../../composables/useInputMessage'
 
 import uid from '../../../utils/uid'
+
+import './TextArea.css'
 
 export default {
   name: 'TextArea',

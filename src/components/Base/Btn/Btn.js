@@ -1,11 +1,11 @@
 import { h, ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 
-import './Btn.css'
+import { convertToUnit } from '../../../utils/convertToUnit'
 
 import Progress from '../Progress'
 
-import { convertToUnit } from '../../../utils/convertToUnit'
+import './Btn.css'
 
 export default {
   name: 'Btn',

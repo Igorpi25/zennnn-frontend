@@ -5,13 +5,13 @@ import {
   watch,
 } from 'vue'
 
-import './Switch.css'
+import { useInputProps, useInput } from '../../../composables/useInput'
+import { useInputValidationProps, useInputValidation } from '../../../composables/useInputValidation'
 
 import uid from '../../../utils/uid'
 import { deepEqual } from '../../../utils/deepEqual'
 
-import { useInputProps, useInput } from '../../../composables/useInput'
-import { useInputValidationProps, useInputValidation } from '../../../composables/useInputValidation'
+import './Switch.css'
 
 export default {
   name: 'Switch',

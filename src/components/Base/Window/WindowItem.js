@@ -16,10 +16,10 @@ import {
   useLazyContent,
 } from 'uipart'
 
-import { useWindowContext } from './Window'
-
 import uid from '../../../utils/uid'
 import { convertToUnit } from '../../../utils/convertToUnit'
+
+import { useWindowContext } from './Window'
 
 export default {
   name: 'WindowItem',
