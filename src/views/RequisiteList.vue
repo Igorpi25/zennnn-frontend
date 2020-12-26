@@ -245,7 +245,7 @@ export default {
       this.$router.replace({
         path: this.$route.path,
         query,
-      }).catch(() => {})
+      })
     },
     goToRequisite (item) {
       this.$router.push({

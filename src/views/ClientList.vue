@@ -511,7 +511,7 @@ export default {
       this.$router.replace({
         path: this.$route.path,
         query,
-      }).catch(() => {})
+      })
     },
     customFilter (value, search) {
       if (search != null && value != null && typeof value !== 'boolean') {

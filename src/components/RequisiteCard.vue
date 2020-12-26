@@ -233,7 +233,7 @@ export default {
     },
     goBack () {
       if (this.showFillLaterButton) {
-        this.$router.push({ name: 'home' }).catch(() => {})
+        this.$router.push({ name: 'home' })
       } else {
         this.$router.go(-1)
       }

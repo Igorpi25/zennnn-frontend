@@ -470,9 +470,9 @@ export default {
       const clientId = group[type]
       const clientType = this.getClientTypeNumeric(type)
       if (groupId && clientId) {
-        this.$router.push({ name: 'client', params: { groupId, clientId }, query: { clientType } }).catch(() => {})
+        this.$router.push({ name: 'client', params: { groupId, clientId }, query: { clientType } })
       } else {
-        this.$router.push({ name: 'client-create', params: { groupId }, query: { clientType } }).catch(() => {})
+        this.$router.push({ name: 'client-create', params: { groupId }, query: { clientType } })
       }
       this.reset()
     },

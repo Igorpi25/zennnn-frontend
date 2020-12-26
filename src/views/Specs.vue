@@ -852,7 +852,7 @@ export default {
       this.$router.replace({
         path: this.$route.path,
         query,
-      }).catch(() => {})
+      })
     },
     changeClientType (value) {
       this.currentFilter = value

@@ -184,9 +184,9 @@ export default {
             this.compliteFormDialog = true
           } else {
             if (this.$route.query.redirect) {
-              this.$router.replace({ path: this.$route.query.redirect }).catch(() => {})
+              this.$router.replace({ path: this.$route.query.redirect })
             } else {
-              this.$router.replace({ name: 'home' }).catch(() => {})
+              this.$router.replace({ name: 'home' })
             }
           }
         }

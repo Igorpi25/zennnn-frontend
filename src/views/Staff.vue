@@ -478,7 +478,7 @@ export default {
       this.$router.replace({
         path: this.$route.path,
         query,
-      }).catch(() => {})
+      })
     },
     goToSpec (item) {
       this.$router.push({
