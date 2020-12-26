@@ -9,10 +9,12 @@
         v-if="isComponent"
         class="absolute top-0 right-0 z-10 pt-3 pr-3"
       >
-        <i
-          class="zi-close text-2xl text-gray-100 hover:text-white cursor-pointer"
+        <Icon
+          class="text-gray-100 hover:text-white cursor-pointer"
           @click="$emit('close')"
-        />
+        >
+          {{ icons.ziClose }}
+        </Icon>
       </span>
       <h1 class="text-2xl text-white font-semibold leading-tight mb-4">
         {{ create ? $t('client.createTitle') : $t('client.editTitle') }}
@@ -256,12 +258,10 @@
 </template>
 
 <script>
-import cloneDeep from 'clone-deep'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
-
-import { validateLegalClient, validatePrivateClient } from '../util/validation'
+import cloneDeep from 'clone-deep'
 
 import { ClientType } from '../graphql/enums'
 import { GET_CLIENT, GET_CLIENT_GROUP, GET_ORG_NEXT_CLIENT_UID } from '../graphql/queries'
@@ -269,8 +269,13 @@ import {
   CREATE_CLIENT,
   UPDATE_CLIENT,
 } from '../graphql/mutations'
-import { replaceAt } from '../util/helpers'
 
+import { ziClose } from '../assets/icons'
+
+import { replaceAt } from '../util/helpers'
+import { validateLegalClient, validatePrivateClient } from '../util/validation'
+
+import Icon from './Base/Icon'
 import Btn from './Base/Btn'
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
 import LegalDetail from './CompanyDetail/LegalDetail.vue'
@@ -283,6 +288,7 @@ import PrivateDetail from './CompanyDetail/PrivateDetail.vue'
 export default {
   name: 'ClientCard',
   components: {
+    Icon,
     Btn,
     LegalInfo,
     LegalDetail,
@@ -351,6 +357,9 @@ export default {
     const { mutate: updateClientMutate } = useMutation(UPDATE_CLIENT)
 
     return {
+      icons: {
+        ziClose,
+      },
       item,
       clientId,
       getOrgNextClientUid,
