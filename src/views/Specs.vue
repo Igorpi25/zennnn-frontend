@@ -12,7 +12,9 @@
         >
           <template v-slot:prepend>
             <span class="w-10 flex items-center justify-center flex-shrink-0">
-              <i class="zi-magnifier text-2xl text-gray-100"></i>
+              <Icon class="text-gray-100">
+                {{ icons.ziSearch }}
+              </Icon>
             </span>
             <span v-if="clientsFilter.length > 0" class="text-base text-white pr-2">
               <span
@@ -23,18 +25,22 @@
                 <span class="flex-grow pl-xs -mr-xs">
                   {{ filter.text }}
                 </span>
-                <i
-                  class="w-6 flex-shrink-0 zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+                <Icon
+                  class="w-6 flex-shrink-0 text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100"
                   @click="clearClientFilter(filter.value)"
-                />
+                >
+                  {{ icons.ziCloseDelete }}
+                </Icon>
               </span>
             </span>
           </template>
           <template v-slot:append v-if="search || clientsFilter.length > 0">
-            <i
-              class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+            <Icon
+              class="text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100"
               @click="clearFilters"
-            />
+            >
+              {{ icons.ziCloseDelete }}
+            </Icon>
           </template>
         </TextField>
         <div class="flex w-full sm:w-auto items-center justify-end" style="min-width: 165px;">
@@ -53,16 +59,17 @@
                 <span class="text-gray-100 group-hover:text-light-gray-400 pr-2">
                   {{ currentFilterText }}
                 </span>
-                <i class="zi-filter relative text-2xl text-gray-200 group-hover:text-gray-100">
+                <span class="relative">
+                  <Icon class="text-gray-200 group-hover:text-gray-100">
+                    {{ icons.ziFilter }}
+                  </Icon>
                   <div
                     v-if="hasFilter"
-                    :class="[
-                      'absolute top-0 right-0 -mt-xs -mr-1 w-sm h-sm rounded-full border-2 bg-gray-900 border-gray-900 transition-colors duration-100 ease-out',
-                    ]"
+                    class="absolute top-0 right-0 -mt-xs -mr-1 w-sm h-sm rounded-full border-2 bg-gray-900 border-gray-900 transition-colors duration-100 ease-out"
                   >
                     <div class="w-full h-full bg-blue-500 rounded-full" />
                   </div>
-                </i>
+                </span>
               </div>
             </template>
             <template>
@@ -125,8 +132,10 @@
                   <path d="M17 7.2561C14.2 7.2561 12 9.4561 12 12.2561C12 15.0561 14.2 17.2561 17 17.2561C19.8 17.2561 22 15.0561 22 12.2561C22 9.4561 19.8 7.2561 17 7.2561ZM20.2 12.8561H17.6V15.5561H16.4V12.8561H13.8V11.6561H16.4V9.0561H17.6V11.7561H20.2V12.8561Z" fill="#404040"/>
                 </svg>
                 <Tooltip top>
-                  <template v-slot:activator="{ on }">
-                    <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+                  <template v-slot:activator>
+                    <Icon class="text-blue-500 align-middle">
+                      {{ icons.ziQuestionSign }}
+                    </Icon>
                   </template>
                   <span>
                     {{ $t('deals.moneyRecieved') }}
@@ -144,8 +153,10 @@
                 </svg>
 
                 <Tooltip top>
-                  <template v-slot:activator="{ on }">
-                    <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+                  <template v-slot:activator>
+                    <Icon class="text-blue-500 align-middle">
+                      {{ icons.ziQuestionSign }}
+                    </Icon>
                   </template>
                   <span>
                     {{ $t('deals.expensesPaid') }}
@@ -165,8 +176,10 @@
               </span>
 
               <Tooltip top max-width="158">
-                <template v-slot:activator="{ on }">
-                  <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+                <template v-slot:activator>
+                  <Icon class="text-blue-500 align-middle">
+                    {{ icons.ziQuestionSign }}
+                  </Icon>
                 </template>
                 <span>
                   {{ $t('deals.turnoverHint') }}
@@ -178,8 +191,10 @@
             <td :width="header.width + 'px'">
               <span class="inline-block align-middle mr-xs">%</span>
               <Tooltip top max-width="158">
-                <template v-slot:activator="{ on }">
-                  <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+                <template v-slot:activator>
+                  <Icon class="text-blue-500 align-middle">
+                    {{ icons.ziQuestionSign }}
+                  </Icon>
                 </template>
                 <span>
                   {{ $t('deals.marginHint') }}
@@ -195,8 +210,10 @@
               {{ header.text }}
             </span>
             <Tooltip top max-width="220">
-              <template v-slot:activator="{ on }">
-                <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+              <template v-slot:activator>
+                <Icon class="text-blue-500 align-middle">
+                  {{ icons.ziQuestionSign }}
+                </Icon>
               </template>
               <span v-html="$t('deals.numberHint')" />
             </Tooltip>
@@ -236,10 +253,14 @@
                   />
                 </td>
                 <td class="text-center">
-                  <i v-if="item.isMoneyRecieved" class="zi-check text-2xl text-gray-200 align-middle" />
+                  <Icon v-if="item.isMoneyRecieved" class="text-gray-200 align-middle">
+                    {{ icons.ziChecked }}
+                  </Icon>
                 </td>
                 <td class="text-center">
-                  <i v-if="item.isExpensesPaid" class="zi-check text-2xl text-gray-200 align-middle" />
+                  <Icon v-if="item.isExpensesPaid" class="text-gray-200 align-middle">
+                    {{ icons.ziChecked }}
+                  </Icon>
                 </td>
                 <td class="truncate text-right">{{ $n(item.finalCost || 0) }}</td>
                 <td class="truncate text-right text-gray-200">{{ item.margin || 0 }}%</td>
@@ -250,7 +271,9 @@
                     <Tooltip top>
                       <template v-slot:activator="{ on }">
                         <span v-on="on">
-                          <i class="zi-number text-2xl text-gray-200 align-middle" />
+                          <Icon class="text-gray-200 align-middle">
+                            {{ icons.ziNumberOffDocument }}
+                          </Icon>
                           <span v-if="item.specNoCount" class="align-middle text-light-gray-400">
                             - {{ item.specNoCount }}
                           </span>
@@ -275,7 +298,9 @@
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
                       </svg>
                     </a>
-                    <i class="zi-action text-2xl text-gray-200 align-middle cursor-default ml-1" />
+                    <Icon class="text-gray-200 align-middle cursor-default ml-1">
+                      {{ icons.ziAction }}
+                    </Icon>
                   </span>
                 </td>
                 <td class="truncate text-right">{{ (item.client.uid) }}</td>
@@ -284,11 +309,13 @@
                     class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-auto"
                     @click="deleteSpec(item.id)"
                   >
-                    <i class="zi-delete" />
+                    <Icon>
+                      {{ icons.ziDelete }}
+                    </Icon>
                   </button>
                 </td>
                 <td>
-                  <span v-if="item.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-blue-400"></span>
+                  <span v-if="item.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-cold-blue-400"></span>
                 </td>
                 <td :class="{ 'bg-purple-500': item.hasNewComment }"></td>
               </tr>
@@ -319,7 +346,9 @@
         @click="createSpecDialog = true"
       >
         <template v-slot:icon>
-          <i class="zi-bag text-gray-100 text-2xl" />
+          <Icon class="text-gray-100">
+            {{ icons.ziBagDeal }}
+          </Icon>
         </template>
         <span>{{ $t('deals.createDeal') }}</span>
       </Btn>
@@ -332,7 +361,9 @@
     >
       <div ref="createSpecContainer" class="relative">
         <div class="bg-gray-500 flex items-center text-lg text-white font-semibold px-8 py-5">
-          <i class="zi-user-plus text-3xl text-blue-500 mr-4" />
+          <Icon large class="text-blue-500 mr-4">
+            {{ icons.ziUserPlus }}
+          </Icon>
           <div>
             {{ $t('deals.createSpecDialogHeader') }}
           </div>
@@ -359,12 +390,16 @@
           >
             <template v-slot:prepend-item>
               <span class="flex items-center jusitfy-center text-blue-500">
-                <i class="zi-plus-outline text-2xl mr-1" />
+                <Icon class="mr-1">
+                  {{ icons.ziPlusOutline }}
+                </Icon>
                 <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
               </span>
             </template>
             <template v-slot:prepend>
-              <i class="zi-magnifier text-gray-200" />
+              <Icon class="text-gray-200">
+                {{ icons.ziSearch }}
+              </Icon>
             </template>
           </Select>
         </div>
@@ -393,7 +428,9 @@
           class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
           @click="createSpecDialog = false"
         >
-          <i class="zi-close" />
+          <Icon class="text-gray-200">
+            {{ icons.ziCloseWindow }}
+          </Icon>
         </span>
       </div>
     </Modal>
@@ -423,6 +460,8 @@ import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziQuestionSign, ziSearch, ziCloseWindow, ziCloseDelete, ziBagDeal, ziDelete, ziAction, ziBoxes, ziPhone, ziPlusOutline, ziUserPlus, ziChecked, ziNumberOffDocument, ziFilter } from '../assets/icons'
+
 import {
   Role,
   Typename,
@@ -436,6 +475,7 @@ import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
 import { SPECS_DELTA } from '../graphql/subscriptions'
 
 import Btn from '../components/Base/Btn'
+import Icon from '../components/Base/Icon'
 import Menu from '../components/Base/Menu'
 import Modal from '../components/Base/Modal'
 import Tooltip from '../components/Base/Tooltip'
@@ -451,6 +491,7 @@ export default {
   name: 'Specs',
   components: {
     Btn,
+    Icon,
     Menu,
     Modal,
     Tooltip,
@@ -511,6 +552,22 @@ export default {
     const getClientsById = useResult(result4)
 
     return {
+      icons: {
+        ziFilter,
+        ziSearch,
+        ziDelete,
+        ziBagDeal,
+        ziAction,
+        ziPhone,
+        ziBoxes,
+        ziUserPlus,
+        ziChecked,
+        ziNumberOffDocument,
+        ziPlusOutline,
+        ziCloseWindow,
+        ziCloseDelete,
+        ziQuestionSign,
+      },
       resolveClient,
       orgId,
       clientSearch,

@@ -14,7 +14,7 @@
             </h2>
             <div
               v-if="spec.shipped"
-              class="inline-block text-xs align-middle mr-sm px-sm bg-blue-400 text-white rounded-50"
+              class="inline-block text-xs align-middle mr-sm px-sm bg-cold-blue-400 text-white rounded-50"
             >
               {{ $t('paper.shipped') }}
             </div>
@@ -313,7 +313,7 @@
                   </div>
                   <div class="h-full flex items-center justify-center">
                     <div class="text-center py-2 sm:px-0">
-                      <svg class="mx-auto mt-5 mb-4 text-blue-400" width="57" height="57" viewBox="0 0 57 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg class="mx-auto mt-5 mb-4 text-cold-blue-400" width="57" height="57" viewBox="0 0 57 57" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 28.397C0.5 12.9331 13.036 0.397034 28.5 0.397034C43.964 0.397034 56.5 12.9331 56.5 28.397C56.5 43.861 43.964 56.397 28.5 56.397C13.036 56.397 0.5 43.861 0.5 28.397ZM28.5 4.54518C15.327 4.54518 4.64815 15.224 4.64815 28.397C4.64815 41.57 15.327 52.2489 28.5 52.2489C41.673 52.2489 52.3518 41.57 52.3518 28.397C52.3518 15.224 41.673 4.54518 28.5 4.54518Z" fill="#2F80ED"/>
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M44.2118 19.9962L26.0712 37.6498L15.8184 27.5301L19.5063 23.7936L26.0972 30.2989L40.5504 16.2338L44.2118 19.9962Z" fill="#2F80ED"/>
                       </svg>

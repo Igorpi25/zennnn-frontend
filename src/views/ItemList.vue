@@ -10,13 +10,17 @@
           input-class="placeholder-blue-500"
         >
           <template v-slot:prepend>
-            <i class="zi-magnifier text-2xl text-gray-100"></i>
+            <Icon class="text-gray-100">
+              {{ icons.ziSearch }}
+            </Icon>
           </template>
           <template v-slot:append v-if="search">
-            <i
-              class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+            <Icon
+              class="text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100"
               @click="search = null"
-            />
+            >
+              {{ icons.ziCloseDelete }}
+            </Icon>
           </template>
         </TextField>
         <div class="order-1 sm:order-none h-11 flex lg:inline-flex overflow-x-auto scrolling-touch">
@@ -93,8 +97,10 @@
         >
           <template v-slot:[`header.price-content`]="{ header }">
             <Tooltip top max-width="162">
-              <template v-slot:activator="{ on }">
-                <span class="mr-1">{{ header.text }}</span> <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+              <template v-slot:activator>
+                <span>
+                  <span class="mr-1">{{ header.text }}</span> <Icon class="align-middle text-blue-500">{{ icons.ziQuestionSign }}</Icon>
+                </span>
               </template>
               <span>
                 {{ $t('goods.priceHint') }}
@@ -157,7 +163,9 @@
         class="mt-4"
       >
         <template v-slot:icon>
-          <i class="zi-qc text-gray-100 text-2xl" />
+          <Icon class="text-gray-100">
+            {{ icons.ziQr }}
+          </Icon>
         </template>
         <span>{{ $t('goods.createProduct') }}</span>
       </Btn>
@@ -171,9 +179,12 @@ import { useRoute } from 'vue-router'
 
 // import { LIST_ITEMS } from '../graphql/queries'
 
+import { ziQuestionSign, ziQr, ziSearch, ziCloseDelete } from '../assets/icons'
+
 import { getObjectValueByPath } from '../util/helpers'
 
 import Btn from '../components/Base/Btn'
+import Icon from '../components/Base/Icon'
 import Tooltip from '../components/Base/Tooltip'
 import Progress from '../components/Base/Progress'
 import DataTable from '../components/Base/DataTable'
@@ -183,6 +194,7 @@ export default {
   name: 'ItemList',
   components: {
     Btn,
+    Icon,
     Tooltip,
     Progress,
     DataTable,
@@ -200,6 +212,12 @@ export default {
     // const listItems = useResult(result)
 
     return {
+      icons: {
+        ziQr,
+        ziSearch,
+        ziCloseDelete,
+        ziQuestionSign,
+      },
       loading: false,
       orgId,
       // listItems,

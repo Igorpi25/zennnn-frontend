@@ -34,6 +34,12 @@ module.exports = {
         DEFAULT: '1rem',
       },
     },
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+    },
     colors: {
       black: '#000000',
       white: '#ffffff',
@@ -61,15 +67,17 @@ module.exports = {
         800: '#232323',
         900: '#1E1E1E',
       },
-      // TODO: change color pallet, blue-300 > blue-500
       blue: {
-        300: '#6377A0',
-        400: '#2F80ED',
-        500: '#7E99D0', // primary color
-        600: '#5C78B1', // primary hover color
-        700: '#345DEE', // landing color
-        800: '#2F52D4', // landing hover color
+        400: '#83BBEE', // primary hover color
+        500: '#5BAAF0', // primary color
+        600: '#0476FF',
+        800: '#4634B0',
         900: '#4C51BF', // custom price color
+      },
+      'cold-blue': {
+        400: '#2F80ED', // shipped color
+        500: '#345DEE', // landing color
+        600: '#2F52D4', // landing hover color
       },
       pink: {
         500: '#FF005E', // error, IN_PROCESSING
@@ -100,6 +108,13 @@ module.exports = {
       montserrat: ['Montserrat', 'sans-serif'],
     },
     boxShadow: {
+      'main-night': '0px 20px 40px rgba(0, 0, 0, 0.35)',
+      'main-day': '0px 20px 40px rgba(0, 0, 0, 0.1)',
+      'photo': '4px 4px 8px rgba(0, 0, 0, 0.15)',
+      'inner-pressed': 'inset 0px 2px 1px rgba(0, 0, 0, 0.7)',
+      'small-forms-night': '0px 0px 10px rgba(0, 0, 0, 0.25)',
+      'small-form-day': '0px 0px 10px rgba(0, 0, 0, 0.05)',
+
       DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06)',
       md: '0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06)',
       lg: '0px 4px 10px rgba(0, 0, 0, 0.1)',

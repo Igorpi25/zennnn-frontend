@@ -11,13 +11,17 @@
             input-class="placeholder-blue-500"
           >
             <template v-slot:prepend>
-              <i class="zi-magnifier text-2xl text-gray-100"></i>
+              <Icon class="text-gray-100">
+                {{ icons.ziSearch }}
+              </Icon>
             </template>
             <template v-slot:append v-if="search">
-              <i
-                class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+              <Icon
+                class="text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100"
                 @click="search = null"
-              />
+              >
+                {{ icons.ziCloseDelete }}
+              </Icon>
           </template>
           </TextField>
         </div>
@@ -39,10 +43,14 @@
             hide-no-data
           >
             <template v-slot:[`header.dealsCount-content`]>
-              <i class="zi-bag text-2xl text-400 align-middle" />
+              <Icon class="align-middle">
+                {{ icons.ziBagDeal }}
+              </Icon>
               <Tooltip top max-width="188">
-                <template v-slot:activator="{ on }">
-                  <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+                <template v-slot:activator>
+                  <Icon class="text-blue-500 align-middle">
+                    {{ icons.ziQuestionSign }}
+                  </Icon>
                 </template>
                 <span>
                   {{ $t('suppliers.currentDealsAmount') }}
@@ -57,8 +65,10 @@
                 </svg>
               </span>
               <Tooltip top max-width="190">
-                <template v-slot:activator="{ on }">
-                  <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+                <template v-slot:activator>
+                  <Icon class="text-blue-500 align-middle">
+                    {{ icons.ziQuestionSign }}
+                  </Icon>
                 </template>
                 <span>
                   {{ $t('suppliers.dealsAmountHint') }}
@@ -73,8 +83,10 @@
                 </svg>
               </span>
               <Tooltip top max-width="210">
-                <template v-slot:activator="{ on }">
-                  <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+                <template v-slot:activator>
+                  <Icon class="text-blue-500 align-middle">
+                    {{ icons.ziQuestionSign }}
+                  </Icon>
                 </template>
                 <span>
                   {{ $t('suppliers.totalDebtHint') }}
@@ -90,8 +102,10 @@
                 </svg>
               </span>
               <Tooltip top max-width="190">
-                <template v-slot:activator="{ on }">
-                  <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+                <template v-slot:activator>
+                  <Icon class="text-blue-500 align-middle">
+                    {{ icons.ziQuestionSign }}
+                  </Icon>
                 </template>
                 <span>
                   {{ $t('suppliers.turnoverHint') }}
@@ -157,7 +171,9 @@
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
                         </svg>
                       </a>
-                      <i class="zi-action text-2xl text-gray-200 align-middle cursor-default ml-1" />
+                      <Icon class="text-gray-200 align-middle cursor-default ml-1">
+                        {{ icons.ziAction }}
+                      </Icon>
                     </span>
                   </td>
                   <td class="truncate text-right">{{ item.uid }}</td>
@@ -166,7 +182,9 @@
                       class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-auto"
                       @click="deleteSupplier(item.id)"
                     >
-                      <i class="zi-delete" />
+                      <Icon>
+                        {{ icons.ziDelete }}
+                      </Icon>
                     </button>
                   </td>
                 </tr>
@@ -199,7 +217,9 @@
           })"
         >
           <template v-slot:icon>
-            <i class="zi-boxes text-gray-100 text-2xl" />
+            <Icon class="text-gray-100">
+              {{ icons.ziBoxes }}
+            </Icon>
           </template>
           <span>{{ $t('suppliers.createSupplier') }}</span>
         </Btn>
@@ -212,12 +232,15 @@
 import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziQuestionSign, ziSearch, ziCloseDelete, ziBagDeal, ziDelete, ziAction, ziBoxes, ziPhone } from '../assets/icons'
+
 import { LIST_SUPPLIERS } from '@/graphql/queries'
 import { DELETE_SUPPLIER } from '@/graphql/mutations'
 
 import { confirmDialog, wrapInArray } from '@/util/helpers'
 
 import Btn from '../components/Base/Btn'
+import Icon from '../components/Base/Icon'
 import Progress from '../components/Base/Progress'
 import Tooltip from '../components/Base/Tooltip'
 import DataTable from '../components/Base/DataTable'
@@ -227,6 +250,7 @@ export default {
   name: 'Suppliers',
   components: {
     Btn,
+    Icon,
     Progress,
     Tooltip,
     DataTable,
@@ -245,6 +269,16 @@ export default {
     const listSuppliers = useResult(result)
 
     return {
+      icons: {
+        ziSearch,
+        ziDelete,
+        ziBagDeal,
+        ziAction,
+        ziPhone,
+        ziBoxes,
+        ziCloseDelete,
+        ziQuestionSign,
+      },
       resolveClient,
       orgId,
       loading,

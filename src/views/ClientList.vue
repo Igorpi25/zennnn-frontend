@@ -10,13 +10,17 @@
           input-class="placeholder-blue-500"
         >
           <template v-slot:prepend>
-            <i class="zi-magnifier text-2xl text-gray-100"></i>
+            <Icon class="text-gray-100">
+              {{ icons.ziSearch }}
+            </Icon>
           </template>
           <template v-slot:append v-if="search">
-            <i
-              class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
+            <Icon
+              class="text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100"
               @click="search = null"
-            />
+            >
+              {{ icons.ziCloseDelete }}
+            </Icon>
           </template>
         </TextField>
         <div class="h-11 flex lg:inline-flex overflow-x-auto scrolling-touch">
@@ -83,8 +87,10 @@
         >
           <template v-slot:[`header.dealsSearch-content`]>
             <Tooltip top max-width="162">
-              <template v-slot:activator="{ on }">
-                <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+              <template v-slot:activator>
+                <Icon class="text-blue-500 align-middle">
+                  {{ icons.ziQuestionSign }}
+                </Icon>
               </template>
               <span>
                 {{ $t('clients.dealsSearchHint') }}
@@ -92,10 +98,14 @@
             </Tooltip>
           </template>
           <template v-slot:[`header.dealsCount-content`]>
-            <i class="zi-bag text-2xl text-400 align-middle" />
+            <Icon class="align-middle">
+              {{ icons.ziBagDeal }}
+            </Icon>
             <Tooltip top>
-              <template v-slot:activator="{ on }">
-                <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+              <template v-slot:activator>
+                <Icon class="text-blue-500 align-middle">
+                  {{ icons.ziQuestionSign }}
+                </Icon>
               </template>
               <span>
                 {{ $t('clients.currentDealsAmount') }}
@@ -110,8 +120,10 @@
               </svg>
             </span>
             <Tooltip top max-width="152">
-              <template v-slot:activator="{ on }">
-                <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+              <template v-slot:activator>
+                <Icon class="text-blue-500 align-middle">
+                  {{ icons.ziQuestionSign }}
+                </Icon>
               </template>
               <span>
                 {{ $t('clients.totalPrepaymentHint') }}
@@ -126,8 +138,10 @@
               </svg>
             </span>
             <Tooltip top max-width="200">
-              <template v-slot:activator="{ on }">
-                <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+              <template v-slot:activator>
+                <Icon class="text-blue-500 align-middle">
+                  {{ icons.ziQuestionSign }}
+                </Icon>
               </template>
               <span>
                 {{ $t('clients.debtHint') }}
@@ -143,8 +157,10 @@
               </svg>
             </span>
             <Tooltip top max-width="135">
-              <template v-slot:activator="{ on }">
-                <i class="zi-help align-middle text-xl text-blue-300 cursor-pointer" v-on="on" />
+              <template v-slot:activator>
+                <Icon class="text-blue-500 align-middle">
+                  {{ icons.ziQuestionSign }}
+                </Icon>
               </template>
               <span>
                 {{ $t('clients.turnoverHint') }}
@@ -152,11 +168,9 @@
             </Tooltip>
           </template>
           <template v-slot:[`header.contactPhone-content`]>
-            <span class="inline-block align-middle">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
-              </svg>
-            </span>
+            <Icon>
+              {{ icons.ziPhone }}
+            </Icon>
           </template>
 
           <template v-slot:items="{ items }">
@@ -185,7 +199,9 @@
                 <td></td>
                 <td class="truncate">{{ item.fullName }}</td>
                 <td class="text-center pointer-events-none" @click.stop="goToClientSpecs(item)">
-                  <i class="zi-magnifier align-middle text-2xl text-gray-200 cursor-pointer pointer-events-auto" />
+                  <Icon class="text-gray-200 align-middle cursor-pointer pointer-events-auto">
+                    {{ icons.ziSearch }}
+                  </Icon>
                 </td>
                 <td class="truncate text-right">{{ $n(item.dealsCount || 0) }}</td>
                 <td class="truncate text-right">{{ $n(item.prepayment || 0) }}</td>
@@ -209,20 +225,24 @@
                       :href="`tel:${item.contactPhone}`"
                       class="inline-block align-middle text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none"
                     >
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M19.23 15.26L16.69 14.97C16.08 14.9 15.48 15.11 15.05 15.54L13.21 17.38C10.38 15.94 8.06004 13.63 6.62004 10.79L8.47004 8.94001C8.90004 8.51001 9.11004 7.91001 9.04004 7.30001L8.75004 4.78001C8.63004 3.77001 7.78004 3.01001 6.76004 3.01001H5.03004C3.90004 3.01001 2.96004 3.95001 3.03004 5.08001C3.56004 13.62 10.39 20.44 18.92 20.97C20.05 21.04 20.99 20.1 20.99 18.97V17.24C21 16.23 20.24 15.38 19.23 15.26Z" fill="currentColor"/>
-                      </svg>
+                      <Icon>
+                        {{ icons.ziPhone }}
+                      </Icon>
                     </a>
-                    <i class="zi-action text-2xl text-gray-200 align-middle cursor-default ml-1" />
+                    <Icon class="text-gray-200 align-middle cursor-default ml-1">
+                      {{ icons.ziAction }}
+                    </Icon>
                   </span>
                 </td>
                 <td class="truncate text-right">{{ item.uid }}</td>
                 <td class="text-center pointer-events-none" @click.prevent.stop>
                   <button
-                    class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-auto"
+                    class="cursor-pointer pointer-events-auto flex items-center text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-auto"
                     @click="deleteClient(item.id)"
                   >
-                    <i class="zi-delete" />
+                    <Icon>
+                      {{ icons.ziDelete }}
+                    </Icon>
                   </button>
                 </td>
               </tr>
@@ -258,7 +278,9 @@
         })"
       >
         <template v-slot:icon>
-          <i class="zi-user-plus text-gray-100 text-2xl" />
+          <Icon class="text-gray-100">
+            {{ icons.ziUserPlus }}
+          </Icon>
         </template>
         <span>{{ $t('clients.createClient') }}</span>
       </Btn>
@@ -270,6 +292,8 @@
 import { useRoute } from 'vue-router'
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziQuestionSign, ziSearch, ziCloseDelete, ziBagDeal, ziDelete, ziAction, ziUserPlus, ziPhone } from '../assets/icons'
+
 import { ClientType } from '../graphql/enums'
 import { LIST_CLIENTS } from '../graphql/queries'
 import { DELETE_CLIENT } from '../graphql/mutations'
@@ -277,6 +301,7 @@ import { DELETE_CLIENT } from '../graphql/mutations'
 import { confirmDialog, wrapInArray, getObjectValueByPath } from '../util/helpers'
 
 import Btn from '../components/Base/Btn'
+import Icon from '../components/Base/Icon'
 import Tooltip from '../components/Base/Tooltip'
 import Progress from '../components/Base/Progress'
 import DataTable from '../components/Base/DataTable'
@@ -286,6 +311,7 @@ export default {
   name: 'ClientList',
   components: {
     Btn,
+    Icon,
     Tooltip,
     Progress,
     DataTable,
@@ -305,6 +331,16 @@ export default {
     const { mutate: deleteClientMutate } = useMutation(DELETE_CLIENT)
 
     return {
+      icons: {
+        ziSearch,
+        ziDelete,
+        ziBagDeal,
+        ziAction,
+        ziPhone,
+        ziUserPlus,
+        ziCloseDelete,
+        ziQuestionSign,
+      },
       orgId,
       loading,
       listClients,

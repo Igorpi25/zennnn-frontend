@@ -253,7 +253,7 @@
                                 </router-link>
                               </td>
                               <td :width="subHeadersMap['shipped'].width" :style="{ width: subHeadersMap['shipped'].width, minWidth: subHeadersMap['shipped'].width }" class="bg-gray-700 text-center" :class="{ 'rounded-br-md': i + 1 === subItems.length }">
-                                <span v-if="subItem.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-blue-400"></span>
+                                <span v-if="subItem.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-cold-blue-400"></span>
                               </td>
                             </tr>
                           </template>

@@ -25,9 +25,9 @@
               <a
                 v-for="(item, i) of navItems"
                 :key="i"
-                :class="{ 'text-blue-700': activeNav === i }"
+                :class="{ 'text-cold-blue-500': activeNav === i }"
                 href="#"
-                class="mx-5 hover:text-blue-700 transition-colors duration-100 ease-out"
+                class="mx-5 hover:text-cold-blue-500 transition-colors duration-100 ease-out"
                 @click.prevent="goTo(i)"
               >
                 {{ item.text }}
@@ -35,7 +35,7 @@
             </nav>
             <router-link
               :to="{ name: 'signup' }"
-              class="hidden lg:inline-flex items-center text-blue-700 px-6 ml-auto h-13 rounded-50 shadow-outline select-none focus:outline-none focus:text-blue-800 hover:text-blue-800"
+              class="hidden lg:inline-flex items-center text-cold-blue-500 px-6 ml-auto h-13 rounded-50 shadow-outline select-none focus:outline-none focus:text-cold-blue-600 hover:text-cold-blue-600"
             >
               Получить пробный период
             </router-link>
@@ -133,19 +133,19 @@
             <div class="w-full lg:w-1/2 lg:w-1/4 flex flex-col lg:pr-4">
               <div class="flex-grow flex mb-2 lg:mb-0">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-blue-700 text-xl" />
+                  <i class="zi-check text-cold-blue-500 text-xl" />
                 </span>
                 <span v-html="'Удаленная работа с&nbsp;кли&shy;ен&shy;та&shy;ми и&nbsp;пос&shy;тав&shy;щи&shy;ка&shy;ми'" />
               </div>
               <div class="flex mb-2">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-blue-700 text-xl" />
+                  <i class="zi-check text-cold-blue-500 text-xl" />
                 </span>
                 <span>Отгрузочные документы</span>
               </div>
               <div class="flex mb-2 lg:mb-0">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-blue-700 text-xl" />
+                  <i class="zi-check text-cold-blue-500 text-xl" />
                 </span>
                 <span>Unit-экономика</span>
               </div>
@@ -153,25 +153,25 @@
             <div class="flex flex-col">
               <div class="flex mb-2">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-blue-700 text-xl" />
+                  <i class="zi-check text-cold-blue-500 text-xl" />
                 </span>
                 <span v-html="'Статусы производства и&nbsp;доставки'" />
               </div>
               <div class="flex-grow flex mb-2">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-blue-700 text-xl" />
+                  <i class="zi-check text-cold-blue-500 text-xl" />
                 </span>
                 <span>KPI сотрудников</span>
               </div>
               <div class="flex mb-2">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-blue-700 text-xl" />
+                  <i class="zi-check text-cold-blue-500 text-xl" />
                 </span>
                 <span>Личный кабинет клиента</span>
               </div>
               <div class="flex">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-blue-700 text-xl" />
+                  <i class="zi-check text-cold-blue-500 text-xl" />
                 </span>
                 <span v-html="'И&nbsp;многое другое'" />
               </div>
@@ -181,7 +181,7 @@
             <div class="w-full md:w-1/2 pb-4 md:pb-0 text-center md:text-left">
               <router-link
                 :to="{ name: 'signup' }"
-                class="inline-flex items-center text-xl leading-6 rounded-50 font-semibold text-white bg-blue-700 px-10 select-none focus:outline-none focus:bg-blue-800 hover:bg-blue-800"
+                class="inline-flex items-center text-xl leading-6 rounded-50 font-semibold text-white bg-cold-blue-500 px-10 select-none focus:outline-none focus:bg-cold-blue-600 hover:bg-cold-blue-600"
                 style="height: 62px;"
               >
                 <span class="px-1">7 дней бесплатно</span>
@@ -215,7 +215,7 @@
         <h3 class="about-section-title font-bold text-center mx-auto mt-10" style="max-width: 772px;">
           <span v-html="video.title" />
         </h3>
-        <div class="w-15 h-px py-xs my-6 mx-auto bg-blue-700" />
+        <div class="w-15 h-px py-xs my-6 mx-auto bg-cold-blue-500" />
         <div class="pb-6"></div>
         <div class="relative">
           <div style="max-width: 1000px;">
@@ -267,7 +267,7 @@
               v-html="security.title"
               class="about-section-title font-bold"
             />
-            <div class="w-15 h-px py-xs my-6 bg-blue-700" />
+            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
             <div
               v-html="security.text"
               class="text-lg leading-relaxed text-light-gray-900"
@@ -322,7 +322,7 @@
                   class="inline-block mb-xl"
                 />
                 <div
-                  :class="{ 'bg-blue-700': activeFeature === feature.value }"
+                  :class="{ 'bg-cold-blue-500': activeFeature === feature.value }"
                   class="absolute bottom-0 w-full h-px py-xs bg-transparent transition-colors duration-100 ease-out"
                 />
               </a>
@@ -389,7 +389,7 @@
               v-html="issue.title"
               class="about-section-title font-bold"
             />
-            <div class="w-15 h-px py-xs my-6 bg-blue-700" />
+            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
           </div>
           <div class="order-first xl:order-none flex-grow h-0 relative">
             <div class="about-cloud-lock absolute xl:left-0 bottom-0 right-0 xl:right-auto xl:-mb-16">
@@ -438,7 +438,7 @@
                 class="font-bold text-center mx-auto"
                 style="max-width: 510px; min-height: 88px; font-size: 36px; line-height: 44px;"
               />
-              <div class="w-15 h-px py-xs my-5 mx-auto bg-blue-700" />
+              <div class="w-15 h-px py-xs my-5 mx-auto bg-cold-blue-500" />
               <div class="text-lg text-light-gray-900 w-full text-center mx-auto px-4 md:px-0" style="max-width: 646px; line-height: 32px; min-height: 128px;">
                 {{ feature.text }}
               </div>
@@ -488,7 +488,7 @@
               v-html="power.title"
               class="about-section-title font-bold"
             />
-            <div class="w-15 h-px py-xs my-6 bg-blue-700" />
+            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
           </div>
           <div class="order-first xl:order-none flex-grow h-0 relative">
             <div class="absolute xl:left-0 bottom-0 right-0 xl:right-auto lg:-mb-40 xl:pl-64">
@@ -537,7 +537,7 @@
             <h3 class="about-section-title font-bold">
               Кабинет клиента
             </h3>
-            <div class="w-15 h-px py-xs my-6 bg-blue-700" />
+            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
             <div class="text-lg leading-relaxed text-light-gray-900">
               На время сделки у вашего клиента появится свой личный кабинет.Система вовлекает клиента в работу над заказом и упрощает все процессы, с ним связанные, — в течение сделки кабинет клиента хранит информацию о сроках оплаты и доставки, показывает статус товара, позволяет комментировать работу менеджеров, загружать фотографии товара и распечатывать все необходимые документы самостоятельно.
             </div>
@@ -576,7 +576,7 @@
             <h3 class="text-4xl leading-tight font-bold text-white" style="max-width: 1010px;">
               Станьте одним из первых поль&shy;зо&shy;ва&shy;те&shy;лей мощнейшего проекта в меж&shy;ду&shy;на&shy;род&shy;ной торговле
             </h3>
-            <div class="w-15 h-px py-xs my-6 bg-blue-700" />
+            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
             <div class="text-xl leading-normal text-white opacity-50 pb-8" style="max-width: 600px;">
               Бесплатный пробный доступ предоставляется на 7 дней. Этого времени хватит, чтобы оценить удобство сервиса и навсегда полюбить ZENNNN.
             </div>
@@ -586,7 +586,7 @@
             />
             <router-link
               :to="{ name: 'signup' }"
-              class="inline-flex items-center justify-center text-xl leading-6 rounded-50 font-semibold text-white bg-blue-700 select-none focus:outline-none focus:bg-blue-800 hover:bg-blue-800 text-center w-full sm:w-auto px-2 sm:px-10"
+              class="inline-flex items-center justify-center text-xl leading-6 rounded-50 font-semibold text-white bg-cold-blue-500 select-none focus:outline-none focus:bg-cold-blue-600 hover:bg-cold-blue-600 text-center w-full sm:w-auto px-2 sm:px-10"
               style="height: 62px;"
             >
               <span class="px-1">Начать бесплатное тестирование</span>
@@ -633,7 +633,7 @@
             <div class="inline-block">
               <img src="@/assets/img/logo-light.svg" alt="Logo" style="height: 46px;">
             </div>
-            <div class="w-15 h-px py-xs my-6 bg-blue-700" />
+            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
             <div class="text-lg leading-relaxed text-light-gray-900 pb-8">
               {{ userInterface.text }}
             </div>
@@ -645,7 +645,7 @@
               class="flex mb-5 leading-6"
             >
               <span class="flex-shrink-0 inline-flex items-center h-6 mr-4">
-                <i class="zi-check text-blue-700 text-lg" />
+                <i class="zi-check text-cold-blue-500 text-lg" />
               </span>
               <span>{{ item.text }}</span>
             </div>
@@ -665,7 +665,7 @@
             </div>
             <div class="flex">
               <button
-                class="cursor-pointer text-light-gray-400 mr-10 select-none focus:outline-none focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
+                class="cursor-pointer text-light-gray-400 mr-10 select-none focus:outline-none focus:text-cold-blue-500 hover:text-cold-blue-500 transition-colors duration-100 ease-out"
                 @click="$refs.reviewWindow.prev()"
               >
                 <svg width="20" height="33" viewBox="0 0 20 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -673,7 +673,7 @@
                 </svg>
               </button>
               <button
-                class="cursor-pointer text-light-gray-400 select-none focus:outline-none focus:text-blue-700 hover:text-blue-700 transition-colors duration-100 ease-out"
+                class="cursor-pointer text-light-gray-400 select-none focus:outline-none focus:text-cold-blue-500 hover:text-cold-blue-500 transition-colors duration-100 ease-out"
                 @click="$refs.reviewWindow.next()"
               >
                 <svg width="19" height="33" viewBox="0 0 19 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -740,7 +740,7 @@
           <h3 class="about-section-title font-bold">
             Cильная команда<br>практиков
           </h3>
-          <div class="w-15 h-px py-xs my-6 bg-blue-700" />
+          <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
           <div class="">
             <div class="flex flex-wrap -mb-4">
               <div
@@ -773,7 +773,7 @@
             <h3 class="about-section-title font-bold text-white" style="max-width: 643px;">
               Убедитесь, что ZENNNN полезен вашему бизнесу
             </h3>
-            <div class="w-15 h-px py-xs my-6 bg-blue-700" />
+            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
             <div class="text-white text-xl pb-10">
               Если бы биты и пиксели умели любить,<br>ZENNNN стал бы первой программой, которая полюбила человека.
             </div>
@@ -782,7 +782,7 @@
             </div>
             <router-link
               :to="{ name: 'signup' }"
-              class="inline-flex items-center justify-center text-lg leading-tight rounded-50 text-white bg-blue-700 select-none focus:outline-none focus:bg-blue-800 hover:bg-blue-800 text-center w-full sm:w-auto px-2 sm:px-10"
+              class="inline-flex items-center justify-center text-lg leading-tight rounded-50 text-white bg-cold-blue-500 select-none focus:outline-none focus:bg-cold-blue-600 hover:bg-cold-blue-600 text-center w-full sm:w-auto px-2 sm:px-10"
               style="height: 82px;"
             >
               <span class="px-1">

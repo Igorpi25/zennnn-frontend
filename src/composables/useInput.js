@@ -118,7 +118,7 @@ export const useInput = (props, { slots, emit, id }) => {
       default: () => props.labelHint,
       activator: () => {
         return h(Icon, {
-          class: 'text-blue-300 ml-1',
+          class: 'text-blue-500 ml-1',
         }, {
           default: () => ziQuestionSign,
         })
