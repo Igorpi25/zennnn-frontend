@@ -178,7 +178,7 @@ export default {
       const items = [
         {
           text: this.$t('footer.about'),
-          to: { name: 'about' },
+          to: { name: 'about', hash: '#video' },
         },
         {
           text: this.$t('footer.faq'),

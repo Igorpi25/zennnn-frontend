@@ -1,5 +1,15 @@
 <template>
-  <div>
+  <teleport to="head">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900&display=swap&subset=cyrillic">
+    <meta name="title" :content="ogTitle">
+    <meta name="description" :content="ogDescription">
+    <meta property="og:title" :content="ogTitle">
+    <meta property="og:description" :content="ogDescription">
+    <meta property="og:site_name" content="ZENNNN" >
+    <meta property="og:url" :content="ogUrl" >
+    <meta property="og:image" :content="ogImage" >
+  </teleport>
+  <div style="font-family: Montserrat,sans-serif;">
     <div class="flex flex-col min-h-screen">
       <!-- / HEADER -->
       <header class="pt-6 pb-4 font-medium">
@@ -41,7 +51,7 @@
         >
           <div class="container container--xs about-info-alert__container">
             <div class="relative">
-              <div class="about-info-alert__content absolute right-0 w-full flex items-center rounded-md px-4 py-3">
+              <div ref="infoAlertContent" class="about-info-alert__content absolute right-0 w-full flex items-center rounded-md px-4 py-3">
                 <img src="@/assets/img/info.svg" alt="info" class="flex-shrink-0 self-start mr-4">
                 <div
                   v-html="'ZENNNN — самый удобный сервис для удаленной работы с&nbsp;поставщиками со&nbsp;всего мира.'"
@@ -806,25 +816,12 @@ export default {
     Window,
     WindowItem,
   },
-  // metaInfo: {
-  //   link: [
-  //     { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,900&display=swap&subset=cyrillic' },
-  //   ],
-  //   style: [
-  //     { cssText: 'body { font-family: Montserrat,sans-serif }', type: 'text/css' },
-  //   ],
-  //   meta: [
-  //     { hid: 'title', name: 'title', content: 'Сервис для международной оптовой торговли с удаленным управлением | ZENNNN' },
-  //     { hid: 'description', name: 'description', content: 'Представляем вам революционной сервис международной оптовой торговли с возможностью удаленного контроля и управления закупками. Вся операционная деятельность компании в одной системе.' },
-  //     { vmid: 'og:title', property: 'og:title', content: 'Сервис для международной оптовой торговли с удаленным управлением | ZENNNN' },
-  //     { vmid: 'og:description', property: 'og:description', content: 'Представляем вам революционной сервис международной оптовой торговли с возможностью удаленного контроля и управления закупками. Вся операционная деятельность компании в одной системе.' },
-  //     { vmid: 'og:site_name', property: 'og:site_name', content: 'ZENNNN' },
-  //     { vmid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_HOSTNAME}${window.location.pathname}` },
-  //     { vmid: 'og:image', property: 'og:image', content: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png` },
-  //   ],
-  // },
   data () {
     return {
+      ogTitle: 'Сервис для международной оптовой торговли с удаленным управлением | ZENNNN',
+      ogDescription: 'Представляем вам революционной сервис международной оптовой торговли с возможностью удаленного контроля и управления закупками. Вся операционная деятельность компании в одной системе.',
+      ogUrl: `${process.env.VUE_APP_HOSTNAME}${window.location.pathname}`,
+      ogImage: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png`,
       isHeaderActive: true,
       isScrollingUp: false,
       savedScroll: 0,
@@ -1086,107 +1083,107 @@ export default {
         {
           name: 'Михаил Болтенков',
           position: 'CEO, экономист, сооснователь ZENNNN',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Игорь Иванов',
           position: 'CTO, программист, сооснователь ZENNNN, бэк-энд разработчик',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Анна Маловичко',
           position: 'супервумен, экономист, маркетолог',
-          country: 'ua',
+          country: 'UA',
         },
         {
           name: 'Степан Сотников',
           position: 'программист, fullstack, техлид',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Владимир Борисов',
           position: 'программист, фронт-энд разработчик',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Никита Ермолаев',
           position: 'программист, фронт-энд разработчик',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Олег Дубровский',
           position: 'дизайнер, видео-дизайн',
-          country: 'ua',
+          country: 'UA',
         },
         {
           name: 'Юрий Сухарук',
           position: 'советник по таможенному оформлению',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Александр Мурзак',
           position: 'дизайнер, UI/UX дизайн',
-          country: 'ua',
+          country: 'UA',
         },
         {
           name: 'Светлана Щербакова',
           position: 'дизайнер, UI/UX дизайн',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Денис Кольцов',
           position: 'маркетолог',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Маргарита Митрофанова',
           position: 'маркетолог',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Галина Петрова',
           position: 'советник по бухгалтерии и налогам',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Александр Проскурин',
           position: 'экономист, советник по бизнес-вопросам',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Максим Подсевалов',
           position: 'инженер, тайный советник',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Александра Игнатович',
           position: 'филолог, тайный советник',
-          country: 'ru',
+          country: 'RU',
         },
         {
           name: 'Ли Цзянь И',
           position: 'экономист, советник по Китаю',
-          country: 'cn',
+          country: 'CN',
         },
         {
           name: 'Чжан Цин Цин',
           position: 'экономист, менеджер',
-          country: 'cn',
+          country: 'CN',
         },
         {
           name: 'Кэран Хо',
           position: 'переводчик, китайский',
-          country: 'cn',
+          country: 'CN',
         },
         {
           name: 'Тино Картер',
           position: 'переводчик, английский',
-          country: 'us',
+          country: 'US',
         },
         {
           name: 'Бенуар Ожэ',
           position: 'переводчик, французский',
-          country: 'fr',
+          country: 'FR',
         },
       ],
     }
@@ -1252,6 +1249,10 @@ export default {
       const id = nav ? `#${nav.sectionId}` : null
       if (id) {
         document.querySelector(id).scrollIntoView()
+        if (nav.sectionId === 'video') {
+          const h = (this.$refs.infoAlertContent && this.$refs.infoAlertContent.offsetHeight) || 0
+          window.scrollBy(0, -1 * (h + 16))
+        }
       }
     },
     playVideo () {
