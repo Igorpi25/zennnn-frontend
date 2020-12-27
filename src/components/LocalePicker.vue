@@ -1,58 +1,47 @@
 <template>
-  <div class="flex items-center">
-    <Menu
-      v-model="menu"
-      :content-class="light ? 'locale-picker__menu locale-picker__menu--light' : 'locale-picker__menu'"
-      :nudge-bottom="nudgeBottom"
-      bottom
-      left
-    >
-      <template v-slot:activator>
-        <div
-          class="flex items-center cursor-pointer pr-1"
-        >
-          <img
-            :src="require(`@/assets/img/flags/locale/${locale}.svg`).default"
-            :class="[
-              'h-6 w-6 rounded-full mr-1',
-            ]"
-          >
-          <i class="zi-chevron-down text-lg text-blue-500 hover:text-blue-600 cursor-pointer" />
-        </div>
-      </template>
-      <template>
-        <ul
+  <Menu
+    v-model="menu"
+    :value="locale"
+    :arrow="false"
+    :distance="distance"
+    placement="bottom-end"
+    content-class="dark:bg-gray-900"
+    @update:value="changeLocale"
+  >
+    <template v-slot:activator>
+      <div
+        class="group flex items-center cursor-pointer"
+      >
+        <img
+          :src="require(`@/assets/img/flags/locale/${locale}.svg`).default"
           :class="[
-            'text-sm rounded py-2',
-            light ? 'border-white text-gray-900 bg-white' : 'border-gray-400 text-gray-100 bg-gray-400'
+            'h-6 w-6 rounded-full mr-xs',
           ]"
-          role="menu"
         >
-          <li
-            v-for="locale in locales"
-            :key="locale.value"
-            :value="locale.value"
-            :class="[
-              light ? 'hover:bg-light-gray-100 focus:bg-light-gray-100' : 'hover:bg-gray-300 focus:bg-gray-300',
-              'flex items-center h-9 px-2 cursor-pointer focus:outline-none',
-              'transition-colors duration-100 ease-out',
-              locale.value === $i18n.locale && light ? 'text-gray-900 font-semibold' : locale.value === $i18n.locale ? 'text-white' : '',
-            ]"
-            tabindex="0"
-            role="menuitem"
-            @click="changeLocale(locale.value)"
-          >
-            <img
-              :src="require(`@/assets/img/flags/locale/${locale.value}.svg`).default"
-              :alt="locale.text"
-              class="h-6 w-6 rounded-full mr-2"
-            >
-            <span>{{ locale.text }}</span>
-          </li>
-        </ul>
-      </template>
-    </Menu>
-  </div>
+        <Icon
+          role="button"
+          tabindex="0"
+          class="text-blue-500 group-hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+        >
+          {{ icons.ziChevronDown }}
+        </Icon>
+      </div>
+    </template>
+    <MenuItem
+      v-for="(locale, i) in locales"
+      :key="locale.value"
+      :index="i"
+      :value="locale.value"
+      class="bg-gray-900 dark:hover:text-light-gray-100 h-10"
+    >
+      <img
+        :src="require(`@/assets/img/flags/locale/${locale.value}.svg`).default"
+        :alt="locale.text"
+        class="h-6 w-6 rounded-full mr-2"
+      >
+      <span>{{ locale.text }}</span>
+    </MenuItem>
+  </Menu>
 </template>
 
 <script>
@@ -61,16 +50,20 @@ import { useI18n } from 'vue-i18n'
 
 import { CURRENT_LOCALE_STORE_KEY, LOCALES_LIST } from '../config/globals'
 
-import Menu from './Base/Menu'
+import { ziChevronDown } from '../assets/icons'
+
+import Icon from './Base/Icon'
+import { Menu, MenuItem } from './Base/Menu'
 
 export default {
   name: 'LocalePicker',
-  components: { Menu },
+  components: {
+    Icon,
+    Menu,
+    MenuItem,
+  },
   props: {
-    nudgeBottom: {
-      type: [String, Number],
-      default: 40,
-    },
+    distance: [String, Number],
     light: Boolean,
   },
   setup () {
@@ -84,6 +77,9 @@ export default {
     }
 
     return {
+      icons: {
+        ziChevronDown,
+      },
       menu,
       locale,
       locales: LOCALES_LIST,
@@ -92,32 +88,3 @@ export default {
   },
 }
 </script>
-
-<style lang="postcss">
-[data-theme="light"] .locale-picker__menu {
-  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15)!important;
-}
-.locale-picker__menu {
-  margin-top: 8px;
-  overflow: visible;
-  contain: initial;
-}
-.locale-picker__menu > ul {
-  position: relative;
-}
-.locale-picker__menu > ul::after {
-  border-color: transparent;
-  border-style: solid;
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  top: -2px;
-  right: 8px;
-  border-width: 0 5px 5px 5px;
-  border-bottom-color: inherit;
-}
-.locale-picker__menu--light {}
-</style>

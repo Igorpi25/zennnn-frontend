@@ -5,22 +5,22 @@
       <div class="h-20 flex items-center container container--sm">
         <router-link
           :to="{ name: 'home' }"
-          class="flex-shrink-0 select-none focus:outline-none mr-2 sm:mr-4"
+          class="flex-shrink-0 select-none focus:outline-none mr-4"
         >
           <img src="@/assets/img/logo-dark.svg" alt="Logo">
         </router-link>
         <div class="flex-grow flex items-center justify-end">
-          <LocalePicker nudge-bottom="24" class="sm:pr-4" />
+          <LocalePicker distance="16" class="pr-4" />
           <router-link
             :to="{ name: 'signin' }"
-            class="hidden sm:block text-blue-500 select-none focus:outline-none focus:text-blue-600 hover:text-blue-600 mr-3 sm:mr-8"
+            class="text-blue-500 select-none focus:outline-none focus:text-blue-600 hover:text-blue-600 mr-8"
           >
             {{ $t('signup.signin') }}
           </router-link>
           <Btn
             :to="{ name: 'signup' }"
             outlined
-            class="text-center leading-none"
+            class="hidden sm:flex text-center leading-none"
           >
             {{ $t('signup.submit') }}
           </Btn>
@@ -40,7 +40,9 @@
           :key="item"
           class="w-auto flex items-center pl-2 sm:pr-6 sm:pl-6"
         >
-          <i class="zi-check text-xl sm:text-2xl text-blue-500 mr-2" />
+          <Icon :base="false" class="text-xl sm:text-2xl text-blue-500 mr-2">
+            {{ icons.ziChecked }}
+          </Icon>
           <div class="text-sm sm:text-xl text-gray-200">
             {{ item }}
           </div>
@@ -53,7 +55,9 @@
         >
           <div class="flex items-center px-2">
             <span>{{ $t('home.cty') }}</span>
-            <i class="zi-arrow-right text-lg ml-sm" />
+            <Icon size="20" class="ml-sm">
+              {{ icons.ziArrowRight }}
+            </Icon>
           </div>
         </Btn>
       </div>
@@ -88,9 +92,16 @@
                 class="banner"
               />
               <div class="absolute inset-0 flex">
-                <div class="w-1/2 px-8 md:pl-13 pt-8 xl:pt-12">
-                  <div v-html="$t('home.about')" class="text-xl lg:text-28 text-white pb-4" />
-                  <i class="absolute transform group-hover:translate-x-2 transition-transform duration-100 ease-out zi-arrow-right text-blue-500 text-3xl" />
+                <div class="flex flex-col w-1/2 pl-8 md:pl-13 pt-6 sm:pt-8 xl:pt-12">
+                  <div v-html="$t('home.about')" class="text-xl md:text-28 text-white relative z-1" />
+                  <div class="h-full max-h-12 flex items-end mb-2">
+                    <Icon
+                      large
+                      class="text-blue-500 transform group-hover:translate-x-2 transition-transform duration-150 ease-out"
+                    >
+                      {{ icons.ziArrowRight }}
+                    </Icon>
+                  </div>
                 </div>
                 <div class="w-1/2">
                   <img
@@ -112,9 +123,16 @@
                 class="banner"
               />
               <div class="absolute inset-0 flex">
-                <div class="w-1/2 px-8 md:pl-13 pt-8 xl:pt-12">
-                  <div v-html="$t('home.video')" class="text-xl lg:text-28 text-white pb-4" />
-                  <i class="absolute transform group-hover:translate-x-2 transition-transform duration-100 ease-out zi-arrow-right text-blue-500 text-3xl" />
+                <div class="flex flex-col w-1/2 pl-8 md:pl-13 pt-6 sm:pt-8 xl:pt-12">
+                  <div v-html="$t('home.video')" class="text-xl md:text-28 text-white relative z-1" />
+                  <div class="h-full max-h-12 flex items-end mb-2">
+                    <Icon
+                      large
+                      class="text-blue-500 transform group-hover:translate-x-2 transition-transform duration-150 ease-out"
+                    >
+                      {{ icons.ziArrowRight }}
+                    </Icon>
+                  </div>
                 </div>
                 <div class="w-1/2">
                   <img
@@ -170,7 +188,10 @@
 </template>
 
 <script>
+import { ziChecked, ziArrowRight } from '../assets/icons'
+
 import Btn from '../components/Base/Btn'
+import Icon from '../components/Base/Icon'
 import Image from '../components/Base/Image'
 import Footer from '../components/Footer.vue'
 import LocalePicker from '../components/LocalePicker.vue'
@@ -179,6 +200,7 @@ export default {
   name: 'Home',
   components: {
     Btn,
+    Icon,
     Image,
     Footer,
     LocalePicker,
@@ -194,6 +216,14 @@ export default {
   //     { vmid: 'og:image', property: 'og:image', content: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png` },
   //   ],
   // },
+  setup () {
+    return {
+      icons: {
+        ziChecked,
+        ziArrowRight,
+      },
+    }
+  },
   computed: {
     subtitleItems () {
       return [this.$t('home.subtitle1'), this.$t('home.subtitle2'), this.$t('home.subtitle3')]
