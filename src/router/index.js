@@ -8,37 +8,67 @@ import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS, GET_PROFILE } from '..
 
 import { CURRENT_LOCALE_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
 
+import SignIn from '../views/SignIn.vue'
+import Registration from '../views/Registration.vue'
+import SignUp from '../views/SignUp.vue'
+import Welcome from '../views/Welcome.vue'
+import PasswordRestore from '../views/PasswordRestore.vue'
+import PasswordRestoreConfirm from '../views/PasswordRestoreConfirm.vue'
+import Print from '../views/Print.vue'
+import NotFound from '../views/NotFound.vue'
+
+import Pricing from '../views/Pricing.vue'
+import OrgLayout from '../views/OrgLayout.vue'
+import Payment from '../views/Payment.vue'
+import Subscription from '../views/Subscription.vue'
+import WordList from '../views/WordList.vue'
+import RequisiteList from '../views/RequisiteList.vue'
+import RequisiteItem from '../views/RequisiteItem.vue'
+import ItemList from '../views/ItemList.vue'
+import Specs from '../views/Specs.vue'
+import Spec from '../views/Spec.vue'
+import ClientItem from '../views/ClientItem.vue'
+import ClientList from '../views/ClientList.vue'
+import SupplierItem from '../views/SupplierItem.vue'
+import SupplierList from '../views/SupplierList.vue'
+import Staff from '../views/Staff.vue'
+import Invitation from '../views/Invitation.vue'
+
+import Paper from '../views/Paper.vue'
+
 const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
 
 const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 
-const SignIn = () => import(/* webpackChunkName: "common" */ '../views/SignIn.vue')
-const Registration = () => import(/* webpackChunkName: "common" */ '../views/Registration.vue')
-const SignUp = () => import(/* webpackChunkName: "common" */ '../views/SignUp.vue')
-const Welcome = () => import(/* webpackChunkName: "common" */ '../views/Welcome.vue')
-const PasswordRestore = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestore.vue')
-const PasswordRestoreConfirm = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestoreConfirm.vue')
-const Print = () => import(/* webpackChunkName: "common" */ '../views/Print.vue')
-const NotFound = () => import(/* webpackChunkName: "common" */ '../views/NotFound.vue')
+// Tailwind utility and components layers sort not working with lazy loading routes
 
-const Pricing = () => import(/* webpackChunkName: "common" */ '../views/Pricing.vue')
-const OrgLayout = () => import(/* webpackChunkName: "common" */ '../views/OrgLayout.vue')
-const Payment = () => import(/* webpackChunkName: "common" */ '../views/Payment.vue')
-const Subscription = () => import(/* webpackChunkName: "common" */ '../views/Subscription.vue')
-const WordList = () => import(/* webpackChunkName: "common" */ '../views/WordList.vue')
-const RequisiteList = () => import(/* webpackChunkName: "common" */ '../views/RequisiteList.vue')
-const RequisiteItem = () => import(/* webpackChunkName: "common" */ '../views/RequisiteItem.vue')
-const ItemList = () => import(/* webpackChunkName: "common" */ '../views/ItemList.vue')
-const Specs = () => import(/* webpackChunkName: "common" */ '../views/Specs.vue')
-const Spec = () => import(/* webpackChunkName: "common" */ '../views/Spec.vue')
-const ClientItem = () => import(/* webpackChunkName: "common" */ '../views/ClientItem.vue')
-const ClientList = () => import(/* webpackChunkName: "common" */ '../views/ClientList.vue')
-const SupplierItem = () => import(/* webpackChunkName: "common" */ '../views/SupplierItem.vue')
-const SupplierList = () => import(/* webpackChunkName: "common" */ '../views/SupplierList.vue')
-const Staff = () => import(/* webpackChunkName: "common" */ '../views/Staff.vue')
-const Invitation = () => import(/* webpackChunkName: "common" */ '../views/Invitation.vue')
+// const SignIn = () => import(/* webpackChunkName: "common" */ '../views/SignIn.vue')
+// const Registration = () => import(/* webpackChunkName: "common" */ '../views/Registration.vue')
+// const SignUp = () => import(/* webpackChunkName: "common" */ '../views/SignUp.vue')
+// const Welcome = () => import(/* webpackChunkName: "common" */ '../views/Welcome.vue')
+// const PasswordRestore = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestore.vue')
+// const PasswordRestoreConfirm = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestoreConfirm.vue')
+// const Print = () => import(/* webpackChunkName: "common" */ '../views/Print.vue')
+// const NotFound = () => import(/* webpackChunkName: "common" */ '../views/NotFound.vue')
 
-const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
+// const Pricing = () => import(/* webpackChunkName: "common" */ '../views/Pricing.vue')
+// const OrgLayout = () => import(/* webpackChunkName: "common" */ '../views/OrgLayout.vue')
+// const Payment = () => import(/* webpackChunkName: "common" */ '../views/Payment.vue')
+// const Subscription = () => import(/* webpackChunkName: "common" */ '../views/Subscription.vue')
+// const WordList = () => import(/* webpackChunkName: "common" */ '../views/WordList.vue')
+// const RequisiteList = () => import(/* webpackChunkName: "common" */ '../views/RequisiteList.vue')
+// const RequisiteItem = () => import(/* webpackChunkName: "common" */ '../views/RequisiteItem.vue')
+// const ItemList = () => import(/* webpackChunkName: "common" */ '../views/ItemList.vue')
+// const Specs = () => import(/* webpackChunkName: "common" */ '../views/Specs.vue')
+// const Spec = () => import(/* webpackChunkName: "common" */ '../views/Spec.vue')
+// const ClientItem = () => import(/* webpackChunkName: "common" */ '../views/ClientItem.vue')
+// const ClientList = () => import(/* webpackChunkName: "common" */ '../views/ClientList.vue')
+// const SupplierItem = () => import(/* webpackChunkName: "common" */ '../views/SupplierItem.vue')
+// const SupplierList = () => import(/* webpackChunkName: "common" */ '../views/SupplierList.vue')
+// const Staff = () => import(/* webpackChunkName: "common" */ '../views/Staff.vue')
+// const Invitation = () => import(/* webpackChunkName: "common" */ '../views/Invitation.vue')
+
+// const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
 
 const routes = [
   {
