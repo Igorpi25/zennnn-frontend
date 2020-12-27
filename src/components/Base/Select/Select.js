@@ -18,7 +18,7 @@ import {
   Mask,
 } from 'uipart'
 
-import { ziChevronDown, ziMagnifier, ziClose } from '../../../assets/icons'
+import { ziChevronDown, ziSearch, ziCloseDelete } from '../../../assets/icons'
 
 import { useInputProps, useInput } from '../../../composables/useInput'
 import { useInputControlProps, useInputControl } from '../../../composables/useInputControl'
@@ -584,7 +584,7 @@ export default {
               e.stopPropagation()
             }
           },
-        }, genIcon(ziMagnifier, 'w-6 text-gray-200 dark:text-gray-300 mr-2')),
+        }, genIcon(ziSearch, 'w-6 text-gray-200 dark:text-gray-300 mr-2')),
         h('div', {
           class: 'select__control__input',
         }, h('input', {
@@ -660,7 +660,7 @@ export default {
               inputElement.value.focus()
             }
           },
-        }, genIcon(ziClose)),
+        }, genIcon(ziCloseDelete)),
       ])
     }
 

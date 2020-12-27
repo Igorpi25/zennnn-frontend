@@ -10,7 +10,7 @@ import Label from '../components/Base/Label' // TODO: move to input-control
 import Tooltip from '../components/Base/Tooltip' // TODO: move to input-control
 import Icon from '../components/Base/Icon' // TODO: move to input-control
 
-import { ziHelp, ziClose } from '../assets/icons' // TODO: move to input-control
+import { ziQuestionSign, ziCloseDelete } from '../assets/icons' // TODO: move to input-control
 
 // Props
 export const useInputProps = () => {
@@ -120,7 +120,7 @@ export const useInput = (props, { slots, emit, id }) => {
         return h(Icon, {
           class: 'text-blue-300 ml-1',
         }, {
-          default: () => ziHelp,
+          default: () => ziQuestionSign,
         })
       },
     })
@@ -199,7 +199,7 @@ export const useInput = (props, { slots, emit, id }) => {
         inputElement.value && inputElement.value.focus()
         cb ? cb() : clearableCallback()
       },
-    }, genIcon(ziClose))
+    }, genIcon(ziCloseDelete))
   }
 
   const emitChange = () => {

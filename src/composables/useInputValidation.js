@@ -12,7 +12,7 @@ import { useFormContext } from '../components/Base/Form' // TODO: use/input
 import Messages from '../components/Base/Messages' // TODO: use/input
 import Icon from '../components/Base/Icon' // TODO: use/input
 
-import { ziCheckAlt, ziCircleFill } from '../assets/icons' // TODO: use/input
+import { ziCheckedSm, ziStatusPointSm } from '../assets/icons' // TODO: use/input
 
 // Props
 export const useInputValidationProps = () => {
@@ -215,8 +215,8 @@ export const useInputValidation = (props, { emit, id, internalValue, isFocused }
   // TODO: use/input
   const genStateIcon = () => {
     if (!hasState.value) return null
-    const successIcon = props.stateSuccessIcon || ziCheckAlt
-    const errorIcon = props.stateErrorIcon || ziCircleFill
+    const successIcon = props.stateSuccessIcon || ziCheckedSm
+    const errorIcon = props.stateErrorIcon || ziStatusPointSm
     const successColor = props.stateSuccessColor || 'text-green-500'
     const errorColor = props.stateErrorColor === 'none'
       ? 'text-transparent'
@@ -229,7 +229,7 @@ export const useInputValidation = (props, { emit, id, internalValue, isFocused }
     const color = validationState.value === 'success' ? successColor : errorColor
 
     return h(Icon, {
-      size: 16,
+      size: 24,
       class: {
         'w-6 flex-shrink-0': true,
         [color]: true,

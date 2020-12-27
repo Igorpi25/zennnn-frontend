@@ -1,5 +1,3 @@
-import { mdiChevronUp, mdiChevronDown, mdiClose } from '@mdi/js'
-
 import apolloClient from '../plugins/apollo'
 
 import {
@@ -25,11 +23,6 @@ export default {
     return {
       updateLoading: null,
       deleteLoading: false,
-      icons: {
-        mdiClose,
-        mdiChevronUp,
-        mdiChevronDown,
-      },
     }
   },
   computed: {

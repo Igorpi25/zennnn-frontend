@@ -7,7 +7,7 @@ import {
   withDirectives,
 } from 'vue'
 
-import { ziCircleFill } from '../../../assets/icons'
+import { ziStatusPoint } from '../../../assets/icons'
 
 import { useInputProps, useInput } from '../../../composables/useInput'
 import { useInputValidationProps, useInputValidation } from '../../../composables/useInputValidation'
@@ -101,7 +101,7 @@ export default {
         h(Icon, {
           size: 16,
         }, {
-          default: () => ziCircleFill,
+          default: () => ziStatusPoint,
         }),
         [
           [vShow, isActive.value],

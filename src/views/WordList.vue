@@ -179,8 +179,8 @@
                       v-if="item[`${header.key}_ct`]"
                       class="text-gray-200 flex-shrink-0 ml-1"
                     >
-                      <Icon>
-                        {{ icons.mdiGoogleTranslate }}
+                      <Icon :base="false">
+                        {{ icons.ziLanguages }}
                       </Icon>
                     </i>
                   </span>
@@ -252,10 +252,10 @@
 </template>
 
 <script>
-import { mdiGoogleTranslate } from '@mdi/js'
-
 import { useRoute } from 'vue-router'
 import { useQuery, useResult } from '@vue/apollo-composable'
+
+import { ziLanguages } from '../assets/icons'
 
 import { LIST_WORDS } from '../graphql/queries'
 
@@ -307,7 +307,7 @@ export default {
       expanded: [],
       editItem: {},
       icons: {
-        mdiGoogleTranslate,
+        ziLanguages,
       },
     }
   },

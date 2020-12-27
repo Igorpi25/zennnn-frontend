@@ -74,7 +74,7 @@
                 class="text-gray-500 hover:text-gray-300 pr-1"
                 @click="showPassword = !showPassword"
               >
-                {{ showPassword ? icons.ziEye : icons.ziEyeOff }}
+                {{ showPassword ? icons.ziVisible : icons.ziHide }}
               </Icon>
               <!-- <div
                 class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
@@ -191,7 +191,7 @@
               class="text-gray-500 hover:text-gray-300 pr-1"
               @click="compliteShowPassword = !compliteShowPassword"
             >
-              {{ compliteShowPassword ? icons.ziEye : icons.ziEyeOff }}
+              {{ compliteShowPassword ? icons.ziVisible : icons.ziHide }}
             </Icon>
             <!-- <div
               class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
@@ -228,7 +228,7 @@ import { useApolloClient } from '@vue/apollo-composable'
 import { GET_PROFILE, GET_ORGS, GET_IS_LOGGED_IN } from '../graphql/queries'
 import { COMPLITE_REGISTRATION, INIT_SPEC_SIMPLE_UI } from '../graphql/mutations'
 
-import { ziEye, ziEyeOff } from '../assets/icons'
+import { ziVisible, ziHide } from '../assets/icons'
 
 import Icon from '../components/Base/Icon'
 import Btn from '../components/Base/Btn'
@@ -259,8 +259,8 @@ export default {
 
     return {
       icons: {
-        ziEye,
-        ziEyeOff,
+        ziVisible,
+        ziHide,
       },
       apolloClient,
     }

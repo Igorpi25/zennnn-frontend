@@ -44,8 +44,8 @@
               v-slot:append
             >
               <i v-if="googleTranslateIconMap[item.key]">
-                <Icon>
-                  {{ icons.mdiGoogleTranslate }}
+                <Icon :base="false">
+                  {{ icons.ziLanguages }}
                 </Icon>
               </i>
               <div v-else-if="model[item.key]" class="px-1">
@@ -92,8 +92,8 @@
               class="mr-1"
             />
             <i class="text-2xl mr-sm">
-              <Icon>
-                {{ icons.mdiGoogleTranslate }}
+              <Icon :base="false">
+                {{ icons.ziLanguages }}
               </Icon>
             </i>
             <span>{{ $t('words.translate') }}</span>
@@ -130,8 +130,9 @@
 </template>
 
 <script>
-import { mdiGoogleTranslate } from '@mdi/js'
 import { useApolloClient } from '@vue/apollo-composable'
+
+import { ziLanguages } from '../assets/icons'
 
 import { LOCALES_LIST } from '../config/globals'
 import { CREATE_WORD, UPDATE_WORD } from '../graphql/mutations'
@@ -191,7 +192,7 @@ export default {
         required: v => !!v || this.$t('rule.required'),
       },
       icons: {
-        mdiGoogleTranslate,
+        ziLanguages,
       },
       translateLoading: false,
       translations: {},

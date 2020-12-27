@@ -33,9 +33,10 @@
                       {{ $t('header.signout') }}
                     </span>
                     <Icon
-                      :class="['text-32 ml-2']"
+                      large
+                      class="ml-2"
                     >
-                      {{ icons.mdiAccountCircle }}
+                      {{ icons.ziUserCircle }}
                     </Icon>
                   </div>
                 </div>
@@ -322,8 +323,8 @@
                         v-if="item[`${header.key}_ct`]"
                         class="text-gray-200 flex-shrink-0 ml-1"
                       >
-                        <Icon>
-                          {{ icons.mdiGoogleTranslate }}
+                        <Icon :base="false">
+                          {{ icons.ziLanguages }}
                         </Icon>
                       </i>
                     </span>
@@ -408,10 +409,10 @@
 </template>
 
 <script>
-import { mdiGoogleTranslate, mdiAccountCircle } from '@mdi/js'
-
 import { computed, ref, watch } from 'vue'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
+
+import { ziLanguages, ziUserCircle } from '../../assets/icons'
 
 import { LIST_WORDS } from '../../graphql/admin/queries'
 import { APPROVE_WORDS, HIDE_WORDS, MERGE_WORDS } from '../../graphql/admin/mutations'
@@ -505,8 +506,8 @@ export default {
       expanded: [],
       editItem: {},
       icons: {
-        mdiGoogleTranslate,
-        mdiAccountCircle,
+        ziLanguages,
+        ziUserCircle,
       },
       selected: [],
       selectAll: false,

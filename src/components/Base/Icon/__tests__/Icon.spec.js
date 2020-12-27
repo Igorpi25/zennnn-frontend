@@ -7,6 +7,9 @@ describe('Icon.js', () => {
   beforeEach(() => {
     mountFunction = (options = {}) => {
       return mount(Icon, {
+        slots: {
+          default: () => 'M18 12a6 6 0 11-12 0 6 6 0 0112 0z',
+        },
         ...options,
       })
     }
@@ -28,7 +31,18 @@ describe('Icon.js', () => {
     expect(wrapper.html()).toMatchSnapshot()
   })
 
-  it('should set size class from helper prop and match snapshot', () => {
+  it('should add role="button" on attrs.onClick exists and match snapshot', () => {
+    const wrapper = mountFunction({
+      props: { tag: 'span' },
+      attrs: {
+        onClick: () => {},
+      }
+    })
+
+    expect(wrapper.html()).toMatchSnapshot()
+  })
+
+  it('should set size from helper prop and match snapshot', () => {
     const iconFactory = size => mountFunction({
       props: { [size]: true },
     })
@@ -43,13 +57,20 @@ describe('Icon.js', () => {
     expect(large.html()).toMatchSnapshot()
   })
 
-  it('should have correct size style on size prop', () => {
+  it('should have correct size style on size prop and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
         size: 20,
       },
-      slots: {
-        default: () => 'M18 12a6 6 0 11-12 0 6 6 0 0112 0z',
+    })
+
+    expect(wrapper.html()).toMatchSnapshot()
+  })
+
+  it('should not set size style on base prop false and match snapshot', () => {
+    const wrapper = mountFunction({
+      props: {
+        base: false,
       },
     })
 

@@ -9,7 +9,7 @@ import {
   cloneVNode,
 } from 'vue'
 
-import { ziClose, ziInfo } from '../../../assets/icons'
+import { ziCloseDelete, ziInfoBig } from '../../../assets/icons'
 
 import { convertToUnit } from '../../../utils/convertToUnit'
 
@@ -131,7 +131,7 @@ export default {
             [props.infoIconClass.trim()]: true,
           },
         }, {
-          default: () => ziInfo,
+          default: () => ziInfoBig,
         })
       }
       return null
@@ -150,7 +150,7 @@ export default {
           },
           onClick: close,
         }, {
-          default: () => ziClose,
+          default: () => ziCloseDelete,
         })
       }
       return null

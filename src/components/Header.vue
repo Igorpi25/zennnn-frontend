@@ -37,9 +37,10 @@
                     {{ $t('header.signin') }}
                   </span>
                   <Icon
-                    :class="[light ? 'text-gray-200' : 'text-gray-100', 'text-32 ml-2']"
+                    large
+                    :class="[light ? 'text-gray-200' : 'text-gray-100', 'ml-2']"
                   >
-                    {{ icons.mdiAccountCircle }}
+                    {{ icons.ziUserCircle }}
                   </Icon>
                 </div>
               </div>
@@ -97,9 +98,9 @@
                     >
                     <Icon
                       v-else
-                      class="text-32"
+                      large
                     >
-                      {{ icons.mdiAccountCircle }}
+                      {{ icons.ziUserCircle }}
                     </Icon>
                   </div>
                 </div>
@@ -276,8 +277,8 @@
                   </div>
                 </div>
                 <div class="flex-shrink-0 w-6 cursor-pointer" @click.prevent.stop="addFavorites(item.id)">
-                  <Icon class="text-2xl">
-                    {{ favorites.includes(item.id) ? icons.mdiStar : icons.mdiStarOutline }}
+                  <Icon>
+                    {{ favorites.includes(item.id) ? icons.ziStar : icons.ziStarOutline }}
                   </Icon>
                 </div>
               </div>
@@ -307,7 +308,7 @@
 <script>
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
-import { mdiStar, mdiStarOutline, mdiAccountCircle } from '@mdi/js'
+import { ziStar, ziStarOutline, ziUserCircle } from '../assets/icons'
 
 import { Role } from '../graphql/enums'
 import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
@@ -380,9 +381,9 @@ export default {
       orgDialog: false,
       profileMenu: false,
       icons: {
-        mdiStar,
-        mdiStarOutline,
-        mdiAccountCircle,
+        ziStar,
+        ziStarOutline,
+        ziUserCircle,
       },
       systemMessage: '',
       systemMessageDialog: false,

@@ -88,8 +88,8 @@ const genPaths = async (directory) => {
         console.log(`WARN: File ${key} not processed.`)
       }
     }
-    const jsonData = JSON.stringify(paths, null, 2)
-    await fs.writeFile(path.join(__dirname, 'icons-paths.json'), jsonData)
+    // const jsonData = JSON.stringify(paths, null, 2)
+    // await fs.writeFile(path.join(__dirname, 'icons-paths.json'), jsonData)
     let jsData = ''
     Object.keys(paths).forEach(k => {
       const v = paths[k]
@@ -123,7 +123,9 @@ console.log('filename', file)
 console.log('dir', dir)
 
 if (file) {
-  genPath(path.join(__dirname, file))
+  // genPath(path.join(__dirname, file))
+  genPath(file)
 } else if (dir) {
-  genPaths(path.join(__dirname, dir))
+  // genPaths(path.join(__dirname, dir))
+  genPaths(dir)
 }

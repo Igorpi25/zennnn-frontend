@@ -44,8 +44,8 @@
     </Modal>
 
     <div class="modal-header">
-      <Icon size="28">
-        {{ icons.ziPencil }}
+      <Icon>
+        {{ icons.ziEdit }}
       </Icon>
       <TextField
         v-model="contract.name"
@@ -128,10 +128,9 @@
             >
               <i v-if="index > 0" class="text-blue-500">
                 <Icon
-                  size="24"
                   class="icon-move-up--heading"
                 >
-                  {{ icons.ziChevronUpCircle }}
+                  {{ icons.ziChevronUp }}
                 </Icon>
               </i>
               <span>{{ index + 1 }}.</span>
@@ -159,10 +158,9 @@
               >
                 <i v-if="idx > 0" class="text-blue-500">
                   <Icon
-                    size="24"
                     class="icon-move-up--paragraph"
                   >
-                    {{ icons.ziChevronUpCircle }}
+                    {{ icons.ziChevronUp }}
                   </Icon>
                 </i>
                 <span>{{ index + 1 }}.{{ idx + 1 }}.</span>
@@ -191,7 +189,7 @@
             @click="addParagraph(contract.items, index)"
           >
             <template v-slot:icon>
-              <Icon size="16">{{ icons.mdiPlusCircleOutline }}</Icon>
+              <Icon>{{ icons.ziPlusOutline }}</Icon>
             </template>
             <span class="text-sm">{{ $t('contract.addParagraph') }}</span>
           </Btn>
@@ -203,7 +201,7 @@
           @click="addHeading(contract.items)"
         >
           <template v-slot:icon>
-            <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+            <Icon>{{ icons.ziPlusOutline }}</Icon>
           </template>
           <span>{{ $t('contract.addHeading') }}</span>
         </Btn>
@@ -226,7 +224,7 @@
                     @click="openRequisiteList"
                   >
                     <Icon>
-                      {{ icons.ziGear }}
+                      {{ icons.ziCogfigurations }}
                     </Icon>
                     <span class="requisite__company-name">{{ requisite.name || '_ _ _ _ _ _' }}</span>
                   </div>
@@ -343,10 +341,9 @@
             >
               <i v-if="index > 0" class="text-blue-500">
                 <Icon
-                  size="24"
                   class="icon-move-up--heading"
                 >
-                  {{ icons.ziChevronUpCircle }}
+                  {{ icons.ziChevronUp }}
                 </Icon>
               </i>
               <span>{{ index + 2 }}.</span>
@@ -373,10 +370,9 @@
             >
               <i v-if="idx > 0" class="text-blue-500">
                 <Icon
-                  size="24"
                   class="icon-move-up--paragraph"
                 >
-                  {{ icons.ziChevronUpCircle }}
+                  {{ icons.ziChevronUp }}
                 </Icon>
               </i>
               <span>{{ index + 2 }}.{{ idx + 1 }}.</span>
@@ -403,7 +399,7 @@
             @click="addParagraph(contract.specItems, index + 1)"
           >
             <template v-slot:icon>
-              <Icon size="16">{{ icons.mdiPlusCircleOutline }}</Icon>
+              <Icon>{{ icons.ziPlusOutline }}</Icon>
             </template>
             <span class="text-sm">{{ $t('contract.addParagraph') }}</span>
           </Btn>
@@ -415,7 +411,7 @@
           @click="addHeading(contract.specItems)"
         >
           <template v-slot:icon>
-            <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+            <Icon>{{ icons.ziPlusOutline }}</Icon>
           </template>
           <span>{{ $t('contract.addHeading') }}</span>
         </Btn>
@@ -434,7 +430,7 @@
       class="close-btn"
       @click="beforeClose"
     >
-      <Icon>{{ icons.mdiClose }}</Icon>
+      <Icon>{{ icons.ziCloseDelete }}</Icon>
     </span>
   </div>
 </template>
@@ -445,8 +441,7 @@ import deepEqual from 'deep-equal'
 
 import { useApolloClient } from '@vue/apollo-composable'
 
-import { mdiPlusCircleOutline, mdiClose } from '@mdi/js'
-import { ziGear, ziPencil, ziChevronUpCircle } from '@/assets/icons'
+import { ziCogfigurations, ziEdit, ziChevronUp, ziPlusOutline, ziCloseDelete } from '../assets/icons'
 
 import { GET_ORG_REQUISITE } from '../graphql/queries'
 import { CREATE_CONTRACT, UPDATE_CONTRACT } from '../graphql/mutations'
@@ -482,11 +477,11 @@ export default {
   data () {
     return {
       icons: {
-        ziGear,
-        ziPencil,
-        ziChevronUpCircle,
-        mdiPlusCircleOutline,
-        mdiClose,
+        ziCogfigurations,
+        ziEdit,
+        ziChevronUp,
+        ziPlusOutline,
+        ziCloseDelete,
       },
       contractMetaData: {
         name: '',

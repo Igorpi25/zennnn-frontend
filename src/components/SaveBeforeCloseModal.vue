@@ -46,8 +46,6 @@
 </template>
 
 <script>
-import { ziAlert } from '@/assets/icons'
-
 import Btn from './Base/Btn'
 
 export default {
@@ -80,13 +78,6 @@ export default {
       type: String,
       default: '',
     },
-  },
-  data () {
-    return {
-      icons: {
-        ziAlert,
-      },
-    }
   },
 }
 </script>

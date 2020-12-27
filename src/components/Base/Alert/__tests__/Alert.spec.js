@@ -138,7 +138,6 @@ describe('Alert.js', () => {
       },
       slots: {
         icon: () => h(Icon, {
-          base: true,
           class: 'text-blue-500 pr-4',
         }, { default: () => ziCheckFill }),
       },

@@ -2,14 +2,8 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useQuery, useResult, useMutation, useApolloClient } from '@vue/apollo-composable'
 
-import {
-  mdiPlusCircleOutline,
-  mdiChevronLeft,
-  mdiChevronRight,
-  mdiMinus,
-  mdiPlus,
-  mdiSync,
-} from '@mdi/js'
+import { ziRefresh } from '../assets/icons'
+
 import { Role, ProductStatus } from '../graphql/enums'
 import {
   GET_SPEC,
@@ -161,12 +155,7 @@ export default {
       menuPurchaseDate: {},
       menuShippingDate: {},
       icons: {
-        mdiPlusCircleOutline,
-        mdiChevronLeft,
-        mdiChevronRight,
-        mdiMinus,
-        mdiPlus,
-        mdiSync,
+        ziRefresh,
       },
       invoiceScrollId: '',
       invoiceScrollLeft: 0,

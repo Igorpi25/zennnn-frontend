@@ -12,7 +12,7 @@
       >
         <span>
             <Icon>
-              {{ icons.ziGear }}
+              {{ icons.ziCogfigurations }}
             </Icon>
           </span>
         {{ requisite.name }}
@@ -24,7 +24,7 @@
       @click="$emit('openRequisiteDialog')"
     >
       <template>
-        <Icon class="-ml-4 mr-2">{{ icons.mdiPlusCircleOutline }}</Icon>
+        <Icon class="-ml-4 mr-2">{{ icons.ziPlusOutline }}</Icon>
       </template>
       <span>{{ $t('contract.addRequisites') }}</span>
     </Btn>
@@ -35,8 +35,7 @@
 import { useRoute } from 'vue-router'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import { mdiPlusCircleOutline } from '@mdi/js'
-import { ziGear } from '@/assets/icons'
+import { ziCogfigurations, ziPlusOutline } from '../assets/icons'
 
 import { LIST_ORG_REQUISITES } from '../graphql/queries'
 
@@ -63,8 +62,8 @@ export default {
   data () {
     return {
       icons: {
-        ziGear,
-        mdiPlusCircleOutline,
+        ziCogfigurations,
+        ziPlusOutline,
       },
     }
   },

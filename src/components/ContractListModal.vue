@@ -13,16 +13,16 @@
         >
           <span class="flex-grow text-sm cursor-pointer">{{ item.name }}</span>
           <span class="mr-6 cursor-pointer text-blue-500">
-            <Icon size="24">
-              {{ icons.ziGear }}
+            <Icon>
+              {{ icons.ziCogfigurations }}
             </Icon>
           </span>
           <span
             class="cursor-pointer text-blue-500"
             @click.stop="deleteContract(item.id)"
           >
-            <Icon size="24">
-              {{ icons.ziTrash }}
+            <Icon>
+              {{ icons.ziDelete }}
             </Icon>
           </span>
         </li>
@@ -35,7 +35,7 @@
         @click="$emit('createPaper')"
       >
         <template v-slot:icon>
-          <Icon>{{ icons.mdiPlusCircleOutline }}</Icon>
+          <Icon>{{ icons.ziPlusOutline }}</Icon>
         </template>
         <span>{{ $t('contract.createPaper') }}</span>
       </Btn>
@@ -47,16 +47,14 @@
 </template>
 
 <script>
-import { mdiPlusCircleOutline } from '@mdi/js'
-
 import { useApolloClient } from '@vue/apollo-composable'
 
-import { ziGear, ziTrash } from '@/assets/icons'
+import { ziCogfigurations, ziDelete, ziPlusOutline } from '../assets/icons'
 
 import { LIST_ORG_CONTRACTS } from '../graphql/queries'
 import { DELETE_CONTRACT } from '../graphql/mutations'
 
-import { confirmDialog } from '@/util/helpers'
+import { confirmDialog } from '../util/helpers'
 
 import Btn from './Base/Btn'
 import Icon from './Base/Icon'
@@ -83,9 +81,9 @@ export default {
   data () {
     return {
       icons: {
-        ziGear,
-        ziTrash,
-        mdiPlusCircleOutline,
+        ziCogfigurations,
+        ziDelete,
+        ziPlusOutline,
       },
     }
   },

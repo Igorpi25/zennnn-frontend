@@ -1,12 +1,5 @@
 // import throttle from 'lodash.throttle'
 
-import {
-  mdiClose,
-  mdiPlusCircleOutline,
-  mdiChevronLeft,
-  mdiChevronRight,
-} from '@mdi/js'
-
 import { Scroll } from 'uipart'
 
 import apolloClient from '../plugins/apollo'
@@ -56,12 +49,6 @@ export default {
       updateLoading: null,
       deleteLoading: null,
       errors: [],
-      icons: {
-        mdiClose,
-        mdiPlusCircleOutline,
-        mdiChevronLeft,
-        mdiChevronRight,
-      },
       menuPrepaymentDate: false,
       menuResidueDate: false,
       menuClientDebtDate: false,

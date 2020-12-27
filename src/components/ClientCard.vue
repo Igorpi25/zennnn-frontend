@@ -13,7 +13,7 @@
           class="text-gray-100 hover:text-white cursor-pointer"
           @click="$emit('close')"
         >
-          {{ icons.ziClose }}
+          {{ icons.ziCloseWindow }}
         </Icon>
       </span>
       <h1 class="text-2xl text-white font-semibold leading-tight mb-4">
@@ -270,7 +270,7 @@ import {
   UPDATE_CLIENT,
 } from '../graphql/mutations'
 
-import { ziClose } from '../assets/icons'
+import { ziCloseWindow } from '../assets/icons'
 
 import { replaceAt } from '../util/helpers'
 import { validateLegalClient, validatePrivateClient } from '../util/validation'
@@ -358,7 +358,7 @@ export default {
 
     return {
       icons: {
-        ziClose,
+        ziCloseWindow,
       },
       item,
       clientId,
