@@ -47,7 +47,7 @@ export default {
     },
     modelValue: {
       type: [Boolean, String, Number],
-      default: true,
+      default: false,
     },
     dark: Boolean,
     disabled: Boolean,
