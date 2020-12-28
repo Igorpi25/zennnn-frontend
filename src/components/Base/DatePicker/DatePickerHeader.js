@@ -54,7 +54,7 @@ export default {
       }, h(props.clickable ? 'button' : 'span', {
         class: {
           'font-semibold px-3': true,
-          'hover:text-blue-500 focus:text-blue-500 focus:outline-none transition': props.clickable,
+          'hover:text-blue-400 focus:text-blue-400 focus:outline-none transition': props.clickable,
         },
         onClick: (e) => {
           e.preventDefault()

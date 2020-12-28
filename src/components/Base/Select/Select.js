@@ -763,7 +763,7 @@ export default {
         class: [
           'w-6 h-6 flex items-center justify-center focus:outline-none',
           'origin-center transform transition-transform duration-200 ease-in-out',
-          isDisabled.value ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:text-blue-600 focus:text-blue-600',
+          isDisabled.value ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:text-blue-400 focus:text-blue-400',
           { 'rotate-180': isMenuActive.value },
         ],
         onClick: (e) => {

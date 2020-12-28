@@ -123,7 +123,7 @@
     </div>
     <button
       v-if="!create"
-      class="flex items-center text-2xl text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+      class="flex items-center text-2xl text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
       @click="$emit('click', item.id)"
     >
       <i

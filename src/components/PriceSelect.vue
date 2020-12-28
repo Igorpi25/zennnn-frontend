@@ -31,7 +31,7 @@
           <div v-else class="text-sm">
             <router-link
               :to="{ name: 'pricing' }"
-              class="text-blue-500 hover:text-blue-600 focus:outline-none focus:text-blue-600"
+              class="text-blue-500 hover:text-blue-400 focus:outline-none focus:text-blue-400"
             >
               {{ $t('payment.more') }}
             </router-link>

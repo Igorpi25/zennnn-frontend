@@ -83,7 +83,7 @@
             <div
               :class="[
                 'h-12 w-12 rounded-full bg-gray-900 bg-opacity-80 flex items-center justify-center pointer-events-auto',
-                hasPrev ? 'cursor-pointer text-blue-500 hover:text-blue-600' : 'text-gray-200',
+                hasPrev ? 'cursor-pointer text-blue-500 hover:text-blue-400' : 'text-gray-200',
               ]"
               @click="prev"
             >
@@ -92,7 +92,7 @@
             <div
               :class="[
                 'h-12 w-12 rounded-full bg-gray-900 bg-opacity-80 flex items-center justify-center pointer-events-auto',
-                hasNext ? 'cursor-pointer text-blue-500 hover:text-blue-600' : 'text-gray-200',
+                hasNext ? 'cursor-pointer text-blue-500 hover:text-blue-400' : 'text-gray-200',
               ]"
               @click="next"
             >

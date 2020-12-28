@@ -69,7 +69,7 @@
                 >
                   <template v-slot:activator="{ on }">
                     <button
-                      class="select-none focus:outline-none text-blue-500 focus:text-blue-600 hover:text-blue-600"
+                      class="select-none focus:outline-none text-blue-500 focus:text-blue-400 hover:text-blue-400"
                       v-on="on"
                     >
                       {{ canChange ? $t('payment.changePlan') : $t('payment.selectPlan') }}
@@ -238,7 +238,7 @@
                     />
                     <button
                       v-else
-                      class="align-middle invisible group-hover:visible focus:outline-none focus:text-blue-500 hover:text-blue-500 pb-1"
+                      class="align-middle invisible group-hover:visible focus:outline-none focus:text-blue-400 hover:text-blue-400 pb-1"
                       @click="setDefaultPaymentMethod(item.id)"
                     >
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -275,7 +275,7 @@
                     />
                     <button
                       v-else
-                      class="text-2xl align-middle invisible group-hover:visible focus:outline-none focus:text-blue-500 hover:text-blue-500"
+                      class="text-2xl align-middle invisible group-hover:visible focus:outline-none focus:text-blue-400 hover:text-blue-400"
                       @click="detachPaymentMethod(item.id)"
                     >
                       <i class="zi-delete align-middle" />
@@ -359,14 +359,14 @@
                 <td>
                   <button
                     v-if="item.status === 'open'"
-                    class="text-blue-500 focus:outline-none focus:text-blue-600 hover:text-blue-600"
+                    class="text-blue-500 focus:outline-none focus:text-blue-400 hover:text-blue-400"
                     @click="openInvoice(item)"
                   >
                     {{ $t('payment.invoicePay') }}
                   </button>
                 </td>
                 <td class="rounded-r-md px-4">
-                  <a :href="item.invoice_pdf" target="_brank" class="invisible group-hover:visible focus:outline-none text-gray-200 hover:text-blue-500 focus:text-blue-500">
+                  <a :href="item.invoice_pdf" target="_brank" class="invisible group-hover:visible focus:outline-none text-gray-200 hover:text-blue-400 focus:text-blue-400">
                     <i class="zi-download text-2xl align-middle" />
                   </a>
                 </td>

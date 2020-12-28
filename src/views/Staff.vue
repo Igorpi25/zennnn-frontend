@@ -150,7 +150,7 @@
                   <td :class="{ 'bg-gray-400': item.isInvitation }">
                     <button
                       v-if="item.isStaff"
-                      class="flex items-center text-2xl text-blue-500 focus:text-blue-600 hover:text-blue-600 focus:outline-none select-none mx-auto"
+                      class="flex items-center text-2xl text-blue-500 focus:text-blue-400 hover:text-blue-400 focus:outline-none select-none mx-auto"
                     >
                       <i
                         v-if="expanded.includes(item.id)"

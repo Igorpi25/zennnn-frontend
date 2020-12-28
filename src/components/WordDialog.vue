@@ -62,7 +62,7 @@
           <router-link
             v-if="hasNavigateToDictionary"
             :to="{ name: 'dictionary', params: { orgId } }"
-            class="inline-flex items-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none mr-2"
+            class="inline-flex items-center text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none mr-2"
           >
             <i class="zi-edit text-2xl mr-sm" />
             <span>{{ $t('header.dictionary') }}</span>
@@ -81,7 +81,7 @@
             </div>
           </div>
           <button
-            class="inline-flex justify-end items-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+            class="inline-flex justify-end items-center text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
             @click="translateWord"
           >
             <Progress

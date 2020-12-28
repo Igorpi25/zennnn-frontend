@@ -297,13 +297,13 @@
                     </div>
                     <span v-if="header.value === 'more'" class="inline-flex items-center justify-end align-middle">
                       <button
-                        class="flex items-center jusitfy-center text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none cursor-pointer mr-2"
+                        class="flex items-center jusitfy-center text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none cursor-pointer mr-2"
                         @click.prevent.stop="openEditItem(item)"
                       >
                         <i class="zi-edit text-xl" />
                       </button>
                       <button
-                        class="flex items-center text-2xl text-blue-500 focus:text-blue-600 hover:text-blue-600 focus:outline-none select-none ml-auto"
+                        class="flex items-center text-2xl text-blue-500 focus:text-blue-400 hover:text-blue-400 focus:outline-none select-none ml-auto"
                       >
                         <i
                           v-if="expanded.includes(item.id)"
