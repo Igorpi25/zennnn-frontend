@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Un service pour le commerce de gros international avec accès à distance | ZENNNN",
+    "title": "Un service pour le commerce de gros international avec accès à distance {'|'} ZENNNN",
     "description": "Bienvenue au service révolutionnaire du commerce de gros international avec possibilité de contrôle à distance et de gestion des achats. Toutes les activités d'exploitation se trouvent dans un seul système.",
     "userAgreement": "Conditions&nbsp;d'utilisation"
   },
@@ -921,7 +921,7 @@
       "phone": "Numéro de téléphone:",
       "phoneOption": "000",
       "fax": "Fax:",
-      "email": "example@mail.com",
+      "email": "example{'@'}mail.com",
       "site": "www.site.com",
       "vat": "TVA",
       "iec": "CEI",
@@ -1184,7 +1184,7 @@
     "USD": {
       "label": "Dollar américain",
       "iso-4217": "USD",
-      "symbol": "$"
+      "symbol": "{'$'}"
     },
     "CNY": {
       "label": "Yuan Renminbi chinois",

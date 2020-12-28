@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "A service for international wholesale trade with remote access | ZENNNN",
+    "title": "A service for international wholesale trade with remote access {'|'} ZENNNN",
     "description": "Welcome to the revolutionary service for international wholesale trade with a possibility of remote control and purchasing management. All the operating activity of the company is located in one system.",
     "userAgreement": "Terms&nbsp;of&nbsp;use"
   },
@@ -927,7 +927,7 @@
       "phone": "123-4567-8901",
       "phoneOption": "000",
       "fax": "Fax:",
-      "email": "example@mail.com",
+      "email": "example{'@'}mail.com",
       "site": "www.site.com",
       "vat": "TIN No.",
       "iec": "IEC No.",
@@ -1216,7 +1216,7 @@
     "USD": {
       "label": "U.S. Dollar",
       "iso-4217": "USD",
-      "symbol": "$"
+      "symbol": "{'$'}"
     },
     "CNY": {
       "label": "Chinese Yuan Renminbi",
