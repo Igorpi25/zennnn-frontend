@@ -15,10 +15,9 @@
             class="flex text-lg text-gray-100 pb-6"
           >
             <div class="mr-4">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7.58947 11.9648L16.8212 21.1965L14.0176 24L4.78595 14.7683L7.58947 11.9648Z" fill="#7E99D0"/>
-                <path d="M27.2141 10.8035L14.0176 24L11.2141 21.1965L24.4106 8L27.2141 10.8035Z" fill="#7E99D0"/>
-              </svg>
+              <Icon large class="text-blue-500">
+                {{ icons.ziChecked }}
+              </Icon>
             </div>
             <div v-html="item.text" class="pt-1" />
           </div>
@@ -33,12 +32,12 @@
             <router-link to="/">
               <img src="@/assets/img/logo-dark.svg" alt="Logo" class="sm:hidden">
             </router-link>
-            <LocalePicker nudge-bottom="24" class="sm:pr-4" />
+            <LocalePicker distance="16" class="sm:pr-4" />
             <div class="sm:inline-block w-full sm:w-auto text-center py-5 sm:py-0">
               <span class="pr-1">{{ $t('signup.hasAccount') }}</span>
               <router-link
                 :to="{ name: 'signin' }"
-                class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+                class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
               >
                 <span>{{ $t('signup.signin') }}</span>
               </router-link>
@@ -108,13 +107,12 @@
             required
           >
             <template v-slot:append>
-              <div
-                class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
+              <Icon
+                class="text-gray-500 hover:text-gray-300 pr-1"
                 @click="showPassword = !showPassword"
               >
-                <i v-if="showPassword" class="zi-eye align-middle" />
-                <i v-else class=" zi-eye-off align-middle text-28" />
-              </div>
+                {{ showPassword ? icons.ziVisible : icons.ziHide }}
+              </Icon>
             </template>
           </TextField>
           <Checkbox
@@ -145,7 +143,10 @@
 <script>
 import { useMutation } from '@vue/apollo-composable'
 
+import { ziVisible, ziHide, ziChecked } from '../assets/icons'
+
 import Btn from '../components/Base/Btn'
+import Icon from '../components/Base/Icon'
 import Form from '../components/Base/Form'
 import TextField from '../components/Base/TextField'
 import Checkbox from '../components/Base/Checkbox'
@@ -158,6 +159,7 @@ export default {
   name: 'SignUp',
   components: {
     Btn,
+    Icon,
     Form,
     TextField,
     Checkbox,
@@ -169,6 +171,11 @@ export default {
     const { mutate: signupMutate } = useMutation(SIGNUP)
 
     return {
+      icons: {
+        ziVisible,
+        ziHide,
+        ziChecked,
+      },
       signupMutate,
     }
   },
@@ -195,8 +202,8 @@ export default {
   },
   computed: {
     policyHtml () {
-      return `${this.$t('signup.acceptPolicyAndTerms')}&nbsp;<a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none" href="#">
-        ${this.$t('signup.privacyPolicy')}</a> ${this.$t('preposition.and')}&nbsp;<a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none" href="#">${this.$t('signup.termsOfUse')}</a>`
+      return `${this.$t('signup.acceptPolicyAndTerms')}&nbsp;<a href="/policy" class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none">
+        ${this.$t('signup.privacyPolicy')}</a> ${this.$t('preposition.and')}&nbsp;<a href="/agreenemt" class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none">${this.$t('signup.termsOfUse')}</a>`
     },
     items () {
       return [

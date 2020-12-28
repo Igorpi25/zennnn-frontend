@@ -1,4 +1,13 @@
 <template>
+  <teleport to="head">
+    <meta name="title" :content="ogTitle">
+    <meta name="description" :content="ogDescription">
+    <meta property="og:title" :content="ogTitle">
+    <meta property="og:description" :content="ogDescription">
+    <meta property="og:site_name" content="ZENNNN" >
+    <meta property="og:url" :content="ogUrl" >
+    <meta property="og:image" :content="ogImage" >
+  </teleport>
   <div class="flex-grow flex flex-col">
     <!-- / HEADER -->
     <Header
@@ -8,7 +17,9 @@
     >
       <template v-slot:breadcrumbs>
         <div class="flex items-center pl-2 sm:pl-6">
-          <i class="hidden sm:block zi-chevron-up text-2xl text-light-gray-400 transform rotate-90" />
+          <Icon class="hidden sm:block text-light-gray-400">
+            {{ icons.ziChevronRight }}
+          </Icon>
           <div class="hidden sm:block ml-2 sm:ml-6">
             {{ $t('pricing.title') }}
           </div>
@@ -23,15 +34,17 @@
         >
           <img src="@/assets/img/logo-light.svg" alt="Logo" class="h-lg">
         </router-link>
-        <i class="hidden sm:block zi-chevron-up text-2xl text-light-gray-400 transform rotate-90" />
+        <Icon class="hidden sm:block text-light-gray-400">
+          {{ icons.ziChevronRight }}
+        </Icon>
         <div class="hidden sm:block ml-2 sm:ml-6">
           {{ $t('pricing.title') }}
         </div>
         <div class="flex-grow flex items-center justify-end">
-          <LocalePicker :nudge-bottom="52" light class="sm:pr-4" />
+          <LocalePicker :distance="16" light class="sm:pr-4" />
           <router-link
             :to="{ name: 'signin' }"
-            class="hidden sm:block text-blue-500 select-none focus:outline-none focus:text-blue-600 hover:text-blue-600 mr-3 sm:mr-8"
+            class="hidden sm:block text-blue-500 select-none focus:outline-none focus:text-blue-400 hover:text-blue-400 mr-3 sm:mr-8"
           >
             {{ $t('signup.signin') }}
           </router-link>
@@ -39,7 +52,7 @@
             :to="{ name: 'signup' }"
             outlined
             class="text-center leading-none"
-            merge-class="border-blue-500 hover:text-blue-600"
+            merge-class="border-blue-500 hover:text-blue-400"
           >
             {{ $t('signup.submit') }}
           </Btn>
@@ -58,7 +71,7 @@
         <router-link
           v-if="hasSubscription"
           :to="{ name: 'subscription' }"
-          class="inline-flex items-center focus:outline-none text-blue-500 hover:text-blue-600 focus:text-blue-600 select-none whitespace-nowrap"
+          class="inline-flex items-center focus:outline-none text-blue-500 hover:text-blue-400 focus:text-blue-400 select-none whitespace-nowrap"
         >
           <span class="mr-2">{{ $t('footer.subscriptionManagement') }}</span>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -98,21 +111,45 @@
               <tr v-for="(item, i) in specs" :key="i" class="h-16 even:bg-white">
                 <td class="whitespace-nowrap text-left rounded-l-md px-8" v-html="item.text" />
                 <td class="text-gray-200 px-6">
-                  <img v-if="item.start === 'infinite'" src="@/assets/img/infinite.svg" class="mx-auto">
+                  <Icon
+                    v-if="item.start === 'infinite'"
+                    large
+                    class="text-green-500 mx-auto"
+                  >
+                    {{ icons.ziInfinity }}
+                  </Icon>
                   <span v-else-if="item.start === 'na'">&mdash;</span>
                   <span v-else>{{ item.start }}</span>
                 </td>
                 <td class="text-gray-200 px-6">
-                  <img v-if="item.standard === 'infinite'" src="@/assets/img/infinite.svg" class="mx-auto">
+                  <Icon
+                    v-if="item.standard === 'infinite'"
+                    large
+                    class="text-green-500 mx-auto"
+                  >
+                    {{ icons.ziInfinity }}
+                  </Icon>
                   <span v-else-if="item.standard === 'na'">&mdash;</span>
                   <span v-else>{{ item.standard }}</span>
                 </td>
                 <td class="text-gray-900 font-semibold px-6">
-                  <img v-if="item.advanced === 'infinite'" src="@/assets/img/infinite.svg" class="mx-auto">
+                  <Icon
+                    v-if="item.advanced === 'infinite'"
+                    large
+                    class="text-green-500 mx-auto"
+                  >
+                    {{ icons.ziInfinity }}
+                  </Icon>
                   <span v-else>{{ item.advanced }}</span>
                 </td>
                 <td class="rounded-r-md text-gray-200 px-6">
-                  <img v-if="item.premium === 'infinite'" src="@/assets/img/infinite.svg" class="mx-auto">
+                  <Icon
+                    v-if="item.premium === 'infinite'"
+                    large
+                    class="text-green-500 mx-auto"
+                  >
+                    {{ icons.ziInfinity }}
+                  </Icon>
                   <span v-else>{{ item.premium }}</span>
                 </td>
               </tr>
@@ -160,9 +197,14 @@
 </template>
 
 <script>
+import { computed, onBeforeMount, onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziChevronRight, ziInfinity } from '../assets/icons'
+
 import Btn from '../components/Base/Btn'
+import Icon from '../components/Base/Icon'
 import PriceList from '../components/PriceList.vue'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
@@ -174,26 +216,17 @@ export default {
   name: 'Pricing',
   components: {
     Btn,
+    Icon,
     PriceList,
     Header,
     Footer,
     LocalePicker,
   },
-  // metaInfo: {
-  //   style: [
-  //     { cssText: 'body { background-color: #F7F7F7!important }', type: 'text/css' },
-  //   ],
-  //   meta: [
-  //     { hid: 'title', name: 'title', content: 'Сервис для международной оптовой торговли с удаленным управлением | ZENNNN' },
-  //     { hid: 'description', name: 'description', content: 'Представляем вам революционной сервис международной оптовой торговли с возможностью удаленного контроля и управления закупками. Вся операционная деятельность компании в одной системе.' },
-  //     { vmid: 'og:title', property: 'og:title', content: 'Сервис для международной оптовой торговли с удаленным управлением | ZENNNN' },
-  //     { vmid: 'og:description', property: 'og:description', content: 'Представляем вам революционной сервис международной оптовой торговли с возможностью удаленного контроля и управления закупками. Вся операционная деятельность компании в одной системе.' },
-  //     { vmid: 'og:site_name', property: 'og:site_name', content: 'ZENNNN' },
-  //     { vmid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_HOSTNAME}${window.location.pathname}` },
-  //     { vmid: 'og:image', property: 'og:image', content: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png` },
-  //   ],
-  // },
   setup () {
+    const { t } = useI18n()
+    const ogTitle = computed(() => t('app.title'))
+    const ogDescription = computed(() => t('app.description'))
+
     const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
     const isLoggedIn = useResult(result1)
 
@@ -203,9 +236,25 @@ export default {
       fetchPolicy: 'cache-first',
     })
 
+    onBeforeMount(() => {
+      document.querySelector('body').classList.add('bg-light-gray-100')
+    })
+
+    onBeforeUnmount(() => {
+      document.querySelector('body').classList.remove('bg-light-gray-100')
+    })
+
     return {
+      icons: {
+        ziChevronRight,
+        ziInfinity,
+      },
       isLoggedIn,
       getProfile,
+      ogTitle,
+      ogDescription,
+      ogUrl: `${process.env.VUE_APP_HOSTNAME}${window.location.pathname}`,
+      ogImage: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png`,
     }
   },
   computed: {

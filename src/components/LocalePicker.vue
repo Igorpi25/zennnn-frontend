@@ -21,7 +21,7 @@
         <Icon
           role="button"
           tabindex="0"
-          class="text-blue-500 group-hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+          class="text-blue-500 group-hover:text-blue-400 focus:text-blue-400 focus:outline-none"
         >
           {{ icons.ziChevronDown }}
         </Icon>
@@ -32,7 +32,7 @@
       :key="locale.value"
       :index="i"
       :value="locale.value"
-      class="bg-gray-900 dark:hover:text-light-gray-100 h-10"
+      class="dark:bg-gray-900 dark:hover:text-light-gray-100 h-10"
     >
       <img
         :src="require(`@/assets/img/flags/locale/${locale.value}.svg`).default"

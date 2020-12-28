@@ -24,7 +24,7 @@
   .btn--primary {
     @apply text-white;
     @apply bg-blue-500;
-    @apply hover:bg-blue-600 focus:bg-blue-600 disabled:bg-blue-500;
+    @apply hover:bg-blue-400 focus:bg-blue-400 disabled:bg-blue-500;
   }
   .btn--primary.btn--disabled {
     @apply text-light-gray-900 dark:text-gray-200;

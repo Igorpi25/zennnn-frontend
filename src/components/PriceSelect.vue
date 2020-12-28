@@ -1,10 +1,12 @@
 <template>
   <div class="bg-white relative">
     <span class="absolute top-0 right-0 pt-2 pr-2">
-      <i
-        class="zi-close text-2xl text-gray-200 hover:text-gray-300 cursor-pointer"
+      <Icon
+        class="text-gray-200 hover:text-gray-300"
         @click="$emit('close')"
-      />
+      >
+        {{ icons.ziCloseWindow }}
+      </Icon>
     </span>
     <div class="bg-light-gray-100 flex px-8 py-5">
       <svg class="text-blue-500" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,18 +39,29 @@
         </div>
         <div v-html="item.annotation" class="hidden sm:block w-1/3 text-sm text-gray-200 leading-tight self-start pt-1 pl-3" />
         <div class="text-right w-1/2 sm:w-1/3 pl-3">
-          <PriceContactForm v-if="item.isCustomPrice">
-            <template v-slot:activator="{ on }">
+          <Dialog
+            v-if="item.isCustomPrice"
+            v-model="contactDialog"
+            :icon="icons.ziEmail"
+            :title="$t('pricing.contact')"
+          >
+            <template v-slot:activator="{ attrs, listeners }">
               <Btn
+                v-bind="attrs"
+                v-on="listeners"
                 block
                 outlined
-                merge-class="border-gray-100 h-10"
-                v-on="on"
+                class="border-gray-100 h-10"
               >
-                {{ $t('payment.contact') }}
+                {{ $t('pricing.contact') }}
               </Btn>
             </template>
-          </PriceContactForm>
+            <PriceContactForm
+              has-cancel
+              @cancel="contactDialog = false"
+              @success="contactDialog = false"
+            />
+          </Dialog>
           <Btn
             v-else
             block
@@ -66,33 +79,50 @@
 
 <script>
 import axios from 'axios'
+import { ref } from 'vue'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziEmail, ziCloseWindow } from '../assets/icons'
+
 import { LIST_PRICES } from '../graphql/queries'
-import PriceContactForm from './PriceContactForm.vue'
 
 import Btn from './Base/Btn'
+import Icon from './Base/Icon'
+import PriceContactForm from './PriceContactForm.vue'
 
 export default {
   name: 'PriceSelect',
   components: {
     Btn,
+    Icon,
     PriceContactForm,
   },
+
   props: {
     selected: Object,
     currentProductId: String,
     currentPriceId: String,
     changePrice: Boolean,
   },
+
+  emits: ['update:selected', 'select'],
+
   setup () {
     const { result } = useQuery(LIST_PRICES)
     const listPrices = useResult(result)
 
+    const contactDialog = ref(false)
+
     return {
+      icons: {
+        ziEmail,
+        ziCloseWindow,
+      },
+      contactDialog,
       listPrices,
     }
   },
+
   data () {
     return {
       currencyRates: {},
@@ -101,6 +131,7 @@ export default {
       isBooted: false,
     }
   },
+
   computed: {
     prices () {
       return this.listPrices || []
@@ -113,25 +144,29 @@ export default {
     },
     products () {
       const currencyRate = this.currencyRates[this.localeCurrency]
+      const format = (number, options, locale) => {
+        const intlFormatter = new Intl.NumberFormat(locale, options)
+        return intlFormatter.format(number, undefined, locale)
+      }
       const getPriceInCurrency = (rate) => this.localeCurrency !== 'USD'
-        ? this.$n(Math.round((rate * currencyRate)), {
+        ? format(Math.round(rate * currencyRate), {
             style: 'currency',
             currency: this.localeCurrency,
             minimumFractionDigits: 0,
             maximumFractionDigits: 2,
-          })
+          }, this.$i18n.locale)
         : null
-      const getUsd = (rate) => this.$n(rate, {
+      const getUsd = (rate) => format(rate, {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 0,
         maximumFractionDigits: 2,
-      })
+      }, 'en-US')
       const prices = {}
       const products = {}
       const amounts = {}
       let isAnnually = false
-      this.prices.forEach(el => {
+      this.prices.filter(el => el.nickname).forEach(el => {
         prices[el.nickname] = el.id
         const productName = el.nickname.split(' ')[0]
         products[productName] = el.product

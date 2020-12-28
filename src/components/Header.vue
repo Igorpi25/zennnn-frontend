@@ -57,7 +57,7 @@
               :arrow="false"
               placement="bottom-end"
             >
-              <template v-slot:activator="{ on }">
+              <template v-slot:activator>
                 <div
                   :class="[
                     'flex items-center h-full cursor-pointer pr-2',
@@ -69,10 +69,11 @@
                         ? 'hover:bg-light-gray-400' : !light && profileMenu
                           ? 'bg-gray-500 hover:bg-gray-500' : 'hover:bg-gray-200',
                   ]"
-                  v-on="on"
                 >
                   <template>
-                    <i class="text-lg text-gray-100 zi-menu align-middle pl-3" />
+                    <Icon class="text-gray-100 align-middle pl-3">
+                      {{ icons.ziMenu }}
+                    </Icon>
                     <div :class="[light ? 'bg-gray-100' : 'bg-gray-300', 'w-px h-5 mx-3 sm:mx-5']" />
                   </template>
                   <div
@@ -308,7 +309,7 @@
 <script>
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziStar, ziStarOutline, ziUserCircle } from '../assets/icons'
+import { ziStar, ziStarOutline, ziUserCircle, ziMenu } from '../assets/icons'
 
 import { Role } from '../graphql/enums'
 import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
@@ -365,6 +366,12 @@ export default {
     })
 
     return {
+      icons: {
+        ziMenu,
+        ziStar,
+        ziStarOutline,
+        ziUserCircle,
+      },
       resolveClient,
       isLoggedIn,
       getProfile,
@@ -380,11 +387,6 @@ export default {
       favorites: [],
       orgDialog: false,
       profileMenu: false,
-      icons: {
-        ziStar,
-        ziStarOutline,
-        ziUserCircle,
-      },
       systemMessage: '',
       systemMessageDialog: false,
     }

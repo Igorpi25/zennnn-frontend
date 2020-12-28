@@ -9,7 +9,7 @@
     <meta property="og:url" :content="ogUrl" >
     <meta property="og:image" :content="ogImage" >
   </teleport>
-  <div style="font-family: Montserrat,sans-serif;">
+  <div class="font-montserrat">
     <div class="flex flex-col min-h-screen">
       <!-- / HEADER -->
       <header class="pt-6 pb-4 font-medium">
@@ -803,6 +803,9 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
 import Image from '../components/Base/Image'
 import { Window, WindowItem } from '../components/Base/Window'
 
@@ -816,12 +819,20 @@ export default {
     Window,
     WindowItem,
   },
-  data () {
+  setup () {
+    const { t } = useI18n()
+    const ogTitle = computed(() => t('app.title'))
+    const ogDescription = computed(() => t('app.description'))
+
     return {
-      ogTitle: 'Сервис для международной оптовой торговли с удаленным управлением | ZENNNN',
-      ogDescription: 'Представляем вам революционной сервис международной оптовой торговли с возможностью удаленного контроля и управления закупками. Вся операционная деятельность компании в одной системе.',
+      ogTitle,
+      ogDescription,
       ogUrl: `${process.env.VUE_APP_HOSTNAME}${window.location.pathname}`,
       ogImage: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png`,
+    }
+  },
+  data () {
+    return {
       isHeaderActive: true,
       isScrollingUp: false,
       savedScroll: 0,

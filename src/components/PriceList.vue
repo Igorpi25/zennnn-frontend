@@ -11,7 +11,9 @@
         <div
           :class="['h-9 flex items-center text-gray-200 rounded-50 px-2', item.name === 'Advanced' ? 'bg-white' : 'bg-light-gray-100']"
         >
-          <i class="zi-users text-2xl mr-2" />
+          <Icon class="mr-2">
+            {{ icons.ziUsers }}
+          </Icon>
           <span>{{ item.team }}</span>
         </div>
       </div>
@@ -30,9 +32,7 @@
       </div>
       <div style="min-height: 164px;">
         <div class="pb-4">
-          <div v-if="item.isCustomPrice">
-            {{ $t('pricing.premiumEcon') }}
-          </div>
+          <div v-if="item.isCustomPrice" v-html="$t('pricing.premiumEcon')" />
           <div v-else>
             {{ $t('pricing.inMonth') }}, &nbsp; <span class="text-yellow-500" v-html="$t('pricing.econ')" />
           </div>
@@ -42,24 +42,35 @@
         </div>
       </div>
       <div class="pb-4">
-        <PriceContactForm v-if="item.isCustomPrice">
-          <template v-slot:activator="{ on }">
+        <Dialog
+          v-if="item.isCustomPrice"
+          v-model="contactDialog"
+          :icon="icons.ziEmail"
+          :title="$t('pricing.contact')"
+        >
+          <template v-slot:activator="{ attrs, listeners }">
             <Btn
+              v-bind="attrs"
+              v-on="listeners"
               block
               outlined
-              merge-class="border-gray-100"
-              v-on="on"
+              class="border-gray-100"
             >
               {{ $t('pricing.contact') }}
             </Btn>
           </template>
-        </PriceContactForm>
+          <PriceContactForm
+            has-cancel
+            @cancel="contactDialog = false"
+            @success="contactDialog = false"
+          />
+        </Dialog>
         <Btn
           v-else
-          :to="item.to || null"
+          :to="item.to"
           block
           outlined
-          merge-class="border-gray-100"
+          class="border-gray-100"
           @click.prevent="onClick(item)"
         >
           {{ $t('pricing.select') }}
@@ -72,7 +83,9 @@
         :key="`feat-${fi}`"
         class="flex pb-6"
       >
-        <i class="zi-check text-2xl text-blue-500 -ml-2 pr-2" />
+        <Icon class="text-blue-500 -ml-2 pr-2">
+          {{ icons.ziChecked }}
+        </Icon>
         <span v-html="feat" />
       </div>
     </div>
@@ -81,19 +94,27 @@
 
 <script>
 import axios from 'axios'
+import { ref } from 'vue'
 import { useQuery, useResult } from '@vue/apollo-composable'
+
+import { ziChecked, ziUsers, ziEmail } from '../assets/icons'
 
 import { LIST_PRICES } from '../graphql/queries'
 
 import Btn from './Base/Btn'
+import Icon from './Base/Icon'
+import Dialog from './Dialog'
 import PriceContactForm from './PriceContactForm.vue'
 
 export default {
   name: 'PriceList',
   components: {
     Btn,
+    Icon,
+    Dialog,
     PriceContactForm,
   },
+
   props: {
     selected: Object,
     isLoggedIn: Boolean,
@@ -101,11 +122,22 @@ export default {
     currentProductId: String,
     currentPriceId: String,
   },
+
+  emits: ['update:selected', 'select'],
+
   setup () {
     const { result } = useQuery(LIST_PRICES)
     const listPrices = useResult(result)
 
+    const contactDialog = ref(false)
+
     return {
+      icons: {
+        ziUsers,
+        ziEmail,
+        ziChecked,
+      },
+      contactDialog,
       listPrices,
     }
   },
@@ -128,24 +160,28 @@ export default {
     },
     products () {
       const currencyRate = this.currencyRates[this.localeCurrency]
+      const format = (number, options, locale) => {
+        const intlFormatter = new Intl.NumberFormat(locale, options)
+        return intlFormatter.format(number, undefined, locale)
+      }
       const getPriceInCurrency = (rate) => this.localeCurrency !== 'USD'
-        ? this.$n(Math.round((rate * currencyRate)), {
+        ? format(Math.round(rate * currencyRate), {
             style: 'currency',
             currency: this.localeCurrency,
             minimumFractionDigits: 0,
             maximumFractionDigits: 2,
-          })
+          }, this.$i18n.locale)
         : null
-      const getUsd = (rate) => this.$n(rate, {
+      const getUsd = (rate) => format(rate, {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 0,
         maximumFractionDigits: 2,
-      })
+      }, 'en-US')
       const prices = {}
       const products = {}
       const amounts = {}
-      this.prices.forEach(el => {
+      this.prices.filter(el => el.nickname).forEach(el => {
         prices[el.nickname] = el.id
         const productName = el.nickname.split(' ')[0]
         products[productName] = el.product

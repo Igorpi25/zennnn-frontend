@@ -4,7 +4,9 @@
     <Header light :org="orgId">
       <template v-slot:breadcrumbs>
         <div class="flex items-center pl-2 sm:pl-6">
-          <i class="hidden sm:block zi-chevron-up text-2xl text-light-gray-400 transform rotate-90" />
+          <Icon class="hidden sm:block text-light-gray-400">
+            {{ icons.ziChevronRight }}
+          </Icon>
           <div class="hidden sm:block ml-2 sm:ml-6">
             {{ $t('payment.title') }}
           </div>
@@ -24,7 +26,9 @@
         <div class="flex sm:flex-1 items-center w-full">
           <div class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0" :class="{ 'bg-gray-100': !profile.picture }">
             <img v-if="profile.picture" :src="profile.picture" alt="Avatar" class="w-full h-full object-cover">
-            <i v-else class="zi-user text-3xl text-light-gray-400" />
+            <Icon v-else large class="text-light-gray-400">
+              {{ icons.ziUser }}
+            </Icon>
           </div>
           <div class="pl-4">
             <div class="text-lg font-medium">{{ `${profile.givenName} ${profile.familyName}` }}</div>
@@ -106,7 +110,7 @@
         <h3 class="text-2xl pb-4">{{ $t('payment.contactTitle') }}:</h3>
         <div class="flex flex-wrap">
           <div class="w-full sm:w-1/2 sm:pr-5">
-            <PriceContactForm no-dialog />
+            <PriceContactForm />
           </div>
           <div class="w-full sm:w-1/2 sm:pl-5 pt-8" v-html="$t('payment.contactHint')" />
         </div>
@@ -257,8 +261,15 @@
 
 <script>
 import axios from 'axios'
+import { onBeforeMount, onBeforeUnmount } from 'vue'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziChevronRight, ziUser } from '../assets/icons'
+
+import { GET_PROFILE, LIST_PRICES, LIST_PAYMENT_METHODS } from '../graphql/queries'
+import { PAYMENT_DATA } from '../graphql/subscriptions'
+
+import Icon from '../components/Base/Icon'
 import Alert from '../components/Base/Alert'
 import Select from '../components/Base/Select'
 import Radio from '../components/Base/Radio'
@@ -268,12 +279,10 @@ import Footer from '../components/Footer.vue'
 import PaymentCard from '../components/PaymentCard.vue'
 import PriceContactForm from '../components/PriceContactForm.vue'
 
-import { GET_PROFILE, LIST_PRICES, LIST_PAYMENT_METHODS } from '../graphql/queries'
-import { PAYMENT_DATA } from '../graphql/subscriptions'
-
 export default {
   name: 'Payment',
   components: {
+    Icon,
     Alert,
     Select,
     Radio,
@@ -283,11 +292,6 @@ export default {
     PaymentCard,
     PriceContactForm,
   },
-  // metaInfo: {
-  //   style: [
-  //     { cssText: 'body { background-color: #F7F7F7!important }', type: 'text/css' },
-  //   ],
-  // },
   setup () {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
@@ -301,7 +305,19 @@ export default {
     const { result: result3 } = useQuery(LIST_PAYMENT_METHODS, null, { fetchPolicy: 'no-cache' })
     const listPaymentMethods = useResult(result3)
 
+    onBeforeMount(() => {
+      document.querySelector('body').classList.add('bg-light-gray-100')
+    })
+
+    onBeforeUnmount(() => {
+      document.querySelector('body').classList.remove('bg-light-gray-100')
+    })
+
     return {
+      icons: {
+        ziUser,
+        ziChevronRight,
+      },
       apolloClient,
       getProfile,
       getProfileRefetch,
@@ -400,24 +416,28 @@ export default {
     },
     products () {
       const currencyRate = this.currencyRates[this.localeCurrency]
+      const format = (number, options, locale) => {
+        const intlFormatter = new Intl.NumberFormat(locale, options)
+        return intlFormatter.format(number, undefined, locale)
+      }
       const getPriceInCurrency = (rate) => this.localeCurrency !== 'USD'
-        ? this.$n(Math.round(rate * currencyRate), {
+        ? format(Math.round(rate * currencyRate), {
             style: 'currency',
             currency: this.localeCurrency,
             minimumFractionDigits: 0,
             maximumFractionDigits: 2,
-          })
+          }, this.$i18n.locale)
         : null
-      const getUsd = (rate) => this.$n(rate, {
+      const getUsd = (rate) => format(rate, {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 0,
         maximumFractionDigits: 2,
-      })
+      }, 'en-US')
       const prices = {}
       const products = {}
       const amounts = {}
-      this.prices.forEach(el => {
+      this.filter(el => el.nickname).prices.forEach(el => {
         prices[el.nickname] = el.id
         const productName = el.nickname.split(' ')[0]
         products[productName] = el.product

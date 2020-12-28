@@ -11,7 +11,6 @@
         <div v-if="username" class="pb-6">
           <Btn
             :loading="loading"
-            min-width="120"
             @click.prevent="resendSignUp"
           >
             <span>{{ $t('welcome.resend') }}</span>

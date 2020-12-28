@@ -25,12 +25,12 @@
             <router-link to="/" class="focus:outline-none">
               <img src="@/assets/img/logo-dark.svg" alt="Logo" class="sm:hidden">
             </router-link>
-            <LocalePicker nudge-bottom="24" class="sm:pr-4" />
+            <LocalePicker distance="16" class="sm:pr-4" />
             <div class="sm:inline-block w-full sm:w-auto text-center py-5 sm:py-0">
               <span class="pr-1">{{ $t('signin.noAccount') }}</span>
               <router-link
                 :to="{ name: 'signup' }"
-                class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+                class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
               >
                 <span>{{ $t('signin.signup') }}</span>
               </router-link>
@@ -76,19 +76,12 @@
               >
                 {{ showPassword ? icons.ziVisible : icons.ziHide }}
               </Icon>
-              <!-- <div
-                class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
-                @click="showPassword = !showPassword"
-              >
-                <i v-if="showPassword" class="zi-eye align-middle" />
-                <i v-else class=" zi-eye-off align-middle text-28" />
-              </div> -->
             </template>
           </TextField>
           <div class="pb-6">
             <router-link
               :to="{ name: 'password-restore' }"
-              class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none"
+              class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
             >
               {{ $t('signin.forgotPassword') }}
             </router-link>
@@ -193,13 +186,6 @@
             >
               {{ compliteShowPassword ? icons.ziVisible : icons.ziHide }}
             </Icon>
-            <!-- <div
-              class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
-              @click="compliteShowPassword = !compliteShowPassword"
-            >
-              <i v-if="compliteShowPassword" class="zi-eye align-middle" />
-              <i v-else class="zi-eye-off align-middle text-28" />
-            </div> -->
           </template>
         </TextField>
         <Checkbox
@@ -297,8 +283,8 @@ export default {
   },
   computed: {
     policyHtml () {
-      return `${this.$t('signup.acceptPolicyAndTerms')}&nbsp;<a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none" href="#">
-        ${this.$t('signup.privacyPolicy')}</a> ${this.$t('preposition.and')}&nbsp;<a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 focus:outline-none" href="#">${this.$t('signup.termsOfUse')}</a>`
+      return `${this.$t('signup.acceptPolicyAndTerms')}&nbsp;<a class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none" href="#">
+        ${this.$t('signup.privacyPolicy')}</a> ${this.$t('preposition.and')}&nbsp;<a class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none" href="#">${this.$t('signup.termsOfUse')}</a>`
     },
   },
   methods: {

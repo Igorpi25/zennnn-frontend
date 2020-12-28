@@ -1,7 +1,7 @@
 <template>
   <div class="my-auto text-sm text-gray-200 leading-snug">
     <div>
-      ©2019 ZENNNN. <router-link v-if="!hideUserAgreement" v-html="$t('app.userAgreement')" to="/agreenemt" class="text-blue-500 hover:text-blue-600 focus:outline-none focus:text-blue-600"/>
+      ©2019 ZENNNN. <router-link v-if="!hideUserAgreement" v-html="$t('app.userAgreement')" to="/agreenemt" class="text-blue-500 hover:text-blue-400 focus:outline-none focus:text-blue-400"/>
     </div>
     <div>{{ version }}</div>
   </div>

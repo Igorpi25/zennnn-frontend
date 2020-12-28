@@ -11273,10 +11273,10 @@ uglify-js@3.4.x:
     commander "~2.19.0"
     source-map "~0.6.1"
 
-uipart@^0.5.4:
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/uipart/-/uipart-0.5.4.tgz#76df60d84c9848fd34a3393e784dfe8aa1c558ed"
-  integrity sha512-TW2eZw2fmiQbA8JUaJlTZXf4if66g/FqhoEG0mnub5iUGSXn/ztuGN5V3prp0Cvo7n9JCVh2+Med1uYdj5p84w==
+uipart@^0.5.5:
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/uipart/-/uipart-0.5.5.tgz#cb5254e7d22f1dbb53c111f8ce77d294182eb85f"
+  integrity sha512-ADRLXLixTZOhOeYx3HZQQdKjs1fJ+6MLDSdAsPWYZGQ0fmdaqHylnBZPByKx0HlukzFMXcYmkmK/zq3s8K0G4w==
   dependencies:
     "@popperjs/core" "^2.6.0"
     vue "^3.0.4"

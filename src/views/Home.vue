@@ -1,11 +1,21 @@
 <template>
+  <teleport to="head">
+    <meta name="title" :content="ogTitle">
+    <meta name="description" :content="ogDescription">
+    <meta property="og:title" :content="ogTitle">
+    <meta property="og:description" :content="ogDescription">
+    <meta property="og:site_name" content="ZENNNN" >
+    <meta property="og:url" :content="ogUrl" >
+    <meta property="og:image" :content="ogImage" >
+  </teleport>
   <div class="flex-grow flex flex-col">
     <!-- / HEADER -->
     <header>
       <div class="h-20 flex items-center container container--sm">
         <router-link
           :to="{ name: 'home' }"
-          class="flex-shrink-0 select-none focus:outline-none mr-4"
+          class="flex-shrink-0 select-none focus:ring focus:outline-none mr-4"
+          @mousedown="e => e.preventDefault()"
         >
           <img src="@/assets/img/logo-dark.svg" alt="Logo">
         </router-link>
@@ -13,7 +23,7 @@
           <LocalePicker distance="16" class="pr-4" />
           <router-link
             :to="{ name: 'signin' }"
-            class="text-blue-500 select-none focus:outline-none focus:text-blue-600 hover:text-blue-600 mr-8"
+            class="text-blue-500 hover:text-blue-400 focus:outline-none focus:text-blue-400 select-none mr-8"
           >
             {{ $t('signup.signin') }}
           </router-link>
@@ -188,6 +198,9 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
 import { ziChecked, ziArrowRight } from '../assets/icons'
 
 import Btn from '../components/Base/Btn'
@@ -205,23 +218,19 @@ export default {
     Footer,
     LocalePicker,
   },
-  // metaInfo: {
-  //   meta: [
-  //     { hid: 'title', name: 'title', content: 'Сервис для международной оптовой торговли с удаленным управлением | ZENNNN' },
-  //     { hid: 'description', name: 'description', content: 'Представляем вам революционной сервис международной оптовой торговли с возможностью удаленного контроля и управления закупками. Вся операционная деятельность компании в одной системе.' },
-  //     { vmid: 'og:title', property: 'og:title', content: 'Сервис для международной оптовой торговли с удаленным управлением | ZENNNN' },
-  //     { vmid: 'og:description', property: 'og:description', content: 'Представляем вам революционной сервис международной оптовой торговли с возможностью удаленного контроля и управления закупками. Вся операционная деятельность компании в одной системе.' },
-  //     { vmid: 'og:site_name', property: 'og:site_name', content: 'ZENNNN' },
-  //     { vmid: 'og:url', property: 'og:url', content: `${process.env.VUE_APP_HOSTNAME}${window.location.pathname}` },
-  //     { vmid: 'og:image', property: 'og:image', content: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png` },
-  //   ],
-  // },
   setup () {
+    const { t } = useI18n()
+    const ogTitle = computed(() => t('app.title'))
+    const ogDescription = computed(() => t('app.description'))
     return {
       icons: {
         ziChecked,
         ziArrowRight,
       },
+      ogTitle,
+      ogDescription,
+      ogUrl: `${process.env.VUE_APP_HOSTNAME}${window.location.pathname}`,
+      ogImage: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/ses/zennnn_logo_light_2x.png`,
     }
   },
   computed: {
