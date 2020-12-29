@@ -337,7 +337,7 @@ export default {
     const genFilteredText = (text) => {
       text = text || ''
 
-      if (!search.value || props.noFilter) return text
+      if (!search.value) return text
 
       const { start, middle, end } = getMaskedCharacters(text)
 
@@ -745,7 +745,7 @@ export default {
           default: (props) => {
             return slots.item
               ? slots.item({ item, ...props })
-              : h('div', null, h('div', { class: 'truncate' }, genFilteredText(item.text)))
+              : h('div', null, h('div', { class: 'truncate' }, genFilteredText(getText(item))))
           },
         })
       })
@@ -802,7 +802,7 @@ export default {
           onMousedown: (e) => { e.preventDefault() },
         }, h('div', {
           class: 'truncate',
-        }, props.noDataText || t('noDataText')))
+        }, props.noDataText || t('select.noData')))
     }
 
     const genNoResult = () => {
@@ -816,10 +816,11 @@ export default {
           onMousedown: (e) => { e.preventDefault() },
         }, h('div', {
           class: 'truncate',
-        }, props.noResultText || t('noResultText')))
+        }, props.noResultText || t('select.noResult')))
     }
 
     return {
+      filteredItems,
       rootElement,
       classes,
       internalValue,
