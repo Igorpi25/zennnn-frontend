@@ -7,7 +7,7 @@
       <slot name="activator" :attrs="attrs" :listeners="listeners" />
     </template>
 
-    <div class="flex items-center bg-light-gray-300 p-4">
+    <div class="flex items-center bg-light-gray-300 dark:bg-gray-500 p-4">
       <div class="self-start">
         <slot name="icon">
           <Icon
@@ -61,7 +61,7 @@ export default {
   },
 
   props: {
-    ...useDimensionsProps({ width: '100%', maxWidth: 328 }),
+    ...useDimensionsProps({ width: '100%', maxWidth: 448 }),
     modelValue: Boolean,
     title: String,
     icon: String,
