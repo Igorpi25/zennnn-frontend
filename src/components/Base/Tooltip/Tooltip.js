@@ -114,7 +114,7 @@ export default {
     const activate = () => {
       getActivator()
       requestAnimationFrame(() => {
-        isContentVisible.value = true
+        isContentVisible.value = isActive.value
         createPopper(activatorElement.value, wrapperElement.value)
       })
     }
