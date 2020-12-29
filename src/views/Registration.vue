@@ -38,11 +38,21 @@
           <div class="flex-shrink-0">
             <Form
               ref="form"
-              v-model="formValidity"
-              :title="$t('signup.registration')"
-              v-model:error-message="errorMessage"
+              v-model:valid="formValidity"
               class="mx-auto m-0 pt-8 md:pt-12 pb-10 px-0 md:px-12"
             >
+              <h4 class="text-xl pb-6">
+                {{ $t('signup.registration') }}
+              </h4>
+              <Alert
+                v-model="errorMessage"
+                close
+                color="error"
+                class="mb-6"
+                transition="slide-y-transition"
+              >
+                {{ errorMessage }}
+              </Alert>
               <div class="w-full">
                 <TextField
                   v-model="formModel.firstName"
@@ -107,7 +117,7 @@
                 </Checkbox>
                 <div class="flex justify-center">
                   <Btn
-                    :disabled="formValidity"
+                    :disabled="!formValidity"
                     :loading="loading"
                     class="mt-5 flex justify-center"
                     @click="onSubmit"
@@ -130,6 +140,7 @@
 </template>
 
 <script>
+import Alert from '../components/Base/Alert'
 import Btn from '../components/Base/Btn'
 import Form from '../components/Base/Form'
 import TextField from '../components/Base/TextField'
@@ -143,6 +154,7 @@ import { auth } from '../plugins/auth'
 export default {
   name: 'Registration',
   components: {
+    Alert,
     Btn,
     Form,
     TextField,

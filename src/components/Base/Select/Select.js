@@ -114,6 +114,8 @@ export default {
     },
     itemsFilterTabDown: Function,
     contentOnIntersect: Boolean,
+    ariaLabel: String,
+    ariaAutocomplete: String,
   },
 
   emits: ['update:modelValue', 'update:search', 'update:error', 'click:clear', 'focus', 'blur', 'keydown', 'mousedown', 'mouseup'],
@@ -364,6 +366,7 @@ export default {
       if (document.activeElement !== inputElement.value) {
         inputElement.value.focus()
       }
+      updateClientRect()
       if (!isFocused.value) {
         isFocused.value = true
 
@@ -487,6 +490,9 @@ export default {
         minlength: props.minlength,
         maxlength: props.maxlength,
         inputmode: props.inputmode,
+        autocomplete: props.autocomplete,
+        'aria-label': props.ariaLabel,
+        'aria-autocomplete': props.ariaAutocomplete,
         readonly: isReadonly.value || !props.searchable,
         disabled: isDisabled.value,
         onFocus: onFocus,
@@ -499,7 +505,6 @@ export default {
           }
         },
       }
-      if (props.autocomplete === 'off') data.autocomplete = 'off'
       if (props.size) data.size = props.size
       if (props.pattern) data.pattern = props.pattern
       if (props.mask) {

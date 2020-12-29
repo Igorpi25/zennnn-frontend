@@ -51,60 +51,68 @@
         </h1>
         <Form
           ref="form"
-          v-model="formValidity"
+          v-model:valid="formValidity"
         >
           <TextField
             v-model="formModel.firstName"
             :placeholder="$t('signup.firstName')"
             :rules="[rules.required]"
+            :hide-details="false"
             class="pb-6"
-            name="firstName"
-            autocomplete="on"
+            name="given-name"
+            autocomplete="given-name"
+            aria-label="given name input"
             validate-on-blur
             autofocus
             state-icon
-            state-icon-on-validate
             required
+            messages-on-focused
           />
           <TextField
             v-model="formModel.lastName"
             :placeholder="$t('signup.lastName')"
             :rules="[rules.required]"
+            :hide-details="false"
             class="pb-6"
-            name="lastName"
-            autocomplete="on"
+            name="family-name"
+            autocomplete="family-name"
+            aria-label="family name input"
             validate-on-blur
             state-icon
-            state-icon-on-validate
             required
+            messages-on-focused
           />
           <TextField
             ref="email"
             v-model="formModel.email"
             :placeholder="$t('signup.login')"
             :rules="[rules.required, rules.email]"
+            :hide-details="false"
             class="pb-6"
             type="email"
             name="email"
-            autocomplete="on"
+            autocomplete="email"
+            aria-label="email input"
             validate-on-blur
             state-icon
-            state-icon-on-validate
             required
+            messages-on-focused
           />
           <TextField
             v-model="formModel.password"
             :placeholder="$t('signup.password')"
             :type="showPassword ? 'text' : 'password'"
             :rules="[rules.required, rules.passwordMinLength]"
+            :hide-details="false"
             class="pb-6"
-            name="password"
-            autocomplete="on"
+            name="new-password"
+            autocomplete="new-password"
+            aria-label="new password input"
             minlength="8"
             validate-on-blur
             state-icon
-            state-icon-on-validate
             required
+            messages-on-focused
           >
             <template v-slot:append>
               <Icon
@@ -117,13 +125,14 @@
           </TextField>
           <Checkbox
             :rules="[rules.check]"
-            lazy-validation
+            :hide-details="false"
             class="pb-6"
+            required
           >
             <span class="ml-3 float-left" v-html="policyHtml" />
           </Checkbox>
           <Btn
-            :disabled="formValidity"
+            :disabled="!formValidity"
             :loading="loading"
             class="w-full sm:w-48"
             @click="onSubmit"

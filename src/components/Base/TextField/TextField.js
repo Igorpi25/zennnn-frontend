@@ -54,6 +54,8 @@ export default {
       default: 'off',
     },
     size: [Number, String],
+    ariaLabel: String,
+    ariaAutocomplete: String,
   },
 
   emits: ['update:modelValue', 'update:error', 'click:clear', 'focus', 'blur', 'change', 'keydown', 'mousedown', 'mouseup'],
@@ -108,6 +110,7 @@ export default {
     })
     const {
       clientRect,
+      updateClientRect,
     } = useClientRect(clientRectProps)
 
     const {
@@ -158,6 +161,7 @@ export default {
       if (document.activeElement !== inputElement.value) {
         inputElement.value.focus()
       }
+      updateClientRect()
       if (!isFocused.value) {
         isFocused.value = true
 
@@ -276,13 +280,15 @@ export default {
         inputmode: inputmode.value,
         readonly: isReadonly.value,
         disabled: isDisabled.value,
+        autocomplete: props.autocomplete,
+        'aria-label': props.ariaLabel,
+        'aria-autocomplete': props.ariaAutocomplete,
         onFocus: onFocus,
         onBlur: onBlur,
         onInput: onInput,
         onChange: onChange,
         onKeyDown: onKeyDown,
       }
-      if (props.autocomplete === 'off') data.autocomplete = 'off'
       if (props.size) data.size = props.size
       if (props.pattern) data.pattern = props.pattern
       if (props.mask) {

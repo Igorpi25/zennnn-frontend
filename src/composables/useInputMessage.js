@@ -1,4 +1,4 @@
-import { h, ref, computed, watch } from 'vue'
+import { h, computed } from 'vue'
 
 import Menu from '../components/Base/Menu'
 
@@ -25,30 +25,13 @@ export const useInputMessage = (props, {
     return showPatternMismatch.value || showError
   })
 
-  // TODO: messages menu hide animation problem
-  // when error messages cleared before animation end
-  const messageToDisplay = ref('')
-  let messageToDisplayTimeout = null
-  watch(messagesToDisplay, (val) => {
-    const [message] = val
-    if (!message) {
-      messageToDisplayTimeout = setTimeout(() => {
-        messageToDisplay.value = message
-      }, 200)
-    } else {
-      clearTimeout(messageToDisplayTimeout)
-      messageToDisplayTimeout = null
-      messageToDisplay.value = message
-    }
-  })
-
   // TODO: popper activator can be virtual
   const genInputMessages = () => {
     if (!showDetails.value || !controlElement.value) return null
 
     const message = showPatternMismatch.value
       ? props.patternMessage
-      : messageToDisplay.value
+      : messagesToDisplay.value[0]
 
     return h(Menu, {
       modelValue: showPopupMessage.value,

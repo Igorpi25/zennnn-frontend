@@ -157,6 +157,7 @@ export default {
       if (document.activeElement !== inputElement.value) {
         inputElement.value.focus()
       }
+      updateClientRect()
       if (!isFocused.value) {
         isFocused.value = true
 

@@ -2,7 +2,7 @@
   <div class="p-6">
     <Form
       ref="form"
-      v-model="formValidity"
+      v-model:valid="formValidity"
       @submit="onSubmit"
     >
       <TextField
@@ -11,19 +11,23 @@
         :label="$t('pricing.nameLabel')"
         :placeholder="$t('pricing.namePlaceholder')"
         :rules="[rules.required]"
-        autofocus
+        :hide-details="false"
         type="text"
-        name="full-name"
+        name="name"
+        autocomplete="name"
+        aria-label="name input"
         class="pb-4"
       />
       <TextField
         v-model="email"
         :label="$t('pricing.emailLabel')"
         :rules="[rules.required, rules.email]"
+        :hide-details="false"
         placeholder="example@mail.com"
         type="email"
-        autocomplete="on"
         name="email"
+        autocomplete="email"
+        aria-label="email input"
         class="pb-6"
       />
     </Form>
@@ -39,9 +43,9 @@
       </Btn>
       <Btn
         :loading="loading"
-        :disabled="formValidity"
+        :disabled="!formValidity"
         :class="[
-          formValidity ? 'bg-gray-100 text-white cursor-not-allowed' : '',
+          !formValidity ? 'bg-gray-100 text-white cursor-not-allowed' : '',
           { 'sm:ml-3': hasCancel },
         ]"
         :min-width="!hasCancel ? 185 : undefined"

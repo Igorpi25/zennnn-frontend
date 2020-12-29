@@ -28,7 +28,7 @@
         </h1>
         <Form
           ref="form"
-          v-model="formValidity"
+          v-model:valid="formValidity"
           @submit="onSubmit"
         >
           <TextField
@@ -80,8 +80,7 @@
     >
       <Form
         ref="compliteForm"
-        v-model="compliteFormValidity"
-        v-model:error-message="compliteErrorMessage"
+        v-model:valid="compliteFormValidity"
         class="mx-auto"
       >
         <TextField
@@ -103,7 +102,6 @@
           minlength="8"
           validate-on-blur
           state-icon
-          state-icon-on-validate
           required
         >
           <template v-slot:append>
@@ -116,6 +114,15 @@
             </div>
           </template>
         </TextField>
+        <Alert
+          v-model="compliteErrorMessage"
+          close
+          color="error"
+          class="mb-6"
+          transition="slide-y-transition"
+        >
+          {{ compliteErrorMessage }}
+        </Alert>
         <Btn
           :loading="compliteLoading"
           class="w-full sm:w-48"
@@ -129,6 +136,7 @@
 </template>
 
 <script>
+import Alert from '../../components/Base/Alert'
 import Btn from '../../components/Base/Btn'
 import Form from '../../components/Base/Form'
 import TextField from '../../components/Base/TextField'
@@ -137,6 +145,7 @@ import LocalePicker from '../../components/LocalePicker.vue'
 export default {
   name: 'Login',
   components: {
+    Alert,
     Btn,
     Form,
     TextField,

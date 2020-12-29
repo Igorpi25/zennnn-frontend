@@ -44,30 +44,36 @@
         </h1>
         <Form
           ref="form"
-          v-model="formValidity"
+          v-model:valid="formValidity"
           @submit="onSubmit"
         >
           <TextField
             v-model="formModel.login"
             :placeholder="$t('signin.login')"
             :rules="[rules.required, rules.email]"
+            :hide-details="false"
             class="pb-6"
             type="email"
-            autocomplete="on"
-            name="login"
+            name="email"
+            autocomplete="email"
+            aria-label="email input"
             autofocus
             validate-on-blur
+            messages-on-focused
           />
           <TextField
             v-model="formModel.password"
             :placeholder="$t('signin.password')"
             :type="showPassword ? 'text' : 'password'"
             :rules="[rules.required, rules.passwordMinLength]"
+            :hide-details="false"
             class="pb-6"
             name="password"
-            autocomplete="on"
+            autocomplete="current-password"
+            aria-label="password input"
             minlength="8"
             validate-on-blur
+            messages-on-focused
           >
             <template v-slot:append>
               <Icon
@@ -87,7 +93,7 @@
             </router-link>
           </div>
           <Btn
-            :disabled="formValidity"
+            :disabled="!formValidity"
             :loading="loading"
             class="w-full sm:w-48"
             @click="onSubmit"
@@ -105,15 +111,15 @@
       v-model="compliteFormDialog"
       max-width="385"
       persistent
-      content-class="p-5 bg-gray-900"
     >
       <Form
         ref="compliteForm"
-        v-model="compliteFormValidity"
-        :title="$t('signup.registration')"
-        v-model:error-message="compliteErrorMessage"
-        class="mx-auto"
+        v-model:valid="compliteFormValidity"
+        class="mx-auto p-5"
       >
+        <h4 class="text-xl pb-6">
+          {{ $t('signup.registration') }}
+        </h4>
         <div class="w-full pb-6">
           <p class="text-white">
             <span>{{ $t('signup.compliteRegistration') }}</span>&nbsp;
@@ -126,58 +132,66 @@
           v-model="compliteFormModel.firstName"
           :placeholder="$t('signup.firstName')"
           :rules="[rules.required]"
+          :hide-details="false"
           class="pb-6"
-          name="firstName"
-          autocomplete="on"
+          name="given-name"
+          autocomplete="given-name"
+          aria-label="given name input"
           autofocus
           force-validate
           validate-on-blur
           state-icon
-          state-icon-on-validate
           required
+          messages-on-focused
         />
         <TextField
           v-model="compliteFormModel.lastName"
           :placeholder="$t('signup.lastName')"
           :rules="[rules.required]"
+          :hide-details="false"
           class="pb-6"
-          name="lastName"
-          autocomplete="on"
+          name="family-name"
+          autocomplete="family-name"
+          aria-label="family name input"
           force-validate
           validate-on-blur
           state-icon
-          state-icon-on-validate
           required
+          messages-on-focused
         />
         <TextField
           ref="email"
           v-model="compliteFormModel.email"
           :placeholder="$t('signin.login')"
           :rules="[rules.required, rules.email]"
+          :hide-details="false"
           class="pb-6"
           type="email"
           name="email"
-          autocomplete="on"
+          autocomplete="email"
+          aria-label="email input"
           disabled
           force-validate
           validate-on-blur
           state-icon
-          state-icon-on-validate
           required
+          messages-on-focused
         />
         <TextField
           v-model="compliteFormModel.password"
           :placeholder="$t('signup.password')"
           :type="compliteShowPassword ? 'text' : 'password'"
           :rules="[rules.required, rules.passwordMinLength]"
+          :hide-details="false"
           class="pb-6"
-          name="password"
-          autocomplete="on"
+          name="new-password"
+          autocomplete="new-password"
+          aria-label="new password input"
           minlength="8"
           validate-on-blur
           state-icon
-          state-icon-on-validate
           required
+          messages-on-focused
         >
           <template v-slot:append>
             <Icon
@@ -190,13 +204,22 @@
         </TextField>
         <Checkbox
           :rules="[rules.check]"
-          lazy-validation
+          :hide-details="false"
           class="pb-6"
         >
           <span class="ml-3 float-left" v-html="policyHtml" />
         </Checkbox>
+        <Alert
+          v-model="compliteErrorMessage"
+          close
+          color="error"
+          class="mb-6"
+          transition="slide-y-transition"
+        >
+          {{ compliteErrorMessage }}
+        </Alert>
         <Btn
-          :disabled="compliteFormValidity"
+          :disabled="!compliteFormValidity"
           :loading="compliteLoading"
           class="w-full sm:w-48"
           @click="completeNewPassword"
@@ -216,6 +239,7 @@ import { COMPLITE_REGISTRATION, INIT_SPEC_SIMPLE_UI } from '../graphql/mutations
 
 import { ziVisible, ziHide } from '../assets/icons'
 
+import Alert from '../components/Base/Alert'
 import Icon from '../components/Base/Icon'
 import Btn from '../components/Base/Btn'
 import Form from '../components/Base/Form'
@@ -229,6 +253,7 @@ import LocalePicker from '../components/LocalePicker.vue'
 export default {
   name: 'SignIn',
   components: {
+    Alert,
     Icon,
     Btn,
     Form,

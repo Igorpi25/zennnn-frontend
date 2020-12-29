@@ -21,7 +21,7 @@ export default {
   name: 'Alert',
 
   props: {
-    modelValue: Boolean,
+    modelValue: [String, Boolean],
     color: {
       type: String,
       validator: (value) => {

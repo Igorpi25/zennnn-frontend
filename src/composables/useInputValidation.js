@@ -3,7 +3,6 @@ import {
   ref,
   computed,
   watch,
-  nextTick,
   onBeforeMount,
   onBeforeUnmount,
 } from 'vue'
@@ -128,7 +127,7 @@ export const useInputValidation = (props, { emit, id, internalValue, isFocused }
   watch(internalValue, () => {
     hasInput.value = true
     // skip validation if not focused
-    ;(props.validateOnBlur && !hasFocused.value) || nextTick(validate)
+    ;(props.validateOnBlur && !hasFocused.value) || validate()
   })
 
   // validate on blur
@@ -138,7 +137,7 @@ export const useInputValidation = (props, { emit, id, internalValue, isFocused }
       !isDisabled.value
     ) {
       hasFocused.value = true
-      props.validateOnBlur && nextTick(validate)
+      props.validateOnBlur && validate()
     }
   })
 

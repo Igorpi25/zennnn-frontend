@@ -92,7 +92,6 @@ export const useInput = (props, { slots, emit, id }) => {
   const genInput = (data) => {
     return h('input', {
       ref: inputElement,
-      modelValue: internalValue.value,
       name: props.name,
       required: props.required,
       readonly: props.readonly,

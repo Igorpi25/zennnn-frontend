@@ -398,7 +398,7 @@ export default {
       const data = {
         ref: contentElement,
         class: {
-          'text-left bg-white': true,
+          'text-left bg-white dark:bg-gray-800': true,
           'transform transition-transform': true,
           'inline-block overflow-auto pointer-events-auto max-h-full': true,
           'focus:outline-none shadow-xl': true,

@@ -15,7 +15,6 @@
           <WindowItem :value="1">
             <Form
               ref="emailForm"
-              v-model:error-message="emailErrorMessage"
               lazy-validation
             >
               <TextField
@@ -30,6 +29,15 @@
                 class="pb-6"
                 @input="emailErrorMessage = ''"
               />
+              <Alert
+                v-model="emailErrorMessage"
+                close
+                color="error"
+                class="mb-6"
+                transition="slide-y-transition"
+              >
+                {{ emailErrorMessage }}
+              </Alert>
               <div class="text-right">
                 <Btn
                   :loading="emailFormLoading"
@@ -44,7 +52,6 @@
           <WindowItem :value="2">
             <Form
               ref="inviteForm"
-              v-model:error-message="inviteErrorMessage"
               lazy-validation
             >
               <TextField
@@ -89,6 +96,15 @@
                 flat
                 class="pb-6"
               />
+              <Alert
+                v-model="inviteErrorMessage"
+                close
+                color="error"
+                class="mb-6"
+                transition="slide-y-transition"
+              >
+                {{ inviteErrorMessage }}
+              </Alert>
               <div class="flex flex-wrap sm:flex-nowrap justify-between">
                 <Btn
                   :disabled="inviteFormLoading"
@@ -129,6 +145,7 @@ import { GET_INVITE_USER_TO_ORG } from '../graphql/queries'
 import { INVITE_USER_TO_ORG } from '../graphql/mutations'
 import { LOCALES_LIST } from '../config/globals'
 
+import Alert from './Base/Alert'
 import Btn from './Base/Btn'
 import Modal from './Base/Modal'
 import Form from './Base/Form'
@@ -139,6 +156,7 @@ import { Window, WindowItem } from './Base/Window'
 export default {
   name: 'StaffCreateModal',
   components: {
+    Alert,
     Btn,
     Modal,
     Form,

@@ -60,6 +60,7 @@
             </Btn>
           </template>
           <PriceContactForm
+            ref="contactForm"
             has-cancel
             @cancel="contactDialog = false"
             @success="contactDialog = false"
@@ -94,7 +95,7 @@
 
 <script>
 import axios from 'axios'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
 import { ziChecked, ziUsers, ziEmail } from '../assets/icons'
@@ -130,6 +131,19 @@ export default {
     const listPrices = useResult(result)
 
     const contactDialog = ref(false)
+    const contactForm = ref(null)
+
+    watch(contactDialog, val => {
+      if (val) {
+        setTimeout(() => {
+          contactForm.value && contactForm.value.focus()
+        }, 200)
+      } else {
+        setTimeout(() => {
+          contactForm.value && contactForm.value.reset()
+        }, 200)
+      }
+    })
 
     return {
       icons: {
@@ -138,6 +152,7 @@ export default {
         ziChecked,
       },
       contactDialog,
+      contactForm,
       listPrices,
     }
   },
