@@ -36,7 +36,7 @@
         v-if="hasCancel"
         block
         outlined
-        class="border-gray-100 mb-3 sm:mb-0 sm:mr-3"
+        class="border-gray-100 sm:mr-3"
         @click="onCancel"
       >
         {{ $t('pricing.cancel') }}
@@ -46,7 +46,7 @@
         :disabled="!formValidity"
         :class="[
           !formValidity ? 'bg-gray-100 text-white cursor-not-allowed' : '',
-          { 'sm:ml-3': hasCancel },
+          { 'order-first sm:order-none mb-3 sm:mb-0 sm:ml-3': hasCancel },
         ]"
         :min-width="!hasCancel ? 185 : undefined"
         :block="hasCancel"
