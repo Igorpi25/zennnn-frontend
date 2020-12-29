@@ -12,7 +12,7 @@
   }
 
   .data-table td {
-    @apply h-12 p-1;
+    @apply h-12;
   }
 
   .data-table--single-line td {
