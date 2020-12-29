@@ -32,7 +32,7 @@ export default {
       required: true,
     },
     value: {
-      type: [Object, String],
+      type: [Object, String, Number],
       default: null,
     },
     disabled: {
