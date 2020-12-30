@@ -5,23 +5,12 @@
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          :content-class="[search ? 'shadow-blue-500' : '', 'bg-transparent']"
+          :control-class="search ? 'bg-transparent dark:bg-transparent ring-1 ring-blue-500' : 'bg-transparent dark:bg-transparent'"
+          :prepend-icon="icons.ziSearch"
           class="w-full lg:w-auto lg:flex-grow md:max-w-md pb-4 lg:pr-8"
-          input-class="placeholder-blue-500"
+          input-class="placeholder-blue-500 dark:placeholder-blue-500"
+          clearable
         >
-          <template v-slot:prepend>
-            <Icon class="text-gray-100">
-              {{ icons.ziSearch }}
-            </Icon>
-          </template>
-          <template v-slot:append v-if="search">
-            <Icon
-              class="text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100"
-              @click="search = null"
-            >
-              {{ icons.ziCloseDelete }}
-            </Icon>
-          </template>
         </TextField>
         <div class="h-11 flex lg:inline-flex overflow-x-auto scrolling-touch">
           <div
@@ -71,11 +60,11 @@
 
       <div class="overflow-x-auto scrolling-touch pb-4">
         <DataTable
+          v-model:sort-by="sortBy"
+          v-model:sort-desc="sortDesc"
           :headers="headers"
           :items="items"
           :search="search"
-          v-model:sort-by="sortBy"
-          v-model:sort-desc="sortDesc"
           :custom-filter="customFilter"
           :group-by="groupBy"
           :group-desc="groupDesc"
@@ -86,7 +75,7 @@
           hide-no-data
         >
           <template v-slot:[`header.dealsSearch-content`]>
-            <Tooltip top max-width="162">
+            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="162">
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -98,10 +87,10 @@
             </Tooltip>
           </template>
           <template v-slot:[`header.dealsCount-content`]>
-            <Icon class="align-middle">
+            <Icon size="20" class="align-middle">
               {{ icons.ziBagDeal }}
             </Icon>
-            <Tooltip top>
+            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%">
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -113,13 +102,10 @@
             </Tooltip>
           </template>
           <template v-slot:[`header.prepayment-content`]>
-            <span class="inline-block align-middle mr-xs">
-              <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4.9 19.512V17.912C3.8 17.812 2.7 17.512 2 17.212L2.5 15.212C3.2 15.612 4.2 16.012 5.4 16.012C6.4 16.012 7.1 15.612 7.1 14.912C7.1 14.212 6.5 13.812 5.3 13.412C3.5 12.812 2.2 11.912 2.2 10.212C2.1 8.71196 3.2 7.51196 5 7.11196V5.51196H6.7V7.01196C7.9 7.01196 8.6 7.31196 9.2 7.51196L8.7 9.51196C8.3 9.31196 7.5 8.91196 6.2 8.91196C5.1 8.91196 4.7 9.41196 4.7 9.91196C4.7 10.512 5.3 10.812 6.8 11.412C8.9 12.112 9.7 13.112 9.7 14.612C9.7 16.112 8.6 17.412 6.6 17.812V19.512H4.9Z" fill="#404040"/>
-                <path d="M17 7.51196C14.2 7.51196 12 9.71196 12 12.512C12 15.312 14.2 17.512 17 17.512C19.8 17.512 22 15.312 22 12.512C22 9.71196 19.8 7.51196 17 7.51196ZM20.2 13.112H17.6V15.812H16.4V13.112H13.8V11.912H16.4V9.31196H17.6V12.012H20.2V13.112Z" fill="#404040"/>
-              </svg>
-            </span>
-            <Tooltip top max-width="152">
+            <Icon class="align-middle">
+              {{ icons.ziMoneyPlus }}
+            </Icon>
+            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="152">
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -131,13 +117,10 @@
             </Tooltip>
           </template>
           <template v-slot:[`header.debt-content`]>
-            <span class="inline-block align-middle mr-xs">
-              <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4.9 19.512V17.912C3.7 17.812 2.6 17.512 2 17.212L2.5 15.212C3.2 15.612 4.2 16.012 5.4 16.012C6.4 16.012 7.1 15.612 7.1 14.912C7.1 14.212 6.5 13.812 5.3 13.412C3.5 12.812 2.2 11.912 2.2 10.212C2.1 8.61199 3.2 7.41199 5 7.11199V5.41199H6.7V6.91199C7.9 7.01199 8.6 7.21199 9.2 7.51199L8.7 9.51199C8.3 9.31199 7.5 8.91199 6.2 8.91199C5.1 8.91199 4.7 9.41199 4.7 9.91199C4.7 10.512 5.3 10.812 6.8 11.412C8.9 12.112 9.7 13.112 9.7 14.612C9.7 16.112 8.6 17.412 6.6 17.812V19.612H4.9V19.512Z" fill="#404040"/>
-                <path d="M17 7.51196C14.2 7.51196 12 9.71196 12 12.512C12 15.312 14.2 17.512 17 17.512C19.8 17.512 22 15.312 22 12.512C22 9.71196 19.8 7.51196 17 7.51196ZM19.7 13.112H14.3V11.912H19.7V13.112Z" fill="#404040"/>
-              </svg>
-            </span>
-            <Tooltip top max-width="200">
+            <Icon class="align-middle">
+              {{ icons.ziMoneyMinus }}
+            </Icon>
+            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="200">
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -149,14 +132,10 @@
             </Tooltip>
           </template>
           <template v-slot:[`header.turnover-content`]>
-            <span class="inline-block align-middle mr-xs">
-              <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M11.0729 19.5713V17.9713C9.87285 17.8713 8.77285 17.5713 8.17285 17.2713L8.67285 15.2713C9.37285 15.6713 10.3729 16.0713 11.5729 16.0713C12.5729 16.0713 13.2729 15.6713 13.2729 14.9713C13.2729 14.2713 12.6729 13.8713 11.4729 13.4713C9.67285 12.8713 8.37285 11.9713 8.37285 10.2713C8.37285 8.77129 9.47285 7.57129 11.2729 7.17129V5.57129H12.9729V7.07129C14.1729 7.17129 14.8729 7.37129 15.4729 7.67129L14.8729 9.57129C14.4729 9.37129 13.6729 8.97129 12.3729 8.97129C11.2729 8.97129 10.8729 9.47129 10.8729 9.97129C10.8729 10.5713 11.4729 10.8713 12.9729 11.4713C15.0729 12.1713 15.8729 13.1713 15.8729 14.6713C15.8729 16.1713 14.7729 17.4713 12.7729 17.8713V19.5713H11.0729Z" fill="#404040"/>
-                <path d="M15.9726 1.27137C15.0726 0.871371 14.1726 0.671371 13.2726 0.571371C7.0726 -0.0286289 1.4726 3.97137 0.272596 10.0714C-0.227404 12.4714 -0.0274037 14.7714 0.772596 16.8714C0.972596 17.2714 1.4726 17.4714 1.8726 17.2714C2.1726 17.0714 2.3726 16.6714 2.1726 16.3714C1.6726 15.0714 1.4726 13.7714 1.4726 12.2714C1.6726 7.17137 5.6726 2.77137 10.6726 2.17137C12.2726 1.97137 13.8726 2.17137 15.2726 2.67137L14.9726 3.37137L19.1726 3.97137C19.4726 3.97137 19.5726 3.67137 19.3726 3.47137L16.4726 0.571371L15.9726 1.27137Z" fill="#404040"/>
-                <path d="M7.97241 23.7714C8.87241 24.1714 9.77241 24.3714 10.6724 24.4714C16.8724 25.0714 22.4724 21.1714 23.7724 15.0714C24.2724 12.6714 24.0724 10.3714 23.2724 8.27142C22.9724 7.77142 22.5724 7.57142 22.1724 7.87142C21.8724 8.07142 21.6724 8.47142 21.8724 8.77142C22.3724 10.0714 22.5724 11.3714 22.5724 12.8714C22.3724 17.9714 18.3724 22.3714 13.3724 22.9714C11.7724 23.1714 10.1724 22.9714 8.77241 22.4714L9.07241 21.7714L4.87241 21.1714C4.57241 21.1714 4.47241 21.4714 4.67241 21.6714L7.77241 24.5714L7.97241 23.7714Z" fill="#404040"/>
-              </svg>
-            </span>
-            <Tooltip top max-width="135">
+            <Icon class="align-middle">
+              {{ icons.ziMoneyTernover }}
+            </Icon>
+            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="135">
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -277,11 +256,9 @@
           },
         })"
       >
-        <template v-slot:icon>
-          <Icon class="text-gray-100">
-            {{ icons.ziUserPlus }}
-          </Icon>
-        </template>
+        <Icon class="text-gray-200 mr-sm">
+          {{ icons.ziUserPlus }}
+        </Icon>
         <span>{{ $t('clients.createClient') }}</span>
       </Btn>
     </div>
@@ -292,7 +269,18 @@
 import { useRoute } from 'vue-router'
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziQuestionSign, ziSearch, ziCloseDelete, ziBagDeal, ziDelete, ziAction, ziUserPlus, ziPhone } from '../assets/icons'
+import {
+  ziSearch,
+  ziDelete,
+  ziBagDeal,
+  ziAction,
+  ziPhone,
+  ziUserPlus,
+  ziMoneyPlus,
+  ziMoneyMinus,
+  ziMoneyTernover,
+  ziQuestionSign,
+} from '../assets/icons'
 
 import { ClientType } from '../graphql/enums'
 import { LIST_CLIENTS } from '../graphql/queries'
@@ -338,7 +326,9 @@ export default {
         ziAction,
         ziPhone,
         ziUserPlus,
-        ziCloseDelete,
+        ziMoneyPlus,
+        ziMoneyMinus,
+        ziMoneyTernover,
         ziQuestionSign,
       },
       orgId,
