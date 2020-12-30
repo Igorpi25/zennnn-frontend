@@ -6,19 +6,12 @@
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          :content-class="[search ? 'shadow-blue-500' : '', 'bg-transparent']"
+          :control-class="search ? 'bg-transparent dark:bg-transparent ring-1 ring-blue-500' : 'bg-transparent dark:bg-transparent'"
+          :prepend-icon="icons.ziSearch"
           class="w-full md:max-w-md"
-          input-class="placeholder-blue-500"
+          input-class="placeholder-blue-500 dark:placeholder-blue-500"
+          clearable
         >
-          <template v-slot:prepend>
-            <i class="zi-magnifier text-2xl text-gray-100"></i>
-          </template>
-          <template v-slot:append v-if="search">
-            <i
-              class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
-              @click="search = null"
-            />
-          </template>
         </TextField>
       </div>
 
@@ -115,10 +108,9 @@
           </template>
           <template v-slot:[`header.more-content`]="{ header }">
             <span class="inline-flex items-center pt-3">
-              <img
-                src="@/assets/icons/earth.svg"
-                class="h-6 w-6 rounded-full mr-2"
-              >
+              <Icon class="mr-2">
+                {{ icons.ziGlobe }}
+              </Icon>
               <span>{{ header.text }}</span>
             </span>
           </template>
@@ -156,19 +148,19 @@
                       class="flex items-center jusitfy-center text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none cursor-pointer mr-2"
                       @click.prevent.stop="openEditItem(item)"
                     >
-                      <i class="zi-edit text-xl" />
+                      <Icon size="20">
+                        {{ icons.ziEdit }}
+                      </Icon>
                     </button>
                     <button
-                      class="flex items-center text-2xl text-blue-500 focus:text-blue-400 hover:text-blue-400 focus:outline-none select-none ml-auto"
+                      class="flex items-center text-blue-500 focus:text-blue-400 hover:text-blue-400 focus:outline-none ml-auto"
                     >
-                      <i
-                        v-if="expanded.includes(item.id)"
-                        class="zi-chevron-down"
-                      />
-                      <i
-                        v-else
-                        class="zi-chevron-up transform rotate-90"
-                      />
+                      <Icon
+                        class="transition-transform"
+                        :class="{ 'transform rotate-90': expanded.includes(item.id) }"
+                      >
+                        {{ icons.ziChevronRight }}
+                      </Icon>
                     </button>
                   </span>
                   <span v-else class="inline-flex items-center max-w-full">
@@ -230,9 +222,9 @@
         class="mt-4"
         @click="wordCreateDialog = true"
       >
-        <template v-slot:icon>
-          <i class="zi-edit text-gray-100 text-2xl" />
-        </template>
+        <Icon size="20" class="text-gray-200 mr-sm">
+          {{ icons.ziEdit }}
+        </Icon>
         <span>{{ $t('words.addWord') }}</span>
       </Btn>
     </div>
@@ -255,7 +247,13 @@
 import { useRoute } from 'vue-router'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziLanguages } from '../assets/icons'
+import {
+  ziEdit,
+  ziGlobe,
+  ziSearch,
+  ziLanguages,
+  ziChevronRight,
+} from '../assets/icons'
 
 import { LIST_WORDS } from '../graphql/queries'
 
@@ -307,7 +305,11 @@ export default {
       expanded: [],
       editItem: {},
       icons: {
+        ziEdit,
+        ziGlobe,
+        ziSearch,
         ziLanguages,
+        ziChevronRight,
       },
     }
   },
@@ -356,7 +358,7 @@ export default {
     items () {
       const items = (this.listWords && this.listWords.items) || []
       return items.map(item => {
-        const result = item
+        const result = Object.assign({}, item)
         const values = item.values || []
         LOCALES_LIST.forEach(locale => {
           const key = locale.value

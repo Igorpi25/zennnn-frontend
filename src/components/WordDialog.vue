@@ -1,6 +1,7 @@
 <template>
   <Modal
     v-model="dialog"
+    width="100%"
     :max-width="710"
   >
     <div class="relative bg-gray-400">
@@ -16,22 +17,19 @@
         >
           <TextField
             v-for="item in locales"
-            :value="model[item.key]"
+            :model-value="model[item.key]"
             :ref="item.value"
             :key="item.value"
             :placeholder="item.text"
             :rules="item.value === defaultLocale ? [rules.required] : undefined"
             :state-icon="item.value === defaultLocale"
             :required="item.value === defaultLocale"
-            :state-color="item.value === defaultLocale ? undefined : 'none'"
+            :state-succes-icon="item.value === defaultLocale ? icons.ziUser : undefined"
+            :state-succes-color="item.value === defaultLocale ? 'text-blue-500' : undefined"
             force-update
-            lazy-validation
             content-class="pr-sm"
-            state-icon-user
-            prepend-slot-class="w-auto"
-            append-slot-class="w-auto"
             @blur="onBlur(item.key)"
-            @input="onInput(item.key, $event)"
+            @update:model-value="onInput(item.key, $event)"
           >
             <template v-slot:prepend>
               <img
@@ -43,18 +41,14 @@
               v-if="item.value !== defaultLocale"
               v-slot:append
             >
-              <i v-if="googleTranslateIconMap[item.key]">
-                <Icon :base="false">
+              <i>
+                <Icon v-if="googleTranslateIconMap[item.key]" :base="false">
                   {{ icons.ziLanguages }}
                 </Icon>
+                <Icon v-else-if="model[item.key]" :base="false" class="text-blue-500">
+                  {{ icons.ziUser }}
+                </Icon>
               </i>
-              <div v-else-if="model[item.key]" class="px-1">
-                <i class="text-blue-500">
-                  <svg  width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.5754 8.01019C11.5124 8.31943 12.402 8.88729 13.1424 9.66794C14.3403 10.9308 15 12.5667 15 14.2742V15H0V14.2742C0 12.5667 0.659693 10.9308 1.85753 9.66797C2.59793 8.88737 3.48754 8.31947 4.42456 8.01019C3.49101 7.16821 2.90322 5.94991 2.90322 4.59677C2.90322 2.06211 4.96536 0 7.50002 0C10.0347 0 12.0968 2.06211 12.0968 4.59677C12.0968 5.94991 11.509 7.16821 10.5754 8.01019ZM7.49998 1.45161C5.76575 1.45161 4.35483 2.86254 4.35483 4.59677C4.35483 6.33101 5.76575 7.74193 7.49998 7.74193C9.23422 7.74193 10.6451 6.33101 10.6451 4.59677C10.6451 2.86254 9.23422 1.45161 7.49998 1.45161ZM6.04837 9.19355C4.06324 9.19355 1.86298 11.0122 1.50275 13.5484H13.4972C13.137 11.0122 10.9367 9.19355 8.95159 9.19355H6.04837Z" fill="currentColor" />
-                  </svg>
-                </i>
-              </div>
             </template>
           </TextField>
         </Form>
@@ -64,7 +58,9 @@
             :to="{ name: 'dictionary', params: { orgId } }"
             class="inline-flex items-center text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none mr-2"
           >
-            <i class="zi-edit text-2xl mr-sm" />
+            <Icon class="mr-sm">
+              {{ icons.ziEdit }}
+            </Icon>
             <span>{{ $t('header.dictionary') }}</span>
           </router-link>
           <div v-else-if="isAdmin">
@@ -73,7 +69,7 @@
               <Select
                 v-model="defaultLocaleLazy"
                 :items="locales"
-                :has-arrow-icon="false"
+                :show-arrow="false"
                 solo
                 hide-details
                 class="w-1/2"
@@ -102,17 +98,15 @@
         <div class="flex justify-between pt-8">
           <Btn
             :disabled="loading"
-            min-width="120"
             outlined
-            merge-class="border-gray-200 h-10 text-sm"
+            class="border-gray-200 h-10 text-sm"
             @click="dialog = false"
           >
             <span>{{ $t('action.cancel') }}</span>
           </Btn>
           <Btn
             :loading="loading"
-            merge-class="h-10 text-sm"
-            min-width="120"
+            class="h-10 text-sm"
             @click="onSubmit"
           >
             <span>{{ actionText ? actionText : create ? $t('action.add') : $t('action.apply') }}</span>
@@ -120,10 +114,12 @@
         </div>
       </div>
       <span
-        class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
+        class="absolute top-0 right-0 text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
         @click="dialog = false"
       >
-        <i class="zi-close" />
+        <Icon>
+          {{  icons.ziCloseDelete }}
+        </Icon>
       </span>
     </div>
   </Modal>
@@ -132,7 +128,13 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
-import { ziLanguages } from '../assets/icons'
+import {
+  ziEdit,
+  ziUser,
+  ziCloseDelete,
+  ziLanguages,
+  ziCheckedSm,
+} from '../assets/icons'
 
 import { LOCALES_LIST } from '../config/globals'
 import { CREATE_WORD, UPDATE_WORD } from '../graphql/mutations'
@@ -174,11 +176,19 @@ export default {
     isAdmin: Boolean,
     submitResult: Boolean,
   },
+  emits: ['update:modelValue'],
   setup () {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
     return {
+      icons: {
+        ziEdit,
+        ziUser,
+        ziCloseDelete,
+        ziLanguages,
+        ziCheckedSm,
+      },
       apolloClient,
     }
   },
@@ -190,9 +200,6 @@ export default {
       model: {},
       rules: {
         required: v => !!v || this.$t('rule.required'),
-      },
-      icons: {
-        ziLanguages,
       },
       translateLoading: false,
       translations: {},
@@ -254,7 +261,7 @@ export default {
       this.dialog = val
     },
     dialog (val) {
-      this.$emit('input', val)
+      this.$emit('update:modelValue', val)
       if (val) {
         this.onOpen()
       } else {

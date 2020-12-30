@@ -249,10 +249,9 @@
             </template>
             <template v-slot:[`header.more-content`]="{ header }">
               <span class="inline-flex items-center pt-3">
-                <img
-                  src="@/assets/icons/earth.svg"
-                  class="h-6 w-6 rounded-full mr-2"
-                >
+                <Icon class="mr-2">
+                  {{ icons.ziGlobe }}
+                </Icon>
                 <span>{{ header.text }}</span>
               </span>
             </template>
@@ -412,7 +411,12 @@
 import { computed, ref, watch } from 'vue'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziLanguages, ziUserCircle } from '../../assets/icons'
+import {
+  ziEdit,
+  ziGlobe,
+  ziLanguages,
+  ziUserCircle,
+} from '../../assets/icons'
 
 import { LIST_WORDS } from '../../graphql/admin/queries'
 import { APPROVE_WORDS, HIDE_WORDS, MERGE_WORDS } from '../../graphql/admin/mutations'
@@ -484,6 +488,12 @@ export default {
     })
 
     return {
+      icons: {
+        ziEdit,
+        ziGlobe,
+        ziLanguages,
+        ziUserCircle,
+      },
       apolloClient,
       loggedOut,
       queryLoading,
@@ -505,10 +515,6 @@ export default {
       wordMergeDialog: false,
       expanded: [],
       editItem: {},
-      icons: {
-        ziLanguages,
-        ziUserCircle,
-      },
       selected: [],
       selectAll: false,
       approveLoading: false,
@@ -604,7 +610,7 @@ export default {
       if (this.currentFilter === 'DUPLICATES') {
         const map = items.map(item => {
           let duplicatesSearch = ''
-          const result = item
+          const result = Object.assign({}, item)
           const values = item.values || []
           LOCALES_LIST.forEach(locale => {
             const key = locale.value
@@ -622,7 +628,7 @@ export default {
         return map
       }
       return items.map(item => {
-        const result = item
+        const result = Object.assign({}, item)
         const values = item.values || []
         LOCALES_LIST.forEach(locale => {
           const key = locale.value
