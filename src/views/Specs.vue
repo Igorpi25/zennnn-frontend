@@ -895,7 +895,7 @@ export default {
     goToSpec (specId) {
       this.$router.push({
         name: 'spec',
-        params: { specId },
+        params: { orgId: this.orgId, specId },
       })
     },
     createClient () {
