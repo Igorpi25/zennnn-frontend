@@ -164,6 +164,22 @@
 }
 
 @layer components {
+  /* Used in Welcome, PasswordRestore, PasswordRestoreConfirm, Paper, NotFound, SignInByPhone, Registration, LoginRestore */
+  .content {
+    @apply flex-grow flex flex-col relative overflow-x-hidden;
+  }
+
+  /* Signin, Signup views */
+  .auth-left {
+    width: 44%!important;
+  }
+  .auth-left--bg {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: -300px 380px;
+    background-image: url(../img/cloud.svg);
+  }
+
   /* override draggable */
   .draggable-mirror {
     z-index: 500!important;
@@ -399,11 +415,6 @@
   }
 }
 
-.content {
-  @apply flex-grow flex flex-col relative;
-  overflow-x: hidden;
-}
-
 /* TODO: should be removed */
 
 .header-profile-menu {
@@ -424,17 +435,6 @@
   pointer-events: none;
   background: transparent;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
-}
-
-/* Signin, Signup views */
-.auth-left {
-  width: 44%!important;
-}
-.auth-left--bg {
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: -300px 380px;
-  background-image: url(../img/cloud.svg);
 }
 
 .file-list__item .file-list__close {
