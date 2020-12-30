@@ -209,7 +209,7 @@ export default {
   emits: ['update:page', 'update:items-per-page', 'update:sort-by', 'update:sort-desc', 'update:group-by', 'update:group-desc'],
 
   setup (props, { slots, emit }) {
-    const { locale } = useI18n()
+    const { locale, t } = useI18n()
 
     const internalOptions = ref({
       page: props.page,
@@ -482,8 +482,19 @@ export default {
       ])
     }
 
+    const genNoResult = () => {
+      return h('tr', {
+        key: 'no-result',
+        class: 'text-center pointer-events-none',
+      }, h('td', {
+        colspan: computedHeaders.value.length,
+      }, t('dataTable.noResult')))
+    }
+
     const genSlotItems = () => {
-      return slots.items({ items: computedItems.value })
+      return filteredItems.value.length === 0
+        ? genNoResult()
+        : slots.items({ items: computedItems.value })
     }
 
     const genDefaultItems = () => {
