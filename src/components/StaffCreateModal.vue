@@ -1,164 +1,155 @@
 <template>
-  <Modal
+  <Dialog
     v-model="dialog"
-    :max-width="458"
+    :icon="icons.ziUserPlus"
+    :title="$t('staff.addStaff')"
   >
-    <div class="relative bg-gray-400">
-      <div class="bg-gray-500 flex items-center text-lg text-white font-semibold px-8 py-5">
-        <i class="zi-user-plus text-3xl text-blue-500 mr-4" />
-        <div>
-          {{ $t('staff.addStaff') }}
-        </div>
-      </div>
-      <div class="text-gray-100 px-8 pt-6 pb-8">
-        <Window v-model="invitationStep">
-          <WindowItem :value="1">
-            <Form
-              ref="emailForm"
-              lazy-validation
+    <Window v-model="invitationStep" class="p-6">
+      <WindowItem :value="1">
+        <Form
+          ref="emailForm"
+          lazy-validation
+        >
+          <TextField
+            ref="email"
+            v-model="emailFormModel.email"
+            :label="$t('staff.login')"
+            :rules="[rules.required, rules.email]"
+            :hide-details="false"
+            placeholder="example@mail.com"
+            validate-on-blur
+            type="email"
+            name="email"
+            class="pb-6"
+            @update:model-value="emailErrorMessage = ''"
+          />
+          <Alert
+            v-model="emailErrorMessage"
+            close
+            color="error"
+            class="mb-6"
+            transition="slide-y-transition"
+          >
+            {{ emailErrorMessage }}
+          </Alert>
+          <div class="text-right">
+            <Btn
+              :loading="emailFormLoading"
+              @click="getInviteUser"
             >
-              <TextField
-                ref="email"
-                v-model="emailFormModel.email"
-                :label="$t('staff.login')"
-                :rules="[rules.required, rules.email]"
-                placeholder="example@mail.com"
-                validate-on-blur
-                type="email"
-                name="email"
-                class="pb-6"
-                @input="emailErrorMessage = ''"
-              />
-              <Alert
-                v-model="emailErrorMessage"
-                close
-                color="error"
-                class="mb-6"
-                transition="slide-y-transition"
-              >
-                {{ emailErrorMessage }}
-              </Alert>
-              <div class="text-right">
-                <Btn
-                  :loading="emailFormLoading"
-                  min-width="120"
-                  @click="getInviteUser"
-                >
-                  <span>{{ $t('staff.next') }}</span>
-                </Btn>
-              </div>
-            </Form>
-          </WindowItem>
-          <WindowItem :value="2">
-            <Form
-              ref="inviteForm"
-              lazy-validation
+              <span>{{ $t('staff.next') }}</span>
+            </Btn>
+          </div>
+        </Form>
+      </WindowItem>
+      <WindowItem :value="2">
+        <Form
+          ref="inviteForm"
+          lazy-validation
+        >
+          <TextField
+            ref="givenNameInput"
+            v-model="inviteFormModel.givenName"
+            :label="$t('staff.firstName')"
+            :placeholder="$t('staff.firstName')"
+            :rules="[rules.required]"
+            :hide-details="false"
+            :readonly="!!inviteUser"
+            validate-on-blur
+            name="first-name"
+            autofocus
+            class="pb-2"
+          />
+          <TextField
+            v-model="inviteFormModel.familyName"
+            :label="$t('staff.lastName')"
+            :placeholder="$t('staff.lastName')"
+            :rules="[rules.required]"
+            :hide-details="false"
+            :readonly="!!inviteUser"
+            validate-on-blur
+            name="last-name"
+            class="pb-2"
+          />
+          <Select
+            v-model="inviteFormModel.role"
+            :label="$t('staff.access')"
+            :placeholder="$t('staff.access')"
+            :items="roles"
+            :rules="[rules.requiredSelect]"
+            :hide-details="false"
+            validate-on-blur
+            class="pb-2"
+          />
+          <Select
+            v-model="inviteFormModel.locale"
+            :label="$t('companyDetail.label.language')"
+            :placeholder="$t('companyDetail.label.language')"
+            :items="langs"
+            :rules="[rules.requiredSelect]"
+            :hide-details="false"
+            validate-on-blur
+            class="pb-6"
+          />
+          <Alert
+            v-model="inviteErrorMessage"
+            close
+            color="error"
+            class="mb-6"
+            transition="slide-y-transition"
+          >
+            {{ inviteErrorMessage }}
+          </Alert>
+          <div class="flex flex-wrap sm:flex-nowrap justify-between">
+            <Btn
+              :disabled="inviteFormLoading"
+              :class="inviteFormLoading ? 'text-gray-300 border-gray-200' : 'border-gray-200'"
+              outlined
+              class="w-full sm:w-1/2 order-1 sm:order-none sm:mr-3"
+              @click="invitationStep = 1"
             >
-              <TextField
-                ref="givenNameInput"
-                v-model="inviteFormModel.givenName"
-                :label="$t('staff.firstName')"
-                :placeholder="$t('staff.firstName')"
-                :rules="[rules.required]"
-                :readonly="!!inviteUser"
-                validate-on-blur
-                name="firstName"
-                autofocus
-                class="pb-2"
-              />
-              <TextField
-                v-model="inviteFormModel.familyName"
-                :label="$t('staff.lastName')"
-                :placeholder="$t('staff.lastName')"
-                :rules="[rules.required]"
-                :readonly="!!inviteUser"
-                validate-on-blur
-                name="lastName"
-                class="pb-2"
-              />
-              <Select
-                v-model="inviteFormModel.role"
-                :label="$t('staff.access')"
-                :placeholder="$t('staff.access')"
-                :items="roles"
-                :rules="[rules.requiredSelect]"
-                validate-on-blur
-                flat
-                class="pb-2"
-              />
-              <Select
-                v-model="inviteFormModel.locale"
-                :label="$t('companyDetail.label.language')"
-                :placeholder="$t('companyDetail.label.language')"
-                :items="langs"
-                :rules="[rules.requiredSelect]"
-                validate-on-blur
-                flat
-                class="pb-6"
-              />
-              <Alert
-                v-model="inviteErrorMessage"
-                close
-                color="error"
-                class="mb-6"
-                transition="slide-y-transition"
-              >
-                {{ inviteErrorMessage }}
-              </Alert>
-              <div class="flex flex-wrap sm:flex-nowrap justify-between">
-                <Btn
-                  :disabled="inviteFormLoading"
-                  :merge-class="inviteFormLoading ? 'text-gray-300 border-gray-200' : 'border-gray-200'"
-                  outlined
-                  class="w-full sm:w-1/2 order-1 sm:order-none sm:mr-3"
-                  @click="invitationStep = 1"
-                >
-                  <span>{{ $t('staff.back') }}</span>
-                </Btn>
-                <Btn
-                  :loading="inviteFormLoading"
-                  block
-                  class="w-full sm:w-1/2  mb-4 sm:mb-0 sm:ml-3"
-                  @click="submit"
-                >
-                  <span>{{ $t('staff.invite') }}</span>
-                </Btn>
-              </div>
-            </Form>
-          </WindowItem>
-        </Window>
-      </div>
-      <span
-        class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
-        @click="dialog = false"
-      >
-        <i class="zi-close" />
-      </span>
-    </div>
-  </Modal>
+              <span>{{ $t('staff.back') }}</span>
+            </Btn>
+            <Btn
+              :loading="inviteFormLoading"
+              block
+              class="w-full sm:w-1/2  mb-4 sm:mb-0 sm:ml-3"
+              @click="submit"
+            >
+              <span>{{ $t('staff.invite') }}</span>
+            </Btn>
+          </div>
+        </Form>
+      </WindowItem>
+    </Window>
+  </Dialog>
 </template>
 
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
+
+import { ziUserPlus } from '../assets/icons'
+
 import { Role } from '../graphql/enums'
 import { GET_INVITE_USER_TO_ORG } from '../graphql/queries'
 import { INVITE_USER_TO_ORG } from '../graphql/mutations'
+
 import { LOCALES_LIST } from '../config/globals'
 
 import Alert from './Base/Alert'
 import Btn from './Base/Btn'
-import Modal from './Base/Modal'
 import Form from './Base/Form'
 import Select from './Base/Select'
 import TextField from './Base/TextField'
 import { Window, WindowItem } from './Base/Window'
+import Dialog from './Dialog'
 
 export default {
   name: 'StaffCreateModal',
   components: {
     Alert,
     Btn,
-    Modal,
+    Dialog,
     Form,
     Select,
     TextField,
@@ -168,11 +159,15 @@ export default {
   props: {
     value: Boolean,
   },
+  emits: ['update:modelValue'],
   setup () {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
     return {
+      icons: {
+        ziUserPlus,
+      },
       apolloClient,
     }
   },
@@ -224,8 +219,14 @@ export default {
       this.dialog = val
     },
     dialog (val) {
-      this.$emit('input', val)
-      if (!val) {
+      this.$emit('update:modelValue', val)
+      if (val) {
+        setTimeout(() => {
+          if (this.invitationStep === 1 && this.$refs.email) {
+            this.$refs.email.focus()
+          }
+        }, 300)
+      } else {
         this.invitationStep = 1
         this.resetInviteForm()
       }

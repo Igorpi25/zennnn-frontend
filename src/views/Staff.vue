@@ -3,7 +3,7 @@
 
     <StaffCreateModal
       v-model="createStaffDialog"
-      @update="refetchItems"
+      @update:model-value="refetchItems"
     />
 
     <div class="container container--sm">
@@ -12,29 +12,22 @@
           <TextField
             v-model="search"
             :placeholder="$t('placeholder.pageSearch')"
-            :content-class="[search ? 'shadow-blue-500' : '', 'bg-transparent']"
+            :control-class="search ? 'bg-transparent dark:bg-transparent ring-1 ring-blue-500' : 'bg-transparent dark:bg-transparent'"
+            :prepend-icon="icons.ziSearch"
             class="w-full flex-shrink-0 md:max-w-md pb-4 md:pr-8"
-            input-class="placeholder-blue-500"
+            input-class="placeholder-blue-500 dark:placeholder-blue-500"
+            clearable
           >
-            <template v-slot:prepend>
-              <i class="zi-magnifier text-2xl text-gray-100"></i>
-            </template>
-            <template v-slot:append v-if="search">
-              <i
-                class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
-                @click="search = null"
-              />
-            </template>
           </TextField>
         </div>
 
         <div class="overflow-x-auto scrolling-touch pb-4">
           <DataTable
+            v-model:sort-by="sortBy"
+            v-model:sort-desc="sortDesc"
             :headers="headers"
             :items="items"
             :search="search"
-            v-model:sort-by="sortBy"
-            v-model:sort-desc="sortDesc"
             :group-by="['type']"
             :group-desc="[true]"
             table-width="100%"
@@ -133,17 +126,21 @@
                     <template v-else>
                       <button
                         v-if="item.isStaff"
-                        class="flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
+                        class="flex items-center text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none"
                         @click.stop.prevent="deleteUser(item.id)"
                       >
-                        <i class="zi-delete" />
+                        <Icon>
+                          {{ icons.ziDelete }}
+                        </Icon>
                       </button>
                       <button
                         v-else
-                        class="flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none"
+                        class="flex items-center text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none"
                         @click.stop.prevent="cancelInvitation(item.id)"
                       >
-                        <i class="zi-delete" />
+                        <Icon>
+                          {{ icons.ziDelete }}
+                        </Icon>
                       </button>
                     </template>
                   </td>
@@ -152,116 +149,120 @@
                       v-if="item.isStaff"
                       class="flex items-center text-2xl text-blue-500 focus:text-blue-400 hover:text-blue-400 focus:outline-none select-none mx-auto"
                     >
-                      <i
-                        v-if="expanded.includes(item.id)"
-                        class="zi-chevron-down"
-                      />
-                      <i
-                        v-else
-                        class="zi-chevron-up transform rotate-90"
-                      />
+                      <Icon
+                        class="transition-transform"
+                        :class="{ 'transform rotate-90': expanded.includes(item.id) }"
+                      >
+                        {{ icons.ziChevronRight }}
+                      </Icon>
                     </button>
                   </td>
                 </tr>
-                <template v-if="expanded.includes(item.id)">
-                  <tr
-                    :key="`expand-${item.id}`"
-                    class="expand bg-gray-700"
-                    style="background-color: #282828;"
-                  >
-                    <td :colspan="headers.length" class="relative p-0">
-                      <div
-                        class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
-                      />
-                      <div
-                        v-if="!item.specs || item.specs.length === 0"
-                        v-html="$t('dataTable.noData')"
-                        class="bg-gray-700 rounded-b-md text-center text-gray-200 leading-tight py-4 -mt-1"
-                      />
-                      <DataTable
-                        v-if="item.specs && item.specs.length > 0"
-                        :headers="subHeaders"
-                        :items="item.specs"
-                        hide-headers
-                        table-width="100%"
-                        table-class="table-fixed -mt-1"
-                        flat
-                        hide-no-data
-                      >
-                        <template v-slot:items="{ items: subItems }">
-                          <template v-for="(subItem, i) in subItems" :key="subItem.id">
-                            <tr class="bg-gray-700" style="background-color: #282828;">
-                              <td :width="subHeadersMap['status'].width" :style="{ width: subHeadersMap['status'].width, minWidth: subHeadersMap['status'].width }" class="bg-gray-700" :class="{ 'rounded-bl-md': i + 1 === subItems.length }">
-                                <div class="flex items-center justify-between">
-                                  <div class="w-3 h-3 flex items-center justify-center ml-5 mr-3">
-                                    <div
-                                      :class="[
-                                        'w-2 h-2 rounded-full',
-                                        subItem.specStatus === SpecStatus.IN_STOCK
-                                          ? 'bg-green-500' : subItem.specStatus === SpecStatus.IN_PRODUCTION
-                                            ? 'bg-yellow-500' : subItem.specStatus === SpecStatus.IN_PROCESSING
-                                              ? 'bg-pink-500' : 'bg-gray-800'
-                                      ]"
-                                    >
-                                    </div>
-                                  </div>
-                                  <div class="flex">
-                                    <div class="w-6 text-right">
-                                      <span v-if="subItem.isMoneyRecieved">+$</span>
-                                    </div>
-                                    <div class="w-6 text-right">
-                                      <span v-if="subItem.isExpensesPaid">-$</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td :width="subHeadersMap['diff'].width" :style="{ width: subHeadersMap['diff'].width, minWidth: subHeadersMap['diff'].width }" :class="['bg-gray-700 truncate text-right']">
-                                {{ $n(subItem.diff || 0) }}
-                              </td>
-                              <td :width="subHeadersMap['margin'].width" :style="{ width: subHeadersMap['margin'].width, minWidth: subHeadersMap['margin'].width }" class="bg-gray-700 truncate text-right">
-                                {{ $n(subItem.totalMargin) }}%
-                              </td>
-                              <td :width="subHeadersMap['revenue'].width" :style="{ width: subHeadersMap['revenue'].width, minWidth: subHeadersMap['revenue'].width }" class="bg-gray-700 truncate text-right">
-                                {{ $n(subItem.revenue || 0) }}
-                              </td>
-                              <td :width="subHeadersMap['totalItemsCost'].width" :style="{ width: subHeadersMap['totalItemsCost'].width, minWidth: subHeadersMap['totalItemsCost'].width }" class="bg-gray-700 truncate text-right">
-                                {{ $n(subItem.totalItemsCost || 0) }}
-                              </td>
-                              <td :width="subHeadersMap['specNo'].width" :style="{ width: subHeadersMap['specNo'].width, minWidth: subHeadersMap['specNo'].width }" class="bg-gray-700 truncate text-left leading-tight pl-16">
-                                <span class="whitespace-nowrap pl-5">
-                                  {{ subItem.specNo || '' }}
-                                </span>
-                              </td>
-                              <td :width="subHeadersMap['clientFullName'].width" :style="{ width: subHeadersMap['clientFullName'].width, minWidth: subHeadersMap['clientFullName'].width }" class="bg-gray-700 truncate text-left">
-                                <span class="whitespace-nowrap pl-5">
-                                  {{ subItem.clientFullName }}
-                                </span>
-                              </td>
-                              <td :width="subHeadersMap['actions'].width" :style="{ width: subHeadersMap['actions'].width, minWidth: subHeadersMap['actions'].width }" class="bg-gray-700 text-right">
-                                <router-link
-                                  :to="{
-                                    name: 'spec',
-                                    params: {
-                                      orgId,
-                                      specId: subItem.id,
-                                    },
-                                  }"
-                                  tabindex="-1"
-                                  class="align-middle text-2xl text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100 -mr-3"
+                <tr
+                  v-if="expanded.includes(item.id)"
+                  :key="`expand-${item.id}`"
+                  class="expand bg-gray-700"
+                  style="background-color: #282828;"
+                >
+                  <td :colspan="headers.length" class="relative p-0">
+                    <div
+                      class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
+                    />
+                    <div
+                      v-if="!item.specs || item.specs.length === 0"
+                      v-html="$t('dataTable.noData')"
+                      class="bg-gray-700 rounded-b-md text-center text-gray-200 leading-tight py-4 -mt-1"
+                    />
+                    <DataTable
+                      v-if="item.specs && item.specs.length > 0"
+                      :headers="subHeaders"
+                      :items="item.specs"
+                      :rounded="false"
+                      hide-headers
+                      table-width="100%"
+                      table-class="table-fixed -mt-1"
+                      hide-no-data
+                    >
+                      <template v-slot:items="{ items: subItems }">
+                        <tr
+                          v-for="(subItem, i) in subItems"
+                          :key="subItem.id"
+                          class="bg-gray-700"
+                          style="background-color: #282828;"
+                        >
+                          <td :width="subHeadersMap['status'].width" :style="{ width: subHeadersMap['status'].width, minWidth: subHeadersMap['status'].width }" class="bg-gray-700" :class="{ 'rounded-bl-md': i + 1 === subItems.length }">
+                            <div class="flex items-center justify-between">
+                              <div class="w-3 h-3 flex items-center justify-center ml-5 mr-3">
+                                <div
+                                  :class="[
+                                    'w-2 h-2 rounded-full',
+                                    subItem.specStatus === SpecStatus.IN_STOCK
+                                      ? 'bg-green-500' : subItem.specStatus === SpecStatus.IN_PRODUCTION
+                                        ? 'bg-yellow-500' : subItem.specStatus === SpecStatus.IN_PROCESSING
+                                          ? 'bg-pink-500' : 'bg-gray-800'
+                                  ]"
                                 >
-                                  <i class="zi-magnifier align-middle" />
-                                </router-link>
-                              </td>
-                              <td :width="subHeadersMap['shipped'].width" :style="{ width: subHeadersMap['shipped'].width, minWidth: subHeadersMap['shipped'].width }" class="bg-gray-700 text-center" :class="{ 'rounded-br-md': i + 1 === subItems.length }">
-                                <span v-if="subItem.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-cold-blue-400"></span>
-                              </td>
-                            </tr>
-                          </template>
-                        </template>
-                      </DataTable>
-                    </td>
-                  </tr>
-                </template>
+                                </div>
+                              </div>
+                              <div class="flex">
+                                <div class="w-6 text-right">
+                                  <span v-if="subItem.isMoneyRecieved">+$</span>
+                                </div>
+                                <div class="w-6 text-right">
+                                  <span v-if="subItem.isExpensesPaid">-$</span>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td :width="subHeadersMap['diff'].width" :style="{ width: subHeadersMap['diff'].width, minWidth: subHeadersMap['diff'].width }" :class="['bg-gray-700 truncate text-right']">
+                            {{ $n(subItem.diff || 0) }}
+                          </td>
+                          <td :width="subHeadersMap['margin'].width" :style="{ width: subHeadersMap['margin'].width, minWidth: subHeadersMap['margin'].width }" class="bg-gray-700 truncate text-right">
+                            <!-- TODO: vue error -->
+                            <!-- {{ $n(subItem.totalMargin) }}% -->
+                            {{ subItem.totalMargin }}%
+                          </td>
+                          <td :width="subHeadersMap['revenue'].width" :style="{ width: subHeadersMap['revenue'].width, minWidth: subHeadersMap['revenue'].width }" class="bg-gray-700 truncate text-right">
+                            {{ $n(subItem.revenue || 0) }}
+                          </td>
+                          <td :width="subHeadersMap['totalItemsCost'].width" :style="{ width: subHeadersMap['totalItemsCost'].width, minWidth: subHeadersMap['totalItemsCost'].width }" class="bg-gray-700 truncate text-right">
+                            {{ $n(subItem.totalItemsCost || 0) }}
+                          </td>
+                          <td :width="subHeadersMap['specNo'].width" :style="{ width: subHeadersMap['specNo'].width, minWidth: subHeadersMap['specNo'].width }" class="bg-gray-700 truncate text-left leading-tight pl-16">
+                            <span class="whitespace-nowrap pl-5">
+                              {{ subItem.specNo || '' }}
+                            </span>
+                          </td>
+                          <td :width="subHeadersMap['clientFullName'].width" :style="{ width: subHeadersMap['clientFullName'].width, minWidth: subHeadersMap['clientFullName'].width }" class="bg-gray-700 truncate text-left">
+                            <span class="whitespace-nowrap pl-5">
+                              {{ subItem.clientFullName }}
+                            </span>
+                          </td>
+                          <td :width="subHeadersMap['actions'].width" :style="{ width: subHeadersMap['actions'].width, minWidth: subHeadersMap['actions'].width, overflow: 'visible' }" class="bg-gray-700 text-right">
+                            <router-link
+                              :to="{
+                                name: 'spec',
+                                params: {
+                                  orgId,
+                                  specId: subItem.id,
+                                },
+                              }"
+                              tabindex="-1"
+                              class="align-middle text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100 -mr-3"
+                            >
+                              <Icon class="align-middle">
+                                {{ icons.ziSearch }}
+                              </Icon>
+                            </router-link>
+                          </td>
+                          <td :width="subHeadersMap['shipped'].width" :style="{ width: subHeadersMap['shipped'].width, minWidth: subHeadersMap['shipped'].width }" class="bg-gray-700 text-center" :class="{ 'rounded-br-md': i + 1 === subItems.length }">
+                            <span v-if="subItem.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-cold-blue-400"></span>
+                          </td>
+                        </tr>
+                      </template>
+                    </DataTable>
+                  </td>
+                </tr>
               </template>
             </template>
           </DataTable>
@@ -287,9 +288,9 @@
           class="mt-4"
           @click="createStaffDialog = true"
         >
-          <template v-slot:icon>
-            <i class="zi-user-plus text-gray-100 text-2xl" />
-          </template>
+          <Icon class="text-gray-200 mr-sm">
+            {{ icons.ziUserPlus }}
+          </Icon>
           <span>{{ $t('staff.addStaff') }}</span>
         </Btn>
       </div>
@@ -301,6 +302,13 @@
 import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
+import {
+  ziDelete,
+  ziSearch,
+  ziUserPlus,
+  ziChevronRight,
+} from '../assets/icons'
+
 import { LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
 import { SpecStatus, InvitationStatus } from '../graphql/enums'
@@ -308,6 +316,7 @@ import { SpecStatus, InvitationStatus } from '../graphql/enums'
 import { confirmDialog, wrapInArray } from '../util/helpers'
 
 import Btn from '../components/Base/Btn'
+import Icon from '../components/Base/Icon'
 import Progress from '../components/Base/Progress'
 import DataTable from '../components/Base/DataTable'
 import TextField from '../components/Base/TextField'
@@ -318,6 +327,7 @@ export default {
   name: 'Staff',
   components: {
     Btn,
+    Icon,
     Progress,
     DataTable,
     TextField,
@@ -339,6 +349,12 @@ export default {
     const listStaff = useResult(result)
 
     return {
+      icons: {
+        ziDelete,
+        ziSearch,
+        ziUserPlus,
+        ziChevronRight,
+      },
       apolloClient,
       orgId,
       loading,

@@ -41,9 +41,11 @@
     @apply rounded-r-md;
   }
   .data-table--rounded > tbody > tr.expanded > td:first-child {
+    @apply rounded-tl-md;
     @apply rounded-bl-none;
   }
   .data-table--rounded > tbody > tr.expanded > td:last-child {
+    @apply rounded-tr-md;
     @apply rounded-br-none;
   }
 

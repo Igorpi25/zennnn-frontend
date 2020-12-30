@@ -443,6 +443,7 @@ export default {
     }
 
     const genTHead = () => {
+      if (props.hideHeaders) return undefined
       const children = computedHeaders.value.map((header, i) => {
         if (slots[`header.${header.value}`]) return slots[`header.${header.value}`]({ value: header.value, header: header })
         return h('th', {
