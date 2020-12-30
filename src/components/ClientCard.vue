@@ -320,31 +320,31 @@ export default {
 
     const { result: result1, refetch: getOrgNextClientUidRefetch } = useQuery(GET_ORG_NEXT_CLIENT_UID, () => ({
       orgId: props.orgId,
-    }), {
+    }), () => ({
       enabled: () => props.create,
       fetchPolicy: 'network-only',
-    })
+    }))
     const getOrgNextClientUid = useResult(result1)
 
     const { result: result2, loading } = useQuery(GET_CLIENT, () => ({
       id: clientId,
-    }), {
+    }), () => ({
       enabled: () => !props.create,
       onResult: ({ data, loading }) => {
         if (loading) return
         setData(data && data.getClient)
       },
       fetchPolicy: 'cache-and-network',
-    })
+    }))
     const getClient = useResult(result2)
 
     const { result: result3, refetch: getClientGroupRefetch } = useQuery(GET_CLIENT_GROUP, () => ({
       orgId: props.orgId,
       groupId: groupId,
-    }), {
+    }), () => ({
       enabled: () => groupId,
       fetchPolicy: 'cache-and-network',
-    })
+    }))
     const getClientGroup = useResult(result3)
 
     // Methods
