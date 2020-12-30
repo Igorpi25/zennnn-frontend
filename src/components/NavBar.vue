@@ -11,27 +11,25 @@
         ]"
       >
         <router-link
+          v-slot="{ isExactActive, route }"
           :to="{
             name: item.name,
             params: item.params,
           }"
-          :exact="item.exact"
-          v-slot="{ href, navigate, isActive, isExactActive }"
+          class="text-xl leading-6 focus:outline-none focus:text-white hover:text-white duration-100 transition-color ease-out"
         >
-          <a
-            :href="href"
+          <span
             :class="[
-              'focus:outline-none focus:text-white hover:text-white border-b-2 border-transparent whitespace-nowrap text-xl leading-6 h-full flex items-center duration-100 transition-color ease-out',
+              'border-b-2 border-transparent whitespace-nowrap h-full flex items-center',
               {
-                'text-white border-blue-500 relative': isActive || isExactActive || ($route.name === 'specs' &&
-                  item.name === $route.name && $route.params.orgId &&
-                  ($route.query.clients || $route.query.clientType || $route.query.q ||  $route.query.sort || $route.query.desc || $route.query.group))
+                'text-white border-blue-500 relative': isExactActive || (route.name === 'specs' &&
+                  item.name === route.name && route.params.orgId &&
+                  (route.query.clients || route.query.clientType || route.query.q ||  route.query.sort || route.query.desc || route.query.group))
               },
             ]"
-            @click="navigate"
           >
             {{ item.text }}
-          </a>
+          </span>
         </router-link>
       </div>
     </div>
