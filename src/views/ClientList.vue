@@ -252,6 +252,7 @@
         @click="$router.push({
           name: 'client-create',
           query: {
+            orgId,
             clientType,
           },
         })"
@@ -568,6 +569,7 @@ export default {
       this.$router.push({
         name: 'client',
         params: {
+          orgId: this.orgId,
           groupId: item.groupId,
           clientId: item.id,
         },

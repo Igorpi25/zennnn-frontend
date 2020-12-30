@@ -190,6 +190,7 @@
           outlined
           class="mt-4"
           @click="$router.push({
+            orgId,
             name: 'supplier-create'
           })"
         >
@@ -414,7 +415,7 @@ export default {
     goToSupplier (supplierId) {
       this.$router.push({
         name: 'supplier',
-        params: { supplierId },
+        params: { orgId: this.orgId, supplierId },
       })
     },
     async deleteSupplier (id) {
