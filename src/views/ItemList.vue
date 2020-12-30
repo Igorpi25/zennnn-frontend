@@ -5,23 +5,12 @@
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          :content-class="[search ? 'shadow-blue-500' : '', 'bg-transparent']"
+          :control-class="search ? 'bg-transparent dark:bg-transparent ring-1 ring-blue-500' : 'bg-transparent dark:bg-transparent'"
+          :prepend-icon="icons.ziSearch"
           class="w-full lg:w-auto lg:flex-grow md:max-w-md pb-4 lg:pr-8"
-          input-class="placeholder-blue-500"
+          input-class="placeholder-blue-500 dark:placeholder-blue-500"
+          clearable
         >
-          <template v-slot:prepend>
-            <Icon class="text-gray-100">
-              {{ icons.ziSearch }}
-            </Icon>
-          </template>
-          <template v-slot:append v-if="search">
-            <Icon
-              class="text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100"
-              @click="search = null"
-            >
-              {{ icons.ziCloseDelete }}
-            </Icon>
-          </template>
         </TextField>
         <div class="order-1 sm:order-none h-11 flex lg:inline-flex overflow-x-auto scrolling-touch">
           <div
@@ -179,7 +168,11 @@ import { useRoute } from 'vue-router'
 
 // import { LIST_ITEMS } from '../graphql/queries'
 
-import { ziQuestionSign, ziQr, ziSearch, ziCloseDelete } from '../assets/icons'
+import {
+  ziQr,
+  ziSearch,
+  ziQuestionSign,
+} from '../assets/icons'
 
 import { getObjectValueByPath } from '../util/helpers'
 
@@ -215,12 +208,11 @@ export default {
       icons: {
         ziQr,
         ziSearch,
-        ziCloseDelete,
         ziQuestionSign,
       },
       loading: false,
       orgId,
-      // listItems,
+      listItems: {},
     }
   },
   data () {
