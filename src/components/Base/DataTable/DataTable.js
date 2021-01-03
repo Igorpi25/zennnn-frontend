@@ -537,7 +537,7 @@ export default {
             style: { background: 'transparent' },
           }, h('td', {
             colspan: computedHeaders.value.length,
-            style: { height: '32px', paddingLeft: '51px' },
+            style: { height: i === 0 ? '16px' : '32px', paddingLeft: '51px' },
             class: 'text-gray-200 text-base leading-tight align-bottom p-0',
           }, [
             h('span', {

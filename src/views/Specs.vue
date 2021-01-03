@@ -181,7 +181,7 @@
         </template>
 
         <template v-slot:items="{ items }">
-          <template v-for="(item) in items">
+          <template v-for="(item, i) in items">
             <tr
               v-if="item.group"
               :key="item.groupName"
@@ -189,7 +189,7 @@
             >
               <td
                 :colspan="headers.length"
-                :style="{ height: '32px', paddingLeft: '26px' }"
+                :style="{ height: i === 0 ? '16px' : '32px', paddingLeft: '26px' }"
                 class="text-gray-200 text-base leading-tight align-bottom p-0"
               >
                 <span class="text-white">{{ item.groupName }}</span> <span class="text-gray-200">({{ item.groupItemsCount }})</span>
