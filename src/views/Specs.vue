@@ -72,232 +72,223 @@
         </div>
       </div>
 
-      <div class="overflow-x-auto scrolling-touch pb-4">
-        <DataTable
-          v-model:sort-by="sortBy"
-          v-model:sort-desc="sortDesc"
-          :headers="headers"
-          :items="items"
-          :search="search"
-          :group-by="groupBy"
-          :group-desc="groupDesc"
-          :custom-group="customGroup"
-          table-width="100%"
-          table-class="table-fixed"
-          hoverable
-          hide-no-data
-        >
-          <template v-slot:[`header.status`]="{ header }">
-            <th
-              :width="header.width + 'px'"
-            >
-              <div class="ml-6 w-3 h-3 rounded-full border border-gray-400" />
-            </th>
-          </template>
-          <template v-slot:[`header.isMoneyRecieved`]="{ header }">
-            <th :width="header.width + 'px'">
-              <div class="flex items-center">
-                <Icon>
-                  {{ icons.ziMoneyPlus }}
-                </Icon>
-                <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%">
-                  <template v-slot:activator>
-                    <Icon class="text-blue-500 align-middle">
-                      {{ icons.ziQuestionSign }}
-                    </Icon>
-                  </template>
-                  <span>
-                    {{ $t('deals.moneyRecieved') }}
-                  </span>
-                </Tooltip>
-              </div>
-            </th>
-          </template>
-          <template v-slot:[`header.isExpensesPaid`]="{ header }">
-            <th :width="header.width + 'px'">
-              <div class="flex items-center">
-                <Icon>
-                  {{ icons.ziMoneyMinus }}
-                </Icon>
-                <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%">
-                  <template v-slot:activator>
-                    <Icon class="text-blue-500 align-middle">
-                      {{ icons.ziQuestionSign }}
-                    </Icon>
-                  </template>
-                  <span>
-                    {{ $t('deals.expensesPaid') }}
-                  </span>
-                </Tooltip>
-              </div>
-            </th>
-          </template>
-          <template v-slot:[`header.finalCost-content`]="{ header }">
-            <th :width="header.width + 'px'">
-              <Icon class="align-middle">
-                {{ icons.ziMoneyTernover }}
+      <DataTable
+        v-model:sort-by="sortBy"
+        v-model:sort-desc="sortDesc"
+        :headers="headers"
+        :items="items"
+        :search="search"
+        :group-by="groupBy"
+        :group-desc="groupDesc"
+        :custom-group="customGroup"
+        :loading="loading"
+        table-width="100%"
+        table-class="table-fixed"
+        hoverable
+      >
+        <template v-slot:header-status="{ header }">
+          <th
+            :width="header.width + 'px'"
+          >
+            <div class="ml-6 w-3 h-3 rounded-full border border-gray-400" />
+          </th>
+        </template>
+        <template v-slot:header-isMoneyRecieved="{ header }">
+          <th :width="header.width + 'px'">
+            <div class="flex items-center">
+              <Icon>
+                {{ icons.ziMoneyPlus }}
               </Icon>
-              <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="158">
+              <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%">
                 <template v-slot:activator>
                   <Icon class="text-blue-500 align-middle">
                     {{ icons.ziQuestionSign }}
                   </Icon>
                 </template>
                 <span>
-                  {{ $t('deals.turnoverHint') }}
+                  {{ $t('deals.moneyRecieved') }}
                 </span>
               </Tooltip>
-            </th>
-          </template>
-          <template v-slot:[`header.margin-content`]="{ header }">
-            <th :width="header.width + 'px'">
-              <span class="inline-block align-middle">%</span>
-              <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="158">
+            </div>
+          </th>
+        </template>
+        <template v-slot:header-isExpensesPaid="{ header }">
+          <th :width="header.width + 'px'">
+            <div class="flex items-center">
+              <Icon>
+                {{ icons.ziMoneyMinus }}
+              </Icon>
+              <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%">
                 <template v-slot:activator>
                   <Icon class="text-blue-500 align-middle">
                     {{ icons.ziQuestionSign }}
                   </Icon>
                 </template>
                 <span>
-                  {{ $t('deals.marginHint') }}
+                  {{ $t('deals.expensesPaid') }}
                 </span>
               </Tooltip>
-            </th>
-          </template>
-          <template v-slot:[`header.hasNewComment`]="{ header }">
-            <th :width="header.width + 'px'" />
-          </template>
-          <template v-slot:[`header.specNo-content`]="{ header }">
-            <span>
-              {{ header.text }}
-            </span>
-            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="220">
+            </div>
+          </th>
+        </template>
+        <template v-slot:header-hasNewComment="{ header }">
+          <th :width="header.width + 'px'" />
+        </template>
+        <template v-slot:header-content-finalCost="{ header }">
+          <th :width="header.width + 'px'">
+            <Icon class="align-middle">
+              {{ icons.ziMoneyTernover }}
+            </Icon>
+            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="158">
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
                 </Icon>
               </template>
-              <span v-html="$t('deals.numberHint')" />
+              <span>
+                {{ $t('deals.turnoverHint') }}
+              </span>
             </Tooltip>
-          </template>
-          <template v-slot:items="{ items }">
-            <template v-for="(item) in items">
-              <tr
-                v-if="item.group"
-                :key="item.groupName"
-                :style="{ background: 'transparent' }"
-              >
-                <td
-                  :colspan="headers.length"
-                  :style="{ height: '32px', paddingLeft: '26px' }"
-                  class="text-gray-200 text-base leading-tight align-bottom p-0"
-                >
-                  <span class="text-white">{{ item.groupName }}</span> <span class="text-gray-200">({{ item.groupItemsCount }})</span>
-                </td>
-              </tr>
-              <tr
-                v-else
-                :key="item.id"
-                class="cursor-default"
-                tabindex="0"
-                @click="goToSpec(item.id)"
-                @keydown.enter.exact.self="goToSpec(item.id)"
-              >
-                <td class="relative">
-                  <div
-                    :class="[
-                      'ml-6 w-3 h-3 rounded-full',
-                      item.specStatus === SpecStatus.IN_STOCK
-                      ? 'bg-green-500' : item.specStatus === SpecStatus.IN_PRODUCTION
-                        ? 'bg-yellow-500' : item.specStatus === SpecStatus.IN_PROCESSING
-                          ? 'bg-pink-500' : 'bg-gray-800'
-                    ]"
-                  />
-                </td>
-                <td class="text-center">
-                  <Icon v-if="item.isMoneyRecieved" class="text-gray-200 align-middle">
-                    {{ icons.ziChecked }}
-                  </Icon>
-                </td>
-                <td class="text-center">
-                  <Icon v-if="item.isExpensesPaid" class="text-gray-200 align-middle">
-                    {{ icons.ziChecked }}
-                  </Icon>
-                </td>
-                <td class="truncate text-right">{{ $n(item.finalCost || 0) }}</td>
-                <td class="truncate text-right text-gray-200">{{ item.margin || 0 }}%</td>
-                <td class="truncate pl-6 pr-2">{{ item.client.fullName }}</td>
-                <td class="truncate pr-2">{{ item.client.contactPersonFullName }}</td>
-                <td class="truncate pl-3">
-                  <span>
-                    <Tooltip placement="top-start" skidding="-16" origin="24px 100%">
-                      <template v-slot:activator>
-                        <Icon class="text-gray-200 align-middle">
-                          {{ icons.ziNumberOffDocument }}
-                        </Icon>
-                        <span v-if="item.specNoCount" class="align-middle text-light-gray-400">
-                          - {{ item.specNoCount }}
-                        </span>
-                      </template>
-                      <span>
-                        {{ item.specNo }}
-                      </span>
-                    </Tooltip>
-                  </span>
-                </td>
-                <td>
-                  {{ $d($parseDate(item.createdAt), 'short') }}
-                </td>
-                <td class="truncate pointer-events-none" @click.stop>
-                  <span v-if="item.client.contactPhone" class="pointer-events-auto">
-                    <a
-                      :href="`tel:${item.client.contactPhone}`"
-                      class="inline-block align-middle"
-                    >
-                      <Icon class="text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none">
-                        {{ icons.ziPhone }}
-                      </Icon>
-                    </a>
-                    <Icon class="text-gray-200 align-middle cursor-default ml-1">
-                      {{ icons.ziAction }}
-                    </Icon>
-                  </span>
-                </td>
-                <td class="truncate text-right">{{ (item.client.uid) }}</td>
-                <td class="text-center pointer-events-none" @click.prevent.stop>
-                  <button
-                    class="cursor-pointer pointer-events-auto flex items-center select-none mx-auto"
-                    @click="deleteSpec(item.id)"
-                  >
-                    <Icon class="text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none">
-                      {{ icons.ziDelete }}
-                    </Icon>
-                  </button>
-                </td>
-                <td>
-                  <span v-if="item.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-cold-blue-400"></span>
-                </td>
-                <td :class="{ 'bg-purple-500': item.hasNewComment }"></td>
-              </tr>
+          </th>
+        </template>
+        <template v-slot:header-content-margin="{ header }">
+          <th :width="header.width + 'px'">
+            <span class="inline-block align-middle">%</span>
+            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="158">
+              <template v-slot:activator>
+                <Icon class="text-blue-500 align-middle">
+                  {{ icons.ziQuestionSign }}
+                </Icon>
+              </template>
+              <span>
+                {{ $t('deals.marginHint') }}
+              </span>
+            </Tooltip>
+          </th>
+        </template>
+        <template v-slot:header-content-specNo="{ header }">
+          <span>
+            {{ header.text }}
+          </span>
+          <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="220">
+            <template v-slot:activator>
+              <Icon class="text-blue-500 align-middle">
+                {{ icons.ziQuestionSign }}
+              </Icon>
             </template>
+            <span v-html="$t('deals.numberHint')" />
+          </Tooltip>
+        </template>
+
+        <template v-slot:items="{ items }">
+          <template v-for="(item) in items">
+            <tr
+              v-if="item.group"
+              :key="item.groupName"
+              :style="{ background: 'transparent' }"
+            >
+              <td
+                :colspan="headers.length"
+                :style="{ height: '32px', paddingLeft: '26px' }"
+                class="text-gray-200 text-base leading-tight align-bottom p-0"
+              >
+                <span class="text-white">{{ item.groupName }}</span> <span class="text-gray-200">({{ item.groupItemsCount }})</span>
+              </td>
+            </tr>
+            <tr
+              v-else
+              :key="item.id"
+              class="cursor-default"
+              tabindex="0"
+              @click="goToSpec(item.id)"
+              @keydown.enter.exact.self="goToSpec(item.id)"
+            >
+              <td class="relative">
+                <div
+                  :class="[
+                    'ml-6 w-3 h-3 rounded-full',
+                    item.specStatus === SpecStatus.IN_STOCK
+                    ? 'bg-green-500' : item.specStatus === SpecStatus.IN_PRODUCTION
+                      ? 'bg-yellow-500' : item.specStatus === SpecStatus.IN_PROCESSING
+                        ? 'bg-pink-500' : 'bg-gray-800'
+                  ]"
+                />
+              </td>
+              <td class="text-center">
+                <Icon v-if="item.isMoneyRecieved" class="text-gray-200 align-middle">
+                  {{ icons.ziChecked }}
+                </Icon>
+              </td>
+              <td class="text-center">
+                <Icon v-if="item.isExpensesPaid" class="text-gray-200 align-middle">
+                  {{ icons.ziChecked }}
+                </Icon>
+              </td>
+              <td class="truncate text-right">{{ $n(item.finalCost || 0) }}</td>
+              <td class="truncate text-right text-gray-200">{{ item.margin || 0 }}%</td>
+              <td class="truncate pl-6 pr-2">{{ item.client.fullName }}</td>
+              <td class="truncate pr-2">{{ item.client.contactPersonFullName }}</td>
+              <td class="truncate pl-3">
+                <span>
+                  <Tooltip placement="top-start" skidding="-16" origin="24px 100%">
+                    <template v-slot:activator>
+                      <Icon class="text-gray-200 align-middle">
+                        {{ icons.ziNumberOffDocument }}
+                      </Icon>
+                      <span v-if="item.specNoCount" class="align-middle text-light-gray-400">
+                        - {{ item.specNoCount }}
+                      </span>
+                    </template>
+                    <span>
+                      {{ item.specNo }}
+                    </span>
+                  </Tooltip>
+                </span>
+              </td>
+              <td>
+                {{ $d($parseDate(item.createdAt), 'short') }}
+              </td>
+              <td class="truncate pointer-events-none" @click.stop>
+                <span v-if="item.client.contactPhone" class="pointer-events-auto">
+                  <a
+                    :href="`tel:${item.client.contactPhone}`"
+                    class="inline-block align-middle"
+                  >
+                    <Icon class="text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none">
+                      {{ icons.ziPhone }}
+                    </Icon>
+                  </a>
+                  <Icon class="text-gray-200 align-middle cursor-default ml-1">
+                    {{ icons.ziAction }}
+                  </Icon>
+                </span>
+              </td>
+              <td class="truncate text-right">{{ (item.client.uid) }}</td>
+              <td class="text-center pointer-events-none" @click.prevent.stop>
+                <button
+                  class="cursor-pointer pointer-events-auto flex items-center select-none mx-auto text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none"
+                  @click="deleteSpec(item.id)"
+                >
+                  <Icon>
+                    {{ icons.ziDelete }}
+                  </Icon>
+                </button>
+              </td>
+              <td>
+                <span v-if="item.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-cold-blue-400"></span>
+              </td>
+              <td :class="{ 'bg-purple-500': item.hasNewComment }"></td>
+            </tr>
           </template>
-        </DataTable>
-      </div>
-      <div
-        v-if="items.length === 0 && loading"
-        class="text-center text-gray-200 leading-tight py-4"
-      >
-        <Progress
-          indeterminate
-          size="24"
-          width="2"
-        />
-      </div>
-      <div
-        v-else-if="items.length === 0"
-        v-html="$t('deals.noData')"
-        class="text-center text-gray-200 leading-tight py-4"
-      />
+        </template>
+
+        <template v-slot:no-data>
+          <div
+            v-html="$t('deals.noData')"
+            class="text-center text-gray-200 leading-tight py-4"
+          />
+        </template>
+      </DataTable>
       <Btn
         v-if="canCreateSpec"
         block
@@ -433,7 +424,6 @@ import Icon from '../components/Base/Icon'
 import { Menu, MenuItem } from '../components/Base/Menu'
 import Modal from '../components/Base/Modal'
 import Tooltip from '../components/Base/Tooltip'
-import Progress from '../components/Base/Progress'
 import DataTable from '../components/Base/DataTable'
 import TextField from '../components/Base/TextField'
 import Select from '../components/Base/Select'
@@ -451,7 +441,6 @@ export default {
     MenuItem,
     Modal,
     Tooltip,
-    Progress,
     DataTable,
     TextField,
     Select,

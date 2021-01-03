@@ -13,7 +13,6 @@
           searchable
           item-value="id"
           item-text="fullName"
-          hide-no-data
           state-icon
           required
           @input="$emit('select-client', $event)"

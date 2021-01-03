@@ -13,17 +13,19 @@
         <DataTable
           :headers="headers"
           :items="items"
+          :scrollable="false"
           table-width="100%"
           class="relative"
           table-class="table-fixed"
           thead-class="text-sm"
           flat
         >
-          <template v-slot:[`header.atWhouse-content`]="{ header }">
+          <template v-slot:header-content-atWhouse="{ header }">
             <span class="inline-block truncate align-middle" style="max-width: 78px;">
               {{ header.text }}
             </span>
           </template>
+
           <template v-slot:top>
             <div class="flex">
               <div
@@ -93,6 +95,7 @@
               </div>
             </div>
           </template>
+
           <template v-slot:items="{ items }">
             <template
               v-for="(item, index) in items"

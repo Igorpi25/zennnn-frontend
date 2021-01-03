@@ -68,84 +68,74 @@
         </div>
       </div>
 
-      <div class="overflow-x-auto scrolling-touch pb-4">
-        <DataTable
-          :headers="headers"
-          :items="items"
-          :search="search"
-          v-model:sort-by="sortBy"
-          v-model:sort-desc="sortDesc"
-          :custom-filter="customFilter"
-          :group-by="groupBy"
-          :group-desc="groupDesc"
-          :custom-group="customGroup"
-          table-width="100%"
-          table-class="table-fixed rounded-tl-none lg:rounded-tl-md"
-          hoverable
-          hide-no-data
-        >
-          <template v-slot:[`header.price-content`]="{ header }">
-            <Tooltip top max-width="162">
-              <template v-slot:activator>
-                <span>
-                  <span class="mr-1">{{ header.text }}</span> <Icon class="align-middle text-blue-500">{{ icons.ziQuestionSign }}</Icon>
-                </span>
-              </template>
-              <span>
-                {{ $t('goods.priceHint') }}
-              </span>
-            </Tooltip>
-          </template>
-
-          <template v-slot:items="{ items }">
-            <template v-for="(item) in items">
-              <tr
-                v-if="item.group"
-                :key="item.groupName"
-                :style="{ background: 'transparent' }"
-              >
-                <td
-                  :colspan="headers.length"
-                  :style="{ height: '32px', paddingLeft: '51px' }"
-                  class="text-gray-200 text-base leading-tight align-bottom p-0"
-                >
-                  <span class="text-white">{{ item.groupName }}</span> ({{ item.groupItemsCount }})
-                </td>
-              </tr>
-              <tr
-                v-else
-                :key="item.id"
-                class="cursor-pointer"
-                tabindex="0"
-              >
-                <td></td>
-                <td class="truncate">{{ item.photo }}</td>
-                <td class="truncate">{{ item.name }}</td>
-                <td class="truncate text-right">{{ item.currency }}</td>
-                <td class="truncate text-right">{{ item.price }}</td>
-                <td class="truncate text-right">{{ $n(item.sold || 0) }}</td>
-                <td class="truncate text-right">{{ item.show }}</td>
-              </tr>
-            </template>
-          </template>
-
-        </DataTable>
-      </div>
-      <div
-        v-if="items.length === 0 && loading"
-        class="text-center text-gray-200 leading-tight py-4"
+      <DataTable
+        :headers="headers"
+        :items="items"
+        :search="search"
+        v-model:sort-by="sortBy"
+        v-model:sort-desc="sortDesc"
+        :custom-filter="customFilter"
+        :group-by="groupBy"
+        :group-desc="groupDesc"
+        :custom-group="customGroup"
+        :loading="loading"
+        table-width="100%"
+        table-class="table-fixed rounded-tl-none lg:rounded-tl-md"
+        hoverable
       >
-        <Progress
-          indeterminate
-          size="24"
-          width="2"
-        />
-      </div>
-      <div
-        v-else-if="items.length === 0"
-        v-html="$t('goods.noData')"
-        class="text-center text-gray-200 leading-tight py-4"
-      />
+        <template v-slot:header-content-price="{ header }">
+          <Tooltip top max-width="162">
+            <template v-slot:activator>
+              <span>
+                <span class="mr-1">{{ header.text }}</span> <Icon class="align-middle text-blue-500">{{ icons.ziQuestionSign }}</Icon>
+              </span>
+            </template>
+            <span>
+              {{ $t('goods.priceHint') }}
+            </span>
+          </Tooltip>
+        </template>
+
+        <template v-slot:items="{ items }">
+          <template v-for="(item) in items">
+            <tr
+              v-if="item.group"
+              :key="item.groupName"
+              :style="{ background: 'transparent' }"
+            >
+              <td
+                :colspan="headers.length"
+                :style="{ height: '32px', paddingLeft: '51px' }"
+                class="text-gray-200 text-base leading-tight align-bottom p-0"
+              >
+                <span class="text-white">{{ item.groupName }}</span> ({{ item.groupItemsCount }})
+              </td>
+            </tr>
+            <tr
+              v-else
+              :key="item.id"
+              class="cursor-default"
+              tabindex="0"
+            >
+              <td></td>
+              <td class="truncate">{{ item.photo }}</td>
+              <td class="truncate">{{ item.name }}</td>
+              <td class="truncate text-right">{{ item.currency }}</td>
+              <td class="truncate text-right">{{ item.price }}</td>
+              <td class="truncate text-right">{{ $n(item.sold || 0) }}</td>
+              <td class="truncate text-right">{{ item.show }}</td>
+            </tr>
+          </template>
+        </template>
+
+        <template v-slot:no-data>
+          <div
+            v-html="$t('goods.noData')"
+            class="text-center text-gray-200 leading-tight py-4"
+          />
+        </template>
+
+      </DataTable>
       <Btn
         block
         outlined
@@ -179,7 +169,6 @@ import { getObjectValueByPath } from '../util/helpers'
 import Btn from '../components/Base/Btn'
 import Icon from '../components/Base/Icon'
 import Tooltip from '../components/Base/Tooltip'
-import Progress from '../components/Base/Progress'
 import DataTable from '../components/Base/DataTable'
 import TextField from '../components/Base/TextField'
 
@@ -189,7 +178,6 @@ export default {
     Btn,
     Icon,
     Tooltip,
-    Progress,
     DataTable,
     TextField,
   },

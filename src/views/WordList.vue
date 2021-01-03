@@ -39,183 +39,173 @@
         </span>
       </div>
 
-      <div class="overflow-x-auto scrolling-touch pt-6 pb-4">
-        <DataTable
-          :headers="headers"
-          :items="items"
-          :search="search"
-          :group-by="groupBy"
-          :group-desc="groupDesc"
-          :custom-group="customGroup"
-          table-width="100%"
-          table-class="table-fixed"
-          hoverable
-          hide-no-data
-        >
-          <template v-slot:[`header.en-content`]="{ header }">
-            <span class="inline-flex items-center pt-3">
-              <img
-                :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
-                class="h-6 w-6 rounded-full mr-2"
-              >
-              <span>{{ header.text }}</span>
-            </span>
-          </template>
-          <template v-slot:[`header.fr-content`]="{ header }">
-            <span class="inline-flex items-center pt-3">
-              <img
-                :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
-                class="h-6 w-6 rounded-full mr-2"
-              >
-              <span>{{ header.text }}</span>
-            </span>
-          </template>
-          <template v-slot:[`header.zh-Hans-content`]="{ header }">
-            <span class="inline-flex items-center pt-3">
-              <img
-                :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
-                class="h-6 w-6 rounded-full mr-2"
-              >
-              <span>{{ header.text }}</span>
-            </span>
-          </template>
-          <template v-slot:[`header.zh-Hant-content`]="{ header }">
-            <span class="inline-flex items-center pt-3">
-              <img
-                :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
-                class="h-6 w-6 rounded-full mr-2"
-              >
-              <span>{{ header.text }}</span>
-            </span>
-          </template>
-          <template v-slot:[`header.ru-content`]="{ header }">
-            <span class="inline-flex items-center pt-3">
-              <img
-                :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
-                class="h-6 w-6 rounded-full mr-2"
-              >
-              <span>{{ header.text }}</span>
-            </span>
-          </template>
-          <template v-slot:[`header.uk-content`]="{ header }">
-            <span class="inline-flex items-center pt-3">
-              <img
-                :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
-                class="h-6 w-6 rounded-full mr-2"
-              >
-              <span>{{ header.text }}</span>
-            </span>
-          </template>
-          <template v-slot:[`header.more-content`]="{ header }">
-            <span class="inline-flex items-center pt-3">
-              <Icon class="mr-2">
-                {{ icons.ziGlobe }}
-              </Icon>
-              <span>{{ header.text }}</span>
-            </span>
-          </template>
-
-          <template v-slot:items="{ items }">
-            <template v-for="(item, index) in items">
-              <tr
-                v-if="item.group"
-                :key="item.groupName"
-                :style="{ background: 'transparent' }"
-              >
-                <td
-                  :colspan="headers.length"
-                  :style="{ height: '32px', paddingLeft: '12px' }"
-                  class="text-gray-200 text-base leading-tight align-bottom p-0"
-                >
-                  <span class="text-white">{{ item.groupName }}</span> ({{ item.groupItemsCount }})
-                </td>
-              </tr>
-              <tr
-                v-else
-                :key="index"
-                class="cursor-pointer"
-                :class="{ 'text-white expanded': expanded.includes(item.id) }"
-                tabindex="0"
-                @click="toggle(item.id)"
-              >
-                <td
-                  v-for="header in headers"
-                  :key="header.value"
-                  :class="['truncate px-3', { 'text-right': header.value === 'more' }]"
-                >
-                  <span v-if="header.value === 'more'" class="inline-flex items-center justify-end align-middle">
-                    <button
-                      class="flex items-center jusitfy-center text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none cursor-pointer mr-2"
-                      @click.prevent.stop="openEditItem(item)"
-                    >
-                      <Icon size="20">
-                        {{ icons.ziEdit }}
-                      </Icon>
-                    </button>
-                    <button
-                      class="flex items-center text-blue-500 focus:text-blue-400 hover:text-blue-400 focus:outline-none ml-auto"
-                    >
-                      <Icon
-                        class="transition-transform"
-                        :class="{ 'transform rotate-90': expanded.includes(item.id) }"
-                      >
-                        {{ icons.ziChevronRight }}
-                      </Icon>
-                    </button>
-                  </span>
-                  <span v-else class="inline-flex items-center max-w-full">
-                    <span class="flex-grow truncate">
-                      {{ item[header.key] }}
-                    </span>
-                    <i
-                      v-if="item[`${header.key}_ct`]"
-                      class="text-gray-200 flex-shrink-0 ml-1"
-                    >
-                      <Icon :base="false">
-                        {{ icons.ziLanguages }}
-                      </Icon>
-                    </i>
-                  </span>
-                </td>
-              </tr>
-              <tr
-                v-if="expanded.includes(item.id)"
-                :key="`expand-${item.id}`"
-                class="expand bg-transparent"
-                style="background-color: transparent;"
-              >
-                <td :colspan="headers.length" class="relative p-0">
-                  <div class="bg-gray-700 rounded-b-md py-2 px-3 -mt-1" style="min-height: 52px;">
-                    <WordSpecs
-                      :org-id="orgId"
-                      :word-id="item.id"
-                    />
-                  </div>
-                  <div
-                    class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
-                  />
-                </td>
-              </tr>
-            </template>
-          </template>
-
-        </DataTable>
-      </div>
-      <div
-        v-if="items.length === 0 && loading"
-        class="text-center text-gray-200 leading-tight py-4"
+      <DataTable
+        :headers="headers"
+        :items="items"
+        :search="search"
+        :group-by="groupBy"
+        :group-desc="groupDesc"
+        :custom-group="customGroup"
+        :loading="loading"
+        table-width="100%"
+        table-class="table-fixed"
+        hoverable
       >
-        <Progress
-          indeterminate
-          size="24"
-          width="2"
-        />
-      </div>
-      <div
-        v-else-if="items.length === 0"
-        v-html="$t('words.noData')"
-        class="text-center text-gray-200 leading-tight py-4"
-      />
+        <template v-slot:header-content-en="{ header }">
+          <span class="inline-flex items-center pt-3">
+            <img
+              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              class="h-6 w-6 rounded-full mr-2"
+            >
+            <span>{{ header.text }}</span>
+          </span>
+        </template>
+        <template v-slot:header-content-fr="{ header }">
+          <span class="inline-flex items-center pt-3">
+            <img
+              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              class="h-6 w-6 rounded-full mr-2"
+            >
+            <span>{{ header.text }}</span>
+          </span>
+        </template>
+        <template v-slot:header-content-zh-Hans="{ header }">
+          <span class="inline-flex items-center pt-3">
+            <img
+              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              class="h-6 w-6 rounded-full mr-2"
+            >
+            <span>{{ header.text }}</span>
+          </span>
+        </template>
+        <template v-slot:header-content-zh-Hant="{ header }">
+          <span class="inline-flex items-center pt-3">
+            <img
+              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              class="h-6 w-6 rounded-full mr-2"
+            >
+            <span>{{ header.text }}</span>
+          </span>
+        </template>
+        <template v-slot:header-content-ru="{ header }">
+          <span class="inline-flex items-center pt-3">
+            <img
+              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              class="h-6 w-6 rounded-full mr-2"
+            >
+            <span>{{ header.text }}</span>
+          </span>
+        </template>
+        <template v-slot:header-content-uk="{ header }">
+          <span class="inline-flex items-center pt-3">
+            <img
+              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              class="h-6 w-6 rounded-full mr-2"
+            >
+            <span>{{ header.text }}</span>
+          </span>
+        </template>
+        <template v-slot:header-content-more="{ header }">
+          <span class="inline-flex items-center pt-3">
+            <Icon class="mr-2">
+              {{ icons.ziGlobe }}
+            </Icon>
+            <span>{{ header.text }}</span>
+          </span>
+        </template>
+
+        <template v-slot:items="{ items }">
+          <template v-for="(item, index) in items">
+            <tr
+              v-if="item.group"
+              :key="item.groupName"
+              :style="{ background: 'transparent' }"
+            >
+              <td
+                :colspan="headers.length"
+                :style="{ height: '32px', paddingLeft: '12px' }"
+                class="text-gray-200 text-base leading-tight align-bottom p-0"
+              >
+                <span class="text-white">{{ item.groupName }}</span> ({{ item.groupItemsCount }})
+              </td>
+            </tr>
+            <tr
+              v-else
+              :key="index"
+              class="cursor-default"
+              :class="{ 'text-white expanded': expanded.includes(item.id) }"
+              tabindex="0"
+              @click="toggle(item.id)"
+            >
+              <td
+                v-for="header in headers"
+                :key="header.value"
+                :class="['truncate px-3', { 'text-right': header.value === 'more' }]"
+              >
+                <span v-if="header.value === 'more'" class="inline-flex items-center justify-end align-middle">
+                  <button
+                    class="flex items-center jusitfy-center text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none cursor-pointer mr-2"
+                    @click.prevent.stop="openEditItem(item)"
+                  >
+                    <Icon size="20">
+                      {{ icons.ziEdit }}
+                    </Icon>
+                  </button>
+                  <button
+                    class="flex items-center text-blue-500 focus:text-blue-400 hover:text-blue-400 focus:outline-none ml-auto"
+                  >
+                    <Icon
+                      class="transition-transform"
+                      :class="{ 'transform rotate-90': expanded.includes(item.id) }"
+                    >
+                      {{ icons.ziChevronRight }}
+                    </Icon>
+                  </button>
+                </span>
+                <span v-else class="inline-flex items-center max-w-full">
+                  <span class="flex-grow truncate">
+                    {{ item[header.key] }}
+                  </span>
+                  <i
+                    v-if="item[`${header.key}_ct`]"
+                    class="text-gray-200 flex-shrink-0 ml-1"
+                  >
+                    <Icon :base="false">
+                      {{ icons.ziLanguages }}
+                    </Icon>
+                  </i>
+                </span>
+              </td>
+            </tr>
+            <tr
+              v-if="expanded.includes(item.id)"
+              :key="`expand-${item.id}`"
+              class="expand bg-transparent"
+              style="background-color: transparent;"
+            >
+              <td :colspan="headers.length" class="relative p-0">
+                <div class="bg-gray-700 rounded-b-md py-2 px-3 -mt-1" style="min-height: 52px;">
+                  <WordSpecs
+                    :org-id="orgId"
+                    :word-id="item.id"
+                  />
+                </div>
+                <div
+                  class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
+                />
+              </td>
+            </tr>
+          </template>
+        </template>
+
+        <template v-slot:no-data>
+          <div
+            v-html="$t('words.noData')"
+            class="text-center text-gray-200 leading-tight py-4"
+          />
+        </template>
+
+      </DataTable>
       <Btn
         block
         outlined

@@ -16,6 +16,7 @@ import { deepEqual } from '../../../utils/deepEqual'
 import { defaultFilter } from '../../../utils/defaultFilter'
 
 import Icon from '../Icon'
+import Progress from '../Progress'
 
 import './DataTable.css'
 
@@ -181,7 +182,6 @@ export default {
     },
     disableFiltering: Boolean,
     disableSort: Boolean,
-    hideNoData: Boolean,
     mustSort: Boolean,
     multiSort: Boolean,
     fixed: {
@@ -201,6 +201,11 @@ export default {
       default: '0 1px',
     },
     singleLine: {
+      type: Boolean,
+      default: true,
+    },
+    loading: Boolean,
+    scrollable: {
       type: Boolean,
       default: true,
     },
@@ -445,7 +450,7 @@ export default {
     const genTHead = () => {
       if (props.hideHeaders) return undefined
       const children = computedHeaders.value.map((header, i) => {
-        if (slots[`header.${header.value}`]) return slots[`header.${header.value}`]({ value: header.value, header: header })
+        if (slots[`header-${header.value}`]) return slots[`header-${header.value}`]({ value: header.value, header: header })
         return h('th', {
           key: i,
           width: convertToUnit(header.width) || null,
@@ -465,8 +470,8 @@ export default {
             return header.sortable ? sort(header.value) : undefined
           },
         }, [
-          slots[`header.${header.value}-content`]
-            ? slots[`header.${header.value}-content`]({ value: header.value, header: header })
+          slots[`header-content-${header.value}`]
+            ? slots[`header-content-${header.value}`]({ value: header.value, header: header })
             : h('span', undefined, header.text),
           h(Icon, { size: 24, class: 'data-table-header__icon' }, { default: () => ziArrowSortTop }),
         ])
@@ -482,19 +487,46 @@ export default {
       ])
     }
 
+    const genNoData = () => {
+      return slots['no-data']
+        ? slots['no-data']()
+        : h('div', {
+          class: 'text-center text-gray-200 leading-tight py-4',
+        }, t('dataTable.noData'))
+    }
+
     const genNoResult = () => {
-      return h('tr', {
-        key: 'no-result',
-        class: 'text-center pointer-events-none',
-      }, h('td', {
-        colspan: computedHeaders.value.length,
-      }, t('dataTable.noResult')))
+      return slots['no-result']
+        ? slots['no-result']()
+        : h('div', {
+          class: 'text-center text-gray-200 leading-tight py-4',
+        }, t('dataTable.noResult'))
+    }
+
+    const genLoading = () => {
+      return slots.loading
+        ? slots.loading()
+        : h('div', {
+          class: 'text-center text-gray-200 py-4',
+        }, h(Progress, {
+          indeterminate: true,
+          size: 24,
+          width: 2,
+        }))
+    }
+
+    const genNoDataSlot = () => {
+      return props.items.length === 0 && props.loading
+        ? genLoading()
+        : props.items.length === 0
+          ? genNoData()
+          : filteredItems.value.length === 0
+            ? genNoResult()
+            : undefined
     }
 
     const genSlotItems = () => {
-      return filteredItems.value.length === 0
-        ? genNoResult()
-        : slots.items({ items: computedItems.value })
+      return slots.items({ items: computedItems.value })
     }
 
     const genDefaultItems = () => {
@@ -517,7 +549,7 @@ export default {
           ]))
         } else {
           const children = computedHeaders.value.map(header => {
-            if (slots[`item.${header.value}`]) return slots[`item.${header.value}`]({ value: item[header.value], item: item })
+            if (slots[`item-${header.value}`]) return slots[`item-${header.value}`]({ value: item[header.value], item: item })
             return h('td', {
               key: `${i}-${header.value}`,
               class: [
@@ -533,7 +565,7 @@ export default {
     }
 
     const genTable = () => {
-      return h('table', {
+      const table = h('table', {
         width: convertToUnit(props.width),
         class: {
           'data-table': true,
@@ -552,11 +584,20 @@ export default {
         genTHead(),
         genTBody(),
       ])
+
+      return props.scrollable
+        ? h('div', {
+            class: {
+              'data-table__scroll-wrapper': props.scrollable,
+            },
+          }, table)
+        : table
     }
 
     return {
       genSlot,
       genTable,
+      genNoDataSlot,
     }
   },
 
@@ -566,6 +607,7 @@ export default {
     }, [
       this.genSlot('top'),
       this.genTable(),
+      this.genNoDataSlot(),
       this.genSlot('bottom'),
     ])
   },
