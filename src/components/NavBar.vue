@@ -1,37 +1,30 @@
 <template>
   <div class="relative">
     <div class="absolute bottom-0 inset-x-0 border-b border-gray-500" />
-    <div class="container container--sm flex h-16 overflow-x-auto scrolling-touch">
-      <div
-        v-for="(item, i) in items"
+    <div class="container container--sm flex h-16 overflow-x-auto scrolling-touch text-gray-200 space-x-10">
+      <router-link
+        v-for="item in items"
+        v-slot="{ route }"
         :key="item.name"
-        :class="[
-          'text-gray-200',
-          i === 0 ? 'pr-5' : 'px-5',
-        ]"
+        :to="{
+          name: item.name,
+          params: { orgId },
+        }"
+        class="text-xl leading-6 focus:outline-none focus:text-white hover:text-white duration-100 transition-color ease-out"
       >
-        <router-link
-          v-slot="{ isExactActive, route }"
-          :to="{
-            name: item.name,
-            params: item.params,
-          }"
-          class="text-xl leading-6 focus:outline-none focus:text-white hover:text-white duration-100 transition-color ease-out"
+        <span
+          :class="[
+            'border-b-2 border-transparent whitespace-nowrap h-full flex items-center',
+            {
+              'text-white border-blue-500 relative': route.name === 'specs'
+                ? $route.name === 'specs' || $route.name === 'spec'
+                : $route.path.startsWith(route.path)
+            },
+          ]"
         >
-          <span
-            :class="[
-              'border-b-2 border-transparent whitespace-nowrap h-full flex items-center',
-              {
-                'text-white border-blue-500 relative': isExactActive || (route.name === 'specs' &&
-                  item.name === route.name && route.params.orgId &&
-                  (route.query.clients || route.query.clientType || route.query.q ||  route.query.sort || route.query.desc || route.query.group))
-              },
-            ]"
-          >
-            {{ item.text }}
-          </span>
-        </router-link>
-      </div>
+          {{ item.text }}
+        </span>
+      </router-link>
     </div>
   </div>
 </template>
@@ -70,35 +63,29 @@ export default {
       const items = [
         {
           name: 'specs',
-          exact: this.$route.name !== 'spec',
           text: this.$t('navbar.deals'),
-          params: { orgId: this.orgId },
         },
       ]
       if (this.ownerOrManager) {
         items.push({
           name: 'clients',
           text: this.$t('navbar.clients'),
-          params: { orgId: this.orgId },
         })
         items.push({
           name: 'suppliers',
           text: this.$t('navbar.suppliers'),
-          params: { orgId: this.orgId },
         })
       }
       if (this.roleInOrg === Role.OWNER) {
         items.push({
           name: 'staff',
           text: this.$t('navbar.staff'),
-          params: { orgId: this.orgId },
         })
       }
       if (this.ownerOrManager) {
         items.push({
           name: 'items',
           text: this.$t('navbar.goods'),
-          params: { orgId: this.orgId },
         })
       }
       return items
