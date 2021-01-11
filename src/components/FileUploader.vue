@@ -313,7 +313,7 @@ export default {
         const uploadUrl = process.env.VUE_APP_UPLAOD_ENDPOINT
         const formData = new FormData()
         formData.append('file', file)
-        const response = await this.axios.put(uploadUrl, formData, {
+        const response = await axios.put(uploadUrl, formData, {
           headers: {
             Authorization: token ? `Bearer ${token}` : '',
           },
