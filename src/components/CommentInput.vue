@@ -23,7 +23,7 @@
       <div class="flex-grow" />
       <Btn
         outlined
-        :merge-class="light ? 'text-gray-900 border-gray-100 h-8' : 'text-white border-gray-200 h-8'"
+        :class="light ? 'text-gray-900 border-gray-100 h-8' : 'text-white border-gray-200 h-8'"
         content-class="w-full flex items-center justify-center text-xs"
         class="mr-2"
         min-width="68"
@@ -34,7 +34,7 @@
       <Btn
         :disabled="!comment"
         :loading="loading"
-        :merge-class="!comment ? ['h-8', light ? 'bg-gray-100 text-light-gray-400' : 'bg-gray-300'] : 'h-8'"
+        :class="!comment ? ['h-8', light ? 'bg-gray-100 text-light-gray-400' : 'bg-gray-300'] : 'h-8'"
         content-class="w-full flex items-center justify-center text-xs"
         min-width="68"
         @click="submitComment"

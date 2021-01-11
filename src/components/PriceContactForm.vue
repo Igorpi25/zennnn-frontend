@@ -96,7 +96,7 @@ export default {
     const loading = ref(false)
     const formValidity = ref(false)
 
-    const premiumContactMutate = useMutation(PREMIUM_CONTACT, {
+    const { mutate: premiumContactMutate } = useMutation(PREMIUM_CONTACT, {
       variables: {
         name: name.value,
         email: email.value,

@@ -206,11 +206,11 @@ export default {
     const { result, refetch: searchSuppliersRefetch } = useQuery(SEARCH_SUPPLIERS, () => ({
       orgId: orgId,
       search: supplierSearch.value,
-    }), {
-      enabled: () => supplierSearch.value,
+    }), () => ({
+      enabled: !!supplierSearch.value,
       fetchPolicy: 'cache-and-network',
       debounce: 300,
-    })
+    }))
     const searchSuppliers = useResult(result)
 
     const { mutate: setInvoiceSupplierMutate } = useMutation(SET_INVOICE_SUPPLIER)

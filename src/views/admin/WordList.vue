@@ -132,7 +132,7 @@
           <Btn
             :loading="approveLoading"
             :disabled="selected.length === 0"
-            merge-class="h-8 text-sm ml-sm"
+            class="h-8 text-sm ml-sm"
             content-class="w-full flex items-center justify-center px-2"
             @click="approveWords"
           >
@@ -141,7 +141,7 @@
           <Btn
             :loading="hideLoading"
             :disabled="selected.length === 0"
-            merge-class="h-8 text-sm"
+            class="h-8 text-sm"
             content-class="w-full flex items-center justify-center px-2"
             outlined
             borderless
@@ -152,7 +152,7 @@
           <Btn
             :loading="mergeLoading"
             :disabled="selected.length < 2"
-            merge-class="h-8 text-sm"
+            class="h-8 text-sm"
             content-class="w-full flex items-center justify-center px-2"
             outlined
             borderless
@@ -461,10 +461,10 @@ export default {
 
     const { result, loading, refetch: listWordsRefetch } = useQuery(LIST_WORDS, () => ({
       filters: filters.value,
-    }), {
-      enabled: () => !loggedOut.value,
+    }), () => ({
+      enabled: !loggedOut.value,
       fetchPolicy: 'cache-and-network',
-    })
+    }))
     const listWords = useResult(result)
 
     watch(loading, (val) => {

@@ -37,7 +37,7 @@
         </div>
         <div class="w-full sm:w-auto flex-grow flex justify-end space-x-2 pb-4 px-6">
           <Btn
-            merge-class="text-gray-200 hover:text-gray-100 focus:text-gray-100 hover:border-gray-200 focus:border-gray-200 w-12 h-12 text-sm"
+            class="text-gray-200 hover:text-gray-100 focus:text-gray-100 hover:border-gray-200 focus:border-gray-200 w-12 h-12 text-sm"
             content-class="w-full flex items-center justify-center px-3"
             outlined
             borderless
@@ -47,7 +47,7 @@
             </svg>
           </Btn>
           <Btn
-            merge-class="text-gray-100 hover:text-gray-100 focus:text-gray-100 hover:border-gray-200 focus:border-gray-200 w-12 h-12 text-sm"
+            class="text-gray-100 hover:text-gray-100 focus:text-gray-100 hover:border-gray-200 focus:border-gray-200 w-12 h-12 text-sm"
             content-class="w-full flex items-center justify-center px-3"
             outlined
           >
@@ -56,7 +56,7 @@
             </svg>
           </Btn>
           <Btn
-            merge-class="text-gray-200 hover:text-gray-100 focus:text-gray-100 hover:border-gray-200 focus:border-gray-200 w-12 h-12 text-sm"
+            class="text-gray-200 hover:text-gray-100 focus:text-gray-100 hover:border-gray-200 focus:border-gray-200 w-12 h-12 text-sm"
             content-class="w-full flex items-center justify-center px-3"
             outlined
             borderless

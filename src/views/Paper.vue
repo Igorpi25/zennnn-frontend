@@ -557,17 +557,16 @@ export default {
     })
     const getProfile = useResult(result1)
 
-    const { result: result2 } = useQuery(GET_PAPER_SPEC, () => ({
+    const { result: result2, onResult } = useQuery(GET_PAPER_SPEC, () => ({
       id: specId,
-    }), {
-      onResult: ({ data, loading }) => {
-        if (!loading && !isBooted.value) {
-          const spec = (data && data.getPaperSpec) || {}
-          updateExpanded(spec)
-        }
-      },
-    })
+    }))
     const getPaperSpec = useResult(result2)
+    onResult(({ data, loading }) => {
+      if (!loading && !isBooted.value) {
+        const spec = (data && data.getPaperSpec) || {}
+        updateExpanded(spec)
+      }
+    })
 
     // Methods
     const updateExpanded = async (spec) => {

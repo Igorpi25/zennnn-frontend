@@ -154,10 +154,10 @@ export default {
     const isLoggedIn = useResult(result1)
 
     const { result: result2 } = useQuery(GET_PROFILE)
-    const getProfile = useResult(result2, null, {
+    const getProfile = useResult(result2, null, () => ({
       enabled: isLoggedIn.value,
       fetchPolicy: 'cache-only',
-    })
+    }))
 
     return {
       resolveClient,

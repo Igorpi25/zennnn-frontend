@@ -150,8 +150,7 @@
       <Btn
         v-else
         outlined
-        min-width="120"
-        merge-class="border-gray-100"
+        class="border-gray-100"
         @click="$emit('back')"
       >
         {{ isNewPaymentMethod ? $t('action.cancel') : $t('payment.back') }}
@@ -159,7 +158,6 @@
       <div class="flex-grow" />
       <Btn
         :loading="loading"
-        min-width="120"
         @click="onCardFormSubmit"
       >
         {{ isNewPaymentMethod ? $t('payment.add') : $t('payment.buy') }}

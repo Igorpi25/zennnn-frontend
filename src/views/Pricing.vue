@@ -51,8 +51,7 @@
           <Btn
             :to="{ name: 'signup' }"
             outlined
-            class="text-center leading-none"
-            merge-class="border-blue-500 hover:text-blue-400"
+            class="border-blue-500 hover:text-blue-400 text-center leading-none"
           >
             {{ $t('signup.submit') }}
           </Btn>
@@ -231,10 +230,10 @@ export default {
     const isLoggedIn = useResult(result1)
 
     const { result: result2 } = useQuery(GET_PROFILE)
-    const getProfile = useResult(result2, null, {
+    const getProfile = useResult(result2, null, () => ({
       enabled: isLoggedIn.value,
       fetchPolicy: 'cache-first',
-    })
+    }))
 
     onBeforeMount(() => {
       document.querySelector('body').classList.add('bg-light-gray-100')

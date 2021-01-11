@@ -26,7 +26,7 @@
         <Btn
           :loading="addProductsLoading"
           min-width="100px"
-          merge-class="h-8 text-sm"
+          class="h-8 text-sm"
           content-class="w-full flex items-center justify-center px-2"
           @click="addProductsDialog = true"
         >
@@ -35,7 +35,7 @@
         <Btn
           :loading="createWordLoading"
           min-width="100px"
-          merge-class="h-8 text-sm ml-3"
+          class="h-8 text-sm ml-3"
           content-class="w-full flex items-center justify-center px-2"
           outlined
           @click="newWordDialog = true"
@@ -96,9 +96,8 @@
           <div class="flex justify-between pt-8">
             <Btn
               :disabled="addProductsLoading"
-              min-width="120"
               outlined
-              merge-class="border-gray-200 h-10 text-sm"
+              class="border-gray-200 h-10 text-sm"
               @click="addProductsDialog = false"
             >
               <span>{{ $t('action.cancel') }}</span>
@@ -106,8 +105,7 @@
             <Btn
               :loading="addProductsLoading"
               :disabled="!selectedItemId"
-              merge-class="h-10 text-sm"
-              min-width="120"
+              class="h-10 text-sm"
               @click="addProductsToWord(selectedItemId)"
             >
               <span>{{ $t('action.add') }}</span>
@@ -164,11 +162,11 @@ export default {
 
     const { result } = useQuery(SEARCH_WORDS, () => ({
       search: wordSearch.value,
-    }), {
-      enabled: () => wordSearch.value,
+    }), () => ({
+      enabled: !!wordSearch.value,
       fetchPolicy: 'cache-and-network',
       debounce: 300,
-    })
+    }))
     const searchWords = useResult(result)
 
     return {

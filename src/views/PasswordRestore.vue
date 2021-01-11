@@ -32,7 +32,6 @@
         <div class="pb-6">
           <Btn
             :loading="loading"
-            min-width="120"
             @click.prevent="onSubmit"
           >
             <span>{{ $t('welcome.resend') }}</span>

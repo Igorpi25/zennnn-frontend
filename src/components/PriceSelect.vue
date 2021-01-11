@@ -67,7 +67,7 @@
             v-else
             block
             outlined
-            merge-class="border-gray-100 h-10"
+            class="border-gray-100 h-10"
             @click.prevent="onClick(item)"
           >
             {{ $t('payment.select') }}

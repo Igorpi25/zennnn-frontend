@@ -487,11 +487,11 @@ export default {
     const { result: result1 } = useQuery(SEARCH_CLIENTS, () => ({
       orgId: props.orgId,
       search: clientSearch.value,
-    }), {
-      enabled: () => clientSearch.value,
+    }), () => ({
+      enabled: !!clientSearch.value,
       fetchPolicy: 'cache-and-network',
       debounce: 300,
-    })
+    }))
     const searchClients = useResult(result1)
 
     const { result: result2, loading: requisiteLoading } = useQuery(LIST_ORG_REQUISITES, () => ({

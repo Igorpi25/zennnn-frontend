@@ -30,7 +30,7 @@
       <div>
         <Btn
           outlined
-          merge-class="border-gray-100"
+          class="border-gray-100"
           min-width="185"
           @click="successDialog = false"
         >
@@ -133,8 +133,7 @@
               <Btn
                 :loading="cancelSubscriptionLoading"
                 block
-                class="mb-3 sm:mb-0 sm:mr-3"
-                merge-class="bg-pink-500 hover:bg-pink-600 focus:bg-pink-600"
+                class="bg-pink-500 hover:bg-pink-600 focus:bg-pink-600 mb-3 sm:mb-0 sm:mr-3"
                 @click="cancelSubscription"
               >
               {{ $t('payment.cancelSubscription') }}
@@ -142,8 +141,7 @@
               <Btn
                 block
                 outlined
-                class="sm:ml-3"
-                merge-class="border-gray-100"
+                class="border-gray-100 sm:ml-3"
                 @click="cancelSubscriptionDialog = false"
               >
                 {{ $t('payment.notCancel') }}

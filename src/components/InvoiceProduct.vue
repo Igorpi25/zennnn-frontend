@@ -516,11 +516,11 @@ export default {
       orgId: orgId,
       search: wordSearch.value,
       locale: locale.value,
-    }), {
-      enabled: () => wordSearch.value,
+    }), () => ({
+      enabled: !!wordSearch.value,
       fetchPolicy: 'cache-and-network',
       debounce: 300,
-    })
+    }))
     const searchWords = useResult(result)
 
     return {
