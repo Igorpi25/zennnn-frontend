@@ -59,7 +59,6 @@
             aria-label="email input"
             autofocus
             validate-on-blur
-            messages-on-focused
           />
           <TextField
             v-model="formModel.password"
@@ -73,7 +72,6 @@
             aria-label="password input"
             minlength="8"
             validate-on-blur
-            messages-on-focused
           >
             <template v-slot:append>
               <Icon
@@ -142,7 +140,6 @@
           validate-on-blur
           state-icon
           required
-          messages-on-focused
         />
         <TextField
           v-model="compliteFormModel.lastName"
@@ -157,7 +154,6 @@
           validate-on-blur
           state-icon
           required
-          messages-on-focused
         />
         <TextField
           ref="email"
@@ -175,7 +171,6 @@
           validate-on-blur
           state-icon
           required
-          messages-on-focused
         />
         <TextField
           v-model="compliteFormModel.password"
@@ -191,7 +186,6 @@
           validate-on-blur
           state-icon
           required
-          messages-on-focused
         >
           <template v-slot:append>
             <Icon

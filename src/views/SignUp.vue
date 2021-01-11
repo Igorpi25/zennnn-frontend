@@ -66,7 +66,6 @@
             autofocus
             state-icon
             required
-            messages-on-focused
           />
           <TextField
             v-model="formModel.lastName"
@@ -80,7 +79,6 @@
             validate-on-blur
             state-icon
             required
-            messages-on-focused
           />
           <TextField
             ref="email"
@@ -96,7 +94,6 @@
             validate-on-blur
             state-icon
             required
-            messages-on-focused
           />
           <TextField
             v-model="formModel.password"
@@ -112,7 +109,6 @@
             validate-on-blur
             state-icon
             required
-            messages-on-focused
           >
             <template v-slot:append>
               <Icon
