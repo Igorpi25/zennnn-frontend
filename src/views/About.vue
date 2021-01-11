@@ -235,7 +235,7 @@
                 <!-- <iframe v-if="isVideoActivated" class="w-full h-full" width="1206" height="678" src="https://www.youtube.com/embed/LMFUvAmbwS0?rel=0&controls=2&color=red&modestbranding=1&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
                 <div id="ytplayer" class="w-full h-full"></div>
               </div>
-              <transition name="fade">
+              <transition name="fade-transition">
                 <div
                   v-if="!isVideoActivated"
                   class="about-video absolute inset-0 flex items-center justify-center cursor-pointer bg-gray-900"
