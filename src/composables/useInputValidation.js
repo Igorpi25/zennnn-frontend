@@ -29,7 +29,10 @@ export const useInputValidationProps = () => {
       type: Array,
       default: [],
     },
-    messagesOnFocused: Boolean,
+    messagesOnFocused: {
+      type: Boolean,
+      default: true,
+    },
     hideDetails: {
       type: [Boolean, String],
       default: undefined,
