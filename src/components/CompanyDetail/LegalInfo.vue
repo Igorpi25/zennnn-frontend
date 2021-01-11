@@ -3,93 +3,89 @@
     <div class="w-full lg:w-1/2 lg:pr-5">
       <div class="flex items-end pb-2">
         <TextField
-          :value="contactPerson.firstName"
+          :model-value="contactPerson.firstName"
           :label="$t('companyDetail.label.contactPerson')"
           :placeholder="$t('companyDetail.placeholder.firstName')"
           :loading="loading"
           :rules="[v => !!v || this.$t('companyDetail.rule.contactPersonFirstName')]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
           label-no-wrap
           class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
-          @input="updateContactPerson({ firstName: $event })"
+          @update:model-value="updateContactPerson({ firstName: $event })"
         />
         <TextField
-          :value="contactPerson.lastName"
+          :model-value="contactPerson.lastName"
           :placeholder="$t('companyDetail.placeholder.lastName')"
           :loading="loading"
           :rules="[v => !!v || this.$t('companyDetail.rule.contactPersonLastName')]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
           class="flex-grow"
-          @input="updateContactPerson({ lastName: $event })"
+          @update:model-value="updateContactPerson({ lastName: $event })"
         />
       </div>
       <div class="pb-2">
         <Phone
-          :value="item.mobilePhone"
+          :model-value="item.mobilePhone"
           :locale="item.locale"
           :label="$t('companyDetail.label.mobilePhone')"
           :label-hint="$t('companyDetail.hint.mobilePhone')"
-          :rule-message="$t('companyDetail.rule.notificationMobilePhone')"
+          :error-message="$t('companyDetail.rule.notificationMobilePhone')"
           :loading="loading"
           :lazy="create"
-          lazy-validation
           state-icon
           required
-          @input="updateData({ 'mobilePhone': $event })"
+          @update:model-value="updateData({ 'mobilePhone': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.email"
+          :model-value="item.email"
           :label="$t('companyDetail.label.email')"
           :label-hint="$t('companyDetail.hint.email')"
           :placeholder="$t('companyDetail.placeholder.email')"
           :loading="loading"
           :rules="[rules.email]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
-          @input="updateData({ 'email': $event })"
+          @update:model-value="updateData({ 'email': $event })"
         />
       </div>
       <div>
         <Select
-          :value="item.locale"
+          :model-value="item.locale"
           :items="locales"
           :label="$t('companyDetail.label.locale')"
           :placeholder="$t('companyDetail.placeholder.locale')"
           :loading="loading"
           :rules="[v => !!v || this.$t('companyDetail.rule.locale')]"
-          lazy-validation
+          :hide-details="false"
           state-icon
           required
-          item-value="value"
-          item-text="text"
           class="pb-2"
-          prepend-slot-class="w-auto pl-2"
-          @input="updateData({ 'locale': $event })"
+          @update:model-value="updateData({ 'locale': $event })"
         >
           <template v-slot:prepend>
             <img
               v-if="item.locale"
               :src="require(`@/assets/img/flags/locale/${item.locale}.svg`).default"
               :alt="item.locale"
-              class="h-6 w-6 rounded-full mr-4"
+              class="h-6 w-6 rounded-full ml-2 mr-4"
             >
             <img
               v-else
               src="@/assets/icons/earth.svg"
-              class="h-6 w-6 rounded-full mr-4"
+              class="h-6 w-6 rounded-full ml-2 mr-4"
             >
           </template>
           <template v-slot:item="{ item }">
@@ -110,18 +106,18 @@
       <div class="pb-2 lg:pb-1">
         <div class="flex">
           <TextField
-            :value="item.companyName"
+            :model-value="item.companyName"
             :label="$t('companyDetail.label.companyName')"
             :placeholder="$t('companyDetail.placeholder.companyName')"
             :loading="loading"
             :rules="[v => !!v || this.$t('companyDetail.rule.companyName')]"
+            :hide-details="false"
             :debounce="500"
             :lazy="create"
-            lazy-validation
             state-icon
             required
             class="pb-2 flex-grow"
-            @input="updateCompanyName"
+            @update:model-value="updateCompanyName"
           />
           <div class="relative flex-shrink-0 relative pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
@@ -129,9 +125,8 @@
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
               <Switch
-                :value="isCompanyNameMatch"
-                hide-details
-                @input="updateCompanyNameMatch"
+                :model-value="isCompanyNameMatch"
+                @update:model-value="updateCompanyNameMatch"
               />
             </div>
           </div>
@@ -144,18 +139,18 @@
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.companyNameLocal"
+          :model-value="item.companyNameLocal"
           :label="$t('companyDetail.label.companyNameLocal')"
           :placeholder="$t('companyDetail.placeholder.companyNameLocal')"
           :loading="loading"
           :disabled="isCompanyNameMatch"
           :rules="[v => !!v || this.$t('companyDetail.rule.companyNameLocal')]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
-          @input="updateData({ 'companyNameLocal': $event })"
+          @update:model-value="updateData({ 'companyNameLocal': $event })"
         />
       </div>
       <div>
@@ -175,6 +170,7 @@
 
 <script>
 import { LOCALES_LIST } from '../../config/globals'
+
 import companyDetail from '../../mixins/clientDetail'
 
 import TextField from '../Base/TextField'
@@ -243,6 +239,8 @@ export default {
   },
   methods: {
     updateCompanyNameMatch (val) {
+      // TODO: !!!
+      if (!!val === !!this.isCompanyNameMatch) return
       this.isCompanyNameMatch = val
       const input = { isCompanyNameMatch: val }
       this.updateData(input)

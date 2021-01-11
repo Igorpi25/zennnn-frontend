@@ -2,6 +2,7 @@
   <div>
     <RequisiteCard
       ref="card"
+      :key="$route.fullPath"
       :org-id="$route.params.orgId"
       :create="create"
       :show-fill-later-button="showFillLaterButton"
@@ -46,10 +47,10 @@ export default {
     const isLoggedIn = useResult(result1)
 
     const { result: result2 } = useQuery(GET_PROFILE)
-    const getProfile = useResult(result2, null, {
+    const getProfile = useResult(result2, null, () => ({
       enabled: isLoggedIn.value,
       fetchPolicy: 'cache-only',
-    })
+    }))
 
     const { mutate: noteGreetingMutate } = useMutation(NOTE_GREETING)
 

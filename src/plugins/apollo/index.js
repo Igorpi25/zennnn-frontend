@@ -24,7 +24,47 @@ const possibleTypes = {
   SpecPaperDeltaObject: ['PaperSpec', 'PaperInvoice', 'PaperProduct', 'PayloadFields'],
 }
 
-const cache = new InMemoryCache({ possibleTypes })
+const typePolicies = {
+  Client: {
+    fields: {
+      contacts: {
+        merge: false,
+      },
+    },
+  },
+  Supplier: {
+    fields: {
+      contacts: {
+        merge: false,
+      },
+      branches: {
+        merge: false,
+      },
+    },
+  },
+  SupplierBranch: {
+    fields: {
+      contacts: {
+        merge: false,
+      },
+    },
+  },
+  Requisite: {
+    fields: {
+      contacts: {
+        merge: false,
+      },
+      bankDetails: {
+        merge: false,
+      },
+    },
+  },
+}
+
+const cache = new InMemoryCache({
+  possibleTypes,
+  typePolicies,
+})
 
 const authLink = setContext(async (request, { headers }) => {
   const operationName = request.operationName

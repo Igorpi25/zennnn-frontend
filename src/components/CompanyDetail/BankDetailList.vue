@@ -6,11 +6,15 @@
       </div>
       <div>
         <button
-          class="w-6 h-6 flex items-center justify-center text-2xl text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none select-none"
-           @click="toggleExpand"
+          class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
+          @click="toggleExpand"
         >
-          <i v-if="expanded" class="zi-chevron-down" />
-          <i v-else class="zi-chevron-up" />
+          <Icon
+            class="transition-transform"
+            :class="{ 'transform rotate-90': expanded }"
+          >
+            {{ icons.ziChevronRight }}
+          </Icon>
         </button>
       </div>
     </div>
@@ -34,10 +38,12 @@
               class="absolute top-0 right-0 pt-12"
             >
               <button
-                class="flex justify-center items-center text-2xl text-gray-200 cursor-pointer focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-1"
+                class="text-gray-200 cursor-pointer focus:text-gray-100 hover:text-gray-100 focus:outline-none"
                 @click="deleteData(i, item.id)"
               >
-                <i class="zi-close" />
+                <Icon>
+                  {{ icons.ziCloseDelete }}
+                </Icon>
               </button>
             </div>
             <BankDetailItem
@@ -58,7 +64,7 @@
             :loading="createLoading"
             block
             outlined
-            merge-class="h-10 text-sm"
+            class="h-10 text-sm"
             @click="addData"
           >
             {{ $t('companyDetail.addBankDetail') }}
@@ -72,12 +78,7 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
-import Btn from '../Base/Btn'
-import ExpandTransition from '../Base/ExpandTransition'
-import BankDetailItem from './BankDetailItem.vue'
-
-import clientDetail from '../../mixins/clientDetail'
-import { validateCompanyDetail } from '../../util/validation'
+import { ziChevronRight, ziCloseDelete } from '../../assets/icons'
 
 import { GET_ORG_REQUISITE } from '../../graphql/queries'
 import {
@@ -86,10 +87,20 @@ import {
   DELETE_COMPANY_BANK_DETAIL,
 } from '../../graphql/mutations'
 
+import { validateCompanyDetail } from '../../util/validation'
+
+import clientDetail from '../../mixins/clientDetail'
+
+import Btn from '../Base/Btn'
+import Icon from '../Base/Icon'
+import ExpandTransition from '../Base/ExpandTransition'
+import BankDetailItem from './BankDetailItem.vue'
+
 export default {
   name: 'BankDetailList',
   components: {
     Btn,
+    Icon,
     ExpandTransition,
     BankDetailItem,
   },
@@ -104,11 +115,16 @@ export default {
       default: () => ([]),
     },
   },
+  emits: ['update'],
   setup () {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
     return {
+      icons: {
+        ziCloseDelete,
+        ziChevronRight,
+      },
       apolloClient,
     }
   },
@@ -158,16 +174,23 @@ export default {
               query: GET_ORG_REQUISITE,
               variables,
             })
-            data.getOrgRequisite.bankDetails.push(createCompanyBankDetail)
             // update validation state
             // should be fixed with subs
             const v = validateCompanyDetail(data.getOrgRequisite)
-            data.getOrgRequisite.isRequiredFilled = v.isRequiredFilled
-            data.getOrgRequisite.isOptionalFilled = v.isOptionalFilled
             store.writeQuery({
               query: GET_ORG_REQUISITE,
               variables,
-              data,
+              data: {
+                getOrgRequisite: {
+                  ...data.getOrgRequisite,
+                  isRequiredFilled: v.isRequiredFilled,
+                  isOptionalFilled: v.isOptionalFilled,
+                  bankDetails: [
+                    ...data.getOrgRequisite.bankDetails,
+                    createCompanyBankDetail,
+                  ],
+                },
+              },
             })
           },
         })
@@ -195,18 +218,26 @@ export default {
             })
             const index = data.getOrgRequisite.bankDetails.findIndex(el => el.id === id)
             if (index !== -1) {
-              data.getOrgRequisite.bankDetails.splice(index, 1, updateCompanyBankDetail)
               // update validation state
               // should be fixed with subs
               const v = validateCompanyDetail(data.getOrgRequisite)
-              data.getOrgRequisite.isRequiredFilled = v.isRequiredFilled
-              data.getOrgRequisite.isOptionalFilled = v.isOptionalFilled
+              store.writeQuery({
+                query: GET_ORG_REQUISITE,
+                variables,
+                data: {
+                  getOrgRequisite: {
+                    ...data.getOrgRequisite,
+                    isRequiredFilled: v.isRequiredFilled,
+                    isOptionalFilled: v.isOptionalFilled,
+                    bankDetails: [
+                      ...data.getOrgRequisite.bankDetails.slice(0, index),
+                      updateCompanyBankDetail,
+                      ...data.getOrgRequisite.bankDetails.slice(index + 1),
+                    ],
+                  },
+                },
+              })
             }
-            store.writeQuery({
-              query: GET_ORG_REQUISITE,
-              variables,
-              data,
-            })
           },
         })
       } catch (error) {
@@ -233,18 +264,22 @@ export default {
             })
             const index = data.getOrgRequisite.bankDetails.findIndex(el => el.id === id)
             if (index !== -1) {
-              data.getOrgRequisite.bankDetails.splice(index, 1)
               // update validation state
               // should be fixed with subs
               const v = validateCompanyDetail(data.getOrgRequisite)
-              data.getOrgRequisite.isRequiredFilled = v.isRequiredFilled
-              data.getOrgRequisite.isOptionalFilled = v.isOptionalFilled
+              store.writeQuery({
+                query: GET_ORG_REQUISITE,
+                variables,
+                data: {
+                  getOrgRequisite: {
+                    ...data.getOrgRequisite,
+                    isRequiredFilled: v.isRequiredFilled,
+                    isOptionalFilled: v.isOptionalFilled,
+                    bankDetails: data.getOrgRequisite.bankDetails.filter((_, i) => i !== index),
+                  },
+                },
+              })
             }
-            store.writeQuery({
-              query: GET_ORG_REQUISITE,
-              variables,
-              data,
-            })
           },
         })
       } catch (error) {

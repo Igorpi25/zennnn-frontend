@@ -22,7 +22,6 @@
           <Btn
             v-if="!isComponent"
             outlined
-            min-width="120"
             @click="goBack"
           >
             <span>{{ showFillLaterButton ? $t('requisite.fillLater') : $t('requisite.back') }}</span>
@@ -117,7 +116,7 @@
         v-if="isComponent"
         :loading="updateLoading"
         outlined
-        merge-class="w-40"
+        class="w-40"
         @click="createFromItem"
       >
         {{ create ? $t('action.create') : $t('action.save') }}
@@ -185,17 +184,18 @@ export default {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
-    const { result, loading } = useQuery(GET_ORG_REQUISITE, () => ({
+    const { result, loading, onResult } = useQuery(GET_ORG_REQUISITE, () => ({
       id: reqId,
-    }), {
-      enabled: () => !props.create,
-      onResult: ({ data, loading }) => {
-        if (loading) return
-        setData(data && data.getClient)
-      },
+    }), () => ({
+      enabled: !props.create,
       fetchPolicy: 'cache-and-network',
-    })
+      nextFetchPolicy: 'cache-fisrt',
+    }))
     const getOrgRequisite = useResult(result)
+    onResult(({ data, loading }) => {
+      if (loading) return
+      setData(data && data.getOrgRequisite)
+    })
 
     const setData = (data) => {
       if (!data) return

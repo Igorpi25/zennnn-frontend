@@ -7,40 +7,38 @@
       <div class="flex justify-end items-center">
         <transition name="fade-transition">
           <div v-if="isWarehouse" class="flex items-center pr-1">
-            <Tooltip top max-width="180" nudge-right="60">
-              <template v-slot:activator="{ on }">
-                <i class="zi-help align-middle text-base text-blue-500 cursor-pointer" v-on="on" />
+            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="180">
+              <template v-slot:activator>
+                <Icon class="text-blue-500 align-middle">
+                  {{ icons.ziQuestionSign }}
+                </Icon>
               </template>
               <span v-html="$t('companyDetail.hint.branchDeliveryAddress')" />
             </Tooltip>
             <div class="pr-4">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 22C12 22 20 18 20 12V4L12 2L4 4V12C4 18 12 22 12 22Z" fill="#FDB600" stroke="#FDB600" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="12" cy="11" r="5" fill="#2F2F2F"/>
-                <path d="M14.5391 9.48438L11.8694 12.3024L10.0859 10.4609" stroke="#FDB600" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <img src="@/assets/icons/colorful/Shield-yellow.svg" aria-hidden="true">
             </div>
           </div>
         </transition>
         <Select
-          :value="internalItem.branchType"
+          :model-value="internalItem.branchType"
           :items="branchTypeItems"
           :placeholder="$t('placeholder.notChosen')"
           :loading="loading"
-          item-value="value"
-          item-text="text"
-          @input="updateData('branchType', $event)"
+          @update:model-value="updateData('branchType', $event)"
         />
         <button
-          class="flex justify-center items-center text-2xl text-gray-200 cursor-pointer focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-1"
+          class="text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none ml-1"
           @click="$emit('delete', internalItem.id)"
         >
-          <i class="zi-close" />
+          <Icon>
+            {{ icons.ziCloseDelete }}
+          </Icon>
         </button>
       </div>
     </div>
     <TextField
-      :value="internalItem.name"
+      :model-value="internalItem.name"
       :label="$t('companyDetail.label.branchName')"
       :placeholder="$t('companyDetail.placeholder.branchName')"
       :loading="loading"
@@ -49,10 +47,10 @@
       state-icon
       state-color="none"
       class="pb-2"
-      @input="updateData('name', $event)"
+      @update:model-value="updateData('name', $event)"
     />
     <TextField
-      :value="internalItem.address"
+      :model-value="internalItem.address"
       :label="$t('companyDetail.label.branchAddress')"
       :placeholder="$t('companyDetail.placeholder.address')"
       :loading="loading"
@@ -61,7 +59,7 @@
       state-icon
       state-color="none"
       class="pb-2"
-      @input="updateData('address', $event)"
+      @update:model-value="updateData('address', $event)"
     />
     <div class="flex items-end pb-2">
       <TextField
@@ -88,7 +86,7 @@
       />
     </div>
     <Phone
-      :value="internalItem.mobilePhone"
+      :model-value="internalItem.mobilePhone"
       :locale="locale"
       :label="$t('companyDetail.label.mobilePhone')"
       :loading="loading"
@@ -96,17 +94,17 @@
       state-color="none"
       required
       class="pb-2"
-      @input="updateData('mobilePhone', $event)"
+      @update:model-value="updateData('mobilePhone', $event)"
     />
     <Phone
-      :value="internalItem.workPhone"
+      :model-value="internalItem.workPhone"
       :locale="locale"
       :label="$t('companyDetail.label.phone')"
       :loading="loading"
       state-icon
       state-color="none"
       required
-      @input="updateData('workPhone', $event)"
+      @update:model-value="updateData('workPhone', $event)"
     />
     <div
       v-if="contactItems.length > 0"
@@ -119,7 +117,7 @@
       >
         <ContactItem
           :loading="loading"
-          :item="item"
+          :value="item"
           @update="updateContact(i, item, $event)"
           @delete="deleteContact(i)"
         />
@@ -135,8 +133,11 @@
 </template>
 
 <script>
+import { ziCloseDelete, ziQuestionSign } from '../../assets/icons'
+
 import { BranchType, ContactType } from '../../graphql/enums'
 
+import Icon from '../Base/Icon'
 import Tooltip from '../Base/Tooltip'
 import Select from '../Base/Select'
 import TextField from '../Base/TextField'
@@ -146,6 +147,7 @@ import ContactItem from './ContactItem.vue'
 export default {
   name: 'BranchItem',
   components: {
+    Icon,
     Tooltip,
     Select,
     TextField,
@@ -160,11 +162,16 @@ export default {
       type: Object,
     },
   },
+  emits: ['update', 'delete'],
   data () {
     return {
       lazyItem: undefined,
       rules: {
         required: v => !!v || this.$t('rule.required'),
+      },
+      icons: {
+        ziCloseDelete,
+        ziQuestionSign,
       },
     }
   },
@@ -241,7 +248,8 @@ export default {
       const contact = item.contact || null
       this.$emit('update', { contacts: [...this.contactItems, { contactType, contact }] })
       this.$nextTick(() => {
-        this.$refs.contactCreate.setItem()
+        this.$refs.contactCreate.setValue()
+        this.$refs.contactCreate.$refs.inputRef.reset()
       })
     },
     updateContact (i, item, value) {

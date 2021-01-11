@@ -180,8 +180,8 @@
           outlined
           class="mt-4"
           @click="$router.push({
-            orgId,
-            name: 'supplier-create'
+            name: 'supplier-create',
+            params: { orgId },
           })"
         >
           <Icon class="text-gray-200 mr-sm">

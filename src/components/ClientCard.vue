@@ -247,7 +247,7 @@
         v-if="create && isComponent"
         :loading="updateLoading"
         outlined
-        merge-class="w-40"
+        class="w-40"
         @click="createFromItem"
       >
         {{ $t('client.save') }}
@@ -321,28 +321,29 @@ export default {
     const { result: result1, refetch: getOrgNextClientUidRefetch } = useQuery(GET_ORG_NEXT_CLIENT_UID, () => ({
       orgId: props.orgId,
     }), () => ({
-      enabled: () => props.create,
+      enabled: props.create,
       fetchPolicy: 'network-only',
     }))
     const getOrgNextClientUid = useResult(result1)
 
-    const { result: result2, loading } = useQuery(GET_CLIENT, () => ({
+    const { result: result2, loading, onResult } = useQuery(GET_CLIENT, () => ({
       id: clientId,
     }), () => ({
-      enabled: () => !props.create,
-      onResult: ({ data, loading }) => {
-        if (loading) return
-        setData(data && data.getClient)
-      },
+      enabled: !props.create,
       fetchPolicy: 'cache-and-network',
+      nextFetchPolicy: 'cache-fisrt',
     }))
     const getClient = useResult(result2)
+    onResult(({ data, loading }) => {
+      if (loading) return
+      setData(data && data.getClient)
+    })
 
     const { result: result3, refetch: getClientGroupRefetch } = useQuery(GET_CLIENT_GROUP, () => ({
       orgId: props.orgId,
       groupId: groupId,
     }), () => ({
-      enabled: () => groupId,
+      enabled: !!groupId,
       fetchPolicy: 'cache-and-network',
     }))
     const getClientGroup = useResult(result3)
@@ -478,10 +479,11 @@ export default {
       const groupId = group.id
       const clientId = group[type]
       const clientType = this.getClientTypeNumeric(type)
+      const orgId = this.orgId
       if (groupId && clientId) {
-        this.$router.push({ name: 'client', params: { groupId, clientId }, query: { clientType } })
+        this.$router.push({ name: 'client', params: { orgId, groupId, clientId }, query: { clientType } })
       } else {
-        this.$router.push({ name: 'client-create', params: { groupId }, query: { clientType } })
+        this.$router.push({ name: 'client-create', params: { orgId, groupId }, query: { clientType } })
       }
       this.reset()
     },

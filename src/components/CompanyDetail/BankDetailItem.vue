@@ -4,17 +4,16 @@
       <div class="pb-2 lg:pb-1">
         <div class="flex justify-between">
           <TextField
-            :value="internalItem.bankName"
+            :model-value="internalItem.bankName"
             :label="$t('companyDetail.label.bankName')"
             :placeholder="$t('companyDetail.placeholder.bankName')"
             :loading="loading"
             :debounce="500"
             :rules="[rules.required]"
-            lazy-validation
             state-icon
             required
             class="flex-grow pb-2"
-            @input="updateData({ 'bankName': $event })"
+            @update:model-value="updateData({ 'bankName': $event })"
           />
           <div class="relative flex-shrink-0 relative pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
@@ -23,8 +22,7 @@
             <div class="h-full flex items-center justify-end pt-8 pb-1">
               <Switch
                 v-model="isMainBankDetail"
-                hide-details
-                @input="$emit('set-main-bank-detail', internalItem.id)"
+                @update:model-value="$emit('set-main-bank-detail', internalItem.id)"
               />
             </div>
           </div>
@@ -37,84 +35,81 @@
       </div>
       <div class="pb-2">
         <TextField
-          :value="internalItem.bankAddress"
+          :model-value="internalItem.bankAddress"
           :label="$t('companyDetail.label.bankAddress')"
           :placeholder="$t('companyDetail.placeholder.bankAddress')"
           :loading="loading"
           :debounce="500"
           :rules="[rules.required]"
-          lazy-validation
           state-icon
-          @input="updateData({ 'bankAddress': $event })"
+          @update:model-value="updateData({ 'bankAddress': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="internalItem.bankAccountNumber"
+          :model-value="internalItem.bankAccountNumber"
           :label="$t('companyDetail.label.bankAccountNumber')"
           :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
           :loading="loading"
           :debounce="500"
           :rules="[rules.required]"
-          lazy-validation
           state-icon
           required
-          @input="updateData({ 'bankAccountNumber': $event })"
+          @update:model-value="updateData({ 'bankAccountNumber': $event })"
         />
       </div>
     </div>
     <div class="lg:w-1/2 lg:pl-5">
       <div class="flex items-end pb-2">
         <TextField
-          :value="internalItem.swift"
+          :model-value="internalItem.swift"
           :label="$t('companyDetail.label.swift')"
           :placeholder="$t('companyDetail.placeholder.swift')"
           :loading="loading"
           :debounce="500"
           :rules="[rules.required]"
-          lazy-validation
           state-icon
           required
           class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-          @input="updateData({ 'swift': $event })"
+          @update:model-value="updateData({ 'swift': $event })"
         />
         <TextField
-          :value="internalItem.bic"
+          :model-value="internalItem.bic"
           :label="$t('companyDetail.label.bic')"
           :placeholder="$t('companyDetail.placeholder.bic')"
           :loading="loading"
           :debounce="500"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           class="flex-grow"
-          @input="updateData({ 'bic': $event })"
+          @update:model-value="updateData({ 'bic': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="internalItem.correspondentBankName"
+          :model-value="internalItem.correspondentBankName"
           :label="$t('companyDetail.label.correspondentBankName')"
           :placeholder="$t('companyDetail.placeholder.correspondentBankName')"
           :loading="loading"
           :debounce="500"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
-          @input="updateData({ 'correspondentBankName': $event })"
+          state-error-color="none"
+          @update:model-value="updateData({ 'correspondentBankName': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="internalItem.correspondentAccountNumber"
+          :model-value="internalItem.correspondentAccountNumber"
           :label="$t('companyDetail.label.correspondentAccountNumber')"
           :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
           :loading="loading"
           :debounce="500"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
-          @input="updateData({ 'correspondentAccountNumber': $event })"
+          state-error-color="none"
+          @update:model-value="updateData({ 'correspondentAccountNumber': $event })"
         />
       </div>
       <div v-if="create" class="w-full pt-9">
@@ -122,7 +117,7 @@
           :loading="createLoading"
           block
           outlined
-          merge-class="h-10 text-sm"
+          class="h-10 text-sm"
           @click="$emit('create')"
         >
           {{ $t('companyDetail.addBankDetail') }}
@@ -153,6 +148,7 @@ export default {
     },
     isDefaultBankDetail: Boolean,
   },
+  emits: ['create', 'update', 'set-main-bank-detail'],
   data () {
     return {
       lazyItem: undefined,

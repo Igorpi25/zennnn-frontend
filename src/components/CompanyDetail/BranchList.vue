@@ -6,11 +6,15 @@
       </div>
       <div>
         <button
-          class="w-6 h-6 flex items-center justify-center text-2xl text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none select-none"
+          class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
            @click="toggleExpand"
         >
-          <i v-if="expanded" class="zi-chevron-down" />
-          <i v-else class="zi-chevron-up" />
+          <Icon
+            class="transition-transform"
+            :class="{ 'transform rotate-90': expanded }"
+          >
+            {{ icons.ziChevronRight }}
+          </Icon>
         </button>
       </div>
     </div>
@@ -43,7 +47,7 @@
             :loading="createLoading"
             block
             outlined
-            merge-class="h-10 text-sm"
+            class="h-10 text-sm"
             @click="addData"
           >
             {{ $t('companyDetail.addBranch') }}
@@ -57,6 +61,8 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
+import { ziChevronRight } from '../../assets/icons'
+
 import { BranchType } from '../../graphql/enums'
 import { GET_SUPPLIER } from '../../graphql/queries'
 import {
@@ -68,6 +74,7 @@ import {
 import clientDetail from '../../mixins/clientDetail'
 
 import Btn from '../Base/Btn'
+import Icon from '../Base/Icon'
 import ExpandTransition from '../Base/ExpandTransition'
 import BranchItem from './BranchItem.vue'
 
@@ -75,6 +82,7 @@ export default {
   name: 'BranchList',
   components: {
     Btn,
+    Icon,
     ExpandTransition,
     BranchItem,
   },
@@ -93,6 +101,9 @@ export default {
     const apolloClient = resolveClient()
 
     return {
+      icons: {
+        ziChevronRight,
+      },
       apolloClient,
     }
   },
@@ -142,11 +153,18 @@ export default {
               query: GET_SUPPLIER,
               variables,
             })
-            data.getSupplier.branches.push(createSupplierBranch)
             store.writeQuery({
               query: GET_SUPPLIER,
               variables,
-              data,
+              data: {
+                getSupplier: {
+                  ...data.getSupplier,
+                  branches: [
+                    ...data.getSupplier.branches,
+                    createSupplierBranch,
+                  ],
+                },
+              },
             })
           },
         })
@@ -174,13 +192,21 @@ export default {
             })
             const index = data.getSupplier.branches.findIndex(el => el.id === id)
             if (index !== -1) {
-              data.getSupplier.branches.splice(index, 1, updateSupplierBranch)
+              store.writeQuery({
+                query: GET_SUPPLIER,
+                variables,
+                data: {
+                  getSupplier: {
+                    ...data.getSupplier,
+                    branches: [
+                      ...data.getSupplier.branches.slice(0, index),
+                      updateSupplierBranch,
+                      ...data.getSupplier.branches.slice(index + 1),
+                    ],
+                  },
+                },
+              })
             }
-            store.writeQuery({
-              query: GET_SUPPLIER,
-              variables,
-              data,
-            })
           },
         })
       } catch (error) {
@@ -207,13 +233,17 @@ export default {
             })
             const index = data.getSupplier.branches.findIndex(el => el.id === id)
             if (index !== -1) {
-              data.getSupplier.branches.splice(index, 1)
+              store.writeQuery({
+                query: GET_SUPPLIER,
+                variables,
+                data: {
+                  getSupplier: {
+                    ...data.getSupplier,
+                    branches: data.getSupplier.branches.filter((_, i) => i !== index),
+                  },
+                },
+              })
             }
-            store.writeQuery({
-              query: GET_SUPPLIER,
-              variables,
-              data,
-            })
           },
         })
       } catch (error) {

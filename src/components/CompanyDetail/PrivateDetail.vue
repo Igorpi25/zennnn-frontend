@@ -8,9 +8,11 @@
         <span class="text-gray-200 mr-1">
           <span> </span><span>{{ $t('companyDetail.privateDetailDesc') }}</span>
         </span>
-        <Tooltip top max-width="332" nudge-right="136">
-          <template v-slot:activator="{ on }">
-            <i class="zi-help align-middle text-base text-blue-500 cursor-pointer" v-on="on" />
+        <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="332">
+          <template v-slot:activator>
+            <Icon class="text-blue-500 align-middle">
+              {{ icons.ziQuestionSign }}
+            </Icon>
           </template>
           <span>
             {{ $t('companyDetail.privateDetailHint') }}
@@ -19,11 +21,15 @@
       </div>
       <div>
         <button
-          class="w-6 h-6 flex items-center justify-center text-2xl text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none select-none"
+          class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
           @click="toggleExpand"
         >
-          <i v-if="expanded" class="zi-chevron-down" />
-          <i v-else class="zi-chevron-up" />
+          <Icon
+            class="transition-transform"
+            :class="{ 'transform rotate-90': expanded }"
+          >
+            {{ icons.ziChevronRight }}
+          </Icon>
         </button>
       </div>
     </div>
@@ -32,7 +38,7 @@
         <div class="w-full lg:w-1/2 lg:pr-5">
           <div class="pb-2">
             <TextField
-              :value="item.passportId"
+              :model-value="item.passportId"
               :label="$t('companyDetail.label.passportId')"
               :placeholder="$t('companyDetail.placeholder.passportId')"
               :loading="loading"
@@ -40,13 +46,13 @@
               :lazy="create"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
-              @input="updateData({ 'passportId': $event })"
+              state-error-color="none"
+              @update:model-value="updateData({ 'passportId': $event })"
             />
           </div>
           <div class="pb-2">
             <Select
-              :value="item.citizenship"
+              :model-value="item.citizenship"
               v-model:search="countriesSearch"
               :items="countries"
               :label="$t('companyDetail.label.citizenship')"
@@ -54,23 +60,20 @@
               :loading="loading"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
+              state-error-color="none"
               searchable
-              item-value="value"
-              item-text="text"
-              prepend-slot-class="w-auto pl-2"
-              @input="updateData({ 'citizenship': $event })"
+              @update:model-value="updateData({ 'citizenship': $event })"
             >
               <template v-slot:prepend>
                 <img
                   v-if="item.citizenship"
                   :src="require(`@/assets/img/flags/square/${item.citizenship}.svg`).default"
-                  class="w-6 rounded-sm mr-4"
+                  class="w-6 rounded-sm ml-2 mr-4"
                 >
                 <img
                   v-else
                   src="@/assets/icons/earth.svg"
-                  class="h-6 w-6 rounded-full mr-4"
+                  class="h-6 w-6 rounded-full ml-2 mr-4"
                 >
               </template>
               <template v-slot:item="{ item }">
@@ -85,53 +88,57 @@
           <div class="pb-2">
             <div class="flex">
               <DatePicker
-                :value="item.issueDate"
-                @input="updateData({ 'issueDate': $event })"
+                :model-value="item.issueDate"
+                @update:model-value="updateData({ 'issueDate': $event })"
               >
                 <template v-slot:activator>
                   <div
-                    class="w-1/2 pr-sm"
+                    class="pr-sm"
                     style="max-width: 232px;"
                   >
                     <TextField
-                      :value="item.issueDate ? $d($parseDate(item.issueDate), 'short') : null"
+                      :model-value="item.issueDate ? $d($parseDate(item.issueDate), 'short') : null"
                       :label="$t('companyDetail.label.issueDate')"
                       :placeholder="$t('companyDetail.placeholder.date')"
                       :loading="loading"
                       :rules="[rules.required]"
                       state-icon
-                      state-color="none"
+                      state-error-color="none"
                       label-no-wrap
                       readonly
                     >
                       <template v-slot:prepend>
-                        <i class="zi-calendar text-lg" />
+                        <Icon small class="text-gray-200 mr-sm">
+                          {{ icons.ziCalendar }}
+                        </Icon>
                       </template>
                     </TextField>
                   </div>
                 </template>
               </DatePicker>
               <DatePicker
-                :value="item.expireDate"
-                @input="updateData({ 'expireDate': $event })"
+                :model-value="item.expireDate"
+                @update:model-value="updateData({ 'expireDate': $event })"
               >
                 <template v-slot:activator>
                   <div
-                    class="w-1/2 pr-sm"
+                    class="pr-sm"
                     style="max-width: 232px;"
                   >
                     <TextField
-                      :value="item.expireDate ? $d($parseDate(item.expireDate), 'short') : null"
+                      :model-value="item.expireDate ? $d($parseDate(item.expireDate), 'short') : null"
                       :label="$t('companyDetail.label.expireDate')"
                       :placeholder="$t('companyDetail.placeholder.date')"
                       :loading="loading"
                       :rules="[rules.required]"
                       state-icon
-                      state-color="none"
+                      state-error-color="none"
                       readonly
                     >
                       <template v-slot:prepend>
-                        <i class="zi-calendar text-lg" />
+                        <Icon small class="text-gray-200 mr-sm">
+                          {{ icons.ziCalendar }}
+                        </Icon>
                       </template>
                     </TextField>
                   </div>
@@ -141,7 +148,7 @@
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.issuedBy"
+              :model-value="item.issuedBy"
               :label="$t('companyDetail.label.issuedBy')"
               :placeholder="$t('companyDetail.placeholder.issuedBy')"
               :loading="loading"
@@ -149,13 +156,13 @@
               :lazy="create"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
-              @input="updateData({ 'issuedBy': $event })"
+              state-error-color="none"
+              @update:model-value="updateData({ 'issuedBy': $event })"
             />
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.legalAddress"
+              :model-value="item.legalAddress"
               :label="$t('companyDetail.label.placeOfResidence')"
               :placeholder="$t('companyDetail.placeholder.address')"
               :loading="loading"
@@ -163,13 +170,13 @@
               :lazy="create"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
-              @input="updateLegalAddress"
+              state-error-color="none"
+              @update:model-value="updateLegalAddress"
             />
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.legalAddressPostcode"
+              :model-value="item.legalAddressPostcode"
               :label="$t('companyDetail.label.placeOfResidencePostcode')"
               :placeholder="$t('companyDetail.placeholder.postcode')"
               :loading="loading"
@@ -177,15 +184,15 @@
               :lazy="create"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
+              state-error-color="none"
               label-no-wrap
               class="w-48"
-              @input="updateLegalAddressPostcode"
+              @update:model-value="updateLegalAddressPostcode"
             />
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.mailingAddress"
+              :model-value="item.mailingAddress"
               :label="$t('companyDetail.label.privateMailingAddress')"
               :placeholder="$t('companyDetail.placeholder.address')"
               :disabled="isMailingAddressMatch"
@@ -194,14 +201,14 @@
               :lazy="create"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
-              @input="updateMailingAddress"
+              state-error-color="none"
+              @update:model-value="updateMailingAddress"
             />
           </div>
           <div class="pb-2 lg:pb-1">
             <div class="flex justify-between">
               <TextField
-                :value="item.mailingAddressPostcode"
+                :model-value="item.mailingAddressPostcode"
                 :label="$t('companyDetail.label.mailingAddressPostcode')"
                 :placeholder="$t('companyDetail.placeholder.postcode')"
                 :loading="loading"
@@ -210,10 +217,10 @@
                 :lazy="create"
                 :rules="[rules.required]"
                 state-icon
-                state-color="none"
+                state-error-color="none"
                 label-no-wrap
                 class="w-48 pb-2"
-                @input="updateMailingAddressPostcode"
+                @update:model-value="updateMailingAddressPostcode"
               />
               <div class="relative flex-shrink-0 relative pl-sm">
                 <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
@@ -221,9 +228,8 @@
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
                    <Switch
-                    :value="isMailingAddressMatch"
-                    hide-details
-                    @input="updateMailingAddressMatch"
+                    :model-value="isMailingAddressMatch"
+                    @update:model-value="updateMailingAddressMatch"
                   />
                 </div>
               </div>
@@ -238,7 +244,7 @@
         <div class="w-full lg:w-1/2 lg:pl-5">
           <div class="pb-2">
             <TextField
-              :value="item.vat"
+              :model-value="item.vat"
               :label="$t('companyDetail.label.vat')"
               :placeholder="$t('companyDetail.placeholder.vat')"
               :loading="loading"
@@ -246,13 +252,13 @@
               :lazy="create"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
-              @input="updateData({ 'vat': $event })"
+              state-error-color="none"
+              @update:model-value="updateData({ 'vat': $event })"
             />
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.bankName"
+              :model-value="item.bankName"
               :label="$t('companyDetail.label.bankName')"
               :placeholder="$t('companyDetail.placeholder.bankName')"
               :loading="loading"
@@ -260,13 +266,13 @@
               :lazy="create"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
-              @input="updateData({ 'bankName': $event })"
+              state-error-color="none"
+              @update:model-value="updateData({ 'bankName': $event })"
             />
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.bankAddress"
+              :model-value="item.bankAddress"
               :label="$t('companyDetail.label.bankAddress')"
               :placeholder="$t('companyDetail.placeholder.bankAddress')"
               :loading="loading"
@@ -274,13 +280,13 @@
               :lazy="create"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
-              @input="updateData({ 'bankAddress': $event })"
+              state-error-color="none"
+              @update:model-value="updateData({ 'bankAddress': $event })"
             />
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.bankAccountNumber"
+              :model-value="item.bankAccountNumber"
               :label="$t('companyDetail.label.bankAccountNumber')"
               :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
               :loading="loading"
@@ -288,13 +294,13 @@
               :lazy="create"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
-              @input="updateData({ 'bankAccountNumber': $event })"
+              state-error-color="none"
+              @update:model-value="updateData({ 'bankAccountNumber': $event })"
             />
           </div>
           <div class="flex items-end pb-2">
             <TextField
-              :value="item.swift"
+              :model-value="item.swift"
               :label="$t('companyDetail.label.swift')"
               :placeholder="$t('companyDetail.placeholder.swift')"
               :loading="loading"
@@ -302,12 +308,12 @@
               :lazy="create"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
+              state-error-color="none"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-              @input="updateData({ 'swift': $event })"
+              @update:model-value="updateData({ 'swift': $event })"
             />
             <TextField
-              :value="item.bic"
+              :model-value="item.bic"
               :label="$t('companyDetail.label.bic')"
               :placeholder="$t('companyDetail.placeholder.bic')"
               :loading="loading"
@@ -315,38 +321,38 @@
               :lazy="create"
               :rules="[rules.required]"
               state-icon
-              state-color="none"
+              state-error-color="none"
               class="flex-grow"
-              @input="updateData({ 'bic': $event })"
+              @update:model-value="updateData({ 'bic': $event })"
             />
           </div>
           <div>
             <div class="flex items-end pb-2">
               <Phone
-                :value="item.phone"
+                :model-value="item.phone"
                 :locale="item.locale"
                 :label="$t('companyDetail.label.phone')"
                 :loading="loading"
                 :rules="[rules.required]"
                 :lazy="create"
                 state-icon
-                state-color="none"
+                state-error-color="none"
                 required
                 class="w-1/2 pr-2"
-                @input="updateData({ 'phone': $event })"
+                @update:model-value="updateData({ 'phone': $event })"
               />
               <Phone
-                :value="item.fax"
+                :model-value="item.fax"
                 :locale="item.locale"
                 :label="$t('companyDetail.label.fax')"
                 :loading="loading"
                 :rules="[rules.required]"
                 :lazy="create"
                 state-icon
-                state-color="none"
+                state-error-color="none"
                 required
                 class="w-1/2 pl-2"
-                @input="updateData({ 'fax': $event })"
+                @update:model-value="updateData({ 'fax': $event })"
               />
             </div>
             <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
@@ -361,8 +367,12 @@
 
 <script>
 import Countries from '../../config/countries-iso3.json'
+
+import { ziCalendar, ziChevronRight, ziQuestionSign } from '../../assets/icons'
+
 import clientDetail from '../../mixins/clientDetail'
 
+import Icon from '../Base/Icon'
 import Tooltip from '../Base/Tooltip'
 import Switch from '../Base/Switch'
 import Select from '../Base/Select'
@@ -374,6 +384,7 @@ import Phone from '../Phone.vue'
 export default {
   name: 'PrivateDetail',
   components: {
+    Icon,
     Tooltip,
     Switch,
     Select,
@@ -395,6 +406,11 @@ export default {
       countriesSearch: '',
       rules: {
         required: v => !!v || this.$t('rule.required'),
+      },
+      icons: {
+        ziCalendar,
+        ziChevronRight,
+        ziQuestionSign,
       },
     }
   },
@@ -425,6 +441,8 @@ export default {
   },
   methods: {
     updateMailingAddressMatch (val) {
+      // TODO: !!!
+      if (!!val === !!this.isMailingAddressMatch) return
       this.isMailingAddressMatch = val
       const input = { isMailingAddressMatch: val }
       this.updateData(input)

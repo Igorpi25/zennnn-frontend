@@ -241,10 +241,8 @@
         class="mt-4"
         @click="$router.push({
           name: 'client-create',
-          query: {
-            orgId,
-            clientType,
-          },
+          params: { orgId },
+          query: { clientType },
         })"
       >
         <Icon class="text-gray-200 mr-sm">

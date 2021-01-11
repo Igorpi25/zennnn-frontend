@@ -4,18 +4,17 @@
       <div class="pb-2 lg:pb-1">
         <div class="flex">
           <TextField
-            :value="item.companyName"
+            :model-value="item.companyName"
             :label="$t('companyDetail.label.companyName')"
             :placeholder="$t('companyDetail.placeholder.companyName')"
             :loading="loading"
             :rules="[v => !!v || this.$t('companyDetail.rule.companyName')]"
             :debounce="500"
             :lazy="create"
-            lazy-validation
             state-icon
             required
             class="pb-2 flex-grow"
-            @input="updateCompanyName"
+            @update:model-value="updateCompanyName"
           />
           <div class="relative flex-shrink-0 relative pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
@@ -23,9 +22,8 @@
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
               <Switch
-                :value="isCompanyNameMatch"
-                hide-details
-                @input="updateCompanyNameMatch"
+                :model-value="isCompanyNameMatch"
+                @update:model-value="updateCompanyNameMatch"
               />
             </div>
           </div>
@@ -38,7 +36,7 @@
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.companyNameLocal"
+          :model-value="item.companyNameLocal"
           :label="$t('companyDetail.label.companyNameLocal')"
           :placeholder="$t('companyDetail.placeholder.companyNameLocal')"
           :loading="loading"
@@ -46,18 +44,18 @@
           :rules="[v => !!v || this.$t('companyDetail.rule.companyNameLocal')]"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
-          @input="updateData({ 'companyNameLocal': $event })"
+          @update:model-value="updateData({ 'companyNameLocal': $event })"
         />
       </div>
       <div class="relative h-56 pt-9 mb-7">
         <div class="absolute pin-t inset-x">
           <Alert
-            :value="true"
+            :model-value="true"
             :close="false"
             color="warn"
+            info-icon-class="items-start"
             max-width="none"
           >
             {{ $t('companyDetail.hint.companyNameLocal') }}
@@ -66,19 +64,18 @@
       </div>
       <div class="flex flex-wrap lg:flex-nowrap pb-2">
         <Phone
-          :value="item.phone"
+          :model-value="item.phone"
           :locale="item.locale"
           :label="$t('companyDetail.label.phone')"
           :loading="loading"
           :lazy="create"
-          lazy-validation
           state-icon
           required
           class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-sm"
-          @input="updateData({ 'phone': $event })"
+          @update:model-value="updateData({ 'phone': $event })"
         />
         <TextField
-          :value="item.phoneOption"
+          :model-value="item.phoneOption"
           :label="$t('companyDetail.label.phoneOption')"
           :placeholder="$t('companyDetail.placeholder.phoneOption')"
           :loading="loading"
@@ -88,27 +85,26 @@
           state-icon
           state-color="none"
           class="w-full sm:w-auto lg:w-full max-w-xs"
-          @input="updateData({ 'phoneOption': $event })"
+          @update:model-value="updateData({ 'phoneOption': $event })"
         />
       </div>
       <div class="pb-2">
         <Phone
-          :value="item.fax"
+          :model-value="item.fax"
           :locale="item.locale"
           :label="$t('companyDetail.label.fax')"
           :loading="loading"
           :lazy="create"
           state-icon
           state-color="none"
-          lazy-validation
           required
           class="sm:w-4/6 max-w-xs sm:pr-sm"
-          @input="updateData({ 'fax': $event })"
+          @update:model-value="updateData({ 'fax': $event })"
         />
       </div>
       <div>
         <TextField
-          :value="item.website"
+          :model-value="item.website"
           :label="$t('companyDetail.label.site')"
           :placeholder="$t('companyDetail.placeholder.site')"
           :loading="loading"
@@ -118,12 +114,12 @@
           state-icon
           state-color="none"
           required
-          @input="updateData({ 'website': $event })"
+          @update:model-value="updateData({ 'website': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.email"
+          :model-value="item.email"
           :label="$t('companyDetail.label.email')"
           :label-hint="$t('companyDetail.hint.email')"
           :placeholder="$t('companyDetail.placeholder.email')"
@@ -131,64 +127,60 @@
           :rules="[rules.email]"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           state-color="warn"
           required
-          @input="updateData({ 'email': $event })"
+          @update:model-value="updateData({ 'email': $event })"
         />
       </div>
     </div>
     <div class="w-full lg:w-1/2 lg:pl-5">
       <div class="pb-2">
         <TextField
-          :value="item.vat"
+          :model-value="item.vat"
           :label="$t('companyDetail.label.vat')"
           :placeholder="$t('companyDetail.placeholder.vat')"
           :loading="loading"
           :rules="[rules.required]"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           state-color="warn"
-          @input="updateData({ 'vat': $event })"
+          @update:model-value="updateData({ 'vat': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.legalAddress"
+          :model-value="item.legalAddress"
           :label="$t('companyDetail.label.legalAddress')"
           :placeholder="$t('companyDetail.placeholder.address')"
           :loading="loading"
           :rules="[rules.required]"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
-          @input="updateLegalAddress"
+          @update:model-value="updateLegalAddress"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.legalAddressPostcode"
+          :model-value="item.legalAddressPostcode"
           :label="$t('companyDetail.label.legalAddressPostcode')"
           :placeholder="$t('companyDetail.placeholder.postcode')"
           :loading="loading"
           :rules="[rules.required]"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           label-no-wrap
           class="w-48"
-          @input="updateLegalAddressPostcode"
+          @update:model-value="updateLegalAddressPostcode"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.mailingAddress"
+          :model-value="item.mailingAddress"
           :label="$t('companyDetail.label.mailingAddress')"
           :placeholder="$t('companyDetail.placeholder.address')"
           :loading="loading"
@@ -198,13 +190,13 @@
           :rules="[rules.required]"
           state-icon
           state-color="none"
-          @input="updateMailingAddress"
+          @update:model-value="updateMailingAddress"
         />
       </div>
       <div class="pb-2 lg:pb-1">
         <div class="flex justify-between">
           <TextField
-            :value="item.mailingAddressPostcode"
+            :model-value="item.mailingAddressPostcode"
             :label="$t('companyDetail.label.mailingAddressPostcode')"
             :placeholder="$t('companyDetail.placeholder.postcode')"
             :loading="loading"
@@ -216,7 +208,7 @@
             state-color="none"
             label-no-wrap
             class="w-48 pb-2"
-            @input="updateMailingAddressPostcode"
+            @update:model-value="updateMailingAddressPostcode"
           />
           <div class="relative flex-shrink-0 relative pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
@@ -224,9 +216,8 @@
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
               <Switch
-                :value="isMailingAddressMatch"
-                hide-details
-                @input="updateMailingAddressMatch"
+                :model-value="isMailingAddressMatch"
+                @update:model-value="updateMailingAddressMatch"
               />
             </div>
           </div>
@@ -239,7 +230,7 @@
       </div>
       <div class="flex items-end pb-2">
         <TextField
-          :value="item.iec"
+          :model-value="item.iec"
           :label="$t('companyDetail.label.iec')"
           :placeholder="$t('companyDetail.placeholder.iec')"
           :loading="loading"
@@ -249,10 +240,10 @@
           state-icon
           state-color="none"
           class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-          @input="updateData({ 'iec': $event })"
+          @update:model-value="updateData({ 'iec': $event })"
         />
         <TextField
-          :value="item.okpo"
+          :model-value="item.okpo"
           :label="$t('companyDetail.label.okpo')"
           :placeholder="$t('companyDetail.placeholder.okpo')"
           :loading="loading"
@@ -262,12 +253,12 @@
           state-icon
           state-color="none"
           class="flex-grow"
-          @input="updateData({ 'okpo': $event })"
+          @update:model-value="updateData({ 'okpo': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.psrn"
+          :model-value="item.psrn"
           :label="$t('companyDetail.label.psrn')"
           :placeholder="$t('companyDetail.placeholder.psrn')"
           :loading="loading"
@@ -276,7 +267,7 @@
           :rules="[rules.required]"
           state-icon
           state-color="none"
-          @input="updateData({ 'psrn': $event })"
+          @update:model-value="updateData({ 'psrn': $event })"
         />
       </div>
       <div class="flex items-end pb-2">
@@ -287,12 +278,12 @@
             label="given-family"
             value="given-family"
             hide-details
-            @input="updateCompanyOwnerType(false, 'given-name-input')"
+            @update:model-value="updateCompanyOwnerType(false, 'given-name-input')"
           />
         </div>
         <TextField
           ref="given-name-input"
-          :value="companyOwner.firstName"
+          :model-value="companyOwner.firstName"
           :label="$t('companyDetail.label.ownerFullName')"
           :placeholder="$t('companyDetail.placeholder.firstName')"
           :loading="loading"
@@ -301,14 +292,13 @@
           :debounce="500"
           :lazy="create"
           label-no-wrap
-          lazy-validation
           state-icon
           required
           class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
-          @input="updateCompanyOwner({ firstName: $event })"
+          @update:model-value="updateCompanyOwner({ firstName: $event })"
         />
         <TextField
-          :value="companyOwner.lastName"
+          :model-value="companyOwner.lastName"
           :placeholder="$t('companyDetail.placeholder.lastName')"
           :loading="loading"
           :disabled="isOwnerName"
@@ -316,10 +306,9 @@
           :debounce="500"
           :lazy="create"
           class="flex-grow"
-          lazy-validation
           state-icon
           required
-          @input="updateCompanyOwner({ lastName: $event })"
+          @update:model-value="updateCompanyOwner({ lastName: $event })"
         />
       </div>
       <div class="flex items-end pb-2">
@@ -330,12 +319,12 @@
             label="name"
             value="name"
             hide-details
-            @input="updateCompanyOwnerType(true, 'name-input')"
+            @update:model-value="updateCompanyOwnerType(true, 'name-input')"
           />
         </div>
         <TextField
           ref="name-input"
-          :value="companyOwner.name"
+          :model-value="companyOwner.name"
           :label="$t('companyDetail.label.ownerFullNameAlt')"
           :placeholder="$t('companyDetail.placeholder.ownerFullNameAlt')"
           :loading="loading"
@@ -344,11 +333,10 @@
           :debounce="500"
           :lazy="create"
           label-no-wrap
-          lazy-validation
           state-icon
           required
           class="w-full"
-          @input="updateCompanyOwner({ name: $event })"
+          @update:model-value="updateCompanyOwner({ name: $event })"
         />
       </div>
     </div>
@@ -434,6 +422,8 @@ export default {
       })
     },
     updateCompanyNameMatch (val) {
+      // TODO: !!!
+      if (!!val === !!this.isCompanyNameMatch) return
       this.isCompanyNameMatch = val
       const input = { isCompanyNameMatch: val }
       this.updateData(input)
@@ -443,6 +433,8 @@ export default {
       this.updateData(input)
     },
     updateMailingAddressMatch (val) {
+      // TODO: !!!
+      if (!!val === !!this.isMailingAddressMatch) return
       this.isMailingAddressMatch = val
       const input = { isMailingAddressMatch: val }
       this.updateData(input)

@@ -132,8 +132,8 @@
             class="border border-gray-400 focus:outline-none focus:border-blue-500 hover:border-blue-500 rounded-md h-full flex items-center justify-center cursor-pointer"
             role="menuitem"
             tabindex="0"
-            @click="$router.push({ name: 'requisite-create' })"
-            @keydown.enter.exact.self="$router.push({ name: 'requisite-create' })"
+            @click="$router.push({ name: 'requisite-create', params: { orgId } })"
+            @keydown.enter.exact.self="$router.push({ name: 'requisite-create', params: { orgId } })"
           >
             <div class="flex flex-col items-center pb-8">
               <Icon :size="106" class="text-gray-200">
@@ -271,6 +271,7 @@ export default {
       this.$router.push({
         name: 'requisite',
         params: {
+          orgId: this.orgId,
           reqId: item.id,
         },
       })

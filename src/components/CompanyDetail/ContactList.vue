@@ -6,11 +6,15 @@
       </div>
       <div>
         <button
-          class="w-6 h-6 flex items-center justify-center text-2xl text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none select-none"
+          class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
            @click="toggleExpand"
         >
-          <i v-if="expanded" class="zi-chevron-down" />
-          <i v-else class="zi-chevron-up" />
+          <Icon
+            class="transition-transform"
+            :class="{ 'transform rotate-90': expanded }"
+          >
+            {{ icons.ziChevronRight }}
+          </Icon>
         </button>
       </div>
     </div>
@@ -27,7 +31,7 @@
           >
             <ContactItem
               :loading="loading"
-              :item="item"
+              :value="item"
               @update="updateData(i, item, $event)"
               @delete="deleteData(i)"
             />
@@ -38,7 +42,7 @@
             :loading="createLoading"
             block
             outlined
-            merge-class="h-10 text-sm"
+            class="h-10 text-sm"
             @click="addData"
           >
             {{ $t('companyDetail.addContact') }}
@@ -50,10 +54,14 @@
 </template>
 
 <script>
-import clientDetail from '../../mixins/clientDetail'
 import { ContactType } from '../../graphql/enums'
 
+import { ziChevronRight } from '../../assets/icons'
+
+import clientDetail from '../../mixins/clientDetail'
+
 import Btn from '../Base/Btn'
+import Icon from '../Base/Icon'
 import ExpandTransition from '../Base/ExpandTransition'
 import ContactItem from './ContactItem.vue'
 
@@ -61,6 +69,7 @@ export default {
   name: 'ContactList',
   components: {
     Btn,
+    Icon,
     ExpandTransition,
     ContactItem,
   },
@@ -73,11 +82,15 @@ export default {
       default: () => ([]),
     },
   },
+  emits: ['update'],
   data () {
     return {
       createLoading: false,
       updateLoading: false,
       deleteLoading: false,
+      icons: {
+        ziChevronRight,
+      },
     }
   },
   computed: {

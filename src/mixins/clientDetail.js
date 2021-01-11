@@ -7,6 +7,7 @@ export default {
       default: false,
     },
   },
+  emits: ['update'],
   data () {
     return {
       expanded: true,

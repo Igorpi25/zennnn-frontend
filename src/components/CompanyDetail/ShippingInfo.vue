@@ -6,11 +6,15 @@
       </div>
       <div>
         <button
-          class="w-6 h-6 flex items-center justify-center text-2xl text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none select-none"
+          class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
            @click="toggleExpand"
         >
-          <i v-if="expanded" class="zi-chevron-down" />
-          <i v-else class="zi-chevron-up" />
+          <Icon
+            class="transition-transform"
+            :class="{ 'transform rotate-90': expanded }"
+          >
+            {{ icons.ziChevronRight }}
+          </Icon>
         </button>
       </div>
     </div>
@@ -19,7 +23,7 @@
         <div :class="{ 'lg:w-1/2 lg:pr-5': isRequisite }">
           <div class="pb-2">
             <TextField
-              :value="consignee"
+              :model-value="consignee"
               :label="$t('companyDetail.label.consignee')"
               :placeholder="$t('companyDetail.placeholder.consignee')"
               :loading="loading"
@@ -28,7 +32,7 @@
           </div>
           <div class="pb-2">
             <TextField
-              :value="item.deliveryAddress"
+              :model-value="item.deliveryAddress"
               :label="$t('companyDetail.label.deliveryAddress')"
               :placeholder="$t('companyDetail.placeholder.deliveryAddress')"
               :loading="loading"
@@ -38,26 +42,24 @@
               :state-color="hasStateIcon ? 'warn' : 'none'"
               :debounce="500"
               :lazy="create"
-              lazy-validation
-              @input="updateData({ 'deliveryAddress': $event })"
+              @update:model-value="updateData({ 'deliveryAddress': $event })"
             />
           </div>
           <div class="pb-2 lg:pb-1">
             <div class="flex justify-between">
               <TextField
-                :value="item.deliveryAddressPostcode"
+                :model-value="item.deliveryAddressPostcode"
                 :label="$t('companyDetail.label.deliveryAddressPostcode')"
                 :placeholder="$t('companyDetail.placeholder.postcode')"
                 :loading="loading"
                 :disabled="isDeliveryAddressMatch"
                 :rules="compRules"
                 :state-icon="true"
-                :state-color="hasStateIcon ? 'warn' : 'none'"
+                :state-error-color="hasStateIcon ? 'warn' : 'none'"
                 :debounce="500"
                 :lazy="create"
-                lazy-validation
                 class="w-48 pb-2"
-                @input="updateData({ 'deliveryAddressPostcode': $event })"
+                @update:model-value="updateData({ 'deliveryAddressPostcode': $event })"
               />
               <div class="relative flex-shrink-0 relative pl-sm">
                 <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
@@ -65,9 +67,8 @@
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
                   <Switch
-                    :value="isDeliveryAddressMatch"
-                    hide-details
-                    @input="updateDeliveryAddressMatch"
+                    :model-value="isDeliveryAddressMatch"
+                    @update:model-value="updateDeliveryAddressMatch"
                   />
                 </div>
               </div>
@@ -82,54 +83,52 @@
         <div :class="{ 'lg:w-1/2 lg:pl-5': isRequisite }">
           <div class="flex items-end pb-2">
             <TextField
-              :value="importerContactPerson.firstName"
+              :model-value="importerContactPerson.firstName"
               :label="$t('companyDetail.label.contactPerson')"
               :placeholder="$t('companyDetail.label.firstName')"
               :loading="loading"
               :rules="compRules"
               :state-icon="true"
-              :state-color="hasStateIcon ? 'warn' : 'none'"
+              :state-error-color="hasStateIcon ? 'warn' : 'none'"
               :debounce="500"
               :lazy="create"
-              lazy-validation
               label-no-wrap
               class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
-              @input="updateContactPerson({ firstName: $event })"
+              @update:model-value="updateContactPerson({ firstName: $event })"
             />
             <TextField
-              :value="importerContactPerson.lastName"
+              :model-value="importerContactPerson.lastName"
               :placeholder="$t('companyDetail.label.lastName')"
               :loading="loading"
               :rules="compRules"
               :state-icon="true"
-              :state-color="hasStateIcon ? 'warn' : 'none'"
+              :state-error-color="hasStateIcon ? 'warn' : 'none'"
               :debounce="500"
               :lazy="create"
-              lazy-validation
               class="flex-grow"
-              @input="updateContactPerson({ lastName: $event })"
+              @update:model-value="updateContactPerson({ lastName: $event })"
             />
           </div>
           <div>
             <Phone
-              :value="item.importerMobilePhone"
+              :model-value="item.importerMobilePhone"
               :locale="item.locale"
               :label="$t('companyDetail.label.mobilePhone')"
               :loading="loading"
               :state-color="hasStateIcon ? 'warn' : 'none'"
               :state-icon="true"
               :lazy="create"
-              lazy-validation
               required
-              @input="updateData({ 'importerMobilePhone': $event })"
+              @update:model-value="updateData({ 'importerMobilePhone': $event })"
             />
           </div>
           <div class="pt-10">
             <Alert
               v-if="isRequisite"
-              :value="true"
+              :model-value="true"
               :close="false"
               color="warn"
+              info-icon-class="items-start"
               max-width="none"
             >
               {{ $t('companyDetail.hint.companyLocale') }}
@@ -142,8 +141,11 @@
 </template>
 
 <script>
+import { ziChevronRight } from '../../assets/icons'
+
 import clientDetail from '../../mixins/clientDetail'
 
+import Icon from '../Base/Icon'
 import Alert from '../Base/Alert'
 import Switch from '../Base/Switch'
 import TextField from '../Base/TextField'
@@ -153,6 +155,7 @@ import Phone from '../Phone.vue'
 export default {
   name: 'ShippingInfo',
   components: {
+    Icon,
     Alert,
     Switch,
     TextField,
@@ -173,6 +176,9 @@ export default {
       isDeliveryAddressMatchLazy: false,
       rules: {
         required: v => !!v || this.$t('rule.required'),
+      },
+      icons: {
+        ziChevronRight,
       },
     }
   },

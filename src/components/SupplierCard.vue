@@ -9,10 +9,12 @@
         v-if="isComponent"
         class="absolute top-0 right-0 z-10 pt-3 pr-3"
       >
-        <i
-          class="zi-close text-2xl text-gray-100 hover:text-white cursor-pointer"
+        <Icon
+          class="text-gray-100 hover:text-white cursor-pointer"
           @click="$emit('close')"
-        />
+        >
+          {{ icons.ziCloseWindow }}
+        </Icon>
       </span>
       <h1 class="text-2xl text-white font-semibold leading-tight mb-4">
         {{ create ? $t('supplier.createTitle') : $t('supplier.editTitle') }}
@@ -107,7 +109,7 @@
         v-if="isComponent"
         :loading="updateLoading"
         outlined
-        merge-class="w-40"
+        class="w-40"
         @click="createFromItem"
       >
         {{ $t('supplier.save') }}
@@ -123,15 +125,18 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
 
-import { validateSupplier } from '../util/validation'
-
 import { GET_SUPPLIER, GET_ORG_NEXT_SUPPLIER_UID } from '../graphql/queries'
 import {
   CREATE_SUPPLIER,
   UPDATE_SUPPLIER,
 } from '../graphql/mutations'
 
+import { ziCloseWindow } from '../assets/icons'
+
+import { validateSupplier } from '../util/validation'
+
 import Btn from './Base/Btn'
+import Icon from './Base/Icon'
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
 import LegalDetail from './CompanyDetail/LegalDetail.vue'
 import ContactList from './CompanyDetail/ContactList.vue'
@@ -142,6 +147,7 @@ export default {
   name: 'SupplierCard',
   components: {
     Btn,
+    Icon,
     LegalInfo,
     LegalDetail,
     ContactList,
@@ -169,33 +175,37 @@ export default {
 
     const { result: result1 } = useQuery(GET_ORG_NEXT_SUPPLIER_UID, () => ({
       orgId: props.orgId,
-    }), {
-      enabled: () => props.create,
+    }), () => ({
+      enabled: props.create,
       fetchPolicy: 'network-only',
-    })
+    }))
     const getOrgNextSupplierUid = useResult(result1)
 
-    const { result: result2, loading } = useQuery(GET_SUPPLIER, () => ({
+    const { result: result2, loading, onResult } = useQuery(GET_SUPPLIER, () => ({
       id: supplierId,
-    }), {
-      enabled: () => !props.create,
-      onResult: ({ data, loading }) => {
-        if (loading) return
-        setData(data && data.getSupplier)
-      },
+    }), () => ({
+      enabled: !props.create,
       fetchPolicy: 'cache-and-network',
-    })
+      nextFetchPolicy: 'cache-fisrt',
+    }))
     const getSupplier = useResult(result2)
+    onResult(({ data, loading }) => {
+      if (loading) return
+      setData(data && data.getSupplier)
+    })
 
     const setData = (data) => {
       if (!data) return
       item.value = cloneDeep(data)
     }
 
-    const createSupplierMutate = useMutation(CREATE_SUPPLIER)
-    const updateSupplierMutate = useMutation(UPDATE_SUPPLIER)
+    const { mutate: createSupplierMutate } = useMutation(CREATE_SUPPLIER)
+    const { mutate: updateSupplierMutate } = useMutation(UPDATE_SUPPLIER)
 
     return {
+      icons: {
+        ziCloseWindow,
+      },
       item,
       supplierId,
       getOrgNextSupplierUid,

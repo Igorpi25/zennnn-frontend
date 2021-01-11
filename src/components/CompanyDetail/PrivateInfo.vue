@@ -3,93 +3,89 @@
     <div class="w-full lg:w-1/2 lg:pr-5">
       <div class="flex items-end pb-2">
         <TextField
-          :value="contactPerson.firstName"
+          :model-value="contactPerson.firstName"
           :label="$t('companyDetail.label.contactPerson')"
           :placeholder="$t('companyDetail.placeholder.firstName')"
           :loading="loading"
           :rules="[v => !!v || this.$t('companyDetail.rule.contactPersonFirstName')]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
           label-no-wrap
           class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
-          @input="updateContactPerson({ firstName: $event })"
+          @update:model-value="updateContactPerson({ firstName: $event })"
         />
         <TextField
-          :value="contactPerson.lastName"
+          :model-value="contactPerson.lastName"
           :placeholder="$t('companyDetail.placeholder.lastName')"
           :loading="loading"
           :rules="[v => !!v || this.$t('companyDetail.rule.contactPersonLastName')]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
           class="flex-grow"
-          @input="updateContactPerson({ lastName: $event })"
+          @update:model-value="updateContactPerson({ lastName: $event })"
         />
       </div>
       <div class="pb-2">
         <Phone
-          :value="item.mobilePhone"
+          :model-value="item.mobilePhone"
           :locale="item.locale"
           :label="$t('companyDetail.label.mobilePhone')"
           :label-hint="$t('companyDetail.hint.mobilePhone')"
-          :rule-message="$t('companyDetail.rule.notificationMobilePhone')"
+          :error-message="$t('companyDetail.rule.notificationMobilePhone')"
           :loading="loading"
           :lazy="create"
-          lazy-validation
           state-icon
           required
-          @input="updateData({ 'mobilePhone': $event })"
+          @update:model-value="updateData({ 'mobilePhone': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.email"
+          :model-value="item.email"
           :label="$t('companyDetail.label.email')"
           :label-hint="$t('companyDetail.hint.email')"
           :placeholder="$t('companyDetail.placeholder.email')"
           :loading="loading"
           :rules="[rules.email]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
-          @input="updateData({ 'email': $event })"
+          @update:model-value="updateData({ 'email': $event })"
         />
       </div>
       <div class="pb-2 lg:pb-1">
         <Select
-          :value="item.locale"
+          :model-value="item.locale"
           :items="locales"
           :label="$t('companyDetail.label.locale')"
           :placeholder="$t('companyDetail.placeholder.locale')"
           :loading="loading"
           :rules="[v => !!v || this.$t('companyDetail.rule.locale')]"
-          lazy-validation
+          :hide-details="false"
           state-icon
           required
-          item-value="value"
-          item-text="text"
           class="pb-2"
-          prepend-slot-class="w-auto pl-2"
-          @input="updateData({ 'locale': $event })"
+          @update:model-value="updateData({ 'locale': $event })"
         >
           <template v-slot:prepend>
             <img
               v-if="item.locale"
               :src="require(`@/assets/img/flags/locale/${item.locale}.svg`).default"
               :alt="item.locale"
-              class="h-6 w-6 rounded-full mr-4"
+              class="h-6 w-6 rounded-full ml-2 mr-4"
             >
             <img
               v-else
               src="@/assets/icons/earth.svg"
-              class="h-6 w-6 rounded-full mr-4"
+              class="h-6 w-6 rounded-full ml-2 mr-4"
             >
           </template>
           <template v-slot:item="{ item }">
@@ -109,13 +105,12 @@
       </div>
       <div class="pb-2 lg:pb-0">
         <Alert
-          :value="true"
+          :model-value="true"
           :close="false"
-          text-color="text-pink-500"
-          bg-color="bg-pink-500 bg-opacity-10"
-          icon-color="text-pink-500"
+          content-class="text-pink-500"
+          container-class="bg-pink-500 bg-opacity-10"
+          info-icon-class="text-pink-500 items-start"
           max-width="none"
-          class="py-4"
         >
           {{ $t('companyDetail.privacyWarning') }}
         </Alert>
@@ -124,36 +119,36 @@
     <div class="w-full lg:w-1/2 lg:pl-5">
       <div class="pb-2">
         <TextField
-          :value="person.firstName"
+          :model-value="person.firstName"
           :label="$t('companyDetail.label.givenName')"
           :placeholder="$t('companyDetail.placeholder.givenName')"
           :disabled="isPersonMatch"
           :loading="loading"
           :rules="[v => !!v || this.$t('companyDetail.rule.givenName')]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
-          @input="updatePerson({ firstName: $event })"
+          @update:model-value="updatePerson({ firstName: $event })"
         />
       </div>
       <div class="pb-2 lg:pb-1">
         <div class="flex">
           <TextField
-            :value="person.lastName"
+            :model-value="person.lastName"
             :label="$t('companyDetail.label.familyName')"
             :placeholder="$t('companyDetail.placeholder.familyName')"
             :disabled="isPersonMatch"
             :loading="loading"
             :rules="[v => !!v || this.$t('companyDetail.rule.familyName')]"
+            :hide-details="false"
             :debounce="500"
             :lazy="create"
-            lazy-validation
             state-icon
             required
             class="pb-2 flex-grow"
-            @input="updatePerson({ lastName: $event })"
+            @update:model-value="updatePerson({ lastName: $event })"
           />
           <div class="relative flex-shrink-0 relative pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
@@ -161,9 +156,8 @@
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
               <Switch
-                :value="isPersonMatch"
-                hide-details
-                @input="updatePersonMatch"
+                :model-value="isPersonMatch"
+                @update:model-value="updatePersonMatch"
               />
             </div>
           </div>
@@ -176,37 +170,38 @@
       </div>
       <div class="pb-2">
         <TextField
-          :value="person.middleName"
+          :model-value="person.middleName"
           :label="$t('companyDetail.label.middleName')"
           :placeholder="$t('companyDetail.placeholder.middleName')"
           :lazy="create"
           :debounce="500"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
-          @input="updatePerson({ middleName: $event })"
+          state-error-color="none"
+          @update:model-value="updatePerson({ middleName: $event })"
         />
       </div>
       <div class="flex items-end pb-2">
         <DatePicker
-          :value="item.birthdate"
-          @input="updateData({ 'birthdate': $event })"
+          :model-value="item.birthdate"
+          @update:model-value="updateData({ 'birthdate': $event })"
         >
           <template v-slot:activator>
-            <div class="w-1/2 pr-4">
+            <div class="pr-4">
               <TextField
-                :value="item.birthdate ? $d($parseDate(item.birthdate), 'short') : null"
+                :model-value="item.birthdate ? $d($parseDate(item.birthdate), 'short') : null"
                 :label="$t('companyDetail.label.birthdate')"
                 :placeholder="$t('companyDetail.placeholder.date')"
                 :loading="loading"
                 :rules="[rules.required]"
-                lazy-validation
                 state-icon
                 label-no-wrap
                 readonly
               >
                 <template v-slot:prepend>
-                  <i class="zi-calendar text-lg" />
+                  <Icon small class="text-gray-200 mr-sm">
+                    {{ icons.ziCalendar }}
+                  </Icon>
                 </template>
               </TextField>
             </div>
@@ -219,7 +214,9 @@
           <div class="h-10 flex justify-start relative pl-12">
             <div class="absolute bottom-0 pl-4">
               <div class="flex items-center justify-center w-14 h-14 border border-gray-200 text-gray-200 bg-gray-400 rounded-full">
-                <i class="zi-user text-3xl" />
+                <Icon large>
+                  {{ icons.ziUser }}
+                </Icon>
               </div>
             </div>
           </div>
@@ -242,8 +239,12 @@
 
 <script>
 import { LOCALES_LIST } from '../../config/globals'
+
+import { ziUser, ziCalendar } from '../../assets/icons'
+
 import companyDetail from '../../mixins/clientDetail'
 
+import Icon from '../Base/Icon'
 import Alert from '../Base/Alert'
 import Switch from '../Base/Switch'
 import Select from '../Base/Select'
@@ -254,6 +255,7 @@ import Phone from '../Phone.vue'
 export default {
   name: 'PrivateInfo',
   components: {
+    Icon,
     Alert,
     Switch,
     Select,
@@ -275,6 +277,10 @@ export default {
       rules: {
         required: v => !!v || this.$t('rule.required'),
         email: v => (v && /.+@.+\..+/.test(v)) || this.$t('companyDetail.rule.notificationEmail'),
+      },
+      icons: {
+        ziUser,
+        ziCalendar,
       },
     }
   },

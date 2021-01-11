@@ -436,11 +436,3 @@
   background: transparent;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
 }
-
-.file-list__item .file-list__close {
-  opacity: 0;
-}
-
-.file-list__item:hover .file-list__close {
-  opacity: 1;
-}

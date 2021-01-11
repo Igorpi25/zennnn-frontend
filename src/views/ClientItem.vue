@@ -1,5 +1,6 @@
 <template>
   <ClientCard
+    :key="$route.fullPath"
     :org-id="$route.params.orgId"
     :create="create"
   />
