@@ -130,7 +130,14 @@ export default {
     stateErrorColor: String,
     errorMessage: String,
     lazy: Boolean,
-    messagesOnFocused: Boolean,
+    messagesOnFocused: {
+      type: Boolean,
+      default: true,
+    },
+    hideDetails: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   emits: ['update:modelValue'],
