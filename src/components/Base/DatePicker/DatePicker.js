@@ -7,10 +7,14 @@ import {
 
 import { useI18n } from 'vue-i18n'
 
+import parseISO from 'date-fns/parseISO'
+import fromUnixTime from 'date-fns/fromUnixTime'
+import formatISO from 'date-fns/formatISO'
 import parse from 'date-fns/parse'
 import isValid from 'date-fns/isValid'
 
 import { convertToUnit } from '../../../utils/convertToUnit'
+import { isString } from '../../../utils/check'
 
 import Btn from '../Btn'
 import Menu from '../Menu'
@@ -27,15 +31,15 @@ export default {
       default: '',
     },
     modelValue: {
-      type: Date,
+      type: [Date, String, Number],
       required: false,
     },
     max: {
-      type: Date,
+      type: [Date, String, Number],
       required: false,
     },
     min: {
-      type: Date,
+      type: [Date, String, Number],
       required: false,
     },
     inputFormat: {
@@ -65,6 +69,7 @@ export default {
     const activePicker = ref(props.type.toUpperCase())
     const internal = ref(new Date())
     const input = ref('')
+    const isMenuActive = ref(false)
 
     const { locale, d } = useI18n()
 
@@ -85,6 +90,15 @@ export default {
     //   ? lightFormat(props.modelValue, props.inputFormat)
     //   : ''))
 
+    const parseDate = (date) => {
+      if (!date) return undefined
+      if (!isString(date) && isValid(date)) return new Date(date)
+      const isUnixTime = !Number.isNaN(Number(date))
+      return isUnixTime
+        ? fromUnixTime(date / 1000)
+        : parseISO(date)
+    }
+
     const selectYear = (date) => {
       internal.value = date
       activePicker.value = 'MONTH'
@@ -94,7 +108,8 @@ export default {
       activePicker.value = 'DATE'
     }
     const selectDay = (date) => {
-      emit('update:modelValue', date)
+      emit('update:modelValue', formatISO(date, { representation: 'date' }))
+      isMenuActive.value = false
     }
 
     const genInput = () => {
@@ -118,10 +133,10 @@ export default {
 
     const genYearPicker = () => {
       return h(DatePickerYears, {
-        modelValue: internal.value,
-        selected: props.modelValue,
-        min: props.min,
-        max: props.max,
+        modelValue: parseDate(internal.value),
+        selected: parseDate(props.modelValue),
+        min: parseDate(props.min),
+        max: parseDate(props.max),
         'onUpdate:modelValue': v => {
           internal.value = v
         },
@@ -131,10 +146,10 @@ export default {
 
     const genMonthPicker = () => {
       return h(DatePickerMonths, {
-        modelValue: internal.value,
-        selected: props.modelValue,
-        min: props.min,
-        max: props.max,
+        modelValue: parseDate(internal.value),
+        selected: parseDate(props.modelValue),
+        min: parseDate(props.min),
+        max: parseDate(props.max),
         'onUpdate:modelValue': v => {
           internal.value = v
         },
@@ -147,11 +162,11 @@ export default {
 
     const genDayPicker = () => {
       return h(DatePickerDates, {
-        modelValue: internal.value,
-        selected: props.modelValue,
+        modelValue: parseDate(internal.value),
+        selected: parseDate(props.modelValue),
         firstDayOfWeek: firstDayOfWeek.value,
-        min: props.min,
-        max: props.max,
+        min: parseDate(props.min),
+        max: parseDate(props.max),
         'onUpdate:modelValue': v => {
           internal.value = v
         },
@@ -176,6 +191,7 @@ export default {
       input,
       internal,
       activePicker,
+      isMenuActive,
       genPicker,
       selectYear,
       selectMonth,
@@ -190,7 +206,12 @@ export default {
 
   render () {
     return h(Menu, {
-      bottom: true,
+      modelValue: this.isMenuActive,
+      placement: 'bottom-start',
+      contentClass: 'pt-0 pb-0',
+      'onUpdate:modelValue': value => {
+        this.isMenuActive = value
+      },
     }, {
       activator: () => this.genActivator(),
       default: () => {
