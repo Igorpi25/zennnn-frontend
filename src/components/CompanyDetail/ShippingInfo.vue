@@ -39,7 +39,7 @@
               :disabled="isDeliveryAddressMatch"
               :rules="compRules"
               :state-icon="true"
-              :state-color="hasStateIcon ? 'warn' : 'none'"
+              :state-error-color="hasStateIcon ? 'warn' : 'none'"
               :debounce="500"
               :lazy="create"
               @update:model-value="updateData({ 'deliveryAddress': $event })"
@@ -115,7 +115,7 @@
               :locale="item.locale"
               :label="$t('companyDetail.label.mobilePhone')"
               :loading="loading"
-              :state-color="hasStateIcon ? 'warn' : 'none'"
+              :state-error-color="hasStateIcon ? 'warn' : 'none'"
               :state-icon="true"
               :lazy="create"
               required

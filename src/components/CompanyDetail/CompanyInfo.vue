@@ -83,7 +83,7 @@
           :lazy="create"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           class="w-full sm:w-auto lg:w-full max-w-xs"
           @update:model-value="updateData({ 'phoneOption': $event })"
         />
@@ -96,7 +96,7 @@
           :loading="loading"
           :lazy="create"
           state-icon
-          state-color="none"
+          state-error-color="none"
           required
           class="sm:w-4/6 max-w-xs sm:pr-sm"
           @update:model-value="updateData({ 'fax': $event })"
@@ -112,7 +112,7 @@
           :lazy="create"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           required
           @update:model-value="updateData({ 'website': $event })"
         />
@@ -128,7 +128,7 @@
           :debounce="500"
           :lazy="create"
           state-icon
-          state-color="warn"
+          state-error-color="warn"
           required
           @update:model-value="updateData({ 'email': $event })"
         />
@@ -145,7 +145,7 @@
           :debounce="500"
           :lazy="create"
           state-icon
-          state-color="warn"
+          state-error-color="warn"
           @update:model-value="updateData({ 'vat': $event })"
         />
       </div>
@@ -189,7 +189,7 @@
           :lazy="create"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           @update:model-value="updateMailingAddress"
         />
       </div>
@@ -205,7 +205,7 @@
             :lazy="create"
             :rules="[rules.required]"
             state-icon
-            state-color="none"
+            state-error-color="none"
             label-no-wrap
             class="w-48 pb-2"
             @update:model-value="updateMailingAddressPostcode"
@@ -238,7 +238,7 @@
           :lazy="create"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
           @update:model-value="updateData({ 'iec': $event })"
         />
@@ -251,7 +251,7 @@
           :lazy="create"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           class="flex-grow"
           @update:model-value="updateData({ 'okpo': $event })"
         />
@@ -266,7 +266,7 @@
           :lazy="create"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           @update:model-value="updateData({ 'psrn': $event })"
         />
       </div>

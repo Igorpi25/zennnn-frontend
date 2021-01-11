@@ -45,7 +45,7 @@
       :debounce="500"
       :rules="[rules.required]"
       state-icon
-      state-color="none"
+      state-error-color="none"
       class="pb-2"
       @update:model-value="updateData('name', $event)"
     />
@@ -57,7 +57,7 @@
       :debounce="500"
       :rules="[rules.required]"
       state-icon
-      state-color="none"
+      state-error-color="none"
       class="pb-2"
       @update:model-value="updateData('address', $event)"
     />
@@ -70,7 +70,7 @@
         :debounce="500"
         :rules="[rules.required]"
         state-icon
-        state-color="none"
+        state-error-color="none"
         label-no-wrap
         class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
       />
@@ -81,7 +81,7 @@
         :debounce="500"
         :rules="[rules.required]"
         state-icon
-        state-color="none"
+        state-error-color="none"
         class="flex-grow"
       />
     </div>
@@ -91,7 +91,7 @@
       :label="$t('companyDetail.label.mobilePhone')"
       :loading="loading"
       state-icon
-      state-color="none"
+      state-error-color="none"
       required
       class="pb-2"
       @update:model-value="updateData('mobilePhone', $event)"
@@ -102,7 +102,7 @@
       :label="$t('companyDetail.label.phone')"
       :loading="loading"
       state-icon
-      state-color="none"
+      state-error-color="none"
       required
       @update:model-value="updateData('workPhone', $event)"
     />
