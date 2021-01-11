@@ -273,6 +273,7 @@ export default {
 
     const setInternalValue = (val) => {
       internalValue.value = getValue(val)
+      setSelectedItem()
       setSearch()
     }
 
@@ -305,7 +306,7 @@ export default {
 
     const setSelectedItem = (val) => {
       if (!val) {
-        selectedItem.value = items.value.find(item => item.value === internalValue.value)
+        selectedItem.value = items.value.find(item => getValue(item) === internalValue.value)
       } else {
         selectedItem.value = val
       }
@@ -726,13 +727,14 @@ export default {
         if (item.divider) {
           return genDivider(index)
         }
+        const value = getValue(item)
         return h(MenuItem, {
           tag: 'template',
           id: item.id,
           index: index++,
-          key: item.value,
+          key: value,
           disabled: item.disabled,
-          value: item.value,
+          value: value,
           role: 'option',
           class: itemClassNames,
           contentOnIntersect: props.contentOnIntersect,
@@ -744,7 +746,7 @@ export default {
         }, {
           default: (props) => {
             return slots.item
-              ? slots.item({ item, ...props })
+              ? h('div', null, slots.item({ item, ...props }))
               : h('div', null, h('div', { class: 'truncate' }, genFilteredText(getText(item))))
           },
         })
