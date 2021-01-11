@@ -15,7 +15,7 @@
             </span>
           </div>
           <div class="text-white text-lg font-semibold pl-8 sm:pl-0 md:pl-8 lg:pl-0 xl:pl-8">
-            {{ spec.estimateShippingDate ? $d($parseDate(spec.estimateShippingDate), 'short') : this.$t('placeholder.emptyDate') }}
+            {{ spec.estimateShippingDate ? $d($parseDate(spec.estimateShippingDate), 'short') : $t('placeholder.emptyDate') }}
           </div>
         </div>
       </div>

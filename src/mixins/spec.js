@@ -47,37 +47,37 @@ export default {
     const { result: result2 } = useQuery(GET_IS_SPEC_SYNC)
     const isSpecSync = useResult(result2)
 
-    const { result: result3 } = useQuery(GET_SPEC, () => ({
+    const { result: result3, onResult } = useQuery(GET_SPEC, () => ({
       id: specId,
     }), {
-      onResult: ({ data, loading }) => {
-        if (!loading && !isBooted.value) {
-          const spec = (data && data.getSpec) || {}
-          updateExpandedAndActiveTab(spec)
-        }
-      },
       fetchPolicy: 'cache-only',
     })
     const getSpec = useResult(result3)
+    onResult(({ data, loading }) => {
+      if (!loading && !isBooted.value) {
+        const spec = (data && data.getSpec) || {}
+        updateExpandedAndActiveTab(spec)
+      }
+    })
 
     const { result: result4, refetch: searchClientsRefetch } = useQuery(SEARCH_CLIENTS, () => ({
       orgId: orgId,
       search: clientSearch.value,
-    }), {
-      enabled: () => clientSearch.value,
+    }), () => ({
+      enabled: !!clientSearch.value,
       fetchPolicy: 'cache-and-network',
       debounce: 300,
-    })
+    }))
     const searchClients = useResult(result4)
 
     const { result: result5, refetch: searchSuppliersRefetch } = useQuery(SEARCH_SUPPLIERS, () => ({
       orgId: orgId,
       search: supplierSearch.value,
-    }), {
-      enabled: () => supplierSearch.value,
+    }), () => ({
+      enabled: !!supplierSearch.value,
       fetchPolicy: 'cache-and-network',
       debounce: 300,
-    })
+    }))
     const searchSuppliers = useResult(result5)
 
     // Methods
