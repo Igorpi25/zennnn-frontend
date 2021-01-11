@@ -80,7 +80,9 @@
             >
               <template v-slot:prepend-item>
                 <span class="flex items-center jusitfy-center text-blue-500">
-                  <i class="zi-plus-outline text-2xl mr-1" />
+                  <Icon class="mr-1">
+                    {{ icons.ziPlusOutline }}
+                  </Icon>
                   <span>{{ $t('deals.createSpecDialogAddClient') }}</span>
                 </span>
               </template>
@@ -93,20 +95,28 @@
         <div class="h-12 flex items-center">
           <div class="flex items-center pl-5 sm:pr-sm">
             <Checkbox disabled hide-details class="pt-xs">
-              <button disabled class="flex text-2xl text-blue-500 focus:outline-none cursor-not-allowed">
-                <i class="zi-chevron-down" />
+              <button disabled class="flex text-blue-500 focus:outline-none cursor-not-allowed">
+                <Icon>
+                  {{ icons.ziChevronDown }}
+                </Icon>
               </button>
             </Checkbox>
           </div>
           <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-1 sm:px-sm">
-            <i class="zi-copy text-2xl" />
+            <Icon>
+              {{ icons.ziCopy }}
+            </Icon>
           </button>
           <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-1 sm:px-sm">
-            <i class="zi-delete text-2xl" />
+            <Icon>
+              {{ icons.ziDelete }}
+            </Icon>
           </button>
           <div class="w-px h-5 bg-gray-400 mx-sm" />
           <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-sm">
-            <i class="zi-filter text-2xl" />
+            <Icon>
+              {{ icons.ziFilter }}
+            </Icon>
           </button>
           <div class="flex-grow" />
           <div class="flex text-gray-200 text-lg overflow-hidden">
@@ -118,7 +128,9 @@
                 class="flex items-center text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
                 @click="expandAll"
               >
-                <i class="zi-expand" :title="$t('action.expandAll')" />
+                <Icon :title="$t('action.expandAll')">
+                  {{ icons.ziExpand }}
+                </Icon>
               </button>
               <button
                 v-else
@@ -126,7 +138,9 @@
                 class="flex items-center text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
                 @click="collapseAll"
               >
-                <i class="zi-collapse" :title="$t('action.collapseAll')" />
+                <Icon :title="$t('action.collapseAll')">
+                  {{ icons.ziCollapse }}
+                </Icon>
               </button>
             </div>
           </div>
@@ -286,7 +300,9 @@
         @click="createInvoice"
       >
         <template v-slot:icon>
-          <i class="zi-plus text-lg block align-middle" />
+          <Icon small class="block align-middle">
+            {{ icons.ziPlus }}
+          </Icon>
         </template>
         <span>{{ $t('shipping.addInvoice') }}</span>
       </Btn>
@@ -326,7 +342,17 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useQuery, useResult, useMutation, useApolloClient } from '@vue/apollo-composable'
 
-import { ziRefresh, ziQuestionSign } from '../../assets/icons'
+import {
+  ziRefresh,
+  ziQuestionSign,
+  ziPlusOutline,
+  ziChevronDown,
+  ziCopy,
+  ziDelete,
+  ziFilter,
+  ziExpand,
+  ziCollapse,
+} from '../../assets/icons'
 
 import { Role, ProductStatus } from '../../graphql/enums'
 import {
@@ -488,6 +514,13 @@ export default {
       icons: {
         ziRefresh,
         ziQuestionSign,
+        ziPlusOutline,
+        ziChevronDown,
+        ziCopy,
+        ziDelete,
+        ziFilter,
+        ziExpand,
+        ziCollapse,
       },
       apolloClient,
       orgId,

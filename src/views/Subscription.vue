@@ -4,7 +4,9 @@
     <Header light :org="orgId">
       <template v-slot:breadcrumbs>
         <div class="flex items-center pl-2 sm:pl-6">
-          <i class="hidden sm:block zi-chevron-up text-2xl text-light-gray-400 transform rotate-90" />
+          <Icon class="hidden sm:block text-light-gray-400">
+            {{ icons.ziChevronRight }}
+          </Icon>
           <div class="hidden sm:block ml-2 sm:ml-6">
             {{ $t('payment.subscriptionManagement') }}
           </div>
@@ -19,10 +21,12 @@
       content-class="relative text-gray-200 bg-light-gray-100 text-center p-8"
     >
       <span class="absolute text-right top-0 right-0 pt-2 pr-2">
-        <i
-          class="zi-close text-2xl text-gray-200 hover:text-gray-300 cursor-pointer"
+        <Icon
+          class="text-gray-200 hover:text-gray-300 cursor-pointer"
           @click="successDialog = false"
-        />
+        >
+          {{ icons.ziCloseWindow }}
+        </Icon>
       </span>
       <div class="py-10">
         {{ $t('payment.subscriptionPaid', { plan: successProductName }) }}
@@ -49,7 +53,9 @@
         <div class="flex sm:flex-1 items-center w-full">
           <div class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0" :class="{ 'bg-gray-100': !profile.picture }">
             <img v-if="profile.picture" :src="profile.picture" alt="Avatar" class="w-full h-full object-cover">
-            <i v-else class="zi-user text-3xl text-light-gray-400" />
+            <Icon v-else large class="text-light-gray-400">
+              {{ icons.ziUser }}
+            </Icon>
           </div>
           <div class="pl-4">
             <div class="text-lg font-medium">{{ `${profile.givenName} ${profile.familyName}` }}</div>
@@ -119,10 +125,12 @@
             </button>
           </template>
           <span class="absolute w-10 text-right top-0 right-0 pt-3 pr-3">
-            <i
-              class="zi-close text-2xl hover:text-gray-300 cursor-pointer"
+            <Icon
+              class="hover:text-gray-300 cursor-pointer"
               @click="cancelSubscriptionDialog = false"
-            />
+            >
+              {{ icons.ziCloseWindow }}
+            </Icon>
           </span>
           <div>
             <div class="font-semibold text-lg pb-sm">
@@ -273,10 +281,12 @@
                     />
                     <button
                       v-else
-                      class="text-2xl align-middle invisible group-hover:visible focus:outline-none focus:text-blue-400 hover:text-blue-400"
+                      class="align-middle invisible group-hover:visible focus:outline-none focus:text-blue-400 hover:text-blue-400"
                       @click="detachPaymentMethod(item.id)"
                     >
-                      <i class="zi-delete align-middle" />
+                      <Icon class="align-middle">
+                        {{ icons.ziDelete }}
+                      </Icon>
                     </button>
                   </td>
                 </tr>
@@ -365,7 +375,9 @@
                 </td>
                 <td class="rounded-r-md px-4">
                   <a :href="item.invoice_pdf" target="_brank" class="invisible group-hover:visible focus:outline-none text-gray-200 hover:text-blue-400 focus:text-blue-400">
-                    <i class="zi-download text-2xl align-middle" />
+                    <Icon class="align-middle">
+                      {{ icons.ziDownload }}
+                    </Icon>
                   </a>
                 </td>
               </tr>
@@ -383,7 +395,20 @@
 import axios from 'axios'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
+import { GET_PROFILE, LIST_PAYMENT_METHODS, LIST_PAYMENT_INVOICES } from '../graphql/queries'
+import { CANCEL_PAYMENT_SUBSCRIPTION, SET_DEFAULT_PAYMENT_METHOD, DETACH_PAYMENT_METHOD } from '../graphql/mutations'
+import { PAYMENT_DATA } from '../graphql/subscriptions'
+
+import {
+  ziUser,
+  ziDelete,
+  ziDownload,
+  ziChevronRight,
+  ziCloseWindow,
+} from '../assets/icons'
+
 import Btn from '../components/Base/Btn'
+import Icon from '../components/Base/Icon'
 import Modal from '../components/Base/Modal'
 import Progress from '../components/Base/Progress'
 import Header from '../components/Header.vue'
@@ -391,14 +416,11 @@ import Footer from '../components/Footer.vue'
 import PaymentCard from '../components/PaymentCard.vue'
 import PriceSelect from '../components/PriceSelect.vue'
 
-import { GET_PROFILE, LIST_PAYMENT_METHODS, LIST_PAYMENT_INVOICES } from '../graphql/queries'
-import { CANCEL_PAYMENT_SUBSCRIPTION, SET_DEFAULT_PAYMENT_METHOD, DETACH_PAYMENT_METHOD } from '../graphql/mutations'
-import { PAYMENT_DATA } from '../graphql/subscriptions'
-
 export default {
   name: 'Subscription',
   components: {
     Btn,
+    Icon,
     Modal,
     Progress,
     Header,
@@ -425,6 +447,13 @@ export default {
     const listPaymentInvoices = useResult(result3)
 
     return {
+      icons: {
+        ziUser,
+        ziDelete,
+        ziDownload,
+        ziChevronRight,
+        ziCloseWindow,
+      },
       apolloClient,
       getProfile,
       getProfileRefetch,

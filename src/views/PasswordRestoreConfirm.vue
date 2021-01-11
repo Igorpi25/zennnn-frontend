@@ -27,13 +27,12 @@
               required
             >
               <template v-slot:append>
-                <div
-                  class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
+                <Icon
+                  class="text-gray-500 hover:text-gray-300 pr-1"
                   @click="showPassword = !showPassword"
                 >
-                  <i v-if="showPassword" class="zi-eye align-middle" />
-                  <i v-else class=" zi-eye-off align-middle text-28" />
-                </div>
+                  {{ showPassword ? icons.ziVisible : icons.ziHide }}
+                </Icon>
               </template>
             </TextField>
             <TextField
@@ -49,13 +48,12 @@
               required
             >
               <template v-slot:append>
-                <div
-                  class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
+                <Icon
+                  class="text-gray-500 hover:text-gray-300 pr-1"
                   @click="showConfirmPassword = !showConfirmPassword"
                 >
-                  <i v-if="showConfirmPassword" class="zi-eye align-middle" />
-                  <i v-else class=" zi-eye-off align-middle text-28" />
-                </div>
+                  {{ showConfirmPassword ? icons.ziVisible : icons.ziHide }}
+                </Icon>
               </template>
             </TextField>
           </Form>
@@ -77,7 +75,10 @@
 </template>
 
 <script>
+import { ziVisible, ziHide } from '../assets/icons'
+
 import Btn from '../components/Base/Btn'
+import Icon from '../components/Base/Icon'
 import Form from '../components/Base/Form'
 import TextField from '../components/Base/TextField'
 import Header from '../components/Header.vue'
@@ -87,6 +88,7 @@ export default {
   name: 'PasswordRestoreConfirm',
   components: {
     Btn,
+    Icon,
     Form,
     TextField,
     Header,
@@ -109,6 +111,10 @@ export default {
         required: v => !!v || this.$t('rule.required'),
         passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
         passwordConfirmRules: v => (v && v === this.formModel.password) || this.$t('rule.passwordsDoNotMatch'),
+      },
+      icons: {
+        ziVisible,
+        ziHide,
       },
     }
   },

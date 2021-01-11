@@ -53,13 +53,12 @@
             validate-on-blur
           >
             <template v-slot:append>
-              <div
-                class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
+              <Icon
+                class="text-gray-500 hover:text-gray-300 pr-1"
                 @click="showPassword = !showPassword"
               >
-                <i v-if="showPassword" class="zi-eye align-middle" />
-                <i v-else class=" zi-eye-off align-middle text-28" />
-              </div>
+                {{ showPassword ? icons.ziVisible : icons.ziHide }}
+              </Icon>
             </template>
           </TextField>
           <Btn
@@ -105,13 +104,12 @@
           required
         >
           <template v-slot:append>
-            <div
-              class="cursor-pointer select-none text-gray-500 hover:text-gray-300 pr-1"
+            <Icon
+              class="text-gray-500 hover:text-gray-300 pr-1"
               @click="compliteShowPassword = !compliteShowPassword"
             >
-              <i v-if="compliteShowPassword" class="zi-eye align-middle" />
-              <i v-else class="zi-eye-off align-middle text-28" />
-            </div>
+              {{ compliteShowPassword ? icons.ziVisible : icons.ziHide }}
+            </Icon>
           </template>
         </TextField>
         <Alert
@@ -136,6 +134,9 @@
 </template>
 
 <script>
+import { ziVisible, ziHide } from '../../assets/icons'
+
+import Icon from '../../components/Base/Icon'
 import Alert from '../../components/Base/Alert'
 import Btn from '../../components/Base/Btn'
 import Form from '../../components/Base/Form'
@@ -175,6 +176,10 @@ export default {
         required: v => !!v || this.$t('rule.required'),
         email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
         passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
+      },
+      icons: {
+        ziVisible,
+        ziHide,
       },
     }
   },

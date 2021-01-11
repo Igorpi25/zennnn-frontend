@@ -9,10 +9,12 @@
         v-if="isComponent"
         class="absolute top-0 right-0 z-10 pt-3 pr-3"
       >
-        <i
-          class="zi-close text-2xl text-gray-100 hover:text-white cursor-pointer"
+        <Icon
+          class="text-gray-100 hover:text-white cursor-pointer"
           @click="$emit('close')"
-        />
+        >
+          {{ icons.ziCloseWindow }}
+        </Icon>
       </span>
       <div class="relative flex flex-wrap pb-4">
         <h1 class="w-full text-2xl text-white font-semibold leading-tight">
@@ -141,7 +143,10 @@ import {
   UPDATE_REQUISITE,
 } from '../graphql/mutations'
 
+import { ziCloseWindow } from '../assets/icons'
+
 import Btn from './Base/Btn'
+import Icon from './Base/Icon'
 import CompanyInfo from './CompanyDetail/CompanyInfo.vue'
 import BankDetailList from './CompanyDetail/BankDetailList.vue'
 import ContactList from './CompanyDetail/ContactList.vue'
@@ -152,6 +157,7 @@ export default {
   name: 'RequisiteCard',
   components: {
     Btn,
+    Icon,
     CompanyInfo,
     BankDetailList,
     ContactList,
@@ -206,6 +212,9 @@ export default {
     const { mutate: updateRequisiteMutate } = useMutation(UPDATE_REQUISITE)
 
     return {
+      icons: {
+        ziCloseWindow,
+      },
       item,
       reqId,
       loading,

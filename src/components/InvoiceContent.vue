@@ -55,10 +55,7 @@
                   @click="switchTab(tab.value)"
                   @keydown.enter.exact="switchTab(tab.value)"
                 >
-                  <i
-                    v-if="tab.icon"
-                    :class="['relative text-2xl', tab.icon]"
-                  >
+                  <span v-if="tab.icon" class="relative">
                     <div
                       v-if="tab.value === 5 && hasNewComments"
                       :class="[
@@ -68,7 +65,10 @@
                     >
                       <div class="w-full h-full bg-purple-500 rounded-full" />
                     </div>
-                  </i>
+                    <Icon>
+                      {{ tab.icon }}
+                    </Icon>
+                  </span>
                   <span>
                     {{ tab.text }}
                   </span>
@@ -134,20 +134,7 @@
                   class="h-12 absolute inset-x-0 bottom-0 pointer-events-none opacity-50 bg-gradient-to-t from-gray-900 to-gray-900-a-0"
                 />
               </td>
-              <td :colspan="activeTab === 2 ? 2 : 3">
-                <!-- <div class="flex">
-                  <Btn
-                    outlined
-                    borderless
-                    @click.prevent="createProduct"
-                  >
-                    <template v-slot:icon>
-                      <i class="zi-plus text-xl block align-middle" />
-                    </template>
-                    <span>{{ $t('shipping.addProduct') }}</span>
-                  </Btn>
-                </div> -->
-              </td>
+              <td :colspan="activeTab === 2 ? 2 : 3" />
 
               <template v-if="activeTab === 1">
                 <td class="text-gray-300 text-right px-sm">
@@ -231,6 +218,13 @@
 <script>
 import invoice from '../mixins/invoice'
 
+import {
+  ziLink,
+  ziChat,
+  ziQr,
+} from '../assets/icons'
+
+import Icon from './Base/Icon'
 import DataTable from './Base/DataTable'
 import InvoiceProduct from './InvoiceProduct.vue'
 import InvoiceSummary from './InvoiceSummary.vue'
@@ -239,6 +233,7 @@ import { Role } from '../graphql/enums'
 export default {
   name: 'InvoiceContent',
   components: {
+    Icon,
     DataTable,
     InvoiceProduct,
     InvoiceSummary,
@@ -276,21 +271,21 @@ export default {
             { value: 1, text: this.$t('shipping.prices'), width: 130, class: 'flex-1' },
             { value: 2, text: this.$t('shipping.warehouse'), width: 130, class: 'flex-1' },
             { value: 3, text: this.$t('shipping.description'), width: 130, class: 'flex-1' },
-            { value: 4, title: this.$t('shipping.link'), icon: 'zi-link', width: 46 },
-            { value: 5, icon: 'zi-chat', width: 46 },
-            { value: 6, icon: 'zi-qc', width: 46, disabled: true },
+            { value: 4, title: this.$t('shipping.link'), icon: ziLink, width: 46 },
+            { value: 5, icon: ziChat, width: 46 },
+            { value: 6, icon: ziQr, width: 46, disabled: true },
           ]
         : this.role === Role.ACCOUNTANT
           ? [
               { value: 1, text: this.$t('shipping.prices'), width: 130 },
               { value: 3, text: this.$t('shipping.description'), width: 130 },
-              { value: 4, title: this.$t('shipping.link'), icon: 'zi-link', width: 46 },
+              { value: 4, title: this.$t('shipping.link'), icon: ziLink, width: 46 },
             ]
           : this.role === Role.WAREHOUSEMAN || this.role === Role.FREELANCER
             ? [
                 { value: 2, text: this.$t('shipping.warehouse'), width: 130 },
                 { value: 3, text: this.$t('shipping.description'), width: 130 },
-                { value: 4, title: this.$t('shipping.link'), icon: 'zi-link', width: 46 },
+                { value: 4, title: this.$t('shipping.link'), icon: ziLink, width: 46 },
               ]
             : []
     },

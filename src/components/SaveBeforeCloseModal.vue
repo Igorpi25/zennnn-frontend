@@ -1,10 +1,12 @@
 <template>
   <div class="bg-gray-400 relative">
     <div class="absolute top-0 right-0 mt-2 mr-2">
-      <i
-        class="zi-close text-2xl text-gray-200 hover:text-gray-100 cursor-pointer"
+      <Icon
+        class="text-gray-200 hover:text-gray-100 cursor-pointer"
         @click="$emit('cancel')"
-      />
+      >
+        {{ icons.ziCloseWindow }}
+      </Icon>
     </div>
     <div class="text-center text-base sm:text-left p-8">
       <div class="py-10">
@@ -44,12 +46,16 @@
 </template>
 
 <script>
+import { ziCloseWindow } from '../assets/icons'
+
 import Btn from './Base/Btn'
+import Icon from './Base/Icon'
 
 export default {
   name: 'SaveBeforeCloseModal',
   components: {
     Btn,
+    Icon,
   },
   props: {
     title: {
@@ -76,6 +82,13 @@ export default {
       type: String,
       default: '',
     },
+  },
+  data () {
+    return {
+      icons: {
+        ziCloseWindow,
+      },
+    }
   },
 }
 </script>

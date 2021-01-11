@@ -23,7 +23,9 @@
                 style="width: 14px; height: 14px; right: -5px; top: -5px; z-index: 1;"
                 @click="removeImage(img)"
               >
-                <i class="zi-close text-white" />
+                <Icon class="text-white">
+                  {{ icons.ziCloseDelete }}
+                </Icon>
               </div>
               <Image
                 :key="img.url"
@@ -39,7 +41,9 @@
               </Image>
               <div v-if="isOpen" class="absolute inset-0 w-full h-full bg-black opacity-35 rounded" />
               <div v-if="isOpen" class="absolute inset-0 w-full h-full flex items-center justify-center">
-                <i class="zi-magnifier text-2xl text-white" />
+                <Icon class="text-white">
+                  {{ icons.ziSearch }}
+                </Icon>
               </div>
             </div>
           </template>
@@ -71,6 +75,12 @@ import { useApolloClient } from '@vue/apollo-composable'
 import { ICON_IMAGE_POSTFIX } from '../config/globals'
 import { ADD_PRODUCT_IMAGE, REMOVE_PRODUCT_IMAGE } from '../graphql/mutations'
 
+import {
+  ziSearch,
+  ziCloseDelete,
+} from '../assets/icons'
+
+import Icon from './Base/Icon'
 import Image from './Base/Image'
 import LoadingSpinner from './Base/LoadingSpinner'
 import ProductImage from './ProductImage.vue'
@@ -79,6 +89,7 @@ import FileUploader from './FileUploader.vue'
 export default {
   name: 'ProductImagesList',
   components: {
+    Icon,
     Image,
     LoadingSpinner,
     ProductImage,
@@ -108,6 +119,10 @@ export default {
     const apolloClient = resolveClient()
 
     return {
+      icons: {
+        ziSearch,
+        ziCloseDelete,
+      },
       apolloClient,
     }
   },

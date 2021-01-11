@@ -6,10 +6,12 @@
     <span
       class="absolute top-0 right-0 z-10 pt-1 pr-1"
     >
-      <i
-        class="zi-close text-2xl text-gray-100 hover:text-white cursor-pointer"
+      <Icon
+        class="text-gray-100 hover:text-white cursor-pointer"
         @click="$emit('close')"
-      />
+      >
+        {{ icons.ziCloseWindow }}
+      </Icon>
     </span>
     <!-- Header -->
     <div class="px-3">
@@ -410,7 +412,10 @@ import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import Countries from '../config/countries-iso3.json'
 
+import { ziCloseWindow } from '../assets/icons'
+
 import Btn from './Base/Btn'
+import Icon from './Base/Icon'
 import Modal from './Base/Modal'
 import Switch from './Base/Switch'
 import Select from './Base/Select'
@@ -433,6 +438,7 @@ export default {
   name: 'PrintSettings',
   components: {
     Btn,
+    Icon,
     Modal,
     Switch,
     Select,
@@ -502,6 +508,9 @@ export default {
     const listOrgRequisites = useResult(result2)
 
     return {
+      icons: {
+        ziCloseWindow,
+      },
       apolloClient,
       clientSearch,
       searchClients,

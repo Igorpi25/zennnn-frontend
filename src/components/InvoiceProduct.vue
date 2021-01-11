@@ -59,7 +59,9 @@
         </template>
         <template v-slot:prepend-item>
           <span class="flex items-center jusitfy-center text-blue-500">
-            <i class="zi-plus-outline text-2xl mr-1" />
+            <Icon class="mr-1">
+              {{ icons.ziPlusOutline }}
+            </Icon>
             <span>{{ $t('words.addWord') }}</span>
           </span>
         </template>
@@ -69,7 +71,9 @@
             class="flex items-center jusitfy-center text-blue-500 focus:outline-none cursor-pointer"
             @click="wordEditDialog = true"
           >
-            <i class="zi-edit text-xl" />
+            <Icon>
+              {{ icons.ziEdit }}
+            </Icon>
           </button>
         </template>
       </Select>
@@ -351,7 +355,9 @@
               target="_blank"
               class="inline-flex text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
             >
-              <i class="zi-open-in-new text-2xl" />
+              <Icon>
+                {{ icons.ziOpenInNew }}
+              </Icon>
             </a>
             <div
               v-if="!link.url && !isLinkUrlFocus"
@@ -361,7 +367,9 @@
                 class="h-8 w-full flex items-center justify-center rounded bg-gray-800 text-center text-gray-300 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
                 @click="$refs['link-input'].focus()"
               >
-                <i class="text-2xl zi-link mr-sm" />
+                <Icon class="mr-sm">
+                  {{ icons.ziLink }}
+                </Icon>
                 <span>
                   {{ $t('shipping.linkAdd') }}
                 </span>
@@ -384,7 +392,9 @@
           <div v-if="commentators.length === 1" class="flex items-center">
             <div class="w-8 h-8 flex items-center flex-shrink-0 mr-sm">
               <div class="w-full h-full rounded-full flex items-center justify-center border border-gray-200">
-                <i class="zi-user text-2xl text-gray-200" />
+                <Icon class="text-gray-200">
+                  {{ icons.ziUser }}
+                </Icon>
               </div>
             </div>
             <div class="flex-grow text-sm truncate">
@@ -400,7 +410,9 @@
             >
               <div class="w-8 h-8 flex items-center flex-shrink-0 mr-xs">
                 <div class="w-full h-full rounded-full flex items-center justify-center border border-gray-200">
-                  <i class="zi-user text-2xl text-gray-200" />
+                  <Icon class="text-gray-200">
+                    {{ icons.ziUser }}
+                  </Icon>
                 </div>
               </div>
             </div>
@@ -443,10 +455,12 @@
     >
       <button
         v-if="isOwnerOrManager && !create"
-        class="flex justify-end text-2xl text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none pr-3 md:pr-md ml-auto"
+        class="flex justify-end text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none pr-3 md:pr-md ml-auto"
         @click="deleteProduct(item.id)"
       >
-        <i class="zi-close" />
+        <Icon>
+          {{ icons.ziCloseDelete }}
+        </Icon>
       </button>
     </td>
   </tr>
@@ -460,9 +474,20 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 
 import { InvoiceProfitType, Role, WordStatus } from '../graphql/enums'
 import { SEARCH_WORDS } from '../graphql/queries'
+
 import product from '../mixins/product'
 import { isLink } from '../util/helpers'
 
+import {
+  ziEdit,
+  ziLink,
+  ziUser,
+  ziOpenInNew,
+  ziCloseDelete,
+  ziPlusOutline,
+} from '../assets/icons'
+
+import Icon from './Base/Icon'
 import Switch from './Base/Switch'
 import Select from './Base/Select'
 import TextField from './Base/TextField'
@@ -472,6 +497,7 @@ import WordDialog from './WordDialog.vue'
 export default {
   name: 'InvoiceProduct',
   components: {
+    Icon,
     Switch,
     Select,
     TextField,
@@ -524,6 +550,14 @@ export default {
     const searchWords = useResult(result)
 
     return {
+      icons: {
+        ziEdit,
+        ziLink,
+        ziUser,
+        ziOpenInNew,
+        ziCloseDelete,
+        ziPlusOutline,
+      },
       orgId,
       wordSearch,
       searchWords,

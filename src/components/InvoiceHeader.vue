@@ -52,7 +52,9 @@
                 class="w-full sm:w-36 mb-2 md:mb-0 mr-2"
               >
                 <template v-slot:prepend>
-                  <i class="zi-calendar text-2xl" />
+                  <Icon>
+                    {{ icons.ziCalendar }}
+                  </Icon>
                 </template>
               </TextField>
             </div>
@@ -81,7 +83,9 @@
             class="focus:outline-none select-none text-gray-200 hover:text-gray-100 focus:text-gray-100"
             @click="openCreateSupplierDialog(item)"
           >
-            <i class="zi-plus-outline text-2xl align-middle" />
+            <Icon class="align-middle">
+              {{ icons.ziPlusOutline }}
+            </Icon>
           </button>
         </template>
       </Select>
@@ -100,7 +104,9 @@
                 class="lg:flex-shrink-0 w-full sm:w-36 mr-2"
               >
                 <template v-slot:prepend>
-                  <i class="zi-calendar text-2xl" />
+                  <Icon>
+                    {{ icons.ziCalendar }}
+                  </Icon>
                 </template>
               </TextField>
             </div>
@@ -123,19 +129,16 @@
     </div>
     <button
       v-if="!create"
-      class="flex items-center text-2xl text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
+      class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
       @click="$emit('click', item.id)"
     >
-      <i
-        v-if="isExpanded"
-        :title="$t('action.collapse')"
-        class="zi-chevron-up"
-      />
-      <i
-        v-else
-        :title="$t('action.expand')"
-        class="zi-chevron-down"
-      />
+      <Icon
+        class="transition-transform"
+        :title="isExpanded ? $t('action.collapse') : $t('action.expand')"
+        :class="{ 'transform rotate-90': isExpanded }"
+      >
+        {{ icons.ziChevronRight }}
+      </Icon>
     </button>
     <div v-else class="w-6 h-6" />
     <Modal
@@ -168,6 +171,13 @@ import { InvoiceStatus, Role } from '../graphql/enums'
 import { SEARCH_SUPPLIERS } from '../graphql/queries'
 import { SET_INVOICE_SUPPLIER } from '../graphql/mutations'
 
+import {
+  ziCalendar,
+  ziPlusOutline,
+  ziChevronRight,
+} from '../assets/icons'
+
+import Icon from './Base/Icon'
 import Modal from './Base/Modal'
 import Select from './Base/Select'
 import Checkbox from './Base/Checkbox'
@@ -178,6 +188,7 @@ import SupplierCard from './SupplierCard.vue'
 export default {
   name: 'InvoiceHeader',
   components: {
+    Icon,
     Modal,
     Select,
     Checkbox,
@@ -216,6 +227,11 @@ export default {
     const { mutate: setInvoiceSupplierMutate } = useMutation(SET_INVOICE_SUPPLIER)
 
     return {
+      icons: {
+        ziCalendar,
+        ziPlusOutline,
+        ziChevronRight,
+      },
       orgId,
       supplierSearch,
       searchSuppliers,

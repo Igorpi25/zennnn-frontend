@@ -122,7 +122,9 @@
             />
           </td>
           <td class="bg-white p-2 rounded-r-md text-center">
-            <i class="zi-open-in-new text-light-gray-400 text-2xl align-middle" />
+            <Icon class="align-middle text-light-gray-400">
+              {{ icons.ziOpenInNew }}
+            </Icon>
           </td>
         </tr>
       </tbody>
@@ -194,18 +196,25 @@
 
 <script>
 import { Scroll } from 'uipart'
+
+import { ProductStatus } from '../graphql/enums'
+
+import { DEFAULT_CURRENCY } from '../config/globals'
+
+import { convertToUnit, isNumber } from '../util/helpers'
+
+import { ziOpenInNew } from '../assets/icons'
+
+import Icon from './Base/Icon'
 import Image from './Base/Image'
 import LoadingSpinner from './Base/LoadingSpinner'
 import ProductImage from './ProductImage.vue'
-import Comments from './Comments'
-
-import { ProductStatus } from '../graphql/enums'
-import { DEFAULT_CURRENCY } from '../config/globals'
-import { convertToUnit, isNumber } from '../util/helpers'
+import Comments from './Comments.vue'
 
 export default {
   name: 'PaperInvoice',
   components: {
+    Icon,
     Image,
     LoadingSpinner,
     ProductImage,
@@ -238,6 +247,9 @@ export default {
   },
   data () {
     return {
+      icons: {
+        ziOpenInNew,
+      },
       isScrollStart: false,
       scrollEndTimer: null,
       isMouseOver: false,

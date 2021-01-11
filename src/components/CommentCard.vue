@@ -5,7 +5,9 @@
     <div class="flex items-center pb-2">
       <div class="w-8 h-8 flex items-center flex-shrink-0 mr-sm">
         <div class="w-full h-full rounded-full flex items-center justify-center border border-gray-200">
-          <i class="zi-user text-2xl text-gray-200" />
+          <Icon class="text-gray-200">
+            {{ icons.ziUser }}
+          </Icon>
         </div>
       </div>
       <div :class="['font-semibold flex-grow', light ? 'text-gray-900' : 'text-white']">
@@ -27,8 +29,15 @@
 </template>
 
 <script>
+import { ziUser } from '../assets/icons'
+
+import Icon from './Base/Icon'
+
 export default {
   name: 'CommentCard',
+  components: {
+    Icon,
+  },
   props: {
     item: {
       type: Object,
@@ -38,6 +47,13 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  data () {
+    return {
+      icons: {
+        ziUser,
+      },
+    }
   },
 }
 </script>

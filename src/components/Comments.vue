@@ -15,11 +15,10 @@
       max-width="320"
       max-height="75vh"
     >
-      <template v-slot:activator="{ on }">
-        <slot name="activator" :on="on">
+      <template v-slot:activator>
+        <slot name="activator">
           <div
             class="relative flex items-center"
-            v-on="on"
           >
             <transition name="scale-transition">
               <div
@@ -32,7 +31,9 @@
                 </span>
               </div>
             </transition>
-            <i class="zi-chat cursor-pointer select-none text-2xl" />
+            <Icon class="cursor-pointer select-none">
+              {{ icons.ziChat }}
+            </Icon>
           </div>
         </slot>
       </template>
@@ -81,6 +82,9 @@ import {
   MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED,
 } from '../graphql/mutations'
 
+import { ziChat } from '../assets/icons'
+
+import Icon from './Base/Icon'
 import Menu from './Base/Menu'
 import Comment from './Comment'
 import CommentInput from './CommentInput'
@@ -88,6 +92,7 @@ import CommentInput from './CommentInput'
 export default {
   name: 'Comments',
   components: {
+    Icon,
     Menu,
     Comment,
     CommentInput,
@@ -160,6 +165,9 @@ export default {
     }))
 
     return {
+      icons: {
+        ziChat,
+      },
       resolveClient,
       isLoggedIn,
       getProfile,

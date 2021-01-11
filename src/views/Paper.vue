@@ -26,7 +26,9 @@
                 class="w-full inline-block rounded-md border border-transparent pointer-events-none"
               >
                 <div class="h-10 w-10 flex items-center justify-center text-light-gray-400">
-                  <i class="zi-user-plus text-2xl" />
+                  <Icon>
+                    {{ icons.ziUserPlus }}
+                  </Icon>
                 </div>
               </button>
             </div>
@@ -48,7 +50,9 @@
                   />
                 </div>
                 <div :class="['h-10 w-10 flex items-center justify-center', { 'opacity-0': printLoading }]">
-                  <i class="zi-print text-blue-500 text-2xl" />
+                  <Icon class="text-blue-500">
+                    {{ icons.ziPrint }}
+                  </Icon>
                 </div>
               </button>
             </div>
@@ -92,17 +96,18 @@
                     class="w-full inline-block bg-light-gray-100 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
                     v-on="on"
                   >
-                    <div class="h-10 w-10 flex items-center justify-center">
-                      <i class="relative zi-chat text-blue-500 text-2xl">
-                        <div
-                          v-if="hasNewComments"
-                          :class="[
-                            'absolute top-0 right-0 w-sm h-sm rounded-full border-2 bg-light-gray-100 border-light-gray-100 transition-colors duration-100 ease-out -mt-xs -mr-1',
-                          ]"
-                        >
-                          <div class="w-full h-full bg-purple-500 rounded-full" />
-                        </div>
-                      </i>
+                    <div class="h-10 w-10 flex items-center justify-center relative">
+                      <div
+                        v-if="hasNewComments"
+                        :class="[
+                          'absolute top-0 right-0 w-sm h-sm rounded-full border-2 bg-light-gray-100 border-light-gray-100 transition-colors duration-100 ease-out -mt-xs -mr-1',
+                        ]"
+                      >
+                        <div class="w-full h-full bg-purple-500 rounded-full" />
+                      </div>
+                      <Icon class=" text-blue-500">
+                        {{ icons.ziChat }}
+                      </Icon>
                     </div>
                   </button>
                 </template>
@@ -114,8 +119,9 @@
                 @click="toggleExpandAll"
               >
                 <div class="h-10 w-10 flex items-center justify-center">
-                  <i v-if="expanded.length === 0" class="zi-expand text-blue-500 text-2xl" />
-                  <i v-else class="zi-collapse text-blue-500 text-2xl" />
+                  <Icon class="text-blue-500">
+                    {{ expanded.length === 0 ? icons.ziExpand : icons.ziCollapse }}
+                  </Icon>
                 </div>
               </button>
             </div>
@@ -154,8 +160,12 @@
               </div>
               <div class="ml-auto">
                 <button class="select-none focus:outline-none text-blue-500 focus:text-blue-400 hover:text-blue-400 transition-colors duration-100 ease-out">
-                  <i v-if="expanded.includes(item.id)" class="zi-chevron-up text-xl align-middle" />
-                  <i v-else class="zi-chevron-down text-2xl align-middle" />
+                  <Icon
+                    class="transition-transform"
+                    :class="{ 'transform rotate-90': expanded.includes(item.id) }"
+                  >
+                    {{ icons.ziChevronRight }}
+                  </Icon>
                 </button>
               </div>
             </div>
@@ -187,7 +197,9 @@
                 <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
                   <div class="flex flex-col justify-between bg-light-gray-100 rounded-md py-4 px-5 leading-6 h-full">
                     <div class="flex text-gray-100 pb-2">
-                      <i class="zi-calendar text-2xl mr-2" />
+                      <Icon class="mr-2">
+                        {{ icons.ziCalendar }}
+                      </Icon>
                       <span>
                         {{ $t('paper.estimateDate') }}
                       </span>
@@ -200,7 +212,9 @@
                 <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
                   <div class="flex flex-col justify-between bg-light-gray-100 rounded-md py-4 px-5 leading-6 h-full">
                     <div class="flex text-gray-100 pb-2">
-                      <i class="zi-cup text-2xl mr-2" />
+                      <Icon class="mr-2">
+                        {{ icons.ziVolume }}
+                      </Icon>
                       <span>
                         {{ $t('paper.totalVolume') }}
                       </span>
@@ -213,7 +227,9 @@
                 <div class="w-1/2 sm:w-1/4 px-2">
                   <div class="flex flex-col justify-between bg-light-gray-100 rounded-md py-4 px-5 leading-6 h-full">
                     <div class="flex text-gray-100 pb-2">
-                      <i class="zi-boxes text-2xl mr-2" />
+                      <Icon class="mr-2">
+                        {{ icons.ziBoxes }}
+                      </Icon>
                       <span>
                         {{ $t('paper.totalPackages') }}
                       </span>
@@ -226,7 +242,9 @@
                 <div class="w-1/2 sm:w-1/4 px-2">
                   <div class="flex flex-col justify-between bg-light-gray-100 rounded-md py-4 px-5 leading-6 h-full">
                     <div class="flex text-gray-100 pb-2">
-                      <i class="zi-massa text-2xl mr-2" />
+                      <Icon class="mr-2">
+                        {{ icons.ziVolume }}
+                      </Icon>
                       <span>
                         {{ $t('paper.totalWeight') }}
                       </span>
@@ -278,7 +296,9 @@
                       v-if="container.full"
                       class="flex items-center px-5 py-3"
                     >
-                      <i class="zi-plus text-xl text-gray-100" />
+                      <Icon class="text-gray-100">
+                        {{ icons.ziPlus }}
+                      </Icon>
                     </div>
                     <div class="text-sm text-gray-200">
                       <div>
@@ -403,7 +423,9 @@
                   class="w-full inline-block rounded-md border border-light-gray-400 pointer-events-none"
                 >
                   <div class="h-12 flex items-center px-3 text-light-gray-400">
-                    <i class="zi-user-plus text-xl mr-2" />
+                    <Icon class="mr-2">
+                      {{ icons.ziUserPlus }}
+                    </Icon>
                     <span class="whitespace-nowrap leading-tight">
                       {{ $t('paper.share') }}
                     </span>
@@ -429,7 +451,9 @@
                     />
                   </div>
                   <div :class="['h-12 flex items-center px-3', { 'opacity-0': printLoading }]">
-                    <i class="zi-print text-gray-100 text-xl mr-2" />
+                    <Icon class="text-gray-100 mr-2">
+                      {{ icons.ziPrint }}
+                    </Icon>
                     <span class="text-blue-500 whitespace-nowrap leading-tight">
                       {{ $t('paper.print') }}
                     </span>
@@ -509,11 +533,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApolloClient, useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
-import Progress from '../components/Base/Progress'
-import Header from '../components/Header'
-import Copyright from '../components/Copyright'
-import Comments from '../components/Comments'
-import PaperInvoice from '../components/PaperInvoice'
+import { PAPER_STORE_KEY_PREFIX, DEFAULT_CURRENCY, PAPER_ORG_ID_STORE_KEY } from '../config/globals'
 
 import { Typename, Operation, InvoiceStatus } from '../graphql/enums'
 import { GET_PAPER_SPEC, GET_PROFILE } from '../graphql/queries'
@@ -530,13 +550,35 @@ import {
   PAPER_SPEC_INVOICES_FRAGMENT,
   PAPER_INVOICE_PRODUCTS_FRAGMENT,
 } from '../graphql/typeDefs'
-import { PAPER_STORE_KEY_PREFIX, DEFAULT_CURRENCY, PAPER_ORG_ID_STORE_KEY } from '../config/globals'
 import { getSpecExpandedInvoices } from '../graphql/resolvers'
+
+import {
+  ziUserPlus,
+  ziPrint,
+  ziChat,
+  ziExpand,
+  ziCollapse,
+  ziChevronRight,
+  ziCalendar,
+  ziVolume,
+  ziBoxes,
+  ziWeight,
+  ziPlus,
+} from '../assets/icons'
+
 import printInvoice from '../components/printInvoice'
+
+import Icon from '../components/Base/Icon'
+import Progress from '../components/Base/Progress'
+import Header from '../components/Header'
+import Copyright from '../components/Copyright'
+import Comments from '../components/Comments'
+import PaperInvoice from '../components/PaperInvoice'
 
 export default {
   name: 'Paper',
   components: {
+    Icon,
     Progress,
     Header,
     Copyright,
@@ -597,6 +639,19 @@ export default {
     const { mutate: removeExpandedInvoices } = useMutation(ADD_SPEC_EXPANDED_INVOICES)
 
     return {
+      icons: {
+        ziUserPlus,
+        ziPrint,
+        ziChat,
+        ziExpand,
+        ziCollapse,
+        ziChevronRight,
+        ziCalendar,
+        ziVolume,
+        ziBoxes,
+        ziWeight,
+        ziPlus,
+      },
       apolloClient,
       specId,
       isBooted,

@@ -9,7 +9,9 @@
       <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
         <div class="flex flex-col justify-between bg-gray-700 rounded-md py-4 px-5 leading-6 h-full">
           <div class="flex text-gray-200 pb-2">
-            <i class="zi-calendar text-gray-300 text-2xl mr-2" />
+            <Icon class="text-gray-300 mr-2">
+              {{ icons.ziCalendar }}
+            </Icon>
             <span>
               {{ $t('shipping.estimateDate') }}
             </span>
@@ -22,7 +24,9 @@
       <div class="w-1/2 pb-4 sm:pb-0 sm:w-1/4 px-2">
         <div class="flex flex-col justify-between bg-gray-700 rounded-md py-4 px-5 leading-6 h-full">
           <div class="flex text-gray-200 pb-2">
-            <i class="zi-cup text-gray-200 text-2xl mr-2" />
+            <Icon class="text-gray-300 mr-2">
+              {{ icons.ziVolume }}
+            </Icon>
             <span>
               {{ $t('shipping.totalVolume') }}
             </span>
@@ -35,7 +39,9 @@
       <div class="w-1/2 sm:w-1/4 px-2">
         <div class="flex flex-col justify-between bg-gray-700 rounded-md py-4 px-5 leading-6 h-full">
           <div class="flex text-gray-200 pb-2">
-            <i class="zi-boxes text-gray-300 text-2xl mr-2" />
+            <Icon class="text-gray-300 mr-2">
+              {{ icons.ziBoxes }}
+            </Icon>
             <span>
               {{ $t('shipping.totalPackages') }}
             </span>
@@ -48,7 +54,9 @@
       <div class="w-1/2 sm:w-1/4 px-2">
         <div class="flex flex-col justify-between bg-gray-700 rounded-md py-4 px-5 leading-6 h-full">
           <div class="flex text-gray-200 pb-2">
-            <i class="zi-massa text-gray-300 text-2xl mr-2" />
+            <Icon class="text-gray-300 mr-2">
+              {{ icons.ziWeight }}
+            </Icon>
             <span>
               {{ $t('shipping.totalWeight') }}
             </span>
@@ -104,7 +112,9 @@
               v-if="container.full"
               class="flex items-center px-4 py-2"
             >
-              <i class="zi-plus text-4xl text-gray-400" />
+              <Icon :base="false" class="text-4xl text-gray-400">
+                {{ icons.ziPlus }}
+              </Icon>
             </div>
             <div class="text-sm text-gray-200" style="min-height: 160px;">
               <div>
@@ -138,14 +148,38 @@
 </template>
 
 <script>
+import {
+  ziPlus,
+  ziBoxes,
+  ziWeight,
+  ziVolume,
+  ziCalendar,
+} from '../assets/icons'
+
+import Icon from './Base/Icon'
+
 export default {
   name: 'SpecShipping',
+  components: {
+    Icon,
+  },
   props: {
     spec: {
       type: Object,
       default: () => ({}),
     },
     hideContainers: Boolean,
+  },
+  data () {
+    return {
+      icons: {
+        ziPlus,
+        ziBoxes,
+        ziWeight,
+        ziVolume,
+        ziCalendar,
+      },
+    }
   },
   computed: {
     containers () {

@@ -24,7 +24,9 @@
         <span class="flex-grow truncate text-gray-100 group-hover:text-white">
           {{ item.specNo }}
         </span>
-        <i class="flex-shrink-0 zi-magnifier align-middle text-2xl text-gray-200 group-hover:text-gray-100 mx-1" />
+        <Icon class="flex-shrink-0 align-middle text-gray-200 group-hover:text-gray-100 mx-1">
+          {{ icons.ziSearch }}
+        </Icon>
       </router-link>
     </div>
   </div>
@@ -32,13 +34,18 @@
 
 <script>
 import { useQuery, useResult } from '@vue/apollo-composable'
+
 import { GET_WORD_SPECS } from '../graphql/queries'
 
+import { ziSearch } from '../assets/icons'
+
+import Icon from './Base/Icon'
 import Progress from './Base/Progress'
 
 export default {
   name: 'WordSpecs',
   components: {
+    Icon,
     Progress,
   },
   props: {
@@ -58,6 +65,9 @@ export default {
     const items = useResult(result, [], data => data.getWordSpecs)
 
     return {
+      icons: {
+        ziSearch,
+      },
       loading,
       items,
     }

@@ -84,12 +84,16 @@
             >
               <template v-slot:prepend-item>
                 <span class="flex items-center jusitfy-center text-blue-500">
-                  <i class="zi-plus-outline text-2xl mr-1" />
+                  <Icon class="mr-1">
+                    {{ icons.ziPlusOutline }}
+                  </Icon>
                   <span>{{ $t('words.addNewWord') }}</span>
                 </span>
               </template>
               <template v-slot:prepend>
-                <i class="zi-magnifier text-gray-200" />
+                <Icon class="text-gray-200">
+                  {{ icons.ziSearch }}
+                </Icon>
               </template>
             </Select>
           </div>
@@ -116,7 +120,9 @@
           class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
           @click="addProductsDialog = false"
         >
-          <i class="zi-close" />
+          <Icon>
+            {{ icons.ziCloseWindow }}
+          </Icon>
         </span>
       </div>
     </Modal>
@@ -130,7 +136,14 @@ import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 import { SEARCH_WORDS } from '../graphql/admin/queries'
 import { ADD_PRODUCTS_TO_WORD, CREATE_WORD_WITH_PRODUCTS } from '../graphql/admin/mutations'
 
+import {
+  ziSearch,
+  ziCloseWindow,
+  ziPlusOutline,
+} from '../assets/icons'
+
 import Btn from './Base/Btn'
+import Icon from './Base/Icon'
 import Modal from './Base/Modal'
 import Select from './Base/Select'
 import ExpandTransition from './Base/ExpandTransition'
@@ -141,6 +154,7 @@ export default {
   name: 'WordProducts',
   components: {
     Btn,
+    Icon,
     Modal,
     Select,
     ExpandTransition,
@@ -170,6 +184,11 @@ export default {
     const searchWords = useResult(result)
 
     return {
+      icons: {
+        ziSearch,
+        ziCloseWindow,
+        ziPlusOutline,
+      },
       apolloClient,
       wordSearch,
       searchWords,

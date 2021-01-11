@@ -36,11 +36,13 @@
       <span
         class="absolute top-0 right-0 pt-2 pr-2"
       >
-        <i
-          class="zi-close text-2xl text-gray-200 cursor-pointer"
+        <Icon
+          class="text-gray-200 cursor-pointer"
           :class="[light ? 'hover:text-gray-300' : 'hover:text-gray-100']"
           @click="menu = false"
-        />
+        >
+          {{ icons.ziCloseWindow }}
+        </Icon>
       </span>
       <div class="h-5" />
       <div class="w-full">
@@ -67,7 +69,9 @@
               target="_blank"
               class="absolute right-0 top-0 pointer-events-auto cursor-pointer text-2xl text-light-gray-400 hover:text-white focus:text-white focus:outline-none pt-sm pr-sm"
             >
-              <i class="zi-full-screen" />
+              <Icon>
+                {{ icons.ziFullScreen }}
+              </Icon>
             </a>
           </div>
           <div class="absolute inset-x-0 bottom-0 h-20 rounded-b overflow-hidden pointer-events-none text-gray-100">
@@ -87,7 +91,9 @@
               ]"
               @click="prev"
             >
-              <i class="zi-arrow-left text-2xl" />
+              <Icon>
+                {{ icons.ziArrowLeft }}
+              </Icon>
             </div>
             <div
               :class="[
@@ -96,7 +102,9 @@
               ]"
               @click="next"
             >
-              <i class="zi-arrow-right text-2xl" />
+              <Icon>
+                {{ icons.ziArrowRight }}
+              </Icon>
             </div>
           </div>
         </div>
@@ -111,6 +119,14 @@
 <script>
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
 
+import {
+  ziFullScreen,
+  ziArrowLeft,
+  ziArrowRight,
+  ziCloseWindow,
+} from '../assets/icons'
+
+import Icon from './Base/Icon'
 import Menu from './Base/Menu'
 import Image from './Base/Image'
 import LoadingSpinner from './Base/LoadingSpinner'
@@ -118,6 +134,7 @@ import LoadingSpinner from './Base/LoadingSpinner'
 export default {
   name: 'WordProduct',
   components: {
+    Icon,
     Menu,
     Image,
     LoadingSpinner,
@@ -135,6 +152,12 @@ export default {
       menu: false,
       currentImageFilename: '',
       currentImageIndex: 0,
+      icons: {
+        ziFullScreen,
+        ziArrowLeft,
+        ziArrowRight,
+        ziCloseWindow,
+      },
     }
   },
   computed: {

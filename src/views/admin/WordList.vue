@@ -56,71 +56,44 @@
             :content-class="[search ? 'shadow-blue-500' : '', 'bg-transparent']"
             class="w-full md:max-w-md"
             input-class="placeholder-blue-500"
+            clearable
           >
             <template v-slot:prepend>
-              <i class="zi-magnifier text-2xl text-gray-100"></i>
-            </template>
-            <template v-slot:append v-if="search">
-              <i
-                class="zi-close text-2xl text-gray-200 cursor-pointer focus:outline-none focus:text-gray-100 hover:text-gray-100"
-                @click="search = null"
-              />
+              <Icon class="text-gray-100">
+                {{ icons.ziSearch }}
+              </Icon>
             </template>
           </TextField>
           <div class="flex w-full sm:w-auto items-center justify-end" style="min-width: 165px;">
             <Menu
               v-model="filterMenu"
-              :content-class="'locale-picker__menu'"
-              :nudge-bottom="25"
-              bottom
-              left
+              placement="bottom-start"
+              @update:value="v => currentFilter = v"
             >
-              <template v-slot:activator="{ on }">
+              <template v-slot:activator>
                 <div
                   class="group flex items-center cursor-pointer whitespace-nowrap"
-                  v-on="on"
                 >
                   <span class="text-gray-100 group-hover:text-light-gray-400 pr-2">
                     {{ currentFilterText }}
                   </span>
-                  <i class="zi-filter relative text-2xl text-gray-200 group-hover:text-gray-100">
-                    <div
-                      v-if="currentFilter"
-                      :class="[
-                        'absolute top-0 right-0 -mt-xs -mr-1 w-sm h-sm rounded-full border-2 bg-gray-900 border-gray-900 transition-colors duration-100 ease-out',
-                      ]"
+                  <span class="relative">
+                    <Icon
+                      class="text-gray-200 group-hover:text-gray-100"
                     >
-                      <div class="w-full h-full bg-blue-500 rounded-full" />
-                    </div>
-                  </i>
+                      {{ currentFilter ? icons.ziFilter : icons.ziFilterOutline }}
+                    </Icon>
+                  </span>
                 </div>
               </template>
-              <template>
-                <ul
-                  :class="[
-                    'rounded py-2',
-                    'border-gray-400 text-gray-100 bg-gray-400'
-                  ]"
-                  role="menu"
-                >
-                  <li
-                    v-for="item in filtersItems"
-                    :key="item.value"
-                    :value="item.value"
-                    :class="[
-                      'hover:bg-gray-300 focus:bg-gray-300',
-                      'flex items-center h-9 cursor-pointer focus:outline-none px-5',
-                      'transition-colors duration-100 ease-out',
-                      { 'text-white': item.value === currentFilter },
-                    ]"
-                    tabindex="0"
-                    role="menuitem"
-                    @click="currentFilter = item.value"
-                  >
-                    <span>{{ item.text }}</span>
-                  </li>
-                </ul>
-              </template>
+              <MenuItem
+                v-for="(item, i) in filtersItems"
+                :key="item.value"
+                :index="i"
+                :value="item.value"
+              >
+                <span>{{ item.text }}</span>
+              </MenuItem>
             </Menu>
           </div>
         </div>
@@ -298,19 +271,19 @@
                       class="flex items-center jusitfy-center text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none cursor-pointer mr-2"
                       @click.prevent.stop="openEditItem(item)"
                     >
-                      <i class="zi-edit text-xl" />
+                      <Icon small>
+                        {{ icons.ziEdit }}
+                      </Icon>
                     </button>
                     <button
-                      class="flex items-center text-2xl text-blue-500 focus:text-blue-400 hover:text-blue-400 focus:outline-none select-none ml-auto"
+                      class="text-blue-500 focus:text-blue-400 hover:text-blue-400 focus:outline-none ml-auto"
                     >
-                      <i
-                        v-if="expanded.includes(item.id)"
-                        class="zi-chevron-down"
-                      />
-                      <i
-                        v-else
-                        class="zi-chevron-up transform rotate-90"
-                      />
+                      <Icon
+                        class="transition-transform"
+                        :class="{ 'transform rotate-90': expanded.includes(item.id) }"
+                      >
+                        {{ icons.ziChevronRight }}
+                      </Icon>
                     </button>
                   </span>
                   <span v-else class="inline-flex items-center max-w-full">
@@ -364,9 +337,9 @@
           class="mt-4"
           @click="wordCreateDialog = true"
         >
-          <template v-slot:icon>
-            <i class="zi-edit text-gray-100 text-2xl" />
-          </template>
+          <Icon class="text-gray-100 mr-sm">
+            {{ icons.ziEdit }}
+          </Icon>
           <span>{{ $t('words.addWord') }}</span>
         </Btn>
       </div>
@@ -406,6 +379,11 @@ import {
   ziGlobe,
   ziLanguages,
   ziUserCircle,
+  ziEdit,
+  ziSearch,
+  ziFilter,
+  ziFilterOutline,
+  ziChevronRight,
 } from '../../assets/icons'
 
 import { LIST_WORDS } from '../../graphql/admin/queries'
@@ -414,7 +392,7 @@ import { LOCALES_LIST } from '../../config/globals'
 
 import Btn from '../../components/Base/Btn'
 import Icon from '../../components/Base/Icon'
-import Menu from '../../components/Base/Menu'
+import { Menu, MenuItem } from '../../components/Base/Menu'
 import Progress from '../../components/Base/Progress'
 import DataTable from '../../components/Base/DataTable'
 import TextField from '../../components/Base/TextField'
@@ -428,6 +406,7 @@ export default {
     Btn,
     Icon,
     Menu,
+    MenuItem,
     Progress,
     DataTable,
     TextField,
@@ -483,6 +462,11 @@ export default {
         ziGlobe,
         ziLanguages,
         ziUserCircle,
+        ziEdit,
+        ziSearch,
+        ziFilter,
+        ziFilterOutline,
+        ziChevronRight,
       },
       apolloClient,
       loggedOut,

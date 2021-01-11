@@ -133,19 +133,25 @@
             <div class="w-full lg:w-1/2 lg:w-1/4 flex flex-col lg:pr-4">
               <div class="flex-grow flex mb-2 lg:mb-0">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-cold-blue-500 text-xl" />
+                  <Icon small class="text-cold-blue-500">
+                    {{ icons.ziChecked }}
+                  </Icon>
                 </span>
                 <span v-html="'Удаленная работа с&nbsp;кли&shy;ен&shy;та&shy;ми и&nbsp;пос&shy;тав&shy;щи&shy;ка&shy;ми'" />
               </div>
               <div class="flex mb-2">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-cold-blue-500 text-xl" />
+                  <Icon small class="text-cold-blue-500">
+                    {{ icons.ziChecked }}
+                  </Icon>
                 </span>
                 <span>Отгрузочные документы</span>
               </div>
               <div class="flex mb-2 lg:mb-0">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-cold-blue-500 text-xl" />
+                  <Icon small class="text-cold-blue-500">
+                    {{ icons.ziChecked }}
+                  </Icon>
                 </span>
                 <span>Unit-экономика</span>
               </div>
@@ -153,25 +159,33 @@
             <div class="flex flex-col">
               <div class="flex mb-2">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-cold-blue-500 text-xl" />
+                  <Icon small class="text-cold-blue-500">
+                    {{ icons.ziChecked }}
+                  </Icon>
                 </span>
                 <span v-html="'Статусы производства и&nbsp;доставки'" />
               </div>
               <div class="flex-grow flex mb-2">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-cold-blue-500 text-xl" />
+                  <Icon small class="text-cold-blue-500">
+                    {{ icons.ziChecked }}
+                  </Icon>
                 </span>
                 <span>KPI сотрудников</span>
               </div>
               <div class="flex mb-2">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-cold-blue-500 text-xl" />
+                  <Icon small class="text-cold-blue-500">
+                    {{ icons.ziChecked }}
+                  </Icon>
                 </span>
                 <span>Личный кабинет клиента</span>
               </div>
               <div class="flex">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
-                  <i class="zi-check text-cold-blue-500 text-xl" />
+                  <Icon small class="text-cold-blue-500">
+                    {{ icons.ziChecked }}
+                  </Icon>
                 </span>
                 <span v-html="'И&nbsp;многое другое'" />
               </div>
@@ -645,7 +659,9 @@
               class="flex mb-5 leading-6"
             >
               <span class="flex-shrink-0 inline-flex items-center h-6 mr-4">
-                <i class="zi-check text-cold-blue-500 text-lg" />
+                <Icon small class="text-cold-blue-500">
+                  {{ icons.ziChecked }}
+                </Icon>
               </span>
               <span>{{ item.text }}</span>
             </div>
@@ -806,6 +822,9 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { ziChecked } from '../assets/icons'
+
+import Icon from '../components/Base/Icon'
 import Image from '../components/Base/Image'
 import { Window, WindowItem } from '../components/Base/Window'
 
@@ -815,6 +834,7 @@ const SCROLL_THRESHOLD = 90
 export default {
   name: 'About',
   components: {
+    Icon,
     Image,
     Window,
     WindowItem,
@@ -825,6 +845,9 @@ export default {
     const ogDescription = computed(() => t('app.description'))
 
     return {
+      icons: {
+        ziChecked,
+      },
       ogTitle,
       ogDescription,
       ogUrl: `${process.env.VUE_APP_HOSTNAME}${window.location.pathname}`,

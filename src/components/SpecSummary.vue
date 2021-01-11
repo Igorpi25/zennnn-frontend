@@ -91,7 +91,9 @@
               @click="onOverview"
             >
               <template v-slot:icon>
-                <i class="zi-eye text-gray-100 text-2xl" />
+                <Icon class="text-gray-100">
+                  {{ icons.ziVisible }}
+                </Icon>
               </template>
               {{ $t('shipping.previewAsCustomer') }}
             </Btn>
@@ -105,7 +107,9 @@
               @click="openPaperList"
             >
               <template v-slot:icon>
-                <i class="zi-setting text-gray-100 text-2xl" />
+                <Icon class="text-gray-100">
+                  {{ icons.ziSettings }}
+                </Icon>
               </template>
               {{ $t('shipping.paperConfigurator') }}
             </Btn>
@@ -119,7 +123,9 @@
               @click="printDialog = true"
             >
               <template v-slot:icon>
-                <i class="zi-print text-gray-100 text-2xl" />
+                <Icon class="text-gray-100">
+                  {{ icons.ziPrint }}
+                </Icon>
               </template>
               {{ $t('shipping.print') }}
             </Btn>
@@ -133,7 +139,9 @@
               @click="accessControlDialog = true"
             >
               <template v-slot:icon>
-                <i class="zi-user-plus text-gray-100 text-2xl" />
+                <Icon class="text-gray-100">
+                  {{ icons.ziUserPlus }}
+                </Icon>
               </template>
               {{ $t('shipping.inviteCustomer') }}
             </Btn>
@@ -147,7 +155,9 @@
               content-class="w-full flex items-center"
             >
               <template v-slot:icon>
-                <i class="zi-email text-2xl" />
+                <Icon>
+                  {{ icons.ziEmail }}
+                </Icon>
               </template>
               {{ $t('shipping.notifyCustomer') }}
             </Btn>
@@ -226,7 +236,9 @@
                 class="cursor-pointer"
                 @click="removeEmailAccess(a.email)"
               >
-                <i class="zi-close text-lg" />
+                <Icon>
+                  {{ icons.ziCloseDelete }}
+                </Icon>
               </div>
             </transition>
           </div>
@@ -241,7 +253,17 @@ import cloneDeep from 'clone-deep'
 import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
+import {
+  ziVisible,
+  ziSettings,
+  ziPrint,
+  ziUserPlus,
+  ziEmail,
+  ziCloseDelete,
+} from '../assets/icons'
+
 import Btn from './Base/Btn'
+import Icon from './Base/Icon'
 import Modal from './Base/Modal'
 import TextField from './Base/TextField'
 import LoadingSpinner from './Base/LoadingSpinner'
@@ -271,6 +293,7 @@ export default {
   name: 'SpecSummary',
   components: {
     Btn,
+    Icon,
     Modal,
     TextField,
     LoadingSpinner,
@@ -305,6 +328,14 @@ export default {
     const listOrgContracts = useResult(result)
 
     return {
+      icons: {
+        ziVisible,
+        ziSettings,
+        ziPrint,
+        ziUserPlus,
+        ziEmail,
+        ziCloseDelete,
+      },
       orgId,
       apolloClient,
       listOrgContracts,

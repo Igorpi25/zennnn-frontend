@@ -144,7 +144,9 @@
               class="remove-item"
               @click="removeItem(contract.items, index)"
             >
-              <i class="zi-close text-2xl" title="Remove" />
+              <Icon title="Remove">
+                {{ icons.ziCloseDelete }}
+              </Icon>
             </span>
           </div>
           <div>
@@ -179,7 +181,9 @@
                 class="remove-item"
                 @click="removeParagraph(contract.items, index, idx)"
               >
-                <i class="zi-close text-2xl" title="Remove" />
+                <Icon title="Remove">
+                  {{ icons.ziCloseDelete }}
+                </Icon>
               </span>
             </div>
           </div>
@@ -357,7 +361,9 @@
               class="remove-item"
               @click="removeItem(contract.specItems, index + 1)"
             >
-              <i class="zi-close text-2xl" title="Remove" />
+              <Icon title="Remove">
+                {{ icons.ziCloseDelete }}
+              </Icon>
             </span>
           </div>
           <div
@@ -390,7 +396,9 @@
               class="remove-item"
               @click="removeParagraph(contract.specItems, index + 1, idx)"
             >
-              <i class="zi-close text-2xl" title="Remove" />
+              <Icon title="Remove">
+                {{ icons.ziCloseDelete }}
+              </Icon>
             </span>
           </div>
           <Btn

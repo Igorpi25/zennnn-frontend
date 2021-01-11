@@ -75,10 +75,12 @@
           key="cancel"
           class="absolute inset-0 flex justify-center items-center pointer-events-none"
         >
-          <i
-            class="zi-close text-2xl cursor-pointer pointer-events-auto hover:text-white"
+          <Icon
+            class="pointer-events-auto hover:text-white"
             @click="cancelUpload"
-          />
+          >
+            {{ icons.ziCloseDelete }}
+          </Icon>
         </div>
       </transition>
     </template>
@@ -99,11 +101,17 @@ import {
   UPLOAD_FILE_SIZE_MB,
 } from '../config/globals'
 
+import { ziCloseDelete } from '../assets/icons'
+
+import Icon from './Base/Icon'
 import Progress from './Base/Progress'
 
 export default {
   name: 'FileUploader',
-  components: { Progress },
+  components: {
+    Icon,
+    Progress,
+  },
   props: {
     fileAccept: {
       type: String,
@@ -141,6 +149,9 @@ export default {
       isDragOver: false,
       dragAndDropCapable: false,
       uploadPercentage: 0,
+      icons: {
+        ziCloseDelete,
+      },
     }
   },
 
