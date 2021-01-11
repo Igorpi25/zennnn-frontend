@@ -3,24 +3,27 @@
     <div class="w-full lg:w-1/2 lg:pr-5">
       <div class="pb-2">
         <Select
-          :value="item"
-          :menu-attach="$refs.container"
+          :model-value="item"
+          :attach="$refs.container"
           :label="$t('requisite.label.companyName')"
           :placeholder="$t('shipping.companyNotSetted')"
           v-model:search="search"
           :items="items"
           :rules="[rules.required]"
+          :hide-details="false"
           state-icon
           required
           searchable
           item-value="id"
           item-text="companyName"
-          @input="$emit('select-company', $event)"
+          @update:model-value="$emit('select-company', $event)"
           @click:prepend-item="$emit('create-company', $event)"
         >
           <template v-slot:prepend-item>
             <span class="flex jusitfy-center text-blue-500">
-              <i class="zi-plus-outline text-2xl mr-2" />
+              <Icon class="mr-2">
+                {{ icons.ziPlusOutline }}
+              </Icon>
               <span>{{ $t('action.create') }}</span>
             </span>
           </template>
@@ -41,35 +44,34 @@
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.legalAddress"
+          :model-value="item.legalAddress"
           :label="$t('companyDetail.label.legalAddress')"
           :placeholder="$t('companyDetail.placeholder.address')"
           :loading="loading"
           :readonly="readonly"
           :rules="[rules.required]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
-          @input="updateData({ legalAddress: $event })"
+          @update:model-value="updateData({ legalAddress: $event })"
         />
       </div>
       <div class="flex flex-wrap lg:flex-nowrap pb-2">
         <Phone
-          :value="item.phone"
+          :model-value="item.phone"
           :label="$t('companyDetail.label.phone')"
           :loading="loading"
           :readonly="readonly"
           :lazy="create"
-          lazy-validation
           state-icon
           required
           class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-sm"
-          @input="updateData({ 'phone': $event })"
+          @update:model-value="updateData({ 'phone': $event })"
         />
         <TextField
-          :value="item.phoneOption"
+          :model-value="item.phoneOption"
           :label="$t('companyDetail.label.phoneOption')"
           :placeholder="$t('companyDetail.placeholder.phoneOption')"
           :loading="loading"
@@ -78,46 +80,45 @@
           :lazy="create"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           class="w-full sm:w-auto lg:w-full max-w-xs"
-          @input="updateData({ 'phoneOption': $event })"
+          @update:model-value="updateData({ 'phoneOption': $event })"
         />
       </div>
       <div class="pb-2">
         <Phone
-          :value="item.fax"
+          :model-value="item.fax"
           :label="$t('companyDetail.label.fax')"
           :loading="loading"
           :readonly="readonly"
           :lazy="create"
           state-icon
-          state-color="none"
-          lazy-validation
+          state-error-color="none"
           required
           class="sm:w-4/6 max-w-xs sm:pr-sm"
-          @input="updateData({ 'fax': $event })"
+          @update:model-value="updateData({ 'fax': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.email"
+          :model-value="item.email"
           :label="$t('companyDetail.label.email')"
           :placeholder="$t('companyDetail.placeholder.email')"
           :loading="loading"
           :readonly="readonly"
           :rules="[rules.email]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
-          state-color="warn"
+          state-error-color="warn"
           required
-          @input="updateData({ 'email': $event })"
+          @update:model-value="updateData({ 'email': $event })"
         />
       </div>
       <div>
         <TextField
-          :value="item.website"
+          :model-value="item.website"
           :label="$t('companyDetail.label.site')"
           :placeholder="$t('companyDetail.placeholder.site')"
           :loading="loading"
@@ -126,25 +127,26 @@
           :lazy="create"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
-          @input="updateData({ 'website': $event })"
+          state-error-color="none"
+          @update:model-value="updateData({ 'website': $event })"
         />
       </div>
     </div>
     <div class="w-full lg:w-1/2 lg:pl-5">
       <div class="pb-2">
         <Select
-          :value="bankDetailItem"
-          :menu-attach="$refs.container"
+          :model-value="bankDetailItem"
+          :attach="$refs.container"
           :label="$t('companyDetail.label.bankName')"
           :placeholder="$t('companyDetail.placeholder.bankName')"
           :items="bankDetailList"
+          :rules="[rules.required]"
+          :hide-details="false"
           item-value="id"
           item-text="bankName"
-          :rules="[rules.required]"
           state-icon
           required
-          @input="setDefaultBankDetail"
+          @update:model-value="setDefaultBankDetail"
         >
           <template v-slot:item="{ item }">
             <span v-if="item.bankName" class="text-white">
@@ -163,51 +165,51 @@
       </div>
       <div class="pb-2">
         <TextField
-          :value="bankDetailItem.bankAddress"
+          :model-value="bankDetailItem.bankAddress"
           :label="$t('companyDetail.label.bankAddress')"
           :placeholder="$t('companyDetail.placeholder.bankAddress')"
           :loading="loading"
           :readonly="readonly || !bankDetailItem.id"
           :debounce="500"
           :rules="[rules.required]"
-          lazy-validation
+          :hide-details="false"
           state-icon
           required
-          @input="updateBankDetail({ 'bankAddress': $event })"
+          @update:model-value="updateBankDetail({ 'bankAddress': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="bankDetailItem.bankAccountNumber"
+          :model-value="bankDetailItem.bankAccountNumber"
           :label="$t('companyDetail.label.bankAccountNumber')"
           :placeholder="$t('companyDetail.placeholder.bankAccountNumber')"
           :loading="loading"
           :readonly="readonly || !bankDetailItem.id"
           :debounce="500"
           :rules="[rules.required]"
-          lazy-validation
+          :hide-details="false"
           state-icon
           required
-          @input="updateBankDetail({ 'bankAccountNumber': $event })"
+          @update:model-value="updateBankDetail({ 'bankAccountNumber': $event })"
         />
       </div>
       <div class="flex items-end pb-2">
         <TextField
-          :value="bankDetailItem.swift"
+          :model-value="bankDetailItem.swift"
           :label="$t('companyDetail.label.swift')"
           :placeholder="$t('companyDetail.placeholder.swift')"
           :loading="loading"
           :readonly="readonly || !bankDetailItem.id"
           :debounce="500"
           :rules="[rules.required]"
-          lazy-validation
+          :hide-details="false"
           state-icon
           required
           class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-          @input="updateBankDetail({ 'swift': $event })"
+          @update:model-value="updateBankDetail({ 'swift': $event })"
         />
         <TextField
-          :value="bankDetailItem.bic"
+          :model-value="bankDetailItem.bic"
           :label="$t('companyDetail.label.bic')"
           :placeholder="$t('companyDetail.placeholder.bic')"
           :loading="loading"
@@ -215,14 +217,14 @@
           :debounce="500"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           class="flex-grow"
-          @input="updateBankDetail({ 'bic': $event })"
+          @update:model-value="updateBankDetail({ 'bic': $event })"
         />
       </div>
       <div class="flex pb-2">
         <TextField
-          :value="item.vat"
+          :model-value="item.vat"
           :label="$t('companyDetail.label.vat')"
           :placeholder="$t('companyDetail.placeholder.vat')"
           :loading="loading"
@@ -231,12 +233,12 @@
           :lazy="create"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           class="w-7/12 pr-sm"
-          @input="updateData({ 'vat': $event })"
+          @update:model-value="updateData({ 'vat': $event })"
         />
         <TextField
-          :value="item.okpo"
+          :model-value="item.okpo"
           :label="$t('companyDetail.label.okpo')"
           :placeholder="$t('companyDetail.placeholder.okpo')"
           :loading="loading"
@@ -245,9 +247,9 @@
           :lazy="create"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           class="flex-grow"
-          @input="updateData({ 'okpo': $event })"
+          @update:model-value="updateData({ 'okpo': $event })"
         />
       </div>
     </div>
@@ -258,8 +260,12 @@
 import { useApolloClient } from '@vue/apollo-composable'
 
 import companyDetail from '../../mixins/clientDetail'
+
 import { UPDATE_COMPANY_BANK_DETAIL } from '../../graphql/mutations'
 
+import { ziPlusOutline } from '../../assets/icons'
+
+import Icon from '../Base/Icon'
 import Select from '../Base/Select'
 import TextField from '../Base/TextField'
 import Phone from '../Phone.vue'
@@ -267,6 +273,7 @@ import Phone from '../Phone.vue'
 export default {
   name: 'CompanyInfoPrint',
   components: {
+    Icon,
     Select,
     TextField,
     Phone,
@@ -283,11 +290,15 @@ export default {
       default: () => ([]),
     },
   },
+  emits: ['select-company', 'create-company', 'update'],
   setup () {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
     return {
+      icons: {
+        ziPlusOutline,
+      },
       apolloClient,
     }
   },

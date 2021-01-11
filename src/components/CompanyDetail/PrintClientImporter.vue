@@ -3,7 +3,7 @@
     <div class="w-full lg:w-1/2 lg:pr-5">
       <div class="pb-2">
         <TextField
-          :value="item.importerCompanyName"
+          :model-value="item.importerCompanyName"
           :label="$t('companyDetail.label.consignee')"
           :placeholder="$t('companyDetail.placeholder.consignee')"
           :loading="loading"
@@ -12,81 +12,81 @@
           :debounce="500"
           :lazy="create"
           :rules="[rules.required]"
+          :hide-details="false"
           state-icon
           required
-          @input="updateData({ 'importerCompanyName': $event })"
+          @update:model-value="updateData({ 'importerCompanyName': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.deliveryAddress"
+          :model-value="item.deliveryAddress"
           :label="$t('companyDetail.label.legalAddress')"
           :placeholder="$t('companyDetail.placeholder.address')"
           :loading="loading"
           :readonly="readonly"
           :disabled="disabled"
           :rules="[rules.required]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
-          @input="updateData({ deliveryAddress: $event })"
+          @update:model-value="updateData({ deliveryAddress: $event })"
         />
       </div>
       <div class="flex items-end pb-2">
         <TextField
-          :value="contactPerson.firstName"
+          :model-value="contactPerson.firstName"
           :label="$t('companyDetail.label.contactPerson')"
           :placeholder="$t('companyDetail.placeholder.firstName')"
           :loading="loading"
           :readonly="readonly"
           :disabled="disabled"
           :rules="[rules.required]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
           label-no-wrap
           class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
-          @input="updateContactPerson({ firstName: $event })"
+          @update:model-value="updateContactPerson({ firstName: $event })"
         />
         <TextField
-          :value="contactPerson.lastName"
+          :model-value="contactPerson.lastName"
           :placeholder="$t('companyDetail.placeholder.lastName')"
           :loading="loading"
           :readonly="readonly"
           :disabled="disabled"
           :rules="[rules.required]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
           class="flex-grow"
-          @input="updateContactPerson({ lastName: $event })"
+          @update:model-value="updateContactPerson({ lastName: $event })"
         />
       </div>
     </div>
     <div class="w-full lg:w-1/2 lg:pl-5">
       <div class="flex flex-wrap lg:flex-nowrap pb-2">
         <Phone
-          :value="item.importerPhone"
+          :model-value="item.importerPhone"
           :locale="item.locale"
           :label="$t('companyDetail.label.phone')"
           :loading="loading"
           :readonly="readonly"
           :disabled="disabled"
           :lazy="create"
-          lazy-validation
           state-icon
           required
           class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-sm"
-          @input="updateData({ 'importerPhone': $event })"
+          @update:model-value="updateData({ 'importerPhone': $event })"
         />
         <!-- <TextField
-          :value="item.phoneOption"
+          :model-value="item.phoneOption"
           :label="$t('companyDetail.label.phoneOption')"
           :placeholder="$t('companyDetail.placeholder.phoneOption')"
           :loading="loading"
@@ -95,15 +95,16 @@
           :debounce="500"
           :lazy="create"
           :rules="[rules.required]"
+          :hide-details="false"
           state-icon
-          state-color="none"
+          state-error-color="none"
           class="w-full sm:w-auto lg:w-full max-w-xs"
-          @input="updateData({ 'phoneOption': $event })"
+          @update:model-value="updateData({ 'phoneOption': $event })"
         /> -->
       </div>
       <!-- <div class="pb-2">
         <Phone
-          :value="item.fax"
+          :model-value="item.fax"
           :locale="item.locale"
           :label="$t('companyDetail.label.fax')"
           :loading="loading"
@@ -111,28 +112,27 @@
           :disabled="disabled"
           :lazy="create"
           state-icon
-          state-color="none"
-          lazy-validation
+          state-error-color="none"
           required
           class="sm:w-4/6 max-w-xs sm:pr-sm"
-          @input="updateData({ 'fax': $event })"
+          @update:model-value="updateData({ 'fax': $event })"
         />
       </div> -->
       <div class="pb-2">
         <TextField
-          :value="item.importerEmail"
+          :model-value="item.importerEmail"
           :label="$t('companyDetail.label.email')"
           :placeholder="$t('companyDetail.placeholder.email')"
           :loading="loading"
           :readonly="readonly"
           :disabled="disabled"
           :rules="[rules.email]"
+          :hide-details="false"
           :debounce="500"
           :lazy="create"
-          lazy-validation
           state-icon
           required
-          @input="updateData({ 'importerEmail': $event })"
+          @update:model-value="updateData({ 'importerEmail': $event })"
         />
       </div>
     </div>

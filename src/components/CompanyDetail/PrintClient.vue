@@ -3,24 +3,27 @@
     <div class="w-full lg:w-1/2 lg:pr-5">
       <div class="pb-2">
         <Select
-          :value="item"
-          :menu-attach="$refs.container"
+          :model-value="item"
+          :attach="$refs.container"
           :label="$t('clients.companyName')"
           :placeholder="$t('shipping.clientNotSetted')"
           v-model:search="search"
           :items="clients"
           :rules="[rules.required]"
+          :hide-details="false"
           searchable
           item-value="id"
           item-text="fullName"
           state-icon
           required
-          @input="$emit('select-client', $event)"
+          @update:model-value="$emit('select-client', $event)"
           @click:prepend-item="$emit('create-client', $event)"
         >
           <template v-slot:prepend-item>
             <span class="flex jusitfy-center text-blue-500">
-              <i class="zi-plus-outline text-2xl mr-2" />
+              <Icon class="mr-2">
+                {{ icons.ziPlusOutline }}
+              </Icon>
               <span>{{ $t('shipping.clientAddCreateAndAttach') }}</span>
             </span>
           </template>
@@ -44,51 +47,54 @@
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.legalAddress"
+          :model-value="item.legalAddress"
           :label="$t('companyDetail.label.legalAddress')"
           :placeholder="$t('companyDetail.placeholder.address')"
           :loading="loading"
           :readonly="readonly"
           :rules="[rules.required]"
+          :hide-details="false"
           :debounce="500"
           state-icon
           required
-          @input="updateData({ legalAddress: $event })"
+          @update:model-value="updateData({ legalAddress: $event })"
         />
         </div>
       <div class="flex items-end pb-2">
         <TextField
-          :value="contactPerson.firstName"
+          :model-value="contactPerson.firstName"
           :label="$t('companyDetail.label.contactPerson')"
           :placeholder="$t('companyDetail.placeholder.firstName')"
           :loading="loading"
           :readonly="readonly"
           :rules="[rules.required]"
+          :hide-details="false"
           :debounce="500"
           state-icon
           required
           label-no-wrap
           class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
-          @input="updateContactPerson({ firstName: $event })"
+          @update:model-value="updateContactPerson({ firstName: $event })"
         />
         <TextField
-          :value="contactPerson.lastName"
+          :model-value="contactPerson.lastName"
           :placeholder="$t('companyDetail.placeholder.lastName')"
           :loading="loading"
           :readonly="readonly"
           :rules="[rules.required]"
+          :hide-details="false"
           :debounce="500"
           state-icon
           required
           class="flex-grow"
-          @input="updateContactPerson({ lastName: $event })"
+          @update:model-value="updateContactPerson({ lastName: $event })"
         />
       </div>
     </div>
     <div class="w-full lg:w-1/2 lg:pl-5">
       <div class="flex flex-wrap lg:flex-nowrap pb-2">
         <Phone
-          :value="item.phone"
+          :model-value="item.phone"
           :locale="item.locale"
           :label="$t('companyDetail.label.phone')"
           :loading="loading"
@@ -96,10 +102,10 @@
           state-icon
           required
           class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-sm"
-          @input="updateData({ 'phone': $event })"
+          @update:model-value="updateData({ 'phone': $event })"
         />
         <TextField
-          :value="item.phoneOption"
+          :model-value="item.phoneOption"
           :label="$t('companyDetail.label.phoneOption')"
           :placeholder="$t('companyDetail.placeholder.phoneOption')"
           :loading="loading"
@@ -107,37 +113,38 @@
           :debounce="500"
           :rules="[rules.required]"
           state-icon
-          state-color="none"
+          state-error-color="none"
           class="w-full sm:w-auto lg:w-full max-w-xs"
-          @input="updateData({ 'phoneOption': $event })"
+          @update:model-value="updateData({ 'phoneOption': $event })"
         />
       </div>
       <div class="pb-2">
         <Phone
-          :value="item.fax"
+          :model-value="item.fax"
           :locale="item.locale"
           :label="$t('companyDetail.label.fax')"
           :loading="loading"
           :readonly="readonly"
           state-icon
-          state-color="none"
+          state-error-color="none"
           required
           class="sm:w-4/6 max-w-xs sm:pr-sm"
-          @input="updateData({ 'fax': $event })"
+          @update:model-value="updateData({ 'fax': $event })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="item.email"
+          :model-value="item.email"
           :label="$t('companyDetail.label.email')"
           :placeholder="$t('companyDetail.placeholder.email')"
           :loading="loading"
           :readonly="readonly"
           :rules="[rules.email]"
+          :hide-details="false"
           :debounce="500"
           state-icon
           required
-          @input="updateData({ 'email': $event })"
+          @update:model-value="updateData({ 'email': $event })"
         />
       </div>
     </div>
@@ -146,8 +153,12 @@
 
 <script>
 import companyDetail from '../../mixins/clientDetail'
+
 import { ClientType } from '../../graphql/enums'
 
+import { ziPlusOutline } from '../../assets/icons'
+
+import Icon from '../Base/Icon'
 import TextField from '../Base/TextField'
 import Select from '../Base/Select'
 import Phone from '../Phone.vue'
@@ -155,6 +166,7 @@ import Phone from '../Phone.vue'
 export default {
   name: 'PrintClient',
   components: {
+    Icon,
     TextField,
     Select,
     Phone,
@@ -171,6 +183,7 @@ export default {
       default: () => ([]),
     },
   },
+  emits: ['select-client', 'create-client', 'update:search'],
   data () {
     return {
       lazyItem: {},
@@ -178,6 +191,9 @@ export default {
       rules: {
         required: v => !!v || this.$t('rule.required'),
         email: v => (v && /.+@.+\..+/.test(v)) || this.$t('rule.email'),
+      },
+      icons: {
+        ziPlusOutline,
       },
     }
   },

@@ -3,58 +3,62 @@
     <div class="w-full sm:w-1/2 sm:pr-5">
       <div class="pb-2">
         <TextField
-          :value="shipment.sentFrom"
+          :model-value="shipment.sentFrom"
           :debounce="500"
           :label="$t('shipping.fromLabel')"
           :placeholder="$t('shipping.deliveryPlaceholder')"
           :rules="[rules.required]"
+          :hide-details="false"
           state-icon
           required
-          @input="$emit('update', { shipment: { sentFrom: $event } })"
+          @update:model-value="$emit('update', { shipment: { sentFrom: $event } })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="shipment.sentThrough"
+          :model-value="shipment.sentThrough"
           :debounce="500"
           :label="$t('shipping.viaLabel')"
           :placeholder="$t('shipping.deliveryPlaceholder')"
           :rules="[rules.required]"
           state-icon
-          state-color="warn"
-          @input="$emit('update', { shipment: { sentThrough: $event } })"
+          state-error-color="warn"
+          @update:model-value="$emit('update', { shipment: { sentThrough: $event } })"
         />
       </div>
       <div class="pb-2">
         <TextField
-          :value="shipment.sentDestination"
+          :model-value="shipment.sentDestination"
           :debounce="500"
           :label="$t('shipping.toLabel')"
           :placeholder="$t('shipping.deliveryPlaceholder')"
           :rules="[rules.required]"
+          :hide-details="false"
           state-icon
           required
-          @input="$emit('update', { shipment: { sentDestination: $event } })"
+          @update:model-value="$emit('update', { shipment: { sentDestination: $event } })"
         />
       </div>
       <div v-show="hasExportDate" class="pr-2">
         <DatePicker
-          :value="exportDate"
-          @input="updateExportDate"
+          :model-value="exportDate"
+          @update:model-value="updateExportDate"
         >
           <template v-slot:activator>
             <div style="max-width: 232px;">
               <TextField
-                :value="exportDate ? $d($parseDate(exportDate), 'short'): ''"
+                :model-value="exportDate ? $d($parseDate(exportDate), 'short'): ''"
                 :label="$t('shipping.exportDate')"
                 :placeholder="$t('companyDetail.placeholder.date')"
                 :rules="[rules.required]"
                 state-icon
-                state-color="warn"
+                state-error-color="warn"
                 readonly
               >
                 <template v-slot:prepend>
-                  <i class="zi-calendar text-lg" />
+                  <Icon small class="text-gray-200 mr-sm">
+                    {{ icons.ziCalendar }}
+                  </Icon>
                 </template>
               </TextField>
             </div>
@@ -65,66 +69,69 @@
     <div class="w-full sm:w-1/2 sm:pl-5">
       <div class="pb-2">
         <Select
-          :value="activeType"
-          :menu-attach="$refs.container"
+          :model-value="activeType"
+          :attach="$refs.container"
           :label="$t('shipping.shipmentType')"
           :placeholder="$t('shipping.methodOfDispatchPlaceholder')"
           v-model:search="shipmentTypeSearch"
           :items="shipmentTypes"
           :rules="[rules.required]"
+          :hide-details="false"
           state-icon
           searchable
           required
-          @input="$emit('update', { shipment: { activeType: $event } })"
+          @update:model-value="$emit('update', { shipment: { activeType: $event } })"
         >
         </Select>
       </div>
       <!-- MARINE -->
       <div v-show="shipment.activeType === ShipmentType.MARINE" key="marine">
         <TextField
-          :value="shipment.marine.containersCount"
+          :model-value="shipment.marine.containersCount"
           :debounce="500"
           :label="$t('shipping.containersCount')"
           :placeholder="$t('placeholder.notIndicated')"
           :rules="[rules.required]"
+          :hide-details="false"
           state-icon
           required
-          @input="$emit('update', { shipment: { marine: { containersCount: $event } } })"
+          @update:model-value="$emit('update', { shipment: { marine: { containersCount: $event } } })"
         />
         <div class="pb-2">
           <TextField
-            :value="shipment.marine.billOfLadingNo"
+            :model-value="shipment.marine.billOfLadingNo"
             :debounce="500"
             :label="$t('shipping.billOfLadingNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
+            :hide-details="false"
             state-icon
             required
-            @input="$emit('update', { shipment: { marine: { billOfLadingNo: $event } } })"
+            @update:model-value="$emit('update', { shipment: { marine: { billOfLadingNo: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.marine.ship"
+            :model-value="shipment.marine.ship"
             :debounce="500"
             :label="$t('shipping.ship')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { marine: { ship: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { marine: { ship: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.marine.containersNo"
+            :model-value="shipment.marine.containersNo"
             :debounce="500"
             :label="$t('shipping.containersNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { marine: { containersNo: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { marine: { containersNo: $event } } })"
           />
         </div>
       </div>
@@ -132,38 +139,40 @@
       <div v-show="shipment.activeType === ShipmentType.AIR" key="air">
         <div class="pb-2">
           <TextField
-            :value="shipment.air.airWaybillNo"
+            :model-value="shipment.air.airWaybillNo"
             :debounce="500"
             :label="$t('shipping.airWaybillNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
+            :hide-details="false"
             state-icon
             required
-            @input="$emit('update', { shipment: { air: { airWaybillNo: $event } } })"
+            @update:model-value="$emit('update', { shipment: { air: { airWaybillNo: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.air.flight"
+            :model-value="shipment.air.flight"
             :debounce="500"
             :label="$t('shipping.flight')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { air: { flight: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { air: { flight: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.air.numbersOfPkg"
+            :model-value="shipment.air.numbersOfPkg"
             :debounce="500"
             :label="$t('shipping.numbersOfPkg')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
+            :hide-details="false"
             state-icon
             required
-            @input="$emit('update', { shipment: { air: { numbersOfPkg: $event } } })"
+            @update:model-value="$emit('update', { shipment: { air: { numbersOfPkg: $event } } })"
           />
         </div>
       </div>
@@ -171,50 +180,52 @@
       <div v-show="shipment.activeType === ShipmentType.RAILWAY" key="railway">
         <div class="pb-2">
           <TextField
-            :value="shipment.railway.internationalWaybillNo"
+            :model-value="shipment.railway.internationalWaybillNo"
             :debounce="500"
             :label=" $t('shipping.internationalWaybillNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
+            :hide-details="false"
             state-icon
             required
-            @input="$emit('update', { shipment: { railway: { internationalWaybillNo: $event } } })"
+            @update:model-value="$emit('update', { shipment: { railway: { internationalWaybillNo: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.railway.train"
+            :model-value="shipment.railway.train"
             :debounce="500"
             :label="$t('shipping.train')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { railway: { train: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { railway: { train: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.railway.containersCount"
+            :model-value="shipment.railway.containersCount"
             :debounce="500"
             :label="$t('shipping.trainContainersCount')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
+            :hide-details="false"
             state-icon
             required
-            @input="$emit('update', { shipment: { railway: { containersCount: $event } } })"
+            @update:model-value="$emit('update', { shipment: { railway: { containersCount: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.railway.containersNo"
+            :model-value="shipment.railway.containersNo"
             :debounce="500"
             :label="$t('shipping.trainContainersNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { railway: { containersNo: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { railway: { containersNo: $event } } })"
           />
         </div>
       </div>
@@ -222,38 +233,39 @@
       <div v-show="shipment.activeType === ShipmentType.CAR" key="car">
         <div class="pb-2">
           <TextField
-            :value="shipment.car.internationalWaybillNo"
+            :model-value="shipment.car.internationalWaybillNo"
             :debounce="500"
             :label="$t('shipping.internationalWaybillNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
+            :hide-details="false"
             state-icon
             required
-            @input="$emit('update', { shipment: { car: { internationalWaybillNo: $event } } })"
+            @update:model-value="$emit('update', { shipment: { car: { internationalWaybillNo: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.car.vehicleNo"
+            :model-value="shipment.car.vehicleNo"
             :debounce="500"
             :label="$t('shipping.vehicleNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { car: { vehicleNo: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { car: { vehicleNo: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.car.semitrailerNo"
+            :model-value="shipment.car.semitrailerNo"
             :debounce="500"
             :label="$t('shipping.semitrailerNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { car: { semitrailerNo: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { car: { semitrailerNo: $event } } })"
           />
         </div>
       </div>
@@ -261,74 +273,75 @@
       <div v-show="shipment.activeType === ShipmentType.MIXED" key="mixed">
         <div class="pb-2">
           <TextField
-            :value="shipment.mixed.internationalWaybillNo"
+            :model-value="shipment.mixed.internationalWaybillNo"
             :debounce="500"
             :label="$t('shipping.internationalWaybillNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
+            :hide-details="false"
             state-icon
             required
-            @input="$emit('update', { shipment: { mixed: { internationalWaybillNo: $event } } })"
+            @update:model-value="$emit('update', { shipment: { mixed: { internationalWaybillNo: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.mixed.ship"
+            :model-value="shipment.mixed.ship"
             :debounce="500"
             :label="$t('shipping.ship')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { mixed: { ship: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { mixed: { ship: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.mixed.train"
+            :model-value="shipment.mixed.train"
             :debounce="500"
             :label="$t('shipping.train')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { mixed: { train: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { mixed: { train: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.mixed.flight"
+            :model-value="shipment.mixed.flight"
             :debounce="500"
             :label="$t('shipping.flight')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { mixed: { flight: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { mixed: { flight: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.mixed.vehicleNo"
+            :model-value="shipment.mixed.vehicleNo"
             :debounce="500"
             :label="$t('shipping.vehicleAndSemitrailerNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { mixed: { vehicleNo: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { mixed: { vehicleNo: $event } } })"
           />
         </div>
         <div class="pb-4">
           <TextField
-            :value="shipment.mixed.containersNo"
+            :model-value="shipment.mixed.containersNo"
             :debounce="500"
             :label="$t('shipping.containersNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { mixed: { containersNo: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { mixed: { containersNo: $event } } })"
           />
         </div>
       </div>
@@ -336,38 +349,40 @@
       <div v-show="shipment.activeType === ShipmentType.EXPRESS" key="express">
         <div class="pb-2">
           <TextField
-            :value="shipment.express.postalNo"
+            :model-value="shipment.express.postalNo"
             :debounce="500"
             :label="$t('shipping.postalNo')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
+            :hide-details="false"
             state-icon
             required
-            @input="$emit('update', { shipment: { express: { postalNo: $event } } })"
+            @update:model-value="$emit('update', { shipment: { express: { postalNo: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.express.deliveryService"
+            :model-value="shipment.express.deliveryService"
             :debounce="500"
             :label="$t('shipping.deliveryService')"
             :placeholder="$t('placeholder.notIndicated')"
             :rules="[rules.required]"
             state-icon
-            state-color="warn"
-            @input="$emit('update', { shipment: { express: { deliveryService: $event } } })"
+            state-error-color="warn"
+            @update:model-value="$emit('update', { shipment: { express: { deliveryService: $event } } })"
           />
         </div>
         <div class="pb-2">
           <TextField
-            :value="shipment.express.numbersOfPkg"
+            :model-value="shipment.express.numbersOfPkg"
             :debounce="500"
             :label="$t('shipping.numbersOfPkg')"
             :placeholder="$t('placeholder.notChosen')"
             :rules="[rules.required]"
+            :hide-details="false"
             state-icon
             required
-            @input="$emit('update', { shipment: { express: { numbersOfPkg: $event } } })"
+            @update:model-value="$emit('update', { shipment: { express: { numbersOfPkg: $event } } })"
           />
         </div>
       </div>
@@ -378,6 +393,9 @@
 <script>
 import { ShipmentType, CustomsTerms, CustomsTermsMore } from '../../graphql/enums'
 
+import { ziCalendar } from '../../assets/icons'
+
+import Icon from '../Base/Icon'
 import Select from '../Base/Select'
 import TextField from '../Base/TextField'
 import DatePicker from '../Base/DatePicker'
@@ -385,6 +403,7 @@ import DatePicker from '../Base/DatePicker'
 export default {
   name: 'PrintDelivery',
   components: {
+    Icon,
     Select,
     TextField,
     DatePicker,
@@ -394,6 +413,7 @@ export default {
       type: Object,
     },
   },
+  emits: ['update'],
   data () {
     return {
       lazyItem: {
@@ -409,6 +429,9 @@ export default {
       termsSearch: '',
       rules: {
         required: v => !!v || this.$t('rule.required'),
+      },
+      icons: {
+        ziCalendar,
       },
     }
   },
