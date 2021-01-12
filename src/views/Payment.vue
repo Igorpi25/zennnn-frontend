@@ -89,10 +89,9 @@
           item-value="id"
           item-text="title"
           content-class="bg-white shadow-light-gray-400"
-          prepend-slot-class="w-auto flex-grow text-base text-gray-900"
         >
           <template v-if="selectedProduct" v-slot:prepend>
-            <div class="w-full flex justify-between pl-4">
+            <div class="w-full flex justify-between flex-grow text-base text-gray-900 pl-4">
               <div>{{ selectedProduct && selectedProduct.members }}</div>
             </div>
           </template>
