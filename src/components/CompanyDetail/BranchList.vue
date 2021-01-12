@@ -231,15 +231,14 @@ export default {
               query: GET_SUPPLIER,
               variables,
             })
-            const index = data.getSupplier.branches.findIndex(el => el.id === id)
-            if (index !== -1) {
+            if (data.getSupplier.branches.some(el => el.id === id)) {
               store.writeQuery({
                 query: GET_SUPPLIER,
                 variables,
                 data: {
                   getSupplier: {
                     ...data.getSupplier,
-                    branches: data.getSupplier.branches.filter((_, i) => i !== index),
+                    branches: data.getSupplier.branches.filter(el => el.id !== id),
                   },
                 },
               })

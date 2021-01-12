@@ -584,24 +584,26 @@ export default {
         }
         this.deleteLoading = id
         const response = await this.deleteClientMutate({ id }, {
-          update: (store) => {
-            const data = store.readQuery({
+          update: (cache) => {
+            const data = cache.readQuery({
               query: LIST_CLIENTS,
               variables: {
                 orgId: this.orgId,
               },
             })
-            const index = data.listClients.items.findIndex(item => item.id === id)
-            if (index !== -1) {
-              data.listClients.items.splice(index, 1)
+            if (data.listClients.items.some(item => item.id === id)) {
+              cache.writeQuery({
+                query: LIST_CLIENTS,
+                variables: {
+                  orgId: this.orgId,
+                },
+                data: {
+                  listClients: {
+                    items: data.listClients.items.filter(item => item.id !== id),
+                  },
+                },
+              })
             }
-            store.writeQuery({
-              query: LIST_CLIENTS,
-              variables: {
-                orgId: this.orgId,
-              },
-              data,
-            })
           },
         })
         if (response && response.errors && response.errors.length > 0) {

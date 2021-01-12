@@ -418,24 +418,26 @@ export default {
         const response = await client.mutate({
           mutation: DELETE_SUPPLIER,
           variables: { id },
-          update: (store) => {
-            const data = store.readQuery({
+          update: (cache) => {
+            const data = cache.readQuery({
               query: LIST_SUPPLIERS,
               variables: {
                 orgId: this.orgId,
               },
             })
-            const index = data.listSuppliers.items.findIndex(item => item.id === id)
-            if (index !== -1) {
-              data.listSuppliers.items.splice(index, 1)
+            if (data.listSuppliers.items.some(item => item.id === id)) {
+              cache.writeQuery({
+                query: LIST_SUPPLIERS,
+                variables: {
+                  orgId: this.orgId,
+                },
+                data: {
+                  listSuppliers: {
+                    items: data.listSuppliers.items.filter(item => item.id !== id),
+                  },
+                },
+              })
             }
-            store.writeQuery({
-              query: LIST_SUPPLIERS,
-              variables: {
-                orgId: this.orgId,
-              },
-              data,
-            })
           },
         })
         if (response && response.errors && response.errors.length > 0) {

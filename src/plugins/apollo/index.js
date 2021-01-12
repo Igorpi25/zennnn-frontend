@@ -25,6 +25,16 @@ const possibleTypes = {
 }
 
 const typePolicies = {
+  Query: {
+    fields: {
+      listClients: {
+        merge: false,
+      },
+      listSuppliers: {
+        merge: false,
+      },
+    },
+  },
   Client: {
     fields: {
       contacts: {

@@ -262,8 +262,7 @@ export default {
               query: GET_ORG_REQUISITE,
               variables,
             })
-            const index = data.getOrgRequisite.bankDetails.findIndex(el => el.id === id)
-            if (index !== -1) {
+            if (data.getOrgRequisite.bankDetails.some(el => el.id === id)) {
               // update validation state
               // should be fixed with subs
               const v = validateCompanyDetail(data.getOrgRequisite)
@@ -275,7 +274,7 @@ export default {
                     ...data.getOrgRequisite,
                     isRequiredFilled: v.isRequiredFilled,
                     isOptionalFilled: v.isOptionalFilled,
-                    bankDetails: data.getOrgRequisite.bankDetails.filter((_, i) => i !== index),
+                    bankDetails: data.getOrgRequisite.bankDetails.filter(el => el.id !== id),
                   },
                 },
               })
