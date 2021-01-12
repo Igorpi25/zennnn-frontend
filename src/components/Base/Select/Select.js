@@ -224,7 +224,7 @@ export default {
       return props.items.map((item, i) => {
         return {
           ...item,
-          id: `${listboxId}-option-${i + 1}`,
+          $id: `${listboxId}-option-${i + 1}`,
         }
       })
     })
@@ -730,7 +730,7 @@ export default {
         const value = getValue(item)
         return h(MenuItem, {
           tag: 'template',
-          id: item.id,
+          id: item.$id,
           index: index++,
           key: value,
           disabled: item.disabled,
