@@ -61,13 +61,13 @@
       <!-- ALERT -->
       <div class="pt-6">
         <Alert
-          :value="true"
+          :model-value="true"
           :close="false"
           color="warn"
           max-width="none"
-          text-color="text-gray-500"
-          icon-color="text-yellow-500"
-          bg-color="bg-yellow-500 bg-opacity-20"
+          info-icon-class="text-yellow-500"
+          content-class="text-gray-500"
+          container-class="items-start bg-yellow-500 bg-opacity-20"
         >
           <span v-html="$t('payment.paymentAlert', { email: profile.email })" />
         </Alert>
