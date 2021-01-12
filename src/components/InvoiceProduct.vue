@@ -30,14 +30,15 @@
       />
     </td>
     <td class="pr-sm">
+      <!-- TODO: check active style prop -->
       <Select
         v-if="isOwnerOrManager"
-        :value="wordItem"
+        :model-value="wordItem"
         :placeholder="hasNoTranslation ? $t('words.noTranslation') : $t('shipping.name')"
         :lazy="create"
         v-model:search="wordSearch"
         :items="words"
-        :has-arrow-icon="false"
+        :show-arrow="false"
         :input-class="hasNoTranslation ? 'placeholder-yellow-300': ''"
         :active-style="{ width: '180px', zIndex: 10 }"
         min-width="180px"
@@ -48,9 +49,8 @@
         searchable
         no-filter
         class="relative"
-        append-slot-class="w-auto pr-sm"
         @click:prepend-item="openWordCreateDialog"
-        @input="createOrUpdateProduct({ name: $event })"
+        @update:model-value="createOrUpdateProduct({ name: $event })"
       >
         <template v-slot:item="{ item }">
           <span class="truncate">
@@ -68,7 +68,7 @@
         <template v-slot:append="{ open }">
           <button
             v-if="open && canEdit"
-            class="flex items-center jusitfy-center text-blue-500 focus:outline-none cursor-pointer"
+            class="flex items-center jusitfy-center text-blue-500 focus:outline-none cursor-pointer mr-sm"
             @click="wordEditDialog = true"
           >
             <Icon>
@@ -101,11 +101,11 @@
     <td class="pr-sm">
       <TextField
         v-if="isOwnerOrManager"
-        :value="item.article"
+        :model-value="item.article"
         :placeholder="$t('shipping.model')"
         :lazy="create"
         solo
-        @input="createOrUpdateProduct({ article: $event })"
+        @update:model-value="createOrUpdateProduct({ article: $event })"
       />
       <span v-else class="pl-sm">
         {{ item.article }}
@@ -115,12 +115,12 @@
      <template v-if="!create">
         <TextField
           v-if="isOwnerOrManager"
-          :value="item.qty"
+          :model-value="item.qty"
           :placeholder="$t('placeholder.emptyNumber')"
           lazy
           solo
           number
-          @input="updateProduct({ qty: $event })"
+          @update:model-value="updateProduct({ qty: $event })"
         />
         <span v-else class="pl-sm">
           {{ $n(item.qty) || 0 }}
@@ -155,14 +155,14 @@
       <template v-else>
         <td v-if="(isInvoiceProfitTypeMargin || !profitForAll) && isOwnerOrManager" class="pl-sm">
           <TextField
-            :value="purchasePrice"
+            :model-value="purchasePrice"
             :placeholder="$t('placeholder.emptyNumber')"
             :input-class="hasCustomPurchasePrice ? 'text-blue-900' : null"
             lazy
             solo
             number
             number-format="currency"
-            @input="updateProductCost({ purchasePrice: $event })"
+            @update:model-value="updateProductCost({ purchasePrice: $event })"
           />
         </td>
         <td
@@ -178,14 +178,14 @@
 
         <td v-if="(isInvoiceProfitTypeCommission || !profitForAll) && isOwnerOrManager" class="pl-sm">
           <TextField
-            :value="clientPrice"
+            :model-value="clientPrice"
             :placeholder="$t('placeholder.emptyNumber')"
             :input-class="hasCustomClientPrice ? 'text-blue-900' : null"
             lazy
             solo
             number
             number-format="currency"
-            @input="updateProductCost({ clientPrice: $event })"
+            @update:model-value="updateProductCost({ clientPrice: $event })"
           />
         </td>
         <td
@@ -208,67 +208,67 @@
       <template v-else>
         <td class="pl-1">
           <TextField
-            :value="store.net"
+            :model-value="store.net"
             :placeholder="$t('placeholder.emptyNumber')"
             solo
             number
-            @input="updateProductStore({ net: $event })"
+            @update:model-value="updateProductStore({ net: $event })"
           />
         </td>
         <td>
           <TextField
-            :value="store.gross"
+            :model-value="store.gross"
             :placeholder="$t('placeholder.emptyNumber')"
             solo
             number
-            @input="updateProductStore({ gross: $event })"
+            @update:model-value="updateProductStore({ gross: $event })"
           />
         </td>
         <td>
           <div class="flex items-center">
             <TextField
-              :value="store.width"
+              :model-value="store.width"
               :placeholder="$t('placeholder.emptyNumber')"
               solo
               number
-              @input="updateProductStore({ width: $event })"
+              @update:model-value="updateProductStore({ width: $event })"
             />
             <TextField
-              :value="store.height"
+              :model-value="store.height"
               :placeholder="$t('placeholder.emptyNumber')"
               solo
               number
-              @input="updateProductStore({ height: $event })"
+              @update:model-value="updateProductStore({ height: $event })"
             />
             <TextField
-              :value="store.length"
+              :model-value="store.length"
               :placeholder="$t('placeholder.emptyNumber')"
               solo
               number
-              @input="updateProductStore({ length: $event })"
+              @update:model-value="updateProductStore({ length: $event })"
             />
           </div>
         </td>
         <td>
           <TextField
             v-if="isOwnerOrManager || isWarehouseman"
-            :value="store.pkgQty"
+            :model-value="store.pkgQty"
             :placeholder="$t('placeholder.emptyNumber')"
             solo
             number
             number-format="integer"
-            @input="updateProductStore({ pkgQty: $event })"
+            @update:model-value="updateProductStore({ pkgQty: $event })"
           />
         </td>
         <td>
           <TextField
             v-if="isOwnerOrManager || isWarehouseman"
-            :value="store.pkgNo"
+            :model-value="store.pkgNo"
             :placeholder="$t('placeholder.emptyNumber')"
             solo
             number
             number-format="integer"
-            @input="updateProductStore({ pkgNo: $event })"
+            @update:model-value="updateProductStore({ pkgNo: $event })"
           />
         </td>
         <td class="pl-1">
@@ -277,11 +277,10 @@
             class="h-4 relative"
           >
             <Switch
-              :value="store.atWhouse"
-              hide-details
+              :model-value="store.atWhouse"
               small
               class="absolute left-0 top-0"
-              @input="updateProductStore({ atWhouse: $event })"
+              @update:model-value="updateProductStore({ atWhouse: $event })"
             />
           </div>
         </td>
@@ -307,10 +306,10 @@
         <td class="text-left pl-sm">
           <TextField
             v-if="isOwnerOrManager || isWarehouseman"
-            :value="info.description"
+            :model-value="info.description"
             :placeholder="$t('placeholder.emptyText')"
             solo
-            @input="updateProductInfo({ description: $event })"
+            @update:model-value="updateProductInfo({ description: $event })"
           />
           <span v-else class="truncate">
             {{ info.description }}
@@ -341,13 +340,13 @@
           <div v-if="isOwnerOrManager || isWarehouseman" class="flex items-center relative">
             <TextField
               ref="link-input"
-              :value="link.url"
+              :model-value="link.url"
               :placeholder="$t('placeholder.emptyText')"
               solo
               class="flex-grow"
               @focus="isLinkUrlFocus = true"
               @blur="isLinkUrlFocus = false"
-              @input="updateProductLink({ url: $event })"
+              @update:model-value="updateProductLink({ url: $event })"
             />
             <a
               v-show="linkUrl && !isLinkUrlFocus"

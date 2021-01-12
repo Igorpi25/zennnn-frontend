@@ -29,17 +29,17 @@
         </h1>
         <div class="flex items-center text-white">
           <Switch
-            :value="specSimpleUI"
+            :model-value="specSimpleUI"
             class="inline-flex"
-            @input="toggleSpecSimpleUI"
+            @update:model-value="toggleSpecSimpleUI"
           >
             <span class="mr-2">
               {{ $t('shipping.simpleInterface') }}
             </span>
           </Switch>
           <Tooltip top max-width="320" nudge-right="130">
-            <template v-slot:activator="{ on }">
-              <i class="zi-help text-blue-500 cursor-pointer" v-on="on" />
+            <template v-slot:activator>
+              <i class="zi-help text-blue-500 cursor-pointer" />
             </template>
             <span>
               {{ $t('shipping.simpleInterfaceHint') }}
@@ -59,11 +59,11 @@
           </span>
           <template v-else>
             <Select
-              :value="spec.client"
+              :model-value="spec.client"
               :placeholder="$t('shipping.shippingClientAdd')"
               v-model:search="clientSearch"
               :items="clients"
-              :has-arrow-icon="false"
+              :show-arrow="false"
               flat
               no-filter
               searchable
@@ -73,7 +73,7 @@
               solo
               hide-details
               class="inline-flex justify-end ml-2"
-              @input="setSpecClient($event && $event.id)"
+              @update:model-value="setSpecClient($event && $event.id)"
               @click:prepend-item="createClient"
             >
               <template v-slot:prepend-item>
@@ -225,9 +225,8 @@
                   </option>
                 </select>
                 <Switch
-                  :value="spec.shipped"
-                  hide-details
-                  @input="updateSpec({ shipped: $event })"
+                  :model-value="spec.shipped"
+                  @update:model-value="updateSpec({ shipped: $event })"
                 >
                   {{ $t('shipping.setShipped') }}
                 </Switch>

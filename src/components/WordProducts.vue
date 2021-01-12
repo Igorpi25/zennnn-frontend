@@ -68,7 +68,7 @@
           <div>
             <Select
               ref="word-select"
-              :value="selectedItemId"
+              :model-value="selectedItemId"
               :placeholder="$t('placeholder.startTyping')"
               v-model:search="wordSearch"
               :items="words"
@@ -78,9 +78,8 @@
               searchable
               no-filter
               class="relative"
-              append-slot-class="w-auto pr-sm"
               @click:prepend-item="openCreateDialog"
-              @input="(v) => selectedItemId = v"
+              @update:model-value="v => selectedItemId = v"
             >
               <template v-slot:prepend-item>
                 <span class="flex items-center jusitfy-center text-blue-500">
@@ -91,7 +90,7 @@
                 </span>
               </template>
               <template v-slot:prepend>
-                <Icon class="text-gray-200">
+                <Icon class="text-gray-200 mr-sm">
                   {{ icons.ziSearch }}
                 </Icon>
               </template>

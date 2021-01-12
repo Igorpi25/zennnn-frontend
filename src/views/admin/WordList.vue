@@ -67,8 +67,8 @@
           <div class="flex w-full sm:w-auto items-center justify-end" style="min-width: 165px;">
             <Menu
               v-model="filterMenu"
+              v-model:value="currentFilter"
               placement="bottom-start"
-              @update:value="v => currentFilter = v"
             >
               <template v-slot:activator>
                 <div

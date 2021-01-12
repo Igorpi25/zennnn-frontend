@@ -6,11 +6,11 @@
     <div class="bg-gray-700 rounded-t-md flex flex-wrap lg:flex-nowrap items-center mb-1 py-2 px-sm">
       <div class="w-full pb-5 lg:p-0 lg:w-1/3">
         <TextField
-          :value="item.sentFrom"
+          :model-value="item.sentFrom"
           :debounce="250"
           :placeholder="$t('shipping.sentFrom')"
           dense
-          @input="$emit('update', { shipment: { sentFrom: $event } })"
+          @update:model-value="$emit('update', { shipment: { sentFrom: $event } })"
         />
       </div>
 
@@ -22,11 +22,11 @@
 
       <div class="w-full flex-1 py-5 lg:p-0">
         <TextField
-          :value="item.sentThrough"
+          :model-value="item.sentThrough"
           :debounce="250"
           :placeholder="$t('shipping.sentThrough')"
           dense
-          @input="$emit('update', { shipment: { sentThrough: $event } })"
+          @update:model-value="$emit('update', { shipment: { sentThrough: $event } })"
         />
       </div>
 
@@ -38,11 +38,11 @@
 
       <div class="w-full flex-1 pt-5 lg:p-0">
         <TextField
-          :value="item.sentDestination"
+          :model-value="item.sentDestination"
           :debounce="250"
           :placeholder="$t('shipping.destination')"
           dense
-          @input="$emit('update', { shipment: { sentDestination: $event } })"
+          @update:model-value="$emit('update', { shipment: { sentDestination: $event } })"
         />
       </div>
     </div>
@@ -50,13 +50,13 @@
     <div class="bg-gray-700 rounded-b-md flex flex-wrap pt-4 pb-5" style="padding-left: 6px; padding-right: 6px;">
       <div class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1 pb-2">
         <Select
-          :value="item.activeType"
+          :model-value="item.activeType"
           :placeholder="$t('shipping.shipmentType')"
           v-model:search="shipmentTypeSearch"
           :items="shipmentTypes"
           dense
           searchable
-          @input="$emit('update', { shipment: { activeType: $event } })"
+          @update:model-value="$emit('update', { shipment: { activeType: $event } })"
         />
       </div>
       <div class="w-full sm:w-2/3 md:w-full lg:w-2/3 px-1 pb-2">
@@ -68,20 +68,20 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          :value="item.marine.billOfLadingNo"
+          :model-value="item.marine.billOfLadingNo"
           :debounce="250"
           :placeholder="$t('shipping.billOfLadingNo')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { marine: { billOfLadingNo: $event } } })"
+          @update:model-value="$emit('update', { shipment: { marine: { billOfLadingNo: $event } } })"
         />
         <TextField
-          :value="item.marine.ship"
+          :model-value="item.marine.ship"
           :debounce="250"
           :placeholder="$t('shipping.ship')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { marine: { ship: $event } } })"
+          @update:model-value="$emit('update', { shipment: { marine: { ship: $event } } })"
         />
       </div>
       <div
@@ -94,21 +94,21 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              :value="item.marine.containersCount"
+              :model-value="item.marine.containersCount"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              @input="$emit('update', { shipment: { marine: { containersCount: $event } } })"
+              @update:model-value="$emit('update', { shipment: { marine: { containersCount: $event } } })"
             />
           </div>
         </div>
         <div class="px-1 pb-2">
           <TextField
-            :value="item.marine.containersNo"
+            :model-value="item.marine.containersNo"
             :debounce="250"
             :placeholder="$t('shipping.containersNo')"
             dense
-            @input="$emit('update', { shipment: { marine: { containersNo: $event } } })"
+            @update:model-value="$emit('update', { shipment: { marine: { containersNo: $event } } })"
           />
         </div>
         <div class="flex items-center pb-2">
@@ -117,13 +117,13 @@
           </div>
           <div class="w-1/2 px-1">
             <DatePicker
-              :value="item.marine.exportDate"
-              @input="$emit('update', { shipment: { marine: { exportDate: $event } } })"
+              :model-value="item.marine.exportDate"
+              @update:model-value="$emit('update', { shipment: { marine: { exportDate: $event } } })"
             >
               <template v-slot:activator>
                 <div>
                   <TextField
-                    :value="item.marine.exportDate ? $d($parseDate(item.marine.exportDate), 'short'): ''"
+                    :model-value="item.marine.exportDate ? $d($parseDate(item.marine.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
                     dense
                     readonly
@@ -140,20 +140,20 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          :value="item.air.airWaybillNo"
+          :model-value="item.air.airWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.airWaybillNo')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { air: { airWaybillNo: $event } } })"
+          @update:model-value="$emit('update', { shipment: { air: { airWaybillNo: $event } } })"
         />
         <TextField
-          :value="item.air.flight"
+          :model-value="item.air.flight"
           :debounce="250"
           :placeholder="$t('shipping.flight')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { air: { flight: $event } } })"
+          @update:model-value="$emit('update', { shipment: { air: { flight: $event } } })"
         />
       </div>
       <div
@@ -166,11 +166,11 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              :value="item.air.numbersOfPkg"
+              :model-value="item.air.numbersOfPkg"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              @input="$emit('update', { shipment: { air: { numbersOfPkg: $event } } })"
+              @update:model-value="$emit('update', { shipment: { air: { numbersOfPkg: $event } } })"
             />
           </div>
         </div>
@@ -181,20 +181,20 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          :value="item.railway.internationalWaybillNo"
+          :model-value="item.railway.internationalWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { railway: { internationalWaybillNo: $event } } })"
+          @update:model-value="$emit('update', { shipment: { railway: { internationalWaybillNo: $event } } })"
         />
         <TextField
-          :value="item.railway.train"
+          :model-value="item.railway.train"
           :debounce="250"
           :placeholder="$t('shipping.train')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { railway: { train: $event } } })"
+          @update:model-value="$emit('update', { shipment: { railway: { train: $event } } })"
         />
       </div>
       <div
@@ -207,21 +207,21 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              :value="item.railway.containersCount"
+              :model-value="item.railway.containersCount"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              @input="$emit('update', { shipment: { railway: { containersCount: $event } } })"
+              @update:model-value="$emit('update', { shipment: { railway: { containersCount: $event } } })"
             />
           </div>
         </div>
         <div class="px-1 pb-2">
           <TextField
-            :value="item.railway.containersNo"
+            :model-value="item.railway.containersNo"
             :debounce="250"
             :placeholder="$t('shipping.trainContainersNo')"
             dense
-            @input="$emit('update', { shipment: { railway: { containersNo: $event } } })"
+            @update:model-value="$emit('update', { shipment: { railway: { containersNo: $event } } })"
           />
         </div>
         <div class="flex items-center pb-2">
@@ -230,13 +230,13 @@
           </div>
           <div class="w-1/2 px-1">
             <DatePicker
-              :value="item.railway.exportDate"
-              @input="$emit('update', { shipment: { railway: { exportDate: $event } } })"
+              :model-value="item.railway.exportDate"
+              @update:model-value="$emit('update', { shipment: { railway: { exportDate: $event } } })"
             >
               <template v-slot:activator>
                 <div>
                   <TextField
-                    :value="item.railway.exportDate ? $d($parseDate(item.railway.exportDate), 'short'): ''"
+                    :model-value="item.railway.exportDate ? $d($parseDate(item.railway.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
                     dense
                     readonly
@@ -253,20 +253,20 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          :value="item.car.internationalWaybillNo"
+          :model-value="item.car.internationalWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { car: { internationalWaybillNo: $event } } })"
+          @update:model-value="$emit('update', { shipment: { car: { internationalWaybillNo: $event } } })"
         />
         <TextField
-          :value="item.car.vehicleNo"
+          :model-value="item.car.vehicleNo"
           :debounce="250"
           :placeholder="$t('shipping.vehicleNo')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { car: { vehicleNo: $event } } })"
+          @update:model-value="$emit('update', { shipment: { car: { vehicleNo: $event } } })"
         />
       </div>
       <div
@@ -279,11 +279,11 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              :value="item.car.semitrailerNo"
+              :model-value="item.car.semitrailerNo"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              @input="$emit('update', { shipment: { car: { semitrailerNo: $event } } })"
+              @update:model-value="$emit('update', { shipment: { car: { semitrailerNo: $event } } })"
             />
           </div>
         </div>
@@ -293,13 +293,13 @@
           </div>
           <div class="w-1/2 px-1">
             <DatePicker
-              :value="item.car.exportDate"
-              @input="$emit('update', { shipment: { car: { exportDate: $event } } })"
+              :model-value="item.car.exportDate"
+              @update:model-value="$emit('update', { shipment: { car: { exportDate: $event } } })"
             >
               <template v-slot:activator>
                 <div>
                   <TextField
-                    :value="item.car.exportDate ? $d($parseDate(item.car.exportDate), 'short'): ''"
+                    :model-value="item.car.exportDate ? $d($parseDate(item.car.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
                     dense
                     readonly
@@ -316,36 +316,36 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          :value="item.mixed.internationalWaybillNo"
+          :model-value="item.mixed.internationalWaybillNo"
           :debounce="250"
           :placeholder="$t('shipping.internationalWaybillNo')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { mixed: { internationalWaybillNo: $event } } })"
+          @update:model-value="$emit('update', { shipment: { mixed: { internationalWaybillNo: $event } } })"
         />
         <TextField
-          :value="item.mixed.ship"
+          :model-value="item.mixed.ship"
           :debounce="250"
           :placeholder="$t('shipping.ship')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { mixed: { ship: $event } } })"
+          @update:model-value="$emit('update', { shipment: { mixed: { ship: $event } } })"
         />
         <TextField
-          :value="item.mixed.train"
+          :model-value="item.mixed.train"
           :debounce="250"
           :placeholder="$t('shipping.train')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { mixed: { train: $event } } })"
+          @update:model-value="$emit('update', { shipment: { mixed: { train: $event } } })"
         />
         <TextField
-          :value="item.mixed.flight"
+          :model-value="item.mixed.flight"
           :debounce="250"
           :placeholder="$t('shipping.flight')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { mixed: { flight: $event } } })"
+          @update:model-value="$emit('update', { shipment: { mixed: { flight: $event } } })"
         />
       </div>
       <div
@@ -358,22 +358,22 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              :value="item.mixed.vehicleNo"
+              :model-value="item.mixed.vehicleNo"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              @input="$emit('update', { shipment: { mixed: { vehicleNo: $event } } })"
+              @update:model-value="$emit('update', { shipment: { mixed: { vehicleNo: $event } } })"
             />
           </div>
         </div>
         <div class="px-1">
           <TextField
-            :value="item.mixed.containersNo"
+            :model-value="item.mixed.containersNo"
             :debounce="250"
             :placeholder="$t('shipping.containersNo')"
             dense
             class="pb-2"
-            @input="$emit('update', { shipment: { mixed: { containersNo: $event } } })"
+            @update:model-value="$emit('update', { shipment: { mixed: { containersNo: $event } } })"
           />
         </div>
         <div class="flex items-center pb-2">
@@ -382,13 +382,13 @@
           </div>
           <div class="w-1/2 px-1">
             <DatePicker
-              :value="item.mixed.exportDate"
-              @input="$emit('update', { shipment: { mixed: { exportDate: $event } } })"
+              :model-value="item.mixed.exportDate"
+              @update:model-value="$emit('update', { shipment: { mixed: { exportDate: $event } } })"
             >
               <template v-slot:activator="{ on }">
                 <div v-on="on">
                   <TextField
-                    :value="item.mixed.exportDate ? $d($parseDate(item.mixed.exportDate), 'short'): ''"
+                    :model-value="item.mixed.exportDate ? $d($parseDate(item.mixed.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"
                     dense
                     readonly
@@ -405,20 +405,20 @@
         class="w-full sm:w-1/3 md:w-full lg:w-1/3 px-1"
       >
         <TextField
-          :value="item.express.postalNo"
+          :model-value="item.express.postalNo"
           :debounce="250"
           :placeholder="$t('shipping.postalNo')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { express: { postalNo: $event } } })"
+          @update:model-value="$emit('update', { shipment: { express: { postalNo: $event } } })"
         />
         <TextField
-          :value="item.express.deliveryService"
+          :model-value="item.express.deliveryService"
           :debounce="250"
           :placeholder="$t('shipping.deliveryService')"
           dense
           class="pb-2"
-          @input="$emit('update', { shipment: { express: { deliveryService: $event } } })"
+          @update:model-value="$emit('update', { shipment: { express: { deliveryService: $event } } })"
         />
       </div>
       <div
@@ -431,11 +431,11 @@
           </div>
           <div class="w-1/2 px-1">
             <TextField
-              :value="item.express.numbersOfPkg"
+              :model-value="item.express.numbersOfPkg"
               :debounce="250"
               :placeholder="$t('placeholder.notIndicated')"
               dense
-              @input="$emit('update', { shipment: { express: { numbersOfPkg: $event } } })"
+              @update:model-value="$emit('update', { shipment: { express: { numbersOfPkg: $event } } })"
             />
           </div>
         </div>

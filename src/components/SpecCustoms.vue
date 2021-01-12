@@ -6,27 +6,26 @@
     <div class="bg-gray-700 text-gray-200 rounded-md pt-2 pb-5 px-sm">
       <div class="pb-2">
         <Select
-          :value="item.countryOfOrigin"
+          :model-value="item.countryOfOrigin"
           :placeholder="$t('shipping.countryOfOrigin')"
           v-model:search="countriesSearch"
           :items="shipmentCountries"
           dense
           searchable
           hide-details
-          prepend-slot-class="w-auto pl-2"
-          @input="$emit('update', { customs: { countryOfOrigin: $event } })"
+          @update:model-value="$emit('update', { customs: { countryOfOrigin: $event } })"
         >
           <template v-slot:prepend>
             <img
               v-if="item.countryOfOrigin"
               :src="require(`@/assets/img/flags/square/${item.countryOfOrigin}.svg`).default"
               :alt="item.countryOfOrigin"
-              class="w-6 rounded-sm mr-4"
+              class="w-6 rounded-sm mr-4 ml-2"
             >
             <img
               v-else
               src="@/assets/icons/earth.svg"
-              class="h-5 w-6 rounded-full mr-4"
+              class="h-5 w-6 rounded-full mr-4 ml-2"
             >
           </template>
           <template v-slot:item="{ item }">
@@ -44,14 +43,14 @@
         </div>
         <div class="w-2/5">
           <Select
-            :value="item.terms"
+            :model-value="item.terms"
             :placeholder="$t('placeholder.notChosen')"
             v-model:search="termsSearch"
             :items="customsTerms"
             :disabled="isTermsDisabled"
             dense
             searchable
-            @input="$emit('update', { customs: { terms: $event } })"
+            @update:model-value="$emit('update', { customs: { terms: $event } })"
           />
         </div>
       </div>
@@ -61,14 +60,13 @@
         </div>
         <div class="w-2/5">
           <TextField
-            :value="item.cost"
+            :model-value="item.cost"
             :placeholder="$t('placeholder.emptyNumber')"
             lazy
             dense
             number
             number-format="currency"
-            slot-class="w-auto"
-            @input="$emit('update', { customs: { cost: $event } })"
+            @update:model-value="$emit('update', { customs: { cost: $event } })"
           >
             <template v-slot:append>
               <span class="text-base text-white pl-xs pr-sm">
@@ -85,14 +83,13 @@
         </div>
         <div class="w-2/5">
           <TextField
-            :value="item.discount"
+            :model-value="item.discount"
             :placeholder="$t('placeholder.emptyNumber')"
             lazy
             dense
             number
             number-format="currency"
-            slot-class="w-auto"
-            @input="$emit('update', { customs: { discount: $event } })"
+            @update:model-value="$emit('update', { customs: { discount: $event } })"
           >
             <template v-slot:append>
               <span class="text-base text-white pl-xs pr-sm">
@@ -112,7 +109,6 @@
             :items="[]"
             dense
             disabled
-            squared
             hide-details
           />
         </div>
@@ -138,20 +134,20 @@
       </div>
       <div class="pb-2">
         <TextArea
-          :value="amountInWords"
+          :model-value="amountInWords"
           :debounce="250"
           :placeholder="$t('shipping.amountInWords')"
           rows="2"
-          @input="$emit('update', { amountInWords: $event })"
+          @update:model-value="$emit('update', { amountInWords: $event })"
         />
       </div>
       <div>
         <TextArea
-          :value="amountInWordsClientLang"
+          :model-value="amountInWordsClientLang"
           :debounce="250"
           :placeholder="$t('shipping.amountInWordsClientLang')"
           rows="2"
-          @input="$emit('update', { amountInWordsClientLang: $event })"
+          @update:model-value="$emit('update', { amountInWordsClientLang: $event })"
         />
       </div>
     </div>

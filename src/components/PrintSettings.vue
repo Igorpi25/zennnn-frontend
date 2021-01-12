@@ -149,31 +149,29 @@
           <div class="w-full sm:w-1/2 sm:pr-5">
             <div class="pb-2">
               <Select
-                :value="customsCountryOfOriginValue"
-                :menu-attach="$refs.container"
+                :model-value="customsCountryOfOriginValue"
+                :attach="$refs.container"
                 :label="$t('shipping.countryOfOrigin')"
                 :placeholder="$t('companyDetail.placeholder.citizenship')"
                 v-model:search="countriesSearch"
                 :items="shipmentCountries"
                 :rules="[rules.required]"
-                lazy-validation
-                prepend-slot-class="w-auto pl-2"
                 searchable
                 state-icon
                 required
-                @input="$emit('update', { customs: { countryOfOrigin: $event } })"
+                @update:model-value="$emit('update', { customs: { countryOfOrigin: $event } })"
               >
                 <template v-slot:prepend>
                   <img
                     v-if="customs.countryOfOrigin"
                     :src="require(`@/assets/img/flags/square/${item.countryOfOrigin}.svg`).default"
                     :alt="customs.countryOfOrigin"
-                    class="w-6 rounded-sm mr-4"
+                    class="w-6 rounded-sm mr-4 ml-2"
                   >
                   <img
                     v-else
                     src="@/assets/icons/earth.svg"
-                    class="h-6 w-6 rounded-full mr-4"
+                    class="h-6 w-6 rounded-full mr-4 ml-2"
                   >
                 </template>
                 <template v-slot:item="{ item }">
@@ -188,8 +186,8 @@
             <div class="flex pb-2">
               <div class="w-1/2 pr-sm">
                 <Select
-                  :value="customsTermsValue"
-                  :menu-attach="$refs.container"
+                  :model-value="customsTermsValue"
+                  :attach="$refs.container"
                   :label="$t('shipping.termsLabel')"
                   :placeholder="$t('shipping.termsPlaceholder')"
                   v-model:search="termsSearch"
@@ -199,22 +197,23 @@
                   searchable
                   state-icon
                   required
-                  @input="$emit('update', { customs: { terms: $event } })"
+                  @update:model-value="$emit('update', { customs: { terms: $event } })"
                 />
               </div>
               <div class="w-1/2">
                 <TextField
-                  :value="customs.cost"
+                  :model-value="customs.cost"
                   :label="$t('shipping.costLabel')"
                   :placeholder="$t('placeholder.notChosen')"
                   lazy
                   number
                   number-format="currency"
-                  append-slot-class="text-base w-auto pl-xs pr-sm"
-                  @input="$emit('update', { customs: { cost: $event } })"
+                  @update:model-value="$emit('update', { customs: { cost: $event } })"
                 >
                   <template v-slot:append>
-                    {{ $t(`currency.USD.symbol`) }}
+                    <span class="text-base w-auto pl-xs pr-sm">
+                      {{ $t(`currency.USD.symbol`) }}
+                    </span>
                   </template>
                 </TextField>
               </div>
@@ -222,8 +221,8 @@
             <div class="pb-2 flex">
               <div class="w-1/2 pr-sm">
                 <Select
-                  :value="$t('currency.USD.iso-4217')"
-                  :menu-attach="$refs.container"
+                  :model-value="$t('currency.USD.iso-4217')"
+                  :attach="$refs.container"
                   :label="$t('shipping.invoiceCurrency')"
                   :placeholder="$t('currency.USD.iso-4217')"
                   :items="[{ value: $t('currency.USD.iso-4217'), text: $t('currency.USD.iso-4217') }]"
@@ -235,23 +234,24 @@
             <div class="flex pb-2">
               <div class="w-1/3 pr-2">
                 <TextField
-                  :value="customs.discount"
+                  :model-value="customs.discount"
                   :label="$t('shipping.discountLabel')"
                   :placeholder="$t('placeholder.notChosen')"
                   lazy
                   number
                   number-format="currency"
-                  append-slot-class="text-base w-auto pl-xs pr-sm"
-                  @input="$emit('update', { customs: { discount: $event } })"
+                  @update:model-value="$emit('update', { customs: { discount: $event } })"
                 >
                   <template v-slot:append>
-                    {{ $t(`currency.USD.symbol`) }}
+                    <span class="text-base w-auto pl-xs pr-sm">
+                      {{ $t(`currency.USD.symbol`) }}
+                    </span>
                   </template>
                 </TextField>
               </div>
               <div class="w-1/3 px-2">
                 <Select
-                  :menu-attach="$refs.container"
+                  :attach="$refs.container"
                   :label="$t('shipping.vatLabel')"
                   :placeholder="$t('placeholder.notChosen')"
                   :items="[]"
@@ -260,7 +260,7 @@
               </div>
               <div class="w-1/3 pl-2">
                 <Select
-                  :menu-attach="$refs.container"
+                  :attach="$refs.container"
                   :label="$t('shipping.incomeTaxLabel')"
                   :placeholder="$t('placeholder.notChosen')"
                   :items="[]"
@@ -295,14 +295,14 @@
                 {{ $t('shipping.amountInWords') }}
               </label>
               <TextArea
-                :value="amountInWords"
+                :model-value="amountInWords"
                 :debounce="500"
                 :rules="[rules.required]"
                 :placeholder="$t('placeholder.notIndicated')"
                 rows="2"
                 state-icon
-                state-color="warn"
-                @input="$emit('update', { amountInWords: $event })"
+                state-error-color="warn"
+                @update:model-value="$emit('update', { amountInWords: $event })"
               />
             </div>
           </div>
@@ -312,14 +312,14 @@
                 {{ $t('shipping.amountInWordsClientLang') }}
               </label>
               <TextArea
-                :value="amountInWordsClientLang"
+                :model-value="amountInWordsClientLang"
                 :debounce="500"
                 :rules="[rules.required]"
                 :placeholder="$t('placeholder.notIndicated')"
                 rows="2"
                 state-icon
-                state-color="warn"
-                @input="$emit('update', { amountInWordsClientLang: $event })"
+                state-error-color="warn"
+                @update:model-value="$emit('update', { amountInWordsClientLang: $event })"
               />
             </div>
           </div>

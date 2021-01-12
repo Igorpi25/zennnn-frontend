@@ -101,17 +101,13 @@
               :placeholder="$t('contract.textField')"
               hide-details
               single-line
-              text-dark
-              transparent
               rows="1"
             />
           </div>
           <Checkbox
-            :value="contract.useDefaultDocHeader"
+            :model-value="contract.useDefaultDocHeader"
             class="-ml-6 text-blue-500"
-            hide-details
-            vertical-align
-            @input="useDefaultHeader"
+            @update:model-value="useDefaultHeader"
           >
             <span class="ml-2 mb-2 text-sm text-black">{{ $t('contract.contractHeader') }}</span>
           </Checkbox>

@@ -23,13 +23,13 @@
     />
     <div v-if="isOwnerOrManager" class="flex flex-wrap md:flex-nowrap lg:flex-grow w-full md:w-auto">
       <TextField
-        :value="item.invoiceNo"
+        :model-value="item.invoiceNo"
         :debounce="250"
         :placeholder="$t('shipping.invoiceNo')"
         :lazy="create"
         solo
         class="w-full sm:w-auto lg:w-32 lg:flex-shrink-0 sm:flex-grow md:flex-grow-0 mb-2 md:mb-0 mr-2"
-        @input="$emit('update', { invoiceNo: $event }, item.id)"
+        @update:model-value="$emit('update', { invoiceNo: $event }, item.id)"
       >
         <template v-slot:prepend>
           <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -38,14 +38,14 @@
         </template>
       </TextField>
       <DatePicker
-        :value="item.purchaseDate"
-        @input="$emit('update', { purchaseDate: $event }, item.id)"
+        :model-value="item.purchaseDate"
+        @update:model-value="$emit('update', { purchaseDate: $event }, item.id)"
       >
         <template v-slot:activator>
           <div class="text-left">
             <div>
               <TextField
-                :value="item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : null"
+                :model-value="item.purchaseDate ? $d($parseDate(item.purchaseDate), 'short') : null"
                 :placeholder="$t('shipping.purchaseDate')"
                 solo
                 readonly
@@ -63,20 +63,19 @@
       </DatePicker>
       <!-- TODO on real api, need send id -->
       <Select
-        :value="item.supplier"
+        :model-value="item.supplier"
         :placeholder="$t('shipping.supplierName')"
         v-model:search="supplierSearch"
         :items="suppliers"
-        :has-arrow-icon="false"
+        :show-arrow="false"
         solo
         no-filter
         searchable
         item-value="id"
         item-text="companyName"
         return-object
-        hide-details
         class="w-full sm:w-auto xl:w-full lg:flex-shrink-0 sm:flex-grow md:flex-grow-0 lg:flex-grow xl:flex-grow-0 max-w-sm mb-2 md:mb-0 mr-2"
-        @input="updateSupplier(item.id, ($event && $event.id))"
+        @update:model-value="updateSupplier(item.id, ($event && $event.id))"
       >
         <template v-slot:prepend>
           <button
@@ -90,14 +89,14 @@
         </template>
       </Select>
       <DatePicker
-        :value="item.shippingDate"
-        @input="$emit('update', { shippingDate: $event }, item.id)"
+        :model-value="item.shippingDate"
+        @update:model-value="$emit('update', { shippingDate: $event }, item.id)"
       >
         <template v-slot:activator>
           <div class="text-left">
             <div>
               <TextField
-                :value="item.shippingDate ? $d($parseDate(item.shippingDate), 'short') : null"
+                :model-value="item.shippingDate ? $d($parseDate(item.shippingDate), 'short') : null"
                 :placeholder="$t('shipping.shippingDate')"
                 solo
                 readonly

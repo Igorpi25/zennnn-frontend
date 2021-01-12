@@ -75,12 +75,12 @@
         </div>
         <div class="w-20 mr-2">
           <TextField
-            :value="spec.currencyRate"
+            :model-value="spec.currencyRate"
             :placeholder="$t('placeholder.emptyNumber')"
             :disabled="isCurrencyDisabled"
             lazy
             number
-            @input="$emit('update-spec', { currencyRate: $event })"
+            @update:model-value="$emit('update-spec', { currencyRate: $event })"
           />
         </div>
         <div class="text-gray-200">

@@ -74,7 +74,7 @@
               <div class="w-full">
                 <TextField
                   ref="email"
-                  :value="formModel.email"
+                  :model-value="formModel.email"
                   :label="$t('signup.login')"
                   :rules="[rules.required, rules.email]"
                   type="email"

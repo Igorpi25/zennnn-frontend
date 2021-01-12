@@ -6,22 +6,21 @@
         <BtnToggle
           v-model="internalProfitType"
           :items="buttonGroupItems"
-          @input="updateInvoice({
+          @update:model-value="updateInvoice({
             profitType: $event
           })"
         />
       </div>
       <div class="flex items-center">
         <TextField
-          :value="item.profitPercent"
+          :model-value="item.profitPercent"
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           lazy
           solo
           number
-          slot-class="w-auto"
           class="w-16 mr-2"
-          @input="updateInvoice({
+          @update:model-value="updateInvoice({
             profitPercent: $event
           })"
         >
@@ -30,9 +29,8 @@
           </template>
         </TextField>
         <Switch
-          :value="item.profitForAll"
-          hide-details
-          @input="updateInvoice({
+          :model-value="item.profitForAll"
+          @update:model-value="updateInvoice({
             profitForAll: $event
           })"
         >
@@ -53,15 +51,14 @@
         </label>
         <TextField
           v-if="isOwnerOrManager"
-          :value="item.discount"
+          :model-value="item.discount"
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           lazy
           solo
           number
           number-format="currency"
-          slot-class="w-auto"
-          @input="updateInvoice({
+          @update:model-value="updateInvoice({
             discount: $event
           })"
         >
@@ -80,15 +77,14 @@
         </label>
         <TextField
           v-if="isOwnerOrManager"
-          :value="item.prepayment"
+          :model-value="item.prepayment"
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           lazy
           solo
           number
           number-format="currency"
-          slot-class="w-auto"
-          @input="updateInvoice({
+          @update:model-value="updateInvoice({
             prepayment: $event
           })"
         >

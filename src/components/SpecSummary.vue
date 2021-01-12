@@ -175,15 +175,15 @@
         <LoadingSpinner v-if="linkAccessLoading" />
         <template v-else>
           <!-- <Switch
-            :value="linkAccess"
+            :model-value="linkAccess"
             class="mb-2"
-            @input="updateLinkAccess"
+            @update:model-value="updateLinkAccess"
           >
             <span>{{ $t('shipping.linkAccess') }}</span>
           </Switch> -->
           <TextField
             ref="linkInput"
-            :value="link"
+            :model-value="link"
             readonly
             solo
             class="pb-3"
