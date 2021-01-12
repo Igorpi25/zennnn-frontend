@@ -149,6 +149,7 @@ export default {
 
     onBeforeUnmount(() => {
       if (typeof window !== 'undefined') unbind()
+      showScroll()
     })
 
     // Methods
