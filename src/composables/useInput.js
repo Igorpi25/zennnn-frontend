@@ -160,7 +160,7 @@ export const useInput = (props, { slots, emit, id }) => {
       class: 'flex items-center flex-shrink-0',
     }, [
       props.prependIcon ? genIcon(props.prependIcon, 'w-6 text-gray-200 dark:text-gray-300 mr-2') : null,
-      slots.prepend ? slots.prepend() : null,
+      slots.prepend ? slots.prepend({ focused: isFocused.value }) : null,
     ])
   }
 
@@ -170,7 +170,7 @@ export const useInput = (props, { slots, emit, id }) => {
     return h('div', {
       class: 'flex items-center flex-shrink-0',
     }, [
-      slots.append ? slots.append() : null,
+      slots.append ? slots.append({ focused: isFocused.value }) : null,
       props.appendIcon ? genIcon(props.appendIcon, 'w-6 text-gray-200 dark:text-gray-300') : null,
     ])
   }
