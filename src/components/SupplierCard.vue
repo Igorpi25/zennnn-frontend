@@ -168,6 +168,7 @@ export default {
       default: false,
     },
   },
+  emits: ['close', 'create', 'update'],
   setup (props) {
     const route = useRoute()
     const supplierId = route.params.supplierId
