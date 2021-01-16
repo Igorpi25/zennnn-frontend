@@ -4,19 +4,14 @@
     <Menu
       v-model="isMenuActive"
       :close-on-content-click="false"
-      :left="left"
-      :top="top"
-      :right="right"
-      :bottom="bottom"
-      :offset-x="offsetX"
-      :offset-y="offsetY"
+      :placement="placement"
       :light="light"
       min-width="320"
       max-width="320"
       max-height="75vh"
     >
-      <template v-slot:activator>
-        <slot name="activator">
+      <template v-slot:activator="{ attrs, listeners }">
+        <slot name="activator" :attrs="attrs" :listeners="listeners">
           <div
             class="relative flex items-center"
           >
@@ -120,33 +115,9 @@ export default {
       type: String,
       default: '',
     },
-    menuProps: {
-      type: Object,
-      default: () => ({}),
-    },
-    left: {
-      type: Boolean,
-      default: false,
-    },
-    top: {
-      type: Boolean,
-      default: false,
-    },
-    right: {
-      type: Boolean,
-      default: false,
-    },
-    bottom: {
-      type: Boolean,
-      default: false,
-    },
-    offsetX: {
-      type: Boolean,
-      default: true,
-    },
-    offsetY: {
-      type: Boolean,
-      default: false,
+    placement: {
+      type: String,
+      default: 'right-start',
     },
     sm: {
       type: Boolean,

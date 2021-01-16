@@ -27,6 +27,9 @@ const possibleTypes = {
 const typePolicies = {
   Query: {
     fields: {
+      getSpecs: {
+        merge: false,
+      },
       listClients: {
         merge: false,
       },

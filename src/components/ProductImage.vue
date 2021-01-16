@@ -2,15 +2,14 @@
   <Menu
     v-model="menu"
     :close-on-content-click="false"
-    :nudge-width="400"
     :max-width="400"
     :disabled="!imageSrc || uploading"
     :light="light"
     open-on-hover
-    offset-x
+    placement="right-start"
   >
-    <template v-slot:activator="{ on }">
-      <div v-on="on" class="inline-block align-middle pr-2">
+    <template v-slot:activator>
+      <div class="inline-block align-middle pr-2">
         <slot name="menu-activator" :is-open="menu">
           <FileUploader
             v-if="upload"
@@ -270,6 +269,7 @@ export default {
     light: Boolean,
     caption: String,
   },
+  emits: ['upload-start'],
   setup () {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()

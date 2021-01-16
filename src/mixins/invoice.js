@@ -35,6 +35,7 @@ export default {
       default: 0,
     },
   },
+  emits: ['change:scrollLeft', 'change:tab'],
   data () {
     return {
       isScrollStart: false,

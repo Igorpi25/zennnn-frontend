@@ -86,15 +86,12 @@
               <Comments
                 :items="spec.comments"
                 :spec-id="specId"
-                :right="$breakpoint.mdAndDown"
-                :left="$breakpoint.lgAndUp"
-                :offset-x="$breakpoint.lgAndUp"
+                :placement="$breakpoint.lgAndUp ? 'left-start': 'right-start'"
                 is-paper
               >
-                <template v-slot:activator="{ on }">
+                <template v-slot:activator>
                   <button
                     class="w-full inline-block bg-light-gray-100 rounded-md border border-transparent select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
-                    v-on="on"
                   >
                     <div class="h-10 w-10 flex items-center justify-center relative">
                       <div
@@ -496,16 +493,13 @@
                   :activator="$refs.bottomSpecCommentsActivator"
                   :items="spec.comments"
                   :spec-id="specId"
-                  :right="$breakpoint.mdAndDown"
-                  :left="$breakpoint.lgAndUp"
-                  :offset-x="$breakpoint.lgAndUp"
+                  :placement="$breakpoint.lgAndUp ? 'left-start': 'right-start'"
                   is-paper
                 >
-                  <template v-slot:activator="{ on }">
+                  <template v-slot:activator>
                     <button
                       min-width="85"
                       class="w-full inline-block rounded-md border border-light-gray-400 select-none focus:outline-none focus:border-blue-500 hover:border-blue-500 transition-colors duration-100 ease-out"
-                      v-on="on"
                     >
                       <div class="h-12 flex items-center px-3">
                         <span class="text-blue-500 whitespace-nowrap leading-tight">

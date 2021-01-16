@@ -32,7 +32,7 @@
         @update:model-value="$emit('update', { invoiceNo: $event }, item.id)"
       >
         <template v-slot:prepend>
-          <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg class="mr-2" width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M14.4974 1.06834C12.5574 1.06834 11.1174 2.38834 11.1174 4.60834C11.1174 6.80834 12.5574 8.04834 14.4574 8.04834C16.2174 8.04834 17.8174 7.00834 17.8174 4.50834C17.8174 2.46834 16.5574 1.06834 14.4974 1.06834ZM14.4574 2.34834C15.4574 2.34834 15.8774 3.48834 15.8774 4.56834C15.8774 5.84834 15.3774 6.78834 14.4774 6.78834C13.6774 6.78834 13.0574 5.84834 13.0574 4.60834C13.0574 3.54834 13.4974 2.34834 14.4574 2.34834ZM17.2774 10.1683V8.88834H11.6774V10.1683H17.2774ZM2.99736 13.7683V9.28834C2.99736 7.04834 2.95736 5.34834 2.87736 3.68834H2.93736C3.49736 5.14834 4.15736 6.72834 4.81736 8.12834L7.59736 13.7683H10.0774V0.76834H7.93736V5.16834C7.93736 7.22834 7.99736 8.90834 8.13736 10.6283L8.11736 10.6483C7.57736 9.26834 6.91736 7.70834 6.23736 6.28834L3.53736 0.76834H0.857356V13.7683H2.99736Z" fill="#585858"/>
           </svg>
         </template>
@@ -52,7 +52,7 @@
                 class="w-full sm:w-36 mb-2 md:mb-0 mr-2"
               >
                 <template v-slot:prepend>
-                  <Icon>
+                  <Icon class="text-gray-300 mr-2">
                     {{ icons.ziCalendar }}
                   </Icon>
                 </template>
@@ -79,7 +79,7 @@
       >
         <template v-slot:prepend>
           <button
-            class="focus:outline-none select-none text-gray-200 hover:text-gray-100 focus:text-gray-100"
+            class="focus:outline-none select-none text-gray-300 hover:text-gray-100 focus:text-gray-100 mr-2"
             @click="openCreateSupplierDialog(item)"
           >
             <Icon class="align-middle">
@@ -103,7 +103,7 @@
                 class="lg:flex-shrink-0 w-full sm:w-36 mr-2"
               >
                 <template v-slot:prepend>
-                  <Icon>
+                  <Icon class="text-gray-300 mr-2">
                     {{ icons.ziCalendar }}
                   </Icon>
                 </template>
@@ -208,6 +208,7 @@ export default {
     create: Boolean,
     isEmpty: Boolean,
   },
+  emits: ['update', 'click'],
   setup () {
     const route = useRoute()
     const orgId = route.params.orgId

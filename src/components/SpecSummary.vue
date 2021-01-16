@@ -90,11 +90,9 @@
               content-class="w-full flex items-center"
               @click="onOverview"
             >
-              <template v-slot:icon>
-                <Icon class="text-gray-100">
-                  {{ icons.ziVisible }}
-                </Icon>
-              </template>
+              <Icon class="text-gray-100 mr-sm">
+                {{ icons.ziVisible }}
+              </Icon>
               {{ $t('shipping.previewAsCustomer') }}
             </Btn>
           </div>
@@ -106,11 +104,9 @@
               content-class="w-full flex items-center"
               @click="openPaperList"
             >
-              <template v-slot:icon>
-                <Icon class="text-gray-100">
-                  {{ icons.ziSettings }}
-                </Icon>
-              </template>
+              <Icon class="text-gray-100 mr-sm">
+                {{ icons.ziSettings }}
+              </Icon>
               {{ $t('shipping.paperConfigurator') }}
             </Btn>
           </div>
@@ -122,11 +118,9 @@
               content-class="w-full flex items-center"
               @click="printDialog = true"
             >
-              <template v-slot:icon>
-                <Icon class="text-gray-100">
-                  {{ icons.ziPrint }}
-                </Icon>
-              </template>
+              <Icon class="text-gray-100 mr-sm">
+                {{ icons.ziPrint }}
+              </Icon>
               {{ $t('shipping.print') }}
             </Btn>
           </div>
@@ -138,11 +132,9 @@
               content-class="w-full flex items-center"
               @click="accessControlDialog = true"
             >
-              <template v-slot:icon>
-                <Icon class="text-gray-100">
-                  {{ icons.ziUserPlus }}
-                </Icon>
-              </template>
+              <Icon class="text-gray-100 mr-sm">
+                {{ icons.ziUserPlus }}
+              </Icon>
               {{ $t('shipping.inviteCustomer') }}
             </Btn>
           </div>
@@ -154,11 +146,9 @@
               class="w-full"
               content-class="w-full flex items-center"
             >
-              <template v-slot:icon>
-                <Icon>
-                  {{ icons.ziEmail }}
-                </Icon>
-              </template>
+              <Icon class="mr-sm">
+                {{ icons.ziEmail }}
+              </Icon>
               {{ $t('shipping.notifyCustomer') }}
             </Btn>
           </div>

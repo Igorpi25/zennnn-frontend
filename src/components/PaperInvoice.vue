@@ -117,7 +117,7 @@
               :spec-id="specId"
               is-product
               is-paper
-              left
+              placement="left-start"
               class="inline-block align-middle mr-sm text-gray-200 focus:text-gray-400 hover:text-gray-400 transition-colors duration-100 ease-out"
             />
           </td>
@@ -245,6 +245,7 @@ export default {
       default: 0,
     },
   },
+  emits: ['change:scrollLeft', 'change:tab'],
   data () {
     return {
       icons: {

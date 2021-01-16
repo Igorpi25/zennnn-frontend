@@ -33,7 +33,7 @@
             class="inline-flex"
             @update:model-value="toggleSpecSimpleUI"
           >
-            <span class="mr-2">
+            <span class="mx-2">
               {{ $t('shipping.simpleInterface') }}
             </span>
           </Switch>
@@ -53,7 +53,7 @@
             v-if="spec.client"
             :items="spec.comments"
             :spec-id="specId"
-            left
+            placement="left-start"
             class="text-gray-300 focus:text-gray-100 hover:text-gray-100 transition-colors duration-100 ease-out mr-4"
           />
           <span v-if="spec.client">
@@ -244,7 +244,7 @@
                   :model-value="spec.shipped"
                   @update:model-value="updateSpec({ shipped: $event })"
                 >
-                  {{ $t('shipping.setShipped') }}
+                  <span class="ml-2">{{ $t('shipping.setShipped') }}</span>
                 </Switch>
               </div>
             </template>
@@ -424,7 +424,7 @@ export default {
 
     const route = useRoute()
     const orgId = route.params.orgId
-    const specId = route.params.orgId
+    const specId = route.params.specId
     const clientSearch = ref('')
     const supplierSearch = ref('')
     const isBooted = ref(false)
@@ -633,7 +633,7 @@ export default {
       return this.getSpec || {}
     },
     items () {
-      return (this.getSpec && this.getSpec.invoices) || []
+      return this.spec.invoices || []
     },
     specClient () {
       const client = this.spec.client || {}

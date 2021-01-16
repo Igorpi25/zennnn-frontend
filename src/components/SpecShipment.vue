@@ -385,8 +385,8 @@
               :model-value="item.mixed.exportDate"
               @update:model-value="$emit('update', { shipment: { mixed: { exportDate: $event } } })"
             >
-              <template v-slot:activator="{ on }">
-                <div v-on="on">
+              <template v-slot:activator>
+                <div>
                   <TextField
                     :model-value="item.mixed.exportDate ? $d($parseDate(item.mixed.exportDate), 'short'): ''"
                     :placeholder="$t('placeholder.notIndicated')"

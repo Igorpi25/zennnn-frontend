@@ -13,7 +13,7 @@
       </div>
       <div class="flex items-center">
         <TextField
-          :model-value="item.profitPercent"
+          :model-value="invoice.profitPercent"
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           lazy
@@ -29,7 +29,7 @@
           </template>
         </TextField>
         <Switch
-          :model-value="item.profitForAll"
+          :model-value="invoice.profitForAll"
           @update:model-value="updateInvoice({
             profitForAll: $event
           })"
@@ -51,7 +51,7 @@
         </label>
         <TextField
           v-if="isOwnerOrManager"
-          :model-value="item.discount"
+          :model-value="invoice.discount"
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           lazy
@@ -67,7 +67,7 @@
           </template>
         </TextField>
         <div v-else class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
-          <span class="text-white">{{ $n(item.discount, 'fixed') }}</span>
+          <span class="text-white">{{ $n(invoice.discount || 0, 'fixed') }}</span>
           <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
         </div>
       </div>
@@ -77,7 +77,7 @@
         </label>
         <TextField
           v-if="isOwnerOrManager"
-          :model-value="item.prepayment"
+          :model-value="invoice.prepayment"
           :debounce="600"
           :placeholder="$t('placeholder.emptyNumber')"
           lazy
@@ -93,11 +93,11 @@
           </template>
         </TextField>
         <div v-else class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
-          <span class="text-white">{{ $n(item.prepayment, 'fixed') }}</span>
+          <span class="text-white">{{ $n(invoice.prepayment || 0, 'fixed') }}</span>
           <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
         </div>
         <DatePicker
-          :model-value="item.prepaymentDate"
+          :model-value="invoice.prepaymentDate"
           :placeholder="$t('placeholder.emptyDate')"
           @update:model-value="updateInvoice({ prepaymentDate: $event })"
         />
@@ -112,11 +112,11 @@
           {{ $t('shipping.obtainCost') }}
         </label>
         <div class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
-          <span class="text-white">{{ $n(item.obtainCost, 'fixed') }}</span>
+          <span class="text-white">{{ $n(invoice.obtainCost || 0, 'fixed') }}</span>
           <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
         </div>
         <DatePicker
-          :model-value="item.obtainCostDate"
+          :model-value="invoice.obtainCostDate"
           :placeholder="$t('placeholder.emptyDate')"
           @update:model-value="updateInvoice({ obtainCostDate: $event })"
         />
@@ -126,11 +126,11 @@
           {{ $t('shipping.clientDebt') }}
         </label>
         <div class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
-          <span class="text-white">{{ $n(item.clientDebt, 'fixed') }}</span>
+          <span class="text-white">{{ $n(invoice.clientDebt || 0, 'fixed') }}</span>
           <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
         </div>
         <DatePicker
-          :model-value="item.clientDebtDate"
+          :model-value="invoice.clientDebtDate"
           :placeholder="$t('placeholder.emptyDate')"
           @update:model-value="updateInvoice({ clientDebtDate: $event })"
         />
@@ -141,8 +141,15 @@
 </template>
 
 <script>
-import invoice from '../mixins/invoice'
-import { Role } from '../graphql/enums'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useApolloClient } from '@vue/apollo-composable'
+
+import { DEFAULT_CURRENCY } from '../config/globals'
+
+import { GET_SPEC, GET_IS_SPEC_SYNC } from '../graphql/queries'
+import { UPDATE_INVOICE } from '../graphql/mutations'
+import { Role, InvoiceProfitType } from '../graphql/enums'
 
 import Switch from './Base/Switch'
 import TextField from './Base/TextField'
@@ -157,9 +164,12 @@ export default {
     DatePicker,
     BtnToggle,
   },
-  mixins: [invoice],
   props: {
-    item: {
+    currency: {
+      type: String,
+      default: DEFAULT_CURRENCY,
+    },
+    invoice: {
       type: Object,
       default: () => ({}),
     },
@@ -168,20 +178,38 @@ export default {
       required: true,
     },
   },
-  data () {
+  setup () {
+    const route = useRoute()
+    const specId = route.params.specId
+
+    const { resolveClient } = useApolloClient()
+    const apolloClient = resolveClient()
+
+    const updateLoading = (null)
+    const internalProfitType = ref('')
+
     return {
+      specId,
+      apolloClient,
+      updateLoading,
       // TODO: need RadioButtonGroup component for control radio values
-      internalProfitType: '',
+      internalProfitType,
     }
   },
   computed: {
+    isInvoiceProfitTypeMargin () {
+      return this.invoice.profitType === InvoiceProfitType.MARGIN
+    },
+    isInvoiceProfitTypeCommission () {
+      return this.invoice.profitType === InvoiceProfitType.COMMISSION
+    },
     buttonGroupItems () {
       return [{
         text: this.$t('shipping.margin').toLowerCase(),
-        value: this.InvoiceProfitType.MARGIN,
+        value: InvoiceProfitType.MARGIN,
       }, {
         text: this.$t('shipping.commission').toLowerCase(),
-        value: this.InvoiceProfitType.COMMISSION,
+        value: InvoiceProfitType.COMMISSION,
       }]
     },
     isOwnerOrManager () {
@@ -197,11 +225,56 @@ export default {
     },
   },
   watch: {
-    'item.profitType': {
+    'invoice.profitType': {
       handler (val) {
         this.internalProfitType = val
       },
       immediate: true,
+    },
+  },
+  methods: {
+    async updateInvoice (input) {
+      try {
+        const id = this.invoice.id
+        this.updateLoading = id
+        await this.apolloClient.mutate({
+          mutation: UPDATE_INVOICE,
+          variables: {
+            id,
+            input,
+          },
+        })
+      } catch (error) {
+        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+          this.refetchSpec()
+        }
+        this.$logger.warn('Error: ', error)
+        throw new Error(error)
+      } finally {
+        this.updateLoading = null
+      }
+    },
+    async refetchSpec () {
+      try {
+        this.apolloClient.writeQuery({
+          query: GET_IS_SPEC_SYNC,
+          data: { isSpecSync: true },
+        })
+        await this.apolloClient.query({
+          query: GET_SPEC,
+          variables: {
+            id: this.specId,
+          },
+          fetchPolicy: 'network-only',
+        })
+      } catch (error) {
+        this.$logger.warn('Error: ', error)
+      } finally {
+        this.apolloClient.writeQuery({
+          query: GET_IS_SPEC_SYNC,
+          data: { isSpecSync: false },
+        })
+      }
     },
   },
 }

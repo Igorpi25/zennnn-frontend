@@ -14,11 +14,11 @@
           :headers="headers"
           :items="items"
           :scrollable="false"
+          :rounded="false"
           table-width="100%"
           class="relative"
           table-class="table-fixed"
           thead-class="text-sm"
-          flat
         >
           <template v-slot:header-content-atWhouse="{ header }">
             <span class="inline-block truncate align-middle" style="max-width: 78px;">
@@ -105,8 +105,8 @@
                 v-if="item.id === `empty-${invoice.id}` && isOwnerOrManager"
                 :index="items.length"
                 :active-tab="activeTab"
-                :profit-type="invoiceItem.profitType"
-                :profit-for-all="invoiceItem.profitForAll"
+                :profit-type="invoice.profitType"
+                :profit-for-all="invoice.profitForAll"
                 :role="role"
                 create
                 @create="addProduct"
@@ -116,8 +116,8 @@
                 :item="item"
                 :index="index + 1"
                 :active-tab="activeTab"
-                :profit-type="invoiceItem.profitType"
-                :profit-for-all="invoiceItem.profitForAll"
+                :profit-type="invoice.profitType"
+                :profit-for-all="invoice.profitForAll"
                 :role="role"
               />
             </template>
@@ -144,7 +144,7 @@
                 </td>
                 <td class="text-right px-sm">
                   <span class="relative z-1">
-                    {{ $n(invoiceItem.totalPurchaseAmount || 0, 'fixed') }}
+                    {{ $n(invoice.totalPurchaseAmount || 0, 'fixed') }}
                   </span>
                 </td>
                 <td class="text-gray-300 text-right px-sm">
@@ -154,7 +154,7 @@
                 </td>
                 <td class="text-right px-sm">
                   <span class="relative z-1">
-                    {{ $n(invoiceItem.totalClientAmount || 0, 'fixed') }}
+                    {{ $n(invoice.totalClientAmount || 0, 'fixed') }}
                   </span>
                 </td>
                 <td colspan="2"></td>
@@ -168,24 +168,24 @@
                 </td>
                 <td class="text-right pr-sm">
                   <span class="relative z-1">
-                    <span>{{ $n(invoiceItem.totalNet) }}</span>
+                    <span>{{ $n(invoice.totalNet) }}</span>
                     <span class="text-gray-300 absolute right-0 transform translate-x-full pl-1">{{ $t('measure.kg') }}</span>
                   </span>
                 </td>
                 <td class="text-right pr-sm">
                   <span class="relative z-1">
-                    <span>{{ $n(invoiceItem.totalGross) }}</span>
+                    <span>{{ $n(invoice.totalGross) }}</span>
                     <span class="text-gray-300 absolute right-0 transform translate-x-full pl-1">{{ $t('measure.kg') }}</span>
                   </span>
                 </td>
                 <td class="text-center">
                   <span class="relative z-1">
-                    {{ $n(invoiceItem.totalVolume) }} <span class="text-gray-300">{{ $t('measure.m3') }}</span>
+                    {{ $n(invoice.totalVolume) }} <span class="text-gray-300">{{ $t('measure.m3') }}</span>
                   </span>
                 </td>
                 <td class="text-right pr-sm">
                   <span class="relative z-1">
-                    {{ $n(invoiceItem.totalPkgQty) }}
+                    {{ $n(invoice.totalPkgQty) }}
                   </span>
                 </td>
                 <td class="text-left" colspan="2">
@@ -210,13 +210,22 @@
       v-if="isAmountVisible && items && !create && !hideSummary"
       :role="role"
       :currency="currency"
-      :item="invoiceItem"
+      :invoice="invoice"
     />
   </div>
 </template>
 
 <script>
-import invoice from '../mixins/invoice'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useMutation } from '@vue/apollo-composable'
+
+import { Scroll } from 'uipart'
+
+import { DEFAULT_CURRENCY } from '../config/globals'
+
+import { SpecCurrency, InvoiceProfitType, Role } from '../graphql/enums'
+import { CREATE_PRODUCT, CREATE_PRODUCT_WITH_INVOICE } from '../graphql/mutations'
 
 import {
   ziLink,
@@ -228,7 +237,6 @@ import Icon from './Base/Icon'
 import DataTable from './Base/DataTable'
 import InvoiceProduct from './InvoiceProduct.vue'
 import InvoiceSummary from './InvoiceSummary.vue'
-import { Role } from '../graphql/enums'
 
 export default {
   name: 'InvoiceContent',
@@ -238,8 +246,18 @@ export default {
     InvoiceProduct,
     InvoiceSummary,
   },
-  mixins: [invoice],
+  directives: {
+    Scroll,
+  },
   props: {
+    currency: {
+      type: String,
+      default: DEFAULT_CURRENCY,
+    },
+    activeTab: {
+      type: Number,
+      default: 1,
+    },
     invoice: {
       type: Object,
       default: () => ({}),
@@ -250,8 +268,80 @@ export default {
     },
     create: Boolean,
     hideSummary: Boolean,
+    // Scroll
+    scrollInvoiceId: {
+      type: String,
+      default: '',
+    },
+    scrollLeft: {
+      type: Number,
+      default: 0,
+    },
+  },
+  emits: ['update:currency', 'change:scrollLeft', 'change:tab'],
+  setup () {
+    const route = useRoute()
+    const specId = route.params.specId
+
+    const isScrollStart = ref(false)
+    const scrollEndTimer = ref(null)
+    const isMouseOver = ref(false)
+    const lazyScrollLeft = ref(0)
+    const scrollLeftDelay = ref(75)
+    const scrollAnimationDuration = ref(75)
+
+    const {
+      mutate: createProductMutate,
+      loading: createProductLoading,
+    } = useMutation(CREATE_PRODUCT, {
+      fetchPolicy: 'no-cache',
+    })
+
+    const {
+      mutate: createProductWithInvoiceMutate,
+      loading: createProductWithInvoiceLoading,
+    } = useMutation(CREATE_PRODUCT_WITH_INVOICE, {
+      fetchPolicy: 'no-cache',
+    })
+
+    return {
+      specId,
+      createProductMutate,
+      createProductLoading,
+      createProductWithInvoiceMutate,
+      createProductWithInvoiceLoading,
+      // Scroll
+      isScrollStart,
+      scrollEndTimer,
+      isMouseOver,
+      lazyScrollLeft,
+      scrollLeftDelay,
+      scrollAnimationDuration,
+    }
   },
   computed: {
+    items () {
+      return (this.invoice && this.invoice.products) || []
+    },
+    fixedHeadersWidth () {
+      return this.productHeaders.reduce((acc, curr) => {
+        return acc + (curr.width || 0)
+      }, 0)
+    },
+    currencies () {
+      return Object.values(SpecCurrency).map(el => {
+        return {
+          text: el,
+          value: el,
+        }
+      })
+    },
+    isInvoiceProfitTypeMargin () {
+      return this.invoice.profitType === InvoiceProfitType.MARGIN
+    },
+    isInvoiceProfitTypeCommission () {
+      return this.invoice.profitType === InvoiceProfitType.COMMISSION
+    },
     hasNewComments () {
       const products = this.invoice.products || []
       return products.some(item => {
@@ -358,6 +448,111 @@ export default {
         { text: '', value: 'messages', width: 140, align: 'left', class: 'bg-gray-600 relative z-1' },
         { text: '', value: 'startChat', width: 168, align: 'right', class: 'bg-gray-600 relative z-1' },
       ]
+    },
+  },
+  watch: {
+    scrollLeft () {
+      if (this.invoice.id === this.scrollInvoiceId) return
+      if (this.isMouseOver || this.isScrollStart) return
+      this.setScrollLeft()
+    },
+  },
+  mounted () {
+    // this.debounceEmitScrollLeftChange = throttle(this.emitScrollLeftChange, this.scrollLeftDelay, { leading: true })
+    if (this.scrollLeft) {
+      this.setScrollLeft(false)
+    }
+  },
+  methods: {
+    switchTab (value) {
+      this.$emit('change:tab', value)
+    },
+    addProduct (input) {
+      if (this.create) {
+        this.createProductWithInvoice(input)
+      } else {
+        this.createProduct(input)
+      }
+    },
+    createProduct (input) {
+      const variables = {
+        invoiceId: this.invoice.id,
+      }
+      if (input) {
+        variables.input = {
+          name: input.name,
+          article: input.article,
+        }
+      }
+      this.createProductMutate(variables)
+    },
+    createProductWithInvoice (input) {
+      const variables = {
+        specId: this.specId,
+      }
+      if (input) {
+        variables.input = {
+          name: input.name,
+          article: input.article,
+        }
+      }
+      this.createProductWithInvoiceMutate(variables)
+    },
+    // Scroll
+    emitScrollLeftChange () {
+      this.$emit('change:scrollLeft', this.lazyScrollLeft, this.invoice.id)
+    },
+    setScrollLeft (animate = true) {
+      const target = this.$refs.productsTable
+      if (target) {
+        const scrollLeft = this.scrollLeft || 0
+        if (animate) {
+          target.scrollLeft = scrollLeft
+          // this.scrollLeftWithAnimation(scrollLeft)
+        } else {
+          target.scrollLeft = scrollLeft
+        }
+      }
+    },
+    scrollLeftWithAnimation (scrollLeft) {
+      const container = this.$refs.productsTable
+      if (!container) return
+      const targetLocation = scrollLeft
+      const startLocation = container.scrollLeft
+      if (targetLocation === startLocation) return
+      const startTime = performance.now()
+      const duration = this.scrollAnimationDuration
+      const ease = (t) => t
+      return new Promise(resolve => requestAnimationFrame(function step (currentTime) {
+        const timeElapsed = currentTime - startTime
+        const progress = Math.abs(duration ? Math.min(timeElapsed / duration, 1) : 1)
+
+        container.scrollLeft = Math.floor(startLocation + (targetLocation - startLocation) * ease(progress))
+
+        const clientWidth = container.clientWidth
+        if (progress === 1 || clientWidth + container.scrollLeft === container.scrollWidth) {
+          return resolve(targetLocation)
+        }
+
+        requestAnimationFrame(step)
+      }))
+    },
+    onScroll (e) {
+      const target = e.target
+      const scrollLeft = target ? target.scrollLeft : 0
+      this.lazyScrollLeft = scrollLeft < 0 ? 0 : scrollLeft
+      if (!this.isMouseOver && !this.isScrollStart) return
+      if (this.isScrollStart) {
+        this.clearScrollEndTimer()
+      }
+      this.emitScrollLeftChange()
+      // this.debounceEmitScrollLeftChange()
+    },
+    clearScrollEndTimer () {
+      clearTimeout(this.scrollEndTimer)
+      this.scrollEndTimer = setTimeout(() => {
+        this.isScrollStart = false
+      }, 300)
     },
   },
 }

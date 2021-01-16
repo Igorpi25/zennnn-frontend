@@ -1,3 +1,5 @@
+import { isProxy } from 'vue'
+
 import { store } from '../plugins/localforage'
 import { auth } from '../plugins/auth'
 import {
@@ -96,7 +98,9 @@ const resolvers = {
       const username = await getUsername()
       let key = prefix ? `${prefix}.` : ''
       key += `${username}.${specId}.${SPEC_EXPANDED_INVOICES_STORE_KEY}`
-      await store.setItem(key, ids || [])
+      // TODO: expanded in resolver eq. to Proxy({0: <id>, ...})
+      const idsArr = isProxy(ids) ? [...ids] : ids || []
+      await store.setItem(key, idsArr)
       return true
     },
     addSpecExpandedInvoices: async (_, { specId, ids, prefix }) => {

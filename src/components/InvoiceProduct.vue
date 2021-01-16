@@ -65,9 +65,9 @@
             <span>{{ $t('words.addWord') }}</span>
           </span>
         </template>
-        <template v-slot:append="{ open }">
+        <template v-slot:append="{ focused }">
           <button
-            v-if="open && canEdit"
+            v-if="focused && canEdit"
             class="flex items-center jusitfy-center text-blue-500 focus:outline-none cursor-pointer mr-sm"
             @click="wordEditDialog = true"
           >
@@ -157,7 +157,7 @@
           <TextField
             :model-value="purchasePrice"
             :placeholder="$t('placeholder.emptyNumber')"
-            :input-class="hasCustomPurchasePrice ? 'text-blue-900' : null"
+            :input-class="hasCustomPurchasePrice ? 'text-blue-900' : ''"
             lazy
             solo
             number
@@ -169,18 +169,18 @@
           v-else
           class="text-right px-sm"
         >
-          {{ $n(cost.purchasePrice, 'fixed') }}
+          {{ $n(cost.purchasePrice || 0, 'fixed') }}
         </td>
 
         <td class="text-right px-sm">
-          {{ $n(cost.purchaseAmount, 'fixed') }}
+          {{ $n(cost.purchaseAmount || 0, 'fixed') }}
         </td>
 
         <td v-if="(isInvoiceProfitTypeCommission || !profitForAll) && isOwnerOrManager" class="pl-sm">
           <TextField
             :model-value="clientPrice"
             :placeholder="$t('placeholder.emptyNumber')"
-            :input-class="hasCustomClientPrice ? 'text-blue-900' : null"
+            :input-class="hasCustomClientPrice ? 'text-blue-900' : ''"
             lazy
             solo
             number
@@ -192,11 +192,11 @@
           v-else
           class="text-right px-sm"
         >
-          {{ $n(cost.clientPrice, 'fixed') }}
+          {{ $n(cost.clientPrice || 0, 'fixed') }}
         </td>
 
         <td class="text-right px-sm">
-          {{ $n(cost.clientAmount, 'fixed') }}
+          {{ $n(cost.clientAmount || 0, 'fixed') }}
         </td>
       </template>
     </template>
@@ -433,13 +433,12 @@
             :product-id="item.id"
             :spec-id="specId"
             is-product
-            left
+            placement="left-start"
             class="inline-block"
           >
-            <template v-slot:activator="{ on }">
+            <template v-slot:activator>
               <button
                 class="h-8 w-32 inline-block rounded text-blue-500 border border-gray-400 hover:border-blue-500 focus:border-blue-500 focus:outline-none select-none transition-colors duration-100 ease-out"
-                v-on="on"
               >
                 {{ $t('shipping.chatStart') }}
               </button>
@@ -531,6 +530,7 @@ export default {
     },
     create: Boolean,
   },
+  emits: ['create'],
   setup () {
     const { locale } = useI18n()
     const route = useRoute()

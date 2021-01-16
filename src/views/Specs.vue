@@ -333,6 +333,7 @@
             <div
               role="option"
               class="flex items-center jusitfy-center text-blue-500 hover:text-blue-400 cursor-pointer h-9 px-4"
+              @click="createClient"
             >
               <Icon class="mr-1">
                 {{ icons.ziPlusOutline }}
@@ -341,7 +342,7 @@
             </div>
           </template>
         </Select>
-        <div class="flex justify-between">
+        <div class="flex justify-between mt-4">
           <Btn
             :disabled="createWithClientLoading"
             :loading="createWithoutClientLoading"
@@ -619,7 +620,7 @@ export default {
         { text: '', value: 'status', align: 'left', width: 45, sortable: true },
         { text: '', value: 'isMoneyRecieved', align: 'left', width: 50, sortable: false },
         { text: '', value: 'isExpensesPaid', align: 'left', width: 50, sortable: false },
-        { text: '', value: 'finalCost', align: 'right', width: 110, sortable: true },
+        { text: '', value: 'finalCost', align: 'right', width: 100, sortable: true },
         { text: '', value: 'margin', align: 'right', width: 62, sortable: true },
         { text: this.$t('deals.clientName'), value: 'client.fullName', align: 'left', width: 230, minWidth: 230, class: 'whitespace-nowrap text-left pl-6', sortable: true },
         { text: this.$t('deals.contactPerson'), value: 'client.contactPersonFullName', align: 'left', width: 152, sortable: true },
@@ -742,8 +743,6 @@ export default {
           })
 
           if (!getSpecs.some(el => el.id === data.delta.payload.id)) {
-            getSpecs.push(data.delta.payload)
-
             apolloClient.writeQuery({
               query: GET_SPECS,
               variables: {
@@ -752,7 +751,7 @@ export default {
                 clientType: this.clientTypeEnum,
               },
               data: {
-                getSpecs,
+                getSpecs: [...getSpecs, data.delta.payload],
               },
             })
           }
@@ -776,10 +775,7 @@ export default {
             },
           })
 
-          const index = getSpecs.findIndex(el => el.id === data.delta.payload.id)
-
-          if (index !== -1) {
-            getSpecs.splice(index, 1)
+          if (getSpecs.some(el => el.id === data.delta.payload.id)) {
             apolloClient.writeQuery({
               query: GET_SPECS,
               variables: {
@@ -788,7 +784,7 @@ export default {
                 clientType: this.clientTypeEnum,
               },
               data: {
-                getSpecs,
+                getSpecs: getSpecs.filter(el => el.id !== data.delta.payload.id),
               },
             })
           }
@@ -917,31 +913,6 @@ export default {
         })
         if (response && response.data && response.data.createSpec) {
           const spec = response.data.createSpec
-
-          const { getSpecs } = client.readQuery({
-            query: GET_SPECS,
-            variables: {
-              orgId: this.orgId,
-              clientsIds: this.filter.clientsIds,
-              clientType: this.clientTypeEnum,
-            },
-          })
-
-          if (!getSpecs.some(el => el.id === spec.id)) {
-            getSpecs.push(spec)
-
-            client.writeQuery({
-              query: GET_SPECS,
-              variables: {
-                orgId: this.orgId,
-                clientsIds: this.filter.clientsIds,
-                clientType: this.clientTypeEnum,
-              },
-              data: {
-                getSpecs,
-              },
-            })
-          }
           this.$router.push({ name: 'spec', params: { orgId: this.orgId, specId: spec.id } })
         }
       } catch (error) {
@@ -985,10 +956,7 @@ export default {
           },
         })
 
-        const index = getSpecs.findIndex(el => el.id === id)
-
-        if (index !== -1) {
-          getSpecs.splice(index, 1)
+        if (getSpecs.some(el => el.id === id)) {
           client.writeQuery({
             query: GET_SPECS,
             variables: {
@@ -997,7 +965,7 @@ export default {
               clientType: this.clientTypeEnum,
             },
             data: {
-              getSpecs,
+              getSpecs: getSpecs.filter(el => el.id !== id),
             },
           })
         }
