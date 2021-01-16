@@ -273,11 +273,11 @@ export default {
     }
 
     const bind = () => {
-      window.addEventListener('focusin', onFocusin)
+      // window.addEventListener('focusin', onFocusin)
     }
 
     const unbind = () => {
-      window.removeEventListener('focusin', onFocusin)
+      // window.removeEventListener('focusin', onFocusin)
     }
 
     const onClickAnimationEnd = () => {
@@ -327,7 +327,8 @@ export default {
 
     // On focus change, wrap focus to stay inside the dialog
     // https://github.com/vuetifyjs/vuetify/issues/6892
-    const onFocusin = (e) => {
+    // TODO: stacked model has maximum call stack
+    const onFocusin = (e) => { // eslint-disable-line
       if (!e || !props.retainFocus) return
 
       const target = e.target
