@@ -128,7 +128,9 @@ export default {
       return h(Btn, {
         outlined: true,
         small: true,
-      }, isValid(internal.value) ? d(internal.value, 'short') : props.placeholder || 'Date')
+      }, {
+        default: () => isValid(internal.value) ? d(internal.value, 'short') : props.placeholder || 'Date',
+      })
     }
 
     const genYearPicker = () => {
