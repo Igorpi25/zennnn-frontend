@@ -66,6 +66,7 @@
     transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
     @apply opacity-0 text-gray-200;
     @apply absolute inset-y-0;
+    @apply items-center;
   }
   .data-table thead th.sortable:hover .data-table-header__icon {
     @apply opacity-100;
