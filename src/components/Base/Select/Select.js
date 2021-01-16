@@ -267,13 +267,13 @@ export default {
     onBeforeMount(() => {
       // override initial set of model value
       internalValue.value = getValue(props.modelValue)
-      setSelectedItem()
+      setSelectedItem(props.returnObject ? props.modelValue : undefined)
       setSearch()
     })
 
     const setInternalValue = (val) => {
       internalValue.value = getValue(val)
-      setSelectedItem()
+      setSelectedItem(props.returnObject ? val : undefined)
       setSearch()
     }
 
