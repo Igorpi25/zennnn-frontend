@@ -152,7 +152,7 @@
 </template>
 
 <script>
-import companyDetail from '../../mixins/clientDetail'
+import clientDetail from '../../mixins/clientDetail'
 
 import { ClientType } from '../../graphql/enums'
 
@@ -171,7 +171,7 @@ export default {
     Select,
     Phone,
   },
-  mixins: [companyDetail],
+  mixins: [clientDetail],
   props: {
     readonly: Boolean,
     client: {

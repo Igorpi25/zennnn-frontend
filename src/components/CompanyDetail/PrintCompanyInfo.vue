@@ -259,7 +259,7 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
-import companyDetail from '../../mixins/clientDetail'
+import clientDetail from '../../mixins/clientDetail'
 
 import { UPDATE_COMPANY_BANK_DETAIL } from '../../graphql/mutations'
 
@@ -278,7 +278,7 @@ export default {
     TextField,
     Phone,
   },
-  mixins: [companyDetail],
+  mixins: [clientDetail],
   props: {
     readonly: Boolean,
     item: {

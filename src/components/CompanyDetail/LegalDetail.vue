@@ -407,8 +407,6 @@ export default {
   },
   methods: {
     updateMailingAddressMatch (val) {
-      // TODO: !!!
-      if (!!val === !!this.isMailingAddressMatch) return
       this.isMailingAddressMatch = val
       const input = { isMailingAddressMatch: val }
       this.updateData(input)

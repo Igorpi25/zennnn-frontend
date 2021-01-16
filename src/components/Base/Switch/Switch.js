@@ -75,7 +75,7 @@ export default {
     })
 
     watch(internalValue, (val) => {
-      emit('update:modelValue', val)
+      !!val !== !!props.modelValue && emit('update:modelValue', val)
     })
 
     const onChange = () => {

@@ -242,7 +242,7 @@ import { LOCALES_LIST } from '../../config/globals'
 
 import { ziUser, ziCalendar } from '../../assets/icons'
 
-import companyDetail from '../../mixins/clientDetail'
+import clientDetail from '../../mixins/clientDetail'
 
 import Icon from '../Base/Icon'
 import Alert from '../Base/Alert'
@@ -263,7 +263,7 @@ export default {
     DatePicker,
     Phone,
   },
-  mixins: [companyDetail],
+  mixins: [clientDetail],
   props: {
     uid: String,
     item: {

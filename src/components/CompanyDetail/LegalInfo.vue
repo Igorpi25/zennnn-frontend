@@ -171,7 +171,7 @@
 <script>
 import { LOCALES_LIST } from '../../config/globals'
 
-import companyDetail from '../../mixins/clientDetail'
+import clientDetail from '../../mixins/clientDetail'
 
 import TextField from '../Base/TextField'
 import Select from '../Base/Select'
@@ -186,7 +186,7 @@ export default {
     Switch,
     Phone,
   },
-  mixins: [companyDetail],
+  mixins: [clientDetail],
   props: {
     uid: String,
     item: {
@@ -239,8 +239,6 @@ export default {
   },
   methods: {
     updateCompanyNameMatch (val) {
-      // TODO: !!!
-      if (!!val === !!this.isCompanyNameMatch) return
       this.isCompanyNameMatch = val
       const input = { isCompanyNameMatch: val }
       this.updateData(input)

@@ -344,7 +344,7 @@
 </template>
 
 <script>
-import companyDetail from '../../mixins/clientDetail'
+import clientDetail from '../../mixins/clientDetail'
 
 import Alert from '../Base/Alert'
 import Radio from '../Base/Radio'
@@ -361,7 +361,7 @@ export default {
     TextField,
     Phone,
   },
-  mixins: [companyDetail],
+  mixins: [clientDetail],
   props: {
     item: {
       type: Object,
@@ -422,8 +422,6 @@ export default {
       })
     },
     updateCompanyNameMatch (val) {
-      // TODO: !!!
-      if (!!val === !!this.isCompanyNameMatch) return
       this.isCompanyNameMatch = val
       const input = { isCompanyNameMatch: val }
       this.updateData(input)
@@ -433,8 +431,6 @@ export default {
       this.updateData(input)
     },
     updateMailingAddressMatch (val) {
-      // TODO: !!!
-      if (!!val === !!this.isMailingAddressMatch) return
       this.isMailingAddressMatch = val
       const input = { isMailingAddressMatch: val }
       this.updateData(input)
