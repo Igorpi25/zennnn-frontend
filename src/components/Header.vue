@@ -17,9 +17,9 @@
         </div>
         <slot name="breadcrumbs" />
         <div class="flex-grow" />
-        <div class="flex justify-end">
+        <div class="flex items-center justify-end">
           <!-- Locale picker -->
-          <LocalePicker :nudge-bottom="light ? 52 : 40" :light="light" />
+          <LocalePicker :distance="16" :light="light" class="flex h-full" />
           <!-- Menu -->
           <div
             v-if="!loggedIn"
@@ -48,14 +48,14 @@
           </div>
           <div
             v-else
-            class="flex items-center"
+            class="flex items-center h-full"
           >
             <Menu
               v-model="profileMenu"
-              :distance="light ? 80 : 56"
-              :content-class=" light ? 'header-profile-menu header-profile-menu--light' : 'header-profile-menu'"
               :arrow="false"
               placement="bottom-end"
+              class="h-full"
+              content-class="pt-0 pb-0 rounded-t-none"
             >
               <template v-slot:activator>
                 <div
@@ -70,12 +70,10 @@
                           ? 'bg-gray-500 hover:bg-gray-500' : 'hover:bg-gray-200',
                   ]"
                 >
-                  <template>
-                    <Icon class="text-gray-100 align-middle pl-3">
-                      {{ icons.ziMenu }}
-                    </Icon>
-                    <div :class="[light ? 'bg-gray-100' : 'bg-gray-300', 'w-px h-5 mx-3 sm:mx-5']" />
-                  </template>
+                  <Icon class="text-gray-100 align-middle pl-3">
+                    {{ icons.ziMenu }}
+                  </Icon>
+                  <div :class="[light ? 'bg-gray-100' : 'bg-gray-300', 'w-px h-5 mx-3 sm:mx-5']" />
                   <div
                     v-if="currentOrg"
                     class="hidden sm:block text-sm text-right pr-2 max-w-xs"
@@ -106,50 +104,40 @@
                   </div>
                 </div>
               </template>
-              <ul
-                :class="['overflow-hidden rounded-b', light ? 'bg-white text-gray-900' : 'bg-gray-500 text-white']"
-                role="menu"
+              <div
+                v-if="username"
+                :class="light ? 'text-gray-200' : 'text-gray-100'"
+                class="flex items-center h-10 text-xs bg-gray-500 px-3"
               >
-                <li
-                  v-if="username"
-                  :class="[light ? 'text-gray-200' : 'text-gray-100']"
-                  class="flex items-center h-10 px-3 text-xs focus:outline-none"
-                  tabindex="0"
-                  role="menuitem"
-                >
-                  <span>
-                    {{ username }}
-                  </span>
-                </li>
-                <li
-                  v-for="item in profileItems"
-                  :key="item.value"
-                  :value="item.value"
-                  :class="[light ? 'hover:bg-light-gray-300 focus:bg-light-gray-300' : 'hover:bg-gray-300 focus:bg-gray-300']"
-                  class="flex items-center justify-between h-10 px-3 cursor-pointer focus:outline-none transition-colors duration-100 ease-out"
-                  tabindex="0"
-                  role="menuitem"
-                  @click="profileAction(item.value)"
-                >
-                  <span>{{ item.text }}</span>
-                  <div v-if="item.value === 'pricing' && profile.account && isOwner" class="text-right ml-2">
-                    <div
-                      v-if="subscriptionStatus"
-                      :class="[subscriptionStatus === 'paid' ? 'border-green-500 text-green-500' : subscriptionStatus === 'trial' ? 'border-yellow-500 text-yellow-500' : 'border-pink-500 text-pink-500']"
-                      class="border h-6 inline-flex items-center rounded-md text-sm font-semibold text-white px-2 mb-xs"
-                      style="border-radius: 11px;"
-                    >
-                      <span v-if="subscriptionStatus === 'paid' && productName">
-                        {{ productName }}
-                      </span>
-                      <span v-else>
-                        {{ $t(`payment.${subscriptionStatus}`) }}
-                      </span>
-                    </div>
+                <span>
+                  {{ username }}
+                </span>
+              </div>
+              <MenuItem
+                v-for="(item, i) in profileItems"
+                :key="item.value"
+                :index="i"
+                :value="item.value"
+                class="bg-gray-500"
+                @click="profileAction(item.value)"
+              >
+                <span>{{ item.text }}</span>
+                <div v-if="item.value === 'pricing' && profile.account && isOwner" class="text-right ml-2">
+                  <div
+                    v-if="subscriptionStatus"
+                    :class="[subscriptionStatus === 'paid' ? 'border-green-500 text-green-500' : subscriptionStatus === 'trial' ? 'border-yellow-500 text-yellow-500' : 'border-pink-500 text-pink-500']"
+                    class="border h-6 inline-flex items-center rounded-md text-sm font-semibold text-white px-2 mb-xs"
+                    style="border-radius: 11px;"
+                  >
+                    <span v-if="subscriptionStatus === 'paid' && productName">
+                      {{ productName }}
+                    </span>
+                    <span v-else>
+                      {{ $t(`payment.${subscriptionStatus}`) }}
+                    </span>
                   </div>
-                </li>
-              </ul>
-              <div v-if="light" class="header-profile-menu_light-shadow rounded-b" />
+              </div>
+              </MenuItem>
             </Menu>
           </div>
         </div>
@@ -318,7 +306,7 @@ import { wsLink } from '../plugins/apollo'
 
 import Btn from './Base/Btn'
 import Icon from './Base/Icon'
-import Menu from './Base/Menu'
+import { Menu, MenuItem } from './Base/Menu'
 import Modal from './Base/Modal'
 import Image from './Base/Image'
 import LoadingSpinner from './Base/LoadingSpinner'
@@ -334,6 +322,7 @@ export default {
     Btn,
     Icon,
     Menu,
+    MenuItem,
     Modal,
     Image,
     LoadingSpinner,
@@ -354,16 +343,16 @@ export default {
     const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
     const isLoggedIn = useResult(result1)
 
-    const { result: result2 } = useQuery(GET_PROFILE)
-    const getProfile = useResult(result2, null, () => ({
+    const { result: result2 } = useQuery(GET_PROFILE, null, () => ({
       enabled: isLoggedIn.value,
       fetchPolicy: 'cache-only',
     }))
+    const getProfile = useResult(result2)
 
-    const { result: result3 } = useQuery(GET_ORGS)
-    const getOrgs = useResult(result3, null, {
+    const { result: result3 } = useQuery(GET_ORGS, null, {
       fetchPolicy: 'cache-only',
     })
+    const getOrgs = useResult(result3)
 
     return {
       icons: {

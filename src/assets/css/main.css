@@ -414,25 +414,3 @@
     padding-right: 40px;
   }
 }
-
-/* TODO: should be removed */
-
-.header-profile-menu {
-  box-shadow: none!important;
-  border-top-left-radius: 0!important;
-  border-top-right-radius: 0!important;
-}
-.header-profile-menu.header-profile-menu--light {
-  overflow: visible;
-  contain: initial;
-}
-.header-profile-menu_light-shadow {
-  position: absolute;
-  top: -80px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  background: transparent;
-  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.15);
-}
