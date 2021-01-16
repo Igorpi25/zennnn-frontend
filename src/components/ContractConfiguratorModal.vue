@@ -69,8 +69,8 @@
               />
             </span>
             <Tooltip top max-width="600">
-              <template v-slot:activator="{ on }">
-                <span class="paper-title__number" v-on="on">A0000-26082020-1</span>
+              <template v-slot:activator>
+                <span class="paper-title__number">A0000-26082020-1</span>
               </template>
               <span class="text-sm">
                 {{ $t('contract.specNumber') }}
@@ -86,8 +86,8 @@
               />
             </span>
             <Tooltip top max-width="340">
-              <template v-slot:activator="{ on }">
-                <span class="mt-8 sm:mt-0" v-on="on">{{ $t('contract.date') }}</span>
+              <template v-slot:activator>
+                <span class="mt-8 sm:mt-0">{{ $t('contract.date') }}</span>
               </template>
               <span class="text-sm">
                 {{ $t('contract.paperDate') }}
@@ -188,9 +188,7 @@
             class="mt-4"
             @click="addParagraph(contract.items, index)"
           >
-            <template v-slot:icon>
-              <Icon>{{ icons.ziPlusOutline }}</Icon>
-            </template>
+            <Icon class="mr-sm">{{ icons.ziPlusOutline }}</Icon>
             <span class="text-sm">{{ $t('contract.addParagraph') }}</span>
           </Btn>
         </div>
@@ -200,9 +198,7 @@
           class="mt-10"
           @click="addHeading(contract.items)"
         >
-          <template v-slot:icon>
-            <Icon>{{ icons.ziPlusOutline }}</Icon>
-          </template>
+          <Icon class="mr-sm">{{ icons.ziPlusOutline }}</Icon>
           <span>{{ $t('contract.addHeading') }}</span>
         </Btn>
 
@@ -304,8 +300,8 @@
               />
             </span>
               <Tooltip top max-width="340">
-                <template v-slot:activator="{ on }">
-                  <span v-on="on">{{ $t('contract.date') }}</span>
+                <template v-slot:activator>
+                  <span>{{ $t('contract.date') }}</span>
                 </template>
                 <span class="text-sm">
                   {{ $t('contract.paperDate') }}
@@ -402,9 +398,7 @@
             class="mt-4"
             @click="addParagraph(contract.specItems, index + 1)"
           >
-            <template v-slot:icon>
-              <Icon>{{ icons.ziPlusOutline }}</Icon>
-            </template>
+            <Icon class="mr-sm">{{ icons.ziPlusOutline }}</Icon>
             <span class="text-sm">{{ $t('contract.addParagraph') }}</span>
           </Btn>
         </div>
@@ -414,9 +408,7 @@
           class="mt-10"
           @click="addHeading(contract.specItems)"
         >
-          <template v-slot:icon>
-            <Icon>{{ icons.ziPlusOutline }}</Icon>
-          </template>
+          <Icon class="mr-sm">{{ icons.ziPlusOutline }}</Icon>
           <span>{{ $t('contract.addHeading') }}</span>
         </Btn>
       </div>

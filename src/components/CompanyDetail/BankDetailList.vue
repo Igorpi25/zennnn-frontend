@@ -168,16 +168,16 @@ export default {
         await this.apolloClient.mutate({
           mutation: CREATE_COMPANY_BANK_DETAIL,
           variables: { companyId: this.reqId, input: {} },
-          update: (store, { data: { createCompanyBankDetail } }) => {
+          update: (cache, { data: { createCompanyBankDetail } }) => {
             const variables = { id: this.reqId }
-            const data = store.readQuery({
+            const data = cache.readQuery({
               query: GET_ORG_REQUISITE,
               variables,
             })
             // update validation state
             // should be fixed with subs
             const v = validateCompanyDetail(data.getOrgRequisite)
-            store.writeQuery({
+            cache.writeQuery({
               query: GET_ORG_REQUISITE,
               variables,
               data: {
@@ -210,9 +210,9 @@ export default {
         await this.apolloClient.mutate({
           mutation: UPDATE_COMPANY_BANK_DETAIL,
           variables: { companyId: this.reqId, id, input },
-          update: (store, { data: { updateCompanyBankDetail } }) => {
+          update: (cache, { data: { updateCompanyBankDetail } }) => {
             const variables = { id: this.reqId }
-            const data = store.readQuery({
+            const data = cache.readQuery({
               query: GET_ORG_REQUISITE,
               variables,
             })
@@ -221,7 +221,7 @@ export default {
               // update validation state
               // should be fixed with subs
               const v = validateCompanyDetail(data.getOrgRequisite)
-              store.writeQuery({
+              cache.writeQuery({
                 query: GET_ORG_REQUISITE,
                 variables,
                 data: {
@@ -256,9 +256,9 @@ export default {
         await this.apolloClient.mutate({
           mutation: DELETE_COMPANY_BANK_DETAIL,
           variables: { companyId: this.reqId, id },
-          update: (store) => {
+          update: (cache) => {
             const variables = { id: this.reqId }
-            const data = store.readQuery({
+            const data = cache.readQuery({
               query: GET_ORG_REQUISITE,
               variables,
             })
@@ -266,7 +266,7 @@ export default {
               // update validation state
               // should be fixed with subs
               const v = validateCompanyDetail(data.getOrgRequisite)
-              store.writeQuery({
+              cache.writeQuery({
                 query: GET_ORG_REQUISITE,
                 variables,
                 data: {

@@ -287,24 +287,24 @@ export default {
         const response = await this.apolloClient.mutate({
           mutation: DELETE_REQUISITE,
           variables: { id },
-          update: (store) => {
-            const data = store.readQuery({
+          update: (cache) => {
+            const data = cache.readQuery({
               query: LIST_ORG_REQUISITES,
               variables: {
                 orgId: this.orgId,
               },
             })
-            const index = data.listOrgRequisites.findIndex(item => item.id === id)
-            if (index !== -1) {
-              data.listOrgRequisites.splice(index, 1)
+            if (data.listOrgRequisites.some(item => item.id === id)) {
+              cache.writeQuery({
+                query: LIST_ORG_REQUISITES,
+                variables: {
+                  orgId: this.orgId,
+                },
+                data: {
+                  listOrgRequisites: data.listOrgRequisites.filter(item => item.id !== id),
+                },
+              })
             }
-            store.writeQuery({
-              query: LIST_ORG_REQUISITES,
-              variables: {
-                orgId: this.orgId,
-              },
-              data,
-            })
           },
         })
         if (response && response.errors && response.errors.length > 0) {

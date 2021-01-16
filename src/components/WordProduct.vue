@@ -2,15 +2,14 @@
   <Menu
     v-model="menu"
     :close-on-content-click="false"
-    :nudge-width="400"
     :max-width="400"
     :disabled="!imageSrc"
     :light="light"
     open-on-hover
-    offset-x
+    placement="right-start"
   >
-    <template v-slot:activator="{ on }">
-      <div v-on="on" class="inline-flex align-middle pr-2">
+    <template v-slot:activator>
+      <div class="inline-flex align-middle pr-2">
         <div
           class="w-7 h-7 rounded"
         >

@@ -73,10 +73,9 @@
                   max-width="458"
                   eager
                 >
-                  <template v-slot:activator="{ on }">
+                  <template v-slot:activator>
                     <button
                       class="select-none focus:outline-none text-blue-500 focus:text-blue-400 hover:text-blue-400"
-                      v-on="on"
                     >
                       {{ canChange ? $t('payment.changePlan') : $t('payment.selectPlan') }}
                     </button>
@@ -116,10 +115,9 @@
           max-width="458"
           content-class="relative text-gray-200 bg-light-gray-100 p-8 pt-6"
         >
-          <template v-slot:activator="{ on }">
+          <template v-slot:activator>
             <button
               class="select-none focus:outline-none text-pink-500 focus:text-pink-600 hover:text-pink-600"
-              v-on="on"
             >
               {{ $t('payment.cancelSubscription') }}
             </button>
@@ -300,10 +298,8 @@
             max-width="746"
             content-class="bg-light-gray-100 px-5 pt-8"
           >
-            <template v-slot:activator="{ on }">
-              <Btn
-                v-on="on"
-              >
+            <template v-slot:activator>
+              <Btn>
                 {{ $t('payment.addCard') }}
               </Btn>
             </template>

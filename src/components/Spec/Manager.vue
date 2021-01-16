@@ -37,7 +37,7 @@
               {{ $t('shipping.simpleInterface') }}
             </span>
           </Switch>
-          <Tooltip top max-width="320" nudge-right="130">
+          <Tooltip top max-width="320">
             <template v-slot:activator>
               <i class="zi-help text-blue-500 cursor-pointer" />
             </template>
@@ -254,9 +254,9 @@
       >
         <h4 class="text-white text-xl font-semibold leading-6 mb-4">
           <span class="mr-1">{{ $t('shipping.extraTitle') }}</span>
-          <Tooltip top max-width="240" nudge-right="90">
-            <template v-slot:activator="{ on }">
-              <i class="zi-help align-middle text-blue-500 text-xl cursor-pointer" v-on="on" />
+          <Tooltip top max-width="240">
+            <template v-slot:activator>
+              <i class="zi-help align-middle text-blue-500 text-xl cursor-pointer" />
             </template>
             <span>
               {{ $t('shipping.extraHint') }}

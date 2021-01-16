@@ -141,11 +141,9 @@
         outlined
         class="mt-4"
       >
-        <template v-slot:icon>
-          <Icon class="text-gray-100">
-            {{ icons.ziQr }}
-          </Icon>
-        </template>
+        <Icon class="text-gray-100 mr-sm">
+          {{ icons.ziQr }}
+        </Icon>
         <span>{{ $t('goods.createProduct') }}</span>
       </Btn>
     </div>

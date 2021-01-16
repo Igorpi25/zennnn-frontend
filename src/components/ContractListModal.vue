@@ -34,9 +34,7 @@
         class="my-5 ml-8"
         @click="$emit('createPaper')"
       >
-        <template v-slot:icon>
-          <Icon>{{ icons.ziPlusOutline }}</Icon>
-        </template>
+        <Icon class="mr-sm">{{ icons.ziPlusOutline }}</Icon>
         <span>{{ $t('contract.createPaper') }}</span>
       </Btn>
     </div>
@@ -99,24 +97,24 @@ export default {
         const response = await client.mutate({
           mutation: DELETE_CONTRACT,
           variables: { id },
-          update: (store) => {
-            const data = store.readQuery({
+          update: (cache) => {
+            const data = cache.readQuery({
               query: LIST_ORG_CONTRACTS,
               variables: {
                 orgId: this.$route.params.orgId,
               },
             })
-            const index = data.listOrgContracts.findIndex(item => item.id === id)
-            if (index !== -1) {
-              data.listOrgContracts.splice(index, 1)
+            if (data.listOrgContracts.some(item => item.id === id)) {
+              cache.writeQuery({
+                query: LIST_ORG_CONTRACTS,
+                variables: {
+                  orgId: this.$route.params.orgId,
+                },
+                data: {
+                  listOrgContracts: data.listOrgContracts.filter(item => item.id !== id),
+                },
+              })
             }
-            store.writeQuery({
-              query: LIST_ORG_CONTRACTS,
-              variables: {
-                orgId: this.$route.params.orgId,
-              },
-              data,
-            })
           },
         })
         if (response && response.errors && response.errors.length > 0) {

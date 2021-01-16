@@ -16,7 +16,7 @@
           <div class="flex-grow" />
           <div class="flex justify-end">
             <!-- Locale picker -->
-            <LocalePicker :nudge-bottom="40" />
+            <LocalePicker :distance="16" />
             <!-- Menu -->
             <div
               class="flex items-center"

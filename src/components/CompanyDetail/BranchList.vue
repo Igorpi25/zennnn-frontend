@@ -147,13 +147,13 @@ export default {
         await this.apolloClient.mutate({
           mutation: CREATE_SUPPLIER_BRANCH,
           variables: { supplierId: this.supplierId, input: {} },
-          update: (store, { data: { createSupplierBranch } }) => {
+          update: (cache, { data: { createSupplierBranch } }) => {
             const variables = { id: this.supplierId }
-            const data = store.readQuery({
+            const data = cache.readQuery({
               query: GET_SUPPLIER,
               variables,
             })
-            store.writeQuery({
+            cache.writeQuery({
               query: GET_SUPPLIER,
               variables,
               data: {
@@ -184,15 +184,15 @@ export default {
         await this.apolloClient.mutate({
           mutation: UPDATE_SUPPLIER_BRANCH,
           variables: { id, input },
-          update: (store, { data: { updateSupplierBranch } }) => {
+          update: (cache, { data: { updateSupplierBranch } }) => {
             const variables = { id: this.supplierId }
-            const data = store.readQuery({
+            const data = cache.readQuery({
               query: GET_SUPPLIER,
               variables,
             })
             const index = data.getSupplier.branches.findIndex(el => el.id === id)
             if (index !== -1) {
-              store.writeQuery({
+              cache.writeQuery({
                 query: GET_SUPPLIER,
                 variables,
                 data: {
@@ -225,14 +225,14 @@ export default {
         await this.apolloClient.mutate({
           mutation: DELETE_SUPPLIER_BRANCH,
           variables: { id },
-          update: (store) => {
+          update: (cache) => {
             const variables = { id: this.supplierId }
-            const data = store.readQuery({
+            const data = cache.readQuery({
               query: GET_SUPPLIER,
               variables,
             })
             if (data.getSupplier.branches.some(el => el.id === id)) {
-              store.writeQuery({
+              cache.writeQuery({
                 query: GET_SUPPLIER,
                 variables,
                 data: {
