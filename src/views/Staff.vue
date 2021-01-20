@@ -305,7 +305,8 @@ import { LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
 import { SpecStatus, InvitationStatus } from '../graphql/enums'
 
-import { confirmDialog, wrapInArray } from '../util/helpers'
+import { confirmDialog } from '../utils/confirmDialog'
+import { wrapInArray } from '../utils/wrapInArray'
 
 import Btn from '../components/Base/Btn'
 import Icon from '../components/Base/Icon'

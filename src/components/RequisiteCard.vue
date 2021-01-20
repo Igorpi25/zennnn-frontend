@@ -135,7 +135,7 @@ import { useApolloClient, useMutation, useQuery, useResult } from '@vue/apollo-c
 
 import debounce from 'lodash.debounce'
 import cloneDeep from 'clone-deep'
-import { validateCompanyDetail } from '../util/validation'
+import { validateCompanyDetail } from '../utils/validation'
 
 import { GET_ORG_REQUISITE, GET_ORGS } from '../graphql/queries'
 import {

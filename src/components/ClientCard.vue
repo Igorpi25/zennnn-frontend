@@ -272,8 +272,8 @@ import {
 
 import { ziCloseWindow } from '../assets/icons'
 
-import { replaceAt } from '../util/helpers'
-import { validateLegalClient, validatePrivateClient } from '../util/validation'
+import { replaceAt } from '../utils/replaceAt'
+import { validateLegalClient, validatePrivateClient } from '../utils/validation'
 
 import Icon from './Base/Icon'
 import Btn from './Base/Btn'

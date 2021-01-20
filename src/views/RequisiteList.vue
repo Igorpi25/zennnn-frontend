@@ -167,7 +167,9 @@ import {
 import { LIST_ORG_REQUISITES, GET_ORGS } from '../graphql/queries'
 import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '../graphql/mutations'
 
-import { confirmDialog, defaultFilter, getObjectValueByPath } from '../util/helpers'
+import { confirmDialog } from '../utils/confirmDialog'
+import { defaultFilter } from '../utils/defaultFilter'
+import { getObjectValueByPath } from '../utils/object'
 
 import Icon from '../components/Base/Icon'
 import Progress from '../components/Base/Progress'

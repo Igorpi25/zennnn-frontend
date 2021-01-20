@@ -431,7 +431,8 @@ import Select from '../components/Base/Select'
 import ClientCard from '../components/ClientCard.vue'
 import Dialog from '../components/Dialog'
 
-import { confirmDialog, wrapInArray } from '../util/helpers'
+import { confirmDialog } from '../utils/confirmDialog'
+import { wrapInArray } from '../utils/wrapInArray'
 
 export default {
   name: 'Specs',

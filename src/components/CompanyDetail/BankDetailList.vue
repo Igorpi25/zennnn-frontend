@@ -87,7 +87,7 @@ import {
   DELETE_COMPANY_BANK_DETAIL,
 } from '../../graphql/mutations'
 
-import { validateCompanyDetail } from '../../util/validation'
+import { validateCompanyDetail } from '../../utils/validation'
 
 import clientDetail from '../../mixins/clientDetail'
 

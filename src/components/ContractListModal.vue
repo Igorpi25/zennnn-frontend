@@ -52,7 +52,7 @@ import { ziCogfigurations, ziDelete, ziPlusOutline } from '../assets/icons'
 import { LIST_ORG_CONTRACTS } from '../graphql/queries'
 import { DELETE_CONTRACT } from '../graphql/mutations'
 
-import { confirmDialog } from '../util/helpers'
+import { confirmDialog } from '../utils/confirmDialog'
 
 import Btn from './Base/Btn'
 import Icon from './Base/Icon'

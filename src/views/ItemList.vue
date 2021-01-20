@@ -162,7 +162,7 @@ import {
   ziQuestionSign,
 } from '../assets/icons'
 
-import { getObjectValueByPath } from '../util/helpers'
+import { getObjectValueByPath } from '../utils/object'
 
 import Btn from '../components/Base/Btn'
 import Icon from '../components/Base/Icon'

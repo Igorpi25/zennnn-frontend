@@ -474,7 +474,7 @@ import { InvoiceProfitType, Role, WordStatus } from '../graphql/enums'
 import { SEARCH_WORDS } from '../graphql/queries'
 
 import product from '../mixins/product'
-import { isLink } from '../util/helpers'
+import { isLink } from '../utils/isLink'
 
 import {
   ziEdit,

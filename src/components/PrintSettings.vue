@@ -432,7 +432,7 @@ import { UPDATE_CLIENT, UPDATE_REQUISITE, SET_SPEC_CLIENT } from '../graphql/mut
 import { LIST_ORG_REQUISITES, SEARCH_CLIENTS } from '../graphql/queries'
 import { ClientType, ShipmentType, CustomsTerms, CustomsTermsMore } from '../graphql/enums'
 
-import { validateInvoicePrint } from '../util/validation'
+import { validateInvoicePrint } from '../utils/validation'
 
 export default {
   name: 'PrintSettings',

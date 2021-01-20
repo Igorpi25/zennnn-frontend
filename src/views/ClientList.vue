@@ -275,7 +275,9 @@ import { ClientType } from '../graphql/enums'
 import { LIST_CLIENTS } from '../graphql/queries'
 import { DELETE_CLIENT } from '../graphql/mutations'
 
-import { confirmDialog, wrapInArray, getObjectValueByPath } from '../util/helpers'
+import { confirmDialog } from '../utils/confirmDialog'
+import { wrapInArray } from '../utils/wrapInArray'
+import { getObjectValueByPath } from '../utils/object'
 
 import Btn from '../components/Base/Btn'
 import Icon from '../components/Base/Icon'

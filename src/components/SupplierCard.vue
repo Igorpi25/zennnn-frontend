@@ -133,7 +133,7 @@ import {
 
 import { ziCloseWindow } from '../assets/icons'
 
-import { validateSupplier } from '../util/validation'
+import { validateSupplier } from '../utils/validation'
 
 import Btn from './Base/Btn'
 import Icon from './Base/Icon'

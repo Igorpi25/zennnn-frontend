@@ -8,11 +8,14 @@ import {
   UPDATE_PRODUCT_LINK,
   DELETE_PRODUCT,
 } from '../graphql/mutations'
-import ProductImagesList from '../components/ProductImagesList.vue'
-import ProductImage from '../components/ProductImage.vue'
-import { confirmDialog, isNumber } from '../util/helpers'
 import { GET_SPEC, GET_IS_SPEC_SYNC } from '../graphql/queries'
 import { ProductStatus } from '../graphql/enums'
+
+import ProductImagesList from '../components/ProductImagesList.vue'
+import ProductImage from '../components/ProductImage.vue'
+
+import { confirmDialog } from '../utils/confirmDialog'
+import { isNumber } from '../utils/check'
 
 export default {
   components: {
