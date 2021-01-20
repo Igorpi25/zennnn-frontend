@@ -1,5 +1,4 @@
-# zennnn-frontend
-zennnn monorepo
+# zennnn
 
 ```
 npm install

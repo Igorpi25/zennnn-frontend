@@ -1,0 +1,19 @@
+{
+  "version": "0.36.7",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "packages": [
+    "packages/*"
+  ],
+  "command": {
+    "version": {
+      "allowBranch": [
+        "master",
+        "stable"
+      ],
+      "message": "chore(release): %s",
+      "conventionalCommits": true,
+      "yes": true
+    }
+  }
+}
