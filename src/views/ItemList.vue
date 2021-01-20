@@ -152,6 +152,7 @@
 
 <script>
 import { useRoute } from 'vue-router'
+import { getObjectValueByPath } from 'vue-supp'
 // import { useQuery, useResult } from '@vue/apollo-composable'
 
 // import { LIST_ITEMS } from '../graphql/queries'
@@ -161,8 +162,6 @@ import {
   ziSearch,
   ziQuestionSign,
 } from '../assets/icons'
-
-import { getObjectValueByPath } from '../utils/object'
 
 import Btn from '../components/Base/Btn'
 import Icon from '../components/Base/Icon'

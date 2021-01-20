@@ -14,7 +14,7 @@ import {
   useLazyContentProps,
   useLazyContent,
   ClickOutside,
-} from 'uipart'
+} from 'vue-supp'
 
 import uid from '../../../utils/uid'
 

@@ -293,6 +293,7 @@
 <script>
 import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
+import { wrapInArray } from 'vue-supp'
 
 import {
   ziDelete,
@@ -306,7 +307,6 @@ import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
 import { SpecStatus, InvitationStatus } from '../graphql/enums'
 
 import { confirmDialog } from '../utils/confirmDialog'
-import { wrapInArray } from '../utils/wrapInArray'
 
 import Btn from '../components/Base/Btn'
 import Icon from '../components/Base/Icon'

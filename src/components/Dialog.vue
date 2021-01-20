@@ -43,7 +43,7 @@
 
 <script>
 import { computed, ref, toRefs, watch } from 'vue'
-import { dimensions } from 'uipart'
+import { dimensions } from 'vue-supp'
 
 import { ziCloseWindow } from '../assets/icons'
 

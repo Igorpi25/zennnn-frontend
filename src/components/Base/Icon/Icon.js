@@ -1,6 +1,5 @@
 import { h, computed } from 'vue'
-
-import { convertToUnit } from '../../../utils/convertToUnit'
+import { convertToUnit } from 'vue-supp'
 
 import './Icon.css'
 

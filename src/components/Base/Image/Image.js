@@ -9,7 +9,7 @@ import {
   withDirectives,
 } from 'vue'
 
-import { useAspectRatioProps, useAspectRatio, dimensions, Intersect } from 'uipart'
+import { useAspectRatioProps, useAspectRatio, dimensions, Intersect } from 'vue-supp'
 
 import './Image.css'
 

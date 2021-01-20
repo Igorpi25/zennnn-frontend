@@ -14,10 +14,10 @@ import {
 import {
   useLazyContentProps,
   useLazyContent,
-} from 'uipart'
+  convertToUnit,
+} from 'vue-supp'
 
 import uid from '../../../utils/uid'
-import { convertToUnit } from '../../../utils/convertToUnit'
 
 import { useWindowContext } from './Window'
 

@@ -257,6 +257,7 @@
 <script>
 import { useRoute } from 'vue-router'
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
+import { wrapInArray, getObjectValueByPath } from 'vue-supp'
 
 import {
   ziSearch,
@@ -276,8 +277,6 @@ import { LIST_CLIENTS } from '../graphql/queries'
 import { DELETE_CLIENT } from '../graphql/mutations'
 
 import { confirmDialog } from '../utils/confirmDialog'
-import { wrapInArray } from '../utils/wrapInArray'
-import { getObjectValueByPath } from '../utils/object'
 
 import Btn from '../components/Base/Btn'
 import Icon from '../components/Base/Icon'

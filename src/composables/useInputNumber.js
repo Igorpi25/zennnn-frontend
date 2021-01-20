@@ -1,8 +1,10 @@
 import { ref, computed, watch, onBeforeMount } from 'vue'
 import { useI18n } from 'vue-i18n'
-
-import { formatNumber as format, unformatNumber as unformat } from '../utils/formatNumber'
-import { isNumber } from '../utils/check'
+import {
+  formatNumber as format,
+  unformatNumber as unformat,
+  isNumber,
+} from 'vue-supp'
 
 const COMMA_SEPARATE_LOCALES = ['fr', 'ru', 'uk']
 

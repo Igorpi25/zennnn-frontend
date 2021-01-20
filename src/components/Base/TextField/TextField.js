@@ -7,7 +7,7 @@ import {
   withDirectives,
 } from 'vue'
 
-import { useClientRect, Mask } from 'uipart'
+import { useClientRect, Mask, setCursor } from 'vue-supp'
 
 import { useInputProps, useInput } from '../../../composables/useInput'
 import { useInputControlProps, useInputControl } from '../../../composables/useInputControl'
@@ -17,7 +17,6 @@ import { useInputLazyProps, useInputLazy } from '../../../composables/useInputLa
 import { useInputMessage } from '../../../composables/useInputMessage'
 
 import uid from '../../../utils/uid'
-import { setCursor } from '../../../utils/dom'
 
 import './TextField.css'
 

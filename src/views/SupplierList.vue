@@ -197,6 +197,7 @@
 <script>
 import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
+import { wrapInArray } from 'vue-supp'
 
 import {
   ziSearch,
@@ -215,7 +216,6 @@ import { LIST_SUPPLIERS } from '@/graphql/queries'
 import { DELETE_SUPPLIER } from '@/graphql/mutations'
 
 import { confirmDialog } from '../utils/confirmDialog'
-import { wrapInArray } from '../utils/wrapInArray'
 
 import Btn from '../components/Base/Btn'
 import Icon from '../components/Base/Icon'

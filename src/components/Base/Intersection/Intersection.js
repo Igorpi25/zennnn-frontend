@@ -6,7 +6,7 @@ import {
   withDirectives,
 } from 'vue'
 
-import { Intersect } from 'uipart'
+import { Intersect } from 'vue-supp'
 
 export default {
   name: 'Intersection',

@@ -388,6 +388,7 @@
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
+import { wrapInArray } from 'vue-supp'
 
 import {
   ziFilter,
@@ -432,7 +433,6 @@ import ClientCard from '../components/ClientCard.vue'
 import Dialog from '../components/Dialog'
 
 import { confirmDialog } from '../utils/confirmDialog'
-import { wrapInArray } from '../utils/wrapInArray'
 
 export default {
   name: 'Specs',

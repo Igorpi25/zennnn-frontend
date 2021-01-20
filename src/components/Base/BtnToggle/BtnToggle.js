@@ -1,6 +1,5 @@
 import { h, ref, watch } from 'vue'
-
-import { convertToUnit } from '../../../utils/convertToUnit'
+import { convertToUnit } from 'vue-supp'
 
 import './BtnToggle.css'
 

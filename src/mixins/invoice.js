@@ -1,6 +1,6 @@
 // import throttle from 'lodash.throttle'
 
-import { Scroll } from 'uipart'
+import { Scroll } from 'vue-supp'
 
 import apolloClient from '../plugins/apollo'
 

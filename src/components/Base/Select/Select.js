@@ -16,7 +16,9 @@ import {
   useFilter,
   useClientRect,
   Mask,
-} from 'uipart'
+  setCursor,
+  getPropertyFromItem,
+} from 'vue-supp'
 
 import { ziChevronDown, ziSearch, ziCloseDelete } from '../../../assets/icons'
 
@@ -27,8 +29,6 @@ import { useInputMessage } from '../../../composables/useInputMessage'
 
 import uid from '../../../utils/uid'
 import { defaultFilter } from '../../../utils/defaultFilter'
-import { setCursor } from '../../../utils/dom'
-import { getPropertyFromItem } from '../../../utils/object'
 
 import { Menu, MenuItem } from '../Menu'
 

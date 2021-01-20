@@ -1,6 +1,5 @@
 import { h, Transition } from 'vue'
-
-import { upperFirst } from '../../../utils/upperFirst'
+import { upperFirst } from 'vue-supp'
 
 /**
  * Props

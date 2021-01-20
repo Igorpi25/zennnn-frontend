@@ -7,14 +7,13 @@ import {
 
 import { useI18n } from 'vue-i18n'
 
+import { convertToUnit, isString } from 'vue-supp'
+
 import parseISO from 'date-fns/parseISO'
 import fromUnixTime from 'date-fns/fromUnixTime'
 import formatISO from 'date-fns/formatISO'
 import parse from 'date-fns/parse'
 import isValid from 'date-fns/isValid'
-
-import { convertToUnit } from '../../../utils/convertToUnit'
-import { isString } from '../../../utils/check'
 
 import Btn from '../Btn'
 import Menu from '../Menu'

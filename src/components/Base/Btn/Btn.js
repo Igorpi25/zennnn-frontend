@@ -1,7 +1,6 @@
 import { h, ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
-
-import { convertToUnit } from '../../../utils/convertToUnit'
+import { convertToUnit } from 'vue-supp'
 
 import Progress from '../Progress'
 

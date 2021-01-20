@@ -1,4 +1,4 @@
-import { getObjectValueByPath } from './object'
+import { getObjectValueByPath } from 'vue-supp'
 
 export const sortItems = (
   items,

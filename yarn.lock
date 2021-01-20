@@ -11052,14 +11052,6 @@ uglify-js@3.4.x:
     commander "~2.19.0"
     source-map "~0.6.1"
 
-uipart@^0.5.6:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/uipart/-/uipart-0.5.6.tgz#55d8901344b85408d35100cdf0d7ea966504a97c"
-  integrity sha512-GI4+jmnkGL84AeN56HbVHJQpwL59HQXrj5SvFVVvCF/qFvxAjvsfwd0Swa1fz92YgEt/JBqkUrbbKY9qbtu52Q==
-  dependencies:
-    "@popperjs/core" "^2.6.0"
-    vue "^3.0.5"
-
 unfetch@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/unfetch/-/unfetch-4.2.0.tgz#7e21b0ef7d363d8d9af0fb929a5555f6ef97a3be"
@@ -11428,6 +11420,14 @@ vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
   dependencies:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
+
+vue-supp@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/vue-supp/-/vue-supp-0.7.1.tgz#3012c9d3835907d36cef2b1fc2ac997487ff75e6"
+  integrity sha512-+dovOTbZBKsbTqgNF3b/U7MQzy6uQAZpZ03GOdZiMF5KEo3TIMCyrWJ9rlACWnvpkl4eLQVe0JDCp54xjaNiKQ==
+  dependencies:
+    "@popperjs/core" "^2.6.0"
+    vue "^3.0.5"
 
 vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"

@@ -8,7 +8,7 @@ import {
   onMounted,
 } from 'vue'
 
-import { useClientRect } from 'uipart'
+import { useClientRect } from 'vue-supp'
 
 import { useInputProps, useInput } from '../../../composables/useInput'
 import { useInputControlProps, useInputControl } from '../../../composables/useInputControl'

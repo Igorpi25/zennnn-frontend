@@ -153,6 +153,7 @@
 <script>
 import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
+import { getObjectValueByPath } from 'vue-supp'
 
 import {
   ziStarLg,
@@ -169,7 +170,6 @@ import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '../graphql/mutations'
 
 import { confirmDialog } from '../utils/confirmDialog'
 import { defaultFilter } from '../utils/defaultFilter'
-import { getObjectValueByPath } from '../utils/object'
 
 import Icon from '../components/Base/Icon'
 import Progress from '../components/Base/Progress'

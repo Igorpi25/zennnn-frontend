@@ -1,7 +1,7 @@
+import { wait } from 'vue-supp'
 import { auth } from './index'
 import { apolloClient } from '../apollo'
 import { GET_PROFILE, GET_IS_LOGGED_IN } from '../../graphql/queries'
-import { wait } from '../../utils/wait'
 
 /**
  * Check auth of current user

@@ -7,6 +7,7 @@ import {
   vShow,
   withDirectives,
 } from 'vue'
+import { deepEqual } from 'vue-supp'
 
 import { ziCheckboxMarked, ziMinus } from '../../../assets/icons'
 
@@ -14,7 +15,6 @@ import { useInputProps, useInput } from '../../../composables/useInput'
 import { useInputValidationProps, useInputValidation } from '../../../composables/useInputValidation'
 
 import uid from '../../../utils/uid'
-import { deepEqual } from '../../../utils/deepEqual'
 
 import Icon from '../Icon'
 

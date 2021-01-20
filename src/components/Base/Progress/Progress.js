@@ -1,6 +1,5 @@
 import { h, reactive, computed } from 'vue'
-
-import { convertToUnit } from '../../../utils/convertToUnit'
+import { convertToUnit } from 'vue-supp'
 
 import './Progress.css'
 

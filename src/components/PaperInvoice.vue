@@ -195,14 +195,11 @@
 </template>
 
 <script>
-import { Scroll } from 'uipart'
+import { Scroll, convertToUnit, isNumber } from 'vue-supp'
 
 import { ProductStatus } from '../graphql/enums'
 
 import { DEFAULT_CURRENCY } from '../config/globals'
-
-import { convertToUnit } from '../utils/convertToUnit'
-import { isNumber } from '../utils/check'
 
 import { ziOpenInNew } from '../assets/icons'
 

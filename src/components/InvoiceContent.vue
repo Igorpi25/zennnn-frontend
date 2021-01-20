@@ -220,7 +220,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMutation } from '@vue/apollo-composable'
 
-import { Scroll } from 'uipart'
+import { Scroll } from 'vue-supp'
 
 import { DEFAULT_CURRENCY } from '../config/globals'
 

@@ -9,9 +9,8 @@ import {
 
 import {
   Scroll,
-} from 'uipart'
-
-import { convertToUnit } from '../../../utils/convertToUnit'
+  convertToUnit,
+} from 'vue-supp'
 
 import './VScroll.css'
 

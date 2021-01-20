@@ -1,9 +1,8 @@
 import { mount } from '@vue/test-utils'
 import { h, nextTick } from 'vue'
+import { wait } from 'vue-supp'
 
 import Tooltip from '../Tooltip'
-
-import { wait } from '../../../../utils/wait'
 
 jest.mock('../../../../utils/uid')
 

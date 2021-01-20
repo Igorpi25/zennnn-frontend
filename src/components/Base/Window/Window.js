@@ -9,11 +9,9 @@ import {
   inject,
 } from 'vue'
 
-import { useGroupProps, useGroup, Touch } from 'uipart'
+import { useGroupProps, useGroup, Touch, wrapInArray } from 'vue-supp'
 
 import { ziArrowLeft, ziArrowRight } from '../../../assets/icons'
-
-import { wrapInArray } from '../../../utils/wrapInArray'
 
 import Icon from '../Icon'
 

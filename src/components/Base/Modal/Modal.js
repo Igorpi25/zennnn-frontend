@@ -21,10 +21,10 @@ import {
   useAttachProps,
   useAttach,
   ClickOutside,
-} from 'uipart'
+  convertToUnit,
+} from 'vue-supp'
 
 import uid from '../../../utils/uid'
-import { convertToUnit } from '../../../utils/convertToUnit'
 
 export default {
   name: 'Modal',

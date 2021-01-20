@@ -9,9 +9,9 @@ import {
   cloneVNode,
 } from 'vue'
 
-import { ziCloseDelete, ziInfoBig } from '../../../assets/icons'
+import { convertToUnit } from 'vue-supp'
 
-import { convertToUnit } from '../../../utils/convertToUnit'
+import { ziCloseDelete, ziInfoBig } from '../../../assets/icons'
 
 import Icon from '../Icon'
 

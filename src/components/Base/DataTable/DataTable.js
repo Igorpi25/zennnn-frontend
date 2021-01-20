@@ -7,12 +7,10 @@ import {
 
 import { useI18n } from 'vue-i18n'
 
+import { convertToUnit, getObjectValueByPath, wrapInArray, deepEqual } from 'vue-supp'
+
 import { ziArrowSortTop } from '../../../assets/icons'
 
-import { convertToUnit } from '../../../utils/convertToUnit'
-import { getObjectValueByPath } from '../../../utils/object'
-import { wrapInArray } from '../../../utils/wrapInArray'
-import { deepEqual } from '../../../utils/deepEqual'
 import { defaultFilter } from '../../../utils/defaultFilter'
 
 import Icon from '../Icon'

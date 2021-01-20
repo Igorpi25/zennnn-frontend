@@ -4,12 +4,12 @@ import {
   computed,
   watch,
 } from 'vue'
+import { deepEqual } from 'vue-supp'
 
 import { useInputProps, useInput } from '../../../composables/useInput'
 import { useInputValidationProps, useInputValidation } from '../../../composables/useInputValidation'
 
 import uid from '../../../utils/uid'
-import { deepEqual } from '../../../utils/deepEqual'
 
 import './Switch.css'
 

@@ -1,3 +1,5 @@
+import { isNumber } from 'vue-supp'
+
 import apolloClient from '../plugins/apollo'
 
 import {
@@ -15,7 +17,6 @@ import ProductImagesList from '../components/ProductImagesList.vue'
 import ProductImage from '../components/ProductImage.vue'
 
 import { confirmDialog } from '../utils/confirmDialog'
-import { isNumber } from '../utils/check'
 
 export default {
   components: {
