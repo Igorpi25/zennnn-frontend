@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Switch.js should render checked component and match snapshot 1`] = `
+<div class="switch switch--active">
+  <!---->
+  <div class="switch__control">
+    <div class="switch__control__input"><input id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="true">
+      <div class="switch__track"></div>
+      <div class="switch__thumb"></div>
+    </div><label for="switch-1" class="switch__label">Label</label>
+  </div>
+  <!---->
+</div>
+`;
+
+exports[`Switch.js should render component and match snapshot 1`] = `
+<div class="switch">
+  <!---->
+  <div class="switch__control">
+    <div class="switch__control__input"><input id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
+      <div class="switch__track"></div>
+      <div class="switch__thumb"></div>
+    </div><label for="switch-1" class="switch__label">Label</label>
+  </div>
+  <!---->
+</div>
+`;
+
+exports[`Switch.js should render component with disabled prop and match snapshot 1`] = `
+<div class="switch switch--disabled">
+  <!---->
+  <div class="switch__control">
+    <div class="switch__control__input"><input disabled="" id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
+      <div class="switch__track"></div>
+      <div class="switch__thumb"></div>
+    </div><label for="switch-1" class="switch__label">Label</label>
+  </div>
+  <!---->
+</div>
+`;
+
+exports[`Switch.js should render component with label prop and match snapshot 1`] = `
+<div class="switch"><label id="label-1" for="switch-1" aria-hidden="false" class="label">
+    <div class="label__wrapper">
+      <div class="label__content__wrapper">
+        <div class="label__content">Input label</div>
+      </div>
+      <!---->
+    </div>
+  </label>
+  <div class="switch__control">
+    <div class="switch__control__input"><input id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
+      <div class="switch__track"></div>
+      <div class="switch__thumb"></div>
+    </div><label for="switch-1" class="switch__label">Switch label</label>
+  </div>
+  <!---->
+</div>
+`;
+
+exports[`Switch.js should render component with name, required, readonly props and match snapshot 1`] = `
+<div class="switch switch--readonly">
+  <!---->
+  <div class="switch__control">
+    <div class="switch__control__input"><input name="simple-input" required="" readonly="" id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
+      <div class="switch__track"></div>
+      <div class="switch__thumb"></div>
+    </div><label for="switch-1" class="switch__label">Label</label>
+  </div>
+  <!---->
+</div>
+`;
+
+exports[`Switch.js should render focused component and match snapshot 1`] = `
+<div class="switch switch--focused">
+  <!---->
+  <div class="switch__control">
+    <div class="switch__control__input"><input id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
+      <div class="switch__track"></div>
+      <div class="switch__thumb"></div>
+    </div><label for="switch-1" class="switch__label">Label</label>
+  </div>
+  <!---->
+</div>
+`;

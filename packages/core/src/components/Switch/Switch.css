@@ -1,0 +1,79 @@
+@layer components {
+  .switch__control {
+    @apply flex items-center relative;
+  }
+  .switch--show-details .switch__control {
+    @apply pb-2;
+  }
+  .switch__control__input {
+    width: 45px;
+    height: 24px;
+    @apply relative;
+  }
+  .switch--small .switch__control__input {
+    width: 30px;
+    height: 16px;
+  }
+
+  .switch__track,
+  .switch__thumb {
+    @apply pointer-events-none;
+  }
+
+  .switch__track {
+    transition: .3s cubic-bezier(.25,.8,.5,1);
+    @apply rounded-full absolute bg-light-gray-500 dark:bg-gray-800 w-full h-full;
+  }
+  .switch--focused .switch__track {
+    @apply ring ring-blue-500 ring-opacity-50;
+  }
+  .switch--active .switch__track {
+    @apply bg-blue-500;
+  }
+  .switch--disabled .switch__track {
+    @apply bg-light-gray-500 dark:bg-gray-800;
+  }
+
+  .switch__thumb {
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    top: calc(50% - 9px);
+    transition: .3s cubic-bezier(.25,.8,.5,1);
+    @apply bg-gray-100 dark:bg-gray-200 rounded-full relative;
+  }
+  .switch--active .switch__thumb {
+    transform: translateX(21px);
+    @apply bg-white;
+  }
+  .switch--small .switch__thumb {
+    height: 12px;
+    width: 12px;
+    left: 2px;
+    top: calc(50% - 6px);
+  }
+  .switch--active.switch--small .switch__thumb {
+    transform: translateX(14px);
+  }
+
+  .switch__input {
+    @apply absolute opacity-0 select-none w-full h-full;
+  }
+
+  .switch__label {
+    @apply select-none leading-tight;
+  }
+
+  .switch__label,
+  .switch__input {
+    @apply cursor-pointer;
+  }
+  .switch--disabled .switch__label,
+  .switch--disabled .switch__input {
+    @apply cursor-not-allowed;
+  }
+
+  .switch--disabled {
+    @apply opacity-40;
+  }
+}
