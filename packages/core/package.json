@@ -1,0 +1,27 @@
+{
+  "name": "@zennnn/core",
+  "version": "0.36.7",
+  "private": true,
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "files": [
+    "src/",
+    "lib/",
+    "types/"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:lib": "rm -rf ./lib/* && babel src --out-dir lib --ignore \"**/__tests__\" --source-maps --copy-files --no-copy-ignored",
+    "test": "jest",
+    "lint": "eslint src -f codeframe"
+  },
+  "dependencies": {
+    "vue": "^3.0.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.0.4",
+    "@vue/compiler-sfc": "^3.0.5",
+    "vite": "^2.0.0-beta.12"
+  }
+}
