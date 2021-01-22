@@ -7,9 +7,9 @@ import {
   onBeforeUnmount,
 } from 'vue'
 
-import { useFormContext } from '../components/Base/Form' // TODO: use/input
-import Messages from '../components/Base/Messages' // TODO: use/input
-import Icon from '../components/Base/Icon' // TODO: use/input
+import { useFormContext } from '../components/Form' // TODO: use/input
+import Messages from '../components/Messages' // TODO: use/input
+import Icon from '../components/Icon' // TODO: use/input
 
 import { ziCheckedSm, ziStatusPointSm } from '@zennnn/icons' // TODO: use/input
 

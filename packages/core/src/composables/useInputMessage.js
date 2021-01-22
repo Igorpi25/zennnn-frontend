@@ -1,7 +1,7 @@
 import { h, computed } from 'vue'
 import { convertToUnit } from 'vue-supp'
 
-import Menu from '../components/Base/Menu'
+import Menu from '../components/Menu'
 
 // Default
 export const useInputMessage = (props, {

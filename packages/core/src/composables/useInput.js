@@ -6,9 +6,9 @@ import {
   onMounted,
 } from 'vue'
 
-import Label from '../components/Base/Label' // TODO: move to input-control
-import Tooltip from '../components/Base/Tooltip' // TODO: move to input-control
-import Icon from '../components/Base/Icon' // TODO: move to input-control
+import Label from '../components/Label' // TODO: move to input-control
+import Tooltip from '../components/Tooltip' // TODO: move to input-control
+import Icon from '../components/Icon' // TODO: move to input-control
 
 import { ziQuestionSign, ziCloseDelete } from '@zennnn/icons' // TODO: move to input-control
 
