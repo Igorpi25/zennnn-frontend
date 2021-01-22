@@ -1,0 +1,90 @@
+@layer components {
+  .btn {
+    @apply h-12 relative rounded-md inline-flex justify-center items-center align-middle;
+    @apply transition-colors duration-100 ease-out;
+    @apply select-none focus:outline-none;
+    @apply px-6;
+  }
+  .btn--small {
+    @apply text-sm;
+    @apply h-10;
+    @apply px-4;
+  }
+  .btn--icon {
+    @apply w-12;
+    @apply px-0;
+  }
+  .btn--icon.btn--small {
+    @apply w-10;
+  }
+  .btn--block {
+    @apply w-full justify-center;
+  }
+
+  .btn--primary {
+    @apply text-white;
+    @apply bg-blue-500;
+    @apply hover:bg-blue-400 focus:bg-blue-400 disabled:bg-blue-500;
+  }
+  .btn--primary.btn--disabled {
+    @apply text-light-gray-900 dark:text-gray-200;
+    @apply bg-gray-200 disabled:bg-gray-200 dark:bg-gray-400 dark:disabled:bg-gray-400;
+  }
+  .btn--primary.btn--disabled.btn--light {
+    @apply text-light-gray-900;
+    @apply bg-gray-200 disabled:bg-gray-200;
+  }
+  .btn--primary.btn--disabled.btn--dark {
+    @apply text-gray-200;
+    @apply bg-gray-400 disabled:bg-gray-400;
+  }
+
+  .btn--outlined {
+    @apply text-blue-500;
+    @apply border border-light-gray-400 dark:border-gray-400;
+    @apply hover:border-current focus:border-current dark:hover:border-current dark:focus:border-current;
+    @apply disabled:border-light-gray-400 dark:disabled:border-gray-400;
+  }
+  .btn--outlined.btn--light {
+    @apply border-light-gray-400 disabled:border-light-gray-400;
+  }
+  .btn--outlined.btn--dark {
+    @apply border-gray-400 disabled:border-gray-400;
+  }
+  .btn--outlined.btn--disabled {
+    @apply text-light-gray-400 dark:text-gray-400;
+  }
+  .btn--outlined.btn--disabled.btn--light {
+    @apply text-light-gray-400;
+  }
+  .btn--outlined.btn--disabled.btn--dark {
+    @apply text-gray-400;
+  }
+  .btn--borderless {
+    @apply border-transparent dark:border-transparent;
+    @apply disabled:border-transparent dark:disabled:border-transparent;
+  }
+  .btn--borderless.btn--disabled {
+    @apply hover:border-transparent focus:border-transparent;
+  }
+
+  .btn--disabled, .btn--loading {
+    @apply cursor-not-allowed;
+  }
+  .btn--loading .btn__content {
+    @apply opacity-0;
+  }
+
+  .btn__content {
+    @apply flex items-center leading-none whitespace-nowrap;
+  }
+
+  .btn--outlined .icon,
+  .btn--outlined.btn--icon .btn__content {
+    @apply text-gray-100;
+  }
+
+  .btn__loader {
+    @apply absolute inset-0 flex items-center justify-center;
+  }
+}
