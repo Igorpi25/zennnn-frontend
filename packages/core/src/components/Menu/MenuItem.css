@@ -1,0 +1,24 @@
+@layer components {
+  .menu__item {
+    @apply h-9 flex items-center;
+    @apply hover:bg-light-gray-200 dark:hover:bg-gray-200;
+    @apply focus:outline-none;
+    @apply cursor-pointer;
+    @apply px-5;
+  }
+  .menu__item--selected {
+    @apply text-black bg-light-gray-100;
+    @apply dark:text-white dark:bg-transparent;
+    @apply hover:bg-light-gray-200 dark:hover:bg-gray-200;
+  }
+  .menu__item--active {
+    @apply bg-light-gray-300 hover:bg-light-gray-300;
+    @apply dark:bg-gray-300 dark:hover:bg-gray-300;
+  }
+  .menu__item--disabled {
+    @apply text-gray-100 hover:text-gray-100;
+    @apply dark:text-gray-300 dark:hover:text-gray-300;
+    @apply hover:bg-transparent dark:hover:bg-transparent;
+    @apply cursor-not-allowed;
+  }
+}
