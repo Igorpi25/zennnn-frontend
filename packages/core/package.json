@@ -17,12 +17,6 @@
     "lint": "eslint src -f codeframe"
   },
   "dependencies": {
-    "@zennnn/icons": "^0.36.7",
-    "vue": "^3.0.5"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^1.0.4",
-    "@vue/compiler-sfc": "^3.0.5",
-    "vite": "^2.0.0-beta.12"
+    "@zennnn/icons": "^0.36.7"
   }
 }
