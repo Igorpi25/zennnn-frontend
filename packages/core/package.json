@@ -17,6 +17,7 @@
     "lint": "eslint src -f codeframe"
   },
   "dependencies": {
+    "@zennnn/icons": "^0.36.7",
     "vue": "^3.0.5"
   },
   "devDependencies": {
