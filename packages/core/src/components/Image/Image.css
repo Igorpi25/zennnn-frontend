@@ -1,0 +1,40 @@
+@layer components {
+  .image {
+    flex: 1 0 auto;
+    @apply z-0;
+    @apply flex relative overflow-hidden max-w-full;
+  }
+
+  .image__sizer {
+    flex: 1 0 0px;
+    @apply transition-padding-bottom duration-200 ease-out-quart;
+  }
+
+  .image__content {
+    flex: 1 0 0px;
+    @apply max-w-full;
+  }
+
+  .image__sizer ~ .image__content {
+    margin-left: -100%;
+  }
+
+  .image__image,
+  .image__placeholder {
+    z-index: -1;
+    @apply absolute top-0 left-0 w-full h-full;
+  }
+
+  .image__image {
+    @apply bg-no-repeat;
+  }
+  .image__image--preload {
+    filter: blur(2px);
+  }
+  .image__image--contain {
+    @apply bg-contain;
+  }
+  .image__image--cover {
+    @apply bg-cover;
+  }
+}
