@@ -379,7 +379,6 @@ import {
   ziGlobe,
   ziLanguages,
   ziUserCircle,
-  ziEdit,
   ziSearch,
   ziFilter,
   ziFilterOutline,
@@ -458,7 +457,6 @@ export default {
 
     return {
       icons: {
-        ziEdit,
         ziGlobe,
         ziLanguages,
         ziUserCircle,

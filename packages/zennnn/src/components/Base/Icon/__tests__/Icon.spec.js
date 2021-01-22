@@ -36,7 +36,7 @@ describe('Icon.js', () => {
       props: { tag: 'span' },
       attrs: {
         onClick: () => {},
-      }
+      },
     })
 
     expect(wrapper.html()).toMatchSnapshot()

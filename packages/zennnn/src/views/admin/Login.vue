@@ -146,6 +146,7 @@ import LocalePicker from '../../components/LocalePicker.vue'
 export default {
   name: 'Login',
   components: {
+    Icon,
     Alert,
     Btn,
     Form,
