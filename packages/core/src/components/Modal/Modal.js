@@ -22,8 +22,9 @@ import {
   useAttach,
   ClickOutside,
   convertToUnit,
-  uid,
 } from 'vue-supp'
+
+import uid from '../../utils/uid'
 
 export default {
   name: 'Modal',

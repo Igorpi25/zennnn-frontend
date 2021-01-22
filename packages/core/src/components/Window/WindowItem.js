@@ -15,8 +15,9 @@ import {
   useLazyContentProps,
   useLazyContent,
   convertToUnit,
-  uid,
 } from 'vue-supp'
+
+import uid from '../../utils/uid'
 
 import { useWindowContext } from './Window'
 

@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import Label from '../Label'
 
-jest.mock('vue-supp')
+jest.mock('../../../utils/uid')
 
 describe('Label.js', () => {
   let mountFunction

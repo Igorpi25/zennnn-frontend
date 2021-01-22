@@ -3,7 +3,7 @@ import {
   ref,
 } from 'vue'
 
-import { uid } from 'vue-supp'
+import uid from '../../utils/uid'
 
 import './Label.css'
 
