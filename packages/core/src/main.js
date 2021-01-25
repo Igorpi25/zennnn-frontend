@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from 'vite-plugin-pages/client'
+import 'prismjs/themes/prism.css'
 
 import App from './App.vue'
 import './index.css'

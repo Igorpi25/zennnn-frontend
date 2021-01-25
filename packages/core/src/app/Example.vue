@@ -1,0 +1,57 @@
+<template>
+  <div class="h-12 flex items-center justify-end space-x-4 border-b border-light-gray-400">
+    <button
+      class="text-gray-200 hover:text-blue-500 rounded"
+      @click="dark = !dark"
+    >
+      <Icon>
+        {{ dark ? ziSun : ziMoon }}
+      </Icon>
+    </button>
+    <button
+      v-for="item in items"
+      :key="item.name"
+      :class="{
+        'hover:text-blue-500 rounded py-1 px-2': true,
+        'text-blue-500 bg-blue-400 bg-opacity-10': activeTab === item.name,
+      }"
+      @click="activeTab = item.name"
+    >
+      {{ item.text }}
+    </button>
+  </div>
+  <div :class="{ dark: dark }">
+    <div
+      v-if="activeTab === 'preview'"
+      :class="[dark ? 'bg-gray-900' : 'bg-light-gray-100']"
+      class="rounded-md my-4 p-6"
+    >
+      <Preview />
+    </div>
+    <Code v-else-if="activeTab === 'code'" />
+  </div>
+</template>
+
+<script setup>
+import { ref, defineProps, defineAsyncComponent } from 'vue'
+import { ziSun, ziMoon } from '@zennnn/icons'
+
+const props = defineProps({
+  file: {
+    type: String,
+    required: true,
+  },
+})
+
+const Preview = defineAsyncComponent(() =>
+  import(`../examples/${props.file}.vue`)
+)
+
+const Code = defineAsyncComponent(() =>
+  import(`../examples/${props.file}Code.md`)
+)
+
+const dark = ref(false)
+const activeTab = ref('preview')
+const items = [{ name: 'preview', text: 'Preview' }, { name: 'code', text: 'Code' }]
+</script>

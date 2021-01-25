@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && yarn build:lib",
+    "build": "yarn build:examples && vite build && yarn build:lib",
+    "build:examples": "node ./build/gen-examples.js",
     "build:lib": "rm -rf ./lib/* && babel src --out-dir lib --ignore \"**/__tests__\" --source-maps --copy-files --no-copy-ignored",
     "test": "jest",
     "lint": "eslint src -f codeframe"

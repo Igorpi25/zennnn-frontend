@@ -1,3 +1,189 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+    @apply font-sans antialiased;
+    @apply p-0 m-0;
+  }
+
+  h1, h2, h3, h4, h5 {
+    @apply dark:text-white;
+  }
+
+  h1 {
+    font-size: 32px;
+    line-height: 40px;
+  }
+  h2 {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 600;
+  }
+  h3 {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 600;
+  }
+  h4 {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  h5 {
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 600;
+  }
+
+  a.header-anchor {
+    float: left;
+    margin-left: -.87em;
+    padding-right: .23em;
+    font-size: .85em;
+    opacity: 0;
+    color: #5BAAF0;
+  }
+  h1:hover .header-anchor,
+  h2:hover .header-anchor,
+  h3:hover .header-anchor,
+  h4:hover .header-anchor,
+  h5:hover .header-anchor,
+  h6:hover .header-anchor {
+    opacity: 1;
+  }
+  a.header-anchor:focus {
+    opacity: 1;
+  }
+  a.header-anchor:hover,
+  a.header-anchor:focus {
+    text-decoration: none;
+  }
+
+  h1 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  h2 {
+    margin-top: 2.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .table-of-contents {
+    @apply w-64 fixed top-0 right-0 mt-12 py-6 px-4;
+  }
+  .table-of-contents ul {
+    @apply text-gray-200 text-sm;
+  }
+  .table-of-contents ul > li {
+    @apply hover:text-blue-500 py-px;
+  }
+  .table-of-contents ul > li > a {
+    @apply align-middle;
+  }
+
+  /* code */
+
+  p code {
+    margin: 0;
+    border-radius: 3px;
+    padding: .25rem .5rem;
+    font-size: .85em;
+    color: #000;
+    background-color: #F7F7F7;
+  }
+
+  div[class*='language-'] {
+    position: relative;
+    overflow-x: auto;
+    background-color: #F7F7F7;
+    border-radius: 6px;
+    margin: 1rem 0;
+  }
+
+  [class*='language-'] pre,
+  [class*='language-'] code {
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  [class*='language-'] pre {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    background: transparent;
+    overflow-x: auto;
+  }
+
+  [class*='language-'] code {
+    padding: 0;
+    line-height: 24px;
+    font-size: 14px;
+  }
+
+  [class*='language-']:before {
+    position: absolute;
+    top: .6em;
+    right: 1em;
+    z-index: 2;
+    font-size: .8rem;
+    color: #888;
+  }
+  
+  [class~='language-html']:before,
+  [class~='language-markup']:before {
+    content: 'html';
+  }
+  
+  [class~='language-md']:before,
+  [class~='language-markdown']:before {
+    content: 'md';
+  }
+  
+  [class~='language-css']:before {
+    content: 'css';
+  }
+
+  [class~='language-js']:before,
+  [class~='language-typescript']:before {
+    content: 'js';
+  }
+
+  [class~='language-ts']:before,
+  [class~='language-typescript']:before {
+    content: 'ts';
+  }
+
+  [class~='language-json']:before {
+    content: 'json';
+  }
+
+  [class~='language-sh']:before,
+  [class~='language-bash']:before {
+    content: 'sh';
+  }
+
+  [class~='language-yaml']:before {
+    content: 'yaml';
+  }
+
+  [class~='language-dockerfile']:before {
+    content: 'dockerfile';
+  }
+
+  [class~='language-vue']:before {
+    content: 'vue';
+  }
+}
