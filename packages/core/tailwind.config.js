@@ -89,14 +89,14 @@ module.exports = {
         500: '#FDB600', // warning, IN_PRODUCTION
       },
       red: {
-        500: '#FF212D',
-        600: '#FF121F', // spec total client debt text
+        // 500: '#FF212D',
+        // 600: '#FF121F', // spec total client debt text
+        500: '#FF005E', // TODO: *-pink-500 replace with *-red-500
+        600: '#E62828',
+        700: '#BE0000',
         900: '#3D242D', // error color
       },
     },
-    // fontFamily: {
-    //   body: ['Open Sans', 'sans-serif'],
-    // },
     boxShadow: {
       'main-night': '0px 20px 40px rgba(0, 0, 0, 0.35)',
       'main-day': '0px 20px 40px rgba(0, 0, 0, 0.1)',
@@ -217,6 +217,8 @@ module.exports = {
     backgroundColor: ['responsive', 'hover', 'focus', 'disabled', 'dark', 'even'],
     borderColor: ['responsive', 'hover', 'focus', 'disabled', 'dark'],
     boxShadow: ['responsive', 'hover', 'focus', 'dark'],
+    cursor: ['responsive', 'disabled'],
+    opacity: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus', 'disabled'],
     overflow: ['responsive', 'hover'],
     visibility: ['group-hover'],
     translate: ['responsive', 'hover', 'focus', 'group-hover'],
