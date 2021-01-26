@@ -32,8 +32,6 @@ export default {
   },
 
   setup (props, { attrs, slots }) {
-    const tag = computed(() => props.tag || 'i')
-
     const fontSize = computed(() => {
       return props.size
         ? convertToUnit(props.size)
@@ -76,18 +74,19 @@ export default {
       })))
     }
 
-    const classes = {
-      icon: true,
-      'icon--left': props.left,
-      'icon--right': props.right,
-    }
-
     const clickable = attrs.onClick
 
     return () => {
-      return h(tag.value, {
-        class: classes,
+      const tag = clickable ? 'button' : props.tag
+      return h(tag, {
+        class: {
+          icon: true,
+          'icon--left': props.left,
+          'icon--right': props.right,
+          'icon--link': clickable,
+        },
         role: clickable ? 'button' : undefined,
+        'aria-hidden': !clickable,
       }, genSvg())
     }
   },

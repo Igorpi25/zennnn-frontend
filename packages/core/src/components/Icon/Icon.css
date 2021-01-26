@@ -19,4 +19,11 @@
     width: 1em;
     height: 1em;
   }
+  .icon--link {
+    cursor: pointer;
+    outline: none;
+  }
+  .icon--link:focus {
+    outline: none;
+  }
 }
