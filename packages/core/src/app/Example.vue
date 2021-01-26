@@ -23,7 +23,7 @@
   <div :class="{ dark: dark }">
     <div
       v-if="activeTab === 'preview'"
-      :class="[dark ? 'bg-gray-900' : 'bg-light-gray-100']"
+      :class="[dark ? 'bg-gray-900 text-gray-100' : 'bg-light-gray-100']"
       class="rounded-md my-4 p-6"
     >
       <component :is="Preview" />
