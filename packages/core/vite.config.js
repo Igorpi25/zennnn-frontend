@@ -16,9 +16,7 @@ export default {
       include: [/\.vue$/, /\.md$/],
     }),
     pages({
-      importMode (path) {
-        return path === '/src/pages/index.md' ? 'sync' : 'async'
-      },
+      importMode: 'sync',
       extensions: ['vue', 'md'],
     }),
     components({

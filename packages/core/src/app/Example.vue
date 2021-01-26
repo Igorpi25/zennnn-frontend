@@ -26,15 +26,19 @@
       :class="[dark ? 'bg-gray-900' : 'bg-light-gray-100']"
       class="rounded-md my-4 p-6"
     >
-      <Preview />
+      <component :is="Preview" />
     </div>
-    <Code v-else-if="activeTab === 'code'" />
+    <div v-else-if="activeTab === 'code'">
+      <component :is="Code" />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps, defineAsyncComponent } from 'vue'
+import { ref, defineProps, shallowRef } from 'vue'
 import { ziSun, ziMoon } from '@zennnn/icons'
+
+const modules = import.meta.globEager('../examples/**/*.*')
 
 const props = defineProps({
   file: {
@@ -43,13 +47,20 @@ const props = defineProps({
   },
 })
 
-const Preview = defineAsyncComponent(() =>
-  import(`../examples/${props.file}.vue`)
-)
+let Preview = shallowRef(null)
+let Code = shallowRef(null)
 
-const Code = defineAsyncComponent(() =>
-  import(`../examples/${props.file}Code.md`)
-)
+const previewRe = new RegExp(`${props.file}.vue`)
+const codeRe = new RegExp(`${props.file}Code.md`)
+
+for (const path in modules) {
+  if (previewRe.test(path)) {
+    Preview.value = modules[path].default
+  }
+  if (codeRe.test(path)) {
+    Code.value = modules[path].default
+  }
+}
 
 const dark = ref(false)
 const activeTab = ref('preview')
