@@ -23,10 +23,14 @@ export default {
     href: String,
     loading: Boolean,
     disabled: Boolean,
-    primary: Boolean,
+    primary: {
+      type: Boolean,
+      default: undefined,
+    },
     block: Boolean,
     outlined: Boolean,
-    borderless: Boolean,
+    xSmall: Boolean,
+    mini: Boolean,
     text: Boolean,
     icon: Boolean,
     small: Boolean,
@@ -38,11 +42,12 @@ export default {
     },
     minWidth: [String, Number],
     maxWidth: [String, Number],
+    darkIcon: Boolean,
   },
 
   setup (props, { slots }) {
-    const MIN_WIDTH = 120
-    const MIN_WIDTH_SMALL = 100
+    const MIN_WIDTH = 128
+    const MIN_WIDTH_SMALL = 96
 
     const rootElement = ref(null)
 
@@ -51,16 +56,17 @@ export default {
     })
 
     const classes = computed(() => {
-      const outlined = props.outlined || props.borderless
       return {
         btn: true,
-        'btn--primary': props.primary || !outlined,
-        'btn--outlined': outlined,
-        'btn--borderless': props.borderless,
+        'btn--primary': !props.text && !props.outlined && props.primary !== false,
+        'btn--outlined': !props.text && props.outlined,
         'btn--block': props.block,
         'btn--text': props.text,
         'btn--icon': props.icon,
+        'btn--dark-icon': props.darkIcon,
         'btn--small': props.small,
+        'btn--x-small': props.xSmall,
+        'btn--mini': props.mini,
         'btn--loading': props.loading,
         'btn--disabled': props.disabled,
         'btn--light': props.light,
@@ -70,7 +76,7 @@ export default {
 
     const styles = computed(() => {
       let minWidth = null
-      if (!props.icon && !props.text) {
+      if (!props.icon && !props.text && !props.xSmall && !props.mini) {
         minWidth = props.small ? MIN_WIDTH_SMALL : MIN_WIDTH
       }
       return {

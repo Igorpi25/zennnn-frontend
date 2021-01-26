@@ -1,76 +1,87 @@
 @layer components {
   .btn {
-    @apply h-12 relative rounded-md inline-flex justify-center items-center align-middle;
+    @apply h-12 relative rounded-lg inline-flex justify-center items-center align-middle;
     @apply transition-colors duration-100 ease-out;
     @apply select-none focus:outline-none;
     @apply px-6;
+    @apply disabled:cursor-not-allowed disabled:opacity-50;
   }
+
   .btn--small {
     @apply text-sm;
     @apply h-10;
     @apply px-4;
+    min-width: 2.5rem;
   }
+  .btn--x-small {
+    @apply text-sm;
+    @apply h-8;
+    @apply px-2;
+    @apply rounded;
+    min-width: 2rem;
+  }
+  .btn--mini {
+    @apply text-xs;
+    @apply h-6;
+    @apply px-1;
+    @apply rounded;
+    min-width: 1.5rem;
+  }
+
   .btn--icon {
-    @apply w-12;
-    @apply px-0;
+    @apply p-3;
   }
   .btn--icon.btn--small {
-    @apply w-10;
+    @apply p-2;
   }
+  .btn--icon.btn--x-small {
+    @apply p-1;
+  }
+  .btn--icon.btn--mini {
+    @apply p-0;
+  }
+
   .btn--block {
     @apply w-full justify-center;
+  }
+
+  .btn--loading {
+    @apply disabled:opacity-100;
   }
 
   .btn--primary {
     @apply text-white;
     @apply bg-blue-500;
-    @apply hover:bg-blue-400 focus:bg-blue-400 disabled:bg-blue-500;
   }
-  .btn--primary.btn--disabled {
-    @apply text-light-gray-900 dark:text-gray-200;
-    @apply bg-gray-200 disabled:bg-gray-200 dark:bg-gray-400 dark:disabled:bg-gray-400;
-  }
-  .btn--primary.btn--disabled.btn--light {
-    @apply text-light-gray-900;
-    @apply bg-gray-200 disabled:bg-gray-200;
-  }
-  .btn--primary.btn--disabled.btn--dark {
-    @apply text-gray-200;
-    @apply bg-gray-400 disabled:bg-gray-400;
+  .btn--primary:not(.btn--loading) {
+    @apply hover:bg-blue-400 focus:bg-blue-400;
+    @apply disabled:bg-gray-100 disabled:text-gray-700;
   }
 
   .btn--outlined {
     @apply text-blue-500;
     @apply border border-light-gray-400 dark:border-gray-400;
-    @apply hover:border-current focus:border-current dark:hover:border-current dark:focus:border-current;
-    @apply disabled:border-light-gray-400 dark:disabled:border-gray-400;
+  }
+  .btn--outlined:not(.btn--loading) {
+    @apply hover:text-white focus:text-white hover:border-blue-400 focus:border-blue-400 hover:bg-blue-400 focus:bg-blue-400;
+    @apply disabled:text-gray-100;
+    @apply disabled:border-light-gray-400 dark:disabled:border-gray-400 disabled:bg-transparent;
   }
   .btn--outlined.btn--light {
-    @apply border-light-gray-400 disabled:border-light-gray-400;
+    @apply dark:border-light-gray-400 dark:disabled:border-light-gray-400;
   }
   .btn--outlined.btn--dark {
     @apply border-gray-400 disabled:border-gray-400;
   }
-  .btn--outlined.btn--disabled {
-    @apply text-light-gray-400 dark:text-gray-400;
+
+  .btn--text {
+    @apply text-blue-500;
   }
-  .btn--outlined.btn--disabled.btn--light {
-    @apply text-light-gray-400;
-  }
-  .btn--outlined.btn--disabled.btn--dark {
-    @apply text-gray-400;
-  }
-  .btn--borderless {
-    @apply border-transparent dark:border-transparent;
-    @apply disabled:border-transparent dark:disabled:border-transparent;
-  }
-  .btn--borderless.btn--disabled {
-    @apply hover:border-transparent focus:border-transparent;
+  .btn--text:not(.btn--loading) {
+    @apply hover:text-blue-400 focus:text-blue-400;
+    @apply disabled:text-gray-100;
   }
 
-  .btn--disabled, .btn--loading {
-    @apply cursor-not-allowed;
-  }
   .btn--loading .btn__content {
     @apply opacity-0;
   }
@@ -79,12 +90,30 @@
     @apply flex items-center leading-none whitespace-nowrap;
   }
 
-  .btn--outlined .icon,
-  .btn--outlined.btn--icon .btn__content {
-    @apply text-gray-100;
-  }
-
   .btn__loader {
     @apply absolute inset-0 flex items-center justify-center;
+  }
+
+  .btn--dark-icon .icon {
+    @apply text-gray-100 dark:text-gray-200;
+  }
+  .btn:not(:disabled).btn--dark-icon:hover .icon,
+  .btn:not(:disabled).btn--dark-icon:focus .icon {
+    @apply text-white dark:text-white;
+  }
+
+  .btn .icon--left {
+    @apply mr-2;
+  }
+  .btn .icon--right {
+    @apply ml-2;
+  }
+  .btn--x-small .icon--left,
+  .btn--mini .icon--left {
+    @apply mr-1;
+  }
+  .btn--x-small .icon--right,
+  .btn--mini .icon--right {
+    @apply ml-1;
   }
 }
