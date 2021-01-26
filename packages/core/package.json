@@ -13,7 +13,7 @@
     "dev": "vite",
     "build": "yarn build:examples && vite build && yarn build:lib",
     "build:examples": "node ./build/gen-examples.js",
-    "build:lib": "rm -rf ./lib/* && babel src --out-dir lib --ignore \"**/__tests__\" --source-maps --copy-files --no-copy-ignored",
+    "build:lib": "rm -rf ./lib/* && babel src --out-dir lib --source-maps",
     "test": "jest",
     "lint": "eslint src -f codeframe"
   },
