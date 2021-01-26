@@ -27,6 +27,8 @@ export default {
       type: Boolean,
       default: true,
     },
+    left: Boolean,
+    right: Boolean,
   },
 
   setup (props, { attrs, slots }) {
@@ -74,7 +76,11 @@ export default {
       })))
     }
 
-    const classes = { icon: true }
+    const classes = {
+      icon: true,
+      'icon--left': props.left,
+      'icon--right': props.right,
+    }
 
     const clickable = attrs.onClick
 
