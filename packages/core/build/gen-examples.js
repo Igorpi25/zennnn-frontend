@@ -25,7 +25,6 @@ async function getFile (filepath) {
 
 ;(async () => {
   for await (const filepath of getFiles(dirname)) {
-    console.log('filepath', filepath)
     await getFile(filepath)
   }
 })()
