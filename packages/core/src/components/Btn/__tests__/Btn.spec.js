@@ -151,17 +151,19 @@ describe('Btn.js', () => {
     expect(wrapper.element.style.maxWidth).toBe('250px')
   })
 
-  it('should have correct min-width style on small prop', async () => {
+  it('should have correct default min-width styles', async () => {
     const wrapper = mountFunction({
-      props: {
-        small: true,
-      },
+      props: {},
     })
 
-    expect(wrapper.element.style.minWidth).toBe('100px')
+    expect(wrapper.element.style.minWidth).toBe('128px')
+
+    await wrapper.setProps({ small: true })
+
+    expect(wrapper.element.style.minWidth).toBe('96px')
   })
 
-  it('should not have default min-width style on icon and text prop', async () => {
+  it('should not have default min-width style on icon/text/xSmall/mini props', async () => {
     const wrapper = mountFunction({
       props: {
         icon: true,
@@ -171,6 +173,14 @@ describe('Btn.js', () => {
     expect(wrapper.element.style.minWidth).toBe('')
 
     await wrapper.setProps({ text: true })
+
+    expect(wrapper.element.style.minWidth).toBe('')
+
+    await wrapper.setProps({ xSmall: true })
+
+    expect(wrapper.element.style.minWidth).toBe('')
+
+    await wrapper.setProps({ mini: true })
 
     expect(wrapper.element.style.minWidth).toBe('')
   })
@@ -197,15 +207,55 @@ describe('Btn.js', () => {
     expect(wrapper.classes('btn--small')).toBe(true)
   })
 
-  it('should have btn--primary class when using primary prop', () => {
+  it('should have btn--x-small class when using x-small prop', () => {
     const wrapper = mountFunction({
       props: {
-        primary: true,
-        outlined: true,
+        xSmall: true,
       },
     })
 
+    expect(wrapper.classes('btn--x-small')).toBe(true)
+  })
+
+  it('should have btn--mini class when using mini prop', () => {
+    const wrapper = mountFunction({
+      props: {
+        mini: true,
+      },
+    })
+
+    expect(wrapper.classes('btn--mini')).toBe(true)
+  })
+
+  it('should have btn--primary class by default or when using primary prop', async () => {
+    const wrapper = mountFunction({
+      props: {},
+    })
+
     expect(wrapper.classes('btn--primary')).toBe(true)
+
+    await wrapper.setProps({ primary: true })
+
+    expect(wrapper.classes('btn--primary')).toBe(true)
+  })
+
+  it('should not have btn--primary class when using text, outlined prop or primary=false', async () => {
+    const wrapper = mountFunction({
+      props: {
+        primary: true,
+        text: true,
+      },
+    })
+
+    expect(wrapper.classes('btn--primary')).toBe(false)
+    
+    await wrapper.setProps({ primary: true, outlined: true })
+
+    expect(wrapper.classes('btn--primary')).toBe(false)
+
+    await wrapper.setProps({ primary: false })
+
+    expect(wrapper.classes('btn--primary')).toBe(false)
   })
 
   it('should have btn--outlined class when using outlined prop', () => {
@@ -218,15 +268,14 @@ describe('Btn.js', () => {
     expect(wrapper.classes('btn--outlined')).toBe(true)
   })
 
-  it('should have btn--outlined and btn--borderless class when using borderless prop', () => {
+  it('should not have btn--outlined class when using text prop', () => {
     const wrapper = mountFunction({
       props: {
-        borderless: true,
+        text: true,
       },
     })
 
-    expect(wrapper.classes('btn--outlined')).toBe(true)
-    expect(wrapper.classes('btn--borderless')).toBe(true)
+    expect(wrapper.classes('btn--outlined')).toBe(false)
   })
 
   it('should have btn--light and btn--dark class when using light and dark props', async () => {

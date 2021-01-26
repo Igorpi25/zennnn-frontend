@@ -1,29 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Btn.js should render an <a> tag when using href prop and match snapshot 1`] = `
-<a class="btn btn--primary" style="min-width: 120px;" href="http://example.com"><span class="btn__content"></span>
+<a class="btn btn--primary" style="min-width: 128px;" href="http://example.com"><span class="btn__content"></span>
   <!---->
 </a>
 `;
 
 exports[`Btn.js should render component with default slot and match snapshot 1`] = `
-<button class="btn btn--primary" style="min-width: 120px;"><span class="btn__content">Button</span>
+<button class="btn btn--primary" style="min-width: 128px;"><span class="btn__content">Button</span>
   <!---->
 </button>
 `;
 
-exports[`Btn.js should render component with loader and match snapshot 1`] = `<button class="btn btn--primary btn--loading" style="min-width: 120px;" disabled=""><span class="btn__content"></span><span class="btn__loader"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress progress--indeterminate" style="height: 24px; width: 24px;"><svg style="transform: rotate(0deg);" xmlns="http://www.w3.org/2000/svg" viewBox="21.81818181818182 21.81818181818182 43.63636363636364 43.63636363636364"><!----><circle class="progress__overlay" fill="transparent" cx="43.63636363636364" cy="43.63636363636364" r="20" stroke-width="3.6363636363636367" stroke-dasharray="125.664" stroke-dashoffset="125.66370614359172px"></circle></svg><div class="progress__info"></div></div></span></button>`;
+exports[`Btn.js should render component with loader and match snapshot 1`] = `<button class="btn btn--primary btn--loading" style="min-width: 128px;" disabled=""><span class="btn__content"></span><span class="btn__loader"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="progress progress--indeterminate" style="height: 24px; width: 24px;"><svg style="transform: rotate(0deg);" xmlns="http://www.w3.org/2000/svg" viewBox="21.81818181818182 21.81818181818182 43.63636363636364 43.63636363636364"><!----><circle class="progress__overlay" fill="transparent" cx="43.63636363636364" cy="43.63636363636364" r="20" stroke-width="3.6363636363636367" stroke-dasharray="125.664" stroke-dashoffset="125.66370614359172px"></circle></svg><div class="progress__info"></div></div></span></button>`;
 
-exports[`Btn.js should render component with loader slot and match snapshot 1`] = `<button class="btn btn--primary btn--loading" style="min-width: 120px;" disabled=""><span class="btn__content"></span><span class="btn__loader">&lt;span&gt;Loading&lt;/span&gt;</span></button>`;
+exports[`Btn.js should render component with loader slot and match snapshot 1`] = `<button class="btn btn--primary btn--loading" style="min-width: 128px;" disabled=""><span class="btn__content"></span><span class="btn__loader">&lt;span&gt;Loading&lt;/span&gt;</span></button>`;
 
 exports[`Btn.js should render router-link when using to prop and match snapshot 1`] = `
-<a href="/foo" class="btn btn--primary" style="min-width: 120px;"><span class="btn__content"></span>
+<a href="/foo" class="btn btn--primary" style="min-width: 128px;"><span class="btn__content"></span>
   <!---->
 </a>
 `;
 
 exports[`Btn.js should render specified tag when using tag prop and match snapshot 1`] = `
-<a class="btn btn--primary" style="min-width: 120px;"><span class="btn__content"></span>
+<a class="btn btn--primary" style="min-width: 128px;"><span class="btn__content"></span>
   <!---->
 </a>
 `;
