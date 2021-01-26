@@ -187,3 +187,20 @@
     content: 'vue';
   }
 }
+
+@layer components {
+  .simple-table {
+    overflow-x: auto;
+  }
+  .simple-table table {
+    width: 100%;
+  }
+  .simple-table tr th,
+  .simple-table tr td {
+    vertical-align: top;
+    border-bottom: 1px solid #F4F4F4;
+  }
+  .simple-table tbody tr:hover {
+    background-color: #F7F7F7;
+  }
+}
