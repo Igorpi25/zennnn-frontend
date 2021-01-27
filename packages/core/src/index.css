@@ -39,11 +39,11 @@
 
   a.header-anchor {
     float: left;
-    margin-left: -.87em;
-    padding-right: .23em;
+    margin-left: -.8em;
+    padding-right: .2em;
     font-size: .85em;
     opacity: 0;
-    color: #5BAAF0;
+    @apply text-blue-500;
   }
   h1:hover .header-anchor,
   h2:hover .header-anchor,
@@ -76,16 +76,15 @@
     border-radius: 3px;
     padding: .25rem .5rem;
     font-size: .85em;
-    color: #000;
-    background-color: #F7F7F7;
+    @apply text-black bg-light-gray-100;
   }
 
   div[class*='language-'] {
     position: relative;
     overflow-x: auto;
-    background-color: #F7F7F7;
     border-radius: 6px;
     margin: 1rem 0;
+    @apply bg-light-gray-100;
   }
 
   [class*='language-'] pre,
@@ -207,17 +206,16 @@
   }
 
   .simple-table {
-    overflow-x: auto;
+    @apply overflow-x-auto;
   }
   .simple-table table {
-    width: 100%;
+    @apply w-full;
   }
   .simple-table tr th,
   .simple-table tr td {
-    vertical-align: top;
-    border-bottom: 1px solid #F4F4F4;
+    @apply align-top border-b border-light-gray-200;
   }
   .simple-table tbody tr:hover {
-    background-color: #F7F7F7;
+    @apply bg-light-gray-100;
   }
 }
