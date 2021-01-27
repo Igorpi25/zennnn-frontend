@@ -43,6 +43,7 @@ export default {
     minWidth: [String, Number],
     maxWidth: [String, Number],
     darkIcon: Boolean,
+    retainFocusOnClick: Boolean,
   },
 
   setup (props, { slots }) {
@@ -133,7 +134,7 @@ export default {
         data.disabled = isDisabled.value || null
       }
       data.onClick = () => {
-        rootElement.value.blur()
+        !props.retainFocusOnClick && rootElement.value.blur()
       }
       return h(tag, data, children)
     }
