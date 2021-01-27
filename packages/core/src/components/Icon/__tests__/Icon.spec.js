@@ -31,7 +31,7 @@ describe('Icon.js', () => {
     expect(wrapper.html()).toMatchSnapshot()
   })
 
-  it('should add role="button" on attrs.onClick exists and match snapshot', () => {
+  it('should render "button" tag on attrs.onClick exists and match snapshot', () => {
     const wrapper = mountFunction({
       props: { tag: 'span' },
       attrs: {
@@ -75,5 +75,29 @@ describe('Icon.js', () => {
     })
 
     expect(wrapper.html()).toMatchSnapshot()
+  })
+
+  it('should add decorator class with left/right props', async () => {
+    const wrapper = mountFunction({
+      props: {
+        left: true,
+      },
+    })
+
+    expect(wrapper.classes('icon--left')).toBe(true)
+
+    await wrapper.setProps({ right: true })
+
+    expect(wrapper.classes('icon--right')).toBe(true)
+  })
+
+  it('should override "aria-hidden" from attributes', async () => {
+    const wrapper = mountFunction({
+      attrs: {
+        'aria-hidden': true,
+      },
+    })
+
+    expect(wrapper.attributes('aria-hidden')).toBe('true')
   })
 })
