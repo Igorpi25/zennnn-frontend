@@ -30,7 +30,12 @@ module.exports = {
   },
   theme: {
     container: false,
-    screens: false,
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+    },
     colors: {
       black: '#000000',
       white: '#ffffff',
@@ -125,13 +130,6 @@ module.exports = {
       24: '9 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12)',
       none: 'none',
     },
-    // letterSpacing: {
-    //   tight: '-.025em',
-    //   normal: '0',
-    //   wide: '.025em',
-    //   wider: '.05em',
-    //   widest: '.15em',
-    // },
     gradientColorStops: {
       'gray-900': 'rgba(30, 30, 30, 1)',
       'gray-900-a-0': 'rgba(30, 30, 30, 0)',
@@ -222,7 +220,7 @@ module.exports = {
     overflow: ['responsive', 'hover'],
     visibility: ['group-hover'],
     translate: ['responsive', 'hover', 'focus', 'group-hover'],
-    textColor: ['responsive', 'hover', 'focus', 'group-hover', 'disabled', 'dark'],
+    textColor: ['responsive', 'hover', 'focus', 'group-hover', 'disabled', 'dark', 'active'],
   },
   plugins: [
     scrollingTouchUtilities,
