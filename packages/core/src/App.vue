@@ -12,12 +12,12 @@
   </header>
   <nav id="sidebar"
     :class="{ 'open' : isOpen }"
-    class="bg-white border-r md:border-r-0 border-light-gray-400 w-64 xl:w-72 fixed top-0 overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-200 mt-12 p-6 pr-4"
+    class="bg-white border-r md:border-r-0 border-light-gray-400 w-64 xl:w-72 fixed top-0 overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-200 mt-12 py-6 px-4"
   >
     <div
       v-for="item in items"
       :key="item.name"
-      class="h-8 flex items-center"
+      class="mb-1"
     >
       <router-link
         :to="item.path"
@@ -27,8 +27,8 @@
         <a
           :href="href"
           :class="[
-            'w-full hover:text-blue-500 active:text-blue-500',
-            isExactActive ? 'text-blue-500' : 'text-gray-200',
+            'block hover:bg-gray-100 bg-opacity-10 hover:bg-opacity-10 rounded py-1 px-2',
+            isExactActive ? 'text-blue-500 hover:text-blue-500 bg-blue-500 hover:bg-blue-500' : 'text-gray-400',
           ]"
           @click="navigate"
         >
@@ -43,12 +43,12 @@
     class="md:hidden fixed top-0 left-0 w-screen h-screen"
     @click="isOpen = false"
   />
-  <main class="flex-grow md:ml-64 xl:ml-72 lg:mr-64 xl:mr-72 p-6">
+  <main class="flex-grow md:ml-64 xl:ml-72 xl:mr-72 p-6">
     <div class="max-w-screen-md mx-auto">
       <router-view />
     </div>
   </main>
-  <nav id="toc" class="hidden lg:block w-64 xl:w-72 fixed p-6 pl-4"></nav>
+  <nav id="toc" class="hidden lg:block w-64 xl:w-72 fixed py-6 px-4"></nav>
 </template>
 
 <script setup>

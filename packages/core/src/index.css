@@ -67,6 +67,7 @@
   h2 {
     margin-top: 2.25rem;
     margin-bottom: 1.25rem;
+    font-weight: 400;
   }
 
   /* code */
@@ -188,18 +189,18 @@
 
   .table-of-contents {
     @apply hidden;
-    @apply w-64 fixed top-0 right-0 mt-12 py-6 px-4;
+    @apply w-72 fixed top-0 right-0 mt-12 py-6 px-4;
   }
   .table-of-contents ul {
     @apply text-gray-200 text-sm;
   }
   .table-of-contents ul > li {
-    @apply hover:text-blue-500 active:text-blue-500 py-px;
+    @apply py-1;
   }
   .table-of-contents ul > li > a {
-    @apply align-middle;
+    @apply block align-middle hover:text-black px-2;
   }
-  @screen lg {
+  @screen xl {
     .table-of-contents {
       @apply block;
     }
