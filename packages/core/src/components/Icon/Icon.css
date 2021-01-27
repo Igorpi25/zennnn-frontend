@@ -20,10 +20,11 @@
     height: 1em;
   }
   .icon--link {
-    cursor: pointer;
-    outline: none;
+    @apply cursor-pointer rounded;
+    @apply focus:outline-none focus:ring focus:ring-blue-400 focus:ring-offset-2 focus:ring-opacity-90 dark:focus:ring-offset-gray-900;
   }
-  .icon--link:focus {
-    outline: none;
+  .icon--link:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: 0;
   }
 }
