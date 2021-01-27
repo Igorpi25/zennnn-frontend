@@ -5,6 +5,12 @@
     @apply select-none focus:outline-none;
     @apply px-6;
     @apply disabled:cursor-not-allowed disabled:opacity-50;
+    @apply focus:ring focus:ring-blue-400 focus:ring-offset-2 focus:ring-opacity-90 dark:focus:ring-offset-gray-900;
+  }
+
+  .btn:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: 0;
   }
 
   .btn--small {
@@ -54,7 +60,7 @@
     @apply bg-blue-500;
   }
   .btn--primary:not(.btn--loading) {
-    @apply hover:bg-blue-400 focus:bg-blue-400;
+    @apply hover:bg-blue-400 active:bg-blue-400;
     @apply disabled:bg-gray-100 disabled:text-gray-700;
   }
 
@@ -63,7 +69,7 @@
     @apply border border-light-gray-400 dark:border-gray-400;
   }
   .btn--outlined:not(.btn--loading) {
-    @apply hover:text-white focus:text-white hover:border-blue-400 focus:border-blue-400 hover:bg-blue-400 focus:bg-blue-400;
+    @apply hover:text-white active:text-white hover:border-blue-400 active:border-blue-400 hover:bg-blue-400 active:bg-blue-400;
     @apply disabled:text-gray-100;
     @apply disabled:border-light-gray-400 dark:disabled:border-gray-400 disabled:bg-transparent;
   }
@@ -78,7 +84,7 @@
     @apply text-blue-500;
   }
   .btn--text:not(.btn--loading) {
-    @apply hover:text-blue-400 focus:text-blue-400;
+    @apply hover:text-blue-400 active:text-blue-400;
     @apply disabled:text-gray-100;
   }
 
@@ -98,7 +104,7 @@
     @apply text-gray-100 dark:text-gray-200;
   }
   .btn:not(:disabled).btn--dark-icon:hover .icon,
-  .btn:not(:disabled).btn--dark-icon:focus .icon {
+  .btn:not(:disabled).btn--dark-icon:active .icon {
     @apply text-white dark:text-white;
   }
 
