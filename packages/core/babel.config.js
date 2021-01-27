@@ -5,4 +5,11 @@ module.exports = {
       modules: false,
     }],
   ],
+  env: {
+    test: {
+      presets: [
+        '@vue/cli-plugin-babel/preset',
+      ],
+    },
+  },
 }
