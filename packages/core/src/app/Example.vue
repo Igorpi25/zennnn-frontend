@@ -1,24 +1,31 @@
 <template>
   <div class="h-12 flex items-center justify-end space-x-4 border-b border-light-gray-400">
-    <button
-      class="text-gray-200 hover:text-blue-500 rounded"
+    <Btn
+      :primary="false"
+      icon
+      x-small
+      retain-focus-on-click
+      class="text-gray-200 hover:text-blue-500 active:text-blue-500"
       @click="dark = !dark"
     >
       <Icon>
         {{ dark ? ziSun : ziMoon }}
       </Icon>
-    </button>
-    <button
+    </Btn>
+    <Btn
       v-for="item in items"
       :key="item.name"
       :class="{
-        'hover:text-blue-500 rounded py-1 px-2': true,
-        'text-blue-500 bg-blue-400 bg-opacity-10': activeTab === item.name,
+        'hover:text-blue-500 active:text-blue-500 rounded px-2': true,
+        'text-blue-500 bg-blue-400 bg-opacity-20': activeTab === item.name,
       }"
+      :primary="false"
+      x-small
+      retain-focus-on-click
       @click="activeTab = item.name"
     >
       {{ item.text }}
-    </button>
+    </Btn>
   </div>
   <div :class="{ dark: dark }">
     <div
