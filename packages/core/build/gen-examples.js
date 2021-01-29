@@ -17,7 +17,7 @@ async function* getFiles (dir) {
 
 async function getFile (filepath) {
   const file = await fs.readFile(filepath, 'utf8')
-  const md = `\`\`\`vue\n${file}\n\`\`\`\n`
+  const md = `\`\`\`vue\n${file}\`\`\``
   const parse = path.parse(filepath)
   const filename = `${parse.name}Code.md`
   await fs.writeFile(path.join(parse.dir, filename), md)

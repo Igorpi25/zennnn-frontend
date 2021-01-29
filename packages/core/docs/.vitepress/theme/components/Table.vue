@@ -48,10 +48,11 @@ const props = defineProps({
 })
 
 const getApi = name => {
-    return import(
-      `../api/data/${name}.js`
-    )
+  switch (name) {
+    case 'btn': return import('../../../../src/api/data/btn.js')
+    case 'icon': return import('../../../../src/api/data/icon.js')
   }
+}
 
 const HEADERS = {
   props: ['name', 'type', 'default', 'description'],

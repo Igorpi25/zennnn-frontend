@@ -1,10 +1,19 @@
-[[toc]]
-
 # Buttons
 The `Btn` component.
 
 ## Usage
-<Example file="Btn/Usage" />
+<Btn>Button</Btn>
+
+---
+
+```vue
+<Btn>
+  Button
+</Btn>
+```
+
+## Api
+- [Btn](../api/btn)
 
 ## Block
 <Example file="Btn/Block" />
@@ -28,9 +37,3 @@ Buttons with `x-small` and `dark-icon` props.
 
 ## Custom
 <Example file="Btn/Custom" />
-
-## Props
-<Table name="btn" field="props" />
-
-## Slots
-<Table name="btn" field="slots" />

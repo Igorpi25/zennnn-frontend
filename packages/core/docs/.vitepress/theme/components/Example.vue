@@ -42,10 +42,8 @@
 </template>
 
 <script setup>
-import { ref, defineProps, shallowRef } from 'vue'
+import { ref, defineProps, shallowRef, defineAsyncComponent } from 'vue'
 import { ziSun, ziMoon } from '@zennnn/icons'
-
-const modules = import.meta.globEager('../examples/**/*.*')
 
 const props = defineProps({
   file: {
@@ -54,18 +52,35 @@ const props = defineProps({
   },
 })
 
-let Preview = shallowRef(null)
-let Code = shallowRef(null)
+const Preview = defineAsyncComponent(async () => {
+  // TypeError: Failed to fetch dynamically imported module
+  // const m = await import(/* @vite-ignore */ `../../../../src/examples/${props.file}.vue`)
+  const path = `../../../../src/examples/${props.file}.vue`
+  const modules = await getComponentsModules()
+  const m = await modules[path]()
+  return m
+})
 
-const previewRe = new RegExp(`${props.file}.vue`)
-const codeRe = new RegExp(`${props.file}Code.md`)
+const Code = defineAsyncComponent(async () => {
+  const path = `../../../../src/examples/${props.file}Code.md`
+  const modules = await getCodesModules()
+  const m = await modules[path]()
+  return m
+})
 
-for (const path in modules) {
-  if (previewRe.test(path)) {
-    Preview.value = modules[path].default
+const getComponentsModules = () => {
+  const page = props.file.split('/')[0]
+  switch (page) {
+    case 'Btn': return import.meta.glob('../../../../src/examples/Btn/*.vue')
+    case 'Icon': return import.meta.glob('../../../../src/examples/Icon/*.vue')
   }
-  if (codeRe.test(path)) {
-    Code.value = modules[path].default
+}
+
+const getCodesModules = () => {
+  const page = props.file.split('/')[0]
+  switch (page) {
+    case 'Btn': return import.meta.glob('../../../../src/examples/Btn/*.md')
+    case 'Icon': return import.meta.glob('../../../../src/examples/Icon/*.md')
   }
 }
 

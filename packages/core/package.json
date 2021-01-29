@@ -10,14 +10,19 @@
     "types/"
   ],
   "scripts": {
-    "dev": "vite",
-    "build": "yarn build:examples && vite build && yarn build:lib",
-    "build:examples": "node ./build/gen-examples.js",
+    "build": "yarn build:lib",
     "build:lib": "rm -rf ./lib/* && babel src --out-dir lib --source-maps",
+    "build:examples": "node ./build/gen-examples.js",
     "test": "jest",
-    "lint": "eslint src -f codeframe"
+    "lint": "eslint src -f codeframe",
+    "docs:dev": "vitepress dev docs",
+    "docs:serve": "vitepress serve docs",
+    "docs:build": "yarn build:examples && vitepress build docs"
   },
   "dependencies": {
     "@zennnn/icons": "^0.36.7"
+  },
+  "devDependencies": {
+    "vitepress": "^0.11.4"
   }
 }
