@@ -62,7 +62,7 @@ const Preview = defineAsyncComponent(async () => {
 })
 
 const Code = defineAsyncComponent(async () => {
-  const path = `../../../../src/examples/${props.file}Code.md`
+  const path = `../../../../src/examples_code/${props.file}.md`
   const modules = await getCodesModules()
   const m = await modules[path]()
   return m
@@ -79,8 +79,8 @@ const getComponentsModules = () => {
 const getCodesModules = () => {
   const page = props.file.split('/')[0]
   switch (page) {
-    case 'Btn': return import.meta.glob('../../../../src/examples/Btn/*.md')
-    case 'Icon': return import.meta.glob('../../../../src/examples/Icon/*.md')
+    case 'Btn': return import.meta.glob('../../../../src/examples_code/Btn/*.md')
+    case 'Icon': return import.meta.glob('../../../../src/examples_code/Icon/*.md')
   }
 }
 

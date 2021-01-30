@@ -1,5 +1,5 @@
 const path = require('path')
-const fs = require('fs').promises
+const fs = require('fs-extra')
 
 const dirname = 'src/examples'
 
@@ -19,8 +19,9 @@ async function getFile (filepath) {
   const file = await fs.readFile(filepath, 'utf8')
   const md = `\`\`\`vue\n${file}\`\`\``
   const parse = path.parse(filepath)
-  const filename = `${parse.name}Code.md`
-  await fs.writeFile(path.join(parse.dir, filename), md)
+  const dirname = parse.dir.replace('/examples/', '/examples_code/')
+  const filename = `${parse.name}.md`
+  await fs.outputFile(`${dirname}/${filename}`, md)
 }
 
 ;(async () => {
