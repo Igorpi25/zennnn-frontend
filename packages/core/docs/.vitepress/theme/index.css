@@ -89,37 +89,12 @@
   }
 }
 
-@layer components {
-  .table-of-contents {
-    @apply hidden;
-    @apply w-72 fixed top-0 right-0 mt-12 py-6 px-4;
+@layer utilities {
+  .max-w-8xl {
+    max-width: 90rem;
   }
-  .table-of-contents ul {
-    @apply text-gray-200 text-sm;
-  }
-  .table-of-contents ul > li {
-    @apply py-1;
-  }
-  .table-of-contents ul > li > a {
-    @apply block align-middle hover:text-black px-2;
-  }
-  @screen xl {
-    .table-of-contents {
-      @apply block;
-    }
-  }
-
-  .simple-table {
-    @apply overflow-x-auto;
-  }
-  .simple-table table {
-    @apply w-full;
-  }
-  .simple-table tr th,
-  .simple-table tr td {
-    @apply align-top border-b border-light-gray-200;
-  }
-  .simple-table tbody tr:hover {
-    @apply bg-light-gray-100;
+  /* page height with navbar offset .h-12 (3rem) */
+  .h-page-wrapper {
+    height: calc(100vh - 3rem);
   }
 }

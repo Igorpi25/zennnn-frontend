@@ -1,5 +1,5 @@
 <template>
-  <header class="nav-bar sticky top-0 bg-white z-10 h-12 flex items-center border-b border-light-gray-400 px-6">
+  <header class="nav-bar max-w-8xl mx-auto sticky top-0 bg-white z-10 h-12 flex items-center border-b border-light-gray-400 px-6">
     <SideBarToggleButton @toggle="$emit('toggle')" />
     <a :href="$withBase('/')">
       <Logo />
