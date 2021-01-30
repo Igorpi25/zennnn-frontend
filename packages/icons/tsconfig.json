@@ -1,0 +1,15 @@
+{
+  "include": [
+    "index.ts"
+  ],
+  "compilerOptions": {
+    "declaration": true,
+    "target": "ES5",
+    "module": "ES2015",
+    "lib": [],
+    "sourceMap": false,
+    "esModuleInterop": false,
+    "moduleResolution": "node",
+    "skipLibCheck": true
+  }
+}

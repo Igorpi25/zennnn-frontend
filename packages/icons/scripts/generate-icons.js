@@ -2,9 +2,9 @@ const path = require('path')
 const fs = require('fs').promises
 const upperFirst = require('lodash/upperFirst')
 const camelCase = require('lodash/camelCase')
-const { removeSvgAttrs, mergeSvgPaths, getPath } = require('./process')
+const { removeSvgAttrs, mergeSvgPaths, getPath } = require('./svgo-process')
 
-const dirname = 'source'
+const dirname = path.join(__dirname, '../source')
 
 async function* getFiles (dir) {
   const dirents = await fs.readdir(dir, { withFileTypes: true })
@@ -38,5 +38,5 @@ async function* getFiles (dir) {
     const v = paths[k]
     jsData += `export const ${k}: string = '${v}'\n`
   })
-  await fs.writeFile(path.join(__dirname, 'index.ts'), jsData)
+  await fs.writeFile(path.join(__dirname, '../index.ts'), jsData)
 })()

@@ -1,4 +1,3 @@
-// not saved to package.json
 const sharp = require('sharp')
 const DEFAULT_SIZE = 20
 
@@ -11,17 +10,14 @@ if (!filename) {
   process.exit()
 }
 
-// eslint-disable-next-line no-console
 console.log('Image to process: ', filename)
 
 sharp(filename)
   .resize(size)
   .toBuffer()
   .then(data => {
-    // eslint-disable-next-line no-console
     console.log(`data:image/png;base64,${data.toString('base64')}`)
   })
   .catch(error => {
-    // eslint-disable-next-line no-console
     console.warn(error)
   })

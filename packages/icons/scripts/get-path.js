@@ -1,5 +1,6 @@
+const path = require('path')
 const fs = require('fs').promises
-const { removeSvgAttrs, mergeSvgPaths, getPath } = require('./process')
+const { removeSvgAttrs, mergeSvgPaths, getPath: getFilePath } = require('./svgo-process')
 
 const getPath = async (filepath) => {
   if (!filepath) {
@@ -15,10 +16,13 @@ const getPath = async (filepath) => {
   console.log(result)
   const data = result.data
   console.log('Result')
-  console.log(getPath(data, filepath))
+  console.log(getFilePath(data, filepath))
 }
 
 const fileIndex = process.argv.indexOf('--file')
 const file = fileIndex === -1 ? undefined : process.argv[fileIndex + 1]
 
-getPath(file)
+;(async () => {
+  const filepath = path.join(__dirname, file)
+  await getPath(filepath)
+})()
