@@ -39,7 +39,7 @@
     </Btn>
   </div>
   <div>
-    <Btn x-small :primary="false" class="text-white bg-gray-600 hover:bg-gray-400 focus:bg-gray-400 mb-6">
+    <Btn x-small :primary="false" class="text-white bg-gray-600 hover:bg-gray-400 focus:ring-gray-400 mb-6">
       <Icon class="mr-2">
         {{ ziAddCart }}
       </Icon>
@@ -81,7 +81,7 @@ const custom1 = 'bg-blue-600'
 const custom2 = computed(() => {
   return [
     'text-white bg-red-700',
-    { 'disabled:bg-gray-100 disabled:text-gray-700 hover:bg-red-600 focus:bg-red-600' : !loading.value },
+    { 'disabled:bg-gray-100 disabled:text-gray-700 hover:bg-red-600 focus:ring-red-600' : !loading.value },
   ]
 })
 
