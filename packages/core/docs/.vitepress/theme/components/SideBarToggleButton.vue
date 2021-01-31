@@ -3,7 +3,8 @@
     :primary="false"
     mini
     icon
-    class="md:hidden hover:text-gray-200 active:text-gray-200 mr-3"
+    retain-focus-on-click
+    class="md:hidden hover:text-gray-200 mr-3"
     @click="$emit('toggle')"
   >
     <svg

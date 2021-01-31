@@ -99,6 +99,9 @@
   .btn__loader {
     @apply absolute inset-0 flex items-center justify-center;
   }
+  .btn--outlined .btn__loader {
+    @apply text-blue-500;
+  }
 
   .btn--dark-icon .icon {
     @apply text-gray-100 dark:text-gray-200;

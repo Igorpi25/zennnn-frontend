@@ -69,6 +69,7 @@ module.exports = {
       blue: {
         400: '#83BBEE', // primary hover color
         500: '#5BAAF0', // primary color
+        550: '#549EDE', // primary active color
         600: '#0476FF',
         800: '#4634B0',
         900: '#4C51BF', // custom price color

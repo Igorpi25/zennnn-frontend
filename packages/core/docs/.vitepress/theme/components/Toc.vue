@@ -11,7 +11,7 @@
       >
         <a
           :href="`#${item.slug}`"
-          :class="`#${item.slug}` === activeHash ? 'text-blue-500' : 'text-gray-200 hover:text-black active:text-black'"
+          :class="`#${item.slug}` === activeHash ? 'text-blue-500' : 'text-gray-200 hover:text-black'"
         >
           {{ item.title }}
         </a>
