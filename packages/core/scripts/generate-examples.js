@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 
-const dirname = 'src/examples'
+const dirname = 'docs/.vitepress/examples'
 
 async function* getFiles (dir) {
   const dirents = await fs.readdir(dir, { withFileTypes: true })

@@ -84,8 +84,14 @@
     @apply list-disc list-inside;
   }
 
-  p > code {
+  main p > code {
     font-size: 14px;
+  }
+  main table p > code {
+    font-size: 12px;
+  }
+  main .font-mono .token.keyword {
+    color: #6196cc;
   }
 }
 

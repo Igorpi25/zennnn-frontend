@@ -1,0 +1,30 @@
+{
+  "props": {
+    "append": "Setting **append** prop always appends the relative path to the current path.",
+    "block": "Expands the button to 100% of available space.",
+    "contentClass": "Applies a custom class to `.btn__content`.",
+    "dark": "Applies the dark theme variant to the component.",
+    "darkIcon": "Icon dark color decortion.",
+    "disabled": "Removes the ability to click or target the component.",
+    "href": "Designates the component as anchor and applies the href attribute.",
+    "icon": "Removes `min-width`/`height` styles.",
+    "light": "Applies the light theme variant to the component.",
+    "loading": "Adds a loading icon animation.",
+    "maxWidth": "Sets the maximum width for the component.",
+    "minWidth": "Sets the minimum width for the component. Default size has `128px` and **small** has `96px`.",
+    "mini": "Makes the component mini.",
+    "outlined": "Makes the background transparent and applies a thin border.",
+    "primary": "Default style, used when not **text**, **outlined** and `false`.",
+    "replace": "Setting **replace** prop will call `router.replace()` instead of `router.push()` when clicked, so the navigation will not leave a history record.",
+    "retainFocusOnClick": "Don’t blur on click.",
+    "small": "Makes the component small.",
+    "tag": "Specify a custom tag used on the root element.",
+    "text": "Makes the background transparent.",
+    "to": "Denotes the target route of the link.",
+    "xSmall": "Makes the component extra small."
+  },
+  "slots": {
+    "default": "The default Vue slot.",
+    "loader": "Custom loader."
+  }
+}

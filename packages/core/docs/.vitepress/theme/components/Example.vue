@@ -69,8 +69,8 @@ const isCodeLoaded = ref(false)
 const Preview = defineAsyncComponent({
   loader: async () => {
     // TypeError: Failed to fetch dynamically imported module
-    // const m = await import(/* @vite-ignore */ `../../../../src/examples/${props.file}.vue`)
-    const path = `../../../../src/examples/${props.file}.vue`
+    // const m = await import(/* @vite-ignore */ `../../examples/${props.file}.vue`)
+    const path = `../../examples/${props.file}.vue`
     const modules = await getComponentsModules()
     const m = modules[path]
     isPreviewLoaded.value = true
@@ -80,7 +80,7 @@ const Preview = defineAsyncComponent({
 
 const Code = defineAsyncComponent({
   loader: async () => {
-    const path = `../../../../src/examples_code/${props.file}.md`
+    const path = `../../examples_code/${props.file}.md`
     const modules = await getCodesModules()
     const m = await modules[path]()
     isCodeLoaded.value = true
@@ -91,16 +91,16 @@ const Code = defineAsyncComponent({
 const getComponentsModules = () => {
   const page = props.file.split('/')[0]
   switch (page) {
-    case 'Btn': return import.meta.globEager('../../../../src/examples/Btn/*.vue')
-    case 'Icon': return import.meta.globEager('../../../../src/examples/Icon/*.vue')
+    case 'Btn': return import.meta.globEager('../../examples/Btn/*.vue')
+    case 'Icon': return import.meta.globEager('../../examples/Icon/*.vue')
   }
 }
 
 const getCodesModules = () => {
   const page = props.file.split('/')[0]
   switch (page) {
-    case 'Btn': return import.meta.glob('../../../../src/examples_code/Btn/*.md')
-    case 'Icon': return import.meta.glob('../../../../src/examples_code/Icon/*.md')
+    case 'Btn': return import.meta.glob('../../examples_code/Btn/*.md')
+    case 'Icon': return import.meta.glob('../../examples_code/Icon/*.md')
   }
 }
 

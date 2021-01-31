@@ -70,8 +70,8 @@ onBeforeMount(async () => {
 
 function getApi (name) {
   switch (name) {
-    case 'btn': return import('../../../../src/api/data/btn.js')
-    case 'icon': return import('../../../../src/api/data/icon.js')
+    case 'btn': return import('../../data/btn.json')
+    case 'icon': return import('../../data/icon.json')
   }
 }
 </script>
