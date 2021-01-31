@@ -1,47 +1,53 @@
 <template>
-  <div class="space-x-4 mb-6">
-    <Btn outlined>
+  <div>
+    <Btn outlined class="mr-4 mb-6">
       <Icon left>
         {{ ziVisible }}
       </Icon>
       Text icon
     </Btn>
-    <Btn outlined>Text</Btn>
-    <Btn outlined icon>
+    <Btn outlined class="mr-4 mb-6">
+      Text
+    </Btn>
+    <Btn outlined icon class="mb-6">
       <Icon>
         {{ ziVisible }}
       </Icon>
     </Btn>
   </div>
-  <div class="space-x-4 mb-6">
-    <Btn outlined small>
+  <div>
+    <Btn outlined small class="mr-4 mb-6">
       <Icon left>
         {{ ziVisible }}
       </Icon>
       Text icon
     </Btn>
-    <Btn outlined small>Text</Btn>
-    <Btn outlined small icon>
+    <Btn outlined small class="mr-4 mb-6">
+      Text
+    </Btn>
+    <Btn outlined small icon class="mb-6">
       <Icon>
         {{ ziVisible }}
       </Icon>
     </Btn>
   </div>
-  <div class="space-x-4 mb-6">
-    <Btn disabled outlined small>
+  <div>
+    <Btn disabled outlined small class="mr-4 mb-6">
       <Icon left>
         {{ ziVisible }}
       </Icon>
       Text icon
     </Btn>
-    <Btn disabled outlined small>Text</Btn>
-    <Btn disabled outlined small icon>
+    <Btn disabled outlined small class="mr-4 mb-6">
+      Text
+    </Btn>
+    <Btn disabled outlined small icon class="mb-6">
       <Icon>
         {{ ziVisible }}
       </Icon>
     </Btn>
   </div>
-  <div class="space-x-4">
+  <div>
     <Btn :loading="loading" outlined block @click="toggleLoading">
       <Icon left>
         {{ ziVisible }}

@@ -1,56 +1,56 @@
 <template>
-  <div class="space-x-4 mb-6">
-    <Btn x-small outlined dark-icon>
+  <div>
+    <Btn x-small outlined dark-icon class="mr-4 mb-6">
       Date
       <Icon right>
         {{ ziCalendar }}
       </Icon>
     </Btn>
-    <Btn x-small disabled outlined dark-icon>
+    <Btn x-small disabled outlined dark-icon class="mr-4 mb-6">
       Date
       <Icon right>
         {{ ziCalendar }}
       </Icon>
     </Btn>
-    <Btn x-small :loading="loading" outlined dark-icon @click="toggleLoading">
+    <Btn x-small :loading="loading" outlined dark-icon @click="toggleLoading" class="mb-6">
       Date
       <Icon right>
         {{ ziCalendar }}
       </Icon>
     </Btn>
   </div>
-  <div class="space-x-4 mb-6">
-    <Btn x-small outlined dark-icon>
+  <div>
+    <Btn x-small outlined dark-icon class="mr-4 mb-6">
       <Icon left>
         {{ ziPlay }}
       </Icon>
       Start
     </Btn>
-    <Btn x-small disabled outlined dark-icon>
+    <Btn x-small disabled outlined dark-icon class="mr-4 mb-6">
       <Icon left>
         {{ ziPlay }}
       </Icon>
       Start
     </Btn>
-    <Btn x-small :loading="loading" outlined dark-icon @click="toggleLoading">
+    <Btn x-small :loading="loading" outlined dark-icon @click="toggleLoading" class="mb-6">
       <Icon left>
         {{ ziPlay }}
       </Icon>
       Start
     </Btn>
   </div>
-  <div class="space-x-4">
-    <Btn x-small icon outlined>
+  <div class="-mb-6">
+    <Btn x-small icon outlined class="mr-4 mb-6">
       <Icon>
         {{ ziDimentions }}
       </Icon>
     </Btn>
-    <Btn x-small icon disabled outlined>
+    <Btn x-small icon disabled outlined class="mr-4 mb-6">
       <Icon>
         {{ ziDimentions }}
       </Icon>
     </Btn>
-    <Btn x-small icon :loading="loading" outlined @click="toggleLoading">
+    <Btn x-small icon :loading="loading" outlined @click="toggleLoading" class="mb-6">
       <Icon>
         {{ ziDimentions }}
       </Icon>

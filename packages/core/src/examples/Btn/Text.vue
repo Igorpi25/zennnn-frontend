@@ -1,38 +1,38 @@
 <template>
-  <div class="space-x-4 mb-6">
-    <Btn text small>
+  <div>
+    <Btn text small class="mr-4 mb-6">
       <Icon left>
         {{ ziEdit }}
       </Icon>
       Text
     </Btn>
-    <Btn text small disabled>
+    <Btn text small disabled class="mr-4 mb-6">
       <Icon left>
         {{ ziEdit }}
       </Icon>
       Text
     </Btn>
-    <Btn text small :loading="loading" @click="toggleLoading">
+    <Btn text small :loading="loading" @click="toggleLoading" class="mb-6">
       <Icon left>
         {{ ziEdit }}
       </Icon>
       Text
     </Btn>
   </div>
-  <div class="space-x-4">
-    <Btn text mini>
+  <div class="-mb-6">
+    <Btn text mini class="mr-4 mb-6">
       <Icon left>
         {{ ziReply }}
       </Icon>
       Reply
     </Btn>
-    <Btn text mini disabled>
+    <Btn text mini disabled class="mr-4 mb-6">
       <Icon left>
         {{ ziReply }}
       </Icon>
       Reply
     </Btn>
-    <Btn text mini :loading="loading" @click="toggleLoading">
+    <Btn text mini :loading="loading" @click="toggleLoading" class="mb-6">
       <Icon left>
         {{ ziReply }}
       </Icon>

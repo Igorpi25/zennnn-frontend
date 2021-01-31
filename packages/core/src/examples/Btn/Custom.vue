@@ -1,45 +1,45 @@
 <template>
-  <div class="space-x-4 mb-6">
-    <Btn icon outlined dark-icon>
+  <div>
+    <Btn icon outlined dark-icon class="mr-4 mb-6">
       <Icon>
         {{ ziAddCart }}
       </Icon>
     </Btn>
-    <Btn icon outlined dark-icon disabled>
+    <Btn icon outlined dark-icon disabled class="mr-4 mb-6">
       <Icon>
         {{ ziAddCart }}
       </Icon>
     </Btn>
-    <Btn icon outlined dark-icon :loading="loading" @click="toggleLoading">
+    <Btn icon outlined dark-icon :loading="loading" @click="toggleLoading" class="mb-6">
       <Icon>
         {{ ziAddCart }}
       </Icon>
     </Btn>
   </div>
-  <div class="space-x-4 mb-6">
-    <Btn :class="custom1">
+  <div>
+    <Btn :class="custom1" class="mr-4 mb-6">
       Start using
     </Btn>
-    <Btn disabled :class="custom1">
+    <Btn disabled :class="custom1" class="mr-4 mb-6">
       Start using
     </Btn>
-    <Btn :class="custom1" :loading="loading" @click="toggleLoading">
+    <Btn :class="custom1" :loading="loading" @click="toggleLoading" class="mb-6">
       Start using
     </Btn>
   </div>
-  <div class="space-x-4 mb-6">
-    <Btn :primary="false" :class="custom2">
+  <div>
+    <Btn :primary="false" :class="custom2" class="mr-4 mb-6">
       Delete
     </Btn>
-    <Btn :primary="false" disabled class="disabled:bg-gray-100 disabled:text-gray-700">
+    <Btn :primary="false" disabled class="mr-4 mb-6 disabled:bg-gray-100 disabled:text-gray-700">
       Delete
     </Btn>
-    <Btn :primary="false" :class="custom2" :loading="loading" @click="toggleLoading">
+    <Btn :primary="false" :class="custom2" :loading="loading" @click="toggleLoading" class="mr-4 mb-6">
       Delete
     </Btn>
   </div>
-  <div class="space-x-4 mb-6">
-    <Btn x-small :primary="false" class="text-white bg-gray-600 hover:bg-gray-400 focus:bg-gray-400">
+  <div>
+    <Btn x-small :primary="false" class="text-white bg-gray-600 hover:bg-gray-400 focus:bg-gray-400 mb-6">
       <Icon class="mr-2">
         {{ ziAddCart }}
       </Icon>

@@ -8,7 +8,7 @@
   <Btn block disabled class="mb-6">
     Disabled
   </Btn>
-  <Btn block :loading="loading" class="mb-6" @click="toggleLoading">
+  <Btn block :loading="loading" @click="toggleLoading">
     Loading
   </Btn>
 </template>
