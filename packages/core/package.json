@@ -2,16 +2,17 @@
   "name": "@zennnn/core",
   "version": "0.36.7",
   "private": true,
-  "main": "lib/index.js",
-  "module": "lib/index.js",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.esm.js",
   "files": [
     "src/",
     "lib/",
     "types/"
   ],
   "scripts": {
-    "build": "yarn build:lib",
-    "build:lib": "rm -rf ./lib/* && babel src --out-dir lib --source-maps",
+    "build": "rm -rf ./lib/* && yarn build:lib && yarn build:bundle",
+    "build:lib": "babel src --out-dir lib --source-maps",
+    "build:bundle": "rollup -c",
     "generate:examples": "node ./scripts/generate-examples.js",
     "test": "jest",
     "lint": "eslint src -f codeframe",
