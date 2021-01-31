@@ -5,7 +5,7 @@
     @apply select-none focus:outline-none;
     @apply px-6;
     @apply disabled:cursor-not-allowed disabled:opacity-50;
-    @apply focus:ring focus:ring-blue-400 focus:ring-offset-2 focus:ring-opacity-90 dark:focus:ring-offset-gray-900;
+    @apply focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900;
   }
 
   .btn:focus:not(:focus-visible) {
