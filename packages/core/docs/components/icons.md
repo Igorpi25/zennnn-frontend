@@ -2,13 +2,13 @@
 The `Icon` component.
 
 ## Usage
-<Icon>M13 11V6h-2v5H6v2h5v5h2v-5h5v-2h-5z</Icon>
+<Icon>M3 5h18v2H3V5zm0 6h18v2H3v-2zm18 6H3v2h18v-2z</Icon>
 
 ---
 
 ```vue
 <Icon>
-  M13 11V6h-2v5H6v2h5v5h2v-5h5v-2h-5z
+  M3 5h18v2H3V5zm0 6h18v2H3v-2zm18 6H3v2h18v-2z
 </Icon>
 ```
 
