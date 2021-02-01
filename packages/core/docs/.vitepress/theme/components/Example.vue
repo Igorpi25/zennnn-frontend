@@ -94,6 +94,7 @@ const getComponentsModules = () => {
     case 'Btn': return import.meta.globEager('../../examples/Btn/*.vue')
     case 'Icon': return import.meta.globEager('../../examples/Icon/*.vue')
     case 'Progress': return import.meta.globEager('../../examples/Progress/*.vue')
+    case 'LoadingSpinner': return import.meta.globEager('../../examples/LoadingSpinner/*.vue')
   }
 }
 
@@ -103,6 +104,7 @@ const getCodesModules = () => {
     case 'Btn': return import.meta.glob('../../examples_code/Btn/*.md')
     case 'Icon': return import.meta.glob('../../examples_code/Icon/*.md')
     case 'Progress': return import.meta.glob('../../examples_code/Progress/*.md')
+    case 'LoadingSpinner': return import.meta.glob('../../examples_code/LoadingSpinner/*.md')
   }
 }
 

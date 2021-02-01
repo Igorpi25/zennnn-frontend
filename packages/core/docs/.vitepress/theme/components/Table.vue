@@ -73,6 +73,7 @@ function getApi (name) {
     case 'btn': return import('../../data/btn.json')
     case 'icon': return import('../../data/icon.json')
     case 'progress': return import('../../data/progress.json')
+    case 'loading-spinner': return import('../../data/loading-spinner.json')
   }
 }
 </script>

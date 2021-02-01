@@ -1,5 +1,6 @@
 const fs = require('fs-extra')
 const path = require('path')
+const isFunction = require('lodash/isFunction')
 const isPlainObject = require('lodash/isPlainObject')
 const lib = require('../lib/index.cjs')
 const Prism = require('prismjs')
@@ -8,6 +9,14 @@ const md = require('markdown-it')({
   html: true,
   linkify: true,
 })
+
+const map = {
+  LoadingSpinner: {
+    props: {
+      size: { type: Number, default: 18 },
+    },
+  },
+}
 
 const dirname = 'docs/.vitepress/locales'
 
@@ -26,7 +35,7 @@ const localeData = getLocaleData()
 for (const componentName in lib) {
   const transformedName = kebabCase(componentName)
   const locale = localeData[transformedName] || {}
-  const component = lib[componentName]
+  const component = isFunction(lib[componentName]) ? map[componentName] : lib[componentName]
   const data = {}
   if (component.props) {
     const propsLocale = locale.props || {}
