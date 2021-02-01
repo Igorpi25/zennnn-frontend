@@ -72,6 +72,7 @@ function getApi (name) {
   switch (name) {
     case 'btn': return import('../../data/btn.json')
     case 'icon': return import('../../data/icon.json')
+    case 'progress': return import('../../data/progress.json')
   }
 }
 </script>

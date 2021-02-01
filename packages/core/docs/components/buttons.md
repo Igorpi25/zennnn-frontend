@@ -2,15 +2,7 @@
 The `Btn` component.
 
 ## Usage
-<Btn>Button</Btn>
-
----
-
-```vue
-<Btn>
-  Button
-</Btn>
-```
+<Example file="Btn/Usage" />
 
 ## Api
 - [Btn](../api/btn)

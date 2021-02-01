@@ -21,6 +21,7 @@ function getSidebar () {
       children: [
         { text: 'Buttons', link: '/components/buttons' },
         { text: 'Icons', link: '/components/icons' },
+        { text: 'Progress', link: '/components/progress' },
       ],
     },
     {
@@ -28,6 +29,7 @@ function getSidebar () {
       children: [
         { text: 'Btn', link: '/api/btn' },
         { text: 'Icon', link: '/api/icon' },
+        { text: 'Progress', link: '/api/progress' },
       ],
     },
   ]
