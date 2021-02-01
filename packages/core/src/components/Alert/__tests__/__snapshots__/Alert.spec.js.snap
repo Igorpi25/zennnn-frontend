@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Alert.js should render component with "error" color and match snapshot 1`] = `
-<div class="alert" style="max-width: 494px;" role="alert">
-  <div class="alert__container alert__container--error"><i class="icon alert__info-icon alert__info-icon--error"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<div class="alert" role="alert">
+  <div class="alert__container alert__container--error"><i class="icon alert__icon alert__icon--error" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 6.045a1.251 1.251 0 000 2.5 1.251 1.251 0 000-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 100 18.4 9.2 9.2 0 000-18.4z"></path>
         </g>
@@ -13,8 +13,8 @@ exports[`Alert.js should render component with "error" color and match snapshot 
 `;
 
 exports[`Alert.js should render component with "info" color and match snapshot 1`] = `
-<div class="alert" style="max-width: 494px;" role="alert">
-  <div class="alert__container alert__container--info"><i class="icon alert__info-icon alert__info-icon--info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<div class="alert" role="alert">
+  <div class="alert__container alert__container--info"><i class="icon alert__icon alert__icon--info" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 6.045a1.251 1.251 0 000 2.5 1.251 1.251 0 000-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 100 18.4 9.2 9.2 0 000-18.4z"></path>
         </g>
@@ -25,8 +25,8 @@ exports[`Alert.js should render component with "info" color and match snapshot 1
 `;
 
 exports[`Alert.js should render component with "primary" color and match snapshot 1`] = `
-<div class="alert" style="max-width: 494px;" role="alert">
-  <div class="alert__container alert__container--primary"><i class="icon alert__info-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<div class="alert" role="alert">
+  <div class="alert__container alert__container--primary"><i class="icon alert__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 6.045a1.251 1.251 0 000 2.5 1.251 1.251 0 000-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 100 18.4 9.2 9.2 0 000-18.4z"></path>
         </g>
@@ -37,8 +37,8 @@ exports[`Alert.js should render component with "primary" color and match snapsho
 `;
 
 exports[`Alert.js should render component with "success" color and match snapshot 1`] = `
-<div class="alert" style="max-width: 494px;" role="alert">
-  <div class="alert__container alert__container--success"><i class="icon alert__info-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<div class="alert" role="alert">
+  <div class="alert__container alert__container--success"><i class="icon alert__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 6.045a1.251 1.251 0 000 2.5 1.251 1.251 0 000-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 100 18.4 9.2 9.2 0 000-18.4z"></path>
         </g>
@@ -49,8 +49,8 @@ exports[`Alert.js should render component with "success" color and match snapsho
 `;
 
 exports[`Alert.js should render component with "warn" color and match snapshot 1`] = `
-<div class="alert" style="max-width: 494px;" role="alert">
-  <div class="alert__container alert__container--warn"><i class="icon alert__info-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<div class="alert" role="alert">
+  <div class="alert__container alert__container--warn"><i class="icon alert__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 6.045a1.251 1.251 0 000 2.5 1.251 1.251 0 000-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 100 18.4 9.2 9.2 0 000-18.4z"></path>
         </g>
@@ -61,24 +61,24 @@ exports[`Alert.js should render component with "warn" color and match snapshot 1
 `;
 
 exports[`Alert.js should render component with close prop and match snapshot 1`] = `
-<div class="alert" style="max-width: 494px;" role="alert">
-  <div class="alert__container alert__container--primary alert__container--closable"><i class="icon alert__info-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<div class="alert" role="alert">
+  <div class="alert__container alert__container--primary alert__container--closable"><i class="icon alert__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 6.045a1.251 1.251 0 000 2.5 1.251 1.251 0 000-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 100 18.4 9.2 9.2 0 000-18.4z"></path>
         </g>
       </svg></i>
-    <div class="alert__content">Alert</div><i class="icon alert__close" role="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <div class="alert__content">Alert</div><button class="icon icon--link alert__close" role="button" aria-hidden="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 10.586L8.466 7.05 7.051 8.465 10.586 12l-3.535 3.536 1.414 1.414 3.536-3.536 3.535 3.536 1.414-1.414L13.415 12l3.535-3.535-1.414-1.415-3.535 3.536z"></path>
         </g>
-      </svg></i>
+      </svg></button>
   </div>
 </div>
 `;
 
 exports[`Alert.js should render component with close slot and match snapshot 1`] = `
-<div class="alert" style="max-width: 494px;" role="alert">
-  <div class="alert__container alert__container--primary"><i class="icon alert__info-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<div class="alert" role="alert">
+  <div class="alert__container alert__container--primary"><i class="icon alert__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 6.045a1.251 1.251 0 000 2.5 1.251 1.251 0 000-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 100 18.4 9.2 9.2 0 000-18.4z"></path>
         </g>
@@ -89,24 +89,24 @@ exports[`Alert.js should render component with close slot and match snapshot 1`]
 `;
 
 exports[`Alert.js should render component with custom class props and match snapshot 1`] = `
-<div class="alert custom-class" style="max-width: 494px;" role="alert">
-  <div class="alert__container alert__container--primary alert__container--closable"><i class="icon alert__info-icon custom-info-icon-close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<div class="alert custom-class" role="alert">
+  <div class="alert__container alert__container--primary alert__container--closable"><i class="icon alert__icon custom-info-icon-close" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 6.045a1.251 1.251 0 000 2.5 1.251 1.251 0 000-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 100 18.4 9.2 9.2 0 000-18.4z"></path>
         </g>
       </svg></i>
-    <div class="alert__content content-custom-class">Alert</div><i class="icon alert__close custom-close-class" role="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <div class="alert__content content-custom-class">Alert</div><button class="icon icon--link alert__close custom-close-class" role="button" aria-hidden="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 10.586L8.466 7.05 7.051 8.465 10.586 12l-3.535 3.536 1.414 1.414 3.536-3.536 3.535 3.536 1.414-1.414L13.415 12l3.535-3.535-1.414-1.415-3.535 3.536z"></path>
         </g>
-      </svg></i>
+      </svg></button>
   </div>
 </div>
 `;
 
 exports[`Alert.js should render component with default slot and match snapshot 1`] = `
-<div class="alert" style="max-width: 494px;" role="alert">
-  <div class="alert__container alert__container--primary"><i class="icon alert__info-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<div class="alert" role="alert">
+  <div class="alert__container alert__container--primary"><i class="icon alert__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 6.045a1.251 1.251 0 000 2.5 1.251 1.251 0 000-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 100 18.4 9.2 9.2 0 000-18.4z"></path>
         </g>
@@ -117,24 +117,24 @@ exports[`Alert.js should render component with default slot and match snapshot 1
 `;
 
 exports[`Alert.js should render component with icon slot and match snapshot 1`] = `
-<div class="alert" style="max-width: 494px;" role="alert">
-  <div class="alert__container alert__container--primary alert__container--closable"><i class="icon text-blue-500 pr-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<div class="alert" role="alert">
+  <div class="alert__container alert__container--primary alert__container--closable"><i class="icon text-blue-500 pr-4" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm.646-6.535a1.25 1.25 0 01-1.805.01l-3.567-3.683a1.25 1.25 0 111.796-1.74l2.659 2.746 4.442-4.689a1.25 1.25 0 111.815 1.72z"></path>
         </g>
       </svg></i>
-    <div class="alert__content">Alert</div><i class="icon alert__close" role="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <div class="alert__content">Alert</div><button class="icon icon--link alert__close" role="button" aria-hidden="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 10.586L8.466 7.05 7.051 8.465 10.586 12l-3.535 3.536 1.414 1.414 3.536-3.536 3.535 3.536 1.414-1.414L13.415 12l3.535-3.535-1.414-1.415-3.535 3.536z"></path>
         </g>
-      </svg></i>
+      </svg></button>
   </div>
 </div>
 `;
 
 exports[`Alert.js should render component with text prop and match snapshot 1`] = `
-<div class="alert" style="max-width: 494px;" role="alert">
-  <div class="alert__container alert__container--primary"><i class="icon alert__info-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<div class="alert" role="alert">
+  <div class="alert__container alert__container--primary"><i class="icon alert__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 6.045a1.251 1.251 0 000 2.5 1.251 1.251 0 000-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 100 18.4 9.2 9.2 0 000-18.4z"></path>
         </g>
@@ -145,7 +145,7 @@ exports[`Alert.js should render component with text prop and match snapshot 1`] 
 `;
 
 exports[`Alert.js should render component without icon and match snapshot 1`] = `
-<div class="alert" style="max-width: 494px;" role="alert">
+<div class="alert" role="alert">
   <div class="alert__container alert__container--primary">
     <div class="alert__content">Alert</div>
   </div>

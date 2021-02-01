@@ -2,7 +2,6 @@ import {
   h,
   ref,
   computed,
-  Transition,
   withDirectives,
   vShow,
   watch,
@@ -14,6 +13,7 @@ import { convertToUnit } from 'vue-supp'
 import { ziCloseDelete, ziInfoBig } from '@zennnn/icons'
 
 import Icon from '../Icon'
+import Transition from '../Transition'
 
 import './Alert.css'
 
@@ -21,7 +21,10 @@ export default {
   name: 'Alert',
 
   props: {
-    modelValue: [String, Boolean],
+    modelValue: {
+      type: [String, Boolean],
+      default: true,
+    },
     color: {
       type: String,
       validator: (value) => {
@@ -35,25 +38,18 @@ export default {
       },
       default: 'primary',
     },
-    infoIcon: {
+    icon: {
       type: Boolean,
       default: true,
     },
     close: Boolean,
-    text: {
-      type: String,
-      default: '',
-    },
+    text: String,
     transition: String,
-    minWidth: {
-      type: [String, Number],
-      default: undefined,
-    },
-    maxWidth: {
-      type: [String, Number],
-      default: 494,
-    },
-    infoIconClass: {
+    mode: String,
+    origin: String,
+    minWidth: [String, Number],
+    maxWidth: [String, Number],
+    iconClass: {
       type: String,
       default: '',
     },
@@ -107,7 +103,7 @@ export default {
     })
 
     const hasIcon = computed(() => {
-      return slots.icon || props.infoIcon
+      return slots.icon || props.icon
     })
 
     const hasClose = computed(() => {
@@ -121,14 +117,14 @@ export default {
     const genIcon = () => {
       if (slots.icon) {
         return slots.icon()
-      } else if (props.infoIcon) {
+      } else if (props.icon) {
         return h(Icon, {
           size: 24,
           class: {
-            'alert__info-icon': true,
-            'alert__info-icon--error': props.color === 'error',
-            'alert__info-icon--info': props.color === 'info',
-            [props.infoIconClass.trim()]: true,
+            'alert__icon': true,
+            'alert__icon--error': props.color === 'error',
+            'alert__icon--info': props.color === 'info',
+            [props.iconClass.trim()]: true,
           },
         }, {
           default: () => ziInfoBig,
@@ -200,6 +196,8 @@ export default {
     if (this.transition) {
       return h(Transition, {
         name: this.transition,
+        mode: this.mode,
+        origin: this.origin,
       }, { default: () => content })
     } else {
       return this.internalValue ? content : undefined

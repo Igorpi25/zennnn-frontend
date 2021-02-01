@@ -20,9 +20,6 @@ describe('Alert.js', () => {
 
   it('should render component with default slot and match snapshot', () => {
     const wrapper = mountFunction({
-      props: {
-        modelValue: true,
-      },
       slots: {
         default: () => 'Alert',
       },
@@ -34,7 +31,6 @@ describe('Alert.js', () => {
   it('should render component with text prop and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
         text: 'Alert',
       },
     })
@@ -45,7 +41,6 @@ describe('Alert.js', () => {
   it('should render component with "error" color and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
         color: 'error',
         text: 'Alert',
       },
@@ -57,7 +52,6 @@ describe('Alert.js', () => {
   it('should render component with "warn" color and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
         color: 'warn',
         text: 'Alert',
       },
@@ -69,7 +63,6 @@ describe('Alert.js', () => {
   it('should render component with "success" color and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
         color: 'success',
         text: 'Alert',
       },
@@ -81,7 +74,6 @@ describe('Alert.js', () => {
   it('should render component with "info" color and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
         color: 'info',
         text: 'Alert',
       },
@@ -93,7 +85,6 @@ describe('Alert.js', () => {
   it('should render component with "primary" color and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
         color: 'primary',
         text: 'Alert',
       },
@@ -105,7 +96,6 @@ describe('Alert.js', () => {
   it('should render component with close prop and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
         close: true,
         text: 'Alert',
       },
@@ -117,10 +107,9 @@ describe('Alert.js', () => {
   it('should render component with custom class props and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
         close: true,
         closeClass: 'custom-close-class',
-        infoIconClass: 'custom-info-icon-close',
+        iconClass: 'custom-info-icon-close',
         contentClass: 'content-custom-class',
         class: 'custom-class',
         text: 'Alert',
@@ -133,7 +122,6 @@ describe('Alert.js', () => {
   it('should render component with icon slot and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
         close: true,
         text: 'Alert',
       },
@@ -150,8 +138,7 @@ describe('Alert.js', () => {
   it('should render component without icon and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
-        infoIcon: false,
+        icon: false,
         text: 'Alert',
       },
     })
@@ -162,7 +149,6 @@ describe('Alert.js', () => {
   it('should render component with close slot and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
         text: 'Alert',
       },
       slots: {
@@ -176,7 +162,6 @@ describe('Alert.js', () => {
   it('should emit false modelValue on close icon click', async () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
         close: true,
         text: 'Alert',
       },
@@ -189,6 +174,9 @@ describe('Alert.js', () => {
 
   it('should toggle model value', async () => {
     const wrapper = mountFunction({
+      props: {
+        modelValue: false,
+      },
       slots: {
         default: 'Alert',
       },
@@ -201,14 +189,23 @@ describe('Alert.js', () => {
     expect(wrapper.classes('alert')).toBe(true)
   })
 
-  it('should unset default maxWidth prop', async () => {
+  it('should set min-width with minWidth prop', () => {
     const wrapper = mountFunction({
       props: {
-        modelValue: true,
-        maxWidth: 'none',
+        minWidth: 100,
       },
     })
 
-    expect(wrapper.element.style.maxWidth).toBe('none')
+    expect(wrapper.element.style.minWidth).toBe('100px')
+  })
+
+  it('should set max-width with maxWidth prop', () => {
+    const wrapper = mountFunction({
+      props: {
+        maxWidth: 100,
+      },
+    })
+
+    expect(wrapper.element.style.maxWidth).toBe('100px')
   })
 })

@@ -7,12 +7,15 @@
     @apply flex-grow flex items-center text-sm leading-tight;
   }
 
-  .alert__info-icon {
+  .alert__icon {
     @apply flex-shrink-0 pr-4;
   }
 
   .alert__close {
-    @apply flex-shrink-0 pl-3 cursor-pointer select-none;
+    @apply flex-shrink-0 ml-3 cursor-pointer select-none;
+  }
+  .alert__close.icon--link {
+    @apply ring-offset-0;
   }
 
   .alert__container {
@@ -39,10 +42,10 @@
     @apply text-gray-100 bg-gray-500;
   }
 
-  .alert__info-icon--error {
+  .alert__icon--error {
     @apply text-pink-500;
   }
-  .alert__info-icon--info {
+  .alert__icon--info {
     @apply text-green-500;
   }
 }
