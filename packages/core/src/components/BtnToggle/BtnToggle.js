@@ -13,14 +13,15 @@ export default {
       default: () => ([]),
     },
     disabled: Boolean,
-    minWidth: [String, Number],
+    minWidth: {
+      type: [String, Number],
+      default: 132,
+    },
   },
 
   emits: ['update:modelValue'],
 
   setup (props, { emit }) {
-    const MIN_WIDTH = 130
-
     const internalValue = ref(props.modelValue)
 
     watch(internalValue, (val) => {
@@ -34,7 +35,7 @@ export default {
           'btn-toggle__item--active': internalValue.value === value,
         },
         style: {
-          minWidth: convertToUnit(props.minWidth || MIN_WIDTH),
+          minWidth: convertToUnit(props.minWidth),
         },
         disabled: props.disabled || disabled,
         onClick () {

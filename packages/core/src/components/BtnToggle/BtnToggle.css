@@ -4,30 +4,43 @@
   }
 
   .btn-toggle__item {
-    box-shadow: 0px 2px 1px #BDBDBD;
-    @apply h-10;
-    @apply bg-light-gray-200 text-gray-200 border-l border-t border-b border-light-gray-400;
-    @apply dark:bg-gray-600 dark:text-gray-200 dark:border-gray-900;
-    @apply hover:text-black focus:text-black dark:hover:text-white dark:focus:text-white focus:outline-none;
-    @apply disabled:text-light-gray-600 dark:disabled:text-gray-400 disabled:cursor-not-allowed;
-    @apply transition-bg-and-color duration-75 ease-in-out;
+    @apply focus:outline-none px-4;
+    @apply h-10 select-none relative border-l border-t border-b;
+    @apply bg-light-gray-200 text-gray-200 border-light-gray-400;
+    @apply dark:bg-gray-500 dark:text-gray-100 dark:border-gray-900;
+    @apply hover:text-black dark:hover:text-white active:text-black dark:hover:text-white;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:text-gray-100 dark:disabled:text-gray-300;
+    @apply transition-bg-and-color duration-100 ease-in-out;
   }
-  .dark .btn-toggle__item {
-    box-shadow: 0px 2px 1px #1E1E1E;
+
+  .btn-toggle__item::before {
+    content: '';
+    @apply absolute inset-0 pointer-events-none;
   }
-  .btn-toggle__item:first-child {
-    @apply rounded-l-md;
+
+  .btn-toggle__item:focus::before {
+    @apply z-1 ring-2 ring-blue-400 ring-offset-1 ring-offset-light-gray-400 dark:ring-offset-gray-900;
+  }
+  .btn-toggle__item:focus:not(:focus-visible)::before {
+    box-shadow: none;
+    outline: 0;
   }
   .btn-toggle__item:last-child {
-    @apply rounded-r-md;
+    @apply border-r;
+  }
+
+  .btn-toggle__item:first-child,
+  .btn-toggle__item:first-child::before {
+    @apply rounded-l-lg;
+  }
+  .btn-toggle__item:last-child,
+  .btn-toggle__item:last-child::before {
+    @apply rounded-r-lg;
   }
 
   .btn-toggle__item--active {
-    box-shadow: inset 0px 2px 1px rgba(0, 0, 0, 0.3);
     @apply bg-white text-black;
-    @apply dark:bg-gray-900 dark:text-white;
-  }
-  .dark .btn-toggle__item--active {
-    box-shadow: inset 0px 2px 1px rgba(0, 0, 0, 0.7);
+    @apply dark:bg-gray-800 dark:text-white;
+    @apply shadow-inner-pressed-day dark:shadow-inner-pressed-night;
   }
 }

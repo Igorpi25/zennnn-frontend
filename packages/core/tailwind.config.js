@@ -110,7 +110,8 @@ module.exports = {
       'main-night': '0px 20px 40px rgba(0, 0, 0, 0.35)',
       'main-day': '0px 20px 40px rgba(0, 0, 0, 0.1)',
       'photo': '4px 4px 8px rgba(0, 0, 0, 0.15)',
-      'inner-pressed': 'inset 0px 2px 1px rgba(0, 0, 0, 0.7)',
+      'inner-pressed-night': 'inset 0px 2px 1px rgba(0, 0, 0, 0.7)',
+      'inner-pressed-day': 'inset 0px 2px 1px rgba(0, 0, 0, 0.2)',
       'small-forms-night': '0px 0px 10px rgba(0, 0, 0, 0.25)',
       'small-form-day': '0px 0px 10px rgba(0, 0, 0, 0.05)',
 

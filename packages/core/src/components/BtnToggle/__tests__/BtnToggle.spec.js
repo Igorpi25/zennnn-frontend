@@ -58,6 +58,28 @@ describe('BtnToggle.js', () => {
     expect(wrapper.get('button').element.style.minWidth).toBe('150px')
   })
 
+  it('should unset min-width style with minWidth prop', () => {
+    const wrapper = mountFunction({
+      props: {
+        minWidth: 'none',
+        items: [{ text: 'Item 1', value: 'item-1' }],
+      },
+    })
+
+    expect(wrapper.get('button').element.style.minWidth).toBe('none')
+  })
+
+  it('should activate initial value', () => {
+    const wrapper = mountFunction({
+      props: {
+        modelValue: 'item-1',
+        items: [{ text: 'Item 1', value: 'item-1' }],
+      },
+    })
+
+    expect(wrapper.get('button').classes('btn-toggle__item--active')).toBe(true)
+  })
+
   it('should have btn-toggle__item--active class on item click', async () => {
     const wrapper = mountFunction({
       props: {

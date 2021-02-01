@@ -20,6 +20,7 @@ function getSidebar () {
       text: 'Components',
       children: [
         { text: 'Buttons', link: '/components/buttons' },
+        { text: 'Button Groups', link: '/components/button-groups' },
         { text: 'Icons', link: '/components/icons' },
         { text: 'Progress', link: '/components/progress' },
         { text: 'Loading', link: '/components/loading' },
@@ -28,7 +29,8 @@ function getSidebar () {
     {
       text: 'Api',
       children: [
-        { text: 'Btn', link: '/api/btn' },
+        { text: 'Btn', link: '/api/btn', activeMatch: '/api/btn$' },
+        { text: 'BtnToggle', link: '/api/btn-toggle' },
         { text: 'Icon', link: '/api/icon' },
         { text: 'Progress', link: '/api/progress' },
         { text: 'Loading Spinner', link: '/api/loading-spinner' },
