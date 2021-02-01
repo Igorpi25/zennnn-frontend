@@ -1,13 +1,16 @@
 {
   "name": "@zennnn/icons",
   "version": "0.36.7",
-  "main": "index.js",
+  "main": "commonjs/index.js",
   "types": "index.d.ts",
   "module": "index.js",
+  "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "yarn generate && yarn tsc",
-    "generate": "node ./scripts/generate-icons.js",
+    "build": "yarn generate:icons && yarn es5 && yarn commonjs",
+    "es5": "tsc",
+    "commonjs": "tsc --module commonjs --outDir commonjs",
+    "generate:icons": "node ./scripts/generate-icons.js",
     "generate:favicon": "node ./scripts/generate-favicon.js"
   },
   "peerDependencies": {

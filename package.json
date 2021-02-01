@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "core": "yarn workspace @zennnn/core",
+    "icons": "yarn workspace @zennnn/icons",
     "zennnn": "yarn workspace zennnn",
     "admin": "yarn workspace zennnn-admin",
     "serve": "yarn workspace zennnn serve",
