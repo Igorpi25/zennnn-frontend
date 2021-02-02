@@ -16,6 +16,13 @@ const map = {
       size: { type: Number, default: 18 },
     },
   },
+  ExpandTransition: {
+    props: {
+      mode: String,
+      x: Boolean,
+      expandedParentClass: String,
+    }
+  },
 }
 
 const dirname = 'docs/.vitepress/locales'

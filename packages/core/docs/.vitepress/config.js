@@ -25,6 +25,7 @@ function getSidebar () {
         { text: 'Icons', link: '/components/icons' },
         { text: 'Progress', link: '/components/progress' },
         { text: 'Loading', link: '/components/loading' },
+        { text: 'Transitions', link: '/components/transitions' },
       ],
     },
     {
@@ -36,6 +37,7 @@ function getSidebar () {
         { text: 'Icon', link: '/api/icon' },
         { text: 'Progress', link: '/api/progress' },
         { text: 'Loading Spinner', link: '/api/loading-spinner' },
+        { text: 'ExpandTransition', link: '/api/expand-transition' },
       ],
     },
   ]
