@@ -1,22 +1,12 @@
 <template>
   <div class="mb-6">
     <BtnToggle
-      v-model="model1"
+      v-model="model"
       :items="items"
       class="inline-flex mr-6"
     />
     <span class="text-gray-200">
-      Value: {{ model1 }}
-    </span>
-  </div>
-  <div>
-    <BtnToggle
-      v-model="model2"
-      :items="items"
-      class="inline-flex mr-6"
-    />
-    <span class="text-gray-200">
-      Value: {{ model2 }}
+      Value: {{ model }}
     </span>
   </div>
 </template>
@@ -24,8 +14,7 @@
 <script setup>
 import { ref } from 'vue'
 
-const model1 = ref(0)
-const model2 = ref(1)
+const model = ref(0)
 
 const items = [
   {

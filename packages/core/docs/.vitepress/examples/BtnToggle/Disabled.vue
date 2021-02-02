@@ -10,7 +10,7 @@
     </span>
   </div>
   <BtnToggle
-    :mode-value="'item-1'"
+    v-model="model"
     :items="items"
     disabled
   />
@@ -19,7 +19,7 @@
 <script setup>
 import { ref } from 'vue'
 
-const model = ref(null)
+const model = ref('item-1')
 
 const items = [
   {
