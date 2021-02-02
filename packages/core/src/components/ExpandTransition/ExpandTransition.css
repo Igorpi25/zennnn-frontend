@@ -1,0 +1,16 @@
+@layer components {
+  .expand-transition-enter-active,
+  .expand-transition-leave-active {
+    transition: .3s cubic-bezier(.25,.8,.5,1);
+  }
+  .expand-transition-move {
+    transition: transform .6s;
+  }
+  .expand-x-transition-enter-active,
+  .expand-x-transition-leave-active {
+    transition: .3s cubic-bezier(.25,.8,.5,1);
+  }
+  .expand-x-transition-move {
+    transition: transform .6s;
+  }
+}

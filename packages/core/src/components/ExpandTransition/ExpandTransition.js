@@ -1,16 +1,18 @@
 import { h, Transition } from 'vue'
 import { upperFirst } from 'vue-supp'
 
+import './ExpandTransition.css'
+
 /**
  * Props
  * @param {string} [props.mode=in-out] Transition mode.
- * @param {boolean} [props.x=in-out] Transition direction.
- * @param {string} expandedParentClass Class names to add parent.
+ * @param {boolean} [props.x] Transition direction.
+ * @param {string} [props.expandedParentClass] Class names to add parent.
  */
 export default (props, { slots }) => {
   const mode = props.mode || 'in-out'
   const name = props.x ? 'expand-x-transition' : 'expand-transition'
-  const expandedParentClass = props.expandedParentClass
+  const expandedParentClass = props['expanded-parent-class']
   const sizeProperty = props.x ? 'width' : 'height'
   const offsetProperty = `offset${upperFirst(sizeProperty)}`
 
@@ -92,8 +94,6 @@ export default (props, { slots }) => {
     onAfterLeave,
     onLeaveCancelled,
   }, {
-    default: () => {
-      return slots.default ? slots.default() : null
-    },
+    default: () => slots.default && slots.default(),
   })
 }
