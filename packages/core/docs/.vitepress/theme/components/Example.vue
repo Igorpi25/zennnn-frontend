@@ -91,6 +91,7 @@ const Code = defineAsyncComponent({
 const getComponentsModules = () => {
   const page = props.file.split('/')[0]
   switch (page) {
+    case 'Alert': return import.meta.globEager('../../examples/Alert/*.vue')
     case 'Btn': return import.meta.globEager('../../examples/Btn/*.vue')
     case 'BtnToggle': return import.meta.globEager('../../examples/BtnToggle/*.vue')
     case 'Icon': return import.meta.globEager('../../examples/Icon/*.vue')
@@ -102,6 +103,7 @@ const getComponentsModules = () => {
 const getCodesModules = () => {
   const page = props.file.split('/')[0]
   switch (page) {
+    case 'Alert': return import.meta.glob('../../examples_code/Alert/*.md')
     case 'Btn': return import.meta.glob('../../examples_code/Btn/*.md')
     case 'BtnToggle': return import.meta.glob('../../examples_code/BtnToggle/*.md')
     case 'Icon': return import.meta.glob('../../examples_code/Icon/*.md')

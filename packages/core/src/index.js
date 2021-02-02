@@ -1,3 +1,4 @@
+export * from './components/Alert'
 export * from './components/Btn'
 export * from './components/BtnToggle'
 export * from './components/Progress'

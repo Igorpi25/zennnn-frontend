@@ -19,6 +19,7 @@ function getSidebar () {
     {
       text: 'Components',
       children: [
+        { text: 'Alerts', link: '/components/alerts' },
         { text: 'Buttons', link: '/components/buttons' },
         { text: 'Button Groups', link: '/components/button-groups' },
         { text: 'Icons', link: '/components/icons' },
@@ -29,6 +30,7 @@ function getSidebar () {
     {
       text: 'Api',
       children: [
+        { text: 'Alert', link: '/api/alert' },
         { text: 'Btn', link: '/api/btn', activeMatch: '/api/btn$' },
         { text: 'BtnToggle', link: '/api/btn-toggle' },
         { text: 'Icon', link: '/api/icon' },

@@ -3,6 +3,7 @@ import {
   ref,
   computed,
   withDirectives,
+  Transition,
   vShow,
   watch,
   cloneVNode,
@@ -13,7 +14,6 @@ import { convertToUnit } from 'vue-supp'
 import { ziCloseDelete, ziInfoBig } from '@zennnn/icons'
 
 import Icon from '../Icon'
-import Transition from '../Transition'
 
 import './Alert.css'
 
@@ -46,7 +46,6 @@ export default {
     text: String,
     transition: String,
     mode: String,
-    origin: String,
     minWidth: [String, Number],
     maxWidth: [String, Number],
     iconClass: {
@@ -197,7 +196,6 @@ export default {
       return h(Transition, {
         name: this.transition,
         mode: this.mode,
-        origin: this.origin,
       }, { default: () => content })
     } else {
       return this.internalValue ? content : undefined
