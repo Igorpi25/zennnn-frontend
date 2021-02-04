@@ -18,7 +18,6 @@ export default {
       type: [String, Object],
       default: undefined,
     },
-    append: Boolean,
     replace: Boolean,
     href: String,
     loading: Boolean,
@@ -111,7 +110,6 @@ export default {
     const genRouterLink = (data, children) => {
       Object.assign(data, {
         to: props.to,
-        append: props.append,
         replace: props.replace,
       })
       return h(RouterLink, data, {

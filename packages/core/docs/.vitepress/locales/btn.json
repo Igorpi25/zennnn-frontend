@@ -1,6 +1,5 @@
 {
   "props": {
-    "append": "Setting **append** prop always appends the relative path to the current path.",
     "block": "Expands the button to 100% of available space.",
     "contentClass": "Applies a custom class to `.btn__content`.",
     "dark": "Applies the dark theme variant to the component.",
