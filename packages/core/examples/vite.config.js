@@ -12,7 +12,7 @@ export default {
     }),
     pages({
       extensions: ['vue', 'md'],
-      pagesDir: '../docs/components'
+      pagesDir: '../docs/components',
     }),
     markdown(),
   ]

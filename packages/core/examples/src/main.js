@@ -10,7 +10,10 @@ import Example from './Example.vue'
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes: [
+    ...routes,
+    { path: '/', redirect: '/alerts' },
+  ],
 })
 
 const app = createApp(App)

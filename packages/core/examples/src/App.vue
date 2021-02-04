@@ -8,7 +8,7 @@
             :key="item.path"
             class="py-2 px-2"
           >
-            <router-link :to="item.path">
+            <router-link :to="item.path" active-class="text-blue-500">
               {{ item.name }}
             </router-link>
           </li>

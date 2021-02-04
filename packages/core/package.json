@@ -20,7 +20,7 @@
     "docs:dev": "vitepress dev docs --port 3030",
     "docs:serve": "vitepress serve docs --port 5050",
     "docs:build": "yarn generate:examples && yarn generate:api && vitepress build docs",
-    "playground": "vite examples --port 3030",
+    "playground": "vite examples --port 4040",
     "playground:build": "vite build examples"
   },
   "dependencies": {
