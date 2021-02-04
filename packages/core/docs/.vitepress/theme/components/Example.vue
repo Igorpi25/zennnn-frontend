@@ -69,8 +69,8 @@ const isCodeLoaded = ref(false)
 const Preview = defineAsyncComponent({
   loader: async () => {
     // TypeError: Failed to fetch dynamically imported module
-    // const m = await import(/* @vite-ignore */ `../../examples/${props.file}.vue`)
-    const path = `../../examples/${props.file}.vue`
+    // const m = await import(/* @vite-ignore */ `../../../../examples/src/components/${props.file}.vue`)
+    const path = `../../../../examples/src/components/${props.file}.vue`
     const modules = await getComponentsModules()
     const m = modules[path]
     isPreviewLoaded.value = true
@@ -80,7 +80,7 @@ const Preview = defineAsyncComponent({
 
 const Code = defineAsyncComponent({
   loader: async () => {
-    const path = `../../examples_code/${props.file}.md`
+    const path = `../../../../examples/generated/code/${props.file}.md`
     const modules = await getCodesModules()
     const m = await modules[path]()
     isCodeLoaded.value = true
@@ -91,28 +91,28 @@ const Code = defineAsyncComponent({
 const getComponentsModules = () => {
   const page = props.file.split('/')[0]
   switch (page) {
-    case 'Alert': return import.meta.globEager('../../examples/Alert/*.vue')
-    case 'Btn': return import.meta.globEager('../../examples/Btn/*.vue')
-    case 'BtnToggle': return import.meta.globEager('../../examples/BtnToggle/*.vue')
-    case 'Icon': return import.meta.globEager('../../examples/Icon/*.vue')
-    case 'Progress': return import.meta.globEager('../../examples/Progress/*.vue')
-    case 'LoadingSpinner': return import.meta.globEager('../../examples/LoadingSpinner/*.vue')
-    case 'Transition': return import.meta.globEager('../../examples/Transition/*.vue')
-    case 'Tooltip': return import.meta.globEager('../../examples/Tooltip/*.vue')
+    case 'Alert': return import.meta.globEager('../../../../examples/src/components/Alert/*.vue')
+    case 'Btn': return import.meta.globEager('../../../../examples/src/components/Btn/*.vue')
+    case 'BtnToggle': return import.meta.globEager('../../../../examples/src/components/BtnToggle/*.vue')
+    case 'Icon': return import.meta.globEager('../../../../examples/src/components/Icon/*.vue')
+    case 'Progress': return import.meta.globEager('../../../../examples/src/components/Progress/*.vue')
+    case 'LoadingSpinner': return import.meta.globEager('../../../../examples/src/components/LoadingSpinner/*.vue')
+    case 'Transition': return import.meta.globEager('../../../../examples/src/components/Transition/*.vue')
+    case 'Tooltip': return import.meta.globEager('../../../../examples/src/components/Tooltip/*.vue')
   }
 }
 
 const getCodesModules = () => {
   const page = props.file.split('/')[0]
   switch (page) {
-    case 'Alert': return import.meta.glob('../../examples_code/Alert/*.md')
-    case 'Btn': return import.meta.glob('../../examples_code/Btn/*.md')
-    case 'BtnToggle': return import.meta.glob('../../examples_code/BtnToggle/*.md')
-    case 'Icon': return import.meta.glob('../../examples_code/Icon/*.md')
-    case 'Progress': return import.meta.glob('../../examples_code/Progress/*.md')
-    case 'LoadingSpinner': return import.meta.glob('../../examples_code/LoadingSpinner/*.md')
-    case 'Transition': return import.meta.glob('../../examples_code/Transition/*.md')
-    case 'Tooltip': return import.meta.glob('../../examples_code/Tooltip/*.md')
+    case 'Alert': return import.meta.glob('../../../../examples/generated/code/Alert/*.md')
+    case 'Btn': return import.meta.glob('../../../../examples/generated/code/Btn/*.md')
+    case 'BtnToggle': return import.meta.glob('../../../../examples/generated/code/BtnToggle/*.md')
+    case 'Icon': return import.meta.glob('../../../../examples/generated/code/Icon/*.md')
+    case 'Progress': return import.meta.glob('../../../../examples/generated/code/Progress/*.md')
+    case 'LoadingSpinner': return import.meta.glob('../../../../examples/generated/code/LoadingSpinner/*.md')
+    case 'Transition': return import.meta.glob('../../../../examples/generated/code/Transition/*.md')
+    case 'Tooltip': return import.meta.glob('../../../../examples/generated/code/Tooltip/*.md')
   }
 }
 

@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 
-const dirname = 'docs/.vitepress/examples'
+const dirname = 'examples/src/components'
 
 async function* getFiles (dir) {
   const dirents = await fs.readdir(dir, { withFileTypes: true })
@@ -19,7 +19,7 @@ async function getFile (filepath) {
   const file = await fs.readFile(filepath, 'utf8')
   const md = `\`\`\`vue\n${file}\`\`\``
   const parse = path.parse(filepath)
-  const dirname = parse.dir.replace('/examples/', '/examples_code/')
+  const dirname = parse.dir.replace('/src/components/', '/generated/code/')
   const filename = `${parse.name}.md`
   await fs.outputFile(`${dirname}/${filename}`, md)
 }

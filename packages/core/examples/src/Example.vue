@@ -1,0 +1,45 @@
+<template>
+  <div class="h-12 flex items-center justify-end space-x-4 border-b border-light-gray-400">
+    <Btn
+      :primary="false"
+      icon
+      x-small
+      retain-focus-on-click
+      class="text-gray-200 hover:text-blue-500 active:text-blue-500"
+      @click="dark = !dark"
+    >
+      <Icon>
+        {{ dark ? ziSun : ziMoon }}
+      </Icon>
+    </Btn>
+  </div>
+  <div :class="[
+    'xs:rounded-md -mx-6 xs:mx-0 my-4 p-6',
+    dark ? 'dark bg-gray-900 text-gray-100' : 'bg-light-gray-100',
+  ]">
+    <component :is="Preview" />
+  </div>
+</template>
+
+<script setup>
+import { ref, defineProps, defineAsyncComponent } from 'vue'
+import { ziMoon, ziSun } from '@zennnn/icons'
+
+const props = defineProps({
+  file: {
+    type: String,
+    required: true,
+  },
+})
+
+const Preview = defineAsyncComponent(
+  async () => {
+    const path = `./components/${props.file}.vue`
+    const modules = import.meta.glob('./components/**/*.vue')
+    const m = await modules[path]()
+    return m
+  }
+)
+
+const dark = ref(false)
+</script>

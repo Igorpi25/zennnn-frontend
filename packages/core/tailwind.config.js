@@ -27,7 +27,7 @@ module.exports = {
       './src/**/*.js',
       './src/**/*.ts',
       './docs/.vitepress/theme/**/*.vue',
-      './docs/.vitepress/examples/**/*.vue',
+      './examples/**/*.vue',
     ],
   },
   theme: {

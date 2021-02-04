@@ -15006,7 +15006,19 @@ vite@^2.0.0-beta.56:
   optionalDependencies:
     fsevents "~2.1.2"
 
-vitepress@^0.11.4:
+vite@^2.0.0-beta.64:
+  version "2.0.0-beta.64"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.0.0-beta.64.tgz#245cabc72335911d4cb704545f713d47e880d84f"
+  integrity sha512-/dR5rOXohhdXfkAIBAjmwX7JmoMWhQc7+VI6/EjyqXQCQzREmfBztLgTk/rPkmsNY87Cd71u9b+nlbcYK4TDCA==
+  dependencies:
+    esbuild "^0.8.34"
+    postcss "^8.2.1"
+    resolve "^1.19.0"
+    rollup "^2.35.1"
+  optionalDependencies:
+    fsevents "~2.1.2"
+
+vitepress@^0.11.5:
   version "0.11.5"
   resolved "https://registry.yarnpkg.com/vitepress/-/vitepress-0.11.5.tgz#1973058ff50fab8702438361c5a5f1c1df336be1"
   integrity sha512-QElAGDxXcvn3G1UrW6VKWX6hd748+07cU1mMH5/gRN/QDdXTVAyt5Ulxmo+IXAmrZQhN5nvvY7jCWWJIDNXQOA==
@@ -15141,10 +15153,10 @@ vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue-supp@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/vue-supp/-/vue-supp-0.7.1.tgz#3012c9d3835907d36cef2b1fc2ac997487ff75e6"
-  integrity sha512-+dovOTbZBKsbTqgNF3b/U7MQzy6uQAZpZ03GOdZiMF5KEo3TIMCyrWJ9rlACWnvpkl4eLQVe0JDCp54xjaNiKQ==
+vue-supp@^0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/vue-supp/-/vue-supp-0.7.3.tgz#fd4157e472d47672b1e6b8babad75e692274b0f6"
+  integrity sha512-AukZ5Y/Nby2EFzFaLTm5EmCdApFccbammrquWWeQKpLSHpnMjvA4skuVsUJr6Lx0SCWXpffjV5x/7XkRF4ckKQ==
   dependencies:
     "@popperjs/core" "^2.6.0"
     vue "^3.0.5"
