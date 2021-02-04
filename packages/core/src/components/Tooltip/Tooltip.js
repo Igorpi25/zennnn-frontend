@@ -81,6 +81,7 @@ export default {
 
     const activatorAttrs = computed(() => {
       return {
+        role: undefined,
         'aria-describedby': isActive.value ? id : undefined,
         'aria-controls': isActive.value ? id : undefined,
       }

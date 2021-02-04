@@ -6,10 +6,10 @@ exports[`Tooltip.js should not attach content and match snapshot 1`] = `
 </div>
 </transition-stub>
 </div>
-<!--teleport end--><button role="button" aria-haspopup="true" aria-expanded="true" aria-describedby="tooltip-1" aria-controls="tooltip-1">Activator</button></span>
+<!--teleport end--><button aria-haspopup="true" aria-expanded="true" aria-describedby="tooltip-1" aria-controls="tooltip-1">Activator</button></span>
 `;
 
-exports[`Tooltip.js should render component and match snapshot 1`] = `<span class="tooltip"><!--teleport start--><!--teleport end--><button role="button" aria-haspopup="true" aria-expanded="true" aria-describedby="tooltip-1" aria-controls="tooltip-1">Activator</button></span>`;
+exports[`Tooltip.js should render component and match snapshot 1`] = `<span class="tooltip"><!--teleport start--><!--teleport end--><button aria-haspopup="true" aria-expanded="true" aria-describedby="tooltip-1" aria-controls="tooltip-1">Activator</button></span>`;
 
 exports[`Tooltip.js should render component and match snapshot 2`] = `
 <div id="app">
@@ -30,7 +30,7 @@ exports[`Tooltip.js should render component with min/max width and match snapsho
 </div>
 </transition-stub>
 </div>
-<!--teleport end--><button role="button" aria-haspopup="true" aria-expanded="true" aria-describedby="tooltip-1" aria-controls="tooltip-1">Activator</button></span>
+<!--teleport end--><button aria-haspopup="true" aria-expanded="true" aria-describedby="tooltip-1" aria-controls="tooltip-1">Activator</button></span>
 `;
 
 exports[`Tooltip.js should render component with zIndex prop and match snapshot 1`] = `
@@ -39,5 +39,5 @@ exports[`Tooltip.js should render component with zIndex prop and match snapshot 
 </div>
 </transition-stub>
 </div>
-<!--teleport end--><button role="button" aria-haspopup="true" aria-expanded="true" aria-describedby="tooltip-1" aria-controls="tooltip-1">Activator</button></span>
+<!--teleport end--><button aria-haspopup="true" aria-expanded="true" aria-describedby="tooltip-1" aria-controls="tooltip-1">Activator</button></span>
 `;
