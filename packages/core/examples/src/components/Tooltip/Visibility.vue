@@ -4,7 +4,7 @@
       Toggle
     </Btn>
   </div>
-  <Tooltip v-model="toggle">
+  <Tooltip v-model="toggle" :open-on-hover="false">
     <template v-slot:activator>
       <Icon>
         {{ ziQuestionSign }}

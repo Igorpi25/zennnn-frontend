@@ -12,3 +12,6 @@ The `Tooltip` component.
 
 ## Visibility
 <Example file="Tooltip/Visibility" />
+
+## Overflow
+<Example file="Tooltip/Overflow" />
