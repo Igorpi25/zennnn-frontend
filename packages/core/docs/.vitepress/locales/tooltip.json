@@ -1,0 +1,42 @@
+{
+  "props": {
+    "activator": "Designate a custom activator when the `activator` slot is not used. String can be any valid querySelector and Object can be any valid Node.",
+    "allowOverflow": "Removes overflow re-positioning for the content.",
+    "arrow": "The arrow modifier positions an inner element of the popper so it appears centered relative to the reference element, usually the triangle or caret that points toward the reference element.",
+    "attach": "Specifies which DOM element that this component should detach to.",
+    "bottom": "Aligns the component towards the bottom.",
+    "boxClass": "Applies a custom class to `.tooltip__box`.",
+    "contentClass": "Applies a custom class to `.tooltip__content`.",
+    "disableKeys": "Removes all keyboard interaction.",
+    "disabled": "Disables the tooltip.",
+    "distance": "Displaces the popper away from, or toward, the reference element in the direction of its placement. A positive number displaces it further away, while a negative number lets it overlap the reference.",
+    "eager": "Will force the components content to render on mounted.",
+    "fixed": "Applies `position: fixed` to the component.",
+    "height": "Height of the content.",
+    "left": "Aligns the component towards the left.",
+    "maxHeight": "Sets the maximum height for the content.",
+    "maxWidth": "Sets the maximum width for the content.",
+    "minHeight": "Sets the minimum height for the content.",
+    "minWidth": "Sets the minimum width for the content.",
+    "modelValue": "Controls whether the component is visible or hidden.",
+    "openOnClick": "Designates whether menu should open on activator click.",
+    "openOnFocus": "Designates whether menu should open on activator focus",
+    "openOnHover": "Designates whether menu should open on activator hover.",
+    "origin": "Sets the transition origin on the element.",
+    "placement": "Describes the preferred placement of the popper.",
+    "right": "Aligns the component towards the right.",
+    "skidding": "Displaces the popper along the reference element.",
+    "tag": "Specifies a custom tag for the activator wrapper.",
+    "top": "Aligns the content towards the top.",
+    "transition": "Sets the component transition. Can be string name of transition or object with [custom transition classes](https://v3.vuejs.org/guide/transitions-enterleave.html#custom-transition-classes).",
+    "width": "Width of the content.",
+    "zIndex": "The z-index used for the component."
+  },
+  "emits": {
+    "update:modelValue": "Emitted when the model value updated."
+  },
+  "slots": {
+    "activator": "When used, will activate the component when clicked (or hover for specific components).",
+    "default": "The default Vue slot."
+  }
+}

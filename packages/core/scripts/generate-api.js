@@ -1,3 +1,9 @@
+const jsdom = require('jsdom')
+global.window = new jsdom.JSDOM().window
+global.document = window.document
+global.Element = window.Element
+global.HTMLElement = window.HTMLElement
+
 const fs = require('fs-extra')
 const path = require('path')
 const isFunction = require('lodash/isFunction')

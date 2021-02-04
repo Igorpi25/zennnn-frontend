@@ -98,6 +98,7 @@ const getComponentsModules = () => {
     case 'Progress': return import.meta.globEager('../../examples/Progress/*.vue')
     case 'LoadingSpinner': return import.meta.globEager('../../examples/LoadingSpinner/*.vue')
     case 'Transition': return import.meta.globEager('../../examples/Transition/*.vue')
+    case 'Tooltip': return import.meta.globEager('../../examples/Tooltip/*.vue')
   }
 }
 
@@ -111,6 +112,7 @@ const getCodesModules = () => {
     case 'Progress': return import.meta.glob('../../examples_code/Progress/*.md')
     case 'LoadingSpinner': return import.meta.glob('../../examples_code/LoadingSpinner/*.md')
     case 'Transition': return import.meta.glob('../../examples_code/Transition/*.md')
+    case 'Tooltip': return import.meta.glob('../../examples_code/Tooltip/*.md')
   }
 }
 
