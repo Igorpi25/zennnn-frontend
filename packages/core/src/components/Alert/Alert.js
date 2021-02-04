@@ -120,7 +120,7 @@ export default {
         return h(Icon, {
           size: 24,
           class: {
-            'alert__icon': true,
+            alert__icon: true,
             'alert__icon--error': props.color === 'error',
             'alert__icon--info': props.color === 'info',
             [props.iconClass.trim()]: true,

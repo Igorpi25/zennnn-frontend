@@ -39,7 +39,6 @@ function createConfig (format, output, plugins = []) {
     }),
     require('rollup-plugin-node-builtins')(),
     require('rollup-plugin-node-globals')(),
-    
   ]
 
   if (format !== 'cjs') {

@@ -248,7 +248,7 @@ describe('Btn.js', () => {
     })
 
     expect(wrapper.classes('btn--primary')).toBe(false)
-    
+
     await wrapper.setProps({ primary: true, outlined: true })
 
     expect(wrapper.classes('btn--primary')).toBe(false)
