@@ -106,41 +106,21 @@ module.exports = {
         900: '#3D242D', // error color
       },
     },
-    boxShadow: {
-      'main-night': '0px 20px 40px rgba(0, 0, 0, 0.35)',
-      'main-day': '0px 20px 40px rgba(0, 0, 0, 0.1)',
-      'photo': '4px 4px 8px rgba(0, 0, 0, 0.15)',
-      'inner-pressed-night': 'inset 0px 2px 1px rgba(0, 0, 0, 0.7)',
-      'inner-pressed-day': 'inset 0px 2px 1px rgba(0, 0, 0, 0.2)',
-      'small-forms-night': '0px 0px 10px rgba(0, 0, 0, 0.25)',
-      'small-form-day': '0px 0px 10px rgba(0, 0, 0, 0.05)',
-
-      DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06)',
-      md: '0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06)',
-      lg: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-      xl: '0px 0px 20px rgba(0, 0, 0, 0.1)',
-      // drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.25)); // comment right menu shadow
-      '2xl': '0px 4px 30px 0 rgba(0, 0, 0, 0.15)', // tooltip and menu shadows (light)
-      '3xl': '0px 4px 30px 0 rgba(0, 0, 0, 0.25)', // tooltip and menu shadows
-      '4xl': '6px 6px 60px 0 rgba(0, 0, 0, 0.16)', // image preview menu shadow (light)
-      '5xl': '0px 4px 120px 0 rgba(0, 0, 0, 0.5)', // image preview menu shadow?
-      1: '0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12)',
-      2: '0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12)',
-      3: '0 3px 3px -2px rgba(0,0,0,.2),0 3px 4px 0 rgba(0,0,0,.14),0 1px 8px 0 rgba(0,0,0,.12)',
-      4: '0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12)',
-      5: '0 3px 5px -1px rgba(0,0,0,.2),0 5px 8px 0 rgba(0,0,0,.14),0 1px 14px 0 rgba(0,0,0,.12)',
-      6: '0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12)',
-      7: '0 4px 5px -2px rgba(0,0,0,.2),0 7px 10px 1px rgba(0,0,0,.14),0 2px 16px 1px rgba(0,0,0,.12)',
-      8: '0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)',
-      24: '9 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12)',
-      none: 'none',
-    },
     gradientColorStops: {
       'gray-900': 'rgba(30, 30, 30, 1)',
       'gray-900-a-0': 'rgba(30, 30, 30, 0)',
       'gray-900-a-50': 'rgba(30, 30, 30, 0.5)',
     },
     extend: {
+      boxShadow: {
+        'main-night': '0px 20px 40px rgba(0, 0, 0, 0.35)',
+        'main-day': '0px 20px 40px rgba(0, 0, 0, 0.1)',
+        'photo': '4px 4px 8px rgba(0, 0, 0, 0.15)',
+        'inner-pressed-night': 'inset 0px 2px 1px rgba(0, 0, 0, 0.7)',
+        'inner-pressed-day': 'inset 0px 2px 1px rgba(0, 0, 0, 0.2)',
+        'small-forms-night': '0px 0px 10px rgba(0, 0, 0, 0.25)',
+        'small-form-day': '0px 0px 10px rgba(0, 0, 0, 0.05)',
+      },
       keyframes: {
         shake: {
           'from, to': { transform: 'translate3d(0, 0, 0)' },
