@@ -413,7 +413,7 @@ export default {
         },
         role: 'dialog',
         ariaModal: true,
-        tabIndex: isActive.value ? 0 : undefined,
+        tabindex: isActive.value ? 0 : undefined,
         onKeydown: onKeydown,
       }
 
