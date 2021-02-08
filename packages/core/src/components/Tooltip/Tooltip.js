@@ -37,14 +37,7 @@ export default {
     },
     transition: {
       type: [String, Object],
-      default: {
-        enterActiveClass: 'transition ease-out duration-150',
-        enterFromClass: 'transform opacity-0 scale-50',
-        enterToClass: 'transform opacity-100 scale-100',
-        leaveActiveClass: 'transition ease-out duration-75',
-        leaveFromClass: 'transform opacity-100',
-        leaveToClass: 'transform opacity-0',
-      },
+      default: 'tooltip-transition',
     },
   },
 
