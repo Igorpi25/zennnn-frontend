@@ -13,10 +13,13 @@
       </Icon>
     </Btn>
   </div>
-  <div :class="[
-    'xs:rounded-md -mx-6 xs:mx-0 my-4 p-6',
-    dark ? 'dark bg-gray-900 text-gray-100' : 'bg-light-gray-100',
-  ]">
+  <div
+    ref="previewRef"
+    :class="[
+      'xs:rounded-md -mx-6 xs:mx-0 my-4 p-6',
+      dark ? 'dark bg-gray-500 text-gray-100' : 'bg-light-gray-100',
+    ]"
+  >
     <component :is="Preview" />
   </div>
 </template>
@@ -24,6 +27,7 @@
 <script setup>
 import { ref, defineProps, defineAsyncComponent } from 'vue'
 import { ziMoon, ziSun } from '@zennnn/icons'
+import { useExampleTheme } from '../../docs/.vitepress/theme/composables/exampleTheme'
 
 const props = defineProps({
   file: {
@@ -41,5 +45,7 @@ const Preview = defineAsyncComponent(
   }
 )
 
-const dark = ref(false)
+const previewRef = ref(null)
+
+const { dark } = useExampleTheme(previewRef, props.file)
 </script>

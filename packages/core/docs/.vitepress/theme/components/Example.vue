@@ -31,8 +31,10 @@
     <div
       ref="previewRef"
       v-if="activeTab === TAB.PREVIEW"
-      :class="[dark ? 'bg-gray-900 text-gray-100' : 'bg-light-gray-100']"
-      class="xs:rounded-md -mx-6 xs:mx-0 p-6"
+      :class="[
+        'xs:rounded-md -mx-6 xs:mx-0 p-6',
+        dark ? 'bg-gray-500 text-gray-100' : 'bg-light-gray-100',
+      ]"
     >
       <component :is="Preview" />
     </div>
@@ -48,6 +50,7 @@
 <script setup>
 import { ref, defineProps, defineAsyncComponent } from 'vue'
 import { ziSun, ziMoon } from '@zennnn/icons'
+import { useExampleTheme } from '../composables/exampleTheme'
 
 const TAB = {
   PREVIEW: 1,
@@ -61,10 +64,14 @@ const props = defineProps({
   },
 })
 
+const items = [{ value: TAB.PREVIEW, text: 'Preview' }, { value: TAB.CODE, text: 'Code' }]
 const previewRef = ref(null)
 const initialHeight = ref(80)
 const isPreviewLoaded = ref(false)
 const isCodeLoaded = ref(false)
+const activeTab = ref(TAB.PREVIEW)
+
+const { dark } = useExampleTheme(previewRef, props.file)
 
 const Preview = defineAsyncComponent({
   loader: async () => {
@@ -99,6 +106,7 @@ const getComponentsModules = () => {
     case 'LoadingSpinner': return import.meta.globEager('../../../../examples/src/components/LoadingSpinner/*.vue')
     case 'Transition': return import.meta.globEager('../../../../examples/src/components/Transition/*.vue')
     case 'Tooltip': return import.meta.globEager('../../../../examples/src/components/Tooltip/*.vue')
+    case 'Menu': return import.meta.globEager('../../../../examples/src/components/Menu/*.vue')
   }
 }
 
@@ -113,12 +121,9 @@ const getCodesModules = () => {
     case 'LoadingSpinner': return import.meta.glob('../../../../examples/generated/code/LoadingSpinner/*.md')
     case 'Transition': return import.meta.glob('../../../../examples/generated/code/Transition/*.md')
     case 'Tooltip': return import.meta.glob('../../../../examples/generated/code/Tooltip/*.md')
+    case 'Menu': return import.meta.glob('../../../../examples/generated/code/Menu/*.md')
   }
 }
-
-const dark = ref(false)
-const activeTab = ref(TAB.PREVIEW)
-const items = [{ value: TAB.PREVIEW, text: 'Preview' }, { value: TAB.CODE, text: 'Code' }]
 
 function switchTab (tab) {
   activeTab.value = tab

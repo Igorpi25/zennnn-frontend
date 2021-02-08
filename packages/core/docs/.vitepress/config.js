@@ -5,7 +5,7 @@ module.exports = {
 
   themeConfig: {
     sidebar: getSidebar(),
-  }
+  },
 }
 
 function getSidebar () {
@@ -23,8 +23,9 @@ function getSidebar () {
         { text: 'Buttons', link: '/components/buttons' },
         { text: 'Button Groups', link: '/components/button-groups' },
         { text: 'Icons', link: '/components/icons' },
-        { text: 'Progress', link: '/components/progress' },
         { text: 'Loading', link: '/components/loading' },
+        { text: 'Menus', link: '/components/menus' },
+        { text: 'Progress', link: '/components/progress' },
         { text: 'Tooltips', link: '/components/tooltips' },
         { text: 'Transitions', link: '/components/transitions' },
       ],
@@ -36,8 +37,10 @@ function getSidebar () {
         { text: 'Btn', link: '/api/btn', activeMatch: '/api/btn$' },
         { text: 'BtnToggle', link: '/api/btn-toggle' },
         { text: 'Icon', link: '/api/icon' },
-        { text: 'Progress', link: '/api/progress' },
         { text: 'Loading Spinner', link: '/api/loading-spinner' },
+        { text: 'Menu', link: '/api/menu', activeMatch: '/api/menu$' },
+        { text: 'MenuItem', link: '/api/menu-item' },
+        { text: 'Progress', link: '/api/progress' },
         { text: 'Tooltip', link: '/api/tooltip' },
         { text: 'ExpandTransition', link: '/api/expand-transition' },
       ],
