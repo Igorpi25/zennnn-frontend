@@ -49,6 +49,7 @@ export default {
     },
     id: String,
     contentOnIntersect: Boolean,
+    dense: Boolean,
   },
 
   setup (props) {
@@ -66,6 +67,7 @@ export default {
     const selected = computed(() => props.value !== null && api.internalValue.value === props.value)
 
     onMounted(() => {
+      if (!api.isActive) return
       if (!selected.value) return
       nextTick(() => {
         updateSelf()
@@ -73,6 +75,7 @@ export default {
     })
 
     watch(api.isContentVisible, (val) => {
+      if (!api.isActive) return
       if (!selected.value) return
       nextTick(() => {
         val && updateSelf()
@@ -80,6 +83,7 @@ export default {
     })
 
     watchEffect(() => {
+      if (!api.isActive) return
       if (!active.value) return
 
       nextTick(() => {
@@ -108,13 +112,13 @@ export default {
       api.goToItem(props.index)
     }
 
-    const onPointerMove = () => {
+    const onPointermove = () => {
       if (props.disabled) return
       if (active.value) return
       api.goToItem(props.index)
     }
 
-    const onPointerLeave = () => {
+    const onPointerleave = () => {
       if (props.disabled) return
       if (!active.value) return
       api.goToItem(-1)
@@ -133,8 +137,8 @@ export default {
       setItemRef,
       onClick,
       onFocus,
-      onPointerMove,
-      onPointerLeave,
+      onPointermove,
+      onPointerleave,
       onIntersect,
     }
   },
@@ -145,19 +149,22 @@ export default {
       ref: this.setItemRef,
       id: this.id,
       role: this.role,
-      tabIndex: this.tabindex,
+      tabindex: this.tabindex,
       class: {
         menu__item: true,
         'menu__item--active': this.active,
         'menu__item--selected': this.selected,
         'menu__item--disabled': this.disabled,
+        'menu__item--dense': this.dense,
       },
       'aria-disabled': this.disabled === true ? true : undefined,
       'aria-selected': this.selected === true ? this.selected : undefined,
       onClick: this.$attrs.onClick || this.onClick,
       onFocus: this.onFocus,
-      onPointerMove: this.onPointerMove,
-      onPointerLeave: this.onPointerLeave,
+      onPointermove: this.onPointermove,
+      onMousemove: this.onPointermove,
+      onPointerleave: this.onPointerleave,
+      onMouseleave: this.onPointerleave,
     }
 
     let children = null

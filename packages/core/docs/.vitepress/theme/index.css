@@ -110,7 +110,7 @@
     position: relative;
     outline: 0;
     transition-property: transform, visibility, opacity;
-    @apply rounded-md;
+    @apply rounded-lg;
   }
 
   .popper__arrow,

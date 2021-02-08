@@ -17,6 +17,7 @@ import {
   useActivator,
   useLazyContentProps,
   useLazyContent,
+  useClientRect,
   ClickOutside,
 } from 'vue-supp'
 
@@ -86,6 +87,10 @@ export default {
       default: [],
     },
     id: String,
+    transition: {
+      type: [String, Object],
+      default: 'menu-transition',
+    },
   },
 
   emits: ['update:modelValue', 'update:value'],
@@ -125,6 +130,15 @@ export default {
     const {
       showLazyContent,
     } = useLazyContent(lazyContentProps)
+
+    const clientRectProps = reactive({
+      element: props.width === 'auto' ? rootElement : undefined,
+      hasResizeListener: props.width === 'auto',
+    })
+    const {
+      clientRect,
+      updateClientRect,
+    } = useClientRect(clientRectProps)
 
     const internalValue = computed(() => props.value)
 
@@ -186,7 +200,11 @@ export default {
     })
 
     watch(isActive, (val) => {
-      if (!val) activeItemIndex.value = -1
+      if (!val) {
+        nextTick(() => {
+          activeItemIndex.value = -1
+        })
+      }
 
       if (props.disabled) return
       // show popper root from isActive, hide after transition end
@@ -212,12 +230,12 @@ export default {
     const focusMenu = () => {
       if (isContentVisible.value) {
         nextTick(() => {
-          contentElement.value && contentElement.value.focus()
+          contentElement.value && contentElement.value.focus({ preventScroll: true })
         })
       } else {
         // focus not firing, because content activated in requestAnimationFrame
         const unwatch = watch(isContentVisible, (val) => {
-          nextTick(() => val && contentElement.value && contentElement.value.focus())
+          nextTick(() => val && contentElement.value && contentElement.value.focus({ preventScroll: true }))
           unwatch()
         })
       }
@@ -226,7 +244,7 @@ export default {
     const closeMenu = () => {
       nextTick(() => {
         const _activator = getActivator()
-        _activator && _activator.focus()
+        _activator && _activator.focus({ preventScroll: true })
       })
       isActive.value = false
     }
@@ -241,6 +259,7 @@ export default {
 
     const activate = () => {
       getActivator()
+      if (props.width === 'auto') updateClientRect()
       requestAnimationFrame(() => {
         isContentVisible.value = isActive.value
         createPopper(activatorElement.value, wrapperElement.value)
@@ -373,7 +392,10 @@ export default {
         role: props.role,
         class: 'menu__box',
         tabindex: props.tabindex,
-        'aria-activedescendant': activeItemId.value,
+        'aria-activedescendant': isActive.value && activeItemId.value ? activeItemId.value : undefined,
+        style: {
+          width: props.width === 'auto' ? clientRect.value.width + 'px' : undefined,
+        },
       }
       if (!props.disableKeys) {
         boxData.onKeyDown = onContentKeyDown

@@ -1,7 +1,7 @@
 @layer components {
   .menu__box {
-    @apply shadow-2xl dark:shadow-6;
-    @apply text-white dark:text-gray-400;
+    @apply shadow-main-day dark:shadow-main-night;
+    @apply text-white dark:text-gray-900;
   }
 
   .menu__content {
@@ -10,13 +10,22 @@
     /* This is required for an issue on Chrome 65
     that prevents scrolling after a menu is opened */
     will-change: transform;
-    @apply relative z-1 rounded-md bg-white dark:bg-gray-400;
+    @apply relative z-1 rounded-lg bg-white dark:bg-gray-900;
     @apply leading-tight text-gray-900 dark:text-gray-100;
     @apply overflow-y-auto overflow-x-hidden scrolling-touch;
-    @apply pt-2 pb-3;
   }
 
   /* Transition */
+  .menu-transition-enter-active {
+    @apply transition-opacity ease-out-quart duration-200;
+  }
+  .menu-transition-leave-active {
+    @apply transition-opacity ease-out-quart duration-150;
+  }
+  .menu-transition-enter-from,
+  .menu-transition-leave-to {
+    @apply opacity-0;
+  }
 
   .menu__box[class*="-enter-from"] .menu__item {
     min-width: 0;
