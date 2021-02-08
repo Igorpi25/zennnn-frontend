@@ -38,7 +38,7 @@ export default {
       }
     }
 
-    const onPointerEnter = () => {
+    const onPointerenter = () => {
       timeout = setTimeout(() => {
         const clientWidth = contentWrapperElement.value && contentWrapperElement.value.clientWidth
         const scrollWidth = contentElement.value && contentElement.value.scrollWidth
@@ -52,7 +52,7 @@ export default {
         }
       }, 120)
     }
-    const onPointerLeave = () => {
+    const onPointerleave = () => {
       if (timeout) {
         clearTimeout(timeout)
         timeout = null
@@ -71,8 +71,8 @@ export default {
         class: 'label__content__wrapper',
       }
       if (props.showWrap) {
-        data.onPointerEnter = onPointerEnter
-        data.onPointerLeave = onPointerLeave
+        data.onPointerenter = onPointerenter
+        data.onPointerleave = onPointerleave
       }
       return h('div', data, genContent())
     }
