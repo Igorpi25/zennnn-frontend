@@ -2,7 +2,7 @@
   <div class="space-x-4">
     <Tooltip>
       <template v-slot:activator>
-        <Btn x-small>
+        <Btn>
           Button
         </Btn>
       </template>

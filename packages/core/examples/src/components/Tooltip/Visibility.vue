@@ -1,6 +1,6 @@
 <template>
   <div class="mb-12">
-    <Btn x-small @click="toggle = !toggle">
+    <Btn @click="toggle = !toggle">
       Toggle
     </Btn>
   </div>

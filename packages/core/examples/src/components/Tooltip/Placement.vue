@@ -1,8 +1,8 @@
 <template>
-  <div class="space-x-4 mb-6">
+  <div>
     <Tooltip top>
       <template v-slot:activator>
-        <Btn x-small>
+        <Btn class="mr-4 mb-6">
           Top
         </Btn>
       </template>
@@ -10,7 +10,7 @@
     </Tooltip>
     <Tooltip right>
       <template v-slot:activator>
-        <Btn x-small>
+        <Btn class="mr-4 mb-6">
           Right
         </Btn>
       </template>
@@ -18,7 +18,7 @@
     </Tooltip>
     <Tooltip bottom>
       <template v-slot:activator>
-        <Btn x-small>
+        <Btn class="mr-4 mb-6">
           Bottom
         </Btn>
       </template>
@@ -26,17 +26,17 @@
     </Tooltip>
     <Tooltip left>
       <template v-slot:activator>
-        <Btn x-small>
+        <Btn class="mr-4 mb-6">
           Left
         </Btn>
       </template>
       Left tooltip!
     </Tooltip>
   </div>
-  <div class="space-x-4">
+  <div class="space-x-4 -mb-6">
     <Tooltip placement="top-start" max-width="250" skidding="-16" origin="24px 100%">
       <template v-slot:activator>
-        <Icon>
+        <Icon class="mb-6">
           {{ ziQuestionSign }}
         </Icon>
       </template>
@@ -44,7 +44,7 @@
     </Tooltip>
     <Tooltip placement="right-start" max-width="250" skidding="-16" origin="0 24px">
       <template v-slot:activator>
-        <Icon>
+        <Icon class="mb-6">
           {{ ziQuestionSign }}
         </Icon>
       </template>
@@ -52,7 +52,7 @@
     </Tooltip>
     <Tooltip placement="bottom-start" max-width="250" skidding="-16" origin="24px 0">
       <template v-slot:activator>
-        <Icon>
+        <Icon class="mb-6">
           {{ ziQuestionSign }}
         </Icon>
       </template>
@@ -60,7 +60,7 @@
     </Tooltip>
     <Tooltip placement="left-start" max-width="120" skidding="-16" origin="100% 24px">
       <template v-slot:activator>
-        <Icon>
+        <Icon class="mb-6">
           {{ ziQuestionSign }}
         </Icon>
       </template>
