@@ -73,6 +73,7 @@ function getApi (name) {
     case 'alert': return import('../../data/alert.json')
     case 'btn': return import('../../data/btn.json')
     case 'btn-toggle': return import('../../data/btn-toggle.json')
+    case 'data-table': return import('../../data/data-table.json')
     case 'icon': return import('../../data/icon.json')
     case 'image': return import('../../data/image.json')
     case 'progress': return import('../../data/progress.json')

@@ -4,7 +4,7 @@
   }
 
   .data-table--rounded {
-    @apply bg-gray-800 rounded-md px-sm;
+    @apply bg-light-gray-100 dark:bg-gray-800 rounded-md px-sm;
   }
 
   .data-table--rounded:not(.data-table--empty) {
@@ -28,10 +28,10 @@
   }
 
   .data-table thead {
-    @apply bg-gray-800 text-center select-none text-gray-300;
+    @apply bg-light-gray-100 dark:bg-gray-800 text-center select-none text-gray-200 dark:text-gray-300;
   }
   .data-table--rounded thead {
-    @apply text-gray-400;
+    @apply text-gray-200 dark:text-gray-400;
   }
 
   .data-table--rounded > tbody > tr:not(.expanded) > td:first-child {
@@ -50,20 +50,20 @@
   }
 
   .data-table tbody tr {
-    @apply bg-gray-600;
+    @apply bg-white dark:bg-gray-600;
     transition: background-color 100ms cubic-bezier(0.4, 0, 1, 1);
   }
 
   .data-table--hoverable tbody tr:hover,
   .data-table--hoverable tbody tr:focus {
-    @apply bg-gray-500;
+    @apply bg-light-gray-400 dark:bg-gray-500;
   }
   .data-table--hoverable tbody tr:focus {
     @apply outline-none;
   }
 
   .data-table thead .data-table-header__icon {
-    transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+    @apply transition ease-out-quart duration-300;
     @apply opacity-0 text-gray-200;
     @apply absolute inset-y-0;
     @apply items-center;
@@ -72,7 +72,7 @@
     @apply opacity-100;
   }
   .data-table thead th.sortable.active .data-table-header__icon {
-    @apply opacity-100 text-white;
+    @apply opacity-100 text-gray-900 dark:text-white;
   }
   .data-table thead th.sortable.active.desc .data-table-header__icon {
     @apply transform -rotate-180;

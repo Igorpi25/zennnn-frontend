@@ -114,10 +114,6 @@ export default {
   props: {
     hoverable: Boolean,
     hideHeaders: Boolean,
-    tableWidth: {
-      type: [String, Number],
-      default: '',
-    },
     headers: {
       type: Array,
       default: () => ([]),
@@ -126,12 +122,10 @@ export default {
       type: Array,
       default: () => ([]),
     },
-    light: Boolean,
     expanded: {
       type: Array,
       default: () => ([]),
     },
-    expand: Boolean,
     tableClass: {
       type: String,
       default: '',
@@ -241,7 +235,6 @@ export default {
       internalOptions.value.groupDesc.push(...Array(groupDiff).fill(false))
     }
 
-    // computed
     const borderSpacing = computed(() => {
       return props.rounded
         ? '0 4px'
@@ -255,7 +248,7 @@ export default {
     const pageCount = computed(() => {
       return internalOptions.value.itemsPerPage === -1
         ? 1
-        : Math.ceil(itemsLength.value / internalOptions.value.itemsPerPage) // TODO: can't use items.length here
+        : Math.ceil(itemsLength.value / internalOptions.value.itemsPerPage)
     })
 
     const isGrouped = computed(() => !!internalOptions.value.groupBy.length)
@@ -304,7 +297,6 @@ export default {
       return items
     })
 
-    // watch
     watch(() => props.page, (page) => {
       updateOptions({ page })
     })
@@ -353,8 +345,7 @@ export default {
       !deepEqual(groupDesc, old) && emit('update:group-desc', Array.isArray(props.groupDesc) ? groupDesc : groupDesc[0])
     })
 
-    // methods
-    const toggle = (key, oldBy, oldDesc, page, mustSort, multiSort) => {
+    function toggle (key, oldBy, oldDesc, page, mustSort, multiSort) {
       let by = oldBy.slice()
       let desc = oldDesc.slice()
       const byIndex = by.findIndex((k) => k === key)
@@ -384,7 +375,7 @@ export default {
       return { by, desc, page }
     }
 
-    const sort = (key) => {
+    function sort (key) {
       if (Array.isArray(key)) return sortArray(key)
 
       const { by: sortBy, desc: sortDesc, page } = toggle(
@@ -398,7 +389,7 @@ export default {
       updateOptions({ sortBy, sortDesc, page })
     }
 
-    const sortArray = (sortBy) => {
+    function sortArray (sortBy) {
       const sortDesc = sortBy.map(s => {
         const i = internalOptions.value.sortBy.findIndex((k) => k === s)
         return i > -1 ? internalOptions.value.sortDesc[i] : false
@@ -407,7 +398,7 @@ export default {
       updateOptions({ sortBy, sortDesc })
     }
 
-    const updateOptions = (options) => {
+    function updateOptions (options) {
       internalOptions.value = {
         ...internalOptions.value,
         ...options,
@@ -417,7 +408,7 @@ export default {
       }
     }
 
-    const _sortItems = (items) => {
+    function _sortItems (items) {
       let sortBy = internalOptions.value.sortBy
       let sortDesc = internalOptions.value.sortDesc
 
@@ -429,23 +420,23 @@ export default {
       return customSortWithHeaders(items, sortBy, sortDesc, locale)
     }
 
-    const _groupItems = (items) => {
+    function _groupItems (items) {
       return props.customGroup(items, internalOptions.value.groupBy, internalOptions.value.groupDesc)
     }
 
-    const customSortWithHeaders = (items, sortBy, sortDesc, locale) => {
+    function customSortWithHeaders (items, sortBy, sortDesc, locale) {
       return props.customSort(items, sortBy, sortDesc, locale, columnSorters.value)
     }
 
-    const customFilterWithColumns = (items, search) => {
+    function customFilterWithColumns (items, search) {
       return searchTableItems(items, search, headersWithCustomFilters.value, headersWithoutCustomFilters.value, props.customFilter)
     }
 
-    const genSlot = (name) => {
+    function genSlot (name) {
       return slots[name] ? slots[name]() : undefined
     }
 
-    const genTHead = () => {
+    function genTHead () {
       if (props.hideHeaders) return undefined
       const children = computedHeaders.value.map((header, i) => {
         if (slots[`header-${header.value}`]) return slots[`header-${header.value}`]({ value: header.value, header: header })
@@ -477,7 +468,7 @@ export default {
       return h('thead', undefined, h('tr', undefined, children))
     }
 
-    const genTBody = () => {
+    function genTBody () {
       return h('tbody', undefined, [
         slots.items ? genSlotItems() : genDefaultItems(),
         slots.expanded ? slots.expanded() : undefined,
@@ -485,7 +476,7 @@ export default {
       ])
     }
 
-    const genNoData = () => {
+    function genNoData () {
       return slots['no-data']
         ? slots['no-data']()
         : h('div', {
@@ -493,7 +484,7 @@ export default {
         }, t('dataTable.noData'))
     }
 
-    const genNoResult = () => {
+    function genNoResult () {
       return slots['no-result']
         ? slots['no-result']()
         : h('div', {
@@ -501,7 +492,7 @@ export default {
         }, t('dataTable.noResult'))
     }
 
-    const genLoading = () => {
+    function genLoading () {
       return slots.loading
         ? slots.loading()
         : h('div', {
@@ -513,7 +504,7 @@ export default {
         }))
     }
 
-    const genNoDataSlot = () => {
+    function genNoDataSlot () {
       return props.items.length === 0 && props.loading
         ? genLoading()
         : props.items.length === 0
@@ -523,11 +514,11 @@ export default {
             : undefined
     }
 
-    const genSlotItems = () => {
+    function genSlotItems () {
       return slots.items({ items: computedItems.value })
     }
 
-    const genDefaultItems = () => {
+    function genDefaultItems () {
       return computedItems.value.map((item, i) => {
         if (item.group) {
           return h('tr', {
@@ -562,7 +553,7 @@ export default {
       })
     }
 
-    const genTable = () => {
+    function genTable () {
       const table = h('table', {
         width: convertToUnit(props.width),
         class: {
@@ -606,7 +597,6 @@ export default {
       this.genSlot('top'),
       this.genTable(),
       this.genNoDataSlot(),
-      this.genSlot('bottom'),
     ])
   },
 }

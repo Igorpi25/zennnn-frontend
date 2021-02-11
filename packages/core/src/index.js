@@ -1,6 +1,7 @@
 export * from './components/Alert'
 export * from './components/Btn'
 export * from './components/BtnToggle'
+export * from './components/DataTable'
 export * from './components/Progress'
 export * from './components/Icon'
 export * from './components/Image'
