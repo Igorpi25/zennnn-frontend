@@ -21,7 +21,7 @@ import SideBarLink from './SideBarLink.vue'
 defineProps({
   item: {
     type: Object,
-    default: () => {},
+    default: () => ({}),
   },
 })
 </script>

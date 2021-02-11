@@ -19,7 +19,7 @@ import { useNavLink } from '../composables/navLink'
 const props = defineProps({
   item: {
     type: Object,
-    default: () => {},
+    default: () => ({}),
   },
 })
 

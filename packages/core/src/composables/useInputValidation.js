@@ -27,7 +27,7 @@ export const useInputValidationProps = () => {
     error: Boolean,
     errorMessages: {
       type: Array,
-      default: [],
+      default: () => ([]),
     },
     messagesOnFocused: {
       type: Boolean,

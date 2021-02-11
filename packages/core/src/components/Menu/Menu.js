@@ -84,7 +84,7 @@ export default {
     },
     includeElements: {
       type: Array,
-      default: [],
+      default: () => ([]),
     },
     id: String,
     transition: {

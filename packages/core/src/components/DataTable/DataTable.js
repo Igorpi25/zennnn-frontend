@@ -152,11 +152,11 @@ export default {
     options: Object,
     sortBy: {
       type: [String, Array],
-      default: () => [],
+      default: () => ([]),
     },
     sortDesc: {
       type: [Boolean, Array],
-      default: () => [],
+      default: () => ([]),
     },
     customSort: {
       type: Function,
@@ -164,11 +164,11 @@ export default {
     },
     groupBy: {
       type: [String, Array],
-      default: () => [],
+      default: () => ([]),
     },
     groupDesc: {
       type: [Boolean, Array],
-      default: () => [],
+      default: () => ([]),
     },
     customGroup: {
       type: Function,
