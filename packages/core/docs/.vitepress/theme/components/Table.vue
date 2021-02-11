@@ -80,6 +80,8 @@ function getApi (name) {
     case 'tooltip': return import('../../data/tooltip.json')
     case 'menu': return import('../../data/menu.json')
     case 'menu-item': return import('../../data/menu-item.json')
+    case 'window': return import('../../data/window.json')
+    case 'window-item': return import('../../data/window-item.json')
   }
 }
 </script>

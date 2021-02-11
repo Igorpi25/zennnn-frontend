@@ -107,6 +107,7 @@ const getComponentsModules = () => {
     case 'Transition': return import.meta.globEager('../../../../examples/src/components/Transition/*.vue')
     case 'Tooltip': return import.meta.globEager('../../../../examples/src/components/Tooltip/*.vue')
     case 'Menu': return import.meta.globEager('../../../../examples/src/components/Menu/*.vue')
+    case 'Window': return import.meta.globEager('../../../../examples/src/components/Window/*.vue')
   }
 }
 
@@ -122,6 +123,7 @@ const getCodesModules = () => {
     case 'Transition': return import.meta.glob('../../../../examples/generated/code/Transition/*.md')
     case 'Tooltip': return import.meta.glob('../../../../examples/generated/code/Tooltip/*.md')
     case 'Menu': return import.meta.glob('../../../../examples/generated/code/Menu/*.md')
+    case 'Window': return import.meta.glob('../../../../examples/generated/code/Window/*.md')
   }
 }
 

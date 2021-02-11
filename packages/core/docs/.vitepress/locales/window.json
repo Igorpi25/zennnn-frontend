@@ -1,0 +1,23 @@
+{
+  "props": {
+    "activeClass": "The **active-class** applied to children when they are activated.",
+    "continuous": "If `true`, window will “wrap around” from the last item to the first, and from the first item to the last.",
+    "mandatory": "-",
+    "max": "-",
+    "modelValue": "The designated model value for the component.",
+    "multiple": "-",
+    "nextIcon": "Icon used for the “next” button if **show-arrows** is `true`.",
+    "prevIcon": "Icon used for the “prev” button if **show-arrows** is `true`.",
+    "reverse": "Reverse the normal transition direction.",
+    "showArrows": "Display the “next” and “prev” buttons.",
+    "touch": "Provide a custom **left** and **right** function when swiped left or right.",
+    "touchless": "Disable touch support.",
+    "vertical": "Uses a vertical transition when changing windows."
+  },
+  "emits": {
+    "update:modelValue": "Emitted when the model value updated."
+  },
+  "slots": {
+    "default": "The default Vue slot."
+  }
+}
