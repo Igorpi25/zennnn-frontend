@@ -27,6 +27,7 @@ function createConfig (format, output, plugins = []) {
     'vue',
     'vue-router',
     'vue-supp',
+    'vue-i18n',
     '@zennnn/icons',
   ]
 
