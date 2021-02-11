@@ -7,11 +7,11 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "yarn generate:icons && yarn es5 && yarn commonjs",
+    "build": "yarn gen:icons && yarn es5 && yarn commonjs",
     "es5": "tsc",
     "commonjs": "tsc --module commonjs --outDir commonjs",
-    "generate:icons": "node ./scripts/generate-icons.js",
-    "generate:favicon": "node ./scripts/generate-favicon.js"
+    "gen:icons": "node ./scripts/generate-icons.js",
+    "gen:favicon": "node ./scripts/generate-favicon.js"
   },
   "peerDependencies": {
     "sharp": "^0.27.1",
