@@ -5,7 +5,7 @@ export function useExampleTheme (elRef, file) {
   const dark = ref(false)
   const attachRefs = ref([])
   const isAttachable = computed(() => {
-    return /Tooltip|Menu/.test(file)
+    return /Tooltip|Menu|Modal/.test(file)
   })
 
   watch(dark, () => {
@@ -52,9 +52,9 @@ export function useExampleTheme (elRef, file) {
   function toggleDark () {
     for (const el of attachRefs.value) {
       if (dark.value) {
-        el.classList.add('dark')
+        el.classList.add('dark', 'text-gray-100')
       } else {
-        el.classList.remove('dark')
+        el.classList.remove('dark', 'text-gray-100')
       }
     }
   }

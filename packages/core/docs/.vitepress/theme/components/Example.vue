@@ -105,9 +105,10 @@ const getComponentsModules = () => {
     case 'Image': return import.meta.globEager('../../../../examples/src/components/Image/*.vue')
     case 'Progress': return import.meta.globEager('../../../../examples/src/components/Progress/*.vue')
     case 'LoadingSpinner': return import.meta.globEager('../../../../examples/src/components/LoadingSpinner/*.vue')
+    case 'Menu': return import.meta.globEager('../../../../examples/src/components/Menu/*.vue')
+    case 'Modal': return import.meta.globEager('../../../../examples/src/components/Modal/*.vue')
     case 'Transition': return import.meta.globEager('../../../../examples/src/components/Transition/*.vue')
     case 'Tooltip': return import.meta.globEager('../../../../examples/src/components/Tooltip/*.vue')
-    case 'Menu': return import.meta.globEager('../../../../examples/src/components/Menu/*.vue')
     case 'Window': return import.meta.globEager('../../../../examples/src/components/Window/*.vue')
   }
 }
@@ -122,9 +123,10 @@ const getCodesModules = () => {
     case 'Image': return import.meta.glob('../../../../examples/generated/code/Image/*.md')
     case 'Progress': return import.meta.glob('../../../../examples/generated/code/Progress/*.md')
     case 'LoadingSpinner': return import.meta.glob('../../../../examples/generated/code/LoadingSpinner/*.md')
+    case 'Menu': return import.meta.glob('../../../../examples/generated/code/Menu/*.md')
+    case 'Modal': return import.meta.glob('../../../../examples/generated/code/Modal/*.md')
     case 'Transition': return import.meta.glob('../../../../examples/generated/code/Transition/*.md')
     case 'Tooltip': return import.meta.glob('../../../../examples/generated/code/Tooltip/*.md')
-    case 'Menu': return import.meta.glob('../../../../examples/generated/code/Menu/*.md')
     case 'Window': return import.meta.glob('../../../../examples/generated/code/Window/*.md')
   }
 }

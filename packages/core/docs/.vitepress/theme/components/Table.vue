@@ -77,10 +77,11 @@ function getApi (name) {
     case 'image': return import('../../data/image.json')
     case 'progress': return import('../../data/progress.json')
     case 'loading-spinner': return import('../../data/loading-spinner.json')
-    case 'expand-transition': return import('../../data/expand-transition.json')
-    case 'tooltip': return import('../../data/tooltip.json')
     case 'menu': return import('../../data/menu.json')
     case 'menu-item': return import('../../data/menu-item.json')
+    case 'modal': return import('../../data/modal.json')
+    case 'expand-transition': return import('../../data/expand-transition.json')
+    case 'tooltip': return import('../../data/tooltip.json')
     case 'window': return import('../../data/window.json')
     case 'window-item': return import('../../data/window-item.json')
   }

@@ -8,6 +8,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const isFunction = require('lodash/isFunction')
 const isPlainObject = require('lodash/isPlainObject')
+const isEmpty = require('lodash/isEmpty')
 const lib = require('../lib/index.cjs')
 const Prism = require('prismjs')
 require('prismjs/components/prism-typescript')
@@ -111,7 +112,10 @@ function getDefaultValue (item) {
     ? String(defaultValue)
     : JSON.stringify(defaultValue, null, 2)
 
-  return Prism.highlight(str, Prism.languages.typescript)
+  const code = Prism.highlight(str, Prism.languages.typescript)
+  return isPlainObject(defaultValue) && !isEmpty(JSON.parse(JSON.stringify(defaultValue)))
+    ? `<div style="border-radius:3px; background:#f5f2f0; padding:4px 8px;"><pre style="overflow-x:auto; max-width:18rem;"><code style="background:#f5f2f0;">${code}</code></pre></div>`
+    : code
 }
 
 function getProp (name, prop) {
@@ -144,7 +148,7 @@ function getPropDefault (def, type) {
     return def ? 'true' : 'false'
   }
 
-  if (type === 'string') {
+  if (type === 'string' || typeof def === 'string') {
     return def ? `'${def}'` : def
   }
 

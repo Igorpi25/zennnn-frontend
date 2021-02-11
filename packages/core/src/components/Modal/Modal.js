@@ -49,19 +49,13 @@ export default {
       type: [Boolean, String, Number],
       default: false,
     },
-    dark: Boolean,
     disabled: Boolean,
     fullscreen: Boolean,
-    light: Boolean,
     maxWidth: {
       type: [String, Number],
       default: 'none',
     },
     noClickAnimation: Boolean,
-    origin: {
-      type: String,
-      default: 'center center',
-    },
     persistent: Boolean,
     retainFocus: {
       type: Boolean,
@@ -70,14 +64,14 @@ export default {
     scrollable: Boolean,
     transition: {
       type: [String, Object],
-      default: {
+      default: () => ({
         enterActiveClass: 'transition ease-out-quart duration-300',
         enterFromClass: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
         enterToClass: 'opacity-100 translate-y-0 sm:scale-100',
         leaveActiveClass: 'transition ease-out-quart duration-200',
         leaveFromClass: 'opacity-100 translate-y-0 sm:scale-100',
         leaveToClass: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
-      },
+      }),
     },
     width: {
       type: [String, Number],
@@ -86,6 +80,10 @@ export default {
     contentClass: {
       type: String,
       default: '',
+    },
+    originClass: {
+      type: String,
+      default: 'origin-center',
     },
     hideOverlay: Boolean,
   },
@@ -387,10 +385,6 @@ export default {
       return h(Transition, {
         appear: true,
         ...transition,
-        onBeforeEnter (el) {
-          el.style.transformOrigin = props.origin
-          el.style.webkitTransformOrigin = props.origin
-        },
       }, {
         default: () => content,
       })
@@ -403,14 +397,14 @@ export default {
           'text-left bg-white dark:bg-gray-650': true,
           'transform transition-transform': true,
           'inline-block overflow-auto pointer-events-auto max-h-full': true,
-          'focus:outline-none shadow-xl': true,
+          'focus:outline-none shadow-main-day dark:shadow-main-night': true,
           'w-full h-full': props.fullscreen,
           'rounded-lg m-4 sm:m-8': !props.fullscreen,
           'animate-shake': animate.value,
+          [props.contentClass.trim()]: true,
+          [props.originClass.trim()]: true,
         },
-        style: {
-          transformOrigin: props.origin,
-        },
+        id,
         role: 'dialog',
         ariaModal: true,
         tabindex: isActive.value ? 0 : undefined,
