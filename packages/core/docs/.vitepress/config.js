@@ -13,7 +13,9 @@ function getSidebar () {
     {
       text: 'Styles',
       children: [
-        { text: 'Typography', link: '/styles/typography' },
+        { text: 'Typography', link: '/', activeMatch: '^/$' },
+        { text: 'Colors', link: '/styles/colors' },
+        { text: 'Theme', link: '/styles/theme' },
       ]
     },
     {

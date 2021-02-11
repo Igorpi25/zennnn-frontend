@@ -1,5 +1,3 @@
-# Home page
+# Typography
 
-[Buttons](./components/buttons)
-
-[Icons](./components/icons)
+<Example file="Styles/Typography" />

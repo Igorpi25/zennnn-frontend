@@ -75,7 +75,7 @@
   }
 
   main a {
-    @apply text-blue-500 hover:text-blue-400;
+    @apply leading-tight text-blue-500 hover:text-blue-400;
   }
   main hr {
     @apply border-light-gray-400 my-4;
