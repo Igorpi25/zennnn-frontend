@@ -1,0 +1,9 @@
+<template>
+  <Image
+    :aspect-ratio="4/3"
+    lazy-src="https://picsum.photos/id/11/10/6"
+    cover
+    max-width="250"
+    src="https://picsum.photos/id/11/500/300"
+  ></Image>
+</template>
