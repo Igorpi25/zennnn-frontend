@@ -15,8 +15,6 @@ import { ziArrowLeft, ziArrowRight } from '@zennnn/icons'
 
 import Icon from '../Icon'
 
-import './Window.css'
-
 export const WindowContext = Symbol('WindowContext')
 
 export const useWindowContext = (component) => {
@@ -42,37 +40,32 @@ export default {
     },
     nextIcon: {
       type: [Boolean, String],
-      default: ziArrowRight,
+      default: true,
     },
     prevIcon: {
       type: [Boolean, String],
-      default: ziArrowLeft,
+      default: true,
     },
     reverse: {
       type: Boolean,
       default: undefined,
     },
     showArrows: Boolean,
-    showArrowsOnHover: Boolean,
     touch: Object,
     touchless: Boolean,
-    value: {
-      required: false,
-    },
     vertical: Boolean,
   },
 
   emits: ['update:modelValue'],
 
-  setup (props, { slots, emit }) {
-    // Data
-    const internalHeight = ref(undefined) // This can be fixed by child class.
-    const transitionHeight = ref(undefined) // Intermediate height during transition.
-    const transitionCount = ref(0) // Number of windows in transition state.
+  setup (props, { emit }) {
+    const transitionHeight = ref(undefined)
+    const transitionCount = ref(0)
     const isBooted = ref(false)
     const isReverse = ref(false)
 
     const roolElement = ref(null)
+    const containerElement = ref(null)
 
     const groupProps = {
       modelValue: props.modelValue,
@@ -96,31 +89,12 @@ export default {
       getIds,
     } = useGroup(groupProps, { emit })
 
-    const isActive = computed(() => {
-      return transitionCount.value > 0
-    })
+    const isActive = computed(() => transitionCount.value > 0)
 
-    const classes = computed(() => {
-      return {
-        window: true,
-        'window--show-arrows-on-hover': props.showArrowsOnHover,
-      }
-    })
+    const internalReverse = computed(() => props.reverse ? !isReverse.value : isReverse.value)
 
-    const computedTransition = computed(() => {
-      if (!isBooted.value) return ''
+    const isVertical = computed(() => props.vertical)
 
-      const axis = props.vertical ? 'y' : 'x'
-      const direction = internalReverse.value ? '-reverse' : ''
-
-      return `window-${axis}${direction}-transition`
-    })
-
-    const internalReverse = computed(() => {
-      return props.reverse ? !isReverse.value : isReverse.value
-    })
-
-    // Watch
     watch(selectedIndex, (val, oldVal) => updateReverse(val, oldVal))
 
     watch(() => props.modelValue, (value, oldVal) => {
@@ -131,37 +105,28 @@ export default {
       select(id, value)
     })
 
-    // Hooks
     onMounted(() => {
       window.requestAnimationFrame(() => (isBooted.value = true))
     })
 
-    // Methods
-    const genContainer = () => {
-      const children = slots.default ? [slots.default()] : []
-
-      if (props.showArrows) {
-        children.push(genControlIcons())
-      }
-
+    function genIcon (direction, icon, fn) {
       return h('div', {
         class: {
-          window__container: true,
-          'window__container--is-active': isActive.value,
+          'z-1 mx-4 absolute rounded-full bg-black bg-opacity-10 dark:bg-opacity-30': true,
+          'left-0': direction === 'prev',
+          'right-0': direction === 'next',
         },
         style: {
-          height: internalHeight.value || transitionHeight.value,
-        },
-      }, children)
-    }
-
-    const genIcon = (direction, icon, fn) => {
-      return h('div', {
-        class: `window__${direction}`,
+          top: 'calc(50% - 1.25rem)',
+        }
       }, [
         h('button', {
           'aria-label': direction,
-          class: 'flex rounded-full focus:outline-none text-gray-600 hover:text-gray-900 focus:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:focus:text-white p-2',
+          class: {
+            'rounded-full w-10 h-10 flex items-center justify-center': true,
+            'text-white opacity-50 hover:opacity-100': true,
+            'focus:outline-none focus:opacity-100': true,
+          },
           onClick: () => {
             fn()
           },
@@ -173,10 +138,12 @@ export default {
       ])
     }
 
-    const genControlIcons = () => {
+    function genControlIcons () {
       const icons = []
 
-      const prevIcon = props.prevIcon
+      const prevIcon = props.prevIcon === true
+        ? ziArrowLeft
+        : props.prevIcon
 
       if (
         hasPrev.value &&
@@ -187,7 +154,9 @@ export default {
         icon && icons.push(icon)
       }
 
-      const nextIcon = props.nextIcon
+      const nextIcon = props.nextIcon === true
+        ? ziArrowRight
+        : props.nextIcon
 
       if (
         hasNext.value &&
@@ -201,19 +170,19 @@ export default {
       return icons
     }
 
-    const next = () => {
+    function next () {
       if (!hasActiveItems.value || !hasNext.value) return
 
       _next()
     }
 
-    const prev = () => {
+    function prev () {
       if (!hasActiveItems.value || !hasPrev.value) return
 
       _prev()
     }
 
-    const updateReverse = (val, oldVal) => {
+    function updateReverse (val, oldVal) {
       isReverse.value = val < oldVal
     }
 
@@ -222,28 +191,40 @@ export default {
       unregister,
       isSelected,
       internalReverse,
-      computedTransition,
       transitionCount,
       transitionHeight,
-      el: roolElement,
+      containerElement,
+      isVertical,
     }
 
     provide(WindowContext, api)
 
     return {
+      isActive,
       roolElement,
-      classes,
+      containerElement,
       next,
       prev,
-      genContainer,
+      genControlIcons,
     }
   },
 
   render () {
+    const container = h('div', {
+      ref: 'containerElement',
+      class: {
+        'transition-all duration-300': true,
+      },
+      // leave transition not working, then setted inline to element
+      // style: { height: transitionHeight.value },
+    }, this.$slots.default && this.$slots.default())
+
     const node = h('div', {
       ref: 'roolElement',
-      class: this.classes,
-    }, this.genContainer())
+      class: {
+        'relative overflow-hidden': true,
+      },
+    }, [container, this.showArrows && this.genControlIcons()])
 
     if (!this.touchless) return node
 

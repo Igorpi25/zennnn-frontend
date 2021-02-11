@@ -2,6 +2,7 @@ import {
   h,
   ref,
   computed,
+  watch,
   nextTick,
   Transition,
   withDirectives,
@@ -27,14 +28,7 @@ export default {
   props: {
     ...useLazyContentProps(),
     disabled: Boolean,
-    reverseTransition: {
-      type: [Boolean, String],
-      default: undefined,
-    },
-    transition: {
-      type: [Boolean, String],
-      default: undefined,
-    },
+    transition: Object,
     value: {
       required: false,
     },
@@ -42,14 +36,22 @@ export default {
   },
 
   setup (props, { slots }) {
-    const windowGroup = useWindowContext('WindowItem')
-    // Data
+    const {
+      isVertical,
+      transitionCount,
+      transitionHeight,
+      internalReverse,
+      containerElement,
+      register,
+      unregister,
+      isSelected,
+      
+    } = useWindowContext('WindowItem')
     const id = uid()
     const inTransition = ref(false)
 
-    // Computed
     const isActive = computed(() => {
-      return windowGroup.isSelected(id)
+      return isSelected(id)
     })
 
     const lazyContentProps = reactive({
@@ -58,129 +60,111 @@ export default {
     })
     const { showLazyContent } = useLazyContent(lazyContentProps)
 
-    const classes = computed(() => {
+    const transitionData = computed(() => {
+      let leaveTranslate, enterTranslate
+      if (isVertical.value) {
+        leaveTranslate = internalReverse.value ? 'translate-y-full' : '-translate-y-full'
+        enterTranslate = internalReverse.value ? '-translate-y-full' : 'translate-y-full'
+      } else {
+        leaveTranslate = internalReverse.value ? 'translate-x-full' : '-translate-x-full'
+        enterTranslate = internalReverse.value ? '-translate-x-full' : 'translate-x-full'
+      }
+
+      const classes = props.transition || {
+        enterActiveClass: 'transition-transform ease-out-quart duration-300',
+        leaveActiveClass: 'transition-transform ease-out-quart duration-300',
+        leaveFromClass: 'absolute top-0 w-full',
+        leaveToClass: `absolute top-0 w-full transform ${leaveTranslate}`,
+        enterFromClass: `transform ${enterTranslate}`,
+      }
+
+      const hooks = {
+        onBeforeEnter: onBeforeTransition,
+        onAfterEnter: onAfterTransition,
+        onEnterCancelled: onAfterTransition,
+
+        onBeforeLeave: onBeforeTransition,
+        onAfterLeave: onAfterTransition,
+        onLeaveCancelled: onAfterTransition,
+
+        onEnter: onEnter,
+      }
       return {
-        'window-item': true,
-        'window-item--active': isActive.value,
+        ...classes,
+        ...hooks,
       }
     })
 
-    const computedTransition = computed(() => {
-      if (!windowGroup.internalReverse.value) {
-        return typeof props.transition !== 'undefined'
-          ? props.transition || ''
-          : windowGroup.computedTransition.value
-      }
-
-      return typeof props.reverseTransition !== 'undefined'
-        ? props.reverseTransition || ''
-        : windowGroup.computedTransition.value
+    watch(transitionHeight, (val) => {
+      containerElement.value.style.height = val
     })
 
-    // Hooks
     onBeforeMount(() => {
-      windowGroup.register({ id, value: props.value, disabled: props.disabled }, props.index)
+      register({ id, value: props.value, disabled: props.disabled }, props.index)
     })
 
     onBeforeUnmount(() => {
-      windowGroup.unregister(id)
+      unregister(id)
     })
 
-    // Methods
-    const genDefaultSlot = () => {
-      return slots.default ? slots.default() : undefined
-    }
-
-    const genWindowItem = () => {
+    function genWindowItem () {
       return withDirectives(
         h('div', {
-          class: classes.value,
-        }, genDefaultSlot()),
+        }, slots.default && slots.default()),
         [
           [vShow, isActive.value],
         ],
       )
     }
 
-    const onAfterTransition = () => {
-      if (!inTransition.value) {
-        return
-      }
+    function onAfterTransition () {
+      if (!inTransition.value) return
 
       // Finalize transition state.
       inTransition.value = false
-      if (windowGroup.transitionCount.value > 0) {
-        windowGroup.transitionCount.value--
+      if (transitionCount.value > 0) {
+        transitionCount.value--
 
         // Remove container height if we are out of transition.
-        if (windowGroup.transitionCount.value === 0) {
-          windowGroup.transitionHeight.value = undefined
+        if (transitionCount.value === 0) {
+          transitionHeight.value = undefined
         }
       }
     }
 
-    const onBeforeTransition = () => {
-      if (inTransition.value) {
-        return
-      }
+    function onBeforeTransition () {
+      if (inTransition.value) return
 
       // Initialize transition state here.
       inTransition.value = true
-      if (windowGroup.transitionCount.value === 0) {
+      if (transitionCount.value === 0) {
         // Set initial height for height transition.
-        windowGroup.transitionHeight.value = convertToUnit(windowGroup.el.value.clientHeight)
+        transitionHeight.value = convertToUnit(containerElement.value.parentNode.clientHeight)
       }
-      windowGroup.transitionCount.value++
+      transitionCount.value++
     }
 
-    const onTransitionCancelled = () => {
-      onAfterTransition() // This should have the same path as normal transition end.
-    }
-
-    const onEnter = (el) => {
-      if (!inTransition.value) {
-        return
-      }
+    function onEnter (el) {
+      if (!inTransition.value) return
 
       nextTick(() => {
         // Do not set height if no transition or cancelled.
-        if (!computedTransition.value || !inTransition.value) {
-          return
-        }
+        if (!inTransition.value) return
 
         // Set transition target height.
-        windowGroup.transitionHeight.value = convertToUnit(el.clientHeight)
+        transitionHeight.value = convertToUnit(el.clientHeight)
       })
     }
 
     return {
-      computedTransition,
-      onBeforeTransition,
-      onAfterTransition,
-      onTransitionCancelled,
-      onEnter,
+      transitionData,
       showLazyContent,
       genWindowItem,
     }
   },
 
   render () {
-    return h(Transition, {
-      name: this.computedTransition,
-
-      // Handlers for enter windows.
-      onBeforeEnter: this.onBeforeTransition,
-      onAfterEnter: this.onAfterTransition,
-      onEnterCancelled: this.onTransitionCancelled,
-
-      // Handlers for leave windows.
-      onBeforeLeave: this.onBeforeTransition,
-      onAfterLeave: this.onAfterTransition,
-      onLeaveCancelled: this.onTransitionCancelled,
-
-      // Enter handler for height transition.
-      onEnter: this.onEnter,
-    }, {
+    return h(Transition, this.transitionData, {
       default: () => this.showLazyContent(this.genWindowItem),
     })
   },
