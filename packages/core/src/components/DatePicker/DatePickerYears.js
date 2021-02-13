@@ -10,6 +10,7 @@ import subYears from 'date-fns/subYears'
 import addYears from 'date-fns/addYears'
 import isAfter from 'date-fns/isAfter'
 import isBefore from 'date-fns/isBefore'
+import isSameYear from 'date-fns/isSameYear'
 import getDecade from 'date-fns/getDecade'
 import isValid from 'date-fns/isValid'
 
@@ -34,6 +35,7 @@ export default {
   },
 
   setup (props, { emit }) {
+    const now = new Date()
     // TODO: change positions calc
     const startOffset = computed(() => {
       const now = new Date()
@@ -56,6 +58,7 @@ export default {
       value,
       key: String(getYear(value)),
       text: getYear(value),
+      current: isSameYear(value, now),
       selected: props.selected && getYear(value) === getYear(props.selected),
       disabled: !isEnabled(value, props.min, props.max),
     })))
@@ -106,11 +109,12 @@ export default {
           key: item.key,
           disabled: item.disabled,
           class: {
-            'h-8 rounded-md focus:outline-none px-4': true,
+            'h-8 rounded focus:outline-none px-4': true,
             transition: !item.disabled,
-            'text-gray-200 cursor-default': item.disabled,
-            'hover:bg-gray-300 focus:bg-gray-300': !item.selected && !item.disabled,
-            'bg-blue-500 text-white': item.selected,
+            'text-gray-100 dark:text-gray-300 cursor-default': item.disabled,
+            'hover:bg-light-gray-300 focus:bg-light-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600': !item.selected && !item.disabled,
+            'bg-blue-400 text-white': item.selected,
+            'ring-2 ring-inset ring-blue-500': !item.selected && !item.disabled && item.current,
           },
           onClick: (e) => {
             e.preventDefault()
@@ -121,7 +125,7 @@ export default {
       })
 
       return h('div', {
-        class: 'grid grid-cols-3 gap-6 items-center justify-items-center pt-4',
+        class: 'grid grid-cols-3 gap-6 items-center justify-items-center py-4 px-md',
       }, children)
     }
 

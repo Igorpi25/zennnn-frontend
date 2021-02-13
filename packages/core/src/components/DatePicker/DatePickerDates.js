@@ -21,6 +21,7 @@ import isSameMonth from 'date-fns/isSameMonth'
 import endOfDay from 'date-fns/endOfDay'
 import startOfDay from 'date-fns/startOfDay'
 import isValid from 'date-fns/isValid'
+import isWeekend from 'date-fns/isWeekend'
 
 import DatePickerHeader from './DatePickerHeader'
 
@@ -58,6 +59,14 @@ export default {
       return intlFormatter.format(date)
     }
 
+    const weekendIndexes = computed(() => {
+      return Array.from(Array(7))
+        .map((_, i) => (props.firstDayOfWeek + i) % 7)
+        .reduce((acc, v, i) => {
+          return v === 0 || v === 6 ? [...acc, i] : [...acc]
+        }, [])
+    })
+
     const monthStart = computed(() => startOfMonth(props.modelValue))
 
     const monthEnd = computed(() => endOfMonth(props.modelValue))
@@ -93,6 +102,7 @@ export default {
       return eachDayOfInterval(displayedInterval.value).map((value, i) => ({
         value,
         text: dayFormat(value),
+        isWeekend: isWeekend(value),
         current: isSameDay(value, now),
         selected: props.selected && isSameDay(props.selected, value),
         disabled: !isWithinInterval(value, currentMonth.value) ||
@@ -141,10 +151,14 @@ export default {
 
     const genItemsHead = () => {
       return h('div', {
-        class: 'grid grid-cols-7 gap-2 items-center justify-items-center text-sm font-semibold pt-3',
+        class: 'grid grid-cols-7 gap-1 items-center justify-items-center pt-4 px-md',
       }, weekDays.value.map((day, i) => {
-        return h('span', {
+        return h('h5', {
           key: i,
+          class: {
+            'w-8 text-center': true,
+            'text-gray-200 dark:text-gray-100': weekendIndexes.value.includes(i),
+          },
         }, day)
       }))
     }
@@ -155,12 +169,13 @@ export default {
           key: item.key,
           disabled: item.disabled,
           class: {
-            'w-8 h-8 rounded-md focus:outline-none': true,
+            'w-8 h-8 rounded focus:outline-none': true,
             transition: !item.disabled,
-            'text-gray-200 cursor-default': item.disabled,
-            'hover:bg-gray-300 focus:bg-gray-300': !item.selected && !item.disabled,
-            'bg-blue-500 text-white': item.selected,
-            'ring-1 ring-blue-500 ring-opacity-50': !item.selected && !item.disabled && item.current,
+            'text-gray-100 dark:text-gray-300 cursor-default': item.disabled,
+            'hover:bg-light-gray-300 focus:bg-light-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600': !item.selected && !item.disabled,
+            'bg-blue-400 text-white': item.selected,
+            'ring-2 ring-inset ring-blue-500': !item.selected && !item.disabled && item.current,
+            'text-gray-200 dark:text-gray-100': !item.selected && !item.disabled && item.isWeekend,
           },
           onClick: (e) => {
             e.preventDefault()
@@ -171,7 +186,7 @@ export default {
       })
 
       return h('div', {
-        class: 'grid grid-cols-7 gap-2 items-center justify-items-center text-sm pt-4',
+        class: 'grid grid-cols-7 gap-1 items-center justify-items-center text-sm py-4 px-md',
       }, children)
     }
 

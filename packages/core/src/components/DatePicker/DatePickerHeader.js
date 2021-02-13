@@ -1,6 +1,4 @@
-import {
-  h,
-} from 'vue'
+import { h } from 'vue'
 
 import { ziChevronLeft, ziChevronRight } from '@zennnn/icons'
 
@@ -21,8 +19,8 @@ export default {
     const genPrevButton = () => {
       return h('button', {
         class: {
-          'flex justify-center items-center rounded-md transition': true,
-          'hover:bg-gray-300 focus:bg-gray-300 focus:outline-none': true,
+          'w-6 h-6 rounded transition': true,
+          'text-blue-500 hover:bg-blue-400 hover:text-white focus:bg-blue-400 focus:text-white focus:outline-none': true,
         },
         disabled: props.prevDisabled,
         onClick: (e) => {
@@ -30,14 +28,14 @@ export default {
           e.stopPropagation()
           emit('prev')
         },
-      }, h(Icon, { size: 32 }, { default: () => ziChevronLeft }))
+      }, h(Icon, { size: 24 }, { default: () => ziChevronLeft }))
     }
 
     const genNextButton = () => {
       return h('button', {
         class: {
-          'flex justify-center items-center rounded-md transition': true,
-          'hover:bg-gray-300 focus:bg-gray-300 focus:outline-none': true,
+          'w-6 h-6 rounded transition': true,
+          'text-blue-500 hover:bg-blue-400 hover:text-white focus:bg-blue-400 focus:text-white focus:outline-none': true,
         },
         disabled: props.nextDisabled,
         onClick: (e) => {
@@ -45,23 +43,21 @@ export default {
           e.stopPropagation()
           emit('next')
         },
-      }, h(Icon, { size: 32 }, { default: () => ziChevronRight }))
+      }, h(Icon, { size: 24 }, { default: () => ziChevronRight }))
     }
 
     const genTitle = () => {
-      return h('div', {
-        class: 'flex flex-1 justify-center items-center h-8',
-      }, h(props.clickable ? 'button' : 'span', {
+      return h(props.clickable ? 'button' : 'span', {
         class: {
-          'font-semibold px-3': true,
-          'hover:text-blue-400 focus:text-blue-400 focus:outline-none transition': props.clickable,
+          'px-4': true,
+          'text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none transition': props.clickable,
         },
         onClick: (e) => {
           e.preventDefault()
           e.stopPropagation()
           emit('title:click')
         },
-      }, slots.default ? slots.default() : undefined))
+      }, slots.default && slots.default())
     }
 
     return {
@@ -73,7 +69,7 @@ export default {
 
   render () {
     return h('div', {
-      class: 'w-full flex h-8',
+      class: 'flex items-center justify-between h-12 px-4',
     }, [
       this.genPrevButton(),
       this.genTitle(),

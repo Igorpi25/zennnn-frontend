@@ -1,13 +1,15 @@
 import {
-  computed,
   h,
   ref,
+  computed,
   watchEffect,
 } from 'vue'
 
 import { useI18n } from 'vue-i18n'
 
 import { convertToUnit, isString } from 'vue-supp'
+
+import { ziCalendar } from '@zennnn/icons'
 
 import parseISO from 'date-fns/parseISO'
 import fromUnixTime from 'date-fns/fromUnixTime'
@@ -16,6 +18,7 @@ import parse from 'date-fns/parse'
 import isValid from 'date-fns/isValid'
 
 import Btn from '../Btn'
+import Icon from '../Icon'
 import Menu from '../Menu'
 import DatePickerYears from './DatePickerYears'
 import DatePickerMonths from './DatePickerMonths'
@@ -56,21 +59,17 @@ export default {
       type: [String, Number],
       default: 276,
     },
-    minHeight: {
-      type: [String, Number],
-      default: 302,
-    },
   },
 
   emits: ['update:modelValue'],
 
   setup (props, { emit, slots }) {
+    const { locale, d } = useI18n()
+
     const activePicker = ref(props.type.toUpperCase())
     const internal = ref(new Date())
     const input = ref('')
     const isMenuActive = ref(false)
-
-    const { locale, d } = useI18n()
 
     const firstDayOfWeek = computed(() => {
       return (locale.value === 'fr' || locale.value === 'ru' || locale.value === 'uk')
@@ -102,10 +101,12 @@ export default {
       internal.value = date
       activePicker.value = 'MONTH'
     }
+
     const selectMonth = (date) => {
       internal.value = date
       activePicker.value = 'DATE'
     }
+
     const selectDay = (date) => {
       emit('update:modelValue', formatISO(date, { representation: 'date' }))
       isMenuActive.value = false
@@ -123,12 +124,25 @@ export default {
     }
 
     const genActivator = () => {
-      if (slots.activator) return slots.activator()
+      const value = props.modelValue && d(parseDate(props.modelValue), 'short')
+
+      if (slots.activator) return slots.activator({ menu: isMenuActive.value, formatted: value })
+
       return h(Btn, {
         outlined: true,
-        small: true,
+        xSmall: true,
+        darkIcon: !isMenuActive.value,
+        class: { 'bg-blue-400 border-blue-400 dark:border-blue-400 text-white': isMenuActive.value },
       }, {
-        default: () => isValid(internal.value) ? d(internal.value, 'short') : props.placeholder || 'Date',
+        default: () => {
+          const placeholder = props.placeholder || 'Date'
+          return value
+            ? value
+            : [
+              h('span', placeholder),
+              h(Icon, { right: true }, { default: () => ziCalendar }),
+            ]
+        },
       })
     }
 
@@ -217,10 +231,9 @@ export default {
       activator: () => this.genActivator(),
       default: () => {
         return h('div', {
-          class: 'bg-gray-400 rounded-md p-2 py-3',
+          class: 'bg-white dark:bg-gray-900 dark:text-white rounded-lg',
           style: {
             width: convertToUnit(this.width),
-            minHeight: convertToUnit(this.minHeight),
           },
         }, this.genPicker())
       },

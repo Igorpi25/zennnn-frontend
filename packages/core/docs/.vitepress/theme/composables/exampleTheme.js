@@ -5,7 +5,7 @@ export function useExampleTheme (elRef, file) {
   const dark = ref(false)
   const attachRefs = ref([])
   const isAttachable = computed(() => {
-    return /Tooltip|Menu|Modal/.test(file)
+    return /Tooltip|Menu|Modal|DatePicker/.test(file)
   })
 
   watch(dark, () => {
