@@ -18,17 +18,23 @@ const md = require('markdown-it')({
 })
 
 const map = {
-  LoadingSpinner: {
-    props: {
-      size: { type: Number, default: 18 },
-    },
-  },
   ExpandTransition: {
     props: {
       mode: String,
       x: Boolean,
       expandedParentClass: String,
     }
+  },
+  LoadingSpinner: {
+    props: {
+      size: { type: Number, default: 18 },
+    },
+  },
+  Messages: {
+    props: {
+      value: Array,
+      error: Boolean,
+    },
   },
 }
 

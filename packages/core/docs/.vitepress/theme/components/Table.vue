@@ -81,6 +81,7 @@ function getApi (name) {
     case 'loading-spinner': return import('../../data/loading-spinner.json')
     case 'menu': return import('../../data/menu.json')
     case 'menu-item': return import('../../data/menu-item.json')
+    case 'messages': return import('../../data/messages.json')
     case 'modal': return import('../../data/modal.json')
     case 'progress': return import('../../data/progress.json')
     case 'tooltip': return import('../../data/tooltip.json')
