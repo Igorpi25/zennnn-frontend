@@ -5,7 +5,7 @@
       <SideBar :open="isOpen" @close="toggleMenu(false)" />
       <div class="min-w-0 w-full flex-auto">
         <div class="flex w-full">
-          <main class="min-w-0 w-full flex-auto p-6">
+          <main class="min-w-0 w-full flex-auto p-6 pb-12">
             <Content />
           </main>
           <Toc />
