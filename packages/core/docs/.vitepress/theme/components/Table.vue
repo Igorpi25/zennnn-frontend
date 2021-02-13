@@ -20,13 +20,14 @@
         >
           <td
             v-for="header in headers"
-            :key="header"
             v-html="item[header]"
-            class="align-top border-b border-light-gray-200 text-sm p-2"
+            :key="header"
+            :width="header === 'name' ? '180' : header === 'type' ? '120' : undefined"
             :class="{
               'font-medium': header === 'name',
               'font-mono': header === 'name' || header === 'type' || header === 'default',
             }"
+            class="align-top border-b border-light-gray-200 text-sm p-2"
           />
         </tr>
       </tbody>

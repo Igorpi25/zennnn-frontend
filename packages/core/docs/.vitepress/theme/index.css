@@ -93,6 +93,18 @@
   main .font-mono .token.keyword {
     color: #6196cc;
   }
+  .api-table__default {
+    border-radius: 3px;
+    background: #f5f2f0;
+    padding: 4px 8px;
+  }
+  .api-table__default pre {
+    overflow-x: auto;
+    max-width: 14rem;
+  }
+  .api-table__default code {
+    background: #f5f2f0;
+  }
 }
 
 @layer components {

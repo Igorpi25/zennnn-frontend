@@ -120,7 +120,7 @@ function getDefaultValue (item) {
 
   const code = Prism.highlight(str, Prism.languages.typescript)
   return isPlainObject(defaultValue) && !isEmpty(JSON.parse(JSON.stringify(defaultValue)))
-    ? `<div style="border-radius:3px; background:#f5f2f0; padding:4px 8px;"><pre style="overflow-x:auto; max-width:18rem;"><code style="background:#f5f2f0;">${code}</code></pre></div>`
+    ? `<div class="api-table__default"><pre><code>${code}</code></pre></div>`
     : code
 }
 
