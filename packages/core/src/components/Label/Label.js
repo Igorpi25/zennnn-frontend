@@ -78,7 +78,7 @@ export default {
     }
 
     const genAppendSlot = () => {
-      return slots.append ? slots.append() : null
+      return slots.append && slots.append()
     }
 
     const genContent = () => {

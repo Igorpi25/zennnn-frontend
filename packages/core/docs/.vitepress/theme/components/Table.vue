@@ -78,6 +78,7 @@ function getApi (name) {
     case 'expand-transition': return import('../../data/expand-transition.json')
     case 'icon': return import('../../data/icon.json')
     case 'image': return import('../../data/image.json')
+    case 'label': return import('../../data/label.json')
     case 'loading-spinner': return import('../../data/loading-spinner.json')
     case 'menu': return import('../../data/menu.json')
     case 'menu-item': return import('../../data/menu-item.json')
