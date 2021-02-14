@@ -5,7 +5,7 @@ The `TextArea` component.
 <Example file="TextArea/Usage" />
 
 ## Api
-- [TextArea](../api/text-field)
+- [TextArea](../api/text-area)
 
 ## Single Line
 <Example file="TextArea/SingleLine" />
