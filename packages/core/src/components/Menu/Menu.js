@@ -393,9 +393,9 @@ export default {
         class: 'menu__box',
         tabindex: props.tabindex,
         'aria-activedescendant': isActive.value && activeItemId.value ? activeItemId.value : undefined,
-        style: {
-          width: props.width === 'auto' ? clientRect.value.width + 'px' : undefined,
-        },
+      }
+      if (props.width === 'auto') {
+        boxData.style = { width: clientRect.value.width + 'px' }
       }
       if (!props.disableKeys) {
         boxData.onKeyDown = onContentKeyDown

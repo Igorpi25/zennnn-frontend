@@ -27,7 +27,7 @@
     "openOnFocus": "Designates whether menu should open on activator focus.",
     "openOnHover": "Designates whether menu should open on activator hover.",
     "origin": "Sets the transition origin on the element.",
-    "placement": "Describes the preferred placement of the popper.",
+    "placement": "Describes the preferred placement of the [popper](https://popper.js.org/docs/v2/constructors/#options).",
     "right": "Aligns the component towards the right.",
     "role": "Applies a custom role.",
     "skidding": "Displaces the popper along the reference element.",
