@@ -3,7 +3,7 @@
     @apply relative transition-opacity duration-75 ease-in;
   }
   .text-field--disabled {
-    @apply opacity-40;
+    @apply opacity-50;
   }
 
   .text-field__control {
