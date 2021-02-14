@@ -4,7 +4,6 @@
     :pattern="pattern"
     :pattern-message="patternMessage"
     :hide-details="false"
-    label="Default"
     placeholder="Input pattern"
   >
   </TextField>

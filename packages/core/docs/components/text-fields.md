@@ -19,6 +19,9 @@ The `TextField` component.
 ## States
 <Example file="TextField/States" />
 
+## State Icon
+<Example file="TextField/StateIcon" />
+
 ## Prepend and Append
 <Example file="TextField/PrependAndAppend" />
 

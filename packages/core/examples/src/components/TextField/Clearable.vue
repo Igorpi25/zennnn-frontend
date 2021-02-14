@@ -1,7 +1,6 @@
 <template>
   <TextField
     v-model="model"
-    label="Default"
     placeholder="Clearable"
     clearable
   >

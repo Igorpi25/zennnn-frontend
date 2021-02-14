@@ -3,7 +3,6 @@
     v-model="model"
     :hide-details="false"
     :rules="[rules.required]"
-    label="Default"
     placeholder="Value required"
   >
   </TextField>

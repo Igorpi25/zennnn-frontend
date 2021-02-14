@@ -3,7 +3,6 @@
     v-model="model"
     :prepend-icon="ziSearch"
     :append-icon="ziFactory"
-    label="Default"
     placeholder="Custom slots"
   >
     <template v-slot:prepend>

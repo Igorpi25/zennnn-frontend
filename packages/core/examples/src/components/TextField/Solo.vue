@@ -14,7 +14,8 @@
       solo
       control-class="bg-transparent dark:bg-transparent"
       input-class="placeholder-blue-500 dark:placeholder-blue-500"
-    />
+    >
+    </TextField>
   </div>
 </template>
 
