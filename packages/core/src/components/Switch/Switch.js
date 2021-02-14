@@ -17,6 +17,7 @@ export default {
   name: 'Switch',
 
   props: {
+    // TODO: exclude `clearable`, `placeholder`, `pattern`, `patternMessage`, `appendIcon`, `prependIcon`, `autofocus` props
     ...useInputProps(),
     ...useInputValidationProps(),
     modelValue: {
@@ -75,7 +76,7 @@ export default {
     })
 
     watch(internalValue, (val) => {
-      !!val !== !!props.modelValue && emit('update:modelValue', val)
+      emit('update:modelValue', val)
     })
 
     const onChange = () => {
@@ -104,7 +105,7 @@ export default {
     }
 
     const genSwitchLabel = () => {
-      const children = slots.default ? slots.default() : undefined
+      const children = slots.default && slots.default()
       if (!children) return null
       return h('label', {
         for: id,

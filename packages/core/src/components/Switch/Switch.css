@@ -22,16 +22,20 @@
 
   .switch__track {
     transition: .3s cubic-bezier(.25,.8,.5,1);
-    @apply rounded-full absolute bg-light-gray-500 dark:bg-gray-800 w-full h-full;
+    @apply rounded-full absolute bg-light-gray-400 dark:bg-gray-900 w-full h-full;
   }
   .switch--focused .switch__track {
-    @apply ring ring-blue-500 ring-opacity-50;
+    @apply ring ring-blue-400;
+  }
+  .switch__input:focus:not(:focus-visible) + .switch__track {
+    box-shadow: none;
+    outline: 0;
   }
   .switch--active .switch__track {
     @apply bg-blue-500;
   }
   .switch--disabled .switch__track {
-    @apply bg-light-gray-500 dark:bg-gray-800;
+    @apply bg-light-gray-400 dark:bg-gray-900;
   }
 
   .switch__thumb {
@@ -63,6 +67,9 @@
   .switch__label {
     @apply select-none leading-tight;
   }
+  .switch--small .switch__label {
+    @apply leading-none;
+  }
 
   .switch__label,
   .switch__input {
@@ -74,6 +81,6 @@
   }
 
   .switch--disabled {
-    @apply opacity-40;
+    @apply opacity-50;
   }
 }
