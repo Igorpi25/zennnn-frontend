@@ -184,8 +184,8 @@ export const useInput = (props, { slots, emit, id }) => {
     return h('button', {
       disabled: disabled,
       class: {
-        'w-6 h-6 flex items-center justify-center focus:outline-none': true,
-        'text-gray-200 focus:text-gray-300 hover:text-gray-300 dark:focus:text-gray-100 dark:hover:text-gray-100': true,
+        'w-6 h-6 flex items-center justify-center rounded focus:outline-none': true,
+        'text-gray-200 hover:text-gray-400 dark:hover:text-gray-100 focus:ring-2 focus:ring-blue-400': true,
         invisible: disabled,
       },
       'aria-label': 'clear icon',
