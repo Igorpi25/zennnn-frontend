@@ -39,6 +39,7 @@
 
   a.header-anchor {
     float: left;
+    margin-top: .125em;
     margin-left: -.8em;
     padding-right: .2em;
     font-size: .85em;
