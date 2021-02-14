@@ -175,7 +175,6 @@ module.exports = {
         'out-quart': 'cubic-bezier(0.25, 0.8, 0.5, 1)',
       },
       borderRadius: {
-        3: '3px',
         20: '20px',
         50: '50px',
       },

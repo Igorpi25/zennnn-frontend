@@ -24,6 +24,7 @@ export default {
   name: 'Checkbox',
 
   props: {
+    // TODO: exclude `clearable`, `placeholder`, `pattern`, `patternMessage`, `appendIcon`, `prependIcon`, `autofocus` props
     ...useInputProps(),
     ...useInputValidationProps(),
     modelValue: {
@@ -149,7 +150,7 @@ export default {
     }
 
     const genCheckboxLabel = () => {
-      const children = slots.default ? slots.default() : undefined
+      const children = slots.default && slots.default()
       if (!children) return null
       return h('label', {
         for: id,

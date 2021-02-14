@@ -129,7 +129,7 @@ function getProp (name, prop) {
   return {
     name,
     type,
-    default: getPropDefault(prop.default, type),
+    default: getPropDefault(prop && prop.default, type),
   }
 }
 

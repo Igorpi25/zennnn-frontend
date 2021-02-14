@@ -74,6 +74,7 @@ function getApi (name) {
     case 'alert': return import('../../data/alert.json')
     case 'btn': return import('../../data/btn.json')
     case 'btn-toggle': return import('../../data/btn-toggle.json')
+    case 'checkbox': return import('../../data/checkbox.json')
     case 'data-table': return import('../../data/data-table.json')
     case 'date-picker': return import('../../data/date-picker.json')
     case 'expand-transition': return import('../../data/expand-transition.json')
