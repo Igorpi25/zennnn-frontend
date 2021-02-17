@@ -1,6 +1,6 @@
 {
   "props": {
-    "contentOnIntersect": "Render items in ",
+    "contentOnIntersect": "Render items on intersect.",
     "dense": "Reduces height.",
     "disabled": "Disables the item.",
     "id": "Applies a custom id.",

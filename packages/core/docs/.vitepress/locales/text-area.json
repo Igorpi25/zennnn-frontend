@@ -4,7 +4,7 @@
     "autoGrow": "Automatically grow the textarea depending on amount of text.",
     "autofocus": "Enables autofocus.",
     "clearable": "Add input clear functionality, default @zennnn/icons `ziCloseDelete`.",
-    "controlClass": "Applies a custom class to `.textarea__control`.",
+    "controlClass": "Applies a custom class to control wrapper.",
     "debounce": "Sets delays to input value emit.",
     "dependencies": "Input controls contain element. Should not trigger focus on element click.",
     "disabled": "Disable the input.",

@@ -7,7 +7,7 @@
     "autocomplete": "Sets input [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete).",
     "autofocus": "Enables autofocus.",
     "clearable": "Add input clear functionality, default @zennnn/icons `ziCloseDelete`.",
-    "controlClass": "Applies a custom class to `.text-field__control`.",
+    "controlClass": "Applies a custom class to control wrapper.",
     "debounce": "Sets delays to input value emit.",
     "dense": "Reduces the input height.",
     "dependencies": "Input controls contain element. Should not trigger focus on element click.",

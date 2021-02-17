@@ -2,7 +2,7 @@
   "props": {
     "activator": "Designate a custom activator when the `activator` slot is not used. String can be any valid querySelector and Object can be any valid Node.",
     "attach": "Specifies which DOM element that this component should detach to.",
-    "contentClass": "Applies a custom class to content.",
+    "contentClass": "Applies a custom class to content wrapper.",
     "disableKeys": "Removes all keyboard interaction.",
     "disabled": "Disables the modal.",
     "eager": "Will force the components content to render on mounted.",

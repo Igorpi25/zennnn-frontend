@@ -1,7 +1,7 @@
 {
   "props": {
     "block": "Expands the button to 100% of available space.",
-    "contentClass": "Applies a custom class to `.btn__content`.",
+    "contentClass": "Applies a custom class to content wrapper.",
     "dark": "Applies the dark theme variant to the component.",
     "darkIcon": "Icon dark color decortion.",
     "disabled": "Removes the ability to click or target the component.",

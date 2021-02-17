@@ -4,7 +4,7 @@
     "closeClass": "Applies a custom class to `.alert__close`.",
     "color": "Applies specified color to the control. Allowed values: `primary`, `error`, `warn`, `success`, `info`.",
     "containerClass": "Applies a custom class to `.alert__container`. _Has container for preventing opacity, can be removed when set not transparent background colors._",
-    "contentClass": "Applies a custom class to `.alert__content`.",
+    "contentClass": "Applies a custom class to content wrapper.",
     "icon": "Adds a info icon at beginning of alert.",
     "iconClass": "Applies a custom class to `.alert__icon`.",
     "maxWidth": "Sets the maximum width for the component.",
