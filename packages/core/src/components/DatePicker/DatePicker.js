@@ -126,7 +126,7 @@ export default {
     const genActivator = () => {
       const value = props.modelValue && d(parseDate(props.modelValue), 'short')
 
-      if (slots.activator) return slots.activator({ menu: isMenuActive.value, formatted: value })
+      if (slots.activator) return slots.activator({ open: isMenuActive.value, formatted: value })
 
       return h(Btn, {
         outlined: true,
@@ -136,12 +136,10 @@ export default {
       }, {
         default: () => {
           const placeholder = props.placeholder || 'Date'
-          return value
-            ? value
-            : [
-              h('span', placeholder),
-              h(Icon, { right: true }, { default: () => ziCalendar }),
-            ]
+          return value || [
+            h('span', placeholder),
+            h(Icon, { right: true }, { default: () => ziCalendar }),
+          ]
         },
       })
     }

@@ -1,8 +1,8 @@
 <template>
   <DatePicker v-model="model">
-    <template v-slot:activator="{ menu, formatted }">
+    <template v-slot:activator="{ open, formatted }">
       <input
-        :class="{ 'ring-2 ring-blue-400': menu }"
+        :class="{ 'ring-2 ring-blue-400': open }"
         :value="formatted"
         class="text-blue-500 placeholder-blue-500 bg-transparent dark:text-white focus:ring-2 focus:ring-blue-400 focus:outline-none px-2"
         placeholder="Select Date"
