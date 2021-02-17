@@ -20,7 +20,7 @@ import {
   getPropertyFromItem,
 } from 'vue-supp'
 
-import { ziChevronDown, ziSearch, ziCloseDelete } from '@zennnn/icons'
+import { ziChevronDown, ziSearch, ziCloseDelete, ziChecked } from '@zennnn/icons'
 
 import { useInputProps, useInput } from '../../composables/useInput'
 import { useInputControlProps, useInputControl } from '../../composables/useInputControl'
@@ -30,6 +30,7 @@ import { useInputMessage } from '../../composables/useInputMessage'
 import uid from '../../utils/uid'
 import defaultFilter from '../../utils/defaultFilter'
 
+import Icon from '../Icon'
 import { Menu, MenuItem } from '../Menu'
 
 import './Select.css'
@@ -76,11 +77,11 @@ export default {
     minHeight: [String, Number],
     maxHeight: {
       type: [Number, String],
-      default: 304,
+      // default: 304,
     },
     distance: {
       type: Number,
-      default: 1,
+      default: 0,
     },
     openOnFocus: Boolean,
     returnObject: Boolean,
@@ -116,6 +117,11 @@ export default {
     contentOnIntersect: Boolean,
     ariaLabel: String,
     ariaAutocomplete: String,
+    // TODO: add composables and split to Autocomplete component
+    selectable: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   emits: ['update:modelValue', 'update:search', 'update:error', 'click:clear', 'focus', 'blur', 'keydown', 'mousedown', 'mouseup'],
@@ -206,10 +212,13 @@ export default {
         'select--focused': isFocused.value,
         'select--disabled': isDisabled.value,
         'select--readonly': isReadonly.value,
+        'select--is-menu-active': isMenuActive.value,
         'select--single-line': props.singleLine,
         'select--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
       }
     })
+
+    const openOnFocus = computed(() => props.openOnFocus || !props.searchable)
 
     const isActive = computed(() => {
       return isFocused.value || isMenuActive.value
@@ -253,7 +262,7 @@ export default {
     })
 
     watch(isFocused, (val) => {
-      val && props.openOnFocus && openMenu()
+      val && openOnFocus.value && openMenu()
     })
 
     watch(isMenuActive, (val) => {
@@ -287,7 +296,7 @@ export default {
     }
 
     const openMenu = () => {
-      if (isDisabled.value) return
+      if (isDisabled.value || isReadonly.value) return
       isMenuActive.value = true
       // update dimensions, has problem on attached like modal
       updateClientRect()
@@ -430,7 +439,7 @@ export default {
       } else if (e.key === 'ArrowUp' || e.key === 'Up') {
         e.preventDefault()
         if (!isMenuActive.value) {
-          isMenuActive.value = true
+          openMenu()
           !internalValue.value && setTimeout(menu.goToPrevItem)
         } else {
           menu.goToPrevItem()
@@ -438,7 +447,7 @@ export default {
       } else if (e.key === 'ArrowDown' || e.key === 'Down') {
         e.preventDefault()
         if (!isMenuActive.value) {
-          isMenuActive.value = true
+          openMenu()
           !internalValue.value && setTimeout(menu.goToNextItem)
         } else {
           menu.goToNextItem()
@@ -494,6 +503,9 @@ export default {
         autocomplete: props.autocomplete,
         'aria-label': props.ariaLabel,
         'aria-autocomplete': props.ariaAutocomplete,
+        'aria-haspopup': true,
+        'aria-expanded': isMenuActive.value ? true : undefined,
+        'aria-controls': isMenuActive.value ? listboxId : undefined,
         readonly: isReadonly.value || !props.searchable,
         disabled: isDisabled.value,
         onFocus: onFocus,
@@ -540,6 +552,8 @@ export default {
           'select__control--not-append': !hasAppendSlot.value && !hasState.value && !props.clearable && !props.showArrow,
           'select__control--is-active': isActive.value,
           'select__control--is-menu-active': isMenuActive.value,
+          'select__control--open-on-focus': openOnFocus.value,
+          'pl-8': props.selectable && !props.searchable && isMenuActive.value,
           [props.controlClass.trim()]: true,
         },
         onClick: onControlClick,
@@ -612,12 +626,12 @@ export default {
             const menu = menuRef.value
             if (e.key === 'Esc' || e.key === 'Escape') {
               e.preventDefault()
-              inputElement.value.focus()
+              inputElement.value.focus({ preventScroll: true })
             } else if (e.key === 'Enter') {
               e.preventDefault()
               if (menu.activeItem) {
                 menu.activeItem.click()
-                inputElement.value.focus()
+                inputElement.value.focus({ preventScroll: true })
               }
             } else if (e.key === 'ArrowUp' || e.key === 'Up') {
               e.preventDefault()
@@ -629,7 +643,7 @@ export default {
               if (e.shiftKey) {
                 e.preventDefault()
                 e.stopPropagation()
-                inputElement.value.focus()
+                inputElement.value.focus({ preventScroll: true })
               } else if (!isFilterDirty) {
                 e.preventDefault()
                 e.stopPropagation()
@@ -639,7 +653,7 @@ export default {
                 } else if (props.itemsFilterTabDown) {
                   props.itemsFilterTabDown()
                 } else {
-                  inputElement.value.focus()
+                  inputElement.value.focus({ preventScroll: true })
                 }
               }
             }
@@ -656,14 +670,14 @@ export default {
           onClick: (e) => {
             e.preventDefault()
             e.stopPropagation()
-            filterInputElement.value.focus()
+            filterInputElement.value.focus({ preventScroll: true })
             filter.value = ''
           },
           onKeyDown: (e) => {
             if (e.key === 'Tab' && !e.shiftKey) {
               e.preventDefault()
               e.stopPropagation()
-              inputElement.value.focus()
+              inputElement.value.focus({ preventScroll: true })
             }
           },
         }, genIcon(ziCloseDelete)),
@@ -693,8 +707,10 @@ export default {
         height: props.height,
         minHeight: props.minHeight,
         maxHeight: props.maxHeight,
+        disabled: isDisabled.value || isReadonly.value,
         boxClass: classNames(
-          'ring-1 ring-blue-500 dark:ring-1 dark:ring-blue-500 rounded-t-none',
+          'select-box shadow-none dark:shadow-none rounded-t-none',
+          props.solo || props.dense ? 'select-box--dense' : '',
           isSearching.value && !slots.item ? 'listbox--searching' : '',
           props.boxClass.trim(),
         ),
@@ -720,7 +736,8 @@ export default {
     const genMenuItems = () => {
       const itemClassNames = classNames(
         'listbox__option',
-        props.solo || props.dense ? 'h-8' : 'h-9',
+        props.solo || props.dense ? 'h-8' : 'h-10',
+        props.selectable ? 'pl-0' : '',
       )
       let index = 0
       const items = filteredItems.value.map((item) => {
@@ -741,13 +758,23 @@ export default {
           onClick: (e) => {
             if (item.disabled) return e.preventDefault()
             menuRef.value.selectItem(item)
-            closeMenu()
+            inputElement.value && inputElement.value.focus({ preventScroll: true })
+            nextTick(closeMenu)
           },
         }, {
-          default: (props) => {
+          default: (slotProps) => {
             return slots.item
-              ? h('div', null, slots.item({ item, ...props }))
-              : h('div', null, h('div', { class: 'truncate' }, genFilteredText(getText(item))))
+              ? h('div', null, slots.item({ item, ...slotProps }))
+              : h('div', null, [
+                props.selectable
+                  ? h('div', {
+                    class: 'w-8 flex justify-center flex-shrink-0',
+                  }, getValue(selectedItem.value) === getValue(item)
+                    ? h(Icon, { size: 24 }, { default: () => ziChecked })
+                    : undefined)
+                  : undefined,
+                h('div', { class: 'truncate' }, genFilteredText(getText(item))),
+              ])
           },
         })
       })
@@ -799,7 +826,7 @@ export default {
         : h('div', {
           class: classNames(
             'flex items-center px-4',
-            props.solo || props.dense ? 'h-8' : 'h-9',
+            props.solo || props.dense ? 'h-8' : 'h-10',
           ),
           onMousedown: (e) => { e.preventDefault() },
         }, h('div', {
@@ -813,7 +840,7 @@ export default {
         : h('div', {
           class: classNames(
             'flex items-center px-4',
-            props.solo || props.dense ? 'h-8' : 'h-9',
+            props.solo || props.dense ? 'h-8' : 'h-10',
           ),
           onMousedown: (e) => { e.preventDefault() },
         }, h('div', {

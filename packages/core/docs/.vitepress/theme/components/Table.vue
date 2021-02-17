@@ -88,6 +88,7 @@ function getApi (name) {
     case 'modal': return import('../../data/modal.json')
     case 'progress': return import('../../data/progress.json')
     case 'radio': return import('../../data/radio.json')
+    case 'select': return import('../../data/select.json')
     case 'switch': return import('../../data/switch.json')
     case 'text-field': return import('../../data/text-field.json')
     case 'text-area': return import('../../data/text-area.json')
