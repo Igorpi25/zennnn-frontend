@@ -768,10 +768,10 @@ export default {
               : h('div', null, [
                 props.selectable
                   ? h('div', {
-                    class: 'w-8 flex justify-center flex-shrink-0',
-                  }, getValue(selectedItem.value) === getValue(item)
-                    ? h(Icon, { size: 24 }, { default: () => ziChecked })
-                    : undefined)
+                      class: 'w-8 flex justify-center flex-shrink-0',
+                    }, getValue(selectedItem.value) === getValue(item)
+                      ? h(Icon, { size: 24 }, { default: () => ziChecked })
+                      : undefined)
                   : undefined,
                 h('div', { class: 'truncate' }, genFilteredText(getText(item))),
               ])

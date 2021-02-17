@@ -44,7 +44,7 @@ const items = Array.from(Array(20).keys()).map(key => {
   return {
     value: `item${i}`,
     text: `Item ${i} Item ${i} Item ${i} Item ${i}`,
-    disabled: i === 3,
+    disabled: i === 3
   }
 })
 </script>

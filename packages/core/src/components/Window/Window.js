@@ -118,7 +118,7 @@ export default {
         },
         style: {
           top: 'calc(50% - 1.25rem)',
-        }
+        },
       }, [
         h('button', {
           'aria-label': direction,

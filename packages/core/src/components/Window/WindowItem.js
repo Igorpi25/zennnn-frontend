@@ -45,7 +45,7 @@ export default {
       register,
       unregister,
       isSelected,
-      
+
     } = useWindowContext('WindowItem')
     const id = uid()
     const inTransition = ref(false)
