@@ -714,7 +714,7 @@ export default defineComponent({
         openOnClick: false,
         openOnHover: false,
         disableKeys: true,
-        width: clientRect.value!.width,
+        width: clientRect.value?.width,
         distance: props.distance,
         tabindex: '-1',
         id: listboxId,
