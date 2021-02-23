@@ -1,5 +1,3 @@
-// import throttle from 'lodash-es/throttle'
-
 import { Scroll } from 'vue-supp'
 
 import apolloClient from '../plugins/apollo'

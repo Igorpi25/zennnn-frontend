@@ -41,7 +41,7 @@ function createConfig (format, output, plugins = []) {
     'vue-router',
     'vue-supp',
     'vue-i18n',
-    'lodash-es',
+    'lodash.debounce',
     '@zennnn/icons',
     'date-fns/parseISO',
     'date-fns/fromUnixTime',

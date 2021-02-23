@@ -11,7 +11,4 @@ module.exports = {
   snapshotSerializers: [
     'jest-serializer-vue',
   ],
-  moduleNameMapper: {
-    '^lodash-es$': 'lodash',
-  },
 }
