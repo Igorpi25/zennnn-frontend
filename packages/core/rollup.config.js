@@ -1,5 +1,6 @@
 import analyze from 'rollup-plugin-analyzer'
 import postcss from 'rollup-plugin-postcss'
+import ts from 'rollup-plugin-typescript2'
 
 const outputConfigs = {
   esm: {
@@ -23,11 +24,24 @@ function createConfig (format, output, plugins = []) {
     process.exit(1)
   }
 
+  const tsPlugin = ts({
+    check: false,
+    tsconfig: './tsconfig.dist.json',
+    cacheRoot: './node_modules/.rts2_cache',
+    tsconfigOverride: {
+      compilerOptions: {
+        sourceMap: false,
+        declaration: false,
+      },
+    },
+  })
+
   const external = [
     'vue',
     'vue-router',
     'vue-supp',
     'vue-i18n',
+    'lodash-es',
     '@zennnn/icons',
     'date-fns/parseISO',
     'date-fns/fromUnixTime',
@@ -81,6 +95,7 @@ function createConfig (format, output, plugins = []) {
         },
         extensions: ['.css'],
         extract: true,
+        inject: false,
       })
     )
   } else {
@@ -91,14 +106,16 @@ function createConfig (format, output, plugins = []) {
         },
         extensions: ['.css'],
         extract: false,
+        inject: false,
       })
     )
   }
 
   return {
-    input: './src/index.js',
+    input: './src/index.ts',
     external,
     plugins: [
+      tsPlugin,
       ...nodePlugins,
       ...plugins,
     ],

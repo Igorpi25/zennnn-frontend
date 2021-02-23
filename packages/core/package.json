@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "rm -rf ./lib/* && yarn build:lib && yarn build:bundle",
-    "build:lib": "babel src --out-dir lib --source-maps",
+    "build:lib": "tsc -p tsconfig.dist.json && node ./scripts/transform-css-paths.js",
     "build:bundle": "rollup -c",
     "gen:examples": "node ./scripts/generate-examples.js",
     "gen:api": "node ./scripts/generate-api.js",

@@ -1,0 +1,156 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Image.ts should display error slot 1`] = `
+<div class="image">
+  <div class="image__sizer"></div>
+  <transition-stub><img class="image__image bg-contain" style="display: none;"></transition-stub>
+  <transition-stub>
+    <!---->
+  </transition-stub>
+  <!---->
+  <transition-stub>
+    <div class="image__error">
+      <div>Error loading image</div>
+    </div>
+  </transition-stub>
+  <div class="image__content"></div>
+</div>
+`;
+
+exports[`Image.ts should display placeholders 1`] = `
+<div class="image">
+  <div class="image__sizer"></div>
+  <transition-stub><img class="image__image bg-contain" style="display: none;"></transition-stub>
+  <transition-stub><img class="image__image image__image--preload bg-contain"></transition-stub>
+  <transition-stub>
+    <div class="image__placeholder">
+      <div>loading...</div>
+    </div>
+  </transition-stub>
+  <!---->
+  <div class="image__content"></div>
+</div>
+`;
+
+exports[`Image.ts should display placeholders 2`] = `
+<div class="image">
+  <div class="image__sizer" style="padding-bottom: 56.25%;"></div>
+  <transition-stub><img class="image__image bg-contain"></transition-stub>
+  <transition-stub>
+    <!---->
+  </transition-stub>
+  <transition-stub>
+    <!---->
+  </transition-stub>
+  <!---->
+  <div class="image__content"></div>
+</div>
+`;
+
+exports[`Image.ts should have aria attributes 1`] = `
+<div class="image" aria-label="role and aria label" role="img">
+  <div class="image__sizer" style="padding-bottom: 56.25%;"></div>
+  <transition-stub><img class="image__image bg-contain"></transition-stub>
+  <transition-stub>
+    <!---->
+  </transition-stub>
+  <!---->
+  <!---->
+  <div class="image__content"></div>
+</div>
+`;
+
+exports[`Image.ts should load 1`] = `
+<div class="image">
+  <div class="image__sizer"></div>
+  <transition-stub><img class="image__image bg-contain" style="display: none;"></transition-stub>
+  <transition-stub>
+    <!---->
+  </transition-stub>
+  <!---->
+  <!---->
+  <div class="image__content"></div>
+</div>
+`;
+
+exports[`Image.ts should load 2`] = `
+<div class="image">
+  <div class="image__sizer" style="padding-bottom: 56.25%;"></div>
+  <transition-stub><img class="image__image bg-contain"></transition-stub>
+  <transition-stub>
+    <!---->
+  </transition-stub>
+  <!---->
+  <!---->
+  <div class="image__content"></div>
+</div>
+`;
+
+exports[`Image.ts should render a <picture> 1`] = `
+<div class="image">
+  <div class="image__sizer" style="padding-bottom: 56.25%;"></div>
+  <transition-stub>
+    <picture class="image__picture">
+      <source srcset="LOAD_SUCCESS_SRC.webp"><img class="image__image bg-contain">
+    </picture>
+  </transition-stub>
+  <transition-stub>
+    <!---->
+  </transition-stub>
+  <!---->
+  <!---->
+  <div class="image__content"></div>
+</div>
+`;
+
+exports[`Image.ts should update src 1`] = `
+<div class="image">
+  <div class="image__sizer" style="padding-bottom: 56.25%;"></div>
+  <transition-stub><img class="image__image bg-contain"></transition-stub>
+  <transition-stub>
+    <!---->
+  </transition-stub>
+  <!---->
+  <!---->
+  <div class="image__content"></div>
+</div>
+`;
+
+exports[`Image.ts should update src 2`] = `
+<div class="image">
+  <div class="image__sizer" style="padding-bottom: 56.25%;"></div>
+  <transition-stub><img class="image__image bg-contain"></transition-stub>
+  <transition-stub>
+    <!---->
+  </transition-stub>
+  <!---->
+  <!---->
+  <div class="image__content"></div>
+</div>
+`;
+
+exports[`Image.ts should update src while still loading 1`] = `
+<div class="image">
+  <div class="image__sizer"></div>
+  <transition-stub><img class="image__image bg-contain" style="display: none;"></transition-stub>
+  <transition-stub>
+    <!---->
+  </transition-stub>
+  <!---->
+  <!---->
+  <div class="image__content"></div>
+</div>
+`;
+
+exports[`Image.ts should update src while still loading 2`] = `
+<div class="image">
+  <div class="image__sizer" style="padding-bottom: 56.25%;"></div>
+  <transition-stub><img class="image__image bg-contain"></transition-stub>
+  <transition-stub>
+    <!---->
+  </transition-stub>
+  <!---->
+  <!---->
+  <div class="image__content"></div>
+</div>
+`;

@@ -19,6 +19,8 @@
   }
 
   .image__image,
+  .image__picture,
+  .image__error,
   .image__placeholder {
     z-index: -1;
     @apply absolute top-0 left-0 w-full h-full;
@@ -29,11 +31,5 @@
   }
   .image__image--preload {
     filter: blur(2px);
-  }
-  .image__image--contain {
-    @apply bg-contain;
-  }
-  .image__image--cover {
-    @apply bg-cover;
   }
 }
