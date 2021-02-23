@@ -1,1 +1,1 @@
-import './transitions.css'
+import './transitions'
