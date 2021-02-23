@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@zennnn/core": "^0.36.7",
-    "core-js": "^3.8.2",
+    "core-js": "^3.9.0",
     "vue": "^3.0.5"
   },
   "devDependencies": {
