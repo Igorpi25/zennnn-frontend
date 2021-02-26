@@ -220,7 +220,7 @@
                             <div
                               v-if="isDragOver || updateOrgImageHovered[item.id]"
                               :class="[
-                                'border border-transparent border-dashed absolute inset-0 w-full h-full bg-black opacity-35 rounded-full',
+                                'border border-transparent border-dashed absolute inset-0 w-full h-full bg-black opacity-30 rounded-full',
                                 { 'border-white': isDragOver },
                               ]"
                             />

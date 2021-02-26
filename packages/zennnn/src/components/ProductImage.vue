@@ -56,7 +56,7 @@
                   <div
                     v-if="isDragOver || menu"
                     :class="[
-                      'border border-transparent border-dashed absolute inset-0 w-full h-full bg-black opacity-35 rounded',
+                      'border border-transparent border-dashed absolute inset-0 w-full h-full bg-black opacity-30 rounded',
                       { 'border-white': isDragOver },
                     ]"
                   />

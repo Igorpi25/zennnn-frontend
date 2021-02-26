@@ -56,7 +56,7 @@
         v-if="filePreview"
         key="opacity"
         :class="[
-          'absolute inset-0 bg-black opacity-35 overflow-hidden cursor-wait',
+          'absolute inset-0 bg-black opacity-30 overflow-hidden cursor-wait',
           rounded ? 'rounded-full' : 'rounded'
         ]"
       />
