@@ -67,6 +67,7 @@ function createConfig (format, output, plugins = []) {
         inject: false,
       })
     )
+    external.push('lodash-es')
   } else {
     nodePlugins.push(
       postcss({
