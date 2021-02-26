@@ -35,7 +35,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps, onBeforeMount, ref, computed } from 'vue'
 
 const props = defineProps({
@@ -69,7 +69,7 @@ onBeforeMount(async () => {
   api.value = (await getApi(props.name)).default
 })
 
-function getApi (name) {
+function getApi (name: string) {
   switch (name) {
     case 'alert': return import('../../data/alert.json')
     case 'btn': return import('../../data/btn.json')

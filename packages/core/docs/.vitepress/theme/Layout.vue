@@ -17,7 +17,7 @@
   <Debug />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vitepress'
 import NavBar from './components/NavBar.vue'
@@ -26,11 +26,11 @@ import Toc from './components/Toc.vue'
 
 const route = useRoute()
 
-const isOpen = ref(false)
+const isOpen = ref<boolean>(false)
 
 watch(() => route.path, () => { isOpen.value = false })
 
-function toggleMenu (to) {
+function toggleMenu (to: boolean | undefined) {
   isOpen.value = typeof to === 'boolean' ? to : !isOpen.value
 }
 </script>

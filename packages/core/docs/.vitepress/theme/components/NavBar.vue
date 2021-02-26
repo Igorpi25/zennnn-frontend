@@ -7,7 +7,7 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineEmit } from 'vue'
 import Logo from './Logo.vue'
 import SideBarToggleButton from './SideBarToggleButton.vue'

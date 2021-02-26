@@ -1,11 +1,11 @@
 import { ref, onMounted, onUnmounted, onUpdated } from 'vue'
 
 export function useTocActiveLink () {
-  const activeHash = ref(null)
+  const activeHash = ref<string | null>(null)
 
   const onScroll = throttleAndDebounce(setActiveLink, 300)
 
-  function setActiveLink () {
+  function setActiveLink (): void {
     const links = getLinks()
     const anchors = getAnchors(links)
     for (let i = 0; i < anchors.length; i++) {
@@ -20,7 +20,7 @@ export function useTocActiveLink () {
     }
   }
 
-  function activateLink (hash) {
+  function activateLink (hash: string | null): void {
     activeHash.value = hash
   }
 
@@ -43,26 +43,32 @@ export function useTocActiveLink () {
   }
 }
 
-function getLinks () {
+function getLinks (): HTMLAnchorElement[] {
   return [].slice.call(document.querySelectorAll('.toc a'))
 }
 
-function getAnchors (links) {
+function getAnchors (links: HTMLAnchorElement[]): HTMLAnchorElement[] {
   return [].slice
     .call(document.querySelectorAll('.header-anchor'))
-    .filter((anchor) => links.some((link) => link.hash === anchor.hash))
+    .filter((anchor: HTMLAnchorElement) =>
+      links.some((link) => link.hash === anchor.hash)
+    ) as HTMLAnchorElement[]
 }
 
-function getPageOffset () {
-  return document.querySelector('.nav-bar').offsetHeight
+function getPageOffset (): number {
+  return (document.querySelector('.nav-bar') as HTMLElement).offsetHeight
 }
 
-function getAnchorTop (anchor) {
+function getAnchorTop (anchor: HTMLAnchorElement): number {
   const pageOffset = getPageOffset()
   return anchor.parentElement.offsetTop - pageOffset - 15
 }
 
-function isAnchorActive (index, anchor, nextAnchor) {
+function isAnchorActive (
+  index: number,
+  anchor: HTMLAnchorElement,
+  nextAnchor: HTMLAnchorElement,
+): [boolean, string | null] {
   const scrollTop = window.scrollY
   if (index === 0 && scrollTop === 0) {
     return [true, null]
@@ -76,14 +82,15 @@ function isAnchorActive (index, anchor, nextAnchor) {
   return [false, null]
 }
 
-function throttleAndDebounce (fn, delay) {
-  let timeout
+function throttleAndDebounce (fn: () => void, delay: number): () => void {
+  let timeout: any
   let called = false
 
   return () => {
     if (timeout) {
       clearTimeout(timeout)
     }
+
     if (!called) {
       fn()
       called = true

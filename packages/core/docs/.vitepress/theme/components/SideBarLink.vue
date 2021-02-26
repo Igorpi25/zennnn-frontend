@@ -12,7 +12,7 @@
   </li>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps } from 'vue'
 import { useNavLink } from '../composables/navLink'
 

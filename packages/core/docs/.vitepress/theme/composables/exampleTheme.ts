@@ -1,9 +1,9 @@
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, Ref } from 'vue'
 
-export function useExampleTheme (elRef, file) {
+export function useExampleTheme (elRef: Ref<HTMLElement>, file: string) {
   let observer
-  const dark = ref(false)
-  const attachRefs = ref([])
+  const dark = ref<boolean>(false)
+  const attachRefs = ref<HTMLElement[]>([])
   const isAttachable = computed(() => {
     return /Tooltip|Menu|Modal|DatePicker|Select/.test(file)
   })
@@ -25,14 +25,14 @@ export function useExampleTheme (elRef, file) {
           elRef.value
         ) {
           const activatorEls = elRef.value.querySelectorAll('[aria-haspopup="true"]')
-          const ids = []
+          const ids: string[] = []
           for (const el of activatorEls) {
-            const id = el.getAttribute('aria-controls')
+            const id = (el as HTMLElement).getAttribute('aria-controls')
             id && ids.push(id)
           }
           if (ids.length > 0) {
-            ids.forEach(id => {
-              const el = document.getElementById(id).parentNode
+            ids.forEach((id: string) => {
+              const el = (document.getElementById(id).parentNode) as HTMLElement
               if (el) {
                 attachRefs.value.push(el)
               }
@@ -49,7 +49,7 @@ export function useExampleTheme (elRef, file) {
     observer && observer.disconnect()
   })
   
-  function toggleDark () {
+  function toggleDark (): void {
     for (const el of attachRefs.value) {
       if (dark.value) {
         el.classList.add('dark', 'text-gray-100')

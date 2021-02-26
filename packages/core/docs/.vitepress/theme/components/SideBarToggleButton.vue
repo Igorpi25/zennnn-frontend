@@ -23,7 +23,7 @@
   </Btn>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineEmit } from 'vue'
 
 defineEmit(['toggle'])

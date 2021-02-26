@@ -14,7 +14,7 @@
   </li>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, defineProps } from 'vue'
 import SideBarLink from './SideBarLink.vue'
 

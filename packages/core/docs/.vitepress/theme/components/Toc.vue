@@ -20,7 +20,7 @@
   </nav>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRoute, usePageData } from 'vitepress'
 import { computed } from 'vue'
 import { useTocActiveLink } from '../composables/tocActiveLink'

@@ -3,7 +3,7 @@ import { useRoute } from 'vitepress'
 import { isExternal as isExternalCheck } from '../utils'
 import { useUrl } from '../composables/url'
 
-export function useNavLink (item) {
+export function useNavLink (item: any) {
   const route = useRoute()
   const { withBase } = useUrl()
 
@@ -38,7 +38,7 @@ export function useNavLink (item) {
   }
 }
 
-function normalizePath (path) {
+function normalizePath (path: string): string {
   return path
     .replace(/#.*$/, '')
     .replace(/\?.*$/, '')

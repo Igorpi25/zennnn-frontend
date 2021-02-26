@@ -18,7 +18,7 @@
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, defineProps, defineEmit } from 'vue'
 import { useSiteData } from 'vitepress'
 import SideBarLinks from './SideBarLinks.vue'

@@ -47,7 +47,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, defineProps, defineAsyncComponent } from 'vue'
 import { ziSun, ziMoon } from '@zennnn/icons'
 import { useExampleTheme } from '../composables/exampleTheme'
@@ -65,11 +65,11 @@ const props = defineProps({
 })
 
 const items = [{ value: TAB.PREVIEW, text: 'Preview' }, { value: TAB.CODE, text: 'Code' }]
-const previewRef = ref(null)
-const initialHeight = ref(80)
-const isPreviewLoaded = ref(false)
-const isCodeLoaded = ref(false)
-const activeTab = ref(TAB.PREVIEW)
+const previewRef = ref<HTMLElement>()
+const initialHeight = ref<number>(80)
+const isPreviewLoaded = ref<boolean>(false)
+const isCodeLoaded = ref<boolean>(false)
+const activeTab = ref<1 | 2>(TAB.PREVIEW)
 
 const { dark } = useExampleTheme(previewRef, props.file)
 
@@ -153,7 +153,7 @@ const getCodesModules = () => {
   }
 }
 
-function switchTab (tab) {
+function switchTab (tab: number) {
   activeTab.value = tab
   if (tab === TAB.CODE && !isCodeLoaded.value) {
     initialHeight.value = previewRef.value.clientHeight
