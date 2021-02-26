@@ -133,7 +133,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApolloClient, useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
-import debounce from 'lodash.debounce'
+import debounce from 'lodash-es/debounce'
 import cloneDeep from 'clone-deep'
 import { validateCompanyDetail } from '../utils/validation'
 

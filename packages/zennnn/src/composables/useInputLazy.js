@@ -1,6 +1,6 @@
 import { ref, computed, watch, onBeforeMount, nextTick } from 'vue'
 
-import debounce from 'lodash.debounce'
+import debounce from 'lodash-es/debounce'
 
 // Props
 export const useInputLazyProps = () => {
