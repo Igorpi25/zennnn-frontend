@@ -7,19 +7,34 @@ import {
 
 import { useI18n } from 'vue-i18n'
 
-import startOfYear from 'date-fns/startOfYear'
-import endOfYear from 'date-fns/endOfYear'
-import eachMonthOfInterval from 'date-fns/eachMonthOfInterval'
-import getYear from 'date-fns/getYear'
-import subYears from 'date-fns/subYears'
-import addYears from 'date-fns/addYears'
-import isSameMonth from 'date-fns/isSameMonth'
-import isBefore from 'date-fns/isBefore'
-import isAfter from 'date-fns/isAfter'
-import isSameYear from 'date-fns/isSameYear'
-import startOfMonth from 'date-fns/startOfMonth'
-import endOfMonth from 'date-fns/endOfMonth'
-import isValid from 'date-fns/isValid'
+// import startOfYear from 'date-fns/startOfYear'
+// import endOfYear from 'date-fns/endOfYear'
+// import eachMonthOfInterval from 'date-fns/eachMonthOfInterval'
+// import getYear from 'date-fns/getYear'
+// import subYears from 'date-fns/subYears'
+// import addYears from 'date-fns/addYears'
+// import isSameMonth from 'date-fns/isSameMonth'
+// import isBefore from 'date-fns/isBefore'
+// import isAfter from 'date-fns/isAfter'
+// import isSameYear from 'date-fns/isSameYear'
+// import startOfMonth from 'date-fns/startOfMonth'
+// import endOfMonth from 'date-fns/endOfMonth'
+// import isValid from 'date-fns/isValid'
+import {
+  startOfYear,
+  endOfYear,
+  eachMonthOfInterval,
+  getYear,
+  subYears,
+  addYears,
+  isSameMonth,
+  isBefore,
+  isAfter,
+  isSameYear,
+  startOfMonth,
+  endOfMonth,
+  isValid,
+} from 'date-fns'
 
 import DatePickerHeader from './DatePickerHeader'
 

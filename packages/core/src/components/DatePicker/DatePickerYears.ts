@@ -5,16 +5,28 @@ import {
   PropType,
 } from 'vue'
 
-import startOfDecade from 'date-fns/startOfDecade'
-import eachYearOfInterval from 'date-fns/eachYearOfInterval'
-import getYear from 'date-fns/getYear'
-import subYears from 'date-fns/subYears'
-import addYears from 'date-fns/addYears'
-import isAfter from 'date-fns/isAfter'
-import isBefore from 'date-fns/isBefore'
-import isSameYear from 'date-fns/isSameYear'
-import getDecade from 'date-fns/getDecade'
-import isValid from 'date-fns/isValid'
+// import startOfDecade from 'date-fns/startOfDecade'
+// import eachYearOfInterval from 'date-fns/eachYearOfInterval'
+// import getYear from 'date-fns/getYear'
+// import subYears from 'date-fns/subYears'
+// import addYears from 'date-fns/addYears'
+// import isAfter from 'date-fns/isAfter'
+// import isBefore from 'date-fns/isBefore'
+// import isSameYear from 'date-fns/isSameYear'
+// import getDecade from 'date-fns/getDecade'
+// import isValid from 'date-fns/isValid'
+import {
+  startOfDecade,
+  eachYearOfInterval,
+  getYear,
+  subYears,
+  addYears,
+  isAfter,
+  isBefore,
+  isSameYear,
+  getDecade,
+  isValid,
+} from 'date-fns'
 
 import DatePickerHeader from './DatePickerHeader'
 
