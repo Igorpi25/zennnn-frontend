@@ -103,11 +103,6 @@ module.exports = {
         900: '#3D242D', // error color
       },
     },
-    fontFamily: {
-      myriad: ['MyriadPro', 'sans-serif'],
-      'myriad-cond': ['MyriadPro-Cond', 'sans-serif'],
-      montserrat: ['Montserrat', 'sans-serif'],
-    },
     gradientColorStops: {
       'gray-900': 'rgba(30, 30, 30, 1)',
       'gray-900-a-0': 'rgba(30, 30, 30, 0)',
