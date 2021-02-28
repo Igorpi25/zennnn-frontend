@@ -1,7 +1,7 @@
 import { ref, computed, watch, onMounted, onUnmounted, Ref } from 'vue'
 
 export function useExampleTheme (elRef: Ref<HTMLElement>, file: string) {
-  let observer
+  let observer: MutationObserver
   const dark = ref<boolean>(false)
   const attachRefs = ref<HTMLElement[]>([])
   const isAttachable = computed(() => {
@@ -15,8 +15,8 @@ export function useExampleTheme (elRef: Ref<HTMLElement>, file: string) {
   })
   onMounted(() => {
     if (!isAttachable.value) return
-    const targetNode = document.getElementById('app')
-    const callback = function (mutationsList) {
+    const targetNode = document.getElementById('app') as HTMLElement
+    const callback = function (mutationsList: MutationRecord[]) {
       for (const mutation of mutationsList) {
         if (
           mutation.type === 'childList' &&
@@ -32,7 +32,7 @@ export function useExampleTheme (elRef: Ref<HTMLElement>, file: string) {
           }
           if (ids.length > 0) {
             ids.forEach((id: string) => {
-              const el = (document.getElementById(id).parentNode) as HTMLElement
+              const el = (document.getElementById(id)?.parentNode) as HTMLElement
               if (el) {
                 attachRefs.value.push(el)
               }

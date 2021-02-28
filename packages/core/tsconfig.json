@@ -1,21 +1,21 @@
 {
   "extends": "../../tsconfig.json",
   "include": [
+    "docs/.vitepress/theme/**/*.ts",
     "src/**/*.ts",
     "tests/**/*.ts",
-    "types"
+    "types/index.d.ts"
   ],
   "compilerOptions": {
     "target": "es2017",
     "declaration": true,
     "removeComments": true,
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./lib",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["./src/*"],
+      "/@docs/*": ["./docs/*"]
     }
   }
 }

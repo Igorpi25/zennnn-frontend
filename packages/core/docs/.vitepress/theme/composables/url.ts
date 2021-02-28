@@ -1,6 +1,6 @@
 import { useSiteData, joinPath } from 'vitepress'
 
-export function useUrl() {
+export function useUrl () {
   const site = useSiteData()
 
   function withBase (path: string): string {

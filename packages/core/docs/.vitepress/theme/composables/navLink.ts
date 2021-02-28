@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vitepress'
 import { isExternal as isExternalCheck } from '../utils'
-import { useUrl } from '../composables/url'
+import { useUrl } from './url'
 
 export function useNavLink (item: any) {
   const route = useRoute()

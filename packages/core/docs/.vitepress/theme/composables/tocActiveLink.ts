@@ -61,7 +61,7 @@ function getPageOffset (): number {
 
 function getAnchorTop (anchor: HTMLAnchorElement): number {
   const pageOffset = getPageOffset()
-  return anchor.parentElement.offsetTop - pageOffset - 15
+  return anchor.parentElement!.offsetTop - pageOffset - 15
 }
 
 function isAnchorActive (
