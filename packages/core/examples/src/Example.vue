@@ -24,28 +24,39 @@
   </div>
 </template>
 
-<script setup>
-import { ref, defineProps, defineAsyncComponent } from 'vue'
+<script>
+import { ref, defineAsyncComponent } from 'vue'
 import { ziMoon, ziSun } from '@zennnn/icons'
 import { useExampleTheme } from '../../docs/.vitepress/theme/composables/exampleTheme'
 
-const props = defineProps({
-  file: {
-    type: String,
-    required: true,
+export default {
+  props: {
+    file: {
+      type: String,
+      required: true,
+    },
   },
-})
+  setup (props) {
+    const previewRef = ref()
 
-const Preview = defineAsyncComponent(
-  async () => {
-    const path = `./components/${props.file}.vue`
-    const modules = import.meta.glob('./components/**/*.vue')
-    const m = await modules[path]()
-    return m
-  }
-)
+    const { dark } = useExampleTheme(previewRef, props.file)
 
-const previewRef = ref(null)
+    const Preview = defineAsyncComponent(
+      async () => {
+        const path = `./components/${props.file}.vue`
+        const modules = import.meta.glob('./components/**/*.vue')
+        const m = await modules[path]()
+        return m
+      }
+    )
 
-const { dark } = useExampleTheme(previewRef, props.file)
+    return {
+      ziMoon,
+      ziSun,
+      dark,
+      previewRef,
+      Preview,
+    }
+  },
+}
 </script>

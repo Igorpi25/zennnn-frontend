@@ -26,5 +26,5 @@
 </template>
 
 <script setup>
-import routes from 'vite-plugin-pages/client'
+import routes from 'pages-generated'
 </script>
