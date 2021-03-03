@@ -20,11 +20,14 @@
     "width": "Sets the width for the component."
   },
   "emits": {
-    "load": "Emitted when image is loaded.",
-    "error": "Emitted when there is an error."
+    "load": "Emitted when the image is loaded.",
+    "error": "Emitted if the image fails to load.",
+    "loadstart": "Emitted when the image starts to load"
   },
   "slots": {
     "default": "The default Vue slot.",
-    "placeholder": "Slot for image placeholder."
+    "placeholder": "Display an overlay while the image is loading.",
+    "error": "Will be shown if the image fails to load, replacing the placeholder slot.",
+    "sources": "A list of `<source>` elements. If this slot is used, will render a `<picture>` instead of `<img>`."
   }
 }

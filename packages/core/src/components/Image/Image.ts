@@ -11,7 +11,7 @@ import {
   withDirectives,
   defineComponent,
   VNode,
-  Prop,
+  PropType,
   TransitionProps,
   mergeProps,
 } from 'vue'
@@ -42,7 +42,7 @@ export default defineComponent({
     eager: Boolean,
     lazySrc: String,
     options: {
-      type: Object,
+      type: Object as PropType<IntersectionObserverInit>,
       // For more information on types, navigate to:
       // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
       default: () => ({
@@ -50,22 +50,21 @@ export default defineComponent({
         rootMargin: undefined,
         threshold: undefined,
       }),
-    } as Prop<IntersectionObserverInit>,
+    },
     position: {
       type: String,
       default: 'center center',
     },
     sizes: String,
     src: {
-      type: [String, Object],
+      type: [String, Object] as PropType<string | srcObject>,
       default: '',
-    } as Prop<string | srcObject>,
+    },
     srcset: String,
     transition: {
-      type: [Boolean, String],
+      type: [Boolean, String] as PropType<string | false>,
       default: 'fade-transition',
-      validator: val => val !== true,
-    } as Prop<string | false, string>,
+    },
   },
 
   emits: ['load', 'error', 'loadstart'],
@@ -191,8 +190,8 @@ export default defineComponent({
 
       state.value = 'loading'
       nextTick(() => {
-        emit('loadstart', image.value?.currentSrc || props.src)
-        aspectRatio.value || pollForSize(image.value!)
+        emit('loadstart', image.value?.currentSrc || normalisedSrc.value.src)
+        if (!aspectRatio.value) pollForSize(image.value!)
         getSrc()
       })
 
@@ -206,12 +205,12 @@ export default defineComponent({
     const onLoad = () => {
       getSrc()
       state.value = 'loaded'
-      emit('load', image.value?.currentSrc || props.src)
+      emit('load', image.value?.currentSrc || normalisedSrc.value.src)
     }
 
     const onError = () => {
       state.value = 'error'
-      emit('error', image.value?.currentSrc || props.src)
+      emit('error', image.value?.currentSrc || normalisedSrc.value.src)
     }
 
     const getSrc = () => {

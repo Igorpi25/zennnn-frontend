@@ -5,7 +5,7 @@ import {
   Transition,
   withDirectives,
   defineComponent,
-  Prop,
+  PropType,
 } from 'vue'
 
 import { Intersect } from 'vue-supp'
@@ -29,13 +29,13 @@ export default defineComponent({
     // For more information on types, navigate to:
     // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
     options: {
-      type: Object,
+      type: Object as PropType<IntersectionObserverInit>,
       default: () => ({
         root: undefined,
         rootMargin: undefined,
         threshold: undefined,
       }),
-    } as Prop<IntersectionObserverInit>,
+    },
   },
 
   emits: ['update:modelValue'],
