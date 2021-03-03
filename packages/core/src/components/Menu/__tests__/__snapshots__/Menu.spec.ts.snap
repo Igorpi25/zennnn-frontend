@@ -13,7 +13,7 @@ exports[`Menu.ts should render component and match snapshot 1`] = `<span class="
 
 exports[`Menu.ts should render component and match snapshot 2`] = `
 <div id="app">
-  <div style="z-index: 10; position: absolute; left: 0px; top: 0px; margin: 0px; bottom: 0px; transform: translate(0px, 2px);" data-popper-root="" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top">
+  <div style="z-index: 10; position: absolute; left: 0px; top: 0px; margin: 0px; bottom: 0px; transform: translate(0px, -8px);" data-popper-root="" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top">
     <transition-stub>
       <div id="menu-1" role="menu" class="popper__box menu__box" tabindex="0" style="">
         <!---->
