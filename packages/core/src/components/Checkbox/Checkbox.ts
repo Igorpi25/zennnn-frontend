@@ -25,7 +25,6 @@ export default defineComponent({
   name: 'Checkbox',
 
   props: {
-    // TODO: exclude `clearable`, `placeholder`, `pattern`, `patternMessage`, `appendIcon`, `prependIcon`, `autofocus` props
     ...useInputProps(),
     ...useInputValidationProps(),
     modelValue: {

@@ -24,7 +24,6 @@ export default defineComponent({
   name: 'Radio',
 
   props: {
-    // TODO: exclude `clearable`, `placeholder`, `pattern`, `patternMessage`, `appendIcon`, `prependIcon`, `autofocus` props
     ...useInputProps(),
     ...useInputValidationProps(),
     modelValue: {

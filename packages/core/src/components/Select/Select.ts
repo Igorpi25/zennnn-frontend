@@ -24,6 +24,7 @@ import {
 import { ziChevronDown, ziSearch, ziCloseDelete, ziChecked } from '@zennnn/icons'
 
 import { useInputProps, useInput } from '../../composables/useInput'
+import { useInputClearProps, useInputClear } from '../../composables/useInputClear'
 import { useInputControlProps, useInputControl } from '../../composables/useInputControl'
 import { useInputValidationProps, useInputValidation } from '../../composables/useInputValidation'
 import { useInputMessage } from '../../composables/useInputMessage'
@@ -57,6 +58,7 @@ export default defineComponent({
 
   props: {
     ...useInputProps(),
+    ...useInputClearProps(),
     ...useInputValidationProps(),
     ...useInputControlProps(),
     ...useFilterProps(),
@@ -132,6 +134,7 @@ export default defineComponent({
     contentOnIntersect: Boolean,
     ariaLabel: String,
     ariaAutocomplete: String,
+    placeholder: String,
     // TODO: add composables and split to Autocomplete component
     selectable: {
       type: Boolean,
@@ -162,15 +165,10 @@ export default defineComponent({
       internalValue,
       isFocused,
       badInput,
-      hasPrependSlot,
-      hasAppendSlot,
+      isDirty,
       focus,
       blur,
-      genIcon,
-      genPrependSlot,
-      genAppendSlot,
       genLabel,
-      genClearIcon,
     } = useInput(props, { slots, emit, id })
 
     const {
@@ -194,10 +192,15 @@ export default defineComponent({
 
     const {
       controlElement,
+      hasPrependSlot,
+      hasAppendSlot,
       onControlClick,
       onControlMouseDown,
       onControlMouseUp,
-    } = useInputControl(props, { emit, inputElement, isFocused, isDisabled })
+      genIcon,
+      genPrependSlot,
+      genAppendSlot,
+    } = useInputControl(props, { emit, slots, inputElement, isFocused, isDisabled })
 
     const clientRectProps = reactive({
       element: controlElement,
@@ -219,6 +222,16 @@ export default defineComponent({
       messagesToDisplay,
       showDetails,
       dimensions: clientRect,
+    })
+
+    const {
+      genClearInput,
+    } = useInputClear(props, {
+      inputElement,
+      isDirty,
+      emit,
+      emitChange: () => { select(null); closeMenu() },
+      setInternalValue: (val) => setInternalValue(val),
     })
 
     const classes = computed(() => {
@@ -580,7 +593,7 @@ export default defineComponent({
         genSelect(),
         genAppendSlot(),
         genStateIcon(),
-        genClearIcon(),
+        genClearInput(),
         genArrow(),
         genAppendOuterSlot(),
       ])

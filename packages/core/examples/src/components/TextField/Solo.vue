@@ -9,11 +9,10 @@
     </TextField>
     <TextField
       v-model="model2"
-      label="Solo custom"
-      placeholder="Solo custom"
+      :prepend-icon="ziPublish"
+      label="Solo"
+      placeholder="Solo"
       solo
-      control-class="bg-transparent dark:bg-transparent"
-      input-class="placeholder-blue-500 dark:placeholder-blue-500"
     >
     </TextField>
   </div>
@@ -21,6 +20,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { ziPublish } from '@zennnn/icons'
 
 const model = ref('')
 const model2 = ref('')

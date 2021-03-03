@@ -1,16 +1,29 @@
-import { ref, PropType, Ref, ComputedRef } from 'vue'
+import {
+  h,
+  ref,
+  computed,
+  PropType,
+  Ref,
+  Slots,
+  ComputedRef,
+} from 'vue'
 
 import { EmitFn } from '../../types'
+
+import Icon from '../components/Icon'
 
 export interface InputControlProps {
   controlClass: string
   dependencies?: HTMLElement[]
+  prependIcon?: string
+  appendIcon?: string
 }
 
 export interface InputControlContext {
   isFocused: Ref<boolean>
   isDisabled: ComputedRef<boolean>
   inputElement: Ref<HTMLElement | undefined>
+  slots: Slots
   emit?: EmitFn
 }
 
@@ -22,13 +35,22 @@ export const useInputControlProps = () => {
       default: '',
     },
     dependencies: Array as PropType<HTMLElement[]>,
+    prependIcon: String,
+    appendIcon: String,
   }
 }
 
-// Default
-export const useInputControl = (props: InputControlProps, { emit, inputElement, isFocused, isDisabled }: InputControlContext) => {
+export const useInputControl = (props: InputControlProps, { emit, slots, inputElement, isFocused, isDisabled }: InputControlContext) => {
   const controlElement = ref<HTMLElement>()
   const hasMouseDown = ref<boolean>(false)
+
+  const hasPrependSlot = computed(() => {
+    return props.prependIcon || slots.prepend
+  })
+
+  const hasAppendSlot = computed(() => {
+    return props.appendIcon || slots.append
+  })
 
   const isContains = (target: HTMLElement) => {
     if (!props.dependencies) return false
@@ -63,11 +85,46 @@ export const useInputControl = (props: InputControlProps, { emit, inputElement, 
     emit?.('mouseup', e)
   }
 
+  const genIcon = (icon: string, classes?: string, $size?: number) => {
+    const size = $size || 24
+    return h(Icon, {
+      size,
+      class: classes,
+    }, {
+      default: () => icon,
+    })
+  }
+
+  const genPrependSlot = () => {
+    if (!hasPrependSlot.value) return undefined
+    return h('div', {
+      class: 'flex items-center flex-shrink-0',
+    }, [
+      props.prependIcon ? genIcon(props.prependIcon, 'text-gray-200 dark:text-gray-300') : undefined,
+      slots.prepend?.({ focused: isFocused.value }),
+    ])
+  }
+
+  const genAppendSlot = () => {
+    if (!hasAppendSlot.value) return undefined
+    return h('div', {
+      class: 'flex items-center flex-shrink-0',
+    }, [
+      slots.append?.({ focused: isFocused.value }),
+      props.appendIcon ? genIcon(props.appendIcon, 'text-gray-200 dark:text-gray-300') : undefined,
+    ])
+  }
+
   return {
     controlElement,
     hasMouseDown,
+    hasPrependSlot,
+    hasAppendSlot,
     onControlClick,
     onControlMouseDown,
     onControlMouseUp,
+    genIcon,
+    genPrependSlot,
+    genAppendSlot,
   }
 }

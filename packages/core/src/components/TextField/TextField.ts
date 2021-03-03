@@ -11,6 +11,7 @@ import {
 import { useClientRect, Mask, setCursor } from 'vue-supp'
 
 import { useInputProps, useInput } from '../../composables/useInput'
+import { useInputClearProps, useInputClear } from '../../composables/useInputClear'
 import { useInputControlProps, useInputControl } from '../../composables/useInputControl'
 import { useInputValidationProps, useInputValidation } from '../../composables/useInputValidation'
 import { useInputNumberProps, useInputNumber } from '../../composables/useInputNumber'
@@ -26,6 +27,7 @@ export default defineComponent({
 
   props: {
     ...useInputProps(),
+    ...useInputClearProps(),
     ...useInputValidationProps(),
     ...useInputNumberProps(),
     ...useInputControlProps(),
@@ -56,6 +58,7 @@ export default defineComponent({
     size: [Number, String],
     ariaLabel: String,
     ariaAutocomplete: String,
+    placeholder: String,
   },
 
   emits: ['update:modelValue', 'update:error', 'click:clear', 'focus', 'blur', 'change', 'keydown', 'mousedown', 'mouseup'],
@@ -69,14 +72,10 @@ export default defineComponent({
       internalValue,
       isFocused,
       badInput,
-      hasPrependSlot,
-      hasAppendSlot,
+      isDirty,
       focus,
       blur,
-      genPrependSlot,
-      genAppendSlot,
       genLabel,
-      genClearIcon,
       emitChange,
     } = useInput(props, { slots, emit, id })
 
@@ -98,10 +97,14 @@ export default defineComponent({
 
     const {
       controlElement,
+      hasPrependSlot,
+      hasAppendSlot,
       onControlClick,
       onControlMouseDown,
       onControlMouseUp,
-    } = useInputControl(props, { emit, inputElement, isFocused, isDisabled })
+      genPrependSlot,
+      genAppendSlot,
+    } = useInputControl(props, { emit, slots, inputElement, isFocused, isDisabled })
 
     const clientRectProps = reactive({
       element: controlElement,
@@ -138,6 +141,10 @@ export default defineComponent({
     } = useInputNumber(props, { internalValue, isFocused })
 
     const {
+      genClearInput,
+    } = useInputClear(props, { inputElement, isDirty, emit, emitChange, setInternalValue })
+
+    const {
       hasDebounce,
       debounceInput,
       cancelDebounce,
@@ -151,7 +158,7 @@ export default defineComponent({
         'text-field--disabled': isDisabled.value,
         'text-field--readonly': isReadonly.value,
         'text-field--align-right': props.alignRight || props.number,
-        'text-field--single-line': props.singleLine,
+        'text-field--dirty': internalValue.value,
         'text-field--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
       }
     })
@@ -267,7 +274,6 @@ export default defineComponent({
         value: props.number ? formattedNumber.value : internalValue.value,
         class: {
           'text-field__input': true,
-          'text-field__input--solo': props.solo,
           [props.inputClass.trim()]: true,
         },
         name: props.name,
@@ -302,22 +308,15 @@ export default defineComponent({
       return h('input', data)
     }
 
-    const genTextField = () => {
-      return h('div', {
-        class: 'text-field__control__input',
-      }, genTextFieldInput())
-    }
-
     const genControl = () => {
       return h('div', {
         ref: controlElement,
         class: {
           'text-field__control': true,
           'text-field__control--solo': props.solo,
-          'text-field__control--dense': props.dense,
-          'text-field__control--empty': props.solo && !internalValue.value,
-          'text-field__control--not-prepend': !hasPrependSlot.value,
-          'text-field__control--not-append': !hasAppendSlot.value && !hasState.value && !props.clearable,
+          'text-field__control--dense': props.dense || props.solo,
+          'text-field__control--has-prepend': hasPrependSlot.value,
+          'text-field__control--has-append': hasAppendSlot.value || hasState.value || props.clearable,
           [props.controlClass.trim()]: true,
         },
         onClick: onControlClick,
@@ -325,10 +324,10 @@ export default defineComponent({
         onMouseup: onControlMouseUp,
       }, [
         genPrependSlot(),
-        genTextField(),
+        genTextFieldInput(),
         genAppendSlot(),
         genStateIcon(),
-        genClearIcon(clearableCallback),
+        genClearInput(clearableCallback),
       ])
     }
 

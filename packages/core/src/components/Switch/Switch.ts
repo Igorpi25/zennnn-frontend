@@ -18,7 +18,6 @@ export default defineComponent({
   name: 'Switch',
 
   props: {
-    // TODO: exclude `clearable`, `placeholder`, `pattern`, `patternMessage`, `appendIcon`, `prependIcon`, `autofocus` props
     ...useInputProps(),
     ...useInputValidationProps(),
     modelValue: {

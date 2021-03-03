@@ -12,6 +12,7 @@ import {
 import { useClientRect } from 'vue-supp'
 
 import { useInputProps, useInput } from '../../composables/useInput'
+import { useInputClearProps, useInputClear } from '../../composables/useInputClear'
 import { useInputControlProps, useInputControl } from '../../composables/useInputControl'
 import { useInputValidationProps, useInputValidation } from '../../composables/useInputValidation'
 import { useInputLazyProps, useInputLazy } from '../../composables/useInputLazy'
@@ -26,6 +27,7 @@ export default defineComponent({
 
   props: {
     ...useInputProps(),
+    ...useInputClearProps(),
     ...useInputValidationProps(),
     ...useInputControlProps(),
     ...useInputLazyProps(),
@@ -53,6 +55,7 @@ export default defineComponent({
     singleLine: Boolean,
     minlength: String,
     maxlength: String,
+    placeholder: String,
   },
 
   emits: ['update:modelValue', 'update:error', 'click:clear', 'focus', 'blur', 'change', 'keydown', 'mousedown', 'mouseup'],
@@ -66,17 +69,17 @@ export default defineComponent({
       internalValue,
       isFocused,
       badInput,
-      hasPrependSlot,
-      hasAppendSlot,
+      isDirty,
       focus,
       blur,
-      genPrependSlot,
-      genAppendSlot,
       genLabel,
-      genClearIcon,
       emitChange,
       setInternalValue,
     } = useInput(props, { slots, emit, id })
+
+    const {
+      genClearInput,
+    } = useInputClear(props, { inputElement, isDirty, emit, emitChange, setInternalValue })
 
     const {
       showDetails,
@@ -91,10 +94,14 @@ export default defineComponent({
 
     const {
       controlElement,
+      hasPrependSlot,
+      hasAppendSlot,
       onControlClick,
       onControlMouseDown,
       onControlMouseUp,
-    } = useInputControl(props, { emit, inputElement, isFocused, isDisabled })
+      genPrependSlot,
+      genAppendSlot,
+    } = useInputControl(props, { emit, slots, inputElement, isFocused, isDisabled })
 
     const clientRectProps = reactive({
       element: controlElement,
@@ -130,7 +137,6 @@ export default defineComponent({
         'text-area--focused': isFocused.value,
         'text-area--disabled': isDisabled.value,
         'text-area--readonly': isReadonly.value,
-        'text-area--single-line': props.singleLine,
         'text-area--has-error': (hasMessages.value && hasError.value) && showDetails.value,
       }
     })
@@ -264,19 +270,13 @@ export default defineComponent({
       return h('textarea', data)
     }
 
-    const genTextArea = () => {
-      return h('div', {
-        class: 'text-area__control__input',
-      }, genTextAreaInput())
-    }
-
     const genControl = () => {
       return h('div', {
         ref: controlElement,
         class: {
           'text-area__control': true,
-          'text-area__control--not-prepend': !hasPrependSlot.value,
-          'text-area__control--not-append': !hasAppendSlot.value && !hasState.value && !props.clearable,
+          'text-area__control--has-prepend': hasPrependSlot.value,
+          'text-area__control--has-append': hasAppendSlot.value || hasState.value || props.clearable,
           [props.controlClass.trim()]: true,
         },
         onClick: onControlClick,
@@ -284,10 +284,10 @@ export default defineComponent({
         onMouseup: onControlMouseUp,
       }, [
         genPrependSlot(),
-        genTextArea(),
+        genTextAreaInput(),
         genAppendSlot(),
         genStateIcon(),
-        genClearIcon(clearableCallback),
+        genClearInput(clearableCallback),
       ])
     }
 
