@@ -10,9 +10,6 @@ The `TextArea` component.
 ## Single Line
 <Example file="TextArea/SingleLine" />
 
-## Custom
-<Example file="TextArea/Custom" />
-
 ## States
 <Example file="TextArea/States" />
 
