@@ -2,6 +2,7 @@
   .text-area {
     @apply relative transition-opacity duration-75 ease-in;
   }
+
   .text-area--disabled {
     @apply opacity-50;
   }
@@ -32,7 +33,7 @@
   }
 
   .text-area__input {
-    @apply flex-auto px-2 rounded;
+    @apply flex-auto rounded px-2;
     @apply appearance-none focus:outline-none;
     @apply transition-colors duration-100 ease-out;
     @apply bg-transparent placeholder-gray-100 dark:placeholder-gray-200;

@@ -2,14 +2,15 @@
   .text-field {
     @apply relative transition-opacity duration-75 ease-in;
   }
+
   .text-field--disabled {
     @apply opacity-50;
   }
 
   .text-field__control {
-    @apply relative flex items-center rounded;
+    @apply relative flex items-center rounded h-10;
     @apply transition-colors-and-opacity duration-100 ease-in-out;
-    @apply h-10 bg-white dark:bg-gray-900;
+    @apply bg-white dark:bg-gray-900;
     @apply space-x-1;
   }
 
@@ -47,7 +48,7 @@
   }
 
   .text-field__input {
-    @apply flex-auto p-2 rounded;
+    @apply flex-auto rounded p-2;
     @apply appearance-none focus:outline-none truncate;
     @apply transition-colors duration-100 ease-out;
     @apply bg-transparent placeholder-gray-100 dark:placeholder-gray-200;
