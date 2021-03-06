@@ -102,7 +102,6 @@ export default defineComponent({
     },
     openOnFocus: Boolean,
     returnObject: Boolean,
-    // hasArrowIcon renamed to showArrow
     showArrow: {
       type: Boolean,
       default: true,
@@ -112,11 +111,6 @@ export default defineComponent({
       default: '',
     },
     contentClass: {
-      type: String,
-      default: '',
-    },
-    // need set 'flex-shrink-0' on phone input
-    controlInputClass: {
       type: String,
       default: '',
     },
@@ -240,8 +234,8 @@ export default defineComponent({
         'select--focused': isFocused.value,
         'select--disabled': isDisabled.value,
         'select--readonly': isReadonly.value,
+        'select--dirty': internalValue.value,
         'select--is-menu-active': isMenuActive.value,
-        'select--single-line': props.singleLine,
         'select--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
       }
     })
@@ -259,8 +253,9 @@ export default defineComponent({
 
     const items = computed(() => {
       return props.items.map((item: any, i: number) => {
+        const v = typeof item === 'string' || typeof item === 'number' ? { text: item, value: item } : item
         return {
-          ...item,
+          ...v,
           $id: `${listboxId}-option-${i + 1}`,
         }
       })
@@ -516,7 +511,6 @@ export default defineComponent({
         value: search.value,
         class: {
           select__input: true,
-          'select__input--solo': props.solo,
           'cursor-pointer': !props.searchable && !isDisabled.value && !isReadonly.value,
           [props.inputClass.trim()]: true,
         },
@@ -559,29 +553,19 @@ export default defineComponent({
       return h('input', data)
     }
 
-    const genSelect = () => {
-      return h('div', {
-        class: {
-          select__control__input: true,
-          [props.controlInputClass.trim()]: true,
-        },
-      }, genSelectInput())
-    }
-
     const genControl = () => {
       return h('div', {
         ref: controlElement,
         class: {
           select__control: true,
           'select__control--solo': props.solo,
-          'select__control--dense': props.dense,
-          'select__control--empty': props.solo && !internalValue.value,
-          'select__control--not-prepend': !hasPrependSlot.value,
-          'select__control--not-append': !hasAppendSlot.value && !hasState.value && !props.clearable && !props.showArrow,
+          'select__control--dense': props.dense || props.solo,
+          'select__control--has-prepend': hasPrependSlot.value,
+          'select__control--has-append': hasAppendSlot.value || hasState.value || props.clearable || props.showArrow,
           'select__control--is-active': isActive.value,
           'select__control--is-menu-active': isMenuActive.value,
           'select__control--open-on-focus': openOnFocus.value,
-          'pl-8': props.selectable && !props.searchable && isMenuActive.value,
+          'pl-8': props.selectable && !props.searchable && isMenuActive.value && !hasPrependSlot.value,
           [props.controlClass.trim()]: true,
         },
         onClick: onControlClick,
@@ -590,7 +574,7 @@ export default defineComponent({
       }, [
         genPrependOuterSlot(),
         genPrependSlot(),
-        genSelect(),
+        genSelectInput(),
         genAppendSlot(),
         genStateIcon(),
         genClearInput(),
@@ -632,7 +616,7 @@ export default defineComponent({
               e.stopPropagation()
             }
           },
-        }, genIcon(ziSearch, 'w-6 text-gray-200 dark:text-gray-300 mr-2')),
+        }, genIcon(ziSearch, 'text-gray-200 dark:text-gray-300 mr-2')),
         h('div', {
           class: 'select__control__input',
         }, h('input', {
@@ -687,11 +671,12 @@ export default defineComponent({
             }
           },
         })),
-        h('button', {
+        h(Icon, {
+          tag: 'button',
+          size: 24,
           disabled: !isFilterDirty,
           class: {
-            'w-6 h-6 flex items-center justify-center focus:outline-none': true,
-            'text-gray-200 focus:text-gray-300 hover:text-gray-300 dark:focus:text-gray-100 dark:hover:text-gray-100': true,
+            'focus:outline-none text-gray-200 focus:text-gray-300 hover:text-gray-300 dark:focus:text-gray-100 dark:hover:text-gray-100': true,
             invisible: !isFilterDirty,
           },
           'aria-label': 'clear icon',
@@ -708,7 +693,9 @@ export default defineComponent({
               inputElement.value?.focus({ preventScroll: true })
             }
           },
-        }, genIcon(ziCloseDelete)),
+        }, {
+          default: () => ziCloseDelete,
+        }),
       ])
     }
 
@@ -755,9 +742,7 @@ export default defineComponent({
           select(val)
         },
       }, {
-        default: () => {
-          return genMenuItems()
-        },
+        default: () => genMenuItems(),
       })
     }
 
@@ -819,12 +804,13 @@ export default defineComponent({
 
     const genArrow = () => {
       if (!props.showArrow) return undefined
-      return h('button', {
+      return h(Icon, {
+        tag: 'button',
+        size: 24,
         tabindex: '-1',
         disabled: isDisabled.value,
         class: [
-          'w-6 h-6 flex items-center justify-center focus:outline-none',
-          'origin-center transform transition-transform duration-200 ease-in-out',
+          'focus:outline-none origin-center transform transition-transform duration-200 ease-in-out',
           isDisabled.value ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:text-blue-400 focus:text-blue-400',
           { 'rotate-180': isMenuActive.value },
         ],
@@ -841,7 +827,9 @@ export default defineComponent({
         onMouseup: (e: MouseEvent) => {
           e.stopPropagation()
         },
-      }, genIcon(ziChevronDown))
+      }, {
+        default: () => ziChevronDown,
+      })
     }
 
     const genDivider = (index: number) => {

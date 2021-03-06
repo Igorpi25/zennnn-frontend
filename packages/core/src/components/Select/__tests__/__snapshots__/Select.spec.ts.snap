@@ -1,0 +1,241 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Select.ts should render component and match snapshot 1`] = `
+<div class="select"><label id="label-1" for="select-1" aria-hidden="false" class="label">
+    <div class="label__wrapper">
+      <div class="label__content__wrapper">
+        <div class="label__content">Default</div>
+      </div>
+      <!---->
+    </div>
+  </label>
+  <!---->
+  <div class="select__control select__control--has-append select__control--open-on-focus">
+    <!---->
+    <!----><input id="select-1" class="select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
+    <!---->
+    <!---->
+    <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+        </g>
+      </svg></button>
+    <!---->
+  </div><span class="menu"><!----><!----></span>
+</div>
+`;
+
+exports[`Select.ts should render component with dense prop and match snapshot 1`] = `
+<div class="select"><label id="label-1" for="select-1" aria-hidden="false" class="label">
+    <div class="label__wrapper">
+      <div class="label__content__wrapper">
+        <div class="label__content">Default</div>
+      </div>
+      <!---->
+    </div>
+  </label>
+  <!---->
+  <div class="select__control select__control--dense select__control--has-append select__control--open-on-focus">
+    <!---->
+    <!----><input id="select-1" class="select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
+    <!---->
+    <!---->
+    <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+        </g>
+      </svg></button>
+    <!---->
+  </div><span class="menu"><!----><!----></span>
+</div>
+`;
+
+exports[`Select.ts should render component with disabled prop and match snapshot, should not open menu 1`] = `
+<div class="select select--disabled"><label id="label-1" for="select-1" aria-hidden="false" class="label">
+    <div class="label__wrapper">
+      <div class="label__content__wrapper">
+        <div class="label__content">Default</div>
+      </div>
+      <!---->
+    </div>
+  </label>
+  <!---->
+  <div class="select__control select__control--has-append select__control--open-on-focus">
+    <!---->
+    <!----><input id="select-1" class="select__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="" disabled="">
+    <!---->
+    <!---->
+    <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-gray-400 cursor-not-allowed" role="button" aria-hidden="false" tabindex="-1" disabled=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+        </g>
+      </svg></button>
+    <!---->
+  </div><span class="menu"><!----><!----></span>
+</div>
+`;
+
+exports[`Select.ts should render component with loading prop and match snapshot 1`] = `
+<div class="select"><label id="label-1" for="select-1" aria-hidden="false" class="label">
+    <div class="label__wrapper">
+      <div class="label__content__wrapper">
+        <div class="label__content">Default</div>
+      </div>
+      <!---->
+    </div>
+  </label>
+  <!---->
+  <div class="select__control select__control--has-append select__control--open-on-focus">
+    <!---->
+    <!----><input id="select-1" class="select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
+    <!---->
+    <!---->
+    <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+        </g>
+      </svg></button>
+    <!---->
+  </div><span class="menu"><!----><!----></span>
+</div>
+`;
+
+exports[`Select.ts should render component with name, required, readonly props and match snapshot, should not open menu 1`] = `
+<div class="select select--focused select--readonly"><label id="label-1" for="select-1" aria-hidden="false" class="label">
+    <div class="label__wrapper">
+      <div class="label__content__wrapper">
+        <div class="label__content">Default</div>
+      </div>
+      <!---->
+    </div>
+  </label>
+  <!---->
+  <div class="select__control select__control--has-append select__control--is-active select__control--open-on-focus">
+    <!---->
+    <!----><input id="select-1" class="select__input" name="text-field-name" required="" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
+    <!---->
+    <!---->
+    <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+        </g>
+      </svg></button>
+    <!---->
+  </div><span class="menu"><!----><!----></span>
+</div>
+`;
+
+exports[`Select.ts should render component with singleLine prop and match snapshot 1`] = `
+<div class="select">
+  <!---->
+  <!---->
+  <div class="select__control select__control--has-append select__control--open-on-focus">
+    <!---->
+    <!----><input id="select-1" class="select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
+    <!---->
+    <!---->
+    <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+        </g>
+      </svg></button>
+    <!---->
+  </div><span class="menu"><!----><!----></span>
+</div>
+`;
+
+exports[`Select.ts should render component with slots and match snapshot 1`] = `
+<div class="select">
+  <!---->
+  <!---->
+  <div class="select__control select__control--has-prepend select__control--has-append select__control--open-on-focus">
+    <!---->
+    <div class="flex items-center flex-shrink-0"><i class="icon text-gray-200 dark:text-gray-300" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+          <g fill="currentColor">
+            <path d="prepend-icon"></path>
+          </g>
+        </svg></i>Prepend slot</div><input id="select-1" class="select__input cursor-pointer" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
+    <div class="flex items-center flex-shrink-0">Append slot<i class="icon text-gray-200 dark:text-gray-300" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+          <g fill="currentColor">
+            <path d="append-icon"></path>
+          </g>
+        </svg></i></div>
+    <!---->
+    <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+        </g>
+      </svg></button>
+    <!---->
+  </div><span class="menu"><!----><!----></span>
+</div>
+`;
+
+exports[`Select.ts should render component with solo prop and match snapshot 1`] = `
+<div class="select">
+  <!---->
+  <!---->
+  <div class="select__control select__control--solo select__control--dense select__control--has-append select__control--open-on-focus">
+    <!---->
+    <!----><input id="select-1" class="select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
+    <!---->
+    <!---->
+    <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+        </g>
+      </svg></button>
+    <!---->
+  </div><span class="menu"><!----><!----></span>
+</div>
+`;
+
+exports[`Select.ts should render items on focused and match snapshot 1`] = `
+<div style="z-index: 10;" data-popper-root="">
+  <transition-stub>
+    <div id="listbox-1" role="listbox" class="popper__box menu__box select-box shadow-none dark:shadow-none rounded-t-none" tabindex="-1" style="display: none;">
+      <!---->
+      <div class="menu__content bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-t-none">
+        <div id="listbox-1-option-1" role="option" tabindex="-1" class="menu__item listbox__option h-10 pl-0">
+          <div class="w-8 flex justify-center flex-shrink-0"></div>
+          <div class="truncate">one</div>
+        </div>
+        <div id="listbox-1-option-2" role="option" tabindex="-1" class="menu__item listbox__option h-10 pl-0">
+          <div class="w-8 flex justify-center flex-shrink-0"></div>
+          <div class="truncate">two</div>
+        </div>
+        <div id="listbox-1-option-3" role="option" tabindex="-1" class="menu__item listbox__option h-10 pl-0">
+          <div class="w-8 flex justify-center flex-shrink-0"></div>
+          <div class="truncate">three</div>
+        </div>
+      </div>
+      <!---->
+    </div>
+  </transition-stub>
+</div>
+`;
+
+exports[`Select.ts should render items on focused and match snapshot 2`] = `
+<div class="select select--focused select--is-menu-active"><label id="label-1" for="select-1" aria-hidden="false" class="label">
+    <div class="label__wrapper">
+      <div class="label__content__wrapper">
+        <div class="label__content">Default</div>
+      </div>
+      <!---->
+    </div>
+  </label>
+  <!---->
+  <div class="select__control select__control--has-append select__control--is-active select__control--is-menu-active select__control--open-on-focus pl-8">
+    <!---->
+    <!----><input id="select-1" class="select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="" aria-expanded="true" aria-controls="listbox-1">
+    <!---->
+    <!---->
+    <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400 rotate-180" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+        </g>
+      </svg></button>
+    <!---->
+  </div><span class="menu"><!--teleport start--><!--teleport end--><!----></span>
+</div>
+`;

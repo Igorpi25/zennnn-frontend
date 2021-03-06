@@ -4,11 +4,10 @@
       ref="selectRef"
       :model-value="selectValue"
       :items="items"
-      :control-class="isInputFocused ? 'ring-1 ring-blue-500' : ''"
+      :control-class="isInputFocused ? 'ring-1 ring-blue-500 flex-shrink-0' : 'flex-shrink-0'"
       :open-on-focus="false"
       :dependencies="dependencies"
       class="flex-grow"
-      control-input-class="flex-shrink-0"
       input-class="w-0"
       @update:model-value="onContactTypeSelect"
     >

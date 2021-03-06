@@ -174,7 +174,7 @@ module.exports = {
         50: '50px',
       },
       inset: {
-        '1/2': '50%',
+        '1/2': '50%', // -
       },
       gridTemplateColumns: {
         // Complex site-specific column configuration

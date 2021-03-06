@@ -2,9 +2,11 @@
   .select {
     @apply relative transition-opacity duration-75 ease-in;
   }
+
   .select--disabled {
     @apply opacity-50;
   }
+
   .select--is-menu-active {
     @apply bg-white dark:bg-gray-900 rounded-t-lg;
   }
@@ -19,31 +21,33 @@
   }
 
   .select__control {
-    @apply relative flex items-center;
+    @apply relative flex items-center rounded h-10;
     @apply transition-colors-and-opacity duration-100 ease-in-out;
-    @apply h-10 bg-white dark:bg-gray-900 rounded px-2;
+    @apply bg-white dark:bg-gray-900;
+    @apply space-x-1;
+    @apply px-2;
   }
-  .select__control--solo {
-    @apply bg-transparent dark:bg-transparent;
-  }
-  .select__control--solo,
+
   .select__control--dense {
     @apply h-8;
   }
-  .select__control--empty {
-    @apply bg-white dark:bg-gray-900;
+
+  .select--dirty .select__control--solo:not(:focus-within) {
+    @apply bg-transparent dark:bg-transparent;
   }
-  .select--focused .select__control--solo {
-    @apply bg-white dark:bg-gray-900;
+  .select--dirty .select__control--solo .select__input:not(:focus) {
+    @apply text-blue-500 dark:text-blue-500;
   }
+
+  .select__control--has-prepend {
+    @apply pl-1;
+  }
+  .select__control--has-append {
+    @apply pr-1;
+  }
+
   .select--disabled .select__control {
     @apply cursor-not-allowed;
-  }
-  .select__control--not-prepend {
-    @apply pl-2;
-  }
-  .select__control--not-append {
-    @apply pr-2;
   }
   .select--has-error .select__control {
     @apply ring-1 ring-yellow-300 ring-inset;
@@ -58,23 +62,18 @@
   }
 
   .select__input {
-    @apply w-full appearance-none focus:outline-none truncate;
+    @apply flex-auto rounded;
+    @apply appearance-none focus:outline-none truncate;
     @apply transition-colors duration-100 ease-out;
     @apply bg-transparent placeholder-gray-100 dark:placeholder-gray-200;
     @apply dark:text-white disabled:text-gray-200;
   }
-  .select__input--solo {
-    @apply text-blue-500 dark:text-blue-500;
-  }
+
   .select--loading .select__input {
     @apply cursor-wait;
   }
   .select--disabled .select__input {
     @apply cursor-not-allowed;
-  }
-
-  .select__control__input {
-    @apply flex-grow flex items-center;
   }
 
   /* smaller placeholder font */

@@ -7,7 +7,7 @@
     :loading="loading"
     :items="items"
     :distance="16"
-    :control-class="isPhoneInputFocused ? 'rounded-b ring-1 ring-blue-500' : 'rounded-b'"
+    :control-class="isPhoneInputFocused ? 'rounded-b ring-1 ring-blue-500 flex-shrink-0' : 'rounded-b flex-shrink-0'"
     :open-on-focus="false"
     :dependencies="dependencies"
     :solo="solo"
@@ -26,7 +26,6 @@
     item-text="code"
     box-class="rounded-t-md"
     content-class="rounded-t-md pt-0"
-    control-input-class="flex-shrink-0"
     input-class="pr-1"
     searchable
     has-items-filter

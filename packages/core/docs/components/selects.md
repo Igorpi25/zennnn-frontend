@@ -13,6 +13,9 @@ The `Select` component.
 ## State Icon
 <Example file="Select/StateIcon" />
 
+## Prepend and Append
+<Example file="Select/PrependAndAppend" />
+
 ## Slots
 <Example file="Select/Slots" />
 
