@@ -22,5 +22,5 @@ The `Select` component.
 ## States
 <Example file="Select/States" />
 
-## Autocomplete
-<Example file="Select/Autocomplete" />
+## Clearable
+<Example file="Select/Clearable" />

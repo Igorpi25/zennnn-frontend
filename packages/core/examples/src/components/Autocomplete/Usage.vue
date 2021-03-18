@@ -1,19 +1,14 @@
 <template>
-  <Select
+  <Autocomplete
     v-model="model"
     :items="items"
-    :prepend-icon="ziSearch"
-    :selectable="false"
-    :max-height="304"
-    searchable
-    placeholder="Search..."
+    placeholder="Select item"
   >
-  </Select>
+  </Autocomplete>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { ziSearch } from '@zennnn/icons'
 
 const model = ref(null)
 const items = Array.from(Array(10).keys()).map(key => {

@@ -72,6 +72,7 @@ onBeforeMount(async () => {
 function getApi (name: string) {
   switch (name) {
     case 'alert': return import('../../data/alert.json')
+    case 'autocomplete': return import('../../data/autocomplete.json')
     case 'btn': return import('../../data/btn.json')
     case 'btn-toggle': return import('../../data/btn-toggle.json')
     case 'checkbox': return import('../../data/checkbox.json')

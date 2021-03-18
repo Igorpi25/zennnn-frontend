@@ -42,6 +42,7 @@
     "noDataText": "Display text when there is no data.",
     "noFilter": "Do not apply filtering when searching. Useful when data is being filtered server side.",
     "noResultText": "Display text when there is no filter result.",
+    "openOnFocus": "Designates whether menu should open on activator focus.",
     "pattern": "Sets input [pattern](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/pattern) attribute.",
     "patternMessage": "Pattern validation message.",
     "placeholder": "Sets input placeholder attribute.",

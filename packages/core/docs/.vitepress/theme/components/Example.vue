@@ -99,6 +99,7 @@ const getComponentsModules = () => {
   const page = props.file.split('/')[0]
   switch (page) {
     case 'Alert': return import.meta.globEager('../../../../examples/src/components/Alert/*.vue')
+    case 'Autocomplete': return import.meta.globEager('../../../../examples/src/components/Autocomplete/*.vue')
     case 'Btn': return import.meta.globEager('../../../../examples/src/components/Btn/*.vue')
     case 'BtnToggle': return import.meta.globEager('../../../../examples/src/components/BtnToggle/*.vue')
     case 'Checkbox': return import.meta.globEager('../../../../examples/src/components/Checkbox/*.vue')
@@ -128,6 +129,7 @@ const getCodesModules = () => {
   const page = props.file.split('/')[0]
   switch (page) {
     case 'Alert': return import.meta.glob('../../../../examples/generated/code/Alert/*.md')
+    case 'Autocomplete': return import.meta.glob('../../../../examples/generated/code/Autocomplete/*.md')
     case 'Btn': return import.meta.glob('../../../../examples/generated/code/Btn/*.md')
     case 'BtnToggle': return import.meta.glob('../../../../examples/generated/code/BtnToggle/*.md')
     case 'Checkbox': return import.meta.globEager('../../../../examples/generated/code/Checkbox/*.vue')

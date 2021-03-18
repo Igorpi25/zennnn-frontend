@@ -1,5 +1,5 @@
 <template>
-  <Select
+  <Autocomplete
     v-model="model"
     :items="items"
     placeholder="Search..."
@@ -27,7 +27,7 @@
         Append Item
       </button>
     </template>
-  </Select>
+  </Autocomplete>
 </template>
 
 <script setup>

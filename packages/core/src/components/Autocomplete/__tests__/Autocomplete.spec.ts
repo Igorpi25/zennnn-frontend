@@ -2,18 +2,18 @@ import { nextTick } from 'vue'
 import { mount, VueWrapper } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'
 
-import Select from '../Select'
+import Autocomplete from '../Autocomplete'
 
 jest.mock('../../../utils/uid')
 
-describe('Select.ts', () => {
+describe('Autocomplete.ts', () => {
   let mountFunction: (options?: Record<string, unknown>) => VueWrapper<any>
 
   beforeEach(() => {
     document.body.innerHTML = '<div id="app"></div>'
 
     mountFunction = (options = {}) => {
-      return mount(Select, {
+      return mount(Autocomplete, {
         ...options,
         global: {
           plugins: [createI18n()],
@@ -155,6 +155,25 @@ describe('Select.ts', () => {
     expect(wrapper.html()).toMatchSnapshot()
   })
 
+  //
+
+  it('should filter items', async () => {
+    const items: any[] = ['one', 'two', 'three']
+    const wrapper = mountFunction({
+      props: {
+        items,
+        searchable: true,
+      },
+    })
+
+    const input = wrapper.get('input')
+
+    await input.trigger('focus')
+    await input.setValue('one')
+
+    expect(document.querySelectorAll('[role="option"]').length).toBe(1)
+  })
+
   // Interactions
 
   it('should select value on item click', async () => {
@@ -166,7 +185,10 @@ describe('Select.ts', () => {
       },
     })
 
-    await wrapper.get('input').trigger('focus')
+    const input = wrapper.get('input')
+
+    await input.trigger('focus')
+    await input.trigger('keydown', { key: ' ' })
 
     await wrapper.find('[role="option"]').trigger('click')
 
@@ -194,7 +216,7 @@ describe('Select.ts', () => {
     expect(wrapper.vm.isMenuActive).toBe(true)
   })
 
-  it('should open menu on focus and close on Esc keydown', async () => {
+  it('should not open menu on focus and close on Esc keydown', async () => {
     window.HTMLElement.prototype.scrollIntoView = jest.fn()
 
     const items: any[] = ['Item 1', 'Item 2', 'Item 3']
@@ -202,6 +224,7 @@ describe('Select.ts', () => {
       props: {
         modelValue: 'Item 2',
         items,
+        openOnFocus: true,
       },
     })
 
@@ -230,11 +253,12 @@ describe('Select.ts', () => {
     const input = wrapper.get('input')
 
     await input.trigger('focus')
+    await input.trigger('keydown', { key: ' ' })
     await input.trigger('keydown', { key: 'ArrowDown' })
 
     const item = document.querySelector('.menu__item--active') as HTMLElement
 
-    expect(wrapper.emitted().keydown.length).toBe(1)
+    expect(wrapper.emitted().keydown.length).toBe(2)
     expect(item.textContent).toBe('Item 1')
   })
 
@@ -251,11 +275,12 @@ describe('Select.ts', () => {
     const input = wrapper.get('input')
 
     await input.trigger('focus')
+    await input.trigger('keydown', { key: ' ' })
     await input.trigger('keydown', { key: 'ArrowUp' })
 
     const item = document.querySelector('.menu__item--active') as HTMLElement
 
-    expect(wrapper.emitted().keydown.length).toBe(1)
+    expect(wrapper.emitted().keydown.length).toBe(2)
     expect(item.textContent).toBe('Item 3')
   })
 
@@ -273,6 +298,7 @@ describe('Select.ts', () => {
     const input = wrapper.get('input')
 
     await input.trigger('focus')
+    await input.trigger('keydown', { key: ' ' })
     await input.trigger('keydown', { key: 'ArrowDown' })
 
     expect((document.querySelector('.menu__item--active') as HTMLElement).textContent).toBe('Item 2')
@@ -282,7 +308,7 @@ describe('Select.ts', () => {
     await input.trigger('keydown', { key: 'ArrowUp' })
 
     expect((document.querySelector('.menu__item--active') as HTMLElement).textContent).toBe('Item 2')
-    expect(wrapper.emitted().keydown.length).toBe(3)
+    expect(wrapper.emitted().keydown.length).toBe(4)
   })
 
   it('should select value with keyboard', async () => {
@@ -298,10 +324,11 @@ describe('Select.ts', () => {
     const input = wrapper.get('input')
 
     await input.trigger('focus')
+    await input.trigger('keydown', { key: ' ' })
     await input.trigger('keydown', { key: 'ArrowDown' })
     await input.trigger('keydown', { key: 'Enter' })
 
-    expect(wrapper.emitted().keydown.length).toBe(2)
+    expect(wrapper.emitted().keydown.length).toBe(3)
     expect(wrapper.emitted('update:modelValue')).toEqual([[1]])
   })
 
@@ -318,13 +345,14 @@ describe('Select.ts', () => {
     const input = wrapper.get('input')
 
     await input.trigger('focus')
+    await input.trigger('keydown', { key: ' ' })
     await input.trigger('keydown', { key: 'ArrowDown' })
     await input.trigger('keydown', { key: 'Tab' })
 
     await nextTick()
 
     expect(wrapper.vm.isMenuActive).toBe(false)
-    expect(wrapper.emitted().keydown.length).toBe(2)
+    expect(wrapper.emitted().keydown.length).toBe(3)
     expect(wrapper.emitted('update:modelValue')).toEqual([['Item 1']])
   })
 })

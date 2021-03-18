@@ -22,6 +22,7 @@ function getSidebar () {
       text: 'Components',
       children: [
         { text: 'Alerts', link: '/components/alerts' },
+        { text: 'Autocompletes', link: '/components/autocompletes' },
         { text: 'Buttons', link: '/components/buttons' },
         { text: 'Button Groups', link: '/components/button-groups' },
         { text: 'Checkboxes', link: '/components/checkboxes' },
@@ -49,6 +50,7 @@ function getSidebar () {
       text: 'Api',
       children: [
         { text: 'Alert', link: '/api/alert' },
+        { text: 'Autocomplete', link: '/api/autocomplete' },
         { text: 'Btn', link: '/api/btn', activeMatch: '/api/btn$' },
         { text: 'BtnToggle', link: '/api/btn-toggle' },
         { text: 'Checkbox', link: '/api/checkbox' },

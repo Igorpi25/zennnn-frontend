@@ -15,9 +15,9 @@ import {
   useFilter,
   useClientRect,
   Mask,
+  setCursor,
+  getPropertyFromItem,
 } from 'vue-supp'
-
-import { ziChecked } from '@zennnn/icons'
 
 import { useInputProps, useInput } from '../../composables/useInput'
 import { useInputClearProps, useInputClear } from '../../composables/useInputClear'
@@ -25,18 +25,18 @@ import { useInputControlProps, useInputControl } from '../../composables/useInpu
 import { useInputValidationProps, useInputValidation } from '../../composables/useInputValidation'
 import { useInputMessage } from '../../composables/useInputMessage'
 import { useSelect } from '../../composables/useSelect'
+import { useTextHighlight } from '../../composables/useTextHighlight'
 
 import uid from '../../utils/uid'
 
-import Icon from '../Icon'
 import { Menu, MenuItem } from '../Menu'
 
-import './Select.css'
+import './Autocomplete.css'
 
 const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ')
 
 export default defineComponent({
-  name: 'Select',
+  name: 'Autocomplete',
 
   props: {
     ...useInputProps(),
@@ -73,11 +73,15 @@ export default defineComponent({
     },
     height: [String, Number],
     minHeight: [String, Number],
-    maxHeight: [Number, String],
+    maxHeight: {
+      type: [Number, String],
+      default: 304,
+    },
     distance: {
       type: Number,
       default: 0,
     },
+    openOnFocus: Boolean,
     returnObject: Boolean,
     showArrow: {
       type: Boolean,
@@ -100,7 +104,7 @@ export default defineComponent({
   emits: ['update:modelValue', 'update:search', 'update:error', 'click:clear', 'focus', 'blur', 'keydown', 'mousedown', 'mouseup'],
 
   setup (props, { slots, emit }) {
-    const id: string = uid('select-')
+    const id: string = uid('autocomplete-')
     const listboxId: string = uid('listbox-')
 
     const rootElement = ref<HTMLElement>()
@@ -117,6 +121,8 @@ export default defineComponent({
     } = useInput(props, { slots, emit, id })
 
     const {
+      search,
+      searchIsDirty,
       getText,
       getValue,
     } = useFilter(props, { emit })
@@ -189,6 +195,7 @@ export default defineComponent({
       genArrow,
       genDivider,
       genNoData,
+      genNoResult,
     } = useSelect(props, {
       internalValue,
       inputElement,
@@ -198,15 +205,17 @@ export default defineComponent({
       slots,
     })
 
+    const { genFilteredText } = useTextHighlight(search)
+
     const classes = computed(() => {
       return {
-        select: true,
-        'select--focused': isFocused.value,
-        'select--disabled': isDisabled.value,
-        'select--readonly': isReadonly.value,
-        'select--dirty': internalValue.value,
-        'select--is-menu-active': isMenuActive.value,
-        'select--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
+        autocomplete: true,
+        'autocomplete--focused': isFocused.value,
+        'autocomplete--disabled': isDisabled.value,
+        'autocomplete--readonly': isReadonly.value,
+        'autocomplete--dirty': internalValue.value,
+        'autocomplete--is-menu-active': isMenuActive.value,
+        'autocomplete--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
       }
     })
 
@@ -214,14 +223,36 @@ export default defineComponent({
       return isFocused.value || isMenuActive.value
     })
 
+    const isSearching = computed(() => {
+      return searchIsDirty.value &&
+        search.value !== getText(selectedItem.value)
+    })
+
+    const filteredItems = computed(() => {
+      if (props.noFilter || !isSearching.value || search.value == null) return items.value
+      return items.value.filter((item: any) => {
+        const value = getPropertyFromItem(item, props.itemText)
+        const text = value != null ? String(value) : ''
+        const queryText = String(search.value)
+        return props.filter(item, queryText, text)
+      })
+    })
+
+    watch(filteredItems, (val, oldVal) => {
+      if (val === oldVal) return
+      menuRef.value?.goToItem(-1)
+    })
+
     watch(isFocused, (val) => {
-      val && openMenu()
+      val && props.openOnFocus && openMenu()
     })
 
     watch(isMenuActive, (val) => {
       if (val) {
         // moved from openMenu
         updateClientRect()
+      } else {
+        updateSelf()
       }
     })
 
@@ -233,17 +264,20 @@ export default defineComponent({
       // override initial set of model value
       internalValue.value = getValue(props.modelValue)
       setSelectedItem(props.returnObject ? props.modelValue : undefined)
+      setSearch()
     })
 
     const setInternalValue = (val: any) => {
       internalValue.value = getValue(val)
       setSelectedItem(props.returnObject ? val : undefined)
+      setSearch()
     }
 
     const select = (val: any) => {
       selectedItem.value = val
       const value = props.returnObject ? val : getValue(val)
       emit('update:modelValue', value)
+      setSearch()
     }
 
     const setSelectedItem = (val: any) => {
@@ -251,6 +285,29 @@ export default defineComponent({
         selectedItem.value = items.value.find(item => getValue(item) === internalValue.value)
       } else {
         selectedItem.value = val
+      }
+    }
+
+    const setSearch = () => {
+      // Wait for nextTick so selectedItem
+      // has had time to update
+      nextTick(() => {
+        if (
+          !search.value ||
+          !isMenuActive.value
+        ) {
+          search.value = getText(selectedItem.value)
+        }
+      })
+    }
+
+    const updateSelf = () => {
+      if (!searchIsDirty.value &&
+        !internalValue.value
+      ) return
+
+      if (search.value !== internalValue.value) {
+        setSearch()
       }
     }
 
@@ -281,6 +338,22 @@ export default defineComponent({
       badInput.value = target.validity && target.validity.badInput
 
       if (!isMenuActive.value) openMenu()
+
+      let value = target.value || ''
+
+      if (props.pattern) {
+        isPatternMismatch.value = target.validity && target.validity.patternMismatch
+        if (isPatternMismatch.value) {
+          let positionFromEnd = target.value.length - target.selectionEnd!
+          const v = search.value || ''
+          value = v
+          target.value = v
+          positionFromEnd = target.value.length - positionFromEnd
+          setCursor(target, positionFromEnd)
+        }
+      }
+
+      search.value = value
     }
 
     const onKeyDown = (e: KeyboardEvent) => {
@@ -295,9 +368,9 @@ export default defineComponent({
         } else if (menu.activeItem) {
           menu.activeItem.click()
         }
-      } else if (e.key === ' ' || e.key === 'Spacebar') {
+      } else if ((e.key === ' ' || e.key === 'Spacebar') && !isMenuActive.value) {
         e.preventDefault()
-        toggleMenu()
+        openMenu()
       } else if (e.key === 'ArrowUp' || e.key === 'Up') {
         e.preventDefault()
         if (!isMenuActive.value) {
@@ -320,6 +393,7 @@ export default defineComponent({
             e.preventDefault()
             e.stopPropagation()
             menu.activeItem.click()
+            updateSelf()
           } else {
             closeMenu()
           }
@@ -335,10 +409,9 @@ export default defineComponent({
       const data: Record<string, unknown> = {
         id,
         ref: inputElement,
-        value: getText(selectedItem.value),
+        value: search.value,
         class: {
-          select__input: true,
-          'cursor-pointer': !isDisabled.value && !isReadonly.value,
+          autocomplete__input: true,
           [props.inputClass.trim()]: true,
         },
         name: props.name,
@@ -355,17 +428,12 @@ export default defineComponent({
         'aria-haspopup': true,
         'aria-expanded': isMenuActive.value ? true : undefined,
         'aria-controls': isMenuActive.value ? listboxId : undefined,
-        readonly: true,
+        readonly: isReadonly.value,
         disabled: isDisabled.value,
         onFocus: onFocus,
         onBlur: onBlur,
         onInput: onInput,
         onKeyDown: onKeyDown,
-        onClick: () => {
-          if (!isDisabled.value && !isReadonly.value) {
-            openMenu()
-          }
-        },
       }
       if (props.size) data.size = props.size
       if (props.pattern) data.pattern = props.pattern
@@ -384,15 +452,13 @@ export default defineComponent({
       return h('div', {
         ref: controlElement,
         class: {
-          select__control: true,
-          'select__control--solo': props.solo,
-          'select__control--dense': props.dense || props.solo,
-          'select__control--has-prepend': hasPrependSlot.value,
-          'select__control--has-append': hasAppendSlot.value || hasState.value || props.clearable || props.showArrow,
-          'select__control--is-active': isActive.value,
-          'select__control--is-menu-active': isMenuActive.value,
-          'select__control--open-on-focus': true,
-          'pl-8': isMenuActive.value && !hasPrependSlot.value,
+          autocomplete__control: true,
+          'autocomplete__control--solo': props.solo,
+          'autocomplete__control--dense': props.dense || props.solo,
+          'autocomplete__control--has-prepend': hasPrependSlot.value,
+          'autocomplete__control--has-append': hasAppendSlot.value || hasState.value || props.clearable || props.showArrow,
+          'autocomplete__control--is-active': isActive.value,
+          'autocomplete__control--is-menu-active': isMenuActive.value,
           [props.controlClass.trim()]: true,
         },
         onClick: onControlClick,
@@ -435,8 +501,9 @@ export default defineComponent({
         maxHeight: props.maxHeight,
         disabled: isDisabled.value || isReadonly.value,
         boxClass: classNames(
-          'select-box shadow-none dark:shadow-none rounded-t-none',
-          props.solo || props.dense ? 'select-box--dense' : '',
+          'autocomplete-box shadow-none dark:shadow-none rounded-t-none',
+          props.solo || props.dense ? 'autocomplete-box--dense' : '',
+          isSearching.value && !slots.item ? 'listbox--searching' : '',
           props.boxClass.trim(),
         ),
         contentClass: classNames(
@@ -460,10 +527,9 @@ export default defineComponent({
       const itemClassNames = classNames(
         'listbox__option',
         props.solo || props.dense ? 'h-8' : 'h-10',
-        'pl-0',
       )
       let index = 0
-      const children: any[] = items.value.map((item) => {
+      const children: any[] = filteredItems.value.map((item) => {
         if (item.divider) {
           return genDivider(index)
         }
@@ -488,19 +554,14 @@ export default defineComponent({
           default: (slotProps: any) => {
             return slots.item
               ? h('div', undefined, slots.item({ item, ...slotProps }))
-              : h('div', undefined, [
-                h('div', {
-                  class: 'w-8 flex justify-center flex-shrink-0',
-                }, getValue(selectedItem.value) === getValue(item)
-                  ? h(Icon, { size: 24 }, { default: () => ziChecked })
-                  : undefined),
-                h('div', { class: 'truncate' }, getText(item)),
-              ])
+              : h('div', undefined, h('div', { class: 'truncate' }, genFilteredText(getText(item))))
           },
         })
       })
       if (props.items.length === 0) {
         children.push(genNoData())
+      } else if (filteredItems.value.length === 0) {
+        children.push(genNoResult())
       }
       slots['prepend-item'] && children.unshift(slots['prepend-item']())
       slots['append-item'] && children.push(slots['append-item']())
@@ -508,6 +569,7 @@ export default defineComponent({
     }
 
     return {
+      filteredItems,
       rootElement,
       classes,
       internalValue,
@@ -515,6 +577,7 @@ export default defineComponent({
       isActive,
       isMenuActive,
       selectedItem,
+      search,
       focus,
       blur,
       genLabel,
