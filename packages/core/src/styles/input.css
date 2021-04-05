@@ -1,0 +1,79 @@
+@layer components {
+  .input {
+    @apply relative transition-opacity duration-75 ease-in;
+  }
+
+  .input--disabled {
+    @apply opacity-50;
+  }
+
+  .input__control {
+    @apply relative flex items-center rounded;
+    @apply transition-colors-and-opacity duration-100 ease-in-out;
+    @apply bg-white dark:bg-gray-900;
+    @apply space-x-1;
+  }
+
+  /* Solo */
+  .input--dirty .input__control--solo:not(:focus-within) {
+    @apply bg-transparent;
+  }
+  .input--dirty .input__control--solo .input__input:not(:focus) {
+    @apply text-blue-500;
+  }
+
+  .input__control--has-prepend {
+    @apply pl-1;
+  }
+  .input__control--has-append {
+    @apply pr-1;
+  }
+  /* For override padding with `inputClass` prop should add classes to input, ex. `.input__input--has-prepend` */
+  .input__control--has-prepend .input__input {
+    @apply pl-0;
+  }
+  .input__control--has-append .input__input {
+    @apply pr-0;
+  }
+
+  .input--focused .input__control {
+    @apply ring-1 ring-blue-500 ring-inset;
+  }
+  .input--has-error .input__control {
+    @apply ring-1 ring-yellow-300 ring-inset;
+  }
+  .input--disabled .input__control {
+    @apply cursor-not-allowed;
+  }
+
+  .input__control--no-shadow {
+    @apply ring-0 !important;
+  }
+
+  .input__input {
+    @apply flex-auto rounded h-10 p-2;
+    @apply appearance-none focus:outline-none truncate;
+    @apply transition-colors duration-100 ease-out;
+    @apply bg-transparent placeholder-gray-100 dark:placeholder-gray-200;
+    @apply dark:text-white disabled:text-gray-200;
+  }
+
+  .input__input--dense {
+    @apply h-8 py-1;
+  }
+
+  .input--loading .input__input {
+    @apply cursor-wait;
+  }
+  .input--disabled .input__input {
+    @apply cursor-not-allowed;
+  }
+  .input--align-right .input__input {
+    @apply text-right;
+  }
+
+  /* smaller placeholder font */
+  .input__input::placeholder {
+    font-size: 14px;
+  }
+}

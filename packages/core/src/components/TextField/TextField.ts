@@ -153,13 +153,13 @@ export default defineComponent({
 
     const classes = computed(() => {
       return {
+        input: true,
+        'input--focused': isFocused.value,
+        'input--disabled': isDisabled.value,
+        'input--align-right': props.alignRight || props.number,
+        'input--dirty': internalValue.value,
+        'input--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
         'text-field': true,
-        'text-field--focused': isFocused.value,
-        'text-field--disabled': isDisabled.value,
-        'text-field--readonly': isReadonly.value,
-        'text-field--align-right': props.alignRight || props.number,
-        'text-field--dirty': internalValue.value,
-        'text-field--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
       }
     })
 
@@ -273,6 +273,8 @@ export default defineComponent({
         ref: inputElement,
         value: props.number ? formattedNumber.value : internalValue.value,
         class: {
+          input__input: true,
+          'input__input--dense': props.dense || props.solo,
           'text-field__input': true,
           [props.inputClass.trim()]: true,
         },
@@ -312,11 +314,11 @@ export default defineComponent({
       return h('div', {
         ref: controlElement,
         class: {
+          input__control: true,
+          'input__control--solo': props.solo,
+          'input__control--has-prepend': hasPrependSlot.value,
+          'input__control--has-append': hasAppendSlot.value || hasState.value || props.clearable,
           'text-field__control': true,
-          'text-field__control--solo': props.solo,
-          'text-field__control--dense': props.dense || props.solo,
-          'text-field__control--has-prepend': hasPrependSlot.value,
-          'text-field__control--has-append': hasAppendSlot.value || hasState.value || props.clearable,
           [props.controlClass.trim()]: true,
         },
         onClick: onControlClick,

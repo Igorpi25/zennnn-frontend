@@ -1,57 +1,13 @@
 @layer components {
-  .text-area {
-    @apply relative transition-opacity duration-75 ease-in;
-  }
-
-  .text-area--disabled {
-    @apply opacity-50;
-  }
-
   .text-area__control {
-    @apply relative flex items-start rounded py-2;
-    @apply transition-colors-and-opacity duration-100 ease-in-out;
-    @apply bg-white dark:bg-gray-900;
-    @apply space-x-1;
+    @apply items-start;
   }
-
-  .text-area--focused .text-area__control {
-    @apply ring-1 ring-blue-500;
-  }
-  .text-area--has-error .text-area__control {
-    @apply ring-1 ring-yellow-300;
-  }
-
-  .text-area--disabled .text-area__control {
-    @apply cursor-not-allowed;
-  }
-
-  .text-area__control--has-prepend {
-    @apply pl-1;
-  }
-  .text-area__control--has-append {
-    @apply pr-1;
+  .text-area__control {
+    @apply h-auto py-2;
   }
 
   .text-area__input {
-    @apply flex-auto rounded px-2;
-    @apply appearance-none focus:outline-none;
-    @apply transition-colors duration-100 ease-out;
-    @apply bg-transparent placeholder-gray-100 dark:placeholder-gray-200;
-    @apply dark:text-white disabled:text-gray-200;
-  }
-
-  .text-area__control--has-prepend .text-area__input {
-    @apply pl-0;
-  }
-  .text-area__control--has-append .text-area__input {
-    @apply pr-0;
-  }
-
-  .text-area--loading .text-area__input {
-    @apply cursor-wait;
-  }
-  .text-area--disabled .text-area__input {
-    @apply cursor-not-allowed;
+    @apply py-0 px-2;
   }
 
   /* smaller placeholder font */

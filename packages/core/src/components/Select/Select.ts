@@ -200,13 +200,13 @@ export default defineComponent({
 
     const classes = computed(() => {
       return {
+        input: true,
+        'input--focused': isFocused.value,
+        'input--disabled': isDisabled.value,
+        'input--dirty': internalValue.value,
+        'input--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
         select: true,
-        'select--focused': isFocused.value,
-        'select--disabled': isDisabled.value,
-        'select--readonly': isReadonly.value,
-        'select--dirty': internalValue.value,
         'select--is-menu-active': isMenuActive.value,
-        'select--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
       }
     })
 
@@ -337,8 +337,11 @@ export default defineComponent({
         ref: inputElement,
         value: getText(selectedItem.value),
         class: {
+          input__input: true,
+          'input__input--dense': props.dense || props.solo,
           select__input: true,
           'cursor-pointer': !isDisabled.value && !isReadonly.value,
+          'pl-8': isMenuActive.value && !hasPrependSlot.value,
           [props.inputClass.trim()]: true,
         },
         name: props.name,
@@ -384,15 +387,13 @@ export default defineComponent({
       return h('div', {
         ref: controlElement,
         class: {
+          input__control: true,
+          'input__control--solo': props.solo,
+          'input__control--has-prepend': hasPrependSlot.value,
+          'input__control--has-append': hasAppendSlot.value || hasState.value || props.clearable || props.showArrow,
           select__control: true,
-          'select__control--solo': props.solo,
-          'select__control--dense': props.dense || props.solo,
-          'select__control--has-prepend': hasPrependSlot.value,
-          'select__control--has-append': hasAppendSlot.value || hasState.value || props.clearable || props.showArrow,
           'select__control--is-active': isActive.value,
           'select__control--is-menu-active': isMenuActive.value,
-          'select__control--open-on-focus': true,
-          'pl-8': isMenuActive.value && !hasPrependSlot.value,
           [props.controlClass.trim()]: true,
         },
         onClick: onControlClick,

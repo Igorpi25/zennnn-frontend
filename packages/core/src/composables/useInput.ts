@@ -6,13 +6,15 @@ import {
   Slots,
 } from 'vue'
 
+import { ziQuestionSign } from '@zennnn/icons'
+
 import { EmitFn } from '../../types'
 
 import Label from '../components/Label'
 import Tooltip from '../components/Tooltip'
 import Icon from '../components/Icon'
 
-import { ziQuestionSign } from '@zennnn/icons'
+import '../styles/input.css'
 
 export interface InputProps {
   modelValue?: any

@@ -11,11 +11,11 @@ import {
 
 import { EmitFn } from '../../types'
 
+import { ziCheckedSm, ziStatusPointSm } from '@zennnn/icons' // TODO: use/input
+
 import { useFormContext } from '../components/Form/Form' // TODO: use/input
 import Messages from '../components/Messages' // TODO: use/input
 import Icon from '../components/Icon' // TODO: use/input
-
-import { ziCheckedSm, ziStatusPointSm } from '@zennnn/icons' // TODO: use/input
 
 export interface InputValidationProps {
   rules: any[]
@@ -268,7 +268,7 @@ export const useInputValidation = (
     return h(Icon, {
       size: 24,
       class: {
-        'w-6 flex-shrink-0': true,
+        'flex-shrink-0': true,
         [color]: true,
       },
     }, {

@@ -5,11 +5,11 @@ import {
   ComputedRef,
 } from 'vue'
 
+import { ziCloseDelete } from '@zennnn/icons'
+
 import { EmitFn } from '../../types'
 
 import Icon from '../components/Icon'
-
-import { ziCloseDelete } from '@zennnn/icons'
 
 export interface InputClearProps {
   clearable?: boolean

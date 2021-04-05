@@ -1,101 +1,15 @@
 @layer components {
-  .autocomplete {
-    @apply relative transition-opacity duration-75 ease-in;
-  }
-
-  .autocomplete--disabled {
-    @apply opacity-50;
-  }
-
   .autocomplete--is-menu-active {
     @apply bg-white dark:bg-gray-900 rounded-t;
   }
 
   .autocomplete-box::before {
     content: '';
-    @apply absolute pointer-events-none inset-0 -top-10 rounded;
+    @apply absolute pointer-events-none inset-0 -top-10 rounded-t rounded-b-lg;
     @apply shadow-main-day dark:shadow-main-night;
   }
   .autocomplete-box--dense::before {
     @apply -top-8;
-  }
-
-  .autocomplete__control {
-    @apply relative flex items-center rounded h-10;
-    @apply transition-colors-and-opacity duration-100 ease-in-out;
-    @apply bg-white dark:bg-gray-900;
-    @apply space-x-1;
-  }
-
-  .autocomplete__control--dense {
-    @apply h-8;
-  }
-
-  .autocomplete--dirty .autocomplete__control--solo:not(:focus-within) {
-    @apply bg-transparent dark:bg-transparent;
-  }
-  .autocomplete--dirty .autocomplete__control--solo .autocomplete__input:not(:focus) {
-    @apply text-blue-500 dark:text-blue-500;
-  }
-
-  .autocomplete__control--has-prepend {
-    @apply pl-1;
-  }
-  .autocomplete__control--has-append {
-    @apply pr-1;
-  }
-
-  .autocomplete--focused .autocomplete__control {
-    @apply ring-1 ring-blue-500 ring-inset;
-  }
-  .autocomplete--has-error .autocomplete__control {
-    @apply ring-1 ring-yellow-300 ring-inset;
-  }
-
-  .autocomplete--disabled .autocomplete__control {
-    @apply cursor-not-allowed;
-  }
-
-  .autocomplete__control--no-shadow {
-    @apply ring-0 !important;
-  }
-
-  .autocomplete__control--has-prepend {
-    @apply pl-1;
-  }
-  .autocomplete__control--has-append {
-    @apply pr-1;
-  }
-
-  .autocomplete__input {
-    @apply flex-auto rounded p-2;
-    @apply appearance-none focus:outline-none truncate;
-    @apply transition-colors duration-100 ease-out;
-    @apply bg-transparent placeholder-gray-100 dark:placeholder-gray-200;
-    @apply dark:text-white disabled:text-gray-200;
-  }
-  /* For override padding with `inputClass` prop should add classes to input, ex. `.autocomplete__input--has-prepend` */
-  .autocomplete__control--has-prepend .autocomplete__input {
-    @apply pl-0;
-  }
-  .autocomplete__control--has-append .autocomplete__input {
-    @apply pr-0;
-  }
-
-  .autocomplete__control--dense .autocomplete__input {
-    @apply py-1;
-  }
-
-  .autocomplete--loading .autocomplete__input {
-    @apply cursor-wait;
-  }
-  .autocomplete--disabled .autocomplete__input {
-    @apply cursor-not-allowed;
-  }
-
-  /* smaller placeholder font */
-  .autocomplete__input::placeholder {
-    font-size: 14px;
   }
 
   .listbox--searching .menu__item:not(.menu__item--disabled) {

@@ -7,11 +7,11 @@ import {
   Slots,
 } from 'vue'
 
+import { ziChevronDown } from '@zennnn/icons'
+
 import { useI18n } from 'vue-i18n'
 
 import Icon from '../components/Icon'
-
-import { ziChevronDown } from '@zennnn/icons'
 
 const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ')
 

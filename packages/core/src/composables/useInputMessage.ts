@@ -66,7 +66,7 @@ export const useInputMessage = (props: InputMessageProps, {
       distance: dimensions.value!.height * -1,
       allowOverflow: true,
       boxClass: 'shadow-none dark:shadow-none',
-      contentClass: 'bg-yellow-300 dark:bg-yellow-300 ring-1 ring-yellow-300 text-black dark:text-black rounded px-sm py-2',
+      contentClass: 'bg-yellow-300 dark:bg-yellow-300 ring-1 ring-yellow-300 ring-inset text-black dark:text-black rounded px-sm py-2',
       onClick: () => {
         if (!props.messagesOnFocused) {
           focus()

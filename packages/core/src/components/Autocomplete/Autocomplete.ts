@@ -209,13 +209,13 @@ export default defineComponent({
 
     const classes = computed(() => {
       return {
+        input: true,
+        'input--focused': isFocused.value,
+        'input--disabled': isDisabled.value,
+        'input--dirty': internalValue.value,
+        'input--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
         autocomplete: true,
-        'autocomplete--focused': isFocused.value,
-        'autocomplete--disabled': isDisabled.value,
-        'autocomplete--readonly': isReadonly.value,
-        'autocomplete--dirty': internalValue.value,
         'autocomplete--is-menu-active': isMenuActive.value,
-        'autocomplete--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
       }
     })
 
@@ -411,6 +411,8 @@ export default defineComponent({
         ref: inputElement,
         value: search.value,
         class: {
+          input__input: true,
+          'input__input--dense': props.dense || props.solo,
           autocomplete__input: true,
           [props.inputClass.trim()]: true,
         },
@@ -452,11 +454,11 @@ export default defineComponent({
       return h('div', {
         ref: controlElement,
         class: {
+          input__control: true,
+          'input__control--solo': props.solo,
+          'input__control--has-prepend': hasPrependSlot.value,
+          'input__control--has-append': hasAppendSlot.value || hasState.value || props.clearable || props.showArrow,
           autocomplete__control: true,
-          'autocomplete__control--solo': props.solo,
-          'autocomplete__control--dense': props.dense || props.solo,
-          'autocomplete__control--has-prepend': hasPrependSlot.value,
-          'autocomplete__control--has-append': hasAppendSlot.value || hasState.value || props.clearable || props.showArrow,
           'autocomplete__control--is-active': isActive.value,
           'autocomplete__control--is-menu-active': isMenuActive.value,
           [props.controlClass.trim()]: true,

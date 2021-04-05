@@ -133,11 +133,11 @@ export default defineComponent({
 
     const classes = computed(() => {
       return {
+        input: true,
+        'input--focused': isFocused.value,
+        'input--disabled': isDisabled.value,
+        'input--has-error': (hasMessages.value && hasError.value) && showDetails.value,
         'text-area': true,
-        'text-area--focused': isFocused.value,
-        'text-area--disabled': isDisabled.value,
-        'text-area--readonly': isReadonly.value,
-        'text-area--has-error': (hasMessages.value && hasError.value) && showDetails.value,
       }
     })
 
@@ -249,6 +249,7 @@ export default defineComponent({
         ref: inputElement,
         value: internalValue.value,
         class: {
+          input__input: true,
           'text-area__input': true,
           'resize-none': props.noResize || props.autoGrow,
           [props.inputClass.trim()]: true,
@@ -274,9 +275,10 @@ export default defineComponent({
       return h('div', {
         ref: controlElement,
         class: {
+          input__control: true,
+          'input__control--has-prepend': hasPrependSlot.value,
+          'input__control--has-append': hasAppendSlot.value || hasState.value || props.clearable,
           'text-area__control': true,
-          'text-area__control--has-prepend': hasPrependSlot.value,
-          'text-area__control--has-append': hasAppendSlot.value || hasState.value || props.clearable,
           [props.controlClass.trim()]: true,
         },
         onClick: onControlClick,
