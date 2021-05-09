@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "exclude": [
+    "docs/.vitepress/theme/**/*.ts",
     "node_modules",
     "**/__tests__/**",
     "**/__mocks__/**"

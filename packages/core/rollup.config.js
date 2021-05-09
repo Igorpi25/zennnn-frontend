@@ -42,6 +42,7 @@ function createConfig (format, output, plugins = []) {
     'vue-supp',
     'vue-i18n',
     '@zennnn/icons',
+    '@popperjs/core',
     'date-fns',
   ]
 

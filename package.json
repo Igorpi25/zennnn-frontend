@@ -40,7 +40,7 @@
     "vue": "^3.0.11",
     "vue-i18n": "^9.1.6",
     "vue-router": "^4.0.6",
-    "vue-supp": "^0.8.0"
+    "vue-supp": "^0.8.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.14",
@@ -89,7 +89,7 @@
     "tailwindcss": "^2.0.4",
     "ts-jest": "^26.5.1",
     "typescript": "~4.1.2",
-    "vite": "^2.2.3",
+    "vite": "^2.2.4",
     "vite-plugin-components": "^0.6.14",
     "vite-plugin-md": "^0.5.1",
     "vite-plugin-pages": "^0.9.6",

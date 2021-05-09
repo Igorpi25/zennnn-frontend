@@ -15,18 +15,6 @@
     @apply overflow-y-auto overflow-x-hidden scrolling-touch;
   }
 
-  /* Transition */
-  .menu-transition-enter-active {
-    @apply transition-opacity ease-out-quart duration-200;
-  }
-  .menu-transition-leave-active {
-    @apply transition-opacity ease-out-quart duration-150;
-  }
-  .menu-transition-enter-from,
-  .menu-transition-leave-to {
-    @apply opacity-0;
-  }
-
   .menu__box[class*="-enter-from"] .menu__item {
     min-width: 0;
     pointer-events: none;

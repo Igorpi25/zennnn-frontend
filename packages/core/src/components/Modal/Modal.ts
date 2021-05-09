@@ -1,16 +1,15 @@
 import {
   h,
   ref,
-  reactive,
   computed,
   watch,
   nextTick,
   onMounted,
   onBeforeUnmount,
-  Transition,
   withDirectives,
   vShow,
   Teleport,
+  Transition,
   defineComponent,
   VNodeProps,
   AllowedComponentProps,
@@ -24,11 +23,21 @@ import {
   useLazyContent,
   useAttachProps,
   useAttach,
+  useTransitionProps,
   ClickOutside,
   convertToUnit,
 } from 'vue-supp'
 
 import uid from '../../utils/uid'
+
+const overlayTransition = useTransitionProps({
+  enterActiveClass: 'transition ease-out-quart duration-300',
+  enterFromClass: 'opacity-0',
+  enterToClass: 'opacity-100',
+  leaveActiveClass: 'transition ease-out-quart duration-200',
+  leaveFromClass: 'opacity-100',
+  leaveToClass: 'opacity-0',
+}).transition
 
 export default defineComponent({
   name: 'Modal',
@@ -37,6 +46,16 @@ export default defineComponent({
     ...useActivatorProps(),
     ...useLazyContentProps(),
     ...useAttachProps(),
+    ...useTransitionProps({
+      appear: true,
+      enterActiveClass: 'transition ease-out-quart duration-300',
+      enterFromClass: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
+      enterToClass: 'opacity-100 translate-y-0 sm:scale-100',
+      leaveActiveClass: 'transition ease-out-quart duration-200',
+      leaveFromClass: 'opacity-100 translate-y-0 sm:scale-100',
+      leaveToClass: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
+    }),
+    overlayTransition,
     openOnHover: {
       type: Boolean,
       default: false,
@@ -66,17 +85,6 @@ export default defineComponent({
       default: true,
     },
     scrollable: Boolean,
-    transition: {
-      type: [String, Object],
-      default: () => ({
-        enterActiveClass: 'transition ease-out-quart duration-300',
-        enterFromClass: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
-        enterToClass: 'opacity-100 translate-y-0 sm:scale-100',
-        leaveActiveClass: 'transition ease-out-quart duration-200',
-        leaveFromClass: 'opacity-100 translate-y-0 sm:scale-100',
-        leaveToClass: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
-      }),
-    },
     width: {
       type: [String, Number],
       default: 'auto',
@@ -108,21 +116,14 @@ export default defineComponent({
     const {
       isActive,
       genActivator,
-      getActivator,
-    } = useActivator(props, { slots, emit })
+      focusActivator,
+    } = useActivator(props, { slots })
 
-    const lazyContentProps = reactive({
-      isActive: isActive,
-      disabled: computed(() => props.disabled),
-    })
     const {
       showLazyContent,
-    } = useLazyContent(lazyContentProps)
+    } = useLazyContent(props, { isActive })
 
-    const attachProps = reactive({
-      attach: computed(() => props.attach),
-    })
-    const { target } = useAttach(attachProps)
+    const { target } = useAttach(props)
 
     const activatorAttrs = computed(() => {
       return {
@@ -136,7 +137,6 @@ export default defineComponent({
         show()
         hideScroll()
       } else {
-        unbind()
         previousActiveElement && previousActiveElement.focus()
         showScroll()
       }
@@ -150,7 +150,6 @@ export default defineComponent({
     })
 
     onBeforeUnmount(() => {
-      if (typeof window !== 'undefined') unbind()
       showScroll()
     })
 
@@ -269,16 +268,7 @@ export default defineComponent({
       nextTick(() => {
         previousActiveElement = document.activeElement as HTMLElement
         contentElement.value && contentElement.value.focus()
-        bind()
       })
-    }
-
-    const bind = () => {
-      // window.addEventListener('focusin', onFocusin)
-    }
-
-    const unbind = () => {
-      // window.removeEventListener('focusin', onFocusin)
     }
 
     const onClickAnimationEnd = () => {
@@ -317,37 +307,12 @@ export default defineComponent({
       if (e.key === 'Esc' || e.key === 'Escape') {
         if (!props.persistent) {
           isActive.value = false
-          const activator = getActivator()
-          nextTick(() => activator && activator.focus())
+          nextTick(focusActivator)
         } else if (!props.noClickAnimation) {
           animateClick()
         }
       }
       emit('keydown', e)
-    }
-
-    // On focus change, wrap focus to stay inside the dialog
-    // https://github.com/vuetifyjs/vuetify/issues/6892
-    // TODO: stacked model has maximum call stack
-    const onFocusin = (e: Event) => { // eslint-disable-line
-      if (!e || !props.retainFocus) return
-
-      const target = e.target as HTMLElement
-
-      if (
-        !!target &&
-        // It isn't the document or the dialog body
-        ![document, contentElement.value].includes(target) &&
-        // It isn't inside the dialog body
-        !contentElement.value?.contains(target) &&
-        ![rootElement.value].some(el => el?.contains(target))
-        // So we must have focused something outside the dialog and its children
-      ) {
-        // Find and focus the first available element inside the dialog
-        const focusable = contentElement.value!.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
-        const el = [...focusable].find(el => !el.hasAttribute('disabled')) as HTMLElement | undefined
-        el && el.focus()
-      }
     }
 
     const genOverlay = () => {
@@ -359,21 +324,16 @@ export default defineComponent({
         ariaHidden: true,
       }, h('div', { class: 'absolute inset-0 bg-gray-500 opacity-75' }))
 
-      return h(Transition, {
-        enterActiveClass: 'transition ease-out-quart duration-300',
-        enterFromClass: 'opacity-0',
-        enterToClass: 'opacity-100',
-        leaveActiveClass: 'transition ease-out-quart duration-200',
-        leaveFromClass: 'opacity-100',
-        leaveToClass: 'opacity-0',
-      }, {
-        default: () => withDirectives(
-          overlay,
-          [
-            [vShow, isActive.value],
-          ],
-        ),
-      })
+      const content = withDirectives(
+        overlay,
+        [
+          [vShow, isActive.value],
+        ],
+      )
+
+      if (!props.overlayTransition) return content
+
+      return h(Transition, props.overlayTransition, () => content)
     }
 
     const genContent = () => {
@@ -381,16 +341,7 @@ export default defineComponent({
 
       if (!props.transition) return content
 
-      const transition = typeof props.transition === 'string'
-        ? { name: props.transition }
-        : { ...props.transition }
-
-      return h(Transition, {
-        appear: true,
-        ...transition,
-      }, {
-        default: () => content,
-      })
+      return h(Transition, props.transition, () => content)
     }
 
     const genInnerContent = () => {

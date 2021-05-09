@@ -9,7 +9,6 @@ import {
   vShow,
   onBeforeMount,
   onBeforeUnmount,
-  reactive,
   defineComponent,
   TransitionProps,
 } from 'vue'
@@ -55,11 +54,7 @@ export default defineComponent({
       return isSelected(id)
     })
 
-    const lazyContentProps = reactive({
-      isActive,
-      eager: computed(() => props.eager),
-    })
-    const { showLazyContent } = useLazyContent(lazyContentProps)
+    const { showLazyContent } = useLazyContent(props, { isActive })
 
     const transitionData = computed((): TransitionProps => {
       let leaveTranslate, enterTranslate

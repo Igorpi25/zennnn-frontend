@@ -1,6 +1,7 @@
 import { nextTick } from 'vue'
 import { mount, VueWrapper } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'
+import { wait } from 'vue-supp'
 
 import Autocomplete from '../Autocomplete'
 
@@ -298,17 +299,15 @@ describe('Autocomplete.ts', () => {
     const input = wrapper.get('input')
 
     await input.trigger('focus')
-    await input.trigger('keydown', { key: ' ' })
     await input.trigger('keydown', { key: 'ArrowDown' })
-
-    expect((document.querySelector('.menu__item--active') as HTMLElement).textContent).toBe('Item 2')
+    await wait(20)
+    expect((document.querySelector('.menu__item--active') as HTMLElement)?.textContent).toBe('Item 2')
 
     await input.trigger('keydown', { key: 'Esc' })
-
+    await nextTick()
     await input.trigger('keydown', { key: 'ArrowUp' })
-
-    expect((document.querySelector('.menu__item--active') as HTMLElement).textContent).toBe('Item 2')
-    expect(wrapper.emitted().keydown.length).toBe(4)
+    await wait(20)
+    expect((document.querySelector('.menu__item--active') as HTMLElement)?.textContent).toBe('Item 2')
   })
 
   it('should select value with keyboard', async () => {

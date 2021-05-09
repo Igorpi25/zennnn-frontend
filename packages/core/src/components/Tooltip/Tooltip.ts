@@ -1,21 +1,30 @@
 import {
   h,
   ref,
-  reactive,
   computed,
   watch,
   defineComponent,
+  vShow,
+  Teleport,
+  Transition,
+  withDirectives,
+  ComponentPublicInstance,
 } from 'vue'
 
 import {
-  usePopperProps,
-  usePopper,
+  useTransitionProps,
+  useDimensionProps,
+  useDimension,
+  useAttachProps,
+  useAttach,
   useActivatorProps,
   useActivator,
   useLazyContentProps,
   useLazyContent,
   ClickOutside,
 } from 'vue-supp'
+
+import { usePopperProps, usePopper } from '../../composables/usePopper'
 
 import uid from '../../utils/uid'
 
@@ -28,6 +37,16 @@ export default defineComponent({
     ...usePopperProps(),
     ...useActivatorProps(),
     ...useLazyContentProps(),
+    ...useTransitionProps({
+      enterActiveClass: 'transition ease-out duration-150',
+      enterFromClass: 'transform scale-50 opacity-0',
+      enterToClass: 'transform scale-100 opacity-100',
+      leaveActiveClass: 'transition ease-out duration-75',
+      leaveFromClass: 'opacity-100',
+      leaveToClass: 'opacity-0',
+    }),
+    ...useDimensionProps(),
+    ...useAttachProps(),
     tag: {
       type: String,
       default: 'span',
@@ -36,42 +55,29 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    transition: {
-      type: [String, Object],
-      default: 'tooltip-transition',
-    },
   },
 
   emits: ['update:modelValue'],
 
-  setup (props, { slots, emit }) {
+  setup (props, { slots }) {
     const id: string = uid('tooltip-')
     const rootElement = ref<HTMLElement>()
+    const isVisible = ref(false)
 
-    const {
-      isVisible,
-      isContentVisible,
-      wrapperElement,
-      create: createPopper,
-      destroy: destroyPopper,
-      genBox,
-      genWrapper,
-    } = usePopper(props)
+    const { dimensionStyles } = useDimension(props)
+
+    const { target } = useAttach(props)
+
+    const { reference, popper, create, destroy, genArrow } = usePopper(props)
 
     const {
       isActive,
-      activatorElement,
       genActivator,
-      getActivator,
-    } = useActivator(props, { slots, emit })
+    } = useActivator(props, { slots, reference })
 
-    const lazyContentProps = reactive({
-      isActive: isActive,
-      disabled: computed(() => props.disabled),
-    })
     const {
       showLazyContent,
-    } = useLazyContent(lazyContentProps)
+    } = useLazyContent(props, { isActive })
 
     const activatorAttrs = computed(() => {
       return {
@@ -91,32 +97,18 @@ export default defineComponent({
 
     watch(isActive, (val) => {
       if (props.disabled) return
-      // show popper root from isActive, hide after transition end
-      if (val) isVisible.value = val
-      val ? activate() : deactivate()
-    })
-
-    watch(isVisible, (val) => {
-      if (val !== isActive.value) {
-        isActive.value = val
+      if (val) {
+        requestAnimationFrame(() => {
+          isVisible.value = val
+          create()
+        })
+      } else {
+        isVisible.value = val
+        if (!props.transition) {
+          destroy()
+        }
       }
     })
-
-    watch(() => props.activator, () => {
-      destroyPopper()
-    })
-
-    const activate = () => {
-      getActivator()
-      requestAnimationFrame(() => {
-        isContentVisible.value = isActive.value
-        createPopper(activatorElement.value, wrapperElement.value)
-      })
-    }
-
-    const deactivate = () => {
-      isContentVisible.value = false
-    }
 
     const genContent = () => {
       return h('div', {
@@ -127,49 +119,81 @@ export default defineComponent({
       }, slots.default?.())
     }
 
-    const genPopper = () => {
-      const children = genBox(
-        {
-          id,
-          role: 'tooltip',
-          tabindex: '-1',
-          class: 'tooltip__box',
+    const genPopperBox = () => {
+      const data = {
+        id,
+        role: 'tooltip',
+        tabindex: '-1',
+        class: {
+          'popper__box tooltip__box': true,
         },
-        [genContent()],
-      )
+        style: dimensionStyles.value,
+      }
 
-      const directives = [
+      const content = withDirectives(
+        h('div', data, [
+          genContent(),
+          genArrow(),
+        ]),
         [
-          ClickOutside,
-          {
-            handler: () => {
-              isActive.value = false
-            },
-            closeConditional: (e: Event) => {
-              return isActive.value &&
-                !(wrapperElement.value?.contains(e.target as HTMLElement))
-            },
-            include: () => [rootElement.value],
-          },
+          [vShow, isVisible.value],
         ],
-      ]
-
-      return genWrapper(
-        undefined,
-        children,
-        directives,
       )
+
+      if (!props.transition) return content
+
+      return h(Transition, {
+        ...props.transition,
+        onAfterLeave () {
+          destroy()
+        },
+      }, () => content)
+    }
+
+    const genPopper = () => {
+      const children = genPopperBox()
+
+      const data = {
+        ref: popper,
+        style: {
+          zIndex: props.zIndex,
+        },
+        'data-popper-root': '',
+      }
+
+      const content = withDirectives(
+        h('div', data, children),
+        [
+          [
+            ClickOutside,
+            {
+              handler: () => {
+                isActive.value = false
+              },
+              closeConditional: (e: Event) => {
+                const wrapper = ((popper.value as ComponentPublicInstance)?.$el || popper.value) as Element
+                return isActive.value &&
+                  !(wrapper?.contains(e.target as Element))
+              },
+              include: () => [rootElement.value],
+            },
+          ],
+        ],
+      )
+
+      return showLazyContent(() => h(Teleport, {
+        to: target.value,
+        disabled: !target.value,
+      }, content))
     }
 
     return {
       isActive,
       isVisible,
-      isContentVisible,
       rootElement,
       activatorAttrs,
       activatorListeners,
       genPopper,
-      showLazyContent,
       genActivator,
     }
   },
@@ -181,7 +205,7 @@ export default defineComponent({
         tooltip: true,
       },
     }, [
-      this.showLazyContent(this.genPopper),
+      this.genPopper(),
       this.genActivator(this.activatorAttrs, this.activatorListeners),
     ])
   },

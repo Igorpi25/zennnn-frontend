@@ -12,18 +12,17 @@ import {
 import {
   Scroll,
   convertToUnit,
-  dimensions,
+  useDimensionProps,
+  useDimension,
 } from 'vue-supp'
 
 import './VScroll.css'
-
-const { useDimensionsProps, useDimensions } = dimensions()
 
 export default defineComponent({
   name: 'VScroll',
 
   props: {
-    ...useDimensionsProps(),
+    ...useDimensionProps(),
     bench: {
       type: [Number, String],
       default: 0,
@@ -44,7 +43,7 @@ export default defineComponent({
     const last = ref<number>(0)
     const scrollTop = ref<number>(0)
 
-    const { dimensionsStyles } = useDimensions(props)
+    const { dimensionStyles } = useDimension(props)
 
     const bench = computed(() => {
       return parseInt(props.bench, 10)
@@ -115,7 +114,7 @@ export default defineComponent({
         h('div', {
           ref: rootElement,
           class: 'virtual-scroll',
-          style: dimensionsStyles.value,
+          style: dimensionStyles.value,
         }, [content]),
         [
           [Scroll, onScroll, '', { self: true }],

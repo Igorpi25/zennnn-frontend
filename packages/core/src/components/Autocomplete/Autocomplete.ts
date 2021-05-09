@@ -125,7 +125,7 @@ export default defineComponent({
       searchIsDirty,
       getText,
       getValue,
-    } = useFilter(props, { emit })
+    } = useFilter(props)
 
     const {
       showDetails,
@@ -356,7 +356,7 @@ export default defineComponent({
       search.value = value
     }
 
-    const onKeyDown = (e: KeyboardEvent) => {
+    const onKeydown = (e: KeyboardEvent) => {
       const menu = menuRef.value!
       if (e.key === 'Esc' || e.key === 'Escape') {
         e.preventDefault()
@@ -435,7 +435,7 @@ export default defineComponent({
         onFocus: onFocus,
         onBlur: onBlur,
         onInput: onInput,
-        onKeyDown: onKeyDown,
+        onKeydown: onKeydown,
       }
       if (props.size) data.size = props.size
       if (props.pattern) data.pattern = props.pattern

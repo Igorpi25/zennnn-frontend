@@ -16,11 +16,9 @@ import {
   mergeProps,
 } from 'vue'
 
-import { useAspectRatioProps, useAspectRatio, dimensions, Intersect } from 'vue-supp'
+import { useAspectRatioProps, useAspectRatio, useDimensionProps, useDimension, Intersect } from 'vue-supp'
 
 import './Image.css'
-
-const { useDimensionsProps, useDimensions } = dimensions()
 
 const hasIntersect = typeof window !== 'undefined' && 'IntersectionObserver' in window
 
@@ -36,7 +34,7 @@ export default defineComponent({
 
   props: {
     ...useAspectRatioProps(),
-    ...useDimensionsProps(),
+    ...useDimensionProps(),
     alt: String,
     cover: Boolean,
     eager: Boolean,
@@ -76,15 +74,7 @@ export default defineComponent({
     const naturalWidth = ref<number>()
     const naturalHeight = ref<number>()
 
-    const measureProps = reactive({
-      height: computed(() => props.height),
-      maxHeight: computed(() => props.maxHeight),
-      maxWidth: computed(() => props.maxWidth),
-      minHeight: computed(() => props.minHeight),
-      minWidth: computed(() => props.minWidth),
-      width: computed(() => props.width),
-    })
-    const { dimensionsStyles } = useDimensions(measureProps)
+    const { dimensionStyles } = useDimension(props)
 
     const aspectRatio = computed(() => normalisedSrc.value.aspect || naturalWidth.value! / naturalHeight.value! || 0)
 
@@ -264,7 +254,7 @@ export default defineComponent({
     return () => {
       const data = {
         class: 'image',
-        style: dimensionsStyles.value,
+        style: dimensionStyles.value,
         'aria-label': props.alt,
         role: props.alt ? 'img' : undefined,
       }

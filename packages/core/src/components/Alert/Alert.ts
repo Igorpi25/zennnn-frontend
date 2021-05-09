@@ -1,17 +1,15 @@
 import {
   h,
-  ref,
   computed,
   withDirectives,
   Transition,
   vShow,
-  watch,
   cloneVNode,
   defineComponent,
   PropType,
 } from 'vue'
 
-import { convertToUnit } from 'vue-supp'
+import { useModel, convertToUnit } from 'vue-supp'
 
 import { ziCloseDelete, ziInfoBig } from '@zennnn/icons'
 
@@ -70,16 +68,8 @@ export default defineComponent({
 
   emits: ['update:modelValue'],
 
-  setup (props, { slots, emit }) {
-    const internalValue = ref(props.modelValue)
-
-    watch(() => props.modelValue, (val) => {
-      internalValue.value = val
-    })
-
-    watch(internalValue, (val) => {
-      emit('update:modelValue', val)
-    })
+  setup (props, { slots }) {
+    const internal = useModel(props, 'modelValue')
 
     const containerClasses = computed(() => {
       return {
@@ -112,7 +102,7 @@ export default defineComponent({
     })
 
     const close = () => {
-      internalValue.value = false
+      internal.value = false
     }
 
     const genIcon = () => {
@@ -180,13 +170,13 @@ export default defineComponent({
           class: containerClasses.value,
         }, children)),
         [
-          [vShow, internalValue.value],
+          [vShow, internal.value],
         ],
       )
     }
 
     return {
-      internalValue,
+      internal,
       genContent,
     }
   },
@@ -200,7 +190,7 @@ export default defineComponent({
         mode: this.mode,
       }, { default: () => content })
     } else {
-      return this.internalValue ? content : undefined
+      return this.internal ? content : undefined
     }
   },
 })

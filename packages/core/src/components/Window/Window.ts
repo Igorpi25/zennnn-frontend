@@ -8,6 +8,7 @@ import {
   provide,
   inject,
   defineComponent,
+  SetupContext,
 } from 'vue'
 
 import { useGroupProps, useGroup, Touch, wrapInArray } from 'vue-supp'
@@ -59,22 +60,14 @@ export default defineComponent({
 
   emits: ['update:modelValue'],
 
-  setup (props, { emit }) {
+  setup (props, ctx) {
     const transitionHeight = ref<string>()
     const transitionCount = ref<number>(0)
     const isBooted = ref<boolean>(false)
     const isReverse = ref<boolean>(false)
 
-    const roolElement = ref(null)
-    const containerElement = ref(null)
-
-    const groupProps = {
-      modelValue: props.modelValue,
-      multiple: props.multiple,
-      mandatory: props.mandatory,
-      continuous: props.continuous,
-      max: props.max,
-    }
+    const roolElement = ref<HTMLElement>()
+    const containerElement = ref<HTMLElement>()
 
     const {
       selectedIndex,
@@ -88,7 +81,7 @@ export default defineComponent({
       next: _next,
       isSelected,
       getIds,
-    } = useGroup(groupProps, { emit })
+    } = useGroup(props, ctx as SetupContext)
 
     const isActive = computed(() => transitionCount.value > 0)
 

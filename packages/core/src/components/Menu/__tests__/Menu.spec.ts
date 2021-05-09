@@ -88,9 +88,24 @@ describe('Menu.ts', () => {
     expect(wrapper.html()).toMatchSnapshot()
   })
 
-  it('should open on mousenter and close on mouseleave', async () => {
+  it('should open on mousenter and close on mouse out', async () => {
+    window.HTMLElement.prototype.getBoundingClientRect = function () {
+      return {
+        width: 0,
+        height: 0,
+        top: 111,
+        left: 111,
+        bottom: 111,
+        right: 111,
+        x: 0,
+        y: 0,
+        toJSON: () => undefined,
+      }
+    }
+
     const wrapper = mountFunction({
       props: {
+        openOnFocus: true,
         openOnHover: true,
       },
       slots: {
@@ -100,9 +115,14 @@ describe('Menu.ts', () => {
     })
 
     const activator = wrapper.get('button')
-    await activator.trigger('mouseenter')
+    await activator.trigger('focus')
     expect(wrapper.vm.isActive).toBe(true)
-    await activator.trigger('mouseleave')
+
+    await wait(50)
+    const mouseMove = new Event('mousemove')
+    document.dispatchEvent(mouseMove)
+    await wait(50)
+
     expect(wrapper.vm.isActive).toBe(false)
   })
 

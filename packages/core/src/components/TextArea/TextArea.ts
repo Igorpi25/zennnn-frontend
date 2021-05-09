@@ -211,7 +211,7 @@ export default defineComponent({
       emit('change', e)
     }
 
-    const onKeyDown = (e: KeyboardEvent) => {
+    const onKeydown = (e: KeyboardEvent) => {
       // on esc set value from store
       if (e.key === 'Esc' || e.key === 'Escape') {
         cancelDebounce()
@@ -266,7 +266,7 @@ export default defineComponent({
         onBlur: onBlur,
         onInput: onInput,
         onChange: onChange,
-        onKeyDown: onKeyDown,
+        onKeydown: onKeydown,
       }
       return h('textarea', data)
     }

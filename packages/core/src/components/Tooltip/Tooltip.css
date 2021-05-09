@@ -9,26 +9,4 @@
     @apply text-sm leading-tight text-light-gray-500 dark:text-gray-100;
     @apply p-5;
   }
-
-  /* Transition */
-  .tooltip-transition-enter-active {
-    @apply transition ease-out duration-150;
-  }
-  .tooltip-transition-enter-from {
-    @apply transform scale-50;
-  }
-  .tooltip-transition-enter-to {
-    @apply transform scale-100;
-  }
-  .tooltip-transition-leave-active {
-    @apply transition ease-out duration-75;
-  }
-  .tooltip-transition-enter-to,
-  .tooltip-transition-leave-from {
-    @apply opacity-100;
-  }
-  .tooltip-transition-enter-from,
-  .tooltip-transition-leave-to {
-    @apply opacity-0;
-  }
 }

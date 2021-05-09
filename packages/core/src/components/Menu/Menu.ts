@@ -8,13 +8,20 @@ import {
   computed,
   onBeforeUpdate,
   nextTick,
+  vShow,
+  Teleport,
+  Transition,
+  withDirectives,
   defineComponent,
-  PropType,
+  ComponentPublicInstance,
 } from 'vue'
 
 import {
-  usePopperProps,
-  usePopper,
+  useTransitionProps,
+  useDimensionProps,
+  useDimension,
+  useAttachProps,
+  useAttach,
   useActivatorProps,
   useActivator,
   useLazyContentProps,
@@ -23,7 +30,10 @@ import {
   ClickOutside,
 } from 'vue-supp'
 
+import { usePopperProps, usePopper } from '../../composables/usePopper'
+
 import uid from '../../utils/uid'
+import { debounce } from '../../utils/debounce'
 
 import './Menu.css'
 
@@ -48,6 +58,14 @@ export default defineComponent({
     ...usePopperProps(),
     ...useActivatorProps(),
     ...useLazyContentProps(),
+    ...useTransitionProps({
+      enterActiveClass: 'transition-opacity ease-out-quart duration-200',
+      leaveActiveClass: 'transition-opacity ease-out-quart duration-150',
+      enterFromClass: 'opacity-0',
+      leaveToClass: 'opacity-0',
+    }),
+    ...useDimensionProps(),
+    ...useAttachProps(),
     tag: {
       type: String,
       default: 'span',
@@ -89,10 +107,6 @@ export default defineComponent({
       default: () => ([]),
     },
     id: String,
-    transition: {
-      type: [String, Object] as PropType<string | Record<string, unknown> | null | undefined>,
-      default: 'menu-transition',
-    },
   },
 
   emits: ['update:modelValue', 'update:value'],
@@ -105,33 +119,23 @@ export default defineComponent({
     const activeItemIndex = ref<number>(-1)
     const activeItem = ref<HTMLElement>()
     const activeItemId = ref<string>()
+    const isVisible = ref(false)
 
-    const {
-      isVisible,
-      isContentVisible,
-      boxOffsetElement,
-      wrapperElement,
-      create: createPopper,
-      destroy: destroyPopper,
-      genBox,
-      genBoxOffset,
-      genWrapper,
-    } = usePopper(props)
+    const { dimensionStyles } = useDimension(props)
+
+    const { target } = useAttach(props)
+
+    const { reference, popper, create, destroy, genArrow, isCursorOutside } = usePopper(props)
 
     const {
       isActive,
-      activatorElement,
       genActivator,
-      getActivator,
-    } = useActivator(props, { slots, emit })
+      focusActivator,
+    } = useActivator(props, { slots, reference })
 
-    const lazyContentProps = reactive({
-      isActive: isActive,
-      disabled: computed(() => props.disabled),
-    })
     const {
       showLazyContent,
-    } = useLazyContent(lazyContentProps)
+    } = useLazyContent(props, { isActive })
 
     const clientRectProps = reactive({
       element: props.width === 'auto' ? rootElement : undefined,
@@ -155,20 +159,16 @@ export default defineComponent({
     })
 
     const activatorListeners = computed(() => {
-      const listeners: Record<string, unknown> = {}
+      const listeners: Record<string, (e?: any) => void> = {}
 
       if (props.openOnHover) {
         listeners.onMouseenter = () => {
           isActive.value = true
           focusMenu()
         }
-        listeners.onMouseleave = (e: MouseEvent) => {
-          const target = e.relatedTarget as HTMLElement
-          if (
-            wrapperElement.value?.contains(target) ||
-            boxOffsetElement.value?.contains(target)
-          ) return
-          isActive.value = false
+        // override event from useActivator
+        listeners.onMouseleave = (e) => {
+          e.stopPropagation()
         }
       }
 
@@ -190,11 +190,19 @@ export default defineComponent({
       }
 
       if (!props.disableKeys) {
-        listeners.onKeyDown = onActivatorKeyDown
+        listeners.onKeydown = onActivatorKeyDown
       }
 
       return listeners
     })
+
+    const onMousemove = (e: MouseEvent) => {
+      if (isCursorOutside(e)) {
+        isActive.value = false
+      }
+    }
+
+    const debouncedOnMousemove = debounce(onMousemove, 45)
 
     // computed value create "Maximum recursive updates exceeded."
     watch(activeItemIndex, (val) => {
@@ -203,26 +211,35 @@ export default defineComponent({
     })
 
     watch(isActive, (val) => {
-      if (!val) {
+      if (props.disabled) return
+
+      if (val) {
+        requestAnimationFrame(() => {
+          isVisible.value = val
+          create()
+        })
+      } else {
+        isVisible.value = val
+        if (!props.transition) {
+          destroy()
+        }
         nextTick(() => {
           activeItemIndex.value = -1
         })
       }
 
-      if (props.disabled) return
-      // show popper root from isActive, hide after transition end
-      if (val) isVisible.value = val
-      val ? activate() : deactivate()
+      // SHOUL BE REPLACE BY RESIZE OBSERVER
+      if (props.width === 'auto') updateClientRect()
     })
 
     watch(isVisible, (val) => {
-      if (val !== isActive.value) {
-        isActive.value = val
+      if (props.openOnHover) {
+        if (val) {
+          document.addEventListener('mousemove', debouncedOnMousemove)
+        } else {
+          document.removeEventListener('mousemove', debouncedOnMousemove)
+        }
       }
-    })
-
-    watch(() => props.activator, () => {
-      destroyPopper()
     })
 
     // make sure to reset the refs before each update
@@ -231,13 +248,13 @@ export default defineComponent({
     })
 
     const focusMenu = () => {
-      if (isContentVisible.value) {
+      if (isVisible.value) {
         nextTick(() => {
           contentElement.value && contentElement.value.focus({ preventScroll: true })
         })
       } else {
         // focus not firing, because content activated in requestAnimationFrame
-        const unwatch = watch(isContentVisible, (val) => {
+        const unwatch = watch(isVisible, (val) => {
           nextTick(() => val && contentElement.value && contentElement.value.focus({ preventScroll: true }))
           unwatch()
         })
@@ -245,10 +262,7 @@ export default defineComponent({
     }
 
     const closeMenu = () => {
-      nextTick(() => {
-        const _activator = getActivator()
-        _activator && _activator.focus({ preventScroll: true })
-      })
+      nextTick(() => focusActivator({ preventScroll: true }))
       isActive.value = false
     }
 
@@ -258,19 +272,6 @@ export default defineComponent({
 
     const setItemRef = (el: Element, i: number) => {
       if (el) items.value[i] = el
-    }
-
-    const activate = () => {
-      getActivator()
-      if (props.width === 'auto') updateClientRect()
-      requestAnimationFrame(() => {
-        isContentVisible.value = isActive.value
-        createPopper(activatorElement.value, wrapperElement.value)
-      })
-    }
-
-    const deactivate = () => {
-      isContentVisible.value = false
     }
 
     // Ref: https://www.w3.org/TR/wai-aria-practices-1.2/#keyboard-interaction-13
@@ -388,82 +389,96 @@ export default defineComponent({
       }, slots.default?.())
     }
 
-    const genPopper = () => {
-      const boxData: Record<string, unknown> = {
+    const genPopperBox = () => {
+      const data = {
         ref: contentElement,
         id,
         role: props.role,
-        class: 'menu__box',
         tabindex: props.tabindex,
         'aria-activedescendant': isActive.value && activeItemId.value ? activeItemId.value : undefined,
+        class: {
+          'popper__box menu__box': true,
+          [props.boxClass.trim()]: true,
+        },
+        style: {
+          ...dimensionStyles.value,
+        },
+        onKeydown: !props.disableKeys ? onContentKeyDown : undefined,
       }
+
+      // TODO: should be refactored
       if (props.width === 'auto') {
-        boxData.style = { width: clientRect.value?.width + 'px' }
+        data.style.width = clientRect.value?.width + 'px'
       }
-      if (!props.disableKeys) {
-        boxData.onKeyDown = onContentKeyDown
-      }
-      const children = genBox(
-        boxData,
-        [
-          props.openOnHover ? genBoxOffset() : undefined,
+
+      const content = withDirectives(
+        h('div', data, [
           genContent(),
+          genArrow(),
+        ]),
+        [
+          [vShow, isVisible.value],
         ],
       )
 
-      const data: Record<string, unknown> = {
+      if (!props.transition) return content
+
+      return h(Transition, {
+        ...props.transition,
+        onAfterLeave () {
+          destroy()
+        },
+      }, () => content)
+    }
+
+    const genPopper = () => {
+      const children = genPopperBox()
+
+      const data = {
+        ref: popper,
+        style: {
+          zIndex: props.zIndex,
+        },
+        'data-popper-root': '',
         onClick (e: Event) {
           const target = e.target as HTMLElement
           if (target.getAttribute('disabled')) return
           if (props.closeOnContentClick) isActive.value = false
         },
       }
-      if (!props.disabled && props.openOnHover) {
-        data.onMouseenter = () => {
-          isActive.value = true
-        }
-      }
-      if (props.openOnHover) {
-        data.onMouseleave = (e: MouseEvent) => {
-          const target = e.relatedTarget as HTMLElement
-          if (
-            rootElement.value?.contains(target) ||
-            boxOffsetElement.value?.contains(target)
-          ) return
-          isActive.value = false
-        }
-      }
 
-      const directives = [
+      const content = withDirectives(
+        h('div', data, children),
         [
-          ClickOutside,
-          {
-            handler: () => {
-              isActive.value = false
+          [
+            ClickOutside,
+            {
+              handler: () => {
+                isActive.value = false
+              },
+              closeConditional: (e: Event) => {
+                const target = e.target as Element
+                const wrapper = ((popper.value as ComponentPublicInstance)?.$el || popper.value) as Element
+                return isActive.value &&
+                  props.closeOnClick &&
+                  !(wrapper && wrapper.contains(target))
+              },
+              include: () => [rootElement.value, ...props.includeElements],
             },
-            closeConditional: (e: Event) => {
-              const target = e.target as HTMLElement
-              return isActive.value &&
-                props.closeOnClick &&
-                !(wrapperElement.value && wrapperElement.value.contains(target))
-            },
-            include: () => [rootElement.value, ...props.includeElements],
-          },
+          ],
         ],
-      ]
-
-      return genWrapper(
-        data,
-        children,
-        directives,
       )
+
+      return showLazyContent(() => h(Teleport, {
+        to: target.value,
+        disabled: !target.value,
+      }, content))
     }
 
     const api = {
       id,
       isActive,
       isVisible,
-      isContentVisible,
       internalValue,
       activeItemIndex,
       focusMenu,
@@ -486,7 +501,6 @@ export default defineComponent({
       activatorAttrs,
       activatorListeners,
       genPopper,
-      showLazyContent,
       genActivator,
     }
   },
@@ -498,7 +512,7 @@ export default defineComponent({
         menu: true,
       },
     }, [
-      this.showLazyContent(this.genPopper),
+      this.genPopper(),
       this.genActivator(this.activatorAttrs, this.activatorListeners),
     ])
   },

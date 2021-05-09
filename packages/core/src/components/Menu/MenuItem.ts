@@ -71,15 +71,15 @@ export default defineComponent({
     const selected = computed(() => props.value !== null && api.internalValue.value === props.value)
 
     onMounted(() => {
-      if (!api.isActive) return
+      if (!api.isActive.value) return
       if (!selected.value) return
       nextTick(() => {
         updateSelf()
       })
     })
 
-    watch(api.isContentVisible, (val) => {
-      if (!api.isActive) return
+    watch(api.isVisible, (val) => {
+      if (!api.isActive.value) return
       if (!selected.value) return
       nextTick(() => {
         val && updateSelf()
@@ -87,7 +87,7 @@ export default defineComponent({
     })
 
     watchEffect(() => {
-      if (!api.isActive) return
+      if (!api.isActive.value) return
       if (!active.value) return
 
       nextTick(() => {
@@ -133,6 +133,7 @@ export default defineComponent({
     }
 
     return {
+      api,
       rootElement,
       cid: id,
       active,
