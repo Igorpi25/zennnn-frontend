@@ -20,13 +20,13 @@
     "docs:dev": "vitepress dev docs --port 3030",
     "docs:serve": "vitepress serve docs --port 5050",
     "docs:build": "yarn gen:examples && yarn gen:api && vitepress build docs",
-    "playground": "vite examples --port 4040",
-    "playground:build": "vite build examples"
+    "playground": "vite playground --port 4040",
+    "playground:build": "vite build playground"
   },
   "dependencies": {
     "@zennnn/icons": "^0.36.7"
   },
   "devDependencies": {
-    "vitepress": "0.13.0"
+    "vitepress": "^0.13.2"
   }
 }

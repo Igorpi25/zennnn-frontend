@@ -1,7 +1,6 @@
 {
   "extends": "../../tsconfig.json",
   "include": [
-    "docs/.vitepress/theme/**/*.ts",
     "src/**/*.ts",
     "tests/**/*.ts",
     "types/index.d.ts"
@@ -14,8 +13,7 @@
     "outDir": "./lib",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "/@docs/*": ["./docs/*"]
+      "@/*": ["./src/*"]
     }
   }
 }
