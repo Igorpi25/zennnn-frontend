@@ -34,7 +34,11 @@
       <div class="min-w-0 w-full flex-auto bg-light-gray-100 dark:bg-gray-500 dark:text-gray-100">
         <div class="flex w-full">
           <main class="max-w-3xl mx-auto min-w-0 w-full flex-auto p-6">
-            <router-view />
+            <router-view v-slot="{ Component }">
+              <Suspense>
+                <component :is="Component" />
+              </Suspense>
+            </router-view>
           </main>
         </div>
       </div>

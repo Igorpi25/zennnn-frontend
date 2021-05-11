@@ -46,6 +46,7 @@
     "@babel/cli": "^7.13.14",
     "@babel/core": "^7.13.14",
     "@babel/eslint-parser": "^7.13.14",
+    "@intlify/vite-plugin-vue-i18n": "^2.1.2",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.0.1",
