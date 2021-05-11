@@ -1,0 +1,33 @@
+{
+  "props": {
+    "alt": "Alternate text for screen readers. Leave empty for decorative images.",
+    "aspectRatio": "Calculated as width/height, so for a 1920x1080px image this will be 1.7778. Will be calculated automatically if omitted.",
+    "contain": "Prevents the image from being cropped if it doesn’t fit.",
+    "eager": "Will force the components content to render on mounted.",
+    "gradient": "Overlays a gradient onto the image. Only supports [linear-gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient) syntax, anything else should be done with classes.",
+    "height": "Sets the height for the component.",
+    "lazySrc": "Something to show while waiting for the main image to load, typically a small base64-encoded thumbnail. Has a slight blur filter applied.",
+    "maxHeight": "Sets the maximum height for the component.",
+    "maxWidth": "Sets the maximum width for the component.",
+    "minHeight": "Sets the minimum height for the component.",
+    "minWidth": "Sets the minimum width for the component.",
+    "options": "Options that are passed to the [Intersection observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) constructor.",
+    "position": "Overrides the default to change which parts get cropped off. Uses the same syntax as [`background-position`](https://developer.mozilla.org/en-US/docs/Web/CSS/background-position).",
+    "sizes": "For use with srcset, see [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes).",
+    "src": "The image URL. This prop is mandatory.",
+    "srcset": "A set of alternate images to use based on device size. [Read more…](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-srcset)",
+    "transition": "The transition to use when switching from lazy-src to src.",
+    "width": "Sets the width for the component."
+  },
+  "emits": {
+    "load": "Emitted when the image is loaded.",
+    "error": "Emitted if the image fails to load.",
+    "loadstart": "Emitted when the image starts to load"
+  },
+  "slots": {
+    "default": "The default Vue slot.",
+    "placeholder": "Display an overlay while the image is loading.",
+    "error": "Will be shown if the image fails to load, replacing the placeholder slot.",
+    "sources": "A list of `<source>` elements. If this slot is used, will render a `<picture>` instead of `<img>`."
+  }
+}

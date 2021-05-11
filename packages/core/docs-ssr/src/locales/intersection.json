@@ -1,0 +1,16 @@
+{
+  "props": {
+    "modelValue": "The designated model value for the component.",
+    "once": "Will only invoke the provided user callback on mount and once intersected. If using the **quiet** modifier will only invoke once.",
+    "options": "Options of [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API).",
+    "quiet": "Will not automatically invoke the provided callback on bind.",
+    "tag": "Specify a custom tag used on the root element.",
+    "transition": "Sets the component transition."
+  },
+  "emits": {
+    "update:modelValue": "Emitted when the model value updated."
+  },
+  "slots": {
+    "default": "The default Vue slot."
+  }
+}
