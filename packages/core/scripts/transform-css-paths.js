@@ -17,7 +17,7 @@ async function* getFiles (dir) {
 
 async function getFile (filepath) {
   const parse = path.parse(filepath)
-  const dir = path.relative(parse.dir, parse.dir.replace(dirname, 'src'))
+  const dir = path.relative(parse.dir, parse.dir.replace(`${dirname}/src`, 'src'))
 
   const file = await fs.readFile(filepath, 'utf8')
   const m = file.match(/import ('\.\/\w+\.css');\n/)
