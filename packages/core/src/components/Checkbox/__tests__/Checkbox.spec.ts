@@ -115,8 +115,14 @@ describe('Checkbox.ts', () => {
       },
     })
 
-    await wrapper.get('input').trigger('click')
+    const input = wrapper.get('input')
+    await input.setValue('false')
+    await input.setValue('true')
+
+    // on click emitted native click
+    await input.trigger('click')
     await wrapper.get('label').trigger('click')
+    expect(wrapper.emitted().click.length).toEqual(3)
 
     expect(wrapper.emitted()).toHaveProperty('change')
     expect(wrapper.emitted().change[0]).toEqual([true])
@@ -131,9 +137,10 @@ describe('Checkbox.ts', () => {
     })
 
     const input = wrapper.get('input')
-    await input.trigger('click')
-    await input.trigger('click')
+    await input.setValue()
+    await input.setValue('Test')
 
+    // on click emitted native click
     expect(wrapper.emitted().change[0]).toEqual(['Test'])
     expect(wrapper.emitted().change[1]).toEqual([null])
   })
@@ -147,8 +154,8 @@ describe('Checkbox.ts', () => {
     })
 
     const input = wrapper.get('input')
-    await input.trigger('click')
-    await input.trigger('click')
+    await input.setValue('false')
+    await input.setValue('true')
 
     expect(wrapper.emitted().change[0]).toEqual(['on'])
     expect(wrapper.emitted().change[1]).toEqual(['off'])
@@ -162,7 +169,7 @@ describe('Checkbox.ts', () => {
       },
     })
 
-    await wrapper.get('input').trigger('click')
+    await wrapper.get('input').setValue()
 
     expect(wrapper.emitted().change[0]).toEqual([['Test']])
   })
@@ -175,7 +182,7 @@ describe('Checkbox.ts', () => {
       },
     })
 
-    await wrapper.get('input').trigger('click')
+    await wrapper.get('input').setValue()
 
     expect(wrapper.emitted().change[0]).toEqual([['Test']])
   })
@@ -189,7 +196,7 @@ describe('Checkbox.ts', () => {
       },
     })
 
-    await wrapper.get('input').trigger('click')
+    await wrapper.get('input').setValue(['Test'])
 
     expect(wrapper.emitted().change[0]).toEqual([[]])
   })
