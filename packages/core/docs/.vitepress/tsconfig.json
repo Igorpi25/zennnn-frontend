@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.vite.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "core-components": ["../../src/index.ts"],
+      "/@core-shared/*": ["../../shared/*"]
+    }
+  },
+  "include": [
+    "theme/**/*.ts",
+    "theme/**/*.d.ts",
+    "theme/**/*.tsx",
+    "theme/**/*.vue",
+    "../../src/**/*.ts",
+    "../../shared/index.css",
+    "../../shared/**/*.ts",
+    "../../shared/**/*.json"
+  ]
+}

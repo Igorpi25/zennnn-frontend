@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   lang: 'en-US',
   title: 'ZENNNN UI',
@@ -6,6 +8,17 @@ module.exports = {
   themeConfig: {
     sidebar: getSidebar(),
   },
+
+  alias: [
+    {
+      find: /^core-components$/,
+      replacement: path.join(__dirname, '../../src/index')
+    },
+    {
+      find: '/@core-shared',
+      replacement: path.join(__dirname, '../../shared')
+    }
+  ],
 }
 
 function getSidebar () {

@@ -1,6 +1,6 @@
 import { ref, computed, watch, onMounted, onUnmounted, Ref } from 'vue'
 
-export function useExampleTheme (elRef: Ref<HTMLElement>, file: string) {
+export function useExampleTheme (elRef: Ref<HTMLElement | undefined>, file: string) {
   let observer: MutationObserver
   const dark = ref<boolean>(false)
   const attachRefs = ref<HTMLElement[]>([])
@@ -26,6 +26,7 @@ export function useExampleTheme (elRef: Ref<HTMLElement>, file: string) {
         ) {
           const activatorEls = elRef.value.querySelectorAll('[aria-haspopup="true"]')
           const ids: string[] = []
+          // @ts-ignore
           for (const el of activatorEls) {
             const id = (el as HTMLElement).getAttribute('aria-controls')
             id && ids.push(id)

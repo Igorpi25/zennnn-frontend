@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 
-const dirname = 'examples/src/components'
+const dirname = 'playground/src/components'
 
 async function* getFiles (dir) {
   const dirents = await fs.readdir(dir, { withFileTypes: true })

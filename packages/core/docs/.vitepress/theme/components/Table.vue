@@ -38,6 +38,12 @@
 <script setup lang="ts">
 import { defineProps, onBeforeMount, ref, computed } from 'vue'
 
+interface Header {
+  props?: any
+  slots?: any
+  emits: any
+}
+
 const props = defineProps({
   name: {
     type: String,
@@ -58,11 +64,11 @@ const HEADERS = {
 const api = ref({})
 
 const headers = computed(() => {
-  return HEADERS[props.field]
+  return HEADERS[props.field as keyof Header]
 })
 
 const items = computed(() => {
-  return api.value[props.field]
+  return (api.value as Header)[props.field as keyof Header]
 })
 
 onBeforeMount(async () => {

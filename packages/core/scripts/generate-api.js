@@ -3,6 +3,9 @@ global.window = new jsdom.JSDOM().window
 global.document = window.document
 global.Element = window.Element
 global.HTMLElement = window.HTMLElement
+global.navigator = {
+  userAgent: 'node.js'
+};
 
 const fs = require('fs-extra')
 const path = require('path')

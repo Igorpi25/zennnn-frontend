@@ -4,16 +4,20 @@ import { EnhanceAppContext } from 'vitepress'
 import 'vitepress/dist/client/theme-default/styles/vars.css'
 import 'vitepress/dist/client/theme-default/styles/code.css'
 
+// import { datetimeFormats, numberFormats } from '/@core-shared/plugins/i18n/formats'
+// import en from '/@core-shared/plugins/i18n/locales/en.json'
+// import '/@core-shared/index.css'
+// import * as components from 'core-components'
+
+import { datetimeFormats, numberFormats } from '../../../shared/plugins/i18n/formats'
+import en from '../../../shared/plugins/i18n/locales/en.json'
+import '../../../shared/index.css'
+import * as components from '../../../src'
+
 import Layout from './Layout.vue'
 import NotFound from './NotFound.vue'
 import Example from './components/Example.vue'
 import Table from './components/Table.vue'
-import * as components from '../../../src'
-
-import './index.css'
-
-import { datetimeFormats, numberFormats } from './plugins/i18n/formats'
-import en from './plugins/i18n/locales/en.json'
 
 const i18n = createI18n({
   locale: 'en',
