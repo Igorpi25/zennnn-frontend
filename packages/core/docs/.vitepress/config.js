@@ -11,11 +11,15 @@ module.exports = {
 
   alias: [
     {
-      find: /^core-components$/,
+      find: 'vue-i18n',
+      replacement: 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js',
+    },
+    {
+      find: /^@zennnn\/core$/,
       replacement: path.join(__dirname, '../../src/index')
     },
     {
-      find: '/@core-shared',
+      find: '/@shared',
       replacement: path.join(__dirname, '../../shared')
     }
   ],
