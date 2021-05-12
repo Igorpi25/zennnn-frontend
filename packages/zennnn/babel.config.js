@@ -7,9 +7,18 @@ module.exports = {
       'import',
       {
         libraryName: '@zennnn/core',
-        libraryDirectory: 'lib/components',
         style: false,
         camel2DashComponentName: false,
+        customName: (name) => {
+          const componentsPath = '@zennnn/core/lib/components'
+          if (name === 'MenuItem') {
+            return `${componentsPath}/Menu/MenuItem`
+          }
+          if (name === 'WindowItem') {
+            return `${componentsPath}/Window/WindowItem`
+          }
+          return `${componentsPath}/${name}`
+        },
       },
     ],
   ],
