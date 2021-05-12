@@ -61,7 +61,7 @@
                 class="w-48 pb-2"
                 @update:model-value="updateData({ 'deliveryAddressPostcode': $event })"
               />
-              <div class="relative flex-shrink-0 relative pl-sm">
+              <div class="relative flex-shrink-0 pl-sm">
                 <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
                   {{ $t('companyDetail.label.matches') }}
                 </label>
@@ -128,7 +128,7 @@
               :model-value="true"
               :close="false"
               color="warn"
-              info-icon-class="items-start"
+              icon-class="items-start"
               max-width="none"
             >
               {{ $t('companyDetail.hint.companyLocale') }}
@@ -145,11 +145,7 @@ import { ziChevronRight } from '../../assets/icons'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import Icon from '../Base/Icon'
-import Alert from '../Base/Alert'
-import Switch from '../Base/Switch'
-import TextField from '../Base/TextField'
-import ExpandTransition from '../Base/ExpandTransition'
+import { Icon, Alert, Switch, TextField, ExpandTransition } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

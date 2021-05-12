@@ -136,11 +136,7 @@
 <script>
 import { ziVisible, ziHide } from '../../assets/icons'
 
-import Icon from '../../components/Base/Icon'
-import Alert from '../../components/Base/Alert'
-import Btn from '../../components/Base/Btn'
-import Form from '../../components/Base/Form'
-import TextField from '../../components/Base/TextField'
+import { Icon, Alert, Btn, Form, TextField } from '@zennnn/core'
 import LocalePicker from '../../components/LocalePicker.vue'
 
 export default {

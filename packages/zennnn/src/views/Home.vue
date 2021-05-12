@@ -11,7 +11,7 @@
   <div class="flex-grow flex flex-col">
     <!-- / HEADER -->
     <header>
-      <div class="h-20 flex items-center container container--sm">
+      <div class="h-20 flex items-center container">
         <router-link
           :to="{ name: 'home' }"
           class="flex-shrink-0 select-none focus:ring focus:outline-none mr-4"
@@ -39,7 +39,7 @@
     </header>
     <!-- HEADER / -->
     <!-- / MAIN -->
-    <main class="container container--sm home-main--top flex-grow">
+    <main class="container home-main--top flex-grow">
       <h1
         v-html="$t('home.title')"
         class="text-4xl sm:text-56 text-light-gray-400 text-center font-semibold leading-tight mb-10"
@@ -203,9 +203,7 @@ import { useI18n } from 'vue-i18n'
 
 import { ziChecked, ziArrowRight } from '../assets/icons'
 
-import Btn from '../components/Base/Btn'
-import Icon from '../components/Base/Icon'
-import Image from '../components/Base/Image'
+import { Btn, Icon, Image } from '@zennnn/core'
 import Footer from '../components/Footer.vue'
 import LocalePicker from '../components/LocalePicker.vue'
 

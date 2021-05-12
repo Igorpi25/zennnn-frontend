@@ -79,8 +79,7 @@ import {
 
 import { ziChat } from '../assets/icons'
 
-import Icon from './Base/Icon'
-import Menu from './Base/Menu'
+import { Icon, Menu } from '@zennnn/core'
 import Comment from './Comment'
 import CommentInput from './CommentInput'
 

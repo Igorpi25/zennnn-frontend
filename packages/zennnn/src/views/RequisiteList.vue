@@ -1,5 +1,5 @@
 <template>
-  <div class="container container--sm">
+  <div class="container">
     <div class="pt-4 pb-10">
 
       <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-6">
@@ -171,9 +171,7 @@ import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '../graphql/mutations'
 import { confirmDialog } from '../utils/confirmDialog'
 import { defaultFilter } from '../utils/defaultFilter'
 
-import Icon from '../components/Base/Icon'
-import Progress from '../components/Base/Progress'
-import TextField from '../components/Base/TextField'
+import { Icon, Progress, TextField } from '@zennnn/core'
 
 export default {
   name: 'RequisiteList',

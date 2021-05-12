@@ -485,10 +485,7 @@ import {
   ziPlusOutline,
 } from '../assets/icons'
 
-import Icon from './Base/Icon'
-import Switch from './Base/Switch'
-import Select from './Base/Select'
-import TextField from './Base/TextField'
+import { Icon, Switch, Select, TextField } from '@zennnn/core'
 import Comments from './Comments.vue'
 import WordDialog from './WordDialog.vue'
 

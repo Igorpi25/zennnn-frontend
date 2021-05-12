@@ -43,14 +43,11 @@
 
 <script>
 import { computed, ref, toRefs, watch } from 'vue'
-import { dimensions } from 'vue-supp'
+import { useDimensionProps } from 'vue-supp'
 
 import { ziCloseWindow } from '../assets/icons'
 
-import Icon from './Base/Icon'
-import Modal from './Base/Modal'
-
-const { useDimensionsProps } = dimensions()
+import { Icon, Modal } from '@zennnn/core'
 
 export default {
   name: 'Dialog',
@@ -61,7 +58,7 @@ export default {
   },
 
   props: {
-    ...useDimensionsProps({ width: '100%', maxWidth: 448 }),
+    ...useDimensionProps({ width: '100%', maxWidth: 448 }),
     modelValue: Boolean,
     title: String,
     icon: String,

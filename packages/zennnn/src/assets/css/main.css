@@ -163,6 +163,11 @@
 }
 
 @layer components {
+  .container {
+    max-width: 1162px; /* max width 1130 + padding 32px */
+    @apply mx-auto px-4;
+  }
+
   /* Used in Welcome, PasswordRestore, PasswordRestoreConfirm, Paper, NotFound, SignInByPhone, Registration, LoginRestore */
   .content {
     @apply flex-grow flex flex-col relative overflow-x-hidden;
@@ -285,7 +290,8 @@
 
 
   /* Transitions */
-  .scale-transition-enter-active,
+  @import url(../../../../core/src/components/transitions/transitions.css);
+  /* .scale-transition-enter-active,
   .scale-transition-leave-active {
     transition: .3s cubic-bezier(.25,.8,.5,1);
   }
@@ -381,13 +387,13 @@
   #app .transition-fast-out-linear-in { transition: .3s cubic-bezier(.4,0,1,1)!important }
   #app .transition-ease-in-out { transition: .3s cubic-bezier(.4,0,.6,1)!important }
   #app .transition-fast-in-fast-out { transition: .3s cubic-bezier(.25,.8,.25,1)!important }
-  #app .transition-swing { transition:.3s cubic-bezier(.25,.8,.5,1)!important }
+  #app .transition-swing { transition:.3s cubic-bezier(.25,.8,.5,1)!important } */
 }
 
 
 /* TODO: replace or remove */
 
-.container {
+/* .container {
   @apply px-6;
 }
 .container--sm {
@@ -412,4 +418,4 @@
     padding-left: 40px;
     padding-right: 40px;
   }
-}
+} */

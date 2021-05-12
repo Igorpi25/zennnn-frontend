@@ -90,8 +90,8 @@
 
 <script>
 import { ref, computed } from 'vue'
-import Select from './Base/Select'
-import TextField from './Base/TextField'
+
+import { Select, TextField } from '@zennnn/core'
 
 import phonesPlaceholder from '../config/countries-phones-placeholder.json'
 import phonesMask from '../config/countries-phones-mask.json'

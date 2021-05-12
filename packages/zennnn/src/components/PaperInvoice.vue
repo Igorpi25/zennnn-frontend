@@ -203,9 +203,7 @@ import { DEFAULT_CURRENCY } from '../config/globals'
 
 import { ziOpenInNew } from '../assets/icons'
 
-import Icon from './Base/Icon'
-import Image from './Base/Image'
-import LoadingSpinner from './Base/LoadingSpinner'
+import { Icon, Image, LoadingSpinner } from '@zennnn/core'
 import ProductImage from './ProductImage.vue'
 import Comments from './Comments.vue'
 

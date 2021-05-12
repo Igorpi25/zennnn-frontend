@@ -103,8 +103,7 @@ import {
 
 import { ziCloseDelete } from '../assets/icons'
 
-import Icon from './Base/Icon'
-import Progress from './Base/Progress'
+import { Icon, Progress } from '@zennnn/core'
 
 export default {
   name: 'FileUploader',

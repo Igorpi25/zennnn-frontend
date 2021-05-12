@@ -3,7 +3,7 @@
 
     <div
       id="container"
-      :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container container--sm']"
+      :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container']"
     >
       <span
         v-if="isComponent"
@@ -145,8 +145,7 @@ import {
 
 import { ziCloseWindow } from '../assets/icons'
 
-import Btn from './Base/Btn'
-import Icon from './Base/Icon'
+import { Btn, Icon } from '@zennnn/core'
 import CompanyInfo from './CompanyDetail/CompanyInfo.vue'
 import BankDetailList from './CompanyDetail/BankDetailList.vue'
 import ContactList from './CompanyDetail/ContactList.vue'

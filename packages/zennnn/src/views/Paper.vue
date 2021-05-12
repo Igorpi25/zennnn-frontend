@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <Header :paper-org-name="spec.orgName" :org="orgId" />
-    <div class="container container--sm mb-12">
+    <div class="container mb-12">
       <div class="pt-8 pb-16">
         <div class="flex flex-col sm:flex-row items-center justify-between pb-6">
           <!-- TODO: change tag to h1, need refactor base h1 style -->
@@ -562,8 +562,7 @@ import {
 
 import printInvoice from '../components/printInvoice'
 
-import Icon from '../components/Base/Icon'
-import Progress from '../components/Base/Progress'
+import { Icon, Progress } from '@zennnn/core'
 import Header from '../components/Header'
 import Copyright from '../components/Copyright'
 import Comments from '../components/Comments'

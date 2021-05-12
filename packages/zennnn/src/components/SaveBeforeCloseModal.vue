@@ -48,8 +48,7 @@
 <script>
 import { ziCloseWindow } from '../assets/icons'
 
-import Btn from './Base/Btn'
-import Icon from './Base/Icon'
+import { Btn, Icon } from '@zennnn/core'
 
 export default {
   name: 'SaveBeforeCloseModal',

@@ -230,10 +230,7 @@ import {
   ziArrowRight,
 } from '../assets/icons'
 
-import Icon from './Base/Icon'
-import Menu from './Base/Menu'
-import Image from './Base/Image'
-import LoadingSpinner from './Base/LoadingSpinner'
+import { Icon, Menu, Image, LoadingSpinner } from '@zennnn/core'
 import Sortable from '../plugins/draggable/Sortable'
 import FileUploader from '../components/FileUploader.vue'
 

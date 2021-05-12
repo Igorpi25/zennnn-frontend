@@ -59,6 +59,7 @@
             :rules="[rules.required]"
             :hide-details="false"
             class="pb-6"
+            control-class="dark:bg-gray-800"
             name="given-name"
             autocomplete="given-name"
             aria-label="given name input"
@@ -73,6 +74,7 @@
             :rules="[rules.required]"
             :hide-details="false"
             class="pb-6"
+            control-class="dark:bg-gray-800"
             name="family-name"
             autocomplete="family-name"
             aria-label="family name input"
@@ -87,6 +89,7 @@
             :rules="[rules.required, rules.email]"
             :hide-details="false"
             class="pb-6"
+            control-class="dark:bg-gray-800"
             type="email"
             name="email"
             autocomplete="email"
@@ -102,6 +105,7 @@
             :rules="[rules.required, rules.passwordMinLength]"
             :hide-details="false"
             class="pb-6"
+            control-class="dark:bg-gray-800"
             name="new-password"
             autocomplete="new-password"
             aria-label="new password input"
@@ -150,11 +154,7 @@ import { useMutation } from '@vue/apollo-composable'
 
 import { ziVisible, ziHide, ziChecked } from '../assets/icons'
 
-import Btn from '../components/Base/Btn'
-import Icon from '../components/Base/Icon'
-import Form from '../components/Base/Form'
-import TextField from '../components/Base/TextField'
-import Checkbox from '../components/Base/Checkbox'
+import { Btn, Icon, Form, TextField, Checkbox } from '@zennnn/core'
 import Social from '../components/Social.vue'
 import Copyright from '../components/Copyright.vue'
 import LocalePicker from '../components/LocalePicker.vue'

@@ -16,7 +16,7 @@
             class="pb-2 flex-grow"
             @update:model-value="updateCompanyName"
           />
-          <div class="relative flex-shrink-0 relative pl-sm">
+          <div class="relative flex-shrink-0 pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
               {{ $t('companyDetail.label.englishOnly') }}
             </label>
@@ -55,7 +55,7 @@
             :model-value="true"
             :close="false"
             color="warn"
-            info-icon-class="items-start"
+            icon-class="items-start"
             max-width="none"
           >
             {{ $t('companyDetail.hint.companyNameLocal') }}
@@ -210,7 +210,7 @@
             class="w-48 pb-2"
             @update:model-value="updateMailingAddressPostcode"
           />
-          <div class="relative flex-shrink-0 relative pl-sm">
+          <div class="relative flex-shrink-0 pl-sm">
             <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
               {{ $t('companyDetail.label.matches') }}
             </label>
@@ -346,10 +346,7 @@
 <script>
 import clientDetail from '../../mixins/clientDetail'
 
-import Alert from '../Base/Alert'
-import Radio from '../Base/Radio'
-import Switch from '../Base/Switch'
-import TextField from '../Base/TextField'
+import { Alert, Radio, Switch, TextField } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

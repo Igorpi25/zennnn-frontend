@@ -53,6 +53,7 @@
             :rules="[rules.required, rules.email]"
             :hide-details="false"
             class="pb-6"
+            control-class="dark:bg-gray-800"
             type="email"
             name="email"
             autocomplete="email"
@@ -67,6 +68,7 @@
             :rules="[rules.required, rules.passwordMinLength]"
             :hide-details="false"
             class="pb-6"
+            control-class="dark:bg-gray-800"
             name="password"
             autocomplete="current-password"
             aria-label="password input"
@@ -233,13 +235,7 @@ import { COMPLITE_REGISTRATION, INIT_SPEC_SIMPLE_UI } from '../graphql/mutations
 
 import { ziVisible, ziHide } from '../assets/icons'
 
-import Alert from '../components/Base/Alert'
-import Icon from '../components/Base/Icon'
-import Btn from '../components/Base/Btn'
-import Form from '../components/Base/Form'
-import TextField from '../components/Base/TextField'
-import Modal from '../components/Base/Modal'
-import Checkbox from '../components/Base/Checkbox'
+import { Alert, Icon, Btn, Form, TextField, Modal, Checkbox } from '@zennnn/core'
 import Social from '../components/Social.vue'
 import Copyright from '../components/Copyright.vue'
 import LocalePicker from '../components/LocalePicker.vue'

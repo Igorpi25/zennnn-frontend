@@ -395,10 +395,7 @@ import { ShipmentType, CustomsTerms, CustomsTermsMore } from '../../graphql/enum
 
 import { ziCalendar } from '../../assets/icons'
 
-import Icon from '../Base/Icon'
-import Select from '../Base/Select'
-import TextField from '../Base/TextField'
-import DatePicker from '../Base/DatePicker'
+import { Icon, Select, TextField, DatePicker } from '@zennnn/core'
 
 export default {
   name: 'PrintDelivery',

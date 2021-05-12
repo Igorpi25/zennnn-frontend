@@ -179,13 +179,7 @@ import {
 
 import Countries from '../config/countries-iso3.json'
 
-import Btn from './Base/Btn'
-import Form from './Base/Form'
-import Radio from './Base/Radio'
-import Checkbox from './Base/Checkbox'
-import Select from './Base/Select'
-import TextField from './Base/TextField'
-import ExpandTransition from './Base/ExpandTransition'
+import { Btn, Form, Radio, Checkbox, Select, TextField, ExpandTransition } from '@zennnn/core'
 
 export default {
   name: 'PaymentCard',

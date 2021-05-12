@@ -13,7 +13,7 @@
     <div class="flex flex-col min-h-screen">
       <!-- / HEADER -->
       <header class="pt-6 pb-4 font-medium">
-        <div class="container container--xs">
+        <div class="container">
           <div class="flex items-center h-13">
             <router-link
               :to="{ name: 'home' }"
@@ -49,7 +49,7 @@
           :style="infoAlertStyle"
           class="about-info-alert z-10 fixed inset-x-0 top-0"
         >
-          <div class="container container--xs about-info-alert__container">
+          <div class="container about-info-alert__container">
             <div class="relative">
               <div ref="infoAlertContent" class="about-info-alert__content absolute right-0 w-full flex items-center rounded-md px-4 py-3">
                 <img src="@/assets/img/info.svg" alt="info" class="flex-shrink-0 self-start mr-4">
@@ -74,7 +74,7 @@
       <!-- / HERO -->
       <div class="md:relative flex-grow flex items-end pb-3">
         <div class="w-full md:pt-12">
-          <div class="container container--xs">
+          <div class="container">
             <div class="pt-32 md:pt-6">
               <div class="flex">
                 <h1 class="about-head-title font-bold flex-shrink-0 mt-sm mb-5">бэк-офис ZENNNN</h1>
@@ -129,7 +129,7 @@
               />
             </div>
           </div>
-          <div class="container container--xs flex flex-wrap lg:flex-nowrap pb-16 leading-normal text-light-gray-800">
+          <div class="container flex flex-wrap lg:flex-nowrap pb-16 leading-normal text-light-gray-800">
             <div class="w-full lg:w-1/2 lg:w-1/4 flex flex-col lg:pr-4">
               <div class="flex-grow flex mb-2 lg:mb-0">
                 <span class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3">
@@ -191,7 +191,7 @@
               </div>
             </div>
           </div>
-          <div class="container container--xs flex flex-wrap md:flex-nowrap">
+          <div class="container flex flex-wrap md:flex-nowrap">
             <div class="w-full md:w-1/2 pb-4 md:pb-0 text-center md:text-left">
               <router-link
                 :to="{ name: 'signup' }"
@@ -274,7 +274,7 @@
       </div>
       <!-- VIDEO / -->
       <!-- / SECURITY -->
-      <div id="security" class="container container--xs pt-16 sm:pt-20 pb-16">
+      <div id="security" class="container pt-16 sm:pt-20 pb-16">
         <div class="flex flex-wrap lg:flex-nowrap pt-6 pb-6">
           <div class="w-full flex-shrink-0" style="max-width: 532px;">
             <h3
@@ -322,7 +322,7 @@
       <!-- / FEATURE -->
       <div id="feature" class="about-section-bg relative pt-24">
         <div>
-          <div class="container container--xs flex w-full overflow-x-auto mb-8">
+          <div class="container flex w-full overflow-x-auto mb-8">
             <nav class="tabs relative inline-flex justify-center mx-auto text-2xl text-black font-bold leading-7">
               <div class="absolute bottom-0 inset-x-0 h-px bg-light-gray-600 mx-5" />
               <a
@@ -396,7 +396,7 @@
       </div>
       <!-- FEATURE / -->
       <!-- / ISSUE -->
-      <div class="container container--xs pt-24 pb-12">
+      <div class="container pt-24 pb-12">
         <div class="flex flex-col xl:flex-row py-1">
           <div class="w-full flex-shrink-0" style="max-width: 849px;">
             <h3
@@ -495,7 +495,7 @@
       </div>
       <!-- ADVANCE FREATURE / -->
       <!-- / POWER -->
-      <div class="container container--xs py-24">
+      <div class="container py-24">
         <div class="flex flex-col xl:flex-row py-1">
           <div class="w-full flex-shrink-0" style="max-width: 578px;">
             <h3
@@ -546,7 +546,7 @@
             </div>
           </div>
         </div>
-        <div class="container container--xs flex pt-32 pb-10 lg:mt-6">
+        <div class="container flex pt-32 pb-10 lg:mt-6">
           <div class="w-full flex-shrink-0" style="max-width: 518px;">
             <h3 class="about-section-title font-bold">
               Кабинет клиента
@@ -585,7 +585,7 @@
       <!-- CLIENT CABINET / -->
       <!-- / ACTION -->
       <div class="relative" style="top: -88px;">
-        <div class="container container--xs">
+        <div class="container">
           <div class="flex flex-col items-center text-center bg-gray-900 rounded-12 py-20 px-3">
             <h3 class="text-4xl leading-tight font-bold text-white" style="max-width: 1010px;">
               Станьте одним из первых поль&shy;зо&shy;ва&shy;те&shy;лей мощнейшего проекта в меж&shy;ду&shy;на&shy;род&shy;ной торговле
@@ -610,7 +610,7 @@
       </div>
       <!-- ACTION / -->
       <!-- / USER INTERFACE -->
-      <div class="container container--xs flex flex-wrap pt-12 pb-48 xl:pb-40">
+      <div class="container flex flex-wrap pt-12 pb-48 xl:pb-40">
         <div class="w-full lg:w-1/2 xl:-ml-10 xl:mr-10 pb-16 lg:pb-0">
           <div
             class="relative flex justify-center h-full mx-auto lg:m-0 pt-16"
@@ -671,7 +671,7 @@
       <!-- USER INTERFACE / -->
       <!-- / REVIEW -->
       <div id="review" class="py-32 bg-gray-900">
-        <div class="container container--xs flex flex-col md:flex-row relative py-5">
+        <div class="container flex flex-col md:flex-row relative py-5">
           <div class="absolute right-0 transform -translate-y-full px-4" style="top: -90px;">
             <img src="@/assets/img/quote-open.svg" alt="quote" class="w-48 lg:w-auto">
           </div>
@@ -752,7 +752,7 @@
       <!-- REVIEW / -->
       <!-- / TEAM -->
       <div class="bg-light-gray-200 py-24">
-        <div class="container container--xs pt-sm">
+        <div class="container pt-sm">
           <h3 class="about-section-title font-bold">
             Cильная команда<br>практиков
           </h3>
@@ -784,7 +784,7 @@
       <!-- TEAM / -->
       <!-- / ADVANCE ACTION  -->
       <div class="bg-gray-900 py-20">
-        <div class="container container--xs pt-5 pb-sm">
+        <div class="container pt-5 pb-sm">
           <div class="flex flex-col items-center text-center">
             <h3 class="about-section-title font-bold text-white" style="max-width: 643px;">
               Убедитесь, что ZENNNN полезен вашему бизнесу
@@ -824,9 +824,7 @@ import { useI18n } from 'vue-i18n'
 
 import { ziChecked } from '../assets/icons'
 
-import Icon from '../components/Base/Icon'
-import Image from '../components/Base/Image'
-import { Window, WindowItem } from '../components/Base/Window'
+import { Icon, Image, Window, WindowItem } from '@zennnn/core'
 
 const INFO_ALERT_TOP = 90
 const SCROLL_THRESHOLD = 90

@@ -1,7 +1,7 @@
 <template>
   <footer class="bg-gray-900 text-gray-100">
     <div class="bg-gray-800 bg-opacity-90">
-      <div class="container container--sm flex flex-wrap py-8 sm:py-16">
+      <div class="container flex flex-wrap py-8 sm:py-16">
         <div class="relative h-full w-full md:w-1/3 md:pl-6 pb-6 md:pb-0">
           <div class="absolute bottom-0 md:bottom-auto left-0 w-full md:w-px h-px md:h-full bg-gray-400" />
           <div
@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    <div class="container container--sm h-20 flex items-center">
+    <div class="container h-20 flex items-center">
       <div class="flex md:pl-6">
         <router-link
           :to="{ name: 'home' }" class="select-none focus:ring focus:outline-none"
@@ -99,7 +99,7 @@ import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 
 import { ziFacebook, ziTelegram, ziInstagram, ziYoutube, ziVk } from '../assets/icons'
 
-import Icon from './Base/Icon'
+import { Icon } from '@zennnn/core'
 import Copyright from '../components/Copyright.vue'
 
 export default {

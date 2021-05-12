@@ -158,9 +158,7 @@
 import { CustomsTerms, CustomsTermsMore, ShipmentType } from '../graphql/enums'
 import Countries from '../config/countries-iso3.json'
 
-import TextField from './Base/TextField'
-import TextArea from './Base/TextArea'
-import Select from './Base/Select'
+import { TextField, TextArea, Select } from '@zennnn/core'
 
 export default {
   name: 'SpecCustoms',

@@ -141,11 +141,7 @@ import {
   ziPlusOutline,
 } from '../assets/icons'
 
-import Btn from './Base/Btn'
-import Icon from './Base/Icon'
-import Modal from './Base/Modal'
-import Select from './Base/Select'
-import ExpandTransition from './Base/ExpandTransition'
+import { Btn, Icon, Modal, Select, ExpandTransition } from '@zennnn/core'
 import WordProduct from './WordProduct.vue'
 import WordDialog from './WordDialog.vue'
 

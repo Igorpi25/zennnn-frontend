@@ -1,5 +1,5 @@
 <template>
-  <div class="container container--sm">
+  <div class="container">
     <div class="pt-4 pb-10">
       <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-4">
         <TextField
@@ -421,14 +421,7 @@ import { GET_SPECS, GET_ORGS, SEARCH_CLIENTS, GET_CLIENTS_BY_ID } from '../graph
 import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
 import { SPECS_DELTA } from '../graphql/subscriptions'
 
-import Btn from '../components/Base/Btn'
-import Icon from '../components/Base/Icon'
-import { Menu, MenuItem } from '../components/Base/Menu'
-import Modal from '../components/Base/Modal'
-import Tooltip from '../components/Base/Tooltip'
-import DataTable from '../components/Base/DataTable'
-import TextField from '../components/Base/TextField'
-import Select from '../components/Base/Select'
+import { Btn, Icon, Menu, MenuItem, Modal, Tooltip, TextField, Select, DataTable } from '@zennnn/core'
 import ClientCard from '../components/ClientCard.vue'
 import Dialog from '../components/Dialog'
 

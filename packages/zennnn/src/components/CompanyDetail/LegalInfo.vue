@@ -173,9 +173,7 @@ import { LOCALES_LIST } from '../../config/globals'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import TextField from '../Base/TextField'
-import Select from '../Base/Select'
-import Switch from '../Base/Switch'
+import { TextField, Select, Switch } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

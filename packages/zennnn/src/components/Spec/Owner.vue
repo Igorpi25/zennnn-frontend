@@ -1,5 +1,5 @@
 <template>
-  <div class="container container--sm">
+  <div class="container">
     <div
       v-if="isSpecSync"
       class="fixed bottom-0 right-0 z-20 opacity-50 text-2xl mr-2 sm:mr-4 mb-6"
@@ -378,15 +378,7 @@ import {
 } from '../../graphql/mutations'
 import { getSpecExpandedInvoices, getSpecActiveTab } from '../../graphql/resolvers'
 
-import Icon from '../Base/Icon'
-import Progress from '../Base/Progress'
-import Tooltip from '../Base/Tooltip'
-import Modal from '../Base/Modal'
-import TextArea from '../Base/TextArea'
-import Select from '../Base/Select'
-import Switch from '../Base/Switch'
-import Checkbox from '../Base/Checkbox'
-import ExpandTransition from '../Base/ExpandTransition'
+import { Icon, Progress, Tooltip, Modal, TextArea, Select, Switch, Checkbox, ExpandTransition } from '@zennnn/core'
 import InvoiceHeader from '../InvoiceHeader.vue'
 import InvoiceContent from '../InvoiceContent.vue'
 import SpecSummary from '../SpecSummary.vue'

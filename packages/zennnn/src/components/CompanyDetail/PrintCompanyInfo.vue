@@ -265,9 +265,7 @@ import { UPDATE_COMPANY_BANK_DETAIL } from '../../graphql/mutations'
 
 import { ziPlusOutline } from '../../assets/icons'
 
-import Icon from '../Base/Icon'
-import Select from '../Base/Select'
-import TextField from '../Base/TextField'
+import { Icon, Select, TextField } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

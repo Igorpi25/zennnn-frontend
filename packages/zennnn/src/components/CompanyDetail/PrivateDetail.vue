@@ -372,13 +372,7 @@ import { ziCalendar, ziChevronRight, ziQuestionSign } from '../../assets/icons'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import Icon from '../Base/Icon'
-import Tooltip from '../Base/Tooltip'
-import Switch from '../Base/Switch'
-import Select from '../Base/Select'
-import TextField from '../Base/TextField'
-import DatePicker from '../Base/DatePicker'
-import ExpandTransition from '../Base/ExpandTransition'
+import { Icon, Tooltip, Switch, Select, TextField, DatePicker, ExpandTransition } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

@@ -141,12 +141,7 @@
 <script>
 import { ziVisible, ziHide } from '../assets/icons'
 
-import Icon from '../components/Base/Icon'
-import Alert from '../components/Base/Alert'
-import Btn from '../components/Base/Btn'
-import Form from '../components/Base/Form'
-import TextField from '../components/Base/TextField'
-import Checkbox from '../components/Base/Checkbox'
+import { Icon, Alert, Btn, Form, TextField, Checkbox } from '@zennnn/core'
 import Header from '../components/Header.vue'
 import Social from '../components/Social.vue'
 import Copyright from '../components/Copyright.vue'

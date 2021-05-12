@@ -1,5 +1,5 @@
 <template>
-  <div class="container container--sm">
+  <div class="container">
     <div
       v-if="isSpecSync"
       class="fixed bottom-0 right-0 z-20 opacity-50 text-2xl mr-2 sm:mr-4 mb-6"

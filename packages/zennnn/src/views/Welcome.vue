@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import Btn from '../components/Base/Btn'
+import { Btn } from '@zennnn/core'
 import Header from '../components/Header.vue'
 import Copyright from '../components/Copyright.vue'
 

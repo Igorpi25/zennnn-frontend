@@ -233,8 +233,7 @@ import {
   ziQr,
 } from '../assets/icons'
 
-import Icon from './Base/Icon'
-import DataTable from './Base/DataTable'
+import { Icon, DataTable } from '@zennnn/core'
 import InvoiceProduct from './InvoiceProduct.vue'
 import InvoiceSummary from './InvoiceSummary.vue'
 

@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import Btn from './Base/Btn'
+import { Btn } from '@zennnn/core'
 
 export default {
   name: 'CommentInput',

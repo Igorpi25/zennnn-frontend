@@ -39,8 +39,7 @@ import { GET_WORD_SPECS } from '../graphql/queries'
 
 import { ziSearch } from '../assets/icons'
 
-import Icon from './Base/Icon'
-import Progress from './Base/Progress'
+import { Icon, Progress } from '@zennnn/core'
 
 export default {
   name: 'WordSpecs',

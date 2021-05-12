@@ -156,7 +156,7 @@ import {
   ziCalendar,
 } from '../assets/icons'
 
-import Icon from './Base/Icon'
+import { Icon } from '@zennnn/core'
 
 export default {
   name: 'SpecShipping',

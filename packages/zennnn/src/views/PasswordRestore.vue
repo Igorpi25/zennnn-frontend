@@ -47,9 +47,7 @@
 </template>
 
 <script>
-import Btn from '../components/Base/Btn'
-import Form from '../components/Base/Form'
-import TextField from '../components/Base/TextField'
+import { Btn, Form, TextField } from '@zennnn/core'
 import Header from '../components/Header.vue'
 import Copyright from '../components/Copyright.vue'
 

@@ -25,7 +25,7 @@ import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 import { GET_IS_LOGGED_IN, GET_PROFILE } from '../graphql/queries'
 import { NOTE_GREETING } from '../graphql/mutations'
 
-import Modal from '../components/Base/Modal'
+import { Modal } from '@zennnn/core'
 import RequisiteCard from '../components/RequisiteCard.vue'
 import WelcomeModal from '../components/WelcomeModal.vue'
 

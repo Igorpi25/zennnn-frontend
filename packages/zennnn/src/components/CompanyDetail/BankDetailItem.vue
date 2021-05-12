@@ -128,9 +128,7 @@
 </template>
 
 <script>
-import Btn from '../Base/Btn'
-import Switch from '../Base/Switch'
-import TextField from '../Base/TextField'
+import { Btn, Switch, TextField } from '@zennnn/core'
 
 export default {
   name: 'BankDetailItem',

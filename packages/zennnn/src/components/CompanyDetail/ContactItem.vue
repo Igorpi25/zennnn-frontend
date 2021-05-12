@@ -70,9 +70,7 @@ import { ziCloseDelete } from '../../assets/icons'
 
 import { ContactType } from '../../graphql/enums'
 
-import Icon from '../Base/Icon'
-import Select from '../Base/Select'
-import TextField from '../Base/TextField'
+import { Icon, Select, TextField } from '@zennnn/core'
 
 export default {
   name: 'ContactItem',

@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div class="container container--sm pb-12">
+    <div class="container pb-12">
       <div class="pt-4 pb-10">
 
         <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-8">
@@ -389,12 +389,7 @@ import { LIST_WORDS } from '../../graphql/admin/queries'
 import { APPROVE_WORDS, HIDE_WORDS, MERGE_WORDS } from '../../graphql/admin/mutations'
 import { LOCALES_LIST } from '../../config/globals'
 
-import Btn from '../../components/Base/Btn'
-import Icon from '../../components/Base/Icon'
-import { Menu, MenuItem } from '../../components/Base/Menu'
-import Progress from '../../components/Base/Progress'
-import DataTable from '../../components/Base/DataTable'
-import TextField from '../../components/Base/TextField'
+import { Btn, Icon, Menu, MenuItem, Progress, TextField, DataTable } from '@zennnn/core'
 import WordProducts from '../../components/WordProducts.vue'
 import LocalePicker from '../../components/LocalePicker.vue'
 import WordDialog from '../../components/WordDialog.vue'

@@ -60,9 +60,7 @@ import { ziChevronRight } from '../../assets/icons'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import Btn from '../Base/Btn'
-import Icon from '../Base/Icon'
-import ExpandTransition from '../Base/ExpandTransition'
+import { Btn, Icon, ExpandTransition } from '@zennnn/core'
 import ContactItem from './ContactItem.vue'
 
 export default {

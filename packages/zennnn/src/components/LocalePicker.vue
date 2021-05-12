@@ -52,8 +52,7 @@ import { CURRENT_LOCALE_STORE_KEY, LOCALES_LIST } from '../config/globals'
 
 import { ziChevronDown } from '../assets/icons'
 
-import Icon from './Base/Icon'
-import { Menu, MenuItem } from './Base/Menu'
+import { Icon, Menu, MenuItem } from '@zennnn/core'
 
 export default {
   name: 'LocalePicker',

@@ -80,9 +80,7 @@ import {
   ziCloseDelete,
 } from '../assets/icons'
 
-import Icon from './Base/Icon'
-import Image from './Base/Image'
-import LoadingSpinner from './Base/LoadingSpinner'
+import { Icon, Image, LoadingSpinner } from '@zennnn/core'
 import ProductImage from './ProductImage.vue'
 import FileUploader from './FileUploader.vue'
 

@@ -139,10 +139,7 @@ import { ziChevronRight, ziDocument } from '../../assets/icons'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import Icon from '../Base/Icon'
-import TextField from '../Base/TextField'
-import TextArea from '../Base/TextArea'
-import ExpandTransition from '../Base/ExpandTransition'
+import { Icon, TextField, TextArea, ExpandTransition } from '@zennnn/core'
 import FileUploader from '../FileUploader.vue'
 
 export default {

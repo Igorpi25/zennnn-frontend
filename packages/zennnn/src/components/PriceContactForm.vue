@@ -67,9 +67,7 @@ import { ziCloseWindow } from '../assets/icons'
 
 import { PREMIUM_CONTACT } from '../graphql/mutations'
 
-import Btn from './Base/Btn'
-import Form from './Base/Form'
-import TextField from './Base/TextField'
+import { Btn, Form, TextField } from '@zennnn/core'
 
 export default {
   name: 'PriceContactForm',

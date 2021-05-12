@@ -1,6 +1,6 @@
 import { ref, defineComponent, createVNode, render, TransitionGroup } from 'vue'
 
-import Alert from '../../components/Base/Alert'
+import { Alert } from '@zennnn/core'
 
 let id = 0
 const DEFAULT_Z_INDEX = 999
@@ -70,7 +70,8 @@ export const createNotify = (options = {}) => {
       minWidth: 220,
       color: item.type || item.color,
       text: item.message || item.text,
-      infoIcon: item.icon,
+      icon: item.icon,
+      iconClass: item.iconClass,
       close: item.close,
       'onUpdate:modelValue': (val) => {
         if (!val) removeItem(item.id)

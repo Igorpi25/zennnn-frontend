@@ -27,7 +27,7 @@
       </template>
     </Header>
     <header v-else class="border-b border-light-gray-400">
-      <div class="h-20 flex items-center container container--sm">
+      <div class="h-20 flex items-center container">
         <router-link
           :to="{ name: 'home' }"
           class="flex-shrink-0 select-none focus:outline-none mr-2 sm:mr-6"
@@ -60,7 +60,7 @@
     </header>
     <!-- HEADER / -->
     <!-- / MAIN -->
-    <main class="container container--sm flex-grow pt-16">
+    <main class="container flex-grow pt-16">
       <div class="flex flex-wrap justify-between">
         <h1
           class="text-40 font-bold leading-tight mb-6"
@@ -202,8 +202,7 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 
 import { ziChevronRight, ziInfinity } from '../assets/icons'
 
-import Btn from '../components/Base/Btn'
-import Icon from '../components/Base/Icon'
+import { Btn, Icon } from '@zennnn/core'
 import PriceList from '../components/PriceList.vue'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'

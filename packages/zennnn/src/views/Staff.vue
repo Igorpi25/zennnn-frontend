@@ -6,7 +6,7 @@
       @update:model-value="refetchItems"
     />
 
-    <div class="container container--sm">
+    <div class="container">
       <div class="pt-4 pb-10">
         <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-4">
           <TextField
@@ -308,12 +308,7 @@ import { SpecStatus, InvitationStatus } from '../graphql/enums'
 
 import { confirmDialog } from '../utils/confirmDialog'
 
-import Btn from '../components/Base/Btn'
-import Icon from '../components/Base/Icon'
-import Progress from '../components/Base/Progress'
-import DataTable from '../components/Base/DataTable'
-import TextField from '../components/Base/TextField'
-import Switch from '../components/Base/Switch'
+import { Btn, Icon, Progress, TextField, Switch, DataTable } from '@zennnn/core'
 import StaffCreateModal from '../components/StaffCreateModal.vue'
 
 export default {

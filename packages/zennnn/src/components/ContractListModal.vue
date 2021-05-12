@@ -54,8 +54,7 @@ import { DELETE_CONTRACT } from '../graphql/mutations'
 
 import { confirmDialog } from '../utils/confirmDialog'
 
-import Btn from './Base/Btn'
-import Icon from './Base/Icon'
+import { Btn, Icon } from '@zennnn/core'
 
 export default {
   name: 'ContractListModal',

@@ -151,10 +151,7 @@ import { GET_SPEC, GET_IS_SPEC_SYNC } from '../graphql/queries'
 import { UPDATE_INVOICE } from '../graphql/mutations'
 import { Role, InvoiceProfitType } from '../graphql/enums'
 
-import Switch from './Base/Switch'
-import TextField from './Base/TextField'
-import DatePicker from './Base/DatePicker'
-import BtnToggle from './Base/BtnToggle'
+import { Switch, TextField, DatePicker, BtnToggle } from '@zennnn/core'
 
 export default {
   name: 'InvoiceSummary',

@@ -11,9 +11,7 @@
       v-if="isOwnerOrManager"
       hide-details
       disabled
-      border-color="border-gray-800"
-      bg-color="bg-gray-800"
-      class="mr-3 md:mr-5"
+      class="bg-gray-800 border-gray-800 mr-3 md:mr-5"
     />
     <div
       :class="[
@@ -176,12 +174,7 @@ import {
   ziChevronRight,
 } from '../assets/icons'
 
-import Icon from './Base/Icon'
-import Modal from './Base/Modal'
-import Select from './Base/Select'
-import Checkbox from './Base/Checkbox'
-import TextField from './Base/TextField'
-import DatePicker from './Base/DatePicker'
+import { Icon, Modal, Select, Checkbox, TextField, DatePicker } from '@zennnn/core'
 import SupplierCard from './SupplierCard.vue'
 
 export default {

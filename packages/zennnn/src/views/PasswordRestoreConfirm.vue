@@ -77,10 +77,7 @@
 <script>
 import { ziVisible, ziHide } from '../assets/icons'
 
-import Btn from '../components/Base/Btn'
-import Icon from '../components/Base/Icon'
-import Form from '../components/Base/Form'
-import TextField from '../components/Base/TextField'
+import { Btn, Icon, Form, TextField } from '@zennnn/core'
 import Header from '../components/Header.vue'
 import Copyright from '../components/Copyright.vue'
 

@@ -447,9 +447,7 @@
 <script>
 import { ShipmentType } from '../graphql/enums'
 
-import Select from './Base/Select'
-import TextField from './Base/TextField'
-import DatePicker from './Base/DatePicker'
+import { Select, TextField, DatePicker } from '@zennnn/core'
 
 export default {
   name: 'SpecShipment',

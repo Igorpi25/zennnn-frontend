@@ -63,7 +63,7 @@
       <div class="bg-gray-600 rounded-md p-5 pt-10">
         <!-- REQUISITE -->
         <h5 class="flex-grow text-lg leading-tight">
-          <span class="text-white uppercase font-semibold tracking-widest uppercase">
+          <span class="text-white uppercase font-semibold tracking-widest">
             {{ $t('shipping.supplierTitle') }}
           </span>
           <span class="text-gray-200 lowercase mr-1">
@@ -83,7 +83,7 @@
         <div class="my-10 border-t border-gray-400" />
         <!-- CLIENT -->
         <h5 class="flex-grow text-lg leading-tight">
-          <span class="text-white uppercase font-semibold tracking-widest uppercase">
+          <span class="text-white uppercase font-semibold tracking-widest">
             {{ $t('shipping.clientTitle') }}
           </span>
           <span class="text-gray-200 lowercase mr-1">
@@ -109,7 +109,7 @@
           hide-details
         >
           <h5 class="flex-grow text-lg leading-tight pt-1">
-            <span class="text-white uppercase font-semibold tracking-widest uppercase">
+            <span class="text-white uppercase font-semibold tracking-widest">
               {{ $t('shipping.importerTitle') }}
             </span>
             <span class="text-gray-200 lowercase mr-1">
@@ -128,7 +128,7 @@
         <div class="my-10 border-t border-gray-400" />
         <!-- DELIVERY -->
         <h5 class="flex-grow text-lg leading-tight">
-          <span class="text-white uppercase font-semibold tracking-widest uppercase">
+          <span class="text-white uppercase font-semibold tracking-widest">
             {{ $t('shipping.forDeliver') }}
           </span>
         </h5>
@@ -141,7 +141,7 @@
         <div class="my-10 border-t border-gray-400" />
         <!-- CUSTOMS -->
         <h5 class="flex-grow text-lg leading-tight">
-          <span class="text-white uppercase font-semibold tracking-widest uppercase">
+          <span class="text-white uppercase font-semibold tracking-widest">
             {{ $t('shipping.customsAndTaxes') }}
           </span>
         </h5>
@@ -414,13 +414,7 @@ import Countries from '../config/countries-iso3.json'
 
 import { ziCloseWindow } from '../assets/icons'
 
-import Btn from './Base/Btn'
-import Icon from './Base/Icon'
-import Modal from './Base/Modal'
-import Switch from './Base/Switch'
-import Select from './Base/Select'
-import TextField from './Base/TextField'
-import TextArea from './Base/TextArea'
+import { Btn, Icon, Modal, Switch, Select, TextField, TextArea } from '@zennnn/core'
 import PrintCompanyInfo from './CompanyDetail/PrintCompanyInfo.vue'
 import PrintClient from './CompanyDetail/PrintClient.vue'
 import PrintClientImporter from './CompanyDetail/PrintClientImporter.vue'

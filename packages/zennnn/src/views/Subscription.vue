@@ -42,7 +42,7 @@
         </Btn>
       </div>
     </Modal>
-    <main class="container container--xs flex-grow max-w-screen-md mx-auto pt-16 pb-32" style="padding-left: 16px; padding-right: 16px;">
+    <main class="container flex-grow max-w-screen-md mx-auto pt-16 pb-32">
       <h1
         class="text-40 font-bold leading-tight mb-6"
       >
@@ -403,10 +403,7 @@ import {
   ziCloseWindow,
 } from '../assets/icons'
 
-import Btn from '../components/Base/Btn'
-import Icon from '../components/Base/Icon'
-import Modal from '../components/Base/Modal'
-import Progress from '../components/Base/Progress'
+import { Btn, Icon, Modal, Progress } from '@zennnn/core'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import PaymentCard from '../components/PaymentCard.vue'
@@ -631,7 +628,7 @@ export default {
     async getRates () {
       try {
         const response = await axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
-        if (response.data) {
+        if (response.data && response.data.success) {
           this.currencyRates = response.data.rates
         }
       } catch (error) {

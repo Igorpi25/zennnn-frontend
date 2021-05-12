@@ -94,7 +94,7 @@
 import { DEFAULT_CURRENCY } from '../config/globals'
 import { SpecCurrency, Role } from '../graphql/enums'
 
-import TextField from './Base/TextField'
+import { TextField } from '@zennnn/core'
 
 export default {
   name: 'SpecCost',

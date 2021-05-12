@@ -142,7 +142,7 @@
 <script>
 import clientDetail from '../../mixins/clientDetail'
 
-import TextField from '../Base/TextField'
+import { TextField } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

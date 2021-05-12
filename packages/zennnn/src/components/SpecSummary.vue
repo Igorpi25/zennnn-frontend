@@ -252,11 +252,7 @@ import {
   ziCloseDelete,
 } from '../assets/icons'
 
-import Btn from './Base/Btn'
-import Icon from './Base/Icon'
-import Modal from './Base/Modal'
-import TextField from './Base/TextField'
-import LoadingSpinner from './Base/LoadingSpinner'
+import { Btn, Icon, Modal, TextField, LoadingSpinner } from '@zennnn/core'
 import ContractListModal from '@/components/ContractListModal.vue'
 // import ContractConfiguratorModal from '@/components/ContractConfiguratorModal.vue'
 import PrintSettings from '../components/PrintSettings.vue'

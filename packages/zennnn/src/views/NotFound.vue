@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import Btn from '../components/Base/Btn'
+import { Btn } from '@zennnn/core'
 
 export default {
   name: 'NotFound',

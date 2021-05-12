@@ -15,7 +15,7 @@
     </Header>
     <!-- HEADER / -->
     <!-- / MAIN -->
-    <main class="container container--xs flex-grow max-w-screen-md mx-auto pt-16 pb-32" style="padding-left: 16px; padding-right: 16px;">
+    <main class="container flex-grow max-w-screen-md mx-auto pt-16 pb-32">
       <h1
         class="text-40 font-bold leading-tight mb-6"
       >
@@ -65,7 +65,7 @@
           :close="false"
           color="warn"
           max-width="none"
-          info-icon-class="text-yellow-500"
+          icon-class="text-yellow-500"
           content-class="text-gray-500"
           container-class="items-start bg-yellow-500 bg-opacity-20"
         >
@@ -268,11 +268,7 @@ import { ziChevronRight, ziUser } from '../assets/icons'
 import { GET_PROFILE, LIST_PRICES, LIST_PAYMENT_METHODS } from '../graphql/queries'
 import { PAYMENT_DATA } from '../graphql/subscriptions'
 
-import Icon from '../components/Base/Icon'
-import Alert from '../components/Base/Alert'
-import Select from '../components/Base/Select'
-import Radio from '../components/Base/Radio'
-import ExpandTransition from '../components/Base/ExpandTransition'
+import { Icon, Alert, Select, Radio, ExpandTransition } from '@zennnn/core'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import PaymentCard from '../components/PaymentCard.vue'
@@ -614,7 +610,7 @@ export default {
     async getRates () {
       try {
         const response = await axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
-        if (response.data) {
+        if (response.data && response.data.success) {
           this.currencyRates = response.data.rates
         }
       } catch (error) {

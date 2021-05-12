@@ -109,7 +109,7 @@
           :close="false"
           content-class="text-pink-500"
           container-class="bg-pink-500 bg-opacity-10"
-          info-icon-class="text-pink-500 items-start"
+          icon-class="text-pink-500 items-start"
           max-width="none"
         >
           {{ $t('companyDetail.privacyWarning') }}
@@ -244,12 +244,7 @@ import { ziUser, ziCalendar } from '../../assets/icons'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import Icon from '../Base/Icon'
-import Alert from '../Base/Alert'
-import Switch from '../Base/Switch'
-import Select from '../Base/Select'
-import TextField from '../Base/TextField'
-import DatePicker from '../Base/DatePicker'
+import { Icon, Alert, Switch, Select, TextField, DatePicker } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

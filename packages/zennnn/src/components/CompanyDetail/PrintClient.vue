@@ -158,9 +158,7 @@ import { ClientType } from '../../graphql/enums'
 
 import { ziPlusOutline } from '../../assets/icons'
 
-import Icon from '../Base/Icon'
-import TextField from '../Base/TextField'
-import Select from '../Base/Select'
+import { Icon, TextField, Select } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

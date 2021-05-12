@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container container--sm">
+    <div class="container">
       <div class="pt-4 pb-10">
         <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-4">
           <TextField
@@ -217,11 +217,7 @@ import { DELETE_SUPPLIER } from '@/graphql/mutations'
 
 import { confirmDialog } from '../utils/confirmDialog'
 
-import Btn from '../components/Base/Btn'
-import Icon from '../components/Base/Icon'
-import Tooltip from '../components/Base/Tooltip'
-import DataTable from '../components/Base/DataTable'
-import TextField from '../components/Base/TextField'
+import { Btn, Icon, Tooltip, TextField, DataTable } from '@zennnn/core'
 
 export default {
   name: 'Suppliers',

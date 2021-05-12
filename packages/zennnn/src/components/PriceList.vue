@@ -102,8 +102,7 @@ import { ziChecked, ziUsers, ziEmail } from '../assets/icons'
 
 import { LIST_PRICES } from '../graphql/queries'
 
-import Btn from './Base/Btn'
-import Icon from './Base/Icon'
+import { Btn, Icon } from '@zennnn/core'
 import Dialog from './Dialog'
 import PriceContactForm from './PriceContactForm.vue'
 
@@ -300,7 +299,7 @@ export default {
     async getRates () {
       try {
         const response = await axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
-        if (response.data) {
+        if (response.data && response.data.success) {
           this.currencyRates = response.data.rates
         }
       } catch (error) {

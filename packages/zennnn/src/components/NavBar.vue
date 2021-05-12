@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div class="absolute bottom-0 inset-x-0 border-b border-gray-500" />
-    <div class="container container--sm flex h-16 overflow-x-auto scrolling-touch text-gray-200 space-x-10">
+    <div class="container flex h-16 overflow-x-auto scrolling-touch text-gray-200 space-x-10">
       <router-link
         v-for="item in items"
         v-slot="{ route }"

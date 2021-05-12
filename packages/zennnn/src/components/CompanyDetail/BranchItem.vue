@@ -137,10 +137,7 @@ import { ziCloseDelete, ziQuestionSign } from '../../assets/icons'
 
 import { BranchType, ContactType } from '../../graphql/enums'
 
-import Icon from '../Base/Icon'
-import Tooltip from '../Base/Tooltip'
-import Select from '../Base/Select'
-import TextField from '../Base/TextField'
+import { Icon, Tooltip, Select, TextField } from '@zennnn/core'
 import Phone from '../Phone.vue'
 import ContactItem from './ContactItem.vue'
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="container container--sm">
+  <div class="container">
     <div class="pt-4 pb-10">
 
       <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-6">
@@ -249,11 +249,7 @@ import { LIST_WORDS } from '../graphql/queries'
 
 import { LOCALES_LIST } from '../config/globals'
 
-import Btn from '../components/Base/Btn'
-import Icon from '../components/Base/Icon'
-import Progress from '../components/Base/Progress'
-import DataTable from '../components/Base/DataTable'
-import TextField from '../components/Base/TextField'
+import { Btn, Icon, Progress, TextField, DataTable } from '@zennnn/core'
 import WordDialog from '../components/WordDialog.vue'
 import WordSpecs from '../components/WordSpecs.vue'
 

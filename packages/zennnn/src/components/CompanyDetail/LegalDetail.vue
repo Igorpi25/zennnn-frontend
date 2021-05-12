@@ -345,11 +345,7 @@ import { ziQuestionSign, ziChevronRight } from '../../assets/icons'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import Icon from '../Base/Icon'
-import Tooltip from '../Base/Tooltip'
-import Switch from '../Base/Switch'
-import TextField from '../Base/TextField'
-import ExpandTransition from '../Base/ExpandTransition'
+import { Icon, Tooltip, Switch, TextField, ExpandTransition } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {
