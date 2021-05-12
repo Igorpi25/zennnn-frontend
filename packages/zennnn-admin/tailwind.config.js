@@ -6,10 +6,10 @@ module.exports = {
     mode: 'layers',
     layers: ['utilities'],
     content: [
-      './src/**/*.html',
+      './public/index.html',
       './src/**/*.{vue,js,ts,jsx,tsx,md}',
-      '../core/lib/components/**/*.js',
-      '../core/lib/composables/**/*.js',
+      '../../node_modules/@zennnn/core/lib/components/**/*.js',
+      '../../node_modules/@zennnn/core/lib/composables/**/*.js',
     ],
   },
   theme: {
