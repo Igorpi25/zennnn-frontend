@@ -129,16 +129,16 @@ export const useInput = (props, { slots, emit, id }) => {
   const genLabel = () => {
     return hasLabel.value
       ? h(Label, {
-          for: id,
-          showWrap: props.showLabelWrap,
-          // prevent check on checkbox
-          onClick: (e) => {
-            e.preventDefault()
-          },
-        }, {
-          default: () => slots.label ? slots.label() : props.label,
-          append: () => genLabelHint(),
-        })
+        for: id,
+        showWrap: props.showLabelWrap,
+        // prevent check on checkbox
+        onClick: (e) => {
+          e.preventDefault()
+        },
+      }, {
+        default: () => slots.label ? slots.label() : props.label,
+        append: () => genLabelHint(),
+      })
       : undefined
   }
 

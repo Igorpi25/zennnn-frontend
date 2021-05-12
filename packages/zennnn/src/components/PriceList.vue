@@ -181,11 +181,11 @@ export default {
       }
       const getPriceInCurrency = (rate) => this.localeCurrency !== 'USD'
         ? format(Math.round(rate * currencyRate), {
-            style: 'currency',
-            currency: this.localeCurrency,
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-          }, this.$i18n.locale)
+          style: 'currency',
+          currency: this.localeCurrency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        }, this.$i18n.locale)
         : null
       const getUsd = (rate) => format(rate, {
         style: 'currency',

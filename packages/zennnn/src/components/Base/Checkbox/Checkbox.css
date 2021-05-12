@@ -9,7 +9,7 @@
     @apply relative;
   }
   .checkbox__control__icon {
-    @apply w-5 h-5 border-2 border-light-gray-900 dark:border-gray-300 rounded-3;
+    @apply w-5 h-5 border-2 border-light-gray-900 dark:border-gray-300 rounded;
     @apply flex items-center justify-center;
     @apply transition-colors duration-100 ease-in-out;
     @apply text-white;

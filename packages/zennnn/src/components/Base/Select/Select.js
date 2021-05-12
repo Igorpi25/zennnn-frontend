@@ -236,11 +236,11 @@ export default {
       if (!hasSearch && !hasItemsFilter) return items.value
       const filtered = hasSearch
         ? items.value.filter(item => {
-            const value = getPropertyFromItem(item, props.itemText)
-            const text = value != null ? String(value) : ''
-            const queryText = String(search.value)
-            return props.filter(item, queryText, text)
-          })
+          const value = getPropertyFromItem(item, props.itemText)
+          const text = value != null ? String(value) : ''
+          const queryText = String(search.value)
+          return props.filter(item, queryText, text)
+        })
         : items.value
       return hasItemsFilter
         ? filtered.filter(item => props.itemsFilter(item, filter.value))

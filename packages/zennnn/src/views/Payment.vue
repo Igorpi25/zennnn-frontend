@@ -378,11 +378,11 @@ export default {
       const currencyRate = this.currencyRates[this.localeCurrency]
       const priceInCurrency = this.localeCurrency !== 'USD'
         ? this.$n(Math.round(1 * currencyRate), {
-            style: 'currency',
-            currency: this.localeCurrency,
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-          })
+          style: 'currency',
+          currency: this.localeCurrency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })
         : null
       return {
         price: '$1',
@@ -394,11 +394,11 @@ export default {
       const currencyRate = this.currencyRates[this.localeCurrency]
       const priceInCurrency = this.localeCurrency !== 'USD'
         ? this.$n(Math.round(invoiceAmount * currencyRate), {
-            style: 'currency',
-            currency: this.localeCurrency,
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-          })
+          style: 'currency',
+          currency: this.localeCurrency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })
         : null
       return {
         price: this.$n(Math.round(invoiceAmount * currencyRate), {
@@ -421,11 +421,11 @@ export default {
       }
       const getPriceInCurrency = (rate) => this.localeCurrency !== 'USD'
         ? format(Math.round(rate * currencyRate), {
-            style: 'currency',
-            currency: this.localeCurrency,
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-          }, this.$i18n.locale)
+          style: 'currency',
+          currency: this.localeCurrency,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        }, this.$i18n.locale)
         : null
       const getUsd = (rate) => format(rate, {
         style: 'currency',

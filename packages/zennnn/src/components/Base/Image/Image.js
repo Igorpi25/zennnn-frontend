@@ -245,8 +245,8 @@ export default {
       if (slots.placeholder) {
         const placeholder = isLoading.value
           ? h('div', {
-              class: 'image__placeholder',
-            }, slots.placeholder())
+            class: 'image__placeholder',
+          }, slots.placeholder())
           : undefined
 
         if (!props.transition) return placeholder

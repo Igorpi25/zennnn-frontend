@@ -1,6 +1,6 @@
 @layer components {
   .menu__box {
-    @apply shadow-2xl dark:shadow-6;
+    @apply shadow-main-day dark:shadow-main-night;
     @apply text-white dark:text-gray-400;
   }
 

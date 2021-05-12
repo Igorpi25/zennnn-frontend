@@ -585,10 +585,10 @@ export default {
 
       return props.scrollable
         ? h('div', {
-            class: {
-              'data-table__scroll-wrapper': props.scrollable,
-            },
-          }, table)
+          class: {
+            'data-table__scroll-wrapper': props.scrollable,
+          },
+        }, table)
         : table
     }
 
