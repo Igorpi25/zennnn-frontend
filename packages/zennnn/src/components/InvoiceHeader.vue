@@ -164,17 +164,13 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziCalendar, ziPlusOutline, ziChevronRight } from '@zennnn/icons'
+import { Icon, Modal, Select, Checkbox, TextField, DatePicker } from '@zennnn/core'
+
 import { InvoiceStatus, Role } from '../graphql/enums'
 import { SEARCH_SUPPLIERS } from '../graphql/queries'
 import { SET_INVOICE_SUPPLIER } from '../graphql/mutations'
 
-import {
-  ziCalendar,
-  ziPlusOutline,
-  ziChevronRight,
-} from '../assets/icons'
-
-import { Icon, Modal, Select, Checkbox, TextField, DatePicker } from '@zennnn/core'
 import SupplierCard from './SupplierCard.vue'
 
 export default {

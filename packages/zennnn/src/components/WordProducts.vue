@@ -132,16 +132,12 @@
 import { ref } from 'vue'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziSearch, ziCloseWindow, ziPlusOutline } from '@zennnn/icons'
+import { Btn, Icon, Modal, Select, ExpandTransition } from '@zennnn/core'
+
 import { SEARCH_WORDS } from '../graphql/admin/queries'
 import { ADD_PRODUCTS_TO_WORD, CREATE_WORD_WITH_PRODUCTS } from '../graphql/admin/mutations'
 
-import {
-  ziSearch,
-  ziCloseWindow,
-  ziPlusOutline,
-} from '../assets/icons'
-
-import { Btn, Icon, Modal, Select, ExpandTransition } from '@zennnn/core'
 import WordProduct from './WordProduct.vue'
 import WordDialog from './WordDialog.vue'
 

@@ -822,8 +822,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { ziChecked } from '../assets/icons'
-
+import { ziChecked } from '@zennnn/icons'
 import { Icon, Image, Window, WindowItem } from '@zennnn/core'
 
 const INFO_ALERT_TOP = 90

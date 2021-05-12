@@ -391,19 +391,13 @@
 import axios from 'axios'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziUser, ziDelete, ziDownload, ziChevronRight, ziCloseWindow } from '@zennnn/icons'
+import { Btn, Icon, Modal, Progress } from '@zennnn/core'
+
 import { GET_PROFILE, LIST_PAYMENT_METHODS, LIST_PAYMENT_INVOICES } from '../graphql/queries'
 import { CANCEL_PAYMENT_SUBSCRIPTION, SET_DEFAULT_PAYMENT_METHOD, DETACH_PAYMENT_METHOD } from '../graphql/mutations'
 import { PAYMENT_DATA } from '../graphql/subscriptions'
 
-import {
-  ziUser,
-  ziDelete,
-  ziDownload,
-  ziChevronRight,
-  ziCloseWindow,
-} from '../assets/icons'
-
-import { Btn, Icon, Modal, Progress } from '@zennnn/core'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import PaymentCard from '../components/PaymentCard.vue'

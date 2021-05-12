@@ -125,17 +125,17 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
 
+import { ziCloseWindow } from '@zennnn/icons'
+import { Btn, Icon } from '@zennnn/core'
+
 import { GET_SUPPLIER, GET_ORG_NEXT_SUPPLIER_UID } from '../graphql/queries'
 import {
   CREATE_SUPPLIER,
   UPDATE_SUPPLIER,
 } from '../graphql/mutations'
 
-import { ziCloseWindow } from '../assets/icons'
-
 import { validateSupplier } from '../utils/validation'
 
-import { Btn, Icon } from '@zennnn/core'
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
 import LegalDetail from './CompanyDetail/LegalDetail.vue'
 import ContactList from './CompanyDetail/ContactList.vue'

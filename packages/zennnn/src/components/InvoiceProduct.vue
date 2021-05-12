@@ -470,22 +470,15 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziEdit, ziLink, ziUser, ziOpenInNew, ziCloseDelete, ziPlusOutline } from '@zennnn/icons'
+import { Icon, Switch, Select, TextField } from '@zennnn/core'
+
 import { InvoiceProfitType, Role, WordStatus } from '../graphql/enums'
 import { SEARCH_WORDS } from '../graphql/queries'
 
 import product from '../mixins/product'
 import { isLink } from '../utils/isLink'
 
-import {
-  ziEdit,
-  ziLink,
-  ziUser,
-  ziOpenInNew,
-  ziCloseDelete,
-  ziPlusOutline,
-} from '../assets/icons'
-
-import { Icon, Switch, Select, TextField } from '@zennnn/core'
 import Comments from './Comments.vue'
 import WordDialog from './WordDialog.vue'
 

@@ -133,11 +133,11 @@
 </template>
 
 <script>
-import { ziCloseDelete, ziQuestionSign } from '../../assets/icons'
+import { ziCloseDelete, ziQuestionSign } from '@zennnn/icons'
+import { Icon, Tooltip, Select, TextField } from '@zennnn/core'
 
 import { BranchType, ContactType } from '../../graphql/enums'
 
-import { Icon, Tooltip, Select, TextField } from '@zennnn/core'
 import Phone from '../Phone.vue'
 import ContactItem from './ContactItem.vue'
 

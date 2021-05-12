@@ -238,13 +238,13 @@
 </template>
 
 <script>
-import { LOCALES_LIST } from '../../config/globals'
+import { ziUser, ziCalendar } from '@zennnn/icons'
+import { Icon, Alert, Switch, Select, TextField, DatePicker } from '@zennnn/core'
 
-import { ziUser, ziCalendar } from '../../assets/icons'
+import { LOCALES_LIST } from '../../config/globals'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import { Icon, Alert, Switch, Select, TextField, DatePicker } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

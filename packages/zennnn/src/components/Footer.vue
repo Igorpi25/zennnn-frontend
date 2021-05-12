@@ -95,11 +95,11 @@
 <script>
 import { useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziFacebook, ziTelegram, ziInstagram, ziYoutube, ziVk } from '@zennnn/icons'
+import { Icon } from '@zennnn/core'
+
 import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 
-import { ziFacebook, ziTelegram, ziInstagram, ziYoutube, ziVk } from '../assets/icons'
-
-import { Icon } from '@zennnn/core'
 import Copyright from '../components/Copyright.vue'
 
 export default {

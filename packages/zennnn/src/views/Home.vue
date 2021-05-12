@@ -201,9 +201,9 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { ziChecked, ziArrowRight } from '../assets/icons'
-
+import { ziChecked, ziArrowRight } from '@zennnn/icons'
 import { Btn, Icon, Image } from '@zennnn/core'
+
 import Footer from '../components/Footer.vue'
 import LocalePicker from '../components/LocalePicker.vue'
 

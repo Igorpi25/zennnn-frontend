@@ -72,15 +72,12 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
+import { ziSearch, ziCloseDelete } from '@zennnn/icons'
+import { Icon, Image, LoadingSpinner } from '@zennnn/core'
+
 import { ICON_IMAGE_POSTFIX } from '../config/globals'
 import { ADD_PRODUCT_IMAGE, REMOVE_PRODUCT_IMAGE } from '../graphql/mutations'
 
-import {
-  ziSearch,
-  ziCloseDelete,
-} from '../assets/icons'
-
-import { Icon, Image, LoadingSpinner } from '@zennnn/core'
 import ProductImage from './ProductImage.vue'
 import FileUploader from './FileUploader.vue'
 

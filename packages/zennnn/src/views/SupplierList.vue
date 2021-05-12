@@ -199,25 +199,13 @@ import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 import { wrapInArray } from 'vue-supp'
 
-import {
-  ziSearch,
-  ziDelete,
-  ziBagDeal,
-  ziAction,
-  ziPhone,
-  ziBoxes,
-  ziMoneyPlus,
-  ziMoneyMinus,
-  ziMoneyTernover,
-  ziQuestionSign,
-} from '../assets/icons'
+import { ziSearch, ziDelete, ziBagDeal, ziAction, ziPhone, ziBoxes, ziMoneyPlus, ziMoneyMinus, ziMoneyTernover, ziQuestionSign } from '@zennnn/icons'
+import { Btn, Icon, Tooltip, TextField, DataTable } from '@zennnn/core'
 
 import { LIST_SUPPLIERS } from '@/graphql/queries'
 import { DELETE_SUPPLIER } from '@/graphql/mutations'
 
 import { confirmDialog } from '../utils/confirmDialog'
-
-import { Btn, Icon, Tooltip, TextField, DataTable } from '@zennnn/core'
 
 export default {
   name: 'Suppliers',

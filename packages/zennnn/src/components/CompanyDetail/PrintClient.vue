@@ -152,13 +152,13 @@
 </template>
 
 <script>
+import { ziPlusOutline } from '@zennnn/icons'
+import { Icon, TextField, Select } from '@zennnn/core'
+
 import clientDetail from '../../mixins/clientDetail'
 
 import { ClientType } from '../../graphql/enums'
 
-import { ziPlusOutline } from '../../assets/icons'
-
-import { Icon, TextField, Select } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

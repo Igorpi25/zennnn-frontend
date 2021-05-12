@@ -297,7 +297,7 @@
 <script>
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziStar, ziStarOutline, ziUserCircle, ziMenu } from '../assets/icons'
+import { ziStar, ziStarOutline, ziUserCircle, ziMenu } from '@zennnn/icons'
 
 import { Role } from '../graphql/enums'
 import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'

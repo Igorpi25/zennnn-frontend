@@ -135,11 +135,11 @@
 </template>
 
 <script>
-import { ziChevronRight, ziDocument } from '../../assets/icons'
+import { ziChevronRight, ziDocument } from '@zennnn/icons'
+import { Icon, TextField, TextArea, ExpandTransition } from '@zennnn/core'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import { Icon, TextField, TextArea, ExpandTransition } from '@zennnn/core'
 import FileUploader from '../FileUploader.vue'
 
 export default {

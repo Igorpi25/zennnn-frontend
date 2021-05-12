@@ -118,13 +118,7 @@
 <script>
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
 
-import {
-  ziFullScreen,
-  ziArrowLeft,
-  ziArrowRight,
-  ziCloseWindow,
-} from '../assets/icons'
-
+import { ziFullScreen, ziArrowLeft, ziArrowRight, ziCloseWindow } from '@zennnn/icons'
 import { Icon, Menu, Image, LoadingSpinner } from '@zennnn/core'
 
 export default {

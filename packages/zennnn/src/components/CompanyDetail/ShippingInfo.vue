@@ -141,11 +141,11 @@
 </template>
 
 <script>
-import { ziChevronRight } from '../../assets/icons'
+import { ziChevronRight } from '@zennnn/icons'
+import { Icon, Alert, Switch, TextField, ExpandTransition } from '@zennnn/core'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import { Icon, Alert, Switch, TextField, ExpandTransition } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

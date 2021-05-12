@@ -35,7 +35,7 @@
 import { useRoute } from 'vue-router'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziCogfigurations, ziPlusOutline } from '../assets/icons'
+import { ziCogfigurations, ziPlusOutline } from '@zennnn/icons'
 
 import { LIST_ORG_REQUISITES } from '../graphql/queries'
 

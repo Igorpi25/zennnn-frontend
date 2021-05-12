@@ -139,9 +139,9 @@
 </template>
 
 <script>
-import { ziVisible, ziHide } from '../assets/icons'
-
+import { ziVisible, ziHide } from '@zennnn/icons'
 import { Icon, Alert, Btn, Form, TextField, Checkbox } from '@zennnn/core'
+
 import Header from '../components/Header.vue'
 import Social from '../components/Social.vue'
 import Copyright from '../components/Copyright.vue'

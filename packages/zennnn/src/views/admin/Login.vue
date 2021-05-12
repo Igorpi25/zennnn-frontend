@@ -134,9 +134,9 @@
 </template>
 
 <script>
-import { ziVisible, ziHide } from '../../assets/icons'
-
+import { ziVisible, ziHide } from '@zennnn/icons'
 import { Icon, Alert, Btn, Form, TextField } from '@zennnn/core'
+
 import LocalePicker from '../../components/LocalePicker.vue'
 
 export default {

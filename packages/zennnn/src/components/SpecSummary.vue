@@ -243,16 +243,9 @@ import cloneDeep from 'clone-deep'
 import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
-import {
-  ziVisible,
-  ziSettings,
-  ziPrint,
-  ziUserPlus,
-  ziEmail,
-  ziCloseDelete,
-} from '../assets/icons'
-
+import { ziVisible, ziSettings, ziPrint, ziUserPlus, ziEmail, ziCloseDelete } from '@zennnn/icons'
 import { Btn, Icon, Modal, TextField, LoadingSpinner } from '@zennnn/core'
+
 import ContractListModal from '@/components/ContractListModal.vue'
 // import ContractConfiguratorModal from '@/components/ContractConfiguratorModal.vue'
 import PrintSettings from '../components/PrintSettings.vue'

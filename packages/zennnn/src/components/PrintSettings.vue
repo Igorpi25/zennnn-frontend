@@ -410,11 +410,11 @@
 import { ref } from 'vue'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziCloseWindow } from '@zennnn/icons'
+import { Btn, Icon, Modal, Switch, Select, TextField, TextArea } from '@zennnn/core'
+
 import Countries from '../config/countries-iso3.json'
 
-import { ziCloseWindow } from '../assets/icons'
-
-import { Btn, Icon, Modal, Switch, Select, TextField, TextArea } from '@zennnn/core'
 import PrintCompanyInfo from './CompanyDetail/PrintCompanyInfo.vue'
 import PrintClient from './CompanyDetail/PrintClient.vue'
 import PrintClientImporter from './CompanyDetail/PrintClientImporter.vue'

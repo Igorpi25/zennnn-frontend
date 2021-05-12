@@ -220,17 +220,12 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
+import { ziCloseWindow, ziFullScreen, ziArrowLeft, ziArrowRight } from '@zennnn/icons'
+import { Icon, Menu, Image, LoadingSpinner } from '@zennnn/core'
+
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
 import { ADD_PRODUCT_IMAGE, UPDATE_PRODUCT_INFO } from '../graphql/mutations'
 
-import {
-  ziCloseWindow,
-  ziFullScreen,
-  ziArrowLeft,
-  ziArrowRight,
-} from '../assets/icons'
-
-import { Icon, Menu, Image, LoadingSpinner } from '@zennnn/core'
 import Sortable from '../plugins/draggable/Sortable'
 import FileUploader from '../components/FileUploader.vue'
 

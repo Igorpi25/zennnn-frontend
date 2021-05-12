@@ -48,11 +48,10 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { CURRENT_LOCALE_STORE_KEY, LOCALES_LIST } from '../config/globals'
-
-import { ziChevronDown } from '../assets/icons'
-
+import { ziChevronDown } from '@zennnn/icons'
 import { Icon, Menu, MenuItem } from '@zennnn/core'
+
+import { CURRENT_LOCALE_STORE_KEY, LOCALES_LIST } from '../config/globals'
 
 export default {
   name: 'LocalePicker',

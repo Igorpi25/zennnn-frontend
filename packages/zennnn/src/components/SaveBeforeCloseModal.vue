@@ -46,8 +46,7 @@
 </template>
 
 <script>
-import { ziCloseWindow } from '../assets/icons'
-
+import { ziCloseWindow } from '@zennnn/icons'
 import { Btn, Icon } from '@zennnn/core'
 
 export default {

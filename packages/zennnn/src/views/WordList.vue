@@ -237,19 +237,13 @@
 import { useRoute } from 'vue-router'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import {
-  ziEdit,
-  ziGlobe,
-  ziSearch,
-  ziLanguages,
-  ziChevronRight,
-} from '../assets/icons'
+import { ziEdit, ziGlobe, ziSearch, ziLanguages, ziChevronRight } from '@zennnn/icons'
+import { Btn, Icon, Progress, TextField, DataTable } from '@zennnn/core'
 
 import { LIST_WORDS } from '../graphql/queries'
 
 import { LOCALES_LIST } from '../config/globals'
 
-import { Btn, Icon, Progress, TextField, DataTable } from '@zennnn/core'
 import WordDialog from '../components/WordDialog.vue'
 import WordSpecs from '../components/WordSpecs.vue'
 

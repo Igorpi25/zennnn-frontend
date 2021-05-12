@@ -200,9 +200,9 @@ import { computed, onBeforeMount, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziChevronRight, ziInfinity } from '../assets/icons'
-
+import { ziChevronRight, ziInfinity } from '@zennnn/icons'
 import { Btn, Icon } from '@zennnn/core'
+
 import PriceList from '../components/PriceList.vue'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'

@@ -78,7 +78,8 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
-import { ziChevronRight, ziCloseDelete } from '../../assets/icons'
+import { ziChevronRight, ziCloseDelete } from '@zennnn/icons'
+import { Btn, Icon, ExpandTransition } from '@zennnn/core'
 
 import { GET_ORG_REQUISITE } from '../../graphql/queries'
 import {
@@ -91,7 +92,6 @@ import { validateCompanyDetail } from '../../utils/validation'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import { Btn, Icon, ExpandTransition } from '@zennnn/core'
 import BankDetailItem from './BankDetailItem.vue'
 
 export default {

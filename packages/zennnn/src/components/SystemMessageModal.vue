@@ -28,8 +28,7 @@
 </template>
 
 <script>
-import { ziInfoBig, ziCloseWindow } from '../assets/icons'
-
+import { ziInfoBig, ziCloseWindow } from '@zennnn/icons'
 import { Icon } from '@zennnn/core'
 
 export default {

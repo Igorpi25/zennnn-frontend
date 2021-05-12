@@ -83,11 +83,11 @@ import axios from 'axios'
 import { ref, watch } from 'vue'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziEmail, ziCloseWindow } from '../assets/icons'
+import { ziEmail, ziCloseWindow } from '@zennnn/icons'
+import { Btn, Icon } from '@zennnn/core'
 
 import { LIST_PRICES } from '../graphql/queries'
 
-import { Btn, Icon } from '@zennnn/core'
 import Dialog from './Dialog'
 import PriceContactForm from './PriceContactForm.vue'
 

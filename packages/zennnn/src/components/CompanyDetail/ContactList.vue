@@ -54,13 +54,13 @@
 </template>
 
 <script>
-import { ContactType } from '../../graphql/enums'
+import { ziChevronRight } from '@zennnn/icons'
+import { Btn, Icon, ExpandTransition } from '@zennnn/core'
 
-import { ziChevronRight } from '../../assets/icons'
+import { ContactType } from '../../graphql/enums'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import { Btn, Icon, ExpandTransition } from '@zennnn/core'
 import ContactItem from './ContactItem.vue'
 
 export default {

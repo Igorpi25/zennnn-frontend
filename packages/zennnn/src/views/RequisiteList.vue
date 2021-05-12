@@ -163,15 +163,15 @@ import {
   ziDelete,
   ziInfoBig,
   ziPlusOutline,
-} from '../assets/icons'
+} from '@zennnn/icons'
+
+import { Icon, Progress, TextField } from '@zennnn/core'
 
 import { LIST_ORG_REQUISITES, GET_ORGS } from '../graphql/queries'
 import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '../graphql/mutations'
 
 import { confirmDialog } from '../utils/confirmDialog'
 import { defaultFilter } from '../utils/defaultFilter'
-
-import { Icon, Progress, TextField } from '@zennnn/core'
 
 export default {
   name: 'RequisiteList',

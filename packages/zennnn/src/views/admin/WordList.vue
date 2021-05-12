@@ -374,22 +374,13 @@
 import { computed, ref, watch } from 'vue'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
-import {
-  ziEdit,
-  ziGlobe,
-  ziLanguages,
-  ziUserCircle,
-  ziSearch,
-  ziFilter,
-  ziFilterOutline,
-  ziChevronRight,
-} from '../../assets/icons'
+import { ziEdit, ziGlobe, ziLanguages, ziUserCircle, ziSearch, ziFilter, ziFilterOutline, ziChevronRight } from '@zennnn/icons'
+import { Btn, Icon, Menu, MenuItem, Progress, TextField, DataTable } from '@zennnn/core'
 
 import { LIST_WORDS } from '../../graphql/admin/queries'
 import { APPROVE_WORDS, HIDE_WORDS, MERGE_WORDS } from '../../graphql/admin/mutations'
 import { LOCALES_LIST } from '../../config/globals'
 
-import { Btn, Icon, Menu, MenuItem, Progress, TextField, DataTable } from '@zennnn/core'
 import WordProducts from '../../components/WordProducts.vue'
 import LocalePicker from '../../components/LocalePicker.vue'
 import WordDialog from '../../components/WordDialog.vue'

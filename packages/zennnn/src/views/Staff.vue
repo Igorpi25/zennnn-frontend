@@ -295,12 +295,8 @@ import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 import { wrapInArray } from 'vue-supp'
 
-import {
-  ziDelete,
-  ziSearch,
-  ziUserPlus,
-  ziChevronRight,
-} from '../assets/icons'
+import { ziDelete, ziSearch, ziUserPlus, ziChevronRight } from '@zennnn/icons'
+import { Btn, Icon, Progress, TextField, Switch, DataTable } from '@zennnn/core'
 
 import { LIST_STAFF } from '../graphql/queries'
 import { CANCEL_INVITATION, REMOVE_USER_FROM_ORG } from '../graphql/mutations'
@@ -308,7 +304,6 @@ import { SpecStatus, InvitationStatus } from '../graphql/enums'
 
 import { confirmDialog } from '../utils/confirmDialog'
 
-import { Btn, Icon, Progress, TextField, Switch, DataTable } from '@zennnn/core'
 import StaffCreateModal from '../components/StaffCreateModal.vue'
 
 export default {

@@ -437,7 +437,7 @@ import deepEqual from 'deep-equal'
 
 import { useApolloClient } from '@vue/apollo-composable'
 
-import { ziCogfigurations, ziEdit, ziChevronUp, ziPlusOutline, ziCloseDelete } from '../assets/icons'
+import { ziCogfigurations, ziEdit, ziChevronUp, ziPlusOutline, ziCloseDelete } from '@zennnn/icons'
 
 import { GET_ORG_REQUISITE } from '../graphql/queries'
 import { CREATE_CONTRACT, UPDATE_CONTRACT } from '../graphql/mutations'

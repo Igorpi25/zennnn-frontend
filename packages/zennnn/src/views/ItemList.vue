@@ -157,12 +157,7 @@ import { getObjectValueByPath } from 'vue-supp'
 
 // import { LIST_ITEMS } from '../graphql/queries'
 
-import {
-  ziQr,
-  ziSearch,
-  ziQuestionSign,
-} from '../assets/icons'
-
+import { ziQr, ziSearch, ziQuestionSign } from '@zennnn/icons'
 import { Btn, Icon, Tooltip, TextField, DataTable } from '@zennnn/core'
 
 export default {

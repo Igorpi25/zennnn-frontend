@@ -11,8 +11,7 @@
 </template>
 
 <script>
-import { ziInstagram, ziFacebook, ziVk, ziTelegram, ziYoutube } from '../assets/icons'
-
+import { ziInstagram, ziFacebook, ziVk, ziTelegram, ziYoutube } from '@zennnn/icons'
 import { Icon } from '@zennnn/core'
 
 export default {

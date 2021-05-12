@@ -61,7 +61,8 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
-import { ziChevronRight } from '../../assets/icons'
+import { ziChevronRight } from '@zennnn/icons'
+import { Btn, Icon, ExpandTransition } from '@zennnn/core'
 
 import { BranchType } from '../../graphql/enums'
 import { GET_SUPPLIER } from '../../graphql/queries'
@@ -73,7 +74,6 @@ import {
 
 import clientDetail from '../../mixins/clientDetail'
 
-import { Btn, Icon, ExpandTransition } from '@zennnn/core'
 import BranchItem from './BranchItem.vue'
 
 export default {

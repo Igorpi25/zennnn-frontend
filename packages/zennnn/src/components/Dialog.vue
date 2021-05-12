@@ -45,8 +45,7 @@
 import { computed, ref, toRefs, watch } from 'vue'
 import { useDimensionProps } from 'vue-supp'
 
-import { ziCloseWindow } from '../assets/icons'
-
+import { ziCloseWindow } from '@zennnn/icons'
 import { Icon, Modal } from '@zennnn/core'
 
 export default {

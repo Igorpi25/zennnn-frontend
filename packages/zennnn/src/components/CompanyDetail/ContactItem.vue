@@ -66,11 +66,10 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { ziCloseDelete } from '../../assets/icons'
+import { ziCloseDelete } from '@zennnn/icons'
+import { Icon, Select, TextField } from '@zennnn/core'
 
 import { ContactType } from '../../graphql/enums'
-
-import { Icon, Select, TextField } from '@zennnn/core'
 
 export default {
   name: 'ContactItem',

@@ -407,7 +407,9 @@ import {
   ziMoneyMinus,
   ziMoneyTernover,
   ziNumberOffDocument,
-} from '../assets/icons'
+} from '@zennnn/icons'
+
+import { Btn, Icon, Menu, MenuItem, Modal, Tooltip, TextField, Select, DataTable } from '@zennnn/core'
 
 import {
   Role,
@@ -421,7 +423,6 @@ import { GET_SPECS, GET_ORGS, SEARCH_CLIENTS, GET_CLIENTS_BY_ID } from '../graph
 import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
 import { SPECS_DELTA } from '../graphql/subscriptions'
 
-import { Btn, Icon, Menu, MenuItem, Modal, Tooltip, TextField, Select, DataTable } from '@zennnn/core'
 import ClientCard from '../components/ClientCard.vue'
 import Dialog from '../components/Dialog'
 

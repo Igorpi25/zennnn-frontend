@@ -263,6 +263,9 @@ import { useRoute } from 'vue-router'
 import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
 import cloneDeep from 'clone-deep'
 
+import { ziCloseWindow } from '@zennnn/icons'
+import { Icon, Btn } from '@zennnn/core'
+
 import { ClientType } from '../graphql/enums'
 import { GET_CLIENT, GET_CLIENT_GROUP, GET_ORG_NEXT_CLIENT_UID } from '../graphql/queries'
 import {
@@ -270,12 +273,9 @@ import {
   UPDATE_CLIENT,
 } from '../graphql/mutations'
 
-import { ziCloseWindow } from '../assets/icons'
-
 import { replaceAt } from '../utils/replaceAt'
 import { validateLegalClient, validatePrivateClient } from '../utils/validation'
 
-import { Icon, Btn } from '@zennnn/core'
 import LegalInfo from './CompanyDetail/LegalInfo.vue'
 import LegalDetail from './CompanyDetail/LegalDetail.vue'
 import ContactList from './CompanyDetail/ContactList.vue'

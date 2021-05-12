@@ -263,12 +263,12 @@ import axios from 'axios'
 import { onBeforeMount, onBeforeUnmount } from 'vue'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziChevronRight, ziUser } from '../assets/icons'
+import { ziChevronRight, ziUser } from '@zennnn/icons'
+import { Icon, Alert, Select, Radio, ExpandTransition } from '@zennnn/core'
 
 import { GET_PROFILE, LIST_PRICES, LIST_PAYMENT_METHODS } from '../graphql/queries'
 import { PAYMENT_DATA } from '../graphql/subscriptions'
 
-import { Icon, Alert, Select, Radio, ExpandTransition } from '@zennnn/core'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import PaymentCard from '../components/PaymentCard.vue'

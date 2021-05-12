@@ -63,11 +63,10 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useApolloClient, useMutation } from '@vue/apollo-composable'
 
-import { ziCloseWindow } from '../assets/icons'
+import { ziCloseWindow } from '@zennnn/icons'
+import { Btn, Form, TextField } from '@zennnn/core'
 
 import { PREMIUM_CONTACT } from '../graphql/mutations'
-
-import { Btn, Form, TextField } from '@zennnn/core'
 
 export default {
   name: 'PriceContactForm',

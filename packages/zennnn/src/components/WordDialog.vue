@@ -128,21 +128,14 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
-import {
-  ziEdit,
-  ziUser,
-  ziCloseDelete,
-  ziLanguages,
-  ziCheckedSm,
-} from '../assets/icons'
+import { ziEdit, ziUser, ziCloseDelete, ziLanguages, ziCheckedSm } from '@zennnn/icons'
+import { Btn, Modal, Progress, Icon, Form, Select, TextField } from '@zennnn/core'
 
 import { LOCALES_LIST } from '../config/globals'
 import { CREATE_WORD, UPDATE_WORD } from '../graphql/mutations'
 import { CREATE_WORD as ADMIN_CREATE_WORD, UPDATE_WORD as ADMIN_UPDATE_WORD } from '../graphql/admin/mutations'
 import { TRANSLATE_WORD } from '../graphql/queries'
 import { TRANSLATE_WORD as ADMIN_TRANSLATE_WORD } from '../graphql/admin/queries'
-
-import { Btn, Modal, Progress, Icon, Form, Select, TextField } from '@zennnn/core'
 
 export default {
   name: 'WordDialog',

@@ -35,11 +35,10 @@
 <script>
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import { GET_WORD_SPECS } from '../graphql/queries'
-
-import { ziSearch } from '../assets/icons'
-
+import { ziSearch } from '@zennnn/icons'
 import { Icon, Progress } from '@zennnn/core'
+
+import { GET_WORD_SPECS } from '../graphql/queries'
 
 export default {
   name: 'WordSpecs',

@@ -135,6 +135,10 @@ import { useApolloClient, useMutation, useQuery, useResult } from '@vue/apollo-c
 
 import debounce from 'lodash-es/debounce'
 import cloneDeep from 'clone-deep'
+
+import { ziCloseWindow } from '@zennnn/icons'
+import { Btn, Icon } from '@zennnn/core'
+
 import { validateCompanyDetail } from '../utils/validation'
 
 import { GET_ORG_REQUISITE, GET_ORGS } from '../graphql/queries'
@@ -143,9 +147,6 @@ import {
   UPDATE_REQUISITE,
 } from '../graphql/mutations'
 
-import { ziCloseWindow } from '../assets/icons'
-
-import { Btn, Icon } from '@zennnn/core'
 import CompanyInfo from './CompanyDetail/CompanyInfo.vue'
 import BankDetailList from './CompanyDetail/BankDetailList.vue'
 import ContactList from './CompanyDetail/ContactList.vue'

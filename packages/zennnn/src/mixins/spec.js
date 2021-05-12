@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useQuery, useResult, useMutation, useApolloClient } from '@vue/apollo-composable'
 
-import { ziRefresh } from '../assets/icons'
+import { ziRefresh } from '@zennnn/icons'
 
 import { Role, ProductStatus } from '../graphql/enums'
 import {

@@ -29,8 +29,7 @@
 </template>
 
 <script>
-import { ziUser } from '../assets/icons'
-
+import { ziUser } from '@zennnn/icons'
 import { Icon } from '@zennnn/core'
 
 export default {

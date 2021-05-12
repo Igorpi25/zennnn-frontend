@@ -342,17 +342,8 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useQuery, useResult, useMutation, useApolloClient } from '@vue/apollo-composable'
 
-import {
-  ziRefresh,
-  ziQuestionSign,
-  ziPlusOutline,
-  ziChevronDown,
-  ziCopy,
-  ziDelete,
-  ziFilter,
-  ziExpand,
-  ziCollapse,
-} from '../../assets/icons'
+import { ziRefresh, ziQuestionSign, ziPlusOutline, ziChevronDown, ziCopy, ziDelete, ziFilter, ziExpand, ziCollapse } from '@zennnn/icons'
+import { Icon, Progress, Tooltip, Modal, TextArea, Select, Switch, Checkbox, ExpandTransition } from '@zennnn/core'
 
 import { Role, ProductStatus } from '../../graphql/enums'
 import {
@@ -378,7 +369,6 @@ import {
 } from '../../graphql/mutations'
 import { getSpecExpandedInvoices, getSpecActiveTab } from '../../graphql/resolvers'
 
-import { Icon, Progress, Tooltip, Modal, TextArea, Select, Switch, Checkbox, ExpandTransition } from '@zennnn/core'
 import InvoiceHeader from '../InvoiceHeader.vue'
 import InvoiceContent from '../InvoiceContent.vue'
 import SpecSummary from '../SpecSummary.vue'

@@ -527,6 +527,9 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApolloClient, useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziUserPlus, ziPrint, ziChat, ziExpand, ziCollapse, ziChevronRight, ziCalendar, ziVolume, ziBoxes, ziWeight, ziPlus } from '@zennnn/icons'
+import { Icon, Progress } from '@zennnn/core'
+
 import { PAPER_STORE_KEY_PREFIX, DEFAULT_CURRENCY, PAPER_ORG_ID_STORE_KEY } from '../config/globals'
 
 import { Typename, Operation, InvoiceStatus } from '../graphql/enums'
@@ -546,23 +549,8 @@ import {
 } from '../graphql/typeDefs'
 import { getSpecExpandedInvoices } from '../graphql/resolvers'
 
-import {
-  ziUserPlus,
-  ziPrint,
-  ziChat,
-  ziExpand,
-  ziCollapse,
-  ziChevronRight,
-  ziCalendar,
-  ziVolume,
-  ziBoxes,
-  ziWeight,
-  ziPlus,
-} from '../assets/icons'
-
 import printInvoice from '../components/printInvoice'
 
-import { Icon, Progress } from '@zennnn/core'
 import Header from '../components/Header'
 import Copyright from '../components/Copyright'
 import Comments from '../components/Comments'

@@ -65,6 +65,9 @@
 <script>
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
+import { ziChat } from '@zennnn/icons'
+import { Icon, Menu } from '@zennnn/core'
+
 import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
 import {
   ADD_COMMENT_TO_SPEC,
@@ -77,9 +80,6 @@ import {
   MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED,
 } from '../graphql/mutations'
 
-import { ziChat } from '../assets/icons'
-
-import { Icon, Menu } from '@zennnn/core'
 import Comment from './Comment'
 import CommentInput from './CommentInput'
 

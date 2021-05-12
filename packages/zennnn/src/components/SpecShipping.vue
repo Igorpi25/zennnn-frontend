@@ -148,14 +148,7 @@
 </template>
 
 <script>
-import {
-  ziPlus,
-  ziBoxes,
-  ziWeight,
-  ziVolume,
-  ziCalendar,
-} from '../assets/icons'
-
+import { ziPlus, ziBoxes, ziWeight, ziVolume, ziCalendar } from '@zennnn/icons'
 import { Icon } from '@zennnn/core'
 
 export default {

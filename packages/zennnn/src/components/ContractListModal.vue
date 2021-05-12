@@ -47,14 +47,13 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
-import { ziCogfigurations, ziDelete, ziPlusOutline } from '../assets/icons'
+import { ziCogfigurations, ziDelete, ziPlusOutline } from '@zennnn/icons'
+import { Btn, Icon } from '@zennnn/core'
 
 import { LIST_ORG_CONTRACTS } from '../graphql/queries'
 import { DELETE_CONTRACT } from '../graphql/mutations'
 
 import { confirmDialog } from '../utils/confirmDialog'
-
-import { Btn, Icon } from '@zennnn/core'
 
 export default {
   name: 'ContractListModal',

@@ -341,11 +341,11 @@
 </template>
 
 <script>
-import { ziQuestionSign, ziChevronRight } from '../../assets/icons'
+import { ziQuestionSign, ziChevronRight } from '@zennnn/icons'
+import { Icon, Tooltip, Switch, TextField, ExpandTransition } from '@zennnn/core'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import { Icon, Tooltip, Switch, TextField, ExpandTransition } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

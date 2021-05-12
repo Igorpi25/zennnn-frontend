@@ -391,11 +391,10 @@
 </template>
 
 <script>
-import { ShipmentType, CustomsTerms, CustomsTermsMore } from '../../graphql/enums'
-
-import { ziCalendar } from '../../assets/icons'
-
+import { ziCalendar } from '@zennnn/icons'
 import { Icon, Select, TextField, DatePicker } from '@zennnn/core'
+
+import { ShipmentType, CustomsTerms, CustomsTermsMore } from '../../graphql/enums'
 
 export default {
   name: 'PrintDelivery',

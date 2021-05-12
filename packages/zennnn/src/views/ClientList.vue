@@ -259,26 +259,14 @@ import { useRoute } from 'vue-router'
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 import { wrapInArray, getObjectValueByPath } from 'vue-supp'
 
-import {
-  ziSearch,
-  ziDelete,
-  ziBagDeal,
-  ziAction,
-  ziPhone,
-  ziUserPlus,
-  ziMoneyPlus,
-  ziMoneyMinus,
-  ziMoneyTernover,
-  ziQuestionSign,
-} from '../assets/icons'
+import { ziSearch, ziDelete, ziBagDeal, ziAction, ziPhone, ziUserPlus, ziMoneyPlus, ziMoneyMinus, ziMoneyTernover, ziQuestionSign } from '@zennnn/icons'
+import { Btn, Icon, Tooltip, TextField, DataTable } from '@zennnn/core'
 
 import { ClientType } from '../graphql/enums'
 import { LIST_CLIENTS } from '../graphql/queries'
 import { DELETE_CLIENT } from '../graphql/mutations'
 
 import { confirmDialog } from '../utils/confirmDialog'
-
-import { Btn, Icon, Tooltip, TextField, DataTable } from '@zennnn/core'
 
 export default {
   name: 'ClientList',

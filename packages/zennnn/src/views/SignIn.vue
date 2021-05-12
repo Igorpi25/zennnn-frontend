@@ -230,12 +230,12 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
+import { ziVisible, ziHide } from '@zennnn/icons'
+import { Alert, Icon, Btn, Form, TextField, Modal, Checkbox } from '@zennnn/core'
+
 import { GET_PROFILE, GET_ORGS, GET_IS_LOGGED_IN } from '../graphql/queries'
 import { COMPLITE_REGISTRATION, INIT_SPEC_SIMPLE_UI } from '../graphql/mutations'
 
-import { ziVisible, ziHide } from '../assets/icons'
-
-import { Alert, Icon, Btn, Form, TextField, Modal, Checkbox } from '@zennnn/core'
 import Social from '../components/Social.vue'
 import Copyright from '../components/Copyright.vue'
 import LocalePicker from '../components/LocalePicker.vue'

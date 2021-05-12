@@ -96,14 +96,14 @@
 
 <script>
 import axios from 'axios'
+
+import { ziCloseDelete } from '@zennnn/icons'
+import { Icon, Progress } from '@zennnn/core'
+
 import {
   ICON_IMAGE_POSTFIX,
   UPLOAD_FILE_SIZE_MB,
 } from '../config/globals'
-
-import { ziCloseDelete } from '../assets/icons'
-
-import { Icon, Progress } from '@zennnn/core'
 
 export default {
   name: 'FileUploader',

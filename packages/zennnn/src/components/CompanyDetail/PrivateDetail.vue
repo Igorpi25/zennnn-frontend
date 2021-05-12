@@ -366,13 +366,13 @@
 </template>
 
 <script>
-import Countries from '../../config/countries-iso3.json'
+import { ziCalendar, ziChevronRight, ziQuestionSign } from '@zennnn/icons'
+import { Icon, Tooltip, Switch, Select, TextField, DatePicker, ExpandTransition } from '@zennnn/core'
 
-import { ziCalendar, ziChevronRight, ziQuestionSign } from '../../assets/icons'
+import Countries from '../../config/countries-iso3.json'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import { Icon, Tooltip, Switch, Select, TextField, DatePicker, ExpandTransition } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

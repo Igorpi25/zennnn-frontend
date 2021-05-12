@@ -259,13 +259,13 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
+import { ziPlusOutline } from '@zennnn/icons'
+import { Icon, Select, TextField } from '@zennnn/core'
+
 import clientDetail from '../../mixins/clientDetail'
 
 import { UPDATE_COMPANY_BANK_DETAIL } from '../../graphql/mutations'
 
-import { ziPlusOutline } from '../../assets/icons'
-
-import { Icon, Select, TextField } from '@zennnn/core'
 import Phone from '../Phone.vue'
 
 export default {

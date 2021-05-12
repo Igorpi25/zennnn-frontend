@@ -128,7 +128,8 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
-import { ziUserPlus } from '../assets/icons'
+import { ziUserPlus } from '@zennnn/icons'
+import { Alert, Btn, Form, Select, TextField, Window, WindowItem } from '@zennnn/core'
 
 import { Role } from '../graphql/enums'
 import { GET_INVITE_USER_TO_ORG } from '../graphql/queries'
@@ -136,7 +137,6 @@ import { INVITE_USER_TO_ORG } from '../graphql/mutations'
 
 import { LOCALES_LIST } from '../config/globals'
 
-import { Alert, Btn, Form, Select, TextField, Window, WindowItem } from '@zennnn/core'
 import Dialog from './Dialog'
 
 export default {

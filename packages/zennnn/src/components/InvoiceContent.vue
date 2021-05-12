@@ -222,18 +222,14 @@ import { useMutation } from '@vue/apollo-composable'
 
 import { Scroll } from 'vue-supp'
 
+import { ziLink, ziChat, ziQr } from '@zennnn/icons'
+import { Icon, DataTable } from '@zennnn/core'
+
 import { DEFAULT_CURRENCY } from '../config/globals'
 
 import { SpecCurrency, InvoiceProfitType, Role } from '../graphql/enums'
 import { CREATE_PRODUCT, CREATE_PRODUCT_WITH_INVOICE } from '../graphql/mutations'
 
-import {
-  ziLink,
-  ziChat,
-  ziQr,
-} from '../assets/icons'
-
-import { Icon, DataTable } from '@zennnn/core'
 import InvoiceProduct from './InvoiceProduct.vue'
 import InvoiceSummary from './InvoiceSummary.vue'
 

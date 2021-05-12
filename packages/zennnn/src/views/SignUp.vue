@@ -152,9 +152,9 @@
 <script>
 import { useMutation } from '@vue/apollo-composable'
 
-import { ziVisible, ziHide, ziChecked } from '../assets/icons'
-
+import { ziVisible, ziHide, ziChecked } from '@zennnn/icons'
 import { Btn, Icon, Form, TextField, Checkbox } from '@zennnn/core'
+
 import Social from '../components/Social.vue'
 import Copyright from '../components/Copyright.vue'
 import LocalePicker from '../components/LocalePicker.vue'
