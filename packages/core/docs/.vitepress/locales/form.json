@@ -1,0 +1,11 @@
+{
+  "props": {
+    "disabled": "Puts all children inputs into a disabled state.",
+    "lazyValidation": "If enabled, **valid** will always be `true` unless there are visible validation errors. You can still call `validate()` to manually trigger validation.",
+    "readonly": "Puts all children inputs into a readonly state.",
+    "valid": "A boolean value representing the validity of the form."
+  },
+  "emits": {
+    "update:valid": "Emitted when the valid prop updated."
+  }
+}
