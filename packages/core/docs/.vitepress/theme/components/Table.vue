@@ -85,6 +85,7 @@ function getApi (name: string) {
     case 'data-table': return import('../../data/data-table.json')
     case 'date-picker': return import('../../data/date-picker.json')
     case 'expand-transition': return import('../../data/expand-transition.json')
+    case 'form': return import('../../data/form.json')
     case 'icon': return import('../../data/icon.json')
     case 'image': return import('../../data/image.json')
     case 'label': return import('../../data/label.json')
