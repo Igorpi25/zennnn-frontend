@@ -1,7 +1,7 @@
 # Label API
 
 ## Component Page
-- [Label](../components/label)
+- [Labels](../components/labels)
 
 ## Props
 <Table name="label" field="props" />

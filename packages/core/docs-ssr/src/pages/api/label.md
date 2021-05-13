@@ -1,7 +1,7 @@
 # Label API
 
 ## Component Page
-- <router-link to="/components/label">Label</router-link>
+- <router-link to="/components/labels">Labels</router-link>
 
 ## Props
 <Table name="label" field="props" />

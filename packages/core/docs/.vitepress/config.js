@@ -46,7 +46,7 @@ function getSidebar () {
         { text: 'DatePickers', link: '/components/date-pickers' },
         { text: 'Icons', link: '/components/icons' },
         { text: 'Images', link: '/components/images' },
-        { text: 'Label', link: '/components/label' },
+        { text: 'Labels', link: '/components/labels' },
         { text: 'Loading', link: '/components/loading' },
         { text: 'Menus', link: '/components/menus' },
         { text: 'Messages', link: '/components/messages' },
