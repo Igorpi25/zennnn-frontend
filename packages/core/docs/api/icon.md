@@ -1,7 +1,7 @@
 # Icon API
 
 ## Component Page
-- [Icon](../components/icons)
+- [Icons](../components/icons)
 
 ## Props
 <Table name="icon" field="props" />
