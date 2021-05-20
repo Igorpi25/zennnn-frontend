@@ -2,6 +2,7 @@ import path from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueI18n from '@intlify/vite-plugin-vue-i18n'
+import viteComponents from 'vite-plugin-components'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -26,6 +27,21 @@ export default defineConfig({
     vue(),
     vueI18n({
       include: path.resolve(__dirname, '../shared/plugins/i18n/locales/**'),
+    }),
+    viteComponents({
+      // relative paths to the directory to search for components.
+      dirs: ['../src/components'],
+
+      // valid file extensions for components.
+      extensions: ['ts'],
+      // search for subdirectories
+      deep: true,
+
+      // Allow subdirectories as namespace prefix for components.
+      directoryAsNamespace: false,
+      // Subdirectory paths for ignoring namespace prefixes
+      // works when `directoryAsNamespace: true`
+      globalNamespaces: [],
     }),
   ],
 })

@@ -16,7 +16,8 @@ interface Route {
 const routesGroupMap = {} as Record<string, Route[]>
 
 const routes = Object.keys(pages).map((key) => {
-  const path = key.match(/\.\/components(.*)\.vue$/)![1].split('/').map(p => kebabCase(p)).join('/')
+  const componentPath = key.match(/\.\/components(.*)\.vue$/)![1]
+  const path = componentPath.split('/').map(p => kebabCase(p)).join('/')
   const name = kebabCase(path)
   const [groupName] = path.slice(1).split('/')
   const route = { name, path }
@@ -28,7 +29,7 @@ const routes = Object.keys(pages).map((key) => {
   return {
     name,
     path,
-    component: pages[key],
+    component: () => import(`./components/${componentPath}.vue`),
   }
 })
 
