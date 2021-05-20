@@ -19,8 +19,6 @@ import uid from '../../utils/uid'
 
 import Icon from '../Icon'
 
-import './Checkbox.css'
-
 export default defineComponent({
   name: 'Checkbox',
 

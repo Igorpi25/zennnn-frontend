@@ -6,8 +6,6 @@ import {
   defineComponent,
 } from 'vue'
 
-import './Overlay.css'
-
 export default defineComponent({
   name: 'Overlay',
 

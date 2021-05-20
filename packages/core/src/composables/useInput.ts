@@ -14,8 +14,6 @@ import Label from '../components/Label'
 import Tooltip from '../components/Tooltip'
 import Icon from '../components/Icon'
 
-import '../styles/input.css'
-
 export interface InputProps {
   modelValue?: any
   name?: string

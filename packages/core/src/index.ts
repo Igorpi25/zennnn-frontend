@@ -25,4 +25,4 @@ export * from './components/TextArea'
 export * from './components/Tooltip'
 // export * from './components/VScroll' // not used
 export * from './components/Window'
-export * from './components/transitions'
+// export * from './components/transitions'

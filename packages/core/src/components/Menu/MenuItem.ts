@@ -20,8 +20,6 @@ import uid from '../../utils/uid'
 
 import { useMenuContext } from './Menu'
 
-import './MenuItem.css'
-
 export default defineComponent({
   name: 'MenuItem',
 

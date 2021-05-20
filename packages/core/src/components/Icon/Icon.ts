@@ -1,8 +1,6 @@
 import { h, computed, defineComponent } from 'vue'
 import { convertToUnit } from 'vue-supp'
 
-import './Icon.css'
-
 const SIZE_CLASS_MAP = {
   small: '18px',
   base: '24px',

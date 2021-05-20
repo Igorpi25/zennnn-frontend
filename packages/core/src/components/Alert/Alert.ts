@@ -15,8 +15,6 @@ import { ziCloseDelete, ziInfoBig } from '@zennnn/icons'
 
 import Icon from '../Icon'
 
-import './Alert.css'
-
 export default defineComponent({
   name: 'Alert',
 

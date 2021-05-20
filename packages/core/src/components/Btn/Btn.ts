@@ -4,8 +4,6 @@ import { convertToUnit } from 'vue-supp'
 
 import Progress from '../Progress'
 
-import './Btn.css'
-
 export default defineComponent({
   name: 'Btn',
 

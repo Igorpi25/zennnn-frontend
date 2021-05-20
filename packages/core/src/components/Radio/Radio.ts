@@ -18,8 +18,6 @@ import uid from '../../utils/uid'
 
 import Icon from '../Icon'
 
-import './Radio.css'
-
 export default defineComponent({
   name: 'Radio',
 

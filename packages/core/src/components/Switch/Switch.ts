@@ -12,8 +12,6 @@ import { useInputValidationProps, useInputValidation } from '../../composables/u
 
 import uid from '../../utils/uid'
 
-import './Switch.css'
-
 export default defineComponent({
   name: 'Switch',
 

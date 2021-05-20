@@ -18,8 +18,6 @@ import defaultFilter from '../../utils/defaultFilter'
 import Icon from '../Icon'
 import Progress from '../Progress'
 
-import './DataTable.css'
-
 type DataTableCompareFunction<T = any> = (a: T, b: T) => number
 type DataTableFilterFunction = (value: any, search: string | null, item: any) => boolean
 interface DataTableHeader<T extends any = any> {

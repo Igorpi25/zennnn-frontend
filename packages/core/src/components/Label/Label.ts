@@ -6,8 +6,6 @@ import {
 
 import uid from '../../utils/uid'
 
-import './Label.css'
-
 export default defineComponent({
   name: 'Label',
 

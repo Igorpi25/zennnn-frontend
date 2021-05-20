@@ -20,8 +20,6 @@ import { useInputMessage } from '../../composables/useInputMessage'
 
 import uid from '../../utils/uid'
 
-import './TextArea.css'
-
 export default defineComponent({
   name: 'TextArea',
 

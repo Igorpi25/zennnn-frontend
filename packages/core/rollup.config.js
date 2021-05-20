@@ -1,5 +1,4 @@
 import analyze from 'rollup-plugin-analyzer'
-import postcss from 'rollup-plugin-postcss'
 import ts from 'rollup-plugin-typescript2'
 
 const outputConfigs = {
@@ -58,28 +57,7 @@ function createConfig (format, output, plugins = []) {
   ]
 
   if (format !== 'cjs') {
-    nodePlugins.push(
-      postcss({
-        config: {
-          path: './postcss.config.js',
-        },
-        extensions: ['.css'],
-        extract: true,
-        inject: false,
-      })
-    )
     external.push('lodash-es')
-  } else {
-    nodePlugins.push(
-      postcss({
-        config: {
-          path: './postcss.config.js',
-        },
-        extensions: ['.css'],
-        extract: false,
-        inject: false,
-      })
-    )
   }
 
   return {

@@ -1,8 +1,6 @@
 import { h, ref, watch, defineComponent } from 'vue'
 import { convertToUnit } from 'vue-supp'
 
-import './BtnToggle.css'
-
 export default defineComponent({
   name: 'BtnToggle',
 

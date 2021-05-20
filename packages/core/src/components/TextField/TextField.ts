@@ -20,8 +20,6 @@ import { useInputMessage } from '../../composables/useInputMessage'
 
 import uid from '../../utils/uid'
 
-import './TextField.css'
-
 export default defineComponent({
   name: 'TextField',
 

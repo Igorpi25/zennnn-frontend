@@ -28,8 +28,6 @@ import { usePopperProps, usePopper } from '../../composables/usePopper'
 
 import uid from '../../utils/uid'
 
-import './Tooltip.css'
-
 export default defineComponent({
   name: 'Tooltip',
 

@@ -35,8 +35,6 @@ import { usePopperProps, usePopper } from '../../composables/usePopper'
 import uid from '../../utils/uid'
 import { debounce } from '../../utils/debounce'
 
-import './Menu.css'
-
 export const MenuContext = Symbol('MenuContext')
 
 export const useMenuContext = (component: string) => {

@@ -1,7 +1,5 @@
 import { h, FunctionalComponent } from 'vue'
 
-import './LoadingSpinner.css'
-
 const DEFAULT_SIZE = 18
 const RAYS_COUNT = 12
 const SPEED = 1.2

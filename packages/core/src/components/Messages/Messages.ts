@@ -1,7 +1,5 @@
 import { h, TransitionGroup, FunctionalComponent } from 'vue'
 
-import './Messages.css'
-
 const Messages: FunctionalComponent<{
   value: any[],
   error: boolean,

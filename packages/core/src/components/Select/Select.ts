@@ -31,8 +31,6 @@ import uid from '../../utils/uid'
 import Icon from '../Icon'
 import { Menu, MenuItem } from '../Menu'
 
-import './Select.css'
-
 const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ')
 
 export default defineComponent({

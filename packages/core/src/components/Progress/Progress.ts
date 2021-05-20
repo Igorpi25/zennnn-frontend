@@ -1,8 +1,6 @@
 import { h, reactive, computed, defineComponent } from 'vue'
 import { convertToUnit } from 'vue-supp'
 
-import './Progress.css'
-
 export default defineComponent({
   name: 'Progress',
 

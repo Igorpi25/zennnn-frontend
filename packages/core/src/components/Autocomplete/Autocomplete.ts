@@ -31,8 +31,6 @@ import uid from '../../utils/uid'
 
 import { Menu, MenuItem } from '../Menu'
 
-import './Autocomplete.css'
-
 const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ')
 
 export default defineComponent({

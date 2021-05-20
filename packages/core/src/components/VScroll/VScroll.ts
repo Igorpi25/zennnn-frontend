@@ -16,8 +16,6 @@ import {
   useDimension,
 } from 'vue-supp'
 
-import './VScroll.css'
-
 export default defineComponent({
   name: 'VScroll',
 

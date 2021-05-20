@@ -18,8 +18,6 @@ import {
 
 import { useAspectRatioProps, useAspectRatio, useDimensionProps, useDimension, Intersect } from 'vue-supp'
 
-import './Image.css'
-
 const hasIntersect = typeof window !== 'undefined' && 'IntersectionObserver' in window
 
 export interface srcObject {

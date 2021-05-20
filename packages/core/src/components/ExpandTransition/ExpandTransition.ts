@@ -1,8 +1,6 @@
 import { h, Transition, FunctionalComponent } from 'vue'
 import { upperFirst } from 'vue-supp'
 
-import './ExpandTransition.css'
-
 interface HTMLExpandElement extends HTMLElement {
   _parent?: (Node & ParentNode & HTMLElement) | null
   _initialStyle?: {
