@@ -3,10 +3,11 @@ import glob from 'globby'
 import { defineConfig } from 'vite'
 import { SITE_DATA_ID, SITE_DATA_REQUEST_PATH } from 'vitepress/dist/node/alias'
 import { SiteConfig, SiteData } from 'vitepress'
+import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueI18n from '@intlify/vite-plugin-vue-i18n'
 import viteComponents from 'vite-plugin-components'
-import { createVitePressPlugin } from './vitepressPlugin'
+import vitePressMdToVue from './plugins/markdownToVue'
 import siteData from './src/config'
 
 const components = [
@@ -62,12 +63,13 @@ const config: SiteConfig = {
   themeDir: ''
 }
 
-const plugins = createVitePressPlugin('src/pages', config)
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    ...plugins,
+    vitePressMdToVue('src/pages', config),
+    vue({
+      include: [/\.vue$/, /\.md$/],
+    }),
     vueJsx(),
     vueI18n({
       include: path.resolve(__dirname, './src/plugins/i18n/locales/**'),
