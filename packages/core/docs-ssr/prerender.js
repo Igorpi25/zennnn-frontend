@@ -1,8 +1,9 @@
 // Pre-render the app into static HTML.
 // run `yarn generate` and then `dist/static` can be served as a static site.
 
-const fs = require('fs')
+const fs = require('fs-extra')
 const path = require('path')
+const glob = require('globby')
 
 const toAbsolute = (p) => path.resolve(__dirname, p)
 
@@ -11,16 +12,12 @@ const template = fs.readFileSync(toAbsolute('dist/static/index.html'), 'utf-8')
 const { render } = require('./dist/server/entry-server.js')
 
 // determine routes to pre-render from src/pages
-const routesToPrerender = fs
-  .readdirSync(toAbsolute('src/pages'))
-  .reduce((acc, file) => {
-    if (file.endsWith('.md')) {
-      const name = file.replace(/\.md$/, '').toLowerCase()
-      return [...acc, name === 'index' ? `/` : `/${name}`]
-    } else {
-      return acc
-    }
-  }, [])
+const routesToPrerender = glob
+  .sync('**.md', { cwd: toAbsolute('src/pages') })
+  .map((file) => {
+    const name = file.replace(/\.md$/, '').toLowerCase()
+    return name === 'index' ? `/` : `/${name}`
+  })
 
 ;(async () => {
   // pre-render each route...
@@ -32,7 +29,7 @@ const routesToPrerender = fs
       .replace(`<!--app-html-->`, appHtml)
 
     const filePath = `dist/static${url === '/' ? '/index' : url}.html`
-    fs.writeFileSync(toAbsolute(filePath), html)
+    fs.outputFile(toAbsolute(filePath), html)
     console.log('pre-rendered:', filePath)
   }
 

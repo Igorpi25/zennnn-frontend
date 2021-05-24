@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import NavBar from './components/NavBar.vue'
 import SideBar from './components/SideBar.vue'
@@ -31,6 +31,10 @@ const route = useRoute()
 const isOpen = ref<boolean>(false)
 
 watch(() => route.path, () => { isOpen.value = false })
+
+watchEffect(() => {
+  // console.log('Page Data', route.meta.pageData)
+})
 
 function toggleMenu (to: boolean | undefined) {
   isOpen.value = typeof to === 'boolean' ? to : !isOpen.value

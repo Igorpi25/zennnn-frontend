@@ -12,7 +12,7 @@ const routes = Object.keys(pages).map((path) => {
   const name = path.match(/\.\/pages(.*)\.md$/)![1].toLowerCase()
   return {
     path: name === '/index' ? '/' : name,
-    component: pages[path], // () => import('./pages/*.vue')
+    component: pages[path], // () => import(`./pages${name}.md`),
   }
 })
 

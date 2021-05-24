@@ -14,3 +14,5 @@ declare module '*.json' {
   const value: any
   export default value
 }
+
+declare const __VP_HASH_MAP__: Record<string, string>

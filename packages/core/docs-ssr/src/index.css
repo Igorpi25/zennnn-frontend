@@ -1,6 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import url(../../src/styles/input.css);
+@import url(../../src/styles/popper.css);
+
+@import url(../../src/components/Alert/Alert.css);
+@import url(../../src/components/Autocomplete/Autocomplete.css);
+@import url(../../src/components/Btn/Btn.css);
+@import url(../../src/components/BtnToggle/BtnToggle.css);
+@import url(../../src/components/Checkbox/Checkbox.css);
+@import url(../../src/components/DataTable/DataTable.css);
+@import url(../../src/components/ExpandTransition/ExpandTransition.css);
+@import url(../../src/components/Icon/Icon.css);
+@import url(../../src/components/Image/Image.css);
+@import url(../../src/components/Label/Label.css);
+@import url(../../src/components/LoadingSpinner/LoadingSpinner.css);
+@import url(../../src/components/Menu/Menu.css);
+@import url(../../src/components/Menu/MenuItem.css);
+@import url(../../src/components/Messages/Messages.css);
+@import url(../../src/components/Progress/Progress.css);
+@import url(../../src/components/Radio/Radio.css);
+@import url(../../src/components/Select/Select.css);
+@import url(../../src/components/Switch/Switch.css);
+@import url(../../src/components/TextArea/TextArea.css);
+@import url(../../src/components/TextField/TextField.css);
+@import url(../../src/components/Tooltip/Tooltip.css);
+@import url(../../src/components/transitions/transitions.css);
 
 @layer base {
   body {
@@ -105,66 +131,6 @@
   }
   .api-table__default code {
     background: #f5f2f0;
-  }
-}
-
-@layer components {
-  /* Popper classes */
-  [data-popper-root] {
-    max-width: calc(100vw - 10px);
-    pointer-events: none;
-  }
-  /* Hide the popper when the reference is hidden */
-  [data-popper-root][data-popper-reference-hidden] {
-    visibility: hidden;
-  }
-  .popper__box {
-    pointer-events: auto;
-    position: relative;
-    outline: 0;
-    transition-property: transform, visibility, opacity;
-    @apply rounded-lg;
-  }
-
-  .popper__arrow,
-  .popper__arrow::before {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-  }
-  .popper__arrow::before {
-    content: '';
-    transform: rotate(45deg);
-    @apply bg-current;
-  }
-  .popper__arrow[data-hide] {
-    visibility: hidden;
-  }
-
-  [data-popper-root][data-popper-placement^='top'] > .popper__box > .popper__arrow {
-    bottom: -4px;
-  }
-  [data-popper-root][data-popper-placement^='bottom'] > .popper__box > .popper__arrow {
-    top: -4px;
-  }
-  [data-popper-root][data-popper-placement^='left'] > .popper__box > .popper__arrow {
-    right: -4px;
-  }
-  [data-popper-root][data-popper-placement^='right'] > .popper__box > .popper__arrow {
-    left: -4px;
-  }
-
-  [data-popper-root][data-popper-placement^='top'] > .popper__box {
-    transform-origin: bottom;
-  }
-  [data-popper-root][data-popper-placement^='bottom'] > .popper__box {
-    transform-origin: top;
-  }
-  [data-popper-root][data-popper-placement^='left'] > .popper__box {
-    transform-origin: right;
-  }
-  [data-popper-root][data-popper-placement^='right'] > .popper__box {
-    transform-origin: left;
   }
 }
 
