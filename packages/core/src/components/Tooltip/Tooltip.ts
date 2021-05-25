@@ -8,7 +8,7 @@ import {
   Teleport,
   Transition,
   withDirectives,
-  ComponentPublicInstance,
+  ComponentPublicInstance
 } from 'vue'
 
 import {
@@ -21,7 +21,7 @@ import {
   useActivator,
   useLazyContentProps,
   useLazyContent,
-  ClickOutside,
+  ClickOutside
 } from 'vue-supp'
 
 import { usePopperProps, usePopper } from '../../composables/usePopper'
@@ -41,18 +41,19 @@ export default defineComponent({
       enterToClass: 'transform scale-100 opacity-100',
       leaveActiveClass: 'transition ease-out duration-75',
       leaveFromClass: 'opacity-100',
-      leaveToClass: 'opacity-0',
+      leaveToClass: 'opacity-0'
     }),
     ...useDimensionProps(),
     ...useAttachProps(),
     tag: {
       type: String,
-      default: 'span',
+      default: 'span'
     },
     contentClass: {
       type: String,
-      default: '',
+      default: ''
     },
+    origin: String
   },
 
   emits: ['update:modelValue'],
@@ -76,7 +77,7 @@ export default defineComponent({
       return {
         role: undefined,
         'aria-describedby': isActive.value ? id : undefined,
-        'aria-controls': isActive.value ? id : undefined,
+        'aria-controls': isActive.value ? id : undefined
       }
     })
 
@@ -84,11 +85,11 @@ export default defineComponent({
       return {
         onBlur: () => {
           isActive.value = false
-        },
+        }
       }
     })
 
-    watch(isActive, (val) => {
+    watch(isActive, val => {
       if (props.disabled) return
       if (val) {
         requestAnimationFrame(() => {
@@ -109,8 +110,8 @@ export default defineComponent({
         {
           class: {
             tooltip__content: true,
-            [props.contentClass.trim()]: true,
-          },
+            [props.contentClass.trim()]: true
+          }
         },
         slots.default?.()
       )
@@ -122,9 +123,9 @@ export default defineComponent({
         role: 'tooltip',
         tabindex: '-1',
         class: {
-          'popper__box tooltip__box': true,
+          'popper__box tooltip__box': true
         },
-        style: dimensionStyles.value,
+        style: dimensionStyles.value
       }
 
       const content = withDirectives(
@@ -138,9 +139,18 @@ export default defineComponent({
         Transition,
         {
           ...props.transition,
+          onBeforeEnter(el: Element) {
+            if (props.origin) {
+              ;(el as HTMLElement).style.transformOrigin = props.origin
+              ;(el as HTMLElement).style.webkitTransformOrigin = props.origin
+            }
+          },
+          onAfterEnter() {
+            if (!isActive.value) destroy()
+          },
           onAfterLeave() {
             destroy()
-          },
+          }
         },
         () => content
       )
@@ -152,9 +162,9 @@ export default defineComponent({
       const data = {
         ref: popper,
         style: {
-          zIndex: props.zIndex,
+          zIndex: props.zIndex
         },
-        'data-popper-root': '',
+        'data-popper-root': ''
       }
 
       const content = withDirectives(h('div', data, children), [
@@ -169,9 +179,9 @@ export default defineComponent({
                 popper.value) as Element
               return isActive.value && !wrapper?.contains(e.target as Element)
             },
-            include: () => [rootElement.value],
-          },
-        ],
+            include: () => [rootElement.value]
+          }
+        ]
       ])
 
       return showLazyContent(() =>
@@ -179,7 +189,7 @@ export default defineComponent({
           Teleport,
           {
             to: target.value,
-            disabled: !target.value,
+            disabled: !target.value
           },
           content
         )
@@ -193,7 +203,7 @@ export default defineComponent({
       activatorAttrs,
       activatorListeners,
       genPopper,
-      genActivator,
+      genActivator
     }
   },
 
@@ -203,13 +213,13 @@ export default defineComponent({
       {
         ref: 'rootElement',
         class: {
-          tooltip: true,
-        },
+          tooltip: true
+        }
       },
       [
         this.genPopper(),
-        this.genActivator(this.activatorAttrs, this.activatorListeners),
+        this.genActivator(this.activatorAttrs, this.activatorListeners)
       ]
     )
-  },
+  }
 })
