@@ -8,7 +8,13 @@
         <span class="text-gray-200 mr-1">
           <span> </span><span>{{ $t('companyDetail.privateDetailDesc') }}</span>
         </span>
-        <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="332">
+        <Tooltip
+          placement="top-start"
+          distance="2"
+          skidding="-16"
+          origin="24px 100%"
+          max-width="332"
+        >
           <template v-slot:activator>
             <Icon class="text-blue-500 align-middle">
               {{ icons.ziQuestionSign }}
@@ -21,7 +27,12 @@
       </div>
       <div>
         <button
-          class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
+          class="
+            text-blue-500
+            hover:text-blue-400
+            focus:text-blue-400
+            focus:outline-none
+          "
           @click="toggleExpand"
         >
           <Icon
@@ -47,7 +58,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'passportId': $event })"
+              @update:model-value="updateData({ passportId: $event })"
             />
           </div>
           <div class="pb-2">
@@ -62,25 +73,31 @@
               state-icon
               state-error-color="none"
               searchable
-              @update:model-value="updateData({ 'citizenship': $event })"
+              @update:model-value="updateData({ citizenship: $event })"
             >
               <template v-slot:prepend>
                 <img
                   v-if="item.citizenship"
-                  :src="require(`@/assets/img/flags/square/${item.citizenship}.svg`).default"
+                  :src="
+                    require(`@/assets/img/flags/square/${item.citizenship}.svg`)
+                      .default
+                  "
                   class="w-6 rounded-sm ml-2 mr-4"
-                >
+                />
                 <img
                   v-else
                   src="@/assets/icons/earth.svg"
                   class="h-6 w-6 rounded-full ml-2 mr-4"
-                >
+                />
               </template>
               <template v-slot:item="{ item }">
                 <img
-                  :src="require(`@/assets/img/flags/square/${item.value}.svg`).default"
+                  :src="
+                    require(`@/assets/img/flags/square/${item.value}.svg`)
+                      .default
+                  "
                   class="w-6 rounded-sm mr-4"
-                >
+                />
                 <span>{{ item.text }}</span>
               </template>
             </Select>
@@ -89,15 +106,16 @@
             <div class="flex">
               <DatePicker
                 :model-value="item.issueDate"
-                @update:model-value="updateData({ 'issueDate': $event })"
+                @update:model-value="updateData({ issueDate: $event })"
               >
                 <template v-slot:activator>
-                  <div
-                    class="pr-sm"
-                    style="max-width: 232px;"
-                  >
+                  <div class="pr-sm" style="max-width: 232px">
                     <TextField
-                      :model-value="item.issueDate ? $d($parseDate(item.issueDate), 'short') : null"
+                      :model-value="
+                        item.issueDate
+                          ? $d($parseDate(item.issueDate), 'short')
+                          : null
+                      "
                       :label="$t('companyDetail.label.issueDate')"
                       :placeholder="$t('companyDetail.placeholder.date')"
                       :loading="loading"
@@ -118,15 +136,16 @@
               </DatePicker>
               <DatePicker
                 :model-value="item.expireDate"
-                @update:model-value="updateData({ 'expireDate': $event })"
+                @update:model-value="updateData({ expireDate: $event })"
               >
                 <template v-slot:activator>
-                  <div
-                    class="pr-sm"
-                    style="max-width: 232px;"
-                  >
+                  <div class="pr-sm" style="max-width: 232px">
                     <TextField
-                      :model-value="item.expireDate ? $d($parseDate(item.expireDate), 'short') : null"
+                      :model-value="
+                        item.expireDate
+                          ? $d($parseDate(item.expireDate), 'short')
+                          : null
+                      "
                       :label="$t('companyDetail.label.expireDate')"
                       :placeholder="$t('companyDetail.placeholder.date')"
                       :loading="loading"
@@ -157,7 +176,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'issuedBy': $event })"
+              @update:model-value="updateData({ issuedBy: $event })"
             />
           </div>
           <div class="pb-2">
@@ -223,11 +242,22 @@
                 @update:model-value="updateMailingAddressPostcode"
               />
               <div class="relative flex-shrink-0 relative pl-sm">
-                <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+                <label
+                  class="
+                    absolute
+                    top-0
+                    right-0
+                    block
+                    text-base text-gray-100
+                    whitespace-nowrap
+                    leading-5
+                    py-2
+                  "
+                >
                   {{ $t('companyDetail.label.matches') }}
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
-                   <Switch
+                  <Switch
                     :model-value="isMailingAddressMatch"
                     @update:model-value="updateMailingAddressMatch"
                   />
@@ -235,7 +265,9 @@
               </div>
             </div>
             <div class="relative lg:pb-20">
-              <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
+              <div
+                class="lg:absolute text-sm text-gray-200 leading-tight pl-sm"
+              >
                 {{ $t('companyDetail.hint.privateAddress') }}
               </div>
             </div>
@@ -253,7 +285,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'vat': $event })"
+              @update:model-value="updateData({ vat: $event })"
             />
           </div>
           <div class="pb-2">
@@ -267,7 +299,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'bankName': $event })"
+              @update:model-value="updateData({ bankName: $event })"
             />
           </div>
           <div class="pb-2">
@@ -281,7 +313,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'bankAddress': $event })"
+              @update:model-value="updateData({ bankAddress: $event })"
             />
           </div>
           <div class="pb-2">
@@ -295,7 +327,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'bankAccountNumber': $event })"
+              @update:model-value="updateData({ bankAccountNumber: $event })"
             />
           </div>
           <div class="flex items-end pb-2">
@@ -310,7 +342,7 @@
               state-icon
               state-error-color="none"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-              @update:model-value="updateData({ 'swift': $event })"
+              @update:model-value="updateData({ swift: $event })"
             />
             <TextField
               :model-value="item.bic"
@@ -323,7 +355,7 @@
               state-icon
               state-error-color="none"
               class="flex-grow"
-              @update:model-value="updateData({ 'bic': $event })"
+              @update:model-value="updateData({ bic: $event })"
             />
           </div>
           <div>
@@ -339,7 +371,7 @@
                 state-error-color="none"
                 required
                 class="w-1/2 pr-2"
-                @update:model-value="updateData({ 'phone': $event })"
+                @update:model-value="updateData({ phone: $event })"
               />
               <Phone
                 :model-value="item.fax"
@@ -352,7 +384,7 @@
                 state-error-color="none"
                 required
                 class="w-1/2 pl-2"
-                @update:model-value="updateData({ 'fax': $event })"
+                @update:model-value="updateData({ fax: $event })"
               />
             </div>
             <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
@@ -367,7 +399,15 @@
 
 <script>
 import { ziCalendar, ziChevronRight, ziQuestionSign } from '@zennnn/icons'
-import { Icon, Tooltip, Switch, Select, TextField, DatePicker, ExpandTransition } from '@zennnn/core'
+import {
+  Icon,
+  Tooltip,
+  Switch,
+  Select,
+  TextField,
+  DatePicker,
+  ExpandTransition,
+} from '@zennnn/core'
 
 import Countries from '../../config/countries-iso3.json'
 
@@ -394,12 +434,12 @@ export default {
       default: () => ({}),
     },
   },
-  data () {
+  data() {
     return {
       isMailingAddressMatchLazy: false,
       countriesSearch: '',
       rules: {
-        required: v => !!v || this.$t('rule.required'),
+        required: (v) => !!v || this.$t('rule.required'),
       },
       icons: {
         ziCalendar,
@@ -410,16 +450,18 @@ export default {
   },
   computed: {
     isMailingAddressMatch: {
-      get () {
+      get() {
         return this.isMailingAddressMatchLazy
       },
-      set (val) {
+      set(val) {
         this.isMailingAddressMatchLazy = val
       },
     },
-    countries () {
+    countries() {
       return Object.entries(Countries).map(([k, v]) => {
-        const name = this.$te(`countries.${k}`, 'en') ? this.$t(`countries.${k}`, 'en') : v
+        const name = this.$te(`countries.${k}`, 'en')
+          ? this.$t(`countries.${k}`, 'en')
+          : v
         return {
           text: this.$te(`countries.${k}`) ? this.$t(`countries.${k}`) : name,
           value: k,
@@ -429,29 +471,29 @@ export default {
     },
   },
   watch: {
-    'item.isMailingAddressMatch' (val) {
+    'item.isMailingAddressMatch'(val) {
       this.isMailingAddressMatchLazy = val
     },
   },
   methods: {
-    updateMailingAddressMatch (val) {
+    updateMailingAddressMatch(val) {
       this.isMailingAddressMatch = val
       const input = { isMailingAddressMatch: val }
       this.updateData(input)
     },
-    updateLegalAddress (val) {
+    updateLegalAddress(val) {
       const input = { legalAddress: val }
       this.updateData(input)
     },
-    updateLegalAddressPostcode (val) {
+    updateLegalAddressPostcode(val) {
       const input = { legalAddressPostcode: val }
       this.updateData(input)
     },
-    updateMailingAddress (val) {
+    updateMailingAddress(val) {
       const input = { mailingAddress: val }
       this.updateData(input)
     },
-    updateMailingAddressPostcode (val) {
+    updateMailingAddressPostcode(val) {
       const input = { mailingAddressPostcode: val }
       this.updateData(input)
     },

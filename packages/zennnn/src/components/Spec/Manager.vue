@@ -15,15 +15,8 @@
             {{ $t('shipping.title') }}
           </span>
           <transition name="fade-transition">
-            <div
-              v-if="loading"
-              class="absolute top-0 right-0 text-gray-200"
-            >
-              <Progress
-                indeterminate
-                size="20"
-                width="2"
-              />
+            <div v-if="loading" class="absolute top-0 right-0 text-gray-200">
+              <Progress indeterminate size="20" width="2" />
             </div>
           </transition>
         </h1>
@@ -52,10 +45,22 @@
             :items="spec.comments"
             :spec-id="specId"
             left
-            class="text-gray-300 focus:text-gray-100 hover:text-gray-100 transition-colors duration-100 ease-out mr-4"
+            class="
+              text-gray-300
+              focus:text-gray-100
+              hover:text-gray-100
+              transition-colors
+              duration-100
+              ease-out
+              mr-4
+            "
           />
           <span v-if="spec.client">
-            {{ `${$t('shipping.shippingClient')}: ${spec.client.uid} ${spec.client.fullName}` }}
+            {{
+              `${$t('shipping.shippingClient')}: ${spec.client.uid} ${
+                spec.client.fullName
+              }`
+            }}
           </span>
           <template v-else>
             <Select
@@ -91,29 +96,87 @@
         <div class="h-12 flex items-center">
           <div class="flex items-center pl-5 sm:pr-sm">
             <Checkbox disabled hide-details class="pt-xs">
-              <button disabled class="flex text-2xl text-blue-500 focus:outline-none cursor-not-allowed">
+              <button
+                disabled
+                class="
+                  flex
+                  text-2xl text-blue-500
+                  focus:outline-none
+                  cursor-not-allowed
+                "
+              >
                 <i class="zi-chevron-down" />
               </button>
             </Checkbox>
           </div>
-          <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-1 sm:px-sm">
+          <button
+            disabled
+            class="
+              opacity-40
+              flex
+              items-center
+              text-gray-200
+              focus:outline-none
+              select-none
+              cursor-not-allowed
+              px-1
+              sm:px-sm
+            "
+          >
             <i class="zi-copy text-2xl" />
           </button>
-          <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-1 sm:px-sm">
+          <button
+            disabled
+            class="
+              opacity-40
+              flex
+              items-center
+              text-gray-200
+              focus:outline-none
+              select-none
+              cursor-not-allowed
+              px-1
+              sm:px-sm
+            "
+          >
             <i class="zi-delete text-2xl" />
           </button>
           <div class="w-px h-5 bg-gray-400 mx-sm" />
-          <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-sm">
+          <button
+            disabled
+            class="
+              opacity-40
+              flex
+              items-center
+              text-gray-200
+              focus:outline-none
+              select-none
+              cursor-not-allowed
+              px-sm
+            "
+          >
             <i class="zi-filter text-2xl" />
           </button>
           <div class="flex-grow" />
           <div class="flex text-gray-200 text-lg overflow-hidden">
-            <span v-html="specTitleHtml" :title="specTitleText" class="truncate" />
+            <span
+              v-html="specTitleHtml"
+              :title="specTitleText"
+              class="truncate"
+            />
             <div class="inline-block text-2xl pl-sm pr-3 md:pr-md">
               <button
                 v-if="expanded.length === 0"
                 :disabled="dataLoading"
-                class="flex items-center text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
+                class="
+                  flex
+                  items-center
+                  text-gray-200
+                  hover:text-gray-100
+                  focus:text-gray-100
+                  focus:outline-none
+                  select-none
+                "
                 @click="expandAll"
               >
                 <i class="zi-expand" :title="$t('action.expandAll')" />
@@ -121,7 +184,15 @@
               <button
                 v-else
                 :disabled="dataLoading"
-                class="flex items-center text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
+                class="
+                  flex
+                  items-center
+                  text-gray-200
+                  hover:text-gray-100
+                  focus:text-gray-100
+                  focus:outline-none
+                  select-none
+                "
                 @click="collapseAll"
               >
                 <i class="zi-collapse" :title="$t('action.collapseAll')" />
@@ -129,14 +200,28 @@
             </div>
           </div>
         </div>
-        <div v-if="dataLoading" class="flex items-center justify-center h-12 text-gray-200 bg-gray-700 rounded">
+        <div
+          v-if="dataLoading"
+          class="
+            flex
+            items-center
+            justify-center
+            h-12
+            text-gray-200
+            bg-gray-700
+            rounded
+          "
+        >
           {{ `${$t('action.loading')}...` }}
         </div>
         <div
           v-else
           v-for="(item, i) in items"
           :key="i"
-          :class="[item.id ? 'shadow-lg' : 'shadow-xl', { 'mb-1': i + 1 < items.length }]"
+          :class="[
+            item.id ? 'shadow-lg' : 'shadow-xl',
+            { 'mb-1': i + 1 < items.length },
+          ]"
         >
           <template v-if="item.id === emptyId">
             <InvoiceHeader
@@ -192,8 +277,18 @@
     </div>
 
     <div class="flex flex-wrap lg:flex-nowrap pb-8">
-      <div class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3" style="max-width: 746px;">
-        <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
+      <div
+        class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3"
+        style="max-width: 746px"
+      >
+        <transition
+          name="slide-y-transition"
+          @leave="
+            (el) => {
+              el.style.display = 'none'
+            }
+          "
+        >
           <SpecShipping
             v-if="isInfoVisible"
             :spec="spec"
@@ -209,19 +304,13 @@
                   @change="setContainerSize(container.id, $event)"
                 >
                   <option value="_20_DC">
-                    <span class="cursor-pointer">
-                      20'DC
-                    </span>
+                    <span class="cursor-pointer"> 20'DC </span>
                   </option>
                   <option value="_40_HC">
-                    <span class="cursor-pointer">
-                      40'HC
-                    </span>
+                    <span class="cursor-pointer"> 40'HC </span>
                   </option>
                   <option value="_45_HC">
-                    <span class="cursor-pointer">
-                      45'HC
-                    </span>
+                    <span class="cursor-pointer"> 45'HC </span>
                   </option>
                 </select>
                 <Switch
@@ -236,7 +325,14 @@
         </transition>
       </div>
       <div class="w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3">
-        <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
+        <transition
+          name="slide-y-transition"
+          @leave="
+            (el) => {
+              el.style.display = 'none'
+            }
+          "
+        >
           <SpecCost
             v-if="isCostVisible"
             :role="Role.MANAGER"
@@ -247,16 +343,27 @@
       </div>
     </div>
 
-    <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
-      <div
-        v-if="isSummaryVisible"
-        class="pb-8"
-      >
+    <transition
+      name="slide-y-transition"
+      @leave="
+        (el) => {
+          el.style.display = 'none'
+        }
+      "
+    >
+      <div v-if="isSummaryVisible" class="pb-8">
         <h4 class="text-white text-xl font-semibold leading-6 mb-4">
           <span class="mr-1">{{ $t('shipping.extraTitle') }}</span>
           <Tooltip top max-width="240">
             <template v-slot:activator>
-              <i class="zi-help align-middle text-blue-500 text-xl cursor-pointer" />
+              <i
+                class="
+                  zi-help
+                  align-middle
+                  text-blue-500 text-xl
+                  cursor-pointer
+                "
+              />
             </template>
             <span>
               {{ $t('shipping.extraHint') }}
@@ -266,12 +373,20 @@
         <div class="flex">
           <div class="w-full flex-grow lg:w-auto lg:pr-3">
             <div class="rounded-md bg-gray-700 pt-2 px-sm pb-5">
-              <TextArea
-                :placeholder="$t('shipping.extraPlaceholder')"
-              />
+              <TextArea :placeholder="$t('shipping.extraPlaceholder')" />
             </div>
           </div>
-          <div class="hidden lg:block w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3" />
+          <div
+            class="
+              hidden
+              lg:block
+              w-full
+              flex-shrink-0
+              text-base
+              lg:max-w-sm
+              lg:pl-3
+            "
+          />
         </div>
       </div>
     </transition>
@@ -288,12 +403,15 @@
       </Btn>
     </div> -->
 
-    <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
-      <SpecSummary
-        v-if="isSummaryVisible"
-        :spec="spec"
-        :role="Role.MANAGER"
-      />
+    <transition
+      name="slide-y-transition"
+      @leave="
+        (el) => {
+          el.style.display = 'none'
+        }
+      "
+    >
+      <SpecSummary v-if="isSummaryVisible" :spec="spec" :role="Role.MANAGER" />
     </transition>
 
     <Modal
@@ -313,7 +431,6 @@
         @create="setCreateSpecClient"
       />
     </Modal>
-
   </div>
 </template>
 
@@ -347,7 +464,7 @@ export default {
     SpecCost,
   },
   mixins: [spec],
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
@@ -355,7 +472,7 @@ export default {
       apolloClient,
     }
   },
-  data () {
+  data() {
     return {
       defaultTab: 1,
       setContainerSizeLoading: false,
@@ -364,13 +481,13 @@ export default {
   },
   computed: {
     // TODO: need work with containers
-    container () {
+    container() {
       const containers = this.spec.containers || []
       return containers[0] || {}
     },
   },
   methods: {
-    async setContainerSize (containerId, e) {
+    async setContainerSize(containerId, e) {
       try {
         const val = e.target.value || ''
         const split = val.split('_')
@@ -393,7 +510,7 @@ export default {
         this.setContainerSizeLoading = false
       }
     },
-    async setContainerCustomCapacity (containerId, inputCapacity, inputShrink) {
+    async setContainerCustomCapacity(containerId, inputCapacity, inputShrink) {
       try {
         if (!containerId) return
         this.setContainerCustomCapacityLoading = true

@@ -13,32 +13,42 @@
           dense
           searchable
           hide-details
-          @update:model-value="$emit('update', { customs: { countryOfOrigin: $event } })"
+          @update:model-value="
+            $emit('update', { customs: { countryOfOrigin: $event } })
+          "
         >
           <template v-slot:prepend>
             <img
               v-if="item.countryOfOrigin"
-              :src="require(`@/assets/img/flags/square/${item.countryOfOrigin}.svg`).default"
+              :src="
+                require(`@/assets/img/flags/square/${item.countryOfOrigin}.svg`)
+                  .default
+              "
               :alt="item.countryOfOrigin"
               class="w-6 rounded-sm mr-4 ml-2"
-            >
+            />
             <img
               v-else
               src="@/assets/icons/earth.svg"
               class="h-5 w-6 rounded-full mr-4 ml-2"
-            >
+            />
           </template>
           <template v-slot:item="{ item }">
             <img
-              :src="require(`@/assets/img/flags/square/${item.value}.svg`).default"
+              :src="
+                require(`@/assets/img/flags/square/${item.value}.svg`).default
+              "
               class="w-6 rounded-sm mr-4"
-            >
+            />
             <span>{{ item.text }}</span>
           </template>
         </Select>
       </div>
       <div class="flex items-center pb-2">
-        <div class="pl-sm pr-1 w-3/5 truncate" :title="$t('shipping.termsLabel')">
+        <div
+          class="pl-sm pr-1 w-3/5 truncate"
+          :title="$t('shipping.termsLabel')"
+        >
           {{ $t('shipping.termsLabel') }}:
         </div>
         <div class="w-2/5">
@@ -50,12 +60,17 @@
             :disabled="isTermsDisabled"
             dense
             searchable
-            @update:model-value="$emit('update', { customs: { terms: $event } })"
+            @update:model-value="
+              $emit('update', { customs: { terms: $event } })
+            "
           />
         </div>
       </div>
       <div class="flex items-center">
-        <div class="pl-sm pr-1 w-3/5 truncate" :title="$t('shipping.costLabel')">
+        <div
+          class="pl-sm pr-1 w-3/5 truncate"
+          :title="$t('shipping.costLabel')"
+        >
           {{ $t('shipping.costLabel') }}:
         </div>
         <div class="w-2/5">
@@ -78,7 +93,10 @@
       </div>
       <div class="border-t border-gray-900 my-4 mx-5" />
       <div class="flex items-center pb-2">
-        <div class="pl-sm pr-1 w-3/5 truncate" :title="$t('shipping.discountLabel')">
+        <div
+          class="pl-sm pr-1 w-3/5 truncate"
+          :title="$t('shipping.discountLabel')"
+        >
           {{ $t('shipping.discountLabel') }}:
         </div>
         <div class="w-2/5">
@@ -89,7 +107,9 @@
             dense
             number
             number-format="currency"
-            @update:model-value="$emit('update', { customs: { discount: $event } })"
+            @update:model-value="
+              $emit('update', { customs: { discount: $event } })
+            "
           >
             <template v-slot:append>
               <span class="text-base text-white pl-xs pr-sm">
@@ -114,7 +134,10 @@
         </div>
       </div>
       <div class="flex items-center">
-        <div class="pl-sm pr-1 w-3/5 truncate" :title="$t('shipping.incomeTaxLabel')">
+        <div
+          class="pl-sm pr-1 w-3/5 truncate"
+          :title="$t('shipping.incomeTaxLabel')"
+        >
           {{ $t('shipping.incomeTaxLabel') }}:
         </div>
         <div class="w-2/5">
@@ -147,7 +170,9 @@
           :debounce="250"
           :placeholder="$t('shipping.amountInWordsClientLang')"
           rows="2"
-          @update:model-value="$emit('update', { amountInWordsClientLang: $event })"
+          @update:model-value="
+            $emit('update', { amountInWordsClientLang: $event })
+          "
         />
       </div>
     </div>
@@ -183,19 +208,24 @@ export default {
     amountInWords: String,
     amountInWordsClientLang: String,
   },
-  data () {
+  data() {
     return {
       termsSearch: '',
       countriesSearch: '',
     }
   },
   computed: {
-    isTermsDisabled () {
-      return this.shipmentType === ShipmentType.AIR || this.shipmentType === ShipmentType.EXPRESS
+    isTermsDisabled() {
+      return (
+        this.shipmentType === ShipmentType.AIR ||
+        this.shipmentType === ShipmentType.EXPRESS
+      )
     },
-    countries () {
+    countries() {
       return Object.entries(Countries).map(([k, v]) => {
-        const name = this.$te(`countries.${k}`, 'en') ? this.$t(`countries.${k}`, 'en') : v
+        const name = this.$te(`countries.${k}`, 'en')
+          ? this.$t(`countries.${k}`, 'en')
+          : v
         return {
           text: this.$te(`countries.${k}`) ? this.$t(`countries.${k}`) : name,
           value: k,
@@ -203,32 +233,42 @@ export default {
         }
       })
     },
-    shipmentCountries () {
+    shipmentCountries() {
       return this.countries
     },
-    customsTermsItems () {
-      return Object.values(CustomsTerms).map(el => {
+    customsTermsItems() {
+      return Object.values(CustomsTerms).map((el) => {
         return {
           text: this.$t(`customsTerms.${el}`),
           value: el,
         }
       })
     },
-    customsTermsMoreItems () {
-      return Object.values(CustomsTermsMore).map(el => {
+    customsTermsMoreItems() {
+      return Object.values(CustomsTermsMore).map((el) => {
         return {
           text: this.$t(`customsTerms.${el}`),
           value: el,
         }
       })
     },
-    customsTerms () {
+    customsTerms() {
       let items = []
-      if (this.shipmentType === ShipmentType.RAILWAY || this.shipmentType === ShipmentType.CAR) {
+      if (
+        this.shipmentType === ShipmentType.RAILWAY ||
+        this.shipmentType === ShipmentType.CAR
+      ) {
         items = this.customsTermsItems
       }
-      if (this.shipmentType === ShipmentType.MARINE || this.shipmentType === ShipmentType.MIXED) {
-        items = [...this.customsTermsItems, { divider: true }, ...this.customsTermsMoreItems]
+      if (
+        this.shipmentType === ShipmentType.MARINE ||
+        this.shipmentType === ShipmentType.MIXED
+      ) {
+        items = [
+          ...this.customsTermsItems,
+          { divider: true },
+          ...this.customsTermsMoreItems,
+        ]
       }
       return items
     },

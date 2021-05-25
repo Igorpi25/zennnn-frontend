@@ -23,7 +23,9 @@ export const useWindowContext = (component: string) => {
   const context = inject(WindowContext)
 
   if (context === undefined) {
-    const err = new Error(`<${component} /> is missing a parent <Window /> component.`)
+    const err = new Error(
+      `<${component} /> is missing a parent <Window /> component.`
+    )
     if (Error.captureStackTrace) Error.captureStackTrace(err, useWindowContext)
     throw err
   }
@@ -60,7 +62,7 @@ export default defineComponent({
 
   emits: ['update:modelValue'],
 
-  setup (props, ctx) {
+  setup(props, ctx) {
     const transitionHeight = ref<string>()
     const transitionCount = ref<number>(0)
     const isBooted = ref<boolean>(false)
@@ -85,78 +87,84 @@ export default defineComponent({
 
     const isActive = computed(() => transitionCount.value > 0)
 
-    const internalReverse = computed(() => props.reverse ? !isReverse.value : isReverse.value)
+    const internalReverse = computed(() =>
+      props.reverse ? !isReverse.value : isReverse.value
+    )
 
     const isVertical = computed(() => props.vertical)
 
     watch(selectedIndex, (val, oldVal) => updateReverse(val, oldVal))
 
-    watch(() => props.modelValue, (value, oldVal) => {
-      if (props.multiple || value === oldVal) return
-      const res = getIds(wrapInArray(value))
-      const [id] = res
-      if (!id) return
-      select(id, value)
-    })
+    watch(
+      () => props.modelValue,
+      (value, oldVal) => {
+        if (props.multiple || value === oldVal) return
+        const res = getIds(wrapInArray(value))
+        const [id] = res
+        if (!id) return
+        select(id, value)
+      }
+    )
 
     onMounted(() => {
       window.requestAnimationFrame(() => (isBooted.value = true))
     })
 
-    function genIcon (direction: 'prev' | 'next', icon: string, fn: () => void) {
-      return h('div', {
-        class: {
-          'z-1 mx-4 absolute rounded-full bg-black bg-opacity-10 dark:bg-opacity-30': true,
-          'left-0': direction === 'prev',
-          'right-0': direction === 'next',
-        },
-        style: {
-          top: 'calc(50% - 1.25rem)',
-        },
-      }, [
-        h('button', {
-          'aria-label': direction,
+    function genIcon(direction: 'prev' | 'next', icon: string, fn: () => void) {
+      return h(
+        'div',
+        {
           class: {
-            'rounded-full w-10 h-10 flex items-center justify-center': true,
-            'text-white opacity-50 hover:opacity-100': true,
-            'focus:outline-none focus:opacity-100': true,
+            'z-1 mx-4 absolute rounded-full bg-black bg-opacity-10 dark:bg-opacity-30':
+              true,
+            'left-0': direction === 'prev',
+            'right-0': direction === 'next',
           },
-          onClick: () => {
-            fn()
+          style: {
+            top: 'calc(50% - 1.25rem)',
           },
-        }, h(Icon, {
-          large: true,
-        }, {
-          default: () => icon,
-        })),
-      ])
+        },
+        [
+          h(
+            'button',
+            {
+              'aria-label': direction,
+              class: {
+                'rounded-full w-10 h-10 flex items-center justify-center': true,
+                'text-white opacity-50 hover:opacity-100': true,
+                'focus:outline-none focus:opacity-100': true,
+              },
+              onClick: () => {
+                fn()
+              },
+            },
+            h(
+              Icon,
+              {
+                large: true,
+              },
+              {
+                default: () => icon,
+              }
+            )
+          ),
+        ]
+      )
     }
 
-    function genControlIcons () {
+    function genControlIcons() {
       const icons = []
 
-      const prevIcon = props.prevIcon === true
-        ? ziArrowLeft
-        : props.prevIcon
+      const prevIcon = props.prevIcon === true ? ziArrowLeft : props.prevIcon
 
-      if (
-        hasPrev.value &&
-        prevIcon &&
-        typeof prevIcon === 'string'
-      ) {
+      if (hasPrev.value && prevIcon && typeof prevIcon === 'string') {
         const icon = genIcon('prev', prevIcon, prev)
         icon && icons.push(icon)
       }
 
-      const nextIcon = props.nextIcon === true
-        ? ziArrowRight
-        : props.nextIcon
+      const nextIcon = props.nextIcon === true ? ziArrowRight : props.nextIcon
 
-      if (
-        hasNext.value &&
-        nextIcon &&
-        typeof nextIcon === 'string'
-      ) {
+      if (hasNext.value && nextIcon && typeof nextIcon === 'string') {
         const icon = genIcon('next', nextIcon, next)
         icon && icons.push(icon)
       }
@@ -164,19 +172,19 @@ export default defineComponent({
       return icons
     }
 
-    function next () {
+    function next() {
       if (!hasActiveItems.value || !hasNext.value) return
 
       _next()
     }
 
-    function prev () {
+    function prev() {
       if (!hasActiveItems.value || !hasPrev.value) return
 
       _prev()
     }
 
-    function updateReverse (val: any, oldVal: any) {
+    function updateReverse(val: any, oldVal: any) {
       isReverse.value = val < oldVal
     }
 
@@ -203,22 +211,30 @@ export default defineComponent({
     }
   },
 
-  render () {
-    const container = h('div', {
-      ref: 'containerElement',
-      class: {
-        'transition-all duration-300': true,
+  render() {
+    const container = h(
+      'div',
+      {
+        ref: 'containerElement',
+        class: {
+          'transition-all duration-300': true,
+        },
+        // leave transition not working, then setted inline to element
+        // style: { height: transitionHeight.value },
       },
-      // leave transition not working, then setted inline to element
-      // style: { height: transitionHeight.value },
-    }, this.$slots.default && this.$slots.default())
+      this.$slots.default && this.$slots.default()
+    )
 
-    const node = h('div', {
-      ref: 'roolElement',
-      class: {
-        'relative overflow-hidden': true,
+    const node = h(
+      'div',
+      {
+        ref: 'roolElement',
+        class: {
+          'relative overflow-hidden': true,
+        },
       },
-    }, [container, this.showArrows && this.genControlIcons()])
+      [container, this.showArrows && this.genControlIcons()]
+    )
 
     if (!this.touchless) return node
 
@@ -233,11 +249,6 @@ export default defineComponent({
       },
     }
 
-    return withDirectives(
-      node,
-      [
-        [Touch, value],
-      ],
-    )
+    return withDirectives(node, [[Touch, value]])
   },
 })

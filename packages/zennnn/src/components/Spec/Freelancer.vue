@@ -15,21 +15,18 @@
             {{ $t('shipping.title') }}
           </span>
           <transition name="fade-transition">
-            <div
-              v-if="loading"
-              class="absolute top-0 right-0 text-gray-200"
-            >
-              <Progress
-                indeterminate
-                size="20"
-                width="2"
-              />
+            <div v-if="loading" class="absolute top-0 right-0 text-gray-200">
+              <Progress indeterminate size="20" width="2" />
             </div>
           </transition>
         </h1>
         <div class="text-gray-300">
           <span v-if="spec.client">
-            {{ `${$t('shipping.shippingClient')}: ${spec.client.uid} ${spec.client.fullName}` }}
+            {{
+              `${$t('shipping.shippingClient')}: ${spec.client.uid} ${
+                spec.client.fullName
+              }`
+            }}
           </span>
         </div>
       </div>
@@ -38,12 +35,24 @@
         <div class="h-12 flex items-center">
           <div class="flex-grow" />
           <div class="flex text-gray-200 text-lg overflow-hidden">
-            <span v-html="specTitleHtml" :title="specTitleText" class="truncate" />
+            <span
+              v-html="specTitleHtml"
+              :title="specTitleText"
+              class="truncate"
+            />
             <div class="inline-block text-2xl pl-sm pr-3 md:pr-md">
               <button
                 v-if="expanded.length === 0"
                 :disabled="dataLoading"
-                class="flex items-center text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
+                class="
+                  flex
+                  items-center
+                  text-gray-200
+                  hover:text-gray-100
+                  focus:text-gray-100
+                  focus:outline-none
+                  select-none
+                "
                 @click="expandAll"
               >
                 <i class="zi-expand" :title="$t('action.expandAll')" />
@@ -51,7 +60,15 @@
               <button
                 v-else
                 :disabled="dataLoading"
-                class="flex items-center text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
+                class="
+                  flex
+                  items-center
+                  text-gray-200
+                  hover:text-gray-100
+                  focus:text-gray-100
+                  focus:outline-none
+                  select-none
+                "
                 @click="collapseAll"
               >
                 <i class="zi-collapse" :title="$t('action.collapseAll')" />
@@ -59,7 +76,18 @@
             </div>
           </div>
         </div>
-        <div v-if="dataLoading" class="flex items-center justify-center h-12 text-gray-200 bg-gray-700 rounded">
+        <div
+          v-if="dataLoading"
+          class="
+            flex
+            items-center
+            justify-center
+            h-12
+            text-gray-200
+            bg-gray-700
+            rounded
+          "
+        >
           {{ `${$t('action.loading')}...` }}
         </div>
         <div
@@ -112,7 +140,6 @@
         left
       />
     </div> -->
-
   </div>
 </template>
 
@@ -133,14 +160,14 @@ export default {
     SpecShipping,
   },
   mixins: [spec],
-  data () {
+  data() {
     return {
       defaultTab: 2,
     }
   },
   computed: {
     // TODO: need work with containers
-    container () {
+    container() {
       const containers = this.spec.containers || []
       return containers[0] || {}
     },

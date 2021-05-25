@@ -25,7 +25,10 @@ describe('Menu.ts', () => {
   it('should render component and match snapshot', async () => {
     const wrapper = mountFunction({
       slots: {
-        default: () => Array.from(Array(3).keys()).map(() => 'Content').join(' '),
+        default: () =>
+          Array.from(Array(3).keys())
+            .map(() => 'Content')
+            .join(' '),
         activator: () => h('button', 'Activator'),
       },
     })
@@ -185,7 +188,7 @@ describe('Menu.ts', () => {
   })
 
   it('should render with MenuItem and match snapshot', async () => {
-    const items = Array.from(Array(3).keys()).map(key => {
+    const items = Array.from(Array(3).keys()).map((key) => {
       const i = key + 1
       return {
         name: `item${i}`,
@@ -199,14 +202,21 @@ describe('Menu.ts', () => {
         attach: false,
       },
       slots: {
-        default: () => items.map((item, i) => h(MenuItem, {
-          index: i,
-          key: item.value,
-          value: item.value,
-          disabled: item.disabled,
-        }, {
-          default: () => item.text,
-        })),
+        default: () =>
+          items.map((item, i) =>
+            h(
+              MenuItem,
+              {
+                index: i,
+                key: item.value,
+                value: item.value,
+                disabled: item.disabled,
+              },
+              {
+                default: () => item.text,
+              }
+            )
+          ),
         activator: () => h('button', 'Activator'),
       },
     })

@@ -54,7 +54,7 @@ export default defineComponent({
     dense: Boolean,
   },
 
-  setup (props) {
+  setup(props) {
     const id: string = props.id || uid('menu-item-')
     const api = useMenuContext('MenuItem') as Record<string, any>
     const rootElement = ref<HTMLElement>()
@@ -66,7 +66,9 @@ export default defineComponent({
         : false
     })
 
-    const selected = computed(() => props.value !== null && api.internalValue.value === props.value)
+    const selected = computed(
+      () => props.value !== null && api.internalValue.value === props.value
+    )
 
     onMounted(() => {
       if (!api.isActive.value) return
@@ -126,7 +128,11 @@ export default defineComponent({
       api.goToItem(-1)
     }
 
-    const onIntersect = (entries: IntersectionObserverEntry[], observer: IntersectionObserver, _isIntersecting: boolean) => {
+    const onIntersect = (
+      entries: IntersectionObserverEntry[],
+      observer: IntersectionObserver,
+      _isIntersecting: boolean
+    ) => {
       if (!isIntersecting.value) isIntersecting.value = _isIntersecting
     }
 
@@ -146,8 +152,12 @@ export default defineComponent({
     }
   },
 
-  render () {
-    const slot = { active: this.active, selected: this.selected, disabled: this.disabled }
+  render() {
+    const slot = {
+      active: this.active,
+      selected: this.selected,
+      disabled: this.disabled,
+    }
     const data: Record<string, any> = {
       ref: this.setItemRef,
       id: this.cid,
@@ -180,15 +190,10 @@ export default defineComponent({
     }
 
     if (this.contentOnIntersect) {
-      const content = this.isIntersecting
-        ? children
-        : h('div', data)
-      return withDirectives(
-        content,
-        [
-          [Intersect, this.onIntersect, '', { once: true }],
-        ],
-      )
+      const content = this.isIntersecting ? children : h('div', data)
+      return withDirectives(content, [
+        [Intersect, this.onIntersect, '', { once: true }],
+      ])
     }
     return children
   },

@@ -10,9 +10,7 @@
   >
     <template v-slot:activator>
       <div class="inline-flex align-middle pr-2">
-        <div
-          class="w-7 h-7 rounded"
-        >
+        <div class="w-7 h-7 rounded">
           <Image
             v-if="imageSrc"
             :src="iconImageSrc"
@@ -29,12 +27,8 @@
         </div>
       </div>
     </template>
-    <div
-      :class="['p-4 relative', light ? 'bg-white' : 'bg-gray-400']"
-    >
-      <span
-        class="absolute top-0 right-0 pt-2 pr-2"
-      >
+    <div :class="['p-4 relative', light ? 'bg-white' : 'bg-gray-400']">
+      <span class="absolute top-0 right-0 pt-2 pr-2">
         <Icon
           class="text-gray-200 cursor-pointer"
           :class="[light ? 'hover:text-gray-300' : 'hover:text-gray-100']"
@@ -61,32 +55,91 @@
             </Image>
           </div>
           <div
-            class="absolute inset-x-0 top-0 h-20 rounded-t overflow-hidden pointer-events-none bg-gradient-to-b from-gray-900-a-50 to-gray-900-a-0"
+            class="
+              absolute
+              inset-x-0
+              top-0
+              h-20
+              rounded-t
+              overflow-hidden
+              pointer-events-none
+              bg-gradient-to-b
+              from-gray-900-a-50
+              to-gray-900-a-0
+            "
           >
             <a
               :href="`${currentImage.url}-original`"
               target="_blank"
-              class="absolute right-0 top-0 pointer-events-auto cursor-pointer text-2xl text-light-gray-400 hover:text-white focus:text-white focus:outline-none pt-sm pr-sm"
+              class="
+                absolute
+                right-0
+                top-0
+                pointer-events-auto
+                cursor-pointer
+                text-2xl text-light-gray-400
+                hover:text-white
+                focus:text-white
+                focus:outline-none
+                pt-sm
+                pr-sm
+              "
             >
               <Icon>
                 {{ icons.ziFullScreen }}
               </Icon>
             </a>
           </div>
-          <div class="absolute inset-x-0 bottom-0 h-20 rounded-b overflow-hidden pointer-events-none text-gray-100">
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-900-a-50 to-gray-900-a-0" />
-            <div v-if="imagesList.length > 1" class="absolute inset-x-0 bottom-0 text-center leading-tight pb-2">
-              <span class="text-white">{{ currentImageIndex + 1 }}</span> / <span>{{ imagesList.length }}</span>
+          <div
+            class="
+              absolute
+              inset-x-0
+              bottom-0
+              h-20
+              rounded-b
+              overflow-hidden
+              pointer-events-none
+              text-gray-100
+            "
+          >
+            <div
+              class="
+                absolute
+                inset-0
+                bg-gradient-to-t
+                from-gray-900-a-50
+                to-gray-900-a-0
+              "
+            />
+            <div
+              v-if="imagesList.length > 1"
+              class="absolute inset-x-0 bottom-0 text-center leading-tight pb-2"
+            >
+              <span class="text-white">{{ currentImageIndex + 1 }}</span> /
+              <span>{{ imagesList.length }}</span>
             </div>
           </div>
           <div
             v-if="imagesList.length > 1"
-            class="absolute left-0 top-0 w-full h-full pointer-events-none flex items-center justify-between p-2"
+            class="
+              absolute
+              left-0
+              top-0
+              w-full
+              h-full
+              pointer-events-none
+              flex
+              items-center
+              justify-between
+              p-2
+            "
           >
             <div
               :class="[
                 'h-12 w-12 rounded-full bg-gray-900 bg-opacity-80 flex items-center justify-center pointer-events-auto',
-                hasPrev ? 'cursor-pointer text-blue-500 hover:text-blue-400' : 'text-gray-200',
+                hasPrev
+                  ? 'cursor-pointer text-blue-500 hover:text-blue-400'
+                  : 'text-gray-200',
               ]"
               @click="prev"
             >
@@ -97,7 +150,9 @@
             <div
               :class="[
                 'h-12 w-12 rounded-full bg-gray-900 bg-opacity-80 flex items-center justify-center pointer-events-auto',
-                hasNext ? 'cursor-pointer text-blue-500 hover:text-blue-400' : 'text-gray-200',
+                hasNext
+                  ? 'cursor-pointer text-blue-500 hover:text-blue-400'
+                  : 'text-gray-200',
               ]"
               @click="next"
             >
@@ -107,7 +162,12 @@
             </div>
           </div>
         </div>
-        <div :class="['font-semibold pt-4 pb-1', light ? 'text-gray-900' : 'text-white']">
+        <div
+          :class="[
+            'font-semibold pt-4 pb-1',
+            light ? 'text-gray-900' : 'text-white',
+          ]"
+        >
           {{ currentImage.filename || currentImage.url }}
         </div>
       </div>
@@ -118,7 +178,12 @@
 <script>
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
 
-import { ziFullScreen, ziArrowLeft, ziArrowRight, ziCloseWindow } from '@zennnn/icons'
+import {
+  ziFullScreen,
+  ziArrowLeft,
+  ziArrowRight,
+  ziCloseWindow,
+} from '@zennnn/icons'
 import { Icon, Menu, Image, LoadingSpinner } from '@zennnn/core'
 
 export default {
@@ -133,10 +198,10 @@ export default {
     light: Boolean,
     images: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
   },
-  data () {
+  data() {
     return {
       ICON_IMAGE_POSTFIX,
       menu: false,
@@ -151,38 +216,38 @@ export default {
     }
   },
   computed: {
-    hasPrev () {
+    hasPrev() {
       return this.currentImageIndex > 0
     },
-    hasNext () {
+    hasNext() {
       return this.currentImageIndex + 1 < this.imagesList.length
     },
-    imagesList () {
+    imagesList() {
       return this.images || []
     },
-    imageSrc () {
+    imageSrc() {
       return this.imagesList[0] && this.imagesList[0].url
     },
-    previewImageSrc () {
+    previewImageSrc() {
       if (!this.currentImage.url) return ''
       return `${this.currentImage.url}${PREVIEW_IMAGE_POSTFIX}`
     },
-    iconImageSrc () {
+    iconImageSrc() {
       if (!this.imageSrc) return ''
       return `${this.imageSrc}${ICON_IMAGE_POSTFIX}`
     },
-    currentImage () {
+    currentImage() {
       const index = this.currentImageIndex || 0
       return this.imagesList[index] || {}
     },
   },
   watch: {
-    menu (val) {
+    menu(val) {
       if (val && this.currentIndex > -1) {
         this.currentImageIndex = this.currentIndex
       }
     },
-    imagesList (val) {
+    imagesList(val) {
       if (!val) return
       if (this.currentImageIndex + 1 > val.length) {
         this.setCurrentIndex(0)
@@ -190,21 +255,21 @@ export default {
     },
   },
   methods: {
-    prev () {
+    prev() {
       if (this.imagesList.length === 0) return
       const val = this.currentImageIndex - 1
       if (val > -1) {
         this.currentImageIndex = val
       }
     },
-    next () {
+    next() {
       if (this.imagesList.length === 0) return
       const val = this.currentImageIndex + 1
       if (val < this.imagesList.length) {
         this.currentImageIndex = val
       }
     },
-    setCurrentIndex (index) {
+    setCurrentIndex(index) {
       if (!this.imagesList[index]) {
         index = 0
       }

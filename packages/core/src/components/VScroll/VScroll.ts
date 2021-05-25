@@ -31,11 +31,11 @@ export default defineComponent({
     },
     items: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
   },
 
-  setup (props, { slots }) {
+  setup(props, { slots }) {
     const rootElement = ref<HTMLElement>()
     const first = ref<number>(0)
     const last = ref<number>(0)
@@ -66,10 +66,9 @@ export default defineComponent({
     })
 
     const getChildren = (): VNode[] => {
-      return props.items.slice(
-        firstToRender.value,
-        lastToRender.value,
-      ).map(genChild)
+      return props.items
+        .slice(firstToRender.value, lastToRender.value)
+        .map(genChild)
     }
 
     const genChild = (item: any, index: number) => {
@@ -77,11 +76,15 @@ export default defineComponent({
 
       const top = convertToUnit(index * itemHeight.value)
 
-      return h('div', {
-        class: 'virtual-scroll__item',
-        style: { top },
-        key: index,
-      }, slots.default?.({ index, item }))
+      return h(
+        'div',
+        {
+          class: 'virtual-scroll__item',
+          style: { top },
+          key: index,
+        },
+        slots.default?.({ index, item })
+      )
     }
 
     const getFirst = (): number => {
@@ -89,7 +92,8 @@ export default defineComponent({
     }
 
     const getLast = (first: number): number => {
-      const height = parseInt(props.height || 0, 10) || rootElement.value!.clientHeight
+      const height =
+        parseInt(props.height || 0, 10) || rootElement.value!.clientHeight
 
       return first + Math.ceil(height / itemHeight.value)
     }
@@ -101,22 +105,28 @@ export default defineComponent({
     }
 
     return () => {
-      const content = h('div', {
-        class: 'virtual-scroll__container',
-        style: {
-          height: convertToUnit(props.items.length * itemHeight.value),
+      const content = h(
+        'div',
+        {
+          class: 'virtual-scroll__container',
+          style: {
+            height: convertToUnit(props.items.length * itemHeight.value),
+          },
         },
-      }, getChildren())
+        getChildren()
+      )
 
       return withDirectives(
-        h('div', {
-          ref: rootElement,
-          class: 'virtual-scroll',
-          style: dimensionStyles.value,
-        }, [content]),
-        [
-          [Scroll, onScroll, '', { self: true }],
-        ],
+        h(
+          'div',
+          {
+            ref: rootElement,
+            class: 'virtual-scroll',
+            style: dimensionStyles.value,
+          },
+          [content]
+        ),
+        [[Scroll, onScroll, '', { self: true }]]
       )
     }
   },

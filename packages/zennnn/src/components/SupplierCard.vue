@@ -1,14 +1,13 @@
 <template>
   <div>
-
     <div
       id="container"
-      :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container']"
+      :class="[
+        'pt-8 pb-12',
+        isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container',
+      ]"
     >
-      <span
-        v-if="isComponent"
-        class="absolute top-0 right-0 z-10 pt-3 pr-3"
-      >
+      <span v-if="isComponent" class="absolute top-0 right-0 z-10 pt-3 pr-3">
         <Icon
           class="text-gray-100 hover:text-white cursor-pointer"
           @click="$emit('close')"
@@ -22,9 +21,18 @@
       <div class="bg-gray-800 rounded-md p-sm mb-12">
         <div class="h-11 flex items-center justify-end text-gray-100">
           <transition name="slide-x-reverse-transition">
-            <div v-if="!item.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
+            <div
+              v-if="!item.isRequiredFilled"
+              class="flex items-center whitespace-nowrap pr-5 pb-1"
+            >
               <span class="text-pink-500 mr-2">
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="8"
+                  height="8"
+                  viewBox="0 0 8 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
                 </svg>
               </span>
@@ -32,9 +40,18 @@
             </div>
           </transition>
           <transition name="slide-x-reverse-transition">
-            <div v-if="!item.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
+            <div
+              v-if="!item.isOptionalFilled"
+              class="flex items-center whitespace-nowrap pr-5 pb-1"
+            >
               <span class="text-yellow-500 mr-2">
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="8"
+                  height="8"
+                  viewBox="0 0 8 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
                 </svg>
               </span>
@@ -42,9 +59,7 @@
             </div>
           </transition>
         </div>
-        <div
-          class="bg-gray-600 rounded-md p-5 pt-6"
-        >
+        <div class="bg-gray-600 rounded-md p-5 pt-6">
           <!-- Legal info -->
           <LegalInfo
             :loading="loading"
@@ -115,7 +130,6 @@
         {{ $t('supplier.save') }}
       </Btn>
     </div>
-
   </div>
 </template>
 
@@ -129,10 +143,7 @@ import { ziCloseWindow } from '@zennnn/icons'
 import { Btn, Icon } from '@zennnn/core'
 
 import { GET_SUPPLIER, GET_ORG_NEXT_SUPPLIER_UID } from '../graphql/queries'
-import {
-  CREATE_SUPPLIER,
-  UPDATE_SUPPLIER,
-} from '../graphql/mutations'
+import { CREATE_SUPPLIER, UPDATE_SUPPLIER } from '../graphql/mutations'
 
 import { validateSupplier } from '../utils/validation'
 
@@ -168,26 +179,38 @@ export default {
     },
   },
   emits: ['close', 'create', 'update'],
-  setup (props) {
+  setup(props) {
     const route = useRoute()
     const supplierId = route.params.supplierId
     const item = ref({})
 
-    const { result: result1 } = useQuery(GET_ORG_NEXT_SUPPLIER_UID, () => ({
-      orgId: props.orgId,
-    }), () => ({
-      enabled: props.create,
-      fetchPolicy: 'network-only',
-    }))
+    const { result: result1 } = useQuery(
+      GET_ORG_NEXT_SUPPLIER_UID,
+      () => ({
+        orgId: props.orgId,
+      }),
+      () => ({
+        enabled: props.create,
+        fetchPolicy: 'network-only',
+      })
+    )
     const getOrgNextSupplierUid = useResult(result1)
 
-    const { result: result2, loading, onResult } = useQuery(GET_SUPPLIER, () => ({
-      id: supplierId,
-    }), () => ({
-      enabled: !props.create,
-      fetchPolicy: 'cache-and-network',
-      nextFetchPolicy: 'cache-fisrt',
-    }))
+    const {
+      result: result2,
+      loading,
+      onResult,
+    } = useQuery(
+      GET_SUPPLIER,
+      () => ({
+        id: supplierId,
+      }),
+      () => ({
+        enabled: !props.create,
+        fetchPolicy: 'cache-and-network',
+        nextFetchPolicy: 'cache-fisrt',
+      })
+    )
     const getSupplier = useResult(result2)
     onResult(({ data, loading }) => {
       if (loading) return
@@ -216,13 +239,13 @@ export default {
       updateSupplierMutate,
     }
   },
-  data () {
+  data() {
     return {
       updateLoading: false,
     }
   },
   computed: {
-    uid () {
+    uid() {
       if (this.item.uid) {
         return this.item.uid
       }
@@ -230,7 +253,7 @@ export default {
     },
   },
   methods: {
-    updateValue (input) {
+    updateValue(input) {
       if (this.create) {
         if (this.isComponent) {
           const newItem = Object.assign({}, this.item, input)
@@ -243,10 +266,10 @@ export default {
         this.updateSupplier(input)
       }
     },
-    reset () {
+    reset() {
       this.item = {}
     },
-    createFromItem () {
+    createFromItem() {
       const item = {}
       for (const [k, v] of Object.entries(this.item)) {
         if (k !== 'isRequiredFilled' && k !== 'isOptionalFilled') {
@@ -255,7 +278,7 @@ export default {
       }
       this.createSupplier(item)
     },
-    async createSupplier (input, redirectAfterCreate = true) {
+    async createSupplier(input, redirectAfterCreate = true) {
       try {
         this.updateLoading = true
 
@@ -291,7 +314,7 @@ export default {
         this.updateLoading = false
       }
     },
-    async updateSupplier (input) {
+    async updateSupplier(input) {
       try {
         this.updateLoading = true
 

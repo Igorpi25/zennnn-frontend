@@ -66,20 +66,21 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   // check auth
   const loggedIn = await checkAuth()
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!loggedIn) {
       next({
         name: 'login',
-        query: to.fullPath && (to.fullPath !== '/' || to.fullPath !== '/login')
-          ? { redirect: to.fullPath }
-          : {},
+        query:
+          to.fullPath && (to.fullPath !== '/' || to.fullPath !== '/login')
+            ? { redirect: to.fullPath }
+            : {},
       })
     } else {
       next()
     }
-  } else if (to.matched.some(record => record.meta.requiresNotAuth)) {
+  } else if (to.matched.some((record) => record.meta.requiresNotAuth)) {
     if (loggedIn) {
       next({ name: 'home' })
     } else {

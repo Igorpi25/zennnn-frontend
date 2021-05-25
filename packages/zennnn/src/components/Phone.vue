@@ -7,7 +7,11 @@
     :loading="loading"
     :items="items"
     :distance="16"
-    :control-class="isPhoneInputFocused ? 'rounded-b ring-1 ring-blue-500 flex-shrink-0' : 'rounded-b flex-shrink-0'"
+    :control-class="
+      isPhoneInputFocused
+        ? 'rounded-b ring-1 ring-blue-500 flex-shrink-0'
+        : 'rounded-b flex-shrink-0'
+    "
     :open-on-focus="false"
     :dependencies="dependencies"
     :solo="solo"
@@ -39,7 +43,7 @@
         :src="require(`@/assets/img/flags/square/${codeInput}.svg`).default"
         class="w-6 flex-shrink-0 mr-2"
         aria-hidden="true"
-      >
+      />
     </template>
     <template v-slot:append-outer>
       <TextField
@@ -76,7 +80,7 @@
           :alt="item.value"
           class="w-6 flex-shrink-0 mr-2"
           aria-hidden="true"
-        >
+        />
         <span class="text-gray-900 dark:text-light-gray-400 truncate pr-1">
           {{ item.country }}
         </span>
@@ -141,7 +145,7 @@ export default {
 
   emits: ['update:modelValue'],
 
-  setup () {
+  setup() {
     const codeInput = ref(undefined)
     const phoneInput = ref(undefined)
     const isPhoneInputFocused = ref(false)
@@ -149,7 +153,11 @@ export default {
     const codeInputRef = ref(null)
     const phoneInputRef = ref(null)
     const hasPhoneInputError = computed(() => {
-      return phoneInputRef.value && phoneInputRef.value.hasError && phoneInputRef.value.shouldValidate
+      return (
+        phoneInputRef.value &&
+        phoneInputRef.value.hasError &&
+        phoneInputRef.value.shouldValidate
+      )
     })
     const dependencies = computed(() => {
       return [phoneInputRef.value && phoneInputRef.value.rootElement]
@@ -170,14 +178,18 @@ export default {
     }
   },
   computed: {
-    items () {
+    items() {
       return Object.entries(phonesCode)
         .map(([k, v]) => {
-          const country = this.$t(`countries.${k}`, 'en') ? this.$t(`countries.${k}`, 'en') : k
+          const country = this.$t(`countries.${k}`, 'en')
+            ? this.$t(`countries.${k}`, 'en')
+            : k
           return {
             code: v,
             value: k,
-            country: this.$t(`countries.${k}`) ? this.$t(`countries.${k}`) : country,
+            country: this.$t(`countries.${k}`)
+              ? this.$t(`countries.${k}`)
+              : country,
             countryName: country,
             codeUnformatted: this.phonesUnformatted[k],
             placeholder: phonesPlaceholder[k],
@@ -196,23 +208,25 @@ export default {
           return 0
         })
     },
-    showMessagesOnFocused () {
+    showMessagesOnFocused() {
       // TODO: messagesOnFocused prop do not work after select
-      return this.messagesOnFocused && this.isPhoneInputFocused ? false : this.messagesOnFocused
+      return this.messagesOnFocused && this.isPhoneInputFocused
+        ? false
+        : this.messagesOnFocused
     },
-    phonesUnformatted () {
+    phonesUnformatted() {
       const result = {}
       for (const [k, v] of Object.entries(phonesCode)) {
         result[k] = `+${v.replace(/\D/g, '')}`
       }
       return result
     },
-    errorMessages () {
+    errorMessages() {
       return [this.errorMessage || this.$t('rule.phone')]
     },
-    computedRules () {
+    computedRules() {
       return [
-        v => {
+        (v) => {
           const val = v || ''
           const message = 'Not valid.'
           const mLength = this.currentMask.length || 1
@@ -221,73 +235,79 @@ export default {
         },
       ]
     },
-    computedSize () {
+    computedSize() {
       const code = this.currentCode || ' '
       let cLength = code.length
       if (/\(/.test(code)) cLength--
       return cLength + 1
     },
-    defaultCountryCode () {
+    defaultCountryCode() {
       switch (this.locale || this.$i18n.locale) {
-        case 'en': return 'GB'
-        case 'fr': return 'FR'
-        case 'ru': return 'RU'
+        case 'en':
+          return 'GB'
+        case 'fr':
+          return 'FR'
+        case 'ru':
+          return 'RU'
         case 'zh-Hans':
-        case 'zh-Hant': return 'CN'
-        case 'uk': return 'UA'
-        default: return 'GB'
+        case 'zh-Hant':
+          return 'CN'
+        case 'uk':
+          return 'UA'
+        default:
+          return 'GB'
       }
     },
-    unmasked () {
+    unmasked() {
       const { result } = this.maskValue(this.phoneInput, false)
       return `${this.currentCodeUnformatted}${result}`
     },
-    currentCodeUnformatted () {
+    currentCodeUnformatted() {
       return `+${(this.currentCode || '').replace(/\D/g, '')}`
     },
-    currentCode () {
+    currentCode() {
       return phonesCode[this.codeInput]
     },
-    currentMask () {
+    currentMask() {
       return phonesMask[this.codeInput]
     },
-    currentPlaceholder () {
+    currentPlaceholder() {
       return phonesPlaceholder[this.codeInput]
     },
   },
   watch: {
-    modelValue (val) {
+    modelValue(val) {
       if (!val) return
       this.setValue(val)
     },
-    locale (val) {
+    locale() {
       if (!this.modelValue) {
         this.codeInput = this.defaultCountryCode
       }
     },
   },
-  created () {
+  created() {
     this.codeInput = this.getCountryCode()
   },
   methods: {
-    onFocus () {
+    onFocus() {
       this.codeInputRef.closeMenu()
       this.isPhoneInputFocused = true
     },
-    onBlur () {
+    onBlur() {
       this.isPhoneInputFocused = false
     },
-    onPhoneInput (val) {
+    onPhoneInput(val) {
       this.phoneInput = val
       this.emitChange()
     },
-    onCodeSelect (val) {
+    onCodeSelect(val) {
       if (this.readonly || this.disabled) return
       this.codeInput = val
       this.phoneInputRef.focus()
       this.emitChange()
     },
-    getCountryCode () {
+    getCountryCode() {
       let result = this.defaultCountryCode
       const phone = this.modelValue && this.modelValue.phone
       const value = phone || this.unmasked || ''
@@ -299,7 +319,7 @@ export default {
       }
       return result
     },
-    setValue (val) {
+    setValue(val) {
       let value = val && val.phone
       if (value === this.unmasked) return
       value = value || ''
@@ -307,7 +327,7 @@ export default {
       this.codeInput = countryCode || this.getCountryCode()
       this.phoneInput = value.slice(this.currentCodeUnformatted.length)
     },
-    emitChange () {
+    emitChange() {
       // prevent emit if no changes
       const oldCode = this.modelValue && this.modelValue.countryCode
       const oldVal = this.modelValue && this.modelValue.phone
@@ -315,7 +335,7 @@ export default {
       const phone = this.unmasked
       this.$emit('update:modelValue', { countryCode: this.codeInput, phone })
     },
-    maskValue (value, masked = true) {
+    maskValue(value, masked = true) {
       value = value || ''
       const mask = this.currentMask || ''
       let iMask = 0

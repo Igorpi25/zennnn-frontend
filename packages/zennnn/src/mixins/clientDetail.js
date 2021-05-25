@@ -8,24 +8,24 @@ export default {
     },
   },
   emits: ['update'],
-  data () {
+  data() {
     return {
       expanded: true,
     }
   },
   watch: {
-    isExpanded (val) {
+    isExpanded(val) {
       this.expanded = val
     },
   },
-  created () {
+  created() {
     this.expanded = this.isExpanded
   },
   methods: {
-    toggleExpand () {
+    toggleExpand() {
       this.expanded = !this.expanded
     },
-    updateData (input) {
+    updateData(input) {
       this.$emit('update', input)
     },
   },

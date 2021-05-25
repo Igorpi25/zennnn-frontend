@@ -15,7 +15,7 @@
           :hide-details="false"
           state-icon
           required
-          @update:model-value="updateData({ 'importerCompanyName': $event })"
+          @update:model-value="updateData({ importerCompanyName: $event })"
         />
       </div>
       <div class="pb-2">
@@ -83,7 +83,7 @@
           state-icon
           required
           class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-sm"
-          @update:model-value="updateData({ 'importerPhone': $event })"
+          @update:model-value="updateData({ importerPhone: $event })"
         />
         <!-- <TextField
           :model-value="item.phoneOption"
@@ -132,7 +132,7 @@
           :lazy="create"
           state-icon
           required
-          @update:model-value="updateData({ 'importerEmail': $event })"
+          @update:model-value="updateData({ importerEmail: $event })"
         />
       </div>
     </div>
@@ -161,35 +161,35 @@ export default {
     },
     clients: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
   },
-  data () {
+  data() {
     return {
       lazyItem: {},
       search: '',
       rules: {
-        required: v => !!v || this.$t('rule.required'),
-        email: v => (v && /.+@.+\..+/.test(v)) || this.$t('rule.email'),
+        required: (v) => !!v || this.$t('rule.required'),
+        email: (v) => (v && /.+@.+\..+/.test(v)) || this.$t('rule.email'),
       },
     }
   },
   computed: {
     item: {
-      get () {
+      get() {
         return this.lazyItem || {}
       },
-      set (val) {
+      set(val) {
         this.lazyItem = val
       },
     },
-    contactPerson () {
+    contactPerson() {
       return this.item.importerContactPerson || {}
     },
   },
   watch: {
     client: {
-      handler (val) {
+      handler(val) {
         setTimeout(() => {
           this.lazyItem = val
         }, 100)
@@ -198,11 +198,15 @@ export default {
     },
   },
   methods: {
-    updateContactPerson (personInput) {
-      const value = Object.assign({}, {
-        firstName: this.contactPerson.firstName,
-        lastName: this.contactPerson.lastName,
-      }, personInput)
+    updateContactPerson(personInput) {
+      const value = Object.assign(
+        {},
+        {
+          firstName: this.contactPerson.firstName,
+          lastName: this.contactPerson.lastName,
+        },
+        personInput
+      )
       const input = { importerContactPerson: value }
       this.updateData(input)
     },

@@ -1,10 +1,6 @@
 <template>
   <div>
-
-    <Modal
-      v-model="paperList"
-      max-width="443"
-    >
+    <Modal v-model="paperList" max-width="443">
       <ContractListModal
         :items="papers"
         @close="paperList = false"
@@ -50,7 +46,7 @@
         :amount-in-words="spec.amountInWords"
         :amount-in-words-client-lang="spec.amountInWordsClientLang"
         :loading="printLoading"
-        @update="v => updateSpec(v)"
+        @update="(v) => updateSpec(v)"
         @close="printDialog = false"
         @print="doPrint"
       />
@@ -59,10 +55,7 @@
     <div v-if="isOwnerOrManager">
       <div class="flex flex-wrap lg:flex-nowrap pb-8">
         <!-- Delivery -->
-        <SpecShipment
-          :item="spec.shipment"
-          @update="v => updateSpec(v)"
-        />
+        <SpecShipment :item="spec.shipment" @update="(v) => updateSpec(v)" />
         <!-- Customs -->
         <SpecCustoms
           :shipment-type="(spec.shipment && spec.shipment.activeType) || ''"
@@ -70,7 +63,7 @@
           :amount="spec.total"
           :amount-in-words="spec.amountInWords"
           :amount-in-words-client-lang="spec.amountInWordsClientLang"
-          @update="v => updateSpec(v)"
+          @update="(v) => updateSpec(v)"
         />
       </div>
     </div>
@@ -156,10 +149,7 @@
       </div>
     </div>
 
-    <Modal
-      v-model="accessControlDialog"
-      max-width="320px"
-    >
+    <Modal v-model="accessControlDialog" max-width="320px">
       <div class="p-4 bg-gray-400 text-gray-100">
         <h3 class="pb-3 font-semibold">{{ $t('shipping.access') }}</h3>
         <LoadingSpinner v-if="linkAccessLoading" />
@@ -178,9 +168,7 @@
             solo
             class="pb-3"
           />
-          <Btn
-            @click="copyLink"
-          >
+          <Btn @click="copyLink">
             {{ $t('shipping.copyLink') }}
           </Btn>
         </template>
@@ -209,11 +197,7 @@
           <h4 v-if="emailAccess.length > 0" class="font-semibold">
             {{ $t('shipping.hasAccess') }}
           </h4>
-          <div
-            v-for="a in emailAccess"
-            :key="a.email"
-            class="flex py-2"
-          >
+          <div v-for="a in emailAccess" :key="a.email" class="flex py-2">
             <div class="flex-grow">
               {{ a.email }}
             </div>
@@ -243,7 +227,14 @@ import cloneDeep from 'clone-deep'
 import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziVisible, ziSettings, ziPrint, ziUserPlus, ziEmail, ziCloseDelete } from '@zennnn/icons'
+import {
+  ziVisible,
+  ziSettings,
+  ziPrint,
+  ziUserPlus,
+  ziEmail,
+  ziCloseDelete,
+} from '@zennnn/icons'
 import { Btn, Icon, Modal, TextField, LoadingSpinner } from '@zennnn/core'
 
 import ContractListModal from '@/components/ContractListModal.vue'
@@ -253,7 +244,11 @@ import SpecShipment from '../components/SpecShipment.vue'
 import SpecCustoms from '../components/SpecCustoms.vue'
 
 import { SpecCurrency, Role } from '../graphql/enums'
-import { LIST_ORG_CONTRACTS, GET_SPEC_LINK_ACCESS, GET_SPEC_EMAIL_ACCESS } from '../graphql/queries'
+import {
+  LIST_ORG_CONTRACTS,
+  GET_SPEC_LINK_ACCESS,
+  GET_SPEC_EMAIL_ACCESS,
+} from '../graphql/queries'
 import {
   UPDATE_SPEC,
   OPEN_LINK_ACCESS,
@@ -292,18 +287,22 @@ export default {
       required: true,
     },
   },
-  setup () {
+  setup() {
     const route = useRoute()
     const orgId = route.params.orgId
 
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
-    const { result, refetch: listOrgContractsRefetch } = useQuery(LIST_ORG_CONTRACTS, () => ({
-      orgId: orgId,
-    }), {
-      fetchPolicy: 'cache-and-network',
-    })
+    const { result, refetch: listOrgContractsRefetch } = useQuery(
+      LIST_ORG_CONTRACTS,
+      () => ({
+        orgId: orgId,
+      }),
+      {
+        fetchPolicy: 'cache-and-network',
+      }
+    )
     const listOrgContracts = useResult(result)
 
     return {
@@ -321,7 +320,7 @@ export default {
       listOrgContractsRefetch,
     }
   },
-  data () {
+  data() {
     return {
       printLoading: false,
       printDialog: false,
@@ -344,41 +343,41 @@ export default {
     }
   },
   computed: {
-    isOwnerOrManager () {
+    isOwnerOrManager() {
       return this.role === Role.OWNER || this.role === Role.MANAGER
     },
-    isAccountant () {
+    isAccountant() {
       return this.role === Role.ACCOUNTANT
     },
-    isWarehouseman () {
+    isWarehouseman() {
       return this.role === Role.WAREHOUSEMAN
     },
-    isCurrencyDisabled () {
+    isCurrencyDisabled() {
       return this.currency === SpecCurrency.USD
     },
-    currencies () {
-      return Object.values(SpecCurrency).map(el => {
+    currencies() {
+      return Object.values(SpecCurrency).map((el) => {
         return {
           text: el,
           value: el,
         }
       })
     },
-    currency () {
+    currency() {
       return this.spec.currency || DEFAULT_CURRENCY
     },
-    link () {
+    link() {
       return `${window.location.protocol}//${window.location.host}/paper/${this.specId}`
     },
-    specId () {
+    specId() {
       return this.$route.params.specId
     },
-    containers () {
+    containers() {
       return this.spec.containers || []
     },
   },
   watch: {
-    accessControlDialog (val) {
+    accessControlDialog(val) {
       if (val) {
         // this.getEmailAccess()
       } else {
@@ -387,29 +386,42 @@ export default {
         }, 250)
       }
     },
-    paperConfigurator (val) {
+    paperConfigurator(val) {
       if (!val) {
         setTimeout(() => {
-          const dialog = document.querySelector('.paper-configurator-dialog .modal-body')
+          const dialog = document.querySelector(
+            '.paper-configurator-dialog .modal-body'
+          )
           if (dialog) dialog.scrollTop = 0
         }, 200)
       }
     },
   },
-  mounted () {
-    if (process.env.NODE_ENV === 'development' && this.$route.hash === '#print') {
+  mounted() {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      this.$route.hash === '#print'
+    ) {
       this.printDialog = true
     }
   },
   methods: {
-    onOverview () {
+    onOverview() {
       sessionStorage.setItem(PAPER_ORG_ID_STORE_KEY, this.orgId)
     },
-    async doPrint (requisite, client, shipment, customs) {
+    async doPrint(requisite, client, shipment, customs) {
       try {
         this.printLoading = true
         const method = 'print'
-        await printInvoice(this.spec, requisite, client, shipment, customs, method, false)
+        await printInvoice(
+          this.spec,
+          requisite,
+          client,
+          shipment,
+          customs,
+          method,
+          false
+        )
       } catch (error) {
         this.$notify({
           color: 'error',
@@ -420,7 +432,7 @@ export default {
         this.printLoading = false
       }
     },
-    async setContainerSize (containerId, e) {
+    async setContainerSize(containerId, e) {
       try {
         const val = e.target.value || ''
         const split = val.split('_')
@@ -443,7 +455,7 @@ export default {
         this.setContainerSizeLoading = false
       }
     },
-    async setContainerCustomCapacity (containerId, inputCapacity, inputShrink) {
+    async setContainerCustomCapacity(containerId, inputCapacity, inputShrink) {
       try {
         if (!containerId) return
         this.setContainerCustomCapacityLoading = true
@@ -462,7 +474,7 @@ export default {
         this.setContainerCustomCapacityLoading = false
       }
     },
-    async getEmailAccess () {
+    async getEmailAccess() {
       try {
         this.emailAccessLoading = true
         const { data } = await this.apolloClient.query({
@@ -479,7 +491,7 @@ export default {
         this.emailAccessLoading = false
       }
     },
-    async addEmailAccess (email) {
+    async addEmailAccess(email) {
       try {
         const errors = this.$refs.emailAccessInput.validate()
         if (errors) return
@@ -500,7 +512,7 @@ export default {
         this.addEmailAccessLoading = false
       }
     },
-    async removeEmailAccess (email) {
+    async removeEmailAccess(email) {
       try {
         this.removeEmailAccessLoading = email
         const result = await this.apolloClient.mutate({
@@ -518,7 +530,7 @@ export default {
         this.removeEmailAccessLoading = false
       }
     },
-    async sendLinkAccessToEmail (email) {
+    async sendLinkAccessToEmail(email) {
       try {
         const errors = this.$refs.emailAccessInput.validate()
         if (errors) return
@@ -546,16 +558,17 @@ export default {
         this.sendAccessLinkLoading = false
       }
     },
-    copyLink () {
+    copyLink() {
       let selection = null
       try {
         const input = this.$refs.linkInput
         if (!input) {
           throw new Error('Input not find.')
         }
-        selection = document.getSelection().rangeCount > 0
-          ? document.getSelection().getRangeAt(0)
-          : false
+        selection =
+          document.getSelection().rangeCount > 0
+            ? document.getSelection().getRangeAt(0)
+            : false
         input.$el.querySelector('input').select()
         const successful = document.execCommand('copy')
         if (successful) {
@@ -578,7 +591,7 @@ export default {
         document.getSelection().addRange(selection)
       }
     },
-    async getLinkAccess () {
+    async getLinkAccess() {
       try {
         this.linkAccessLoading = true
         const { data } = await this.apolloClient.query({
@@ -595,7 +608,7 @@ export default {
         this.linkAccessLoading = false
       }
     },
-    async updateLinkAccess (value) {
+    async updateLinkAccess(value) {
       try {
         if (value) {
           await this.openLinkAccess()
@@ -610,7 +623,7 @@ export default {
         throw new Error(error)
       }
     },
-    async openLinkAccess () {
+    async openLinkAccess() {
       try {
         const result = await this.apolloClient.mutate({
           mutation: OPEN_LINK_ACCESS,
@@ -623,7 +636,7 @@ export default {
         throw new Error(error)
       }
     },
-    async closeLinkAccess () {
+    async closeLinkAccess() {
       try {
         const result = await this.apolloClient.mutate({
           mutation: CLOSE_LINK_ACCESS,
@@ -636,7 +649,7 @@ export default {
         throw new Error(error)
       }
     },
-    async updateSpec (input) {
+    async updateSpec(input) {
       try {
         this.updateLoading = true
         await this.apolloClient.mutate({
@@ -652,19 +665,19 @@ export default {
         this.updateLoading = false
       }
     },
-    openPaperList () {
+    openPaperList() {
       this.papers = this.listOrgContracts
       this.paperList = true
     },
-    openContract (id) {
+    openContract(id) {
       if (id) {
         this.create = false
-        this.blank = cloneDeep(this.papers.find(paper => paper.id === id))
+        this.blank = cloneDeep(this.papers.find((paper) => paper.id === id))
       }
       this.paperList = false
       this.paperConfigurator = true
     },
-    createContract () {
+    createContract() {
       this.blank = {
         name: '',
         title: '',
@@ -672,20 +685,24 @@ export default {
         docHeader: '',
         useDefaultDocHeader: false,
         requisiteId: '',
-        items: [{
-          title: '',
-          paragraphs: [],
-        }],
-        specItems: [{
-          title: '',
-          paragraphs: [],
-        }],
+        items: [
+          {
+            title: '',
+            paragraphs: [],
+          },
+        ],
+        specItems: [
+          {
+            title: '',
+            paragraphs: [],
+          },
+        ],
       }
       this.create = true
       this.paperList = false
       this.paperConfigurator = true
     },
-    contractCreated () {
+    contractCreated() {
       this.listOrgContractsRefetch.refetch()
     },
   },

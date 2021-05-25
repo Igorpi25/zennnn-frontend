@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div class="py-10">
-
       <div class="pt-12 pb-6">
         <div class="text-center text-white pb-8">
           <p>
@@ -27,7 +26,6 @@
           </Btn>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -46,18 +44,22 @@ export default {
   components: {
     Btn,
   },
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
     const route = useRoute()
     const invitationId = route.params.invitationId
 
-    const { result } = useQuery(CHECK_INVITATION, () => ({
-      id: invitationId,
-    }), {
-      fetchPolicy: 'cache-only',
-    })
+    const { result } = useQuery(
+      CHECK_INVITATION,
+      () => ({
+        id: invitationId,
+      }),
+      {
+        fetchPolicy: 'cache-only',
+      }
+    )
     const checkInvitation = useResult(result)
 
     return {
@@ -66,20 +68,20 @@ export default {
       checkInvitation,
     }
   },
-  data () {
+  data() {
     return {
       acceptLoading: false,
       declineLoading: false,
     }
   },
   computed: {
-    company () {
+    company() {
       if (!this.checkInvitation) return ''
       return this.checkInvitation.orgName
     },
   },
   methods: {
-    async acceptInvitation () {
+    async acceptInvitation() {
       try {
         this.acceptLoading = true
         await this.apolloClient.mutate({
@@ -96,7 +98,7 @@ export default {
         this.acceptLoading = false
       }
     },
-    async declineInvitation () {
+    async declineInvitation() {
       try {
         this.declineLoading = true
         await this.apolloClient.mutate({

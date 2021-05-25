@@ -5,7 +5,7 @@ export const store = localforage.createInstance({
 })
 
 export default {
-  install (app) {
+  install(app) {
     app.config.globalProperties.$store = store
   },
 }

@@ -6,8 +6,13 @@
       </div>
       <div>
         <button
-          class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
-           @click="toggleExpand"
+          class="
+            text-blue-500
+            hover:text-blue-400
+            focus:text-blue-400
+            focus:outline-none
+          "
+          @click="toggleExpand"
         >
           <Icon
             class="transition-transform"
@@ -20,10 +25,7 @@
     </div>
     <ExpandTransition>
       <div v-show="expanded">
-        <div
-          v-if="clearedItems.length > 0"
-          class="flex flex-wrap -mx-5"
-        >
+        <div v-if="clearedItems.length > 0" class="flex flex-wrap -mx-5">
           <div
             v-for="(item, i) in clearedItems"
             :key="i"
@@ -77,11 +79,11 @@ export default {
     supplierId: String,
     items: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
   },
   emits: ['update'],
-  data () {
+  data() {
     return {
       createLoading: false,
       updateLoading: false,
@@ -93,9 +95,9 @@ export default {
   },
   computed: {
     // filter items fron __typename for fully array update
-    clearedItems () {
+    clearedItems() {
       const items = this.items || []
-      return items.map(item => {
+      return items.map((item) => {
         return {
           contactType: item.contactType,
           contact: item.contact,
@@ -104,16 +106,18 @@ export default {
     },
   },
   methods: {
-    addData () {
-      this.$emit('update', { contacts: [...this.clearedItems, { contactType: ContactType.QQ }] })
+    addData() {
+      this.$emit('update', {
+        contacts: [...this.clearedItems, { contactType: ContactType.QQ }],
+      })
     },
-    updateData (i, item, value) {
+    updateData(i, item, value) {
       const updatedItem = Object.assign({}, item, value)
       const items = this.clearedItems.slice()
       items.splice(i, 1, updatedItem)
       this.$emit('update', { contacts: items })
     },
-    deleteData (i) {
+    deleteData(i) {
       const items = this.clearedItems.slice()
       items.splice(i, 1)
       this.$emit('update', { contacts: items })

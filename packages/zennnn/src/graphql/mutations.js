@@ -42,8 +42,14 @@ export const UPDATE_WORD = gql`
 `
 
 export const UPDATE_PAYMENT_SUBSCRIPTION = gql`
-  mutation UpdatePaymentSubscription($priceId: String!, $paymentMethodId: String) {
-    updatePaymentSubscription(priceId: $priceId, paymentMethodId: $paymentMethodId)
+  mutation UpdatePaymentSubscription(
+    $priceId: String!
+    $paymentMethodId: String
+  ) {
+    updatePaymentSubscription(
+      priceId: $priceId
+      paymentMethodId: $paymentMethodId
+    )
   }
 `
 
@@ -60,8 +66,14 @@ export const CANCEL_PAYMENT_SUBSCRIPTION = gql`
 `
 
 export const RETRY_INVOICE_WITH_NEW_PAYMENT_METHOD = gql`
-  mutation RetryInvoiceWithNewPaymentMethod($paymentMethodId: String!, $invoiceId: String!) {
-    retryInvoiceWithNewPaymentMethod(paymentMethodId: $paymentMethodId, invoiceId: $invoiceId)
+  mutation RetryInvoiceWithNewPaymentMethod(
+    $paymentMethodId: String!
+    $invoiceId: String!
+  ) {
+    retryInvoiceWithNewPaymentMethod(
+      paymentMethodId: $paymentMethodId
+      invoiceId: $invoiceId
+    )
   }
 `
 
@@ -72,8 +84,14 @@ export const SET_DEFAULT_PAYMENT_METHOD = gql`
 `
 
 export const ATTACH_PAYMENT_METHOD = gql`
-  mutation AttachPaymentMethod($paymentMethodId: String!, $setDefault: Boolean) {
-    attachPaymentMethod(paymentMethodId: $paymentMethodId, setDefault: $setDefault)
+  mutation AttachPaymentMethod(
+    $paymentMethodId: String!
+    $setDefault: Boolean
+  ) {
+    attachPaymentMethod(
+      paymentMethodId: $paymentMethodId
+      setDefault: $setDefault
+    )
   }
 `
 
@@ -84,14 +102,38 @@ export const DETACH_PAYMENT_METHOD = gql`
 `
 
 export const SET_BILLING_ADDRESS = gql`
-  mutation SetBillingAddress($country: String!, $city: String!, $street: String!, $postcode: String!) {
-    setBillingAddress(country: $country, city: $city, street: $street, postcode: $postcode)
+  mutation SetBillingAddress(
+    $country: String!
+    $city: String!
+    $street: String!
+    $postcode: String!
+  ) {
+    setBillingAddress(
+      country: $country
+      city: $city
+      street: $street
+      postcode: $postcode
+    )
   }
 `
 
 export const SIGNUP = gql`
-  mutation Signup($givenName: String!, $familyName: String!, $email: String!, $password: String!, $locale: String!, $priceId: String) {
-    signup(givenName: $givenName, familyName: $familyName, email: $email, password: $password, locale: $locale, priceId: $priceId) {
+  mutation Signup(
+    $givenName: String!
+    $familyName: String!
+    $email: String!
+    $password: String!
+    $locale: String!
+    $priceId: String
+  ) {
+    signup(
+      givenName: $givenName
+      familyName: $familyName
+      email: $email
+      password: $password
+      locale: $locale
+      priceId: $priceId
+    ) {
       id
       email
       givenName
@@ -252,7 +294,11 @@ export const UPDATE_PRODUCT_INFO = gql`
   }
 `
 export const ADD_PRODUCT_IMAGE = gql`
-  mutation AddProductImage($id: ID!, $inputImages: [AttachFileInput!]!, $unshift: Boolean) {
+  mutation AddProductImage(
+    $id: ID!
+    $inputImages: [AttachFileInput!]!
+    $unshift: Boolean
+  ) {
     addProductImage(id: $id, inputImages: $inputImages, unshift: $unshift)
   }
 `
@@ -350,7 +396,10 @@ export const DELETE_SUPPLIER = gql`
 `
 
 export const CREATE_SUPPLIER_BRANCH = gql`
-  mutation CreateSupplierBranch($supplierId: ID!, $input: SupplierBranchInput!) {
+  mutation CreateSupplierBranch(
+    $supplierId: ID!
+    $input: SupplierBranchInput!
+  ) {
     createSupplierBranch(supplierId: $supplierId, input: $input) {
       ...SupplierBranchFragment
     }
@@ -407,7 +456,11 @@ export const CREATE_COMPANY_BANK_DETAIL = gql`
 `
 
 export const UPDATE_COMPANY_BANK_DETAIL = gql`
-  mutation UpdateCompanyBankDetail($companyId: ID!, $id: ID!, $input: BankDetailInput!) {
+  mutation UpdateCompanyBankDetail(
+    $companyId: ID!
+    $id: ID!
+    $input: BankDetailInput!
+  ) {
     updateCompanyBankDetail(companyId: $companyId, id: $id, input: $input) {
       ...BankDetailFragment
     }
@@ -524,8 +577,16 @@ export const ADD_COMMENT_TO_SPEC = gql`
 `
 
 export const REPLY_TO_SPEC_COMMENT = gql`
-  mutation ReplyToSpecComment($specId: ID!, $commentId: ID!, $comment: String!) {
-    replyToSpecComment(specId: $specId, commentId: $commentId, comment: $comment)
+  mutation ReplyToSpecComment(
+    $specId: ID!
+    $commentId: ID!
+    $comment: String!
+  ) {
+    replyToSpecComment(
+      specId: $specId
+      commentId: $commentId
+      comment: $comment
+    )
   }
 `
 
@@ -536,8 +597,16 @@ export const ADD_COMMENT_TO_PRODUCT = gql`
 `
 
 export const REPLY_TO_PRODUCT_COMMENT = gql`
-  mutation ReplyToProductComment($productId: ID!, $commentId: ID!, $comment: String!) {
-    replyToProductComment(productId: $productId, commentId: $commentId, comment: $comment)
+  mutation ReplyToProductComment(
+    $productId: ID!
+    $commentId: ID!
+    $comment: String!
+  ) {
+    replyToProductComment(
+      productId: $productId
+      commentId: $commentId
+      comment: $comment
+    )
   }
 `
 
@@ -548,8 +617,16 @@ export const ADD_COMMENT_TO_PAPER_SPEC = gql`
 `
 
 export const REPLY_TO_PAPER_SPEC_COMMENT = gql`
-  mutation ReplyToPaperSpecComment($specId: ID!, $commentId: ID!, $comment: String!) {
-    replyToPaperSpecComment(specId: $specId, commentId: $commentId, comment: $comment)
+  mutation ReplyToPaperSpecComment(
+    $specId: ID!
+    $commentId: ID!
+    $comment: String!
+  ) {
+    replyToPaperSpecComment(
+      specId: $specId
+      commentId: $commentId
+      comment: $comment
+    )
   }
 `
 
@@ -560,8 +637,16 @@ export const ADD_COMMENT_TO_PAPER_PRODUCT = gql`
 `
 
 export const REPLY_TO_PAPER_PRODUCT_COMMENT = gql`
-  mutation ReplyToPaperProductComment($productId: ID!, $commentId: ID!, $comment: String!) {
-    replyToPaperProductComment(productId: $productId, commentId: $commentId, comment: $comment)
+  mutation ReplyToPaperProductComment(
+    $productId: ID!
+    $commentId: ID!
+    $comment: String!
+  ) {
+    replyToPaperProductComment(
+      productId: $productId
+      commentId: $commentId
+      comment: $comment
+    )
   }
 `
 
@@ -573,7 +658,10 @@ export const MARK_SPEC_COMMENTS_AS_VIEWED = gql`
 
 export const MARK_PRODUCT_COMMENTS_AS_VIEWED = gql`
   mutation MarkProductCommentsAsViewed($productId: ID!, $commentsIds: [ID!]) {
-    markProductCommentsAsViewed(productId: $productId, commentsIds: $commentsIds)
+    markProductCommentsAsViewed(
+      productId: $productId
+      commentsIds: $commentsIds
+    )
   }
 `
 
@@ -584,20 +672,46 @@ export const MARK_PAPER_SPEC_COMMENTS_AS_VIEWED = gql`
 `
 
 export const MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED = gql`
-  mutation MarkPaperProductCommentsAsViewed($productId: ID!, $commentsIds: [ID!]) {
-    markPaperProductCommentsAsViewed(productId: $productId, commentsIds: $commentsIds)
+  mutation MarkPaperProductCommentsAsViewed(
+    $productId: ID!
+    $commentsIds: [ID!]
+  ) {
+    markPaperProductCommentsAsViewed(
+      productId: $productId
+      commentsIds: $commentsIds
+    )
   }
 `
 
 export const SET_SPEC_CONTAINER_SIZE = gql`
-  mutation SetSpecContainerSize($specId: ID!, $containerId: ID!, $inputSize: ContainerSize!, $inputMode: ContainerMode) {
-    setSpecContainerSize(specId: $specId, containerId: $containerId, inputSize: $inputSize, inputMode: $inputMode)
+  mutation SetSpecContainerSize(
+    $specId: ID!
+    $containerId: ID!
+    $inputSize: ContainerSize!
+    $inputMode: ContainerMode
+  ) {
+    setSpecContainerSize(
+      specId: $specId
+      containerId: $containerId
+      inputSize: $inputSize
+      inputMode: $inputMode
+    )
   }
 `
 
 export const SET_SPEC_CONTAINER_CUSTOM_CAPACITY = gql`
-  mutation SetSpecContainerCustomCapacity($specId: ID!, $containerId: ID!, $capacity: Float, $shrink: Float) {
-    setSpecContainerCustomCapacity(specId: $specId, containerId: $containerId, capacity: $capacity, shrink: $shrink)
+  mutation SetSpecContainerCustomCapacity(
+    $specId: ID!
+    $containerId: ID!
+    $capacity: Float
+    $shrink: Float
+  ) {
+    setSpecContainerCustomCapacity(
+      specId: $specId
+      containerId: $containerId
+      capacity: $capacity
+      shrink: $shrink
+    )
   }
 `
 
@@ -620,19 +734,32 @@ export const SET_SPEC_ACTIVE_TAB = gql`
 `
 
 export const SET_SPEC_EXPANDED_INVOICES = gql`
-  mutation SetSpecExpandedInvoices($specId: ID!, $ids: [ID!]!, $prefix: String) {
+  mutation SetSpecExpandedInvoices(
+    $specId: ID!
+    $ids: [ID!]!
+    $prefix: String
+  ) {
     setSpecExpandedInvoices(specId: $specId, ids: $ids, prefix: $prefix) @client
   }
 `
 
 export const ADD_SPEC_EXPANDED_INVOICES = gql`
-  mutation AddSpecExpandedInvoices($specId: ID!, $ids: [ID!]!, $prefix: String) {
+  mutation AddSpecExpandedInvoices(
+    $specId: ID!
+    $ids: [ID!]!
+    $prefix: String
+  ) {
     addSpecExpandedInvoices(specId: $specId, ids: $ids, prefix: $prefix) @client
   }
 `
 
 export const REMOVE_SPEC_EXPANDED_INVOICES = gql`
-  mutation RemoveSpecExpandedInvoices($specId: ID!, $ids: [ID!]!, $prefix: String) {
-    removeSpecExpandedInvoices(specId: $specId, ids: $ids, prefix: $prefix) @client
+  mutation RemoveSpecExpandedInvoices(
+    $specId: ID!
+    $ids: [ID!]!
+    $prefix: String
+  ) {
+    removeSpecExpandedInvoices(specId: $specId, ids: $ids, prefix: $prefix)
+      @client
   }
 `

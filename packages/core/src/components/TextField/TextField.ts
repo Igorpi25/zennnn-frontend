@@ -11,10 +11,22 @@ import {
 import { useClientRect, Mask, setCursor } from 'vue-supp'
 
 import { useInputProps, useInput } from '../../composables/useInput'
-import { useInputClearProps, useInputClear } from '../../composables/useInputClear'
-import { useInputControlProps, useInputControl } from '../../composables/useInputControl'
-import { useInputValidationProps, useInputValidation } from '../../composables/useInputValidation'
-import { useInputNumberProps, useInputNumber } from '../../composables/useInputNumber'
+import {
+  useInputClearProps,
+  useInputClear,
+} from '../../composables/useInputClear'
+import {
+  useInputControlProps,
+  useInputControl,
+} from '../../composables/useInputControl'
+import {
+  useInputValidationProps,
+  useInputValidation,
+} from '../../composables/useInputValidation'
+import {
+  useInputNumberProps,
+  useInputNumber,
+} from '../../composables/useInputNumber'
 import { useInputLazyProps, useInputLazy } from '../../composables/useInputLazy'
 import { useInputMessage } from '../../composables/useInputMessage'
 
@@ -59,9 +71,19 @@ export default defineComponent({
     placeholder: String,
   },
 
-  emits: ['update:modelValue', 'update:error', 'click:clear', 'focus', 'blur', 'change', 'keydown', 'mousedown', 'mouseup'],
+  emits: [
+    'update:modelValue',
+    'update:error',
+    'click:clear',
+    'focus',
+    'blur',
+    'change',
+    'keydown',
+    'mousedown',
+    'mouseup',
+  ],
 
-  setup (props, { slots, emit }) {
+  setup(props, { slots, emit }) {
     const id: string = uid('text-field-')
     const rootElement = ref<HTMLElement>()
 
@@ -102,20 +124,21 @@ export default defineComponent({
       onControlMouseUp,
       genPrependSlot,
       genAppendSlot,
-    } = useInputControl(props, { emit, slots, inputElement, isFocused, isDisabled })
+    } = useInputControl(props, {
+      emit,
+      slots,
+      inputElement,
+      isFocused,
+      isDisabled,
+    })
 
     const clientRectProps = reactive({
       element: controlElement,
       hasResizeListener: true,
     })
-    const {
-      clientRect,
-      updateClientRect,
-    } = useClientRect(clientRectProps)
+    const { clientRect, updateClientRect } = useClientRect(clientRectProps)
 
-    const {
-      genInputMessages,
-    } = useInputMessage(props, {
+    const { genInputMessages } = useInputMessage(props, {
       controlElement,
       isFocused,
       isPatternMismatch,
@@ -138,16 +161,16 @@ export default defineComponent({
       setInternalValue,
     } = useInputNumber(props, { internalValue, isFocused })
 
-    const {
-      genClearInput,
-    } = useInputClear(props, { inputElement, isDirty, emit, emitChange, setInternalValue })
+    const { genClearInput } = useInputClear(props, {
+      inputElement,
+      isDirty,
+      emit,
+      emitChange,
+      setInternalValue,
+    })
 
-    const {
-      hasDebounce,
-      debounceInput,
-      cancelDebounce,
-      clearableCallback,
-    } = useInputLazy(props, { isFocused, setInternalValue, emitChange })
+    const { hasDebounce, debounceInput, cancelDebounce, clearableCallback } =
+      useInputLazy(props, { isFocused, setInternalValue, emitChange })
 
     const classes = computed(() => {
       return {
@@ -156,7 +179,9 @@ export default defineComponent({
         'input--disabled': isDisabled.value,
         'input--align-right': props.alignRight || props.number,
         'input--dirty': internalValue.value,
-        'input--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
+        'input--has-error':
+          ((hasMessages.value && hasError.value) || isPatternMismatch.value) &&
+          showDetails.value,
         'text-field': true,
       }
     })
@@ -207,7 +232,8 @@ export default defineComponent({
       badInput.value = target.validity && target.validity.badInput
 
       if (props.pattern) {
-        isPatternMismatch.value = target.validity && target.validity.patternMismatch
+        isPatternMismatch.value =
+          target.validity && target.validity.patternMismatch
         if (isPatternMismatch.value) {
           let positionFromEnd = target.value.length - target.selectionEnd!
           value = internalValue.value
@@ -298,37 +324,37 @@ export default defineComponent({
       if (props.size) data.size = props.size
       if (props.pattern) data.pattern = props.pattern
       if (props.mask) {
-        return withDirectives(
-          h('input', data),
-          [
-            [Mask, props.mask],
-          ],
-        )
+        return withDirectives(h('input', data), [[Mask, props.mask]])
       }
       return h('input', data)
     }
 
     const genControl = () => {
-      return h('div', {
-        ref: controlElement,
-        class: {
-          input__control: true,
-          'input__control--solo': props.solo,
-          'input__control--has-prepend': hasPrependSlot.value,
-          'input__control--has-append': hasAppendSlot.value || hasState.value || props.clearable,
-          'text-field__control': true,
-          [props.controlClass.trim()]: true,
+      return h(
+        'div',
+        {
+          ref: controlElement,
+          class: {
+            input__control: true,
+            'input__control--solo': props.solo,
+            'input__control--has-prepend': hasPrependSlot.value,
+            'input__control--has-append':
+              hasAppendSlot.value || hasState.value || props.clearable,
+            'text-field__control': true,
+            [props.controlClass.trim()]: true,
+          },
+          onClick: onControlClick,
+          onMousedown: onControlMouseDown,
+          onMouseup: onControlMouseUp,
         },
-        onClick: onControlClick,
-        onMousedown: onControlMouseDown,
-        onMouseup: onControlMouseUp,
-      }, [
-        genPrependSlot(),
-        genTextFieldInput(),
-        genAppendSlot(),
-        genStateIcon(),
-        genClearInput(clearableCallback),
-      ])
+        [
+          genPrependSlot(),
+          genTextFieldInput(),
+          genAppendSlot(),
+          genStateIcon(),
+          genClearInput(clearableCallback),
+        ]
+      )
     }
 
     return {
@@ -351,14 +377,14 @@ export default defineComponent({
     }
   },
 
-  render () {
-    return h('div', {
-      ref: 'rootElement',
-      class: this.classes,
-    }, [
-      this.genLabel(),
-      this.genInputMessages(),
-      this.genControl(),
-    ])
+  render() {
+    return h(
+      'div',
+      {
+        ref: 'rootElement',
+        class: this.classes,
+      },
+      [this.genLabel(), this.genInputMessages(), this.genControl()]
+    )
   },
 })

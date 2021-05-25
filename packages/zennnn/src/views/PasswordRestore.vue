@@ -8,11 +8,7 @@
       <div class="w-full md:w-1/2">
         <p v-html="$t('passwordRestore.subtitle')" class="pb-6" />
         <div class="pb-10">
-          <Form
-            ref="form"
-            lazy-validation
-            @submit="onSubmit"
-          >
+          <Form ref="form" lazy-validation @submit="onSubmit">
             <TextField
               ref="email"
               v-model="formModel.email"
@@ -30,14 +26,14 @@
           </Form>
         </div>
         <div class="pb-6">
-          <Btn
-            :loading="loading"
-            @click.prevent="onSubmit"
-          >
+          <Btn :loading="loading" @click.prevent="onSubmit">
             <span>{{ $t('welcome.resend') }}</span>
           </Btn>
         </div>
-        <p v-html="$t('passwordRestore.hint')" class="text-gray-200 leading-tight pb-6" />
+        <p
+          v-html="$t('passwordRestore.hint')"
+          class="text-gray-200 leading-tight pb-6"
+        />
       </div>
     </section>
     <footer class="container">
@@ -60,7 +56,7 @@ export default {
     Header,
     Copyright,
   },
-  data () {
+  data() {
     return {
       loading: false,
       errorMessage: '',
@@ -70,13 +66,13 @@ export default {
         email: '',
       },
       rules: {
-        required: v => !!v || this.$t('rule.required'),
-        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
+        required: (v) => !!v || this.$t('rule.required'),
+        email: (v) => /.+@.+\..+/.test(v) || this.$t('rule.email'),
       },
     }
   },
   methods: {
-    async onSubmit (e) {
+    async onSubmit(e) {
       e.preventDefault()
       try {
         this.loading = true
@@ -87,7 +83,9 @@ export default {
           const response = await this.$auth.forgotPassword(this.formModel.email)
           this.$logger.info('Password restore response', response)
           if (response) {
-            this.successMessage = this.$t('message.emailSent', { email: this.formModel.email })
+            this.successMessage = this.$t('message.emailSent', {
+              email: this.formModel.email,
+            })
             this.$notify({ color: 'success', text: this.successMessage })
             this.$refs.form.reset()
           }
@@ -111,7 +109,7 @@ export default {
   padding-top: 5vh;
 }
 @screen sm {
- .welcome--top {
+  .welcome--top {
     padding-top: 15vh;
   }
 }

@@ -43,7 +43,7 @@
 <script>
 export default {
   name: 'SocialSignIn',
-  data () {
+  data() {
     return {
       googleLoading: false,
       googleWindowTimer: null,
@@ -51,12 +51,14 @@ export default {
     }
   },
   methods: {
-    async googleSignIn () {
+    async googleSignIn() {
       try {
         this.googleLoading = true
         // TODO
         // not implemented
-        const credentials = await this.$auth.federatedSignIn({ provider: 'Google' })
+        const credentials = await this.$auth.federatedSignIn({
+          provider: 'Google',
+        })
         // eslint-disable-next-line
         console.log(credentials)
       } catch (error) {
@@ -65,24 +67,36 @@ export default {
         throw new Error(error)
       }
     },
-    openGoogleSignIn () {
+    openGoogleSignIn() {
       this.clearGoogleWindowTimer()
-      const features = 'width=600,height=660,menubar=no,toolbar=no,status=noe,resizable=no,scrollbars=no'
-      this.googleWindow = window.open('/start-google-signin', 'GoogleSignin', features)
+      const features =
+        'width=600,height=660,menubar=no,toolbar=no,status=noe,resizable=no,scrollbars=no'
+      this.googleWindow = window.open(
+        '/start-google-signin',
+        'GoogleSignin',
+        features
+      )
       window.addEventListener('googlesignin', this.onGoogleSignInFinish, false)
-      this.googleWindowTimer = setInterval(this.checkGoogleWindow, this.googleWindowTimerDelay)
+      this.googleWindowTimer = setInterval(
+        this.checkGoogleWindow,
+        this.googleWindowTimerDelay
+      )
     },
-    checkGoogleWindow () {
+    checkGoogleWindow() {
       if (this.googleWindow && this.googleWindow.closed) {
         this.clearGoogleWindowTimer()
-        window.removeEventListener('googlesignin', this.onGoogleSignInFinish, false)
+        window.removeEventListener(
+          'googlesignin',
+          this.onGoogleSignInFinish,
+          false
+        )
         this.$notify({
           color: 'error',
           text: this.$t('message.authByGoogleError'),
         })
       }
     },
-    onGoogleSignInFinish (e) {
+    onGoogleSignInFinish(e) {
       this.$notify({
         color: 'primary',
         text: this.$t('message.authByGoogle'),
@@ -96,27 +110,34 @@ export default {
       //   this.clearGoogleWindowTimer()
       //   this.googleWindow.close()
       // }
-      window.removeEventListener('googlesignin', this.onGoogleSignInFinish, false)
+      window.removeEventListener(
+        'googlesignin',
+        this.onGoogleSignInFinish,
+        false
+      )
     },
-    async refreshToken () {
+    async refreshToken() {
       try {
         // TODO
         // not implemented
         const cognitoUser = await this.$auth.currentAuthenticatedUser()
         const currentSession = await this.$auth.currentSession()
-        cognitoUser.refreshSession(currentSession.refreshToken, (err, session) => {
-          // eslint-disable-next-line
+        cognitoUser.refreshSession(
+          currentSession.refreshToken,
+          (err, session) => {
+            // eslint-disable-next-line
           console.log('session', err, session)
-          // const { idToken, refreshToken, accessToken } = session
-          // eslint-disable-next-line
+            // const { idToken, refreshToken, accessToken } = session
+            // eslint-disable-next-line
           console.log('SESSION', session)
-        })
+          }
+        )
       } catch (e) {
         // eslint-disable-next-line
         console.log('Unable to refresh Token', e)
       }
     },
-    clearGoogleWindowTimer () {
+    clearGoogleWindowTimer() {
       clearInterval(this.googleWindowTimer)
       this.googleWindowTimer = null
     },

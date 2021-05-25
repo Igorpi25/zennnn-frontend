@@ -2,11 +2,23 @@
   <div>
     <div class="container">
       <div class="pt-4 pb-10">
-        <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-4">
+        <div
+          class="
+            flex flex-wrap
+            sm:flex-nowrap
+            items-center
+            justify-between
+            pb-4
+          "
+        >
           <TextField
             v-model="search"
             :placeholder="$t('placeholder.pageSearch')"
-            :control-class="search ? 'bg-transparent dark:bg-transparent ring-1 ring-blue-500' : 'bg-transparent dark:bg-transparent'"
+            :control-class="
+              search
+                ? 'bg-transparent dark:bg-transparent ring-1 ring-blue-500'
+                : 'bg-transparent dark:bg-transparent'
+            "
             :prepend-icon="icons.ziSearch"
             class="w-full md:max-w-md"
             input-class="placeholder-blue-500 dark:placeholder-blue-500"
@@ -34,7 +46,13 @@
             <Icon size="20" class="align-middle">
               {{ icons.ziBagDeal }}
             </Icon>
-            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="188">
+            <Tooltip
+              placement="top-start"
+              distance="2"
+              skidding="-16"
+              origin="24px 100%"
+              max-width="188"
+            >
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -49,7 +67,13 @@
             <Icon class="align-middle">
               {{ icons.ziMoneyPlus }}
             </Icon>
-            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="190">
+            <Tooltip
+              placement="top-start"
+              distance="2"
+              skidding="-16"
+              origin="24px 100%"
+              max-width="190"
+            >
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -64,7 +88,13 @@
             <Icon class="align-middle">
               {{ icons.ziMoneyMinus }}
             </Icon>
-            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="210">
+            <Tooltip
+              placement="top-start"
+              distance="2"
+              skidding="-16"
+              origin="24px 100%"
+              max-width="210"
+            >
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -79,7 +109,13 @@
             <Icon class="align-middle">
               {{ icons.ziMoneyTernover }}
             </Icon>
-            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="190">
+            <Tooltip
+              placement="top-start"
+              distance="2"
+              skidding="-16"
+              origin="24px 100%"
+              max-width="190"
+            >
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -105,10 +141,15 @@
               >
                 <td
                   :colspan="headers.length"
-                  :style="{ height: i === 0 ? '16px' : '32px', paddingLeft: '51px' }"
+                  :style="{
+                    height: i === 0 ? '16px' : '32px',
+                    paddingLeft: '51px',
+                  }"
                   class="text-gray-200 text-base leading-tight align-bottom p-0"
                 >
-                  <span class="text-white">{{ item.groupName }}</span> ({{ item.groupItemsCount }})
+                  <span class="text-white">{{ item.groupName }}</span> ({{
+                    item.groupItemsCount
+                  }})
                 </td>
               </tr>
               <tr
@@ -121,17 +162,48 @@
               >
                 <td></td>
                 <td class="truncate">{{ item.companyName }}</td>
-                <td class="truncate text-right">{{ $n(item.dealsCount || 0) }}</td>
+                <td class="truncate text-right">
+                  {{ $n(item.dealsCount || 0) }}
+                </td>
                 <td class="truncate text-right">{{ $n(item.cost || 0) }}</td>
-                <td :class="['truncate text-right', { 'text-pink-500': item.debt > 0 }]">{{ $n(item.debt || 0) }}</td>
-                <td class="truncate text-right">{{ $n(item.totalCost || 0) }}</td>
-                <td class="truncate pl-8 pr-2">{{ item.contactPersonFullName }}</td>
+                <td
+                  :class="[
+                    'truncate text-right',
+                    { 'text-pink-500': item.debt > 0 },
+                  ]"
+                >
+                  {{ $n(item.debt || 0) }}
+                </td>
+                <td class="truncate text-right">
+                  {{ $n(item.totalCost || 0) }}
+                </td>
+                <td class="truncate pl-8 pr-2">
+                  {{ item.contactPersonFullName }}
+                </td>
                 <td class="whitespace-nowrap pr-4">
-                  <div class="overflow-x-scroll scrolling-touch scrollbar-hidden flex items-center align-middle rounded-lg space-x-1">
+                  <div
+                    class="
+                      overflow-x-scroll
+                      scrolling-touch
+                      scrollbar-hidden
+                      flex
+                      items-center
+                      align-middle
+                      rounded-lg
+                      space-x-1
+                    "
+                  >
                     <div
                       v-for="(tag, i) in item.tagsArray"
                       :key="i"
-                      class="h-6 inline-flex items-center bg-blue-500 bg-opacity-40 rounded-lg px-1"
+                      class="
+                        h-6
+                        inline-flex
+                        items-center
+                        bg-blue-500 bg-opacity-40
+                        rounded-lg
+                        px-1
+                      "
                     >
                       {{ tag }}
                     </div>
@@ -141,13 +213,22 @@
                   <span v-if="item.contactPhone" class="pointer-events-auto">
                     <a
                       :href="`tel:${item.contactPhone}`"
-                      class="inline-block align-middle text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none"
+                      class="
+                        inline-block
+                        align-middle
+                        text-gray-200
+                        hover:text-gray-100
+                        focus:text-gray-100
+                        focus:outline-none
+                      "
                     >
                       <Icon>
                         {{ icons.ziPhone }}
                       </Icon>
                     </a>
-                    <Icon class="text-gray-200 align-middle cursor-default ml-1">
+                    <Icon
+                      class="text-gray-200 align-middle cursor-default ml-1"
+                    >
                       {{ icons.ziAction }}
                     </Icon>
                   </span>
@@ -155,7 +236,18 @@
                 <td class="truncate text-right">{{ item.uid }}</td>
                 <td class="text-center pointer-events-none" @click.prevent.stop>
                   <button
-                    class="cursor-pointer pointer-events-auto flex items-center text-2xl text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none select-none mx-auto"
+                    class="
+                      cursor-pointer
+                      pointer-events-auto
+                      flex
+                      items-center
+                      text-2xl text-gray-200
+                      focus:text-gray-100
+                      hover:text-gray-100
+                      focus:outline-none
+                      select-none
+                      mx-auto
+                    "
                     @click="deleteSupplier(item.id)"
                   >
                     <Icon>
@@ -173,16 +265,17 @@
               class="text-center text-gray-200 leading-tight py-4"
             />
           </template>
-
         </DataTable>
         <Btn
           block
           outlined
           class="mt-4"
-          @click="$router.push({
-            name: 'supplier-create',
-            params: { orgId },
-          })"
+          @click="
+            $router.push({
+              name: 'supplier-create',
+              params: { orgId },
+            })
+          "
         >
           <Icon class="text-gray-200 mr-sm">
             {{ icons.ziBoxes }}
@@ -199,7 +292,18 @@ import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 import { wrapInArray } from 'vue-supp'
 
-import { ziSearch, ziDelete, ziBagDeal, ziAction, ziPhone, ziBoxes, ziMoneyPlus, ziMoneyMinus, ziMoneyTernover, ziQuestionSign } from '@zennnn/icons'
+import {
+  ziSearch,
+  ziDelete,
+  ziBagDeal,
+  ziAction,
+  ziPhone,
+  ziBoxes,
+  ziMoneyPlus,
+  ziMoneyMinus,
+  ziMoneyTernover,
+  ziQuestionSign,
+} from '@zennnn/icons'
 import { Btn, Icon, Tooltip, TextField, DataTable } from '@zennnn/core'
 
 import { LIST_SUPPLIERS } from '@/graphql/queries'
@@ -216,16 +320,20 @@ export default {
     DataTable,
     TextField,
   },
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const route = useRoute()
     const orgId = route.params.orgId
 
-    const { result, loading } = useQuery(LIST_SUPPLIERS, () => ({
-      orgId: orgId,
-    }), {
-      fetchPolicy: 'cache-and-network',
-    })
+    const { result, loading } = useQuery(
+      LIST_SUPPLIERS,
+      () => ({
+        orgId: orgId,
+      }),
+      {
+        fetchPolicy: 'cache-and-network',
+      }
+    )
     const listSuppliers = useResult(result)
 
     return {
@@ -247,7 +355,7 @@ export default {
       listSuppliers,
     }
   },
-  data () {
+  data() {
     return {
       sortBy: [],
       sortDesc: [],
@@ -258,30 +366,73 @@ export default {
     }
   },
   computed: {
-    groupBy () {
-      return this.sortBy.length === 0 || this.sortBy[0] === 'companyName' ? ['companyName'] : []
+    groupBy() {
+      return this.sortBy.length === 0 || this.sortBy[0] === 'companyName'
+        ? ['companyName']
+        : []
     },
-    groupDesc () {
+    groupDesc() {
       return this.groupBy[0] === 'companyName' ? this.sortDesc : []
     },
-    headers () {
+    headers() {
       return [
         { text: '', value: 'zAccount', width: 50, sortable: false },
-        { text: this.$t('suppliers.companyName'), value: 'companyName', align: 'left', width: 222, minWidth: 222, sortable: true },
+        {
+          text: this.$t('suppliers.companyName'),
+          value: 'companyName',
+          align: 'left',
+          width: 222,
+          minWidth: 222,
+          sortable: true,
+        },
         { text: '', value: 'dealsCount', width: 46, sortable: true },
         { text: '', value: 'cost', align: 'right', width: 100, sortable: true },
         { text: '', value: 'debt', align: 'right', width: 100, sortable: true },
-        { text: '', value: 'totalCost', align: 'right', width: 100, sortable: true },
-        { text: this.$t('suppliers.contactPerson'), value: 'contactPersonFullName', align: 'left', width: 186, class: 'pl-8 pr-2', sortable: true },
-        { text: this.$t('suppliers.tags'), value: 'tags', align: 'left', width: 126, sortable: true },
-        { text: '', value: 'contactPhone', align: 'left', width: 60, minWidth: 60, sortable: true },
-        { text: this.$t('suppliers.usn'), value: 'usn', align: 'right', width: 60, minWidth: 60, class: 'whitespace-nowrap', sortable: true },
+        {
+          text: '',
+          value: 'totalCost',
+          align: 'right',
+          width: 100,
+          sortable: true,
+        },
+        {
+          text: this.$t('suppliers.contactPerson'),
+          value: 'contactPersonFullName',
+          align: 'left',
+          width: 186,
+          class: 'pl-8 pr-2',
+          sortable: true,
+        },
+        {
+          text: this.$t('suppliers.tags'),
+          value: 'tags',
+          align: 'left',
+          width: 126,
+          sortable: true,
+        },
+        {
+          text: '',
+          value: 'contactPhone',
+          align: 'left',
+          width: 60,
+          minWidth: 60,
+          sortable: true,
+        },
+        {
+          text: this.$t('suppliers.usn'),
+          value: 'usn',
+          align: 'right',
+          width: 60,
+          minWidth: 60,
+          class: 'whitespace-nowrap',
+          sortable: true,
+        },
         { text: '', value: 'actions', width: 54 },
       ]
     },
-    items () {
+    items() {
       const items = (this.listSuppliers && this.listSuppliers.items) || []
-      return items.map(item => {
+      return items.map((item) => {
         const tags = item.tags || []
         return {
           ...item,
@@ -292,13 +443,14 @@ export default {
       })
     },
   },
-  created () {
+  created() {
     if (this.$route.query.q) {
       this.search = this.$route.query.q
     }
     if (this.$route.query.sort) {
       this.sortBy = wrapInArray(this.$route.query.sort)
-      const desc = this.$route.query.desc === true || this.$route.query.desc === 'true'
+      const desc =
+        this.$route.query.desc === true || this.$route.query.desc === 'true'
       this.sortDesc = [!!(this.$route.query.sort && desc)]
     }
     // on search on server, escape input string
@@ -308,21 +460,25 @@ export default {
     })
     this.$watch('sortBy', this.updateRouteQuery)
     this.$watch('sortDesc', this.updateRouteQuery)
-    this.$watch('$route.query', (query, old) => {
+    this.$watch('$route.query', (query) => {
       if (query.q !== this.search) {
         this.search = query.q
       }
       if (query.sort !== this.sortBy[0]) {
         this.sortBy = query.sort ? wrapInArray(query.sort) : []
       }
-      this.sortDesc = this.sortBy.length > 0 ? [query.desc === true || query.desc === 'true'] : []
+      this.sortDesc =
+        this.sortBy.length > 0
+          ? [query.desc === true || query.desc === 'true']
+          : []
     })
   },
   methods: {
-    customGroup (items, groupBy, groupDesc) {
+    customGroup(items, groupBy, groupDesc) {
       const key = groupBy[0]
       const desc = groupDesc[0]
-      const re = /[A-ZА-ЯҐЄІЇ\u4e00-\u9fff]|[\u3400-\u4dbf]|[\u{20000}-\u{2a6df}]|[\u{2a700}-\u{2b73f}]|[\u{2b740}-\u{2b81f}]|[\u{2b820}-\u{2ceaf}]|[\uf900-\ufaff]|[\u3300-\u33ff]|[\ufe30-\ufe4f]|[\uf900-\ufaff]|[\u{2f800}-\u{2fa1f}]/u
+      const re =
+        /[A-ZА-ЯҐЄІЇ\u4e00-\u9fff]|[\u3400-\u4dbf]|[\u{20000}-\u{2a6df}]|[\u{2a700}-\u{2b73f}]|[\u{2b740}-\u{2b81f}]|[\u{2b820}-\u{2ceaf}]|[\uf900-\ufaff]|[\u3300-\u33ff]|[\ufe30-\ufe4f]|[\uf900-\ufaff]|[\u{2f800}-\u{2fa1f}]/u
       const others = []
       const grouped = items.reduce((acc, curr) => {
         const name = curr[key] || ''
@@ -343,7 +499,7 @@ export default {
       if (desc) {
         sorted = sorted.reverse()
       }
-      sorted.forEach(k => {
+      sorted.forEach((k) => {
         const groupItems = grouped[k]
         const group = { name: k, items: groupItems }
         result.push(group)
@@ -357,7 +513,7 @@ export default {
       }
       return result
     },
-    updateRouteQuery () {
+    updateRouteQuery() {
       const query = {}
       if (this.search) {
         query.q = this.search
@@ -373,25 +529,25 @@ export default {
         query,
       })
     },
-    customFilter (value, search) {
+    customFilter(value, search) {
       if (search != null && value != null && typeof value !== 'boolean') {
         const words = search
           .split(',')
-          .map(s => s.trim().toLocaleLowerCase())
-          .filter(s => !!s)
+          .map((s) => s.trim().toLocaleLowerCase())
+          .filter((s) => !!s)
         const v = value.toString().toLocaleLowerCase()
-        return words.every(w => v.indexOf(w) !== -1)
+        return words.every((w) => v.indexOf(w) !== -1)
       } else {
         return false
       }
     },
-    goToSupplier (supplierId) {
+    goToSupplier(supplierId) {
       this.$router.push({
         name: 'supplier',
         params: { orgId: this.orgId, supplierId },
       })
     },
-    async deleteSupplier (id) {
+    async deleteSupplier(id) {
       try {
         const client = this.resolveClient()
         const msg = this.$t('alert.removeSupplier')
@@ -410,7 +566,7 @@ export default {
                 orgId: this.orgId,
               },
             })
-            if (data.listSuppliers.items.some(item => item.id === id)) {
+            if (data.listSuppliers.items.some((item) => item.id === id)) {
               cache.writeQuery({
                 query: LIST_SUPPLIERS,
                 variables: {
@@ -418,7 +574,9 @@ export default {
                 },
                 data: {
                   listSuppliers: {
-                    items: data.listSuppliers.items.filter(item => item.id !== id),
+                    items: data.listSuppliers.items.filter(
+                      (item) => item.id !== id
+                    ),
                   },
                 },
               })

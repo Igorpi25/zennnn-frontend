@@ -8,9 +8,7 @@ import Countries from '../config/countries-iso3.json'
 const parseDate = (date) => {
   if (!date) return ''
   const isUnixTime = !Number.isNaN(Number(date))
-  return isUnixTime
-    ? fromUnixTime(date / 1000)
-    : parseISO(date)
+  return isUnixTime ? fromUnixTime(date / 1000) : parseISO(date)
 }
 
 const genLabel = (path, clientLang, opt = {}) => {
@@ -67,7 +65,7 @@ const genLabel = (path, clientLang, opt = {}) => {
 const genValues = (...args) => {
   let result = ''
   if (args.length > 0) {
-    args.forEach(v => {
+    args.forEach((v) => {
       const val = v || ''
       result += result ? ` / ${val}` : val
     })
@@ -96,7 +94,11 @@ const genBillToBody = (client, clientLang) => {
           {
             stack: [
               {
-                text: genValues(client.legalAddress, client.phone && client.phone.phone, client.fax && client.fax.phone),
+                text: genValues(
+                  client.legalAddress,
+                  client.phone && client.phone.phone,
+                  client.fax && client.fax.phone
+                ),
               },
             ],
           },
@@ -108,7 +110,11 @@ const genBillToBody = (client, clientLang) => {
           {
             stack: [
               {
-                text: genValues(client.legalAddress, client.phone && client.phone.phone, client.fax && client.fax.phone),
+                text: genValues(
+                  client.legalAddress,
+                  client.phone && client.phone.phone,
+                  client.fax && client.fax.phone
+                ),
               },
             ],
           },
@@ -134,7 +140,11 @@ const genBillToBody = (client, clientLang) => {
       {
         stack: [
           {
-            text: genValues(client.deliveryAddress, client.importerPhone && client.importerPhone.phone, client.importerFax && client.importerFax.phone),
+            text: genValues(
+              client.deliveryAddress,
+              client.importerPhone && client.importerPhone.phone,
+              client.importerFax && client.importerFax.phone
+            ),
           },
         ],
       },
@@ -222,10 +232,7 @@ const genDeliveryInfoTable = (shipment, clientLang) => {
       ]
   return {
     widths,
-    body: [
-      shipment.sentThrough ? row1 : row2,
-      row,
-    ],
+    body: [shipment.sentThrough ? row1 : row2, row],
   }
 }
 const genShipmentBody = (shipment, customs, clientLang) => {
@@ -236,7 +243,9 @@ const genShipmentBody = (shipment, customs, clientLang) => {
         stack: genLabel('print.methodOfDespatch', clientLang),
       },
       {
-        stack: genLabel(`shipmentType.${shipment.activeType}`, clientLang, { secondary: true }),
+        stack: genLabel(`shipmentType.${shipment.activeType}`, clientLang, {
+          secondary: true,
+        }),
       },
       {
         stack: genLabel('print.quanitiyOfContainers', clientLang),
@@ -288,7 +297,13 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.marine.exportDate ? i18n.d(parseDate(shipment.marine.exportDate), 'short', clientLang) : '',
+            text: shipment.marine.exportDate
+              ? i18n.d(
+                  parseDate(shipment.marine.exportDate),
+                  'short',
+                  clientLang
+                )
+              : '',
           },
         ],
       },
@@ -354,7 +369,9 @@ const genShipmentBody = (shipment, customs, clientLang) => {
         stack: genLabel('print.methodOfDespatch', clientLang),
       },
       {
-        stack: genLabel(`shipmentType.${shipment.activeType}`, clientLang, { secondary: true }),
+        stack: genLabel(`shipmentType.${shipment.activeType}`, clientLang, {
+          secondary: true,
+        }),
       },
       {
         stack: genLabel('print.qtyOfContainersPlatforms', clientLang),
@@ -406,7 +423,13 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.railway.exportDate ? i18n.d(parseDate(shipment.railway.exportDate), 'short', clientLang) : '',
+            text: shipment.railway.exportDate
+              ? i18n.d(
+                  parseDate(shipment.railway.exportDate),
+                  'short',
+                  clientLang
+                )
+              : '',
           },
         ],
       },
@@ -431,7 +454,9 @@ const genShipmentBody = (shipment, customs, clientLang) => {
         stack: genLabel('print.methodOfDespatch', clientLang),
       },
       {
-        stack: genLabel(`shipmentType.${shipment.activeType}`, clientLang, { secondary: true }),
+        stack: genLabel(`shipmentType.${shipment.activeType}`, clientLang, {
+          secondary: true,
+        }),
       },
       {
         stack: genLabel('print.vehicle', clientLang),
@@ -483,7 +508,9 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.car.exportDate ? i18n.d(parseDate(shipment.car.exportDate), 'short', clientLang) : '',
+            text: shipment.car.exportDate
+              ? i18n.d(parseDate(shipment.car.exportDate), 'short', clientLang)
+              : '',
           },
         ],
       },
@@ -494,7 +521,9 @@ const genShipmentBody = (shipment, customs, clientLang) => {
         stack: genLabel('print.methodOfDespatch', clientLang),
       },
       {
-        stack: genLabel(`shipmentType.${shipment.activeType}`, clientLang, { secondary: true }),
+        stack: genLabel(`shipmentType.${shipment.activeType}`, clientLang, {
+          secondary: true,
+        }),
       },
       '',
       '',
@@ -582,7 +611,13 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.mixed.exportDate ? i18n.d(parseDate(shipment.mixed.exportDate), 'short', clientLang) : '',
+            text: shipment.mixed.exportDate
+              ? i18n.d(
+                  parseDate(shipment.mixed.exportDate),
+                  'short',
+                  clientLang
+                )
+              : '',
           },
         ],
       },
@@ -593,7 +628,9 @@ const genShipmentBody = (shipment, customs, clientLang) => {
         stack: genLabel('print.methodOfDespatch', clientLang),
       },
       {
-        stack: genLabel(`shipmentType.${shipment.activeType}`, clientLang, { secondary: true }),
+        stack: genLabel(`shipmentType.${shipment.activeType}`, clientLang, {
+          secondary: true,
+        }),
       },
       {
         stack: genLabel('print.quanitiyOfCartons', clientLang),
@@ -635,13 +672,17 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       stack: genLabel('print.shippingMarks', clientLang),
     },
     {
-      stack: genLabel('print.accordingToContract', clientLang, { secondary: true }),
+      stack: genLabel('print.accordingToContract', clientLang, {
+        secondary: true,
+      }),
     },
     {
       stack: genLabel('print.exportReference', clientLang),
     },
     {
-      stack: genLabel('print.accordingToContract', clientLang, { secondary: true }),
+      stack: genLabel('print.accordingToContract', clientLang, {
+        secondary: true,
+      }),
     },
   ])
   return result
@@ -650,61 +691,77 @@ const genItemBody = (invoices, clientLang) => {
   let index = 0
   const items = []
   // filter dummy invoices
-  invoices.filter(el => !el.id.startsWith('empty-')).forEach(invoice => {
-    // filter dummy products
-    const products = (invoice.products || []).filter(el => !el.id.startsWith('empty-'))
-    products.forEach(product => {
-      index++
-      const price = (product.cost && product.cost.price) || product.costPrice || 0
-      const amount = (product.cost && product.cost.amount) || product.costAmount || 0
-      const lang = clientLang
-      const word = product.name || {}
-      const wordDefaultLocale = word.defaultLocale
-      const wordValues = word.values || []
-      const result = {}
-      wordValues.forEach(el => {
-        const v = el.v || el.tr
-        if (v) {
-          result[el.k] = v
+  invoices
+    .filter((el) => !el.id.startsWith('empty-'))
+    .forEach((invoice) => {
+      // filter dummy products
+      const products = (invoice.products || []).filter(
+        (el) => !el.id.startsWith('empty-')
+      )
+      products.forEach((product) => {
+        index++
+        const price =
+          (product.cost && product.cost.price) || product.costPrice || 0
+        const amount =
+          (product.cost && product.cost.amount) || product.costAmount || 0
+        const lang = clientLang
+        const word = product.name || {}
+        const wordDefaultLocale = word.defaultLocale
+        const wordValues = word.values || []
+        const result = {}
+        wordValues.forEach((el) => {
+          const v = el.v || el.tr
+          if (v) {
+            result[el.k] = v
+          }
+        })
+        let name = result.en || ''
+        if (clientLang !== 'en') {
+          const s = result[lang] || result[wordDefaultLocale] || ''
+          name += name && s ? ` / ${s}` : s || ''
         }
+        if (product.article) {
+          name += ` / ${product.article}`
+        }
+        const description =
+          (product.info && product.info.description) || product.description
+        if (description) {
+          name += `\n${description}`
+        }
+        const unit = product.unit || 'pcs'
+        const unitText = genLabel(`unit.${unit}`, clientLang, {
+          flat: true,
+          secondary: true,
+        })
+        const item = [
+          { text: `${index}`, alignment: 'center' },
+          name,
+          { text: `${product.qty || 0} ${unitText}`, alignment: 'right' },
+          { text: i18n.n(price, 'currency', 'en'), alignment: 'right' },
+          { text: i18n.n(amount, 'currency', 'en'), alignment: 'right' },
+        ]
+        items.push(item)
       })
-      let name = result.en || ''
-      if (clientLang !== 'en') {
-        const s = result[lang] || result[wordDefaultLocale] || ''
-        name += name && s ? ` / ${s}` : s || ''
+      if (invoice.discountInCurrency) {
+        const item = [
+          '',
+          {
+            text: genLabel('print.supplierDiscount', clientLang, {
+              flat: true,
+              secondary: true,
+            }),
+            colSpan: 3,
+          },
+          '',
+          '',
+          {
+            text: `-${i18n.n(invoice.discountInCurrency, 'currency', 'en')}`,
+            alignment: 'right',
+          },
+        ]
+        items.push(item)
       }
-      if (product.article) {
-        name += ` / ${product.article}`
-      }
-      const description = (product.info && product.info.description) || product.description
-      if (description) {
-        name += `\n${description}`
-      }
-      const unit = product.unit || 'pcs'
-      const unitText = genLabel(`unit.${unit}`, clientLang, { flat: true, secondary: true })
-      const item = [
-        { text: `${index}`, alignment: 'center' },
-        name,
-        { text: `${product.qty || 0} ${unitText}`, alignment: 'right' },
-        { text: i18n.n(price, 'currency', 'en'), alignment: 'right' },
-        { text: i18n.n(amount, 'currency', 'en'), alignment: 'right' },
-      ]
-      items.push(item)
     })
-    if (invoice.discountInCurrency) {
-      const item = [
-        '',
-        {
-          text: genLabel('print.supplierDiscount', clientLang, { flat: true, secondary: true }),
-          colSpan: 3,
-        },
-        '',
-        '',
-        { text: `-${i18n.n(invoice.discountInCurrency, 'currency', 'en')}`, alignment: 'right' },
-      ]
-      items.push(item)
-    }
-  })
   return items
 }
 const genItemsAmounts = (spec, customs, clientLang) => {
@@ -851,7 +908,10 @@ const genAmountBody = (spec, depositDueDate, clientLang) => {
     result.push([
       '',
       {
-        text: genLabel('print.depositeDue', clientLang, { flat: true, args: { date } }),
+        text: genLabel('print.depositeDue', clientLang, {
+          flat: true,
+          args: { date },
+        }),
         alignment: 'right',
       },
       {
@@ -869,7 +929,10 @@ const genAmountInWords = (spec, clientLang) => {
   if (spec.amountInWords) {
     result.push([
       {
-        text: `${i18n.t('print.amountInWords', defaultLang)}: ${spec.amountInWords.toUpperCase()}`,
+        text: `${i18n.t(
+          'print.amountInWords',
+          defaultLang
+        )}: ${spec.amountInWords.toUpperCase()}`,
         alignment: 'right',
       },
     ])
@@ -877,7 +940,9 @@ const genAmountInWords = (spec, clientLang) => {
   if (!isDefaultLang && spec.amountInWordsClientLang) {
     result.push([
       {
-        text: `${i18n.t('print.amountInWords', clientLang)}: ${spec.amountInWordsClientLang}`,
+        text: `${i18n.t('print.amountInWords', clientLang)}: ${
+          spec.amountInWordsClientLang
+        }`,
         alignment: 'right',
       },
     ])
@@ -896,21 +961,36 @@ const genAmountInWords = (spec, clientLang) => {
     : null
 }
 
-export default async (spec, requisite, client, shipment, customs, method = 'open', isDraft = true) => {
+export default async (
+  spec,
+  requisite,
+  client,
+  shipment,
+  customs,
+  method = 'open',
+  isDraft = true
+) => {
   try {
-    const bankDetail = (requisite.bankDetails || []).find(el => el.id === requisite.defaultBankDetail) || {}
+    const bankDetail =
+      (requisite.bankDetails || []).find(
+        (el) => el.id === requisite.defaultBankDetail
+      ) || {}
     let win = null
     if (method !== 'download') {
       win = window.open(`/print/${spec.specNo}`, '_blank')
     }
     const defaultLang = i18n.fallbackLocale
     const clientLang = client.locale || defaultLang
-    const pdfMake = (await import(/* webpackChunkName: "pdfMake" */ 'pdfmake/build/pdfmake')).default
+    const pdfMake = (
+      await import(/* webpackChunkName: "pdfMake" */ 'pdfmake/build/pdfmake')
+    ).default
     let font
     let pdfFonts
     if (clientLang === 'zh-Hans') {
       font = 'NotoSansCJKsc'
-      const response = await axios.get(`${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKsc.json`)
+      const response = await axios.get(
+        `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKsc.json`
+      )
       pdfFonts = {
         vfs: response.data,
       }
@@ -924,7 +1004,9 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
       }
     } else if (clientLang === 'zh-Hant') {
       font = 'NotoSansCJKtc'
-      const response = await axios.get(`${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKtc.json`)
+      const response = await axios.get(
+        `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKtc.json`
+      )
       pdfFonts = {
         vfs: response.data,
       }
@@ -938,7 +1020,11 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
       }
     } else {
       font = 'MyriadPro'
-      pdfFonts = (await import(/* webpackChunkName: "pdfFonts" */ '../plugins/pdfmake/vfs_fonts')).default
+      pdfFonts = (
+        await import(
+          /* webpackChunkName: "pdfFonts" */ '../plugins/pdfmake/vfs_fonts'
+        )
+      ).default
       pdfMake.fonts = {
         MyriadPro: {
           normal: 'MyriadPro-Regular.ttf',
@@ -952,7 +1038,9 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
     pdfMake.vfs = vfs
     const specCreatedAt = parseDate(spec.createdAt)
     const specDueDate = parseDate(spec.createdAt)
-    const specDepositDueDate = spec.depositDueDate ? parseDate(spec.depositDueDate) : null
+    const specDepositDueDate = spec.depositDueDate
+      ? parseDate(spec.depositDueDate)
+      : null
     specDueDate.setTime(specDueDate.getTime() + 7 * 86400000)
     const dd = {
       info: {
@@ -960,7 +1048,7 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
         creator: window.location.hostname,
         producer: window.location.hostname,
       },
-      header: (currentPage, pageCount, pageSize) => {
+      header: () => {
         return [
           {
             columns: [
@@ -1027,7 +1115,11 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
                 {
                   stack: genLabel('print.addressTelFax', clientLang),
                 },
-                genValues(requisite.legalAddress, requisite.phone && requisite.phone.phone, requisite.fax && requisite.fax.phone),
+                genValues(
+                  requisite.legalAddress,
+                  requisite.phone && requisite.phone.phone,
+                  requisite.fax && requisite.fax.phone
+                ),
               ],
               [
                 {
@@ -1079,7 +1171,9 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
                   bold: true,
                 },
                 {
-                  stack: genLabel('print.invoiceNo', clientLang, { value: spec.specNo }),
+                  stack: genLabel('print.invoiceNo', clientLang, {
+                    value: spec.specNo,
+                  }),
                 },
                 {
                   alignment: 'right',
@@ -1087,7 +1181,11 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
                 },
                 {
                   alignment: 'right',
-                  text: i18n.d(specDepositDueDate || new Date(), 'short', clientLang),
+                  text: i18n.d(
+                    specDepositDueDate || new Date(),
+                    'short',
+                    clientLang
+                  ),
                 },
               ],
             ],
@@ -1105,9 +1203,9 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
           },
           layout: {
             hLineWidth: function (i, node) {
-              return (i === 0 || i === 2 || i === node.table.body.length) ? 1 : 0
+              return i === 0 || i === 2 || i === node.table.body.length ? 1 : 0
             },
-            vLineWidth: function (i, node) {
+            vLineWidth: function () {
               return 0
             },
           },
@@ -1142,7 +1240,14 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
                   stack: genLabel('print.countryOfOrigin', clientLang),
                 },
                 {
-                  stack: genLabel(`countries.${customs.countryOfOrigin}`, clientLang, { fallback: Countries[customs.countryOfOrigin], secondary: true }),
+                  stack: genLabel(
+                    `countries.${customs.countryOfOrigin}`,
+                    clientLang,
+                    {
+                      fallback: Countries[customs.countryOfOrigin],
+                      secondary: true,
+                    }
+                  ),
                 },
                 {
                   stack: genLabel('print.pkgListNo', clientLang),
@@ -1159,10 +1264,10 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
             margin: [0, 0, 0, 20],
           },
           layout: {
-            hLineWidth: function (i, node) {
-              return (i === 0) ? 1 : 0
+            hLineWidth: function (i) {
+              return i === 0 ? 1 : 0
             },
-            vLineWidth: function (i, node) {
+            vLineWidth: function () {
               return 0
             },
           },
@@ -1175,21 +1280,31 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
             body: [
               [
                 {
-                  stack: genLabel('print.itemNo', clientLang, { secondary: true }),
+                  stack: genLabel('print.itemNo', clientLang, {
+                    secondary: true,
+                  }),
                 },
                 {
-                  stack: genLabel('print.itemDescription', clientLang, { secondary: true }),
+                  stack: genLabel('print.itemDescription', clientLang, {
+                    secondary: true,
+                  }),
                 },
                 {
-                  stack: genLabel('print.itemQuantityUnit', clientLang, { secondary: true }),
+                  stack: genLabel('print.itemQuantityUnit', clientLang, {
+                    secondary: true,
+                  }),
                   alignment: 'right',
                 },
                 {
-                  stack: genLabel('print.itemRatePrice', clientLang, { secondary: true }),
+                  stack: genLabel('print.itemRatePrice', clientLang, {
+                    secondary: true,
+                  }),
                   alignment: 'right',
                 },
                 {
-                  stack: genLabel('print.itemAmount', clientLang, { secondary: true }),
+                  stack: genLabel('print.itemAmount', clientLang, {
+                    secondary: true,
+                  }),
                   alignment: 'right',
                 },
               ],
@@ -1199,9 +1314,9 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
           headerRows: 1,
           layout: {
             hLineWidth: function (i, node) {
-              return (i === 1 || i === node.table.body.length) ? 1 : 0
+              return i === 1 || i === node.table.body.length ? 1 : 0
             },
-            vLineWidth: function (i, node) {
+            vLineWidth: function () {
               return 0
             },
           },
@@ -1253,7 +1368,9 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
                   stack: genLabel('print.terms', clientLang),
                 },
                 {
-                  stack: genLabel('print.NET7', clientLang, { secondary: true }),
+                  stack: genLabel('print.NET7', clientLang, {
+                    secondary: true,
+                  }),
                 },
                 {
                   stack: genLabel('print.dateDue', clientLang),
@@ -1271,7 +1388,9 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
                   stack: genLabel('print.paymentMethods', clientLang),
                 },
                 {
-                  stack: genLabel('print.TTaccordingToContract', clientLang, { secondary: true }),
+                  stack: genLabel('print.TTaccordingToContract', clientLang, {
+                    secondary: true,
+                  }),
                 },
                 '',
                 '',
@@ -1280,9 +1399,9 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
           },
           layout: {
             hLineWidth: function (i, node) {
-              return (i === 0 || i === node.table.body.length) ? 1 : 0
+              return i === 0 || i === node.table.body.length ? 1 : 0
             },
-            vLineWidth: function (i, node) {
+            vLineWidth: function () {
               return 0
             },
           },
@@ -1330,7 +1449,13 @@ export default async (spec, requisite, client, shipment, customs, method = 'open
       },
     }
     if (isDraft) {
-      dd.watermark = { text: i18n.t('paper.draft'), color: 'gray', opacity: 0.3, bold: true, italics: false }
+      dd.watermark = {
+        text: i18n.t('paper.draft'),
+        color: 'gray',
+        opacity: 0.3,
+        bold: true,
+        italics: false,
+      }
     }
     const pdfDocGenerator = pdfMake.createPdf(dd)
     if (method === 'download') {

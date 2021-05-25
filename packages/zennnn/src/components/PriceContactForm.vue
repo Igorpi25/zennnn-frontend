@@ -1,10 +1,6 @@
 <template>
   <div class="p-6">
-    <Form
-      ref="form"
-      v-model:valid="formValidity"
-      @submit="onSubmit"
-    >
+    <Form ref="form" v-model:valid="formValidity" @submit="onSubmit">
       <TextField
         ref="nameInput"
         v-model="name"
@@ -31,7 +27,13 @@
         class="pb-6"
       />
     </Form>
-    <div :class="hasCancel ? 'flex flex-wrap sm:flex-nowrap sm:justify-between' : undefined">
+    <div
+      :class="
+        hasCancel
+          ? 'flex flex-wrap sm:flex-nowrap sm:justify-between'
+          : undefined
+      "
+    >
       <Btn
         v-if="hasCancel"
         block
@@ -52,7 +54,7 @@
         :block="hasCancel"
         @click="onSubmit"
       >
-      {{ $t('pricing.send') }}
+        {{ $t('pricing.send') }}
       </Btn>
     </div>
   </div>
@@ -83,7 +85,7 @@ export default {
 
   emits: ['submit', 'cancel'],
 
-  setup () {
+  setup() {
     const { t } = useI18n()
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
@@ -111,27 +113,27 @@ export default {
       loading,
       formValidity,
       rules: {
-        required: v => !!v || t('rule.required'),
-        email: v => /.+@.+\..+/.test(v) || t('rule.email'),
+        required: (v) => !!v || t('rule.required'),
+        email: (v) => /.+@.+\..+/.test(v) || t('rule.email'),
       },
       premiumContactMutate,
     }
   },
 
   methods: {
-    focus () {
+    focus() {
       this.$refs.nameInput && this.$refs.nameInput.focus()
     },
-    reset () {
+    reset() {
       this.$refs.form && this.$refs.form.reset()
     },
-    onCancel () {
+    onCancel() {
       this.$emit('cancel')
       setTimeout(() => {
         this.reset()
       }, 200)
     },
-    async onSubmit () {
+    async onSubmit() {
       try {
         this.loading = true
 

@@ -1,11 +1,31 @@
 <template>
   <div class="flex-grow flex">
-    <div class="auth-left container flex-shrink-0 hidden sm:flex flex-col bg-gray-700">
+    <div
+      class="
+        auth-left
+        container
+        flex-shrink-0
+        hidden
+        sm:flex
+        flex-col
+        bg-gray-700
+      "
+    >
       <div class="signup--top flex-grow lg:pl-8">
-        <div class="auth-left--bg absolute pointer-events-none bottom-0 left-0 top-0 right-1/2" />
+        <div
+          class="
+            auth-left--bg
+            absolute
+            pointer-events-none
+            bottom-0
+            left-0
+            top-0
+            right-1/2
+          "
+        />
         <div class="pt-2 lg:pl-12 pb-12">
           <router-link to="/" class="focus:outline-none">
-            <img src="@/assets/img/logo-dark.svg" alt="Logo">
+            <img src="@/assets/img/logo-dark.svg" alt="Logo" />
           </router-link>
         </div>
         <div class="pt-1">
@@ -28,16 +48,44 @@
     <div class="container flex-grow flex flex-col">
       <div class="relative">
         <div class="sm:absolute sm:top-0 sm:right-0">
-          <div class="max-w-sm mx-auto sm:max-w-none sm:mx-0 flex items-center justify-between sm:justify-end flex-wrap sm:flex-nowrap text-gray-200 lg:pr-20 pt-6 sm:pt-8">
+          <div
+            class="
+              max-w-sm
+              mx-auto
+              sm:max-w-none
+              sm:mx-0
+              flex
+              items-center
+              justify-between
+              sm:justify-end
+              flex-wrap
+              sm:flex-nowrap
+              text-gray-200
+              lg:pr-20
+              pt-6
+              sm:pt-8
+            "
+          >
             <router-link to="/">
-              <img src="@/assets/img/logo-dark.svg" alt="Logo" class="sm:hidden">
+              <img
+                src="@/assets/img/logo-dark.svg"
+                alt="Logo"
+                class="sm:hidden"
+              />
             </router-link>
             <LocalePicker distance="16" class="sm:pr-4" />
-            <div class="sm:inline-block w-full sm:w-auto text-center py-5 sm:py-0">
+            <div
+              class="sm:inline-block w-full sm:w-auto text-center py-5 sm:py-0"
+            >
               <span class="pr-1">{{ $t('signup.hasAccount') }}</span>
               <router-link
                 :to="{ name: 'signin' }"
-                class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
+                class="
+                  text-blue-500
+                  hover:text-blue-400
+                  focus:text-blue-400
+                  focus:outline-none
+                "
               >
                 <span>{{ $t('signup.signin') }}</span>
               </router-link>
@@ -45,14 +93,24 @@
           </div>
         </div>
       </div>
-      <div class="signup--top flex flex-col justify-center sm:block w-full max-w-sm flex-grow mx-auto sm:mx-0 lg:ml-24">
+      <div
+        class="
+          signup--top
+          flex flex-col
+          justify-center
+          sm:block
+          w-full
+          max-w-sm
+          flex-grow
+          mx-auto
+          sm:mx-0
+          lg:ml-24
+        "
+      >
         <h1 class="pb-10 font-semibold text-2xl">
           {{ $t('signup.registration') }}
         </h1>
-        <Form
-          ref="form"
-          v-model:valid="formValidity"
-        >
+        <Form ref="form" v-model:valid="formValidity">
           <TextField
             v-model="formModel.firstName"
             :placeholder="$t('signup.firstName')"
@@ -172,7 +230,7 @@ export default {
     Copyright,
     LocalePicker,
   },
-  setup () {
+  setup() {
     const { mutate: signupMutate } = useMutation(SIGNUP)
 
     return {
@@ -184,7 +242,7 @@ export default {
       signupMutate,
     }
   },
-  data () {
+  data() {
     return {
       frontendVersion: process.env.FRONTEND_VERSION || '',
       formValidity: false,
@@ -198,19 +256,26 @@ export default {
         password: '',
       },
       rules: {
-        check: v => !!v || this.$t('signup.check'),
-        required: v => !!v || this.$t('rule.required'),
-        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
-        passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
+        check: (v) => !!v || this.$t('signup.check'),
+        required: (v) => !!v || this.$t('rule.required'),
+        email: (v) => /.+@.+\..+/.test(v) || this.$t('rule.email'),
+        passwordMinLength: (v) =>
+          (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
       },
     }
   },
   computed: {
-    policyHtml () {
-      return `${this.$t('signup.acceptPolicyAndTerms')}&nbsp;<a href="/policy" class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none">
-        ${this.$t('signup.privacyPolicy')}</a> ${this.$t('preposition.and')}&nbsp;<a href="/agreenemt" class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none">${this.$t('signup.termsOfUse')}</a>`
+    policyHtml() {
+      return `${this.$t(
+        'signup.acceptPolicyAndTerms'
+      )}&nbsp;<a href="/policy" class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none">
+        ${this.$t('signup.privacyPolicy')}</a> ${this.$t(
+        'preposition.and'
+      )}&nbsp;<a href="/agreenemt" class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none">${this.$t(
+        'signup.termsOfUse'
+      )}</a>`
     },
-    items () {
+    items() {
       return [
         { text: this.$t('signup.feat1') },
         { text: this.$t('signup.feat2') },
@@ -220,7 +285,7 @@ export default {
     },
   },
   methods: {
-    async onSubmit (e) {
+    async onSubmit(e) {
       try {
         e.preventDefault()
         this.loading = true
@@ -266,17 +331,17 @@ export default {
 
 <style lang="postcss" scoped>
 @screen sm {
- .signup--top {
+  .signup--top {
     padding-top: 15vh;
   }
 }
 @screen lg {
- .signup--top {
+  .signup--top {
     padding-top: 20vh;
   }
 }
 @screen xl {
- .signup--top {
+  .signup--top {
     padding-top: 25vh;
   }
 }

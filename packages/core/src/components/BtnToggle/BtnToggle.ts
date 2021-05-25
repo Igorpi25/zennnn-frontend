@@ -8,7 +8,7 @@ export default defineComponent({
     modelValue: [String, Number],
     items: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
     disabled: Boolean,
     minWidth: {
@@ -19,7 +19,7 @@ export default defineComponent({
 
   emits: ['update:modelValue'],
 
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const internalValue = ref(props.modelValue)
 
     watch(internalValue, (val) => {
@@ -27,19 +27,23 @@ export default defineComponent({
     })
 
     const genButton = ({ value, text, disabled }: any) => {
-      return h('button', {
-        class: {
-          'btn-toggle__item': true,
-          'btn-toggle__item--active': internalValue.value === value,
+      return h(
+        'button',
+        {
+          class: {
+            'btn-toggle__item': true,
+            'btn-toggle__item--active': internalValue.value === value,
+          },
+          style: {
+            minWidth: convertToUnit(props.minWidth),
+          },
+          disabled: props.disabled || disabled,
+          onClick() {
+            internalValue.value = value
+          },
         },
-        style: {
-          minWidth: convertToUnit(props.minWidth),
-        },
-        disabled: props.disabled || disabled,
-        onClick () {
-          internalValue.value = value
-        },
-      }, text)
+        text
+      )
     }
 
     const genContent = () => {
@@ -47,12 +51,16 @@ export default defineComponent({
     }
 
     return () => {
-      return h('div', {
-        class: {
-          'btn-toggle': true,
-          'btn-toggle--disabled': props.disabled,
+      return h(
+        'div',
+        {
+          class: {
+            'btn-toggle': true,
+            'btn-toggle--disabled': props.disabled,
+          },
         },
-      }, genContent())
+        genContent()
+      )
     }
   },
 })

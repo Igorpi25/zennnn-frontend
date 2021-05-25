@@ -55,24 +55,32 @@ export default defineComponent({
 
   emits: ['update:valid'],
 
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const id: string = uid('form-')
     const rootElement = ref<HTMLElement>()
     const inputs = ref<any[]>([]) // TODO: better typing
     const watchers = ref<Watchers[]>([])
     const errorBag = ref<ErrorBag>({})
 
-    watch(errorBag, (val) => {
-      const errors = Object.values(val).includes(true)
+    watch(
+      errorBag,
+      (val) => {
+        const errors = Object.values(val).includes(true)
 
-      emit('update:valid', !errors)
-    }, { deep: true, immediate: true })
+        emit('update:valid', !errors)
+      },
+      { deep: true, immediate: true }
+    )
 
     const watchInput = (input: FormInput): Watchers => {
       const watcher = (input: FormInput): (() => void) => {
-        return watch(input.hasError, (val) => {
-          errorBag.value[input.id] = val
-        }, { immediate: true })
+        return watch(
+          input.hasError,
+          (val) => {
+            errorBag.value[input.id] = val
+          },
+          { immediate: true }
+        )
       }
 
       const _watchers: Watchers = {
@@ -87,7 +95,8 @@ export default defineComponent({
           if (!val) return
 
           // Only watch if we're not already doing it
-          if (Object.prototype.hasOwnProperty.call(errorBag.value, input.id)) return
+          if (Object.prototype.hasOwnProperty.call(errorBag.value, input.id))
+            return
 
           _watchers.valid = watcher(input)
         })
@@ -99,11 +108,11 @@ export default defineComponent({
     }
 
     const validate = () => {
-      return inputs.value.filter(input => !input.validate(true)).length === 0
+      return inputs.value.filter((input) => !input.validate(true)).length === 0
     }
 
     const reset = () => {
-      inputs.value.forEach(input => input.reset())
+      inputs.value.forEach((input) => input.reset())
       resetErrorBag()
     }
 
@@ -117,7 +126,7 @@ export default defineComponent({
     }
 
     const resetValidation = () => {
-      inputs.value.forEach(input => input.resetValidation())
+      inputs.value.forEach((input) => input.resetValidation())
       resetErrorBag()
     }
 
@@ -127,18 +136,18 @@ export default defineComponent({
     }
 
     const unregister = (input: FormInput) => {
-      const found = inputs.value.find(i => i.id === input.id)
+      const found = inputs.value.find((i) => i.id === input.id)
 
       if (!found) return
 
-      const unwatch = watchers.value.find(i => i.id === found.id)
+      const unwatch = watchers.value.find((i) => i.id === found.id)
       if (unwatch) {
         unwatch.valid()
         unwatch.shouldValidate()
       }
 
-      watchers.value = watchers.value.filter(i => i.id !== found.id)
-      inputs.value = inputs.value.filter(i => i.id !== found.id)
+      watchers.value = watchers.value.filter((i) => i.id !== found.id)
+      inputs.value = inputs.value.filter((i) => i.id !== found.id)
       delete errorBag.value[found.id]
     }
 
@@ -167,15 +176,19 @@ export default defineComponent({
     }
   },
 
-  render () {
-    return h('form', {
-      ref: 'rootElement',
-      id: this.id,
-      novalidate: true,
-      onSubmit (e: Event) {
-        e.preventDefault()
-        e.stopPropagation()
+  render() {
+    return h(
+      'form',
+      {
+        ref: 'rootElement',
+        id: this.id,
+        novalidate: true,
+        onSubmit(e: Event) {
+          e.preventDefault()
+          e.stopPropagation()
+        },
       },
-    }, this.$slots.default?.())
+      this.$slots.default?.()
+    )
   },
 })

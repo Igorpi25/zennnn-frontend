@@ -24,7 +24,7 @@ export default defineComponent({
     },
   },
 
-  setup (props, { slots }) {
+  setup(props, { slots }) {
     const state: any = reactive({
       radius: 20,
       circumference: computed(() => {
@@ -45,10 +45,12 @@ export default defineComponent({
         return Math.round(state.circumference * 1000) / 1000
       }),
       strokeDashOffset: computed(() => {
-        return ((100 - state.normalizedValue) / 100) * state.circumference + 'px'
+        return (
+          ((100 - state.normalizedValue) / 100) * state.circumference + 'px'
+        )
       }),
       strokeWidth: computed(() => {
-        return Number(props.width) / +props.size * state.viewBoxSize * 2
+        return (Number(props.width) / +props.size) * state.viewBoxSize * 2
       }),
       svgStyles: computed(() => {
         return {
@@ -92,31 +94,44 @@ export default defineComponent({
         genCircle('overlay', state.strokeDashOffset),
       ]
 
-      return h('svg', {
-        style: state.svgStyles,
-        xmlns: 'http://www.w3.org/2000/svg',
-        viewBox: `${state.viewBoxSize} ${state.viewBoxSize} ${2 * state.viewBoxSize} ${2 * state.viewBoxSize}`,
-      }, children)
+      return h(
+        'svg',
+        {
+          style: state.svgStyles,
+          xmlns: 'http://www.w3.org/2000/svg',
+          viewBox: `${state.viewBoxSize} ${state.viewBoxSize} ${
+            2 * state.viewBoxSize
+          } ${2 * state.viewBoxSize}`,
+        },
+        children
+      )
     }
 
     const genInfo = () => {
-      return h('div', {
-        class: 'progress__info',
-      }, slots.default?.())
+      return h(
+        'div',
+        {
+          class: 'progress__info',
+        },
+        slots.default?.()
+      )
     }
 
     return () => {
-      return h('div', {
-        role: 'progressbar',
-        'aria-valuemin': 0,
-        'aria-valuemax': 100,
-        'aria-valuenow': props.indeterminate ? undefined : state.normalizedValue,
-        class: state.classes,
-        style: state.styles,
-      }, [
-        genSvg(),
-        genInfo(),
-      ])
+      return h(
+        'div',
+        {
+          role: 'progressbar',
+          'aria-valuemin': 0,
+          'aria-valuemax': 100,
+          'aria-valuenow': props.indeterminate
+            ? undefined
+            : state.normalizedValue,
+          class: state.classes,
+          style: state.styles,
+        },
+        [genSvg(), genInfo()]
+      )
     }
   },
 })

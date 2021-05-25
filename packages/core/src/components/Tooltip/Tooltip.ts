@@ -57,7 +57,7 @@ export default defineComponent({
 
   emits: ['update:modelValue'],
 
-  setup (props, { slots }) {
+  setup(props, { slots }) {
     const id: string = uid('tooltip-')
     const rootElement = ref<HTMLElement>()
     const isVisible = ref(false)
@@ -68,14 +68,9 @@ export default defineComponent({
 
     const { reference, popper, create, destroy, genArrow } = usePopper(props)
 
-    const {
-      isActive,
-      genActivator,
-    } = useActivator(props, { slots, reference })
+    const { isActive, genActivator } = useActivator(props, { slots, reference })
 
-    const {
-      showLazyContent,
-    } = useLazyContent(props, { isActive })
+    const { showLazyContent } = useLazyContent(props, { isActive })
 
     const activatorAttrs = computed(() => {
       return {
@@ -109,12 +104,16 @@ export default defineComponent({
     })
 
     const genContent = () => {
-      return h('div', {
-        class: {
-          tooltip__content: true,
-          [props.contentClass.trim()]: true,
+      return h(
+        'div',
+        {
+          class: {
+            tooltip__content: true,
+            [props.contentClass.trim()]: true,
+          },
         },
-      }, slots.default?.())
+        slots.default?.()
+      )
     }
 
     const genPopperBox = () => {
@@ -129,23 +128,22 @@ export default defineComponent({
       }
 
       const content = withDirectives(
-        h('div', data, [
-          genContent(),
-          genArrow(),
-        ]),
-        [
-          [vShow, isVisible.value],
-        ],
+        h('div', data, [genContent(), genArrow()]),
+        [[vShow, isVisible.value]]
       )
 
       if (!props.transition) return content
 
-      return h(Transition, {
-        ...props.transition,
-        onAfterLeave () {
-          destroy()
+      return h(
+        Transition,
+        {
+          ...props.transition,
+          onAfterLeave() {
+            destroy()
+          },
         },
-      }, () => content)
+        () => content
+      )
     }
 
     const genPopper = () => {
@@ -159,30 +157,33 @@ export default defineComponent({
         'data-popper-root': '',
       }
 
-      const content = withDirectives(
-        h('div', data, children),
+      const content = withDirectives(h('div', data, children), [
         [
-          [
-            ClickOutside,
-            {
-              handler: () => {
-                isActive.value = false
-              },
-              closeConditional: (e: Event) => {
-                const wrapper = ((popper.value as ComponentPublicInstance)?.$el || popper.value) as Element
-                return isActive.value &&
-                  !(wrapper?.contains(e.target as Element))
-              },
-              include: () => [rootElement.value],
+          ClickOutside,
+          {
+            handler: () => {
+              isActive.value = false
             },
-          ],
+            closeConditional: (e: Event) => {
+              const wrapper = ((popper.value as ComponentPublicInstance)?.$el ||
+                popper.value) as Element
+              return isActive.value && !wrapper?.contains(e.target as Element)
+            },
+            include: () => [rootElement.value],
+          },
         ],
-      )
+      ])
 
-      return showLazyContent(() => h(Teleport, {
-        to: target.value,
-        disabled: !target.value,
-      }, content))
+      return showLazyContent(() =>
+        h(
+          Teleport,
+          {
+            to: target.value,
+            disabled: !target.value,
+          },
+          content
+        )
+      )
     }
 
     return {
@@ -196,15 +197,19 @@ export default defineComponent({
     }
   },
 
-  render () {
-    return h(this.tag, {
-      ref: 'rootElement',
-      class: {
-        tooltip: true,
+  render() {
+    return h(
+      this.tag,
+      {
+        ref: 'rootElement',
+        class: {
+          tooltip: true,
+        },
       },
-    }, [
-      this.genPopper(),
-      this.genActivator(this.activatorAttrs, this.activatorListeners),
-    ])
+      [
+        this.genPopper(),
+        this.genActivator(this.activatorAttrs, this.activatorListeners),
+      ]
+    )
   },
 })

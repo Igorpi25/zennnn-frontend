@@ -1,9 +1,4 @@
-import {
-  h,
-  computed,
-  defineComponent,
-  PropType,
-} from 'vue'
+import { h, computed, defineComponent, PropType } from 'vue'
 
 import { useI18n } from 'vue-i18n'
 
@@ -71,7 +66,7 @@ export default defineComponent({
     back: () => true,
   },
 
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const { locale } = useI18n()
 
     const format = (date: Date | undefined, options: any) => {
@@ -113,7 +108,8 @@ export default defineComponent({
         .map((v) =>
           setDay(new Date(), v, {
             weekStartsOn: props.firstDayOfWeek,
-          }))
+          })
+        )
         .map(dayFormat)
     })
 
@@ -126,27 +122,32 @@ export default defineComponent({
         isWeekend: isWeekend(value),
         current: isSameDay(value, now),
         selected: props.selected && isSameDay(props.selected, value),
-        disabled: !isWithinInterval(value, currentMonth.value) ||
+        disabled:
+          !isWithinInterval(value, currentMonth.value) ||
           !isEnabled(value, props.min, props.max),
         key: i,
       }))
     })
 
-    const title = computed(() => format(props.modelValue, { month: 'long', year: 'numeric' }))
+    const title = computed(() =>
+      format(props.modelValue, { month: 'long', year: 'numeric' })
+    )
 
-    const prevDisabled = computed(() => props.min &&
-      (isSameMonth(props.min, props.modelValue) ||
-        isBefore(props.modelValue, props.min)))
+    const prevDisabled = computed(
+      () =>
+        props.min &&
+        (isSameMonth(props.min, props.modelValue) ||
+          isBefore(props.modelValue, props.min))
+    )
 
-    const nextDisabled = computed(() => props.max &&
-      (isSameMonth(props.max, props.modelValue) ||
-        isAfter(props.modelValue, props.max)))
+    const nextDisabled = computed(
+      () =>
+        props.max &&
+        (isSameMonth(props.max, props.modelValue) ||
+          isAfter(props.modelValue, props.max))
+    )
 
-    const isEnabled = (
-      target: Date,
-      min?: Date,
-      max?: Date,
-    ) => {
+    const isEnabled = (target: Date, min?: Date, max?: Date) => {
       if (!min && !max) return true
       if (min && isBefore(target, startOfDay(min))) return false
       if (max && isAfter(target, endOfDay(max))) return false
@@ -158,57 +159,83 @@ export default defineComponent({
     const next = () => emit('update:modelValue', addMonths(props.modelValue, 1))
 
     const genHeader = () => {
-      return h(DatePickerHeader, {
-        clickable: true,
-        prevDisabled: prevDisabled.value,
-        nextDisabled: nextDisabled.value,
-        onPrev: prev,
-        onNext: next,
-        'onTitle:click': () => emit('back'),
-      }, {
-        default: () => title.value,
-      })
+      return h(
+        DatePickerHeader,
+        {
+          clickable: true,
+          prevDisabled: prevDisabled.value,
+          nextDisabled: nextDisabled.value,
+          onPrev: prev,
+          onNext: next,
+          'onTitle:click': () => emit('back'),
+        },
+        {
+          default: () => title.value,
+        }
+      )
     }
 
     const genItemsHead = () => {
-      return h('div', {
-        class: 'grid grid-cols-7 gap-1 items-center justify-items-center pt-4 px-md',
-      }, weekDays.value.map((day, i) => {
-        return h('h5', {
-          key: i,
-          class: {
-            'w-8 text-center': true,
-            'text-gray-200 dark:text-gray-100': weekendIndexes.value.includes(i),
-          },
-        }, day)
-      }))
+      return h(
+        'div',
+        {
+          class:
+            'grid grid-cols-7 gap-1 items-center justify-items-center pt-4 px-md',
+        },
+        weekDays.value.map((day, i) => {
+          return h(
+            'h5',
+            {
+              key: i,
+              class: {
+                'w-8 text-center': true,
+                'text-gray-200 dark:text-gray-100':
+                  weekendIndexes.value.includes(i),
+              },
+            },
+            day
+          )
+        })
+      )
     }
 
     const genItems = () => {
-      const children = days.value.map(item => {
-        return h('button', {
-          key: item.key,
-          disabled: item.disabled,
-          class: {
-            'w-8 h-8 rounded focus:outline-none': true,
-            transition: !item.disabled,
-            'text-gray-100 dark:text-gray-300 cursor-default': item.disabled,
-            'hover:bg-light-gray-300 focus:bg-light-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600': !item.selected && !item.disabled,
-            'bg-blue-400 text-white': item.selected,
-            'ring-2 ring-inset ring-blue-500': !item.selected && !item.disabled && item.current,
-            'text-gray-200 dark:text-gray-100': !item.selected && !item.disabled && item.isWeekend,
+      const children = days.value.map((item) => {
+        return h(
+          'button',
+          {
+            key: item.key,
+            disabled: item.disabled,
+            class: {
+              'w-8 h-8 rounded focus:outline-none': true,
+              transition: !item.disabled,
+              'text-gray-100 dark:text-gray-300 cursor-default': item.disabled,
+              'hover:bg-light-gray-300 focus:bg-light-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600':
+                !item.selected && !item.disabled,
+              'bg-blue-400 text-white': item.selected,
+              'ring-2 ring-inset ring-blue-500':
+                !item.selected && !item.disabled && item.current,
+              'text-gray-200 dark:text-gray-100':
+                !item.selected && !item.disabled && item.isWeekend,
+            },
+            onClick: (e: MouseEvent) => {
+              e.preventDefault()
+              e.stopPropagation()
+              emit('select', item.value)
+            },
           },
-          onClick: (e: MouseEvent) => {
-            e.preventDefault()
-            e.stopPropagation()
-            emit('select', item.value)
-          },
-        }, h('span', item.text))
+          h('span', item.text)
+        )
       })
 
-      return h('div', {
-        class: 'grid grid-cols-7 gap-1 items-center justify-items-center text-sm py-4 px-md',
-      }, children)
+      return h(
+        'div',
+        {
+          class:
+            'grid grid-cols-7 gap-1 items-center justify-items-center text-sm py-4 px-md',
+        },
+        children
+      )
     }
 
     return {
@@ -221,9 +248,8 @@ export default defineComponent({
     }
   },
 
-  render () {
-    return h('div', {
-    }, [
+  render() {
+    return h('div', {}, [
       this.genHeader(),
       this.genItemsHead(),
       this.genItems(),

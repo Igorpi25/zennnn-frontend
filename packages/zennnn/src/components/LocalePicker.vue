@@ -9,19 +9,20 @@
     @update:value="changeLocale"
   >
     <template v-slot:activator>
-      <div
-        class="group flex items-center cursor-pointer"
-      >
+      <div class="group flex items-center cursor-pointer">
         <img
           :src="require(`@/assets/img/flags/locale/${locale}.svg`).default"
-          :class="[
-            'h-6 w-6 rounded-full mr-xs',
-          ]"
-        >
+          :class="['h-6 w-6 rounded-full mr-xs']"
+        />
         <Icon
           role="button"
           tabindex="0"
-          class="text-blue-500 group-hover:text-blue-400 focus:text-blue-400 focus:outline-none"
+          class="
+            text-blue-500
+            group-hover:text-blue-400
+            focus:text-blue-400
+            focus:outline-none
+          "
         >
           {{ icons.ziChevronDown }}
         </Icon>
@@ -38,7 +39,7 @@
         :src="require(`@/assets/img/flags/locale/${locale.value}.svg`).default"
         :alt="locale.text"
         class="h-6 w-6 rounded-full mr-2"
-      >
+      />
       <span>{{ locale.text }}</span>
     </MenuItem>
   </Menu>
@@ -64,7 +65,7 @@ export default {
     distance: [String, Number],
     light: Boolean,
   },
-  setup () {
+  setup() {
     const menu = ref(false)
     const { locale } = useI18n()
 

@@ -1,7 +1,4 @@
-import {
-  h,
-  Ref,
-} from 'vue'
+import { h, Ref } from 'vue'
 
 export const useTextHighlight = (search: Ref<string | null | undefined>) => {
   const genFilteredText = (text: string | null | undefined) => {
@@ -15,9 +12,13 @@ export const useTextHighlight = (search: Ref<string | null | undefined>) => {
   }
 
   const genHighlight = (text: string) => {
-    return h('span', {
-      class: 'listbox__option__mask',
-    }, text)
+    return h(
+      'span',
+      {
+        class: 'listbox__option__mask',
+      },
+      text
+    )
   }
 
   const getMaskedCharacters = (text: string) => {

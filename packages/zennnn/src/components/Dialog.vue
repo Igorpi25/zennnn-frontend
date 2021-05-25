@@ -1,8 +1,5 @@
 <template>
-  <Modal
-    v-model="internal"
-    v-bind="computedProps"
-  >
+  <Modal v-model="internal" v-bind="computedProps">
     <template v-slot:activator="{ attrs, listeners }">
       <slot name="activator" :attrs="attrs" :listeners="listeners" />
     </template>
@@ -10,11 +7,7 @@
     <div class="flex items-center bg-light-gray-300 dark:bg-gray-500 p-4">
       <div class="self-start">
         <slot name="icon">
-          <Icon
-            v-if="icon"
-            large
-            class="w-8 h-8"
-          >
+          <Icon v-if="icon" large class="w-8 h-8">
             {{ icon }}
           </Icon>
         </slot>
@@ -29,7 +22,14 @@
       <div class="self-start">
         <Icon
           :tabIndex="closeFocusable ? 0 : undefined"
-          class="w-8 h-8 text-blue-500 hover:text-blue-400 focus:outline-none focus:ring"
+          class="
+            w-8
+            h-8
+            text-blue-500
+            hover:text-blue-400
+            focus:outline-none
+            focus:ring
+          "
           @click="internal = false"
         >
           {{ icons.ziCloseWindow }}
@@ -66,7 +66,7 @@ export default {
 
   emits: ['update:modelValue'],
 
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const { modelValue } = toRefs(props)
     const internal = ref(modelValue.value)
 
@@ -81,11 +81,11 @@ export default {
       }
     })
 
-    watch(modelValue, val => {
+    watch(modelValue, (val) => {
       internal.value = val
     })
 
-    watch(internal, val => {
+    watch(internal, (val) => {
       emit('update:modelValue', val)
     })
 

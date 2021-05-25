@@ -11,10 +11,13 @@ const USER_ADMIN_SCOPE = 'aws.cognito.signin.user.admin'
 const logger = new Logger('Auth')
 
 export default class Auth {
-  constructor (config = {}) {
+  constructor(config = {}) {
     const region = config.region || process.env.VUE_APP_AWS_COGNITO_REGION
-    const userPoolId = config.userPoolId || process.env.VUE_APP_AWS_COGNITO_USER_POOL_ID
-    const userPoolWebClientId = config.userPoolWebClientId || process.env.VUE_APP_AWS_COGNITO_USER_POOL_WEB_CLIENT_ID
+    const userPoolId =
+      config.userPoolId || process.env.VUE_APP_AWS_COGNITO_USER_POOL_ID
+    const userPoolWebClientId =
+      config.userPoolWebClientId ||
+      process.env.VUE_APP_AWS_COGNITO_USER_POOL_WEB_CLIENT_ID
     this._config = {
       region,
       userPoolId,
@@ -30,7 +33,7 @@ export default class Auth {
     this.user = null
   }
 
-  signIn (username, password) {
+  signIn(username, password) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
@@ -41,9 +44,7 @@ export default class Auth {
       Username: username,
       Password: password,
     }
-    const authenticationDetails = new AuthenticationDetails(
-      authenticationData,
-    )
+    const authenticationDetails = new AuthenticationDetails(authenticationData)
     // use memory storage for login
     const cognitoUser = this._createCognitoUser(username, true)
     return new Promise((resolve, reject) => {
@@ -81,8 +82,10 @@ export default class Auth {
     })
   }
 
-  completeNewPassword (user, password, requiredAttributes) {
-    if (!password) { return Promise.reject(new Error('Password cannot be empty')) }
+  completeNewPassword(user, password, requiredAttributes) {
+    if (!password) {
+      return Promise.reject(new Error('Password cannot be empty'))
+    }
 
     const that = this
     return new Promise((resolve, reject) => {
@@ -100,7 +103,7 @@ export default class Auth {
     })
   }
 
-  resendSignUp (username) {
+  resendSignUp(username) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
@@ -119,7 +122,7 @@ export default class Auth {
     })
   }
 
-  forgotPassword (username) {
+  forgotPassword(username) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
@@ -139,7 +142,7 @@ export default class Auth {
     })
   }
 
-  forgotPasswordSubmit (username, code, password) {
+  forgotPasswordSubmit(username, code, password) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
@@ -179,7 +182,7 @@ export default class Auth {
    * Get current authenticated user
    * @return - A promise resolves to current authenticated CognitoUser if success
    */
-  currentUserPoolUser (params) {
+  currentUserPoolUser(params) {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
@@ -236,12 +239,12 @@ export default class Auth {
               Object.assign(user, { attributes, preferredMFA })
               return resolve(user)
             },
-            { bypassCache },
+            { bypassCache }
           )
         } else {
           logger.debug(
             `Unable to get the user data because the ${USER_ADMIN_SCOPE} ` +
-              'is not in the scopes of the access token',
+              'is not in the scopes of the access token'
           )
           return resolve(user)
         }
@@ -253,7 +256,7 @@ export default class Auth {
    * Get current user's session
    * @return - A promise resolves to session object if success
    */
-  currentSession () {
+  currentSession() {
     const that = this
     logger.debug('Getting current session')
     // Purposely not calling the reject method here because we don't need a console error
@@ -264,18 +267,18 @@ export default class Auth {
     return new Promise((resolve, reject) => {
       that
         .currentUserPoolUser()
-        .then(user => {
+        .then((user) => {
           that
             .userSession(user)
-            .then(session => {
+            .then((session) => {
               return resolve(session)
             })
-            .catch(e => {
+            .catch((e) => {
               logger.debug('Failed to get the current session', e)
               return reject(e)
             })
         })
-        .catch(e => {
+        .catch((e) => {
           logger.debug('Failed to get the current user', e)
           return reject(e)
         })
@@ -287,7 +290,7 @@ export default class Auth {
    * @param {Object} user - The CognitoUser object
    * @return - A promise resolves to the session
    */
-  userSession (user) {
+  userSession(user) {
     if (!user) {
       logger.debug('the user is null')
       return Promise.reject(new Error('no user session.'))
@@ -306,10 +309,10 @@ export default class Auth {
     })
   }
 
-  attributesToObject (attributes) {
+  attributesToObject(attributes) {
     const obj = {}
     if (attributes) {
-      attributes.forEach(attribute => {
+      attributes.forEach((attribute) => {
         if (attribute.Value === 'true') {
           obj[attribute.Name] = true
         } else if (attribute.Value === 'false') {
@@ -322,12 +325,12 @@ export default class Auth {
     return obj
   }
 
-  _cleanCachedItems () {
+  _cleanCachedItems() {
     this._memoryStorage.clear()
     this._storage.clear()
   }
 
-  _createCognitoUser (username, forceMemoryStorage) {
+  _createCognitoUser(username, forceMemoryStorage) {
     const userData = {
       Username: username,
       Pool: this.userPool,

@@ -45,7 +45,7 @@ describe('Messages.ts', () => {
         value: ['foo', 'bar'],
       },
       slots: {
-        default: ({ message, key }: { message: string, key: number }) => {
+        default: ({ message, key }: { message: string; key: number }) => {
           return h('span', { class: 'custom-class' }, `${key} - ${message}`)
         },
       },

@@ -20,22 +20,27 @@ export interface InputMessageContext {
 }
 
 // Default
-export const useInputMessage = (props: InputMessageProps, {
-  controlElement,
-  isFocused,
-  isPatternMismatch,
-  hasMessages,
-  hasError,
-  messagesToDisplay,
-  showDetails,
-  dimensions,
-}: InputMessageContext) => {
+export const useInputMessage = (
+  props: InputMessageProps,
+  {
+    controlElement,
+    isFocused,
+    isPatternMismatch,
+    hasMessages,
+    hasError,
+    messagesToDisplay,
+    showDetails,
+    dimensions,
+  }: InputMessageContext
+) => {
   const showPatternMismatch = computed(() => {
     return isPatternMismatch && isPatternMismatch.value && props.patternMessage
   })
 
   const showPopupMessage = computed(() => {
-    const showError = hasMessages.value && hasError.value &&
+    const showError =
+      hasMessages.value &&
+      hasError.value &&
       (!props.messagesOnFocused || (props.messagesOnFocused && isFocused.value))
     return showPatternMismatch.value || showError
   })
@@ -48,40 +53,49 @@ export const useInputMessage = (props: InputMessageProps, {
       ? props.patternMessage
       : messagesToDisplay.value[0]
 
-    return h(Menu, {
-      modelValue: showPopupMessage.value,
-      activator: controlElement.value,
-      attach: false,
-      top: true,
-      arrow: false,
-      closeOnClick: false,
-      closeOnContentClick: false,
-      openOnClick: false,
-      openOnHover: false,
-      disableKeys: true,
-      zIndex: 'unset',
-      tabindex: '-1',
-      role: 'alert',
-      width: dimensions.value!.width,
-      distance: dimensions.value!.height * -1,
-      allowOverflow: true,
-      boxClass: 'shadow-none dark:shadow-none',
-      contentClass: 'bg-yellow-300 dark:bg-yellow-300 ring-1 ring-yellow-300 ring-inset text-black dark:text-black rounded px-sm py-2',
-      onClick: () => {
-        if (!props.messagesOnFocused) {
-          focus()
-        }
+    return h(
+      Menu,
+      {
+        modelValue: showPopupMessage.value,
+        activator: controlElement.value,
+        attach: false,
+        top: true,
+        arrow: false,
+        closeOnClick: false,
+        closeOnContentClick: false,
+        openOnClick: false,
+        openOnHover: false,
+        disableKeys: true,
+        zIndex: 'unset',
+        tabindex: '-1',
+        role: 'alert',
+        width: dimensions.value!.width,
+        distance: dimensions.value!.height * -1,
+        allowOverflow: true,
+        boxClass: 'shadow-none dark:shadow-none',
+        contentClass:
+          'bg-yellow-300 dark:bg-yellow-300 ring-1 ring-yellow-300 ring-inset text-black dark:text-black rounded px-sm py-2',
+        onClick: () => {
+          if (!props.messagesOnFocused) {
+            focus()
+          }
+        },
       },
-    }, {
-      default: () => {
-        return h('div', {
-          style: {
-            minHeight: convertToUnit(dimensions.value!.height),
-            paddingBottom: convertToUnit(dimensions.value!.height),
-          },
-        }, message)
-      },
-    })
+      {
+        default: () => {
+          return h(
+            'div',
+            {
+              style: {
+                minHeight: convertToUnit(dimensions.value!.height),
+                paddingBottom: convertToUnit(dimensions.value!.height),
+              },
+            },
+            message
+          )
+        },
+      }
+    )
   }
 
   return {

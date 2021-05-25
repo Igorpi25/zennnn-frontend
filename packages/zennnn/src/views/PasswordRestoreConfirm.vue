@@ -6,13 +6,12 @@
         {{ $t('passwordRestoreConfirm.changePasswordHead') }}
       </h2>
       <div class="w-full md:w-1/2">
-        <p v-html="$t('passwordRestoreConfirm.changePasswordSubhead')" class="pb-6" />
+        <p
+          v-html="$t('passwordRestoreConfirm.changePasswordSubhead')"
+          class="pb-6"
+        />
         <div class="pb-10">
-          <Form
-            ref="form"
-            lazy-validation
-            @submit="onSubmit"
-          >
+          <Form ref="form" lazy-validation @submit="onSubmit">
             <TextField
               v-model="formModel.password"
               :placeholder="$t('passwordRestoreConfirm.newPassword')"
@@ -39,7 +38,11 @@
               v-model="formModel.passwordConfirm"
               :placeholder="$t('passwordRestoreConfirm.newPasswordConfirm')"
               :type="showConfirmPassword ? 'text' : 'password'"
-              :rules="[rules.required, rules.passwordMinLength, rules.passwordConfirmRules]"
+              :rules="[
+                rules.required,
+                rules.passwordMinLength,
+                rules.passwordConfirmRules,
+              ]"
               name="password"
               autocomplete="on"
               minlength="8"
@@ -59,11 +62,8 @@
           </Form>
         </div>
         <div class="pb-6">
-          <Btn
-            :loading="loading"
-            @click.prevent="onSubmit"
-          >
-            <span>{{$t('passwordRestoreConfirm.submit') }}</span>
+          <Btn :loading="loading" @click.prevent="onSubmit">
+            <span>{{ $t('passwordRestoreConfirm.submit') }}</span>
           </Btn>
         </div>
       </div>
@@ -91,7 +91,7 @@ export default {
     Header,
     Copyright,
   },
-  data () {
+  data() {
     return {
       loading: false,
       errorMessage: '',
@@ -105,9 +105,12 @@ export default {
         passwordConfirm: '',
       },
       rules: {
-        required: v => !!v || this.$t('rule.required'),
-        passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
-        passwordConfirmRules: v => (v && v === this.formModel.password) || this.$t('rule.passwordsDoNotMatch'),
+        required: (v) => !!v || this.$t('rule.required'),
+        passwordMinLength: (v) =>
+          (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
+        passwordConfirmRules: (v) =>
+          (v && v === this.formModel.password) ||
+          this.$t('rule.passwordsDoNotMatch'),
       },
       icons: {
         ziVisible,
@@ -115,13 +118,13 @@ export default {
       },
     }
   },
-  mounted () {
+  mounted() {
     this.formModel.username = this.$route.query.username
     this.formModel.code = this.$route.query.code
     this.formModel.email = this.$route.query.email
   },
   methods: {
-    async onSubmit (e) {
+    async onSubmit(e) {
       try {
         e.preventDefault()
         this.loading = true
@@ -131,9 +134,12 @@ export default {
           await this.$auth.forgotPasswordSubmit(
             this.formModel.username,
             this.formModel.code,
-            this.formModel.password,
+            this.formModel.password
           )
-          this.$notify({ color: 'primary', text: this.$t('message.passwordChanged') })
+          this.$notify({
+            color: 'primary',
+            text: this.$t('message.passwordChanged'),
+          })
           this.$router.push({ name: 'signin' })
         }
       } catch (error) {
@@ -153,7 +159,7 @@ export default {
   padding-top: 5vh;
 }
 @screen sm {
- .welcome--top {
+  .welcome--top {
     padding-top: 15vh;
   }
 }

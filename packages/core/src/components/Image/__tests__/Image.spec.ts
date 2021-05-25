@@ -23,10 +23,10 @@ describe('Image.ts', () => {
   beforeAll(() => {
     jest.useFakeTimers()
     Object.defineProperty((global as any).Image.prototype, 'src', {
-      get () {
+      get() {
         return this._currentSrc
       },
-      set (src) {
+      set(src) {
         this._currentSrc = src
         if (src === LOAD_FAILURE_SRC) {
           setTimeout(() => {
@@ -42,15 +42,19 @@ describe('Image.ts', () => {
       },
     })
     Object.defineProperty((global as any).Image.prototype, 'currentSrc', {
-      get () {
+      get() {
         return this._currentSrc
       },
     })
     Object.defineProperty((global as any).Image.prototype, 'naturalWidth', {
-      get () { return this._naturalWidth },
+      get() {
+        return this._naturalWidth
+      },
     })
     Object.defineProperty((global as any).Image.prototype, 'naturalHeight', {
-      get () { return this._naturalHeight },
+      get() {
+        return this._naturalHeight
+      },
     })
   })
 

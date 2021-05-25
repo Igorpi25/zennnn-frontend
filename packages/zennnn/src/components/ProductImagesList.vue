@@ -1,12 +1,7 @@
 <template>
-  <div
-    class="flex items-center"
-  >
+  <div class="flex items-center">
     <div class="flex items-center">
-      <div
-        v-for="(img, index) in leadImages"
-        :key="img.url"
-      >
+      <div v-for="(img, index) in leadImages" :key="img.url">
         <ProductImage
           :product-id="productId"
           :images="imagesList"
@@ -19,8 +14,25 @@
             <div class="h-8 w-8 rounded relative">
               <div
                 :class="[isOpen ? 'opacity-100' : 'opacity-0']"
-                class="absolute rounded-full bg-red-500 flex items-center justify-center transition-colors duration-100 ease-out cursor-pointer"
-                style="width: 14px; height: 14px; right: -5px; top: -5px; z-index: 1;"
+                class="
+                  absolute
+                  rounded-full
+                  bg-red-500
+                  flex
+                  items-center
+                  justify-center
+                  transition-colors
+                  duration-100
+                  ease-out
+                  cursor-pointer
+                "
+                style="
+                  width: 14px;
+                  height: 14px;
+                  right: -5px;
+                  top: -5px;
+                  z-index: 1;
+                "
                 @click="removeImage(img)"
               >
                 <Icon class="text-white">
@@ -39,8 +51,30 @@
                   </div>
                 </template>
               </Image>
-              <div v-if="isOpen" class="absolute inset-0 w-full h-full bg-black opacity-30 rounded" />
-              <div v-if="isOpen" class="absolute inset-0 w-full h-full flex items-center justify-center">
+              <div
+                v-if="isOpen"
+                class="
+                  absolute
+                  inset-0
+                  w-full
+                  h-full
+                  bg-black
+                  opacity-30
+                  rounded
+                "
+              />
+              <div
+                v-if="isOpen"
+                class="
+                  absolute
+                  inset-0
+                  w-full
+                  h-full
+                  flex
+                  items-center
+                  justify-center
+                "
+              >
                 <Icon class="text-white">
                   {{ icons.ziSearch }}
                 </Icon>
@@ -54,9 +88,7 @@
       v-if="otherImages.length > 0"
       class="flex justify-center items-center pr-2"
     >
-      <span class="font-medium text-gray-100">
-      +{{ otherImages.length }}
-      </span>
+      <span class="font-medium text-gray-100"> +{{ otherImages.length }} </span>
     </div>
     <FileUploader
       v-if="upload"
@@ -109,7 +141,7 @@ export default {
     },
     caption: String,
   },
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
@@ -121,7 +153,7 @@ export default {
       apolloClient,
     }
   },
-  data () {
+  data() {
     return {
       ICON_IMAGE_POSTFIX,
       loading: false,
@@ -130,18 +162,18 @@ export default {
     }
   },
   computed: {
-    imagesList () {
+    imagesList() {
       return this.images || []
     },
-    leadImages () {
+    leadImages() {
       return this.imagesList.slice(0, 3)
     },
-    otherImages () {
+    otherImages() {
       return this.imagesList.slice(3)
     },
   },
   methods: {
-    async addImage (file) {
+    async addImage(file) {
       try {
         this.loading = true
         const inputImages = [file]
@@ -159,14 +191,16 @@ export default {
         this.loading = false
       }
     },
-    async removeImage (file) {
+    async removeImage(file) {
       try {
         this.removeLoading = file.url
-        const inputImages = [{
-          url: file.url,
-          filename: file.filename,
-          contentType: file.contentType,
-        }]
+        const inputImages = [
+          {
+            url: file.url,
+            filename: file.filename,
+            contentType: file.contentType,
+          },
+        ]
         await this.apolloClient.mutate({
           mutation: REMOVE_PRODUCT_IMAGE,
           variables: { id: this.productId, inputImages },

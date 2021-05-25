@@ -29,17 +29,17 @@ export default defineComponent({
     right: Boolean,
   },
 
-  setup (props, { attrs, slots }) {
+  setup(props, { attrs, slots }) {
     const fontSize = computed((): string | undefined => {
       return props.size
         ? convertToUnit(props.size)
         : props.small
-          ? SIZE_CLASS_MAP.small
-          : props.large
-            ? SIZE_CLASS_MAP.large
-            : props.base
-              ? SIZE_CLASS_MAP.base
-              : undefined
+        ? SIZE_CLASS_MAP.small
+        : props.large
+        ? SIZE_CLASS_MAP.large
+        : props.base
+        ? SIZE_CLASS_MAP.base
+        : undefined
     })
 
     const genSvg = () => {
@@ -65,27 +65,39 @@ export default defineComponent({
         }
       }
 
-      return h('svg', svgData, h('g', {
-        fill: 'currentColor',
-      }, h('path', {
-        d: icon,
-      })))
+      return h(
+        'svg',
+        svgData,
+        h(
+          'g',
+          {
+            fill: 'currentColor',
+          },
+          h('path', {
+            d: icon,
+          })
+        )
+      )
     }
 
     const clickable = attrs.onClick
 
     return () => {
       const tag = clickable ? 'button' : props.tag
-      return h(tag, {
-        class: {
-          icon: true,
-          'icon--left': props.left,
-          'icon--right': props.right,
-          'icon--link': clickable,
+      return h(
+        tag,
+        {
+          class: {
+            icon: true,
+            'icon--left': props.left,
+            'icon--right': props.right,
+            'icon--link': clickable,
+          },
+          role: clickable ? 'button' : undefined,
+          'aria-hidden': !clickable,
         },
-        role: clickable ? 'button' : undefined,
-        'aria-hidden': !clickable,
-      }, genSvg())
+        genSvg()
+      )
     }
   },
 })

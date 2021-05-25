@@ -34,7 +34,13 @@
             <span v-else class="flex items-center text-gray-200">
               {{ $t('shipping.clientAddNoData') }}
               <span class="text-pink-500 ml-2">
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="8"
+                  height="8"
+                  viewBox="0 0 8 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
                 </svg>
               </span>
@@ -68,7 +74,7 @@
           state-icon
           required
           class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-sm"
-          @update:model-value="updateData({ 'phone': $event })"
+          @update:model-value="updateData({ phone: $event })"
         />
         <TextField
           :model-value="item.phoneOption"
@@ -82,7 +88,7 @@
           state-icon
           state-error-color="none"
           class="w-full sm:w-auto lg:w-full max-w-xs"
-          @update:model-value="updateData({ 'phoneOption': $event })"
+          @update:model-value="updateData({ phoneOption: $event })"
         />
       </div>
       <div class="pb-2">
@@ -96,7 +102,7 @@
           state-error-color="none"
           required
           class="sm:w-4/6 max-w-xs sm:pr-sm"
-          @update:model-value="updateData({ 'fax': $event })"
+          @update:model-value="updateData({ fax: $event })"
         />
       </div>
       <div class="pb-2">
@@ -113,7 +119,7 @@
           state-icon
           state-error-color="warn"
           required
-          @update:model-value="updateData({ 'email': $event })"
+          @update:model-value="updateData({ email: $event })"
         />
       </div>
       <div>
@@ -128,7 +134,7 @@
           :rules="[rules.required]"
           state-icon
           state-error-color="none"
-          @update:model-value="updateData({ 'website': $event })"
+          @update:model-value="updateData({ website: $event })"
         />
       </div>
     </div>
@@ -155,7 +161,13 @@
             <span v-else class="flex items-center text-gray-200">
               {{ $t('shipping.clientAddNoData') }}
               <span class="text-pink-500 ml-2">
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="8"
+                  height="8"
+                  viewBox="0 0 8 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
                 </svg>
               </span>
@@ -175,7 +187,7 @@
           :hide-details="false"
           state-icon
           required
-          @update:model-value="updateBankDetail({ 'bankAddress': $event })"
+          @update:model-value="updateBankDetail({ bankAddress: $event })"
         />
       </div>
       <div class="pb-2">
@@ -190,7 +202,7 @@
           :hide-details="false"
           state-icon
           required
-          @update:model-value="updateBankDetail({ 'bankAccountNumber': $event })"
+          @update:model-value="updateBankDetail({ bankAccountNumber: $event })"
         />
       </div>
       <div class="flex items-end pb-2">
@@ -206,7 +218,7 @@
           state-icon
           required
           class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-          @update:model-value="updateBankDetail({ 'swift': $event })"
+          @update:model-value="updateBankDetail({ swift: $event })"
         />
         <TextField
           :model-value="bankDetailItem.bic"
@@ -219,7 +231,7 @@
           state-icon
           state-error-color="none"
           class="flex-grow"
-          @update:model-value="updateBankDetail({ 'bic': $event })"
+          @update:model-value="updateBankDetail({ bic: $event })"
         />
       </div>
       <div class="flex pb-2">
@@ -235,7 +247,7 @@
           state-icon
           state-error-color="none"
           class="w-7/12 pr-sm"
-          @update:model-value="updateData({ 'vat': $event })"
+          @update:model-value="updateData({ vat: $event })"
         />
         <TextField
           :model-value="item.okpo"
@@ -249,7 +261,7 @@
           state-icon
           state-error-color="none"
           class="flex-grow"
-          @update:model-value="updateData({ 'okpo': $event })"
+          @update:model-value="updateData({ okpo: $event })"
         />
       </div>
     </div>
@@ -285,11 +297,11 @@ export default {
     },
     items: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
   },
   emits: ['select-company', 'create-company', 'update'],
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
@@ -300,37 +312,47 @@ export default {
       apolloClient,
     }
   },
-  data () {
+  data() {
     return {
       search: '',
       rules: {
-        required: v => !!v || this.$t('rule.required'),
-        email: v => (v && /.+@.+\..+/.test(v)) || this.$t('companyDetail.rule.notificationEmail'),
+        required: (v) => !!v || this.$t('rule.required'),
+        email: (v) =>
+          (v && /.+@.+\..+/.test(v)) ||
+          this.$t('companyDetail.rule.notificationEmail'),
       },
     }
   },
   computed: {
-    bankDetailItem () {
-      return this.bankDetailList.find(el => el.id === this.item.defaultBankDetail) || {}
+    bankDetailItem() {
+      return (
+        this.bankDetailList.find(
+          (el) => el.id === this.item.defaultBankDetail
+        ) || {}
+      )
     },
-    bankDetailList () {
+    bankDetailList() {
       return this.item.bankDetails || []
     },
-    companyOwner () {
+    companyOwner() {
       return this.item.companyOwner || {}
     },
   },
   methods: {
-    setDefaultBankDetail (id) {
+    setDefaultBankDetail(id) {
       this.$emit('update', { defaultBankDetail: id })
     },
-    updateBankDetail (input) {
-      this.updateRequisiteBankDetail(this.item.id, this.bankDetailItem.id, input)
+    updateBankDetail(input) {
+      this.updateRequisiteBankDetail(
+        this.item.id,
+        this.bankDetailItem.id,
+        input
+      )
     },
-    updateData (input) {
+    updateData(input) {
       this.$emit('update', input)
     },
-    async updateRequisiteBankDetail (companyId, id, input) {
+    async updateRequisiteBankDetail(companyId, id, input) {
       try {
         this.updateLoading = true
         await this.apolloClient.mutate({

@@ -5,10 +5,14 @@ import { CURRENT_LOCALE_STORE_KEY } from '../../config/globals'
 import { datetimeFormats, numberFormats } from './formats'
 import { slavicPluralRule } from './pluralizationRules'
 
-function loadLocaleMessages () {
-  const locales = require.context('../../locales/admin', true, /[A-Za-z0-9-_,\s]+\.json$/i)
+function loadLocaleMessages() {
+  const locales = require.context(
+    '../../locales/admin',
+    true,
+    /[A-Za-z0-9-_,\s]+\.json$/i
+  )
   const messages = {}
-  locales.keys().forEach(key => {
+  locales.keys().forEach((key) => {
     const matched = key.match(/([A-Za-z0-9-_]+)\./i)
     if (matched && matched.length > 1) {
       const locale = matched[1]

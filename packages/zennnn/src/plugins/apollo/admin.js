@@ -1,4 +1,9 @@
-import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache } from '@apollo/client/core'
+import {
+  ApolloClient,
+  ApolloLink,
+  createHttpLink,
+  InMemoryCache,
+} from '@apollo/client/core'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 import { typeDefs, resolvers } from '../../graphql/admin'
@@ -40,7 +45,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
       switch (code) {
         default:
           logger.warn(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
           )
           if (message && message.includes('Forbidden')) {
             notify.show({ color: 'warn', text: 'Forbidden' })

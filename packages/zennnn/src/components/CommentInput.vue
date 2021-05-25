@@ -8,7 +8,9 @@
       :class="[
         'px-xs placeholder-blue-500 resize-none',
         'w-full appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out',
-        light ? 'text-gray-900 focus:placeholder-gray-100' : 'text-white focus:placeholder-gray-200',
+        light
+          ? 'text-gray-900 focus:placeholder-gray-100'
+          : 'text-white focus:placeholder-gray-200',
       ]"
       rows="1"
       @input="onInput"
@@ -16,14 +18,15 @@
       @blur="onBlur"
       @keydown.enter="handleMeta"
     />
-    <div
-      v-if="isFocused"
-      class="flex pt-3"
-    >
+    <div v-if="isFocused" class="flex pt-3">
       <div class="flex-grow" />
       <Btn
         outlined
-        :class="light ? 'text-gray-900 border-gray-100 h-8' : 'text-white border-gray-200 h-8'"
+        :class="
+          light
+            ? 'text-gray-900 border-gray-100 h-8'
+            : 'text-white border-gray-200 h-8'
+        "
         content-class="w-full flex items-center justify-center text-xs"
         class="mr-2"
         min-width="68"
@@ -34,7 +37,11 @@
       <Btn
         :disabled="!comment"
         :loading="loading"
-        :class="!comment ? ['h-8', light ? 'bg-gray-100 text-light-gray-400' : 'bg-gray-300'] : 'h-8'"
+        :class="
+          !comment
+            ? ['h-8', light ? 'bg-gray-100 text-light-gray-400' : 'bg-gray-300']
+            : 'h-8'
+        "
         content-class="w-full flex items-center justify-center text-xs"
         min-width="68"
         @click="submitComment"
@@ -71,29 +78,29 @@ export default {
       default: false,
     },
   },
-  data () {
+  data() {
     return {
       comment: '',
       isFocused: false,
     }
   },
   watch: {
-    value (val) {
+    value(val) {
       this.comment = val
     },
   },
   methods: {
-    clear () {
+    clear() {
       this.comment = ''
       this.$emit('input', '')
       this.$nextTick(this.calculateHeight)
     },
-    handleMeta (e) {
+    handleMeta(e) {
       if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
         this.submitComment()
       }
     },
-    calculateHeight () {
+    calculateHeight() {
       const textArea = this.$refs.input
       textArea.style.height = '0'
 
@@ -102,26 +109,26 @@ export default {
 
       textArea.style.height = Math.max(minHeight, height) + 'px'
     },
-    onInput (e) {
+    onInput(e) {
       const val = e.target.value
       this.comment = val
       this.$emit('input', val)
       this.$nextTick(this.calculateHeight)
     },
-    onFocus (val) {
+    onFocus() {
       this.isFocused = true
     },
-    onBlur () {
+    onBlur() {
       if (!this.comment) {
         this.isFocused = false
       }
     },
-    blur () {
+    blur() {
       this.clear()
       this.$refs.input.blur()
       this.isFocused = false
     },
-    submitComment () {
+    submitComment() {
       if (!this.comment) return
       this.$emit('submit', this.comment)
     },

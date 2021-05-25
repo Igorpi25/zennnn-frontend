@@ -3,11 +3,12 @@ import { Scroll } from 'vue-supp'
 import apolloClient from '../plugins/apollo'
 
 import { GET_SPEC, GET_IS_SPEC_SYNC } from '../graphql/queries'
-import { UPDATE_INVOICE, CREATE_PRODUCT, CREATE_PRODUCT_WITH_INVOICE } from '../graphql/mutations'
 import {
-  InvoiceProfitType,
-  SpecCurrency,
-} from '../graphql/enums'
+  UPDATE_INVOICE,
+  CREATE_PRODUCT,
+  CREATE_PRODUCT_WITH_INVOICE,
+} from '../graphql/mutations'
+import { InvoiceProfitType, SpecCurrency } from '../graphql/enums'
 
 import { DEFAULT_CURRENCY } from '../config/globals'
 
@@ -34,7 +35,7 @@ export default {
     },
   },
   emits: ['change:scrollLeft', 'change:tab'],
-  data () {
+  data() {
     return {
       isScrollStart: false,
       scrollEndTimer: null,
@@ -57,53 +58,53 @@ export default {
     }
   },
   computed: {
-    specId () {
+    specId() {
       return this.$route.params.specId
     },
-    fixedHeadersWidth () {
+    fixedHeadersWidth() {
       return this.productHeaders.reduce((acc, curr) => {
         return acc + (curr.width || 0)
       }, 0)
     },
-    currencies () {
-      return Object.values(SpecCurrency).map(el => {
+    currencies() {
+      return Object.values(SpecCurrency).map((el) => {
         return {
           text: el,
           value: el,
         }
       })
     },
-    items () {
+    items() {
       return (this.invoice && this.invoice.products) || []
     },
-    invoiceItem () {
+    invoiceItem() {
       return this.invoice || this.item || {}
     },
-    isInvoiceProfitTypeMargin () {
+    isInvoiceProfitTypeMargin() {
       return this.invoiceItem.profitType === InvoiceProfitType.MARGIN
     },
-    isInvoiceProfitTypeCommission () {
+    isInvoiceProfitTypeCommission() {
       return this.invoiceItem.profitType === InvoiceProfitType.COMMISSION
     },
   },
   watch: {
-    scrollLeft () {
+    scrollLeft() {
       if (this.invoiceItem.id === this.scrollInvoiceId) return
       if (this.isMouseOver || this.isScrollStart) return
       this.setScrollLeft()
     },
   },
-  mounted () {
+  mounted() {
     // this.debounceEmitScrollLeftChange = throttle(this.emitScrollLeftChange, this.scrollLeftDelay, { leading: true })
     if (this.scrollLeft) {
       this.setScrollLeft(false)
     }
   },
   methods: {
-    emitScrollLeftChange () {
+    emitScrollLeftChange() {
       this.$emit('change:scrollLeft', this.lazyScrollLeft, this.invoiceItem.id)
     },
-    setScrollLeft (animate = true) {
+    setScrollLeft(animate = true) {
       const target = this.$refs.productsTable
       if (target) {
         const scrollLeft = this.scrollLeft || 0
@@ -115,7 +116,7 @@ export default {
         }
       }
     },
-    scrollLeftWithAnimation (scrollLeft) {
+    scrollLeftWithAnimation(scrollLeft) {
       const container = this.$refs.productsTable
       if (!container) return
       const targetLocation = scrollLeft
@@ -124,21 +125,30 @@ export default {
       const startTime = performance.now()
       const duration = this.scrollAnimationDuration
       const ease = (t) => t
-      return new Promise(resolve => requestAnimationFrame(function step (currentTime) {
-        const timeElapsed = currentTime - startTime
-        const progress = Math.abs(duration ? Math.min(timeElapsed / duration, 1) : 1)
+      return new Promise((resolve) =>
+        requestAnimationFrame(function step(currentTime) {
+          const timeElapsed = currentTime - startTime
+          const progress = Math.abs(
+            duration ? Math.min(timeElapsed / duration, 1) : 1
+          )
 
-        container.scrollLeft = Math.floor(startLocation + (targetLocation - startLocation) * ease(progress))
+          container.scrollLeft = Math.floor(
+            startLocation + (targetLocation - startLocation) * ease(progress)
+          )
 
-        const clientWidth = container.clientWidth
-        if (progress === 1 || clientWidth + container.scrollLeft === container.scrollWidth) {
-          return resolve(targetLocation)
-        }
+          const clientWidth = container.clientWidth
+          if (
+            progress === 1 ||
+            clientWidth + container.scrollLeft === container.scrollWidth
+          ) {
+            return resolve(targetLocation)
+          }
 
-        requestAnimationFrame(step)
-      }))
+          requestAnimationFrame(step)
+        })
+      )
     },
-    onScroll (e) {
+    onScroll(e) {
       const target = e.target
       const scrollLeft = target ? target.scrollLeft : 0
       this.lazyScrollLeft = scrollLeft < 0 ? 0 : scrollLeft
@@ -149,20 +159,20 @@ export default {
       this.emitScrollLeftChange()
       // this.debounceEmitScrollLeftChange()
     },
-    clearScrollEndTimer () {
+    clearScrollEndTimer() {
       clearTimeout(this.scrollEndTimer)
       this.scrollEndTimer = setTimeout(() => {
         this.isScrollStart = false
       }, 300)
     },
-    addProduct (input) {
+    addProduct(input) {
       if (this.create) {
         this.createProductWithInvoice(input)
       } else {
         this.createProduct(input)
       }
     },
-    async createProduct (input) {
+    async createProduct(input) {
       try {
         this.createLoading = true
         const variables = {
@@ -192,7 +202,7 @@ export default {
         this.createLoading = false
       }
     },
-    async createProductWithInvoice (input) {
+    async createProductWithInvoice(input) {
       try {
         this.createLoading = true
         const variables = {
@@ -222,10 +232,10 @@ export default {
         this.createLoading = false
       }
     },
-    switchTab (value) {
+    switchTab(value) {
       this.$emit('change:tab', value)
     },
-    async updateInvoice (input) {
+    async updateInvoice(input) {
       try {
         const id = this.invoiceItem.id
         this.updateLoading = id
@@ -240,7 +250,10 @@ export default {
         if (error && error.errors && error.errors.length > 0) {
           this.errors = error.errors
         }
-        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+        if (
+          error.message &&
+          error.message.includes('GraphQL error: MongoError: WriteConflict')
+        ) {
           this.refetchSpec()
         }
         this.$logger.warn('Error: ', error)
@@ -255,7 +268,7 @@ export default {
         this.updateLoading = null
       }
     },
-    async refetchSpec () {
+    async refetchSpec() {
       try {
         apolloClient.writeQuery({
           query: GET_IS_SPEC_SYNC,

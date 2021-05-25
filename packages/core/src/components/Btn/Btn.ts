@@ -43,7 +43,7 @@ export default defineComponent({
     retainFocusOnClick: Boolean,
   },
 
-  setup (props, { slots }) {
+  setup(props, { slots }) {
     const MIN_WIDTH = 128
     const MIN_WIDTH_SMALL = 96
 
@@ -56,7 +56,8 @@ export default defineComponent({
     const classes = computed(() => {
       return {
         btn: true,
-        'btn--primary': !props.text && !props.outlined && props.primary !== false,
+        'btn--primary':
+          !props.text && !props.outlined && props.primary !== false,
         'btn--outlined': !props.text && props.outlined,
         'btn--block': props.block,
         'btn--text': props.text,
@@ -94,15 +95,19 @@ export default defineComponent({
     }
 
     const genLoader = () => {
-      return h('span', {
-        class: 'btn__loader',
-      }, slots.loader
-        ? slots.loader()
-        : h(Progress, {
-          indeterminate: true,
-          size: 24,
-          width: 2,
-        }))
+      return h(
+        'span',
+        {
+          class: 'btn__loader',
+        },
+        slots.loader
+          ? slots.loader()
+          : h(Progress, {
+              indeterminate: true,
+              size: 24,
+              width: 2,
+            })
+      )
     }
 
     const genRouterLink = (data: any, children: VNode[]) => {
@@ -144,7 +149,7 @@ export default defineComponent({
     }
   },
 
-  render () {
+  render() {
     const children = [
       this.genContent(),
       this.loading && this.genLoader(),

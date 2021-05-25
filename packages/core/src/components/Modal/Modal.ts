@@ -102,7 +102,7 @@ export default defineComponent({
 
   emits: ['update:modelValue', 'click:outside', 'keydown'],
 
-  setup (props, { slots, emit }) {
+  setup(props, { slots, emit }) {
     const id = uid('dialog-')
     // Data
     let previousActiveElement: HTMLElement | undefined
@@ -113,15 +113,11 @@ export default defineComponent({
     const rootElement = ref<HTMLElement>()
     const overlayElement = ref<HTMLElement>()
 
-    const {
-      isActive,
-      genActivator,
-      focusActivator,
-    } = useActivator(props, { slots })
+    const { isActive, genActivator, focusActivator } = useActivator(props, {
+      slots,
+    })
 
-    const {
-      showLazyContent,
-    } = useLazyContent(props, { isActive })
+    const { showLazyContent } = useLazyContent(props, { isActive })
 
     const { target } = useAttach(props)
 
@@ -157,10 +153,13 @@ export default defineComponent({
     const scrollListener = (e: WheelEvent & KeyboardEvent) => {
       if (e.type === 'keydown') {
         if (
-          ['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as Element).tagName) ||
+          ['INPUT', 'TEXTAREA', 'SELECT'].includes(
+            (e.target as Element).tagName
+          ) ||
           // https://github.com/vuetifyjs/vuetify/issues/4715
           (e.target as HTMLElement).isContentEditable
-        ) return
+        )
+          return
 
         const up = ['ArrowUp', 'Up', 'PageUp']
         const down = ['ArrowDown', 'Down', 'PageDown']
@@ -174,16 +173,22 @@ export default defineComponent({
         }
       }
 
-      if (e.target === overlayElement.value ||
+      if (
+        e.target === overlayElement.value ||
         (e.type !== 'keydown' && e.target === document.body) ||
-        checkPath(e)) e.preventDefault()
+        checkPath(e)
+      )
+        e.preventDefault()
     }
 
     const hasScrollbar = (el?: Element) => {
       if (!el || el.nodeType !== Node.ELEMENT_NODE) return false
 
       const style = window.getComputedStyle(el)
-      return ['auto', 'scroll'].includes(style.overflowY) && el.scrollHeight > el.clientHeight
+      return (
+        ['auto', 'scroll'].includes(style.overflowY) &&
+        el.scrollHeight > el.clientHeight
+      )
     }
 
     const shouldScroll = (el: Element, delta: number) => {
@@ -197,7 +202,7 @@ export default defineComponent({
       } else if (el === null || el === document.body) {
         return false
       } else {
-        return isInside((el.parentNode as Element), parent)
+        return isInside(el.parentNode as Element, parent)
       }
     }
 
@@ -222,7 +227,8 @@ export default defineComponent({
         if (el === document.documentElement) return true
         if (el === contentWrapperElement.value) return true
 
-        if (hasScrollbar((el as Element))) return shouldScroll((el as Element), delta)
+        if (hasScrollbar(el as Element))
+          return shouldScroll(el as Element, delta)
       }
 
       return true
@@ -254,14 +260,19 @@ export default defineComponent({
 
     const hideScroll = () => {
       document.documentElement.classList.add('overflow-y-hidden')
-      window.addEventListener('wheel', scrollListener as EventHandlerNonNull, { passive: false })
+      window.addEventListener('wheel', scrollListener as EventHandlerNonNull, {
+        passive: false,
+      })
       window.addEventListener('keydown', scrollListener as EventHandlerNonNull)
     }
 
     const showScroll = () => {
       document.documentElement.classList.remove('overflow-y-hidden')
       window.removeEventListener('wheel', scrollListener as EventHandlerNonNull)
-      window.removeEventListener('keydown', scrollListener as EventHandlerNonNull)
+      window.removeEventListener(
+        'keydown',
+        scrollListener as EventHandlerNonNull
+      )
     }
 
     const show = () => {
@@ -273,7 +284,10 @@ export default defineComponent({
 
     const onClickAnimationEnd = () => {
       animate.value = false
-      contentElement.value?.removeEventListener('animationend', onClickAnimationEnd)
+      contentElement.value?.removeEventListener(
+        'animationend',
+        onClickAnimationEnd
+      )
     }
 
     const animateClick = () => {
@@ -281,7 +295,10 @@ export default defineComponent({
       nextTick(() => {
         animate.value = true
       })
-      contentElement.value?.addEventListener('animationend', onClickAnimationEnd)
+      contentElement.value?.addEventListener(
+        'animationend',
+        onClickAnimationEnd
+      )
     }
 
     const closeConditional = (e: Event) => {
@@ -289,7 +306,9 @@ export default defineComponent({
       return !(
         !isActive.value ||
         contentElement.value?.contains(target) ||
-        (overlayElement.value && target && !overlayElement.value.contains(target))
+        (overlayElement.value &&
+          target &&
+          !overlayElement.value.contains(target))
       )
     }
 
@@ -318,18 +337,17 @@ export default defineComponent({
     const genOverlay = () => {
       if (props.hideOverlay || props.fullscreen) return undefined
 
-      const overlay = h('div', {
-        ref: overlayElement,
-        class: 'fixed inset-0 transition-opacity pointer-events-auto',
-        ariaHidden: true,
-      }, h('div', { class: 'absolute inset-0 bg-gray-500 opacity-75' }))
-
-      const content = withDirectives(
-        overlay,
-        [
-          [vShow, isActive.value],
-        ],
+      const overlay = h(
+        'div',
+        {
+          ref: overlayElement,
+          class: 'fixed inset-0 transition-opacity pointer-events-auto',
+          ariaHidden: true,
+        },
+        h('div', { class: 'absolute inset-0 bg-gray-500 opacity-75' })
       )
+
+      const content = withDirectives(overlay, [[vShow, isActive.value]])
 
       if (!props.overlayTransition) return content
 
@@ -367,42 +385,55 @@ export default defineComponent({
 
       if (!props.fullscreen) {
         data.style = {
-          maxWidth: props.maxWidth === 'none' ? undefined : convertToUnit(props.maxWidth),
-          width: props.width === 'auto' ? undefined : convertToUnit(props.width),
+          maxWidth:
+            props.maxWidth === 'none'
+              ? undefined
+              : convertToUnit(props.maxWidth),
+          width:
+            props.width === 'auto' ? undefined : convertToUnit(props.width),
         }
       }
 
-      return withDirectives(
-        h('div', data, slots.default?.()),
+      return withDirectives(h('div', data, slots.default?.()), [
         [
-          [
-            ClickOutside,
-            {
-              handler: onClickOutside,
-              closeConditional: closeConditional,
-              include: () => [contentElement.value],
-            },
-          ],
-          [vShow, isActive.value],
+          ClickOutside,
+          {
+            handler: onClickOutside,
+            closeConditional: closeConditional,
+            include: () => [contentElement.value],
+          },
         ],
-      )
+        [vShow, isActive.value],
+      ])
     }
 
     const genDialog = () => {
-      const dialog = h('div', {
-        class: 'fixed z-10 inset-0 pointer-events-none',
-      }, h('div', {
-        ref: contentWrapperElement,
-        class: 'flex items-center justify-center min-h-screen h-full w-full',
-      }, [
-        genOverlay(),
-        genContent(),
-      ]))
+      const dialog = h(
+        'div',
+        {
+          class: 'fixed z-10 inset-0 pointer-events-none',
+        },
+        h(
+          'div',
+          {
+            ref: contentWrapperElement,
+            class:
+              'flex items-center justify-center min-h-screen h-full w-full',
+          },
+          [genOverlay(), genContent()]
+        )
+      )
 
-      return showLazyContent(() => h(Teleport, {
-        to: target.value,
-        disabled: !target.value,
-      }, dialog))
+      return showLazyContent(() =>
+        h(
+          Teleport,
+          {
+            to: target.value,
+            disabled: !target.value,
+          },
+          dialog
+        )
+      )
     }
 
     return {
@@ -413,12 +444,13 @@ export default defineComponent({
     }
   },
 
-  render () {
-    return h('div', {
-      ref: 'rootElement',
-    }, [
-      this.genActivator(this.activatorAttrs),
-      this.genDialog(),
-    ])
+  render() {
+    return h(
+      'div',
+      {
+        ref: 'rootElement',
+      },
+      [this.genActivator(this.activatorAttrs), this.genDialog()]
+    )
   },
 })

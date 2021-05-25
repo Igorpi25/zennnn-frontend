@@ -23,38 +23,49 @@ export default {
     ProductImagesList,
     ProductImage,
   },
-  data () {
+  data() {
     return {
       updateLoading: null,
       deleteLoading: false,
     }
   },
   computed: {
-    productStatusColor () {
+    productStatusColor() {
       return this.item.productStatus === ProductStatus.IN_STOCK
         ? 'bg-green-500'
         : this.item.productStatus === ProductStatus.IN_PRODUCTION
-          ? 'bg-yellow-500'
-          : this.item.productStatus === ProductStatus.IN_PROCESSING
-            ? 'bg-pink-500'
-            : ''
+        ? 'bg-yellow-500'
+        : this.item.productStatus === ProductStatus.IN_PROCESSING
+        ? 'bg-pink-500'
+        : ''
     },
-    unitsItems () {
-      const units = ['pcs', 'roll', 'time', 'm', 'l', 'm3', 'set', 'm2', 'kg', 'pack']
-      return units.map(el => {
+    unitsItems() {
+      const units = [
+        'pcs',
+        'roll',
+        'time',
+        'm',
+        'l',
+        'm3',
+        'set',
+        'm2',
+        'kg',
+        'pack',
+      ]
+      return units.map((el) => {
         return {
           value: el,
           text: this.$t(`unit.${el}`),
         }
       })
     },
-    specId () {
+    specId() {
       return this.$route.params.specId
     },
-    hasCustomPurchasePrice () {
+    hasCustomPurchasePrice() {
       return !this.profitForAll && isNumber(this.cost.customPurchasePrice)
     },
-    purchasePrice () {
+    purchasePrice() {
       if (this.profitForAll) {
         return this.cost.purchasePrice
       }
@@ -62,10 +73,10 @@ export default {
         ? this.cost.customPurchasePrice
         : this.cost.purchasePrice
     },
-    hasCustomClientPrice () {
+    hasCustomClientPrice() {
       return !this.profitForAll && isNumber(this.cost.customClientPrice)
     },
-    clientPrice () {
+    clientPrice() {
       if (this.profitForAll) {
         return this.cost.clientPrice
       }
@@ -73,28 +84,28 @@ export default {
         ? this.cost.customClientPrice
         : this.cost.clientPrice
     },
-    cost () {
+    cost() {
       return (this.item && this.item.cost) || {}
     },
-    store () {
+    store() {
       return (this.item && this.item.store) || {}
     },
-    info () {
+    info() {
       return (this.item && this.item.info) || {}
     },
-    link () {
+    link() {
       return (this.item && this.item.link) || {}
     },
   },
   methods: {
-    createOrUpdateProduct (input) {
+    createOrUpdateProduct(input) {
       if (this.create) {
         this.$emit('create', input)
       } else {
         this.updateProduct(input)
       }
     },
-    async updateProduct (input) {
+    async updateProduct(input) {
       try {
         const id = this.item.id
         this.updateLoading = id
@@ -105,7 +116,10 @@ export default {
         })
       } catch (error) {
         this.$logger.warn('Error: ', error)
-        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+        if (
+          error.message &&
+          error.message.includes('GraphQL error: MongoError: WriteConflict')
+        ) {
           this.refetchSpec()
         }
         // Analytics.record({
@@ -118,7 +132,7 @@ export default {
         this.updateLoading = null
       }
     },
-    async refetchSpec () {
+    async refetchSpec() {
       try {
         apolloClient.writeQuery({
           query: GET_IS_SPEC_SYNC,
@@ -140,7 +154,7 @@ export default {
         })
       }
     },
-    async updateProductCost (input) {
+    async updateProductCost(input) {
       try {
         const id = this.item.id
         this.updateLoading = id
@@ -161,7 +175,7 @@ export default {
         this.updateLoading = null
       }
     },
-    async updateProductStore (input) {
+    async updateProductStore(input) {
       try {
         const id = this.item.id
         this.updateLoading = id
@@ -182,7 +196,7 @@ export default {
         this.updateLoading = null
       }
     },
-    async updateProductInfo (input) {
+    async updateProductInfo(input) {
       try {
         const id = this.item.id
         this.updateLoading = id
@@ -203,7 +217,7 @@ export default {
         this.updateLoading = null
       }
     },
-    async updateProductLink (input) {
+    async updateProductLink(input) {
       try {
         const id = this.item.id
         this.updateLoading = id
@@ -224,7 +238,7 @@ export default {
         this.updateLoading = null
       }
     },
-    async deleteProduct (id) {
+    async deleteProduct(id) {
       try {
         const msg = this.$t('alert.removeProduct')
         const confirm = await confirmDialog(msg)

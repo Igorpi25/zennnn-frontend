@@ -1,11 +1,4 @@
-import {
-  h,
-  ref,
-  computed,
-  watchEffect,
-  defineComponent,
-  PropType,
-} from 'vue'
+import { h, ref, computed, watchEffect, defineComponent, PropType } from 'vue'
 
 import { useI18n } from 'vue-i18n'
 
@@ -18,13 +11,7 @@ import { ziCalendar } from '@zennnn/icons'
 // import formatISO from 'date-fns/formatISO'
 // import parse from 'date-fns/parse'
 // import isValid from 'date-fns/isValid'
-import {
-  parseISO,
-  fromUnixTime,
-  formatISO,
-  parse,
-  isValid,
-} from 'date-fns'
+import { parseISO, fromUnixTime, formatISO, parse, isValid } from 'date-fns'
 
 import Btn from '../Btn'
 import Icon from '../Icon'
@@ -41,9 +28,15 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    modelValue: [Date, String, Number] as PropType<Date | string | number | null | undefined>,
-    max: [Date, String, Number] as PropType<Date | string | number | null | undefined>,
-    min: [Date, String, Number] as PropType<Date | string | number | null | undefined>,
+    modelValue: [Date, String, Number] as PropType<
+      Date | string | number | null | undefined
+    >,
+    max: [Date, String, Number] as PropType<
+      Date | string | number | null | undefined
+    >,
+    min: [Date, String, Number] as PropType<
+      Date | string | number | null | undefined
+    >,
     inputFormat: {
       type: String,
       required: false,
@@ -63,7 +56,7 @@ export default defineComponent({
 
   emits: ['update:modelValue'],
 
-  setup (props, { emit, slots }) {
+  setup(props, { emit, slots }) {
     const { locale, d } = useI18n()
 
     const activePicker = ref(props.type.toUpperCase())
@@ -72,7 +65,9 @@ export default defineComponent({
     const isMenuActive = ref<boolean>(false)
 
     const firstDayOfWeek = computed(() => {
-      return (locale.value === 'fr' || locale.value === 'ru' || locale.value === 'uk')
+      return locale.value === 'fr' ||
+        locale.value === 'ru' ||
+        locale.value === 'uk'
         ? 1
         : 0
     })
@@ -92,9 +87,7 @@ export default defineComponent({
       // if (!date) return undefined
       if (!isString(date) && isValid(date)) return new Date(date)
       const isUnixTime = !Number.isNaN(Number(date))
-      return isUnixTime
-        ? fromUnixTime(date / 1000)
-        : parseISO(date)
+      return isUnixTime ? fromUnixTime(date / 1000) : parseISO(date)
     }
 
     const selectYear = (date: Date) => {
@@ -126,22 +119,32 @@ export default defineComponent({
     const genActivator = () => {
       const value = props.modelValue && d(parseDate(props.modelValue), 'short')
 
-      if (slots.activator) return slots.activator({ open: isMenuActive.value, formatted: value })
+      if (slots.activator)
+        return slots.activator({ open: isMenuActive.value, formatted: value })
 
-      return h(Btn, {
-        outlined: true,
-        xSmall: true,
-        darkIcon: !isMenuActive.value,
-        class: { 'bg-blue-400 border-blue-400 dark:border-blue-400 text-white': isMenuActive.value },
-      }, {
-        default: () => {
-          const placeholder = props.placeholder || 'Date'
-          return value || [
-            h('span', placeholder),
-            h(Icon, { right: true }, { default: () => ziCalendar }),
-          ]
+      return h(
+        Btn,
+        {
+          outlined: true,
+          xSmall: true,
+          darkIcon: !isMenuActive.value,
+          class: {
+            'bg-blue-400 border-blue-400 dark:border-blue-400 text-white':
+              isMenuActive.value,
+          },
         },
-      })
+        {
+          default: () => {
+            const placeholder = props.placeholder || 'Date'
+            return (
+              value || [
+                h('span', placeholder),
+                h(Icon, { right: true }, { default: () => ziCalendar }),
+              ]
+            )
+          },
+        }
+      )
     }
 
     const genYearPicker = () => {
@@ -194,10 +197,10 @@ export default defineComponent({
       return activePicker.value === 'YEAR'
         ? genYearPicker()
         : activePicker.value === 'MONTH'
-          ? genMonthPicker()
-          : activePicker.value === 'DATE'
-            ? genDayPicker()
-            : undefined
+        ? genMonthPicker()
+        : activePicker.value === 'DATE'
+        ? genDayPicker()
+        : undefined
     }
 
     return {
@@ -217,24 +220,32 @@ export default defineComponent({
     }
   },
 
-  render () {
-    return h(Menu, {
-      modelValue: this.isMenuActive,
-      placement: 'bottom-start',
-      contentClass: 'pt-0 pb-0',
-      'onUpdate:modelValue': (value: any) => {
-        this.isMenuActive = value
+  render() {
+    return h(
+      Menu,
+      {
+        modelValue: this.isMenuActive,
+        placement: 'bottom-start',
+        contentClass: 'pt-0 pb-0',
+        'onUpdate:modelValue': (value: any) => {
+          this.isMenuActive = value
+        },
       },
-    }, {
-      activator: () => this.genActivator(),
-      default: () => {
-        return h('div', {
-          class: 'bg-white dark:bg-gray-900 dark:text-white rounded-lg',
-          style: {
-            width: convertToUnit(this.width),
-          },
-        }, this.genPicker())
-      },
-    })
+      {
+        activator: () => this.genActivator(),
+        default: () => {
+          return h(
+            'div',
+            {
+              class: 'bg-white dark:bg-gray-900 dark:text-white rounded-lg',
+              style: {
+                width: convertToUnit(this.width),
+              },
+            },
+            this.genPicker()
+          )
+        },
+      }
+    )
   },
 })

@@ -11,7 +11,13 @@
 </template>
 
 <script>
-import { ziInstagram, ziFacebook, ziVk, ziTelegram, ziYoutube } from '@zennnn/icons'
+import {
+  ziInstagram,
+  ziFacebook,
+  ziVk,
+  ziTelegram,
+  ziYoutube,
+} from '@zennnn/icons'
 import { Icon } from '@zennnn/core'
 
 export default {
@@ -19,7 +25,7 @@ export default {
 
   components: { Icon },
 
-  data () {
+  data() {
     return {
       icons: {
         ziInstagram,

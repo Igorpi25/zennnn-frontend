@@ -1,5 +1,5 @@
 export default class Breakpoint {
-  constructor (options = {}) {
+  constructor(options = {}) {
     this.xs = false
     this.sm = false
     this.md = false
@@ -25,40 +25,35 @@ export default class Breakpoint {
     this.mobile = true
     this.resizeTimeout = 0
 
-    const {
-      mobileBreakpoint,
-      scrollBarWidth,
-      thresholds,
-    } = options
+    const { mobileBreakpoint, scrollBarWidth, thresholds } = options
 
     this.mobileBreakpoint = mobileBreakpoint
     this.scrollBarWidth = scrollBarWidth
     this.thresholds = thresholds
   }
 
-  init () {
+  init() {
     this.update()
 
     /* istanbul ignore if */
     if (typeof window === 'undefined') return
 
-    window.addEventListener(
-      'resize',
-      this._onResize.bind(this),
-      { passive: true },
-    )
+    window.addEventListener('resize', this._onResize.bind(this), {
+      passive: true,
+    })
   }
 
   /* eslint-disable-next-line max-statements */
-  update (ssr = false) {
+  update(ssr = false) {
     const height = ssr ? 0 : this._getClientHeight()
     const width = ssr ? 0 : this._getClientWidth()
 
     const xs = width < this.thresholds.xs
     const sm = width < this.thresholds.sm && !xs
-    const md = width < (this.thresholds.md - this.scrollBarWidth) && !(sm || xs)
-    const lg = width < (this.thresholds.lg - this.scrollBarWidth) && !(md || sm || xs)
-    const xl = width >= (this.thresholds.lg - this.scrollBarWidth)
+    const md = width < this.thresholds.md - this.scrollBarWidth && !(sm || xs)
+    const lg =
+      width < this.thresholds.lg - this.scrollBarWidth && !(md || sm || xs)
+    const xl = width >= this.thresholds.lg - this.scrollBarWidth
 
     this.height = height
     this.width = width
@@ -82,16 +77,16 @@ export default class Breakpoint {
     this.xlOnly = xl
 
     switch (true) {
-      case (xs):
+      case xs:
         this.name = 'xs'
         break
-      case (sm):
+      case sm:
         this.name = 'sm'
         break
-      case (md):
+      case md:
         this.name = 'md'
         break
-      case (lg):
+      case lg:
         this.name = 'lg'
         break
       default:
@@ -119,7 +114,7 @@ export default class Breakpoint {
     this.mobile = current <= max
   }
 
-  _onResize () {
+  _onResize() {
     clearTimeout(this.resizeTimeout)
 
     this.resizeTimeout = window.setTimeout(this.update.bind(this), 200)
@@ -127,19 +122,19 @@ export default class Breakpoint {
 
   // Cross-browser support as described in:
   // https://stackoverflow.com/questions/1248081
-  _getClientWidth () {
+  _getClientWidth() {
     if (typeof document === 'undefined') return 0 // SSR
     return Math.max(
       document.documentElement.clientWidth || 0,
-      window.innerWidth || 0,
+      window.innerWidth || 0
     )
   }
 
-  _getClientHeight () {
+  _getClientHeight() {
     if (typeof document === 'undefined') return 0 // SSR
     return Math.max(
       document.documentElement.clientHeight || 0,
-      window.innerHeight || 0,
+      window.innerHeight || 0
     )
   }
 }

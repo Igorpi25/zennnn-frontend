@@ -13,7 +13,10 @@ import { deepEqual } from 'vue-supp'
 import { ziCheckboxMarked, ziMinus } from '@zennnn/icons'
 
 import { useInputProps, useInput } from '../../composables/useInput'
-import { useInputValidationProps, useInputValidation } from '../../composables/useInputValidation'
+import {
+  useInputValidationProps,
+  useInputValidation,
+} from '../../composables/useInputValidation'
 
 import uid from '../../utils/uid'
 
@@ -49,26 +52,24 @@ export default defineComponent({
     falseValue: null,
   },
 
-  emits: ['update:modelValue', 'update:indeterminate', 'update:error', 'change'],
+  emits: [
+    'update:modelValue',
+    'update:indeterminate',
+    'update:error',
+    'change',
+  ],
 
-  setup (props, { slots, emit }) {
+  setup(props, { slots, emit }) {
     const id: string = uid('checkbox-')
     const rootElement = ref<HTMLElement>()
 
-    const {
-      internalValue,
-      isFocused,
-      genInput,
-      genLabel,
-    } = useInput(props, { slots, id })
+    const { internalValue, isFocused, genInput, genLabel } = useInput(props, {
+      slots,
+      id,
+    })
 
-    const {
-      showDetails,
-      isDisabled,
-      isReadonly,
-      isInteractive,
-      genMessages,
-    } = useInputValidation(props, { emit, id, internalValue, isFocused })
+    const { showDetails, isDisabled, isReadonly, isInteractive, genMessages } =
+      useInputValidation(props, { emit, id, internalValue, isFocused })
 
     const inputIndeterminate = ref<boolean>(props.indeterminate)
 
@@ -79,30 +80,37 @@ export default defineComponent({
       if (isMultiple.value) {
         if (!Array.isArray(input)) return false
 
-        return input.some(item => props.valueComparator(item, value))
+        return input.some((item) => props.valueComparator(item, value))
       }
 
       if (props.trueValue === undefined || props.falseValue === undefined) {
-        return value
-          ? props.valueComparator(value, input)
-          : Boolean(input)
+        return value ? props.valueComparator(value, input) : Boolean(input)
       }
 
       return props.valueComparator(input, props.trueValue)
     })
 
-    const isMultiple = computed(() => props.multiple === true ||
-      (props.multiple === null && Array.isArray(internalValue.value)))
+    const isMultiple = computed(
+      () =>
+        props.multiple === true ||
+        (props.multiple === null && Array.isArray(internalValue.value))
+    )
 
-    watch(() => props.modelValue, (val) => {
-      internalValue.value = val
-    })
+    watch(
+      () => props.modelValue,
+      (val) => {
+        internalValue.value = val
+      }
+    )
 
-    watch(() => props.indeterminate, (val) => {
-      nextTick(() => {
-        inputIndeterminate.value = val
-      })
-    })
+    watch(
+      () => props.indeterminate,
+      (val) => {
+        nextTick(() => {
+          inputIndeterminate.value = val
+        })
+      }
+    )
 
     watch(inputIndeterminate, (val) => {
       emit('update:indeterminate', val)
@@ -135,8 +143,13 @@ export default defineComponent({
         if (input.length === length) {
           input.push(value)
         }
-      } else if (props.trueValue !== undefined && props.falseValue !== undefined) {
-        input = props.valueComparator(input, props.trueValue) ? props.falseValue : props.trueValue
+      } else if (
+        props.trueValue !== undefined &&
+        props.falseValue !== undefined
+      ) {
+        input = props.valueComparator(input, props.trueValue)
+          ? props.falseValue
+          : props.trueValue
       } else if (value) {
         input = props.valueComparator(input, value) ? null : value
       } else {
@@ -150,25 +163,36 @@ export default defineComponent({
     const genCheckboxLabel = () => {
       const children = slots.default?.()
       if (!children) return undefined
-      return h('label', {
-        for: id,
-        class: 'checkbox__label',
-      }, children)
+      return h(
+        'label',
+        {
+          for: id,
+          class: 'checkbox__label',
+        },
+        children
+      )
     }
 
     const genCheckboxIcon = () => {
-      return h('div', {
-        class: 'checkbox__control__icon',
-      }, withDirectives(
-        h(Icon, {
-          size: 20,
-        }, {
-          default: () => inputIndeterminate.value ? ziMinus : ziCheckboxMarked,
-        }),
-        [
-          [vShow, isActive.value || inputIndeterminate.value],
-        ],
-      ))
+      return h(
+        'div',
+        {
+          class: 'checkbox__control__icon',
+        },
+        withDirectives(
+          h(
+            Icon,
+            {
+              size: 20,
+            },
+            {
+              default: () =>
+                inputIndeterminate.value ? ziMinus : ziCheckboxMarked,
+            }
+          ),
+          [[vShow, isActive.value || inputIndeterminate.value]]
+        )
+      )
     }
 
     const genCheckboxInput = () => {
@@ -181,51 +205,51 @@ export default defineComponent({
         role: 'checkbox',
         readonly: isReadonly.value,
         disabled: isDisabled.value,
-        'aria-checked': inputIndeterminate.value
-          ? 'mixed'
-          : isActive.value,
+        'aria-checked': inputIndeterminate.value ? 'mixed' : isActive.value,
         onChange: onChange,
       }
       return genInput(data)
     }
 
     const genCheckbox = () => {
-      return h('div', {
-        class: 'checkbox__control__input',
-      }, [
-        genCheckboxInput(),
-        genCheckboxIcon(),
-      ])
+      return h(
+        'div',
+        {
+          class: 'checkbox__control__input',
+        },
+        [genCheckboxInput(), genCheckboxIcon()]
+      )
     }
 
     const genControl = () => {
-      return h('div', {
-        class: {
-          checkbox__control: true,
+      return h(
+        'div',
+        {
+          class: {
+            checkbox__control: true,
+          },
         },
-      }, [
-        genCheckbox(),
-        genCheckboxLabel(),
-      ])
+        [genCheckbox(), genCheckboxLabel()]
+      )
     }
 
     return () => {
-      return h('div', {
-        ref: rootElement,
-        class: {
-          checkbox: true,
-          'checkbox--active': isActive.value,
-          'checkbox--focused': isFocused.value,
-          'checkbox--disabled': isDisabled.value,
-          'checkbox--readonly': isReadonly.value,
-          'checkbox--indeterminate': inputIndeterminate.value,
-          'checkbox--show-details': showDetails.value,
+      return h(
+        'div',
+        {
+          ref: rootElement,
+          class: {
+            checkbox: true,
+            'checkbox--active': isActive.value,
+            'checkbox--focused': isFocused.value,
+            'checkbox--disabled': isDisabled.value,
+            'checkbox--readonly': isReadonly.value,
+            'checkbox--indeterminate': inputIndeterminate.value,
+            'checkbox--show-details': showDetails.value,
+          },
         },
-      }, [
-        genLabel(),
-        genControl(),
-        genMessages(),
-      ])
+        [genLabel(), genControl(), genMessages()]
+      )
     }
   },
 })

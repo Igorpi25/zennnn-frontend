@@ -27,7 +27,10 @@ describe('BtnToggle.ts', () => {
   it('should render component with disabled item and match snapshot', () => {
     const wrapper = mountFunction({
       props: {
-        items: [{ text: 'Item 1', value: 'item-1' }, { text: 'Item 2', value: 'item-2', disabled: true }],
+        items: [
+          { text: 'Item 1', value: 'item-1' },
+          { text: 'Item 2', value: 'item-2', disabled: true },
+        ],
       },
     })
 
@@ -38,7 +41,10 @@ describe('BtnToggle.ts', () => {
     const wrapper = mountFunction({
       props: {
         disabled: true,
-        items: [{ text: 'Item 1', value: 'item-1' }, { text: 'Item 2', value: 'item-2' }],
+        items: [
+          { text: 'Item 1', value: 'item-1' },
+          { text: 'Item 2', value: 'item-2' },
+        ],
       },
     })
 
@@ -83,7 +89,10 @@ describe('BtnToggle.ts', () => {
   it('should have btn-toggle__item--active class on item click', async () => {
     const wrapper = mountFunction({
       props: {
-        items: [{ text: 'Item 1', value: 'item-1' }, { text: 'Item 2', value: 'item-2' }],
+        items: [
+          { text: 'Item 1', value: 'item-1' },
+          { text: 'Item 2', value: 'item-2' },
+        ],
       },
     })
 

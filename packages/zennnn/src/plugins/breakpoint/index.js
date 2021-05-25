@@ -1,7 +1,7 @@
 import Breakpoint from './Breakpoint'
 
 export default {
-  install (app) {
+  install(app) {
     const breakpoint = new Breakpoint({
       thresholds: {
         xs: 340,

@@ -6,7 +6,7 @@
         <Btn
           outlined
           class="mb-5 mt-8 flex justify-center sm:justify-end"
-          @click="$router.push({name: 'signup'})"
+          @click="$router.push({ name: 'signup' })"
         >
           <template v-slot:text>
             <span>{{ $t('signin.noAccount') }}</span>
@@ -17,8 +17,11 @@
           <div class="w-full">
             <h1 class="headline">
               <span>{{ $t('signin.welcomeHead') }}</span>
-              <span>{{ $t('signin.welcomeSubhead') }}&nbsp;
-                <span class="block sm:inline">{{ $t('signin.welcomeContent') }}</span>
+              <span
+                >{{ $t('signin.welcomeSubhead') }}&nbsp;
+                <span class="block sm:inline">{{
+                  $t('signin.welcomeContent')
+                }}</span>
               </span>
             </h1>
             <Form
@@ -26,7 +29,17 @@
               :title="$t('signinByPhone.loginByPhone')"
               v-model:error-message="errorMessage"
               lazy-validation
-              class="form--max-w-md px-0 md:p-8 pt-8 py-1 md:py-8 flex-col sm:flex-row items-center"
+              class="
+                form--max-w-md
+                px-0
+                md:p-8
+                pt-8
+                py-1
+                md:py-8
+                flex-col
+                sm:flex-row
+                items-center
+              "
             >
               <div class="w-full sm:w-1/2 sm:pr-2">
                 <TextField
@@ -47,26 +60,22 @@
                   minlength="6"
                   maxlength="6"
                 />
-                <Btn
-                  outlined
-                  borderless
-                  @click.prevent
-                >
+                <Btn outlined borderless @click.prevent>
                   <span>{{ $t('signinByPhone.resendCode') }}</span>
                 </Btn>
               </div>
               <template v-slot:append>
-                <Btn
-                  :loading="loading"
-                  @click="onSubmit"
-                >
+                <Btn :loading="loading" @click="onSubmit">
                   {{ $t('signinByPhone.submit') }}
                 </Btn>
-                <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-nowrap">
-                  <span>{{ $t('preposition.or') }}</span>&nbsp;
+                <div
+                  class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-nowrap"
+                >
+                  <span>{{ $t('preposition.or') }}</span
+                  >&nbsp;
                   <span>{{ $t('preposition.through') }}</span>
                 </div>
-                  <SocialSignIn />
+                <SocialSignIn />
               </template>
             </Form>
           </div>
@@ -99,7 +108,7 @@ export default {
     Social,
     Copyright,
   },
-  data () {
+  data() {
     return {
       loading: false,
       successMessage: '',
@@ -109,20 +118,24 @@ export default {
         smsCode: '',
       },
       rules: {
-        required: v => !!v || this.$t('rule.required'),
-        codeMinLength: v => (v && v.length > 5) || this.$t('rule.minLength', { n: 6 }),
+        required: (v) => !!v || this.$t('rule.required'),
+        codeMinLength: (v) =>
+          (v && v.length > 5) || this.$t('rule.minLength', { n: 6 }),
       },
     }
   },
   methods: {
-    async onSubmit (e) {
+    async onSubmit(e) {
       try {
         e.preventDefault()
         this.loading = true
         this.errorMessage = ''
         const isValid = this.$refs.form.validate()
         if (isValid) {
-          const user = await this.$auth.signIn(this.model.email, this.model.password)
+          const user = await this.$auth.signIn(
+            this.model.email,
+            this.model.password
+          )
           this.$logger.info('Logged in user', user)
           this.$router.push({ name: 'home' })
         }

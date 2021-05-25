@@ -6,7 +6,12 @@
       </div>
       <div>
         <button
-          class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
+          class="
+            text-blue-500
+            hover:text-blue-400
+            focus:text-blue-400
+            focus:outline-none
+          "
           @click="toggleExpand"
         >
           <Icon
@@ -20,25 +25,21 @@
     </div>
     <ExpandTransition>
       <div v-show="expanded">
-        <div
-          v-if="items.length > 0"
-          class="flex flex-wrap pt-4"
-        >
-          <div
-            v-for="(item, i) in items"
-            :key="i"
-            class="w-full relative"
-          >
+        <div v-if="items.length > 0" class="flex flex-wrap pt-4">
+          <div v-for="(item, i) in items" :key="i" class="w-full relative">
             <div
               v-if="i > 0"
               :class="['mt-10 mb-8 border-b border-gray-400']"
             />
-            <div
-              v-if="i > 0"
-              class="absolute top-0 right-0 pt-12"
-            >
+            <div v-if="i > 0" class="absolute top-0 right-0 pt-12">
               <button
-                class="text-gray-200 cursor-pointer focus:text-gray-100 hover:text-gray-100 focus:outline-none"
+                class="
+                  text-gray-200
+                  cursor-pointer
+                  focus:text-gray-100
+                  hover:text-gray-100
+                  focus:outline-none
+                "
                 @click="deleteData(i, item.id)"
               >
                 <Icon>
@@ -55,7 +56,9 @@
               @create="addData"
               @update="updateData(i, item, $event)"
               @delete="deleteData(i, item.id)"
-              @set-main-bank-detail="$emit('update', { 'defaultBankDetail': $event })"
+              @set-main-bank-detail="
+                $emit('update', { defaultBankDetail: $event })
+              "
             />
           </div>
         </div>
@@ -110,11 +113,11 @@ export default {
     defaultBankDetail: String,
     items: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
   },
   emits: ['update'],
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
@@ -126,7 +129,7 @@ export default {
       apolloClient,
     }
   },
-  data () {
+  data() {
     return {
       createLoading: false,
       updateLoading: false,
@@ -134,14 +137,14 @@ export default {
     }
   },
   methods: {
-    addData () {
+    addData() {
       if (this.emitChanges) {
         this.$emit('update', { bankDetails: [...this.items, {}] })
       } else {
         this.addBankDetail()
       }
     },
-    updateData (i, item, value) {
+    updateData(i, item, value) {
       if (this.emitChanges) {
         const updatedItem = Object.assign({}, item, value)
         const items = this.items.slice()
@@ -151,7 +154,7 @@ export default {
         this.updateBankDetail(item.id, value)
       }
     },
-    deleteData (i, id) {
+    deleteData(i, id) {
       if (this.emitChanges) {
         const items = this.items.slice()
         items.splice(i, 1)
@@ -160,7 +163,7 @@ export default {
         this.deleteBankDetail(id)
       }
     },
-    async addBankDetail () {
+    async addBankDetail() {
       try {
         this.createLoading = true
         await this.apolloClient.mutate({
@@ -202,7 +205,7 @@ export default {
         this.createLoading = false
       }
     },
-    async updateBankDetail (id, input) {
+    async updateBankDetail(id, input) {
       try {
         this.updateLoading = true
         await this.apolloClient.mutate({
@@ -214,7 +217,9 @@ export default {
               query: GET_ORG_REQUISITE,
               variables,
             })
-            const index = data.getOrgRequisite.bankDetails.findIndex(el => el.id === id)
+            const index = data.getOrgRequisite.bankDetails.findIndex(
+              (el) => el.id === id
+            )
             if (index !== -1) {
               // update validation state
               // should be fixed with subs
@@ -248,7 +253,7 @@ export default {
         this.updateLoading = false
       }
     },
-    async deleteBankDetail (id) {
+    async deleteBankDetail(id) {
       try {
         this.deleteLoading = true
         await this.apolloClient.mutate({
@@ -260,7 +265,7 @@ export default {
               query: GET_ORG_REQUISITE,
               variables,
             })
-            if (data.getOrgRequisite.bankDetails.some(el => el.id === id)) {
+            if (data.getOrgRequisite.bankDetails.some((el) => el.id === id)) {
               // update validation state
               // should be fixed with subs
               const v = validateCompanyDetail(data.getOrgRequisite)
@@ -272,7 +277,9 @@ export default {
                     ...data.getOrgRequisite,
                     isRequiredFilled: v.isRequiredFilled,
                     isOptionalFilled: v.isOptionalFilled,
-                    bankDetails: data.getOrgRequisite.bankDetails.filter(el => el.id !== id),
+                    bankDetails: data.getOrgRequisite.bankDetails.filter(
+                      (el) => el.id !== id
+                    ),
                   },
                 },
               })

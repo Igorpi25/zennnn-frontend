@@ -50,7 +50,7 @@ export const useInputValidationProps = () => {
   return {
     rules: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
     pattern: String,
     patternMessage: String,
@@ -59,7 +59,7 @@ export const useInputValidationProps = () => {
     error: Boolean,
     errorMessages: {
       type: Array as PropType<string[]>,
-      default: () => ([]),
+      default: () => [],
     },
     messagesOnFocused: {
       type: Boolean,
@@ -87,7 +87,7 @@ export const useInputValidationProps = () => {
 // Default
 export const useInputValidation = (
   props: InputValidationProps,
-  { emit, id, internalValue, isFocused }: InputValidationContext,
+  { emit, id, internalValue, isFocused }: InputValidationContext
 ) => {
   const formApi = useFormContext()
   const valid = ref(false)
@@ -98,8 +98,12 @@ export const useInputValidation = (
   const isResetting = ref<boolean>(false)
   const isPatternMismatch = ref<boolean>(false)
 
-  const isDisabled = computed(() => props.disabled || (!!formApi && formApi.disabled))
-  const isReadonly = computed(() => props.readonly || (!!formApi && formApi.readonly))
+  const isDisabled = computed(
+    () => props.disabled || (!!formApi && formApi.disabled)
+  )
+  const isReadonly = computed(
+    () => props.readonly || (!!formApi && formApi.readonly)
+  )
 
   const isInteractive = computed(() => {
     return !isDisabled.value && !isReadonly.value
@@ -111,17 +115,21 @@ export const useInputValidation = (
 
   const hasError = computed(() => {
     return (
-      errorBucket.value.length > 0 ||
-      internalErrorMessages.value.length > 0
+      errorBucket.value.length > 0 || internalErrorMessages.value.length > 0
     )
   })
 
   const hasMessages = computed(() => {
-    return errorMessages.value.length > 0 || internalErrorMessages.value.length > 0
+    return (
+      errorMessages.value.length > 0 || internalErrorMessages.value.length > 0
+    )
   })
 
   const showDetails = computed(() => {
-    return props.hideDetails === false || (props.hideDetails === 'auto' && hasMessages.value)
+    return (
+      props.hideDetails === false ||
+      (props.hideDetails === 'auto' && hasMessages.value)
+    )
   })
 
   const errorMessages = computed(() => {
@@ -142,7 +150,7 @@ export const useInputValidation = (
 
     return props.validateOnBlur
       ? hasFocused.value
-      : (hasInput.value || hasFocused.value)
+      : hasInput.value || hasFocused.value
   })
 
   const hasSuccess = computed(() => {
@@ -152,10 +160,7 @@ export const useInputValidation = (
   const hasState = computed(() => {
     if (isDisabled.value || !props.stateIcon) return false
 
-    return (
-      hasSuccess.value ||
-      (shouldValidate.value && hasError.value)
-    )
+    return hasSuccess.value || (shouldValidate.value && hasError.value)
   })
 
   const validationState = computed(() => {
@@ -170,10 +175,7 @@ export const useInputValidation = (
 
   // validate on blur
   watch(isFocused, (val) => {
-    if (
-      !val &&
-      !isDisabled.value
-    ) {
+    if (!val && !isDisabled.value) {
       hasFocused.value = true
       props.validateOnBlur && validate()
     }
@@ -205,9 +207,7 @@ export const useInputValidation = (
 
   const reset = () => {
     isResetting.value = true
-    internalValue.value = Array.isArray(internalValue.value)
-      ? []
-      : undefined
+    internalValue.value = Array.isArray(internalValue.value) ? [] : undefined
   }
 
   const resetValidation = () => {
@@ -255,25 +255,32 @@ export const useInputValidation = (
     const successIcon = props.stateSuccessIcon || ziCheckedSm
     const errorIcon = props.stateErrorIcon || ziStatusPointSm
     const successColor = props.stateSuccessColor || 'text-green-500'
-    const errorColor = props.stateErrorColor === 'none'
-      ? 'text-transparent'
-      : props.stateErrorColor === 'warn' || (!props.required && !props.stateErrorColor)
+    const errorColor =
+      props.stateErrorColor === 'none'
+        ? 'text-transparent'
+        : props.stateErrorColor === 'warn' ||
+          (!props.required && !props.stateErrorColor)
         ? 'text-yellow-500'
         : props.stateErrorColor
-          ? props.stateErrorColor
-          : 'text-pink-500'
+        ? props.stateErrorColor
+        : 'text-pink-500'
     const icon = validationState.value === 'success' ? successIcon : errorIcon
-    const color = validationState.value === 'success' ? successColor : errorColor
+    const color =
+      validationState.value === 'success' ? successColor : errorColor
 
-    return h(Icon, {
-      size: 24,
-      class: {
-        'flex-shrink-0': true,
-        [color]: true,
+    return h(
+      Icon,
+      {
+        size: 24,
+        class: {
+          'flex-shrink-0': true,
+          [color]: true,
+        },
       },
-    }, {
-      default: () => icon,
-    })
+      {
+        default: () => icon,
+      }
+    )
   }
 
   // For form

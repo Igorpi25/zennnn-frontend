@@ -4,9 +4,18 @@ import { i18n } from '../plugins/i18n'
 import { notify } from '../plugins/notify'
 import { checkAuth } from '../plugins/auth/checkAuth'
 import { apolloClient } from '../plugins/apollo'
-import { CHECK_INVITATION, GET_ROLE_IN_PROJECT, GET_ORGS, GET_PROFILE } from '../graphql/queries'
+import {
+  CHECK_INVITATION,
+  GET_ROLE_IN_PROJECT,
+  GET_ORGS,
+  GET_PROFILE,
+} from '../graphql/queries'
 
-import { CURRENT_LOCALE_STORE_KEY, CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config/globals'
+import {
+  CURRENT_LOCALE_STORE_KEY,
+  CURRENT_ORG_STORE_KEY,
+  PAPER_SID_STORE_KEY,
+} from '../config/globals'
 
 import SignIn from '../views/SignIn.vue'
 import Registration from '../views/Registration.vue'
@@ -95,7 +104,9 @@ const routes = [
     component: OrgLayout,
     beforeEnter: async (to) => {
       try {
-        const { data: { getOrgs } } = await apolloClient.query({
+        const {
+          data: { getOrgs },
+        } = await apolloClient.query({
           query: GET_ORGS,
           fetchPolicy: 'cache-first',
         })
@@ -112,7 +123,7 @@ const routes = [
             localStorage.removeItem(CURRENT_ORG_STORE_KEY)
             throw new Error('Not found')
           }
-        } else if (getOrgs.some(el => el.id === orgId)) {
+        } else if (getOrgs.some((el) => el.id === orgId)) {
           localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
           return true
         } else {
@@ -142,7 +153,9 @@ const routes = [
         beforeEnter: async (to) => {
           try {
             const specId = to.params.specId
-            const { data: { roleInProject } } = await apolloClient.query({
+            const {
+              data: { roleInProject },
+            } = await apolloClient.query({
               query: GET_ROLE_IN_PROJECT,
               variables: {
                 specId,
@@ -270,7 +283,9 @@ const routes = [
           query: GET_ORGS,
           fetchPolicy: 'cache-first',
         })
-        const { data: { getProfile } } = await apolloClient.query({
+        const {
+          data: { getProfile },
+        } = await apolloClient.query({
           query: GET_PROFILE,
           fetchPolicy: 'cache-first',
         })
@@ -294,7 +309,9 @@ const routes = [
           query: GET_ORGS,
           fetchPolicy: 'cache-first',
         })
-        const { data: { getProfile } } = await apolloClient.query({
+        const {
+          data: { getProfile },
+        } = await apolloClient.query({
           query: GET_PROFILE,
           fetchPolicy: 'cache-first',
         })
@@ -323,7 +340,9 @@ const routes = [
           return { name: 'signin', query: { redirect: `/invitations/${id}` } }
         }
 
-        const { data: { checkInvitation } } = await apolloClient.query({
+        const {
+          data: { checkInvitation },
+        } = await apolloClient.query({
           query: CHECK_INVITATION,
           variables: { id },
           fetchPolicy: 'network-only',
@@ -360,7 +379,11 @@ const routes = [
       }
       if (to.query.sid) {
         localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid)
-        return { name: 'paper', params: { specId: to.params.specId }, query: {} }
+        return {
+          name: 'paper',
+          params: { specId: to.params.specId },
+          query: {},
+        }
       }
     },
   },
@@ -411,9 +434,15 @@ const routes = [
     beforeEnter: (to) => {
       if (to.query.username) {
         if (to.query.state === 'success') {
-          notify.show({ color: 'success', text: i18n.t('message.emailConfirmed') })
+          notify.show({
+            color: 'success',
+            text: i18n.t('message.emailConfirmed'),
+          })
         } else if (to.query.state === 'confirmed') {
-          notify.show({ color: 'warn', text: i18n.t('message.emailAlreadyConfirmed') })
+          notify.show({
+            color: 'warn',
+            text: i18n.t('message.emailAlreadyConfirmed'),
+          })
         } else if (to.query.state === 'error') {
           notify.show({ color: 'error', text: to.query.message })
           // Add message to Analytics
@@ -437,7 +466,10 @@ const routes = [
         return true
       } else {
         // Incorrect request to restore password
-        notify.show({ color: 'error', text: i18n.t('message.incorrectRestorePassword') })
+        notify.show({
+          color: 'error',
+          text: i18n.t('message.incorrectRestorePassword'),
+        })
         return { name: 'signin' }
       }
     },
@@ -517,7 +549,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (to.matched.some((m) => m.meta.scrollToTop)) {
       return { left: 0, top: 0 }
     }
@@ -545,7 +577,7 @@ router.beforeEach(async (to, from) => {
         lang = defaultLang
         const langs = navigator.languages || []
         for (const sLang of supportedLangs) {
-          if (langs.some(el => (el || '').startsWith(sLang))) {
+          if (langs.some((el) => (el || '').startsWith(sLang))) {
             lang = sLang
             break
           }
@@ -562,16 +594,24 @@ router.beforeEach(async (to, from) => {
     // if not, redirect to login page.
     return {
       name: 'signin',
-      query: to.fullPath && (to.fullPath !== '/' || to.fullPath !== '/signin')
-        ? { redirect: to.fullPath }
-        : {},
+      query:
+        to.fullPath && (to.fullPath !== '/' || to.fullPath !== '/signin')
+          ? { redirect: to.fullPath }
+          : {},
     }
   } else if (to.meta.requiresNotAuth && loggedIn) {
     return { name: 'home' }
   } else {
     // set light theme permanently
     const fromUndef = from.name === undefined && from.path === '/'
-    if (fromUndef && (to.name === 'paper' || to.name === 'about' || to.name === 'pricing' || to.name === 'payment' || to.name === 'subscription')) {
+    if (
+      fromUndef &&
+      (to.name === 'paper' ||
+        to.name === 'about' ||
+        to.name === 'pricing' ||
+        to.name === 'payment' ||
+        to.name === 'subscription')
+    ) {
       setTheme('light')
     }
   }
@@ -579,7 +619,13 @@ router.beforeEach(async (to, from) => {
 
 router.beforeResolve((to) => {
   let theme = 'dark'
-  if (to.name === 'paper' || to.name === 'about' || to.name === 'pricing' || to.name === 'payment' || to.name === 'subscription') {
+  if (
+    to.name === 'paper' ||
+    to.name === 'about' ||
+    to.name === 'pricing' ||
+    to.name === 'payment' ||
+    to.name === 'subscription'
+  ) {
     theme = 'light'
   }
   // set theme meta && attribute
@@ -593,7 +639,8 @@ const setTheme = (theme) => {
     document.querySelector('html').classList.remove('dark')
   }
   const themeColor = theme === 'dark' ? '#1E1E1E' : '#ffffff'
-  document.head.querySelector('meta[name="theme-color"]')
+  document.head
+    .querySelector('meta[name="theme-color"]')
     .setAttribute('content', themeColor)
 }
 

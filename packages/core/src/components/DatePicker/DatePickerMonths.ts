@@ -1,9 +1,4 @@
-import {
-  h,
-  computed,
-  defineComponent,
-  PropType,
-} from 'vue'
+import { h, computed, defineComponent, PropType } from 'vue'
 
 import { useI18n } from 'vue-i18n'
 
@@ -57,7 +52,7 @@ export default defineComponent({
     back: () => true,
   },
 
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const { locale } = useI18n()
     const now = new Date()
 
@@ -71,33 +66,37 @@ export default defineComponent({
       return intlFormatter.format(date)
     }
 
-    const months = computed(() => eachMonthOfInterval({
-      start: from.value,
-      end: to.value,
-    }).map((value, i) => ({
-      value,
-      text: format(value, { month: 'short' }),
-      key: i,
-      current: isSameMonth(value, now),
-      selected: props.selected && isSameMonth(props.selected, value),
-      disabled: !isEnabled(value, props.min, props.max),
-    })))
+    const months = computed(() =>
+      eachMonthOfInterval({
+        start: from.value,
+        end: to.value,
+      }).map((value, i) => ({
+        value,
+        text: format(value, { month: 'short' }),
+        key: i,
+        current: isSameMonth(value, now),
+        selected: props.selected && isSameMonth(props.selected, value),
+        disabled: !isEnabled(value, props.min, props.max),
+      }))
+    )
 
     const title = computed(() => getYear(from.value))
 
-    const prevDisabled = computed(() => props.min &&
-      (isSameYear(props.min, props.modelValue) ||
-        isBefore(props.modelValue, props.min)))
+    const prevDisabled = computed(
+      () =>
+        props.min &&
+        (isSameYear(props.min, props.modelValue) ||
+          isBefore(props.modelValue, props.min))
+    )
 
-    const nextDisabled = computed(() => props.max &&
-      (isSameYear(props.max, props.modelValue) ||
-        isAfter(props.modelValue, props.max)))
+    const nextDisabled = computed(
+      () =>
+        props.max &&
+        (isSameYear(props.max, props.modelValue) ||
+          isAfter(props.modelValue, props.max))
+    )
 
-    const isEnabled = (
-      target: Date,
-      min?: Date,
-      max?: Date,
-    ) => {
+    const isEnabled = (target: Date, min?: Date, max?: Date) => {
       if (!min && !max) return true
       if (min && isBefore(target, startOfMonth(min))) return false
       if (max && isAfter(target, endOfMonth(max))) return false
@@ -109,42 +108,57 @@ export default defineComponent({
     const next = () => emit('update:modelValue', addYears(props.modelValue, 1))
 
     const genHeader = () => {
-      return h(DatePickerHeader, {
-        clickable: true,
-        prevDisabled: prevDisabled.value,
-        nextDisabled: nextDisabled.value,
-        onPrev: prev,
-        onNext: next,
-        'onTitle:click': () => emit('back'),
-      }, {
-        default: () => title.value,
-      })
+      return h(
+        DatePickerHeader,
+        {
+          clickable: true,
+          prevDisabled: prevDisabled.value,
+          nextDisabled: nextDisabled.value,
+          onPrev: prev,
+          onNext: next,
+          'onTitle:click': () => emit('back'),
+        },
+        {
+          default: () => title.value,
+        }
+      )
     }
 
     const genItems = () => {
-      const children = months.value.map(item => {
-        return h('button', {
-          key: item.key,
-          disabled: item.disabled,
-          class: {
-            'h-8 rounded focus:outline-none px-4': true,
-            transition: !item.disabled,
-            'text-gray-100 dark:text-gray-300 cursor-default': item.disabled,
-            'hover:bg-light-gray-300 focus:bg-light-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600': !item.selected && !item.disabled,
-            'bg-blue-400 text-white': item.selected,
-            'ring-2 ring-inset ring-blue-500': !item.selected && !item.disabled && item.current,
+      const children = months.value.map((item) => {
+        return h(
+          'button',
+          {
+            key: item.key,
+            disabled: item.disabled,
+            class: {
+              'h-8 rounded focus:outline-none px-4': true,
+              transition: !item.disabled,
+              'text-gray-100 dark:text-gray-300 cursor-default': item.disabled,
+              'hover:bg-light-gray-300 focus:bg-light-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600':
+                !item.selected && !item.disabled,
+              'bg-blue-400 text-white': item.selected,
+              'ring-2 ring-inset ring-blue-500':
+                !item.selected && !item.disabled && item.current,
+            },
+            onClick: (e: MouseEvent) => {
+              e.preventDefault()
+              e.stopPropagation()
+              emit('select', item.value)
+            },
           },
-          onClick: (e: MouseEvent) => {
-            e.preventDefault()
-            e.stopPropagation()
-            emit('select', item.value)
-          },
-        }, h('span', item.text))
+          h('span', item.text)
+        )
       })
 
-      return h('div', {
-        class: 'grid grid-cols-3 gap-6 items-center justify-items-center py-4 px-md',
-      }, children)
+      return h(
+        'div',
+        {
+          class:
+            'grid grid-cols-3 gap-6 items-center justify-items-center py-4 px-md',
+        },
+        children
+      )
     }
 
     return {
@@ -157,11 +171,7 @@ export default defineComponent({
     }
   },
 
-  render () {
-    return h('div', {
-    }, [
-      this.genHeader(),
-      this.genItems(),
-    ])
+  render() {
+    return h('div', {}, [this.genHeader(), this.genItems()])
   },
 })

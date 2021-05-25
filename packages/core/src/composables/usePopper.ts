@@ -1,4 +1,12 @@
-import { h, ref, shallowRef, computed, onUnmounted, ComponentPublicInstance, PropType } from 'vue'
+import {
+  h,
+  ref,
+  shallowRef,
+  computed,
+  onUnmounted,
+  ComponentPublicInstance,
+  PropType,
+} from 'vue'
 import { createPopper, VirtualElement, Instance, Options } from '@popperjs/core'
 
 type Placement = Options['placement']
@@ -77,7 +85,11 @@ export const usePopperProps = () => {
   }
 }
 
-export const usePopper = (props: PopperProps, customModifiers: Modifiers = [], isVirtual = false) => {
+export const usePopper = (
+  props: PopperProps,
+  customModifiers: Modifiers = [],
+  isVirtual = false
+) => {
   const instance = shallowRef<Instance>()
   const reference = ref<Element | VirtualElement | ComponentPublicInstance>()
   const popper = ref<HTMLElement | ComponentPublicInstance>()
@@ -86,15 +98,15 @@ export const usePopper = (props: PopperProps, customModifiers: Modifiers = [], i
     return props.placement
       ? props.placement
       : props.left
-        ? 'left'
-        : props.right
-          ? 'right'
-          : props.bottom
-            ? 'bottom'
-            : 'top'
+      ? 'left'
+      : props.right
+      ? 'right'
+      : props.bottom
+      ? 'bottom'
+      : 'top'
   })
 
-  const strategy = computed(() => props.fixed ? 'fixed' : 'absolute')
+  const strategy = computed(() => (props.fixed ? 'fixed' : 'absolute'))
 
   const offset = computed(() => {
     const skidding = parseInt(props.skidding) || 0
@@ -136,18 +148,23 @@ export const usePopper = (props: PopperProps, customModifiers: Modifiers = [], i
     ]
 
     if (props.arrow) {
-      defaultModifiers.push({
-        name: 'arrow',
-        options: {
-          padding: 8,
+      defaultModifiers.push(
+        {
+          name: 'arrow',
+          options: {
+            padding: 8,
+          },
         },
-      }, applyArrowHide)
+        applyArrowHide
+      )
     }
 
-    const excludeModifiers = customModifiers.map(mod => mod.name)
+    const excludeModifiers = customModifiers.map((mod) => mod.name)
 
     return [
-      ...defaultModifiers.filter(mode => !excludeModifiers.includes(mode.name)),
+      ...defaultModifiers.filter(
+        (mode) => !excludeModifiers.includes(mode.name)
+      ),
       customModifiers,
     ] as Modifiers
   })
@@ -184,8 +201,10 @@ export const usePopper = (props: PopperProps, customModifiers: Modifiers = [], i
 
   const isCursorOutside = (e: MouseEvent): boolean => {
     const target = e.target as Element
-    const referenceEl = ((reference.value as ComponentPublicInstance)?.$el || reference.value) as Element
-    const popperEl = ((popper.value as ComponentPublicInstance)?.$el || popper.value) as Element
+    const referenceEl = ((reference.value as ComponentPublicInstance)?.$el ||
+      reference.value) as Element
+    const popperEl = ((popper.value as ComponentPublicInstance)?.$el ||
+      popper.value) as Element
 
     if (!referenceEl || !popperEl) return true
 
@@ -228,9 +247,9 @@ export const usePopper = (props: PopperProps, customModifiers: Modifiers = [], i
   const genArrow = () => {
     return props.arrow
       ? h('div', {
-        class: 'popper__arrow',
-        'data-popper-arrow': '',
-      })
+          class: 'popper__arrow',
+          'data-popper-arrow': '',
+        })
       : undefined
   }
 
@@ -250,7 +269,7 @@ const applyArrowHide: Modifiers[0] = {
   name: 'applyArrowHide',
   enabled: true,
   phase: 'write',
-  fn (data) {
+  fn(data) {
     const state = data.state
     const { arrow, reference, popper } = state.elements
 
@@ -263,13 +282,28 @@ const applyArrowHide: Modifiers[0] = {
         const offsetData = state.modifiersData.offset
         const popperRect = popper.getBoundingClientRect()
         const referenceRect = reference.getBoundingClientRect()
-        const leftDistance = basePlacement === 'right' ? offsetData?.left?.x || 0 : 0
-        const rightDistance = basePlacement === 'left' ? offsetData?.right?.x || 0 : 0
+        const leftDistance =
+          basePlacement === 'right' ? offsetData?.left?.x || 0 : 0
+        const rightDistance =
+          basePlacement === 'left' ? offsetData?.right?.x || 0 : 0
         const exceedsLeft = popperRect.left + leftDistance - interactiveBorder
-        const exceedsRight = popperRect.right + rightDistance + interactiveBorder
-        const arrowXPosition = basePlacement === 'left' ? referenceRect.left : basePlacement === 'right' ? referenceRect.right : 0
-        const popperXPosition = basePlacement === 'left' ? exceedsRight : basePlacement === 'right' ? exceedsLeft : 0
-        isCenterY = popperXPosition - 8 < arrowXPosition && popperXPosition + 8 > arrowXPosition
+        const exceedsRight =
+          popperRect.right + rightDistance + interactiveBorder
+        const arrowXPosition =
+          basePlacement === 'left'
+            ? referenceRect.left
+            : basePlacement === 'right'
+            ? referenceRect.right
+            : 0
+        const popperXPosition =
+          basePlacement === 'left'
+            ? exceedsRight
+            : basePlacement === 'right'
+            ? exceedsLeft
+            : 0
+        isCenterY =
+          popperXPosition - 8 < arrowXPosition &&
+          popperXPosition + 8 > arrowXPosition
       }
       if (state.modifiersData.arrow?.centerOffset !== 0 || !isCenterY) {
         arrow.setAttribute('data-hide', '')

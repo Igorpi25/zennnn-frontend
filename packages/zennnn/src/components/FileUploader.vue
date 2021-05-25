@@ -4,7 +4,7 @@
       ref="drop"
       :class="[
         'w-full h-full cursor-pointer overflow-hidden',
-        rounded ? 'rounded-full' : 'rounded'
+        rounded ? 'rounded-full' : 'rounded',
       ]"
       @drag.prevent.stop
       @dragstart.prevent.stop
@@ -30,9 +30,28 @@
           ]"
         >
           <i>
-            <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="0.773926" y="5.50012" width="11" height="1" stroke="currentColor"/>
-              <rect x="6.77393" y="0.500122" width="11" height="1" transform="rotate(90 6.77393 0.500122)" stroke="currentColor"/>
+            <svg
+              width="13"
+              height="12"
+              viewBox="0 0 13 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="0.773926"
+                y="5.50012"
+                width="11"
+                height="1"
+                stroke="currentColor"
+              />
+              <rect
+                x="6.77393"
+                y="0.500122"
+                width="11"
+                height="1"
+                transform="rotate(90 6.77393 0.500122)"
+                stroke="currentColor"
+              />
             </svg>
           </i>
         </div>
@@ -44,36 +63,50 @@
         key="preview"
         :class="[
           'absolute inset-0 flex justify-center items-center overflow-hidden',
-          rounded ? 'rounded-full' : 'rounded'
+          rounded ? 'rounded-full' : 'rounded',
         ]"
       >
         <img
-          :class="['w-full h-full object-cover', rounded ? 'rounded-full' : 'rounded']"
+          :class="[
+            'w-full h-full object-cover',
+            rounded ? 'rounded-full' : 'rounded',
+          ]"
           :src="filePreview"
-        >
+        />
       </div>
       <div
         v-if="filePreview"
         key="opacity"
         :class="[
           'absolute inset-0 bg-black opacity-30 overflow-hidden cursor-wait',
-          rounded ? 'rounded-full' : 'rounded'
+          rounded ? 'rounded-full' : 'rounded',
         ]"
       />
       <div
         key="loader"
-        class="absolute inset-0 flex justify-center items-center pointer-events-none"
+        class="
+          absolute
+          inset-0
+          flex
+          justify-center
+          items-center
+          pointer-events-none
+        "
       >
-        <Progress
-          :value="uploadPercentage"
-          size="28"
-        />
+        <Progress :value="uploadPercentage" size="28" />
       </div>
       <transition name="scale-transition">
         <div
           v-if="uploadLoading"
           key="cancel"
-          class="absolute inset-0 flex justify-center items-center pointer-events-none"
+          class="
+            absolute
+            inset-0
+            flex
+            justify-center
+            items-center
+            pointer-events-none
+          "
         >
           <Icon
             class="pointer-events-auto hover:text-white"
@@ -88,9 +121,9 @@
       ref="input"
       :accept="fileAccept"
       type="file"
-      style="position: absolute; clip: rect(0,0,0,0); width: 0; height: 0;"
+      style="position: absolute; clip: rect(0, 0, 0, 0); width: 0; height: 0"
       @change="onChange"
-    >
+    />
   </div>
 </template>
 
@@ -100,10 +133,7 @@ import axios from 'axios'
 import { ziCloseDelete } from '@zennnn/icons'
 import { Icon, Progress } from '@zennnn/core'
 
-import {
-  ICON_IMAGE_POSTFIX,
-  UPLOAD_FILE_SIZE_MB,
-} from '../config/globals'
+import { ICON_IMAGE_POSTFIX, UPLOAD_FILE_SIZE_MB } from '../config/globals'
 
 export default {
   name: 'FileUploader',
@@ -137,7 +167,7 @@ export default {
       default: false,
     },
   },
-  data () {
+  data() {
     return {
       internalSrc: '',
       filePreview: null,
@@ -155,10 +185,10 @@ export default {
   },
 
   computed: {
-    showPreview () {
+    showPreview() {
       return this.uploadType === 'image'
     },
-    iconImageSrc () {
+    iconImageSrc() {
       if (this.filePreview) return this.filePreview
       if (!this.internalSrc) return null
       return `${this.internalSrc}${ICON_IMAGE_POSTFIX}`
@@ -167,14 +197,14 @@ export default {
 
   watch: {
     src: {
-      handler (val) {
+      handler(val) {
         this.setImageSrc(val)
       },
       immediate: true,
     },
   },
 
-  mounted () {
+  mounted() {
     /*
       Determine if drag and drop functionality is capable in the browser
     */
@@ -182,7 +212,7 @@ export default {
   },
 
   methods: {
-    drop (e) {
+    drop(e) {
       const files = []
       for (let i = 0; i < e.dataTransfer.files.length; i++) {
         files.push(e.dataTransfer.files[i])
@@ -193,17 +223,21 @@ export default {
         this.readAndUploadFile(this.file)
       }
     },
-    dragLeave (e) {
+    dragLeave(e) {
       const target = e.target
       const rect = target.getBoundingClientRect()
       if (
-        !(e.clientX > rect.left && e.clientX < rect.right &&
-        e.clientY > rect.top && e.clientY < rect.bottom)
+        !(
+          e.clientX > rect.left &&
+          e.clientX < rect.right &&
+          e.clientY > rect.top &&
+          e.clientY < rect.bottom
+        )
       ) {
         this.isDragOver = false
       }
     },
-    async setImageSrc (src) {
+    async setImageSrc(src) {
       try {
         if (src && this.filePreview) {
           const iconSrc = `${src}${ICON_IMAGE_POSTFIX}`
@@ -218,7 +252,7 @@ export default {
         })
       }
     },
-    loadImage (src) {
+    loadImage(src) {
       return new Promise((resolve, reject) => {
         const image = new Image()
         image.onload = () => {
@@ -230,21 +264,21 @@ export default {
         image.src = src
       })
     },
-    cancelUpload () {
+    cancelUpload() {
       if (this.axiosSource) {
         this.axiosSource.cancel('Operation canceled by the user.')
       }
       this.filePreview = null
       this.clear()
     },
-    clear () {
+    clear() {
       this.uploadPercentage = 0
       this.getUploadUrlLoading = false
       this.uploadLoading = false
       this.$refs.input.value = ''
       this.$emit('update:uploading', false)
     },
-    emitSrc (data) {
+    emitSrc(data) {
       // set filePreview to internalSrc, on src update will be replced
       if (this.filePreview) {
         this.internalSrc = this.filePreview
@@ -256,7 +290,7 @@ export default {
       Determines if the drag and drop functionality is in the
       window
     */
-    determineDragAndDropCapable () {
+    determineDragAndDropCapable() {
       /*
         Create a test element to see if certain events
         are present that let us do drag and drop.
@@ -267,9 +301,9 @@ export default {
         or the `ondragstart` and `ondrop` events are in the element. If
         they are, then we have what we need for dragging and dropping files.
       */
-      return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div))
+      return 'draggable' in div || ('ondragstart' in div && 'ondrop' in div)
     },
-    onChange (e) {
+    onChange(e) {
       const files = e.target.files
       this.file = files[0]
       if (this.uploadType === 'image') {
@@ -278,7 +312,7 @@ export default {
         this.getUploadUrl(this.file)
       }
     },
-    readAndUploadFile (file) {
+    readAndUploadFile(file) {
       if (!file) return
       if (file.size > UPLOAD_FILE_SIZE_MB * 1048576) {
         this.$notify({
@@ -295,7 +329,7 @@ export default {
       fileReader.readAsDataURL(file)
       this.getUploadUrl(file)
     },
-    async getUploadUrl (file) {
+    async getUploadUrl(file) {
       try {
         if (!file) return
         this.getUploadUrlLoading = true
@@ -308,7 +342,7 @@ export default {
         this.getUploadUrlLoading = false
       }
     },
-    async upload (file) {
+    async upload(file) {
       let token = null
       try {
         const session = await this.$auth.currentSession()
@@ -354,7 +388,12 @@ export default {
       } catch (error) {
         if (axios.isCancel(error)) {
           this.$logger.info('Request canceled', error.message)
-        } else if (error.response && error.response.data && error.response.data.error && error.response.data.error.message) {
+        } else if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error &&
+          error.response.data.error.message
+        ) {
           this.$notify({
             color: 'error',
             text: error.response.data.error.message,

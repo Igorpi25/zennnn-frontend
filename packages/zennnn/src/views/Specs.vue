@@ -1,11 +1,19 @@
 <template>
   <div class="container">
     <div class="pt-4 pb-10">
-      <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-4">
+      <div
+        class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-4"
+      >
         <TextField
           v-model="search"
-          :placeholder="clientsFilter.length === 0 ? $t('placeholder.pageSearch') : ''"
-          :control-class="search || clientsFilter.length > 0 ? 'bg-transparent dark:bg-transparent overflow-x-auto ring-1 ring-blue-500' : 'bg-transparent dark:bg-transparent overflow-x-auto'"
+          :placeholder="
+            clientsFilter.length === 0 ? $t('placeholder.pageSearch') : ''
+          "
+          :control-class="
+            search || clientsFilter.length > 0
+              ? 'bg-transparent dark:bg-transparent overflow-x-auto ring-1 ring-blue-500'
+              : 'bg-transparent dark:bg-transparent overflow-x-auto'
+          "
           class="w-full pb-4 sm:pb-0 sm:pr-8"
           input-class="placeholder-blue-500 dark:placeholder-blue-500"
           clearable
@@ -17,17 +25,36 @@
                 {{ icons.ziSearch }}
               </Icon>
             </span>
-            <span v-if="clientsFilter.length > 0" class="text-base text-white pr-2">
+            <span
+              v-if="clientsFilter.length > 0"
+              class="text-base text-white pr-2"
+            >
               <span
                 v-for="filter in clientsFilter"
                 :key="filter.value"
-                class="h-6 inline-flex items-center rounded-lg bg-gray-400 whitespace-nowrap pl-1 mr-1"
+                class="
+                  h-6
+                  inline-flex
+                  items-center
+                  rounded-lg
+                  bg-gray-400
+                  whitespace-nowrap
+                  pl-1
+                  mr-1
+                "
               >
                 <span class="flex-grow pl-xs -mr-xs">
                   {{ filter.text }}
                 </span>
                 <Icon
-                  class="w-6 flex-shrink-0 text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100"
+                  class="
+                    w-6
+                    flex-shrink-0
+                    text-gray-200
+                    focus:outline-none
+                    focus:text-gray-100
+                    hover:text-gray-100
+                  "
                   @click="clearClientFilter(filter.value)"
                 >
                   {{ icons.ziCloseDelete }}
@@ -36,7 +63,10 @@
             </span>
           </template>
         </TextField>
-        <div class="flex w-full sm:w-auto items-center justify-end" style="min-width: 165px;">
+        <div
+          class="flex w-full sm:w-auto items-center justify-end"
+          style="min-width: 165px"
+        >
           <Menu
             v-model="filterMenu"
             :value="currentFilter"
@@ -47,14 +77,21 @@
             @update:value="changeClientType"
           >
             <template v-slot:activator>
-              <div class="group flex items-center cursor-pointer whitespace-nowrap">
-                <span class="text-gray-100 group-hover:text-light-gray-400 select-none pr-2">
+              <div
+                class="group flex items-center cursor-pointer whitespace-nowrap"
+              >
+                <span
+                  class="
+                    text-gray-100
+                    group-hover:text-light-gray-400
+                    select-none
+                    pr-2
+                  "
+                >
                   {{ currentFilterText }}
                 </span>
                 <span class="relative">
-                  <Icon
-                    class="text-gray-200 group-hover:text-gray-100"
-                  >
+                  <Icon class="text-gray-200 group-hover:text-gray-100">
                     {{ hasFilter ? icons.ziFilter : icons.ziFilterOutline }}
                   </Icon>
                 </span>
@@ -87,9 +124,7 @@
         hoverable
       >
         <template v-slot:header-status="{ header }">
-          <th
-            :width="header.width + 'px'"
-          >
+          <th :width="header.width + 'px'">
             <div class="ml-6 w-3 h-3 rounded-full border border-gray-400" />
           </th>
         </template>
@@ -99,7 +134,12 @@
               <Icon>
                 {{ icons.ziMoneyPlus }}
               </Icon>
-              <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%">
+              <Tooltip
+                placement="top-start"
+                distance="2"
+                skidding="-16"
+                origin="24px 100%"
+              >
                 <template v-slot:activator>
                   <Icon class="text-blue-500 align-middle">
                     {{ icons.ziQuestionSign }}
@@ -118,7 +158,12 @@
               <Icon>
                 {{ icons.ziMoneyMinus }}
               </Icon>
-              <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%">
+              <Tooltip
+                placement="top-start"
+                distance="2"
+                skidding="-16"
+                origin="24px 100%"
+              >
                 <template v-slot:activator>
                   <Icon class="text-blue-500 align-middle">
                     {{ icons.ziQuestionSign }}
@@ -139,7 +184,13 @@
             <Icon class="align-middle">
               {{ icons.ziMoneyTernover }}
             </Icon>
-            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="158">
+            <Tooltip
+              placement="top-start"
+              distance="2"
+              skidding="-16"
+              origin="24px 100%"
+              max-width="158"
+            >
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -154,7 +205,13 @@
         <template v-slot:header-content-margin="{ header }">
           <th :width="header.width + 'px'">
             <span class="inline-block align-middle">%</span>
-            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="158">
+            <Tooltip
+              placement="top-start"
+              distance="2"
+              skidding="-16"
+              origin="24px 100%"
+              max-width="158"
+            >
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -170,7 +227,13 @@
           <span>
             {{ header.text }}
           </span>
-          <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="220">
+          <Tooltip
+            placement="top-start"
+            distance="2"
+            skidding="-16"
+            origin="24px 100%"
+            max-width="220"
+          >
             <template v-slot:activator>
               <Icon class="text-blue-500 align-middle">
                 {{ icons.ziQuestionSign }}
@@ -189,10 +252,14 @@
             >
               <td
                 :colspan="headers.length"
-                :style="{ height: i === 0 ? '16px' : '32px', paddingLeft: '26px' }"
+                :style="{
+                  height: i === 0 ? '16px' : '32px',
+                  paddingLeft: '26px',
+                }"
                 class="text-gray-200 text-base leading-tight align-bottom p-0"
               >
-                <span class="text-white">{{ item.groupName }}</span> <span class="text-gray-200">({{ item.groupItemsCount }})</span>
+                <span class="text-white">{{ item.groupName }}</span>
+                <span class="text-gray-200">({{ item.groupItemsCount }})</span>
               </td>
             </tr>
             <tr
@@ -208,34 +275,54 @@
                   :class="[
                     'ml-6 w-3 h-3 rounded-full',
                     item.specStatus === SpecStatus.IN_STOCK
-                    ? 'bg-green-500' : item.specStatus === SpecStatus.IN_PRODUCTION
-                      ? 'bg-yellow-500' : item.specStatus === SpecStatus.IN_PROCESSING
-                        ? 'bg-pink-500' : 'bg-gray-800'
+                      ? 'bg-green-500'
+                      : item.specStatus === SpecStatus.IN_PRODUCTION
+                      ? 'bg-yellow-500'
+                      : item.specStatus === SpecStatus.IN_PROCESSING
+                      ? 'bg-pink-500'
+                      : 'bg-gray-800',
                   ]"
                 />
               </td>
               <td class="text-center">
-                <Icon v-if="item.isMoneyRecieved" class="text-gray-200 align-middle">
+                <Icon
+                  v-if="item.isMoneyRecieved"
+                  class="text-gray-200 align-middle"
+                >
                   {{ icons.ziChecked }}
                 </Icon>
               </td>
               <td class="text-center">
-                <Icon v-if="item.isExpensesPaid" class="text-gray-200 align-middle">
+                <Icon
+                  v-if="item.isExpensesPaid"
+                  class="text-gray-200 align-middle"
+                >
                   {{ icons.ziChecked }}
                 </Icon>
               </td>
               <td class="truncate text-right">{{ $n(item.finalCost || 0) }}</td>
-              <td class="truncate text-right text-gray-200">{{ item.margin || 0 }}%</td>
+              <td class="truncate text-right text-gray-200">
+                {{ item.margin || 0 }}%
+              </td>
               <td class="truncate pl-6 pr-2">{{ item.client.fullName }}</td>
-              <td class="truncate pr-2">{{ item.client.contactPersonFullName }}</td>
+              <td class="truncate pr-2">
+                {{ item.client.contactPersonFullName }}
+              </td>
               <td class="truncate pl-3">
                 <span>
-                  <Tooltip placement="top-start" skidding="-16" origin="24px 100%">
+                  <Tooltip
+                    placement="top-start"
+                    skidding="-16"
+                    origin="24px 100%"
+                  >
                     <template v-slot:activator>
                       <Icon class="text-gray-200 align-middle">
                         {{ icons.ziNumberOffDocument }}
                       </Icon>
-                      <span v-if="item.specNoCount" class="align-middle text-light-gray-400">
+                      <span
+                        v-if="item.specNoCount"
+                        class="align-middle text-light-gray-400"
+                      >
                         - {{ item.specNoCount }}
                       </span>
                     </template>
@@ -249,12 +336,22 @@
                 {{ $d($parseDate(item.createdAt), 'short') }}
               </td>
               <td class="truncate pointer-events-none" @click.stop>
-                <span v-if="item.client.contactPhone" class="pointer-events-auto">
+                <span
+                  v-if="item.client.contactPhone"
+                  class="pointer-events-auto"
+                >
                   <a
                     :href="`tel:${item.client.contactPhone}`"
                     class="inline-block align-middle"
                   >
-                    <Icon class="text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none">
+                    <Icon
+                      class="
+                        text-gray-200
+                        hover:text-gray-100
+                        focus:text-gray-100
+                        focus:outline-none
+                      "
+                    >
                       {{ icons.ziPhone }}
                     </Icon>
                   </a>
@@ -263,10 +360,21 @@
                   </Icon>
                 </span>
               </td>
-              <td class="truncate text-right">{{ (item.client.uid) }}</td>
+              <td class="truncate text-right">{{ item.client.uid }}</td>
               <td class="text-center pointer-events-none" @click.prevent.stop>
                 <button
-                  class="cursor-pointer pointer-events-auto flex items-center select-none mx-auto text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none"
+                  class="
+                    cursor-pointer
+                    pointer-events-auto
+                    flex
+                    items-center
+                    select-none
+                    mx-auto
+                    text-gray-200
+                    focus:text-gray-100
+                    hover:text-gray-100
+                    focus:outline-none
+                  "
                   @click="deleteSpec(item.id)"
                 >
                   <Icon>
@@ -275,7 +383,17 @@
                 </button>
               </td>
               <td>
-                <span v-if="item.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-cold-blue-400"></span>
+                <span
+                  v-if="item.shipped"
+                  class="
+                    inline-block
+                    align-middle
+                    h-2
+                    w-2
+                    rounded-full
+                    bg-cold-blue-400
+                  "
+                ></span>
               </td>
               <td :class="{ 'bg-purple-500': item.hasNewComment }"></td>
             </tr>
@@ -326,13 +444,22 @@
           item-text="fullName"
           state-icon
           state-error-color="none"
-          @update:model-value="v => createSpecClient = v"
+          @update:model-value="(v) => (createSpecClient = v)"
           @click:prepend-item="createClient"
         >
           <template v-slot:prepend-item>
             <div
               role="option"
-              class="flex items-center jusitfy-center text-blue-500 hover:text-blue-400 cursor-pointer h-9 px-4"
+              class="
+                flex
+                items-center
+                jusitfy-center
+                text-blue-500
+                hover:text-blue-400
+                cursor-pointer
+                h-9
+                px-4
+              "
               @click="createClient"
             >
               <Icon class="mr-1">
@@ -409,7 +536,17 @@ import {
   ziNumberOffDocument,
 } from '@zennnn/icons'
 
-import { Btn, Icon, Menu, MenuItem, Modal, Tooltip, TextField, Select, DataTable } from '@zennnn/core'
+import {
+  Btn,
+  Icon,
+  Menu,
+  MenuItem,
+  Modal,
+  Tooltip,
+  TextField,
+  Select,
+  DataTable,
+} from '@zennnn/core'
 
 import {
   Role,
@@ -419,7 +556,12 @@ import {
   ClientType,
 } from '../graphql/enums'
 import { SPEC_FRAGMENT } from '../graphql/typeDefs'
-import { GET_SPECS, GET_ORGS, SEARCH_CLIENTS, GET_CLIENTS_BY_ID } from '../graphql/queries'
+import {
+  GET_SPECS,
+  GET_ORGS,
+  SEARCH_CLIENTS,
+  GET_CLIENTS_BY_ID,
+} from '../graphql/queries'
 import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
 import { SPECS_DELTA } from '../graphql/subscriptions'
 
@@ -443,7 +585,7 @@ export default {
     ClientCard,
     Dialog,
   },
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const route = useRoute()
     const orgId = route.params.orgId
@@ -454,43 +596,61 @@ export default {
       group: false,
     })
 
-    const { result: result1 } = useQuery(SEARCH_CLIENTS, () => ({
-      orgId: orgId,
-      search: clientSearch.value,
-    }), () => ({
-      enabled: !!clientSearch.value,
-      fetchPolicy: 'cache-and-network',
-      debounce: 300,
-    }))
+    const { result: result1 } = useQuery(
+      SEARCH_CLIENTS,
+      () => ({
+        orgId: orgId,
+        search: clientSearch.value,
+      }),
+      () => ({
+        enabled: !!clientSearch.value,
+        fetchPolicy: 'cache-and-network',
+        debounce: 300,
+      })
+    )
     const searchClients = useResult(result1)
 
     const clientTypeEnum = computed(() => {
       switch (filter.value.clientType) {
-        case 1: return ClientType.LEGAL
-        case 2: return ClientType.PRIVATE
-        case 3: return ClientType.OTHER
-        default: return null
+        case 1:
+          return ClientType.LEGAL
+        case 2:
+          return ClientType.PRIVATE
+        case 3:
+          return ClientType.OTHER
+        default:
+          return null
       }
     })
 
-    const { result: result2, loading } = useQuery(GET_SPECS, () => ({
-      orgId: orgId,
-      clientsIds: filter.value.clientsIds,
-      clientType: clientTypeEnum.value,
-    }), {
-      fetchPolicy: 'cache-and-network',
-    })
+    const { result: result2, loading } = useQuery(
+      GET_SPECS,
+      () => ({
+        orgId: orgId,
+        clientsIds: filter.value.clientsIds,
+        clientType: clientTypeEnum.value,
+      }),
+      {
+        fetchPolicy: 'cache-and-network',
+      }
+    )
     const getSpecs = useResult(result2)
 
-    const { result: result3 } = useQuery(GET_ORGS, null, { fetchPolicy: 'cache-only' })
+    const { result: result3 } = useQuery(GET_ORGS, null, {
+      fetchPolicy: 'cache-only',
+    })
     const getOrgs = useResult(result3)
 
-    const { result: result4 } = useQuery(GET_CLIENTS_BY_ID, () => ({
-      orgId: orgId,
-      ids: filter.value.clientsIds,
-    }), {
-      fetchPolicy: 'cache-and-network',
-    })
+    const { result: result4 } = useQuery(
+      GET_CLIENTS_BY_ID,
+      () => ({
+        orgId: orgId,
+        ids: filter.value.clientsIds,
+      }),
+      {
+        fetchPolicy: 'cache-and-network',
+      }
+    )
     const getClientsById = useResult(result4)
 
     return {
@@ -524,7 +684,7 @@ export default {
       clientTypeEnum,
     }
   },
-  data () {
+  data() {
     return {
       clientDialog: false,
       createSpecClient: null,
@@ -537,17 +697,17 @@ export default {
       createWithClientLoading: false,
       deleteLoading: null,
       rules: {
-        required: v => !!v || this.$t('rule.required'),
+        required: (v) => !!v || this.$t('rule.required'),
       },
       filterMenu: false,
       currentFilter: null,
     }
   },
   computed: {
-    hasFilter () {
+    hasFilter() {
       return this.filter.clientType || this.filter.group
     },
-    filters () {
+    filters() {
       return [
         {
           text: this.$t('label.noSort'),
@@ -571,66 +731,144 @@ export default {
         },
       ]
     },
-    groupBy () {
+    groupBy() {
       return this.filter.group ? ['employeeId'] : null
     },
-    groupDesc () {
+    groupDesc() {
       return this.filter.group ? [false] : null
     },
-    currentFilterText () {
+    currentFilterText() {
       switch (this.currentFilter) {
-        case 1: return this.$t('client.legalPerson')
-        case 2: return this.$t('client.privatePerson')
-        case 3: return this.$t('client.other')
-        case 4: return this.$t('deals.byEmployees')
-        default: return this.$t('label.noSort')
+        case 1:
+          return this.$t('client.legalPerson')
+        case 2:
+          return this.$t('client.privatePerson')
+        case 3:
+          return this.$t('client.other')
+        case 4:
+          return this.$t('deals.byEmployees')
+        default:
+          return this.$t('label.noSort')
       }
     },
-    clientsFilter () {
-      return this.filter.clientsIds.map(id => {
+    clientsFilter() {
+      return this.filter.clientsIds.map((id) => {
         const clients = (this.getClientsById && this.getClientsById.items) || []
-        const client = clients.find(item => item.id === id) || {}
-        const text = ((client.contactPerson && client.contactPerson.fullName) || client.uid) || ''
+        const client = clients.find((item) => item.id === id) || {}
+        const text =
+          (client.contactPerson && client.contactPerson.fullName) ||
+          client.uid ||
+          ''
         return {
           text,
           value: id,
         }
       })
     },
-    clients () {
+    clients() {
       return (this.searchClients && this.searchClients.items) || []
     },
-    canCreateSpec () {
-      return this.roleInOrg === Role.OWNER ||
+    canCreateSpec() {
+      return (
+        this.roleInOrg === Role.OWNER ||
         this.roleInOrg === Role.MANAGER ||
         this.roleInOrg === Role.FREELANCER
+      )
     },
-    roleInOrg () {
+    roleInOrg() {
       const orgs = this.getOrgs || []
-      const org = orgs.find(el => el.id === this.orgId) || {}
+      const org = orgs.find((el) => el.id === this.orgId) || {}
       return org.role || null
     },
-    headers () {
+    headers() {
       return [
         { text: '', value: 'status', align: 'left', width: 45, sortable: true },
-        { text: '', value: 'isMoneyRecieved', align: 'left', width: 50, sortable: false },
-        { text: '', value: 'isExpensesPaid', align: 'left', width: 50, sortable: false },
-        { text: '', value: 'finalCost', align: 'right', width: 100, sortable: true },
-        { text: '', value: 'margin', align: 'right', width: 62, sortable: true },
-        { text: this.$t('deals.clientName'), value: 'client.fullName', align: 'left', width: 230, minWidth: 230, class: 'whitespace-nowrap text-left pl-6', sortable: true },
-        { text: this.$t('deals.contactPerson'), value: 'client.contactPersonFullName', align: 'left', width: 152, sortable: true },
-        { text: this.$t('deals.number'), value: 'specNo', align: 'left', width: 80, minWidth: 80, class: 'whitespace-nowrap', sortable: true },
-        { text: this.$t('deals.createdAt'), value: 'createdAt', align: 'left', width: 100, minWidth: 100, class: 'whitespace-nowrap', sortable: true },
-        { text: this.$t('deals.contact'), value: 'client.contactPhone', align: 'left', width: 85, class: 'whitespace-nowrap', sortable: true },
-        { text: this.$t('deals.clientUcn'), value: 'client.uid', align: 'right', width: 60, class: 'whitespace-nowrap', sortable: true },
+        {
+          text: '',
+          value: 'isMoneyRecieved',
+          align: 'left',
+          width: 50,
+          sortable: false,
+        },
+        {
+          text: '',
+          value: 'isExpensesPaid',
+          align: 'left',
+          width: 50,
+          sortable: false,
+        },
+        {
+          text: '',
+          value: 'finalCost',
+          align: 'right',
+          width: 100,
+          sortable: true,
+        },
+        {
+          text: '',
+          value: 'margin',
+          align: 'right',
+          width: 62,
+          sortable: true,
+        },
+        {
+          text: this.$t('deals.clientName'),
+          value: 'client.fullName',
+          align: 'left',
+          width: 230,
+          minWidth: 230,
+          class: 'whitespace-nowrap text-left pl-6',
+          sortable: true,
+        },
+        {
+          text: this.$t('deals.contactPerson'),
+          value: 'client.contactPersonFullName',
+          align: 'left',
+          width: 152,
+          sortable: true,
+        },
+        {
+          text: this.$t('deals.number'),
+          value: 'specNo',
+          align: 'left',
+          width: 80,
+          minWidth: 80,
+          class: 'whitespace-nowrap',
+          sortable: true,
+        },
+        {
+          text: this.$t('deals.createdAt'),
+          value: 'createdAt',
+          align: 'left',
+          width: 100,
+          minWidth: 100,
+          class: 'whitespace-nowrap',
+          sortable: true,
+        },
+        {
+          text: this.$t('deals.contact'),
+          value: 'client.contactPhone',
+          align: 'left',
+          width: 85,
+          class: 'whitespace-nowrap',
+          sortable: true,
+        },
+        {
+          text: this.$t('deals.clientUcn'),
+          value: 'client.uid',
+          align: 'right',
+          width: 60,
+          class: 'whitespace-nowrap',
+          sortable: true,
+        },
         { text: '', value: 'actions', width: 54 },
         { text: '', value: 'isShipped', width: 28 },
         { text: '', value: 'hasNewComment', width: 5 },
       ]
     },
-    items () {
+    items() {
       const items = this.getSpecs || []
-      return items.map(item => {
+      return items.map((item) => {
         let specNoCount = null
         const specNo = item.specNo || ''
         const specNoSplit = specNo.split('-')
@@ -650,7 +888,7 @@ export default {
     },
   },
   watch: {
-    createSpecDialog (val) {
+    createSpecDialog(val) {
       if (val) {
         setTimeout(() => {
           if (this.$refs.clientSearchInput) {
@@ -664,9 +902,11 @@ export default {
       }
     },
   },
-  created () {
+  created() {
     if (this.$route.query.clients) {
-      this.filter.clientsIds = !Array.isArray(this.$route.query.clients) ? [this.$route.query.clients] : this.$route.query.clients
+      this.filter.clientsIds = !Array.isArray(this.$route.query.clients)
+        ? [this.$route.query.clients]
+        : this.$route.query.clients
     }
     const clientType = Number.parseInt(this.$route.query.clientType, 10) || null
     if (this.$route.query.group) {
@@ -682,7 +922,8 @@ export default {
     }
     if (this.$route.query.sort) {
       this.sortBy = wrapInArray(this.$route.query.sort)
-      const desc = this.$route.query.desc === true || this.$route.query.desc === 'true'
+      const desc =
+        this.$route.query.desc === true || this.$route.query.desc === 'true'
       this.sortDesc = [!!(this.$route.query.sort && desc)]
     }
     // on search on server, escape input string
@@ -692,7 +933,7 @@ export default {
     })
     this.$watch('sortBy', this.updateRouteQuery)
     this.$watch('sortDesc', this.updateRouteQuery)
-    this.$watch('$route.query', (query, old) => {
+    this.$watch('$route.query', (query) => {
       // TODO: deep equal query 'clients' and 'filter.clientsIds'
       if (!query.clients) {
         this.filter.clientsIds = []
@@ -708,11 +949,14 @@ export default {
       if (query.sort !== this.sortBy[0]) {
         this.sortBy = query.sort ? wrapInArray(query.sort) : []
       }
-      this.sortDesc = this.sortBy.length > 0 ? [query.desc === true || query.desc === 'true'] : []
+      this.sortDesc =
+        this.sortBy.length > 0
+          ? [query.desc === true || query.desc === 'true']
+          : []
     })
     this.$watch('filter', this.updateRouteQuery, { deep: true })
   },
-  mounted () {
+  mounted() {
     const apolloClient = this.resolveClient()
 
     const observer = apolloClient.subscribe({
@@ -737,7 +981,7 @@ export default {
             },
           })
 
-          if (!getSpecs.some(el => el.id === data.delta.payload.id)) {
+          if (!getSpecs.some((el) => el.id === data.delta.payload.id)) {
             apolloClient.writeQuery({
               query: GET_SPECS,
               variables: {
@@ -770,7 +1014,7 @@ export default {
             },
           })
 
-          if (getSpecs.some(el => el.id === data.delta.payload.id)) {
+          if (getSpecs.some((el) => el.id === data.delta.payload.id)) {
             apolloClient.writeQuery({
               query: GET_SPECS,
               variables: {
@@ -779,7 +1023,9 @@ export default {
                 clientType: this.clientTypeEnum,
               },
               data: {
-                getSpecs: getSpecs.filter(el => el.id !== data.delta.payload.id),
+                getSpecs: getSpecs.filter(
+                  (el) => el.id !== data.delta.payload.id
+                ),
               },
             })
           }
@@ -791,7 +1037,7 @@ export default {
     })
   },
   methods: {
-    customGroup (items, groupBy) {
+    customGroup(items, groupBy) {
       const key = groupBy[0]
       const others = []
       const grouped = items.reduce((acc, curr) => {
@@ -817,11 +1063,13 @@ export default {
         const itemB = grouped[b][0]
         return roles[itemA.employeeRole] - roles[itemB.employeeRole]
       })
-      keys.forEach(k => {
+      keys.forEach((k) => {
         const groupItems = grouped[k]
         const item = groupItems[0]
         const fullName = item.employeeFullName || ''
-        const role = this.$te(`role.${item.employeeRole}`) ? this.$t(`role.${item.employeeRole}`) : item.employeeRole || ''
+        const role = this.$te(`role.${item.employeeRole}`)
+          ? this.$t(`role.${item.employeeRole}`)
+          : item.employeeRole || ''
         const name = `${fullName} (${role})`
         const group = { name, items: groupItems }
         result.push(group)
@@ -831,7 +1079,7 @@ export default {
       }
       return result
     },
-    updateRouteQuery () {
+    updateRouteQuery() {
       const query = {}
       if (this.filter.clientsIds.length > 0) {
         query.clients = this.filter.clientsIds
@@ -856,7 +1104,7 @@ export default {
         query,
       })
     },
-    changeClientType (value) {
+    changeClientType(value) {
       this.currentFilter = value
       if (value === 4) {
         this.filter.clientType = null
@@ -866,19 +1114,19 @@ export default {
         this.filter.group = false
       }
     },
-    clearClientFilter (id) {
-      this.filter.clientsIds = this.filter.clientsIds.filter(el => el !== id)
+    clearClientFilter(id) {
+      this.filter.clientsIds = this.filter.clientsIds.filter((el) => el !== id)
     },
-    clearFilters () {
+    clearFilters() {
       this.filter.clientsIds = []
     },
-    goToSpec (specId) {
+    goToSpec(specId) {
       this.$router.push({
         name: 'spec',
         params: { orgId: this.orgId, specId },
       })
     },
-    createClient () {
+    createClient() {
       this.clientDialog = true
       this.$nextTick(() => {
         if (this.$refs.clientCard) {
@@ -889,17 +1137,23 @@ export default {
         }
       })
     },
-    setCreateSpecClient (client) {
+    setCreateSpecClient(client) {
       this.clientDialog = false
       this.createSpecClient = client
     },
-    async createSpec (withoutClient) {
+    async createSpec(withoutClient) {
       const client = this.resolveClient()
-      const loading = withoutClient ? 'createWithoutClientLoading' : 'createWithClientLoading'
+      const loading = withoutClient
+        ? 'createWithoutClientLoading'
+        : 'createWithClientLoading'
       this[loading] = true
       try {
         const variables = { orgId: this.orgId }
-        if (!withoutClient && this.createSpecClient && this.createSpecClient.id) {
+        if (
+          !withoutClient &&
+          this.createSpecClient &&
+          this.createSpecClient.id
+        ) {
           variables.clientId = this.createSpecClient.id
         }
         const response = await client.mutate({
@@ -908,7 +1162,10 @@ export default {
         })
         if (response && response.data && response.data.createSpec) {
           const spec = response.data.createSpec
-          this.$router.push({ name: 'spec', params: { orgId: this.orgId, specId: spec.id } })
+          this.$router.push({
+            name: 'spec',
+            params: { orgId: this.orgId, specId: spec.id },
+          })
         }
       } catch (error) {
         if (error.graphQLErrors) {
@@ -927,7 +1184,7 @@ export default {
         }, 150)
       }
     },
-    async deleteSpec (id) {
+    async deleteSpec(id) {
       try {
         const client = this.resolveClient()
         const msg = this.$t('alert.removeDeal')
@@ -951,7 +1208,7 @@ export default {
           },
         })
 
-        if (getSpecs.some(el => el.id === id)) {
+        if (getSpecs.some((el) => el.id === id)) {
           client.writeQuery({
             query: GET_SPECS,
             variables: {
@@ -960,7 +1217,7 @@ export default {
               clientType: this.clientTypeEnum,
             },
             data: {
-              getSpecs: getSpecs.filter(el => el.id !== id),
+              getSpecs: getSpecs.filter((el) => el.id !== id),
             },
           })
         }

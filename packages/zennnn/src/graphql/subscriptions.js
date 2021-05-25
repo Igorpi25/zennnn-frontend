@@ -36,8 +36,8 @@ export const SPECS_DELTA = gql`
 `
 
 export const SPEC_DELTA = gql`
-  subscription SpecDelta ($specId: ID!) {
-    specDelta (specId: $specId) {
+  subscription SpecDelta($specId: ID!) {
+    specDelta(specId: $specId) {
       operation
       parentId
       payload {
@@ -83,8 +83,8 @@ export const SPEC_DELTA = gql`
 `
 
 export const PAPER_SPEC_DELTA = gql`
-  subscription PaperSpecDelta ($specId: ID!) {
-    paperSpecDelta (specId: $specId) {
+  subscription PaperSpecDelta($specId: ID!) {
+    paperSpecDelta(specId: $specId) {
       operation
       parentId
       payload {

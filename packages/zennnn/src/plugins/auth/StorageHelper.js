@@ -21,7 +21,7 @@ export class MemoryStorage {
    * @param {object} value - the value
    * @returns {string} value that was set
    */
-  static setItem (key, value) {
+  static setItem(key, value) {
     dataMemory[key] = value
     return dataMemory[key]
   }
@@ -32,7 +32,7 @@ export class MemoryStorage {
    * This is used to clear the storage
    * @returns {string} the data item
    */
-  static getItem (key) {
+  static getItem(key) {
     return Object.prototype.hasOwnProperty.call(dataMemory, key)
       ? dataMemory[key]
       : undefined
@@ -43,7 +43,7 @@ export class MemoryStorage {
    * @param {string} key - the key being set
    * @returns {string} value - value that was deleted
    */
-  static removeItem (key) {
+  static removeItem(key) {
     return delete dataMemory[key]
   }
 
@@ -51,7 +51,7 @@ export class MemoryStorage {
    * This is used to clear the storage
    * @returns {string} nothing
    */
-  static clear () {
+  static clear() {
     dataMemory = {}
     return dataMemory
   }
@@ -60,7 +60,7 @@ export class MemoryStorage {
    * This is used to get all storage items
    * @returns {array} storage items key/value pair
    */
-  static storageItemsMap () {
+  static storageItemsMap() {
     return Object.entries(dataMemory)
   }
 }
@@ -70,7 +70,7 @@ export default class StorageHelper {
    * This is used to get a storage object
    * @returns {object} the storage
    */
-  constructor (memory = false) {
+  constructor(memory = false) {
     try {
       if (memory) {
         throw 'Forced use of memory storage.' // eslint-disable-line
@@ -87,7 +87,7 @@ export default class StorageHelper {
    * This is used to return the storage
    * @returns {object} the storage
    */
-  getStorage () {
+  getStorage() {
     return this.storageWindow
   }
 }

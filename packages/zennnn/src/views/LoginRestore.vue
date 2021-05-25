@@ -20,7 +20,17 @@
                 :title="$t('loginRestore.recoveryByPhone')"
                 v-model:error-message="errorMessage"
                 lazy-validation
-                class="form--max-w-md px-0 md:px-8 pt-8 md:pt-3 pb-1 md:pb-8 mb-16 md:mb-0"
+                class="
+                  form--max-w-md
+                  px-0
+                  md:px-8
+                  pt-8
+                  md:pt-3
+                  pb-1
+                  md:pb-8
+                  mb-16
+                  md:mb-0
+                "
               >
                 <div class="w-full sm:w-1/2 sm:pr-2">
                   <TextField
@@ -41,24 +51,23 @@
                     minlength="6"
                     maxlength="6"
                   />
-                  <Btn
-                    outlined
-                    borderless
-                    @click.prevent
-                  >
+                  <Btn outlined borderless @click.prevent>
                     <span>{{ $t('loginRestore.resendCode') }}</span>
                   </Btn>
                 </div>
                 <template v-slot:append>
-                  <Btn
-                    :loading="loading"
-                    @click="onSubmit"
-                  >
+                  <Btn :loading="loading" @click="onSubmit">
                     {{ $t('loginRestore.submit') }}
                   </Btn>
-                  <div class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-nowrap">
-                    <span>{{ $t('preposition.or') }}</span>&nbsp;
-                    <span class="lowercase">{{ $t('loginRestore.signin') }}</span>&nbsp;
+                  <div
+                    class="mx-6 pt-10 pb-4 md:py-2 text-white whitespace-nowrap"
+                  >
+                    <span>{{ $t('preposition.or') }}</span
+                    >&nbsp;
+                    <span class="lowercase">{{
+                      $t('loginRestore.signin')
+                    }}</span
+                    >&nbsp;
                     <span>{{ $t('preposition.through') }}</span>
                   </div>
                   <SocialSignIn />
@@ -95,7 +104,7 @@ export default {
     Social,
     Copyright,
   },
-  data () {
+  data() {
     return {
       loading: false,
       errorMessage: '',
@@ -105,13 +114,14 @@ export default {
         smsCode: '',
       },
       rules: {
-        required: v => !!v || this.$t('rule.required'),
-        codeMinLength: v => (v && v.length > 5) || this.$t('rule.minLength', { n: 6 }),
+        required: (v) => !!v || this.$t('rule.required'),
+        codeMinLength: (v) =>
+          (v && v.length > 5) || this.$t('rule.minLength', { n: 6 }),
       },
     }
   },
   methods: {
-    async onSubmit (e) {
+    async onSubmit(e) {
       try {
         e.preventDefault()
         this.loading = true

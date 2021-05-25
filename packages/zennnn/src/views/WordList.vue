@@ -1,12 +1,17 @@
 <template>
   <div class="container">
     <div class="pt-4 pb-10">
-
-      <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-6">
+      <div
+        class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-6"
+      >
         <TextField
           v-model="search"
           :placeholder="$t('placeholder.pageSearch')"
-          :control-class="search ? 'bg-transparent dark:bg-transparent ring-1 ring-blue-500' : 'bg-transparent dark:bg-transparent'"
+          :control-class="
+            search
+              ? 'bg-transparent dark:bg-transparent ring-1 ring-blue-500'
+              : 'bg-transparent dark:bg-transparent'
+          "
           :prepend-icon="icons.ziSearch"
           class="w-full md:max-w-md"
           input-class="placeholder-blue-500 dark:placeholder-blue-500"
@@ -15,10 +20,29 @@
         </TextField>
       </div>
 
-      <div class="font-semibold text-white text-2xl leading-tight whitespace-nowrap overflow-x-auto scrolling-touch pb-4">
+      <div
+        class="
+          font-semibold
+          text-white text-2xl
+          leading-tight
+          whitespace-nowrap
+          overflow-x-auto
+          scrolling-touch
+          pb-4
+        "
+      >
         <router-link
           :to="{ name: 'requisites', params: { orgId } }"
-          class="text-gray-200 hover:text-white focus:text-white focus:outline-none transition-colors duration-75 ease-out mr-10"
+          class="
+            text-gray-200
+            hover:text-white
+            focus:text-white
+            focus:outline-none
+            transition-colors
+            duration-75
+            ease-out
+            mr-10
+          "
         >
           {{ $t('requisites.title') }}
         </router-link>
@@ -29,11 +53,7 @@
               v-if="loading"
               class="absolute right-0 -mr-6 inline-block text-gray-200"
             >
-              <Progress
-                indeterminate
-                size="20"
-                width="2"
-              />
+              <Progress indeterminate size="20" width="2" />
             </div>
           </transition>
         </span>
@@ -54,54 +74,66 @@
         <template v-slot:header-content-en="{ header }">
           <span class="inline-flex items-center pt-3">
             <img
-              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              :src="
+                require(`@/assets/img/flags/locale/${header.value}.svg`).default
+              "
               class="h-6 w-6 rounded-full mr-2"
-            >
+            />
             <span>{{ header.text }}</span>
           </span>
         </template>
         <template v-slot:header-content-fr="{ header }">
           <span class="inline-flex items-center pt-3">
             <img
-              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              :src="
+                require(`@/assets/img/flags/locale/${header.value}.svg`).default
+              "
               class="h-6 w-6 rounded-full mr-2"
-            >
+            />
             <span>{{ header.text }}</span>
           </span>
         </template>
         <template v-slot:header-content-zh-Hans="{ header }">
           <span class="inline-flex items-center pt-3">
             <img
-              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              :src="
+                require(`@/assets/img/flags/locale/${header.value}.svg`).default
+              "
               class="h-6 w-6 rounded-full mr-2"
-            >
+            />
             <span>{{ header.text }}</span>
           </span>
         </template>
         <template v-slot:header-content-zh-Hant="{ header }">
           <span class="inline-flex items-center pt-3">
             <img
-              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              :src="
+                require(`@/assets/img/flags/locale/${header.value}.svg`).default
+              "
               class="h-6 w-6 rounded-full mr-2"
-            >
+            />
             <span>{{ header.text }}</span>
           </span>
         </template>
         <template v-slot:header-content-ru="{ header }">
           <span class="inline-flex items-center pt-3">
             <img
-              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              :src="
+                require(`@/assets/img/flags/locale/${header.value}.svg`).default
+              "
               class="h-6 w-6 rounded-full mr-2"
-            >
+            />
             <span>{{ header.text }}</span>
           </span>
         </template>
         <template v-slot:header-content-uk="{ header }">
           <span class="inline-flex items-center pt-3">
             <img
-              :src="require(`@/assets/img/flags/locale/${header.value}.svg`).default"
+              :src="
+                require(`@/assets/img/flags/locale/${header.value}.svg`).default
+              "
               class="h-6 w-6 rounded-full mr-2"
-            >
+            />
             <span>{{ header.text }}</span>
           </span>
         </template>
@@ -126,7 +158,9 @@
                 :style="{ height: '32px', paddingLeft: '12px' }"
                 class="text-gray-200 text-base leading-tight align-bottom p-0"
               >
-                <span class="text-white">{{ item.groupName }}</span> ({{ item.groupItemsCount }})
+                <span class="text-white">{{ item.groupName }}</span> ({{
+                  item.groupItemsCount
+                }})
               </td>
             </tr>
             <tr
@@ -140,11 +174,27 @@
               <td
                 v-for="header in headers"
                 :key="header.value"
-                :class="['truncate px-3', { 'text-right': header.value === 'more' }]"
+                :class="[
+                  'truncate px-3',
+                  { 'text-right': header.value === 'more' },
+                ]"
               >
-                <span v-if="header.value === 'more'" class="inline-flex items-center justify-end align-middle">
+                <span
+                  v-if="header.value === 'more'"
+                  class="inline-flex items-center justify-end align-middle"
+                >
                   <button
-                    class="flex items-center jusitfy-center text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none cursor-pointer mr-2"
+                    class="
+                      flex
+                      items-center
+                      jusitfy-center
+                      text-blue-500
+                      hover:text-blue-400
+                      focus:text-blue-400
+                      focus:outline-none
+                      cursor-pointer
+                      mr-2
+                    "
                     @click.prevent.stop="openEditItem(item)"
                   >
                     <Icon size="20">
@@ -152,11 +202,21 @@
                     </Icon>
                   </button>
                   <button
-                    class="flex items-center text-blue-500 focus:text-blue-400 hover:text-blue-400 focus:outline-none ml-auto"
+                    class="
+                      flex
+                      items-center
+                      text-blue-500
+                      focus:text-blue-400
+                      hover:text-blue-400
+                      focus:outline-none
+                      ml-auto
+                    "
                   >
                     <Icon
                       class="transition-transform"
-                      :class="{ 'transform rotate-90': expanded.includes(item.id) }"
+                      :class="{
+                        'transform rotate-90': expanded.includes(item.id),
+                      }"
                     >
                       {{ icons.ziChevronRight }}
                     </Icon>
@@ -181,17 +241,28 @@
               v-if="expanded.includes(item.id)"
               :key="`expand-${item.id}`"
               class="expand bg-transparent"
-              style="background-color: transparent;"
+              style="background-color: transparent"
             >
               <td :colspan="headers.length" class="relative p-0">
-                <div class="bg-gray-700 rounded-b-md py-2 px-3 -mt-1" style="min-height: 52px;">
-                  <WordSpecs
-                    :org-id="orgId"
-                    :word-id="item.id"
-                  />
+                <div
+                  class="bg-gray-700 rounded-b-md py-2 px-3 -mt-1"
+                  style="min-height: 52px"
+                >
+                  <WordSpecs :org-id="orgId" :word-id="item.id" />
                 </div>
                 <div
-                  class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
+                  class="
+                    absolute
+                    inset-x-0
+                    top-0
+                    pointer-events-none
+                    opacity-50
+                    h-6
+                    bg-gradient-to-b
+                    from-gray-900
+                    to-gray-900-a-0
+                    -mt-1
+                  "
                 />
               </td>
             </tr>
@@ -204,14 +275,8 @@
             class="text-center text-gray-200 leading-tight py-4"
           />
         </template>
-
       </DataTable>
-      <Btn
-        block
-        outlined
-        class="mt-4"
-        @click="wordCreateDialog = true"
-      >
+      <Btn block outlined class="mt-4" @click="wordCreateDialog = true">
         <Icon size="20" class="text-gray-200 mr-sm">
           {{ icons.ziEdit }}
         </Icon>
@@ -237,7 +302,13 @@
 import { useRoute } from 'vue-router'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziEdit, ziGlobe, ziSearch, ziLanguages, ziChevronRight } from '@zennnn/icons'
+import {
+  ziEdit,
+  ziGlobe,
+  ziSearch,
+  ziLanguages,
+  ziChevronRight,
+} from '@zennnn/icons'
 import { Btn, Icon, Progress, TextField, DataTable } from '@zennnn/core'
 
 import { LIST_WORDS } from '../graphql/queries'
@@ -258,15 +329,23 @@ export default {
     WordDialog,
     WordSpecs,
   },
-  setup () {
+  setup() {
     const route = useRoute()
     const orgId = route.params.orgId
 
-    const { result, loading, refetch: listWordsRefetch } = useQuery(LIST_WORDS, () => ({
-      orgId: orgId,
-    }), {
-      fetchPolicy: 'cache-and-network',
-    })
+    const {
+      result,
+      loading,
+      refetch: listWordsRefetch,
+    } = useQuery(
+      LIST_WORDS,
+      () => ({
+        orgId: orgId,
+      }),
+      {
+        fetchPolicy: 'cache-and-network',
+      }
+    )
     const listWords = useResult(result)
 
     return {
@@ -276,7 +355,7 @@ export default {
       listWordsRefetch,
     }
   },
-  data () {
+  data() {
     return {
       search: undefined,
       deleteLoading: null,
@@ -294,29 +373,31 @@ export default {
     }
   },
   computed: {
-    locales () {
-      const items = LOCALES_LIST.map(el => {
+    locales() {
+      const items = LOCALES_LIST.map((el) => {
         return {
           ...el,
           key: el.value,
         }
       })
       const currentLocale = this.$i18n.locale
-      const currentLocaleIndex = items.findIndex(el => el.value === currentLocale)
+      const currentLocaleIndex = items.findIndex(
+        (el) => el.value === currentLocale
+      )
       if (currentLocaleIndex !== -1) {
         const removed = items.splice(currentLocaleIndex, 1)
         return [...removed, ...items]
       }
       return items
     },
-    localesMap () {
+    localesMap() {
       return this.locales.reduce((acc, curr) => {
         acc[curr.key] = { ...curr }
         return acc
       }, {})
     },
-    headers () {
-      const locales = this.locales.map(el => {
+    headers() {
+      const locales = this.locales.map((el) => {
         return {
           ...el,
           width: '130px',
@@ -335,14 +416,14 @@ export default {
       }
       return [...locales, more]
     },
-    items () {
+    items() {
       const items = (this.listWords && this.listWords.items) || []
-      return items.map(item => {
+      return items.map((item) => {
         const result = Object.assign({}, item)
         const values = item.values || []
-        LOCALES_LIST.forEach(locale => {
+        LOCALES_LIST.forEach((locale) => {
           const key = locale.value
-          const value = values.find(v => v.k === key)
+          const value = values.find((v) => v.k === key)
           if (value) {
             result[key] = value.v || value.tr || ''
             result[`${key}_ct`] = !value.v && value.tr
@@ -351,21 +432,21 @@ export default {
         return result
       })
     },
-    groupBy () {
+    groupBy() {
       return [this.$i18n.locale]
     },
-    groupDesc () {
+    groupDesc() {
       return [false]
     },
   },
   methods: {
-    openEditItem (item) {
+    openEditItem(item) {
       this.editItem = item
       this.$nextTick(() => {
         this.wordEditDialog = true
       })
     },
-    toggle (id) {
+    toggle(id) {
       if (this.expanded.indexOf(id) > -1) {
         const expIndex = this.expanded.indexOf(id)
         this.expanded.splice(expIndex, 1)
@@ -373,17 +454,18 @@ export default {
         this.expanded.push(id)
       }
     },
-    onWordCreate (result) {
+    onWordCreate() {
       this.wordCreateDialog = false
       this.listWordsRefetch()
     },
-    onWordUpdate () {
+    onWordUpdate() {
       this.wordEditDialog = false
     },
-    customGroup (items, groupBy, groupDesc) {
+    customGroup(items, groupBy, groupDesc) {
       const key = groupBy[0]
       const desc = groupDesc[0]
-      const re = /[A-ZА-ЯҐЄІЇ\u4e00-\u9fff]|[\u3400-\u4dbf]|[\u{20000}-\u{2a6df}]|[\u{2a700}-\u{2b73f}]|[\u{2b740}-\u{2b81f}]|[\u{2b820}-\u{2ceaf}]|[\uf900-\ufaff]|[\u3300-\u33ff]|[\ufe30-\ufe4f]|[\uf900-\ufaff]|[\u{2f800}-\u{2fa1f}]/u
+      const re =
+        /[A-ZА-ЯҐЄІЇ\u4e00-\u9fff]|[\u3400-\u4dbf]|[\u{20000}-\u{2a6df}]|[\u{2a700}-\u{2b73f}]|[\u{2b740}-\u{2b81f}]|[\u{2b820}-\u{2ceaf}]|[\uf900-\ufaff]|[\u3300-\u33ff]|[\ufe30-\ufe4f]|[\uf900-\ufaff]|[\u{2f800}-\u{2fa1f}]/u
       const others = []
       const grouped = items.reduce((acc, curr) => {
         const name = curr[key] || ''
@@ -404,7 +486,7 @@ export default {
       if (desc) {
         sorted = sorted.reverse()
       }
-      sorted.forEach(k => {
+      sorted.forEach((k) => {
         const groupItems = grouped[k]
         const group = { name: k, items: groupItems }
         result.push(group)

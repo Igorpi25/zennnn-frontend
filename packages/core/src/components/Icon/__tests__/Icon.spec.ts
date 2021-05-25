@@ -43,9 +43,10 @@ describe('Icon.ts', () => {
   })
 
   it('should set size from helper prop and match snapshot', () => {
-    const iconFactory = (size: string) => mountFunction({
-      props: { [size]: true },
-    })
+    const iconFactory = (size: string) =>
+      mountFunction({
+        props: { [size]: true },
+      })
 
     const small = iconFactory('small')
     expect(small.html()).toMatchSnapshot()

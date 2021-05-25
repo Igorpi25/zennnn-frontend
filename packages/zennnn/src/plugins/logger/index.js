@@ -8,7 +8,7 @@ export const Logger = LoggerClass
 export const logger = new LoggerClass(null, level)
 
 const loggerPlugin = {
-  install (app) {
+  install(app) {
     app.config.globalProperties.$logger = {
       log: (...msg) => {
         logger.log(...msg)

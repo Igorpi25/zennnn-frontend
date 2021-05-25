@@ -301,7 +301,9 @@ describe('Btn.ts', () => {
     })
 
     expect(wrapper.element.className).toBe('btn btn--primary foo')
-    expect(wrapper.get('.btn__content').element.className).toBe('btn__content bar')
+    expect(wrapper.get('.btn__content').element.className).toBe(
+      'btn__content bar'
+    )
   })
 
   // Events

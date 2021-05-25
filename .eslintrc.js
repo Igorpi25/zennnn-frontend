@@ -6,26 +6,26 @@ module.exports = {
   },
 
   extends: [
+    // TS config
+    // "plugin:vue/vue3-essential",
+    // "eslint:recommended",
+    // "@vue/typescript/recommended",
+    // "@vue/prettier",
+    // "@vue/prettier/@typescript-eslint",
     'plugin:vue/vue3-essential',
-    // 'eslint:recommended',
-    '@vue/standard',
+    'eslint:recommended',
+    '@vue/prettier',
   ],
 
   parserOptions: {
+    // TS config
+    // ecmaVersion: 2020,
     parser: '@babel/eslint-parser',
   },
 
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    // require trailing commas in multiline object literals
-    'comma-dangle': ['error', {
-      arrays: 'always-multiline',
-      objects: 'always-multiline',
-      imports: 'always-multiline',
-      exports: 'always-multiline',
-      functions: 'always-multiline',
-    }],
   },
 
   overrides: [

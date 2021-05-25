@@ -9,7 +9,9 @@ const draggableComponent = {
   props: {
     value: {
       type: Array,
-      default: () => { return [] },
+      default: () => {
+        return []
+      },
     },
     tag: {
       type: String,
@@ -28,7 +30,7 @@ const draggableComponent = {
       default: 300,
     },
   },
-  mounted () {
+  mounted() {
     const opt = {
       draggable: this.draggable,
       handle: this.handle,
@@ -46,7 +48,7 @@ const draggableComponent = {
       setTimeout(() => {
         this.$el.removeAttribute('tabindex')
         const childrens = this.$el.childNodes
-        childrens.forEach(el => {
+        childrens.forEach((el) => {
           el.removeAttribute('tabindex')
         })
       }, 0)
@@ -58,24 +60,24 @@ const draggableComponent = {
     this._draggable.on('drag:stop', this.onDragStop)
     // this._draggable.on('mirror:destroy', () => console.log('mirror:destroy'))
   },
-  beforeUnmount () {
+  beforeUnmount() {
     if (this._draggable !== undefined) {
       this._draggable.destroy()
     }
   },
   methods: {
-    getIndex (element) {
+    getIndex(element) {
       return this._draggable
         .getDraggableElementsForContainer(element.parentNode)
         .indexOf(element)
     },
-    onDragStart (e) {
+    onDragStart(e) {
       sourceIndex = this.getIndex(e.source)
     },
-    onDragOver (e) {
+    onDragOver(e) {
       currentIndex = this.getIndex(e.over)
     },
-    onDragStop () {
+    onDragStop() {
       const oldIndex = sourceIndex
       const newIndex = currentIndex
       if (oldIndex !== null && newIndex !== null && oldIndex !== newIndex) {
@@ -83,7 +85,7 @@ const draggableComponent = {
         newValue.splice(
           newIndex,
           1,
-          newValue.splice(oldIndex, 1, newValue[newIndex])[0],
+          newValue.splice(oldIndex, 1, newValue[newIndex])[0]
         )
         this.$emit('input', newValue)
       }
@@ -91,7 +93,7 @@ const draggableComponent = {
       currentIndex = null
     },
   },
-  render (h) {
+  render(h) {
     const slots = this.$slots.default
     return h(this.tag, {}, slots)
   },

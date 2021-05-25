@@ -1,10 +1,4 @@
-import {
-  h,
-  ref,
-  watch,
-  computed,
-  defineComponent,
-} from 'vue'
+import { h, ref, watch, computed, defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'Overlay',
@@ -36,7 +30,7 @@ export default defineComponent({
 
   emits: ['update:modelValue'],
 
-  setup (props, { slots, emit }) {
+  setup(props, { slots, emit }) {
     // Data
     const isActive = ref<boolean>(!!props.modelValue)
 
@@ -60,9 +54,12 @@ export default defineComponent({
     })
 
     // Watch
-    watch(() => props.modelValue, (val) => {
-      isActive.value = !!val
-    })
+    watch(
+      () => props.modelValue,
+      (val) => {
+        isActive.value = !!val
+      }
+    )
 
     watch(isActive, (val) => {
       !!val !== props.modelValue && emit('update:modelValue', val)
@@ -84,9 +81,13 @@ export default defineComponent({
     }
 
     const genContent = () => {
-      return h('div', {
-        class: 'relative',
-      }, slots.default ? slots.default() : undefined)
+      return h(
+        'div',
+        {
+          class: 'relative',
+        },
+        slots.default ? slots.default() : undefined
+      )
     }
 
     return {
@@ -98,14 +99,18 @@ export default defineComponent({
     }
   },
 
-  render () {
+  render() {
     const children = [this.genOverlay()]
 
     if (this.isActive) children.push(this.genContent())
 
-    return h('div', {
-      class: this.classes,
-      style: this.styles,
-    }, children)
+    return h(
+      'div',
+      {
+        class: this.classes,
+        style: this.styles,
+      },
+      children
+    )
   },
 })

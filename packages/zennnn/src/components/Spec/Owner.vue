@@ -15,15 +15,8 @@
             {{ $t('shipping.title') }}
           </span>
           <transition name="fade-transition">
-            <div
-              v-if="loading"
-              class="absolute top-0 right-0 text-gray-200"
-            >
-              <Progress
-                indeterminate
-                size="20"
-                width="2"
-              />
+            <div v-if="loading" class="absolute top-0 right-0 text-gray-200">
+              <Progress indeterminate size="20" width="2" />
             </div>
           </transition>
         </h1>
@@ -37,7 +30,13 @@
               {{ $t('shipping.simpleInterface') }}
             </span>
           </Switch>
-          <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="320">
+          <Tooltip
+            placement="top-start"
+            distance="2"
+            skidding="-16"
+            origin="24px 100%"
+            max-width="320"
+          >
             <template v-slot:activator>
               <Icon class="text-blue-500 align-middle">
                 {{ icons.ziQuestionSign }}
@@ -54,10 +53,22 @@
             :items="spec.comments"
             :spec-id="specId"
             placement="left-start"
-            class="text-gray-300 focus:text-gray-100 hover:text-gray-100 transition-colors duration-100 ease-out mr-4"
+            class="
+              text-gray-300
+              focus:text-gray-100
+              hover:text-gray-100
+              transition-colors
+              duration-100
+              ease-out
+              mr-4
+            "
           />
           <span v-if="spec.client">
-            {{ `${$t('shipping.shippingClient')}: ${spec.client.uid} ${spec.client.fullName}` }}
+            {{
+              `${$t('shipping.shippingClient')}: ${spec.client.uid} ${
+                spec.client.fullName
+              }`
+            }}
           </span>
           <template v-else>
             <Select
@@ -95,37 +106,90 @@
         <div class="h-12 flex items-center">
           <div class="flex items-center pl-5 sm:pr-sm">
             <Checkbox disabled hide-details class="pt-xs">
-              <button disabled class="flex text-blue-500 focus:outline-none cursor-not-allowed">
+              <button
+                disabled
+                class="flex text-blue-500 focus:outline-none cursor-not-allowed"
+              >
                 <Icon>
                   {{ icons.ziChevronDown }}
                 </Icon>
               </button>
             </Checkbox>
           </div>
-          <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-1 sm:px-sm">
+          <button
+            disabled
+            class="
+              opacity-40
+              flex
+              items-center
+              text-gray-200
+              focus:outline-none
+              select-none
+              cursor-not-allowed
+              px-1
+              sm:px-sm
+            "
+          >
             <Icon>
               {{ icons.ziCopy }}
             </Icon>
           </button>
-          <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-1 sm:px-sm">
+          <button
+            disabled
+            class="
+              opacity-40
+              flex
+              items-center
+              text-gray-200
+              focus:outline-none
+              select-none
+              cursor-not-allowed
+              px-1
+              sm:px-sm
+            "
+          >
             <Icon>
               {{ icons.ziDelete }}
             </Icon>
           </button>
           <div class="w-px h-5 bg-gray-400 mx-sm" />
-          <button disabled class="opacity-40 flex items-center text-gray-200 focus:outline-none select-none cursor-not-allowed px-sm">
+          <button
+            disabled
+            class="
+              opacity-40
+              flex
+              items-center
+              text-gray-200
+              focus:outline-none
+              select-none
+              cursor-not-allowed
+              px-sm
+            "
+          >
             <Icon>
               {{ icons.ziFilter }}
             </Icon>
           </button>
           <div class="flex-grow" />
           <div class="flex text-gray-200 text-lg overflow-hidden">
-            <span v-html="specTitleHtml" :title="specTitleText" class="truncate" />
+            <span
+              v-html="specTitleHtml"
+              :title="specTitleText"
+              class="truncate"
+            />
             <div class="inline-block text-2xl pl-sm pr-3 md:pr-md">
               <button
                 v-if="expanded.length === 0"
                 :disabled="dataLoading"
-                class="flex items-center text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
+                class="
+                  flex
+                  items-center
+                  text-gray-200
+                  hover:text-gray-100
+                  focus:text-gray-100
+                  focus:outline-none
+                  select-none
+                "
                 @click="expandAll"
               >
                 <Icon :title="$t('action.expandAll')">
@@ -135,7 +199,15 @@
               <button
                 v-else
                 :disabled="dataLoading"
-                class="flex items-center text-gray-200 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
+                class="
+                  flex
+                  items-center
+                  text-gray-200
+                  hover:text-gray-100
+                  focus:text-gray-100
+                  focus:outline-none
+                  select-none
+                "
                 @click="collapseAll"
               >
                 <Icon :title="$t('action.collapseAll')">
@@ -145,14 +217,28 @@
             </div>
           </div>
         </div>
-        <div v-if="dataLoading" class="flex items-center justify-center h-12 text-gray-200 bg-gray-700 rounded">
+        <div
+          v-if="dataLoading"
+          class="
+            flex
+            items-center
+            justify-center
+            h-12
+            text-gray-200
+            bg-gray-700
+            rounded
+          "
+        >
           {{ `${$t('action.loading')}...` }}
         </div>
         <div
           v-else
           v-for="(item, i) in items"
           :key="i"
-          :class="[item.id ? 'shadow-lg' : 'shadow-xl', { 'mb-1': i + 1 < items.length }]"
+          :class="[
+            item.id ? 'shadow-lg' : 'shadow-xl',
+            { 'mb-1': i + 1 < items.length },
+          ]"
         >
           <template v-if="item.id === emptyId">
             <InvoiceHeader
@@ -208,8 +294,18 @@
     </div>
 
     <div class="flex flex-wrap lg:flex-nowrap pb-8">
-      <div class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3" style="max-width: 746px;">
-        <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
+      <div
+        class="w-full flex-grow lg:w-auto pb-8 lg:pb-0 lg:pr-3"
+        style="max-width: 746px"
+      >
+        <transition
+          name="slide-y-transition"
+          @leave="
+            (el) => {
+              el.style.display = 'none'
+            }
+          "
+        >
           <SpecShipping
             v-if="isInfoVisible"
             :spec="spec"
@@ -225,19 +321,13 @@
                   @change="setContainerSize(container.id, $event)"
                 >
                   <option value="_20_DC">
-                    <span class="cursor-pointer">
-                      20'DC
-                    </span>
+                    <span class="cursor-pointer"> 20'DC </span>
                   </option>
                   <option value="_40_HC">
-                    <span class="cursor-pointer">
-                      40'HC
-                    </span>
+                    <span class="cursor-pointer"> 40'HC </span>
                   </option>
                   <option value="_45_HC">
-                    <span class="cursor-pointer">
-                      45'HC
-                    </span>
+                    <span class="cursor-pointer"> 45'HC </span>
                   </option>
                 </select>
                 <Switch
@@ -252,7 +342,14 @@
         </transition>
       </div>
       <div class="w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3">
-        <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
+        <transition
+          name="slide-y-transition"
+          @leave="
+            (el) => {
+              el.style.display = 'none'
+            }
+          "
+        >
           <SpecCost
             v-if="isCostVisible"
             :role="Role.OWNER"
@@ -263,14 +360,24 @@
       </div>
     </div>
 
-    <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
-      <div
-        v-if="isSummaryVisible"
-        class="pb-8"
-      >
+    <transition
+      name="slide-y-transition"
+      @leave="
+        (el) => {
+          el.style.display = 'none'
+        }
+      "
+    >
+      <div v-if="isSummaryVisible" class="pb-8">
         <h4 class="text-white text-xl font-semibold leading-6 mb-4">
           <span class="mr-1">{{ $t('shipping.extraTitle') }}</span>
-          <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="240">
+          <Tooltip
+            placement="top-start"
+            distance="2"
+            skidding="-16"
+            origin="24px 100%"
+            max-width="240"
+          >
             <template v-slot:activator>
               <Icon class="text-blue-500 align-middle">
                 {{ icons.ziQuestionSign }}
@@ -284,12 +391,20 @@
         <div class="flex">
           <div class="w-full flex-grow lg:w-auto lg:pr-3">
             <div class="rounded-md bg-gray-700 pt-2 px-sm pb-5">
-              <TextArea
-                :placeholder="$t('shipping.extraPlaceholder')"
-              />
+              <TextArea :placeholder="$t('shipping.extraPlaceholder')" />
             </div>
           </div>
-          <div class="hidden lg:block w-full flex-shrink-0 text-base lg:max-w-sm lg:pl-3" />
+          <div
+            class="
+              hidden
+              lg:block
+              w-full
+              flex-shrink-0
+              text-base
+              lg:max-w-sm
+              lg:pl-3
+            "
+          />
         </div>
       </div>
     </transition>
@@ -308,12 +423,15 @@
       </Btn>
     </div> -->
 
-    <transition name="slide-y-transition" @leave="el => { el.style.display = 'none' }">
-      <SpecSummary
-        v-if="isSummaryVisible"
-        :spec="spec"
-        :role="Role.OWNER"
-      />
+    <transition
+      name="slide-y-transition"
+      @leave="
+        (el) => {
+          el.style.display = 'none'
+        }
+      "
+    >
+      <SpecSummary v-if="isSummaryVisible" :spec="spec" :role="Role.OWNER" />
     </transition>
 
     <Modal
@@ -333,17 +451,41 @@
         @create="setCreateSpecClient"
       />
     </Modal>
-
   </div>
 </template>
 
 <script>
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useQuery, useResult, useMutation, useApolloClient } from '@vue/apollo-composable'
+import {
+  useQuery,
+  useResult,
+  useMutation,
+  useApolloClient,
+} from '@vue/apollo-composable'
 
-import { ziRefresh, ziQuestionSign, ziPlusOutline, ziChevronDown, ziCopy, ziDelete, ziFilter, ziExpand, ziCollapse } from '@zennnn/icons'
-import { Icon, Progress, Tooltip, Modal, TextArea, Select, Switch, Checkbox, ExpandTransition } from '@zennnn/core'
+import {
+  ziRefresh,
+  ziQuestionSign,
+  ziPlusOutline,
+  ziChevronDown,
+  ziCopy,
+  ziDelete,
+  ziFilter,
+  ziExpand,
+  ziCollapse,
+} from '@zennnn/icons'
+import {
+  Icon,
+  Progress,
+  Tooltip,
+  Modal,
+  TextArea,
+  Select,
+  Switch,
+  Checkbox,
+  ExpandTransition,
+} from '@zennnn/core'
 
 import { Role, ProductStatus } from '../../graphql/enums'
 import {
@@ -367,7 +509,10 @@ import {
   REMOVE_SPEC_EXPANDED_INVOICES,
   SET_SPEC_SIMPLE_UI,
 } from '../../graphql/mutations'
-import { getSpecExpandedInvoices, getSpecActiveTab } from '../../graphql/resolvers'
+import {
+  getSpecExpandedInvoices,
+  getSpecActiveTab,
+} from '../../graphql/resolvers'
 
 import InvoiceHeader from '../InvoiceHeader.vue'
 import InvoiceContent from '../InvoiceContent.vue'
@@ -400,7 +545,7 @@ export default {
   props: {
     loading: Boolean,
   },
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
@@ -419,11 +564,15 @@ export default {
     const { result: result2 } = useQuery(GET_IS_SPEC_SYNC)
     const isSpecSync = useResult(result2)
 
-    const { result: result3, onResult } = useQuery(GET_SPEC, () => ({
-      id: specId,
-    }), {
-      fetchPolicy: 'cache-only',
-    })
+    const { result: result3, onResult } = useQuery(
+      GET_SPEC,
+      () => ({
+        id: specId,
+      }),
+      {
+        fetchPolicy: 'cache-only',
+      }
+    )
     const getSpec = useResult(result3)
     onResult(({ data, loading }) => {
       if (!loading && !isBooted.value) {
@@ -432,24 +581,32 @@ export default {
       }
     })
 
-    const { result: result4, refetch: searchClientsRefetch } = useQuery(SEARCH_CLIENTS, () => ({
-      orgId: orgId,
-      search: clientSearch.value,
-    }), () => ({
-      enabled: !!clientSearch.value,
-      fetchPolicy: 'cache-and-network',
-      debounce: 300,
-    }))
+    const { result: result4, refetch: searchClientsRefetch } = useQuery(
+      SEARCH_CLIENTS,
+      () => ({
+        orgId: orgId,
+        search: clientSearch.value,
+      }),
+      () => ({
+        enabled: !!clientSearch.value,
+        fetchPolicy: 'cache-and-network',
+        debounce: 300,
+      })
+    )
     const searchClients = useResult(result4)
 
-    const { result: result5, refetch: searchSuppliersRefetch } = useQuery(SEARCH_SUPPLIERS, () => ({
-      orgId: orgId,
-      search: supplierSearch.value,
-    }), () => ({
-      enabled: !!supplierSearch.value,
-      fetchPolicy: 'cache-and-network',
-      debounce: 300,
-    }))
+    const { result: result5, refetch: searchSuppliersRefetch } = useQuery(
+      SEARCH_SUPPLIERS,
+      () => ({
+        orgId: orgId,
+        search: supplierSearch.value,
+      }),
+      () => ({
+        enabled: !!supplierSearch.value,
+        fetchPolicy: 'cache-and-network',
+        debounce: 300,
+      })
+    )
     const searchSuppliers = useResult(result5)
 
     // Methods
@@ -471,22 +628,29 @@ export default {
       }
     }
 
-    const { mutate: setExpandedInvoicesMutate } = useMutation(SET_SPEC_EXPANDED_INVOICES)
+    const { mutate: setExpandedInvoicesMutate } = useMutation(
+      SET_SPEC_EXPANDED_INVOICES
+    )
     const setExpandedInvoices = async (ids) => {
       await setExpandedInvoicesMutate({ specId: specId, ids })
     }
 
-    const { mutate: addExpandedInvoicesMutate } = useMutation(ADD_SPEC_EXPANDED_INVOICES)
+    const { mutate: addExpandedInvoicesMutate } = useMutation(
+      ADD_SPEC_EXPANDED_INVOICES
+    )
     const addExpandedInvoices = async (ids) => {
       await addExpandedInvoicesMutate({ specId: specId, ids })
     }
 
-    const { mutate: removeExpandedInvoicesMutate } = useMutation(REMOVE_SPEC_EXPANDED_INVOICES)
+    const { mutate: removeExpandedInvoicesMutate } = useMutation(
+      REMOVE_SPEC_EXPANDED_INVOICES
+    )
     const removeExpandedInvoices = async (ids) => {
       await removeExpandedInvoicesMutate({ specId: specId, ids })
     }
 
-    const { mutate: setInvoiceActiveTabMutate } = useMutation(SET_SPEC_ACTIVE_TAB)
+    const { mutate: setInvoiceActiveTabMutate } =
+      useMutation(SET_SPEC_ACTIVE_TAB)
     const setInvoiceActiveTab = async (value) => {
       invoiceActiveTab.value = value
       await setInvoiceActiveTabMutate({ specId: specId, tab: value })
@@ -526,7 +690,7 @@ export default {
       searchSuppliersRefetch,
     }
   },
-  data () {
+  data() {
     return {
       defaultTab: 1,
       setContainerSizeLoading: false,
@@ -547,95 +711,117 @@ export default {
   },
   computed: {
     // TODO: need work with containers
-    container () {
+    container() {
       const containers = this.spec.containers || []
       return containers[0] || {}
     },
-    dataLoading () {
+    dataLoading() {
       return this.items.length === 0 && this.loading
     },
-    isInvoiceSummaryVisible () {
-      return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct || this.hasFilledProductQty)
+    isInvoiceSummaryVisible() {
+      return (
+        this.specSimpleUIOff ||
+        this.hasInvoiceShippingDate ||
+        this.hasFilledProduct ||
+        this.hasFilledProductQty
+      )
     },
-    isInfoVisible () {
-      return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct)
+    isInfoVisible() {
+      return (
+        this.specSimpleUIOff ||
+        this.hasInvoiceShippingDate ||
+        this.hasFilledProduct
+      )
     },
-    isCostVisible () {
-      return this.specSimpleUIOff || (this.hasFilledProduct)
+    isCostVisible() {
+      return this.specSimpleUIOff || this.hasFilledProduct
     },
-    isSummaryVisible () {
-      return this.specSimpleUIOff || (this.hasInvoiceShippingDate && this.hasFilledProduct)
+    isSummaryVisible() {
+      return (
+        this.specSimpleUIOff ||
+        (this.hasInvoiceShippingDate && this.hasFilledProduct)
+      )
     },
-    hasInvoiceShippingDate () {
+    hasInvoiceShippingDate() {
       const invoices = this.spec.invoices || []
-      return invoices.some(el => el.shippingDate)
+      return invoices.some((el) => el.shippingDate)
     },
-    hasFilledProduct () {
+    hasFilledProduct() {
       const invoices = this.spec.invoices || []
-      return invoices.some(i => {
+      return invoices.some((i) => {
         const products = i.products || []
-        return products.some(el => {
-          return el.productStatus === ProductStatus.IN_PROCESSING ||
+        return products.some((el) => {
+          return (
+            el.productStatus === ProductStatus.IN_PROCESSING ||
             el.productStatus === ProductStatus.IN_PRODUCTION ||
             el.productStatus === ProductStatus.IN_STOCK
+          )
         })
       })
     },
-    hasFilledProductQty () {
+    hasFilledProductQty() {
       const invoices = this.spec.invoices || []
-      return invoices.some(i => {
+      return invoices.some((i) => {
         const products = i.products || []
-        return products.some(el => el.qty)
+        return products.some((el) => el.qty)
       })
     },
-    specSimpleUI () {
+    specSimpleUI() {
       return !this.specSimpleUIOff
     },
-    emptyId () {
+    emptyId() {
       return `empty-${this.spec.id}`
     },
-    isEmpty () {
+    isEmpty() {
       return this.items.length === 1 && this.items[0].id === this.emptyId
     },
-    specTitleText () {
+    specTitleText() {
       return `
          ${this.$t('shipping.dealNo')}
          ${this.spec.specNo || '-'} ${this.$t('preposition.from')}
-         ${this.spec.createdAt ? this.$d(this.$parseDate(this.spec.createdAt), 'short') : '-'}
+         ${
+           this.spec.createdAt
+             ? this.$d(this.$parseDate(this.spec.createdAt), 'short')
+             : '-'
+         }
       `
     },
-    specTitleHtml () {
+    specTitleHtml() {
       return `
         ${this.$t('shipping.dealNo')}
         &nbsp;${this.spec.specNo || '-'} ${this.$t('preposition.from')}
-        &nbsp;${this.spec.createdAt ? this.$d(this.$parseDate(this.spec.createdAt), 'short') : '-'}
+        &nbsp;${
+          this.spec.createdAt
+            ? this.$d(this.$parseDate(this.spec.createdAt), 'short')
+            : '-'
+        }
       `
     },
-    spec () {
+    spec() {
       return this.getSpec || {}
     },
-    items () {
+    items() {
       return this.spec.invoices || []
     },
-    specClient () {
+    specClient() {
       const client = this.spec.client || {}
       return {
         ...client,
         name: this.getClientName(client),
       }
     },
-    clients () {
+    clients() {
       const items = (this.searchClients && this.searchClients.items) || []
-      return items.map(item => {
+      return items.map((item) => {
         return {
           ...item,
           name: this.getClientName(item),
         }
       })
     },
-    suppliers () {
+    suppliers() {
       const items = (this.searchSuppliers && this.searchSuppliers.items) || []
-      return items.map(item => {
+      return items.map((item) => {
         return {
           ...item,
           name: this.getSupplierName(item),
@@ -644,14 +830,14 @@ export default {
     },
   },
   watch: {
-    items (val, oldVal) {
+    items(val, oldVal) {
       const value = val || []
       const oldValue = oldVal || []
       // on invoice removed clear from expanded
       if (oldValue.length > value.length) {
         const removedIds = []
-        oldValue.forEach(v => {
-          if (!value.some(el => el.id === v.id)) {
+        oldValue.forEach((v) => {
+          if (!value.some((el) => el.id === v.id)) {
             removedIds.push(v.id)
           }
         })
@@ -660,7 +846,7 @@ export default {
     },
   },
   methods: {
-    async setContainerSize (containerId, e) {
+    async setContainerSize(containerId, e) {
       try {
         const val = e.target.value || ''
         const split = val.split('_')
@@ -683,7 +869,7 @@ export default {
         this.setContainerSizeLoading = false
       }
     },
-    async setContainerCustomCapacity (containerId, inputCapacity, inputShrink) {
+    async setContainerCustomCapacity(containerId, inputCapacity, inputShrink) {
       try {
         if (!containerId) return
         this.setContainerCustomCapacityLoading = true
@@ -702,7 +888,7 @@ export default {
         this.setContainerCustomCapacityLoading = false
       }
     },
-    async toggleSpecSimpleUI (value) {
+    async toggleSpecSimpleUI(value) {
       await this.apolloClient.mutate({
         mutation: SET_SPEC_SIMPLE_UI,
         variables: {
@@ -710,22 +896,22 @@ export default {
         },
       })
     },
-    setScrollLeft (scrollLeft, invoiceId) {
+    setScrollLeft(scrollLeft, invoiceId) {
       this.invoiceScrollId = invoiceId
       this.invoiceScrollLeft = scrollLeft
     },
-    getInvoiceSupplier (item) {
+    getInvoiceSupplier(item) {
       const supplier = item.supplier || {}
       return {
         ...supplier,
         name: this.getSupplierName(supplier),
       }
     },
-    openCreateSupplierDialog (item) {
+    openCreateSupplierDialog(item) {
       this.createSupplierInvoice = item
       this.supplierDialog = true
     },
-    createClient () {
+    createClient() {
       this.clientDialog = true
       this.$nextTick(() => {
         if (this.$refs.clientCard) {
@@ -736,13 +922,16 @@ export default {
         }
       })
     },
-    setCreateSpecClient (client) {
+    setCreateSpecClient(client) {
       this.setSpecClient(client.id)
       this.clientDialog = false
       this.searchClientsRefetch()
     },
-    setCreatedSupplier (supplier) {
-      this.setInvoiceSupplier(this.createSupplierInvoice.id, (supplier && supplier.id))
+    setCreatedSupplier(supplier) {
+      this.setInvoiceSupplier(
+        this.createSupplierInvoice.id,
+        supplier && supplier.id
+      )
       this.supplierDialog = false
       this.createSupplierInvoice = null
       this.searchSuppliersRefetch()
@@ -753,13 +942,13 @@ export default {
         }
       }, 200)
     },
-    getClientName (item) {
+    getClientName(item) {
       return item.fullName || ''
     },
-    getSupplierName (item) {
+    getSupplierName(item) {
       return item.companyName || ''
     },
-    expand (id) {
+    expand(id) {
       if (this.expanded.includes(id)) {
         const index = this.expanded.indexOf(id)
         this.expanded.splice(index, 1)
@@ -769,11 +958,11 @@ export default {
         this.addExpandedInvoices([id])
       }
     },
-    collapseAll () {
+    collapseAll() {
       this.expanded = []
       this.setExpandedInvoices([])
     },
-    expandAll () {
+    expandAll() {
       const invoices = this.items
       const ids = invoices.reduce((acc, curr) => {
         return [...acc, curr.id]
@@ -781,7 +970,7 @@ export default {
       this.expanded = ids
       this.setExpandedInvoices(ids)
     },
-    async createInvoice (input) {
+    async createInvoice(input) {
       try {
         this.createLoading = true
         const variables = {
@@ -806,7 +995,7 @@ export default {
         this.createLoading = false
       }
     },
-    async updateInvoice (input, invoiceId) {
+    async updateInvoice(input, invoiceId) {
       try {
         const id = invoiceId
         this.updateLoading = true
@@ -820,7 +1009,10 @@ export default {
         this.menuPurchaseDate[invoiceId] = false
         this.menuShippingDate[invoiceId] = false
       } catch (error) {
-        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+        if (
+          error.message &&
+          error.message.includes('GraphQL error: MongoError: WriteConflict')
+        ) {
           this.refetchSpec()
         }
         this.$logger.warn('Error: ', error)
@@ -829,7 +1021,7 @@ export default {
         this.updateLoading = false
       }
     },
-    async refetchSpec () {
+    async refetchSpec() {
       try {
         this.apolloClient.writeQuery({
           query: GET_IS_SPEC_SYNC,
@@ -851,7 +1043,7 @@ export default {
         })
       }
     },
-    async updateSpec (input) {
+    async updateSpec(input) {
       try {
         this.updateLoading = true
         await this.apolloClient.mutate({
@@ -862,7 +1054,10 @@ export default {
           },
         })
       } catch (error) {
-        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+        if (
+          error.message &&
+          error.message.includes('GraphQL error: MongoError: WriteConflict')
+        ) {
           this.refetchSpec()
         }
         this.$logger.warn('Error: ', error)
@@ -871,7 +1066,7 @@ export default {
         this.updateLoading = false
       }
     },
-    async setSpecClient (clientId) {
+    async setSpecClient(clientId) {
       try {
         this.updateLoading = true
         await this.apolloClient.mutate({
@@ -882,7 +1077,10 @@ export default {
           },
         })
       } catch (error) {
-        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+        if (
+          error.message &&
+          error.message.includes('GraphQL error: MongoError: WriteConflict')
+        ) {
           this.refetchSpec()
         }
         this.$logger.warn('Error: ', error)
@@ -891,7 +1089,7 @@ export default {
         this.updateLoading = false
       }
     },
-    async setInvoiceSupplier (invoiceId, supplierId) {
+    async setInvoiceSupplier(invoiceId, supplierId) {
       try {
         this.updateLoading = true
         await this.apolloClient.mutate({

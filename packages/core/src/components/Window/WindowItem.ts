@@ -13,11 +13,7 @@ import {
   TransitionProps,
 } from 'vue'
 
-import {
-  useLazyContentProps,
-  useLazyContent,
-  convertToUnit,
-} from 'vue-supp'
+import { useLazyContentProps, useLazyContent, convertToUnit } from 'vue-supp'
 
 import uid from '../../utils/uid'
 
@@ -36,7 +32,7 @@ export default defineComponent({
     index: Number,
   },
 
-  setup (props, { slots }) {
+  setup(props, { slots }) {
     const {
       isVertical,
       transitionCount,
@@ -59,11 +55,19 @@ export default defineComponent({
     const transitionData = computed((): TransitionProps => {
       let leaveTranslate, enterTranslate
       if (isVertical.value) {
-        leaveTranslate = internalReverse.value ? 'translate-y-full' : '-translate-y-full'
-        enterTranslate = internalReverse.value ? '-translate-y-full' : 'translate-y-full'
+        leaveTranslate = internalReverse.value
+          ? 'translate-y-full'
+          : '-translate-y-full'
+        enterTranslate = internalReverse.value
+          ? '-translate-y-full'
+          : 'translate-y-full'
       } else {
-        leaveTranslate = internalReverse.value ? 'translate-x-full' : '-translate-x-full'
-        enterTranslate = internalReverse.value ? '-translate-x-full' : 'translate-x-full'
+        leaveTranslate = internalReverse.value
+          ? 'translate-x-full'
+          : '-translate-x-full'
+        enterTranslate = internalReverse.value
+          ? '-translate-x-full'
+          : 'translate-x-full'
       }
 
       const classes = props.transition || {
@@ -96,24 +100,23 @@ export default defineComponent({
     })
 
     onBeforeMount(() => {
-      register({ id, value: props.value, disabled: props.disabled }, props.index)
+      register(
+        { id, value: props.value, disabled: props.disabled },
+        props.index
+      )
     })
 
     onBeforeUnmount(() => {
       unregister(id)
     })
 
-    function genWindowItem () {
-      return withDirectives(
-        h('div', {
-        }, slots.default && slots.default()),
-        [
-          [vShow, isActive.value],
-        ],
-      )
+    function genWindowItem() {
+      return withDirectives(h('div', {}, slots.default && slots.default()), [
+        [vShow, isActive.value],
+      ])
     }
 
-    function onAfterTransition () {
+    function onAfterTransition() {
       if (!inTransition.value) return
 
       // Finalize transition state.
@@ -128,19 +131,21 @@ export default defineComponent({
       }
     }
 
-    function onBeforeTransition () {
+    function onBeforeTransition() {
       if (inTransition.value) return
 
       // Initialize transition state here.
       inTransition.value = true
       if (transitionCount.value === 0) {
         // Set initial height for height transition.
-        transitionHeight.value = convertToUnit(containerElement.value.parentNode.clientHeight)
+        transitionHeight.value = convertToUnit(
+          containerElement.value.parentNode.clientHeight
+        )
       }
       transitionCount.value++
     }
 
-    function onEnter (el: Element) {
+    function onEnter(el: Element) {
       if (!inTransition.value) return
 
       nextTick(() => {
@@ -159,7 +164,7 @@ export default defineComponent({
     }
   },
 
-  render () {
+  render() {
     return h(Transition, this.transitionData, {
       default: () => this.showLazyContent(this.genWindowItem),
     })

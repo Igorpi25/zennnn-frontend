@@ -1,6 +1,11 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useQuery, useResult, useMutation, useApolloClient } from '@vue/apollo-composable'
+import {
+  useQuery,
+  useResult,
+  useMutation,
+  useApolloClient,
+} from '@vue/apollo-composable'
 
 import { ziRefresh } from '@zennnn/icons'
 
@@ -30,7 +35,7 @@ export default {
   props: {
     loading: Boolean,
   },
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const route = useRoute()
     const orgId = route.params.orgId
@@ -47,11 +52,15 @@ export default {
     const { result: result2 } = useQuery(GET_IS_SPEC_SYNC)
     const isSpecSync = useResult(result2)
 
-    const { result: result3, onResult } = useQuery(GET_SPEC, () => ({
-      id: specId,
-    }), {
-      fetchPolicy: 'cache-only',
-    })
+    const { result: result3, onResult } = useQuery(
+      GET_SPEC,
+      () => ({
+        id: specId,
+      }),
+      {
+        fetchPolicy: 'cache-only',
+      }
+    )
     const getSpec = useResult(result3)
     onResult(({ data, loading }) => {
       if (!loading && !isBooted.value) {
@@ -60,24 +69,32 @@ export default {
       }
     })
 
-    const { result: result4, refetch: searchClientsRefetch } = useQuery(SEARCH_CLIENTS, () => ({
-      orgId: orgId,
-      search: clientSearch.value,
-    }), () => ({
-      enabled: !!clientSearch.value,
-      fetchPolicy: 'cache-and-network',
-      debounce: 300,
-    }))
+    const { result: result4, refetch: searchClientsRefetch } = useQuery(
+      SEARCH_CLIENTS,
+      () => ({
+        orgId: orgId,
+        search: clientSearch.value,
+      }),
+      () => ({
+        enabled: !!clientSearch.value,
+        fetchPolicy: 'cache-and-network',
+        debounce: 300,
+      })
+    )
     const searchClients = useResult(result4)
 
-    const { result: result5, refetch: searchSuppliersRefetch } = useQuery(SEARCH_SUPPLIERS, () => ({
-      orgId: orgId,
-      search: supplierSearch.value,
-    }), () => ({
-      enabled: !!supplierSearch.value,
-      fetchPolicy: 'cache-and-network',
-      debounce: 300,
-    }))
+    const { result: result5, refetch: searchSuppliersRefetch } = useQuery(
+      SEARCH_SUPPLIERS,
+      () => ({
+        orgId: orgId,
+        search: supplierSearch.value,
+      }),
+      () => ({
+        enabled: !!supplierSearch.value,
+        fetchPolicy: 'cache-and-network',
+        debounce: 300,
+      })
+    )
     const searchSuppliers = useResult(result5)
 
     // Methods
@@ -99,22 +116,29 @@ export default {
       }
     }
 
-    const { mutate: setExpandedInvoicesMutate } = useMutation(SET_SPEC_EXPANDED_INVOICES)
+    const { mutate: setExpandedInvoicesMutate } = useMutation(
+      SET_SPEC_EXPANDED_INVOICES
+    )
     const setExpandedInvoices = async (ids) => {
       await setExpandedInvoicesMutate({ specId: specId, ids })
     }
 
-    const { mutate: addExpandedInvoicesMutate } = useMutation(ADD_SPEC_EXPANDED_INVOICES)
+    const { mutate: addExpandedInvoicesMutate } = useMutation(
+      ADD_SPEC_EXPANDED_INVOICES
+    )
     const addExpandedInvoices = async (ids) => {
       await addExpandedInvoicesMutate({ specId: specId, ids })
     }
 
-    const { mutate: removeExpandedInvoicesMutate } = useMutation(REMOVE_SPEC_EXPANDED_INVOICES)
+    const { mutate: removeExpandedInvoicesMutate } = useMutation(
+      REMOVE_SPEC_EXPANDED_INVOICES
+    )
     const removeExpandedInvoices = async (ids) => {
       await removeExpandedInvoicesMutate({ specId: specId, ids })
     }
 
-    const { mutate: setInvoiceActiveTabMutate } = useMutation(SET_SPEC_ACTIVE_TAB)
+    const { mutate: setInvoiceActiveTabMutate } =
+      useMutation(SET_SPEC_ACTIVE_TAB)
     const setInvoiceActiveTab = async (value) => {
       invoiceActiveTab.value = value
       await setInvoiceActiveTabMutate({ specId: specId, tab: value })
@@ -143,7 +167,7 @@ export default {
       searchSuppliersRefetch,
     }
   },
-  data () {
+  data() {
     return {
       Role,
       clientDialog: false,
@@ -163,91 +187,105 @@ export default {
     }
   },
   computed: {
-    dataLoading () {
+    dataLoading() {
       return this.items.length === 0 && this.loading
     },
-    isInvoiceSummaryVisible () {
-      return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct || this.hasFilledProductQty)
+    isInvoiceSummaryVisible() {
+      return (
+        this.specSimpleUIOff ||
+        this.hasInvoiceShippingDate ||
+        this.hasFilledProduct ||
+        this.hasFilledProductQty
+      )
     },
-    isInfoVisible () {
-      return this.specSimpleUIOff || (this.hasInvoiceShippingDate || this.hasFilledProduct)
+    isInfoVisible() {
+      return (
+        this.specSimpleUIOff ||
+        this.hasInvoiceShippingDate ||
+        this.hasFilledProduct
+      )
     },
-    isCostVisible () {
-      return this.specSimpleUIOff || (this.hasFilledProduct)
+    isCostVisible() {
+      return this.specSimpleUIOff || this.hasFilledProduct
     },
-    isSummaryVisible () {
-      return this.specSimpleUIOff || (this.hasInvoiceShippingDate && this.hasFilledProduct)
+    isSummaryVisible() {
+      return (
+        this.specSimpleUIOff ||
+        (this.hasInvoiceShippingDate && this.hasFilledProduct)
+      )
     },
-    hasInvoiceShippingDate () {
+    hasInvoiceShippingDate() {
       const invoices = this.spec.invoices || []
-      return invoices.some(el => el.shippingDate)
+      return invoices.some((el) => el.shippingDate)
     },
-    hasFilledProduct () {
+    hasFilledProduct() {
       const invoices = this.spec.invoices || []
-      return invoices.some(i => {
+      return invoices.some((i) => {
         const products = i.products || []
-        return products.some(el => {
-          return el.productStatus === ProductStatus.IN_PROCESSING ||
+        return products.some((el) => {
+          return (
+            el.productStatus === ProductStatus.IN_PROCESSING ||
             el.productStatus === ProductStatus.IN_PRODUCTION ||
             el.productStatus === ProductStatus.IN_STOCK
+          )
         })
       })
     },
-    hasFilledProductQty () {
+    hasFilledProductQty() {
       const invoices = this.spec.invoices || []
-      return invoices.some(i => {
+      return invoices.some((i) => {
         const products = i.products || []
-        return products.some(el => el.qty)
+        return products.some((el) => el.qty)
       })
     },
-    specSimpleUI () {
+    specSimpleUI() {
       return !this.specSimpleUIOff
     },
-    emptyId () {
+    emptyId() {
       return `empty-${this.spec.id}`
     },
-    isEmpty () {
+    isEmpty() {
       return this.items.length === 1 && this.items[0].id === this.emptyId
     },
-    specTitleText () {
+    specTitleText() {
       return `
          ${this.$t('shipping.dealNo')}
          ${this.spec.specNo} ${this.$t('preposition.from')}
          ${this.$d(this.$parseDate(this.spec.createdAt), 'short')}
       `
     },
-    specTitleHtml () {
+    specTitleHtml() {
       return `
         ${this.$t('shipping.dealNo')}
         &nbsp;${this.spec.specNo} ${this.$t('preposition.from')}
         &nbsp;${this.$d(this.$parseDate(this.spec.createdAt), 'short')}
       `
     },
-    spec () {
+    spec() {
       return this.getSpec || {}
     },
-    items () {
+    items() {
       return (this.getSpec && this.getSpec.invoices) || []
     },
-    specClient () {
+    specClient() {
       const client = this.spec.client || {}
       return {
         ...client,
         name: this.getClientName(client),
       }
     },
-    clients () {
+    clients() {
       const items = (this.searchClients && this.searchClients.items) || []
-      return items.map(item => {
+      return items.map((item) => {
         return {
           ...item,
           name: this.getClientName(item),
         }
       })
     },
-    suppliers () {
+    suppliers() {
       const items = (this.searchSuppliers && this.searchSuppliers.items) || []
-      return items.map(item => {
+      return items.map((item) => {
         return {
           ...item,
           name: this.getSupplierName(item),
@@ -256,14 +294,14 @@ export default {
     },
   },
   watch: {
-    items (val, oldVal) {
+    items(val, oldVal) {
       const value = val || []
       const oldValue = oldVal || []
       // on invoice removed clear from expanded
       if (oldValue.length > value.length) {
         const removedIds = []
-        oldValue.forEach(v => {
-          if (!value.some(el => el.id === v.id)) {
+        oldValue.forEach((v) => {
+          if (!value.some((el) => el.id === v.id)) {
             removedIds.push(v.id)
           }
         })
@@ -272,7 +310,7 @@ export default {
     },
   },
   methods: {
-    async toggleSpecSimpleUI (value) {
+    async toggleSpecSimpleUI(value) {
       const client = this.resolveClient()
       await client.mutate({
         mutation: SET_SPEC_SIMPLE_UI,
@@ -281,22 +319,22 @@ export default {
         },
       })
     },
-    setScrollLeft (scrollLeft, invoiceId) {
+    setScrollLeft(scrollLeft, invoiceId) {
       this.invoiceScrollId = invoiceId
       this.invoiceScrollLeft = scrollLeft
     },
-    getInvoiceSupplier (item) {
+    getInvoiceSupplier(item) {
       const supplier = item.supplier || {}
       return {
         ...supplier,
         name: this.getSupplierName(supplier),
       }
     },
-    openCreateSupplierDialog (item) {
+    openCreateSupplierDialog(item) {
       this.createSupplierInvoice = item
       this.supplierDialog = true
     },
-    createClient () {
+    createClient() {
       this.clientDialog = true
       this.$nextTick(() => {
         if (this.$refs.clientCard) {
@@ -307,13 +345,16 @@ export default {
         }
       })
     },
-    setCreateSpecClient (client) {
+    setCreateSpecClient(client) {
       this.setSpecClient(client.id)
       this.clientDialog = false
       this.searchClientsRefetch()
     },
-    setCreatedSupplier (supplier) {
-      this.setInvoiceSupplier(this.createSupplierInvoice.id, (supplier && supplier.id))
+    setCreatedSupplier(supplier) {
+      this.setInvoiceSupplier(
+        this.createSupplierInvoice.id,
+        supplier && supplier.id
+      )
       this.supplierDialog = false
       this.createSupplierInvoice = null
       this.searchSuppliersRefetch()
@@ -324,13 +365,13 @@ export default {
         }
       }, 200)
     },
-    getClientName (item) {
+    getClientName(item) {
       return item.fullName || ''
     },
-    getSupplierName (item) {
+    getSupplierName(item) {
       return item.companyName || ''
     },
-    expand (id) {
+    expand(id) {
       if (this.expanded.includes(id)) {
         const index = this.expanded.indexOf(id)
         this.expanded.splice(index, 1)
@@ -340,11 +381,11 @@ export default {
         this.addExpandedInvoices([id])
       }
     },
-    collapseAll () {
+    collapseAll() {
       this.expanded = []
       this.setExpandedInvoices([])
     },
-    expandAll () {
+    expandAll() {
       const invoices = this.items
       const ids = invoices.reduce((acc, curr) => {
         return [...acc, curr.id]
@@ -352,7 +393,7 @@ export default {
       this.expanded = ids
       this.setExpandedInvoices(ids)
     },
-    async createInvoice (input) {
+    async createInvoice(input) {
       try {
         const client = this.resolveClient()
         this.createLoading = true
@@ -378,7 +419,7 @@ export default {
         this.createLoading = false
       }
     },
-    async updateInvoice (input, invoiceId) {
+    async updateInvoice(input, invoiceId) {
       try {
         const client = this.resolveClient()
         const id = invoiceId
@@ -393,7 +434,10 @@ export default {
         this.menuPurchaseDate[invoiceId] = false
         this.menuShippingDate[invoiceId] = false
       } catch (error) {
-        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+        if (
+          error.message &&
+          error.message.includes('GraphQL error: MongoError: WriteConflict')
+        ) {
           this.refetchSpec()
         }
         this.$logger.warn('Error: ', error)
@@ -402,7 +446,7 @@ export default {
         this.updateLoading = false
       }
     },
-    async refetchSpec () {
+    async refetchSpec() {
       const client = this.resolveClient()
       try {
         client.writeQuery({
@@ -425,7 +469,7 @@ export default {
         })
       }
     },
-    async updateSpec (input) {
+    async updateSpec(input) {
       try {
         const client = this.resolveClient()
         this.updateLoading = true
@@ -437,7 +481,10 @@ export default {
           },
         })
       } catch (error) {
-        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+        if (
+          error.message &&
+          error.message.includes('GraphQL error: MongoError: WriteConflict')
+        ) {
           this.refetchSpec()
         }
         this.$logger.warn('Error: ', error)
@@ -446,7 +493,7 @@ export default {
         this.updateLoading = false
       }
     },
-    async setSpecClient (clientId) {
+    async setSpecClient(clientId) {
       try {
         const client = this.resolveClient()
         this.updateLoading = true
@@ -458,7 +505,10 @@ export default {
           },
         })
       } catch (error) {
-        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+        if (
+          error.message &&
+          error.message.includes('GraphQL error: MongoError: WriteConflict')
+        ) {
           this.refetchSpec()
         }
         this.$logger.warn('Error: ', error)
@@ -467,7 +517,7 @@ export default {
         this.updateLoading = false
       }
     },
-    async setInvoiceSupplier (invoiceId, supplierId) {
+    async setInvoiceSupplier(invoiceId, supplierId) {
       try {
         const client = this.resolveClient()
         this.updateLoading = true

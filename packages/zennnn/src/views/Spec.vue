@@ -6,10 +6,7 @@
       :is="componentName"
       :loading="loading"
     /> -->
-    <Owner
-      ref="spec"
-      :loading="loading"
-    />
+    <Owner ref="spec" :loading="loading" />
   </div>
 </template>
 
@@ -49,25 +46,33 @@ export default {
     // Warehouseman,
     // Freelancer,
   },
-  setup () {
+  setup() {
     const route = useRoute()
     const specId = route.params.specId
 
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
-    const { result: result1 } = useQuery(GET_ROLE_IN_PROJECT, () => ({
-      specId: specId,
-    }), {
-      fetchPolicy: 'cache-only',
-    })
+    const { result: result1 } = useQuery(
+      GET_ROLE_IN_PROJECT,
+      () => ({
+        specId: specId,
+      }),
+      {
+        fetchPolicy: 'cache-only',
+      }
+    )
     const roleInProject = useResult(result1)
 
-    const { result: result2, loading } = useQuery(GET_SPEC, () => ({
-      id: specId,
-    }), {
-      fetchPolicy: 'cache-and-network',
-    })
+    const { result: result2, loading } = useQuery(
+      GET_SPEC,
+      () => ({
+        id: specId,
+      }),
+      {
+        fetchPolicy: 'cache-and-network',
+      }
+    )
     const getSpec = useResult(result2)
 
     return {
@@ -78,28 +83,34 @@ export default {
       getSpec,
     }
   },
-  data () {
+  data() {
     return {
       role: null,
     }
   },
   computed: {
-    componentName () {
+    componentName() {
       switch (this.roleInProject) {
-        case Role.OWNER: return 'Owner'
-        case Role.MANAGER: return 'Manager'
-        case Role.ACCOUNTANT: return 'Accountant'
-        case Role.WAREHOUSEMAN: return 'Warehouseman'
-        case Role.FREELANCER: return 'Freelancer'
-        default: return null
+        case Role.OWNER:
+          return 'Owner'
+        case Role.MANAGER:
+          return 'Manager'
+        case Role.ACCOUNTANT:
+          return 'Accountant'
+        case Role.WAREHOUSEMAN:
+          return 'Warehouseman'
+        case Role.FREELANCER:
+          return 'Freelancer'
+        default:
+          return null
       }
     },
   },
-  mounted () {
+  mounted() {
     const commentsMerge = (target, source) => {
       const destination = target.slice()
-      source.forEach(s => {
-        const index = target.findIndex(el => el.id === s.id)
+      source.forEach((s) => {
+        const index = target.findIndex((el) => el.id === s.id)
         if (index === -1) {
           destination.push(s)
         } else {
@@ -136,10 +147,12 @@ export default {
             fragmentName: 'InvoiceProductsFragment',
           })
 
-          if (!parentInvoice.products.some(el => el.id === delta.payload.id)) {
+          if (
+            !parentInvoice.products.some((el) => el.id === delta.payload.id)
+          ) {
             const products = parentInvoice.products
             const emptyId = `empty-${delta.parentId}`
-            const emptyIndex = products.findIndex(el => el.id === emptyId)
+            const emptyIndex = products.findIndex((el) => el.id === emptyId)
             if (emptyIndex !== -1) {
               products.splice(emptyIndex, 1, delta.payload)
               products.push(Object.assign({}, emptyProduct, { id: emptyId }))
@@ -174,7 +187,7 @@ export default {
               if (key === 'images') {
                 const merge = (_, source) => {
                   const images = source || []
-                  return images.map(el => {
+                  return images.map((el) => {
                     return {
                       ...el,
                       __typename: 'AttachFile',
@@ -206,7 +219,9 @@ export default {
             fragmentName: 'InvoiceProductsFragment',
           })
 
-          const index = parentInvoice.products.findIndex(p => p.id === delta.payload.id)
+          const index = parentInvoice.products.findIndex(
+            (p) => p.id === delta.payload.id
+          )
 
           if (index !== -1) {
             parentInvoice.products.splice(index, 1)
@@ -228,19 +243,28 @@ export default {
             fragmentName: 'SpecInvoicesFragment',
           })
 
-          if (!parentSpec.invoices.some(el => el.id === delta.payload.id)) {
+          if (!parentSpec.invoices.some((el) => el.id === delta.payload.id)) {
             const invoices = parentSpec.invoices
             const emptyId = `empty-${delta.parentId}`
-            const emptyIndex = invoices.findIndex(el => el.id === emptyId)
+            const emptyIndex = invoices.findIndex((el) => el.id === emptyId)
             if (emptyIndex !== -1) {
               if (parentSpec.invoices.length === 1) {
                 this.$refs.spec.expanded = [delta.payload.id]
                 this.$refs.spec.setExpandedInvoices([delta.payload.id])
               }
-              const product = Object.assign({}, emptyProduct, { id: `empty-${delta.payload.id}` })
-              const invoice = Object.assign({}, delta.payload, { products: [product] })
+              const product = Object.assign({}, emptyProduct, {
+                id: `empty-${delta.payload.id}`,
+              })
+              const invoice = Object.assign({}, delta.payload, {
+                products: [product],
+              })
               invoices.splice(emptyIndex, 1, invoice)
-              invoices.push(Object.assign({}, emptyInvoice, { id: emptyId, products: [product, product] }))
+              invoices.push(
+                Object.assign({}, emptyInvoice, {
+                  id: emptyId,
+                  products: [product, product],
+                })
+              )
               parentSpec.invoices = invoices
             } else {
               parentSpec.invoices.push(delta.payload)
@@ -261,9 +285,10 @@ export default {
             fragment: INVOICE_FRAGMENT,
             fragmentName: 'InvoiceFragment',
           })
-          const data = delta.payload.__typename === Typename.INVOICE
-            ? Object.assign({}, cacheData, delta.payload)
-            : Object.assign({}, cacheData, delta.payload.fields)
+          const data =
+            delta.payload.__typename === Typename.INVOICE
+              ? Object.assign({}, cacheData, delta.payload)
+              : Object.assign({}, cacheData, delta.payload.fields)
           apolloClient.writeFragment({
             id: `${Typename.INVOICE}:${delta.payload.id}`,
             fragment: INVOICE_FRAGMENT,
@@ -279,7 +304,9 @@ export default {
             fragmentName: 'SpecInvoicesFragment',
           })
 
-          const index = parentSpec.invoices.findIndex(p => p.id === delta.payload.id)
+          const index = parentSpec.invoices.findIndex(
+            (p) => p.id === delta.payload.id
+          )
 
           if (index !== -1) {
             parentSpec.invoices.splice(index, 1)
@@ -313,9 +340,10 @@ export default {
             fragment: SPEC_FRAGMENT,
             fragmentName: 'SpecFragment',
           })
-          const data = delta.payload.__typename === Typename.SPEC
-            ? deepmerge(cacheData, delta.payload, mergeOptions)
-            : deepmerge(cacheData, delta.payload.fields, mergeOptions)
+          const data =
+            delta.payload.__typename === Typename.SPEC
+              ? deepmerge(cacheData, delta.payload, mergeOptions)
+              : deepmerge(cacheData, delta.payload.fields, mergeOptions)
           apolloClient.writeFragment({
             id: `${Typename.SPEC}:${delta.payload.id}`,
             fragment: SPEC_FRAGMENT,
@@ -343,7 +371,10 @@ export default {
 
         // REQUISITE
 
-        if (operation === Operation.SET_REQUISITES || Operation.UPDATE_REQUISITES) {
+        if (
+          operation === Operation.SET_REQUISITES ||
+          Operation.UPDATE_REQUISITES
+        ) {
           let listOrgRequisites = null
           try {
             const data = apolloClient.readQuery({
@@ -361,8 +392,8 @@ export default {
               cacheItems = items
             }
             if (operation === Operation.UPDATE_REQUISITES) {
-              items.forEach(item => {
-                const index = cacheItems.findIndex(el => el.id === item.id)
+              items.forEach((item) => {
+                const index = cacheItems.findIndex((el) => el.id === item.id)
                 if (index === -1) {
                   cacheItems.push(item)
                 } else {

@@ -1,14 +1,13 @@
 <template>
   <div>
-
     <div
       id="container"
-      :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container']"
+      :class="[
+        'pt-8 pb-12',
+        isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container',
+      ]"
     >
-      <span
-        v-if="isComponent"
-        class="absolute top-0 right-0 z-10 pt-3 pr-3"
-      >
+      <span v-if="isComponent" class="absolute top-0 right-0 z-10 pt-3 pr-3">
         <Icon
           class="text-gray-100 hover:text-white cursor-pointer"
           @click="$emit('close')"
@@ -20,22 +19,41 @@
         <h1 class="w-full text-2xl text-white font-semibold leading-tight">
           {{ create ? $t('requisite.createTitle') : $t('requisite.editTitle') }}
         </h1>
-        <div class="order-first sm:order-none ml-auto sm:absolute sm:bottom-0 sm:right-0 mb-md">
-          <Btn
-            v-if="!isComponent"
-            outlined
-            @click="goBack"
-          >
-            <span>{{ showFillLaterButton ? $t('requisite.fillLater') : $t('requisite.back') }}</span>
+        <div
+          class="
+            order-first
+            sm:order-none
+            ml-auto
+            sm:absolute
+            sm:bottom-0
+            sm:right-0
+            mb-md
+          "
+        >
+          <Btn v-if="!isComponent" outlined @click="goBack">
+            <span>{{
+              showFillLaterButton
+                ? $t('requisite.fillLater')
+                : $t('requisite.back')
+            }}</span>
           </Btn>
         </div>
       </div>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
         <div class="h-11 flex items-center justify-end text-gray-100">
           <transition name="slide-x-reverse-transition">
-            <div v-if="!item.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
+            <div
+              v-if="!item.isRequiredFilled"
+              class="flex items-center whitespace-nowrap pr-5 pb-1"
+            >
               <span class="text-pink-500 mr-2">
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="8"
+                  height="8"
+                  viewBox="0 0 8 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
                 </svg>
               </span>
@@ -43,9 +61,18 @@
             </div>
           </transition>
           <transition name="slide-x-reverse-transition">
-            <div v-if="!item.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
+            <div
+              v-if="!item.isOptionalFilled"
+              class="flex items-center whitespace-nowrap pr-5 pb-1"
+            >
               <span class="text-yellow-500 mr-2">
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="8"
+                  height="8"
+                  viewBox="0 0 8 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
                 </svg>
               </span>
@@ -53,9 +80,7 @@
             </div>
           </transition>
         </div>
-        <div
-          class="bg-gray-600 rounded-md p-5 pt-6"
-        >
+        <div class="bg-gray-600 rounded-md p-5 pt-6">
           <!-- Company Info -->
           <CompanyInfo
             :loading="loading"
@@ -124,14 +149,18 @@
         {{ create ? $t('action.create') : $t('action.save') }}
       </Btn>
     </div>
-
   </div>
 </template>
 
 <script>
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useApolloClient, useMutation, useQuery, useResult } from '@vue/apollo-composable'
+import {
+  useApolloClient,
+  useMutation,
+  useQuery,
+  useResult,
+} from '@vue/apollo-composable'
 
 import debounce from 'lodash-es/debounce'
 import cloneDeep from 'clone-deep'
@@ -142,10 +171,7 @@ import { Btn, Icon } from '@zennnn/core'
 import { validateCompanyDetail } from '../utils/validation'
 
 import { GET_ORG_REQUISITE, GET_ORGS } from '../graphql/queries'
-import {
-  CREATE_REQUISITE,
-  UPDATE_REQUISITE,
-} from '../graphql/mutations'
+import { CREATE_REQUISITE, UPDATE_REQUISITE } from '../graphql/mutations'
 
 import CompanyInfo from './CompanyDetail/CompanyInfo.vue'
 import BankDetailList from './CompanyDetail/BankDetailList.vue'
@@ -183,7 +209,7 @@ export default {
     },
   },
   emits: ['close', 'create', 'update'],
-  setup (props) {
+  setup(props) {
     const route = useRoute()
     const reqId = route.params.reqId
     const item = ref({})
@@ -191,13 +217,17 @@ export default {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
-    const { result, loading, onResult } = useQuery(GET_ORG_REQUISITE, () => ({
-      id: reqId,
-    }), () => ({
-      enabled: !props.create,
-      fetchPolicy: 'cache-and-network',
-      nextFetchPolicy: 'cache-fisrt',
-    }))
+    const { result, loading, onResult } = useQuery(
+      GET_ORG_REQUISITE,
+      () => ({
+        id: reqId,
+      }),
+      () => ({
+        enabled: !props.create,
+        fetchPolicy: 'cache-and-network',
+        nextFetchPolicy: 'cache-fisrt',
+      })
+    )
     const getOrgRequisite = useResult(result)
     onResult(({ data, loading }) => {
       if (loading) return
@@ -226,29 +256,29 @@ export default {
       updateRequisiteMutate,
     }
   },
-  data () {
+  data() {
     return {
       updateLoading: false,
     }
   },
-  created () {
+  created() {
     this.fetchOrgs = debounce(this.getOrgs, 1500)
   },
   methods: {
-    async getOrgs () {
+    async getOrgs() {
       await this.apolloClient.query({
         query: GET_ORGS,
         fetchPolicy: 'network-only',
       })
     },
-    goBack () {
+    goBack() {
       if (this.showFillLaterButton) {
         this.$router.push({ name: 'home' })
       } else {
         this.$router.go(-1)
       }
     },
-    updateValue (input) {
+    updateValue(input) {
       if (this.create) {
         if (this.isComponent) {
           const newItem = Object.assign({}, this.item, input)
@@ -261,10 +291,10 @@ export default {
         this.updateRequisite(input)
       }
     },
-    reset () {
+    reset() {
       this.item = {}
     },
-    createFromItem () {
+    createFromItem() {
       const item = {}
       for (const [k, v] of Object.entries(this.item)) {
         if (k !== 'isRequiredFilled' && k !== 'isOptionalFilled') {
@@ -273,7 +303,7 @@ export default {
       }
       this.createRequisite(item)
     },
-    async createRequisite (input, redirectAfterCreate = true) {
+    async createRequisite(input, redirectAfterCreate = true) {
       try {
         this.updateLoading = true
 
@@ -313,7 +343,7 @@ export default {
         this.updateLoading = false
       }
     },
-    async updateRequisite (input) {
+    async updateRequisite(input) {
       try {
         this.updateLoading = true
 

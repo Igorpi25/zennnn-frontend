@@ -1,10 +1,4 @@
-import {
-  h,
-  ref,
-  computed,
-  onMounted,
-  Slots,
-} from 'vue'
+import { h, ref, computed, onMounted, Slots } from 'vue'
 
 import { ziQuestionSign } from '@zennnn/icons'
 
@@ -61,9 +55,14 @@ export const useInputProps = () => {
   }
 }
 
-export const useInput = (props: InputProps, { slots, emit, id }: InputContext) => {
+export const useInput = (
+  props: InputProps,
+  { slots, emit, id }: InputContext
+) => {
   const inputElement = ref<HTMLElement>()
-  const internalValue = ref<string | number | boolean | any[] | null | undefined>(props.modelValue)
+  const internalValue = ref<
+    string | number | boolean | any[] | null | undefined
+  >(props.modelValue)
   const isFocused = ref(false)
   const badInput = ref(false)
 
@@ -72,7 +71,10 @@ export const useInput = (props: InputProps, { slots, emit, id }: InputContext) =
   })
 
   const isDirty = computed(() => {
-    return (internalValue.value && internalValue.value.toString().length > 0) || badInput.value
+    return (
+      (internalValue.value && internalValue.value.toString().length > 0) ||
+      badInput.value
+    )
   })
 
   onMounted(() => {
@@ -114,39 +116,51 @@ export const useInput = (props: InputProps, { slots, emit, id }: InputContext) =
 
   const genLabelHint = () => {
     if (!props.labelHint) return undefined
-    return h(Tooltip, {
-      maxWidth: 285,
-      placement: 'top-start',
-      skidding: -16,
-      distance: 5,
-      zIndex: 4,
-      origin: '24px 100%',
-      class: 'inline-flex',
-    }, {
-      default: () => props.labelHint,
-      activator: () => {
-        return h(Icon, {
-          class: 'text-blue-500 ml-1',
-        }, {
-          default: () => ziQuestionSign,
-        })
+    return h(
+      Tooltip,
+      {
+        maxWidth: 285,
+        placement: 'top-start',
+        skidding: -16,
+        distance: 5,
+        zIndex: 4,
+        origin: '24px 100%',
+        class: 'inline-flex',
       },
-    })
+      {
+        default: () => props.labelHint,
+        activator: () => {
+          return h(
+            Icon,
+            {
+              class: 'text-blue-500 ml-1',
+            },
+            {
+              default: () => ziQuestionSign,
+            }
+          )
+        },
+      }
+    )
   }
 
   const genLabel = () => {
     return hasLabel.value
-      ? h(Label, {
-        for: id,
-        showWrap: props.showLabelWrap,
-        // prevent check on checkbox
-        onClick: (e: MouseEvent) => {
-          e.preventDefault()
-        },
-      }, {
-        default: () => slots.label?.() ?? props.label,
-        append: () => genLabelHint(),
-      })
+      ? h(
+          Label,
+          {
+            for: id,
+            showWrap: props.showLabelWrap,
+            // prevent check on checkbox
+            onClick: (e: MouseEvent) => {
+              e.preventDefault()
+            },
+          },
+          {
+            default: () => slots.label?.() ?? props.label,
+            append: () => genLabelHint(),
+          }
+        )
       : undefined
   }
 

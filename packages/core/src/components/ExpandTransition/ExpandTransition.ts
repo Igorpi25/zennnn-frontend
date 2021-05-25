@@ -12,15 +12,17 @@ interface HTMLExpandElement extends HTMLElement {
 }
 
 const ExpandTransition: FunctionalComponent<{
-  mode?: 'in-out' | 'out-in' | 'default',
-  x?: boolean,
-  expandedParentClass?: string,
+  mode?: 'in-out' | 'out-in' | 'default'
+  x?: boolean
+  expandedParentClass?: string
 }> = (props, { slots }) => {
   const mode = props.mode || 'in-out'
   const name = props.x ? 'expand-x-transition' : 'expand-transition'
   const expandedParentClass = props.expandedParentClass
-  const sizeProperty = props.x ? 'width' : 'height' as 'width' | 'height'
-  const offsetProperty = `offset${upperFirst(sizeProperty)}` as 'offsetHeight' | 'offsetWidth'
+  const sizeProperty = props.x ? 'width' : ('height' as 'width' | 'height')
+  const offsetProperty = `offset${upperFirst(sizeProperty)}` as
+    | 'offsetHeight'
+    | 'offsetWidth'
 
   const resetStyles = (_el: Element) => {
     const el = _el as HTMLExpandElement
@@ -99,19 +101,23 @@ const ExpandTransition: FunctionalComponent<{
 
   const onLeaveCancelled = onAfterLeave
 
-  return h(Transition, {
-    name: name,
-    mode: mode,
-    onBeforeEnter,
-    onEnter,
-    onAfterEnter,
-    onEnterCancelled,
-    onLeave,
-    onAfterLeave,
-    onLeaveCancelled,
-  }, {
-    default: () => slots.default?.(),
-  })
+  return h(
+    Transition,
+    {
+      name: name,
+      mode: mode,
+      onBeforeEnter,
+      onEnter,
+      onAfterEnter,
+      onEnterCancelled,
+      onLeave,
+      onAfterLeave,
+      onLeaveCancelled,
+    },
+    {
+      default: () => slots.default?.(),
+    }
+  )
 }
 
 export default ExpandTransition

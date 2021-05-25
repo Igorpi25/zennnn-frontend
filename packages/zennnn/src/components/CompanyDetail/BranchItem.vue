@@ -1,13 +1,21 @@
 <template>
   <div>
     <div class="pb-2">
-      <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+      <label
+        class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2"
+      >
         {{ $t('companyDetail.label.branchType') }}
       </label>
       <div class="flex justify-end items-center">
         <transition name="fade-transition">
           <div v-if="isWarehouse" class="flex items-center pr-1">
-            <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="180">
+            <Tooltip
+              placement="top-start"
+              distance="2"
+              skidding="-16"
+              origin="24px 100%"
+              max-width="180"
+            >
               <template v-slot:activator>
                 <Icon class="text-blue-500 align-middle">
                   {{ icons.ziQuestionSign }}
@@ -16,7 +24,10 @@
               <span v-html="$t('companyDetail.hint.branchDeliveryAddress')" />
             </Tooltip>
             <div class="pr-4">
-              <img src="@/assets/icons/colorful/Shield-yellow.svg" aria-hidden="true">
+              <img
+                src="@/assets/icons/colorful/Shield-yellow.svg"
+                aria-hidden="true"
+              />
             </div>
           </div>
         </transition>
@@ -28,7 +39,13 @@
           @update:model-value="updateData('branchType', $event)"
         />
         <button
-          class="text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none ml-1"
+          class="
+            text-gray-200
+            focus:text-gray-100
+            hover:text-gray-100
+            focus:outline-none
+            ml-1
+          "
           @click="$emit('delete', internalItem.id)"
         >
           <Icon>
@@ -106,15 +123,8 @@
       required
       @update:model-value="updateData('workPhone', $event)"
     />
-    <div
-      v-if="contactItems.length > 0"
-      class="flex flex-wrap -mx-5"
-    >
-      <div
-        v-for="(item, i) in contactItems"
-        :key="i"
-        class="w-full pt-11 px-5"
-      >
+    <div v-if="contactItems.length > 0" class="flex flex-wrap -mx-5">
+      <div v-for="(item, i) in contactItems" :key="i" class="w-full pt-11 px-5">
         <ContactItem
           :loading="loading"
           :value="item"
@@ -160,11 +170,11 @@ export default {
     },
   },
   emits: ['update', 'delete'],
-  data () {
+  data() {
     return {
       lazyItem: undefined,
       rules: {
-        required: v => !!v || this.$t('rule.required'),
+        required: (v) => !!v || this.$t('rule.required'),
       },
       icons: {
         ziCloseDelete,
@@ -174,26 +184,26 @@ export default {
   },
   computed: {
     internalItem: {
-      get () {
+      get() {
         return this.lazyItem || {}
       },
-      set (val) {
+      set(val) {
         this.lazyItem = val
       },
     },
-    contactItems () {
-      return (this.internalItem.contacts || []).map(item => {
+    contactItems() {
+      return (this.internalItem.contacts || []).map((item) => {
         return {
           contactType: item.contactType,
           contact: item.contact,
         }
       })
     },
-    isWarehouse () {
+    isWarehouse() {
       return this.internalItem.branchType === BranchType.WAREHOUSE
     },
-    branchTypeItems () {
-      return Object.values(BranchType).map(el => {
+    branchTypeItems() {
+      return Object.values(BranchType).map((el) => {
         return {
           text: this.$t(`branchType.${el}`),
           value: el,
@@ -201,33 +211,49 @@ export default {
       })
     },
     firstName: {
-      get () {
-        return this.internalItem.contactPerson && this.internalItem.contactPerson.firstName
+      get() {
+        return (
+          this.internalItem.contactPerson &&
+          this.internalItem.contactPerson.firstName
+        )
       },
-      set (val) {
-        const person = Object.assign({}, {
-          firstName: val,
-          lastName: this.internalItem.contactPerson && this.internalItem.contactPerson.lastName,
-        })
+      set(val) {
+        const person = Object.assign(
+          {},
+          {
+            firstName: val,
+            lastName:
+              this.internalItem.contactPerson &&
+              this.internalItem.contactPerson.lastName,
+          }
+        )
         this.updateData('contactPerson', person)
       },
     },
     lastName: {
-      get () {
-        return this.internalItem.contactPerson && this.internalItem.contactPerson.lastName
+      get() {
+        return (
+          this.internalItem.contactPerson &&
+          this.internalItem.contactPerson.lastName
+        )
       },
-      set (val) {
-        const person = Object.assign({}, {
-          firstName: this.internalItem.contactPerson && this.internalItem.contactPerson.firstName,
-          lastName: val,
-        })
+      set(val) {
+        const person = Object.assign(
+          {},
+          {
+            firstName:
+              this.internalItem.contactPerson &&
+              this.internalItem.contactPerson.firstName,
+            lastName: val,
+          }
+        )
         this.updateData('contactPerson', person)
       },
     },
   },
   watch: {
     item: {
-      handler (val) {
+      handler(val) {
         this.$nextTick(() => {
           this.internalItem = val
         })
@@ -236,26 +262,28 @@ export default {
     },
   },
   methods: {
-    updateData (key, value) {
+    updateData(key, value) {
       this.$emit('update', { [key]: value })
     },
-    addContact (val) {
+    addContact(val) {
       const item = val || {}
       const contactType = item.contactType || ContactType.QQ
       const contact = item.contact || null
-      this.$emit('update', { contacts: [...this.contactItems, { contactType, contact }] })
+      this.$emit('update', {
+        contacts: [...this.contactItems, { contactType, contact }],
+      })
       this.$nextTick(() => {
         this.$refs.contactCreate.setValue()
         this.$refs.contactCreate.$refs.inputRef.reset()
       })
     },
-    updateContact (i, item, value) {
+    updateContact(i, item, value) {
       const updatedItem = Object.assign({}, item, value)
       const items = this.contactItems.slice()
       items.splice(i, 1, updatedItem)
       this.$emit('update', { contacts: items })
     },
-    deleteContact (i) {
+    deleteContact(i) {
       const items = this.contactItems.slice()
       items.splice(i, 1)
       this.$emit('update', { contacts: items })

@@ -2,11 +2,19 @@
   <div>
     <div class="flex items-center pt-10">
       <div class="flex-grow text-lg leading-tight">
-        <span class="text-white uppercase font-semibold tracking-widest uppercase">
+        <span
+          class="text-white uppercase font-semibold tracking-widest uppercase"
+        >
           {{ $t('companyDetail.legalDetail') }}
         </span>
         <span class="text-gray-200 mr-1">{{ titleDesc }}</span>
-        <Tooltip placement="top-start" distance="2" skidding="-16" origin="24px 100%" max-width="332">
+        <Tooltip
+          placement="top-start"
+          distance="2"
+          skidding="-16"
+          origin="24px 100%"
+          max-width="332"
+        >
           <template v-slot:activator>
             <Icon class="text-blue-500 align-middle">
               {{ icons.ziQuestionSign }}
@@ -17,7 +25,12 @@
       </div>
       <div>
         <button
-          class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
+          class="
+            text-blue-500
+            hover:text-blue-400
+            focus:text-blue-400
+            focus:outline-none
+          "
           @click="toggleExpand"
         >
           <Icon
@@ -43,7 +56,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'vat': $event })"
+              @update:model-value="updateData({ vat: $event })"
             />
           </div>
           <div class="pb-2">
@@ -107,7 +120,18 @@
                 @update:model-value="updateMailingAddressPostcode"
               />
               <div class="relative flex-shrink-0 relative pl-sm">
-                <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+                <label
+                  class="
+                    absolute
+                    top-0
+                    right-0
+                    block
+                    text-base text-gray-100
+                    whitespace-nowrap
+                    leading-5
+                    py-2
+                  "
+                >
                   {{ $t('companyDetail.label.matches') }}
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
@@ -119,7 +143,9 @@
               </div>
             </div>
             <div class="relative lg:pb-20">
-              <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
+              <div
+                class="lg:absolute text-sm text-gray-200 leading-tight pl-sm"
+              >
                 {{ $t('companyDetail.hint.mailingAddress') }}
               </div>
             </div>
@@ -136,7 +162,7 @@
               state-icon
               state-error-color="none"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-              @update:model-value="updateData({ 'iec': $event })"
+              @update:model-value="updateData({ iec: $event })"
             />
             <TextField
               :model-value="item.okpo"
@@ -149,7 +175,7 @@
               state-icon
               state-error-color="none"
               class="flex-grow"
-              @update:model-value="updateData({ 'okpo': $event })"
+              @update:model-value="updateData({ okpo: $event })"
             />
           </div>
           <div class="pb-2">
@@ -163,7 +189,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'psrn': $event })"
+              @update:model-value="updateData({ psrn: $event })"
             />
           </div>
           <div class="flex items-end pb-2">
@@ -207,7 +233,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'bankName': $event })"
+              @update:model-value="updateData({ bankName: $event })"
             />
           </div>
           <div class="pb-2">
@@ -221,7 +247,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'bankAddress': $event })"
+              @update:model-value="updateData({ bankAddress: $event })"
             />
           </div>
           <div class="pb-2">
@@ -235,7 +261,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'bankAccountNumber': $event })"
+              @update:model-value="updateData({ bankAccountNumber: $event })"
             />
           </div>
           <div class="flex items-end pb-2">
@@ -250,7 +276,7 @@
               state-icon
               state-error-color="none"
               class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-              @update:model-value="updateData({ 'swift': $event })"
+              @update:model-value="updateData({ swift: $event })"
             />
             <TextField
               :model-value="item.bic"
@@ -263,21 +289,25 @@
               state-icon
               state-error-color="none"
               class="flex-grow"
-              @update:model-value="updateData({ 'bic': $event })"
+              @update:model-value="updateData({ bic: $event })"
             />
           </div>
           <div class="pb-2">
             <TextField
               :model-value="item.correspondentBankName"
               :label="$t('companyDetail.label.correspondentBankName')"
-              :placeholder="$t('companyDetail.placeholder.correspondentBankName')"
+              :placeholder="
+                $t('companyDetail.placeholder.correspondentBankName')
+              "
               :loading="loading"
               :debounce="500"
               :lazy="create"
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'correspondentBankName': $event })"
+              @update:model-value="
+                updateData({ correspondentBankName: $event })
+              "
             />
           </div>
           <div class="pb-2 lg:pb-1">
@@ -292,7 +322,9 @@
               state-icon
               state-error-color="none"
               class="pb-2"
-              @update:model-value="updateData({ 'correspondentAccountNumber': $event })"
+              @update:model-value="
+                updateData({ correspondentAccountNumber: $event })
+              "
             />
             <div class="lg:pb-20 mr-10" />
           </div>
@@ -306,7 +338,7 @@
               state-icon
               state-error-color="warn"
               class="w-1/2 pr-2"
-              @update:model-value="updateData({ 'phone': $event })"
+              @update:model-value="updateData({ phone: $event })"
             />
             <Phone
               :model-value="item.fax"
@@ -317,7 +349,7 @@
               state-icon
               state-error-color="none"
               class="w-1/2 pl-2"
-              @update:model-value="updateData({ 'fax': $event })"
+              @update:model-value="updateData({ fax: $event })"
             />
           </div>
           <div>
@@ -331,7 +363,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              @update:model-value="updateData({ 'website': $event })"
+              @update:model-value="updateData({ website: $event })"
             />
           </div>
         </div>
@@ -342,7 +374,13 @@
 
 <script>
 import { ziQuestionSign, ziChevronRight } from '@zennnn/icons'
-import { Icon, Tooltip, Switch, TextField, ExpandTransition } from '@zennnn/core'
+import {
+  Icon,
+  Tooltip,
+  Switch,
+  TextField,
+  ExpandTransition,
+} from '@zennnn/core'
 
 import clientDetail from '../../mixins/clientDetail'
 
@@ -366,11 +404,11 @@ export default {
     },
     isSupplier: Boolean,
   },
-  data () {
+  data() {
     return {
       isMailingAddressMatchLazy: false,
       rules: {
-        required: v => !!v || this.$t('rule.required'),
+        required: (v) => !!v || this.$t('rule.required'),
       },
       icons: {
         ziQuestionSign,
@@ -380,54 +418,58 @@ export default {
   },
   computed: {
     isMailingAddressMatch: {
-      get () {
+      get() {
         return this.isMailingAddressMatchLazy
       },
-      set (val) {
+      set(val) {
         this.isMailingAddressMatchLazy = val
       },
     },
-    companyOwner () {
+    companyOwner() {
       return this.item.companyOwner || {}
     },
-    titleDesc () {
+    titleDesc() {
       return this.isSupplier
         ? ` ${this.$t('companyDetail.supplierDetailDesc')}`
         : ` ${this.$t('companyDetail.legalDetailDesc')}`
     },
   },
   watch: {
-    'item.isMailingAddressMatch' (val) {
+    'item.isMailingAddressMatch'(val) {
       this.isMailingAddressMatchLazy = val
     },
   },
   methods: {
-    updateMailingAddressMatch (val) {
+    updateMailingAddressMatch(val) {
       this.isMailingAddressMatch = val
       const input = { isMailingAddressMatch: val }
       this.updateData(input)
     },
-    updateLegalAddress (val) {
+    updateLegalAddress(val) {
       const input = { legalAddress: val }
       this.updateData(input)
     },
-    updateLegalAddressPostcode (val) {
+    updateLegalAddressPostcode(val) {
       const input = { legalAddressPostcode: val }
       this.updateData(input)
     },
-    updateMailingAddress (val) {
+    updateMailingAddress(val) {
       const input = { mailingAddress: val }
       this.updateData(input)
     },
-    updateMailingAddressPostcode (val) {
+    updateMailingAddressPostcode(val) {
       const input = { mailingAddressPostcode: val }
       this.updateData(input)
     },
-    updateCompanyOwner (personInput) {
-      const value = Object.assign({}, {
-        firstName: this.companyOwner.firstName,
-        lastName: this.companyOwner.lastName,
-      }, personInput)
+    updateCompanyOwner(personInput) {
+      const value = Object.assign(
+        {},
+        {
+          firstName: this.companyOwner.firstName,
+          lastName: this.companyOwner.lastName,
+        },
+        personInput
+      )
       const input = { companyOwner: value }
       this.updateData(input)
     },

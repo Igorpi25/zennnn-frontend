@@ -7,7 +7,9 @@
           :label="$t('companyDetail.label.contactPerson')"
           :placeholder="$t('companyDetail.placeholder.firstName')"
           :loading="loading"
-          :rules="[v => !!v || this.$t('companyDetail.rule.contactPersonFirstName')]"
+          :rules="[
+            (v) => !!v || this.$t('companyDetail.rule.contactPersonFirstName'),
+          ]"
           :hide-details="false"
           :debounce="500"
           :lazy="create"
@@ -21,7 +23,9 @@
           :model-value="contactPerson.lastName"
           :placeholder="$t('companyDetail.placeholder.lastName')"
           :loading="loading"
-          :rules="[v => !!v || this.$t('companyDetail.rule.contactPersonLastName')]"
+          :rules="[
+            (v) => !!v || this.$t('companyDetail.rule.contactPersonLastName'),
+          ]"
           :hide-details="false"
           :debounce="500"
           :lazy="create"
@@ -42,7 +46,7 @@
           :lazy="create"
           state-icon
           required
-          @update:model-value="updateData({ 'mobilePhone': $event })"
+          @update:model-value="updateData({ mobilePhone: $event })"
         />
       </div>
       <div class="pb-2">
@@ -58,7 +62,7 @@
           :lazy="create"
           state-icon
           required
-          @update:model-value="updateData({ 'email': $event })"
+          @update:model-value="updateData({ email: $event })"
         />
       </div>
       <div class="pb-2 lg:pb-1">
@@ -68,32 +72,36 @@
           :label="$t('companyDetail.label.locale')"
           :placeholder="$t('companyDetail.placeholder.locale')"
           :loading="loading"
-          :rules="[v => !!v || this.$t('companyDetail.rule.locale')]"
+          :rules="[(v) => !!v || this.$t('companyDetail.rule.locale')]"
           :hide-details="false"
           state-icon
           required
           class="pb-2"
-          @update:model-value="updateData({ 'locale': $event })"
+          @update:model-value="updateData({ locale: $event })"
         >
           <template v-slot:prepend>
             <img
               v-if="item.locale"
-              :src="require(`@/assets/img/flags/locale/${item.locale}.svg`).default"
+              :src="
+                require(`@/assets/img/flags/locale/${item.locale}.svg`).default
+              "
               :alt="item.locale"
               class="h-6 w-6 rounded-full ml-2 mr-4"
-            >
+            />
             <img
               v-else
               src="@/assets/icons/earth.svg"
               class="h-6 w-6 rounded-full ml-2 mr-4"
-            >
+            />
           </template>
           <template v-slot:item="{ item }">
             <img
-              :src="require(`@/assets/img/flags/locale/${item.value}.svg`).default"
+              :src="
+                require(`@/assets/img/flags/locale/${item.value}.svg`).default
+              "
               :alt="item.text"
               class="h-6 w-6 rounded-full mr-4"
-            >
+            />
             <span>{{ item.text }}</span>
           </template>
         </Select>
@@ -124,7 +132,7 @@
           :placeholder="$t('companyDetail.placeholder.givenName')"
           :disabled="isPersonMatch"
           :loading="loading"
-          :rules="[v => !!v || this.$t('companyDetail.rule.givenName')]"
+          :rules="[(v) => !!v || this.$t('companyDetail.rule.givenName')]"
           :hide-details="false"
           :debounce="500"
           :lazy="create"
@@ -141,7 +149,7 @@
             :placeholder="$t('companyDetail.placeholder.familyName')"
             :disabled="isPersonMatch"
             :loading="loading"
-            :rules="[v => !!v || this.$t('companyDetail.rule.familyName')]"
+            :rules="[(v) => !!v || this.$t('companyDetail.rule.familyName')]"
             :hide-details="false"
             :debounce="500"
             :lazy="create"
@@ -151,7 +159,18 @@
             @update:model-value="updatePerson({ lastName: $event })"
           />
           <div class="relative flex-shrink-0 relative pl-sm">
-            <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+            <label
+              class="
+                absolute
+                top-0
+                right-0
+                block
+                text-base text-gray-100
+                whitespace-nowrap
+                leading-5
+                py-2
+              "
+            >
               {{ $t('companyDetail.label.matches') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
@@ -184,12 +203,16 @@
       <div class="flex items-end pb-2">
         <DatePicker
           :model-value="item.birthdate"
-          @update:model-value="updateData({ 'birthdate': $event })"
+          @update:model-value="updateData({ birthdate: $event })"
         >
           <template v-slot:activator>
             <div class="pr-4">
               <TextField
-                :model-value="item.birthdate ? $d($parseDate(item.birthdate), 'short') : null"
+                :model-value="
+                  item.birthdate
+                    ? $d($parseDate(item.birthdate), 'short')
+                    : null
+                "
                 :label="$t('companyDetail.label.birthdate')"
                 :placeholder="$t('companyDetail.placeholder.date')"
                 :loading="loading"
@@ -208,12 +231,32 @@
           </template>
         </DatePicker>
         <div class="w-1/2 pl-4 opacity-40">
-          <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+          <label
+            class="
+              block
+              text-base text-gray-100
+              whitespace-nowrap
+              leading-5
+              py-2
+            "
+          >
             {{ $t('companyDetail.label.avatar') }}
           </label>
           <div class="h-10 flex justify-start relative pl-12">
             <div class="absolute bottom-0 pl-4">
-              <div class="flex items-center justify-center w-14 h-14 border border-gray-200 text-gray-200 bg-gray-400 rounded-full">
+              <div
+                class="
+                  flex
+                  items-center
+                  justify-center
+                  w-14
+                  h-14
+                  border border-gray-200
+                  text-gray-200
+                  bg-gray-400
+                  rounded-full
+                "
+              >
                 <Icon large>
                   {{ icons.ziUser }}
                 </Icon>
@@ -223,7 +266,9 @@
         </div>
       </div>
       <div>
-        <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+        <label
+          class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2"
+        >
           {{ $t('companyDetail.label.ucn') }}
         </label>
         <div class="h-10 flex items-center text-white mb-2 px-sm">
@@ -239,7 +284,14 @@
 
 <script>
 import { ziUser, ziCalendar } from '@zennnn/icons'
-import { Icon, Alert, Switch, Select, TextField, DatePicker } from '@zennnn/core'
+import {
+  Icon,
+  Alert,
+  Switch,
+  Select,
+  TextField,
+  DatePicker,
+} from '@zennnn/core'
 
 import { LOCALES_LIST } from '../../config/globals'
 
@@ -266,12 +318,14 @@ export default {
       default: () => ({}),
     },
   },
-  data () {
+  data() {
     return {
       isPersonMatchLazy: false,
       rules: {
-        required: v => !!v || this.$t('rule.required'),
-        email: v => (v && /.+@.+\..+/.test(v)) || this.$t('companyDetail.rule.notificationEmail'),
+        required: (v) => !!v || this.$t('rule.required'),
+        email: (v) =>
+          (v && /.+@.+\..+/.test(v)) ||
+          this.$t('companyDetail.rule.notificationEmail'),
       },
       icons: {
         ziUser,
@@ -281,46 +335,54 @@ export default {
   },
   computed: {
     isPersonMatch: {
-      get () {
+      get() {
         return this.isPersonMatchLazy
       },
-      set (val) {
+      set(val) {
         this.isPersonMatchLazy = val
       },
     },
-    person () {
+    person() {
       return this.item.person || {}
     },
-    contactPerson () {
+    contactPerson() {
       return this.item.contactPerson || {}
     },
-    locales () {
+    locales() {
       return LOCALES_LIST
     },
   },
   watch: {
-    'item.isPersonMatch' (val) {
+    'item.isPersonMatch'(val) {
       this.isPersonMatchLazy = !!val
     },
   },
   methods: {
-    updatePersonMatch (val) {
+    updatePersonMatch(val) {
       this.isPersonMatch = val
       const input = { isPersonMatch: val }
       this.updateData(input)
     },
-    updateContactPerson (personInput) {
-      const value = Object.assign({}, {
-        firstName: this.contactPerson.firstName,
-        lastName: this.contactPerson.lastName,
-      }, personInput)
+    updateContactPerson(personInput) {
+      const value = Object.assign(
+        {},
+        {
+          firstName: this.contactPerson.firstName,
+          lastName: this.contactPerson.lastName,
+        },
+        personInput
+      )
       const input = { contactPerson: value }
       this.updateData(input)
     },
-    updatePerson (input) {
-      const value = Object.assign({}, {
-        middleName: this.person.middleName,
-      }, input)
+    updatePerson(input) {
+      const value = Object.assign(
+        {},
+        {
+          middleName: this.person.middleName,
+        },
+        input
+      )
       this.updateData({ person: value })
     },
   },

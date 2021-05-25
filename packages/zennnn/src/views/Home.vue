@@ -1,12 +1,12 @@
 <template>
   <teleport to="head">
-    <meta name="title" :content="ogTitle">
-    <meta name="description" :content="ogDescription">
-    <meta property="og:title" :content="ogTitle">
-    <meta property="og:description" :content="ogDescription">
-    <meta property="og:site_name" content="ZENNNN" >
-    <meta property="og:url" :content="ogUrl" >
-    <meta property="og:image" :content="ogImage" >
+    <meta name="title" :content="ogTitle" />
+    <meta name="description" :content="ogDescription" />
+    <meta property="og:title" :content="ogTitle" />
+    <meta property="og:description" :content="ogDescription" />
+    <meta property="og:site_name" content="ZENNNN" />
+    <meta property="og:url" :content="ogUrl" />
+    <meta property="og:image" :content="ogImage" />
   </teleport>
   <div class="flex-grow flex flex-col">
     <!-- / HEADER -->
@@ -15,15 +15,22 @@
         <router-link
           :to="{ name: 'home' }"
           class="flex-shrink-0 select-none focus:ring focus:outline-none mr-4"
-          @mousedown="e => e.preventDefault()"
+          @mousedown="(e) => e.preventDefault()"
         >
-          <img src="@/assets/img/logo-dark.svg" alt="Logo">
+          <img src="@/assets/img/logo-dark.svg" alt="Logo" />
         </router-link>
         <div class="flex-grow flex items-center justify-end">
           <LocalePicker distance="16" class="pr-4" />
           <router-link
             :to="{ name: 'signin' }"
-            class="text-blue-500 hover:text-blue-400 focus:outline-none focus:text-blue-400 select-none mr-8"
+            class="
+              text-blue-500
+              hover:text-blue-400
+              focus:outline-none
+              focus:text-blue-400
+              select-none
+              mr-8
+            "
           >
             {{ $t('signup.signin') }}
           </router-link>
@@ -42,7 +49,14 @@
     <main class="container home-main--top flex-grow">
       <h1
         v-html="$t('home.title')"
-        class="text-4xl sm:text-56 text-light-gray-400 text-center font-semibold leading-tight mb-10"
+        class="
+          text-4xl
+          sm:text-56
+          text-light-gray-400 text-center
+          font-semibold
+          leading-tight
+          mb-10
+        "
       />
       <div class="flex flex-wrap justify-center pb-12">
         <div
@@ -59,10 +73,7 @@
         </div>
       </div>
       <div class="flex justify-center">
-        <Btn
-          :to="{ name: 'signup' }"
-          class="text-center leading-none"
-        >
+        <Btn :to="{ name: 'signup' }" class="text-center leading-none">
           <div class="flex items-center px-2">
             <span>{{ $t('home.cty') }}</span>
             <Icon size="20" class="ml-sm">
@@ -72,7 +83,11 @@
         </Btn>
       </div>
       <div class="relative pt-8 md:pt-16 mt-8 md:mt-0">
-        <img width="296" src="/static/img/home-list.png" class="absolute top-0 right-0 home-list">
+        <img
+          width="296"
+          src="/static/img/home-list.png"
+          class="absolute top-0 right-0 home-list"
+        />
         <div class="px-4 sm:px-18">
           <Image
             :aspect-ratio="1.6"
@@ -82,13 +97,30 @@
             class="home-main"
           />
         </div>
-        <img width="264" src="/static/img/home-tabs.png" class="absolute home-tabs">
-        <img width="246" src="/static/img/home-container.png" class="absolute home-container">
+        <img
+          width="264"
+          src="/static/img/home-tabs.png"
+          class="absolute home-tabs"
+        />
+        <img
+          width="246"
+          src="/static/img/home-container.png"
+          class="absolute home-container"
+        />
       </div>
       <div class="pt-20 pb-20 px-2 sm:px-18">
         <div
           v-html="$t('home.info')"
-          class="border-l-2 sm:border-l-4 border-blue-500 text-lg sm:text-xl leading-relaxed px-4 sm:px-10"
+          class="
+            border-l-2
+            sm:border-l-4
+            border-blue-500
+            text-lg
+            sm:text-xl
+            leading-relaxed
+            px-4
+            sm:px-10
+          "
         />
       </div>
       <div class="flex flex-wrap leading-tight pt-8 pb-20 px-2 sm:px-18">
@@ -102,12 +134,32 @@
                 class="banner"
               />
               <div class="absolute inset-0 flex">
-                <div class="flex flex-col w-1/2 pl-8 md:pl-13 pt-6 sm:pt-8 xl:pt-12">
-                  <div v-html="$t('home.about')" class="text-xl md:text-28 text-white relative z-1" />
+                <div
+                  class="
+                    flex flex-col
+                    w-1/2
+                    pl-8
+                    md:pl-13
+                    pt-6
+                    sm:pt-8
+                    xl:pt-12
+                  "
+                >
+                  <div
+                    v-html="$t('home.about')"
+                    class="text-xl md:text-28 text-white relative z-1"
+                  />
                   <div class="h-full max-h-12 flex items-end mb-2">
                     <Icon
                       large
-                      class="text-blue-500 transform group-hover:translate-x-2 transition-transform duration-150 ease-out"
+                      class="
+                        text-blue-500
+                        transform
+                        group-hover:translate-x-2
+                        transition-transform
+                        duration-150
+                        ease-out
+                      "
                     >
                       {{ icons.ziArrowRight }}
                     </Icon>
@@ -116,8 +168,14 @@
                 <div class="w-1/2">
                   <img
                     src="/static/img/home-iphones.png"
-                    class="banner-image-1 bg-right-bottom absolute right-0 bottom-0"
-                  >
+                    class="
+                      banner-image-1
+                      bg-right-bottom
+                      absolute
+                      right-0
+                      bottom-0
+                    "
+                  />
                 </div>
               </div>
             </div>
@@ -133,12 +191,32 @@
                 class="banner"
               />
               <div class="absolute inset-0 flex">
-                <div class="flex flex-col w-1/2 pl-8 md:pl-13 pt-6 sm:pt-8 xl:pt-12">
-                  <div v-html="$t('home.video')" class="text-xl md:text-28 text-white relative z-1" />
+                <div
+                  class="
+                    flex flex-col
+                    w-1/2
+                    pl-8
+                    md:pl-13
+                    pt-6
+                    sm:pt-8
+                    xl:pt-12
+                  "
+                >
+                  <div
+                    v-html="$t('home.video')"
+                    class="text-xl md:text-28 text-white relative z-1"
+                  />
                   <div class="h-full max-h-12 flex items-end mb-2">
                     <Icon
                       large
-                      class="text-blue-500 transform group-hover:translate-x-2 transition-transform duration-150 ease-out"
+                      class="
+                        text-blue-500
+                        transform
+                        group-hover:translate-x-2
+                        transition-transform
+                        duration-150
+                        ease-out
+                      "
                     >
                       {{ icons.ziArrowRight }}
                     </Icon>
@@ -147,8 +225,14 @@
                 <div class="w-1/2">
                   <img
                     src="/static/img/home-imac.png"
-                    class="banner-image-2 bg-right-bottom absolute right-0 bottom-0"
-                  >
+                    class="
+                      banner-image-2
+                      bg-right-bottom
+                      absolute
+                      right-0
+                      bottom-0
+                    "
+                  />
                 </div>
               </div>
             </div>
@@ -157,25 +241,17 @@
       </div>
       <div class="flex flex-wrap sm:text-lg leading-tight px-2 sm:px-18">
         <div class="w-full sm:w-1/2 sm:pr-4">
-          <div
-            v-for="item in features1"
-            :key="item.icon"
-            class="flex pb-6"
-          >
+          <div v-for="item in features1" :key="item.icon" class="flex pb-6">
             <div class="w-8 h-8 flex items-center flex-shrink-0">
-              <img :src="require(`@/assets/img/${item.icon}`).default">
+              <img :src="require(`@/assets/img/${item.icon}`).default" />
             </div>
             <div v-html="$t(`home.${item.path}`)" class="pl-4 pt-1" />
           </div>
         </div>
         <div class="w-full sm:w-1/2 sm:pl-4">
-          <div
-            v-for="item in features2"
-            :key="item.icon"
-            class="flex pb-6"
-          >
+          <div v-for="item in features2" :key="item.icon" class="flex pb-6">
             <div class="w-8 h-8 flex items-center flex-shrink-0">
-              <img :src="require(`@/assets/img/${item.icon}`).default">
+              <img :src="require(`@/assets/img/${item.icon}`).default" />
             </div>
             <div v-html="$t(`home.${item.path}`)" class="pl-4 pt-1" />
           </div>
@@ -188,7 +264,10 @@
           :key="item.name"
           class="pb-16 px-2 sm:px-12"
         >
-          <img :src="require(`@/assets/img/${item.icon}`).default" :alt="item.name">
+          <img
+            :src="require(`@/assets/img/${item.icon}`).default"
+            :alt="item.name"
+          />
         </div>
       </div>
     </main>
@@ -216,7 +295,7 @@ export default {
     Footer,
     LocalePicker,
   },
-  setup () {
+  setup() {
     const { t } = useI18n()
     const ogTitle = computed(() => t('app.title'))
     const ogDescription = computed(() => t('app.description'))
@@ -232,10 +311,14 @@ export default {
     }
   },
   computed: {
-    subtitleItems () {
-      return [this.$t('home.subtitle1'), this.$t('home.subtitle2'), this.$t('home.subtitle3')]
+    subtitleItems() {
+      return [
+        this.$t('home.subtitle1'),
+        this.$t('home.subtitle2'),
+        this.$t('home.subtitle3'),
+      ]
     },
-    features1 () {
+    features1() {
       return [
         {
           icon: 'language.svg',
@@ -255,7 +338,7 @@ export default {
         },
       ]
     },
-    features2 () {
+    features2() {
       return [
         {
           icon: 'id-badge.svg',
@@ -271,7 +354,7 @@ export default {
         },
       ]
     },
-    techStack () {
+    techStack() {
       return [
         {
           icon: 'logo-kubernetes.svg',
@@ -327,7 +410,7 @@ export default {
   height: 115%;
 }
 .banner {
-  background: linear-gradient(155.21deg, #242424 26.85%, #1E1E1E 124.44%);
+  background: linear-gradient(155.21deg, #242424 26.85%, #1e1e1e 124.44%);
   filter: drop-shadow(10px 20px 20px rgba(0, 0, 0, 0.35));
   transform: translateZ(0);
   border-radius: 6px;
@@ -349,18 +432,20 @@ img.home-tabs {
   left: 0;
   bottom: 40%;
   width: 23%;
-  filter: drop-shadow(0px -10px 15px rgba(0, 0, 0, 0.25)) drop-shadow(8px 40px 25px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0px -10px 15px rgba(0, 0, 0, 0.25))
+    drop-shadow(8px 40px 25px rgba(0, 0, 0, 0.35));
   transform: translateZ(0);
 }
 img.home-container {
   right: 0;
   bottom: 16%;
   width: 21.7%;
-  filter: drop-shadow(0px -10px 15px rgba(0, 0, 0, 0.25)) drop-shadow(8px 40px 25px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0px -10px 15px rgba(0, 0, 0, 0.25))
+    drop-shadow(8px 40px 25px rgba(0, 0, 0, 0.35));
   transform: translateZ(0);
 }
 @screen sm {
- .home-main--top {
+  .home-main--top {
     padding-top: 8vh;
   }
   img.home-tabs {

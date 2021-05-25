@@ -1,12 +1,27 @@
-import { ApolloClient, ApolloLink, split, createHttpLink, InMemoryCache } from '@apollo/client/core'
+import {
+  ApolloClient,
+  ApolloLink,
+  split,
+  createHttpLink,
+  InMemoryCache,
+} from '@apollo/client/core'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 import { getMainDefinition } from '@apollo/client/utilities'
 
 import { typeDefs, resolvers } from '../../graphql'
-import { GET_BACKEND_VERSION, GET_IS_LOGGED_IN, GET_IS_SPEC_SYNC, SPEC_SIMPLE_UI_OFF } from '../../graphql/queries'
-import { BACKEND_VERSION_HEADER_KEY, PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../../config/globals'
+import {
+  GET_BACKEND_VERSION,
+  GET_IS_LOGGED_IN,
+  GET_IS_SPEC_SYNC,
+  SPEC_SIMPLE_UI_OFF,
+} from '../../graphql/queries'
+import {
+  BACKEND_VERSION_HEADER_KEY,
+  PAPER_SID_STORE_KEY,
+  SPEC_SIMPLE_UI_OFF_STORE_KEY,
+} from '../../config/globals'
 import router from '../../router'
 import { getUsername } from '../../graphql/resolvers'
 import emitter from '../mitt'
@@ -20,8 +35,20 @@ const logger = new Logger('Apollo')
 
 // hardcoded TODO with https://www.apollographql.com/docs/react/data/fragments/#defining-possibletypes-manually
 const possibleTypes = {
-  SpecDeltaObject: ['Spec', 'Invoice', 'Product', 'Client', 'RequisiteItems', 'PayloadFields'],
-  SpecPaperDeltaObject: ['PaperSpec', 'PaperInvoice', 'PaperProduct', 'PayloadFields'],
+  SpecDeltaObject: [
+    'Spec',
+    'Invoice',
+    'Product',
+    'Client',
+    'RequisiteItems',
+    'PayloadFields',
+  ],
+  SpecPaperDeltaObject: [
+    'PaperSpec',
+    'PaperInvoice',
+    'PaperProduct',
+    'PayloadFields',
+  ],
 }
 
 const typePolicies = {
@@ -109,7 +136,7 @@ const authLink = setContext(async (request, { headers }) => {
 })
 
 const reponseHeaders = new ApolloLink((operation, forward) => {
-  return forward(operation).map(response => {
+  return forward(operation).map((response) => {
     const context = operation.getContext()
     const {
       response: { headers },
@@ -166,14 +193,16 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
           auth.signOut()
           router.push({
             name: 'signin',
-            query: router.currentRoute.fullPath && router.currentRoute.fullPath !== '/'
-              ? { redirect: router.currentRoute.fullPath }
-              : {},
+            query:
+              router.currentRoute.fullPath &&
+              router.currentRoute.fullPath !== '/'
+                ? { redirect: router.currentRoute.fullPath }
+                : {},
           })
           break
         default:
           logger.warn(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
           )
           if (message === 'ForbiddenError: Insufficient access rights') {
             emitter.emit('system-message', message)
@@ -194,11 +223,13 @@ const link = split(
   // split based on operation type
   ({ query }) => {
     const definition = getMainDefinition(query)
-    return definition.kind === 'OperationDefinition' &&
+    return (
+      definition.kind === 'OperationDefinition' &&
       definition.operation === 'subscription'
+    )
   },
   wsLink,
-  authLink.concat(reponseHeaders.concat(httpLink)),
+  authLink.concat(reponseHeaders.concat(httpLink))
 )
 
 export const apolloClient = new ApolloClient({

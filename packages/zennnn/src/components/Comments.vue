@@ -12,14 +12,20 @@
     >
       <template v-slot:activator="{ attrs, listeners }">
         <slot name="activator" :attrs="attrs" :listeners="listeners">
-          <div
-            class="relative flex items-center"
-          >
+          <div class="relative flex items-center">
             <transition name="scale-transition">
               <div
                 v-if="newCommentsCount > 0"
                 :style="badgeStyles"
-                class="absolute rounded-full flex justify-center items-center text-xs text-white bg-purple-500"
+                class="
+                  absolute
+                  rounded-full
+                  flex
+                  justify-center
+                  items-center
+                  text-xs text-white
+                  bg-purple-500
+                "
               >
                 <span v-if="!sm">
                   {{ newCommentsCount > 99 ? '99+' : newCommentsCount }}
@@ -32,13 +38,8 @@
           </div>
         </slot>
       </template>
-      <div
-        :class="['px-5 py-5', light ? 'bg-white' : 'bg-gray-400']"
-      >
-        <div
-          v-for="(item) in discussions"
-          :key="item.id"
-        >
+      <div :class="['px-5 py-5', light ? 'bg-white' : 'bg-gray-400']">
+        <div v-for="item in discussions" :key="item.id">
           <Comment
             :item="item"
             :is-paper="isPaper"
@@ -95,7 +96,7 @@ export default {
     activator: undefined,
     items: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
     isPaper: {
       type: Boolean,
@@ -123,7 +124,7 @@ export default {
       default: false,
     },
   },
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
     const isLoggedIn = useResult(result1)
@@ -143,7 +144,7 @@ export default {
       getProfile,
     }
   },
-  data () {
+  data() {
     return {
       commentsIds: [],
       viewedComments: [],
@@ -153,7 +154,7 @@ export default {
     }
   },
   computed: {
-    badgeStyles () {
+    badgeStyles() {
       let height = 16
       let width = 18
       if (this.sm) {
@@ -170,9 +171,9 @@ export default {
       }
       return styles
     },
-    newCommentsCount () {
+    newCommentsCount() {
       let count = 0
-      this.items.forEach(item => {
+      this.items.forEach((item) => {
         if (this.isPaper) {
           if (!item.clientViewed) {
             count++
@@ -185,20 +186,21 @@ export default {
       })
       return count
     },
-    light () {
+    light() {
       return this.isPaper
     },
-    discussions () {
+    discussions() {
       const items = this.items || []
-      const discussions = items.filter(d => !d.replyTo)
+      const discussions = items.filter((d) => !d.replyTo)
       return discussions
-        .map(item => {
-          const comments = items.filter(c => c.replyTo === item.id)
+        .map((item) => {
+          const comments = items.filter((c) => c.replyTo === item.id)
           return {
             ...item,
             comments,
           }
-        }).sort((a, b) => {
+        })
+        .sort((a, b) => {
           const aDate = this.$parseDate(a.updatedAt)
           const bDate = this.$parseDate(b.updatedAt)
           return aDate > bDate ? 1 : aDate < bDate ? -1 : 0
@@ -206,19 +208,19 @@ export default {
     },
   },
   watch: {
-    isMenuActive (val) {
+    isMenuActive(val) {
       if (val) {
         setTimeout(() => {
           this.updateViewedComments()
         }, 250)
       }
     },
-    items (val, oldVal) {
+    items(val, oldVal) {
       const valLength = (val && val.length) || 0
       const oldValLength = (oldVal && oldVal.length) || 0
       if (this.isMenuActive && valLength > oldValLength) {
         const newIds = []
-        val.forEach(el => {
+        val.forEach((el) => {
           if (this.isPaper) {
             if (!el.clientViewed) {
               newIds.push(el.id)
@@ -234,7 +236,7 @@ export default {
     },
   },
   methods: {
-    async updateViewedComments (commentsIds) {
+    async updateViewedComments(commentsIds) {
       try {
         const client = this.resolveClient()
         const variables = {}
@@ -248,9 +250,13 @@ export default {
         }
         let mutation = null
         if (this.isPaper) {
-          mutation = this.isProduct ? MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED : MARK_PAPER_SPEC_COMMENTS_AS_VIEWED
+          mutation = this.isProduct
+            ? MARK_PAPER_PRODUCT_COMMENTS_AS_VIEWED
+            : MARK_PAPER_SPEC_COMMENTS_AS_VIEWED
         } else {
-          mutation = this.isProduct ? MARK_PRODUCT_COMMENTS_AS_VIEWED : MARK_SPEC_COMMENTS_AS_VIEWED
+          mutation = this.isProduct
+            ? MARK_PRODUCT_COMMENTS_AS_VIEWED
+            : MARK_SPEC_COMMENTS_AS_VIEWED
         }
         await client.mutate({
           mutation,
@@ -260,16 +266,16 @@ export default {
         throw new Error(error)
       }
     },
-    openMenu () {
+    openMenu() {
       this.isMenuActive = true
     },
-    closeMenu () {
+    closeMenu() {
       this.isMenuActive = false
     },
-    toggleMenu () {
+    toggleMenu() {
       this.isMenuActive = !this.isMenuActive
     },
-    async addComment () {
+    async addComment() {
       try {
         const client = this.resolveClient()
         if (!this.comment) return

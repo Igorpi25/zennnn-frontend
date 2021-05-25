@@ -1,19 +1,35 @@
 <template>
-  <Modal
-    v-model="dialog"
-    width="100%"
-    :max-width="710"
-  >
+  <Modal v-model="dialog" width="100%" :max-width="710">
     <div class="relative bg-gray-400">
-      <div class="flex items-center justify-center text-lg text-white font-semibold p-8 pb-2">
+      <div
+        class="
+          flex
+          items-center
+          justify-center
+          text-lg text-white
+          font-semibold
+          p-8
+          pb-2
+        "
+      >
         <div class="text-white text-xl font-semibold">
-          {{ title ? title : create ? $t('words.addWordTitle') : $t('words.editWord') }}
+          {{
+            title
+              ? title
+              : create
+              ? $t('words.addWordTitle')
+              : $t('words.editWord')
+          }}
         </div>
       </div>
       <div class="text-gray-100 p-5">
         <Form
           ref="form"
-          class="grid grid-rows-1 sm:grid-cols-2 sm:grid-rows-3 sm:grid-flow-col gap-8"
+          class="
+            grid grid-rows-1
+            sm:grid-cols-2 sm:grid-rows-3 sm:grid-flow-col
+            gap-8
+          "
         >
           <TextField
             v-for="item in locales"
@@ -24,8 +40,12 @@
             :rules="item.value === defaultLocale ? [rules.required] : undefined"
             :state-icon="item.value === defaultLocale"
             :required="item.value === defaultLocale"
-            :state-succes-icon="item.value === defaultLocale ? icons.ziUser : undefined"
-            :state-succes-color="item.value === defaultLocale ? 'text-blue-500' : undefined"
+            :state-succes-icon="
+              item.value === defaultLocale ? icons.ziUser : undefined
+            "
+            :state-succes-color="
+              item.value === defaultLocale ? 'text-blue-500' : undefined
+            "
             force-update
             content-class="pr-sm"
             @blur="onBlur(item.key)"
@@ -33,30 +53,48 @@
           >
             <template v-slot:prepend>
               <img
-                :src="require(`@/assets/img/flags/locale/${item.value}.svg`).default"
+                :src="
+                  require(`@/assets/img/flags/locale/${item.value}.svg`).default
+                "
                 class="h-6 w-6 rounded-full ml-sm mr-5"
-              >
+              />
             </template>
-            <template
-              v-if="item.value !== defaultLocale"
-              v-slot:append
-            >
+            <template v-if="item.value !== defaultLocale" v-slot:append>
               <i>
                 <Icon v-if="googleTranslateIconMap[item.key]" :base="false">
                   {{ icons.ziLanguages }}
                 </Icon>
-                <Icon v-else-if="model[item.key]" :base="false" class="text-blue-500">
+                <Icon
+                  v-else-if="model[item.key]"
+                  :base="false"
+                  class="text-blue-500"
+                >
                   {{ icons.ziUser }}
                 </Icon>
               </i>
             </template>
           </TextField>
         </Form>
-        <div :class="['flex px-sm pt-5', hasNavigateToDictionary || isAdmin ? 'justify-between' : 'justify-end']">
+        <div
+          :class="[
+            'flex px-sm pt-5',
+            hasNavigateToDictionary || isAdmin
+              ? 'justify-between'
+              : 'justify-end',
+          ]"
+        >
           <router-link
             v-if="hasNavigateToDictionary"
             :to="{ name: 'dictionary', params: { orgId } }"
-            class="inline-flex items-center text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none mr-2"
+            class="
+              inline-flex
+              items-center
+              text-blue-500
+              hover:text-blue-400
+              focus:text-blue-400
+              focus:outline-none
+              mr-2
+            "
           >
             <Icon class="mr-sm">
               {{ icons.ziEdit }}
@@ -65,7 +103,9 @@
           </router-link>
           <div v-else-if="isAdmin">
             <div class="flex items-center">
-              <span class="w-1/2 text-right mr-1">{{ $t('words.defaultLanguage') }}:</span>
+              <span class="w-1/2 text-right mr-1"
+                >{{ $t('words.defaultLanguage') }}:</span
+              >
               <Select
                 v-model="defaultLocaleLazy"
                 :items="locales"
@@ -77,7 +117,15 @@
             </div>
           </div>
           <button
-            class="inline-flex justify-end items-center text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
+            class="
+              inline-flex
+              justify-end
+              items-center
+              text-blue-500
+              hover:text-blue-400
+              focus:text-blue-400
+              focus:outline-none
+            "
             @click="translateWord"
           >
             <Progress
@@ -104,21 +152,32 @@
           >
             <span>{{ $t('action.cancel') }}</span>
           </Btn>
-          <Btn
-            :loading="loading"
-            class="h-10 text-sm"
-            @click="onSubmit"
-          >
-            <span>{{ actionText ? actionText : create ? $t('action.add') : $t('action.apply') }}</span>
+          <Btn :loading="loading" class="h-10 text-sm" @click="onSubmit">
+            <span>{{
+              actionText
+                ? actionText
+                : create
+                ? $t('action.add')
+                : $t('action.apply')
+            }}</span>
           </Btn>
         </div>
       </div>
       <span
-        class="absolute top-0 right-0 text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
+        class="
+          absolute
+          top-0
+          right-0
+          text-gray-200
+          hover:text-gray-100
+          cursor-pointer
+          mt-2
+          mr-2
+        "
         @click="dialog = false"
       >
         <Icon>
-          {{  icons.ziCloseDelete }}
+          {{ icons.ziCloseDelete }}
         </Icon>
       </span>
     </div>
@@ -128,12 +187,29 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
-import { ziEdit, ziUser, ziCloseDelete, ziLanguages, ziCheckedSm } from '@zennnn/icons'
-import { Btn, Modal, Progress, Icon, Form, Select, TextField } from '@zennnn/core'
+import {
+  ziEdit,
+  ziUser,
+  ziCloseDelete,
+  ziLanguages,
+  ziCheckedSm,
+} from '@zennnn/icons'
+import {
+  Btn,
+  Modal,
+  Progress,
+  Icon,
+  Form,
+  Select,
+  TextField,
+} from '@zennnn/core'
 
 import { LOCALES_LIST } from '../config/globals'
 import { CREATE_WORD, UPDATE_WORD } from '../graphql/mutations'
-import { CREATE_WORD as ADMIN_CREATE_WORD, UPDATE_WORD as ADMIN_UPDATE_WORD } from '../graphql/admin/mutations'
+import {
+  CREATE_WORD as ADMIN_CREATE_WORD,
+  UPDATE_WORD as ADMIN_UPDATE_WORD,
+} from '../graphql/admin/mutations'
 import { TRANSLATE_WORD } from '../graphql/queries'
 import { TRANSLATE_WORD as ADMIN_TRANSLATE_WORD } from '../graphql/admin/queries'
 
@@ -164,7 +240,7 @@ export default {
     submitResult: Boolean,
   },
   emits: ['update:modelValue'],
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
@@ -179,14 +255,14 @@ export default {
       apolloClient,
     }
   },
-  data () {
+  data() {
     return {
       loading: false,
       dialog: this.value,
       formValidity: false,
       model: {},
       rules: {
-        required: v => !!v || this.$t('rule.required'),
+        required: (v) => !!v || this.$t('rule.required'),
       },
       translateLoading: false,
       translations: {},
@@ -194,7 +270,7 @@ export default {
     }
   },
   computed: {
-    defaultLocale () {
+    defaultLocale() {
       if (this.isAdmin) {
         return this.defaultLocaleLazy
       }
@@ -204,33 +280,34 @@ export default {
         return this.item && this.item.defaultLocale
       }
     },
-    googleTranslateIconMap () {
+    googleTranslateIconMap() {
       const result = {}
-      LOCALES_LIST.forEach(el => {
+      LOCALES_LIST.forEach((el) => {
         const key = el.value
-        result[key] = this.translations[key] && this.model[key] === this.translations[key]
+        result[key] =
+          this.translations[key] && this.model[key] === this.translations[key]
       })
       return result
     },
-    hasNavigateToDictionary () {
+    hasNavigateToDictionary() {
       return this.$route.name !== 'dictionary' && !this.isAdmin
     },
-    locales () {
+    locales() {
       const locale = this.$i18n.locale
-      const items = LOCALES_LIST.map(el => {
+      const items = LOCALES_LIST.map((el) => {
         return {
           ...el,
           key: el.value,
         }
       })
-      const index = items.findIndex(el => el.value === locale)
+      const index = items.findIndex((el) => el.value === locale)
       // move default locale input to start
       if (index > 0) {
         items.splice(0, 0, items.splice(index, 1)[0])
       }
       return items
     },
-    statuses () {
+    statuses() {
       return [
         {
           text: this.$t('words.DRAFT'),
@@ -244,10 +321,10 @@ export default {
     },
   },
   watch: {
-    value (val) {
+    value(val) {
       this.dialog = val
     },
-    dialog (val) {
+    dialog(val) {
       this.$emit('update:modelValue', val)
       if (val) {
         this.onOpen()
@@ -257,23 +334,25 @@ export default {
     },
   },
   methods: {
-    onInput (key, value) {
+    onInput(key, value) {
       this.model[key] = value
     },
-    onBlur (key) {
+    onBlur(key) {
       if (!this.model[key] && this.translations[key]) {
         this.model[key] = this.translations[key]
       }
     },
-    onOpen () {
-      this.defaultLocaleLazy = this.create ? this.$i18n.locale : this.item && this.item.defaultLocale
+    onOpen() {
+      this.defaultLocaleLazy = this.create
+        ? this.$i18n.locale
+        : this.item && this.item.defaultLocale
       if (!this.create) {
         this.$nextTick(() => {
           const values = (this.item && this.item.values) || []
           const valuesMap = {}
           const trMap = {}
-          LOCALES_LIST.forEach(el => {
-            const v = values.find(val => val.k === el.value) || {}
+          LOCALES_LIST.forEach((el) => {
+            const v = values.find((val) => val.k === el.value) || {}
             valuesMap[el.value] = v.v || v.tr || undefined
             trMap[el.value] = v.tr || undefined
           })
@@ -283,7 +362,7 @@ export default {
       } else {
         const valuesMap = {}
         const trMap = {}
-        LOCALES_LIST.forEach(el => {
+        LOCALES_LIST.forEach((el) => {
           valuesMap[el.value] = undefined
           trMap[el.value] = undefined
         })
@@ -299,7 +378,7 @@ export default {
         }
       }, 250)
     },
-    onClose () {
+    onClose() {
       setTimeout(() => {
         this.model = {}
         this.translations = {}
@@ -308,7 +387,7 @@ export default {
         }
       }, 250)
     },
-    onSubmit () {
+    onSubmit() {
       const isValid = this.$refs.form.validate(true)
       if (!isValid) return
       if (this.submitResult) {
@@ -323,7 +402,7 @@ export default {
         this.updateWord()
       }
     },
-    async translateWord () {
+    async translateWord() {
       const isValid = this.$refs.form.validate(true)
       if (!isValid) return
       const text = this.model[this.defaultLocale]
@@ -338,9 +417,10 @@ export default {
             sourceLang: this.defaultLocale,
           },
         })
-        const result = (response && response.data && response.data.translateWord) || []
+        const result =
+          (response && response.data && response.data.translateWord) || []
         this.$logger.info('Translate result', result)
-        result.forEach(el => {
+        result.forEach((el) => {
           const key = el.k
           if (!this.model[key] || this.model[key] === this.translations[key]) {
             this.model[key] = el.tr
@@ -357,7 +437,7 @@ export default {
         this.translateLoading = false
       }
     },
-    async createWord () {
+    async createWord() {
       try {
         this.loading = true
         const input = {
@@ -384,7 +464,7 @@ export default {
         this.loading = false
       }
     },
-    async updateWord () {
+    async updateWord() {
       const id = this.item && this.item.id
       if (!id) return
       try {
@@ -415,14 +495,13 @@ export default {
         this.loading = false
       }
     },
-    getValues () {
+    getValues() {
       const result = []
-      LOCALES_LIST.forEach(el => {
+      LOCALES_LIST.forEach((el) => {
         const k = el.value
         const tr = this.translations[k]
-        const v = this.model[k] && this.model[k] === tr
-          ? null
-          : this.model[k] || null
+        const v =
+          this.model[k] && this.model[k] === tr ? null : this.model[k] || null
         const r = {
           k,
           v,

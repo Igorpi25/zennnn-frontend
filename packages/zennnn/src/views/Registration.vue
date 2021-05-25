@@ -10,12 +10,16 @@
                 <span class="text-gray-100 mr-2 inline md:block">
                   {{ $t('signup.hello') }}
                 </span>
-                <span class="text-white inline sm:block" style="max-width: 552px;">
+                <span
+                  class="text-white inline sm:block"
+                  style="max-width: 552px"
+                >
                   {{ $t('signup.helloContent') }}
                 </span>
               </h1>
-              <p class="text-white mb-0 md:mb-5" style="max-width: 460px;">
-                <span>{{ $t('signup.compliteRegistration') }}</span>&nbsp;
+              <p class="text-white mb-0 md:mb-5" style="max-width: 460px">
+                <span>{{ $t('signup.compliteRegistration') }}</span
+                >&nbsp;
                 <span class="text-gray-100">
                   {{ $t('signup.registerContent') }}
                 </span>
@@ -26,7 +30,7 @@
               <Btn
                 outlined
                 class="mx-auto md:mx-0 md:mt-0 mt-8 md:mt-24"
-                @click="$router.push({name: 'signin'})"
+                @click="$router.push({ name: 'signin' })"
               >
                 <span>{{ $t('signup.signin') }}</span>
               </Btn>
@@ -103,15 +107,16 @@
               </div>
               <div class="relative mx-auto text-gray-300">
                 <!-- TODO fix position -->
-                <Checkbox
-                  :rules="[rules.required]"
-                  secondary
-                >
+                <Checkbox :rules="[rules.required]" secondary>
                   <span class="ml-3 float-left text-gray-200">
                     {{ $t('signup.acceptPolicyAndTerms') }}&nbsp;
-                    <a class="text-gray-300" href="#">{{ $t('signup.privacyPolicy') }}</a>
+                    <a class="text-gray-300" href="#">{{
+                      $t('signup.privacyPolicy')
+                    }}</a>
                     &nbsp;{{ $t('preposition.and') }}&nbsp;
-                    <a class="text-gray-300" href="#">{{ $t('signup.termsOfUse') }}</a>
+                    <a class="text-gray-300" href="#">{{
+                      $t('signup.termsOfUse')
+                    }}</a>
                   </span>
                 </Checkbox>
                 <div class="flex justify-center">
@@ -171,7 +176,7 @@ export default {
       next('not-found')
     }
   },
-  data () {
+  data() {
     return {
       formValidity: false,
       loading: false,
@@ -185,9 +190,10 @@ export default {
         password: '',
       },
       rules: {
-        required: v => !!v || this.$t('rule.required'),
-        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
-        passwordMinLength: v => (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
+        required: (v) => !!v || this.$t('rule.required'),
+        email: (v) => /.+@.+\..+/.test(v) || this.$t('rule.email'),
+        passwordMinLength: (v) =>
+          (v && v.length > 7) || this.$t('rule.minLength', { n: 8 }),
       },
       icons: {
         ziVisible,
@@ -195,14 +201,14 @@ export default {
       },
     }
   },
-  created () {
+  created() {
     this.user = this.$auth.currentSessionUser()
     this.formModel.firstName = this.user.given_name || ''
     this.formModel.lastName = this.user.family_name || ''
     this.formModel.email = this.user.email
   },
   methods: {
-    async onSubmit (e) {
+    async onSubmit(e) {
       try {
         e.preventDefault()
         this.loading = true
@@ -215,7 +221,11 @@ export default {
             family_name: lastName,
             locale: this.$i18n.locale,
           }
-          const loggedUser = await this.$auth.completeNewPassword(this.user, password, attrs)
+          const loggedUser = await this.$auth.completeNewPassword(
+            this.user,
+            password,
+            attrs
+          )
           this.$logger.info('Registered complite user', loggedUser)
           await this.$auth.signIn(email, password)
           if (this.$route.query.redirect) {

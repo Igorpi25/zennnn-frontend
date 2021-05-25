@@ -10,19 +10,23 @@ import {
   defineComponent,
 } from 'vue'
 
-import {
-  useFilterProps,
-  useFilter,
-  useClientRect,
-  Mask,
-} from 'vue-supp'
+import { useFilterProps, useFilter, useClientRect, Mask } from 'vue-supp'
 
 import { ziChecked } from '@zennnn/icons'
 
 import { useInputProps, useInput } from '../../composables/useInput'
-import { useInputClearProps, useInputClear } from '../../composables/useInputClear'
-import { useInputControlProps, useInputControl } from '../../composables/useInputControl'
-import { useInputValidationProps, useInputValidation } from '../../composables/useInputValidation'
+import {
+  useInputClearProps,
+  useInputClear,
+} from '../../composables/useInputClear'
+import {
+  useInputControlProps,
+  useInputControl,
+} from '../../composables/useInputControl'
+import {
+  useInputValidationProps,
+  useInputValidation,
+} from '../../composables/useInputValidation'
 import { useInputMessage } from '../../composables/useInputMessage'
 import { useSelect } from '../../composables/useSelect'
 
@@ -95,9 +99,19 @@ export default defineComponent({
     placeholder: String,
   },
 
-  emits: ['update:modelValue', 'update:search', 'update:error', 'click:clear', 'focus', 'blur', 'keydown', 'mousedown', 'mouseup'],
+  emits: [
+    'update:modelValue',
+    'update:search',
+    'update:error',
+    'click:clear',
+    'focus',
+    'blur',
+    'keydown',
+    'mousedown',
+    'mouseup',
+  ],
 
-  setup (props, { slots, emit }) {
+  setup(props, { slots, emit }) {
     const id: string = uid('select-')
     const listboxId: string = uid('listbox-')
 
@@ -114,10 +128,7 @@ export default defineComponent({
       genLabel,
     } = useInput(props, { slots, emit, id })
 
-    const {
-      getText,
-      getValue,
-    } = useFilter(props)
+    const { getText, getValue } = useFilter(props)
 
     const {
       showDetails,
@@ -140,20 +151,21 @@ export default defineComponent({
       onControlMouseUp,
       genPrependSlot,
       genAppendSlot,
-    } = useInputControl(props, { emit, slots, inputElement, isFocused, isDisabled })
+    } = useInputControl(props, {
+      emit,
+      slots,
+      inputElement,
+      isFocused,
+      isDisabled,
+    })
 
     const clientRectProps = reactive({
       element: controlElement,
       hasResizeListener: true,
     })
-    const {
-      clientRect,
-      updateClientRect,
-    } = useClientRect(clientRectProps)
+    const { clientRect, updateClientRect } = useClientRect(clientRectProps)
 
-    const {
-      genInputMessages,
-    } = useInputMessage(props, {
+    const { genInputMessages } = useInputMessage(props, {
       controlElement,
       isFocused,
       isPatternMismatch,
@@ -164,13 +176,14 @@ export default defineComponent({
       dimensions: clientRect,
     })
 
-    const {
-      genClearInput,
-    } = useInputClear(props, {
+    const { genClearInput } = useInputClear(props, {
       inputElement,
       isDirty,
       emit,
-      emitChange: () => { select(null); closeMenu() },
+      emitChange: () => {
+        select(null)
+        closeMenu()
+      },
       setInternalValue: (val) => setInternalValue(val),
     })
 
@@ -202,7 +215,9 @@ export default defineComponent({
         'input--focused': isFocused.value,
         'input--disabled': isDisabled.value,
         'input--dirty': internalValue.value,
-        'input--has-error': ((hasMessages.value && hasError.value) || isPatternMismatch.value) && showDetails.value,
+        'input--has-error':
+          ((hasMessages.value && hasError.value) || isPatternMismatch.value) &&
+          showDetails.value,
         select: true,
         'select--is-menu-active': isMenuActive.value,
       }
@@ -223,9 +238,12 @@ export default defineComponent({
       }
     })
 
-    watch(() => props.modelValue, (val) => {
-      setInternalValue(val)
-    })
+    watch(
+      () => props.modelValue,
+      (val) => {
+        setInternalValue(val)
+      }
+    )
 
     onBeforeMount(() => {
       // override initial set of model value
@@ -246,7 +264,9 @@ export default defineComponent({
 
     const setSelectedItem = (val: any) => {
       if (!val) {
-        selectedItem.value = items.value.find(item => getValue(item) === internalValue.value)
+        selectedItem.value = items.value.find(
+          (item) => getValue(item) === internalValue.value
+        )
       } else {
         selectedItem.value = val
       }
@@ -371,95 +391,102 @@ export default defineComponent({
       if (props.size) data.size = props.size
       if (props.pattern) data.pattern = props.pattern
       if (props.mask) {
-        return withDirectives(
-          h('input', data),
-          [
-            [Mask, props.mask],
-          ],
-        )
+        return withDirectives(h('input', data), [[Mask, props.mask]])
       }
       return h('input', data)
     }
 
     const genControl = () => {
-      return h('div', {
-        ref: controlElement,
-        class: {
-          input__control: true,
-          'input__control--solo': props.solo,
-          'input__control--has-prepend': hasPrependSlot.value,
-          'input__control--has-append': hasAppendSlot.value || hasState.value || props.clearable || props.showArrow,
-          select__control: true,
-          'select__control--is-active': isActive.value,
-          'select__control--is-menu-active': isMenuActive.value,
-          [props.controlClass.trim()]: true,
+      return h(
+        'div',
+        {
+          ref: controlElement,
+          class: {
+            input__control: true,
+            'input__control--solo': props.solo,
+            'input__control--has-prepend': hasPrependSlot.value,
+            'input__control--has-append':
+              hasAppendSlot.value ||
+              hasState.value ||
+              props.clearable ||
+              props.showArrow,
+            select__control: true,
+            'select__control--is-active': isActive.value,
+            'select__control--is-menu-active': isMenuActive.value,
+            [props.controlClass.trim()]: true,
+          },
+          onClick: onControlClick,
+          onMousedown: onControlMouseDown,
+          onMouseup: onControlMouseUp,
         },
-        onClick: onControlClick,
-        onMousedown: onControlMouseDown,
-        onMouseup: onControlMouseUp,
-      }, [
-        genPrependOuterSlot(),
-        genPrependSlot(),
-        genSelectInput(),
-        genAppendSlot(),
-        genStateIcon(),
-        genClearInput(),
-        genArrow(),
-        genAppendOuterSlot(),
-      ])
+        [
+          genPrependOuterSlot(),
+          genPrependSlot(),
+          genSelectInput(),
+          genAppendSlot(),
+          genStateIcon(),
+          genClearInput(),
+          genArrow(),
+          genAppendOuterSlot(),
+        ]
+      )
     }
 
     const genMenu = () => {
-      return h(Menu, {
-        ref: menuRef,
-        modelValue: isMenuActive.value,
-        value: internalValue.value,
-        activator: controlElement.value,
-        attach: props.attach,
-        transition: null,
-        bottom: true,
-        arrow: false,
-        closeOnClick: true,
-        closeOnContentClick: false,
-        openOnClick: false,
-        openOnHover: false,
-        disableKeys: true,
-        width: clientRect.value?.width,
-        distance: props.distance,
-        tabindex: '-1',
-        id: listboxId,
-        allowOverflow: true,
-        height: props.height,
-        minHeight: props.minHeight,
-        maxHeight: props.maxHeight,
-        disabled: isDisabled.value || isReadonly.value,
-        boxClass: classNames(
-          'select-box shadow-none dark:shadow-none rounded-t-none',
-          props.solo || props.dense ? 'select-box--dense' : '',
-          props.boxClass.trim(),
-        ),
-        contentClass: classNames(
-          'bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-t-none',
-          props.contentClass.trim(),
-        ),
-        includeElements: [controlElement.value],
-        role: 'listbox',
-        'onUpdate:modelValue': (val: boolean) => {
-          isMenuActive.value = val
+      return h(
+        Menu,
+        {
+          ref: menuRef,
+          modelValue: isMenuActive.value,
+          value: internalValue.value,
+          activator: controlElement.value,
+          attach: props.attach,
+          transition: null,
+          bottom: true,
+          arrow: false,
+          closeOnClick: true,
+          closeOnContentClick: false,
+          openOnClick: false,
+          openOnHover: false,
+          disableKeys: true,
+          width: clientRect.value?.width,
+          distance: props.distance,
+          tabindex: '-1',
+          id: listboxId,
+          allowOverflow: true,
+          height: props.height,
+          minHeight: props.minHeight,
+          maxHeight: props.maxHeight,
+          disabled: isDisabled.value || isReadonly.value,
+          boxClass: classNames(
+            'select-box shadow-none dark:shadow-none rounded-t-none',
+            props.solo || props.dense ? 'select-box--dense' : '',
+            props.boxClass.trim()
+          ),
+          contentClass: classNames(
+            'bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-t-none',
+            props.contentClass.trim()
+          ),
+          includeElements: [controlElement.value],
+          role: 'listbox',
+          'onUpdate:modelValue': (val: boolean) => {
+            isMenuActive.value = val
+          },
+          'onUpdate:value': (val: any) => {
+            select(val)
+          },
         },
-        'onUpdate:value': (val: any) => {
-          select(val)
-        },
-      }, {
-        default: () => genMenuItems(),
-      })
+        {
+          default: () => genMenuItems(),
+        }
+      )
     }
 
     const genMenuItems = () => {
       const itemClassNames = classNames(
         'listbox__option',
         props.solo || props.dense ? 'h-8' : 'h-10',
-        'pl-0',
+        'pl-0'
       )
       let index = 0
       const children: any[] = items.value.map((item) => {
@@ -467,36 +494,45 @@ export default defineComponent({
           return genDivider(index)
         }
         const value = getValue(item)
-        return h(MenuItem, {
-          tag: 'template',
-          id: item.$id,
-          index: index++,
-          key: value,
-          disabled: item.disabled,
-          value: value,
-          role: 'option',
-          class: itemClassNames,
-          contentOnIntersect: props.contentOnIntersect,
-          onClick: (e: MouseEvent) => {
-            if (item.disabled) return e.preventDefault()
-            menuRef.value?.selectItem(item)
-            inputElement.value && inputElement.value.focus({ preventScroll: true })
-            nextTick(closeMenu)
+        return h(
+          MenuItem,
+          {
+            tag: 'template',
+            id: item.$id,
+            index: index++,
+            key: value,
+            disabled: item.disabled,
+            value: value,
+            role: 'option',
+            class: itemClassNames,
+            contentOnIntersect: props.contentOnIntersect,
+            onClick: (e: MouseEvent) => {
+              if (item.disabled) return e.preventDefault()
+              menuRef.value?.selectItem(item)
+              inputElement.value &&
+                inputElement.value.focus({ preventScroll: true })
+              nextTick(closeMenu)
+            },
           },
-        }, {
-          default: (slotProps: any) => {
-            return slots.item
-              ? h('div', undefined, slots.item({ item, ...slotProps }))
-              : h('div', undefined, [
-                h('div', {
-                  class: 'w-8 flex justify-center flex-shrink-0',
-                }, getValue(selectedItem.value) === getValue(item)
-                  ? h(Icon, { size: 24 }, { default: () => ziChecked })
-                  : undefined),
-                h('div', { class: 'truncate' }, getText(item)),
-              ])
-          },
-        })
+          {
+            default: (slotProps: any) => {
+              return slots.item
+                ? h('div', undefined, slots.item({ item, ...slotProps }))
+                : h('div', undefined, [
+                    h(
+                      'div',
+                      {
+                        class: 'w-8 flex justify-center flex-shrink-0',
+                      },
+                      getValue(selectedItem.value) === getValue(item)
+                        ? h(Icon, { size: 24 }, { default: () => ziChecked })
+                        : undefined
+                    ),
+                    h('div', { class: 'truncate' }, getText(item)),
+                  ])
+            },
+          }
+        )
       })
       if (props.items.length === 0) {
         children.push(genNoData())
@@ -526,15 +562,19 @@ export default defineComponent({
     }
   },
 
-  render () {
-    return h('div', {
-      ref: 'rootElement',
-      class: this.classes,
-    }, [
-      this.genLabel(),
-      this.genInputMessages(),
-      this.genControl(),
-      this.genMenu(),
-    ])
+  render() {
+    return h(
+      'div',
+      {
+        ref: 'rootElement',
+        class: this.classes,
+      },
+      [
+        this.genLabel(),
+        this.genInputMessages(),
+        this.genControl(),
+        this.genMenu(),
+      ]
+    )
   },
 })

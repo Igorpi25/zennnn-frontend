@@ -4,7 +4,9 @@
       ref="selectRef"
       :model-value="selectValue"
       :items="items"
-      :control-class="isInputFocused ? 'ring-1 ring-blue-500 flex-shrink-0' : 'flex-shrink-0'"
+      :control-class="
+        isInputFocused ? 'ring-1 ring-blue-500 flex-shrink-0' : 'flex-shrink-0'
+      "
       :open-on-focus="false"
       :dependencies="dependencies"
       class="flex-grow"
@@ -12,13 +14,11 @@
       @update:model-value="onContactTypeSelect"
     >
       <template v-slot:prepend>
-        <div
-          class="w-6 flex-shrink-0 inline-flex justify-center ml-2 mr-2"
-        >
+        <div class="w-6 flex-shrink-0 inline-flex justify-center ml-2 mr-2">
           <img
             :src="require(`@/assets/img/contacts/${selectedIcon}.svg`).default"
             aria-hidden="true"
-          >
+          />
         </div>
       </template>
       <template v-slot:append-outer>
@@ -44,7 +44,7 @@
           <img
             :src="require(`@/assets/img/contacts/${item.icon}.svg`).default"
             aria-hidden="true"
-          >
+          />
         </div>
         <span class="text-gray-200">{{ item.text }}</span>
       </template>
@@ -52,7 +52,14 @@
 
     <button
       v-if="!create"
-      class="flex-shrink-0 text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none ml-1"
+      class="
+        flex-shrink-0
+        text-gray-200
+        focus:text-gray-100
+        hover:text-gray-100
+        focus:outline-none
+        ml-1
+      "
       @click="$emit('delete')"
     >
       <Icon>
@@ -91,7 +98,7 @@ export default {
     },
   },
   emits: ['update', 'delete'],
-  setup () {
+  setup() {
     const { t } = useI18n()
 
     const inputRef = ref(null)
@@ -154,7 +161,9 @@ export default {
       return [inputRef.value && inputRef.value.rootElement]
     })
 
-    const selectedItem = computed(() => items.find(item => item.value === selectValue.value) || {})
+    const selectedItem = computed(
+      () => items.find((item) => item.value === selectValue.value) || {}
+    )
 
     const selectedIcon = computed(() => selectedItem.value.icon || 'qq')
 
@@ -172,8 +181,8 @@ export default {
       selectedPlaceholder,
       items,
       rules: {
-        required: v => !!v || t('rule.required'),
-        contact: v => (v && v.contact) || t('rule.required'),
+        required: (v) => !!v || t('rule.required'),
+        contact: (v) => (v && v.contact) || t('rule.required'),
       },
       icons: {
         ziCloseDelete,
@@ -182,7 +191,7 @@ export default {
   },
   watch: {
     value: {
-      handler (val) {
+      handler(val) {
         if (!val) return
         this.setValue(val)
       },
@@ -190,35 +199,39 @@ export default {
     },
   },
   methods: {
-    openMenu () {
+    openMenu() {
       if (!this.selectRef.isMenuActive) {
         this.selectRef.openMenu()
       }
     },
-    closeMenu () {
+    closeMenu() {
       if (this.selectRef.isMenuActive) {
         this.selectRef.closeMenu()
       }
     },
-    setValue (val) {
+    setValue(val) {
       const item = val || {}
       this.selectValue = item.contactType
       this.inputValue = item.contact
     },
-    onFocus () {
+    onFocus() {
       this.closeMenu()
       this.isInputFocused = true
     },
-    onBlur (e) {
+    onBlur() {
       this.isInputFocused = false
     },
-    emitChange () {
+    emitChange() {
       const contact = this.inputValue
       const contactType = this.selectValue
-      if (contactType === this.value.contactType && contact === this.value.contact) return
+      if (
+        contactType === this.value.contactType &&
+        contact === this.value.contact
+      )
+        return
       this.$emit('update', { contact, contactType })
     },
-    onContactTypeSelect (val) {
+    onContactTypeSelect(val) {
       this.selectValue = val
       this.emitChange()
       if (!this.create) {

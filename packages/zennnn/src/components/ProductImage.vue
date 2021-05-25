@@ -30,25 +30,37 @@
                   ]"
                 >
                   <i>
-                    <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="0.773926" y="5.50012" width="11" height="1" stroke="currentColor"/>
-                      <rect x="6.77393" y="0.500122" width="11" height="1" transform="rotate(90 6.77393 0.500122)" stroke="currentColor"/>
+                    <svg
+                      width="13"
+                      height="12"
+                      viewBox="0 0 13 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="0.773926"
+                        y="5.50012"
+                        width="11"
+                        height="1"
+                        stroke="currentColor"
+                      />
+                      <rect
+                        x="6.77393"
+                        y="0.500122"
+                        width="11"
+                        height="1"
+                        transform="rotate(90 6.77393 0.500122)"
+                        stroke="currentColor"
+                      />
                     </svg>
                   </i>
                 </div>
-                <div
-                  v-else
-                  :class="[
-                    'w-full h-full rounded',
-                  ]"
-                >
-                  <Image
-                    :src="iconImageSrc"
-                    aspect-ratio="1"
-                    class="rounded"
-                  >
+                <div v-else :class="['w-full h-full rounded']">
+                  <Image :src="iconImageSrc" aspect-ratio="1" class="rounded">
                     <template v-slot:placeholder>
-                      <div class="flex justify-center items-center w-full h-full">
+                      <div
+                        class="flex justify-center items-center w-full h-full"
+                      >
                         <LoadingSpinner />
                       </div>
                     </template>
@@ -62,20 +74,85 @@
                   />
                   <div
                     v-if="(isDragOver || menu) && !loading"
-                    class="absolute inset-0 flex justify-center items-center text-white"
+                    class="
+                      absolute
+                      inset-0
+                      flex
+                      justify-center
+                      items-center
+                      text-white
+                    "
                   >
                     <i v-if="isDragOver">
-                      <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0.773926" y="5.50012" width="11" height="1" stroke="currentColor"/>
-                        <rect x="6.77393" y="0.500122" width="11" height="1" transform="rotate(90 6.77393 0.500122)" stroke="currentColor"/>
+                      <svg
+                        width="13"
+                        height="12"
+                        viewBox="0 0 13 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          x="0.773926"
+                          y="5.50012"
+                          width="11"
+                          height="1"
+                          stroke="currentColor"
+                        />
+                        <rect
+                          x="6.77393"
+                          y="0.500122"
+                          width="11"
+                          height="1"
+                          transform="rotate(90 6.77393 0.500122)"
+                          stroke="currentColor"
+                        />
                       </svg>
                     </i>
                     <i v-else>
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="9.27393" cy="9" r="8" stroke="white" stroke-width="1.6"/>
-                        <rect x="5.67393" y="8.6124" width="7.2" height="0.8" fill="currentColor" stroke="white" stroke-width="0.8"/>
-                        <rect x="15.5076" y="14.1488" width="5.43138" height="0.8" rx="0.4" transform="rotate(45 15.5076 14.1488)" fill="currentColor" stroke="white" stroke-width="0.8"/>
-                        <rect x="9.67397" y="5.41239" width="7.2" height="0.8" transform="rotate(90 9.67397 5.41239)" fill="currentColor" stroke="white" stroke-width="0.8"/>
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="9.27393"
+                          cy="9"
+                          r="8"
+                          stroke="white"
+                          stroke-width="1.6"
+                        />
+                        <rect
+                          x="5.67393"
+                          y="8.6124"
+                          width="7.2"
+                          height="0.8"
+                          fill="currentColor"
+                          stroke="white"
+                          stroke-width="0.8"
+                        />
+                        <rect
+                          x="15.5076"
+                          y="14.1488"
+                          width="5.43138"
+                          height="0.8"
+                          rx="0.4"
+                          transform="rotate(45 15.5076 14.1488)"
+                          fill="currentColor"
+                          stroke="white"
+                          stroke-width="0.8"
+                        />
+                        <rect
+                          x="9.67397"
+                          y="5.41239"
+                          width="7.2"
+                          height="0.8"
+                          transform="rotate(90 9.67397 5.41239)"
+                          fill="currentColor"
+                          stroke="white"
+                          stroke-width="0.8"
+                        />
                       </svg>
                     </i>
                   </div>
@@ -83,10 +160,7 @@
               </div>
             </template>
           </FileUploader>
-          <div
-            v-else
-            class="w-8 h-8 rounded inline-block"
-          >
+          <div v-else class="w-8 h-8 rounded inline-block">
             <Image
               v-if="imageSrc"
               :src="iconImageSrc"
@@ -103,12 +177,8 @@
         </slot>
       </div>
     </template>
-    <div
-      :class="['p-4 relative', light ? 'bg-white' : 'bg-gray-400']"
-    >
-      <span
-        class="absolute top-0 right-0 pt-2 pr-2"
-      >
+    <div :class="['p-4 relative', light ? 'bg-white' : 'bg-gray-400']">
+      <span class="absolute top-0 right-0 pt-2 pr-2">
         <Icon
           class="text-gray-200 cursor-pointer"
           :class="[light ? 'hover:text-gray-300' : 'hover:text-gray-100']"
@@ -121,7 +191,14 @@
         v-if="imagesList.length > 1"
         :disabled="!sortable"
         draggable=".sortable-source"
-        class="inline-flex overflow-x-auto focus:outline-none space-x-2 pb-4 pr-6"
+        class="
+          inline-flex
+          overflow-x-auto
+          focus:outline-none
+          space-x-2
+          pb-4
+          pr-6
+        "
         @input="sortImages"
       >
         <Image
@@ -130,7 +207,11 @@
           :src="`${img.url}${ICON_IMAGE_POSTFIX}`"
           :class="[
             'rounded h-8 w-8 sortable-source focus:outline-none border border-solid',
-            i === currentImageIndex && light ? 'border-light-gray-500' : i === currentImageIndex && !light ? 'border-white' : 'border-transparent',
+            i === currentImageIndex && light
+              ? 'border-light-gray-500'
+              : i === currentImageIndex && !light
+              ? 'border-white'
+              : 'border-transparent',
           ]"
           aspect-ratio="1"
           @click="setCurrentIndex(i)"
@@ -160,32 +241,91 @@
             </Image>
           </div>
           <div
-            class="absolute inset-x-0 top-0 h-20 rounded-t overflow-hidden pointer-events-none bg-gradient-to-b from-gray-900-a-50 to-gray-900-a-0"
+            class="
+              absolute
+              inset-x-0
+              top-0
+              h-20
+              rounded-t
+              overflow-hidden
+              pointer-events-none
+              bg-gradient-to-b
+              from-gray-900-a-50
+              to-gray-900-a-0
+            "
           >
             <a
               :href="`${currentImage.url}-original`"
               target="_blank"
-              class="absolute right-0 top-0 pointer-events-auto cursor-pointer text-2xl text-light-gray-400 hover:text-white focus:text-white focus:outline-none pt-sm pr-sm"
+              class="
+                absolute
+                right-0
+                top-0
+                pointer-events-auto
+                cursor-pointer
+                text-2xl text-light-gray-400
+                hover:text-white
+                focus:text-white
+                focus:outline-none
+                pt-sm
+                pr-sm
+              "
             >
               <Icon>
                 {{ icons.ziFullScreen }}
               </Icon>
             </a>
           </div>
-          <div class="absolute inset-x-0 bottom-0 h-20 rounded-b overflow-hidden pointer-events-none text-gray-100">
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-900-a-50 to-gray-900-a-0" />
-            <div v-if="imagesList.length > 1" class="absolute inset-x-0 bottom-0 text-center leading-tight pb-2">
-              <span class="text-white">{{ currentImageIndex + 1 }}</span> / <span>{{ imagesList.length }}</span>
+          <div
+            class="
+              absolute
+              inset-x-0
+              bottom-0
+              h-20
+              rounded-b
+              overflow-hidden
+              pointer-events-none
+              text-gray-100
+            "
+          >
+            <div
+              class="
+                absolute
+                inset-0
+                bg-gradient-to-t
+                from-gray-900-a-50
+                to-gray-900-a-0
+              "
+            />
+            <div
+              v-if="imagesList.length > 1"
+              class="absolute inset-x-0 bottom-0 text-center leading-tight pb-2"
+            >
+              <span class="text-white">{{ currentImageIndex + 1 }}</span> /
+              <span>{{ imagesList.length }}</span>
             </div>
           </div>
           <div
             v-if="imagesList.length > 1"
-            class="absolute left-0 top-0 w-full h-full pointer-events-none flex items-center justify-between p-2"
+            class="
+              absolute
+              left-0
+              top-0
+              w-full
+              h-full
+              pointer-events-none
+              flex
+              items-center
+              justify-between
+              p-2
+            "
           >
             <div
               :class="[
                 'h-12 w-12 rounded-full bg-gray-900 bg-opacity-80 flex items-center justify-center pointer-events-auto',
-                hasPrev ? 'cursor-pointer text-blue-500 hover:text-blue-400' : 'text-gray-200',
+                hasPrev
+                  ? 'cursor-pointer text-blue-500 hover:text-blue-400'
+                  : 'text-gray-200',
               ]"
               @click="prev"
             >
@@ -196,7 +336,9 @@
             <div
               :class="[
                 'h-12 w-12 rounded-full bg-gray-900 bg-opacity-80 flex items-center justify-center pointer-events-auto',
-                hasNext ? 'cursor-pointer text-blue-500 hover:text-blue-400' : 'text-gray-200',
+                hasNext
+                  ? 'cursor-pointer text-blue-500 hover:text-blue-400'
+                  : 'text-gray-200',
               ]"
               @click="next"
             >
@@ -206,10 +348,21 @@
             </div>
           </div>
         </div>
-        <div :class="['font-semibold pt-4', light ? 'text-gray-900' : 'text-white']">
+        <div
+          :class="[
+            'font-semibold pt-4',
+            light ? 'text-gray-900' : 'text-white',
+          ]"
+        >
           {{ currentImage.filename || currentImage.url }}
         </div>
-        <div v-if="caption" :class="['leading-tight pt-1', light ? 'text-gray-200' : 'text-light-gray-400']">
+        <div
+          v-if="caption"
+          :class="[
+            'leading-tight pt-1',
+            light ? 'text-gray-200' : 'text-light-gray-400',
+          ]"
+        >
           {{ caption }}
         </div>
       </div>
@@ -220,7 +373,12 @@
 <script>
 import { useApolloClient } from '@vue/apollo-composable'
 
-import { ziCloseWindow, ziFullScreen, ziArrowLeft, ziArrowRight } from '@zennnn/icons'
+import {
+  ziCloseWindow,
+  ziFullScreen,
+  ziArrowLeft,
+  ziArrowRight,
+} from '@zennnn/icons'
 import { Icon, Menu, Image, LoadingSpinner } from '@zennnn/core'
 
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
@@ -262,7 +420,7 @@ export default {
     caption: String,
   },
   emits: ['upload-start'],
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
@@ -276,7 +434,7 @@ export default {
       apolloClient,
     }
   },
-  data () {
+  data() {
     return {
       ICON_IMAGE_POSTFIX,
       uploading: false,
@@ -288,38 +446,38 @@ export default {
     }
   },
   computed: {
-    hasPrev () {
+    hasPrev() {
       return this.currentImageIndex > 0
     },
-    hasNext () {
+    hasNext() {
       return this.currentImageIndex + 1 < this.imagesList.length
     },
-    imagesList () {
+    imagesList() {
       return this.images || []
     },
-    imageSrc () {
+    imageSrc() {
       return this.imagesList[0] && this.imagesList[0].url
     },
-    previewImageSrc () {
+    previewImageSrc() {
       if (!this.currentImage.url) return ''
       return `${this.currentImage.url}${PREVIEW_IMAGE_POSTFIX}`
     },
-    iconImageSrc () {
+    iconImageSrc() {
       if (!this.imageSrc) return ''
       return `${this.imageSrc}${ICON_IMAGE_POSTFIX}`
     },
-    currentImage () {
+    currentImage() {
       const index = this.currentImageIndex || 0
       return this.imagesList[index] || {}
     },
   },
   watch: {
-    menu (val) {
+    menu(val) {
       if (val && this.currentIndex > -1) {
         this.currentImageIndex = this.currentIndex
       }
     },
-    imagesList (val) {
+    imagesList(val) {
       if (!val) return
       if (this.currentImageIndex + 1 > val.length) {
         this.setCurrentIndex(0)
@@ -370,21 +528,21 @@ export default {
     //   )
     //   this.photoswipe.init()
     // },
-    prev () {
+    prev() {
       if (this.imagesList.length === 0) return
       const val = this.currentImageIndex - 1
       if (val > -1) {
         this.currentImageIndex = val
       }
     },
-    next () {
+    next() {
       if (this.imagesList.length === 0) return
       const val = this.currentImageIndex + 1
       if (val < this.imagesList.length) {
         this.currentImageIndex = val
       }
     },
-    sortImages (data) {
+    sortImages(data) {
       if (data.oldContainer.id !== data.newContainer.id) return
       const oldIndex = data.oldIndex
       const newIndex = data.newIndex
@@ -393,18 +551,18 @@ export default {
       newValue.splice(newIndex, 0, newValue.splice(oldIndex, 1)[0])
       this.updateImages(newValue)
     },
-    setCurrentIndex (index) {
+    setCurrentIndex(index) {
       if (!this.imagesList[index]) {
         index = 0
       }
       this.currentImageIndex = index
     },
-    async updateImages (images) {
+    async updateImages(images) {
       if (!this.productId) return
       try {
         this.updateImagesLoading = true
         const input = {
-          images: (images || []).map(el => {
+          images: (images || []).map((el) => {
             return {
               filename: el.filename,
               contentType: el.contentType,
@@ -422,7 +580,7 @@ export default {
         this.updateImagesLoading = false
       }
     },
-    async addImage (file) {
+    async addImage(file) {
       if (!this.productId) return
       try {
         this.addLoading = true

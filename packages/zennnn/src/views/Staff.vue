@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <StaffCreateModal
       v-model="createStaffDialog"
       @update:model-value="refetchItems"
@@ -8,11 +7,23 @@
 
     <div class="container">
       <div class="pt-4 pb-10">
-        <div class="flex flex-wrap sm:flex-nowrap items-center justify-between pb-4">
+        <div
+          class="
+            flex flex-wrap
+            sm:flex-nowrap
+            items-center
+            justify-between
+            pb-4
+          "
+        >
           <TextField
             v-model="search"
             :placeholder="$t('placeholder.pageSearch')"
-            :control-class="search ? 'bg-transparent dark:bg-transparent ring-1 ring-blue-500' : 'bg-transparent dark:bg-transparent'"
+            :control-class="
+              search
+                ? 'bg-transparent dark:bg-transparent ring-1 ring-blue-500'
+                : 'bg-transparent dark:bg-transparent'
+            "
             :prepend-icon="icons.ziSearch"
             class="w-full flex-shrink-0 md:max-w-md pb-4 md:pr-8"
             input-class="placeholder-blue-500 dark:placeholder-blue-500"
@@ -39,51 +50,78 @@
             </span>
           </template>
           <template v-slot:header-content-fullName="{ header }">
-            <span class="truncate inline-block align-middle" :style="{ maxWidth: (header.width - 88) + 'px' }">
+            <span
+              class="truncate inline-block align-middle"
+              :style="{ maxWidth: header.width - 88 + 'px' }"
+            >
               {{ header.text }}
             </span>
           </template>
           <template v-slot:header-content-role="{ header }">
-            <span class="truncate inline-block align-middle" :style="{ maxWidth: (header.width - 24) + 'px' }">
+            <span
+              class="truncate inline-block align-middle"
+              :style="{ maxWidth: header.width - 24 + 'px' }"
+            >
               {{ header.text }}
             </span>
           </template>
 
           <template v-slot:items="{ items }">
-            <template v-for="(item) in items">
+            <template v-for="item in items">
               <tr
                 v-if="!item.group"
                 :key="item.id"
-                :class="[{ 'hover:bg-gray-500 cursor-default': item.isStaff }, { 'text-white expanded': expanded.includes(item.id) }]"
+                :class="[
+                  { 'hover:bg-gray-500 cursor-default': item.isStaff },
+                  { 'text-white expanded': expanded.includes(item.id) },
+                ]"
                 @click="item.isStaff ? toggle(item.id) : false"
               >
-                <td :colspan="item.isStaff ? 1 : 2" :class="{ 'bg-gray-400': item.isInvitation }">
-                  <div v-if="item.isStaff" class="flex items-center justify-between">
+                <td
+                  :colspan="item.isStaff ? 1 : 2"
+                  :class="{ 'bg-gray-400': item.isInvitation }"
+                >
+                  <div
+                    v-if="item.isStaff"
+                    class="flex items-center justify-between"
+                  >
                     <div
                       :class="[
                         'w-3 h-3 rounded-full ml-5 mr-3',
                         item.specStatus === SpecStatus.IN_STOCK
-                          ? 'bg-green-500' : item.specStatus === SpecStatus.IN_PRODUCTION
-                            ? 'bg-yellow-500' : item.specStatus === SpecStatus.IN_PROCESSING
-                              ? 'bg-pink-500' : 'bg-gray-800'
+                          ? 'bg-green-500'
+                          : item.specStatus === SpecStatus.IN_PRODUCTION
+                          ? 'bg-yellow-500'
+                          : item.specStatus === SpecStatus.IN_PROCESSING
+                          ? 'bg-pink-500'
+                          : 'bg-gray-800',
                       ]"
-                    >
-                    </div>
+                    ></div>
                     <div class="truncate">
                       {{ item.processing }}
                     </div>
                   </div>
                   <span v-else class="whitespace-nowrap pl-4">
-                    {{ $t('staff.invitationFrom') }}: {{ $d($parseDate(item.createdAt), 'short') }}
+                    {{ $t('staff.invitationFrom') }}:
+                    {{ $d($parseDate(item.createdAt), 'short') }}
                   </span>
                 </td>
-                <td v-if="item.isStaff" :class="['truncate text-right', { 'text-green-500': item.diff > 0 }, { 'text-pink-500' :item.diff < 0 }]">
+                <td
+                  v-if="item.isStaff"
+                  :class="[
+                    'truncate text-right',
+                    { 'text-green-500': item.diff > 0 },
+                    { 'text-pink-500': item.diff < 0 },
+                  ]"
+                >
                   {{ $n(item.diff || 0) }}
                 </td>
-                <td :colspan="item.isStaff ? 1 : 2" class="truncate text-right" :class="{ 'bg-gray-400': item.isInvitation }">
-                  <span v-if="item.isStaff">
-                    {{ $n(item.totalMargin) }}%
-                  </span>
+                <td
+                  :colspan="item.isStaff ? 1 : 2"
+                  class="truncate text-right"
+                  :class="{ 'bg-gray-400': item.isInvitation }"
+                >
+                  <span v-if="item.isStaff"> {{ $n(item.totalMargin) }}% </span>
                   <span v-else class="pl-8">
                     {{ item.invitationEmail }}
                   </span>
@@ -93,40 +131,65 @@
                     {{ $n(item.revenue || 0) }}
                   </span>
                 </td>
-                <td class="truncate text-right" :class="{ 'bg-gray-400': item.isInvitation }">
+                <td
+                  class="truncate text-right"
+                  :class="{ 'bg-gray-400': item.isInvitation }"
+                >
                   <span v-if="item.isStaff">
                     {{ $n(item.totalItemsCost || 0) }}
                   </span>
-                  <span v-else class="text-left block align-middle pl-12" :class="[item.status === InvitationStatus.PENDING ? 'text-yellow-500' : item.status === InvitationStatus.DECLINED ? 'text-pink-500' : item.status === InvitationStatus.ACCEPTED ? 'text-green-500' : '']">
+                  <span
+                    v-else
+                    class="text-left block align-middle pl-12"
+                    :class="[
+                      item.status === InvitationStatus.PENDING
+                        ? 'text-yellow-500'
+                        : item.status === InvitationStatus.DECLINED
+                        ? 'text-pink-500'
+                        : item.status === InvitationStatus.ACCEPTED
+                        ? 'text-green-500'
+                        : '',
+                    ]"
+                  >
                     {{ item.statusText }}
                   </span>
                 </td>
-                <td class="truncate text-left leading-tight pl-16" :class="{ 'bg-gray-400': item.isInvitation }">
+                <td
+                  class="truncate text-left leading-tight pl-16"
+                  :class="{ 'bg-gray-400': item.isInvitation }"
+                >
                   {{ item.fullName }}
                 </td>
-                <td class="truncate text-left" :class="{ 'bg-gray-400': item.isInvitation }">{{ item.role }}</td>
-                <td :class="{ 'bg-gray-400': item.isInvitation }">
-                  <Switch
-                    hide-details
-                    disabled
-                    @click.stop.prevent
-                  />
+                <td
+                  class="truncate text-left"
+                  :class="{ 'bg-gray-400': item.isInvitation }"
+                >
+                  {{ item.role }}
                 </td>
-                <td class="text-center" :class="{ 'bg-gray-400': item.isInvitation }">
+                <td :class="{ 'bg-gray-400': item.isInvitation }">
+                  <Switch hide-details disabled @click.stop.prevent />
+                </td>
+                <td
+                  class="text-center"
+                  :class="{ 'bg-gray-400': item.isInvitation }"
+                >
                   <div
                     v-if="deleteUserLoading === item.id"
                     class="flex items-center justify-center"
                   >
-                    <Progress
-                      indeterminate
-                      size="18"
-                      width="2"
-                    />
+                    <Progress indeterminate size="18" width="2" />
                   </div>
                   <template v-else>
                     <button
                       v-if="item.isStaff"
-                      class="flex items-center text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none"
+                      class="
+                        flex
+                        items-center
+                        text-gray-200
+                        focus:text-gray-100
+                        hover:text-gray-100
+                        focus:outline-none
+                      "
                       @click.stop.prevent="deleteUser(item.id)"
                     >
                       <Icon>
@@ -135,7 +198,14 @@
                     </button>
                     <button
                       v-else
-                      class="flex items-center text-gray-200 focus:text-gray-100 hover:text-gray-100 focus:outline-none"
+                      class="
+                        flex
+                        items-center
+                        text-gray-200
+                        focus:text-gray-100
+                        hover:text-gray-100
+                        focus:outline-none
+                      "
                       @click.stop.prevent="cancelInvitation(item.id)"
                     >
                       <Icon>
@@ -147,11 +217,22 @@
                 <td :class="{ 'bg-gray-400': item.isInvitation }">
                   <button
                     v-if="item.isStaff"
-                    class="flex items-center text-2xl text-blue-500 focus:text-blue-400 hover:text-blue-400 focus:outline-none select-none mx-auto"
+                    class="
+                      flex
+                      items-center
+                      text-2xl text-blue-500
+                      focus:text-blue-400
+                      hover:text-blue-400
+                      focus:outline-none
+                      select-none
+                      mx-auto
+                    "
                   >
                     <Icon
                       class="transition-transform"
-                      :class="{ 'transform rotate-90': expanded.includes(item.id) }"
+                      :class="{
+                        'transform rotate-90': expanded.includes(item.id),
+                      }"
                     >
                       {{ icons.ziChevronRight }}
                     </Icon>
@@ -162,16 +243,34 @@
                 v-if="expanded.includes(item.id)"
                 :key="`expand-${item.id}`"
                 class="expand bg-gray-700"
-                style="background-color: #282828;"
+                style="background-color: #282828"
               >
                 <td :colspan="headers.length" class="relative p-0">
                   <div
-                    class="absolute inset-x-0 top-0 pointer-events-none opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1"
+                    class="
+                      absolute
+                      inset-x-0
+                      top-0
+                      pointer-events-none
+                      opacity-50
+                      h-6
+                      bg-gradient-to-b
+                      from-gray-900
+                      to-gray-900-a-0
+                      -mt-1
+                    "
                   />
                   <div
                     v-if="!item.specs || item.specs.length === 0"
                     v-html="$t('dataTable.noData')"
-                    class="bg-gray-700 rounded-b-md text-center text-gray-200 leading-tight py-4 -mt-1"
+                    class="
+                      bg-gray-700
+                      rounded-b-md
+                      text-center text-gray-200
+                      leading-tight
+                      py-4
+                      -mt-1
+                    "
                   />
                   <DataTable
                     v-if="item.specs && item.specs.length > 0"
@@ -188,21 +287,45 @@
                         v-for="(subItem, i) in subItems"
                         :key="subItem.id"
                         class="bg-gray-700"
-                        style="background-color: #282828;"
+                        style="background-color: #282828"
                       >
-                        <td :width="subHeadersMap['status'].width" :style="{ width: subHeadersMap['status'].width, minWidth: subHeadersMap['status'].width }" class="bg-gray-700" :class="{ 'rounded-bl-md': i + 1 === subItems.length }">
+                        <td
+                          :width="subHeadersMap['status'].width"
+                          :style="{
+                            width: subHeadersMap['status'].width,
+                            minWidth: subHeadersMap['status'].width,
+                          }"
+                          class="bg-gray-700"
+                          :class="{
+                            'rounded-bl-md': i + 1 === subItems.length,
+                          }"
+                        >
                           <div class="flex items-center justify-between">
-                            <div class="w-3 h-3 flex items-center justify-center ml-5 mr-3">
+                            <div
+                              class="
+                                w-3
+                                h-3
+                                flex
+                                items-center
+                                justify-center
+                                ml-5
+                                mr-3
+                              "
+                            >
                               <div
                                 :class="[
                                   'w-2 h-2 rounded-full',
                                   subItem.specStatus === SpecStatus.IN_STOCK
-                                    ? 'bg-green-500' : subItem.specStatus === SpecStatus.IN_PRODUCTION
-                                      ? 'bg-yellow-500' : subItem.specStatus === SpecStatus.IN_PROCESSING
-                                        ? 'bg-pink-500' : 'bg-gray-800'
+                                    ? 'bg-green-500'
+                                    : subItem.specStatus ===
+                                      SpecStatus.IN_PRODUCTION
+                                    ? 'bg-yellow-500'
+                                    : subItem.specStatus ===
+                                      SpecStatus.IN_PROCESSING
+                                    ? 'bg-pink-500'
+                                    : 'bg-gray-800',
                                 ]"
-                              >
-                              </div>
+                              ></div>
                             </div>
                             <div class="flex">
                               <div class="w-6 text-right">
@@ -214,31 +337,87 @@
                             </div>
                           </div>
                         </td>
-                        <td :width="subHeadersMap['diff'].width" :style="{ width: subHeadersMap['diff'].width, minWidth: subHeadersMap['diff'].width }" :class="['bg-gray-700 truncate text-right']">
+                        <td
+                          :width="subHeadersMap['diff'].width"
+                          :style="{
+                            width: subHeadersMap['diff'].width,
+                            minWidth: subHeadersMap['diff'].width,
+                          }"
+                          :class="['bg-gray-700 truncate text-right']"
+                        >
                           {{ $n(subItem.diff || 0) }}
                         </td>
-                        <td :width="subHeadersMap['margin'].width" :style="{ width: subHeadersMap['margin'].width, minWidth: subHeadersMap['margin'].width }" class="bg-gray-700 truncate text-right">
+                        <td
+                          :width="subHeadersMap['margin'].width"
+                          :style="{
+                            width: subHeadersMap['margin'].width,
+                            minWidth: subHeadersMap['margin'].width,
+                          }"
+                          class="bg-gray-700 truncate text-right"
+                        >
                           <!-- TODO: vue error -->
                           <!-- {{ $n(subItem.totalMargin) }}% -->
                           {{ subItem.totalMargin }}%
                         </td>
-                        <td :width="subHeadersMap['revenue'].width" :style="{ width: subHeadersMap['revenue'].width, minWidth: subHeadersMap['revenue'].width }" class="bg-gray-700 truncate text-right">
+                        <td
+                          :width="subHeadersMap['revenue'].width"
+                          :style="{
+                            width: subHeadersMap['revenue'].width,
+                            minWidth: subHeadersMap['revenue'].width,
+                          }"
+                          class="bg-gray-700 truncate text-right"
+                        >
                           {{ $n(subItem.revenue || 0) }}
                         </td>
-                        <td :width="subHeadersMap['totalItemsCost'].width" :style="{ width: subHeadersMap['totalItemsCost'].width, minWidth: subHeadersMap['totalItemsCost'].width }" class="bg-gray-700 truncate text-right">
+                        <td
+                          :width="subHeadersMap['totalItemsCost'].width"
+                          :style="{
+                            width: subHeadersMap['totalItemsCost'].width,
+                            minWidth: subHeadersMap['totalItemsCost'].width,
+                          }"
+                          class="bg-gray-700 truncate text-right"
+                        >
                           {{ $n(subItem.totalItemsCost || 0) }}
                         </td>
-                        <td :width="subHeadersMap['specNo'].width" :style="{ width: subHeadersMap['specNo'].width, minWidth: subHeadersMap['specNo'].width }" class="bg-gray-700 truncate text-left leading-tight pl-16">
+                        <td
+                          :width="subHeadersMap['specNo'].width"
+                          :style="{
+                            width: subHeadersMap['specNo'].width,
+                            minWidth: subHeadersMap['specNo'].width,
+                          }"
+                          class="
+                            bg-gray-700
+                            truncate
+                            text-left
+                            leading-tight
+                            pl-16
+                          "
+                        >
                           <span class="whitespace-nowrap pl-5">
                             {{ subItem.specNo || '' }}
                           </span>
                         </td>
-                        <td :width="subHeadersMap['clientFullName'].width" :style="{ width: subHeadersMap['clientFullName'].width, minWidth: subHeadersMap['clientFullName'].width }" class="bg-gray-700 truncate text-left">
+                        <td
+                          :width="subHeadersMap['clientFullName'].width"
+                          :style="{
+                            width: subHeadersMap['clientFullName'].width,
+                            minWidth: subHeadersMap['clientFullName'].width,
+                          }"
+                          class="bg-gray-700 truncate text-left"
+                        >
                           <span class="whitespace-nowrap pl-5">
                             {{ subItem.clientFullName }}
                           </span>
                         </td>
-                        <td :width="subHeadersMap['actions'].width" :style="{ width: subHeadersMap['actions'].width, minWidth: subHeadersMap['actions'].width, overflow: 'visible' }" class="bg-gray-700 text-right">
+                        <td
+                          :width="subHeadersMap['actions'].width"
+                          :style="{
+                            width: subHeadersMap['actions'].width,
+                            minWidth: subHeadersMap['actions'].width,
+                            overflow: 'visible',
+                          }"
+                          class="bg-gray-700 text-right"
+                        >
                           <router-link
                             :to="{
                               name: 'spec',
@@ -248,15 +427,42 @@
                               },
                             }"
                             tabindex="-1"
-                            class="align-middle text-gray-200 focus:outline-none focus:text-gray-100 hover:text-gray-100 -mr-3"
+                            class="
+                              align-middle
+                              text-gray-200
+                              focus:outline-none
+                              focus:text-gray-100
+                              hover:text-gray-100
+                              -mr-3
+                            "
                           >
                             <Icon class="align-middle">
                               {{ icons.ziSearch }}
                             </Icon>
                           </router-link>
                         </td>
-                        <td :width="subHeadersMap['shipped'].width" :style="{ width: subHeadersMap['shipped'].width, minWidth: subHeadersMap['shipped'].width }" class="bg-gray-700 text-center" :class="{ 'rounded-br-md': i + 1 === subItems.length }">
-                          <span v-if="subItem.shipped" class="inline-block align-middle h-2 w-2 rounded-full bg-cold-blue-400"></span>
+                        <td
+                          :width="subHeadersMap['shipped'].width"
+                          :style="{
+                            width: subHeadersMap['shipped'].width,
+                            minWidth: subHeadersMap['shipped'].width,
+                          }"
+                          class="bg-gray-700 text-center"
+                          :class="{
+                            'rounded-br-md': i + 1 === subItems.length,
+                          }"
+                        >
+                          <span
+                            v-if="subItem.shipped"
+                            class="
+                              inline-block
+                              align-middle
+                              h-2
+                              w-2
+                              rounded-full
+                              bg-cold-blue-400
+                            "
+                          ></span>
                         </td>
                       </tr>
                     </template>
@@ -272,14 +478,8 @@
               class="text-center text-gray-200 leading-tight py-4"
             />
           </template>
-
         </DataTable>
-        <Btn
-          block
-          outlined
-          class="mt-4"
-          @click="createStaffDialog = true"
-        >
+        <Btn block outlined class="mt-4" @click="createStaffDialog = true">
           <Icon class="text-gray-200 mr-sm">
             {{ icons.ziUserPlus }}
           </Icon>
@@ -317,18 +517,26 @@ export default {
     Switch,
     StaffCreateModal,
   },
-  setup () {
+  setup() {
     const route = useRoute()
     const orgId = route.params.orgId
 
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
-    const { result, loading, refetch: listStaffRefetch } = useQuery(LIST_STAFF, () => ({
-      orgId: orgId,
-    }), {
-      fetchPolicy: 'cache-and-network',
-    })
+    const {
+      result,
+      loading,
+      refetch: listStaffRefetch,
+    } = useQuery(
+      LIST_STAFF,
+      () => ({
+        orgId: orgId,
+      }),
+      {
+        fetchPolicy: 'cache-and-network',
+      }
+    )
     const listStaff = useResult(result)
 
     return {
@@ -345,7 +553,7 @@ export default {
       listStaffRefetch,
     }
   },
-  data () {
+  data() {
     return {
       SpecStatus,
       InvitationStatus,
@@ -361,11 +569,9 @@ export default {
     }
   },
   computed: {
-    items () {
+    items() {
       const roleFilter = (val) => {
-        return this.$te(`role.${val}`)
-          ? this.$t(`role.${val}`)
-          : val
+        return this.$te(`role.${val}`) ? this.$t(`role.${val}`) : val
       }
       const statusFilter = (val) => {
         return this.$te(`invitationStatus.${val}`)
@@ -374,7 +580,7 @@ export default {
       }
       const items = (this.listStaff && this.listStaff.items) || []
       const invitations = (this.listStaff && this.listStaff.invitations) || []
-      const staffItems = items.map(item => {
+      const staffItems = items.map((item) => {
         return {
           ...item,
           // for search
@@ -384,7 +590,7 @@ export default {
           role: roleFilter(item.role),
         }
       })
-      const invitationsItems = invitations.map(item => {
+      const invitationsItems = invitations.map((item) => {
         return {
           ...item,
           // for search
@@ -395,54 +601,155 @@ export default {
           statusText: statusFilter(item.status),
         }
       })
-      return [
-        ...staffItems,
-        ...invitationsItems,
-      ]
+      return [...staffItems, ...invitationsItems]
     },
-    headers () {
+    headers() {
       return [
-        { text: this.$t('staff.inWork'), value: 'processing', align: 'right', width: 100, minWidth: 100, sortable: true },
-        { text: this.$t('staff.diff'), value: 'diff', align: 'right', width: 105, minWidth: 105, sortable: true },
-        { text: this.$t('staff.percent'), value: 'totalMargin', align: 'right', width: 66, minWidth: 66, sortable: true },
-        { text: this.$t('staff.revenue'), value: 'revenue', align: 'right', width: 118, minWidth: 118, sortable: true },
-        { text: this.$t('staff.costOfGoods'), value: 'totalItemsCost', align: 'right', width: 140, minWidth: 140, sortable: true },
-        { text: this.$t('staff.staffName'), value: 'fullName', align: 'left', width: 220, minWidth: 220, class: 'whitespace-nowrap pl-16', sortable: true },
-        { text: this.$t('staff.access'), value: 'role', align: 'left', width: 132, minWidth: 132, class: 'whitespace-nowrap', sortable: true },
-        { text: this.$t('staff.accessControl'), value: 'accessControl', align: 'left', width: 75, minWidth: 75, class: 'whitespace-nowrap', sortable: false },
+        {
+          text: this.$t('staff.inWork'),
+          value: 'processing',
+          align: 'right',
+          width: 100,
+          minWidth: 100,
+          sortable: true,
+        },
+        {
+          text: this.$t('staff.diff'),
+          value: 'diff',
+          align: 'right',
+          width: 105,
+          minWidth: 105,
+          sortable: true,
+        },
+        {
+          text: this.$t('staff.percent'),
+          value: 'totalMargin',
+          align: 'right',
+          width: 66,
+          minWidth: 66,
+          sortable: true,
+        },
+        {
+          text: this.$t('staff.revenue'),
+          value: 'revenue',
+          align: 'right',
+          width: 118,
+          minWidth: 118,
+          sortable: true,
+        },
+        {
+          text: this.$t('staff.costOfGoods'),
+          value: 'totalItemsCost',
+          align: 'right',
+          width: 140,
+          minWidth: 140,
+          sortable: true,
+        },
+        {
+          text: this.$t('staff.staffName'),
+          value: 'fullName',
+          align: 'left',
+          width: 220,
+          minWidth: 220,
+          class: 'whitespace-nowrap pl-16',
+          sortable: true,
+        },
+        {
+          text: this.$t('staff.access'),
+          value: 'role',
+          align: 'left',
+          width: 132,
+          minWidth: 132,
+          class: 'whitespace-nowrap',
+          sortable: true,
+        },
+        {
+          text: this.$t('staff.accessControl'),
+          value: 'accessControl',
+          align: 'left',
+          width: 75,
+          minWidth: 75,
+          class: 'whitespace-nowrap',
+          sortable: false,
+        },
         { text: '', value: 'actions', width: 40, minWidth: 40 },
         { text: '', value: 'expand', width: 50, minWidth: 50 },
       ]
     },
-    subHeaders () {
+    subHeaders() {
       return [
-        { text: '', value: 'status', align: 'right', width: '100px', minWidth: '100px' },
-        { text: '', value: 'diff', align: 'right', width: '105px', minWidth: '105px' },
-        { text: '', value: 'margin', align: 'right', width: '66px', minWidth: '66px' },
-        { text: '', value: 'revenue', align: 'right', width: '118px', minWidth: '118px' },
-        { text: '', value: 'totalItemsCost', align: 'right', width: '140px', minWidth: '140px' },
-        { text: '', value: 'specNo', align: 'left', width: '220px', minWidth: '220px', class: 'whitespace-nowrap pl-16' },
-        { text: '', value: 'clientFullName', align: 'left', width: '207px', minWidth: '207px', class: 'whitespace-nowrap' },
+        {
+          text: '',
+          value: 'status',
+          align: 'right',
+          width: '100px',
+          minWidth: '100px',
+        },
+        {
+          text: '',
+          value: 'diff',
+          align: 'right',
+          width: '105px',
+          minWidth: '105px',
+        },
+        {
+          text: '',
+          value: 'margin',
+          align: 'right',
+          width: '66px',
+          minWidth: '66px',
+        },
+        {
+          text: '',
+          value: 'revenue',
+          align: 'right',
+          width: '118px',
+          minWidth: '118px',
+        },
+        {
+          text: '',
+          value: 'totalItemsCost',
+          align: 'right',
+          width: '140px',
+          minWidth: '140px',
+        },
+        {
+          text: '',
+          value: 'specNo',
+          align: 'left',
+          width: '220px',
+          minWidth: '220px',
+          class: 'whitespace-nowrap pl-16',
+        },
+        {
+          text: '',
+          value: 'clientFullName',
+          align: 'left',
+          width: '207px',
+          minWidth: '207px',
+          class: 'whitespace-nowrap',
+        },
         { text: '', value: 'actions', width: '40px', minWidth: '40px' },
         { text: '', value: 'shipped', width: '50px', minWidth: '50px' },
       ]
     },
-    subHeadersMap () {
+    subHeadersMap() {
       const headers = this.subHeaders || []
       const result = {}
-      headers.forEach(item => {
+      headers.forEach((item) => {
         result[item.value] = item
       })
       return result
     },
   },
-  created () {
+  created() {
     if (this.$route.query.q) {
       this.search = this.$route.query.q
     }
     if (this.$route.query.sort) {
       this.sortBy = wrapInArray(this.$route.query.sort)
-      const desc = this.$route.query.desc === true || this.$route.query.desc === 'true'
+      const desc =
+        this.$route.query.desc === true || this.$route.query.desc === 'true'
       this.sortDesc = [!!(this.$route.query.sort && desc)]
     }
     // on search on server, escape input string
@@ -452,18 +759,21 @@ export default {
     })
     this.$watch('sortBy', this.updateRouteQuery)
     this.$watch('sortDesc', this.updateRouteQuery)
-    this.$watch('$route.query', (query, old) => {
+    this.$watch('$route.query', (query) => {
       if (query.q !== this.search) {
         this.search = query.q
       }
       if (query.sort !== this.sortBy[0]) {
         this.sortBy = query.sort ? wrapInArray(query.sort) : []
       }
-      this.sortDesc = this.sortBy.length > 0 ? [query.desc === true || query.desc === 'true'] : []
+      this.sortDesc =
+        this.sortBy.length > 0
+          ? [query.desc === true || query.desc === 'true']
+          : []
     })
   },
   methods: {
-    updateRouteQuery () {
+    updateRouteQuery() {
       const query = {}
       if (this.search) {
         query.q = this.search
@@ -479,7 +789,7 @@ export default {
         query,
       })
     },
-    goToSpec (item) {
+    goToSpec(item) {
       this.$router.push({
         name: 'spec',
         params: {
@@ -489,10 +799,10 @@ export default {
       })
     },
     // TODO: update on after mutation
-    refetchItems () {
+    refetchItems() {
       this.listStaffRefetch()
     },
-    async cancelInvitation (id) {
+    async cancelInvitation(id) {
       try {
         await this.apolloClient.mutate({
           mutation: CANCEL_INVITATION,
@@ -503,7 +813,7 @@ export default {
         throw new Error(error)
       }
     },
-    async deleteUser (userId) {
+    async deleteUser(userId) {
       try {
         const msg = this.$t('alert.removeEmployee')
         const confirm = await confirmDialog(msg)
@@ -523,7 +833,7 @@ export default {
           variables: { orgId: this.orgId },
         })
 
-        const index = listStaff.items.findIndex(el => el.id === userId)
+        const index = listStaff.items.findIndex((el) => el.id === userId)
 
         if (index !== -1) {
           listStaff.items.splice(index, 1)
@@ -543,7 +853,7 @@ export default {
         this.deleteUserLoading = null
       }
     },
-    toggle (id) {
+    toggle(id) {
       if (this.expanded.indexOf(id) > -1) {
         const expIndex = this.expanded.indexOf(id)
         this.expanded.splice(expIndex, 1)

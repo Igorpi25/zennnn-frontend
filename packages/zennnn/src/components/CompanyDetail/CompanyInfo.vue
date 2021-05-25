@@ -8,7 +8,7 @@
             :label="$t('companyDetail.label.companyName')"
             :placeholder="$t('companyDetail.placeholder.companyName')"
             :loading="loading"
-            :rules="[v => !!v || this.$t('companyDetail.rule.companyName')]"
+            :rules="[(v) => !!v || this.$t('companyDetail.rule.companyName')]"
             :debounce="500"
             :lazy="create"
             state-icon
@@ -17,7 +17,18 @@
             @update:model-value="updateCompanyName"
           />
           <div class="relative flex-shrink-0 pl-sm">
-            <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+            <label
+              class="
+                absolute
+                top-0
+                right-0
+                block
+                text-base text-gray-100
+                whitespace-nowrap
+                leading-5
+                py-2
+              "
+            >
               {{ $t('companyDetail.label.englishOnly') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
@@ -41,12 +52,14 @@
           :placeholder="$t('companyDetail.placeholder.companyNameLocal')"
           :loading="loading"
           :disabled="isCompanyNameMatch"
-          :rules="[v => !!v || this.$t('companyDetail.rule.companyNameLocal')]"
+          :rules="[
+            (v) => !!v || this.$t('companyDetail.rule.companyNameLocal'),
+          ]"
           :debounce="500"
           :lazy="create"
           state-icon
           required
-          @update:model-value="updateData({ 'companyNameLocal': $event })"
+          @update:model-value="updateData({ companyNameLocal: $event })"
         />
       </div>
       <div class="relative h-56 pt-9 mb-7">
@@ -72,7 +85,7 @@
           state-icon
           required
           class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-sm"
-          @update:model-value="updateData({ 'phone': $event })"
+          @update:model-value="updateData({ phone: $event })"
         />
         <TextField
           :model-value="item.phoneOption"
@@ -85,7 +98,7 @@
           state-icon
           state-error-color="none"
           class="w-full sm:w-auto lg:w-full max-w-xs"
-          @update:model-value="updateData({ 'phoneOption': $event })"
+          @update:model-value="updateData({ phoneOption: $event })"
         />
       </div>
       <div class="pb-2">
@@ -99,7 +112,7 @@
           state-error-color="none"
           required
           class="sm:w-4/6 max-w-xs sm:pr-sm"
-          @update:model-value="updateData({ 'fax': $event })"
+          @update:model-value="updateData({ fax: $event })"
         />
       </div>
       <div>
@@ -114,7 +127,7 @@
           state-icon
           state-error-color="none"
           required
-          @update:model-value="updateData({ 'website': $event })"
+          @update:model-value="updateData({ website: $event })"
         />
       </div>
       <div class="pb-2">
@@ -130,7 +143,7 @@
           state-icon
           state-error-color="warn"
           required
-          @update:model-value="updateData({ 'email': $event })"
+          @update:model-value="updateData({ email: $event })"
         />
       </div>
     </div>
@@ -146,7 +159,7 @@
           :lazy="create"
           state-icon
           state-error-color="warn"
-          @update:model-value="updateData({ 'vat': $event })"
+          @update:model-value="updateData({ vat: $event })"
         />
       </div>
       <div class="pb-2">
@@ -211,7 +224,18 @@
             @update:model-value="updateMailingAddressPostcode"
           />
           <div class="relative flex-shrink-0 pl-sm">
-            <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+            <label
+              class="
+                absolute
+                top-0
+                right-0
+                block
+                text-base text-gray-100
+                whitespace-nowrap
+                leading-5
+                py-2
+              "
+            >
               {{ $t('companyDetail.label.matches') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
@@ -240,7 +264,7 @@
           state-icon
           state-error-color="none"
           class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-          @update:model-value="updateData({ 'iec': $event })"
+          @update:model-value="updateData({ iec: $event })"
         />
         <TextField
           :model-value="item.okpo"
@@ -253,7 +277,7 @@
           state-icon
           state-error-color="none"
           class="flex-grow"
-          @update:model-value="updateData({ 'okpo': $event })"
+          @update:model-value="updateData({ okpo: $event })"
         />
       </div>
       <div class="pb-2">
@@ -267,7 +291,7 @@
           :rules="[rules.required]"
           state-icon
           state-error-color="none"
-          @update:model-value="updateData({ 'psrn': $event })"
+          @update:model-value="updateData({ psrn: $event })"
         />
       </div>
       <div class="flex items-end pb-2">
@@ -278,7 +302,9 @@
             label="given-family"
             value="given-family"
             hide-details
-            @update:model-value="updateCompanyOwnerType(false, 'given-name-input')"
+            @update:model-value="
+              updateCompanyOwnerType(false, 'given-name-input')
+            "
           />
         </div>
         <TextField
@@ -365,96 +391,102 @@ export default {
       default: () => ({}),
     },
   },
-  data () {
+  data() {
     return {
       ownerNameValue: 'given-family',
       isCompanyNameMatchLazy: false,
       isMailingAddressMatchLazy: false,
       rules: {
-        required: v => !!v || this.$t('rule.required'),
-        email: v => (v && /.+@.+\..+/.test(v)) || this.$t('companyDetail.rule.notificationEmail'),
+        required: (v) => !!v || this.$t('rule.required'),
+        email: (v) =>
+          (v && /.+@.+\..+/.test(v)) ||
+          this.$t('companyDetail.rule.notificationEmail'),
       },
     }
   },
   computed: {
-    isOwnerName () {
+    isOwnerName() {
       return this.ownerNameValue === 'name'
     },
     isCompanyNameMatch: {
-      get () {
+      get() {
         return this.isCompanyNameMatchLazy
       },
-      set (val) {
+      set(val) {
         this.isCompanyNameMatchLazy = val
       },
     },
     isMailingAddressMatch: {
-      get () {
+      get() {
         return this.isMailingAddressMatchLazy
       },
-      set (val) {
+      set(val) {
         this.isMailingAddressMatchLazy = val
       },
     },
-    companyOwner () {
+    companyOwner() {
       return this.item.companyOwner || {}
     },
   },
   watch: {
-    'companyOwner.isName' (val) {
+    'companyOwner.isName'(val) {
       this.ownerNameValue = val ? 'name' : 'given-family'
     },
-    'item.isCompanyNameMatch' (val) {
+    'item.isCompanyNameMatch'(val) {
       this.isCompanyNameMatchLazy = val
     },
-    'item.isMailingAddressMatch' (val) {
+    'item.isMailingAddressMatch'(val) {
       this.isMailingAddressMatchLazy = val
     },
   },
   methods: {
-    updateCompanyOwnerType (val, inputRef) {
+    updateCompanyOwnerType(val, inputRef) {
       this.updateCompanyOwner({ isName: val })
       this.$nextTick(() => {
         this.$refs[inputRef].focus()
       })
     },
-    updateCompanyNameMatch (val) {
+    updateCompanyNameMatch(val) {
       this.isCompanyNameMatch = val
       const input = { isCompanyNameMatch: val }
       this.updateData(input)
     },
-    updateCompanyName (val) {
+    updateCompanyName(val) {
       const input = { companyName: val }
       this.updateData(input)
     },
-    updateMailingAddressMatch (val) {
+    updateMailingAddressMatch(val) {
       this.isMailingAddressMatch = val
       const input = { isMailingAddressMatch: val }
       this.updateData(input)
     },
-    updateLegalAddress (val) {
+    updateLegalAddress(val) {
       const input = { legalAddress: val }
       this.updateData(input)
     },
-    updateLegalAddressPostcode (val) {
+    updateLegalAddressPostcode(val) {
       const input = { legalAddressPostcode: val }
       this.updateData(input)
     },
-    updateMailingAddress (val) {
+    updateMailingAddress(val) {
       const input = { mailingAddress: val }
       this.updateData(input)
     },
-    updateMailingAddressPostcode (val) {
+    updateMailingAddressPostcode(val) {
       const input = { mailingAddressPostcode: val }
       this.updateData(input)
     },
-    updateCompanyOwner (personInput) {
-      const value = Object.assign({}, {
-        isName: !!this.companyOwner.isName,
-        name: this.companyOwner.name,
-        firstName: this.companyOwner.firstName,
-        lastName: this.companyOwner.lastName,
-      }, personInput)
+    updateCompanyOwner(personInput) {
+      const value = Object.assign(
+        {},
+        {
+          isName: !!this.companyOwner.isName,
+          name: this.companyOwner.name,
+          firstName: this.companyOwner.firstName,
+          lastName: this.companyOwner.lastName,
+        },
+        personInput
+      )
       const input = { companyOwner: value }
       this.updateData(input)
     },

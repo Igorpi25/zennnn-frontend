@@ -1,9 +1,4 @@
-import {
-  h,
-  nextTick,
-  Ref,
-  ComputedRef,
-} from 'vue'
+import { h, nextTick, Ref, ComputedRef } from 'vue'
 
 import { ziCloseDelete } from '@zennnn/icons'
 
@@ -30,33 +25,47 @@ export const useInputClearProps = () => {
   }
 }
 
-export const useInputClear = (props: InputClearProps, { isDirty, inputElement, emit, emitChange, setInternalValue }: InputClearContext) => {
+export const useInputClear = (
+  props: InputClearProps,
+  {
+    isDirty,
+    inputElement,
+    emit,
+    emitChange,
+    setInternalValue,
+  }: InputClearContext
+) => {
   const genClearInput = (cb?: () => void) => {
     if (!props.clearable) return undefined
 
     const disabled = !isDirty.value
 
-    return h(Icon, {
-      tag: 'button',
-      size: 24,
-      class: {
-        'text-gray-200 hover:text-gray-400 dark:hover:text-gray-100 focus:ring-offset-0': true,
-        invisible: disabled,
-      },
-      disabled: disabled,
-      'aria-label': 'clear icon',
-      onClick: (e: MouseEvent) => {
-        e.preventDefault()
-        e.stopPropagation()
+    return h(
+      Icon,
+      {
+        tag: 'button',
+        size: 24,
+        class: {
+          'text-gray-200 hover:text-gray-400 dark:hover:text-gray-100 focus:ring-offset-0':
+            true,
+          invisible: disabled,
+        },
+        disabled: disabled,
+        'aria-label': 'clear icon',
+        onClick: (e: MouseEvent) => {
+          e.preventDefault()
+          e.stopPropagation()
 
-        emit?.('click:clear', e)
+          emit?.('click:clear', e)
 
-        inputElement.value?.focus()
-        cb ? cb() : clearableCallback()
+          inputElement.value?.focus()
+          cb ? cb() : clearableCallback()
+        },
       },
-    }, {
-      default: () => ziCloseDelete,
-    })
+      {
+        default: () => ziCloseDelete,
+      }
+    )
   }
 
   const clearableCallback = () => {

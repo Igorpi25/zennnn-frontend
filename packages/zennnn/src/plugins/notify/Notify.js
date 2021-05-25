@@ -37,7 +37,10 @@ export const createNotify = (options = {}) => {
   const addItem = (item) => {
     _items.value.push(item)
 
-    const timeout = typeof item.timeout === 'number' && isFinite(item.timeout) ? item.timeout : _timeout
+    const timeout =
+      typeof item.timeout === 'number' && isFinite(item.timeout)
+        ? item.timeout
+        : _timeout
     if (timeout) {
       setTimeout(() => {
         removeItem(item.id)
@@ -46,7 +49,7 @@ export const createNotify = (options = {}) => {
   }
 
   const removeItem = (id) => {
-    const index = _items.value.findIndex(item => item.id === id)
+    const index = _items.value.findIndex((item) => item.id === id)
     if (index !== -1) {
       _items.value.splice(index, 1)
     }
@@ -57,7 +60,7 @@ export const createNotify = (options = {}) => {
   }
 
   const genItems = () => {
-    return _items.value.map(item => {
+    return _items.value.map((item) => {
       return genItem(item)
     })
   }
@@ -80,20 +83,25 @@ export const createNotify = (options = {}) => {
   }
 
   const renderContainer = () => {
-    const containerVNode = createVNode(TransitionGroup, {
-      tag: 'div',
-      class: 'fixed top-0 inset-x-0 flex flex-col-reverse items-center pointer-events-none pt-8 px-3',
-      style: {
-        zIndex: _zIndex,
+    const containerVNode = createVNode(
+      TransitionGroup,
+      {
+        tag: 'div',
+        class:
+          'fixed top-0 inset-x-0 flex flex-col-reverse items-center pointer-events-none pt-8 px-3',
+        style: {
+          zIndex: _zIndex,
+        },
+        enterActiveClass: 'transition duration-200 ease-out',
+        enterFromClass: 'transform -translate-y-4 opacity-0',
+        moveClass: 'transform duration-500',
+        leaveActiveClass: 'transition duration-200 ease-out',
+        leaveToClass: 'transform -translate-y-4 opacity-0',
       },
-      enterActiveClass: 'transition duration-200 ease-out',
-      enterFromClass: 'transform -translate-y-4 opacity-0',
-      moveClass: 'transform duration-500',
-      leaveActiveClass: 'transition duration-200 ease-out',
-      leaveToClass: 'transform -translate-y-4 opacity-0',
-    }, {
-      default: () => genItems(),
-    })
+      {
+        default: () => genItems(),
+      }
+    )
 
     render(containerVNode, document.createElement('div'))
 
@@ -111,7 +119,7 @@ export const createNotify = (options = {}) => {
 
   return {
     instance,
-    install (app) {
+    install(app) {
       renderContainer()
 
       app.config.globalProperties.$notify = notify

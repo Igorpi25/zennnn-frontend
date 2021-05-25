@@ -3,7 +3,19 @@
     <div class="bg-gray-800 bg-opacity-90">
       <div class="container flex flex-wrap py-8 sm:py-16">
         <div class="relative h-full w-full md:w-1/3 md:pl-6 pb-6 md:pb-0">
-          <div class="absolute bottom-0 md:bottom-auto left-0 w-full md:w-px h-px md:h-full bg-gray-400" />
+          <div
+            class="
+              absolute
+              bottom-0
+              md:bottom-auto
+              left-0
+              w-full
+              md:w-px
+              h-px
+              md:h-full
+              bg-gray-400
+            "
+          />
           <div
             v-for="(item, i) in aboutLinks"
             :key="i"
@@ -27,7 +39,19 @@
           </div>
         </div>
         <div class="relative h-full w-full md:w-1/3 md:pl-6 py-6 md:py-0">
-        <div class="absolute bottom-0 md:bottom-auto left-0 w-full md:w-px h-px md:h-full bg-gray-400" />
+          <div
+            class="
+              absolute
+              bottom-0
+              md:bottom-auto
+              left-0
+              w-full
+              md:w-px
+              h-px
+              md:h-full
+              bg-gray-400
+            "
+          />
           <div
             v-for="(item, i) in extLinks"
             :key="i"
@@ -51,7 +75,9 @@
           </div>
         </div>
         <div class="relative h-full w-full md:w-1/3 md:pl-6 pt-6 md:pt-0">
-          <div class="hidden md:block absolute left-0 w-px h-full bg-gray-400" />
+          <div
+            class="hidden md:block absolute left-0 w-px h-full bg-gray-400"
+          />
           <div
             v-for="item in socialLinks"
             :key="item.text"
@@ -68,7 +94,10 @@
             </a>
           </div>
           <div class="px-4 sm:px-0">
-            <a :href="`mailto:${mailTo}`" class="focus:outline-none focus:text-blue-400 hover:text-blue-400">
+            <a
+              :href="`mailto:${mailTo}`"
+              class="focus:outline-none focus:text-blue-400 hover:text-blue-400"
+            >
               {{ mailTo }}
             </a>
           </div>
@@ -78,10 +107,11 @@
     <div class="container h-20 flex items-center">
       <div class="flex md:pl-6">
         <router-link
-          :to="{ name: 'home' }" class="select-none focus:ring focus:outline-none"
-          @mousedown="e => e.preventDefault()"
+          :to="{ name: 'home' }"
+          class="select-none focus:ring focus:outline-none"
+          @mousedown="(e) => e.preventDefault()"
         >
-          <img src="@/assets/img/logo-dark.svg" alt="Logo">
+          <img src="@/assets/img/logo-dark.svg" alt="Logo" />
         </router-link>
         <div class="w-px h-6 bg-gray-400 ml-6" />
       </div>
@@ -95,7 +125,13 @@
 <script>
 import { useQuery, useResult } from '@vue/apollo-composable'
 
-import { ziFacebook, ziTelegram, ziInstagram, ziYoutube, ziVk } from '@zennnn/icons'
+import {
+  ziFacebook,
+  ziTelegram,
+  ziInstagram,
+  ziYoutube,
+  ziVk,
+} from '@zennnn/icons'
 import { Icon } from '@zennnn/core'
 
 import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
@@ -108,7 +144,7 @@ export default {
     Icon,
     Copyright,
   },
-  setup () {
+  setup() {
     const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
     const isLoggedIn = useResult(result1)
 
@@ -125,10 +161,14 @@ export default {
     }
   },
   computed: {
-    hasSubscription () {
-      return this.getProfile && this.getProfile.account && this.getProfile.account.subscriptionId
+    hasSubscription() {
+      return (
+        this.getProfile &&
+        this.getProfile.account &&
+        this.getProfile.account.subscriptionId
+      )
     },
-    aboutLinks () {
+    aboutLinks() {
       const items = [
         {
           text: this.$t('footer.about'),
@@ -157,7 +197,7 @@ export default {
       ]
       return items
     },
-    extLinks () {
+    extLinks() {
       const items = [
         {
           text: this.$t('footer.tariffs'),
@@ -189,7 +229,7 @@ export default {
       }
       return items
     },
-    socialLinks () {
+    socialLinks() {
       return [
         {
           text: 'Facebook',

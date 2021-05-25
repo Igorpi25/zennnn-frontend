@@ -26,13 +26,7 @@ export default defineComponent({
     color: {
       type: String,
       validator: (value: string) => {
-        return [
-          'primary',
-          'error',
-          'warn',
-          'success',
-          'info',
-        ].includes(value)
+        return ['primary', 'error', 'warn', 'success', 'info'].includes(value)
       },
       default: 'primary',
     },
@@ -66,7 +60,7 @@ export default defineComponent({
 
   emits: ['update:modelValue'],
 
-  setup (props, { slots }) {
+  setup(props, { slots }) {
     const internal = useModel(props, 'modelValue')
 
     const containerClasses = computed(() => {
@@ -107,17 +101,21 @@ export default defineComponent({
       if (slots.icon) {
         return slots.icon()
       } else if (props.icon) {
-        return h(Icon, {
-          size: 24,
-          class: {
-            alert__icon: true,
-            'alert__icon--error': props.color === 'error',
-            'alert__icon--info': props.color === 'info',
-            [props.iconClass.trim()]: true,
+        return h(
+          Icon,
+          {
+            size: 24,
+            class: {
+              alert__icon: true,
+              'alert__icon--error': props.color === 'error',
+              'alert__icon--info': props.color === 'info',
+              [props.iconClass.trim()]: true,
+            },
           },
-        }, {
-          default: () => ziInfoBig,
-        })
+          {
+            default: () => ziInfoBig,
+          }
+        )
       }
       return null
     }
@@ -127,16 +125,20 @@ export default defineComponent({
       if (closeChildren.length === 1) {
         return cloneVNode(closeChildren[0], { onClick: close })
       } else if (props.close) {
-        return h(Icon, {
-          size: 24,
-          class: {
-            alert__close: true,
-            [props.closeClass.trim()]: true,
+        return h(
+          Icon,
+          {
+            size: 24,
+            class: {
+              alert__close: true,
+              [props.closeClass.trim()]: true,
+            },
+            onClick: close,
           },
-          onClick: close,
-        }, {
-          default: () => ziCloseDelete,
-        })
+          {
+            default: () => ziCloseDelete,
+          }
+        )
       }
       return null
     }
@@ -148,28 +150,40 @@ export default defineComponent({
         children.push(genIcon())
       }
 
-      children.push(h('div', {
-        class: {
-          alert__content: true,
-          [props.contentClass.trim()]: true,
-        },
-      }, slots.default?.() ?? props.text))
+      children.push(
+        h(
+          'div',
+          {
+            class: {
+              alert__content: true,
+              [props.contentClass.trim()]: true,
+            },
+          },
+          slots.default?.() ?? props.text
+        )
+      )
 
       if (hasClose.value) {
         children.push(genClose())
       }
 
       return withDirectives(
-        h('div', {
-          class: 'alert',
-          style: styles.value,
-          role: 'alert',
-        }, h('div', {
-          class: containerClasses.value,
-        }, children)),
-        [
-          [vShow, internal.value],
-        ],
+        h(
+          'div',
+          {
+            class: 'alert',
+            style: styles.value,
+            role: 'alert',
+          },
+          h(
+            'div',
+            {
+              class: containerClasses.value,
+            },
+            children
+          )
+        ),
+        [[vShow, internal.value]]
       )
     }
 
@@ -179,14 +193,18 @@ export default defineComponent({
     }
   },
 
-  render () {
+  render() {
     const content = this.genContent()
 
     if (this.transition) {
-      return h(Transition, {
-        name: this.transition,
-        mode: this.mode,
-      }, { default: () => content })
+      return h(
+        Transition,
+        {
+          name: this.transition,
+          mode: this.mode,
+        },
+        { default: () => content }
+      )
     } else {
       return this.internal ? content : undefined
     }

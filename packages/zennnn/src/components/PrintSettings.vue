@@ -1,11 +1,20 @@
 <template>
   <div
     ref="container"
-    class="flex flex-col relative w-full overflow-y-auto scrolling-touch max-h-screen text-gray-100 bg-gray-800 px-sm py-6"
+    class="
+      flex flex-col
+      relative
+      w-full
+      overflow-y-auto
+      scrolling-touch
+      max-h-screen
+      text-gray-100
+      bg-gray-800
+      px-sm
+      py-6
+    "
   >
-    <span
-      class="absolute top-0 right-0 z-10 pt-1 pr-1"
-    >
+    <span class="absolute top-0 right-0 z-10 pt-1 pr-1">
       <Icon
         class="text-gray-100 hover:text-white cursor-pointer"
         @click="$emit('close')"
@@ -24,11 +33,31 @@
             {{ $t('shipping.toPrintInvoiceSubtitle') }}
           </p>
         </div>
-        <div class="flex flex-wrap items-center justify-center sm:justify-end flex-grow order-last sm:order-none pr-4">
+        <div
+          class="
+            flex flex-wrap
+            items-center
+            justify-center
+            sm:justify-end
+            flex-grow
+            order-last
+            sm:order-none
+            pr-4
+          "
+        >
           <transition name="slide-x-reverse-transition">
-            <div v-if="!validationState.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
+            <div
+              v-if="!validationState.isRequiredFilled"
+              class="flex items-center whitespace-nowrap pr-5 pb-1"
+            >
               <span class="text-pink-500 mr-2">
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="8"
+                  height="8"
+                  viewBox="0 0 8 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
                 </svg>
               </span>
@@ -36,9 +65,18 @@
             </div>
           </transition>
           <transition name="slide-x-reverse-transition">
-            <div v-if="!validationState.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
+            <div
+              v-if="!validationState.isOptionalFilled"
+              class="flex items-center whitespace-nowrap pr-5 pb-1"
+            >
               <span class="text-yellow-500 mr-2">
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="8"
+                  height="8"
+                  viewBox="0 0 8 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
                 </svg>
               </span>
@@ -103,11 +141,7 @@
         <!-- Divider -->
         <div class="my-10 border-t border-gray-400" />
         <!-- IMPORTER -->
-        <Switch
-          v-model="isImporterActive"
-          :disabled="!hasClient"
-          hide-details
-        >
+        <Switch v-model="isImporterActive" :disabled="!hasClient" hide-details>
           <h5 class="flex-grow text-lg leading-tight pt-1">
             <span class="text-white uppercase font-semibold tracking-widest">
               {{ $t('shipping.importerTitle') }}
@@ -159,26 +193,34 @@
                 searchable
                 state-icon
                 required
-                @update:model-value="$emit('update', { customs: { countryOfOrigin: $event } })"
+                @update:model-value="
+                  $emit('update', { customs: { countryOfOrigin: $event } })
+                "
               >
                 <template v-slot:prepend>
                   <img
                     v-if="customs.countryOfOrigin"
-                    :src="require(`@/assets/img/flags/square/${item.countryOfOrigin}.svg`).default"
+                    :src="
+                      require(`@/assets/img/flags/square/${item.countryOfOrigin}.svg`)
+                        .default
+                    "
                     :alt="customs.countryOfOrigin"
                     class="w-6 rounded-sm mr-4 ml-2"
-                  >
+                  />
                   <img
                     v-else
                     src="@/assets/icons/earth.svg"
                     class="h-6 w-6 rounded-full mr-4 ml-2"
-                  >
+                  />
                 </template>
                 <template v-slot:item="{ item }">
                   <img
-                    :src="require(`@/assets/img/flags/square/${item.value}.svg`).default"
+                    :src="
+                      require(`@/assets/img/flags/square/${item.value}.svg`)
+                        .default
+                    "
                     class="w-6 rounded-sm mr-4"
-                  >
+                  />
                   <span>{{ item.text }}</span>
                 </template>
               </Select>
@@ -197,7 +239,9 @@
                   searchable
                   state-icon
                   required
-                  @update:model-value="$emit('update', { customs: { terms: $event } })"
+                  @update:model-value="
+                    $emit('update', { customs: { terms: $event } })
+                  "
                 />
               </div>
               <div class="w-1/2">
@@ -208,7 +252,9 @@
                   lazy
                   number
                   number-format="currency"
-                  @update:model-value="$emit('update', { customs: { cost: $event } })"
+                  @update:model-value="
+                    $emit('update', { customs: { cost: $event } })
+                  "
                 >
                   <template v-slot:append>
                     <span class="text-base w-auto pl-xs pr-sm">
@@ -225,7 +271,12 @@
                   :attach="$refs.container"
                   :label="$t('shipping.invoiceCurrency')"
                   :placeholder="$t('currency.USD.iso-4217')"
-                  :items="[{ value: $t('currency.USD.iso-4217'), text: $t('currency.USD.iso-4217') }]"
+                  :items="[
+                    {
+                      value: $t('currency.USD.iso-4217'),
+                      text: $t('currency.USD.iso-4217'),
+                    },
+                  ]"
                 />
               </div>
             </div>
@@ -240,7 +291,9 @@
                   lazy
                   number
                   number-format="currency"
-                  @update:model-value="$emit('update', { customs: { discount: $event } })"
+                  @update:model-value="
+                    $emit('update', { customs: { discount: $event } })
+                  "
                 >
                   <template v-slot:append>
                     <span class="text-base w-auto pl-xs pr-sm">
@@ -272,9 +325,14 @@
             <div class="pt-9 pb-2">
               <div class="h-10 flex items-center">
                 <div class="text-white w-full flex items-baseline">
-                  <div class="text-2xl whitespace-nowrap">{{ $t('shipping.invoiceAmount') }}</div>
+                  <div class="text-2xl whitespace-nowrap">
+                    {{ $t('shipping.invoiceAmount') }}
+                  </div>
                   <div class="flex-grow dots" />
-                  <div class="text-2xl whitespace-nowrap">{{ $n(amount || 0, 'fixed') }} {{ $t(`currency.USD.symbol`) }}</div>
+                  <div class="text-2xl whitespace-nowrap">
+                    {{ $n(amount || 0, 'fixed') }}
+                    {{ $t(`currency.USD.symbol`) }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -284,14 +342,24 @@
         <div class="my-10 border-t border-gray-400" />
         <!-- AMOUNT -->
         <h5 class="flex-grow text-lg leading-tight">
-          <span class="text-white uppercase font-semibold tracking-widest uppercase">
+          <span
+            class="text-white uppercase font-semibold tracking-widest uppercase"
+          >
             {{ $t('shipping.amount') }}
           </span>
         </h5>
         <div class="flex flex-wrap pt-3">
           <div class="w-full sm:w-1/2 sm:pr-5">
             <div class="pb-2">
-              <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+              <label
+                class="
+                  block
+                  text-base text-gray-100
+                  whitespace-nowrap
+                  leading-5
+                  py-2
+                "
+              >
                 {{ $t('shipping.amountInWords') }}
               </label>
               <TextArea
@@ -308,7 +376,15 @@
           </div>
           <div class="w-full sm:w-1/2 sm:pl-5">
             <div class="pb-2">
-              <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+              <label
+                class="
+                  block
+                  text-base text-gray-100
+                  whitespace-nowrap
+                  leading-5
+                  py-2
+                "
+              >
                 {{ $t('shipping.amountInWordsClientLang') }}
               </label>
               <TextArea
@@ -319,7 +395,9 @@
                 rows="2"
                 state-icon
                 state-error-color="warn"
-                @update:model-value="$emit('update', { amountInWordsClientLang: $event })"
+                @update:model-value="
+                  $emit('update', { amountInWordsClientLang: $event })
+                "
               />
             </div>
           </div>
@@ -329,18 +407,34 @@
     <!-- Footer -->
     <div class="px-5">
       <div class="flex flex-col sm:flex-row">
-        <Btn
-          outlined
-          min-width="200"
-          @click="$emit('close')"
-        >
+        <Btn outlined min-width="200" @click="$emit('close')">
           {{ $t('shipping.cancelPrint') }}
         </Btn>
-        <div class="flex flex-wrap items-center justify-center sm:justify-end flex-grow order-first sm:order-none pr-4">
+        <div
+          class="
+            flex flex-wrap
+            items-center
+            justify-center
+            sm:justify-end
+            flex-grow
+            order-first
+            sm:order-none
+            pr-4
+          "
+        >
           <transition name="slide-x-reverse-transition">
-            <div v-if="!validationState.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
+            <div
+              v-if="!validationState.isRequiredFilled"
+              class="flex items-center whitespace-nowrap pr-5 pb-1"
+            >
               <span class="text-pink-500 mr-2">
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="8"
+                  height="8"
+                  viewBox="0 0 8 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
                 </svg>
               </span>
@@ -348,9 +442,18 @@
             </div>
           </transition>
           <transition name="slide-x-reverse-transition">
-            <div v-if="!validationState.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
+            <div
+              v-if="!validationState.isOptionalFilled"
+              class="flex items-center whitespace-nowrap pr-5 pb-1"
+            >
               <span class="text-yellow-500 mr-2">
-                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="8"
+                  height="8"
+                  viewBox="0 0 8 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <circle cx="4" cy="4" r="4" fill="currentColor" />
                 </svg>
               </span>
@@ -411,7 +514,15 @@ import { ref } from 'vue'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import { ziCloseWindow } from '@zennnn/icons'
-import { Btn, Icon, Modal, Switch, Select, TextField, TextArea } from '@zennnn/core'
+import {
+  Btn,
+  Icon,
+  Modal,
+  Switch,
+  Select,
+  TextField,
+  TextArea,
+} from '@zennnn/core'
 
 import Countries from '../config/countries-iso3.json'
 
@@ -422,9 +533,18 @@ import PrintDelivery from './CompanyDetail/PrintDelivery.vue'
 import RequisiteCard from './RequisiteCard.vue'
 import ClientCard from './ClientCard.vue'
 
-import { UPDATE_CLIENT, UPDATE_REQUISITE, SET_SPEC_CLIENT } from '../graphql/mutations'
+import {
+  UPDATE_CLIENT,
+  UPDATE_REQUISITE,
+  SET_SPEC_CLIENT,
+} from '../graphql/mutations'
 import { LIST_ORG_REQUISITES, SEARCH_CLIENTS } from '../graphql/queries'
-import { ClientType, ShipmentType, CustomsTerms, CustomsTermsMore } from '../graphql/enums'
+import {
+  ClientType,
+  ShipmentType,
+  CustomsTerms,
+  CustomsTermsMore,
+} from '../graphql/enums'
 
 import { validateInvoicePrint } from '../utils/validation'
 
@@ -478,27 +598,35 @@ export default {
     amountInWords: String,
     amountInWordsClientLang: String,
   },
-  setup (props) {
+  setup(props) {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
     const clientSearch = ref('')
 
-    const { result: result1 } = useQuery(SEARCH_CLIENTS, () => ({
-      orgId: props.orgId,
-      search: clientSearch.value,
-    }), () => ({
-      enabled: !!clientSearch.value,
-      fetchPolicy: 'cache-and-network',
-      debounce: 300,
-    }))
+    const { result: result1 } = useQuery(
+      SEARCH_CLIENTS,
+      () => ({
+        orgId: props.orgId,
+        search: clientSearch.value,
+      }),
+      () => ({
+        enabled: !!clientSearch.value,
+        fetchPolicy: 'cache-and-network',
+        debounce: 300,
+      })
+    )
     const searchClients = useResult(result1)
 
-    const { result: result2, loading: requisiteLoading } = useQuery(LIST_ORG_REQUISITES, () => ({
-      orgId: props.orgId,
-    }), {
-      fetchPolicy: 'cache-and-network',
-    })
+    const { result: result2, loading: requisiteLoading } = useQuery(
+      LIST_ORG_REQUISITES,
+      () => ({
+        orgId: props.orgId,
+      }),
+      {
+        fetchPolicy: 'cache-and-network',
+      }
+    )
     const listOrgRequisites = useResult(result2)
 
     return {
@@ -512,7 +640,7 @@ export default {
       listOrgRequisites,
     }
   },
-  data () {
+  data() {
     return {
       customsCountryOfOriginValue: undefined,
       customsTermsValue: undefined,
@@ -528,73 +656,91 @@ export default {
       isValid: false,
       ShipmentType,
       rules: {
-        required: v => !!v || this.$t('rule.required'),
+        required: (v) => !!v || this.$t('rule.required'),
       },
     }
   },
   computed: {
-    validationState () {
-      return validateInvoicePrint(this.requisite, this.client, this.shipment, this.customs, this.amountInWords, this.amountInWordsClientLang)
+    validationState() {
+      return validateInvoicePrint(
+        this.requisite,
+        this.client,
+        this.shipment,
+        this.customs,
+        this.amountInWords,
+        this.amountInWordsClientLang
+      )
     },
-    isTermsDisabled () {
+    isTermsDisabled() {
       const shipmentType = this.shipment.activeType
-      return shipmentType === ShipmentType.AIR || shipmentType === ShipmentType.EXPRESS
+      return (
+        shipmentType === ShipmentType.AIR ||
+        shipmentType === ShipmentType.EXPRESS
+      )
     },
     isImporterActive: {
-      get () {
+      get() {
         return !!this.importer.importerActive
       },
-      set (val) {
+      set(val) {
         this.updateClient({ importerActive: !!val })
       },
     },
-    importer () {
+    importer() {
       return this.client || {}
     },
-    hasClient () {
+    hasClient() {
       return this.client && this.client.id
     },
-    isClientTypePrivate () {
+    isClientTypePrivate() {
       return this.client && this.client.clientType === ClientType.PRIVATE
     },
-    hasRequisite () {
+    hasRequisite() {
       return !!this.requisiteId
     },
-    specClient () {
+    specClient() {
       const client = this.client || {}
       return {
         ...client,
         name: client.fullName,
       }
     },
-    clients () {
+    clients() {
       const items = (this.searchClients && this.searchClients.items) || []
-      return items.map(item => {
+      return items.map((item) => {
         return {
           ...item,
           name: item.fullName,
         }
       })
     },
-    requisites () {
+    requisites() {
       const items = this.listOrgRequisites || []
       return items
     },
-    requisite () {
-      return (this.listOrgRequisites || []).find(el => el.id === this.requisiteId) || {}
+    requisite() {
+      return (
+        (this.listOrgRequisites || []).find(
+          (el) => el.id === this.requisiteId
+        ) || {}
+      )
     },
-    shipmentTypes () {
-      const items = Object.values(ShipmentType).filter(el => el !== ShipmentType.UNDEFINED).map(el => {
-        return {
-          text: this.$t(`shipmentType.${el}`),
-          value: el,
-        }
-      })
+    shipmentTypes() {
+      const items = Object.values(ShipmentType)
+        .filter((el) => el !== ShipmentType.UNDEFINED)
+        .map((el) => {
+          return {
+            text: this.$t(`shipmentType.${el}`),
+            value: el,
+          }
+        })
       return items
     },
-    countries () {
+    countries() {
       return Object.entries(Countries).map(([k, v]) => {
-        const name = this.$te(`countries.${k}`, 'en') ? this.$t(`countries.${k}`, 'en') : v
+        const name = this.$te(`countries.${k}`, 'en')
+          ? this.$t(`countries.${k}`, 'en')
+          : v
         return {
           text: this.$te(`countries.${k}`) ? this.$t(`countries.${k}`) : name,
           value: k,
@@ -602,40 +748,50 @@ export default {
         }
       })
     },
-    shipmentCountries () {
+    shipmentCountries() {
       return this.countries
     },
-    customsTermsItems () {
-      return Object.values(CustomsTerms).map(el => {
+    customsTermsItems() {
+      return Object.values(CustomsTerms).map((el) => {
         return {
           text: this.$t(`customsTerms.${el}`),
           value: el,
         }
       })
     },
-    customsTermsMoreItems () {
-      return Object.values(CustomsTermsMore).map(el => {
+    customsTermsMoreItems() {
+      return Object.values(CustomsTermsMore).map((el) => {
         return {
           text: this.$t(`customsTerms.${el}`),
           value: el,
         }
       })
     },
-    customsTerms () {
+    customsTerms() {
       const shipmentType = this.shipment.activeType
       let items = []
-      if (shipmentType === ShipmentType.RAILWAY || shipmentType === ShipmentType.CAR) {
+      if (
+        shipmentType === ShipmentType.RAILWAY ||
+        shipmentType === ShipmentType.CAR
+      ) {
         items = this.customsTermsItems
       }
-      if (shipmentType === ShipmentType.MARINE || shipmentType === ShipmentType.MIXED) {
-        items = [...this.customsTermsItems, { divider: true }, ...this.customsTermsMoreItems]
+      if (
+        shipmentType === ShipmentType.MARINE ||
+        shipmentType === ShipmentType.MIXED
+      ) {
+        items = [
+          ...this.customsTermsItems,
+          { divider: true },
+          ...this.customsTermsMoreItems,
+        ]
       }
       return items
     },
   },
   watch: {
     'customs.countryOfOrigin': {
-      handler (val) {
+      handler(val) {
         this.$nextTick(() => {
           this.customsCountryOfOriginValue = val
         })
@@ -643,7 +799,7 @@ export default {
       immediate: true,
     },
     'customs.terms': {
-      handler (val) {
+      handler(val) {
         this.$nextTick(() => {
           this.customsTermsValue = val
         })
@@ -652,10 +808,16 @@ export default {
     },
   },
   methods: {
-    print () {
-      this.$emit('print', this.requisite, this.client, this.shipment, this.customs)
+    print() {
+      this.$emit(
+        'print',
+        this.requisite,
+        this.client,
+        this.shipment,
+        this.customs
+      )
     },
-    async updateClient (input) {
+    async updateClient(input) {
       try {
         await this.apolloClient.mutate({
           mutation: UPDATE_CLIENT,
@@ -673,7 +835,7 @@ export default {
         throw new Error(error)
       }
     },
-    async updateRequisite (input) {
+    async updateRequisite(input) {
       try {
         await this.apolloClient.mutate({
           mutation: UPDATE_REQUISITE,
@@ -683,7 +845,9 @@ export default {
           },
         })
       } catch (error) {
-        const message = !this.requisiteId ? 'Продавец / Поставщик не установлен.' : error.message
+        const message = !this.requisiteId
+          ? 'Продавец / Поставщик не установлен.'
+          : error.message
         this.$notify({
           color: 'error',
           text: message,
@@ -691,10 +855,10 @@ export default {
         throw new Error(error)
       }
     },
-    setRequisite (id) {
+    setRequisite(id) {
       this.$emit('update', { requisite: id })
     },
-    createRequisite () {
+    createRequisite() {
       this.requisiteDialog = true
       this.$nextTick(() => {
         if (this.$refs.requisiteCard) {
@@ -705,11 +869,11 @@ export default {
         }
       })
     },
-    setCreatedRequisite (item) {
+    setCreatedRequisite(item) {
       this.$emit('update', { requisite: item.id })
       this.requisiteDialog = false
     },
-    createClient () {
+    createClient() {
       this.clientDialog = true
       this.$nextTick(() => {
         if (this.$refs.clientCard) {
@@ -720,7 +884,7 @@ export default {
         }
       })
     },
-    async setSpecClient (clientId) {
+    async setSpecClient(clientId) {
       if (!clientId) return
       try {
         this.updateClientLoading = true

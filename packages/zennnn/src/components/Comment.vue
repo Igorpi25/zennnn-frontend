@@ -1,9 +1,6 @@
 <template>
   <div>
-    <CommentCard
-      :item="item"
-      :light="light"
-    />
+    <CommentCard :item="item" :light="light" />
     <div class="pt-4 pl-4">
       <CommentCard
         v-for="c in item.comments"
@@ -21,7 +18,12 @@
         @submit="commentSubmit"
       /> -->
     </div>
-    <div :class="['border-b my-4', light ? 'border-light-gray-400' : 'border-gray-200']" />
+    <div
+      :class="[
+        'border-b my-4',
+        light ? 'border-light-gray-400' : 'border-gray-200',
+      ]"
+    />
   </div>
 </template>
 
@@ -65,26 +67,26 @@ export default {
       default: '',
     },
   },
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
 
     return {
       resolveClient,
     }
   },
-  data () {
+  data() {
     return {
       commentSubmitLoading: false,
       comment: '',
     }
   },
   computed: {
-    light () {
+    light() {
       return this.isPaper
     },
   },
   methods: {
-    async commentSubmit () {
+    async commentSubmit() {
       try {
         const client = this.resolveClient()
         const comment = this.comment

@@ -41,7 +41,9 @@ export const useMenuContext = (component: string) => {
   const context = inject(MenuContext)
 
   if (context === undefined) {
-    const err = new Error(`<${component} /> is missing a parent <Menu /> component.`)
+    const err = new Error(
+      `<${component} /> is missing a parent <Menu /> component.`
+    )
     if (Error.captureStackTrace) Error.captureStackTrace(err, useMenuContext)
     throw err
   }
@@ -102,14 +104,14 @@ export default defineComponent({
     },
     includeElements: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
     id: String,
   },
 
   emits: ['update:modelValue', 'update:value'],
 
-  setup (props, { slots, emit }) {
+  setup(props, { slots, emit }) {
     const id: string = props.id || uid('menu-')
     const items = ref<any[]>([])
     const rootElement = ref<HTMLElement>()
@@ -123,31 +125,26 @@ export default defineComponent({
 
     const { target } = useAttach(props)
 
-    const { reference, popper, create, destroy, genArrow, isCursorOutside } = usePopper(props)
+    const { reference, popper, create, destroy, genArrow, isCursorOutside } =
+      usePopper(props)
 
-    const {
-      isActive,
-      genActivator,
-      focusActivator,
-    } = useActivator(props, { slots, reference })
+    const { isActive, genActivator, focusActivator } = useActivator(props, {
+      slots,
+      reference,
+    })
 
-    const {
-      showLazyContent,
-    } = useLazyContent(props, { isActive })
+    const { showLazyContent } = useLazyContent(props, { isActive })
 
     const clientRectProps = reactive({
       element: props.width === 'auto' ? rootElement : undefined,
       hasResizeListener: props.width === 'auto',
     })
-    const {
-      clientRect,
-      updateClientRect,
-    } = useClientRect(clientRectProps)
+    const { clientRect, updateClientRect } = useClientRect(clientRectProps)
 
     const internalValue = computed(() => props.value)
 
     const hasClickableMenuItems = computed(() => {
-      return Boolean(items.value.find(item => !item.ariaDisabled))
+      return Boolean(items.value.find((item) => !item.ariaDisabled))
     })
 
     const activatorAttrs = computed(() => {
@@ -248,12 +245,18 @@ export default defineComponent({
     const focusMenu = () => {
       if (isVisible.value) {
         nextTick(() => {
-          contentElement.value && contentElement.value.focus({ preventScroll: true })
+          contentElement.value &&
+            contentElement.value.focus({ preventScroll: true })
         })
       } else {
         // focus not firing, because content activated in requestAnimationFrame
         const unwatch = watch(isVisible, (val) => {
-          nextTick(() => val && contentElement.value && contentElement.value.focus({ preventScroll: true }))
+          nextTick(
+            () =>
+              val &&
+              contentElement.value &&
+              contentElement.value.focus({ preventScroll: true })
+          )
           unwatch()
         })
       }
@@ -278,12 +281,13 @@ export default defineComponent({
         closeMenu()
       } else if (
         !isActive.value &&
-        (
-          e.key === 'ArrowUp' || e.key === 'Up' ||
-          e.key === 'ArrowDown' || e.key === 'Down' ||
+        (e.key === 'ArrowUp' ||
+          e.key === 'Up' ||
+          e.key === 'ArrowDown' ||
+          e.key === 'Down' ||
           e.key === 'Enter' ||
-          e.key === ' ' || e.key === 'Spacebar'
-        )
+          e.key === ' ' ||
+          e.key === 'Spacebar')
       ) {
         e.preventDefault()
         isActive.value = true
@@ -323,7 +327,9 @@ export default defineComponent({
         items.value[activeItemIndex.value].click()
       } else if (e.key === ' ' || e.key === 'Spacebar') {
         e.preventDefault()
-      } else { return }
+      } else {
+        return
+      }
       // One of the conditions was met, prevent default action (#2988)
       e.preventDefault()
     }
@@ -379,12 +385,16 @@ export default defineComponent({
     }
 
     const genContent = () => {
-      return h('div', {
-        class: {
-          menu__content: true,
-          [props.contentClass.trim()]: true,
+      return h(
+        'div',
+        {
+          class: {
+            menu__content: true,
+            [props.contentClass.trim()]: true,
+          },
         },
-      }, slots.default?.())
+        slots.default?.()
+      )
     }
 
     const genPopperBox = () => {
@@ -393,7 +403,8 @@ export default defineComponent({
         id,
         role: props.role,
         tabindex: props.tabindex,
-        'aria-activedescendant': isActive.value && activeItemId.value ? activeItemId.value : undefined,
+        'aria-activedescendant':
+          isActive.value && activeItemId.value ? activeItemId.value : undefined,
         class: {
           'popper__box menu__box': true,
           [props.boxClass.trim()]: true,
@@ -410,23 +421,22 @@ export default defineComponent({
       }
 
       const content = withDirectives(
-        h('div', data, [
-          genContent(),
-          genArrow(),
-        ]),
-        [
-          [vShow, isVisible.value],
-        ],
+        h('div', data, [genContent(), genArrow()]),
+        [[vShow, isVisible.value]]
       )
 
       if (!props.transition) return content
 
-      return h(Transition, {
-        ...props.transition,
-        onAfterLeave () {
-          destroy()
+      return h(
+        Transition,
+        {
+          ...props.transition,
+          onAfterLeave() {
+            destroy()
+          },
         },
-      }, () => content)
+        () => content
+      )
     }
 
     const genPopper = () => {
@@ -438,39 +448,45 @@ export default defineComponent({
           zIndex: props.zIndex,
         },
         'data-popper-root': '',
-        onClick (e: Event) {
+        onClick(e: Event) {
           const target = e.target as HTMLElement
           if (target.getAttribute('disabled')) return
           if (props.closeOnContentClick) isActive.value = false
         },
       }
 
-      const content = withDirectives(
-        h('div', data, children),
+      const content = withDirectives(h('div', data, children), [
         [
-          [
-            ClickOutside,
-            {
-              handler: () => {
-                isActive.value = false
-              },
-              closeConditional: (e: Event) => {
-                const target = e.target as Element
-                const wrapper = ((popper.value as ComponentPublicInstance)?.$el || popper.value) as Element
-                return isActive.value &&
-                  props.closeOnClick &&
-                  !(wrapper && wrapper.contains(target))
-              },
-              include: () => [rootElement.value, ...props.includeElements],
+          ClickOutside,
+          {
+            handler: () => {
+              isActive.value = false
             },
-          ],
+            closeConditional: (e: Event) => {
+              const target = e.target as Element
+              const wrapper = ((popper.value as ComponentPublicInstance)?.$el ||
+                popper.value) as Element
+              return (
+                isActive.value &&
+                props.closeOnClick &&
+                !(wrapper && wrapper.contains(target))
+              )
+            },
+            include: () => [rootElement.value, ...props.includeElements],
+          },
         ],
-      )
+      ])
 
-      return showLazyContent(() => h(Teleport, {
-        to: target.value,
-        disabled: !target.value,
-      }, content))
+      return showLazyContent(() =>
+        h(
+          Teleport,
+          {
+            to: target.value,
+            disabled: !target.value,
+          },
+          content
+        )
+      )
     }
 
     const api = {
@@ -503,15 +519,19 @@ export default defineComponent({
     }
   },
 
-  render () {
-    return h(this.tag, {
-      ref: 'rootElement',
-      class: {
-        menu: true,
+  render() {
+    return h(
+      this.tag,
+      {
+        ref: 'rootElement',
+        class: {
+          menu: true,
+        },
       },
-    }, [
-      this.genPopper(),
-      this.genActivator(this.activatorAttrs, this.activatorListeners),
-    ])
+      [
+        this.genPopper(),
+        this.genActivator(this.activatorAttrs, this.activatorListeners),
+      ]
+    )
   },
 })

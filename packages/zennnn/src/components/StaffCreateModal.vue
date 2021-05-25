@@ -6,10 +6,7 @@
   >
     <Window v-model="invitationStep" class="p-6">
       <WindowItem :value="1">
-        <Form
-          ref="emailForm"
-          lazy-validation
-        >
+        <Form ref="emailForm" lazy-validation>
           <TextField
             ref="email"
             v-model="emailFormModel.email"
@@ -33,20 +30,14 @@
             {{ emailErrorMessage }}
           </Alert>
           <div class="text-right">
-            <Btn
-              :loading="emailFormLoading"
-              @click="getInviteUser"
-            >
+            <Btn :loading="emailFormLoading" @click="getInviteUser">
               <span>{{ $t('staff.next') }}</span>
             </Btn>
           </div>
         </Form>
       </WindowItem>
       <WindowItem :value="2">
-        <Form
-          ref="inviteForm"
-          lazy-validation
-        >
+        <Form ref="inviteForm" lazy-validation>
           <TextField
             ref="givenNameInput"
             v-model="inviteFormModel.givenName"
@@ -103,7 +94,11 @@
           <div class="flex flex-wrap sm:flex-nowrap justify-between">
             <Btn
               :disabled="inviteFormLoading"
-              :class="inviteFormLoading ? 'text-gray-300 border-gray-200' : 'border-gray-200'"
+              :class="
+                inviteFormLoading
+                  ? 'text-gray-300 border-gray-200'
+                  : 'border-gray-200'
+              "
               outlined
               class="w-full sm:w-1/2 order-1 sm:order-none sm:mr-3"
               @click="invitationStep = 1"
@@ -113,7 +108,7 @@
             <Btn
               :loading="inviteFormLoading"
               block
-              class="w-full sm:w-1/2  mb-4 sm:mb-0 sm:ml-3"
+              class="w-full sm:w-1/2 mb-4 sm:mb-0 sm:ml-3"
               @click="submit"
             >
               <span>{{ $t('staff.invite') }}</span>
@@ -129,7 +124,15 @@
 import { useApolloClient } from '@vue/apollo-composable'
 
 import { ziUserPlus } from '@zennnn/icons'
-import { Alert, Btn, Form, Select, TextField, Window, WindowItem } from '@zennnn/core'
+import {
+  Alert,
+  Btn,
+  Form,
+  Select,
+  TextField,
+  Window,
+  WindowItem,
+} from '@zennnn/core'
 
 import { Role } from '../graphql/enums'
 import { GET_INVITE_USER_TO_ORG } from '../graphql/queries'
@@ -155,7 +158,7 @@ export default {
     value: Boolean,
   },
   emits: ['update:modelValue'],
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
@@ -166,7 +169,7 @@ export default {
       apolloClient,
     }
   },
-  data () {
+  data() {
     return {
       emailErrorMessage: '',
       inviteErrorMessage: '',
@@ -187,33 +190,36 @@ export default {
       },
       roleMenu: false,
       rules: {
-        required: v => !!v || this.$t('rule.required'),
-        requiredSelect: v => !!v || this.$t('rule.requiredSelect'),
-        email: v => /.+@.+\..+/.test(v) || this.$t('rule.email'),
+        required: (v) => !!v || this.$t('rule.required'),
+        requiredSelect: (v) => !!v || this.$t('rule.requiredSelect'),
+        email: (v) => /.+@.+\..+/.test(v) || this.$t('rule.email'),
       },
     }
   },
   computed: {
-    orgId () {
+    orgId() {
       return this.$route.params.orgId
     },
-    langs () {
+    langs() {
       return LOCALES_LIST
     },
-    roles () {
+    roles() {
       return [
         { value: Role.MANAGER, text: this.$t(`role.${Role.MANAGER}`) },
         { value: Role.ACCOUNTANT, text: this.$t(`role.${Role.ACCOUNTANT}`) },
-        { value: Role.WAREHOUSEMAN, text: this.$t(`role.${Role.WAREHOUSEMAN}`) },
+        {
+          value: Role.WAREHOUSEMAN,
+          text: this.$t(`role.${Role.WAREHOUSEMAN}`),
+        },
         { value: Role.FREELANCER, text: this.$t(`role.${Role.FREELANCER}`) },
       ]
     },
   },
   watch: {
-    value (val) {
+    value(val) {
       this.dialog = val
     },
-    dialog (val) {
+    dialog(val) {
       this.$emit('update:modelValue', val)
       if (val) {
         setTimeout(() => {
@@ -228,7 +234,7 @@ export default {
     },
   },
   methods: {
-    reset () {
+    reset() {
       this.invitationStep = 1
       if (this.$refs.emailForm) {
         this.$refs.emailForm.reset()
@@ -237,7 +243,7 @@ export default {
       this.inviteErrorMessage = ''
       this.resetInviteForm()
     },
-    resetInviteForm () {
+    resetInviteForm() {
       this.inviteUser = null
       this.inviteErrorMessage = ''
       if (this.$refs.inviteForm) {
@@ -250,7 +256,7 @@ export default {
         locale: '',
       }
     },
-    async getInviteUser () {
+    async getInviteUser() {
       try {
         if (this.$refs.emailForm.validate(true)) {
           this.emailFormLoading = true
@@ -279,7 +285,9 @@ export default {
           this.invitationStep = 2
         }
       } catch (error) {
-        if (error.message === 'GraphQL error: Error: User already exist in org.') {
+        if (
+          error.message === 'GraphQL error: Error: User already exist in org.'
+        ) {
           this.emailErrorMessage = this.$t('staff.userAlreadyExistInOrg')
         } else {
           this.$notify({
@@ -292,7 +300,7 @@ export default {
         this.emailFormLoading = false
       }
     },
-    async submit (e) {
+    async submit(e) {
       e.preventDefault()
       try {
         if (this.$refs.inviteForm.validate(true)) {
@@ -318,7 +326,10 @@ export default {
           this.$emit('update', true)
         }
       } catch (error) {
-        if (error.message === 'GraphQL error: UsernameExistsException: An account with the given email already exists.') {
+        if (
+          error.message ===
+          'GraphQL error: UsernameExistsException: An account with the given email already exists.'
+        ) {
           this.inviteErrorMessage = this.$t('staff.userNotActive')
         } else {
           this.$notify({

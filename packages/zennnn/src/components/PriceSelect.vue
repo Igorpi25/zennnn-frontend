@@ -1,19 +1,28 @@
 <template>
   <div class="bg-white relative">
     <span class="absolute top-0 right-0 pt-2 pr-2">
-      <Icon
-        class="text-gray-200 hover:text-gray-300"
-        @click="$emit('close')"
-      >
+      <Icon class="text-gray-200 hover:text-gray-300" @click="$emit('close')">
         {{ icons.ziCloseWindow }}
       </Icon>
     </span>
     <div class="bg-light-gray-100 flex px-8 py-5">
-      <svg class="text-blue-500" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M19.8174 1.06641C20.208 0.675781 19.9307 0 19.376 0H0.626708C0.072041 0 -0.209198 0.671875 0.185318 1.06641L8.43891 9.32031V18.4375H4.8453C4.23985 18.4375 3.75159 18.9258 3.75159 19.5312C3.75159 19.7891 3.96252 20 4.22032 20H15.7824C16.0402 20 16.2511 19.7891 16.2511 19.5312C16.2511 18.9258 15.7629 18.4375 15.1574 18.4375H11.5638V9.32031L19.8174 1.06641Z" fill="currentColor"/>
+      <svg
+        class="text-blue-500"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M19.8174 1.06641C20.208 0.675781 19.9307 0 19.376 0H0.626708C0.072041 0 -0.209198 0.671875 0.185318 1.06641L8.43891 9.32031V18.4375H4.8453C4.23985 18.4375 3.75159 18.9258 3.75159 19.5312C3.75159 19.7891 3.96252 20 4.22032 20H15.7824C16.0402 20 16.2511 19.7891 16.2511 19.5312C16.2511 18.9258 15.7629 18.4375 15.1574 18.4375H11.5638V9.32031L19.8174 1.06641Z"
+          fill="currentColor"
+        />
       </svg>
       <div class="text-lg font-semibold text-gray-900 pl-4">
-        {{ changePrice ? $t('payment.changePlanTitle') : $t('payment.selectPlan') }}
+        {{
+          changePrice ? $t('payment.changePlanTitle') : $t('payment.selectPlan')
+        }}
       </div>
     </div>
     <div class="p-8">
@@ -31,13 +40,30 @@
           <div v-else class="text-sm">
             <router-link
               :to="{ name: 'pricing' }"
-              class="text-blue-500 hover:text-blue-400 focus:outline-none focus:text-blue-400"
+              class="
+                text-blue-500
+                hover:text-blue-400
+                focus:outline-none
+                focus:text-blue-400
+              "
             >
               {{ $t('payment.more') }}
             </router-link>
           </div>
         </div>
-        <div v-html="item.annotation" class="hidden sm:block w-1/3 text-sm text-gray-200 leading-tight self-start pt-1 pl-3" />
+        <div
+          v-html="item.annotation"
+          class="
+            hidden
+            sm:block
+            w-1/3
+            text-sm text-gray-200
+            leading-tight
+            self-start
+            pt-1
+            pl-3
+          "
+        />
         <div class="text-right w-1/2 sm:w-1/3 pl-3">
           <Dialog
             v-if="item.isCustomPrice"
@@ -109,14 +135,14 @@ export default {
 
   emits: ['update:selected', 'select'],
 
-  setup () {
+  setup() {
     const { result } = useQuery(LIST_PRICES)
     const listPrices = useResult(result)
 
     const contactDialog = ref(false)
     const contactForm = ref(null)
 
-    watch(contactDialog, val => {
+    watch(contactDialog, (val) => {
       if (val) {
         setTimeout(() => {
           contactForm.value && contactForm.value.focus()
@@ -139,7 +165,7 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       currencyRates: {},
       selectedPriceId: '',
@@ -149,48 +175,60 @@ export default {
   },
 
   computed: {
-    prices () {
+    prices() {
       return this.listPrices || []
     },
-    selectedPrice () {
-      return this.prices.find(el => el.id === this.selectedPriceId) || {}
+    selectedPrice() {
+      return this.prices.find((el) => el.id === this.selectedPriceId) || {}
     },
-    selectedProduct () {
-      return this.products.find(el => el.id === this.selectedProductId) || {}
+    selectedProduct() {
+      return this.products.find((el) => el.id === this.selectedProductId) || {}
     },
-    products () {
+    products() {
       const currencyRate = this.currencyRates[this.localeCurrency]
       const format = (number, options, locale) => {
         const intlFormatter = new Intl.NumberFormat(locale, options)
         return intlFormatter.format(number, undefined, locale)
       }
-      const getPriceInCurrency = (rate) => this.localeCurrency !== 'USD'
-        ? format(Math.round(rate * currencyRate), {
-          style: 'currency',
-          currency: this.localeCurrency,
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2,
-        }, this.$i18n.locale)
-        : null
-      const getUsd = (rate) => format(rate, {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-      }, 'en-US')
+      const getPriceInCurrency = (rate) =>
+        this.localeCurrency !== 'USD'
+          ? format(
+              Math.round(rate * currencyRate),
+              {
+                style: 'currency',
+                currency: this.localeCurrency,
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+              },
+              this.$i18n.locale
+            )
+          : null
+      const getUsd = (rate) =>
+        format(
+          rate,
+          {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+          },
+          'en-US'
+        )
       const prices = {}
       const products = {}
       const amounts = {}
       let isAnnually = false
-      this.prices.filter(el => el.nickname).forEach(el => {
-        prices[el.nickname] = el.id
-        const productName = el.nickname.split(' ')[0]
-        products[productName] = el.product
-        if (el.id === this.currentPriceId && el.nickname.includes('Annual')) {
-          isAnnually = true
-        }
-        amounts[el.nickname] = this.getRoundedPriceFromPenny(el.unit_amount)
-      })
+      this.prices
+        .filter((el) => el.nickname)
+        .forEach((el) => {
+          prices[el.nickname] = el.id
+          const productName = el.nickname.split(' ')[0]
+          products[productName] = el.product
+          if (el.id === this.currentPriceId && el.nickname.includes('Annual')) {
+            isAnnually = true
+          }
+          amounts[el.nickname] = this.getRoundedPriceFromPenny(el.unit_amount)
+        })
       return [
         {
           id: products.Start,
@@ -200,12 +238,19 @@ export default {
           title: this.$t('pricing.start'),
           mPriceInCurrency: getPriceInCurrency(amounts['Start Monthly'] || 30),
           mPrice: getUsd(amounts['Start Monthly'] || 30),
-          aPriceInCurrency: getPriceInCurrency((amounts['Start Annual'] || 180) / 12),
+          aPriceInCurrency: getPriceInCurrency(
+            (amounts['Start Annual'] || 180) / 12
+          ),
           aPriceTotal: getUsd(amounts['Start Annual'] || 180),
           aPrice: getUsd((amounts['Start Annual'] || 180) / 12),
           current: this.currentProductId === products.Start,
-          annotation: `${isAnnually ? '$15' : '$30'}<br>${this.$t('payment.monthly').toLowerCase()}`,
-          to: { name: 'payment', params: { type: 'change', product: products.Start } },
+          annotation: `${isAnnually ? '$15' : '$30'}<br>${this.$t(
+            'payment.monthly'
+          ).toLowerCase()}`,
+          to: {
+            name: 'payment',
+            params: { type: 'change', product: products.Start },
+          },
         },
         {
           id: products.Standard,
@@ -213,14 +258,23 @@ export default {
           aId: prices['Standard Annual'],
           name: 'Standard',
           title: this.$t('pricing.standard'),
-          mPriceInCurrency: getPriceInCurrency(amounts['Standard Monthly'] || 198),
+          mPriceInCurrency: getPriceInCurrency(
+            amounts['Standard Monthly'] || 198
+          ),
           mPrice: getUsd(amounts['Standard Monthly'] || 198),
-          aPriceInCurrency: getPriceInCurrency((amounts['Standard Annual'] || 1188) / 12),
+          aPriceInCurrency: getPriceInCurrency(
+            (amounts['Standard Annual'] || 1188) / 12
+          ),
           aPriceTotal: getUsd(amounts['Standard Annual'] || 1188),
           aPrice: getUsd((amounts['Standard Annual'] || 1188) / 12),
           current: this.currentProductId === products.Standard,
-          annotation: `${isAnnually ? '$99' : '$198'}<br>${this.$t('payment.monthly').toLowerCase()}`,
-          to: { name: 'payment', params: { type: 'change', product: products.Standard } },
+          annotation: `${isAnnually ? '$99' : '$198'}<br>${this.$t(
+            'payment.monthly'
+          ).toLowerCase()}`,
+          to: {
+            name: 'payment',
+            params: { type: 'change', product: products.Standard },
+          },
         },
         {
           id: products.Advanced,
@@ -228,14 +282,23 @@ export default {
           aId: prices['Advanced Annual'],
           name: 'Advanced',
           title: this.$t('pricing.advanced'),
-          mPriceInCurrency: getPriceInCurrency(amounts['Advanced Monthly'] || 398),
+          mPriceInCurrency: getPriceInCurrency(
+            amounts['Advanced Monthly'] || 398
+          ),
           mPrice: getUsd(amounts['Advanced Monthly'] || 398),
-          aPriceInCurrency: getPriceInCurrency((amounts['Advanced Annual'] || 2388) / 12),
+          aPriceInCurrency: getPriceInCurrency(
+            (amounts['Advanced Annual'] || 2388) / 12
+          ),
           aPriceTotal: getUsd(amounts['Advanced Annual'] || 2388),
           aPrice: getUsd((amounts['Advanced Annual'] || 2388) / 12),
           current: this.currentProductId === products.Advanced,
-          annotation: `${isAnnually ? '$199' : '$398'}<br>${this.$t('payment.monthly').toLowerCase()}`,
-          to: { name: 'payment', params: { type: 'change', product: products.Advanced } },
+          annotation: `${isAnnually ? '$199' : '$398'}<br>${this.$t(
+            'payment.monthly'
+          ).toLowerCase()}`,
+          to: {
+            name: 'payment',
+            params: { type: 'change', product: products.Advanced },
+          },
         },
         {
           id: products.Premium,
@@ -244,42 +307,52 @@ export default {
           title: this.$t('pricing.premium'),
           aPrice: '$~',
           annotation: this.$t('payment.personalPrice'),
-          to: { name: 'payment', params: { type: 'change', product: products.Premium } },
+          to: {
+            name: 'payment',
+            params: { type: 'change', product: products.Premium },
+          },
         },
       ]
     },
-    localeCurrency () {
+    localeCurrency() {
       switch (this.$i18n.locale) {
-        case 'fr': return 'EUR'
-        case 'ru': return 'RUB'
-        case 'zh-Hans': return 'CNY'
-        case 'zh-Hant': return 'HKD'
-        default: return 'USD'
+        case 'fr':
+          return 'EUR'
+        case 'ru':
+          return 'RUB'
+        case 'zh-Hans':
+          return 'CNY'
+        case 'zh-Hant':
+          return 'HKD'
+        default:
+          return 'USD'
       }
     },
   },
   watch: {
-    selectedProduct (val) {
+    selectedProduct(val) {
       this.$emit('update:selected', val)
     },
   },
-  created () {
+  created() {
     this.getRates()
   },
-  mounted () {
+  mounted() {
     if (this.currentProductId) {
       this.selectedProductId = this.currentProductId
     }
   },
   methods: {
-    onClick (item) {
+    onClick(item) {
       if (item.isCustomPrice) return
       this.selectedProductId = item.id
       this.$emit('select', item)
     },
-    async getRates () {
+    async getRates() {
       try {
-        const response = await axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
+        const response = await axios.get(
+          'https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP'
+        )
         if (response.data && response.data.success) {
           this.currencyRates = response.data.rates
         }
@@ -287,7 +360,7 @@ export default {
         this.$logget.info('Error on get currency rates', error)
       }
     },
-    getRoundedPriceFromPenny (value) {
+    getRoundedPriceFromPenny(value) {
       value = +value
       if (Number.isNaN(value)) return 0
       return Math.round(value / 100)

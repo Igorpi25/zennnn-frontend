@@ -28,22 +28,28 @@ export const useInputLazyProps = () => {
 }
 
 // Default
-export const useInputLazy = (props: InputLazyProps, { isFocused, setInternalValue, emitChange }: InputLazyContext) => {
+export const useInputLazy = (
+  props: InputLazyProps,
+  { isFocused, setInternalValue, emitChange }: InputLazyContext
+) => {
   const debounceInput = ref<any>()
 
   const hasDebounce = computed(() => {
     return props.debounce && !props.lazy
   })
 
-  watch(() => props.modelValue, (val) => {
-    if (props.forceUpdate) {
+  watch(
+    () => props.modelValue,
+    (val) => {
+      if (props.forceUpdate) {
+        setInternalValue(val)
+        return
+      }
+      // do not update value from watcher, for subscription self update
+      if (isFocused.value) return
       setInternalValue(val)
-      return
     }
-    // do not update value from watcher, for subscription self update
-    if (isFocused.value) return
-    setInternalValue(val)
-  })
+  )
 
   onBeforeMount(() => {
     if (hasDebounce.value) {

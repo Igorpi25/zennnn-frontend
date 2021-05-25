@@ -24,7 +24,10 @@ describe('Tooltip.ts', () => {
   it('should render component and match snapshot', async () => {
     const wrapper = mountFunction({
       slots: {
-        default: () => Array.from(Array(3).keys()).map(() => 'Content').join(' '),
+        default: () =>
+          Array.from(Array(3).keys())
+            .map(() => 'Content')
+            .join(' '),
         activator: () => h('button', 'Activator'),
       },
     })

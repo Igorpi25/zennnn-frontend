@@ -1,6 +1,6 @@
-export function debounce<T> (
+export function debounce<T>(
   fn: (arg: T) => void,
-  ms: number,
+  ms: number
 ): (arg: T) => void {
   // Avoid wrapping in `setTimeout` if ms is 0 anyway
   if (ms === 0) {

@@ -12,9 +12,18 @@ import {
 import { useClientRect } from 'vue-supp'
 
 import { useInputProps, useInput } from '../../composables/useInput'
-import { useInputClearProps, useInputClear } from '../../composables/useInputClear'
-import { useInputControlProps, useInputControl } from '../../composables/useInputControl'
-import { useInputValidationProps, useInputValidation } from '../../composables/useInputValidation'
+import {
+  useInputClearProps,
+  useInputClear,
+} from '../../composables/useInputClear'
+import {
+  useInputControlProps,
+  useInputControl,
+} from '../../composables/useInputControl'
+import {
+  useInputValidationProps,
+  useInputValidation,
+} from '../../composables/useInputValidation'
 import { useInputLazyProps, useInputLazy } from '../../composables/useInputLazy'
 import { useInputMessage } from '../../composables/useInputMessage'
 
@@ -56,9 +65,19 @@ export default defineComponent({
     placeholder: String,
   },
 
-  emits: ['update:modelValue', 'update:error', 'click:clear', 'focus', 'blur', 'change', 'keydown', 'mousedown', 'mouseup'],
+  emits: [
+    'update:modelValue',
+    'update:error',
+    'click:clear',
+    'focus',
+    'blur',
+    'change',
+    'keydown',
+    'mousedown',
+    'mouseup',
+  ],
 
-  setup (props, { slots, emit }) {
+  setup(props, { slots, emit }) {
     const id: string = uid('text-area-')
     const rootElement = ref<HTMLElement>()
 
@@ -75,9 +94,13 @@ export default defineComponent({
       setInternalValue,
     } = useInput(props, { slots, emit, id })
 
-    const {
-      genClearInput,
-    } = useInputClear(props, { inputElement, isDirty, emit, emitChange, setInternalValue })
+    const { genClearInput } = useInputClear(props, {
+      inputElement,
+      isDirty,
+      emit,
+      emitChange,
+      setInternalValue,
+    })
 
     const {
       showDetails,
@@ -99,20 +122,21 @@ export default defineComponent({
       onControlMouseUp,
       genPrependSlot,
       genAppendSlot,
-    } = useInputControl(props, { emit, slots, inputElement, isFocused, isDisabled })
+    } = useInputControl(props, {
+      emit,
+      slots,
+      inputElement,
+      isFocused,
+      isDisabled,
+    })
 
     const clientRectProps = reactive({
       element: controlElement,
       hasResizeListener: true,
     })
-    const {
-      clientRect,
-      updateClientRect,
-    } = useClientRect(clientRectProps)
+    const { clientRect, updateClientRect } = useClientRect(clientRectProps)
 
-    const {
-      genInputMessages,
-    } = useInputMessage(props, {
+    const { genInputMessages } = useInputMessage(props, {
       controlElement,
       isFocused,
       hasMessages,
@@ -122,34 +146,37 @@ export default defineComponent({
       dimensions: clientRect,
     })
 
-    const {
-      hasDebounce,
-      debounceInput,
-      cancelDebounce,
-      clearableCallback,
-    } = useInputLazy(props, { isFocused, setInternalValue, emitChange })
+    const { hasDebounce, debounceInput, cancelDebounce, clearableCallback } =
+      useInputLazy(props, { isFocused, setInternalValue, emitChange })
 
     const classes = computed(() => {
       return {
         input: true,
         'input--focused': isFocused.value,
         'input--disabled': isDisabled.value,
-        'input--has-error': (hasMessages.value && hasError.value) && showDetails.value,
+        'input--has-error':
+          hasMessages.value && hasError.value && showDetails.value,
         'text-area': true,
       }
     })
 
-    watch(() => props.modelValue, (val) => {
-      setInternalValue(val)
-    })
+    watch(
+      () => props.modelValue,
+      (val) => {
+        setInternalValue(val)
+      }
+    )
 
     watch(internalValue, () => {
       props.autoGrow && nextTick(calculateInputHeight)
     })
 
-    watch(() => props.rowHeight, () => {
-      props.autoGrow && nextTick(calculateInputHeight)
-    })
+    watch(
+      () => props.rowHeight,
+      () => {
+        props.autoGrow && nextTick(calculateInputHeight)
+      }
+    )
 
     onMounted(() => {
       setTimeout(() => {
@@ -270,25 +297,30 @@ export default defineComponent({
     }
 
     const genControl = () => {
-      return h('div', {
-        ref: controlElement,
-        class: {
-          input__control: true,
-          'input__control--has-prepend': hasPrependSlot.value,
-          'input__control--has-append': hasAppendSlot.value || hasState.value || props.clearable,
-          'text-area__control': true,
-          [props.controlClass.trim()]: true,
+      return h(
+        'div',
+        {
+          ref: controlElement,
+          class: {
+            input__control: true,
+            'input__control--has-prepend': hasPrependSlot.value,
+            'input__control--has-append':
+              hasAppendSlot.value || hasState.value || props.clearable,
+            'text-area__control': true,
+            [props.controlClass.trim()]: true,
+          },
+          onClick: onControlClick,
+          onMousedown: onControlMouseDown,
+          onMouseup: onControlMouseUp,
         },
-        onClick: onControlClick,
-        onMousedown: onControlMouseDown,
-        onMouseup: onControlMouseUp,
-      }, [
-        genPrependSlot(),
-        genTextAreaInput(),
-        genAppendSlot(),
-        genStateIcon(),
-        genClearInput(clearableCallback),
-      ])
+        [
+          genPrependSlot(),
+          genTextAreaInput(),
+          genAppendSlot(),
+          genStateIcon(),
+          genClearInput(clearableCallback),
+        ]
+      )
     }
 
     return {
@@ -303,14 +335,14 @@ export default defineComponent({
     }
   },
 
-  render () {
-    return h('div', {
-      ref: 'rootElement',
-      class: this.classes,
-    }, [
-      this.genLabel(),
-      this.genInputMessages(),
-      this.genControl(),
-    ])
+  render() {
+    return h(
+      'div',
+      {
+        ref: 'rootElement',
+        class: this.classes,
+      },
+      [this.genLabel(), this.genInputMessages(), this.genControl()]
+    )
   },
 })

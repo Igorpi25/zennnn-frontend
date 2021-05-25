@@ -233,24 +233,33 @@ const validateRequire = (val) => !!val
 
 const validateValue = (type, value) => {
   switch (type) {
-    case VALIDATION_TYPE.PERSON: return validatePerson(value)
-    case VALIDATION_TYPE.PHONE: return validatePhone(value)
-    case VALIDATION_TYPE.EMAIL: return validateEmail(value)
+    case VALIDATION_TYPE.PERSON:
+      return validatePerson(value)
+    case VALIDATION_TYPE.PHONE:
+      return validatePhone(value)
+    case VALIDATION_TYPE.EMAIL:
+      return validateEmail(value)
     case VALIDATION_TYPE.LOCALE:
-    case VALIDATION_TYPE.REQUIRE: return validateRequire(value)
-    default: return false
+    case VALIDATION_TYPE.REQUIRE:
+      return validateRequire(value)
+    default:
+      return false
   }
 }
 
 export const validateLegalClient = (doc) => {
-  const isRequiredFilled = LEGAL_CLIENT_VALIDATION_FIELDS.REQUIRED.every(field => {
-    const value = doc[field.path]
-    return validateValue(field.type, value)
-  })
-  const isOptionalFilled = LEGAL_CLIENT_VALIDATION_FIELDS.OPTIONAL.every(field => {
-    const value = doc[field.path]
-    return validateValue(field.type, value)
-  })
+  const isRequiredFilled = LEGAL_CLIENT_VALIDATION_FIELDS.REQUIRED.every(
+    (field) => {
+      const value = doc[field.path]
+      return validateValue(field.type, value)
+    }
+  )
+  const isOptionalFilled = LEGAL_CLIENT_VALIDATION_FIELDS.OPTIONAL.every(
+    (field) => {
+      const value = doc[field.path]
+      return validateValue(field.type, value)
+    }
+  )
   return {
     isRequiredFilled,
     isOptionalFilled,
@@ -258,14 +267,18 @@ export const validateLegalClient = (doc) => {
 }
 
 export const validatePrivateClient = (doc) => {
-  const isRequiredFilled = PRIVATE_CLIENT_VALIDATION_FIELDS.REQUIRED.every(field => {
-    const value = doc[field.path]
-    return validateValue(field.type, value)
-  })
-  const isOptionalFilled = PRIVATE_CLIENT_VALIDATION_FIELDS.OPTIONAL.every(field => {
-    const value = doc[field.path]
-    return validateValue(field.type, value)
-  })
+  const isRequiredFilled = PRIVATE_CLIENT_VALIDATION_FIELDS.REQUIRED.every(
+    (field) => {
+      const value = doc[field.path]
+      return validateValue(field.type, value)
+    }
+  )
+  const isOptionalFilled = PRIVATE_CLIENT_VALIDATION_FIELDS.OPTIONAL.every(
+    (field) => {
+      const value = doc[field.path]
+      return validateValue(field.type, value)
+    }
+  )
   return {
     isRequiredFilled,
     isOptionalFilled,
@@ -273,14 +286,18 @@ export const validatePrivateClient = (doc) => {
 }
 
 export const validateSupplier = (doc) => {
-  const isRequiredFilled = SUPPLIER_VALIDATION_FIELDS.REQUIRED.every(field => {
-    const value = doc[field.path]
-    return validateValue(field.type, value)
-  })
-  const isOptionalFilled = SUPPLIER_VALIDATION_FIELDS.OPTIONAL.every(field => {
-    const value = doc[field.path]
-    return validateValue(field.type, value)
-  })
+  const isRequiredFilled = SUPPLIER_VALIDATION_FIELDS.REQUIRED.every(
+    (field) => {
+      const value = doc[field.path]
+      return validateValue(field.type, value)
+    }
+  )
+  const isOptionalFilled = SUPPLIER_VALIDATION_FIELDS.OPTIONAL.every(
+    (field) => {
+      const value = doc[field.path]
+      return validateValue(field.type, value)
+    }
+  )
   return {
     isRequiredFilled,
     isOptionalFilled,
@@ -289,26 +306,30 @@ export const validateSupplier = (doc) => {
 
 export const validateCompanyDetail = (doc) => {
   const bankDetails = doc.bankDetails || []
-  let isRequiredFilled = COMPANY_DETAIL_VALIDATION_FIELDS.REQUIRED.every(field => {
-    const value = doc[field.path]
-    return validateValue(field.type, value)
-  })
-  let isOptionalFilled = COMPANY_DETAIL_VALIDATION_FIELDS.OPTIONAL.every(field => {
-    const value = doc[field.path]
-    return validateValue(field.type, value)
-  })
+  let isRequiredFilled = COMPANY_DETAIL_VALIDATION_FIELDS.REQUIRED.every(
+    (field) => {
+      const value = doc[field.path]
+      return validateValue(field.type, value)
+    }
+  )
+  let isOptionalFilled = COMPANY_DETAIL_VALIDATION_FIELDS.OPTIONAL.every(
+    (field) => {
+      const value = doc[field.path]
+      return validateValue(field.type, value)
+    }
+  )
   if (bankDetails.length > 0) {
     if (isRequiredFilled) {
-      isRequiredFilled = bankDetails.every(item => {
-        return COMPANY_BANK_DETAIL_VALIDATION_FIELDS.REQUIRED.every(field => {
+      isRequiredFilled = bankDetails.every((item) => {
+        return COMPANY_BANK_DETAIL_VALIDATION_FIELDS.REQUIRED.every((field) => {
           const value = item[field.path]
           return validateValue(field.type, value)
         })
       })
     }
     if (isOptionalFilled) {
-      isOptionalFilled = bankDetails.every(item => {
-        return COMPANY_BANK_DETAIL_VALIDATION_FIELDS.OPTIONAL.every(field => {
+      isOptionalFilled = bankDetails.every((item) => {
+        return COMPANY_BANK_DETAIL_VALIDATION_FIELDS.OPTIONAL.every((field) => {
           const value = item[field.path]
           return validateValue(field.type, value)
         })
@@ -321,36 +342,72 @@ export const validateCompanyDetail = (doc) => {
   }
 }
 
-export const validateInvoicePrint = (company, client, shipment, customs, amountInWords, amountInWordsClientLang) => {
+export const validateInvoicePrint = (
+  company,
+  client,
+  shipment,
+  customs,
+  amountInWords,
+  amountInWordsClientLang
+) => {
   const requireValidations = []
   const optionalValidations = []
   // COMPANY
-  requireValidations.push(validateValue(VALIDATION_TYPE.REQUIRE, company.companyName))
-  requireValidations.push(validateValue(VALIDATION_TYPE.REQUIRE, company.legalAddress))
+  requireValidations.push(
+    validateValue(VALIDATION_TYPE.REQUIRE, company.companyName)
+  )
+  requireValidations.push(
+    validateValue(VALIDATION_TYPE.REQUIRE, company.legalAddress)
+  )
   requireValidations.push(validateValue(VALIDATION_TYPE.PHONE, company.phone))
   requireValidations.push(validateValue(VALIDATION_TYPE.EMAIL, company.email))
   // bank details
-  const bankDetail = (company.bankDetails || []).find(el => el.id === company.defaultBankDetail) || {}
-  requireValidations.push(validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.bankName))
-  requireValidations.push(validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.bankAddress))
-  requireValidations.push(validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.bankAccountNumber))
-  requireValidations.push(validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.swift))
+  const bankDetail =
+    (company.bankDetails || []).find(
+      (el) => el.id === company.defaultBankDetail
+    ) || {}
+  requireValidations.push(
+    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.bankName)
+  )
+  requireValidations.push(
+    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.bankAddress)
+  )
+  requireValidations.push(
+    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.bankAccountNumber)
+  )
+  requireValidations.push(
+    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.swift)
+  )
 
   optionalValidations.push(validateValue(VALIDATION_TYPE.REQUIRE, company.vat))
 
   // CLIENT
   requireValidations.push(client.fullName)
-  requireValidations.push(validateValue(VALIDATION_TYPE.REQUIRE, client.legalAddress))
-  requireValidations.push(validateValue(VALIDATION_TYPE.PERSON, client.contactPerson))
+  requireValidations.push(
+    validateValue(VALIDATION_TYPE.REQUIRE, client.legalAddress)
+  )
+  requireValidations.push(
+    validateValue(VALIDATION_TYPE.PERSON, client.contactPerson)
+  )
   requireValidations.push(validateValue(VALIDATION_TYPE.PHONE, client.phone))
   requireValidations.push(validateValue(VALIDATION_TYPE.EMAIL, client.email))
 
   if (client.importerActive) {
-    requireValidations.push(validateValue(VALIDATION_TYPE.REQUIRE, client.importerCompanyName))
-    requireValidations.push(validateValue(VALIDATION_TYPE.REQUIRE, client.deliveryAddress))
-    requireValidations.push(validateValue(VALIDATION_TYPE.PERSON, client.importerContactPerson))
-    requireValidations.push(validateValue(VALIDATION_TYPE.PHONE, client.importerPhone))
-    requireValidations.push(validateValue(VALIDATION_TYPE.EMAIL, client.importerEmail))
+    requireValidations.push(
+      validateValue(VALIDATION_TYPE.REQUIRE, client.importerCompanyName)
+    )
+    requireValidations.push(
+      validateValue(VALIDATION_TYPE.REQUIRE, client.deliveryAddress)
+    )
+    requireValidations.push(
+      validateValue(VALIDATION_TYPE.PERSON, client.importerContactPerson)
+    )
+    requireValidations.push(
+      validateValue(VALIDATION_TYPE.PHONE, client.importerPhone)
+    )
+    requireValidations.push(
+      validateValue(VALIDATION_TYPE.EMAIL, client.importerEmail)
+    )
   }
 
   // SPEC
@@ -411,8 +468,8 @@ export const validateInvoicePrint = (company, client, shipment, customs, amountI
   optionalValidations.push(amountInWords)
   optionalValidations.push(amountInWordsClientLang)
 
-  const isRequiredFilled = requireValidations.every(el => el)
-  const isOptionalFilled = optionalValidations.every(el => el)
+  const isRequiredFilled = requireValidations.every((el) => el)
+  const isOptionalFilled = optionalValidations.every((el) => el)
 
   return {
     isRequiredFilled,

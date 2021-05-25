@@ -7,20 +7,29 @@ self.addEventListener('activate', (e) => {
 })
 
 self.addEventListener('fetch', (e) => {
-  const resourcesRe = /^https:\/\/s3.ap-northeast-1.amazonaws.com\/.+\/pdf\/vfs\/vfs_fonts.+\.json$/
-  const googleFontsRe = /^https:\/\/fonts.googleapis\.com\/css\?family=Montserrat.*/
+  const resourcesRe =
+    /^https:\/\/s3.ap-northeast-1.amazonaws.com\/.+\/pdf\/vfs\/vfs_fonts.+\.json$/
+  const googleFontsRe =
+    /^https:\/\/fonts.googleapis\.com\/css\?family=Montserrat.*/
   const localFontsRe = /\/fonts\/.*/
   const url = e.request.url
-  if (resourcesRe.test(url) || googleFontsRe.test(url) || localFontsRe.test(url)) {
+  if (
+    resourcesRe.test(url) ||
+    googleFontsRe.test(url) ||
+    localFontsRe.test(url)
+  ) {
     e.respondWith(
       caches.open('zennnn-dynamic').then((cache) => {
         return cache.match(e.request).then((response) => {
-          return response || fetch(e.request).then((response) => {
-            cache.put(e.request, response.clone())
-            return response
-          })
+          return (
+            response ||
+            fetch(e.request).then((response) => {
+              cache.put(e.request, response.clone())
+              return response
+            })
+          )
         })
-      }),
+      })
     )
   }
 })

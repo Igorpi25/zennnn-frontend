@@ -1,10 +1,6 @@
 <template>
   <div class="w-full flex flex-wrap relative">
-    <div
-      v-for="item in items"
-      :key="item.id"
-      class="w-1/4 text-gray-100"
-    >
+    <div v-for="item in items" :key="item.id" class="w-1/4 text-gray-100">
       <div class="flex py-1">
         <input
           v-model="selected"
@@ -13,11 +9,14 @@
           type="checkbox"
           class="self-center mb-1 mr-2"
         />
-        <WordProduct
-          :images="item.images"
-        />
-        <label :for="item.id" class="flex items-center leading-none overflow-hidden">
-          <div class="truncate" style="min-height: 16px;">{{ item.article }}</div>
+        <WordProduct :images="item.images" />
+        <label
+          :for="item.id"
+          class="flex items-center leading-none overflow-hidden"
+        >
+          <div class="truncate" style="min-height: 16px">
+            {{ item.article }}
+          </div>
         </label>
       </div>
     </div>
@@ -54,12 +53,19 @@
       submit-result
       @update="createWordWithProducts"
     />
-    <Modal
-      v-model="addProductsDialog"
-      :max-width="458"
-    >
+    <Modal v-model="addProductsDialog" :max-width="458">
       <div class="relative bg-gray-400">
-        <div class="flex items-center justify-center text-lg text-white font-semibold p-8 pb-2">
+        <div
+          class="
+            flex
+            items-center
+            justify-center
+            text-lg text-white
+            font-semibold
+            p-8
+            pb-2
+          "
+        >
           <div class="text-white text-xl font-semibold">
             {{ $t('words.addToWord') }}
           </div>
@@ -79,7 +85,7 @@
               no-filter
               class="relative"
               @click:prepend-item="openCreateDialog"
-              @update:model-value="v => selectedItemId = v"
+              @update:model-value="(v) => (selectedItemId = v)"
             >
               <template v-slot:prepend-item>
                 <span class="flex items-center jusitfy-center text-blue-500">
@@ -116,7 +122,16 @@
           </div>
         </div>
         <span
-          class="absolute top-0 right-0 text-2xl text-gray-200 hover:text-gray-100 cursor-pointer mt-2 mr-2"
+          class="
+            absolute
+            top-0
+            right-0
+            text-2xl text-gray-200
+            hover:text-gray-100
+            cursor-pointer
+            mt-2
+            mr-2
+          "
           @click="addProductsDialog = false"
         >
           <Icon>
@@ -136,7 +151,10 @@ import { ziSearch, ziCloseWindow, ziPlusOutline } from '@zennnn/icons'
 import { Btn, Icon, Modal, Select, ExpandTransition } from '@zennnn/core'
 
 import { SEARCH_WORDS } from '../graphql/admin/queries'
-import { ADD_PRODUCTS_TO_WORD, CREATE_WORD_WITH_PRODUCTS } from '../graphql/admin/mutations'
+import {
+  ADD_PRODUCTS_TO_WORD,
+  CREATE_WORD_WITH_PRODUCTS,
+} from '../graphql/admin/mutations'
 
 import WordProduct from './WordProduct.vue'
 import WordDialog from './WordDialog.vue'
@@ -156,22 +174,26 @@ export default {
     word: Object,
     items: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
   },
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
     const wordSearch = ref('')
 
-    const { result } = useQuery(SEARCH_WORDS, () => ({
-      search: wordSearch.value,
-    }), () => ({
-      enabled: !!wordSearch.value,
-      fetchPolicy: 'cache-and-network',
-      debounce: 300,
-    }))
+    const { result } = useQuery(
+      SEARCH_WORDS,
+      () => ({
+        search: wordSearch.value,
+      }),
+      () => ({
+        enabled: !!wordSearch.value,
+        fetchPolicy: 'cache-and-network',
+        debounce: 300,
+      })
+    )
     const searchWords = useResult(result)
 
     return {
@@ -185,7 +207,7 @@ export default {
       searchWords,
     }
   },
-  data () {
+  data() {
     return {
       selectedItemId: null,
       selected: [],
@@ -196,12 +218,12 @@ export default {
     }
   },
   computed: {
-    words () {
+    words() {
       const items = (this.searchWords && this.searchWords.items) || []
-      return items.map(word => {
+      return items.map((word) => {
         const values = word.values || []
         const result = {}
-        values.forEach(el => {
+        values.forEach((el) => {
           const v = el.v || el.tr
           if (v) {
             result[el.k] = v
@@ -216,7 +238,7 @@ export default {
     },
   },
   watch: {
-    addProductsDialog (val) {
+    addProductsDialog(val) {
       if (val) {
         this.wordSearch = ''
         this.selectedItemId = null
@@ -229,13 +251,13 @@ export default {
     },
   },
   methods: {
-    openCreateDialog () {
+    openCreateDialog() {
       this.addProductsDialog = false
       this.$nextTick(() => {
         this.newWordDialog = true
       })
     },
-    async createWordWithProducts (input) {
+    async createWordWithProducts(input) {
       try {
         this.createWordLoading = true
         await this.apolloClient.mutate({
@@ -258,7 +280,7 @@ export default {
         this.createWordLoading = false
       }
     },
-    async addProductsToWord (wordId) {
+    async addProductsToWord(wordId) {
       if (!wordId) return
       try {
         this.addProductsLoading = true

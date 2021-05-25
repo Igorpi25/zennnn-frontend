@@ -1,14 +1,13 @@
 <template>
   <div>
-
     <div
       id="container"
-      :class="['pt-8 pb-12', isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container']"
+      :class="[
+        'pt-8 pb-12',
+        isComponent ? 'bg-gray-900 relative px-4 sm:px-5' : 'container',
+      ]"
     >
-      <span
-        v-if="isComponent"
-        class="absolute top-0 right-0 z-10 pt-3 pr-3"
-      >
+      <span v-if="isComponent" class="absolute top-0 right-0 z-10 pt-3 pr-3">
         <Icon
           class="text-gray-100 hover:text-white cursor-pointer"
           @click="$emit('close')"
@@ -21,7 +20,16 @@
       </h1>
       <div class="bg-gray-800 rounded-md p-sm mb-12">
         <div class="lg:h-11 flex flex-wrap lg:flex-nowrap">
-          <div class="h-11 flex order-last lg:order-none overflow-x-auto scrolling-touch">
+          <div
+            class="
+              h-11
+              flex
+              order-last
+              lg:order-none
+              overflow-x-auto
+              scrolling-touch
+            "
+          >
             <div
               v-for="(tab, i) in tabs"
               :aria-selected="clientType === tab.value"
@@ -31,8 +39,12 @@
                 'select-none whitespace-nowrap cursor-pointer',
                 'transition-colors duration-100 ease-in px-10',
                 { 'mr-1': i + 1 < tabs.length },
-                tab.disabled ? 'pointer-events-none opacity-40' : 'focus:outline-none focus:text-white hover:text-white',
-                clientType === tab.value ? 'text-white' : 'bg-opacity-30 text-gray-200',
+                tab.disabled
+                  ? 'pointer-events-none opacity-40'
+                  : 'focus:outline-none focus:text-white hover:text-white',
+                clientType === tab.value
+                  ? 'text-white'
+                  : 'bg-opacity-30 text-gray-200',
               ]"
               :role="tab.disabled ? null : 'tab'"
               :tabindex="tab.disabled ? null : 0"
@@ -45,9 +57,18 @@
           <div class="flex-grow" />
           <div class="w-full lg:w-auto flex items-center justify-end">
             <transition name="slide-x-reverse-transition">
-              <div v-if="!item.isRequiredFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
+              <div
+                v-if="!item.isRequiredFilled"
+                class="flex items-center whitespace-nowrap pr-5 pb-1"
+              >
                 <span class="text-pink-500 mr-2">
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="8"
+                    height="8"
+                    viewBox="0 0 8 8"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <circle cx="4" cy="4" r="4" fill="currentColor" />
                   </svg>
                 </span>
@@ -55,9 +76,18 @@
               </div>
             </transition>
             <transition name="slide-x-reverse-transition">
-              <div v-if="!item.isOptionalFilled" class="flex items-center whitespace-nowrap pr-5 pb-1">
+              <div
+                v-if="!item.isOptionalFilled"
+                class="flex items-center whitespace-nowrap pr-5 pb-1"
+              >
                 <span class="text-yellow-500 mr-2">
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="8"
+                    height="8"
+                    viewBox="0 0 8 8"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <circle cx="4" cy="4" r="4" fill="currentColor" />
                   </svg>
                 </span>
@@ -253,7 +283,6 @@
         {{ $t('client.save') }}
       </Btn>
     </div>
-
   </div>
 </template>
 
@@ -267,11 +296,12 @@ import { ziCloseWindow } from '@zennnn/icons'
 import { Icon, Btn } from '@zennnn/core'
 
 import { ClientType } from '../graphql/enums'
-import { GET_CLIENT, GET_CLIENT_GROUP, GET_ORG_NEXT_CLIENT_UID } from '../graphql/queries'
 import {
-  CREATE_CLIENT,
-  UPDATE_CLIENT,
-} from '../graphql/mutations'
+  GET_CLIENT,
+  GET_CLIENT_GROUP,
+  GET_ORG_NEXT_CLIENT_UID,
+} from '../graphql/queries'
+import { CREATE_CLIENT, UPDATE_CLIENT } from '../graphql/mutations'
 
 import { replaceAt } from '../utils/replaceAt'
 import { validateLegalClient, validatePrivateClient } from '../utils/validation'
@@ -312,40 +342,56 @@ export default {
     },
   },
   emits: ['close', 'create', 'update'],
-  setup (props) {
+  setup(props) {
     const route = useRoute()
     const clientId = route.params.clientId
     const groupId = route.params.groupId
     const item = ref({})
 
-    const { result: result1, refetch: getOrgNextClientUidRefetch } = useQuery(GET_ORG_NEXT_CLIENT_UID, () => ({
-      orgId: props.orgId,
-    }), () => ({
-      enabled: props.create,
-      fetchPolicy: 'network-only',
-    }))
+    const { result: result1, refetch: getOrgNextClientUidRefetch } = useQuery(
+      GET_ORG_NEXT_CLIENT_UID,
+      () => ({
+        orgId: props.orgId,
+      }),
+      () => ({
+        enabled: props.create,
+        fetchPolicy: 'network-only',
+      })
+    )
     const getOrgNextClientUid = useResult(result1)
 
-    const { result: result2, loading, onResult } = useQuery(GET_CLIENT, () => ({
-      id: clientId,
-    }), () => ({
-      enabled: !props.create,
-      fetchPolicy: 'cache-and-network',
-      nextFetchPolicy: 'cache-fisrt',
-    }))
+    const {
+      result: result2,
+      loading,
+      onResult,
+    } = useQuery(
+      GET_CLIENT,
+      () => ({
+        id: clientId,
+      }),
+      () => ({
+        enabled: !props.create,
+        fetchPolicy: 'cache-and-network',
+        nextFetchPolicy: 'cache-fisrt',
+      })
+    )
     const getClient = useResult(result2)
     onResult(({ data, loading }) => {
       if (loading) return
       setData(data && data.getClient)
     })
 
-    const { result: result3, refetch: getClientGroupRefetch } = useQuery(GET_CLIENT_GROUP, () => ({
-      orgId: props.orgId,
-      groupId: groupId,
-    }), () => ({
-      enabled: !!groupId,
-      fetchPolicy: 'cache-and-network',
-    }))
+    const { result: result3, refetch: getClientGroupRefetch } = useQuery(
+      GET_CLIENT_GROUP,
+      () => ({
+        orgId: props.orgId,
+        groupId: groupId,
+      }),
+      () => ({
+        enabled: !!groupId,
+        fetchPolicy: 'cache-and-network',
+      })
+    )
     const getClientGroup = useResult(result3)
 
     // Methods
@@ -374,18 +420,18 @@ export default {
       updateClientMutate,
     }
   },
-  data () {
+  data() {
     return {
       internalClientType: ClientType.LEGAL,
       updateLoading: false,
     }
   },
   computed: {
-    clientType () {
+    clientType() {
       if (this.isComponent) return this.internalClientType
       return this.getClientTypeFromNumeric(this.$route.query.clientType)
     },
-    uid () {
+    uid() {
       if (this.item.uid) {
         return this.item.uid
       }
@@ -402,7 +448,7 @@ export default {
       }
       return nextUid
     },
-    tabs () {
+    tabs() {
       return [
         {
           value: ClientType.LEGAL,
@@ -418,47 +464,55 @@ export default {
         },
       ]
     },
-    isLegalType () {
+    isLegalType() {
       return this.clientType === ClientType.LEGAL
     },
-    isPrivateType () {
+    isPrivateType() {
       return this.clientType === ClientType.PRIVATE
     },
-    isOtherType () {
+    isOtherType() {
       return this.clientType === ClientType.OTHER
     },
   },
   watch: {
-    '$route' (to, from) {
+    $route() {
       if (this.isComponent) return
       this.getClientGroupRefetch()
     },
   },
   methods: {
-    getClientTypeFromNumeric (type) {
+    getClientTypeFromNumeric(type) {
       switch (type) {
         case 1:
-        case '1': return ClientType.LEGAL
+        case '1':
+          return ClientType.LEGAL
         case 2:
-        case '2': return ClientType.PRIVATE
+        case '2':
+          return ClientType.PRIVATE
         case 3:
-        case '3': return ClientType.OTHER
-        default: return ClientType.LEGAL
+        case '3':
+          return ClientType.OTHER
+        default:
+          return ClientType.LEGAL
       }
     },
-    getClientTypeNumeric (type) {
+    getClientTypeNumeric(type) {
       switch (type) {
-        case ClientType.LEGAL: return 1
-        case ClientType.PRIVATE: return 2
-        case ClientType.OTHER: return 3
-        default: return 1
+        case ClientType.LEGAL:
+          return 1
+        case ClientType.PRIVATE:
+          return 2
+        case ClientType.OTHER:
+          return 3
+        default:
+          return 1
       }
     },
-    reset () {
+    reset() {
       this.item = {}
       this.getOrgNextClientUidRefetch()
     },
-    switchClientType (type) {
+    switchClientType(type) {
       if (this.create && this.isComponent) {
         this.internalClientType = type
         const clone = this.item
@@ -481,13 +535,21 @@ export default {
       const clientType = this.getClientTypeNumeric(type)
       const orgId = this.orgId
       if (groupId && clientId) {
-        this.$router.push({ name: 'client', params: { orgId, groupId, clientId }, query: { clientType } })
+        this.$router.push({
+          name: 'client',
+          params: { orgId, groupId, clientId },
+          query: { clientType },
+        })
       } else {
-        this.$router.push({ name: 'client-create', params: { orgId, groupId }, query: { clientType } })
+        this.$router.push({
+          name: 'client-create',
+          params: { orgId, groupId },
+          query: { clientType },
+        })
       }
       this.reset()
     },
-    updateValue (input) {
+    updateValue(input) {
       if (this.create) {
         if (this.isComponent) {
           const newItem = Object.assign({}, this.item, input)
@@ -505,7 +567,7 @@ export default {
         this.updateClient(input)
       }
     },
-    createFromItem () {
+    createFromItem() {
       const item = {}
       for (const [k, v] of Object.entries(this.item)) {
         if (k !== 'isRequiredFilled' && k !== 'isOptionalFilled') {
@@ -514,7 +576,7 @@ export default {
       }
       this.createClient(item)
     },
-    async createClient (input, redirectAfterCreate = true) {
+    async createClient(input, redirectAfterCreate = true) {
       try {
         this.updateLoading = true
         input.clientType = this.clientType
@@ -560,7 +622,7 @@ export default {
         this.updateLoading = false
       }
     },
-    async updateClient (input) {
+    async updateClient(input) {
       try {
         this.updateLoading = true
 

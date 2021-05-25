@@ -9,7 +9,9 @@ const sortableComponent = {
     },
     value: {
       type: Array,
-      default: () => { return [] },
+      default: () => {
+        return []
+      },
     },
     tag: {
       type: String,
@@ -32,23 +34,23 @@ const sortableComponent = {
       default: 150,
     },
   },
-  data () {
+  data() {
     return {
       wrapperId: 'sortable-' + Math.round(Math.random() * 100000),
     }
   },
-  mounted () {
+  mounted() {
     if (!this.disabled) {
       this.initialize()
     }
   },
-  beforeUnmount () {
+  beforeUnmount() {
     if (this._sortable !== undefined) {
       this._sortable.destroy()
     }
   },
   methods: {
-    initialize () {
+    initialize() {
       const containerSelector = this.wrapper
         ? `#${this.wrapperId} ${this.wrapper}`
         : `#${this.wrapperId}`
@@ -69,21 +71,21 @@ const sortableComponent = {
       this._sortable.on('sortable:sorted', this.onSortableSorted)
       this._sortable.on('sortable:stop', this.onSortableStop)
     },
-    onSortableStart (e) {
+    onSortableStart(e) {
       this.$logger.info('on sortable:start', e)
     },
-    onSortableSort (e) {
+    onSortableSort(e) {
       this.$logger.debug('on sortable:sort', e)
     },
-    onSortableSorted (e) {
+    onSortableSorted(e) {
       this.$logger.debug('on sortable:sorted', e)
     },
-    onSortableStop (e) {
+    onSortableStop(e) {
       this.$logger.info('on sortable:stop', e)
       this.$emit('input', e.data)
     },
   },
-  render (h) {
+  render(h) {
     const slots = this.$slots.default
     return h(
       this.tag,
@@ -92,7 +94,7 @@ const sortableComponent = {
           id: this.wrapperId,
         },
       },
-      slots,
+      slots
     )
   },
 }

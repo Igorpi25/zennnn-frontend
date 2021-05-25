@@ -1,14 +1,26 @@
 <template>
-  <div class="flex flex-wrap lg:flex-nowrap justify-between bg-gray-600 rounded-b py-2 px-3 md:px-5">
-
+  <div
+    class="
+      flex flex-wrap
+      lg:flex-nowrap
+      justify-between
+      bg-gray-600
+      rounded-b
+      py-2
+      px-3
+      md:px-5
+    "
+  >
     <div v-if="isOwnerOrManager" class="w-full lg:max-w-xs">
       <div class="pt-2 pb-4">
         <BtnToggle
           v-model="internalProfitType"
           :items="buttonGroupItems"
-          @update:model-value="updateInvoice({
-            profitType: $event
-          })"
+          @update:model-value="
+            updateInvoice({
+              profitType: $event,
+            })
+          "
         />
       </div>
       <div class="flex items-center">
@@ -20,9 +32,11 @@
           solo
           number
           class="w-16 mr-2"
-          @update:model-value="updateInvoice({
-            profitPercent: $event
-          })"
+          @update:model-value="
+            updateInvoice({
+              profitPercent: $event,
+            })
+          "
         >
           <template v-slot:append>
             <span class="text-base text-gray-100 pl-xs pr-sm">%</span>
@@ -30,23 +44,37 @@
         </TextField>
         <Switch
           :model-value="invoice.profitForAll"
-          @update:model-value="updateInvoice({
-            profitForAll: $event
-          })"
+          @update:model-value="
+            updateInvoice({
+              profitForAll: $event,
+            })
+          "
         >
           <span class="text-white">{{ $t('shipping.forAll') }}</span>
         </Switch>
       </div>
     </div>
 
-    <div v-if="isOwnerOrManager" class="w-full lg:w-px h-px lg:h-auto bg-gray-900 lg:mx-4 my-3" />
+    <div
+      v-if="isOwnerOrManager"
+      class="w-full lg:w-px h-px lg:h-auto bg-gray-900 lg:mx-4 my-3"
+    />
 
     <div class="w-full md:w-2/5 lg:w-full lg:max-w-sm flex justify-end">
       <div
         :class="{ 'opacity-0': isInvoiceProfitTypeMargin }"
         class="flex-grow transition-opacity duration-75 ease-in-out sm:pr-4"
       >
-        <label class="block leading-5 text-base text-gray-200 text-right whitespace-nowrap py-2 pr-sm">
+        <label
+          class="
+            block
+            leading-5
+            text-base text-gray-200 text-right
+            whitespace-nowrap
+            py-2
+            pr-sm
+          "
+        >
           {{ $t('shipping.discount') }}
         </label>
         <TextField
@@ -58,21 +86,50 @@
           solo
           number
           number-format="currency"
-          @update:model-value="updateInvoice({
-            discount: $event
-          })"
+          @update:model-value="
+            updateInvoice({
+              discount: $event,
+            })
+          "
         >
           <template v-slot:append>
-            <span class="text-base text-gray-100 pl-xs pr-sm">{{ $t(`currency.${currency}.symbol`) }}</span>
+            <span class="text-base text-gray-100 pl-xs pr-sm">{{
+              $t(`currency.${currency}.symbol`)
+            }}</span>
           </template>
         </TextField>
-        <div v-else class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
-          <span class="text-white">{{ $n(invoice.discount || 0, 'fixed') }}</span>
-          <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
+        <div
+          v-else
+          class="
+            h-8
+            flex
+            items-center
+            justify-end
+            leading-none
+            whitespace-nowrap
+            text-white
+            pr-sm
+          "
+        >
+          <span class="text-white">{{
+            $n(invoice.discount || 0, 'fixed')
+          }}</span>
+          <span class="text-gray-100 pl-xs">{{
+            $t(`currency.${currency}.symbol`)
+          }}</span>
         </div>
       </div>
       <div class="sm:pl-4">
-        <label class="block leading-5 text-base text-gray-200 text-right whitespace-nowrap py-2 pr-sm">
+        <label
+          class="
+            block
+            leading-5
+            text-base text-gray-200 text-right
+            whitespace-nowrap
+            py-2
+            pr-sm
+          "
+        >
           {{ $t('shipping.prepay') }}
         </label>
         <TextField
@@ -84,17 +141,37 @@
           solo
           number
           number-format="currency"
-          @update:model-value="updateInvoice({
-            prepayment: $event
-          })"
+          @update:model-value="
+            updateInvoice({
+              prepayment: $event,
+            })
+          "
         >
           <template v-slot:append>
-            <span class="text-base text-gray-100 pl-xs pr-sm">{{ $t(`currency.${currency}.symbol`) }}</span>
+            <span class="text-base text-gray-100 pl-xs pr-sm">{{
+              $t(`currency.${currency}.symbol`)
+            }}</span>
           </template>
         </TextField>
-        <div v-else class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
-          <span class="text-white">{{ $n(invoice.prepayment || 0, 'fixed') }}</span>
-          <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
+        <div
+          v-else
+          class="
+            h-8
+            flex
+            items-center
+            justify-end
+            leading-none
+            whitespace-nowrap
+            text-white
+            pr-sm
+          "
+        >
+          <span class="text-white">{{
+            $n(invoice.prepayment || 0, 'fixed')
+          }}</span>
+          <span class="text-gray-100 pl-xs">{{
+            $t(`currency.${currency}.symbol`)
+          }}</span>
         </div>
         <DatePicker
           :model-value="invoice.prepaymentDate"
@@ -104,16 +181,44 @@
       </div>
     </div>
 
-    <div class="w-full md:w-px h-px md:h-auto bg-gray-900 lg:mx-4 xl:mx-12 my-3" />
+    <div
+      class="w-full md:w-px h-px md:h-auto bg-gray-900 lg:mx-4 xl:mx-12 my-3"
+    />
 
-    <div class="w-full md:w-auto lg:w-full lg:max-w-xs flex justify-end lg:pl-sm">
+    <div
+      class="w-full md:w-auto lg:w-full lg:max-w-xs flex justify-end lg:pl-sm"
+    >
       <div class="flex-grow sm:pr-4">
-        <label class="block leading-5 text-base text-gray-200 text-right whitespace-nowrap py-2 pr-sm">
+        <label
+          class="
+            block
+            leading-5
+            text-base text-gray-200 text-right
+            whitespace-nowrap
+            py-2
+            pr-sm
+          "
+        >
           {{ $t('shipping.obtainCost') }}
         </label>
-        <div class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
-          <span class="text-white">{{ $n(invoice.obtainCost || 0, 'fixed') }}</span>
-          <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
+        <div
+          class="
+            h-8
+            flex
+            items-center
+            justify-end
+            leading-none
+            whitespace-nowrap
+            text-white
+            pr-sm
+          "
+        >
+          <span class="text-white">{{
+            $n(invoice.obtainCost || 0, 'fixed')
+          }}</span>
+          <span class="text-gray-100 pl-xs">{{
+            $t(`currency.${currency}.symbol`)
+          }}</span>
         </div>
         <DatePicker
           :model-value="invoice.obtainCostDate"
@@ -122,12 +227,36 @@
         />
       </div>
       <div class="sm:pl-4">
-        <label class="block leading-5 text-base text-gray-200 text-right whitespace-nowrap py-2 pr-sm">
+        <label
+          class="
+            block
+            leading-5
+            text-base text-gray-200 text-right
+            whitespace-nowrap
+            py-2
+            pr-sm
+          "
+        >
           {{ $t('shipping.clientDebt') }}
         </label>
-        <div class="h-8 flex items-center justify-end leading-none whitespace-nowrap text-white pr-sm">
-          <span class="text-white">{{ $n(invoice.clientDebt || 0, 'fixed') }}</span>
-          <span class="text-gray-100 pl-xs">{{ $t(`currency.${currency}.symbol`) }}</span>
+        <div
+          class="
+            h-8
+            flex
+            items-center
+            justify-end
+            leading-none
+            whitespace-nowrap
+            text-white
+            pr-sm
+          "
+        >
+          <span class="text-white">{{
+            $n(invoice.clientDebt || 0, 'fixed')
+          }}</span>
+          <span class="text-gray-100 pl-xs">{{
+            $t(`currency.${currency}.symbol`)
+          }}</span>
         </div>
         <DatePicker
           :model-value="invoice.clientDebtDate"
@@ -136,7 +265,6 @@
         />
       </div>
     </div>
-
   </div>
 </template>
 
@@ -175,14 +303,14 @@ export default {
       required: true,
     },
   },
-  setup () {
+  setup() {
     const route = useRoute()
     const specId = route.params.specId
 
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
-    const updateLoading = (null)
+    const updateLoading = null
     const internalProfitType = ref('')
 
     return {
@@ -194,43 +322,46 @@ export default {
     }
   },
   computed: {
-    isInvoiceProfitTypeMargin () {
+    isInvoiceProfitTypeMargin() {
       return this.invoice.profitType === InvoiceProfitType.MARGIN
     },
-    isInvoiceProfitTypeCommission () {
+    isInvoiceProfitTypeCommission() {
       return this.invoice.profitType === InvoiceProfitType.COMMISSION
     },
-    buttonGroupItems () {
-      return [{
-        text: this.$t('shipping.margin').toLowerCase(),
-        value: InvoiceProfitType.MARGIN,
-      }, {
-        text: this.$t('shipping.commission').toLowerCase(),
-        value: InvoiceProfitType.COMMISSION,
-      }]
+    buttonGroupItems() {
+      return [
+        {
+          text: this.$t('shipping.margin').toLowerCase(),
+          value: InvoiceProfitType.MARGIN,
+        },
+        {
+          text: this.$t('shipping.commission').toLowerCase(),
+          value: InvoiceProfitType.COMMISSION,
+        },
+      ]
     },
-    isOwnerOrManager () {
+    isOwnerOrManager() {
       return this.role === Role.OWNER || this.role === Role.MANAGER
     },
     profitType: {
-      get () {
+      get() {
         return this.internalProfitType
       },
-      set (val) {
+      set(val) {
         this.internalProfitType = val
       },
     },
   },
   watch: {
     'invoice.profitType': {
-      handler (val) {
+      handler(val) {
         this.internalProfitType = val
       },
       immediate: true,
     },
   },
   methods: {
-    async updateInvoice (input) {
+    async updateInvoice(input) {
       try {
         const id = this.invoice.id
         this.updateLoading = id
@@ -242,7 +373,10 @@ export default {
           },
         })
       } catch (error) {
-        if (error.message && error.message.includes('GraphQL error: MongoError: WriteConflict')) {
+        if (
+          error.message &&
+          error.message.includes('GraphQL error: MongoError: WriteConflict')
+        ) {
           this.refetchSpec()
         }
         this.$logger.warn('Error: ', error)
@@ -251,7 +385,7 @@ export default {
         this.updateLoading = null
       }
     },
-    async refetchSpec () {
+    async refetchSpec() {
       try {
         this.apolloClient.writeQuery({
           query: GET_IS_SPEC_SYNC,

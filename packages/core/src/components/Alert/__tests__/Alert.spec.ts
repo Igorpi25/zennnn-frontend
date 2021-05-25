@@ -126,9 +126,14 @@ describe('Alert.ts', () => {
         text: 'Alert',
       },
       slots: {
-        icon: () => h(Icon, {
-          class: 'text-blue-500 pr-4',
-        }, { default: () => ziCheckFill }),
+        icon: () =>
+          h(
+            Icon,
+            {
+              class: 'text-blue-500 pr-4',
+            },
+            { default: () => ziCheckFill }
+          ),
       },
     })
 

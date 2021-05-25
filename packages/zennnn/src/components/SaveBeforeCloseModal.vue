@@ -20,7 +20,14 @@
       <div class="flex flex-col sm:flex-row sm:items-center">
         <Btn
           outlined
-          class="border-gray-200 sm:flex-1 mb-3 sm:mb-0 sm:mr-2 whitespace-nowrap"
+          class="
+            border-gray-200
+            sm:flex-1
+            mb-3
+            sm:mb-0
+            sm:mr-2
+            whitespace-nowrap
+          "
           @click="$emit('dontSave')"
         >
           <span>{{ dontSaveButton || $t('action.dontSave') }}</span>
@@ -28,7 +35,14 @@
 
         <Btn
           outlined
-          class="border-gray-200 sm:flex-1 mb-3 sm:mb-0 sm:mx-2 whitespace-nowrap"
+          class="
+            border-gray-200
+            sm:flex-1
+            mb-3
+            sm:mb-0
+            sm:mx-2
+            whitespace-nowrap
+          "
           @click="$emit('cancel')"
         >
           <span>{{ cancelButton || $t('action.cancel') }}</span>
@@ -81,7 +95,7 @@ export default {
       default: '',
     },
   },
-  data () {
+  data() {
     return {
       icons: {
         ziCloseWindow,

@@ -1,8 +1,4 @@
-import {
-  h,
-  ref,
-  defineComponent,
-} from 'vue'
+import { h, ref, defineComponent } from 'vue'
 
 import uid from '../../utils/uid'
 
@@ -16,7 +12,7 @@ export default defineComponent({
     showWrap: Boolean,
   },
 
-  setup (props, { slots }) {
+  setup(props, { slots }) {
     const id: string = props.id || uid('label-')
     const rootElement = ref<HTMLElement>()
     const contentWrapperElement = ref<HTMLElement>()
@@ -29,7 +25,10 @@ export default defineComponent({
       let el = rootElement.value
       while (el?.parentNode) {
         const { backgroundColor } = getComputedStyle(el)
-        if (backgroundColor !== 'transparent' && backgroundColor !== 'rgba(0, 0, 0, 0)') {
+        if (
+          backgroundColor !== 'transparent' &&
+          backgroundColor !== 'rgba(0, 0, 0, 0)'
+        ) {
           closestBackgroundColor.value = backgroundColor
           break
         }
@@ -44,7 +43,8 @@ export default defineComponent({
         hasOverflow.value = scrollWidth > clientWidth
         if (hasOverflow.value) {
           getClosestBackgroundColor()
-          contentElement.value!.style.backgroundColor = closestBackgroundColor.value
+          contentElement.value!.style.backgroundColor =
+            closestBackgroundColor.value
           contentElement.value!.style.overflow = 'visible'
           contentElement.value!.style.whiteSpace = 'normal'
           contentElement.value!.style.zIndex = '1'
@@ -81,10 +81,14 @@ export default defineComponent({
     }
 
     const genContent = () => {
-      return h('div', {
-        ref: contentElement,
-        class: 'label__content',
-      }, getContent())
+      return h(
+        'div',
+        {
+          ref: contentElement,
+          class: 'label__content',
+        },
+        getContent()
+      )
     }
 
     const getContent = () => {
@@ -92,18 +96,26 @@ export default defineComponent({
     }
 
     return () => {
-      return h('label', {
-        ref: rootElement,
-        id: id,
-        for: props.for,
-        'aria-hidden': !props.for,
-        class: {
-          label: true,
-          'label--show-wrap': props.showWrap,
+      return h(
+        'label',
+        {
+          ref: rootElement,
+          id: id,
+          for: props.for,
+          'aria-hidden': !props.for,
+          class: {
+            label: true,
+            'label--show-wrap': props.showWrap,
+          },
         },
-      }, h('div', {
-        class: 'label__wrapper',
-      }, [genContentWrapper(), genAppendSlot()]))
+        h(
+          'div',
+          {
+            class: 'label__wrapper',
+          },
+          [genContentWrapper(), genAppendSlot()]
+        )
+      )
     }
   },
 })

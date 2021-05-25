@@ -6,8 +6,13 @@
       </div>
       <div>
         <button
-          class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
-           @click="toggleExpand"
+          class="
+            text-blue-500
+            hover:text-blue-400
+            focus:text-blue-400
+            focus:outline-none
+          "
+          @click="toggleExpand"
         >
           <Icon
             class="transition-transform"
@@ -42,7 +47,7 @@
               :state-error-color="hasStateIcon ? 'warn' : 'none'"
               :debounce="500"
               :lazy="create"
-              @update:model-value="updateData({ 'deliveryAddress': $event })"
+              @update:model-value="updateData({ deliveryAddress: $event })"
             />
           </div>
           <div class="pb-2 lg:pb-1">
@@ -59,10 +64,23 @@
                 :debounce="500"
                 :lazy="create"
                 class="w-48 pb-2"
-                @update:model-value="updateData({ 'deliveryAddressPostcode': $event })"
+                @update:model-value="
+                  updateData({ deliveryAddressPostcode: $event })
+                "
               />
               <div class="relative flex-shrink-0 pl-sm">
-                <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+                <label
+                  class="
+                    absolute
+                    top-0
+                    right-0
+                    block
+                    text-base text-gray-100
+                    whitespace-nowrap
+                    leading-5
+                    py-2
+                  "
+                >
                   {{ $t('companyDetail.label.matches') }}
                 </label>
                 <div class="h-full flex items-center justify-end pt-8 pb-1">
@@ -74,7 +92,9 @@
               </div>
             </div>
             <div class="relative lg:pb-20">
-              <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
+              <div
+                class="lg:absolute text-sm text-gray-200 leading-tight pl-sm"
+              >
                 {{ $t('companyDetail.hint.deliveryAddress') }}
               </div>
             </div>
@@ -119,7 +139,7 @@
               :state-icon="true"
               :lazy="create"
               required
-              @update:model-value="updateData({ 'importerMobilePhone': $event })"
+              @update:model-value="updateData({ importerMobilePhone: $event })"
             />
           </div>
           <div class="pt-10">
@@ -167,11 +187,11 @@ export default {
     isPrivate: Boolean,
     isRequisite: Boolean,
   },
-  data () {
+  data() {
     return {
       isDeliveryAddressMatchLazy: false,
       rules: {
-        required: v => !!v || this.$t('rule.required'),
+        required: (v) => !!v || this.$t('rule.required'),
       },
       icons: {
         ziChevronRight,
@@ -179,43 +199,47 @@ export default {
     }
   },
   computed: {
-    consignee () {
+    consignee() {
       return this.item.companyNameLocal || this.item.companyName
     },
-    hasStateIcon () {
+    hasStateIcon() {
       return !(this.isPrivate || this.isRequisite)
     },
     isDeliveryAddressMatch: {
-      get () {
+      get() {
         return this.isDeliveryAddressMatchLazy
       },
-      set (val) {
+      set(val) {
         this.isDeliveryAddressMatchLazy = val
       },
     },
-    compRules () {
+    compRules() {
       return [this.rules.required]
     },
-    importerContactPerson () {
+    importerContactPerson() {
       return this.item.importerContactPerson || {}
     },
   },
   watch: {
-    'item.isDeliveryAddressMatch' (val) {
+    'item.isDeliveryAddressMatch'(val) {
       this.isDeliveryAddressMatchLazy = val
     },
   },
   methods: {
-    updateDeliveryAddressMatch (val) {
+    updateDeliveryAddressMatch(val) {
       this.isDeliveryAddressMatch = val
       const input = { isDeliveryAddressMatch: val }
       this.updateData(input)
     },
-    updateContactPerson (personInput) {
-      const value = Object.assign({}, {
-        firstName: this.importerContactPerson.firstName,
-        lastName: this.importerContactPerson.lastName,
-      }, personInput)
+    updateContactPerson(personInput) {
+      const value = Object.assign(
+        {},
+        {
+          firstName: this.importerContactPerson.firstName,
+          lastName: this.importerContactPerson.lastName,
+        },
+        personInput
+      )
       const input = { importerContactPerson: value }
       this.updateData(input)
     },

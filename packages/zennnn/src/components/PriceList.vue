@@ -1,5 +1,15 @@
 <template>
-  <div class="tariff-card leading-snug bg-white overflow-hidden rounded-md flex flex-wrap sm:justify-center">
+  <div
+    class="
+      tariff-card
+      leading-snug
+      bg-white
+      overflow-hidden
+      rounded-md
+      flex flex-wrap
+      sm:justify-center
+    "
+  >
     <div
       v-for="(item, i) of products"
       :key="i"
@@ -9,7 +19,10 @@
       <div class="flex items-center justify-between font-semibold pb-xl">
         <div class="text-xl">{{ item.title }}</div>
         <div
-          :class="['h-9 flex items-center text-gray-200 rounded-50 px-2', item.name === 'Advanced' ? 'bg-white' : 'bg-light-gray-100']"
+          :class="[
+            'h-9 flex items-center text-gray-200 rounded-50 px-2',
+            item.name === 'Advanced' ? 'bg-white' : 'bg-light-gray-100',
+          ]"
         >
           <Icon class="mr-2">
             {{ icons.ziUsers }}
@@ -30,11 +43,12 @@
           </template>
         </div>
       </div>
-      <div style="min-height: 164px;">
+      <div style="min-height: 164px">
         <div class="pb-4">
           <div v-if="item.isCustomPrice" v-html="$t('pricing.premiumEcon')" />
           <div v-else>
-            {{ $t('pricing.inMonth') }}, &nbsp; <span class="text-yellow-500" v-html="$t('pricing.econ')" />
+            {{ $t('pricing.inMonth') }}, &nbsp;
+            <span class="text-yellow-500" v-html="$t('pricing.econ')" />
           </div>
         </div>
         <div class="text-gray-200">
@@ -77,7 +91,11 @@
           {{ $t('pricing.select') }}
         </Btn>
       </div>
-      <div class="text-sm text-gray-200" style="min-height: 90px;" v-html="item.description" />
+      <div
+        class="text-sm text-gray-200"
+        style="min-height: 90px"
+        v-html="item.description"
+      />
       <div class="border-b border-light-gray-100 my-5" />
       <div
         v-for="(feat, fi) of item.feats"
@@ -125,14 +143,14 @@ export default {
 
   emits: ['update:selected', 'select'],
 
-  setup () {
+  setup() {
     const { result } = useQuery(LIST_PRICES)
     const listPrices = useResult(result)
 
     const contactDialog = ref(false)
     const contactForm = ref(null)
 
-    watch(contactDialog, val => {
+    watch(contactDialog, (val) => {
       if (val) {
         setTimeout(() => {
           contactForm.value && contactForm.value.focus()
@@ -155,7 +173,7 @@ export default {
       listPrices,
     }
   },
-  data () {
+  data() {
     return {
       currencyRates: {},
       selectedPriceId: '',
@@ -163,44 +181,56 @@ export default {
     }
   },
   computed: {
-    prices () {
+    prices() {
       return this.listPrices || []
     },
-    selectedPrice () {
-      return this.prices.find(el => el.id === this.selectedPriceId) || {}
+    selectedPrice() {
+      return this.prices.find((el) => el.id === this.selectedPriceId) || {}
     },
-    selectedProduct () {
-      return this.products.find(el => el.id === this.selectedProductId) || {}
+    selectedProduct() {
+      return this.products.find((el) => el.id === this.selectedProductId) || {}
     },
-    products () {
+    products() {
       const currencyRate = this.currencyRates[this.localeCurrency]
       const format = (number, options, locale) => {
         const intlFormatter = new Intl.NumberFormat(locale, options)
         return intlFormatter.format(number, undefined, locale)
       }
-      const getPriceInCurrency = (rate) => this.localeCurrency !== 'USD'
-        ? format(Math.round(rate * currencyRate), {
-          style: 'currency',
-          currency: this.localeCurrency,
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2,
-        }, this.$i18n.locale)
-        : null
-      const getUsd = (rate) => format(rate, {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-      }, 'en-US')
+      const getPriceInCurrency = (rate) =>
+        this.localeCurrency !== 'USD'
+          ? format(
+              Math.round(rate * currencyRate),
+              {
+                style: 'currency',
+                currency: this.localeCurrency,
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+              },
+              this.$i18n.locale
+            )
+          : null
+      const getUsd = (rate) =>
+        format(
+          rate,
+          {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+          },
+          'en-US'
+        )
       const prices = {}
       const products = {}
       const amounts = {}
-      this.prices.filter(el => el.nickname).forEach(el => {
-        prices[el.nickname] = el.id
-        const productName = el.nickname.split(' ')[0]
-        products[productName] = el.product
-        amounts[el.nickname] = this.getRoundedPriceFromPenny(el.unit_amount)
-      })
+      this.prices
+        .filter((el) => el.nickname)
+        .forEach((el) => {
+          prices[el.nickname] = el.id
+          const productName = el.nickname.split(' ')[0]
+          products[productName] = el.product
+          amounts[el.nickname] = this.getRoundedPriceFromPenny(el.unit_amount)
+        })
       return [
         {
           id: products.Start,
@@ -211,10 +241,14 @@ export default {
           team: this.$t('pricing.startUpTo'),
           mPriceInCurrency: getPriceInCurrency(amounts['Start Monthly'] || 30),
           mPrice: getUsd(amounts['Start Monthly'] || 30),
-          aPriceInCurrency: getPriceInCurrency((amounts['Start Annual'] || 180) / 12),
+          aPriceInCurrency: getPriceInCurrency(
+            (amounts['Start Annual'] || 180) / 12
+          ),
           aPriceTotal: getUsd(amounts['Start Annual'] || 180),
           aPrice: getUsd((amounts['Start Annual'] || 180) / 12),
-          priceMonthly: this.$t('pricing.monthlyPrice', { price: getUsd(amounts['Start Monthly'] || 30) }),
+          priceMonthly: this.$t('pricing.monthlyPrice', {
+            price: getUsd(amounts['Start Monthly'] || 30),
+          }),
           description: this.$t('pricing.startDescription'),
           feats: [this.$t('pricing.feat1')],
           to: !this.isLoggedIn ? { name: 'signup' } : null,
@@ -226,12 +260,18 @@ export default {
           name: 'Standard',
           title: this.$t('pricing.standard'),
           team: '4-10',
-          mPriceInCurrency: getPriceInCurrency(amounts['Standard Monthly'] || 198),
+          mPriceInCurrency: getPriceInCurrency(
+            amounts['Standard Monthly'] || 198
+          ),
           mPrice: getUsd(amounts['Standard Monthly'] || 198),
-          aPriceInCurrency: getPriceInCurrency((amounts['Standard Annual'] || 1188) / 12),
+          aPriceInCurrency: getPriceInCurrency(
+            (amounts['Standard Annual'] || 1188) / 12
+          ),
           aPriceTotal: getUsd(amounts['Standard Annual'] || 1188),
           aPrice: getUsd((amounts['Standard Annual'] || 1188) / 12),
-          priceMonthly: this.$t('pricing.monthlyPrice', { price: getUsd(amounts['Standard Monthly'] || 198) }),
+          priceMonthly: this.$t('pricing.monthlyPrice', {
+            price: getUsd(amounts['Standard Monthly'] || 198),
+          }),
           description: this.$t('pricing.standardDescription'),
           feats: [this.$t('pricing.feat1')],
           to: !this.isLoggedIn ? { name: 'signup' } : null,
@@ -243,14 +283,24 @@ export default {
           name: 'Advanced',
           title: this.$t('pricing.advanced'),
           team: '11+',
-          mPriceInCurrency: getPriceInCurrency(amounts['Advanced Monthly'] || 398),
+          mPriceInCurrency: getPriceInCurrency(
+            amounts['Advanced Monthly'] || 398
+          ),
           mPrice: getUsd(amounts['Advanced Monthly'] || 398),
-          aPriceInCurrency: getPriceInCurrency((amounts['Advanced Annual'] || 2388) / 12),
+          aPriceInCurrency: getPriceInCurrency(
+            (amounts['Advanced Annual'] || 2388) / 12
+          ),
           aPriceTotal: getUsd(amounts['Advanced Annual'] || 2388),
           aPrice: getUsd((amounts['Advanced Annual'] || 2388) / 12),
-          priceMonthly: this.$t('pricing.monthlyPrice', { price: getUsd(amounts['Advanced Monthly'] || 398) }),
+          priceMonthly: this.$t('pricing.monthlyPrice', {
+            price: getUsd(amounts['Advanced Monthly'] || 398),
+          }),
           description: this.$t('pricing.advancedDescription'),
-          feats: [this.$t('pricing.feat2'), this.$t('pricing.feat3'), this.$t('pricing.feat4')],
+          feats: [
+            this.$t('pricing.feat2'),
+            this.$t('pricing.feat3'),
+            this.$t('pricing.feat4'),
+          ],
           to: !this.isLoggedIn ? { name: 'signup' } : null,
         },
         {
@@ -261,44 +311,63 @@ export default {
           team: '25+',
           aPrice: '$~',
           description: this.$t('pricing.premiumDescription'),
-          feats: [this.$t('pricing.feat5'), this.$t('pricing.feat6'), this.$t('pricing.feat7'), this.$t('pricing.feat2'), this.$t('pricing.feat3'), this.$t('pricing.feat8'), this.$t('pricing.feat4')],
+          feats: [
+            this.$t('pricing.feat5'),
+            this.$t('pricing.feat6'),
+            this.$t('pricing.feat7'),
+            this.$t('pricing.feat2'),
+            this.$t('pricing.feat3'),
+            this.$t('pricing.feat8'),
+            this.$t('pricing.feat4'),
+          ],
         },
       ]
     },
-    localeCurrency () {
+    localeCurrency() {
       switch (this.$i18n.locale) {
-        case 'fr': return 'EUR'
-        case 'ru': return 'RUB'
-        case 'zh-Hans': return 'CNY'
-        case 'zh-Hant': return 'HKD'
-        default: return 'USD'
+        case 'fr':
+          return 'EUR'
+        case 'ru':
+          return 'RUB'
+        case 'zh-Hans':
+          return 'CNY'
+        case 'zh-Hant':
+          return 'HKD'
+        default:
+          return 'USD'
       }
     },
   },
   watch: {
-    selectedProduct (val) {
+    selectedProduct(val) {
       this.$emit('update:selected', val)
     },
   },
-  created () {
+  created() {
     this.getRates()
   },
-  mounted () {
+  mounted() {
     if (this.currentProductId) {
       this.selectedProductId = this.currentProductId
     }
   },
   methods: {
-    onClick (item) {
+    onClick(item) {
       this.selectedProductId = item.id
       this.$emit('select', item)
       if (this.isLoggedIn && !item.isCustomPrice) {
-        this.$router.push({ name: 'payment', params: { type: 'change' }, query: { product: item.id, interval: 'annual' } })
+        this.$router.push({
+          name: 'payment',
+          params: { type: 'change' },
+          query: { product: item.id, interval: 'annual' },
+        })
       }
     },
-    async getRates () {
+    async getRates() {
       try {
-        const response = await axios.get('https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP')
+        const response = await axios.get(
+          'https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP'
+        )
         if (response.data && response.data.success) {
           this.currencyRates = response.data.rates
         }
@@ -306,7 +375,7 @@ export default {
         this.$logget.info('Error on get currency rates', error)
       }
     },
-    getRoundedPriceFromPenny (value) {
+    getRoundedPriceFromPenny(value) {
       value = +value
       if (Number.isNaN(value)) return 0
       return Math.round(value / 100)
@@ -317,28 +386,28 @@ export default {
 
 <style lang="postcss">
 .tariff-card {
-  border: 1px solid #F0F0F0;
+  border: 1px solid #f0f0f0;
 }
 .tariff-card .tariff-card__item:not(:last-child) {
-  border-bottom: 1px solid #F0F0F0;
+  border-bottom: 1px solid #f0f0f0;
 }
 @screen sm {
   .tariff-card .tariff-card__item:not(:last-child) {
     border-bottom: none;
   }
   .tariff-card .tariff-card__item:nth-child(odd) {
-    border-right: 1px solid #F0F0F0;
+    border-right: 1px solid #f0f0f0;
   }
   .tariff-card .tariff-card__item:nth-child(1),
   .tariff-card .tariff-card__item:nth-child(2) {
-    border-bottom: 1px solid #F0F0F0;
+    border-bottom: 1px solid #f0f0f0;
   }
 }
 @screen lg {
   .tariff-card .tariff-card__item:nth-child(1),
   .tariff-card .tariff-card__item:nth-child(2) {
     border-bottom: none;
-    border-right: 1px solid #F0F0F0;
+    border-right: 1px solid #f0f0f0;
   }
 }
 </style>

@@ -5,7 +5,18 @@
     <div class="mb-12">
       <router-view />
     </div>
-    <div class="h-12 absolute bottom-0 w-full flex items-center justify-center text-center">
+    <div
+      class="
+        h-12
+        absolute
+        bottom-0
+        w-full
+        flex
+        items-center
+        justify-center
+        text-center
+      "
+    >
       <Copyright />
     </div>
   </div>

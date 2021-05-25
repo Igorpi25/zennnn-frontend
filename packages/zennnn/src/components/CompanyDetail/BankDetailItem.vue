@@ -13,16 +13,29 @@
             state-icon
             required
             class="flex-grow pb-2"
-            @update:model-value="updateData({ 'bankName': $event })"
+            @update:model-value="updateData({ bankName: $event })"
           />
           <div class="relative flex-shrink-0 relative pl-sm">
-            <label class="absolute top-0 right-0 block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+            <label
+              class="
+                absolute
+                top-0
+                right-0
+                block
+                text-base text-gray-100
+                whitespace-nowrap
+                leading-5
+                py-2
+              "
+            >
               {{ $t('companyDetail.label.main') }}
             </label>
             <div class="h-full flex items-center justify-end pt-8 pb-1">
               <Switch
                 v-model="isMainBankDetail"
-                @update:model-value="$emit('set-main-bank-detail', internalItem.id)"
+                @update:model-value="
+                  $emit('set-main-bank-detail', internalItem.id)
+                "
               />
             </div>
           </div>
@@ -42,7 +55,7 @@
           :debounce="500"
           :rules="[rules.required]"
           state-icon
-          @update:model-value="updateData({ 'bankAddress': $event })"
+          @update:model-value="updateData({ bankAddress: $event })"
         />
       </div>
       <div class="pb-2">
@@ -55,7 +68,7 @@
           :rules="[rules.required]"
           state-icon
           required
-          @update:model-value="updateData({ 'bankAccountNumber': $event })"
+          @update:model-value="updateData({ bankAccountNumber: $event })"
         />
       </div>
     </div>
@@ -71,7 +84,7 @@
           state-icon
           required
           class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
-          @update:model-value="updateData({ 'swift': $event })"
+          @update:model-value="updateData({ swift: $event })"
         />
         <TextField
           :model-value="internalItem.bic"
@@ -83,7 +96,7 @@
           state-icon
           state-error-color="none"
           class="flex-grow"
-          @update:model-value="updateData({ 'bic': $event })"
+          @update:model-value="updateData({ bic: $event })"
         />
       </div>
       <div class="pb-2">
@@ -96,7 +109,7 @@
           :rules="[rules.required]"
           state-icon
           state-error-color="none"
-          @update:model-value="updateData({ 'correspondentBankName': $event })"
+          @update:model-value="updateData({ correspondentBankName: $event })"
         />
       </div>
       <div class="pb-2">
@@ -109,7 +122,9 @@
           :rules="[rules.required]"
           state-icon
           state-error-color="none"
-          @update:model-value="updateData({ 'correspondentAccountNumber': $event })"
+          @update:model-value="
+            updateData({ correspondentAccountNumber: $event })
+          "
         />
       </div>
       <div v-if="create" class="w-full pt-9">
@@ -147,48 +162,48 @@ export default {
     isDefaultBankDetail: Boolean,
   },
   emits: ['create', 'update', 'set-main-bank-detail'],
-  data () {
+  data() {
     return {
       lazyItem: undefined,
       lazyIsMainBankDetail: this.isDefaultBankDetail,
       rules: {
-        required: v => !!v || this.$t('rule.required'),
+        required: (v) => !!v || this.$t('rule.required'),
       },
     }
   },
   computed: {
     internalItem: {
-      get () {
+      get() {
         return this.lazyItem || {}
       },
-      set (val) {
+      set(val) {
         this.lazyItem = val
       },
     },
     isMainBankDetail: {
-      get () {
+      get() {
         return this.lazyIsMainBankDetail
       },
-      set (val) {
+      set(val) {
         this.lazyIsMainBankDetail = val
       },
     },
   },
   watch: {
     item: {
-      handler (val) {
+      handler(val) {
         this.$nextTick(() => {
           this.internalItem = val
         })
       },
       immediate: true,
     },
-    isDefaultBankDetail (val) {
+    isDefaultBankDetail(val) {
       this.lazyIsMainBankDetail = val
     },
   },
   methods: {
-    updateData (input) {
+    updateData(input) {
       this.$emit('update', input)
     },
   },

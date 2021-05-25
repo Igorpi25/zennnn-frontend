@@ -11,18 +11,14 @@
         @click="$emit('chooseRequisite', requisite.id)"
       >
         <span>
-            <Icon>
-              {{ icons.ziCogfigurations }}
-            </Icon>
-          </span>
+          <Icon>
+            {{ icons.ziCogfigurations }}
+          </Icon>
+        </span>
         {{ requisite.name }}
       </li>
     </ul>
-    <Btn
-      outlined
-      class="mt-4"
-      @click="$emit('openRequisiteDialog')"
-    >
+    <Btn outlined class="mt-4" @click="$emit('openRequisiteDialog')">
       <template>
         <Icon class="-ml-4 mr-2">{{ icons.ziPlusOutline }}</Icon>
       </template>
@@ -41,15 +37,23 @@ import { LIST_ORG_REQUISITES } from '../graphql/queries'
 
 export default {
   name: 'ContractCompanyListModal',
-  setup () {
+  setup() {
     const route = useRoute()
     const orgId = route.params.orgId
 
-    const { result, loading, refetch: listOrgRequisitesRefetch } = useQuery(LIST_ORG_REQUISITES, () => ({
-      orgId: orgId,
-    }), {
-      fetchPolicy: 'cache-and-network',
-    })
+    const {
+      result,
+      loading,
+      refetch: listOrgRequisitesRefetch,
+    } = useQuery(
+      LIST_ORG_REQUISITES,
+      () => ({
+        orgId: orgId,
+      }),
+      {
+        fetchPolicy: 'cache-and-network',
+      }
+    )
     const listOrgRequisites = useResult(result)
 
     return {
@@ -59,7 +63,7 @@ export default {
       listOrgRequisitesRefetch,
     }
   },
-  data () {
+  data() {
     return {
       icons: {
         ziCogfigurations,
@@ -68,12 +72,12 @@ export default {
     }
   },
   computed: {
-    requisiteList () {
+    requisiteList() {
       return this.listOrgRequisites
     },
   },
   methods: {
-    update () {
+    update() {
       this.listOrgRequisitesRefetch()
     },
   },
@@ -81,21 +85,21 @@ export default {
 </script>
 
 <style scoped lang="postcss">
-  .requisite__company-name {
-    @apply relative cursor-pointer;
-  }
-  .requisite__company-name:hover {
-    color: #6996B2;
-  }
-  .requisite__company-name:hover  span {
-    display: block;
-  }
-  .requisite__company-name > span {
-    display: none;
-    position: absolute;
-    left: -28px;
-  }
-  .requisite-list-container {
-    background-color: #dddddd;
-  }
+.requisite__company-name {
+  @apply relative cursor-pointer;
+}
+.requisite__company-name:hover {
+  color: #6996b2;
+}
+.requisite__company-name:hover span {
+  display: block;
+}
+.requisite__company-name > span {
+  display: none;
+  position: absolute;
+  left: -28px;
+}
+.requisite-list-container {
+  background-color: #dddddd;
+}
 </style>

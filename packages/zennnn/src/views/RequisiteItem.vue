@@ -7,15 +7,9 @@
       :create="create"
       :show-fill-later-button="showFillLaterButton"
     />
-    <Modal
-      v-model="showWelcomeDialog"
-      max-width="500"
-    >
-      <WelcomeModal
-        @close="showWelcomeDialog = false"
-      />
+    <Modal v-model="showWelcomeDialog" max-width="500">
+      <WelcomeModal @close="showWelcomeDialog = false" />
     </Modal>
-
   </div>
 </template>
 
@@ -42,7 +36,7 @@ export default {
       default: false,
     },
   },
-  setup () {
+  setup() {
     const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
     const isLoggedIn = useResult(result1)
 
@@ -60,21 +54,21 @@ export default {
       noteGreetingMutate,
     }
   },
-  data () {
+  data() {
     return {
       showWelcomeDialog: false,
       showFillLaterButton: false,
     }
   },
   computed: {
-    profile () {
+    profile() {
       return this.getProfile || {}
     },
-    userInitKeyStore () {
+    userInitKeyStore() {
       return `zIsUserInit.${this.profile.id}`
     },
   },
-  mounted () {
+  mounted() {
     if (this.$route.query.q === 'welcome') {
       const isUserInit = localStorage.getItem(this.userInitKeyStore)
       if (!isUserInit) {
@@ -86,7 +80,7 @@ export default {
     }
   },
   methods: {
-    async noteGreeting () {
+    async noteGreeting() {
       await this.noteGreetingMutate()
     },
   },

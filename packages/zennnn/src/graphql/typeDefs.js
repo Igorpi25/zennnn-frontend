@@ -185,7 +185,7 @@ export const SUPPLIER_FRAGMENT = gql`
     locale
     createdAt
     updatedAt
-    
+
     companyType
     contactPerson {
       ...PersonFragment

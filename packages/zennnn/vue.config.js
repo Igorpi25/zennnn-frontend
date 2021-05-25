@@ -99,9 +99,7 @@ module.exports = {
     })
     // TODO: replace with pwa plugin
     const copyPlugin = new CopyWebpackPlugin({
-      patterns: [
-        { from: 'src/sw.js', to: 'service-worker.js' },
-      ],
+      patterns: [{ from: 'src/sw.js', to: 'service-worker.js' }],
     })
     config.plugins.push(definePlugin)
     if (!isAdmin) {

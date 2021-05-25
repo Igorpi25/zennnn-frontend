@@ -35,7 +35,9 @@ describe('Select.ts', () => {
       },
     })
 
-    expect(document.querySelector('[data-popper-root]')?.outerHTML).toBe(undefined)
+    expect(document.querySelector('[data-popper-root]')?.outerHTML).toBe(
+      undefined
+    )
     expect(wrapper.html()).toMatchSnapshot()
   })
 
@@ -67,7 +69,9 @@ describe('Select.ts', () => {
     })
 
     await wrapper.get('input').trigger('focus')
-    expect(document.querySelector('[data-popper-root]')?.outerHTML).toBe(undefined)
+    expect(document.querySelector('[data-popper-root]')?.outerHTML).toBe(
+      undefined
+    )
 
     expect(wrapper.html()).toMatchSnapshot()
   })
@@ -85,7 +89,9 @@ describe('Select.ts', () => {
     })
 
     await wrapper.get('input').trigger('focus')
-    expect(document.querySelector('[data-popper-root]')?.outerHTML).toBe(undefined)
+    expect(document.querySelector('[data-popper-root]')?.outerHTML).toBe(
+      undefined
+    )
 
     expect(wrapper.html()).toMatchSnapshot()
   })
@@ -278,14 +284,20 @@ describe('Select.ts', () => {
     await nextTick()
     await input.trigger('keydown', { key: 'ArrowDown' })
     await wait(20)
-    expect((document.querySelector('.menu__item--active') as HTMLElement)?.textContent).toBe('Item 2')
+    expect(
+      (document.querySelector('.menu__item--active') as HTMLElement)
+        ?.textContent
+    ).toBe('Item 2')
 
     await input.trigger('keydown', { key: 'Esc' })
     await nextTick()
     await input.trigger('keydown', { key: 'ArrowUp' })
     await wait(20)
 
-    expect((document.querySelector('.menu__item--active') as HTMLElement)?.textContent).toBe('Item 2')
+    expect(
+      (document.querySelector('.menu__item--active') as HTMLElement)
+        ?.textContent
+    ).toBe('Item 2')
   })
 
   it('should select value with keyboard', async () => {

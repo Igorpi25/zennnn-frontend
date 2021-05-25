@@ -12,7 +12,7 @@ export default {
     hideWarn: Boolean,
     forceValidate: Boolean,
   },
-  data () {
+  data() {
     return {
       badInput: null,
       hasInput: false,
@@ -25,39 +25,37 @@ export default {
     }
   },
   computed: {
-    shouldValidate () {
+    shouldValidate() {
       if (this.hasError || this.hasWarn) return true
-      return (this.hasInput || this.hasFocused)
+      return this.hasInput || this.hasFocused
     },
   },
   watch: {
-    internalValue () {
+    internalValue() {
       this.hasInput = true
       if (!(this.validateOnBlur && !this.hasFocused)) {
         this.$nextTick(this.validate)
       }
     },
-    hasFocus (val) {
-      if (
-        !val &&
-        !this.disabled
-      ) {
+    hasFocus(val) {
+      if (!val && !this.disabled) {
         this.hasFocused = true
         this.$nextTick(this.validate)
       }
     },
   },
-  beforeMount () {
-    (this.validateOnBlur || this.lazyValidation) && this.validate(this.forceValidate)
+  beforeMount() {
+    ;(this.validateOnBlur || this.lazyValidation) &&
+      this.validate(this.forceValidate)
   },
-  created () {
+  created() {
     this.form && this.form.register(this)
   },
-  beforeUnmount () {
+  beforeUnmount() {
     this.form && this.form.unregister(this)
   },
   methods: {
-    validate (force = false, value) {
+    validate(force = false, value) {
       // TODO: prevent validation on not has input and lazyValidation
       if (!force && !this.hasInput) return
       if (force) this.hasInput = this.hasFocused = true
@@ -79,7 +77,7 @@ export default {
       }
       return errorsCount
     },
-    validatePatterns (value) {
+    validatePatterns(value) {
       let warnsCount = 0
       if (this.patterns && this.patterns.length > 0) {
         for (const rule of this.patterns) {
@@ -98,7 +96,7 @@ export default {
       }
       return warnsCount
     },
-    reset () {
+    reset() {
       this.internalValue = ''
       this.clearError()
       this.clearWarn()
@@ -107,23 +105,23 @@ export default {
         this.valid = false
       }
     },
-    resetValidation () {
+    resetValidation() {
       this.clearError()
       this.clearWarn()
     },
-    setError (msg) {
+    setError(msg) {
       this.errorText = msg
       this.hasError = true
     },
-    clearError () {
+    clearError() {
       this.errorText = ''
       this.hasError = false
     },
-    setWarn (msg) {
+    setWarn(msg) {
       this.warnText = msg
       this.hasWarn = true
     },
-    clearWarn () {
+    clearWarn() {
       this.warnText = ''
       this.hasWarn = false
     },

@@ -16,9 +16,16 @@ import {
   mergeProps,
 } from 'vue'
 
-import { useAspectRatioProps, useAspectRatio, useDimensionProps, useDimension, Intersect } from 'vue-supp'
+import {
+  useAspectRatioProps,
+  useAspectRatio,
+  useDimensionProps,
+  useDimension,
+  Intersect,
+} from 'vue-supp'
 
-const hasIntersect = typeof window !== 'undefined' && 'IntersectionObserver' in window
+const hasIntersect =
+  typeof window !== 'undefined' && 'IntersectionObserver' in window
 
 export interface srcObject {
   src?: string
@@ -65,7 +72,7 @@ export default defineComponent({
 
   emits: ['load', 'error', 'loadstart'],
 
-  setup (props, { slots, emit }) {
+  setup(props, { slots, emit }) {
     const currentSrc = ref<string>('')
     const image = ref<HTMLImageElement>()
     const state = ref<'idle' | 'loading' | 'loaded' | 'error'>('idle')
@@ -74,7 +81,12 @@ export default defineComponent({
 
     const { dimensionStyles } = useDimension(props)
 
-    const aspectRatio = computed(() => normalisedSrc.value.aspect || naturalWidth.value! / naturalHeight.value! || 0)
+    const aspectRatio = computed(
+      () =>
+        normalisedSrc.value.aspect ||
+        naturalWidth.value! / naturalHeight.value! ||
+        0
+    )
 
     const aspectRatioProps = reactive({
       aspectRatio,
@@ -123,8 +135,8 @@ export default defineComponent({
           sources
             ? h('picture', { class: 'image__picture' }, [sources, img])
             : img,
-          [[vShow, state.value === 'loaded']],
-        ),
+          [[vShow, state.value === 'loaded']]
+        )
       )
     })
 
@@ -135,16 +147,19 @@ export default defineComponent({
       })
       return genTransition(
         {},
-        normalisedSrc.value.lazySrc && state.value !== 'loaded' ? img : undefined,
+        normalisedSrc.value.lazySrc && state.value !== 'loaded'
+          ? img
+          : undefined
       )
     })
 
     const __placeholder = computed(() => {
       if (!slots.placeholder) return
 
-      const placeholder = state.value === 'loading' || (state.value === 'error' && !slots.error)
-        ? h('div', { class: 'image__placeholder' }, slots.placeholder())
-        : undefined
+      const placeholder =
+        state.value === 'loading' || (state.value === 'error' && !slots.error)
+          ? h('div', { class: 'image__placeholder' }, slots.placeholder())
+          : undefined
 
       return genTransition({ appear: true }, placeholder)
     })
@@ -152,29 +167,33 @@ export default defineComponent({
     const __error = computed(() => {
       if (!slots.error) return
 
-      const error = state.value === 'error'
-        ? h('div', { class: 'image__error' }, slots.error())
-        : undefined
+      const error =
+        state.value === 'error'
+          ? h('div', { class: 'image__error' }, slots.error())
+          : undefined
 
       return genTransition({ appear: true }, error)
     })
 
-    watch(() => props.src, () => {
-      init(undefined, undefined, state.value !== 'idle')
-    })
+    watch(
+      () => props.src,
+      () => {
+        init(undefined, undefined, state.value !== 'idle')
+      }
+    )
     // TODO: getSrc when window width changes
 
     onBeforeMount(() => init())
 
-    const init = (entries?: IntersectionObserverEntry[], observer?: IntersectionObserver, isIntersecting?: boolean) => {
+    const init = (
+      entries?: IntersectionObserverEntry[],
+      observer?: IntersectionObserver,
+      isIntersecting?: boolean
+    ) => {
       // If the current browser supports the intersection
       // observer api, the image is not observable, and
       // the eager prop isn't being used, do not load
-      if (
-        hasIntersect &&
-        !isIntersecting &&
-        !props.eager
-      ) return
+      if (hasIntersect && !isIntersecting && !props.eager) return
 
       state.value = 'loading'
       nextTick(() => {
@@ -202,19 +221,30 @@ export default defineComponent({
     }
 
     const getSrc = () => {
-      if (image.value) currentSrc.value = image.value.currentSrc || image.value.src
+      if (image.value)
+        currentSrc.value = image.value.currentSrc || image.value.src
     }
 
-    const pollForSize = (img: HTMLImageElement, timeout: number | null = 100) => {
+    const pollForSize = (
+      img: HTMLImageElement,
+      timeout: number | null = 100
+    ) => {
       const poll = () => {
         const { naturalHeight: imgHeight, naturalWidth: imgWidth } = img
 
         if (imgHeight || imgWidth) {
           naturalWidth.value = imgWidth
           naturalHeight.value = imgHeight
-        } else if (!img.complete && state.value === 'loading' && timeout != null) {
+        } else if (
+          !img.complete &&
+          state.value === 'loading' &&
+          timeout != null
+        ) {
           setTimeout(poll, timeout)
-        } else if (img.currentSrc.endsWith('.svg') || img.currentSrc.startsWith('data:image/svg+xml')) {
+        } else if (
+          img.currentSrc.endsWith('.svg') ||
+          img.currentSrc.startsWith('data:image/svg+xml')
+        ) {
           naturalWidth.value = 1
           naturalHeight.value = 1
         }
@@ -223,30 +253,39 @@ export default defineComponent({
       poll()
     }
 
-    const genTransition = (data: TransitionProps, vNodes: VNode | VNode[] | undefined) => {
+    const genTransition = (
+      data: TransitionProps,
+      vNodes: VNode | VNode[] | undefined
+    ) => {
       if (!props.transition) return vNodes
 
       return h(
         Transition,
         mergeProps({ name: props.transition }, data as any) as TransitionProps,
-        () => vNodes,
+        () => vNodes
       )
     }
 
     const genContent = () => {
-      return h('div', {
-        class: 'image__content',
-      }, slots.default?.())
+      return h(
+        'div',
+        {
+          class: 'image__content',
+        },
+        slots.default?.()
+      )
     }
 
     const genDirectives = (content: VNode) => {
       if (!hasIntersect) return content
-      return withDirectives(
-        content,
+      return withDirectives(content, [
         [
-          [Intersect, { handler: init, options: props.options }, '', { once: true }],
+          Intersect,
+          { handler: init, options: props.options },
+          '',
+          { once: true },
         ],
-      )
+      ])
     }
 
     return () => {

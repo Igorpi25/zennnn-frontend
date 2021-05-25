@@ -1,11 +1,4 @@
-import {
-  h,
-  ref,
-  computed,
-  Ref,
-  ComputedRef,
-  Slots,
-} from 'vue'
+import { h, ref, computed, Ref, ComputedRef, Slots } from 'vue'
 
 import { ziChevronDown } from '@zennnn/icons'
 
@@ -60,15 +53,18 @@ export const useSelectProps = () => {
   }
 }
 
-export const useSelect = (props: SelectProps, {
-  // internalValue,
-  inputElement,
-  isDisabled,
-  isReadonly,
-  listboxId,
-  slots,
-  // updateClientRect, // TODO: add watcher
-}: SelectContext) => {
+export const useSelect = (
+  props: SelectProps,
+  {
+    // internalValue,
+    inputElement,
+    isDisabled,
+    isReadonly,
+    listboxId,
+    slots,
+  }: // updateClientRect, // TODO: add watcher
+  SelectContext
+) => {
   const { t } = useI18n()
 
   const menuRef = ref<MenuRef>()
@@ -77,7 +73,10 @@ export const useSelect = (props: SelectProps, {
 
   const items = computed(() => {
     return props.items.map((item: any, i: number) => {
-      const v = typeof item === 'string' || typeof item === 'number' ? { text: item, value: item } : item
+      const v =
+        typeof item === 'string' || typeof item === 'number'
+          ? { text: item, value: item }
+          : item
       return {
         ...v,
         $id: `${listboxId}-option-${i + 1}`,
@@ -115,64 +114,93 @@ export const useSelect = (props: SelectProps, {
 
   const genArrow = () => {
     if (!props.showArrow) return undefined
-    return h(Icon, {
-      tag: 'button',
-      size: 24,
-      tabindex: '-1',
-      disabled: isDisabled.value,
-      class: [
-        'focus:outline-none origin-center transform transition-transform duration-200 ease-in-out',
-        isDisabled.value ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:text-blue-400 focus:text-blue-400',
-        { 'rotate-180': isMenuActive.value },
-      ],
-      onClick: (e: MouseEvent) => {
-        e.preventDefault()
-        e.stopPropagation()
-        if (!isMenuActive.value) inputElement.value?.focus()
-        toggleMenu()
+    return h(
+      Icon,
+      {
+        tag: 'button',
+        size: 24,
+        tabindex: '-1',
+        disabled: isDisabled.value,
+        class: [
+          'focus:outline-none origin-center transform transition-transform duration-200 ease-in-out',
+          isDisabled.value
+            ? 'text-gray-400 cursor-not-allowed'
+            : 'text-blue-500 hover:text-blue-400 focus:text-blue-400',
+          { 'rotate-180': isMenuActive.value },
+        ],
+        onClick: (e: MouseEvent) => {
+          e.preventDefault()
+          e.stopPropagation()
+          if (!isMenuActive.value) inputElement.value?.focus()
+          toggleMenu()
+        },
+        onMousedown: (e: MouseEvent) => {
+          e.preventDefault()
+          e.stopPropagation()
+        },
+        onMouseup: (e: MouseEvent) => {
+          e.stopPropagation()
+        },
       },
-      onMousedown: (e: MouseEvent) => {
-        e.preventDefault()
-        e.stopPropagation()
-      },
-      onMouseup: (e: MouseEvent) => {
-        e.stopPropagation()
-      },
-    }, {
-      default: () => ziChevronDown,
-    })
+      {
+        default: () => ziChevronDown,
+      }
+    )
   }
 
   const genDivider = (index: number) => {
-    return h('div', { key: `divider-${index}`, class: 'border-b border-blue-500' })
+    return h('div', {
+      key: `divider-${index}`,
+      class: 'border-b border-blue-500',
+    })
   }
 
   const genNoData = () => {
     return slots['no-data']
       ? slots['no-data']()
-      : h('div', {
-        class: classNames(
-          'flex items-center px-4',
-          props.solo || props.dense ? 'h-8' : 'h-10',
-        ),
-        onMousedown: (e: MouseEvent) => { e.preventDefault() },
-      }, h('div', {
-        class: 'truncate',
-      }, props.noDataText || t('select.noData')))
+      : h(
+          'div',
+          {
+            class: classNames(
+              'flex items-center px-4',
+              props.solo || props.dense ? 'h-8' : 'h-10'
+            ),
+            onMousedown: (e: MouseEvent) => {
+              e.preventDefault()
+            },
+          },
+          h(
+            'div',
+            {
+              class: 'truncate',
+            },
+            props.noDataText || t('select.noData')
+          )
+        )
   }
 
   const genNoResult = () => {
     return slots['no-result']
       ? slots['no-result']()
-      : h('div', {
-        class: classNames(
-          'flex items-center px-4',
-          props.solo || props.dense ? 'h-8' : 'h-10',
-        ),
-        onMousedown: (e: MouseEvent) => { e.preventDefault() },
-      }, h('div', {
-        class: 'truncate',
-      }, props.noResultText || t('select.noResult')))
+      : h(
+          'div',
+          {
+            class: classNames(
+              'flex items-center px-4',
+              props.solo || props.dense ? 'h-8' : 'h-10'
+            ),
+            onMousedown: (e: MouseEvent) => {
+              e.preventDefault()
+            },
+          },
+          h(
+            'div',
+            {
+              class: 'truncate',
+            },
+            props.noResultText || t('select.noResult')
+          )
+        )
   }
 
   return {

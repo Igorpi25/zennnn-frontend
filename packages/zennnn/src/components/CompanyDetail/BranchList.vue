@@ -6,8 +6,13 @@
       </div>
       <div>
         <button
-          class="text-blue-500 hover:text-blue-400 focus:text-blue-400 focus:outline-none"
-           @click="toggleExpand"
+          class="
+            text-blue-500
+            hover:text-blue-400
+            focus:text-blue-400
+            focus:outline-none
+          "
+          @click="toggleExpand"
         >
           <Icon
             class="transition-transform"
@@ -20,18 +25,14 @@
     </div>
     <ExpandTransition>
       <div v-show="expanded">
-        <div
-          v-if="items.length > 0"
-          class="flex flex-wrap -mx-5 pt-4"
-        >
-          <div
-            v-for="(item, i) in items"
-            :key="i"
-            class="w-full lg:w-1/2 px-5"
-          >
+        <div v-if="items.length > 0" class="flex flex-wrap -mx-5 pt-4">
+          <div v-for="(item, i) in items" :key="i" class="w-full lg:w-1/2 px-5">
             <div
               v-if="i > 0"
-              :class="['mt-10 mb-8 border-b border-gray-400', { 'lg:hidden': i === 1 }]"
+              :class="[
+                'mt-10 mb-8 border-b border-gray-400',
+                { 'lg:hidden': i === 1 },
+              ]"
             />
             <BranchItem
               :loading="loading"
@@ -91,10 +92,10 @@ export default {
     supplierId: String,
     items: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
   },
-  setup () {
+  setup() {
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
@@ -105,7 +106,7 @@ export default {
       apolloClient,
     }
   },
-  data () {
+  data() {
     return {
       createLoading: false,
       updateLoading: false,
@@ -113,14 +114,16 @@ export default {
     }
   },
   methods: {
-    addData () {
+    addData() {
       if (this.emitChanges) {
-        this.$emit('update', { branches: [...this.items, { branchType: BranchType.WAREHOUSE }] })
+        this.$emit('update', {
+          branches: [...this.items, { branchType: BranchType.WAREHOUSE }],
+        })
       } else {
         this.addBranch()
       }
     },
-    updateData (i, item, value) {
+    updateData(i, item, value) {
       if (this.emitChanges) {
         const updatedItem = Object.assign({}, item, value)
         const items = this.items.slice()
@@ -130,7 +133,7 @@ export default {
         this.updateBranch(item.id, value)
       }
     },
-    deleteData (i, id) {
+    deleteData(i, id) {
       if (this.emitChanges) {
         const items = this.items.slice()
         items.splice(i, 1)
@@ -139,7 +142,7 @@ export default {
         this.deleteBranch(id)
       }
     },
-    async addBranch () {
+    async addBranch() {
       try {
         this.createLoading = true
         await this.apolloClient.mutate({
@@ -176,7 +179,7 @@ export default {
         this.createLoading = false
       }
     },
-    async updateBranch (id, input) {
+    async updateBranch(id, input) {
       try {
         this.updateLoading = true
         await this.apolloClient.mutate({
@@ -188,7 +191,9 @@ export default {
               query: GET_SUPPLIER,
               variables,
             })
-            const index = data.getSupplier.branches.findIndex(el => el.id === id)
+            const index = data.getSupplier.branches.findIndex(
+              (el) => el.id === id
+            )
             if (index !== -1) {
               cache.writeQuery({
                 query: GET_SUPPLIER,
@@ -217,7 +222,7 @@ export default {
         this.updateLoading = false
       }
     },
-    async deleteBranch (id) {
+    async deleteBranch(id) {
       try {
         this.deleteLoading = true
         await this.apolloClient.mutate({
@@ -229,14 +234,16 @@ export default {
               query: GET_SUPPLIER,
               variables,
             })
-            if (data.getSupplier.branches.some(el => el.id === id)) {
+            if (data.getSupplier.branches.some((el) => el.id === id)) {
               cache.writeQuery({
                 query: GET_SUPPLIER,
                 variables,
                 data: {
                   getSupplier: {
                     ...data.getSupplier,
-                    branches: data.getSupplier.branches.filter(el => el.id !== id),
+                    branches: data.getSupplier.branches.filter(
+                      (el) => el.id !== id
+                    ),
                   },
                 },
               })
