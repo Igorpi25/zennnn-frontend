@@ -3,9 +3,11 @@ import { datetimeFormats, numberFormats } from './plugins/i18n/formats'
 import messages from '@intlify/vite-plugin-vue-i18n/messages'
 import './index.css'
 import App from './App.vue'
-import { createSSRApp, defineComponent, h } from 'vue'
+import { createSSRApp } from 'vue'
 import { createRouter } from './router'
 import { inBrowser } from './utils'
+import Table from './components/Table.vue'
+import Example from './components/Example.vue'
 
 const i18n = createI18n({
   locale: 'en',
@@ -14,34 +16,12 @@ const i18n = createI18n({
   numberFormats,
 })
 
-const Example = defineComponent({
-  name: 'Example',
-  props: {
-    file: String,
-  },
-  render () {
-    return h('div', this.file)
-  },
-})
-
-const Table = defineComponent({
-  name: 'Table',
-  props: {
-    name: String,
-    field: String,
-  },
-  render () {
-    return h('div', `name: ${this.name}, field: ${this.field}`)
-  },
-})
-
 // SSR requires a fresh app instance per request, therefore we export a function
 // that creates a fresh app instance. If using Vuex, we'd also be creating a
 // fresh store here.
 export function createApp() {
   const app = createSSRApp(App)
   const router = createRouter()
-
 
   router.beforeEach(r => {
     // const path = r.path

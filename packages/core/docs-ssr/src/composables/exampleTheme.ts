@@ -1,6 +1,6 @@
 import { ref, computed, watch, onMounted, onUnmounted, Ref } from 'vue'
 
-export function useExampleTheme (elRef: Ref<HTMLElement>, file: string) {
+export function useExampleTheme (elRef: Ref<HTMLElement | undefined>, file: string) {
   let observer: MutationObserver
   const dark = ref<boolean>(false)
   const attachRefs = ref<HTMLElement[]>([])
@@ -26,15 +26,16 @@ export function useExampleTheme (elRef: Ref<HTMLElement>, file: string) {
         ) {
           const activatorEls = elRef.value.querySelectorAll('[aria-haspopup="true"]')
           const ids: string[] = []
-          for (const el of activatorEls) {
+          activatorEls.forEach(el => {
             const id = (el as HTMLElement).getAttribute('aria-controls')
             id && ids.push(id)
-          }
+          })
           if (ids.length > 0) {
             ids.forEach((id: string) => {
-              const el = (document.getElementById(id)?.parentNode) as HTMLElement
-              if (el) {
-                attachRefs.value.push(el)
+              const el = document.getElementById(id) as HTMLElement
+              const parent = el && el.parentNode
+              if (parent) {
+                attachRefs.value.push(parent as HTMLElement)
               }
             })
             toggleDark()
@@ -45,10 +46,11 @@ export function useExampleTheme (elRef: Ref<HTMLElement>, file: string) {
     observer = new MutationObserver(callback)
     observer.observe(targetNode, { childList: true })
   })
+
   onUnmounted(() => {
     observer && observer.disconnect()
   })
-  
+
   function toggleDark (): void {
     for (const el of attachRefs.value) {
       if (dark.value) {
