@@ -107,6 +107,7 @@ export default defineComponent({
       default: () => [],
     },
     id: String,
+    visibleOnReferenceHidden: Boolean
   },
 
   emits: ['update:modelValue', 'update:value'],
@@ -448,6 +449,7 @@ export default defineComponent({
           zIndex: props.zIndex,
         },
         'data-popper-root': '',
+        'data-popper-visible-on-reference-hidden': props.visibleOnReferenceHidden ? '' : undefined,
         onClick(e: Event) {
           const target = e.target as HTMLElement
           if (target.getAttribute('disabled')) return

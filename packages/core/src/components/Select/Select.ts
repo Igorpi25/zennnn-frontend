@@ -462,6 +462,7 @@ export default defineComponent({
           minHeight: props.minHeight,
           maxHeight: props.maxHeight,
           disabled: isDisabled.value || isReadonly.value,
+          visibleOnReferenceHidden: true,
           boxClass: classNames(
             'select-box shadow-none dark:shadow-none rounded-t-none',
             props.solo || props.dense ? 'select-box--dense' : '',

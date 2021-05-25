@@ -5,7 +5,7 @@
     pointer-events: none;
   }
   /* Hide the popper when the reference is hidden */
-  [data-popper-root][data-popper-reference-hidden] {
+  [data-popper-root][data-popper-reference-hidden]:not([data-popper-visible-on-reference-hidden]) {
     visibility: hidden;
   }
   .popper__box {
@@ -31,16 +31,24 @@
     visibility: hidden;
   }
 
-  [data-popper-root][data-popper-placement^='top'] > .popper__box > .popper__arrow {
+  [data-popper-root][data-popper-placement^='top']
+    > .popper__box
+    > .popper__arrow {
     bottom: -4px;
   }
-  [data-popper-root][data-popper-placement^='bottom'] > .popper__box > .popper__arrow {
+  [data-popper-root][data-popper-placement^='bottom']
+    > .popper__box
+    > .popper__arrow {
     top: -4px;
   }
-  [data-popper-root][data-popper-placement^='left'] > .popper__box > .popper__arrow {
+  [data-popper-root][data-popper-placement^='left']
+    > .popper__box
+    > .popper__arrow {
     right: -4px;
   }
-  [data-popper-root][data-popper-placement^='right'] > .popper__box > .popper__arrow {
+  [data-popper-root][data-popper-placement^='right']
+    > .popper__box
+    > .popper__arrow {
     left: -4px;
   }
 

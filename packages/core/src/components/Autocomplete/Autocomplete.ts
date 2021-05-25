@@ -527,6 +527,7 @@ export default defineComponent({
           minHeight: props.minHeight,
           maxHeight: props.maxHeight,
           disabled: isDisabled.value || isReadonly.value,
+          visibleOnReferenceHidden: true,
           boxClass: classNames(
             'autocomplete-box shadow-none dark:shadow-none rounded-t-none',
             props.solo || props.dense ? 'autocomplete-box--dense' : '',
