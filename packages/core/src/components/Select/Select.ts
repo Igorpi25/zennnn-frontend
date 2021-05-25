@@ -282,6 +282,10 @@ export default defineComponent({
 
         e && emit('focus', e)
       }
+      if (typeof window !== 'undefined' && e && e.target && !isDisabled.value) {
+        const target = e.target as HTMLInputElement
+        target.selectionEnd = target.selectionStart
+      }
     }
 
     const onBlur = (e: Event) => {
