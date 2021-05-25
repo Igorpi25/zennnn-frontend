@@ -44,14 +44,15 @@
   @font-face {
     font-family: 'MyriadPro';
     src: url('../fonts/MyriadPro-Semibold.eot');
-    src: url('../fonts/MyriadPro-Semibold.eot#iefix') format('embedded-opentype'),
+    src: url('../fonts/MyriadPro-Semibold.eot#iefix')
+        format('embedded-opentype'),
       url('../fonts/MyriadPro-Semibold.woff') format('woff'),
       url('../fonts/MyriadPro-Semibold.ttf') format('truetype'),
       url('../fonts/MyriadPro-Semibold.otf') format('opentype');
     font-weight: 600;
     font-style: normal;
   }
- 
+
   @font-face {
     font-family: 'MyriadPro';
     src: url('../fonts/MyriadPro-Bold.eot');
@@ -62,7 +63,7 @@
     font-weight: 700;
     font-style: normal;
   }
-  
+
   /* italic */
 
   @font-face {
@@ -79,7 +80,8 @@
   @font-face {
     font-family: 'MyriadPro';
     src: url('../fonts/MyriadPro-SemiboldIt.eot');
-    src: url('../fonts/MyriadPro-SemiboldIt.eot#iefix') format('embedded-opentype'),
+    src: url('../fonts/MyriadPro-SemiboldIt.eot#iefix')
+        format('embedded-opentype'),
       url('../fonts/MyriadPro-SemiboldIt.woff') format('woff'),
       url('../fonts/MyriadPro-SemiboldIt.ttf') format('truetype'),
       url('../fonts/MyriadPro-SemiboldIt.otf') format('opentype');
@@ -144,7 +146,8 @@
     font-style: italic;
   }
 
-  html, body {
+  html,
+  body {
     @apply h-full;
   }
 
@@ -162,18 +165,18 @@
   img {
     border-style: none;
   }
-  
+
   /* Turn Off Number Input Arrows */
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
   /* Turn Off Date Input Arrows */
-  [type="date"]::-webkit-inner-spin-button {
+  [type='date']::-webkit-inner-spin-button {
     display: none;
   }
-  
+
   /* Safari text color on faded on input disabled */
   input:disabled {
     -webkit-text-fill-color: currentColor;
@@ -201,7 +204,7 @@
 
   /* Signin, Signup views */
   .auth-left {
-    width: 44%!important;
+    width: 44% !important;
   }
   .auth-left--bg {
     background-repeat: no-repeat;
@@ -212,65 +215,7 @@
 
   /* override draggable */
   .draggable-mirror {
-    z-index: 500!important;
-  }
-
-  /* Popper classes */
-  [data-popper-root] {
-    max-width: calc(100vw - 10px);
-    pointer-events: none;
-  }
-  /* Hide the popper when the reference is hidden */
-  [data-popper-root][data-popper-reference-hidden] {
-    visibility: hidden;
-  }
-  .popper__box {
-    pointer-events: auto;
-    position: relative;
-    outline: 0;
-    transition-property: transform, visibility, opacity;
-    @apply rounded-md;
-  }
-
-  .popper__arrow,
-  .popper__arrow::before {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-  }
-  .popper__arrow::before {
-    content: '';
-    transform: rotate(45deg);
-    @apply bg-current;
-  }
-  .popper__arrow[data-hide] {
-    visibility: hidden;
-  }
-
-  [data-popper-root][data-popper-placement^='top'] > .popper__box > .popper__arrow {
-    bottom: -4px;
-  }
-  [data-popper-root][data-popper-placement^='bottom'] > .popper__box > .popper__arrow {
-    top: -4px;
-  }
-  [data-popper-root][data-popper-placement^='left'] > .popper__box > .popper__arrow {
-    right: -4px;
-  }
-  [data-popper-root][data-popper-placement^='right'] > .popper__box > .popper__arrow {
-    left: -4px;
-  }
-
-  [data-popper-root][data-popper-placement^='top'] > .popper__box {
-    transform-origin: bottom;
-  }
-  [data-popper-root][data-popper-placement^='bottom'] > .popper__box {
-    transform-origin: top;
-  }
-  [data-popper-root][data-popper-placement^='left'] > .popper__box {
-    transform-origin: right;
-  }
-  [data-popper-root][data-popper-placement^='right'] > .popper__box {
-    transform-origin: left;
+    z-index: 500 !important;
   }
 }
 
@@ -283,12 +228,10 @@
   }
   .dots::before {
     display: block;
-    content:
-      ". . . . . . . . . . . . . . . . . . . . "
-      ". . . . . . . . . . . . . . . . . . . . "
-      ". . . . . . . . . . . . . . . . . . . . "
-      ". . . . . . . . . . . . . . . . . . . . "
-    ;
+    content: '. . . . . . . . . . . . . . . . . . . . '
+      '. . . . . . . . . . . . . . . . . . . . '
+      '. . . . . . . . . . . . . . . . . . . . '
+      '. . . . . . . . . . . . . . . . . . . . ';
   }
 
   /* Hide scrollbar */
@@ -312,108 +255,12 @@
     background-color: transparent;
   }
   /*nobody needs this little scrollbar corner, I mean really, get rid of it haha*/
-  .scrollbar-hidden::-webkit-scrollbar-corner { display: none; height: 0px; width: 0px; }
-
-  /* Transitions */
-  /* .scale-transition-enter-active,
-  .scale-transition-leave-active {
-    transition: .3s cubic-bezier(.25,.8,.5,1);
+  .scrollbar-hidden::-webkit-scrollbar-corner {
+    display: none;
+    height: 0px;
+    width: 0px;
   }
-  .scale-transition-move {
-    transition: transform .6s;
-  }
-  .scale-transition-enter-from,
-  .scale-transition-leave-from,
-  .scale-transition-leave-to {
-    opacity: 0;
-    transform: scale(0);
-  }
-
-  .fade-transition-enter-active,
-  .fade-transition-leave-active {
-    transition: .3s cubic-bezier(.25,.8,.5,1);
-  }
-  .fade-transition-move {
-    transition: transform .6s;
-  }
-  .fade-transition-enter-from,
-  .fade-transition-leave-to {
-    opacity: 0!important;
-  }
-
-  .slide-y-transition-enter-active,
-  .slide-y-transition-leave-active {
-    transition: .3s cubic-bezier(.25,.8,.5,1);
-  }
-  .slide-y-transition-move {
-    transition: transform .6s;
-  }
-  .slide-y-transition-enter-from,
-  .slide-y-transition-leave-to {
-    opacity: 0;
-    transform: translateY(-15px);
-  }
-  .slide-y-reverse-transition-enter-active,
-  .slide-y-reverse-transition-leave-active {
-    transition: .3s cubic-bezier(.25,.8,.5,1);
-  }
-  .slide-y-reverse-transition-move {
-    transition: transform .6s;
-  }
-  .slide-y-reverse-transition-enter-from,
-  .slide-y-reverse-transition-leave-to {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-
-  .slide-x-transition-enter-active,
-  .slide-x-transition-leave-active {
-    transition: .3s cubic-bezier(.25,.8,.5,1);
-  }
-  .slide-x-transition-move {
-    transition: transform .6s;
-  }
-  .slide-x-transition-enter-from,
-  .slide-x-transition-leave-to {
-    opacity: 0;
-    transform: translateX(-15px);
-  }
-  .slide-x-reverse-transition-enter-active,
-  .slide-x-reverse-transition-leave-active {
-    transition: .3s cubic-bezier(.25,.8,.5,1);
-  }
-  .slide-x-reverse-transition-move {
-    transition: transform .6s;
-  }
-  .slide-x-reverse-transition-enter-from,
-  .slide-x-reverse-transition-leave-to {
-    opacity: 0;
-    transform: translateX(15px);
-  }
-
-  .expand-transition-enter-active,
-  .expand-transition-leave-active {
-    transition: .3s cubic-bezier(.25,.8,.5,1);
-  }
-  .expand-transition-move {
-    transition: transform .6s;
-  }
-  .expand-x-transition-enter-active,
-  .expand-x-transition-leave-active {
-    transition: .3s cubic-bezier(.25,.8,.5,1);
-  }
-  .expand-x-transition-move {
-    transition: transform .6s;
-  }
-
-  #app .transition-fast-out-slow-in { transition: .3s cubic-bezier(.4,0,.2,1)!important }
-  #app .transition-linear-out-slow-in { transition: .3s cubic-bezier(0,0,.2,1)!important }
-  #app .transition-fast-out-linear-in { transition: .3s cubic-bezier(.4,0,1,1)!important }
-  #app .transition-ease-in-out { transition: .3s cubic-bezier(.4,0,.6,1)!important }
-  #app .transition-fast-in-fast-out { transition: .3s cubic-bezier(.25,.8,.25,1)!important }
-  #app .transition-swing { transition:.3s cubic-bezier(.25,.8,.5,1)!important } */
 }
-
 
 /* TODO: replace or remove */
 
