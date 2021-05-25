@@ -1,6 +1,8 @@
 @layer components {
-  .autocomplete--is-menu-active {
-    @apply bg-white dark:bg-gray-900 rounded-t;
+  .autocomplete--is-menu-active::before {
+    content: '';
+    @apply absolute inset-x-0 bottom-0 pt-1;
+    @apply bg-white dark:bg-gray-900;
   }
 
   .autocomplete-box::before {
@@ -18,7 +20,9 @@
   .listbox--searching .menu__item--active:not(.menu__item--disabled) {
     @apply text-gray-200;
   }
-  .listbox--searching .menu__item:not(.menu__item--disabled) .listbox__option__mask {
+  .listbox--searching
+    .menu__item:not(.menu__item--disabled)
+    .listbox__option__mask {
     @apply text-gray-900 dark:text-white;
   }
 }

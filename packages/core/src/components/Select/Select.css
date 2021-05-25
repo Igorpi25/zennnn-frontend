@@ -1,8 +1,4 @@
 @layer components {
-  .select--is-menu-active {
-    @apply bg-white dark:bg-gray-900 rounded-t-lg;
-  }
-
   .select-box::before {
     content: '';
     @apply absolute pointer-events-none inset-0 -top-10 rounded-lg;
@@ -21,7 +17,7 @@
   }
 
   .select__control--is-menu-active {
-    @apply rounded-t-lg;
+    @apply rounded-t-lg rounded-b-none;
   }
 
   .select__input {
