@@ -138,7 +138,7 @@
             <template v-slot:append>
               <Icon
                 class="text-gray-500 hover:text-gray-300 pr-1"
-                @click="showPassword = !showPassword"
+                @click.prevent="showPassword = !showPassword"
               >
                 {{ showPassword ? icons.ziVisible : icons.ziHide }}
               </Icon>
@@ -254,7 +254,7 @@
           <template v-slot:append>
             <Icon
               class="text-gray-500 hover:text-gray-300 pr-1"
-              @click="compliteShowPassword = !compliteShowPassword"
+              @click.prevent="compliteShowPassword = !compliteShowPassword"
             >
               {{ compliteShowPassword ? icons.ziVisible : icons.ziHide }}
             </Icon>
