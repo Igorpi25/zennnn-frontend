@@ -235,6 +235,7 @@
               >
                 <span class="text-white">{{ item.groupName }}</span> ({{
                   item.groupItemsCount
+
                 }})
               </td>
             </tr>
@@ -377,7 +378,7 @@
           })
         "
       >
-        <Icon class="text-gray-200 mr-sm">
+        <Icon left>
           {{ icons.ziUserPlus }}
         </Icon>
         <span>{{ $t('clients.createClient') }}</span>

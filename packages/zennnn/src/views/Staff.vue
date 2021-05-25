@@ -480,7 +480,7 @@
           </template>
         </DataTable>
         <Btn block outlined class="mt-4" @click="createStaffDialog = true">
-          <Icon class="text-gray-200 mr-sm">
+          <Icon left>
             {{ icons.ziUserPlus }}
           </Icon>
           <span>{{ $t('staff.addStaff') }}</span>

@@ -414,7 +414,7 @@
         class="mt-4"
         @click="createSpecDialog = true"
       >
-        <Icon class="text-gray-200 mr-sm">
+        <Icon left>
           {{ icons.ziBagDeal }}
         </Icon>
         <span>{{ $t('deals.createDeal') }}</span>

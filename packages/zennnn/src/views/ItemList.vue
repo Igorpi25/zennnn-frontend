@@ -210,6 +210,7 @@
               >
                 <span class="text-white">{{ item.groupName }}</span> ({{
                   item.groupItemsCount
+
                 }})
               </td>
             </tr>
@@ -233,7 +234,7 @@
         </template>
       </DataTable>
       <Btn block outlined class="mt-4">
-        <Icon class="text-gray-100 mr-sm">
+        <Icon left>
           {{ icons.ziQr }}
         </Icon>
         <span>{{ $t('goods.createProduct') }}</span>

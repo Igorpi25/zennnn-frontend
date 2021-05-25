@@ -160,6 +160,8 @@
               >
                 <span class="text-white">{{ item.groupName }}</span> ({{
                   item.groupItemsCount
+
+
                 }})
               </td>
             </tr>
@@ -277,7 +279,7 @@
         </template>
       </DataTable>
       <Btn block outlined class="mt-4" @click="wordCreateDialog = true">
-        <Icon size="20" class="text-gray-200 mr-sm">
+        <Icon size="20" left>
           {{ icons.ziEdit }}
         </Icon>
         <span>{{ $t('words.addWord') }}</span>
