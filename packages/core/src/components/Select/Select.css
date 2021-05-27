@@ -21,6 +21,6 @@
   }
 
   .select__input {
-    @apply rounded-none;
+    @apply rounded-none select-none;
   }
 }

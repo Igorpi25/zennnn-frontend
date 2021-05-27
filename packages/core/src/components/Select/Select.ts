@@ -305,49 +305,65 @@ export default defineComponent({
       if (!isMenuActive.value) openMenu()
     }
 
-    const onKeydown = (e: KeyboardEvent) => {
+    const onEnter = (e: KeyboardEvent) => {
+      e.preventDefault()
       const menu = menuRef.value!
+      if (!isMenuActive.value) {
+        openMenu()
+      } else if (menu.activeItem) {
+        menu.activeItem.click()
+      }
+    }
+    const onArrowUp = (e: KeyboardEvent) => {
+      e.preventDefault()
+      const menu = menuRef.value!
+      if (!isMenuActive.value) {
+        openMenu()
+        !internalValue.value && setTimeout(menu.goToPrevItem)
+      } else {
+        menu.goToPrevItem()
+      }
+    }
+    const onArrowDown = (e: KeyboardEvent) => {
+      e.preventDefault()
+      const menu = menuRef.value!
+      if (!isMenuActive.value) {
+        openMenu()
+        !internalValue.value && setTimeout(menu.goToNextItem)
+      } else {
+        menu.goToNextItem()
+      }
+    }
+    const onTab = (e: KeyboardEvent) => {
+      const menu = menuRef.value!
+      if (isMenuActive.value) {
+        if (menu.activeItem) {
+          e.preventDefault()
+          e.stopPropagation()
+          menu.activeItem.click()
+        } else {
+          closeMenu()
+        }
+      } else {
+        closeMenu()
+      }
+    }
+
+    const onKeydown = (e: KeyboardEvent) => {
       if (e.key === 'Esc' || e.key === 'Escape') {
         e.preventDefault()
         closeMenu()
       } else if (e.key === 'Enter') {
-        e.preventDefault()
-        if (!isMenuActive.value) {
-          openMenu()
-        } else if (menu.activeItem) {
-          menu.activeItem.click()
-        }
+        onEnter(e)
       } else if (e.key === ' ' || e.key === 'Spacebar') {
         e.preventDefault()
         toggleMenu()
       } else if (e.key === 'ArrowUp' || e.key === 'Up') {
-        e.preventDefault()
-        if (!isMenuActive.value) {
-          openMenu()
-          !internalValue.value && setTimeout(menu.goToPrevItem)
-        } else {
-          menu.goToPrevItem()
-        }
+        onArrowUp(e)
       } else if (e.key === 'ArrowDown' || e.key === 'Down') {
-        e.preventDefault()
-        if (!isMenuActive.value) {
-          openMenu()
-          !internalValue.value && setTimeout(menu.goToNextItem)
-        } else {
-          menu.goToNextItem()
-        }
+        onArrowDown(e)
       } else if (e.key === 'Tab') {
-        if (isMenuActive.value) {
-          if (menu.activeItem) {
-            e.preventDefault()
-            e.stopPropagation()
-            menu.activeItem.click()
-          } else {
-            closeMenu()
-          }
-        } else {
-          closeMenu()
-        }
+        onTab(e)
       }
 
       emit('keydown', e)
@@ -564,6 +580,10 @@ export default defineComponent({
       toggleMenu,
       openMenu,
       closeMenu,
+      onEnter,
+      onArrowUp,
+      onArrowDown,
+      onTab,
     }
   },
 
