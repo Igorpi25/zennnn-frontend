@@ -36,13 +36,13 @@
     @apply pr-0;
   }
 
-  .input--focused .input__control {
+  .input--focused > .input__control {
     @apply ring-1 ring-blue-500 ring-inset;
   }
-  .input--has-error .input__control {
+  .input--has-error > .input__control {
     @apply ring-1 ring-yellow-300 ring-inset;
   }
-  .input--disabled .input__control {
+  .input--disabled > .input__control {
     @apply cursor-not-allowed;
   }
 
