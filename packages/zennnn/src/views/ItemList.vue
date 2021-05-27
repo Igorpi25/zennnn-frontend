@@ -210,7 +210,6 @@
               >
                 <span class="text-white">{{ item.groupName }}</span> ({{
                   item.groupItemsCount
-
                 }})
               </td>
             </tr>
