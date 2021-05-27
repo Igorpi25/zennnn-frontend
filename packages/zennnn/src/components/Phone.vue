@@ -2,48 +2,49 @@
   <Select
     ref="codeInputRef"
     :model-value="codeInput"
-    :error="hasPhoneInputError"
-    :error-messages="errorMessages"
     :loading="loading"
-    :items="items"
-    :distance="16"
-    :control-class="
-      isPhoneInputFocused
-        ? 'rounded-b ring-1 ring-blue-500 flex-shrink-0'
-        : 'rounded-b flex-shrink-0'
-    "
-    :open-on-focus="false"
+    :items="filteredItems"
     :dependencies="dependencies"
     :solo="solo"
     :dense="dense"
     :label="label"
     :label-hint="labelHint"
     :show-label-wrap="showLabelWrap"
-    :pattern="codeInputPattern"
     :size="computedSize"
-    :hide-details="!hasPhoneInputError"
-    :messages-on-focused="showMessagesOnFocused"
-    :readonly="readonly"
     :disabled="disabled"
+    max-height="304"
     type="tel"
     inputmode="tel"
     item-text="code"
-    box-class="rounded-t-md"
-    content-class="rounded-t-md pt-0"
-    input-class="pr-1"
-    searchable
-    has-items-filter
+    class="phone"
     content-on-intersect
-    :items-filter-tab-down="itemsFilterTabDown"
     @update:model-value="onCodeSelect"
+    @keydown="onCodeKeydown"
   >
     <template v-slot:prepend>
       <img
         v-if="codeInput"
         :src="require(`@/assets/img/flags/square/${codeInput}.svg`).default"
-        class="w-6 flex-shrink-0 mr-2"
+        class="w-6 flex-shrink-0"
         aria-hidden="true"
       />
+    </template>
+    <template v-slot:prepend-item>
+      <TextField
+        ref="searchInputRef"
+        v-model="search"
+        :placeholder="$t('placeholder.startTyping')"
+        clearable
+        class="sticky top-0"
+        control-class="input__control--no-shadow rounded-none"
+        @keydown="onSearchKeydown"
+      >
+        <template v-slot:prepend>
+          <Icon class="text-gray-100 dark:text-gray-200 ml-1">
+            {{ ziSearch }}
+          </Icon>
+        </template>
+      </TextField>
     </template>
     <template v-slot:append-outer>
       <TextField
@@ -64,46 +65,52 @@
         :state-success-color="stateSuccessColor"
         :state-error-color="stateErrorColor"
         :debounce="debounce"
+        :hide-details="hideDetails"
+        :messages-on-focused="messagesOnFocused"
         type="tel"
         inputmode="tel"
         class="w-full flex-grow"
-        control-class="text-field__control--no-shadow pl-1 pr-0"
+        control-class="rounded-l-none pl-2"
         @focus="onFocus"
         @blur="onBlur"
         @update:modelValue="onPhoneInput"
       />
     </template>
-    <template v-slot:item="{ item }">
-      <div class="flex items-center px-2">
-        <img
-          :src="require(`@/assets/img/flags/square/${item.value}.svg`).default"
-          :alt="item.value"
-          class="w-6 flex-shrink-0 mr-2"
-          aria-hidden="true"
-        />
-        <span class="text-gray-900 dark:text-light-gray-400 truncate pr-1">
-          {{ item.country }}
-        </span>
-        <span class="text-gray-200 flex-shrink-0">
-          {{ item.code }}
-        </span>
+    <template v-slot:item="{ item, selected }">
+      <div class="w-8 flex justify-center flex-shrink-0">
+        <Icon v-if="selected">{{ ziChecked }}</Icon>
       </div>
+      <img
+        :src="require(`@/assets/img/flags/square/${item.value}.svg`).default"
+        :alt="item.value"
+        class="w-6 flex-shrink-0 mr-2"
+        aria-hidden="true"
+      />
+      <span class="text-gray-900 dark:text-light-gray-400 truncate pr-2">
+        {{ item.country }}
+      </span>
+      <span class="text-gray-200 flex-shrink-0">
+        {{ item.code }}
+      </span>
     </template>
   </Select>
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 
-import { Select, TextField } from '@zennnn/core'
+import { ziSearch, ziChecked } from '@zennnn/icons'
+
+import { Select, TextField, Icon } from '@zennnn/core'
 
 import phonesPlaceholder from '../config/countries-phones-placeholder.json'
 import phonesMask from '../config/countries-phones-mask.json'
 import phonesCode from '../config/countries-phones-code.json'
+import defaultFilter from '../utils/defaultFilter'
 
 export default {
   name: 'Phone',
-  components: { Select, TextField },
+  components: { Select, TextField, Icon },
   props: {
     modelValue: {
       type: Object,
@@ -146,12 +153,14 @@ export default {
   emits: ['update:modelValue'],
 
   setup() {
-    const codeInput = ref(undefined)
-    const phoneInput = ref(undefined)
+    const search = ref('')
+    const codeInput = ref()
+    const phoneInput = ref()
     const isPhoneInputFocused = ref(false)
     const codeInputPattern = '^[0-9\\s\\-()+]{0,10}$'
-    const codeInputRef = ref(null)
-    const phoneInputRef = ref(null)
+    const codeInputRef = ref()
+    const phoneInputRef = ref()
+    const searchInputRef = ref()
     const hasPhoneInputError = computed(() => {
       return (
         phoneInputRef.value &&
@@ -159,25 +168,90 @@ export default {
         phoneInputRef.value.shouldValidate
       )
     })
+
     const dependencies = computed(() => {
       return [phoneInputRef.value && phoneInputRef.value.rootElement]
     })
-    const itemsFilterTabDown = () => {
-      phoneInputRef.value && phoneInputRef.value.focus()
+
+    const isMenuActive = computed(
+      () => codeInputRef.value && codeInputRef.value.isMenuActive
+    )
+
+    watch(isMenuActive, (val) => {
+      if (val) {
+        setTimeout(() => {
+          searchInputRef.value.focus()
+        }, 0)
+      } else {
+        nextTick(() => {
+          search.value = ''
+        })
+      }
+    })
+
+    function onCodeKeydown(e) {
+      if (e.key === 'Tab' && !e.shiftKey) {
+        e.preventDefault()
+        phoneInputRef.value && phoneInputRef.value.focus()
+      }
     }
+
+    function onSearchKeydown(e) {
+      const selectApi = codeInputRef.value
+      if (e.key === 'Esc' || e.key === 'Escape') {
+        e.preventDefault()
+        selectApi.focus()
+        nextTick(() => {
+          selectApi.closeMenu()
+        })
+      } else if (e.key === 'Enter') {
+        selectApi.onEnter(e)
+      } else if (e.key === 'ArrowUp' || e.key === 'Up') {
+        selectApi.onArrowUp(e)
+      } else if (e.key === 'ArrowDown' || e.key === 'Down') {
+        selectApi.onArrowDown(e)
+      } else if (e.key === 'Tab') {
+        selectApi.onTab(e)
+        e.preventDefault()
+        e.stopPropagation()
+        if (e.shiftKey && codeInputRef.value) {
+          codeInputRef.value.focus()
+        } else if (phoneInputRef.value) {
+          phoneInputRef.value.focus()
+        }
+      }
+    }
+
     return {
+      search,
+      ziSearch,
+      ziChecked,
       codeInput,
       phoneInput,
       isPhoneInputFocused,
       codeInputPattern,
       codeInputRef,
       phoneInputRef,
+      searchInputRef,
       hasPhoneInputError,
       dependencies,
-      itemsFilterTabDown,
+      onCodeKeydown,
+      onSearchKeydown,
     }
   },
   computed: {
+    filteredItems() {
+      if (!this.search) return this.items
+      return this.items.filter((item) => {
+        return [
+          item.country,
+          item.countryName,
+          item.codeUnformatted,
+          item.code,
+          item.value,
+        ].some((text) => defaultFilter(text, this.search))
+      })
+    },
     items() {
       return Object.entries(phonesCode)
         .map(([k, v]) => {
@@ -208,12 +282,6 @@ export default {
           return 0
         })
     },
-    showMessagesOnFocused() {
-      // TODO: messagesOnFocused prop do not work after select
-      return this.messagesOnFocused && this.isPhoneInputFocused
-        ? false
-        : this.messagesOnFocused
-    },
     phonesUnformatted() {
       const result = {}
       for (const [k, v] of Object.entries(phonesCode)) {
@@ -221,25 +289,21 @@ export default {
       }
       return result
     },
-    errorMessages() {
-      return [this.errorMessage || this.$t('rule.phone')]
-    },
     computedRules() {
       return [
         (v) => {
           const val = v || ''
-          const message = 'Not valid.'
+          const message = this.errorMessage || this.$t('rule.phone')
           const mLength = this.currentMask.length || 1
           const { iMask, iValue } = this.maskValue(val)
           return (val.length === mLength && iMask === iValue) || message
         },
       ]
     },
+    // can calculate width with src/utils/getTextWidth
     computedSize() {
       const code = this.currentCode || ' '
-      let cLength = code.length
-      if (/\(/.test(code)) cLength--
-      return cLength + 1
+      return code.length + 1
     },
     defaultCountryCode() {
       switch (this.locale || this.$i18n.locale) {
@@ -304,8 +368,11 @@ export default {
     onCodeSelect(val) {
       if (this.readonly || this.disabled) return
       this.codeInput = val
-      this.phoneInputRef.focus()
       this.emitChange()
+      // TODO: can detect is keydown or click
+      // nextTick(() => {
+      //   this.$refs.phoneInputRef && this.$refs.phoneInputRef.focus()
+      // })
     },
     getCountryCode() {
       let result = this.defaultCountryCode
@@ -362,3 +429,21 @@ export default {
   },
 }
 </script>
+
+<style lang="postcss">
+.phone .select__control {
+  padding-right: 0;
+  padding-left: 8px;
+  @apply bg-light-gray-400 dark:bg-gray-400 !important;
+  @apply rounded !important;
+}
+.phone .select__control input {
+  text-overflow: unset;
+  white-space: nowrap;
+}
+.phone.select--is-menu-active::before {
+  content: '';
+  @apply absolute inset-x-0 bottom-0 pt-1;
+  @apply bg-white dark:bg-gray-900;
+}
+</style>
