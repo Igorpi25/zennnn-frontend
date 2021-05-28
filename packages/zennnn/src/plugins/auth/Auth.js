@@ -87,7 +87,7 @@ export default class Auth {
       return Promise.reject(new Error('Password cannot be empty'))
     }
 
-    const that = this
+    const that = this // eslint-disable-line @typescript-eslint/no-this-alias
     return new Promise((resolve, reject) => {
       user.completeNewPasswordChallenge(password, requiredAttributes, {
         onSuccess: () => {
@@ -162,7 +162,9 @@ export default class Auth {
     })
   }
 
-  async signOut (opts) { // eslint-disable-line
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async signOut(opts) {
+    // eslint-disable-line
     this._cleanCachedItems()
     if (this.userPool) {
       const user = this.userPool.getCurrentUser()
@@ -186,7 +188,7 @@ export default class Auth {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
-    const that = this
+    const that = this // eslint-disable-line @typescript-eslint/no-this-alias
     return new Promise((resolve, reject) => {
       const user = that.userPool.getCurrentUser()
       if (!user) {
@@ -257,7 +259,7 @@ export default class Auth {
    * @return - A promise resolves to session object if success
    */
   currentSession() {
-    const that = this
+    const that = this // eslint-disable-line @typescript-eslint/no-this-alias
     logger.debug('Getting current session')
     // Purposely not calling the reject method here because we don't need a console error
     if (!this.userPool) {
