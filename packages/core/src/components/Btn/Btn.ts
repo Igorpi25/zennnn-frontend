@@ -1,5 +1,5 @@
-import { h, ref, computed, defineComponent, VNode } from 'vue'
-import { RouterLink } from 'vue-router'
+import { h, ref, computed, defineComponent, VNode, PropType } from 'vue'
+import { RouterLink, RouteLocationRaw } from 'vue-router'
 import { convertToUnit } from 'vue-supp'
 
 import Progress from '../Progress'
@@ -12,10 +12,7 @@ export default defineComponent({
       type: String,
       default: 'button',
     },
-    to: {
-      type: [String, Object],
-      default: undefined,
-    },
+    to: [String, Object] as PropType<RouteLocationRaw>,
     replace: Boolean,
     href: String,
     loading: Boolean,
@@ -37,8 +34,8 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    minWidth: [String, Number],
-    maxWidth: [String, Number],
+    minWidth: [String, Number] as PropType<string | number>,
+    maxWidth: [String, Number] as PropType<string | number>,
     darkIcon: Boolean,
     retainFocusOnClick: Boolean,
   },
