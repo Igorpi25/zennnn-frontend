@@ -31,6 +31,7 @@ import {
 } from 'vue-supp'
 
 import { usePopperProps, usePopper } from '../../composables/usePopper'
+import { useDelayProps, useDelay } from '../../composables/useDelay'
 
 import uid from '../../utils/uid'
 import { debounce } from '../../utils/debounce'
@@ -66,6 +67,7 @@ export default defineComponent({
     }),
     ...useDimensionProps(),
     ...useAttachProps(),
+    ...useDelayProps(),
     tag: {
       type: String,
       default: 'span',
@@ -107,7 +109,7 @@ export default defineComponent({
       default: () => [],
     },
     id: String,
-    visibleOnReferenceHidden: Boolean
+    visibleOnReferenceHidden: Boolean,
   },
 
   emits: ['update:modelValue', 'update:value'],
@@ -141,6 +143,27 @@ export default defineComponent({
       hasResizeListener: props.width === 'auto',
     })
     const { clientRect, updateClientRect } = useClientRect(clientRectProps)
+
+    function activate() {
+      requestAnimationFrame(() => {
+        isVisible.value = isActive.value
+        create()
+      })
+    }
+
+    function deactivate() {
+      isVisible.value = isActive.value
+      if (!props.transition) {
+        destroy()
+      }
+      nextTick(() => {
+        activeItemIndex.value = -1
+      })
+    }
+
+    const { runCloseDelay, runOpenDelay } = useDelay(props, (value) => {
+      value ? activate() : deactivate()
+    })
 
     const internalValue = computed(() => props.value)
 
@@ -210,18 +233,9 @@ export default defineComponent({
       if (props.disabled) return
 
       if (val) {
-        requestAnimationFrame(() => {
-          isVisible.value = val
-          create()
-        })
+        runOpenDelay()
       } else {
-        isVisible.value = val
-        if (!props.transition) {
-          destroy()
-        }
-        nextTick(() => {
-          activeItemIndex.value = -1
-        })
+        runCloseDelay()
       }
 
       // SHOUL BE REPLACE BY RESIZE OBSERVER
@@ -449,7 +463,8 @@ export default defineComponent({
           zIndex: props.zIndex,
         },
         'data-popper-root': '',
-        'data-popper-visible-on-reference-hidden': props.visibleOnReferenceHidden ? '' : undefined,
+        'data-popper-visible-on-reference-hidden':
+          props.visibleOnReferenceHidden ? '' : undefined,
         onClick(e: Event) {
           const target = e.target as HTMLElement
           if (target.getAttribute('disabled')) return
