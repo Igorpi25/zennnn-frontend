@@ -1,51 +1,49 @@
-@layer components {
-  .alert {
-    @apply bg-white dark:bg-gray-700 rounded-md;
-  }
+.alert {
+  @apply bg-white dark:bg-gray-700 rounded-md;
+}
 
-  .alert__content {
-    @apply flex-grow flex items-center text-sm leading-tight;
-  }
+.alert__content {
+  @apply flex-grow flex items-center text-sm leading-tight;
+}
 
-  .alert__icon {
-    @apply flex-shrink-0 pr-4;
-  }
+.alert__icon {
+  @apply flex-shrink-0 pr-4;
+}
 
-  .alert__close {
-    @apply flex-shrink-0 ml-3 cursor-pointer select-none;
-  }
-  .alert__close.icon--link {
-    @apply ring-offset-0;
-  }
+.alert__close {
+  @apply flex-shrink-0 ml-3 cursor-pointer select-none;
+}
+.alert__close.icon--link {
+  @apply ring-offset-0;
+}
 
-  .alert__container {
-    @apply flex rounded-md relative text-white py-3 px-4;
-    @apply text-blue-500 bg-blue-500 bg-opacity-10;
-  }
-  .alert__container--closable {
-    @apply pr-3;
-  }
+.alert__container {
+  @apply flex rounded-md relative text-white py-3 px-4;
+  @apply text-blue-500 bg-blue-500 bg-opacity-10;
+}
+.alert__container--closable {
+  @apply pr-3;
+}
 
-  .alert__container--primary {
-    @apply text-blue-500 bg-blue-500 bg-opacity-10;
-  }
-  .alert__container--error {
-    @apply text-white bg-red-900;
-  }
-  .alert__container--warn {
-    @apply text-yellow-500 bg-yellow-500 bg-opacity-10;
-  }
-  .alert__container--success {
-    @apply text-green-500 bg-green-500 bg-opacity-10;
-  }
-  .alert__container--info {
-    @apply text-gray-100 bg-gray-500;
-  }
+.alert__container--primary {
+  @apply text-blue-500 bg-blue-500 bg-opacity-10;
+}
+.alert__container--error {
+  @apply text-white bg-red-900;
+}
+.alert__container--warn {
+  @apply text-yellow-500 bg-yellow-500 bg-opacity-10;
+}
+.alert__container--success {
+  @apply text-green-500 bg-green-500 bg-opacity-10;
+}
+.alert__container--info {
+  @apply text-gray-100 bg-gray-500;
+}
 
-  .alert__icon--error {
-    @apply text-pink-500;
-  }
-  .alert__icon--info {
-    @apply text-green-500;
-  }
+.alert__icon--error {
+  @apply text-pink-500;
+}
+.alert__icon--info {
+  @apply text-green-500;
 }

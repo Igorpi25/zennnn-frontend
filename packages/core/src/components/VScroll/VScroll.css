@@ -1,20 +1,18 @@
-@layer components {
-  .virtual-scroll {
-    display: block;
-    flex: 1 1 auto;
-    height: 100%;
-    max-width: 100%;
-    overflow: auto;
-    position: relative;
-  }
-  
-  .virtual-scroll__container {
-    display: block;
-  }
-  
-  .virtual-scroll__item {
-    left: 0;
-    position: absolute;
-    right: 0;
-  }
+.virtual-scroll {
+  display: block;
+  flex: 1 1 auto;
+  height: 100%;
+  max-width: 100%;
+  overflow: auto;
+  position: relative;
+}
+
+.virtual-scroll__container {
+  display: block;
+}
+
+.virtual-scroll__item {
+  left: 0;
+  position: absolute;
+  right: 0;
 }

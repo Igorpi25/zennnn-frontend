@@ -1,67 +1,65 @@
-@layer components {
-  /* Popper classes */
-  [data-popper-root] {
-    max-width: calc(100vw - 10px);
-    pointer-events: none;
-  }
-  /* Hide the popper when the reference is hidden */
-  [data-popper-root][data-popper-reference-hidden]:not([data-popper-visible-on-reference-hidden]) {
-    visibility: hidden;
-  }
-  .popper__box {
-    pointer-events: auto;
-    position: relative;
-    outline: 0;
-    transition-property: transform, visibility, opacity;
-    @apply rounded-lg;
-  }
+/* Popper classes */
+[data-popper-root] {
+  max-width: calc(100vw - 10px);
+  pointer-events: none;
+}
+/* Hide the popper when the reference is hidden */
+[data-popper-root][data-popper-reference-hidden]:not([data-popper-visible-on-reference-hidden]) {
+  visibility: hidden;
+}
+.popper__box {
+  pointer-events: auto;
+  position: relative;
+  outline: 0;
+  transition-property: transform, visibility, opacity;
+  @apply rounded-lg;
+}
 
-  .popper__arrow,
-  .popper__arrow::before {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-  }
-  .popper__arrow::before {
-    content: '';
-    transform: rotate(45deg);
-    @apply bg-current;
-  }
-  .popper__arrow[data-hide] {
-    visibility: hidden;
-  }
+.popper__arrow,
+.popper__arrow::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+}
+.popper__arrow::before {
+  content: '';
+  transform: rotate(45deg);
+  @apply bg-current;
+}
+.popper__arrow[data-hide] {
+  visibility: hidden;
+}
 
-  [data-popper-root][data-popper-placement^='top']
-    > .popper__box
-    > .popper__arrow {
-    bottom: -4px;
-  }
-  [data-popper-root][data-popper-placement^='bottom']
-    > .popper__box
-    > .popper__arrow {
-    top: -4px;
-  }
-  [data-popper-root][data-popper-placement^='left']
-    > .popper__box
-    > .popper__arrow {
-    right: -4px;
-  }
-  [data-popper-root][data-popper-placement^='right']
-    > .popper__box
-    > .popper__arrow {
-    left: -4px;
-  }
+[data-popper-root][data-popper-placement^='top']
+  > .popper__box
+  > .popper__arrow {
+  bottom: -4px;
+}
+[data-popper-root][data-popper-placement^='bottom']
+  > .popper__box
+  > .popper__arrow {
+  top: -4px;
+}
+[data-popper-root][data-popper-placement^='left']
+  > .popper__box
+  > .popper__arrow {
+  right: -4px;
+}
+[data-popper-root][data-popper-placement^='right']
+  > .popper__box
+  > .popper__arrow {
+  left: -4px;
+}
 
-  [data-popper-root][data-popper-placement^='top'] > .popper__box {
-    transform-origin: bottom;
-  }
-  [data-popper-root][data-popper-placement^='bottom'] > .popper__box {
-    transform-origin: top;
-  }
-  [data-popper-root][data-popper-placement^='left'] > .popper__box {
-    transform-origin: right;
-  }
-  [data-popper-root][data-popper-placement^='right'] > .popper__box {
-    transform-origin: left;
-  }
+[data-popper-root][data-popper-placement^='top'] > .popper__box {
+  transform-origin: bottom;
+}
+[data-popper-root][data-popper-placement^='bottom'] > .popper__box {
+  transform-origin: top;
+}
+[data-popper-root][data-popper-placement^='left'] > .popper__box {
+  transform-origin: right;
+}
+[data-popper-root][data-popper-placement^='right'] > .popper__box {
+  transform-origin: left;
 }

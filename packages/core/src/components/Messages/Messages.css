@@ -1,37 +1,35 @@
-@layer components {
-  .messages {
-    @apply text-sm relative;
-    min-width: 1px;
-    font-size: 14px;
-    min-height: 16px;
-    line-height: 14px;
-  }
-  .messages--error {
-    @apply text-yellow-400;
-  }
-  .messages__message {
-    word-break: break-word;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    hyphens: auto;
-  }
+.messages {
+  @apply text-sm relative;
+  min-width: 1px;
+  font-size: 14px;
+  min-height: 16px;
+  line-height: 14px;
+}
+.messages--error {
+  @apply text-yellow-400;
+}
+.messages__message {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
 
-  /* Transition */
+/* Transition */
 
-  .message-transition-enter-active,
-  .message-transition-leave-active {
-    transition: .3s cubic-bezier(.25,.8,.5,1);
-  }
-  .message-transition-move {
-    transition: transform .6s;
-  }
-  .message-transition-enter-from,
-  .message-transition-leave-to {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  .message-transition-leave-from,
-  .message-transition-leave-active {
-    position: absolute;
-  }
+.message-transition-enter-active,
+.message-transition-leave-active {
+  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+.message-transition-move {
+  transition: transform 0.6s;
+}
+.message-transition-enter-from,
+.message-transition-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.message-transition-leave-from,
+.message-transition-leave-active {
+  position: absolute;
 }

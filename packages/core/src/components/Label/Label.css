@@ -1,21 +1,19 @@
-@layer components {
-  .label {
-    @apply flex items-center relative h-5 my-2;
-  }
+.label {
+  @apply flex items-center relative h-5 my-2;
+}
 
-  .label__wrapper {
-    @apply absolute inset-0 inline-flex;
-  }
+.label__wrapper {
+  @apply absolute inset-0 inline-flex;
+}
 
-  .label__content__wrapper {
-    @apply leading-5 max-w-full;
-  }
+.label__content__wrapper {
+  @apply leading-5 max-w-full;
+}
 
-  .label__content {
-    @apply text-base text-gray-300 dark:text-gray-100;
-    @apply relative w-full truncate;
-  }
-  .label--show-wrap .label__content {
-    @apply pointer-events-none;
-  }
+.label__content {
+  @apply text-base text-gray-300 dark:text-gray-100;
+  @apply relative w-full truncate;
+}
+.label--show-wrap .label__content {
+  @apply pointer-events-none;
 }

@@ -1,52 +1,50 @@
-@layer components {
-  .checkbox__control {
-    @apply flex items-start relative;
-  }
-  .checkbox--show-details .checkbox__control {
-    @apply pb-2;
-  }
-  .checkbox__control__input {
-    @apply relative;
-  }
-  .checkbox__control__icon {
-    @apply w-5 h-5 border-2 border-gray-300 dark:border-gray-300 rounded;
-    @apply flex items-center justify-center;
-    @apply transition-colors duration-100 ease-in-out;
-    @apply text-white;
-  }
-  .checkbox--focused .checkbox__control__icon {
-    @apply ring ring-blue-400;
-  }
-  .checkbox__input:focus:not(:focus-visible) + .checkbox__control__icon {
-    box-shadow: none;
-    outline: 0;
-  }
-  .checkbox--active .checkbox__control__icon {
-    @apply border-blue-500 bg-blue-500;
-  }
-  .checkbox--active.checkbox--disabled .checkbox__control__icon,
-  .checkbox--indeterminate .checkbox__control__icon {
-    @apply bg-gray-300 border-gray-300 dark:bg-gray-300 dark:border-gray-300;
-  }
+.checkbox__control {
+  @apply flex items-start relative;
+}
+.checkbox--show-details .checkbox__control {
+  @apply pb-2;
+}
+.checkbox__control__input {
+  @apply relative;
+}
+.checkbox__control__icon {
+  @apply w-5 h-5 border-2 border-gray-300 dark:border-gray-300 rounded;
+  @apply flex items-center justify-center;
+  @apply transition-colors duration-100 ease-in-out;
+  @apply text-white;
+}
+.checkbox--focused .checkbox__control__icon {
+  @apply ring ring-blue-400;
+}
+.checkbox__input:focus:not(:focus-visible) + .checkbox__control__icon {
+  box-shadow: none;
+  outline: 0;
+}
+.checkbox--active .checkbox__control__icon {
+  @apply border-blue-500 bg-blue-500;
+}
+.checkbox--active.checkbox--disabled .checkbox__control__icon,
+.checkbox--indeterminate .checkbox__control__icon {
+  @apply bg-gray-300 border-gray-300 dark:bg-gray-300 dark:border-gray-300;
+}
 
-  .checkbox__input {
-    @apply absolute opacity-0 select-none w-full h-full;
-  }
+.checkbox__input {
+  @apply absolute opacity-0 select-none w-full h-full;
+}
 
-  .checkbox__label {
-    @apply select-none leading-tight;
-  }
+.checkbox__label {
+  @apply select-none leading-tight;
+}
 
-  .checkbox__label,
-  .checkbox__input {
-    @apply cursor-pointer;
-  }
-  .checkbox--disabled .checkbox__label,
-  .checkbox--disabled .checkbox__input {
-    @apply cursor-not-allowed;
-  }
+.checkbox__label,
+.checkbox__input {
+  @apply cursor-pointer;
+}
+.checkbox--disabled .checkbox__label,
+.checkbox--disabled .checkbox__input {
+  @apply cursor-not-allowed;
+}
 
-  .checkbox--disabled {
-    @apply opacity-50;
-  }
+.checkbox--disabled {
+  @apply opacity-50;
 }

@@ -1,12 +1,10 @@
-@layer components {
-  .tooltip__box {
-    @apply pointer-events-none !important;
-    @apply shadow-main-day dark:shadow-main-night;
-    @apply text-gray-400;
-  }
-  .tooltip__content {
-    @apply relative z-1 rounded-md bg-gray-400;
-    @apply text-sm leading-tight text-light-gray-500 dark:text-gray-100;
-    @apply p-5;
-  }
+.tooltip__box {
+  @apply pointer-events-none !important;
+  @apply shadow-main-day dark:shadow-main-night;
+  @apply text-gray-400;
+}
+.tooltip__content {
+  @apply relative z-1 rounded-md bg-gray-400;
+  @apply text-sm leading-tight text-light-gray-500 dark:text-gray-100;
+  @apply p-5;
 }

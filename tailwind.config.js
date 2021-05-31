@@ -20,19 +20,16 @@ module.exports = {
   purge: {
     mode: 'layers',
     layers: ['utilities'],
-    content: [
-      './src/**/*.html',
-      './src/**/*.{vue,js,ts,jsx,tsx}',
-    ],
+    content: ['./src/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   },
   theme: {
     container: false,
     screens: {
-      'xs': '420px',
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
+      xs: '414px',
+      sm: '512px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
     },
     colors: {
       black: '#000000',
@@ -115,7 +112,7 @@ module.exports = {
       boxShadow: {
         'main-night': '0px 20px 40px rgba(0, 0, 0, 0.35)',
         'main-day': '0px 20px 40px rgba(0, 0, 0, 0.1)',
-        'photo': '4px 4px 8px rgba(0, 0, 0, 0.15)',
+        photo: '4px 4px 8px rgba(0, 0, 0, 0.15)',
         'inner-pressed-night': 'inset 0px 2px 1px rgba(0, 0, 0, 0.7)',
         'inner-pressed-day': 'inset 0px 2px 1px rgba(0, 0, 0, 0.2)',
         'small-forms-night': '0px 0px 10px rgba(0, 0, 0, 0.25)',
@@ -155,6 +152,7 @@ module.exports = {
         26: '6.5rem', // +
         36: '9rem', // -
         38: '9.5rem', // +
+        68: '17rem', // sidebar width
       },
       zIndex: {
         1: '1',
@@ -163,13 +161,15 @@ module.exports = {
       transitionProperty: {
         color: 'color',
         'bg-and-color': 'background-color, color',
-        'colors-and-opacity': 'background-color, border-color, color, fill, stroke, opacity',
+        'colors-and-opacity':
+          'background-color, border-color, color, fill, stroke, opacity',
         'padding-bottom': 'padding-bottom',
       },
       transitionTimingFunction: {
         'out-quart': 'cubic-bezier(0.25, 0.8, 0.5, 1)',
       },
       borderRadius: {
+        10: '10px',
         20: '20px',
         50: '50px',
       },
@@ -185,18 +185,60 @@ module.exports = {
     },
   },
   variants: {
-    backgroundColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus', 'disabled', 'even', 'active'],
-    borderColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus', 'disabled', 'active'],
-    boxShadow: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus', 'dark'],
+    backgroundColor: [
+      'responsive',
+      'dark',
+      'group-hover',
+      'focus-within',
+      'hover',
+      'focus',
+      'disabled',
+      'even',
+      'active',
+    ],
+    borderColor: [
+      'responsive',
+      'dark',
+      'group-hover',
+      'focus-within',
+      'hover',
+      'focus',
+      'disabled',
+      'active',
+    ],
+    boxShadow: [
+      'responsive',
+      'group-hover',
+      'focus-within',
+      'hover',
+      'focus',
+      'dark',
+    ],
     cursor: ['responsive', 'disabled'],
+    fill: ['responsive', 'dark'], // need in `/main` (items list page), moon icon
     fontWeight: ['responsive', 'hover', 'focus', 'dark'],
-    opacity: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus', 'disabled'],
+    opacity: [
+      'responsive',
+      'group-hover',
+      'focus-within',
+      'hover',
+      'focus',
+      'disabled',
+    ],
     overflow: ['responsive', 'hover'],
-    textColor: ['responsive', 'dark', 'group-hover', 'focus-within', 'hover', 'focus', 'disabled', 'active'],
+    strokeWidth: ['responsive', 'dark'], // need in `/main` (items list page), moon icon
+    textColor: [
+      'responsive',
+      'dark',
+      'group-hover',
+      'focus-within',
+      'hover',
+      'focus',
+      'disabled',
+      'active',
+    ],
     translate: ['responsive', 'hover', 'focus', 'group-hover'],
     visibility: ['responsive', 'group-hover'],
   },
-  plugins: [
-    scrollingTouchUtilities,
-  ],
+  plugins: [scrollingTouchUtilities],
 }

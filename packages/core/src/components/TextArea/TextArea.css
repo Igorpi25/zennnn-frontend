@@ -1,18 +1,16 @@
-@layer components {
-  .text-area__control {
-    @apply items-start;
-  }
-  .text-area__control {
-    @apply h-auto py-2;
-  }
+.text-area__control {
+  @apply items-start;
+}
+.text-area__control {
+  @apply h-auto py-2;
+}
 
-  .text-area__input {
-    @apply py-0 px-2;
-  }
+.text-area__input {
+  @apply py-0 px-2;
+}
 
-  /* smaller placeholder font */
-  .text-area__input::placeholder {
-    font-size: 14px;
-    line-height: 24px;
-  }
+/* smaller placeholder font */
+.text-area__input::placeholder {
+  font-size: 14px;
+  line-height: 24px;
 }

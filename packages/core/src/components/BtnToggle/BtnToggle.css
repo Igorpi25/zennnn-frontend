@@ -1,46 +1,44 @@
-@layer components {
-  .btn-toggle {
-    @apply flex items-center;
-  }
+.btn-toggle {
+  @apply flex items-center;
+}
 
-  .btn-toggle__item {
-    @apply focus:outline-none px-4;
-    @apply h-10 select-none relative border-l border-t border-b;
-    @apply bg-light-gray-200 text-gray-200 border-light-gray-400;
-    @apply dark:bg-gray-500 dark:text-gray-100 dark:border-gray-900;
-    @apply hover:text-black dark:hover:text-white active:text-black dark:hover:text-white;
-    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:text-gray-100 dark:disabled:text-gray-300;
-    @apply transition-bg-and-color duration-100 ease-in-out;
-  }
+.btn-toggle__item {
+  @apply focus:outline-none px-4;
+  @apply h-10 select-none relative border-l border-t border-b;
+  @apply bg-light-gray-200 text-gray-200 border-light-gray-400;
+  @apply dark:bg-gray-500 dark:text-gray-100 dark:border-gray-900;
+  @apply hover:text-black dark:hover:text-white active:text-black dark:hover:text-white;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:text-gray-100 dark:disabled:text-gray-300;
+  @apply transition-bg-and-color duration-100 ease-in-out;
+}
 
-  .btn-toggle__item::before {
-    content: '';
-    @apply absolute inset-0 pointer-events-none;
-  }
+.btn-toggle__item::before {
+  content: '';
+  @apply absolute inset-0 pointer-events-none;
+}
 
-  .btn-toggle__item:focus::before {
-    @apply z-1 ring-2 ring-blue-400 ring-offset-1 ring-offset-light-gray-400 dark:ring-offset-gray-900;
-  }
-  .btn-toggle__item:focus:not(:focus-visible)::before {
-    box-shadow: none;
-    outline: 0;
-  }
-  .btn-toggle__item:last-child {
-    @apply border-r;
-  }
+.btn-toggle__item:focus::before {
+  @apply z-1 ring-2 ring-blue-400 ring-offset-1 ring-offset-light-gray-400 dark:ring-offset-gray-900;
+}
+.btn-toggle__item:focus:not(:focus-visible)::before {
+  box-shadow: none;
+  outline: 0;
+}
+.btn-toggle__item:last-child {
+  @apply border-r;
+}
 
-  .btn-toggle__item:first-child,
-  .btn-toggle__item:first-child::before {
-    @apply rounded-l-lg;
-  }
-  .btn-toggle__item:last-child,
-  .btn-toggle__item:last-child::before {
-    @apply rounded-r-lg;
-  }
+.btn-toggle__item:first-child,
+.btn-toggle__item:first-child::before {
+  @apply rounded-l-lg;
+}
+.btn-toggle__item:last-child,
+.btn-toggle__item:last-child::before {
+  @apply rounded-r-lg;
+}
 
-  .btn-toggle__item--active {
-    @apply bg-white text-black;
-    @apply dark:bg-gray-800 dark:text-white;
-    @apply shadow-inner-pressed-day dark:shadow-inner-pressed-night;
-  }
+.btn-toggle__item--active {
+  @apply bg-white text-black;
+  @apply dark:bg-gray-800 dark:text-white;
+  @apply shadow-inner-pressed-day dark:shadow-inner-pressed-night;
 }

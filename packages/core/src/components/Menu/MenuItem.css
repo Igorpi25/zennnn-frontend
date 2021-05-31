@@ -1,18 +1,16 @@
-@layer components {
-  .menu__item {
-    @apply h-10 flex items-center;
-    @apply focus:outline-none;
-    @apply cursor-pointer;
-    @apply px-2;
-  }
-  .menu__item--dense {
-    @apply h-8;
-  }
-  .menu__item--active {
-    @apply bg-blue-400 dark:text-white;
-  }
-  .menu__item--disabled {
-    @apply text-gray-100 dark:text-gray-300;
-    @apply cursor-not-allowed;
-  }
+.menu__item {
+  @apply h-10 flex items-center;
+  @apply focus:outline-none;
+  @apply cursor-pointer;
+  @apply px-2;
+}
+.menu__item--dense {
+  @apply h-8;
+}
+.menu__item--active {
+  @apply bg-blue-400 dark:text-white;
+}
+.menu__item--disabled {
+  @apply text-gray-100 dark:text-gray-300;
+  @apply cursor-not-allowed;
 }

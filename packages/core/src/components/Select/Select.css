@@ -1,26 +1,24 @@
-@layer components {
-  .select-box::before {
-    content: '';
-    @apply absolute pointer-events-none inset-0 -top-10 rounded-lg;
-    @apply shadow-main-day dark:shadow-main-night;
-  }
-  .select-box--dense::before {
-    @apply -top-8;
-  }
+.select-box::before {
+  content: '';
+  @apply absolute pointer-events-none inset-0 -top-10 rounded-lg;
+  @apply shadow-main-day dark:shadow-main-night;
+}
+.select-box--dense::before {
+  @apply -top-8;
+}
 
-  .select:not(.select--has-error) .select__control {
-    @apply ring-transparent !important;
-  }
+.select:not(.select--has-error) .select__control {
+  @apply ring-transparent !important;
+}
 
-  .input--focused:not(.select--is-menu-active) .select__control {
-    @apply shadow-lg dark:shadow-xl;
-  }
+.input--focused:not(.select--is-menu-active) .select__control {
+  @apply shadow-lg dark:shadow-xl;
+}
 
-  .select__control--is-menu-active {
-    @apply rounded-t-lg rounded-b-none;
-  }
+.select__control--is-menu-active {
+  @apply rounded-t-lg rounded-b-none;
+}
 
-  .select__input {
-    @apply rounded-none select-none;
-  }
+.select__input {
+  @apply rounded-none select-none;
 }
