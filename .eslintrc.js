@@ -28,6 +28,8 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    // error on require('..').default
+    '@typescript-eslint/no-var-requires': 'off',
   },
 
   overrides: [

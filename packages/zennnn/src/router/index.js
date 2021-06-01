@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import { theme } from '../plugins/theme'
 import { i18n } from '../plugins/i18n'
 import { notify } from '../plugins/notify'
 import { checkAuth } from '../plugins/auth/checkAuth'
@@ -80,6 +81,10 @@ const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 // const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
 
 const routes = [
+  {
+    path: '/main',
+    component: () => import(/* webpackChunkName: "main" */ '../views/Main'),
+  },
   {
     path: '/',
     name: 'home',
@@ -612,13 +617,12 @@ router.beforeEach(async (to, from) => {
         to.name === 'payment' ||
         to.name === 'subscription')
     ) {
-      setTheme('light')
+      theme.isDark.value = false
     }
   }
 })
 
 router.beforeResolve((to) => {
-  let theme = 'dark'
   if (
     to.name === 'paper' ||
     to.name === 'about' ||
@@ -626,22 +630,10 @@ router.beforeResolve((to) => {
     to.name === 'payment' ||
     to.name === 'subscription'
   ) {
-    theme = 'light'
-  }
-  // set theme meta && attribute
-  setTheme(theme)
-})
-
-const setTheme = (theme) => {
-  if (theme === 'dark') {
-    document.querySelector('html').classList.add('dark')
+    theme.isDark.value = false
   } else {
-    document.querySelector('html').classList.remove('dark')
+    theme.isDark.value = true
   }
-  const themeColor = theme === 'dark' ? '#1E1E1E' : '#ffffff'
-  document.head
-    .querySelector('meta[name="theme-color"]')
-    .setAttribute('content', themeColor)
-}
+})
 
 export default router

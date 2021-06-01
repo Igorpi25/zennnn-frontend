@@ -13,6 +13,9 @@ import breakpoint from './plugins/breakpoint'
 import logger from './plugins/logger'
 import store from './plugins/localforage'
 import isoDate from './plugins/date-fns'
+import theme from './plugins/theme'
+
+import { createDisplay, DisplaySymbol } from './composables/display'
 
 // Tailwindcss
 import './assets/css/main.css'
@@ -29,4 +32,6 @@ createApp(App)
   .use(logger)
   .use(store)
   .use(isoDate)
+  .use(theme)
+  .provide(DisplaySymbol, createDisplay())
   .mount('#app')

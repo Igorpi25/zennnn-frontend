@@ -193,8 +193,8 @@
 
 @layer components {
   .container {
-    max-width: 1162px; /* max width 1130 + padding 32px */
-    @apply mx-auto px-4;
+    max-width: 1178px; /* max width 1130 + padding 48px = 1178px */
+    @apply mx-auto px-4 sm:px-6;
   }
 
   /* Used in Welcome, PasswordRestore, PasswordRestoreConfirm, Paper, NotFound, SignInByPhone, Registration, LoginRestore */
@@ -220,6 +220,29 @@
 }
 
 @layer utilities {
+  .placeholder-sm::placeholder {
+    font-size: 14px;
+  }
+  .placeholder-base::placeholder {
+    font-size: 16px;
+  }
+
+  .leading-12 {
+    line-height: 3rem;
+  }
+
+  @variants responsive {
+    .list-cols-1 {
+      columns: 1;
+    }
+    .list-cols-2 {
+      columns: 2;
+    }
+    .list-cols-3 {
+      columns: 3;
+    }
+  }
+
   /* DOTS */
   .dots {
     overflow: hidden;
@@ -261,32 +284,3 @@
     width: 0px;
   }
 }
-
-/* TODO: replace or remove */
-
-/* .container {
-  @apply px-6;
-}
-.container--sm {
-  @apply px-4;
-}
-.container--xs {
-  padding-left: 16px;
-  padding-right: 16px;
-}
-@screen sm {
-  .container--sm {
-    @apply px-6;
-  }
-}
-@screen xl {
-  .container,
-  .container--sm {
-    padding-left: 75px;
-    padding-right: 75px;
-  }
-  .container--xs {
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-} */
