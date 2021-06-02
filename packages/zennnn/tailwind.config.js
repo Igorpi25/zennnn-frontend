@@ -3,7 +3,6 @@ const aspectRatioPlugin = require('@tailwindcss/aspect-ratio')
 
 module.exports = {
   ...base,
-  mode: 'jit',
   purge: [
     './public/index.html',
     './src/**/*.{vue,js,ts,jsx,tsx,md}',
@@ -22,6 +21,5 @@ module.exports = {
       white: '#ffffff',
     },
   },
-  variants: {},
   plugins: [...base.plugins, aspectRatioPlugin],
 }

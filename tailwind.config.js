@@ -16,12 +16,14 @@ const scrollingTouchUtilities = plugin(function ({ addUtilities }) {
 })
 
 module.exports = {
+  mode: 'jit',
   darkMode: 'class',
-  purge: {
-    mode: 'layers',
-    layers: ['utilities'],
-    content: ['./src/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  },
+  purge: [
+    './public/index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx,md}',
+    '../../node_modules/@zennnn/core/lib/components/**/*.js',
+    '../../node_modules/@zennnn/core/lib/composables/**/*.js',
+  ],
   theme: {
     container: false,
     screens: {
@@ -184,61 +186,6 @@ module.exports = {
       },
     },
   },
-  variants: {
-    backgroundColor: [
-      'responsive',
-      'dark',
-      'group-hover',
-      'focus-within',
-      'hover',
-      'focus',
-      'disabled',
-      'even',
-      'active',
-    ],
-    borderColor: [
-      'responsive',
-      'dark',
-      'group-hover',
-      'focus-within',
-      'hover',
-      'focus',
-      'disabled',
-      'active',
-    ],
-    boxShadow: [
-      'responsive',
-      'group-hover',
-      'focus-within',
-      'hover',
-      'focus',
-      'dark',
-    ],
-    cursor: ['responsive', 'disabled'],
-    fill: ['responsive', 'dark'], // need in `/main` (items list page), moon icon
-    fontWeight: ['responsive', 'hover', 'focus', 'dark'],
-    opacity: [
-      'responsive',
-      'group-hover',
-      'focus-within',
-      'hover',
-      'focus',
-      'disabled',
-    ],
-    overflow: ['responsive', 'hover'],
-    strokeWidth: ['responsive', 'dark'], // need in `/main` (items list page), moon icon
-    textColor: [
-      'responsive',
-      'dark',
-      'group-hover',
-      'focus-within',
-      'hover',
-      'focus',
-      'disabled',
-      'active',
-    ],
-    translate: ['responsive', 'hover', 'focus', 'group-hover'],
-    visibility: ['responsive', 'group-hover'],
-  },
+  variants: {},
   plugins: [scrollingTouchUtilities],
 }

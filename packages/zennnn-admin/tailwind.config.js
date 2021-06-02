@@ -1,17 +1,14 @@
 const base = require('../../tailwind.config.js')
+const aspectRatioPlugin = require('@tailwindcss/aspect-ratio')
 
 module.exports = {
   ...base,
-  purge: {
-    mode: 'layers',
-    layers: ['utilities'],
-    content: [
-      './public/index.html',
-      './src/**/*.{vue,js,ts,jsx,tsx,md}',
-      '../../node_modules/@zennnn/core/lib/components/**/*.js',
-      '../../node_modules/@zennnn/core/lib/composables/**/*.js',
-    ],
-  },
+  purge: [
+    './public/index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx,md}',
+    '../../node_modules/@zennnn/core/lib/components/**/*.js',
+    '../../node_modules/@zennnn/core/lib/composables/**/*.js',
+  ],
   theme: {
     ...base.theme,
     fontFamily: {
@@ -20,4 +17,5 @@ module.exports = {
       montserrat: ['Montserrat', 'sans-serif'],
     },
   },
+  plugins: [...base.plugins, aspectRatioPlugin],
 }
