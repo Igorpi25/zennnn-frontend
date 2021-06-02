@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
+
+@import url(../../../../core/src/styles/input.css);
+@import url(../../../../core/src/styles/popper.css);
+
+@import url(../../../../core/src/components/Alert/Alert.css);
+@import url(../../../../core/src/components/Autocomplete/Autocomplete.css);
+@import url(../../../../core/src/components/Btn/Btn.css);
+@import url(../../../../core/src/components/BtnToggle/BtnToggle.css);
+@import url(../../../../core/src/components/Checkbox/Checkbox.css);
+@import url(../../../../core/src/components/DataTable/DataTable.css);
+@import url(../../../../core/src/components/ExpandTransition/ExpandTransition.css);
+@import url(../../../../core/src/components/Icon/Icon.css);
+@import url(../../../../core/src/components/Image/Image.css);
+@import url(../../../../core/src/components/Label/Label.css);
+@import url(../../../../core/src/components/LoadingSpinner/LoadingSpinner.css);
+@import url(../../../../core/src/components/Menu/Menu.css);
+@import url(../../../../core/src/components/Menu/MenuItem.css);
+@import url(../../../../core/src/components/Messages/Messages.css);
+@import url(../../../../core/src/components/Progress/Progress.css);
+@import url(../../../../core/src/components/Radio/Radio.css);
+@import url(../../../../core/src/components/Select/Select.css);
+@import url(../../../../core/src/components/Switch/Switch.css);
+@import url(../../../../core/src/components/TextArea/TextArea.css);
+@import url(../../../../core/src/components/Tooltip/Tooltip.css);
+@import url(../../../../core/src/components/transitions/transitions.css);
+
 @tailwind utilities;

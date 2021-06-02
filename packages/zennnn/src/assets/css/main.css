@@ -1,6 +1,5 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
 @import url(../../../../core/src/styles/input.css);
 @import url(../../../../core/src/styles/popper.css);
@@ -24,9 +23,10 @@
 @import url(../../../../core/src/components/Select/Select.css);
 @import url(../../../../core/src/components/Switch/Switch.css);
 @import url(../../../../core/src/components/TextArea/TextArea.css);
-@import url(../../../../core/src/components/TextField/TextField.css);
 @import url(../../../../core/src/components/Tooltip/Tooltip.css);
 @import url(../../../../core/src/components/transitions/transitions.css);
+
+@tailwind utilities;
 
 @layer base {
   /* Fonts */
