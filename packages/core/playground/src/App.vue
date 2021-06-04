@@ -31,7 +31,16 @@
           </template>
         </ul>
       </div>
-      <div class="min-w-0 w-full flex-auto bg-light-gray-100 dark:bg-gray-500 dark:text-gray-100">
+      <div
+        class="
+          min-w-0
+          w-full
+          flex-auto
+          bg-light-gray-100
+          dark:bg-gray-500
+          dark:text-gray-100
+        "
+      >
         <div class="flex w-full">
           <main class="max-w-3xl mx-auto min-w-0 w-full flex-auto p-6">
             <router-view v-slot="{ Component }">
@@ -47,10 +56,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue'
+import { computed, onBeforeMount, ref, watchEffect, watch } from 'vue'
 import { ziSun, ziMoon } from '@zennnn/icons'
 import { routes } from './router'
 
+const searchStorageKey = 'page:Search'
 const isDark = ref(false)
 const search = ref('')
 
@@ -59,11 +69,15 @@ const filter = (itemText: string, queryText: string) =>
 
 const filteredRoutes = computed(() => {
   if (!search.value) return routes
-  const filtered = routes.filter(r => filter(r.name, search.value) || r.children.some(c => filter(c.name, search.value)))
-  return filtered.map(r => {
+  const filtered = routes.filter(
+    (r) =>
+      filter(r.name, search.value) ||
+      r.children.some((c) => filter(c.name, search.value))
+  )
+  return filtered.map((r) => {
     return {
       name: r.name,
-      children: r.children.filter(c => filter(c.name, search.value))
+      children: r.children.filter((c) => filter(c.name, search.value)),
     }
   })
 })
@@ -73,6 +87,17 @@ watchEffect(() => {
     document.querySelector('html')?.classList.add('dark')
   } else {
     document.querySelector('html')?.classList.remove('dark')
+  }
+})
+
+watch(search, (val) => {
+  sessionStorage.setItem(searchStorageKey, val)
+})
+
+onBeforeMount(() => {
+  const storageSearch = sessionStorage.getItem(searchStorageKey)
+  if (storageSearch) {
+    search.value = storageSearch
   }
 })
 </script>
