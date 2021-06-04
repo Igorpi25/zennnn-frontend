@@ -2,7 +2,7 @@
   "props": {
     "activator": "Designate a custom activator when the `activator` slot is not used. String can be any valid querySelector and Object can be any valid Node.",
     "attach": "Specifies which DOM element that this component should detach to.",
-    "contentClass": "Applies a custom class to content wrapper.",
+    "contentClass": "Applies a custom class to content wrapper. Transition origin can be sets on the element with [Tailwindcss](https://tailwindcss.com/docs/transform-origin).",
     "disableKeys": "Removes all keyboard interaction.",
     "disabled": "Disables the modal.",
     "eager": "Will force the components content to render on mounted.",
@@ -14,7 +14,7 @@
     "openOnClick": "Designates whether modal should open on activator click.",
     "openOnFocus": "Designates whether modal should open on activator focus.",
     "openOnHover": "Designates whether modal should open on activator hover.",
-    "originClass": "Sets the transition origin on the element with [Tailwindcss](https://tailwindcss.com/docs/transform-origin).",
+    "overlayClass": "Applies a custom class to overlay.",
     "persistent": "Clicking outside of the element will not deactivate it.",
     "retainFocus": "Tab focus will return to the first child of the dialog by default.",
     "scrollable": "When set to true, expects a component with a designated height.",

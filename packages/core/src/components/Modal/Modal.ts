@@ -93,24 +93,23 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    originClass: {
+    overlayClass: {
       type: String,
-      default: 'origin-center',
+      default: '',
     },
     hideOverlay: Boolean,
   },
 
   emits: ['update:modelValue', 'click:outside', 'keydown'],
 
-  setup(props, { slots, emit }) {
+  setup(props, { attrs, slots, emit }) {
     const id = uid('dialog-')
-    // Data
+
     let previousActiveElement: HTMLElement | undefined
     const animate = ref<boolean>(false)
 
+    const wrapperElement = ref<HTMLElement>()
     const contentElement = ref<HTMLElement>()
-    const contentWrapperElement = ref<HTMLElement>()
-    const rootElement = ref<HTMLElement>()
     const overlayElement = ref<HTMLElement>()
 
     const { isActive, genActivator, focusActivator } = useActivator(props, {
@@ -127,7 +126,6 @@ export default defineComponent({
       }
     })
 
-    // Watch
     watch(isActive, (val) => {
       if (val) {
         show()
@@ -138,7 +136,6 @@ export default defineComponent({
       }
     })
 
-    // Hooks
     onMounted(() => {
       nextTick(() => {
         isActive.value && show()
@@ -149,7 +146,6 @@ export default defineComponent({
       showScroll()
     })
 
-    // Methods
     const scrollListener = (e: WheelEvent & KeyboardEvent) => {
       if (e.type === 'keydown') {
         if (
@@ -165,9 +161,9 @@ export default defineComponent({
         const down = ['ArrowDown', 'Down', 'PageDown']
 
         if (up.includes(e.key)) {
-          (e as any).deltaY = -1
+          ;(e as any).deltaY = -1
         } else if (down.includes(e.key)) {
-          (e as any).deltaY = 1
+          ;(e as any).deltaY = 1
         } else {
           return
         }
@@ -225,7 +221,7 @@ export default defineComponent({
 
         if (el === document) return true
         if (el === document.documentElement) return true
-        if (el === contentWrapperElement.value) return true
+        if (el === wrapperElement.value) return true
 
         if (hasScrollbar(el as Element))
           return shouldScroll(el as Element, delta)
@@ -344,7 +340,12 @@ export default defineComponent({
           class: 'fixed inset-0 transition-opacity pointer-events-auto',
           ariaHidden: true,
         },
-        h('div', { class: 'absolute inset-0 bg-gray-500 opacity-75' })
+        h('div', {
+          class: {
+            'modal-overlay': true,
+            [props.overlayClass.trim()]: true,
+          },
+        })
       )
 
       const content = withDirectives(overlay, [[vShow, isActive.value]])
@@ -366,15 +367,10 @@ export default defineComponent({
       const data: VNodeProps & AllowedComponentProps & HTMLAttributes = {
         ref: contentElement,
         class: {
-          'text-left bg-white dark:bg-gray-650': true,
-          'transform transition-transform': true,
-          'inline-block overflow-auto pointer-events-auto max-h-full': true,
-          'focus:outline-none shadow-main-day dark:shadow-main-night': true,
-          'w-full h-full': props.fullscreen,
-          'rounded-lg m-4 sm:m-8': !props.fullscreen,
+          'modal-content': true,
+          'modal-content--fulscreen': props.fullscreen,
           'animate-shake': animate.value,
           [props.contentClass.trim()]: true,
-          [props.originClass.trim()]: true,
         },
         id,
         role: 'dialog',
@@ -416,9 +412,8 @@ export default defineComponent({
         h(
           'div',
           {
-            ref: contentWrapperElement,
-            class:
-              'flex items-center justify-center min-h-screen h-full w-full',
+            ref: wrapperElement,
+            class: ['modal', attrs.class],
           },
           [genOverlay(), genContent()]
         )
@@ -437,7 +432,7 @@ export default defineComponent({
     }
 
     return {
-      rootElement,
+      wrapperElement,
       activatorAttrs,
       genActivator,
       genDialog,
@@ -445,12 +440,7 @@ export default defineComponent({
   },
 
   render() {
-    return h(
-      'div',
-      {
-        ref: 'rootElement',
-      },
-      [this.genActivator(this.activatorAttrs), this.genDialog()]
-    )
+    const activator = this.genActivator(this.activatorAttrs) || []
+    return [...activator, this.genDialog()]
   },
 })

@@ -1,0 +1,20 @@
+.modal {
+  @apply flex items-center justify-center min-h-screen h-full w-full;
+}
+
+.modal-content {
+  @apply text-left bg-white dark:bg-gray-650;
+  @apply transform transition-transform;
+  @apply inline-block overflow-auto pointer-events-auto max-h-full;
+  @apply focus:outline-none shadow-main-day dark:shadow-main-night;
+  @apply rounded-lg m-4 sm:m-8;
+  @apply origin-center;
+}
+
+.modal-content--fulscreen {
+  @apply w-full h-full m-0;
+}
+
+.modal-overlay {
+  @apply absolute inset-0 bg-gray-500 opacity-75;
+}
