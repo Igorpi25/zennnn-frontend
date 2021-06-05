@@ -1,7 +1,34 @@
 <template>
   <div class="max-w-8xl mx-auto">
-    <div class="h-12 flex items-center justify-between px-4">
-      <router-link to="/" class="pr-4">Playground</router-link>
+    <div
+      v-if="isSidebarOpen"
+      class="md:hidden fixed top-0 left-0 w-screen h-screen z-10"
+      @click="toggleMenu(false)"
+    />
+    <div
+      class="
+        z-10
+        sticky
+        top-0
+        bg-white
+        dark:bg-gray-650
+        bg-opacity-70
+        dark:bg-opacity-70
+        backdrop-filter backdrop-blur-xl
+        h-12
+        flex
+        items-center
+        justify-between
+        space-x-4
+        px-4
+      "
+    >
+      <div class="flex space-x-4">
+        <Icon class="md:hidden hover:text-gray-200" @click="toggleMenu">
+          {{ ziMenu }}
+        </Icon>
+        <router-link to="/">Playground</router-link>
+      </div>
       <div class="flex space-x-1">
         <Switch v-model="isDark" />
         <Icon>
@@ -10,8 +37,13 @@
       </div>
     </div>
     <div class="md:flex">
-      <div class="w-64 xl:w-72 py-6 overflow-y-auto h-page-wrapper">
-        <div class="px-2">
+      <div
+        :class="[
+          'transform -translate-x-full md:translate-x-0 transition-transform duration-200 fixed md:sticky top-12 z-10 w-64 xl:w-72 bg-white dark:bg-gray-650 border-r md:border-r-0 border-light-gray-400 dark:border-gray-700 overflow-y-auto h-page-wrapper pb-6',
+          { 'translate-x-0': isSidebarOpen },
+        ]"
+      >
+        <div class="sticky top-0 bg-white dark:bg-gray-650 pt-4 px-2">
           <TextField v-model="search" placeholder="Search ..." clearable />
         </div>
         <ul class="text-sm px-2 mb-3">
@@ -57,10 +89,13 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref, watchEffect, watch } from 'vue'
-import { ziSun, ziMoon } from '@zennnn/icons'
+import { useRoute } from 'vue-router'
+import { ziSun, ziMoon, ziMenu } from '@zennnn/icons'
 import { routes } from './router'
 
+const route = useRoute()
 const searchStorageKey = 'page:Search'
+const isSidebarOpen = ref(false)
 const isDark = ref(false)
 const search = ref('')
 
@@ -91,8 +126,19 @@ watchEffect(() => {
 })
 
 watch(search, (val) => {
-  sessionStorage.setItem(searchStorageKey, val)
+  if (!val) {
+    sessionStorage.removeItem(searchStorageKey)
+  } else {
+    sessionStorage.setItem(searchStorageKey, val)
+  }
 })
+
+watch(
+  () => route.path,
+  () => {
+    isSidebarOpen.value = false
+  }
+)
 
 onBeforeMount(() => {
   const storageSearch = sessionStorage.getItem(searchStorageKey)
@@ -100,4 +146,8 @@ onBeforeMount(() => {
     search.value = storageSearch
   }
 })
+
+function toggleMenu(to: boolean | undefined) {
+  isSidebarOpen.value = typeof to === 'boolean' ? to : !isSidebarOpen.value
+}
 </script>
