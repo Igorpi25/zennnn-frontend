@@ -20,7 +20,7 @@
 }
 
 .switch__track {
-  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+  transition: background 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
   @apply rounded-full absolute bg-light-gray-400 dark:bg-gray-900 w-full h-full;
 }
 .switch--focused .switch__track {
