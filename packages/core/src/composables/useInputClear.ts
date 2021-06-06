@@ -46,8 +46,7 @@ export const useInputClear = (
         tag: 'button',
         size: 24,
         class: {
-          'text-gray-200 hover:text-gray-400 dark:hover:text-gray-100 focus:ring-offset-0':
-            true,
+          'text-gray-200 hover:text-gray-400 dark:hover:text-gray-100': true,
           invisible: disabled,
         },
         disabled: disabled,

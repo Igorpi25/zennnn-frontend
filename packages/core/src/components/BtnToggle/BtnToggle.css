@@ -18,7 +18,7 @@
 }
 
 .btn-toggle__item:focus::before {
-  @apply z-1 ring-2 ring-blue-400 ring-offset-1 ring-offset-light-gray-400 dark:ring-offset-gray-900;
+  @apply z-1 ring ring-blue-400;
 }
 .btn-toggle__item:focus:not(:focus-visible)::before {
   box-shadow: none;

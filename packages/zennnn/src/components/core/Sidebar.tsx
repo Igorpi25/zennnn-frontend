@@ -88,7 +88,7 @@ export default defineComponent({
           <div class="flex justify-end md:hidden p-4">
             <Btn
               icon
-              class="bg-light-gray-300 dark:bg-gray-900 text-gray-900 dark:text-white hover:text-white focus:ring-offset-0"
+              class="bg-light-gray-300 dark:bg-gray-900 text-gray-900 dark:text-white hover:text-white"
               {...{
                 onClick: closeSidebar,
               }}

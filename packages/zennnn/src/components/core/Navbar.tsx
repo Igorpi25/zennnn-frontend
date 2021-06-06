@@ -60,7 +60,7 @@ export default defineComponent({
           <div class="flex space-x-12">
             <router-link
               to="/"
-              class="focus:outline-none focus:ring-2 focus:ring-blue-400 rounded"
+              class="focus:outline-none focus:ring focus:ring-blue-400 rounded"
             >
               <Logo />
             </router-link>
@@ -69,7 +69,7 @@ export default defineComponent({
                 <Btn
                   text
                   to={item.to}
-                  class="text-gray-900 dark:text-white h-auto focus:ring-offset-0 px-0"
+                  class="text-gray-900 dark:text-white h-auto px-0"
                 >
                   {item.text}
                 </Btn>
@@ -79,7 +79,7 @@ export default defineComponent({
           <div class="flex space-x-2">
             <Btn
               icon
-              class="sm:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white focus:ring-offset-0"
+              class="sm:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
               {...{
                 onClick: toggleSearch,
               }}
@@ -89,7 +89,7 @@ export default defineComponent({
 
             <Btn
               icon
-              class="hidden xs:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white focus:ring-offset-0"
+              class="hidden xs:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
               {...{
                 onClick: () => {
                   isPictureOnly.value = !isPictureOnly.value
@@ -115,7 +115,7 @@ export default defineComponent({
 
             <Btn
               icon
-              class="hidden md:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white focus:ring-offset-0"
+              class="hidden md:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
               {...{
                 onClick: () => {
                   isDark.value = !isDark.value
@@ -142,7 +142,7 @@ export default defineComponent({
 
             <Btn
               icon
-              class="hidden sm:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white focus:ring-offset-0 px-3"
+              class="hidden sm:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white px-3"
             >
               <img
                 src={require('@/assets/img/flags/locale/en-US.svg').default}
@@ -167,7 +167,7 @@ export default defineComponent({
               <>
                 <Btn
                   minWidth="none"
-                  class="w-12 sm:w-auto bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white focus:ring-offset-0 sm:px-3"
+                  class="w-12 sm:w-auto bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white sm:px-3"
                   // to="/signin"
                   {...{
                     onClick: () => {
@@ -180,7 +180,7 @@ export default defineComponent({
                 </Btn>
                 <Btn
                   minWidth="none"
-                  class="hidden md:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white focus:ring-offset-0 px-3"
+                  class="hidden md:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white px-3"
                   to="/signup"
                 >
                   Sign up
@@ -190,7 +190,7 @@ export default defineComponent({
 
             <Btn
               icon
-              class="lg:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white focus:ring-offset-0"
+              class="lg:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
               {...{
                 onClick: toggleSidebar,
               }}

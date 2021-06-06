@@ -123,7 +123,7 @@ export default defineComponent({
             {mobile.value && (
               <Btn
                 icon
-                class="sm:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white focus:ring-offset-0"
+                class="sm:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
                 {...{
                   onClick() {
                     isActive.value = !isActive.value

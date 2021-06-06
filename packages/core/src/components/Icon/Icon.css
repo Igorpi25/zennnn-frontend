@@ -20,7 +20,7 @@
 }
 .icon--link {
   @apply cursor-pointer rounded;
-  @apply focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900;
+  @apply focus:outline-none focus:ring focus:ring-blue-400;
 }
 .icon--link:focus:not(:focus-visible) {
   box-shadow: none;

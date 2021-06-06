@@ -13,9 +13,6 @@
 .alert__close {
   @apply flex-shrink-0 ml-3 cursor-pointer select-none;
 }
-.alert__close.icon--link {
-  @apply ring-offset-0;
-}
 
 .alert__container {
   @apply flex rounded-md relative text-white py-3 px-4;
