@@ -23,6 +23,7 @@ export interface InputProps {
   singleLine?: boolean
   solo?: boolean // declarated in component props
   inputClass?: string
+  tabindex?: string
 }
 
 export interface InputContext {
@@ -52,6 +53,7 @@ export const useInputProps = () => {
       type: String,
       default: '',
     },
+    tabindex: String,
   }
 }
 
@@ -108,6 +110,7 @@ export const useInput = (
       required: props.required,
       readonly: props.readonly,
       disabled: props.disabled,
+      tabindex: props.tabindex,
       onFocus: onFocus,
       onBlur: onBlur,
       ...data,
