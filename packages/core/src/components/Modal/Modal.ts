@@ -28,8 +28,11 @@ import {
 } from 'vue-supp'
 
 import { useLockscreen } from '../../composables/useLockscreen'
+import { useStackContext } from '../../composables/useStackContext'
 
 import uid from '../../utils/uid'
+
+const IN_BROWSER = typeof window !== 'undefined'
 
 const overlayTransition = useTransitionProps({
   enterActiveClass: 'transition ease-out-quart duration-300',
@@ -99,17 +102,14 @@ export default defineComponent({
       default: '',
     },
     hideOverlay: Boolean,
-    zIndex: {
-      type: [Number, String],
-      default: 10,
-    },
+    zIndex: [Number, String],
     top: [Number, String],
   },
 
   emits: ['update:modelValue', 'click:outside', 'keydown'],
 
   setup(props, { attrs, slots, emit }) {
-    const id = uid('dialog-')
+    const id = uid('modal-')
 
     let previousActiveElement: HTMLElement | undefined
     const animate = ref<boolean>(false)
@@ -125,6 +125,13 @@ export default defineComponent({
     const { showLazyContent } = useLazyContent(props, { isActive })
 
     const { target } = useAttach(props)
+
+    const { activeZIndex, isTopZIndex } = useStackContext(
+      props,
+      isActive,
+      id,
+      'modal'
+    )
 
     useLockscreen(isActive)
 
@@ -147,6 +154,54 @@ export default defineComponent({
         isActive.value && show()
       })
     })
+
+    function onFocusin(e: FocusEvent) {
+      const before = e.relatedTarget as HTMLElement | null
+      const after = e.target as HTMLElement | null
+
+      if (
+        before !== after &&
+        contentElement.value &&
+        // It isn't the document or the dialog body
+        ![document, contentElement.value].includes(after!) &&
+        // It isn't inside the dialog body
+        !contentElement.value.contains(after) &&
+        // We're the topmost dialog
+        isTopZIndex.value
+        // It isn't inside a dependent element (like a menu)
+        // TODO: !this.getOpenDependentElements().some(el => el.contains(target))
+        // So we must have focused something outside the dialog and its children
+      ) {
+        const focusable = [
+          ...contentElement.value.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          ),
+        ].filter((el) => !el.hasAttribute('disabled')) as HTMLElement[]
+
+        if (!focusable.length) return
+
+        const firstElement = focusable[0]
+        const lastElement = focusable[focusable.length - 1]
+
+        if (before === firstElement) {
+          lastElement.focus()
+        } else {
+          firstElement.focus()
+        }
+      }
+    }
+
+    if (IN_BROWSER) {
+      watch(
+        () => isActive.value && props.retainFocus,
+        (val) => {
+          val
+            ? document.addEventListener('focusin', onFocusin)
+            : document.removeEventListener('focusin', onFocusin)
+        },
+        { immediate: true }
+      )
+    }
 
     const show = () => {
       nextTick(() => {
@@ -283,8 +338,8 @@ export default defineComponent({
       ])
     }
 
-    const genDialog = () => {
-      const dialog = h(
+    const genModal = () => {
+      const modal = h(
         'div',
         {
           class: {
@@ -293,7 +348,7 @@ export default defineComponent({
             'pointer-events-none': !isActive.value,
           },
           style: {
-            zIndex: props.zIndex,
+            zIndex: activeZIndex.value,
           },
         },
         h(
@@ -330,7 +385,7 @@ export default defineComponent({
             to: target.value,
             disabled: !target.value,
           },
-          h('div', { 'data-modal-teleport-root': '' }, dialog)
+          h('div', { 'data-modal-teleport-root': '' }, modal)
         )
       )
     }
@@ -339,12 +394,12 @@ export default defineComponent({
       wrapperElement,
       activatorAttrs,
       genActivator,
-      genDialog,
+      genModal,
     }
   },
 
   render() {
     const activator = this.genActivator(this.activatorAttrs) || []
-    return [...activator, this.genDialog()]
+    return [...activator, this.genModal()]
   },
 })

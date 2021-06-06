@@ -16,15 +16,15 @@
     "openOnHover": "Designates whether modal should open on activator hover.",
     "originClass": "Sets the transition origin on the element with [Tailwindcss](https://tailwindcss.com/docs/transform-origin).",
     "persistent": "Clicking outside of the element will not deactivate it.",
-    "retainFocus": "Tab focus will return to the first child of the dialog by default.",
+    "retainFocus": "Tab focus will return to the first child of the modal by default.",
     "scrollable": "When set to true, expects a component with a designated height.",
     "transition": "Sets the component transition. Can be string name of transition or object with [custom transition classes](https://v3.vuejs.org/guide/transitions-enterleave.html#custom-transition-classes).",
     "width": "Width of the content. Value `auto` setting width of modal eq. to activator width."
   },
   "emits": {
     "update:modelValue": "Emitted when the model value updated.",
-    "click:outside": "Event that fires when clicking outside an active dialog.",
-    "keydown": "Event that fires when key is pressed. If dialog is active and not using the **persistent** prop, the **esc** key will deactivate it."
+    "click:outside": "Event that fires when clicking outside an active modal.",
+    "keydown": "Event that fires when key is pressed. If modal is active and not using the **persistent** prop, the **esc** key will deactivate it."
   },
   "slots": {
     "activator": "When used, will activate the component when clicked (or hover for specific components).",
