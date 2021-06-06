@@ -4,7 +4,7 @@ import type { Ref } from 'vue'
 
 type StackContextInstance = Record<string, Ref<string[]>>
 
-let stackContextInstance = {} as StackContextInstance
+const stackContextInstance = {} as StackContextInstance
 
 export function useStackContext(
   props: { zIndex?: number | string },
