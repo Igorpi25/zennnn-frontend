@@ -144,15 +144,10 @@ module.exports = {
         md: '14px', // - 3.5: '0.875rem'
         lg: '18px', // + 4.5: '1.125rem'
         xl: '30px', // + 7.5: '1.875rem'
-        7: '1.75rem', // -
-        9: '2.25rem', // -
-        11: '2.75rem', // -
         13: '3.25rem', // +
-        14: '3.5rem', // -
         15: '3.75rem', // +
         18: '4.5rem', // +
         26: '6.5rem', // +
-        36: '9rem', // -
         38: '9.5rem', // +
         68: '17rem', // sidebar width
       },
@@ -174,9 +169,6 @@ module.exports = {
         10: '10px',
         20: '20px',
         50: '50px',
-      },
-      inset: {
-        '1/2': '50%', // -
       },
       gridTemplateColumns: {
         // Complex site-specific column configuration
