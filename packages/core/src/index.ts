@@ -15,7 +15,6 @@ export * from './components/LoadingSpinner'
 export * from './components/Menu'
 export * from './components/Messages'
 export * from './components/Modal'
-// export * from './components/Overlay' // should be removed
 export * from './components/Progress'
 export * from './components/Radio'
 export * from './components/Select'
