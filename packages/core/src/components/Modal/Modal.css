@@ -1,18 +1,21 @@
 .modal {
-  @apply flex items-center justify-center min-h-screen h-full w-full;
+  @apply min-h-screen text-center;
+}
+.modal--fullscreen {
+  @apply min-h-full h-full;
 }
 
 .modal-content {
   @apply text-left bg-white dark:bg-gray-650;
   @apply transform transition-transform;
-  @apply inline-block overflow-auto pointer-events-auto max-h-full;
+  @apply inline-block align-middle overflow-hidden;
   @apply focus:outline-none shadow-main-day dark:shadow-main-night;
-  @apply rounded-lg m-4 sm:m-8;
+  @apply rounded-lg m-4;
   @apply origin-center;
 }
 
-.modal-content--fulscreen {
-  @apply w-full h-full m-0;
+.modal-content--fullscreen {
+  @apply w-full h-full rounded-none overflow-auto m-0;
 }
 
 .modal-overlay {

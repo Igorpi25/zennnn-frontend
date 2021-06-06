@@ -5,7 +5,6 @@ import {
   watch,
   nextTick,
   onMounted,
-  onBeforeUnmount,
   withDirectives,
   vShow,
   Teleport,
@@ -27,6 +26,8 @@ import {
   ClickOutside,
   convertToUnit,
 } from 'vue-supp'
+
+import { useLockscreen } from '../../composables/useLockscreen'
 
 import uid from '../../utils/uid'
 
@@ -98,6 +99,11 @@ export default defineComponent({
       default: '',
     },
     hideOverlay: Boolean,
+    zIndex: {
+      type: [Number, String],
+      default: 10,
+    },
+    top: [Number, String],
   },
 
   emits: ['update:modelValue', 'click:outside', 'keydown'],
@@ -120,6 +126,8 @@ export default defineComponent({
 
     const { target } = useAttach(props)
 
+    useLockscreen(isActive)
+
     const activatorAttrs = computed(() => {
       return {
         'aria-controls': isActive.value ? id : undefined,
@@ -129,10 +137,8 @@ export default defineComponent({
     watch(isActive, (val) => {
       if (val) {
         show()
-        hideScroll()
       } else {
         previousActiveElement && previousActiveElement.focus()
-        showScroll()
       }
     })
 
@@ -142,139 +148,15 @@ export default defineComponent({
       })
     })
 
-    onBeforeUnmount(() => {
-      showScroll()
-    })
-
-    const scrollListener = (e: WheelEvent & KeyboardEvent) => {
-      if (e.type === 'keydown') {
-        if (
-          ['INPUT', 'TEXTAREA', 'SELECT'].includes(
-            (e.target as Element).tagName
-          ) ||
-          // https://github.com/vuetifyjs/vuetify/issues/4715
-          (e.target as HTMLElement).isContentEditable
-        )
-          return
-
-        const up = ['ArrowUp', 'Up', 'PageUp']
-        const down = ['ArrowDown', 'Down', 'PageDown']
-
-        if (up.includes(e.key)) {
-          ;(e as any).deltaY = -1
-        } else if (down.includes(e.key)) {
-          ;(e as any).deltaY = 1
-        } else {
-          return
-        }
-      }
-
-      if (
-        e.target === overlayElement.value ||
-        (e.type !== 'keydown' && e.target === document.body) ||
-        checkPath(e)
-      )
-        e.preventDefault()
-    }
-
-    const hasScrollbar = (el?: Element) => {
-      if (!el || el.nodeType !== Node.ELEMENT_NODE) return false
-
-      const style = window.getComputedStyle(el)
-      return (
-        ['auto', 'scroll'].includes(style.overflowY) &&
-        el.scrollHeight > el.clientHeight
-      )
-    }
-
-    const shouldScroll = (el: Element, delta: number) => {
-      if (el.scrollTop === 0 && delta < 0) return true
-      return el.scrollTop + el.clientHeight === el.scrollHeight && delta > 0
-    }
-
-    const isInside = (el: Element, parent: Element): boolean => {
-      if (el === parent) {
-        return true
-      } else if (el === null || el === document.body) {
-        return false
-      } else {
-        return isInside(el.parentNode as Element, parent)
-      }
-    }
-
-    const checkPath = (e: WheelEvent) => {
-      const path = e.path || composedPath(e)
-      const delta = e.deltaY
-
-      if (e.type === 'keydown' && path[0] === document.body) {
-        const dialog = contentElement.value
-        // getSelection returns null in firefox in some edge cases, can be ignored
-        const selected = window.getSelection()?.anchorNode as Element
-        if (dialog && hasScrollbar(dialog) && isInside(selected, dialog)) {
-          return shouldScroll(dialog, delta)
-        }
-        return true
-      }
-
-      for (let index = 0; index < path.length; index++) {
-        const el = path[index]
-
-        if (el === document) return true
-        if (el === document.documentElement) return true
-        if (el === wrapperElement.value) return true
-
-        if (hasScrollbar(el as Element))
-          return shouldScroll(el as Element, delta)
-      }
-
-      return true
-    }
-
-    /**
-     * Polyfill for Event.prototype.composedPath
-     */
-    const composedPath = (e: WheelEvent): EventTarget[] => {
-      if (e.composedPath) return e.composedPath()
-
-      const path = []
-      let el = e.target as Element
-
-      while (el) {
-        path.push(el)
-
-        if (el.tagName === 'HTML') {
-          path.push(document)
-          path.push(window)
-
-          return path
-        }
-
-        el = el.parentElement!
-      }
-      return path
-    }
-
-    const hideScroll = () => {
-      document.documentElement.classList.add('overflow-y-hidden')
-      window.addEventListener('wheel', scrollListener as EventHandlerNonNull, {
-        passive: false,
-      })
-      window.addEventListener('keydown', scrollListener as EventHandlerNonNull)
-    }
-
-    const showScroll = () => {
-      document.documentElement.classList.remove('overflow-y-hidden')
-      window.removeEventListener('wheel', scrollListener as EventHandlerNonNull)
-      window.removeEventListener(
-        'keydown',
-        scrollListener as EventHandlerNonNull
-      )
-    }
-
     const show = () => {
       nextTick(() => {
         previousActiveElement = document.activeElement as HTMLElement
         contentElement.value && contentElement.value.focus()
+        setTimeout(() => {
+          if (wrapperElement.value?.parentElement) {
+            wrapperElement.value.parentElement.scrollTop = 0
+          }
+        }, 0)
       })
     }
 
@@ -337,7 +219,7 @@ export default defineComponent({
         'div',
         {
           ref: overlayElement,
-          class: 'fixed inset-0 transition-opacity pointer-events-auto',
+          class: 'fixed inset-0 transition-opacity',
           ariaHidden: true,
         },
         h('div', {
@@ -368,19 +250,17 @@ export default defineComponent({
         ref: contentElement,
         class: {
           'modal-content': true,
-          'modal-content--fulscreen': props.fullscreen,
+          'modal-content--fullscreen': props.fullscreen,
           'animate-shake': animate.value,
           [props.contentClass.trim()]: true,
         },
-        id,
-        role: 'dialog',
-        'aria-modal': true,
         tabindex: isActive.value ? 0 : undefined,
         onKeydown: onKeydown,
       }
 
       if (!props.fullscreen) {
         data.style = {
+          marginTop: props.top ? convertToUnit(props.top) : undefined,
           maxWidth:
             props.maxWidth === 'none'
               ? undefined
@@ -407,15 +287,39 @@ export default defineComponent({
       const dialog = h(
         'div',
         {
-          class: 'fixed z-10 inset-0 pointer-events-none',
+          class: {
+            'fixed inset-0': true,
+            'overflow-y-auto': !props.fullscreen,
+            'pointer-events-none': !isActive.value,
+          },
+          style: {
+            zIndex: props.zIndex,
+          },
         },
         h(
           'div',
           {
             ref: wrapperElement,
-            class: ['modal', attrs.class],
+            class: [
+              'modal',
+              { 'modal--fullscreen': props.fullscreen },
+              attrs.class,
+            ],
+            id,
+            role: 'dialog',
+            'aria-modal': true,
           },
-          [genOverlay(), genContent()]
+          [
+            genOverlay(),
+            !props.fullscreen && !props.top
+              ? h('span', {
+                  class: 'inline-block h-screen align-middle',
+                  'aria-hidden': true,
+                  innerHTML: '&ZeroWidthSpace;',
+                })
+              : undefined,
+            genContent(),
+          ]
         )
       )
 
@@ -426,7 +330,7 @@ export default defineComponent({
             to: target.value,
             disabled: !target.value,
           },
-          dialog
+          h('div', { 'data-modal-teleport-root': '' }, dialog)
         )
       )
     }
