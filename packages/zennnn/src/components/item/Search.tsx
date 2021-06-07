@@ -136,7 +136,7 @@ export default defineComponent({
             <TextField
               class="flex-grow w-full sm:w-auto order-last sm:order-none mt-8 sm:mt-0"
               controlClass="rounded-lg ring-1 ring-inset ring-light-gray-550 dark:ring-gray-400 dark:text-white focus-within:ring-blue-500 dark:focus-within:ring-blue-500 focus-within:shadow-main-day dark:focus-within:shadow-main-night !pr-3"
-              inputClass="h-12 placeholder-base leading-12 pl-4"
+              inputClass="min-h-[3rem] placeholder-base pl-4"
               placeholder="Search product"
               v-slots={{
                 append: () => <Icon>{ziSearch}</Icon>,
