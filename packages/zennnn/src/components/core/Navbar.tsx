@@ -89,6 +89,7 @@ export default defineComponent({
 
             <Btn
               icon
+              retainFocusOnClick={true}
               class="hidden xs:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
               {...{
                 onClick: () => {
@@ -115,6 +116,7 @@ export default defineComponent({
 
             <Btn
               icon
+              retainFocusOnClick={true}
               class="hidden md:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
               {...{
                 onClick: () => {

@@ -5,6 +5,7 @@ import { Btn } from '@zennnn/core'
 const SidebarItem: FunctionalComponent<{
   class?: string
   to?: RouteLocationRaw
+  retainFocusOnClick?: boolean
   onClick?: (e?: MouseEvent) => void
 }> = (props, { slots }) => {
   function genSlot(name: 'start' | 'end') {
@@ -29,6 +30,7 @@ const SidebarItem: FunctionalComponent<{
     <Btn
       primary={false}
       to={props.to}
+      retainFocusOnClick={props.retainFocusOnClick}
       class="dark:text-white hover:bg-light-gray-200 dark:hover:bg-gray-800 w-full justify-start text-left rounded-none ring-inset"
       contentClass="w-full space-x-4"
     >

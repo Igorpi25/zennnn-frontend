@@ -214,6 +214,7 @@ export default defineComponent({
                 ),
                 end: () => (
                   <Switch
+                    tabindex="-1"
                     modelValue={isPictureOnly.value}
                     {...{
                       onClick: (e: MouseEvent) => {
@@ -223,6 +224,7 @@ export default defineComponent({
                   />
                 ),
               }}
+              retainFocusOnClick={true}
               class="md:hidden"
               onClick={() => {
                 isPictureOnly.value = !isPictureOnly.value
@@ -252,6 +254,7 @@ export default defineComponent({
                 ),
                 end: () => (
                   <Switch
+                    tabindex="-1"
                     modelValue={isDark.value}
                     {...{
                       onClick: (e: MouseEvent) => {
@@ -261,6 +264,7 @@ export default defineComponent({
                   />
                 ),
               }}
+              retainFocusOnClick={true}
               class="md:hidden"
               onClick={() => {
                 isDark.value = !isDark.value
