@@ -50,15 +50,18 @@
 }
 
 .input__input {
-  @apply flex-auto rounded h-10 p-2;
+  @apply flex-auto rounded p-2;
   @apply appearance-none focus:outline-none truncate;
   @apply transition-colors duration-100 ease-out;
   @apply bg-transparent placeholder-gray-100 dark:placeholder-gray-200;
   @apply dark:text-white disabled:text-gray-200;
+  @apply align-middle;
+  min-height: 2.5rem;
 }
 
 .input__input--dense {
-  @apply h-8 py-1;
+  @apply py-1;
+  min-height: 2rem;
 }
 
 .input--loading .input__input {
