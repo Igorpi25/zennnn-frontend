@@ -4,12 +4,7 @@
   @apply select-none focus:outline-none;
   @apply px-6;
   @apply disabled:cursor-not-allowed disabled:opacity-50;
-  @apply focus:ring focus:ring-blue-400;
-}
-
-.btn:focus:not(:focus-visible) {
-  box-shadow: none;
-  outline: 0;
+  @apply focus:ring focus:ring-blue-400 with-focus-visible;
 }
 
 .btn--small {

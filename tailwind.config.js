@@ -1,5 +1,17 @@
 const plugin = require('tailwindcss/plugin')
 
+// https://matthiasott.com/notes/focus-visible-is-here
+const withFocusVisibleUtilities = plugin(function ({ addUtilities }) {
+  const newUtilities = {
+    '.with-focus-visible:focus:not(:focus-visible)': {
+      'box-shadow': 'none',
+      outline: 0,
+    },
+  }
+
+  addUtilities(newUtilities)
+})
+
 // Removed from v2 'scrolling-touch' and 'scrolling-auto' utilities
 // Added with plugin, for use it in '@apply'
 const scrollingTouchUtilities = plugin(function ({ addUtilities }) {
@@ -179,5 +191,5 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [scrollingTouchUtilities],
+  plugins: [withFocusVisibleUtilities, scrollingTouchUtilities],
 }
