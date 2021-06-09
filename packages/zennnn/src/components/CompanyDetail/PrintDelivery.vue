@@ -64,7 +64,7 @@
                 readonly
               >
                 <template v-slot:prepend>
-                  <Icon small class="text-gray-200 mr-sm">
+                  <Icon small class="text-gray-200 mr-2.5">
                     {{ icons.ziCalendar }}
                   </Icon>
                 </template>

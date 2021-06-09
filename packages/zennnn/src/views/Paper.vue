@@ -7,8 +7,8 @@
           class="flex flex-col sm:flex-row items-center justify-between pb-6"
         >
           <!-- TODO: change tag to h1, need refactor base h1 style -->
-          <div class="font-semibold leading-6 pr-sm py-2">
-            <h2 class="text-2xl inline-block align-middle mr-sm">
+          <div class="font-semibold leading-6 pr-2.5 py-2">
+            <h2 class="text-2xl inline-block align-middle mr-2.5">
               <span>{{ $t('paper.shippingTitle') }}</span
               >&nbsp; <span>{{ spec.specNo }}</span
               >&nbsp; <span>{{ $t('preposition.from') }}</span
@@ -21,8 +21,8 @@
                 inline-block
                 text-xs
                 align-middle
-                mr-sm
-                px-sm
+                mr-2.5
+                px-2.5
                 bg-cold-blue-400
                 text-white
                 rounded-50
@@ -199,7 +199,7 @@
                       <div
                         v-if="hasNewComments"
                         :class="[
-                          'absolute top-0 right-0 w-sm h-sm rounded-full border-2 bg-light-gray-100 border-light-gray-100 transition-colors duration-100 ease-out -mt-0.5 -mr-1',
+                          'absolute top-0 right-0 w-2.5 h-2.5 rounded-full border-2 bg-light-gray-100 border-light-gray-100 transition-colors duration-100 ease-out -mt-0.5 -mr-1',
                         ]"
                       >
                         <div class="w-full h-full bg-purple-500 rounded-full" />

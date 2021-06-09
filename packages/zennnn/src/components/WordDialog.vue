@@ -47,7 +47,7 @@
               item.value === defaultLocale ? 'text-blue-500' : undefined
             "
             force-update
-            content-class="pr-sm"
+            content-class="pr-2.5"
             @blur="onBlur(item.key)"
             @update:model-value="onInput(item.key, $event)"
           >
@@ -56,7 +56,7 @@
                 :src="
                   require(`@/assets/img/flags/locale/${item.value}.svg`).default
                 "
-                class="h-6 w-6 rounded-full ml-sm mr-5"
+                class="h-6 w-6 rounded-full ml-2.5 mr-5"
               />
             </template>
             <template v-if="item.value !== defaultLocale" v-slot:append>
@@ -77,7 +77,7 @@
         </Form>
         <div
           :class="[
-            'flex px-sm pt-5',
+            'flex px-2.5 pt-5',
             hasNavigateToDictionary || isAdmin
               ? 'justify-between'
               : 'justify-end',
@@ -96,7 +96,7 @@
               mr-2
             "
           >
-            <Icon class="mr-sm">
+            <Icon class="mr-2.5">
               {{ icons.ziEdit }}
             </Icon>
             <span>{{ $t('header.dictionary') }}</span>
@@ -135,7 +135,7 @@
               width="2"
               class="mr-1"
             />
-            <i class="text-2xl mr-sm">
+            <i class="text-2xl mr-2.5">
               <Icon :base="false">
                 {{ icons.ziLanguages }}
               </Icon>

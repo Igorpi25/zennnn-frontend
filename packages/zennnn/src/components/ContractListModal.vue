@@ -51,7 +51,7 @@
     </div>
     <div class="modal-footer">
       <Btn outlined class="my-5 ml-8" @click="$emit('createPaper')">
-        <Icon class="mr-sm">{{ icons.ziPlusOutline }}</Icon>
+        <Icon class="mr-2.5">{{ icons.ziPlusOutline }}</Icon>
         <span>{{ $t('contract.createPaper') }}</span>
       </Btn>
     </div>

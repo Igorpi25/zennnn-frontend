@@ -24,7 +24,7 @@
         :caption="info.description"
       />
     </td>
-    <td class="pr-sm">
+    <td class="pr-2.5">
       <!-- TODO: check active style prop -->
       <Select
         v-if="isOwnerOrManager"
@@ -72,7 +72,7 @@
               text-blue-500
               focus:outline-none
               cursor-pointer
-              mr-sm
+              mr-2.5
             "
             @click="wordEditDialog = true"
           >
@@ -82,7 +82,7 @@
           </button>
         </template>
       </Select>
-      <span v-else class="pl-sm">
+      <span v-else class="pl-2.5">
         {{ wordItem.text }}
       </span>
       <WordDialog
@@ -103,7 +103,7 @@
         @update="onWordUpdate"
       />
     </td>
-    <td class="pr-sm">
+    <td class="pr-2.5">
       <TextField
         v-if="isOwnerOrManager"
         :model-value="item.article"
@@ -112,7 +112,7 @@
         solo
         @update:model-value="createOrUpdateProduct({ article: $event })"
       />
-      <span v-else class="pl-sm">
+      <span v-else class="pl-2.5">
         {{ item.article }}
       </span>
     </td>
@@ -127,7 +127,7 @@
           number
           @update:model-value="updateProduct({ qty: $event })"
         />
-        <span v-else class="pl-sm">
+        <span v-else class="pl-2.5">
           {{ $n(item.qty) || 0 }}
         </span>
       </template>
@@ -165,7 +165,7 @@
           v-if="
             (isInvoiceProfitTypeMargin || !profitForAll) && isOwnerOrManager
           "
-          class="pl-sm"
+          class="pl-2.5"
         >
           <TextField
             :model-value="purchasePrice"
@@ -178,11 +178,11 @@
             @update:model-value="updateProductCost({ purchasePrice: $event })"
           />
         </td>
-        <td v-else class="text-right px-sm">
+        <td v-else class="text-right px-2.5">
           {{ $n(cost.purchasePrice || 0, 'fixed') }}
         </td>
 
-        <td class="text-right px-sm">
+        <td class="text-right px-2.5">
           {{ $n(cost.purchaseAmount || 0, 'fixed') }}
         </td>
 
@@ -190,7 +190,7 @@
           v-if="
             (isInvoiceProfitTypeCommission || !profitForAll) && isOwnerOrManager
           "
-          class="pl-sm"
+          class="pl-2.5"
         >
           <TextField
             :model-value="clientPrice"
@@ -203,11 +203,11 @@
             @update:model-value="updateProductCost({ clientPrice: $event })"
           />
         </td>
-        <td v-else class="text-right px-sm">
+        <td v-else class="text-right px-2.5">
           {{ $n(cost.clientPrice || 0, 'fixed') }}
         </td>
 
-        <td class="text-right px-sm">
+        <td class="text-right px-2.5">
           {{ $n(cost.clientAmount || 0, 'fixed') }}
         </td>
       </template>
@@ -318,7 +318,7 @@
             />
           </div>
         </td>
-        <td class="text-left pl-sm">
+        <td class="text-left pl-2.5">
           <TextField
             v-if="isOwnerOrManager || isWarehouseman"
             :model-value="info.description"
@@ -351,10 +351,10 @@
               h-8
               bg-gray-800
               rounded
-              px-sm
+              px-2.5
             "
           >
-            <div class="mr-sm">
+            <div class="mr-2.5">
               <svg
                 width="25"
                 height="21"
@@ -430,7 +430,7 @@
                 "
                 @click="$refs['link-input'].focus()"
               >
-                <Icon class="mr-sm">
+                <Icon class="mr-2.5">
                   {{ icons.ziLink }}
                 </Icon>
                 <span>
@@ -455,7 +455,7 @@
       <template v-else>
         <td class="px-6">
           <div v-if="commentators.length === 1" class="flex items-center">
-            <div class="w-8 h-8 flex items-center flex-shrink-0 mr-sm">
+            <div class="w-8 h-8 flex items-center flex-shrink-0 mr-2.5">
               <div
                 class="
                   w-full
@@ -505,7 +505,7 @@
         </td>
         <td class="px-5 text-sm whitespace-nowrap">
           <template v-if="item.comments && item.comments.length > 0">
-            <span class="mr-sm">{{ $t('shipping.chatMessages') }}:</span>
+            <span class="mr-2.5">{{ $t('shipping.chatMessages') }}:</span>
             <span
               :class="[
                 newCommentsCount

@@ -3,7 +3,7 @@
     <h4 class="text-white text-xl font-semibold leading-6 mb-4">
       {{ $t('shipping.customsAndTaxes') }}
     </h4>
-    <div class="bg-gray-700 text-gray-200 rounded-md pt-2 pb-5 px-sm">
+    <div class="bg-gray-700 text-gray-200 rounded-md pt-2 pb-5 px-2.5">
       <div class="pb-2">
         <Select
           :model-value="item.countryOfOrigin"
@@ -46,7 +46,7 @@
       </div>
       <div class="flex items-center pb-2">
         <div
-          class="pl-sm pr-1 w-3/5 truncate"
+          class="pl-2.5 pr-1 w-3/5 truncate"
           :title="$t('shipping.termsLabel')"
         >
           {{ $t('shipping.termsLabel') }}:
@@ -68,7 +68,7 @@
       </div>
       <div class="flex items-center">
         <div
-          class="pl-sm pr-1 w-3/5 truncate"
+          class="pl-2.5 pr-1 w-3/5 truncate"
           :title="$t('shipping.costLabel')"
         >
           {{ $t('shipping.costLabel') }}:
@@ -84,7 +84,7 @@
             @update:model-value="$emit('update', { customs: { cost: $event } })"
           >
             <template v-slot:append>
-              <span class="text-base text-white pl-0.5 pr-sm">
+              <span class="text-base text-white pl-0.5 pr-2.5">
                 {{ $t(`currency.USD.symbol`) }}
               </span>
             </template>
@@ -94,7 +94,7 @@
       <div class="border-t border-gray-900 my-4 mx-5" />
       <div class="flex items-center pb-2">
         <div
-          class="pl-sm pr-1 w-3/5 truncate"
+          class="pl-2.5 pr-1 w-3/5 truncate"
           :title="$t('shipping.discountLabel')"
         >
           {{ $t('shipping.discountLabel') }}:
@@ -112,7 +112,7 @@
             "
           >
             <template v-slot:append>
-              <span class="text-base text-white pl-0.5 pr-sm">
+              <span class="text-base text-white pl-0.5 pr-2.5">
                 {{ $t(`currency.USD.symbol`) }}
               </span>
             </template>
@@ -120,7 +120,10 @@
         </div>
       </div>
       <div class="flex items-center pb-2">
-        <div class="pl-sm pr-1 w-3/5 truncate" :title="$t('shipping.vatLabel')">
+        <div
+          class="pl-2.5 pr-1 w-3/5 truncate"
+          :title="$t('shipping.vatLabel')"
+        >
           {{ $t('shipping.vatLabel') }}:
         </div>
         <div class="w-2/5">
@@ -135,7 +138,7 @@
       </div>
       <div class="flex items-center">
         <div
-          class="pl-sm pr-1 w-3/5 truncate"
+          class="pl-2.5 pr-1 w-3/5 truncate"
           :title="$t('shipping.incomeTaxLabel')"
         >
           {{ $t('shipping.incomeTaxLabel') }}:
@@ -151,8 +154,8 @@
       </div>
     </div>
     <!-- Cost -->
-    <div class="bg-gray-700 rounded-md py-5 px-sm mt-5">
-      <div class="text-white text-lg text-center font-bold px-2 pt-sm pb-6">
+    <div class="bg-gray-700 rounded-md py-5 px-2.5 mt-5">
+      <div class="text-white text-lg text-center font-bold px-2 pt-2.5 pb-6">
         {{ $n(amount || 0, 'fixed') }} {{ $t(`currency.USD.symbol`) }}
       </div>
       <div class="pb-2">

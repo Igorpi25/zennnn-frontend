@@ -83,7 +83,7 @@
               content-class="w-full flex items-center"
               @click="onOverview"
             >
-              <Icon class="text-gray-100 mr-sm">
+              <Icon class="text-gray-100 mr-2.5">
                 {{ icons.ziVisible }}
               </Icon>
               {{ $t('shipping.previewAsCustomer') }}
@@ -97,7 +97,7 @@
               content-class="w-full flex items-center"
               @click="openPaperList"
             >
-              <Icon class="text-gray-100 mr-sm">
+              <Icon class="text-gray-100 mr-2.5">
                 {{ icons.ziSettings }}
               </Icon>
               {{ $t('shipping.paperConfigurator') }}
@@ -111,7 +111,7 @@
               content-class="w-full flex items-center"
               @click="printDialog = true"
             >
-              <Icon class="text-gray-100 mr-sm">
+              <Icon class="text-gray-100 mr-2.5">
                 {{ icons.ziPrint }}
               </Icon>
               {{ $t('shipping.print') }}
@@ -125,7 +125,7 @@
               content-class="w-full flex items-center"
               @click="accessControlDialog = true"
             >
-              <Icon class="text-gray-100 mr-sm">
+              <Icon class="text-gray-100 mr-2.5">
                 {{ icons.ziUserPlus }}
               </Icon>
               {{ $t('shipping.inviteCustomer') }}
@@ -139,7 +139,7 @@
               class="w-full"
               content-class="w-full flex items-center"
             >
-              <Icon class="mr-sm">
+              <Icon class="mr-2.5">
                 {{ icons.ziEmail }}
               </Icon>
               {{ $t('shipping.notifyCustomer') }}

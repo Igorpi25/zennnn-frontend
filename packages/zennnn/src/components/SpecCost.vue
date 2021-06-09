@@ -5,7 +5,7 @@
       {{ $t('shipping.financialInfo') }}
     </h4>
     <div class="bg-gray-700 rounded-md leading-5 p-5">
-      <div class="flex text-gray-200 px-sm pb-3">
+      <div class="flex text-gray-200 px-2.5 pb-3">
         <div class="flex-grow">
           {{ $t('shipping.finalCost') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
@@ -13,8 +13,8 @@
           {{ $n(spec.finalCost || 0, 'fixed') }}
         </div>
       </div>
-      <div class="border-b border-gray-900 mx-sm" />
-      <div class="flex text-gray-200 px-sm py-3">
+      <div class="border-b border-gray-900 mx-2.5" />
+      <div class="flex text-gray-200 px-2.5 py-3">
         <div class="flex-grow">
           {{ $t('shipping.finalObtainCost') }}
           {{ $t(`currency.${currency}.symbol`) }}
@@ -23,8 +23,8 @@
           {{ $n(spec.finalObtainCost || 0, 'fixed') }}
         </div>
       </div>
-      <div class="border-b border-gray-900 mx-sm" />
-      <div class="flex text-gray-200 px-sm py-3">
+      <div class="border-b border-gray-900 mx-2.5" />
+      <div class="flex text-gray-200 px-2.5 py-3">
         <div class="flex-grow">
           {{ $t('shipping.profit') }} {{ $t(`currency.${currency}.symbol`) }}
         </div>
@@ -37,7 +37,7 @@
           {{ $n(spec.profit || 0, 'fixed') }}
         </div>
       </div>
-      <div class="rounded-md bg-gray-500 text-gray-200 px-sm py-2">
+      <div class="rounded-md bg-gray-500 text-gray-200 px-2.5 py-2">
         <div class="flex py-2">
           <div class="flex-grow">
             {{ $t('shipping.totalPrepay') }}

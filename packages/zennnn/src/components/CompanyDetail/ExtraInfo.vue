@@ -106,12 +106,12 @@
             <template v-slot:drag="{ loading, isDragOver }">
               <div
                 :class="[
-                  'flex items-center text-gray-200 h-10 bg-gray-800 rounded px-sm',
+                  'flex items-center text-gray-200 h-10 bg-gray-800 rounded px-2.5',
                   loading ? 'cursor-wait opacity-40' : 'hover:text-gray-100',
                   { 'text-gray-100': isDragOver },
                 ]"
               >
-                <div class="mr-sm">
+                <div class="mr-2.5">
                   <svg
                     width="25"
                     height="21"
@@ -155,7 +155,7 @@
                 </Icon>
               </div>
             </div>
-            <div class="px-sm">
+            <div class="px-2.5">
               <a
                 :href="file.url"
                 target="_blank"

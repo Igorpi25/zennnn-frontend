@@ -136,7 +136,7 @@
             top-0
             bg-gray-800
             rounded-t-md
-            px-sm
+            px-2.5
             flex
             items-center
             h-12
@@ -147,7 +147,7 @@
           <Btn
             :loading="approveLoading"
             :disabled="selected.length === 0"
-            class="h-8 text-sm ml-sm"
+            class="h-8 text-sm ml-2.5"
             content-class="w-full flex items-center justify-center px-2"
             @click="approveWords"
           >
@@ -439,7 +439,7 @@
           </template>
         </DataTable>
         <Btn block outlined class="mt-4" @click="wordCreateDialog = true">
-          <Icon class="text-gray-100 mr-sm">
+          <Icon class="text-gray-100 mr-2.5">
             {{ icons.ziEdit }}
           </Icon>
           <span>{{ $t('words.addWord') }}</span>

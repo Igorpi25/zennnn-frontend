@@ -76,7 +76,7 @@
         <Btn :to="{ name: 'signup' }" class="text-center leading-none">
           <div class="flex items-center px-2">
             <span>{{ $t('home.cty') }}</span>
-            <Icon size="20" class="ml-sm">
+            <Icon size="20" class="ml-2.5">
               {{ icons.ziArrowRight }}
             </Icon>
           </div>

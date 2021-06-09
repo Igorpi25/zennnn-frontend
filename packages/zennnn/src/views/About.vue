@@ -149,7 +149,9 @@
           <div class="container">
             <div class="pt-32 md:pt-6">
               <div class="flex">
-                <h1 class="about-head-title font-bold flex-shrink-0 mt-sm mb-5">
+                <h1
+                  class="about-head-title font-bold flex-shrink-0 mt-2.5 mb-5"
+                >
                   бэк-офис ZENNNN
                 </h1>
                 <div class="w-full pb-5">
@@ -348,7 +350,7 @@
               "
             >
               <div class="mt-auto relative">
-                <div class="absolute -ml-sm">*</div>
+                <div class="absolute -ml-2.5">*</div>
                 <span>
                   Программное обеспечение, представленое как сервис.
                 </span>
@@ -601,7 +603,7 @@
                     cursor-pointer
                     w-3
                     h-3
-                    mx-sm
+                    mx-2.5
                   "
                   @click="activeFeature = n"
                 >
@@ -738,7 +740,7 @@
                   cursor-pointer
                   w-3
                   h-3
-                  mx-sm
+                  mx-2.5
                 "
                 @click="activeAdvanceFeature = n"
               >
@@ -1180,7 +1182,7 @@
       <!-- REVIEW / -->
       <!-- / TEAM -->
       <div class="bg-light-gray-200 py-24">
-        <div class="container pt-sm">
+        <div class="container pt-2.5">
           <h3 class="about-section-title font-bold">
             Cильная команда<br />практиков
           </h3>
@@ -1200,7 +1202,7 @@
                     text-black
                     rounded-10
                     shadow-medium
-                    px-sm
+                    px-2.5
                     py-3
                   "
                 >
@@ -1210,7 +1212,7 @@
                         .default
                     "
                     :alt="member.country"
-                    class="w-8 h-8 ml-1 mr-sm"
+                    class="w-8 h-8 ml-1 mr-2.5"
                   />
                   <span
                     v-html="
@@ -1226,7 +1228,7 @@
       <!-- TEAM / -->
       <!-- / ADVANCE ACTION  -->
       <div class="bg-gray-900 py-20">
-        <div class="container pt-5 pb-sm">
+        <div class="container pt-5 pb-2.5">
           <div class="flex flex-col items-center text-center">
             <h3
               class="about-section-title font-bold text-white"

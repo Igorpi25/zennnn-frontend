@@ -182,13 +182,13 @@
             class="mt-4"
             @click="addParagraph(contract.items, index)"
           >
-            <Icon class="mr-sm">{{ icons.ziPlusOutline }}</Icon>
+            <Icon class="mr-2.5">{{ icons.ziPlusOutline }}</Icon>
             <span class="text-sm">{{ $t('contract.addParagraph') }}</span>
           </Btn>
         </div>
 
         <Btn outlined class="mt-10" @click="addHeading(contract.items)">
-          <Icon class="mr-sm">{{ icons.ziPlusOutline }}</Icon>
+          <Icon class="mr-2.5">{{ icons.ziPlusOutline }}</Icon>
           <span>{{ $t('contract.addHeading') }}</span>
         </Btn>
 
@@ -434,13 +434,13 @@
             class="mt-4"
             @click="addParagraph(contract.specItems, index + 1)"
           >
-            <Icon class="mr-sm">{{ icons.ziPlusOutline }}</Icon>
+            <Icon class="mr-2.5">{{ icons.ziPlusOutline }}</Icon>
             <span class="text-sm">{{ $t('contract.addParagraph') }}</span>
           </Btn>
         </div>
 
         <Btn outlined class="mt-10" @click="addHeading(contract.specItems)">
-          <Icon class="mr-sm">{{ icons.ziPlusOutline }}</Icon>
+          <Icon class="mr-2.5">{{ icons.ziPlusOutline }}</Icon>
           <span>{{ $t('contract.addHeading') }}</span>
         </Btn>
       </div>

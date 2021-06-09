@@ -85,9 +85,8 @@
               focus:outline-none
               focus:shadow-blue-500
               hover:shadow-blue-500
-              px-sm
+              p-2.5
               pt-4
-              pb-sm
             "
             role="menuitem"
             tabindex="0"
@@ -206,7 +205,7 @@
                 </div>
               </div>
             </div>
-            <div class="h-16 pt-sm">
+            <div class="h-16 pt-2.5">
               <div
                 v-if="!item.isRequiredFilled || !item.isOptionalFilled"
                 class="

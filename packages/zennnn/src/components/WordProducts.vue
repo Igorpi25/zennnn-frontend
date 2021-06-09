@@ -96,7 +96,7 @@
                 </span>
               </template>
               <template v-slot:prepend>
-                <Icon class="text-gray-200 mr-sm">
+                <Icon class="text-gray-200 mr-2.5">
                   {{ icons.ziSearch }}
                 </Icon>
               </template>

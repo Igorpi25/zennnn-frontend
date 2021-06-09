@@ -81,8 +81,8 @@
                 hover:text-white
                 focus:text-white
                 focus:outline-none
-                pt-sm
-                pr-sm
+                pt-2.5
+                pr-2.5
               "
             >
               <Icon>

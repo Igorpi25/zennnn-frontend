@@ -102,9 +102,9 @@
         </div>
       </div>
 
-      <div class="bg-gray-800 bg-opacity-90 rounded-md px-sm pb-sm">
+      <div class="bg-gray-800 bg-opacity-90 rounded-md px-2.5 pb-2.5">
         <div class="h-12 flex items-center">
-          <div class="flex items-center pl-5 sm:pr-sm">
+          <div class="flex items-center pl-5 sm:pr-2.5">
             <Checkbox disabled hide-details class="pt-0.5">
               <button
                 disabled
@@ -127,7 +127,7 @@
               select-none
               cursor-not-allowed
               px-1
-              sm:px-sm
+              sm:px-2.5
             "
           >
             <Icon>
@@ -145,14 +145,14 @@
               select-none
               cursor-not-allowed
               px-1
-              sm:px-sm
+              sm:px-2.5
             "
           >
             <Icon>
               {{ icons.ziDelete }}
             </Icon>
           </button>
-          <div class="w-px h-5 bg-gray-400 mx-sm" />
+          <div class="w-px h-5 bg-gray-400 mx-2.5" />
           <button
             disabled
             class="
@@ -163,7 +163,7 @@
               focus:outline-none
               select-none
               cursor-not-allowed
-              px-sm
+              px-2.5
             "
           >
             <Icon>
@@ -177,7 +177,7 @@
               :title="specTitleText"
               class="truncate"
             />
-            <div class="inline-block text-2xl pl-sm pr-3 md:pr-3.5">
+            <div class="inline-block text-2xl pl-2.5 pr-3 md:pr-3.5">
               <button
                 v-if="expanded.length === 0"
                 :disabled="dataLoading"
@@ -390,7 +390,7 @@
         </h4>
         <div class="flex">
           <div class="w-full flex-grow lg:w-auto lg:pr-3">
-            <div class="rounded-md bg-gray-700 pt-2 px-sm pb-5">
+            <div class="rounded-md bg-gray-700 pt-2 px-2.5 pb-5">
               <TextArea :placeholder="$t('shipping.extraPlaceholder')" />
             </div>
           </div>

@@ -163,7 +163,7 @@
               class="
                 inline-block
                 align-middle
-                mr-sm
+                mr-2.5
                 text-gray-200
                 focus:text-gray-400
                 hover:text-gray-400

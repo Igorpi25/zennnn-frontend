@@ -39,7 +39,7 @@
           "
         >
           <template v-slot:append>
-            <span class="text-base text-gray-100 pl-0.5 pr-sm">%</span>
+            <span class="text-base text-gray-100 pl-0.5 pr-2.5">%</span>
           </template>
         </TextField>
         <Switch
@@ -72,7 +72,7 @@
             text-base text-gray-200 text-right
             whitespace-nowrap
             py-2
-            pr-sm
+            pr-2.5
           "
         >
           {{ $t('shipping.discount') }}
@@ -93,7 +93,7 @@
           "
         >
           <template v-slot:append>
-            <span class="text-base text-gray-100 pl-0.5 pr-sm">{{
+            <span class="text-base text-gray-100 pl-0.5 pr-2.5">{{
               $t(`currency.${currency}.symbol`)
             }}</span>
           </template>
@@ -108,7 +108,7 @@
             leading-none
             whitespace-nowrap
             text-white
-            pr-sm
+            pr-2.5
           "
         >
           <span class="text-white">{{
@@ -127,7 +127,7 @@
             text-base text-gray-200 text-right
             whitespace-nowrap
             py-2
-            pr-sm
+            pr-2.5
           "
         >
           {{ $t('shipping.prepay') }}
@@ -148,7 +148,7 @@
           "
         >
           <template v-slot:append>
-            <span class="text-base text-gray-100 pl-0.5 pr-sm">{{
+            <span class="text-base text-gray-100 pl-0.5 pr-2.5">{{
               $t(`currency.${currency}.symbol`)
             }}</span>
           </template>
@@ -163,7 +163,7 @@
             leading-none
             whitespace-nowrap
             text-white
-            pr-sm
+            pr-2.5
           "
         >
           <span class="text-white">{{
@@ -186,7 +186,7 @@
     />
 
     <div
-      class="w-full md:w-auto lg:w-full lg:max-w-xs flex justify-end lg:pl-sm"
+      class="w-full md:w-auto lg:w-full lg:max-w-xs flex justify-end lg:pl-2.5"
     >
       <div class="flex-grow sm:pr-4">
         <label
@@ -196,7 +196,7 @@
             text-base text-gray-200 text-right
             whitespace-nowrap
             py-2
-            pr-sm
+            pr-2.5
           "
         >
           {{ $t('shipping.obtainCost') }}
@@ -210,7 +210,7 @@
             leading-none
             whitespace-nowrap
             text-white
-            pr-sm
+            pr-2.5
           "
         >
           <span class="text-white">{{
@@ -234,7 +234,7 @@
             text-base text-gray-200 text-right
             whitespace-nowrap
             py-2
-            pr-sm
+            pr-2.5
           "
         >
           {{ $t('shipping.clientDebt') }}
@@ -248,7 +248,7 @@
             leading-none
             whitespace-nowrap
             text-white
-            pr-sm
+            pr-2.5
           "
         >
           <span class="text-white">{{

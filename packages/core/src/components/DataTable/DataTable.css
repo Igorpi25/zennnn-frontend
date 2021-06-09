@@ -3,7 +3,7 @@
 }
 
 .data-table--rounded {
-  @apply bg-light-gray-100 dark:bg-gray-800 rounded-md px-sm;
+  @apply bg-light-gray-100 dark:bg-gray-800 rounded-md px-2.5;
 }
 
 .data-table--rounded:not(.data-table--empty) {

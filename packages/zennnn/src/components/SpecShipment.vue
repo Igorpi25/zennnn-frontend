@@ -12,7 +12,7 @@
         items-center
         mb-1
         py-2
-        px-sm
+        px-2.5
       "
     >
       <div class="w-full pb-5 lg:p-0 lg:w-1/3">

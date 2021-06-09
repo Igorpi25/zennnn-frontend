@@ -109,7 +109,7 @@
                 @update:model-value="updateData({ issueDate: $event })"
               >
                 <template v-slot:activator>
-                  <div class="pr-sm" style="max-width: 232px">
+                  <div class="pr-2.5" style="max-width: 232px">
                     <TextField
                       :model-value="
                         item.issueDate
@@ -126,7 +126,7 @@
                       readonly
                     >
                       <template v-slot:prepend>
-                        <Icon small class="text-gray-200 mr-sm">
+                        <Icon small class="text-gray-200 mr-2.5">
                           {{ icons.ziCalendar }}
                         </Icon>
                       </template>
@@ -139,7 +139,7 @@
                 @update:model-value="updateData({ expireDate: $event })"
               >
                 <template v-slot:activator>
-                  <div class="pr-sm" style="max-width: 232px">
+                  <div class="pr-2.5" style="max-width: 232px">
                     <TextField
                       :model-value="
                         item.expireDate
@@ -155,7 +155,7 @@
                       readonly
                     >
                       <template v-slot:prepend>
-                        <Icon small class="text-gray-200 mr-sm">
+                        <Icon small class="text-gray-200 mr-2.5">
                           {{ icons.ziCalendar }}
                         </Icon>
                       </template>
@@ -241,7 +241,7 @@
                 class="w-48 pb-2"
                 @update:model-value="updateMailingAddressPostcode"
               />
-              <div class="relative flex-shrink-0 relative pl-sm">
+              <div class="relative flex-shrink-0 relative pl-2.5">
                 <label
                   class="
                     absolute
@@ -266,7 +266,7 @@
             </div>
             <div class="relative lg:pb-20">
               <div
-                class="lg:absolute text-sm text-gray-200 leading-tight pl-sm"
+                class="lg:absolute text-sm text-gray-200 leading-tight pl-2.5"
               >
                 {{ $t('companyDetail.hint.privateAddress') }}
               </div>
@@ -341,7 +341,7 @@
               :rules="[rules.required]"
               state-icon
               state-error-color="none"
-              class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
+              class="w-1/2 md:w-48 flex-shrink-0 pr-2.5"
               @update:model-value="updateData({ swift: $event })"
             />
             <TextField
@@ -387,7 +387,9 @@
                 @update:model-value="updateData({ fax: $event })"
               />
             </div>
-            <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
+            <div
+              class="text-sm text-gray-200 leading-tight pl-2.5 pb-2 lg:pb-0"
+            >
               {{ $t('companyDetail.hint.phoneAndFax') }}
             </div>
           </div>

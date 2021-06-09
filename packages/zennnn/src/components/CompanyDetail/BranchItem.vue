@@ -89,7 +89,7 @@
         state-icon
         state-error-color="none"
         label-no-wrap
-        class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
+        class="w-1/2 md:w-56 flex-shrink-0 pr-2.5"
       />
       <TextField
         v-model="lastName"

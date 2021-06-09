@@ -214,7 +214,7 @@
             </Icon>
           </span>
           <div>
-            <div class="font-semibold text-lg pb-sm">
+            <div class="font-semibold text-lg pb-2.5">
               {{ $t('payment.cancelTitle') }}
             </div>
             <div class="py-10" v-html="$t('payment.cancelText')" />
@@ -310,7 +310,7 @@
                         <div
                           v-for="i in 4"
                           :key="`i-${i}`"
-                          class="bg-gray-100 rounded-full w-sm h-sm mr-1"
+                          class="bg-gray-100 rounded-full w-2.5 h-2.5 mr-1"
                         />
                       </div>
                       <div>
@@ -387,7 +387,7 @@
                         <div
                           v-for="i in 4"
                           :key="`i-${i}`"
-                          class="bg-gray-100 rounded-full w-sm h-sm mr-1"
+                          class="bg-gray-100 rounded-full w-2.5 h-2.5 mr-1"
                         />
                       </div>
                       <div>
@@ -459,7 +459,7 @@
             scrolling-touch
             rounded-md
             bg-light-gray-300
-            px-sm
+            px-2.5
             pb-2
           "
         >

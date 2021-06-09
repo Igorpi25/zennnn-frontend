@@ -73,7 +73,7 @@
           :lazy="create"
           state-icon
           required
-          class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-sm"
+          class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-2.5"
           @update:model-value="updateData({ phone: $event })"
         />
         <TextField
@@ -101,7 +101,7 @@
           state-icon
           state-error-color="none"
           required
-          class="sm:w-4/6 max-w-xs sm:pr-sm"
+          class="sm:w-4/6 max-w-xs sm:pr-2.5"
           @update:model-value="updateData({ fax: $event })"
         />
       </div>
@@ -217,7 +217,7 @@
           :hide-details="false"
           state-icon
           required
-          class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
+          class="w-1/2 md:w-48 flex-shrink-0 pr-2.5"
           @update:model-value="updateBankDetail({ swift: $event })"
         />
         <TextField
@@ -246,7 +246,7 @@
           :rules="[rules.required]"
           state-icon
           state-error-color="none"
-          class="w-7/12 pr-sm"
+          class="w-7/12 pr-2.5"
           @update:model-value="updateData({ vat: $event })"
         />
         <TextField

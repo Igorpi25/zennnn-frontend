@@ -103,7 +103,7 @@
           state-icon
           required
           label-no-wrap
-          class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
+          class="w-1/2 md:w-56 flex-shrink-0 pr-2.5"
           @update:model-value="updateContactPerson({ firstName: $event })"
         />
         <TextField
@@ -131,7 +131,7 @@
           :readonly="readonly"
           state-icon
           required
-          class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-sm"
+          class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-2.5"
           @update:model-value="updateData({ phone: $event })"
         />
         <TextField
@@ -158,7 +158,7 @@
           state-icon
           state-error-color="none"
           required
-          class="sm:w-4/6 max-w-xs sm:pr-sm"
+          class="sm:w-4/6 max-w-xs sm:pr-2.5"
           @update:model-value="updateData({ fax: $event })"
         />
       </div>

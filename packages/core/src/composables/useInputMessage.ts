@@ -67,7 +67,7 @@ export const useInputMessage = (
           h(
             'div',
             {
-              class: 'bg-yellow-300 text-black rounded-t px-sm pt-2 pb-4',
+              class: 'bg-yellow-300 text-black rounded-t px-2.5 pt-2 pb-4',
               onClick: () => {
                 if (!props.messagesOnFocused) inputElement.value?.focus()
               },

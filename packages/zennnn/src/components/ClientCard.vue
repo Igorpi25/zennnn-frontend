@@ -18,7 +18,7 @@
       <h1 class="text-2xl text-white font-semibold leading-tight mb-4">
         {{ create ? $t('client.createTitle') : $t('client.editTitle') }}
       </h1>
-      <div class="bg-gray-800 rounded-md p-sm mb-12">
+      <div class="bg-gray-800 rounded-md p-2.5 mb-12">
         <div class="lg:h-11 flex flex-wrap lg:flex-nowrap">
           <div
             class="

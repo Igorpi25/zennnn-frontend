@@ -68,7 +68,7 @@
                   updateData({ deliveryAddressPostcode: $event })
                 "
               />
-              <div class="relative flex-shrink-0 pl-sm">
+              <div class="relative flex-shrink-0 pl-2.5">
                 <label
                   class="
                     absolute
@@ -93,7 +93,7 @@
             </div>
             <div class="relative lg:pb-20">
               <div
-                class="lg:absolute text-sm text-gray-200 leading-tight pl-sm"
+                class="lg:absolute text-sm text-gray-200 leading-tight pl-2.5"
               >
                 {{ $t('companyDetail.hint.deliveryAddress') }}
               </div>
@@ -113,7 +113,7 @@
               :debounce="500"
               :lazy="create"
               label-no-wrap
-              class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
+              class="w-1/2 md:w-56 flex-shrink-0 pr-2.5"
               @update:model-value="updateContactPerson({ firstName: $event })"
             />
             <TextField

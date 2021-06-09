@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <div class="bg-gray-800 bg-opacity-90 rounded-md px-sm pb-sm">
+      <div class="bg-gray-800 bg-opacity-90 rounded-md px-2.5 pb-2.5">
         <div class="h-12 flex items-center">
           <div class="flex-grow" />
           <div class="flex text-gray-200 text-lg overflow-hidden">
@@ -40,7 +40,7 @@
               :title="specTitleText"
               class="truncate"
             />
-            <div class="inline-block text-2xl pl-sm pr-3 md:pr-3.5">
+            <div class="inline-block text-2xl pl-2.5 pr-3 md:pr-3.5">
               <button
                 v-if="expanded.length === 0"
                 :disabled="dataLoading"

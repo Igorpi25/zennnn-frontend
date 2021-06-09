@@ -16,7 +16,7 @@
           state-icon
           required
           label-no-wrap
-          class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
+          class="w-1/2 md:w-56 flex-shrink-0 pr-2.5"
           @update:model-value="updateContactPerson({ firstName: $event })"
         />
         <TextField
@@ -105,7 +105,7 @@
             <span>{{ item.text }}</span>
           </template>
         </Select>
-        <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
+        <div class="text-sm text-gray-200 leading-tight pl-2.5 pb-2 lg:pb-0">
           {{ localeSelectHint }}
         </div>
       </div>
@@ -127,7 +127,7 @@
             class="pb-2 flex-grow"
             @update:model-value="updateCompanyName"
           />
-          <div class="relative flex-shrink-0 relative pl-sm">
+          <div class="relative flex-shrink-0 relative pl-2.5">
             <label
               class="
                 absolute
@@ -151,7 +151,7 @@
           </div>
         </div>
         <div class="relative lg:pb-20">
-          <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
+          <div class="lg:absolute text-sm text-gray-200 leading-tight pl-2.5">
             {{ $t('companyDetail.hint.companyName') }}
           </div>
         </div>
@@ -180,10 +180,10 @@
         >
           {{ $t('companyDetail.label.ucn') }}
         </label>
-        <div class="h-10 flex items-center text-white mb-2 px-sm">
+        <div class="h-10 flex items-center text-white mb-2 px-2.5">
           {{ item.uid || uid || uidPlaceholder }}
         </div>
-        <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
+        <div class="text-sm text-gray-200 leading-tight pl-2.5 pb-2 lg:pb-0">
           {{ uidHint }}
         </div>
       </div>

@@ -16,7 +16,7 @@
             class="pb-2 flex-grow"
             @update:model-value="updateCompanyName"
           />
-          <div class="relative flex-shrink-0 pl-sm">
+          <div class="relative flex-shrink-0 pl-2.5">
             <label
               class="
                 absolute
@@ -40,7 +40,7 @@
           </div>
         </div>
         <div class="relative lg:pb-20">
-          <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
+          <div class="lg:absolute text-sm text-gray-200 leading-tight pl-2.5">
             {{ $t('companyDetail.hint.companyName') }}
           </div>
         </div>
@@ -84,7 +84,7 @@
           :lazy="create"
           state-icon
           required
-          class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-sm"
+          class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-2.5"
           @update:model-value="updateData({ phone: $event })"
         />
         <TextField
@@ -111,7 +111,7 @@
           state-icon
           state-error-color="none"
           required
-          class="sm:w-4/6 max-w-xs sm:pr-sm"
+          class="sm:w-4/6 max-w-xs sm:pr-2.5"
           @update:model-value="updateData({ fax: $event })"
         />
       </div>
@@ -223,7 +223,7 @@
             class="w-48 pb-2"
             @update:model-value="updateMailingAddressPostcode"
           />
-          <div class="relative flex-shrink-0 pl-sm">
+          <div class="relative flex-shrink-0 pl-2.5">
             <label
               class="
                 absolute
@@ -247,7 +247,7 @@
           </div>
         </div>
         <div class="relative lg:pb-20">
-          <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
+          <div class="lg:absolute text-sm text-gray-200 leading-tight pl-2.5">
             {{ $t('companyDetail.hint.mailingAddress') }}
           </div>
         </div>
@@ -263,7 +263,7 @@
           :rules="[rules.required]"
           state-icon
           state-error-color="none"
-          class="w-1/2 md:w-48 flex-shrink-0 pr-sm"
+          class="w-1/2 md:w-48 flex-shrink-0 pr-2.5"
           @update:model-value="updateData({ iec: $event })"
         />
         <TextField
@@ -295,7 +295,7 @@
         />
       </div>
       <div class="flex items-end pb-2">
-        <div class="h-10 flex-shrink-0 flex items-center pl-sm pr-3">
+        <div class="h-10 flex-shrink-0 flex items-center pl-2.5 pr-3">
           <Radio
             v-model="ownerNameValue"
             name="owner-name"
@@ -320,7 +320,7 @@
           label-no-wrap
           state-icon
           required
-          class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
+          class="w-1/2 md:w-56 flex-shrink-0 pr-2.5"
           @update:model-value="updateCompanyOwner({ firstName: $event })"
         />
         <TextField
@@ -338,7 +338,7 @@
         />
       </div>
       <div class="flex items-end pb-2">
-        <div class="h-10 flex-shrink-0 flex items-center pl-sm pr-3">
+        <div class="h-10 flex-shrink-0 flex items-center pl-2.5 pr-3">
           <Radio
             v-model="ownerNameValue"
             name="owner-name"

@@ -16,7 +16,7 @@
           state-icon
           required
           label-no-wrap
-          class="w-1/2 md:w-56 flex-shrink-0 pr-sm"
+          class="w-1/2 md:w-56 flex-shrink-0 pr-2.5"
           @update:model-value="updateContactPerson({ firstName: $event })"
         />
         <TextField
@@ -106,7 +106,7 @@
           </template>
         </Select>
         <div class="relative lg:pb-20">
-          <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
+          <div class="lg:absolute text-sm text-gray-200 leading-tight pl-2.5">
             {{ $t('companyDetail.hint.clientLocale') }}
           </div>
         </div>
@@ -158,7 +158,7 @@
             class="pb-2 flex-grow"
             @update:model-value="updatePerson({ lastName: $event })"
           />
-          <div class="relative flex-shrink-0 relative pl-sm">
+          <div class="relative flex-shrink-0 relative pl-2.5">
             <label
               class="
                 absolute
@@ -182,7 +182,7 @@
           </div>
         </div>
         <div class="relative lg:pb-20">
-          <div class="lg:absolute text-sm text-gray-200 leading-tight pl-sm">
+          <div class="lg:absolute text-sm text-gray-200 leading-tight pl-2.5">
             {{ $t('companyDetail.hint.familyName') }}
           </div>
         </div>
@@ -222,7 +222,7 @@
                 readonly
               >
                 <template v-slot:prepend>
-                  <Icon small class="text-gray-200 mr-sm">
+                  <Icon small class="text-gray-200 mr-2.5">
                     {{ icons.ziCalendar }}
                   </Icon>
                 </template>
@@ -271,10 +271,10 @@
         >
           {{ $t('companyDetail.label.ucn') }}
         </label>
-        <div class="h-10 flex items-center text-white mb-2 px-sm">
+        <div class="h-10 flex items-center text-white mb-2 px-2.5">
           {{ item.uid || uid || 'B00001' }}
         </div>
-        <div class="text-sm text-gray-200 leading-tight pl-sm pb-2 lg:pb-0">
+        <div class="text-sm text-gray-200 leading-tight pl-2.5 pb-2 lg:pb-0">
           {{ $t('companyDetail.hint.ucn') }}
         </div>
       </div>

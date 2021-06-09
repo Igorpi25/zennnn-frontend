@@ -76,7 +76,7 @@
                     <div
                       v-if="tab.value === 5 && hasNewComments"
                       :class="[
-                        'absolute top-0 right-0 -mt-0.5 -mr-1 w-sm h-sm rounded-full border-2 bg-gray-600 border-gray-600 transition-colors duration-100 ease-out',
+                        'absolute top-0 right-0 -mt-0.5 -mr-1 w-2.5 h-2.5 rounded-full border-2 bg-gray-600 border-gray-600 transition-colors duration-100 ease-out',
                         activeTab === tab.value
                           ? 'bg-gray-600'
                           : 'border-gray-700',
@@ -173,22 +173,22 @@
               <td :colspan="activeTab === 2 ? 2 : 3" />
 
               <template v-if="activeTab === 1">
-                <td class="text-gray-300 text-right px-sm">
+                <td class="text-gray-300 text-right px-2.5">
                   <span class="relative z-1">
                     {{ $t('shipping.total') }}
                   </span>
                 </td>
-                <td class="text-right px-sm">
+                <td class="text-right px-2.5">
                   <span class="relative z-1">
                     {{ $n(invoice.totalPurchaseAmount || 0, 'fixed') }}
                   </span>
                 </td>
-                <td class="text-gray-300 text-right px-sm">
+                <td class="text-gray-300 text-right px-2.5">
                   <span class="relative z-1">
                     {{ $t('shipping.total') }}
                   </span>
                 </td>
-                <td class="text-right px-sm">
+                <td class="text-right px-2.5">
                   <span class="relative z-1">
                     {{ $n(invoice.totalClientAmount || 0, 'fixed') }}
                   </span>
@@ -202,7 +202,7 @@
                     {{ $t('shipping.total') }}
                   </span>
                 </td>
-                <td class="text-right pr-sm">
+                <td class="text-right pr-2.5">
                   <span class="relative z-1">
                     <span>{{ $n(invoice.totalNet) }}</span>
                     <span
@@ -218,7 +218,7 @@
                     >
                   </span>
                 </td>
-                <td class="text-right pr-sm">
+                <td class="text-right pr-2.5">
                   <span class="relative z-1">
                     <span>{{ $n(invoice.totalGross) }}</span>
                     <span
@@ -240,7 +240,7 @@
                     <span class="text-gray-300">{{ $t('measure.m3') }}</span>
                   </span>
                 </td>
-                <td class="text-right pr-sm">
+                <td class="text-right pr-2.5">
                   <span class="relative z-1">
                     {{ $n(invoice.totalPkgQty) }}
                   </span>
@@ -505,7 +505,7 @@ export default {
           align: 'left',
           width: 123,
           minWidth: 123,
-          class: 'px-sm',
+          class: 'px-2.5',
         },
         {
           text: this.$t('shipping.model'),
@@ -513,7 +513,7 @@ export default {
           align: 'left',
           width: 200,
           minWidth: 200,
-          class: 'px-sm',
+          class: 'px-2.5',
         },
         {
           text: this.$t('shipping.qty'),
@@ -521,7 +521,7 @@ export default {
           align: 'right',
           width: 68,
           minWidth: 68,
-          class: 'px-sm',
+          class: 'px-2.5',
         },
         { text: '', value: 'unit', align: 'right', width: 57, minWidth: 57 },
       ]
@@ -534,7 +534,7 @@ export default {
             : this.$t('shipping.purchaseCost'),
           value: 'purchasePrice',
           width: 138,
-          class: 'bg-gray-600 relative z-1 px-sm',
+          class: 'bg-gray-600 relative z-1 px-2.5',
           align: 'right',
         },
         {
@@ -543,14 +543,14 @@ export default {
           align: 'right',
           width: '100%',
           minWidth: 300,
-          class: 'bg-gray-600 relative z-1 px-sm',
+          class: 'bg-gray-600 relative z-1 px-2.5',
         },
         {
           text: this.$t('shipping.clientCost'),
           value: 'clientPrice',
           align: 'right',
           width: 138,
-          class: 'bg-gray-600 relative z-1 px-sm',
+          class: 'bg-gray-600 relative z-1 px-2.5',
         },
         {
           text: this.$t('shipping.obtainAmount'),
@@ -558,7 +558,7 @@ export default {
           align: 'right',
           width: '100%',
           minWidth: 300,
-          class: 'bg-gray-600 relative z-1 px-sm',
+          class: 'bg-gray-600 relative z-1 px-2.5',
         },
         {
           text: '',
@@ -577,7 +577,7 @@ export default {
           value: 'net',
           align: 'right',
           width: 64,
-          class: 'bg-gray-600 relative z-1 leading-none pr-sm py-0',
+          class: 'bg-gray-600 relative z-1 leading-none pr-2.5 py-0',
         },
         {
           text: `${this.$t('shipping.gross')} ${this.$t(
@@ -586,28 +586,28 @@ export default {
           value: 'gross',
           align: 'right',
           width: 64,
-          class: 'bg-gray-600 relative z-1 leading-none pr-sm py-0',
+          class: 'bg-gray-600 relative z-1 leading-none pr-2.5 py-0',
         },
         {
           text: `${this.$t('shipping.packageSize')} (${this.$t('measure.mm')})`,
           value: 'size',
           align: 'center',
           width: '140%',
-          class: 'bg-gray-600 relative z-1 leading-none pr-sm py-0',
+          class: 'bg-gray-600 relative z-1 leading-none pr-2.5 py-0',
         },
         {
           text: this.$t('shipping.packageQty'),
           value: 'pkgQty',
           width: 62,
           align: 'right',
-          class: 'bg-gray-600 relative z-1 leading-none pr-sm pr-sm py-0',
+          class: 'bg-gray-600 relative z-1 leading-none pr-2.5 pr-2.5 py-0',
         },
         {
           text: this.$t('shipping.packageNo'),
           value: 'pkgNo',
           width: 62,
           align: 'right',
-          class: 'bg-gray-600 relative z-1 leading-none pr-sm py-0',
+          class: 'bg-gray-600 relative z-1 leading-none pr-2.5 py-0',
         },
         {
           text: this.$t('shipping.atWhouse'),
@@ -615,7 +615,7 @@ export default {
           width: 32,
           align: 'right',
           class:
-            'bg-gray-600 relative z-2 leading-none whitespace-nowrap pr-sm py-0',
+            'bg-gray-600 relative z-2 leading-none whitespace-nowrap pr-2.5 py-0',
         },
         {
           text: '',
@@ -639,7 +639,7 @@ export default {
           value: 'description',
           width: 282,
           align: 'left',
-          class: 'bg-gray-600 relative z-1 pl-sm',
+          class: 'bg-gray-600 relative z-1 pl-2.5',
         },
         {
           text: '',

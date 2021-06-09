@@ -1,7 +1,7 @@
 <template>
   <div :class="[light ? 'text-gray-400' : 'text-gray-100']">
     <div class="flex items-center pb-2">
-      <div class="w-8 h-8 flex items-center flex-shrink-0 mr-sm">
+      <div class="w-8 h-8 flex items-center flex-shrink-0 mr-2.5">
         <div
           class="
             w-full
@@ -32,7 +32,7 @@
         {{ $d($parseDate(item.updatedAt), 'short') }}
       </div>
     </div>
-    <div class="leading-tight pl-8 ml-sm">
+    <div class="leading-tight pl-8 ml-2.5">
       {{ item.comment }}
     </div>
   </div>

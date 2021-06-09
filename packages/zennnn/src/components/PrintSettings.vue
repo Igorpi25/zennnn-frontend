@@ -10,7 +10,7 @@
       max-h-screen
       text-gray-100
       bg-gray-800
-      px-sm
+      px-2.5
       py-6
     "
   >
@@ -226,7 +226,7 @@
               </Select>
             </div>
             <div class="flex pb-2">
-              <div class="w-1/2 pr-sm">
+              <div class="w-1/2 pr-2.5">
                 <Select
                   :model-value="customsTermsValue"
                   :attach="$refs.container"
@@ -257,7 +257,7 @@
                   "
                 >
                   <template v-slot:append>
-                    <span class="text-base w-auto pl-0.5 pr-sm">
+                    <span class="text-base w-auto pl-0.5 pr-2.5">
                       {{ $t(`currency.USD.symbol`) }}
                     </span>
                   </template>
@@ -265,7 +265,7 @@
               </div>
             </div>
             <div class="pb-2 flex">
-              <div class="w-1/2 pr-sm">
+              <div class="w-1/2 pr-2.5">
                 <Select
                   :model-value="$t('currency.USD.iso-4217')"
                   :attach="$refs.container"
@@ -296,7 +296,7 @@
                   "
                 >
                   <template v-slot:append>
-                    <span class="text-base w-auto pl-0.5 pr-sm">
+                    <span class="text-base w-auto pl-0.5 pr-2.5">
                       {{ $t(`currency.USD.symbol`) }}
                     </span>
                   </template>
