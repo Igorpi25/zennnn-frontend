@@ -104,6 +104,7 @@ export default defineComponent({
     hideOverlay: Boolean,
     zIndex: [Number, String],
     top: [Number, String],
+    hideOverflow: Boolean,
   },
 
   emits: ['update:modelValue', 'click:outside', 'keydown'],
@@ -344,7 +345,7 @@ export default defineComponent({
         {
           class: {
             'fixed inset-0': true,
-            'overflow-y-auto': !props.fullscreen,
+            'overflow-y-auto': !props.fullscreen && !props.hideOverflow,
             'pointer-events-none': !isActive.value,
           },
           style: {

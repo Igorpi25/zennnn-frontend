@@ -28,9 +28,10 @@
   </Modal>
   <Modal
     v-model="model2"
-    fullscreen
-    class="flex items-end"
-    content-class="max-h-[256px]"
+    class="flex items-end min-h-full h-full"
+    content-class="max-h-[256px] w-full h-full rounded-none overflow-auto m-0"
+    top="auto"
+    :hide-overflow="true"
     :transition="{
       appear: true,
       enterActiveClass: 'transition ease-out duration-300',
