@@ -528,7 +528,7 @@
                 class="relative cursor-pointer mx-5"
                 @click.prevent="activeFeature = feature.value"
               >
-                <span v-html="feature.title" class="inline-block mb-xl" />
+                <span v-html="feature.title" class="inline-block mb-7.5" />
                 <div
                   :class="{
                     'bg-cold-blue-500': activeFeature === feature.value,

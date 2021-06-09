@@ -16,7 +16,7 @@
       :class="{ 'bg-light-gray-100': item.name === 'Advanced' }"
       class="tariff-card__item w-full sm:w-1/2 lg:w-1/4 flex flex-col px-8 pt-8"
     >
-      <div class="flex items-center justify-between font-semibold pb-xl">
+      <div class="flex items-center justify-between font-semibold pb-7.5">
         <div class="text-xl">{{ item.title }}</div>
         <div
           :class="[

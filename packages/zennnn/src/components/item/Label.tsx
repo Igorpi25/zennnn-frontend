@@ -68,7 +68,7 @@ export default defineComponent({
     return () => (
       <div
         class={{
-          'h-lg inline-flex items-center text-xs text-white rounded-10 space-x-1 truncate px-1':
+          'h-4.5 inline-flex items-center text-xs text-white rounded-10 space-x-1 truncate px-1':
             true,
           'pr-0.5': props.count,
         }}

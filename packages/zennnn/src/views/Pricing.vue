@@ -28,7 +28,7 @@
           :to="{ name: 'home' }"
           class="flex-shrink-0 select-none focus:outline-none mr-2 sm:mr-6"
         >
-          <img src="@/assets/img/logo-light.svg" alt="Logo" class="h-lg" />
+          <img src="@/assets/img/logo-light.svg" alt="Logo" class="h-4.5" />
         </router-link>
         <Icon class="hidden sm:block text-light-gray-400">
           {{ icons.ziChevronRight }}
