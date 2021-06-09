@@ -180,7 +180,7 @@ export default defineComponent({
         'div',
         {
           class:
-            'grid grid-cols-7 gap-1 items-center justify-items-center pt-4 px-md',
+            'grid grid-cols-7 gap-1 items-center justify-items-center pt-4 px-3.5',
         },
         weekDays.value.map((day, i) => {
           return h(
@@ -232,7 +232,7 @@ export default defineComponent({
         'div',
         {
           class:
-            'grid grid-cols-7 gap-1 items-center justify-items-center text-sm py-4 px-md',
+            'grid grid-cols-7 gap-1 items-center justify-items-center text-sm py-4 px-3.5',
         },
         children
       )

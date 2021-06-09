@@ -573,7 +573,7 @@
           focus:text-gray-100
           focus:outline-none
           pr-3
-          md:pr-md
+          md:pr-3.5
           ml-auto
         "
         @click="deleteProduct(item.id)"

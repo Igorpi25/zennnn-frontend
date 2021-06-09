@@ -155,7 +155,7 @@ export default defineComponent({
         'div',
         {
           class:
-            'grid grid-cols-3 gap-6 items-center justify-items-center py-4 px-md',
+            'grid grid-cols-3 gap-6 items-center justify-items-center py-4 px-3.5',
         },
         children
       )

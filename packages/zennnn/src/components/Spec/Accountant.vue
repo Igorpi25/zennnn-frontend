@@ -40,7 +40,7 @@
               :title="specTitleText"
               class="truncate"
             />
-            <div class="inline-block text-2xl pl-sm pr-3 md:pr-md">
+            <div class="inline-block text-2xl pl-sm pr-3 md:pr-3.5">
               <button
                 v-if="expanded.length === 0"
                 :disabled="dataLoading"

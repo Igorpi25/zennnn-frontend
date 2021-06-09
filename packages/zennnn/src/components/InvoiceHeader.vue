@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'md:h-12 relative flex items-center mx-auto w-full select-none py-2 md:py-0 px-3 md:pl-5 md:pr-md',
+      'md:h-12 relative flex items-center mx-auto w-full select-none py-2 md:py-0 px-3 md:pl-5 md:pr-3.5',
       'rounded-t text-right',
       { 'rounded-b': !isExpanded },
       create && !isEmpty ? 'bg-gray-700' : 'bg-gray-500',

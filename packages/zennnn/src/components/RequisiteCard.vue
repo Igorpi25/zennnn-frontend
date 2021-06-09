@@ -27,7 +27,7 @@
             sm:absolute
             sm:bottom-0
             sm:right-0
-            mb-md
+            mb-3.5
           "
         >
           <Btn v-if="!isComponent" outlined @click="goBack">

@@ -124,7 +124,7 @@
         />
       </div>
       <div class="flex flex-wrap leading-tight pt-8 pb-20 px-2 sm:px-18">
-        <div class="w-full lg:w-1/2 lg:pr-md pb-12 lg:pb-0">
+        <div class="w-full lg:w-1/2 lg:pr-3.5 pb-12 lg:pb-0">
           <router-link to="/about/#video" class="group">
             <div class="relative">
               <Image
@@ -181,7 +181,7 @@
             </div>
           </router-link>
         </div>
-        <div class="w-full lg:w-1/2 lg:pl-md">
+        <div class="w-full lg:w-1/2 lg:pl-3.5">
           <router-link to="/about#video" class="group">
             <div class="relative">
               <Image
