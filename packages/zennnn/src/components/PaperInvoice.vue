@@ -109,7 +109,7 @@
           </td>
           <td class="bg-white p-2">
             <div
-              class="truncate pb-xs"
+              class="truncate pb-0.5"
               style="min-width: 250px; min-height: 20px"
             >
               {{ getWordText(item.name) }} {{ item.article }}

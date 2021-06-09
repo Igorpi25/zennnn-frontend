@@ -43,7 +43,7 @@
                   mr-1
                 "
               >
-                <span class="flex-grow pl-xs -mr-xs">
+                <span class="flex-grow pl-0.5 -mr-0.5">
                   {{ filter.text }}
                 </span>
                 <Icon

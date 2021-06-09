@@ -108,7 +108,7 @@
         >
           <div class="flex justify-between">
             <div class="">
-              <div class="h-6 text-lg font-semibold mb-xs">
+              <div class="h-6 text-lg font-semibold mb-0.5">
                 {{ productName }}
               </div>
               <!-- CHANGE PLAN DIALOG -->
@@ -168,7 +168,7 @@
                   font-semibold
                   text-white
                   px-2
-                  mb-xs
+                  mb-0.5
                 "
               >
                 {{ $t(`payment.${subscriptionStatus}`) }}

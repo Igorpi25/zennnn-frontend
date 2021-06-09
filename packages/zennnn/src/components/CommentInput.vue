@@ -6,7 +6,7 @@
       :disabled="loading"
       :placeholder="label"
       :class="[
-        'px-xs placeholder-blue-500 resize-none',
+        'px-0.5 placeholder-blue-500 resize-none',
         'w-full appearence-none bg-transparent focus:outline-none transition-colors duration-100 ease-out',
         light
           ? 'text-gray-900 focus:placeholder-gray-100'

@@ -12,7 +12,7 @@
       <div class="group flex items-center cursor-pointer">
         <img
           :src="require(`@/assets/img/flags/locale/${locale}.svg`).default"
-          :class="['h-6 w-6 rounded-full mr-xs']"
+          :class="['h-6 w-6 rounded-full mr-0.5']"
         />
         <Icon
           role="button"

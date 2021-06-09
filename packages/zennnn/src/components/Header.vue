@@ -196,7 +196,7 @@
                       font-semibold
                       text-white
                       px-2
-                      mb-xs
+                      mb-0.5
                     "
                     style="border-radius: 11px"
                   >
@@ -238,7 +238,7 @@
             >
               <div
                 v-if="item.id === orgId"
-                class="absolute top-0 left-0 h-full bg-gray-100 w-xs"
+                class="absolute top-0 left-0 h-full bg-gray-100 w-0.5"
               />
               <div class="flex items-center">
                 <div class="flex-shrink-0 w-9">

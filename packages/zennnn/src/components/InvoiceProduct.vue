@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td class="relative p-0">
-      <span :class="['absolute top-0 left-0 w-xs h-full', productStatusColor]">
+      <span :class="['absolute top-0 left-0 w-0.5 h-full', productStatusColor]">
       </span>
     </td>
     <td class="pl-4 text-base text-gray-100">
@@ -483,7 +483,7 @@
               :key="key"
               :title="value || ''"
             >
-              <div class="w-8 h-8 flex items-center flex-shrink-0 mr-xs">
+              <div class="w-8 h-8 flex items-center flex-shrink-0 mr-0.5">
                 <div
                   class="
                     w-full

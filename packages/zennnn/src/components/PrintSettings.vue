@@ -257,7 +257,7 @@
                   "
                 >
                   <template v-slot:append>
-                    <span class="text-base w-auto pl-xs pr-sm">
+                    <span class="text-base w-auto pl-0.5 pr-sm">
                       {{ $t(`currency.USD.symbol`) }}
                     </span>
                   </template>
@@ -296,7 +296,7 @@
                   "
                 >
                   <template v-slot:append>
-                    <span class="text-base w-auto pl-xs pr-sm">
+                    <span class="text-base w-auto pl-0.5 pr-sm">
                       {{ $t(`currency.USD.symbol`) }}
                     </span>
                   </template>

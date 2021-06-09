@@ -323,7 +323,7 @@
                   <div v-if="header.value === 'status'" class="inline-block">
                     <span
                       :class="[
-                        'absolute top-0 left-0 w-xs h-full',
+                        'absolute top-0 left-0 w-0.5 h-full',
                         item.status === 'DRAFT'
                           ? 'bg-pink-500'
                           : item.status === 'APPROVED'

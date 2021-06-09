@@ -84,7 +84,7 @@
             @update:model-value="$emit('update', { customs: { cost: $event } })"
           >
             <template v-slot:append>
-              <span class="text-base text-white pl-xs pr-sm">
+              <span class="text-base text-white pl-0.5 pr-sm">
                 {{ $t(`currency.USD.symbol`) }}
               </span>
             </template>
@@ -112,7 +112,7 @@
             "
           >
             <template v-slot:append>
-              <span class="text-base text-white pl-xs pr-sm">
+              <span class="text-base text-white pl-0.5 pr-sm">
                 {{ $t(`currency.USD.symbol`) }}
               </span>
             </template>

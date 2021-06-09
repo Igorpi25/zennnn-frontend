@@ -76,7 +76,7 @@
                     <div
                       v-if="tab.value === 5 && hasNewComments"
                       :class="[
-                        'absolute top-0 right-0 -mt-xs -mr-1 w-sm h-sm rounded-full border-2 bg-gray-600 border-gray-600 transition-colors duration-100 ease-out',
+                        'absolute top-0 right-0 -mt-0.5 -mr-1 w-sm h-sm rounded-full border-2 bg-gray-600 border-gray-600 transition-colors duration-100 ease-out',
                         activeTab === tab.value
                           ? 'bg-gray-600'
                           : 'border-gray-700',

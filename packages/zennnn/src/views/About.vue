@@ -234,7 +234,7 @@
             <div class="w-full lg:w-1/2 lg:w-1/4 flex flex-col lg:pr-4">
               <div class="flex-grow flex mb-2 lg:mb-0">
                 <span
-                  class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3"
+                  class="flex-shrink-0 inline-flex items-center h-6 pb-0.5 mr-3"
                 >
                   <Icon small class="text-cold-blue-500">
                     {{ icons.ziChecked }}
@@ -248,7 +248,7 @@
               </div>
               <div class="flex mb-2">
                 <span
-                  class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3"
+                  class="flex-shrink-0 inline-flex items-center h-6 pb-0.5 mr-3"
                 >
                   <Icon small class="text-cold-blue-500">
                     {{ icons.ziChecked }}
@@ -258,7 +258,7 @@
               </div>
               <div class="flex mb-2 lg:mb-0">
                 <span
-                  class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3"
+                  class="flex-shrink-0 inline-flex items-center h-6 pb-0.5 mr-3"
                 >
                   <Icon small class="text-cold-blue-500">
                     {{ icons.ziChecked }}
@@ -270,7 +270,7 @@
             <div class="flex flex-col">
               <div class="flex mb-2">
                 <span
-                  class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3"
+                  class="flex-shrink-0 inline-flex items-center h-6 pb-0.5 mr-3"
                 >
                   <Icon small class="text-cold-blue-500">
                     {{ icons.ziChecked }}
@@ -280,7 +280,7 @@
               </div>
               <div class="flex-grow flex mb-2">
                 <span
-                  class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3"
+                  class="flex-shrink-0 inline-flex items-center h-6 pb-0.5 mr-3"
                 >
                   <Icon small class="text-cold-blue-500">
                     {{ icons.ziChecked }}
@@ -290,7 +290,7 @@
               </div>
               <div class="flex mb-2">
                 <span
-                  class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3"
+                  class="flex-shrink-0 inline-flex items-center h-6 pb-0.5 mr-3"
                 >
                   <Icon small class="text-cold-blue-500">
                     {{ icons.ziChecked }}
@@ -300,7 +300,7 @@
               </div>
               <div class="flex">
                 <span
-                  class="flex-shrink-0 inline-flex items-center h-6 pb-xs mr-3"
+                  class="flex-shrink-0 inline-flex items-center h-6 pb-0.5 mr-3"
                 >
                   <Icon small class="text-cold-blue-500">
                     {{ icons.ziChecked }}
@@ -375,7 +375,7 @@
         >
           <span v-html="video.title" />
         </h3>
-        <div class="w-15 h-px py-xs my-6 mx-auto bg-cold-blue-500" />
+        <div class="w-15 h-px py-0.5 my-6 mx-auto bg-cold-blue-500" />
         <div class="pb-6"></div>
         <div class="relative">
           <div style="max-width: 1000px">
@@ -465,14 +465,14 @@
         <div class="flex flex-wrap lg:flex-nowrap pt-6 pb-6">
           <div class="w-full flex-shrink-0" style="max-width: 532px">
             <h3 v-html="security.title" class="about-section-title font-bold" />
-            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
+            <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
             <div
               v-html="security.text"
               class="text-lg leading-relaxed text-light-gray-900"
             />
           </div>
           <div class="flex-grow flex lg:justify-center px-6 pt-5 lg:pt-2">
-            <div class="pt-xs">
+            <div class="pt-0.5">
               <img src="@/assets/img/amazon-logo.svg" alt="amazon" />
             </div>
           </div>
@@ -538,7 +538,7 @@
                     bottom-0
                     w-full
                     h-px
-                    py-xs
+                    py-0.5
                     bg-transparent
                     transition-colors
                     duration-100
@@ -625,7 +625,7 @@
         <div class="flex flex-col xl:flex-row py-1">
           <div class="w-full flex-shrink-0" style="max-width: 849px">
             <h3 v-html="issue.title" class="about-section-title font-bold" />
-            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
+            <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
           </div>
           <div class="order-first xl:order-none flex-grow h-0 relative">
             <div
@@ -693,7 +693,7 @@
                   line-height: 44px;
                 "
               />
-              <div class="w-15 h-px py-xs my-5 mx-auto bg-cold-blue-500" />
+              <div class="w-15 h-px py-0.5 my-5 mx-auto bg-cold-blue-500" />
               <div
                 class="
                   text-lg text-light-gray-900
@@ -761,7 +761,7 @@
         <div class="flex flex-col xl:flex-row py-1">
           <div class="w-full flex-shrink-0" style="max-width: 578px">
             <h3 v-html="power.title" class="about-section-title font-bold" />
-            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
+            <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
           </div>
           <div class="order-first xl:order-none flex-grow h-0 relative">
             <div
@@ -836,7 +836,7 @@
         <div class="container flex pt-32 pb-10 lg:mt-6">
           <div class="w-full flex-shrink-0" style="max-width: 518px">
             <h3 class="about-section-title font-bold">Кабинет клиента</h3>
-            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
+            <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
             <div class="text-lg leading-relaxed text-light-gray-900">
               На время сделки у вашего клиента появится свой личный
               кабинет.Система вовлекает клиента в работу над заказом и упрощает
@@ -902,7 +902,7 @@
               Станьте одним из первых поль&shy;зо&shy;ва&shy;те&shy;лей
               мощнейшего проекта в меж&shy;ду&shy;на&shy;род&shy;ной торговле
             </h3>
-            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
+            <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
             <div
               class="text-xl leading-normal text-white opacity-50 pb-8"
               style="max-width: 600px"
@@ -994,7 +994,7 @@
                 style="height: 46px"
               />
             </div>
-            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
+            <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
             <div class="text-lg leading-relaxed text-light-gray-900 pb-8">
               {{ userInterface.text }}
             </div>
@@ -1184,7 +1184,7 @@
           <h3 class="about-section-title font-bold">
             Cильная команда<br />практиков
           </h3>
-          <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
+          <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
           <div class="">
             <div class="flex flex-wrap -mb-4">
               <div
@@ -1234,7 +1234,7 @@
             >
               Убедитесь, что ZENNNN полезен вашему бизнесу
             </h3>
-            <div class="w-15 h-px py-xs my-6 bg-cold-blue-500" />
+            <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
             <div class="text-white text-xl pb-10">
               Если бы биты и пиксели умели любить,<br />ZENNNN стал бы первой
               программой, которая полюбила человека.

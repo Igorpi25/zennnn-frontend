@@ -81,7 +81,7 @@
         >
           <div class="flex justify-between">
             <div>
-              <div class="h-6 text-lg font-semibold mb-xs">
+              <div class="h-6 text-lg font-semibold mb-0.5">
                 {{ productName }}
               </div>
               <!-- CHANGE PLAN DIALOG -->
@@ -106,7 +106,7 @@
                   font-semibold
                   text-white
                   px-2
-                  mb-xs
+                  mb-0.5
                 "
               >
                 {{ $t(`payment.${subscriptionStatus}`) }}
@@ -430,17 +430,17 @@
             </div>
           </div>
         </template>
-        <div class="flex justify-between text-xl sm:text-2xl pt-10 pr-4 mr-xs">
+        <div class="flex justify-between text-xl sm:text-2xl pt-10 pr-4 mr-0.5">
           <div class="sm:w-64">{{ $t('payment.total') }}:</div>
           <div class="hidden sm:block md:w-64 mx-8" />
-          <div v-if="isInvoice" class="flex items-center w-full pl-4 ml-xs">
+          <div v-if="isInvoice" class="flex items-center w-full pl-4 ml-0.5">
             <span class="font-bold">{{ invoiceProduct.price }}</span>
             <span v-if="invoiceProduct.priceInCurrency" class="pl-1">~</span>
             <span v-if="invoiceProduct.priceInCurrency" class="pl-1">{{
               invoiceProduct.priceInCurrency
             }}</span>
           </div>
-          <div v-else-if="isPromo" class="flex items-center w-full pl-4 ml-xs">
+          <div v-else-if="isPromo" class="flex items-center w-full pl-4 ml-0.5">
             <span class="font-bold">{{ promoProduct.price }}</span>
             <span v-if="promoProduct.priceInCurrency" class="pl-1">~</span>
             <span v-if="promoProduct.priceInCurrency" class="pl-1">{{
@@ -457,7 +457,7 @@
               items-center
               w-full
               pl-4
-              ml-xs
+              ml-0.5
             "
           >
             <span class="font-bold">{{

@@ -39,7 +39,7 @@
           "
         >
           <template v-slot:append>
-            <span class="text-base text-gray-100 pl-xs pr-sm">%</span>
+            <span class="text-base text-gray-100 pl-0.5 pr-sm">%</span>
           </template>
         </TextField>
         <Switch
@@ -93,7 +93,7 @@
           "
         >
           <template v-slot:append>
-            <span class="text-base text-gray-100 pl-xs pr-sm">{{
+            <span class="text-base text-gray-100 pl-0.5 pr-sm">{{
               $t(`currency.${currency}.symbol`)
             }}</span>
           </template>
@@ -114,7 +114,7 @@
           <span class="text-white">{{
             $n(invoice.discount || 0, 'fixed')
           }}</span>
-          <span class="text-gray-100 pl-xs">{{
+          <span class="text-gray-100 pl-0.5">{{
             $t(`currency.${currency}.symbol`)
           }}</span>
         </div>
@@ -148,7 +148,7 @@
           "
         >
           <template v-slot:append>
-            <span class="text-base text-gray-100 pl-xs pr-sm">{{
+            <span class="text-base text-gray-100 pl-0.5 pr-sm">{{
               $t(`currency.${currency}.symbol`)
             }}</span>
           </template>
@@ -169,7 +169,7 @@
           <span class="text-white">{{
             $n(invoice.prepayment || 0, 'fixed')
           }}</span>
-          <span class="text-gray-100 pl-xs">{{
+          <span class="text-gray-100 pl-0.5">{{
             $t(`currency.${currency}.symbol`)
           }}</span>
         </div>
@@ -216,7 +216,7 @@
           <span class="text-white">{{
             $n(invoice.obtainCost || 0, 'fixed')
           }}</span>
-          <span class="text-gray-100 pl-xs">{{
+          <span class="text-gray-100 pl-0.5">{{
             $t(`currency.${currency}.symbol`)
           }}</span>
         </div>
@@ -254,7 +254,7 @@
           <span class="text-white">{{
             $n(invoice.clientDebt || 0, 'fixed')
           }}</span>
-          <span class="text-gray-100 pl-xs">{{
+          <span class="text-gray-100 pl-0.5">{{
             $t(`currency.${currency}.symbol`)
           }}</span>
         </div>

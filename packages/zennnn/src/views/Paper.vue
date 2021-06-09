@@ -199,7 +199,7 @@
                       <div
                         v-if="hasNewComments"
                         :class="[
-                          'absolute top-0 right-0 w-sm h-sm rounded-full border-2 bg-light-gray-100 border-light-gray-100 transition-colors duration-100 ease-out -mt-xs -mr-1',
+                          'absolute top-0 right-0 w-sm h-sm rounded-full border-2 bg-light-gray-100 border-light-gray-100 transition-colors duration-100 ease-out -mt-0.5 -mr-1',
                         ]"
                       >
                         <div class="w-full h-full bg-purple-500 rounded-full" />

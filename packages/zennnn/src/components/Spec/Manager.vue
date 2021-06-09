@@ -95,7 +95,7 @@
       <div class="bg-gray-800 bg-opacity-90 rounded-md px-sm pb-sm">
         <div class="h-12 flex items-center">
           <div class="flex items-center pl-5 sm:pr-sm">
-            <Checkbox disabled hide-details class="pt-xs">
+            <Checkbox disabled hide-details class="pt-0.5">
               <button
                 disabled
                 class="

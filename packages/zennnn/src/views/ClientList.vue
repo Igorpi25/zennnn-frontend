@@ -77,7 +77,7 @@
                       rounded-full
                       text-white
                       bg-purple-500
-                      px-xs
+                      px-0.5
                     "
                   >
                     <span>
