@@ -1,13 +1,15 @@
 <template>
-  <Select
+  <Autocomplete
     v-model="model"
     :items="items"
     :prepend-icon="ziSearch"
-    :max-height="304"
+    :hide-details="false"
+    :rules="[rules.required]"
     clearable
+    label="Label"
     placeholder="Search..."
   >
-  </Select>
+  </Autocomplete>
 </template>
 
 <script setup>
@@ -23,4 +25,7 @@ const items = Array.from(Array(10).keys()).map((key) => {
     disabled: i === 3,
   }
 })
+const rules = {
+  required: (v) => !!v || 'Please select.',
+}
 </script>

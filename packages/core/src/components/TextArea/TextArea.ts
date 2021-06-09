@@ -1,15 +1,12 @@
 import {
   h,
   ref,
-  reactive,
   computed,
   watch,
   nextTick,
   onMounted,
   defineComponent,
 } from 'vue'
-
-import { useClientRect } from 'vue-supp'
 
 import { useInputProps, useInput } from '../../composables/useInput'
 import {
@@ -130,20 +127,13 @@ export default defineComponent({
       isDisabled,
     })
 
-    const clientRectProps = reactive({
-      element: controlElement,
-      hasResizeListener: true,
-    })
-    const { clientRect, updateClientRect } = useClientRect(clientRectProps)
-
     const { genInputMessages } = useInputMessage(props, {
-      controlElement,
+      inputElement,
       isFocused,
       hasMessages,
       hasError,
       messagesToDisplay,
       showDetails,
-      dimensions: clientRect,
     })
 
     const { hasDebounce, debounceInput, cancelDebounce, clearableCallback } =
@@ -188,7 +178,6 @@ export default defineComponent({
       if (document.activeElement !== inputElement.value) {
         inputElement.value?.focus()
       }
-      updateClientRect()
       if (!isFocused.value) {
         isFocused.value = true
 
@@ -264,8 +253,6 @@ export default defineComponent({
       // This has to be done ASAP, waiting for Vue
       // to update the DOM causes ugly layout jumping
       inputElement.value.style.height = Math.max(minHeight, height) + 'px'
-      // update dimensions
-      updateClientRect()
     }
 
     const genTextAreaInput = () => {

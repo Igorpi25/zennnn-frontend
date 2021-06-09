@@ -14,7 +14,7 @@ import { ref } from 'vue'
 import { ziSearch } from '@zennnn/icons'
 
 const model = ref(null)
-const items = Array.from(Array(10).keys()).map(key => {
+const items = Array.from(Array(10).keys()).map((key) => {
   const i = key + 1
   return {
     value: `item${i}`,

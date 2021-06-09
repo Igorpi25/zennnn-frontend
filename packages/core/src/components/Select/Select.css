@@ -1,3 +1,9 @@
+.select--is-menu-active::before {
+  content: '';
+  @apply absolute inset-x-0 bottom-0 pt-2;
+  @apply bg-white dark:bg-gray-900;
+}
+
 .select-box::before {
   content: '';
   @apply absolute pointer-events-none inset-0 -top-10 rounded-lg;
@@ -7,7 +13,7 @@
   @apply -top-8;
 }
 
-.select:not(.select--has-error) .select__control {
+.select:not(.input--has-error) .select__control {
   @apply ring-transparent !important;
 }
 
@@ -16,7 +22,7 @@
 }
 
 .select__control--is-menu-active {
-  @apply rounded-t-lg rounded-b-none;
+  @apply rounded-lg;
 }
 
 .select__input {

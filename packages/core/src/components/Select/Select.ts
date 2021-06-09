@@ -166,14 +166,13 @@ export default defineComponent({
     const { clientRect, updateClientRect } = useClientRect(clientRectProps)
 
     const { genInputMessages } = useInputMessage(props, {
-      controlElement,
+      inputElement,
       isFocused,
       isPatternMismatch,
       hasMessages,
       hasError,
       messagesToDisplay,
       showDetails,
-      dimensions: clientRect,
     })
 
     const { genClearInput } = useInputClear(props, {

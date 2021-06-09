@@ -1,14 +1,13 @@
 import {
   h,
   ref,
-  reactive,
   computed,
   nextTick,
   withDirectives,
   defineComponent,
 } from 'vue'
 
-import { useClientRect, Mask, setCursor } from 'vue-supp'
+import { Mask, setCursor } from 'vue-supp'
 
 import { useInputProps, useInput } from '../../composables/useInput'
 import {
@@ -132,21 +131,14 @@ export default defineComponent({
       isDisabled,
     })
 
-    const clientRectProps = reactive({
-      element: controlElement,
-      hasResizeListener: true,
-    })
-    const { clientRect, updateClientRect } = useClientRect(clientRectProps)
-
     const { genInputMessages } = useInputMessage(props, {
-      controlElement,
+      inputElement,
       isFocused,
       isPatternMismatch,
       hasMessages,
       hasError,
       messagesToDisplay,
       showDetails,
-      dimensions: clientRect,
     })
 
     const {
@@ -191,7 +183,6 @@ export default defineComponent({
         inputElement.value?.focus()
       }
       const target = e.target as HTMLInputElement
-      updateClientRect()
       if (!isFocused.value) {
         isFocused.value = true
 

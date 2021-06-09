@@ -1,12 +1,12 @@
 <template>
-  <TextField
+  <TextArea
     v-model="model"
     :hide-details="false"
     :rules="[rules.required]"
     label="Label"
     placeholder="Value required"
   >
-  </TextField>
+  </TextArea>
 </template>
 
 <script setup>

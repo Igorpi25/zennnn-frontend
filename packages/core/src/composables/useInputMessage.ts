@@ -1,7 +1,6 @@
-import { h, computed, Ref, ComputedRef } from 'vue'
-import { convertToUnit } from 'vue-supp'
+import { h, ref, computed, watch, Transition, withDirectives, vShow } from 'vue'
 
-import Menu from '../components/Menu'
+import type { Ref, ComputedRef } from 'vue'
 
 export interface InputMessageProps {
   messagesOnFocused?: boolean
@@ -9,30 +8,31 @@ export interface InputMessageProps {
 }
 
 export interface InputMessageContext {
-  controlElement: Ref<HTMLElement | undefined>
+  inputElement: Ref<HTMLElement | undefined>
   isFocused: Ref<boolean>
   isPatternMismatch?: Ref<boolean>
   hasMessages: ComputedRef<boolean>
   hasError: ComputedRef<boolean>
   messagesToDisplay: ComputedRef<string[]>
   showDetails: ComputedRef<boolean>
-  dimensions: Ref<DOMRectReadOnly | undefined>
 }
 
-// Default
 export const useInputMessage = (
   props: InputMessageProps,
   {
-    controlElement,
+    inputElement,
     isFocused,
     isPatternMismatch,
     hasMessages,
     hasError,
     messagesToDisplay,
     showDetails,
-    dimensions,
   }: InputMessageContext
 ) => {
+  // messagesToDisplay cleared before animation end,
+  // set message to display before enable
+  const internalMessage = ref<string | undefined>()
+
   const showPatternMismatch = computed(() => {
     return isPatternMismatch && isPatternMismatch.value && props.patternMessage
   })
@@ -45,56 +45,49 @@ export const useInputMessage = (
     return showPatternMismatch.value || showError
   })
 
-  // TODO: popper activator can be virtual
-  const genInputMessages = () => {
-    if (!showDetails.value || !controlElement.value) return undefined
-
-    const message = showPatternMismatch.value
+  watch(showPopupMessage, (val) => {
+    const m = showPatternMismatch.value
       ? props.patternMessage
       : messagesToDisplay.value[0]
+    if (val) {
+      internalMessage.value = m
+    }
+  })
 
-    return h(
-      Menu,
-      {
-        modelValue: showPopupMessage.value,
-        activator: controlElement.value,
-        attach: false,
-        top: true,
-        arrow: false,
-        closeOnClick: false,
-        closeOnContentClick: false,
-        openOnClick: false,
-        openOnHover: false,
-        disableKeys: true,
-        zIndex: 'unset',
-        tabindex: '-1',
-        role: 'alert',
-        width: dimensions.value!.width,
-        distance: dimensions.value!.height * -1,
-        allowOverflow: true,
-        boxClass: 'shadow-none dark:shadow-none',
-        contentClass:
-          'bg-yellow-300 dark:bg-yellow-300 ring-1 ring-yellow-300 ring-inset text-black dark:text-black rounded px-sm py-2',
-        onClick: () => {
-          if (!props.messagesOnFocused) {
-            focus()
-          }
-        },
-      },
-      {
-        default: () => {
-          return h(
+  const genInputMessages = () => {
+    if (!showDetails.value) return undefined
+
+    const content = withDirectives(
+      h(
+        'div',
+        { class: 'relative h-0 w-full' },
+        h(
+          'div',
+          { class: 'absolute inset-x-0 bottom-0 -mb-2' },
+          h(
             'div',
             {
-              style: {
-                minHeight: convertToUnit(dimensions.value!.height),
-                paddingBottom: convertToUnit(dimensions.value!.height),
+              class: 'bg-yellow-300 text-black rounded-t px-sm pt-2 pb-4',
+              onClick: () => {
+                if (!props.messagesOnFocused) inputElement.value?.focus()
               },
             },
-            message
+            internalMessage.value
           )
-        },
-      }
+        )
+      ),
+      [[vShow, showPopupMessage.value]]
+    )
+
+    return h(
+      Transition,
+      {
+        enterActiveClass: 'transition-opacity ease-out-quart duration-200',
+        leaveActiveClass: 'transition-opacity ease-out-quart duration-150',
+        enterFromClass: 'opacity-0',
+        leaveToClass: 'opacity-0',
+      },
+      () => content
     )
   }
 

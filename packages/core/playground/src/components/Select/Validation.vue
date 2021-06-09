@@ -4,7 +4,10 @@
     :items="items"
     :prepend-icon="ziSearch"
     :max-height="304"
+    :hide-details="false"
+    :rules="[rules.required]"
     clearable
+    label="Label"
     placeholder="Search..."
   >
   </Select>
@@ -23,4 +26,7 @@ const items = Array.from(Array(10).keys()).map((key) => {
     disabled: i === 3,
   }
 })
+const rules = {
+  required: (v) => !!v || 'Please select.',
+}
 </script>
