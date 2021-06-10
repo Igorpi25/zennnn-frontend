@@ -9,7 +9,7 @@
   /* This is required for an issue on Chrome 65
   that prevents scrolling after a menu is opened */
   will-change: transform;
-  @apply relative z-1 rounded-lg bg-white dark:bg-gray-900;
+  @apply relative rounded-lg bg-white dark:bg-gray-900;
   @apply leading-tight text-gray-900 dark:text-gray-100;
   @apply overflow-y-auto overflow-x-hidden scrolling-touch;
 }

@@ -23,9 +23,9 @@ interface PopperProps {
   arrow: boolean
   skidding: string | number
   distance: string | number
-  zIndex: number | string
+  zIndex?: number | string
   // usefull to set origin class
-  boxClass: string
+  boxClass?: string
   width?: string | number
 }
 
@@ -75,10 +75,7 @@ export const usePopperProps = () => {
       type: [String, Number],
       default: 0,
     },
-    zIndex: {
-      type: [Number, String],
-      default: 10,
-    },
+    zIndex: [Number, String],
     boxClass: {
       type: String,
       default: '',

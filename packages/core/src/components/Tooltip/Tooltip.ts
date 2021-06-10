@@ -25,6 +25,7 @@ import {
 } from 'vue-supp'
 
 import { usePopperProps, usePopper } from '../../composables/usePopper'
+import { useStackContext } from '../../composables/useStackContext'
 
 import uid from '../../utils/uid'
 
@@ -72,6 +73,8 @@ export default defineComponent({
     const { isActive, genActivator } = useActivator(props, { slots, reference })
 
     const { showLazyContent } = useLazyContent(props, { isActive })
+
+    const { activeZIndex } = useStackContext(props, isActive, id)
 
     const activatorAttrs = computed(() => {
       return {
@@ -162,7 +165,7 @@ export default defineComponent({
       const data = {
         ref: popper,
         style: {
-          zIndex: props.zIndex,
+          zIndex: activeZIndex.value,
         },
         'data-popper-root': '',
       }

@@ -126,7 +126,6 @@ export const useInput = (
         placement: 'top-start',
         skidding: -16,
         distance: 5,
-        zIndex: 4,
         origin: '24px 100%',
         class: 'inline-flex',
       },

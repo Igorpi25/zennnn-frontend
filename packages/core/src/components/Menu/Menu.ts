@@ -30,6 +30,7 @@ import {
 
 import { usePopperProps, usePopper } from '../../composables/usePopper'
 import { useDelayProps, useDelay } from '../../composables/useDelay'
+import { useStackContext } from '../../composables/useStackContext'
 
 import uid from '../../utils/uid'
 import { debounce } from '../../utils/debounce'
@@ -135,6 +136,8 @@ export default defineComponent({
     })
 
     const { showLazyContent } = useLazyContent(props, { isActive })
+
+    const { activeZIndex } = useStackContext(props, isActive, id)
 
     function activate() {
       requestAnimationFrame(() => {
@@ -444,7 +447,7 @@ export default defineComponent({
       const data = {
         ref: popper,
         style: {
-          zIndex: props.zIndex,
+          zIndex: activeZIndex.value,
         },
         'data-popper-root': '',
         'data-popper-visible-on-reference-hidden':

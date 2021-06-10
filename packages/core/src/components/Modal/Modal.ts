@@ -127,12 +127,7 @@ export default defineComponent({
 
     const { target } = useAttach(props)
 
-    const { activeZIndex, isTopZIndex } = useStackContext(
-      props,
-      isActive,
-      id,
-      'modal'
-    )
+    const { activeZIndex, isTopZIndex } = useStackContext(props, isActive, id)
 
     useLockscreen(isActive)
 
