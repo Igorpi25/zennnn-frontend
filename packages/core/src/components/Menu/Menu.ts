@@ -1,7 +1,6 @@
 import {
   h,
   ref,
-  reactive,
   watch,
   provide,
   inject,
@@ -26,7 +25,6 @@ import {
   useActivator,
   useLazyContentProps,
   useLazyContent,
-  useClientRect,
   ClickOutside,
 } from 'vue-supp'
 
@@ -138,12 +136,6 @@ export default defineComponent({
 
     const { showLazyContent } = useLazyContent(props, { isActive })
 
-    const clientRectProps = reactive({
-      element: props.width === 'auto' ? rootElement : undefined,
-      hasResizeListener: props.width === 'auto',
-    })
-    const { clientRect, updateClientRect } = useClientRect(clientRectProps)
-
     function activate() {
       requestAnimationFrame(() => {
         isVisible.value = isActive.value
@@ -237,9 +229,6 @@ export default defineComponent({
       } else {
         runCloseDelay()
       }
-
-      // SHOUL BE REPLACE BY RESIZE OBSERVER
-      if (props.width === 'auto') updateClientRect()
     })
 
     watch(isVisible, (val) => {
@@ -428,11 +417,6 @@ export default defineComponent({
           ...dimensionStyles.value,
         },
         onKeydown: !props.disableKeys ? onContentKeyDown : undefined,
-      }
-
-      // TODO: should be refactored
-      if (props.width === 'auto') {
-        data.style.width = clientRect.value?.width + 'px'
       }
 
       const content = withDirectives(

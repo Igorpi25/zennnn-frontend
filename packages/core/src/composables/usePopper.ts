@@ -26,6 +26,7 @@ interface PopperProps {
   zIndex: number | string
   // usefull to set origin class
   boxClass: string
+  width?: string | number
 }
 
 export const usePopperProps = () => {
@@ -157,6 +158,10 @@ export const usePopper = (
         },
         applyArrowHide
       )
+    }
+
+    if (props.width === '100%') {
+      defaultModifiers.push(sameWidth)
     }
 
     const excludeModifiers = customModifiers.map((mod) => mod.name)
@@ -311,5 +316,21 @@ const applyArrowHide: Modifiers[0] = {
         arrow.removeAttribute('data-hide')
       }
     }
+  },
+}
+
+// Custom modifier for same width
+// https://github.com/popperjs/popper-core/issues/794#issuecomment-644034386
+const sameWidth: Modifiers[0] = {
+  name: 'sameWidth',
+  enabled: true,
+  phase: 'beforeWrite',
+  fn({ state }) {
+    state.styles.popper.width = `${state.rects.reference.width}px`
+  },
+  effect({ state }) {
+    state.elements.popper.style.minWidth = `${
+      (state.elements.reference as HTMLElement).offsetWidth
+    }px`
   },
 }

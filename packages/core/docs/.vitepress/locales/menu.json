@@ -36,7 +36,7 @@
     "top": "Aligns the content towards the top.",
     "transition": "Sets the component transition. Can be string name of transition or object with [custom transition classes](https://v3.vuejs.org/guide/transitions-enterleave.html#custom-transition-classes).",
     "value": "Selected value.",
-    "width": "Width of the content. Value `auto` setting width of menu eq. to activator width.",
+    "width": "Width of the content. Value `100%` setting width of menu eq. to activator width (uses `sameWith` popper modifier).",
     "zIndex": "The z-index used for the component."
   },
   "emits": {

@@ -2,14 +2,12 @@
   <Menu
     v-model:value="value"
     :arrow="false"
-    bottom
-    width="auto"
+    placement="bottom-start"
+    width="100%"
     max-height="304"
   >
     <template v-slot:activator>
-      <Btn>
-        Dropdown
-      </Btn>
+      <Btn>Dropdown</Btn>
     </template>
     <MenuItem
       v-slot="{ selected }"
@@ -21,7 +19,7 @@
       class="pl-0 pr-3"
     >
       <div class="w-8 flex justify-center flex-shrink-0">
-        <Icon v-if="selected" >{{ ziChecked }}</Icon>
+        <Icon v-if="selected">{{ ziChecked }}</Icon>
       </div>
       <span class="truncate">
         {{ item.text }}
@@ -39,12 +37,12 @@ import { ziChecked } from '@zennnn/icons'
 
 const value = ref(null)
 
-const items = Array.from(Array(20).keys()).map(key => {
+const items = Array.from(Array(20).keys()).map((key) => {
   const i = key + 1
   return {
     value: `item${i}`,
     text: `Item ${i} Item ${i} Item ${i} Item ${i}`,
-    disabled: i === 3
+    disabled: i === 3,
   }
 })
 </script>

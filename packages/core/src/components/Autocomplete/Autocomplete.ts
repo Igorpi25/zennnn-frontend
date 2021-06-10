@@ -1,7 +1,6 @@
 import {
   h,
   ref,
-  reactive,
   computed,
   nextTick,
   withDirectives,
@@ -13,7 +12,6 @@ import {
 import {
   useFilterProps,
   useFilter,
-  useClientRect,
   Mask,
   setCursor,
   getPropertyFromItem,
@@ -168,12 +166,6 @@ export default defineComponent({
       isDisabled,
     })
 
-    const clientRectProps = reactive({
-      element: controlElement,
-      hasResizeListener: true,
-    })
-    const { clientRect, updateClientRect } = useClientRect(clientRectProps)
-
     const { genInputMessages } = useInputMessage(props, {
       inputElement,
       isFocused,
@@ -263,12 +255,7 @@ export default defineComponent({
     })
 
     watch(isMenuActive, (val) => {
-      if (val) {
-        // moved from openMenu
-        updateClientRect()
-      } else {
-        updateSelf()
-      }
+      val || updateSelf()
     })
 
     watch(
@@ -330,7 +317,6 @@ export default defineComponent({
       if (document.activeElement !== inputElement.value) {
         inputElement.value?.focus()
       }
-      updateClientRect()
       if (!isFocused.value) {
         isFocused.value = true
 
@@ -510,14 +496,14 @@ export default defineComponent({
           activator: controlElement.value,
           attach: props.attach,
           transition: null,
-          bottom: true,
           arrow: false,
           closeOnClick: true,
           closeOnContentClick: false,
           openOnClick: false,
           openOnHover: false,
           disableKeys: true,
-          width: clientRect.value?.width,
+          width: '100%',
+          placement: 'bottom-start',
           distance: props.distance,
           tabindex: '-1',
           id: listboxId,
