@@ -25,6 +25,7 @@ import {
 } from 'vue-supp'
 
 import { usePopperProps, usePopper } from '../../composables/usePopper'
+import { useDelayProps, useDelay } from '../../composables/useDelay'
 import { useStackContext } from '../../composables/useStackContext'
 
 import uid from '../../utils/uid'
@@ -46,6 +47,7 @@ export default defineComponent({
     }),
     ...useDimensionProps(),
     ...useAttachProps(),
+    ...useDelayProps(),
     tag: {
       type: String,
       default: 'span',
@@ -76,6 +78,24 @@ export default defineComponent({
 
     const { activeZIndex } = useStackContext(props, isActive, id)
 
+    function activate() {
+      requestAnimationFrame(() => {
+        isVisible.value = isActive.value
+        create()
+      })
+    }
+
+    function deactivate() {
+      isVisible.value = isActive.value
+      if (!props.transition) {
+        destroy()
+      }
+    }
+
+    const { runCloseDelay, runOpenDelay } = useDelay(props, (value) => {
+      value ? activate() : deactivate()
+    })
+
     const activatorAttrs = computed(() => {
       return {
         role: undefined,
@@ -94,17 +114,8 @@ export default defineComponent({
 
     watch(isActive, (val) => {
       if (props.disabled) return
-      if (val) {
-        requestAnimationFrame(() => {
-          isVisible.value = val
-          create()
-        })
-      } else {
-        isVisible.value = val
-        if (!props.transition) {
-          destroy()
-        }
-      }
+
+      val ? runOpenDelay() : runCloseDelay()
     })
 
     const genContent = () => {

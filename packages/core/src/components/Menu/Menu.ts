@@ -227,11 +227,7 @@ export default defineComponent({
     watch(isActive, (val) => {
       if (props.disabled) return
 
-      if (val) {
-        runOpenDelay()
-      } else {
-        runCloseDelay()
-      }
+      val ? runOpenDelay() : runCloseDelay()
     })
 
     watch(isVisible, (val) => {
