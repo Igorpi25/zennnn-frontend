@@ -34,7 +34,6 @@
     "rowHeight": "Height value for each row. Requires the use of the **auto-grow** prop.",
     "rows": "Default row count.",
     "rules": "Accepts a mixed array of types `function`, `boolean` and `string`. Functions pass an input value as an argument and must return either `true` / `false` or a `string` containing an error message. The input field will enter an error state if a function returns (or any value in the array contains) `false` or is a `string`.",
-    "showLabelWrap": "Controls `Label` component `showWrap` prop.",
     "singleLine": "Label does not shown.",
     "stateErrorColor": "Validation success state color class, `warn`, `none` or tailwindcss text class.",
     "stateErrorIcon": "Validation success state icon, default @zennnn/icons `ziStatusPointSm`.",

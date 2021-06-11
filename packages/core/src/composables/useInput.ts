@@ -18,7 +18,6 @@ export interface InputProps {
   placeholder?: string
   label?: string
   labelHint?: string
-  showLabelWrap?: boolean
   loading?: boolean
   singleLine?: boolean
   solo?: boolean // declarated in component props
@@ -46,7 +45,6 @@ export const useInputProps = () => {
     autofocus: Boolean,
     label: String,
     labelHint: String,
-    showLabelWrap: Boolean,
     loading: Boolean,
     singleLine: Boolean,
     inputClass: {
@@ -135,7 +133,7 @@ export const useInput = (
           return h(
             Icon,
             {
-              class: 'text-blue-500 ml-1',
+              class: 'text-blue-500',
             },
             {
               default: () => ziQuestionSign,
@@ -152,7 +150,6 @@ export const useInput = (
           Label,
           {
             for: id,
-            showWrap: props.showLabelWrap,
             // prevent check on checkbox
             onClick: (e: MouseEvent) => {
               e.preventDefault()

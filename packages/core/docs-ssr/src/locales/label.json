@@ -2,8 +2,7 @@
   "props": {
     "id": "Applies a custom id.",
     "for": "The `id` of a labelable form-related element in the same document as the `<label>` element.",
-    "value": "Text value, if not setted **default** slot.",
-    "showWrap": "Designates whether label should show wrapped content on hover."
+    "value": "Text value, if not setted **default** slot."
   },
   "slots": {
     "append": "Append content in wrapper.",

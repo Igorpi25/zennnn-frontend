@@ -9,7 +9,6 @@
     :dense="dense"
     :label="label"
     :label-hint="labelHint"
-    :show-label-wrap="showLabelWrap"
     :size="computedSize"
     :disabled="disabled"
     max-height="304"
@@ -122,7 +121,6 @@ export default {
     dense: Boolean,
     label: String,
     labelHint: String,
-    showLabelWrap: Boolean,
     debounce: {
       type: Number,
       default: 500,

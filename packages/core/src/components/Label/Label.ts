@@ -9,7 +9,6 @@ export default defineComponent({
     id: String,
     for: String,
     value: String,
-    showWrap: Boolean,
   },
 
   setup(props, { slots }) {
@@ -17,39 +16,40 @@ export default defineComponent({
     const rootElement = ref<HTMLElement>()
     const contentWrapperElement = ref<HTMLElement>()
     const contentElement = ref<HTMLElement>()
-    const closestBackgroundColor = ref<string>('transparent')
     const hasOverflow = ref<boolean>(false)
+    const isHovered = ref(false)
     let timeout: any = null
 
     const getClosestBackgroundColor = () => {
       let el = rootElement.value
+      let color = 'inherit'
       while (el?.parentNode) {
         const { backgroundColor } = getComputedStyle(el)
         if (
           backgroundColor !== 'transparent' &&
           backgroundColor !== 'rgba(0, 0, 0, 0)'
         ) {
-          closestBackgroundColor.value = backgroundColor
+          color = backgroundColor
           break
         }
         el = el.parentNode as HTMLElement
       }
+      return color
     }
 
     const onPointerenter = () => {
-      timeout = setTimeout(() => {
-        const clientWidth = contentWrapperElement.value?.clientWidth || 0
-        const scrollWidth = contentElement.value?.scrollWidth || 0
-        hasOverflow.value = scrollWidth > clientWidth
-        if (hasOverflow.value) {
-          getClosestBackgroundColor()
-          contentElement.value!.style.backgroundColor =
-            closestBackgroundColor.value
-          contentElement.value!.style.overflow = 'visible'
-          contentElement.value!.style.whiteSpace = 'normal'
-          contentElement.value!.style.zIndex = '1'
-        }
-      }, 120)
+      const clientWidth = contentWrapperElement.value?.clientWidth || 0
+      const scrollWidth = contentElement.value?.scrollWidth || 0
+      hasOverflow.value = scrollWidth > clientWidth
+      if (hasOverflow.value) {
+        timeout = setTimeout(() => {
+          if (hasOverflow.value) {
+            isHovered.value = true
+            contentElement.value!.style.backgroundColor =
+              getClosestBackgroundColor()
+          }
+        }, 120)
+      }
     }
     const onPointerleave = () => {
       if (timeout) {
@@ -57,23 +57,22 @@ export default defineComponent({
         timeout = null
       }
       if (hasOverflow.value) {
+        isHovered.value = false
         contentElement.value!.style.backgroundColor = 'unset'
-        contentElement.value!.style.overflow = 'hidden'
-        contentElement.value!.style.whiteSpace = 'nowrap'
-        contentElement.value!.style.zIndex = 'unset'
       }
     }
 
     const genContentWrapper = () => {
-      const data = {
-        ref: contentWrapperElement,
-        class: 'label__content__wrapper',
-      } as any
-      if (props.showWrap) {
-        data.onPointerenter = onPointerenter
-        data.onPointerleave = onPointerleave
-      }
-      return h('div', data, genContent())
+      return h(
+        'div',
+        {
+          ref: contentWrapperElement,
+          class: 'label__content__wrapper',
+          onPointerenter: onPointerenter,
+          onPointerleave: onPointerleave,
+        },
+        genContent()
+      )
     }
 
     const genAppendSlot = () => {
@@ -105,7 +104,7 @@ export default defineComponent({
           'aria-hidden': !props.for,
           class: {
             label: true,
-            'label--show-wrap': props.showWrap,
+            'label--show-overflow': hasOverflow.value && isHovered.value,
           },
         },
         h(

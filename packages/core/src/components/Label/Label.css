@@ -1,19 +1,22 @@
 .label {
-  @apply flex items-center relative h-5 my-2;
+  @apply flex items-center relative h-6 my-1.5;
 }
 
 .label__wrapper {
-  @apply absolute inset-0 inline-flex;
+  @apply absolute inset-0 inline-flex max-w-full;
 }
 
 .label__content__wrapper {
-  @apply leading-5 max-w-full;
+  @apply overflow-hidden;
 }
 
 .label__content {
   @apply text-base text-gray-300 dark:text-gray-100;
-  @apply relative w-full truncate;
+  @apply relative w-full transition-colors truncate;
 }
-.label--show-wrap .label__content {
-  @apply pointer-events-none;
+.label--show-overflow .label__content__wrapper {
+  @apply overflow-visible z-1;
+}
+.label--show-overflow .label__content {
+  @apply whitespace-normal pointer-events-none;
 }
