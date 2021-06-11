@@ -33,6 +33,7 @@ import {
 import { useInputMessage } from '../../composables/useInputMessage'
 import { useSelect } from '../../composables/useSelect'
 import { useTextHighlight } from '../../composables/useTextHighlight'
+import { useDelayProps } from '../../composables/useDelay'
 
 import uid from '../../utils/uid'
 
@@ -49,6 +50,7 @@ export default defineComponent({
     ...useInputValidationProps(),
     ...useInputControlProps(),
     ...useFilterProps(),
+    ...useDelayProps(),
     modelValue: {
       type: [String, Number, Date, Object],
       default: null,
@@ -514,6 +516,8 @@ export default defineComponent({
           height: props.height,
           minHeight: props.minHeight,
           maxHeight: props.maxHeight,
+          openDelay: props.openDelay,
+          closeDelay: props.closeDelay,
           disabled: isDisabled.value || isReadonly.value,
           visibleOnReferenceHidden: true,
           boxClass: classNames(
