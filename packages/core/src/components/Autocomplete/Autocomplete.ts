@@ -361,6 +361,9 @@ export default defineComponent({
     const onKeydown = (e: KeyboardEvent) => {
       const menu = menuRef.value!
       if (e.key === 'Esc' || e.key === 'Escape') {
+        if (isMenuActive.value) {
+          e.stopPropagation()
+        }
         e.preventDefault()
         closeMenu()
       } else if (e.key === 'Enter') {
