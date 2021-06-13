@@ -11,18 +11,18 @@
   "dependencies": {
     "@zennnn/core": "^0.36.7",
     "@zennnn/icons": "^0.36.7",
-    "core-js": "^3.11.0",
-    "vue": "^3.0.11"
+    "core-js": "^3.14.0",
+    "vue": "^3.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.13.14",
     "@babel/eslint-parser": "^7.13.14",
-    "@vue/cli-plugin-babel": "~5.0.0-beta.1",
-    "@vue/cli-plugin-eslint": "~5.0.0-beta.1",
-    "@vue/cli-plugin-typescript": "~5.0.0-beta.1",
-    "@vue/cli-plugin-unit-jest": "~5.0.0-beta.1",
-    "@vue/cli-service": "~5.0.0-beta.1",
-    "@vue/compiler-sfc": "^3.0.11",
+    "@vue/cli-plugin-babel": "~5.0.0-beta.2",
+    "@vue/cli-plugin-eslint": "~5.0.0-beta.2",
+    "@vue/cli-plugin-typescript": "~5.0.0-beta.2",
+    "@vue/cli-plugin-unit-jest": "~5.0.0-beta.2",
+    "@vue/cli-service": "~5.0.0-beta.2",
+    "@vue/compiler-sfc": "^3.1.1",
     "eslint": "^7.18.0",
     "eslint-plugin-vue": "^7.9.0"
   }
