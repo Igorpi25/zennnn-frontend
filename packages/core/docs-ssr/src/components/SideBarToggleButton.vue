@@ -1,6 +1,6 @@
 <template>
   <Btn
-    :primary="true"
+    :primary="false"
     mini
     icon
     retain-focus-on-click
