@@ -1,6 +1,6 @@
 export const outboundRE = /^[a-z]+:/i
 
-export function isExternal (path: string): boolean {
+export function isExternal(path: string): boolean {
   return outboundRE.test(path)
 }
 
@@ -9,30 +9,23 @@ export const inBrowser = typeof window !== 'undefined'
 /**
  * Converts a url path to the corresponding js chunk filename.
  */
- export function pathToFile(path: string): string {
-  let pagePath = path.replace(/\.html$/, '')
+export function pathToFile(path: string): string {
+  let pagePath = path.slice()
   if (pagePath.endsWith('/')) {
     pagePath += 'index'
   }
 
   if (import.meta.env.DEV) {
     // always force re-fetch content in dev
-    // pagePath += `.md?t=${Date.now()}`
-    pagePath += `.md`
+    pagePath = `./pages${pagePath}.md?t=${Date.now()}`
   } else {
-    // in production, each .md file is built into a .md.js file following
-    // the path conversion scheme.
-    // /foo/bar.html -> ./foo_bar.md
     if (inBrowser) {
       const base = import.meta.env.BASE_URL
-      pagePath = pagePath.slice(base.length).replace(/\//g, '_') + '.md'
-      // client production build needs to account for page hash, which is
-      // injected directly in the page's html
-      const pageHash = __VP_HASH_MAP__[pagePath.toLowerCase()]
-      pagePath = `${base}assets/${pagePath}.${pageHash}.js`
+      const assetPath = __PAGE_ASSETS_MAP__[pagePath]
+      pagePath = `${base}assets/${assetPath}`
     } else {
       // ssr build uses much simpler name mapping
-      pagePath = `./${pagePath.slice(1).replace(/\//g, '_')}.md.js`
+      pagePath = `./pages${pagePath}.md`
     }
   }
 

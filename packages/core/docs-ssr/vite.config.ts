@@ -25,6 +25,7 @@ const components = [
   'Label',
   'LoadingSpinner',
   'Menu',
+  'MenuItem',
   'Messages',
   'Modal',
   'Progress',
@@ -35,6 +36,7 @@ const components = [
   'TextArea',
   'Tooltip',
   'Window',
+  'WindowItem',
 ]
 
 const toAbsolute = (p) => path.resolve(__dirname, p)
@@ -44,7 +46,7 @@ const pages = glob
   .map((file) => file.toLowerCase())
 
 const config: SiteConfig = {
-  root: 'src/pages',
+  root: toAbsolute('src/pages'),
   site: siteData as SiteData,
   pages,
   alias: [
@@ -57,16 +59,16 @@ const config: SiteConfig = {
       replacement: SITE_DATA_REQUEST_PATH,
     },
   ],
-  configPath: 'src/config.js',
+  configPath: toAbsolute('src/config.js'),
   outDir: '',
   tempDir: '',
-  themeDir: ''
+  themeDir: '',
 }
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vitePressMdToVue('src/pages', config),
+    vitePressMdToVue(toAbsolute('src/pages'), config),
     vue({
       include: [/\.vue$/, /\.md$/],
     }),
@@ -78,12 +80,10 @@ export default defineConfig({
       customComponentResolvers: [
         (name: string) => {
           if (components.includes(name)) {
-            // const folder = name === 'MenuItem' ? 'Menu' : name === 'WindowItem' ? 'Window' : name
-            // return { name, path: `@zennnn/core/lib/components/${folder}/${name}` }
             return { importName: name, path: '@zennnn/core' }
           }
-        }
-      ]
+        },
+      ],
     }),
   ],
 })

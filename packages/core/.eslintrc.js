@@ -16,12 +16,9 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:jest/recommended',
     'plugin:prettier/recommended',
-    'prettier'
+    'prettier',
   ],
-  plugins: [
-    '@typescript-eslint',
-    'jest',
-  ],
+  plugins: ['@typescript-eslint', 'jest'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

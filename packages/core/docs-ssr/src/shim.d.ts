@@ -15,4 +15,4 @@ declare module '*.json' {
   export default value
 }
 
-declare const __VP_HASH_MAP__: Record<string, string>
+declare const __PAGE_ASSETS_MAP__: Record<string, string>

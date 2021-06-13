@@ -1,11 +1,13 @@
 import { ref, onMounted, onUnmounted, onUpdated } from 'vue'
+import { useRouter } from 'vue-router'
 
-export function useTocActiveLink () {
+export function useTocActiveLink() {
   const activeHash = ref<string | null>(null)
+  const router = useRouter()
 
   const onScroll = throttleAndDebounce(setActiveLink, 300)
 
-  function setActiveLink (): void {
+  function setActiveLink(): void {
     const links = getLinks()
     const anchors = getAnchors(links)
     for (let i = 0; i < anchors.length; i++) {
@@ -13,14 +15,14 @@ export function useTocActiveLink () {
       const nextAnchor = anchors[i + 1]
       const [isActive, hash] = isAnchorActive(i, anchor, nextAnchor)
       if (isActive) {
-        history.replaceState(null, document.title, hash ? hash : ' ')
+        router.push({ hash: hash || '' })
         activateLink(hash)
         return
       }
     }
   }
 
-  function activateLink (hash: string | null): void {
+  function activateLink(hash: string | null): void {
     activeHash.value = hash
   }
 
@@ -43,11 +45,11 @@ export function useTocActiveLink () {
   }
 }
 
-function getLinks (): HTMLAnchorElement[] {
+function getLinks(): HTMLAnchorElement[] {
   return [].slice.call(document.querySelectorAll('.toc a'))
 }
 
-function getAnchors (links: HTMLAnchorElement[]): HTMLAnchorElement[] {
+function getAnchors(links: HTMLAnchorElement[]): HTMLAnchorElement[] {
   return [].slice
     .call(document.querySelectorAll('.header-anchor'))
     .filter((anchor: HTMLAnchorElement) =>
@@ -55,19 +57,19 @@ function getAnchors (links: HTMLAnchorElement[]): HTMLAnchorElement[] {
     ) as HTMLAnchorElement[]
 }
 
-function getPageOffset (): number {
+function getPageOffset(): number {
   return (document.querySelector('.nav-bar') as HTMLElement).offsetHeight
 }
 
-function getAnchorTop (anchor: HTMLAnchorElement): number {
+function getAnchorTop(anchor: HTMLAnchorElement): number {
   const pageOffset = getPageOffset()
   return anchor.parentElement!.offsetTop - pageOffset - 15
 }
 
-function isAnchorActive (
+function isAnchorActive(
   index: number,
   anchor: HTMLAnchorElement,
-  nextAnchor: HTMLAnchorElement,
+  nextAnchor: HTMLAnchorElement
 ): [boolean, string | null] {
   const scrollTop = window.scrollY
   if (index === 0 && scrollTop === 0) {
@@ -82,7 +84,7 @@ function isAnchorActive (
   return [false, null]
 }
 
-function throttleAndDebounce (fn: () => void, delay: number): () => void {
+function throttleAndDebounce(fn: () => void, delay: number): () => void {
   let timeout: any
   let called = false
 

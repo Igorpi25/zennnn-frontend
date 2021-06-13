@@ -7,7 +7,7 @@ const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD
 
 async function createServer(
   root = 'docs-ssr', // process.cwd(),
-  isProd = process.env.NODE_ENV === 'production',
+  isProd = process.env.NODE_ENV === 'production'
 ) {
   const resolve = (p) => path.resolve(__dirname, p)
 

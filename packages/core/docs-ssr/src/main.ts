@@ -1,13 +1,14 @@
+import { createSSRApp } from 'vue'
 import { createI18n } from 'vue-i18n'
-import { datetimeFormats, numberFormats } from './plugins/i18n/formats'
 import messages from '@intlify/vite-plugin-vue-i18n/messages'
 import './index.css'
 import App from './App.vue'
-import { createSSRApp } from 'vue'
 import { createRouter } from './router'
-import { inBrowser } from './utils'
+import { inBrowser, pathToFile } from './utils'
+import { datetimeFormats, numberFormats } from './plugins/i18n/formats'
 import Table from './components/Table.vue'
 import Example from './components/Example.vue'
+import type { Router } from 'vue-router'
 
 const i18n = createI18n({
   locale: 'en',
@@ -23,19 +24,25 @@ export function createApp() {
   const app = createSSRApp(App)
   const router = createRouter()
 
-  router.beforeEach(r => {
-    // const path = r.path
-    // let pageFilePath = pathToFile(path)
-    if (!import.meta.env.DEV && inBrowser) {
-      // const base = import.meta.env.BASE_URL
-      // const pageHash = __VP_HASH_MAP__[path]
-      // const pagePath = `${base}assets/${path}.${pageHash}.js`
-      // console.log('pagePath', pagePath)
-      // console.log('pageFilePath', pageFilePath)
-      // return loadPage(pageFilePath)
+  handleHMR(router)
+
+  router.beforeEach(async (r) => {
+    const path = r.path
+    const pageFilePath = pathToFile(path)
+    if (inBrowser || import.meta.env.DEV) {
+      const pageData = await loadPageData(pageFilePath)
+      r.meta.pageData = pageData
+    } else {
+      const pagePath = path.endsWith('/') ? `${path}index` : path
+      // dynamic import not work in SSR
+      const pathSplit = pagePath.split('/')
+      const page =
+        pathSplit.length === 3
+          ? import(`./pages/${pathSplit[1]}/${pathSplit[2]}.md`)
+          : import(`./pages/${pathSplit[1]}.md`)
+      const { __pageData: pageData } = await page
+      r.meta.pageData = JSON.parse(pageData)
     }
-    // r.meta.pageData = path
-    // console.log('BEFORE RESOLVE pageFilePath', pageFilePath)
   })
 
   app.component('Example', Example)
@@ -46,30 +53,26 @@ export function createApp() {
   return { app, router }
 }
 
-async function loadPage (path: string) {
-  const page = import(/*@vite-ignore*/ path)
-  const d = await page
-  console.log('d', d)
+async function loadPageData(path: string) {
+  try {
+    const page = import(/*@vite-ignore*/ path)
+    const { __pageData } = await page
+    return JSON.parse(__pageData)
+  } catch (error) {
+    throw new Error(error)
+  }
 }
 
-function handleHMR(router: any): void {
+function handleHMR(router: Router): void {
   // update route.data on HMR updates of active page
   if (import.meta.hot) {
     // hot reload pageData
     import.meta.hot!.on('vitepress:pageData', (payload) => {
-      if (shouldHotReload(payload)) {
-        // router.route.data = payload.pageData
-        console.log('PAGE HOT RELAOD', payload.pageData)
+      const path = payload.path.replace(/(\bindex)?$/, '')
+      const currentRoute = router.currentRoute.value
+      if (path === currentRoute.path) {
+        currentRoute.meta.pageData = payload.pageData
       }
     })
   }
-}
-
-function shouldHotReload(payload: any): boolean {
-  const payloadPath = payload.path.replace(/(\bindex)?\.md$/, '')
-  const locationPath = location.pathname.replace(/(\bindex)?\.html$/, '')
-
-  console.log('shouldHotReload', payloadPath, locationPath)
-
-  return payloadPath === locationPath
 }

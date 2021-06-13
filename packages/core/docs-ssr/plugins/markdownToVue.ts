@@ -1,18 +1,31 @@
-import path from 'path'
 import { Plugin } from 'vite'
 import { SiteConfig, resolveSiteData } from 'vitepress/dist/node/config'
 import { createMarkdownToVueRenderFn } from 'vitepress/dist/node/markdownToVue'
 import { SITE_DATA_REQUEST_PATH } from 'vitepress/dist/node/alias'
-import { slash } from 'vitepress/dist/node/utils/slash'
+import { OutputAsset, OutputChunk } from 'rollup'
 
-export default function(
+export default function (
   root: string,
-  { configPath, alias, markdown, site, vueOptions, pages }: SiteConfig,
+  { configPath, alias, markdown, site, pages }: SiteConfig
 ): Plugin {
   const markdownToVue = createMarkdownToVueRenderFn(root, markdown, pages)
 
   let siteData = site
   let hasDeadLinks = false
+  const pageAssetsMap = {} as Record<string, string>
+
+  const isPageChunk = (
+    chunk: OutputAsset | OutputChunk
+  ): chunk is OutputChunk & { facadeModuleId: string } =>
+    !!(
+      chunk.type === 'chunk' &&
+      chunk.facadeModuleId &&
+      chunk.facadeModuleId.includes(root) &&
+      chunk.facadeModuleId.endsWith('.md')
+    )
+
+  const filenameToPath = (file: string) =>
+    file.replace(root, '').replace('.md', '')
 
   const vitePressPlugin: Plugin = {
     name: 'vitepress',
@@ -54,6 +67,30 @@ export default function(
       }
     },
 
+    generateBundle(_options, bundle) {
+      for (const name in bundle) {
+        const chunk = bundle[name] as OutputChunk
+        if (isPageChunk(chunk)) {
+          const path = filenameToPath(chunk.facadeModuleId)
+          pageAssetsMap[path] = chunk.fileName.replace('assets/', '')
+        }
+      }
+    },
+
+    transformIndexHtml(html) {
+      const assetsMapString = JSON.stringify(JSON.stringify(pageAssetsMap))
+      return {
+        html,
+        tags: [
+          {
+            tag: 'script',
+            children: `__PAGE_ASSETS_MAP__ = JSON.parse(${assetsMapString})`,
+            injectTo: 'body',
+          },
+        ],
+      }
+    },
+
     async handleHotUpdate(ctx) {
       // handle config hmr
       const { file, read, server } = ctx
@@ -69,7 +106,7 @@ export default function(
       }
 
       // hot reload .md files as .vue files
-      if (file.endsWith('.md')) {
+      if (file.endsWith('.md') && file.includes(root)) {
         const content = await read()
         const { pageData, vueSrc } = markdownToVue(content, file)
 
@@ -78,7 +115,7 @@ export default function(
           type: 'custom',
           event: 'vitepress:pageData',
           data: {
-            path: `/${slash(path.relative(root, file))}`,
+            path: filenameToPath(file),
             pageData,
           },
         })
