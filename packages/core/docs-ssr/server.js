@@ -2,11 +2,23 @@
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
+const minimist = require('minimist')
+const chalk = require('chalk')
+const compression = require('compression')()
+
+const argv = minimist(process.argv.slice(2))
+
+console.log(chalk.cyan(`vite v${require('vite/package.json').version}`))
+
+const serverOption = {
+  port: argv['port'] || 3000,
+  force: !!argv['force'],
+}
 
 const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD
 
 async function createServer(
-  root = 'docs-ssr', // process.cwd(),
+  root = 'docs-ssr', // argv._[0] || process.cwd(),
   isProd = process.env.NODE_ENV === 'production'
 ) {
   const resolve = (p) => path.resolve(__dirname, p)
@@ -31,6 +43,7 @@ async function createServer(
       root,
       logLevel: isTest ? 'error' : 'info',
       server: {
+        force: serverOption.force,
         middlewareMode: true,
         watch: {
           // During tests we edit the files too fast and sometimes chokidar
@@ -43,7 +56,7 @@ async function createServer(
     // use vite's connect instance as middleware
     app.use(vite.middlewares)
   } else {
-    app.use(require('compression')())
+    app.use(compression())
     app.use(
       require('serve-static')(resolve('dist/client'), {
         index: false,
@@ -85,8 +98,8 @@ async function createServer(
 
 if (!isTest) {
   createServer().then(({ app }) =>
-    app.listen(3000, () => {
-      console.log('http://localhost:3000')
+    app.listen(serverOption.port, () => {
+      console.log(`http://localhost:${serverOption.port}`)
     })
   )
 }
