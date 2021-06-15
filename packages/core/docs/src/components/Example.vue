@@ -1,5 +1,14 @@
 <template>
-  <div class="h-12 flex items-center justify-end space-x-4 border-b border-light-gray-400">
+  <div
+    class="
+      h-12
+      flex
+      items-center
+      justify-end
+      space-x-4
+      border-b border-light-gray-400
+    "
+  >
     <Btn
       :primary="false"
       icon
@@ -38,10 +47,13 @@
     >
       <component :is="Preview" />
     </div>
-    <div
-      v-else-if="activeTab === TAB.CODE"
-    >
-      <component :is="Code" />
+    <div v-else-if="activeTab === TAB.CODE">
+      <Suspense>
+        <component :is="Code" />
+        <template #fallback>
+          <div :style="{ height: initialHeight }"></div>
+        </template>
+      </Suspense>
     </div>
   </div>
 </template>
@@ -63,16 +75,15 @@ const props = defineProps({
   },
 })
 
-const items = [{ value: TAB.PREVIEW, text: 'Preview' }, { value: TAB.CODE, text: 'Code' }]
+const items = [
+  { value: TAB.PREVIEW, text: 'Preview' },
+  { value: TAB.CODE, text: 'Code' },
+]
 const previewRef = ref<HTMLElement>()
-const initialHeight = ref<number>(80)
+const initialHeight = ref('80px')
 const isPreviewLoaded = ref<boolean>(false)
 const isCodeLoaded = ref<boolean>(false)
 const activeTab = ref<1 | 2>(1)
-
-const codeHeight = computed(() => {
-  return !isCodeLoaded.value ? `${initialHeight}px` : undefined
-})
 
 const { dark } = useExampleTheme(previewRef, props.file)
 
@@ -101,69 +112,192 @@ const Code = defineAsyncComponent({
 const getComponentsModules = () => {
   const page = props.file.split('/')[0]
   switch (page) {
-    case 'Alert': return import.meta.globEager('../../../playground/src/components/Alert/*.vue')
-    case 'Autocomplete': return import.meta.globEager('../../../playground/src/components/Autocomplete/*.vue')
-    case 'Btn': return import.meta.globEager('../../../playground/src/components/Btn/*.vue')
-    case 'BtnToggle': return import.meta.globEager('../../../playground/src/components/BtnToggle/*.vue')
-    case 'Checkbox': return import.meta.globEager('../../../playground/src/components/Checkbox/*.vue')
-    case 'DataTable': return import.meta.globEager('../../../playground/src/components/DataTable/*.vue')
-    case 'DatePicker': return import.meta.globEager('../../../playground/src/components/DatePicker/*.vue')
-    case 'Form': return import.meta.globEager('../../../playground/src/components/Form/*.vue')
-    case 'Icon': return import.meta.globEager('../../../playground/src/components/Icon/*.vue')
-    case 'Image': return import.meta.globEager('../../../playground/src/components/Image/*.vue')
-    case 'Label': return import.meta.globEager('../../../playground/src/components/Label/*.vue')
-    case 'LoadingSpinner': return import.meta.globEager('../../../playground/src/components/LoadingSpinner/*.vue')
-    case 'Menu': return import.meta.globEager('../../../playground/src/components/Menu/*.vue')
-    case 'Messages': return import.meta.globEager('../../../playground/src/components/Messages/*.vue')
-    case 'Modal': return import.meta.globEager('../../../playground/src/components/Modal/*.vue')
-    case 'Progress': return import.meta.globEager('../../../playground/src/components/Progress/*.vue')
-    case 'Radio': return import.meta.globEager('../../../playground/src/components/Radio/*.vue')
-    case 'Select': return import.meta.globEager('../../../playground/src/components/Select/*.vue')
-    case 'Switch': return import.meta.globEager('../../../playground/src/components/Switch/*.vue')
-    case 'Styles': return import.meta.globEager('../../../playground/src/components/Styles/*.vue')
-    case 'TextField': return import.meta.globEager('../../../playground/src/components/TextField/*.vue')
-    case 'TextArea': return import.meta.globEager('../../../playground/src/components/TextArea/*.vue')
-    case 'Tooltip': return import.meta.globEager('../../../playground/src/components/Tooltip/*.vue')
-    case 'Transition': return import.meta.globEager('../../../playground/src/components/Transition/*.vue')
-    case 'Window': return import.meta.globEager('../../../playground/src/components/Window/*.vue')
+    case 'Alert':
+      return import.meta.globEager(
+        '../../../playground/src/components/Alert/*.vue'
+      )
+    case 'Autocomplete':
+      return import.meta.globEager(
+        '../../../playground/src/components/Autocomplete/*.vue'
+      )
+    case 'Btn':
+      return import.meta.globEager(
+        '../../../playground/src/components/Btn/*.vue'
+      )
+    case 'BtnToggle':
+      return import.meta.globEager(
+        '../../../playground/src/components/BtnToggle/*.vue'
+      )
+    case 'Checkbox':
+      return import.meta.globEager(
+        '../../../playground/src/components/Checkbox/*.vue'
+      )
+    case 'DataTable':
+      return import.meta.globEager(
+        '../../../playground/src/components/DataTable/*.vue'
+      )
+    case 'DatePicker':
+      return import.meta.globEager(
+        '../../../playground/src/components/DatePicker/*.vue'
+      )
+    case 'Form':
+      return import.meta.globEager(
+        '../../../playground/src/components/Form/*.vue'
+      )
+    case 'Icon':
+      return import.meta.globEager(
+        '../../../playground/src/components/Icon/*.vue'
+      )
+    case 'Image':
+      return import.meta.globEager(
+        '../../../playground/src/components/Image/*.vue'
+      )
+    case 'Label':
+      return import.meta.globEager(
+        '../../../playground/src/components/Label/*.vue'
+      )
+    case 'LoadingSpinner':
+      return import.meta.globEager(
+        '../../../playground/src/components/LoadingSpinner/*.vue'
+      )
+    case 'Menu':
+      return import.meta.globEager(
+        '../../../playground/src/components/Menu/*.vue'
+      )
+    case 'Messages':
+      return import.meta.globEager(
+        '../../../playground/src/components/Messages/*.vue'
+      )
+    case 'Modal':
+      return import.meta.globEager(
+        '../../../playground/src/components/Modal/*.vue'
+      )
+    case 'Progress':
+      return import.meta.globEager(
+        '../../../playground/src/components/Progress/*.vue'
+      )
+    case 'Radio':
+      return import.meta.globEager(
+        '../../../playground/src/components/Radio/*.vue'
+      )
+    case 'Select':
+      return import.meta.globEager(
+        '../../../playground/src/components/Select/*.vue'
+      )
+    case 'Switch':
+      return import.meta.globEager(
+        '../../../playground/src/components/Switch/*.vue'
+      )
+    case 'Styles':
+      return import.meta.globEager(
+        '../../../playground/src/components/Styles/*.vue'
+      )
+    case 'TextField':
+      return import.meta.globEager(
+        '../../../playground/src/components/TextField/*.vue'
+      )
+    case 'TextArea':
+      return import.meta.globEager(
+        '../../../playground/src/components/TextArea/*.vue'
+      )
+    case 'Tooltip':
+      return import.meta.globEager(
+        '../../../playground/src/components/Tooltip/*.vue'
+      )
+    case 'Transition':
+      return import.meta.globEager(
+        '../../../playground/src/components/Transition/*.vue'
+      )
+    case 'Window':
+      return import.meta.globEager(
+        '../../../playground/src/components/Window/*.vue'
+      )
   }
 }
 
 const getCodesModules = () => {
   const page = props.file.split('/')[0]
   switch (page) {
-    case 'Alert': return import.meta.glob('../../../playground/generated/code/Alert/*.md')
-    case 'Autocomplete': return import.meta.glob('../../../playground/generated/code/Autocomplete/*.md')
-    case 'Btn': return import.meta.glob('../../../playground/generated/code/Btn/*.md')
-    case 'BtnToggle': return import.meta.glob('../../../playground/generated/code/BtnToggle/*.md')
-    case 'Checkbox': return import.meta.glob('../../../playground/generated/code/Checkbox/*.vue')
-    case 'DataTable': return import.meta.glob('../../../playground/generated/code/DataTable/*.md')
-    case 'DatePicker': return import.meta.glob('../../../playground/generated/code/DatePicker/*.md')
-    case 'Form': return import.meta.glob('../../../playground/generated/code/Form/*.md')
-    case 'Icon': return import.meta.glob('../../../playground/generated/code/Icon/*.md')
-    case 'Image': return import.meta.glob('../../../playground/generated/code/Image/*.md')
-    case 'Label': return import.meta.glob('../../../playground/generated/code/Label/*.md')
-    case 'LoadingSpinner': return import.meta.glob('../../../playground/generated/code/LoadingSpinner/*.md')
-    case 'Menu': return import.meta.glob('../../../playground/generated/code/Menu/*.md')
-    case 'Messages': return import.meta.glob('../../../playground/generated/code/Messages/*.md')
-    case 'Modal': return import.meta.glob('../../../playground/generated/code/Modal/*.md')
-    case 'Progress': return import.meta.glob('../../../playground/generated/code/Progress/*.md')
-    case 'Radio': return import.meta.glob('../../../playground/generated/code/Radio/*.vue')
-    case 'Select': return import.meta.glob('../../../playground/generated/code/Select/*.vue')
-    case 'Switch': return import.meta.glob('../../../playground/generated/code/Switch/*.vue')
-    case 'Styles': return import.meta.glob('../../../playground/generated/code/Styles/*.md')
-    case 'TextField': return import.meta.glob('../../../playground/generated/code/TextField/*.md')
-    case 'TextArea': return import.meta.glob('../../../playground/generated/code/TextArea/*.md')
-    case 'Tooltip': return import.meta.glob('../../../playground/generated/code/Tooltip/*.md')
-    case 'Transition': return import.meta.glob('../../../playground/generated/code/Transition/*.md')
-    case 'Window': return import.meta.glob('../../../playground/generated/code/Window/*.md')
+    case 'Alert':
+      return import.meta.glob('../../../playground/generated/code/Alert/*.md')
+    case 'Autocomplete':
+      return import.meta.glob(
+        '../../../playground/generated/code/Autocomplete/*.md'
+      )
+    case 'Btn':
+      return import.meta.glob('../../../playground/generated/code/Btn/*.md')
+    case 'BtnToggle':
+      return import.meta.glob(
+        '../../../playground/generated/code/BtnToggle/*.md'
+      )
+    case 'Checkbox':
+      return import.meta.glob(
+        '../../../playground/generated/code/Checkbox/*.md'
+      )
+    case 'DataTable':
+      return import.meta.glob(
+        '../../../playground/generated/code/DataTable/*.md'
+      )
+    case 'DatePicker':
+      return import.meta.glob(
+        '../../../playground/generated/code/DatePicker/*.md'
+      )
+    case 'Form':
+      return import.meta.glob('../../../playground/generated/code/Form/*.md')
+    case 'Icon':
+      return import.meta.glob('../../../playground/generated/code/Icon/*.md')
+    case 'Image':
+      return import.meta.glob('../../../playground/generated/code/Image/*.md')
+    case 'Label':
+      return import.meta.glob('../../../playground/generated/code/Label/*.md')
+    case 'LoadingSpinner':
+      return import.meta.glob(
+        '../../../playground/generated/code/LoadingSpinner/*.md'
+      )
+    case 'Menu':
+      return import.meta.glob('../../../playground/generated/code/Menu/*.md')
+    case 'Messages':
+      return import.meta.glob(
+        '../../../playground/generated/code/Messages/*.md'
+      )
+    case 'Modal':
+      return import.meta.glob('../../../playground/generated/code/Modal/*.md')
+    case 'Progress':
+      return import.meta.glob(
+        '../../../playground/generated/code/Progress/*.md'
+      )
+    case 'Radio':
+      return import.meta.glob('../../../playground/generated/code/Radio/*.md')
+    case 'Select':
+      return import.meta.glob('../../../playground/generated/code/Select/*.md')
+    case 'Switch':
+      return import.meta.glob('../../../playground/generated/code/Switch/*.md')
+    case 'Styles':
+      return import.meta.glob('../../../playground/generated/code/Styles/*.md')
+    case 'TextField':
+      return import.meta.glob(
+        '../../../playground/generated/code/TextField/*.md'
+      )
+    case 'TextArea':
+      return import.meta.glob(
+        '../../../playground/generated/code/TextArea/*.md'
+      )
+    case 'Tooltip':
+      return import.meta.glob('../../../playground/generated/code/Tooltip/*.md')
+    case 'Transition':
+      return import.meta.glob(
+        '../../../playground/generated/code/Transition/*.md'
+      )
+    case 'Window':
+      return import.meta.glob('../../../playground/generated/code/Window/*.md')
   }
 }
 
-function switchTab (tab: 1 | 2) {
+function switchTab(tab: 1 | 2) {
   activeTab.value = tab
-  if (tab === TAB.CODE && !isCodeLoaded.value) {
-    initialHeight.value = (previewRef.value && previewRef.value.clientHeight) || 80
+  if (tab === TAB.CODE && !isCodeLoaded.value && previewRef.value) {
+    const { height } = getComputedStyle(previewRef.value)
+    initialHeight.value = height
   }
 }
 </script>
