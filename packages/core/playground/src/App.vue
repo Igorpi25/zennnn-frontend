@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-8xl mx-auto">
+  <div class="max-w-[90rem] mx-auto">
     <div
       v-if="isSidebarOpen"
       class="md:hidden fixed top-0 left-0 w-screen h-screen z-10"
@@ -39,7 +39,7 @@
     <div class="md:flex">
       <div
         :class="[
-          'transform -translate-x-full md:translate-x-0 transition-transform duration-200 fixed md:sticky top-12 z-10 w-64 xl:w-72 bg-white dark:bg-gray-650 border-r md:border-r-0 border-light-gray-400 dark:border-gray-700 overflow-y-auto h-page-wrapper pb-6',
+          'transform -translate-x-full md:translate-x-0 transition-transform duration-200 fixed md:sticky top-12 z-10 w-64 xl:w-72 bg-white dark:bg-gray-650 border-r md:border-r-0 border-light-gray-400 dark:border-gray-700 overflow-y-auto h-[calc(100vh-3rem)] pb-6',
           { 'translate-x-0': isSidebarOpen },
         ]"
       >

@@ -14,7 +14,6 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "../src/**/*.ts",
-    "../shared/index.css",
     "../shared/**/*.ts",
     "../shared/**/*.json"
   ]
