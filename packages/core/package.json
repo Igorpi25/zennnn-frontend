@@ -20,11 +20,12 @@
     "lint": "eslint src -f codeframe",
     "playground": "vite playground --port 4040",
     "playground:build": "vite build playground",
+    "docs": "yarn docs-dev",
     "docs-dev": "node docs/server docs --port 3030",
     "docs-build": "yarn gen:examples && yarn gen:api && yarn docs-build:client && yarn docs-build:server",
     "docs-build:client": "vite build docs --ssrManifest --outDir dist/client",
     "docs-build:server": "vite build docs --ssr src/entry-server.js --outDir dist/server",
-    "docs-generate": "vite build docs --ssrManifest --outDir dist/static && yarn docs-build:server && node docs/prerender",
+    "docs-generate": "yarn gen:examples && yarn gen:api && vite build docs --ssrManifest --outDir dist/static && yarn docs-build:server && node docs/prerender",
     "docs-serve": "cross-env NODE_ENV=production node docs/server --port 5050"
   },
   "dependencies": {
