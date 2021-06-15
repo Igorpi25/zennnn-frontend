@@ -1,5 +1,6 @@
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import type { Ref } from 'vue'
 import type { RouteLocationNormalized } from 'vue-router'
 
 export interface PageData {
@@ -17,7 +18,11 @@ export interface Header {
   slug: string
 }
 
+export type PageDataMap = Record<string, PageData>
+
+export const pageDataMap: Ref<PageDataMap> = ref({})
+
 export function usePageData(route?: RouteLocationNormalized) {
   const r = route || useRoute()
-  return computed(() => (r.meta.pageData || {}) as PageData)
+  return computed(() => pageDataMap.value[r.path] || {})
 }

@@ -8,6 +8,8 @@ import { inBrowser, pathToFile } from './utils'
 import { datetimeFormats, numberFormats } from './plugins/i18n/formats'
 import Table from './components/Table.vue'
 import Example from './components/Example.vue'
+import { pageDataMap } from './composables/pageData'
+
 import type { Router } from 'vue-router'
 
 const i18n = createI18n({
@@ -26,12 +28,15 @@ export function createApp() {
 
   handleHMR(router)
 
-  router.beforeEach(async (r) => {
-    const path = r.path
+  router.beforeEach(async (to, from) => {
+    const path = to.path
+
+    if (path === from.path) return true
+
     const pageFilePath = pathToFile(path)
     if (inBrowser || import.meta.env.DEV) {
       const pageData = await loadPageData(pageFilePath)
-      r.meta.pageData = pageData
+      pageDataMap.value[path] = pageData
     } else {
       const pagePath = path.endsWith('/') ? `${path}index` : path
       // dynamic import not work in SSR
@@ -41,7 +46,7 @@ export function createApp() {
           ? import(`./pages/${pathSplit[1]}/${pathSplit[2]}.md`)
           : import(`./pages/${pathSplit[1]}.md`)
       const { __pageData: pageData } = await page
-      r.meta.pageData = JSON.parse(pageData)
+      pageDataMap.value[path] = JSON.parse(pageData)
     }
   })
 
@@ -71,7 +76,7 @@ function handleHMR(router: Router): void {
       const path = payload.path.replace(/(\bindex)?$/, '')
       const currentRoute = router.currentRoute.value
       if (path === currentRoute.path) {
-        currentRoute.meta.pageData = payload.pageData
+        pageDataMap.value[path] = payload.pageData
       }
     })
   }
