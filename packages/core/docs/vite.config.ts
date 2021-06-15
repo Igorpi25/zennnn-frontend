@@ -8,6 +8,7 @@ import vitePressMdToVue from './plugins/markdownToVue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: process.env.NODE_ENV === 'production' ? '/ui/' : '/',
   resolve: {
     alias: [
       {

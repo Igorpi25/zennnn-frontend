@@ -33,10 +33,13 @@ const scrollBehavior = (to: RouteLocationNormalized) => {
 }
 
 export function createRouter() {
+  const baseUrl = import.meta.env.PROD ? import.meta.env.BASE_URL : undefined
   return _createRouter({
     // use appropriate history implementation for server/client
     // import.meta.env.SSR is injected by Vite.
-    history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
+    history: import.meta.env.SSR
+      ? createMemoryHistory(baseUrl)
+      : createWebHistory(baseUrl),
     routes: [
       ...routes,
       {
