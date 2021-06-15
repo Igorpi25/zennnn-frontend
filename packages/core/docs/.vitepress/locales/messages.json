@@ -1,9 +1,0 @@
-{
-  "props": {
-    "value": "Array of messages.",
-    "error": "Applies error decortion."
-  },
-  "slots": {
-    "default": "The default Vue slot."
-  }
-}
