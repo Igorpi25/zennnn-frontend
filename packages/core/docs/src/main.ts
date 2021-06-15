@@ -33,7 +33,7 @@ export function createApp() {
   router.beforeEach(async (to, from) => {
     const path = to.path
 
-    if (path === from.path) return true
+    if (path === from.path || to.name === 'NotFound') return true
 
     const pageFilePath = pathToFile(path)
     if (inBrowser || import.meta.env.DEV) {
