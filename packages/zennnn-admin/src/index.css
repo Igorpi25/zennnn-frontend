@@ -28,3 +28,10 @@
 @import url(../../core/src/components/transitions/transitions.css);
 
 @tailwind utilities;
+
+@layer components {
+  .container {
+    max-width: 1178px; /* max width 1130 + padding 48px = 1178px */
+    @apply mx-auto px-4 sm:px-6;
+  }
+}

@@ -4,6 +4,10 @@ export default defineComponent({
   name: 'App',
 
   render() {
-    return <router-view />
+    return (
+      <div class="container">
+        <router-view />
+      </div>
+    )
   },
 })

@@ -2,13 +2,13 @@ import { defineComponent } from 'vue'
 import { Btn } from '@zennnn/core'
 
 export default defineComponent({
-  name: 'Home',
+  name: 'About',
 
   setup() {
     return () => (
       <>
-        <div class="text-2xl font-semibold my-4">Home</div>
-        <Btn to="/about">About</Btn>
+        <div class="text-2xl font-semibold my-4">About</div>
+        <Btn to="/">Home</Btn>
       </>
     )
   },
