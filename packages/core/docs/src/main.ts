@@ -28,6 +28,8 @@ export function createApp() {
 
   handleHMR(router)
 
+  handleAnchorScroll()
+
   router.beforeEach(async (to, from) => {
     const path = to.path
 
@@ -56,6 +58,67 @@ export function createApp() {
   app.use(router)
   app.use(i18n)
   return { app, router }
+}
+
+function handleAnchorScroll() {
+  if (inBrowser) {
+    window.addEventListener(
+      'click',
+      (e) => {
+        const link = (e.target as Element).closest('a')
+        const isAnchor =
+          link &&
+          (link.classList.contains('header-anchor') ||
+            link.classList.contains('toc-anchor'))
+        if (link && isAnchor) {
+          const { protocol, hostname, pathname, hash, target } = link
+          const currentUrl = window.location
+          // only intercept inbound links
+          if (
+            !e.ctrlKey &&
+            !e.shiftKey &&
+            !e.altKey &&
+            !e.metaKey &&
+            target !== `_blank` &&
+            protocol === currentUrl.protocol &&
+            hostname === currentUrl.hostname
+          ) {
+            if (pathname === currentUrl.pathname) {
+              // scroll between hash anchors in the same page
+              if (hash && hash !== currentUrl.hash) {
+                e.preventDefault()
+                history.pushState(history.state, '', hash)
+                // use smooth scroll when clicking on header anchor links
+                scrollTo(link, hash, true)
+              }
+            }
+          }
+        }
+      },
+      { capture: true }
+    )
+  }
+}
+
+function scrollTo(el: HTMLElement, hash: string, smooth = false) {
+  const pageOffset = (document.querySelector('.nav-bar') as HTMLElement)
+    .offsetHeight
+  const target = el.classList.contains('.header-anchor')
+    ? el
+    : document.querySelector(decodeURIComponent(hash))
+  if (target) {
+    const targetTop = (target as HTMLElement).offsetTop - pageOffset - 15
+    // only smooth scroll if distance is smaller than screen height.
+    if (!smooth || Math.abs(targetTop - window.scrollY) > window.innerHeight) {
+      window.scrollTo(0, targetTop)
+    } else {
+      window.scrollTo({
+        left: 0,
+        top: targetTop,
+        behavior: 'smooth',
+      })
+    }
+  }
 }
 
 async function loadPageData(path: string) {

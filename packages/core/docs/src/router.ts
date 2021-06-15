@@ -3,6 +3,7 @@ import {
   createRouter as _createRouter,
   createWebHistory,
 } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 
 // Auto generates routes from vue files under ./pages
 // https://vitejs.dev/guide/features.html#glob-import
@@ -16,11 +17,27 @@ const routes = Object.keys(pages).map((path) => {
   }
 })
 
+const scrollBehavior = (to: RouteLocationNormalized) => {
+  const pageOffset = (document.querySelector('.nav-bar') as HTMLElement)
+    .offsetHeight
+  if (to.hash) {
+    return {
+      el: to.hash,
+      top: pageOffset,
+    }
+  } else {
+    return {
+      top: 0,
+    }
+  }
+}
+
 export function createRouter() {
   return _createRouter({
     // use appropriate history implementation for server/client
     // import.meta.env.SSR is injected by Vite.
     history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
     routes,
+    scrollBehavior,
   })
 }

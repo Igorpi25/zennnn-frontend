@@ -26,11 +26,12 @@
       >
         <a
           :href="`#${item.slug}`"
-          :class="
+          :class="[
+            'toc-anchor',
             `#${item.slug}` === activeHash
               ? 'text-blue-500'
-              : 'text-gray-200 hover:text-black'
-          "
+              : 'text-gray-200 hover:text-black',
+          ]"
         >
           {{ item.title }}
         </a>

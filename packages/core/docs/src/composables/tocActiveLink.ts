@@ -15,7 +15,7 @@ export function useTocActiveLink() {
       const nextAnchor = anchors[i + 1]
       const [isActive, hash] = isAnchorActive(i, anchor, nextAnchor)
       if (isActive) {
-        router.push({ hash: hash || '' })
+        history.replaceState(history.state, document.title, hash ? hash : ' ')
         activateLink(hash)
         return
       }
@@ -27,7 +27,6 @@ export function useTocActiveLink() {
   }
 
   onMounted(() => {
-    setActiveLink()
     window.addEventListener('scroll', onScroll)
   })
 
