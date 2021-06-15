@@ -9,12 +9,17 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
+    "paths": {
+      "/@shared/*": ["../shared/*"]
+    },
     "types": ["vite/client", "@intlify/vite-plugin-vue-i18n/client"]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "../shared/**/*.ts",
+    "../shared/**/*.json"
   ]
 }

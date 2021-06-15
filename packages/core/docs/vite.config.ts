@@ -14,6 +14,10 @@ export default defineConfig({
         find: 'vue-i18n',
         replacement: 'vue-i18n/dist/vue-i18n.runtime.esm-bundler.js',
       },
+      {
+        find: '/@shared',
+        replacement: path.join(__dirname, '../shared'),
+      },
     ],
   },
   plugins: [
@@ -23,7 +27,7 @@ export default defineConfig({
     }),
     vueJsx(),
     vueI18n({
-      include: path.resolve(__dirname, './src/plugins/i18n/locales/**'),
+      include: path.resolve(__dirname, '../shared/plugins/i18n/locales/**'),
     }),
     viteComponents({
       customComponentResolvers: [
