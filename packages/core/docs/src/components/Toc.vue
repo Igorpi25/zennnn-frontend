@@ -2,7 +2,7 @@
   <nav
     class="
       toc
-      h-page-wrapper
+      h-[calc(100vh-3rem)]
       hidden
       lg:block
       text-sm

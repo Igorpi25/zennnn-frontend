@@ -1,6 +1,6 @@
 <template>
   <NavBar @toggle="toggleMenu" />
-  <div class="max-w-8xl mx-auto">
+  <div class="max-w-[90rem] mx-auto">
     <div class="md:flex">
       <SideBar :open="isOpen" @close="toggleMenu(false)" />
       <div class="min-w-0 w-full flex-auto">

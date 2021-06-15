@@ -141,13 +141,3 @@
     background: #f5f2f0;
   }
 }
-
-@layer utilities {
-  .max-w-8xl {
-    max-width: 90rem;
-  }
-  /* page height with navbar offset .h-12 (3rem) */
-  .h-page-wrapper {
-    height: calc(100vh - 3rem);
-  }
-}
