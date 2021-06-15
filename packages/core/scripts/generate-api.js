@@ -4,8 +4,8 @@ global.document = window.document
 global.Element = window.Element
 global.HTMLElement = window.HTMLElement
 global.navigator = {
-  userAgent: 'node.js'
-};
+  userAgent: 'node.js',
+}
 
 const fs = require('fs-extra')
 const path = require('path')
@@ -26,7 +26,7 @@ const map = {
       mode: String,
       x: Boolean,
       expandedParentClass: String,
-    }
+    },
   },
   LoadingSpinner: {
     props: {
@@ -41,12 +41,12 @@ const map = {
   },
 }
 
-const dirname = 'docs/.vitepress/locales'
+const dirname = 'docs/src/locales'
 
-function getLocaleData () {
+function getLocaleData() {
   const locale = {}
   const localeFiles = fs.readdirSync(dirname)
-  localeFiles.forEach(file => {
+  localeFiles.forEach((file) => {
     const compLocale = fs.readFileSync(path.join(dirname, file), 'utf8')
     locale[file.split('.')[0]] = JSON.parse(compLocale)
   })
@@ -58,38 +58,44 @@ const localeData = getLocaleData()
 for (const componentName in lib) {
   const transformedName = kebabCase(componentName)
   const locale = localeData[transformedName] || {}
-  const component = isFunction(lib[componentName]) ? map[componentName] : lib[componentName]
+  const component = isFunction(lib[componentName])
+    ? map[componentName]
+    : lib[componentName]
   const data = {}
   if (component.props) {
     const propsLocale = locale.props || {}
-    data.props = Object.keys(component.props).sort().reduce((acc, key) => {
-      const prop = getProp(key, component.props[key])
-      const description = propsLocale[key] ? md.render(propsLocale[key]) : ''
-      if (!Object.prototype.hasOwnProperty.call(data, 'props')) {
-        data.props = []
-      }
-      return [
-        ...acc,
-        {
-          name: kebabCase(key),
-          type: getType(prop.type),
-          default: getDefaultValue(prop),
-          description,
-        },
-      ]
-    }, [])
+    data.props = Object.keys(component.props)
+      .sort()
+      .reduce((acc, key) => {
+        const prop = getProp(key, component.props[key])
+        const description = propsLocale[key] ? md.render(propsLocale[key]) : ''
+        if (!Object.prototype.hasOwnProperty.call(data, 'props')) {
+          data.props = []
+        }
+        return [
+          ...acc,
+          {
+            name: kebabCase(key),
+            type: getType(prop.type),
+            default: getDefaultValue(prop),
+            description,
+          },
+        ]
+      }, [])
   }
 
   if (component.emits) {
     const emitsLocale = locale.emits || {}
-    const arr = Array.isArray(component.emits) ? component.emits : Object.keys(component.emits)
+    const arr = Array.isArray(component.emits)
+      ? component.emits
+      : Object.keys(component.emits)
     data.emits = arr.reduce((acc, key) => {
       return [
         ...acc,
         {
           name: kebabCase(key),
           description: emitsLocale[key] ? md.render(emitsLocale[key]) : '',
-        }
+        },
       ]
     }, [])
   }
@@ -101,33 +107,38 @@ for (const componentName in lib) {
         {
           name: key,
           description: locale.slots[key] ? md.render(locale.slots[key]) : '',
-        }
+        },
       ]
     }, [])
   }
 
-  fs.outputFileSync(path.join('docs/.vitepress/data', `${transformedName}.json`), JSON.stringify(data, null, 2))
+  fs.outputFileSync(
+    path.join('docs/data', `${transformedName}.json`),
+    JSON.stringify(data, null, 2)
+  )
 }
 
-function getType (value) {
+function getType(value) {
   const type = Array.isArray(value) ? value.join(' | ') : value
 
   return Prism.highlight(String(type), Prism.languages.typescript)
 }
 
-function getDefaultValue (item) {
+function getDefaultValue(item) {
   const { default: defaultValue } = item
-  const str = defaultValue == null || typeof defaultValue === 'string'
-    ? String(defaultValue)
-    : JSON.stringify(defaultValue, null, 2)
+  const str =
+    defaultValue == null || typeof defaultValue === 'string'
+      ? String(defaultValue)
+      : JSON.stringify(defaultValue, null, 2)
 
   const code = Prism.highlight(str, Prism.languages.typescript)
-  return isPlainObject(defaultValue) && !isEmpty(JSON.parse(JSON.stringify(defaultValue)))
+  return isPlainObject(defaultValue) &&
+    !isEmpty(JSON.parse(JSON.stringify(defaultValue)))
     ? `<div class="api-table__default"><pre><code>${code}</code></pre></div>`
     : code
 }
 
-function getProp (name, prop) {
+function getProp(name, prop) {
   const type = getPropType(isPlainObject(prop) ? prop.type : prop)
   return {
     name,
@@ -136,9 +147,9 @@ function getProp (name, prop) {
   }
 }
 
-function getPropType (type) {
+function getPropType(type) {
   if (Array.isArray(type)) {
-    return type.map(t => getPropType(t))
+    return type.map((t) => getPropType(t))
   }
 
   if (!type) return 'any'
@@ -146,10 +157,10 @@ function getPropType (type) {
   return type.name.toLowerCase()
 }
 
-function getPropDefault (def, type) {
+function getPropDefault(def, type) {
   if (def == null && type !== 'boolean' && type !== 'function') {
     return 'undefined'
-  } else if (typeof (def) === 'function' && type !== 'function') {
+  } else if (typeof def === 'function' && type !== 'function') {
     def = def.call({})
   }
 
@@ -168,13 +179,13 @@ function getPropDefault (def, type) {
   return def
 }
 
-function parseFunctionParams (func) {
+function parseFunctionParams(func) {
   const groups = /function\s_.*\((.*)\)\s\{.*/i.exec(func)
   if (groups && groups.length > 1) return `(${groups[1]}) => {}`
   else return 'null'
 }
 
-function kebabCase (str) {
+function kebabCase(str) {
   let kebab = ''
   for (let i = 0; i < str.length; i++) {
     const charCode = str.charCodeAt(i)

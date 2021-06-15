@@ -18,17 +18,14 @@
     "gen:api": "node ./scripts/generate-api.js",
     "test": "jest",
     "lint": "eslint src -f codeframe",
-    "docs:dev": "vitepress dev docs --port 3030",
-    "docs:serve": "vitepress serve docs --port 5050",
-    "docs:build": "yarn gen:examples && yarn gen:api && vitepress build docs",
     "playground": "vite playground --port 4040",
     "playground:build": "vite build playground",
-    "docs-dev": "node ./docs-ssr/server docs-ssr --port 3030",
-    "docs-build": "yarn docs-build:client && yarn docs-build:server",
-    "docs-build:client": "vite build docs-ssr --ssrManifest --outDir dist/client",
-    "docs-build:server": "vite build docs-ssr --ssr src/entry-server.js --outDir dist/server",
-    "docs-generate": "vite build docs-ssr --ssrManifest --outDir dist/static && yarn docs-build:server && node ./docs-ssr/prerender",
-    "docs-serve": "cross-env NODE_ENV=production node ./docs-ssr/server --port 5050"
+    "docs-dev": "node docs/server docs --port 3030",
+    "docs-build": "yarn gen:examples && yarn gen:api && yarn docs-build:client && yarn docs-build:server",
+    "docs-build:client": "vite build docs --ssrManifest --outDir dist/client",
+    "docs-build:server": "vite build docs --ssr src/entry-server.js --outDir dist/server",
+    "docs-generate": "vite build docs --ssrManifest --outDir dist/static && yarn docs-build:server && node docs/prerender",
+    "docs-serve": "cross-env NODE_ENV=production node docs/server --port 5050"
   },
   "dependencies": {
     "@zennnn/icons": "^0.36.7"
