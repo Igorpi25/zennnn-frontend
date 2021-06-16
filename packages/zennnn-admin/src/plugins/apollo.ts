@@ -35,7 +35,7 @@ const authLink = setContext(async (_, { headers }) => {
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: process.env.VUE_APP_ADMIN_GRAPHQL_ENDPOINT,
+  uri: process.env.VUE_APP_GRAPHQL_ENDPOINT,
 })
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
