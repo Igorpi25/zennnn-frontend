@@ -1,0 +1,150 @@
+{
+  "signin": {
+    "title": "Revolutionary service for conducting international trade",
+    "subtitle": "Truly. Madly. Deeply.",
+    "formTitle": "Log In",
+    "noAccount": "No account?",
+    "signup": "Sign up",
+    "welcomeHead": "Welcome back to ZENNNN,",
+    "welcomeSubhead": "log in,",
+    "welcomeContent": "to continue",
+    "login": "Login (email)",
+    "password": "Password",
+    "forgotPassword": "Forgot password",
+    "doNotRememberLogin": "Do not remember the login",
+    "rememberMe": "Remember me",
+    "submit": "Log In"
+  },
+  "words": {
+    "addWord": "Add word",
+    "addWordTitle": "Add a word",
+    "editWord": "Edit word",
+    "mergeWords": "Merge words",
+    "noData": "Your dictionary is still empty,<br>add some word and its translation.",
+    "more": "More",
+    "noTranslation": "no translation",
+    "translate": "Translate",
+    "defaultLanguage": "Default language",
+    "status": "Status",
+    "noFilter": "Unfiltered",
+    "approve": "Approve",
+    "merge": "Merge",
+    "hide": "Hide",
+    "newWord": "New word",
+    "addNewWord": "Add new word",
+    "addToWord": "Add to...",
+    "wordFromDictionary": "Dictionary word",
+    "DRAFT": "Draft",
+    "APPROVED": "Approved",
+    "DUPLICATES": "Duplicates",
+    "HIDDEN": "Hidden",
+    "ALL": "All"
+  },
+  "header": {
+    "requisites": "Company details",
+    "myCompanies": "My accounts",
+    "dictionary": "Dictionary",
+    "inbox": "Inbox",
+    "tariffs": "Pricing",
+    "signin": "Log In",
+    "signout": "Log Out",
+    "trial": "Trial",
+    "promo": "Promo",
+    "start": "Start",
+    "standard": "Standard",
+    "advanced": "Advanced",
+    "premium": "Premium",
+    "expired": "Expired"
+  },
+  "dataTable": {
+    "noData": "No data available",
+    "noResult": "No matching records found",
+    "ariaLabel": {}
+  },
+  "select": {
+    "noData": "No data available",
+    "noResult": "No matching records found"
+  },
+  "action": {
+    "cancel": "Cancel",
+    "apply": "Apply",
+    "save": "Save",
+    "create": "Create",
+    "add": "Add",
+    "loading": "Loading",
+    "collapse": "Hide",
+    "collapseAll": "Hide all",
+    "expand": "Unhide",
+    "expandAll": "Unhide all",
+    "dontSave": "Don't save",
+    "createPatternName": "Set template name"
+  },
+  "message": {
+    "notSavedWarning": "Do you really want to close the window. without saving the changes?",
+    "userNotConfirmed": "The user is not confirmed, a confirmation link is in your email.",
+    "linkCopied": "Link copied to clipboard.",
+    "linkNotCopied": "Failed to copy link to clipboard.",
+    "emailResent": "Email was resent.",
+    "failedToSent": "Failed to send.",
+    "authByGoogle": "Authorization via Google.",
+    "authByGoogleError": "Failed to get profile data from google.",
+    "emailSent": "An email has been sent to the {email} email address.",
+    "passwordChanged": "Password changed",
+    "emailConfirmed": "Email confirmed.",
+    "emailAlreadyConfirmed": "Email already confirmed.",
+    "incorrectRestorePassword": "Incorrect request to restore password.",
+    "documentGenerateLoading": "Generating document, please wait..."
+  },
+  "alert": {
+    "insufficientAccess": "You don't have enough access permissions ",
+    "attention": "Attention!",
+    "removeDeal": "Are you sure you want to delete the Deal?",
+    "removeInvoice": "Are you sure you want to delete the Invoice?",
+    "removeProduct": "Are you sure you want to delete the Item?",
+    "removeClient": "Are you sure you want to delete the Client?",
+    "removeSupplier": "Are you sure you want to delete the Supplier?",
+    "removeRequisites": "Are you sure you want to delete the Company Details?",
+    "removeContract": "Are you sure you want to delete the Contract?",
+    "removeEmployee": "Are you sure you want to delete the Employee?"
+  },
+  "rule": {
+    "phone": "The format of the mobile number is invalid.",
+    "onlyLatin": "Only Latin letters and symbols are allowed",
+    "required": "Fill in this field.",
+    "requiredSelect": "Please select.",
+    "email": "Enter your email.",
+    "passwordsDoNotMatch": "Passwords doesn't match.",
+    "minLength": "Password should be at least {n} characters."
+  },
+  "preposition": {
+    "from": "from",
+    "and": "and",
+    "or": "or",
+    "through": "via"
+  },
+  "label": {
+    "noSort": "Unsorted",
+    "saveAsPattern": "Save as a pattern",
+    "template": "Template",
+    "defaultTemplateName": "Template (default)",
+    "saveChangesBeforeClose": "Save changes to the document before closing?",
+    "saveDocChangesBeforeClose": "Save changes to the {doc} document before closing?",
+    "saveChangesHint": "If not, the changes will be lost"
+  },
+  "placeholder": {
+    "notIndicated": "not indicated",
+    "notChosen": "not chosen",
+    "emptyDate": "--.--.----",
+    "emptyText": "----",
+    "emptyNumber": "-",
+    "pageSearch": "quick page search",
+    "startTyping": "Start typing"
+  },
+  "role": {
+    "OWNER": "CEO",
+    "MANAGER": "Manager",
+    "ACCOUNTANT": "Accountant",
+    "WAREHOUSEMAN": "Warehouseman",
+    "FREELANCER": "Freelancer"
+  }
+}
