@@ -5,7 +5,7 @@ const pkg = require('./package.json')
 const pkgVersion = pkg.version
 const commitHash = execSync('git rev-parse HEAD').toString().trim().slice(0, 7)
 const version = `v${pkgVersion}-${commitHash}`
-// const path = require('path')
+const path = require('path')
 // const PrerenderSPAPlugin = require('prerender-spa-plugin')
 
 const isAdmin = process.env.VUE_APP_NAME === 'admin'
@@ -83,6 +83,9 @@ module.exports = {
   //     return options
   //   })
   // },
+  chainWebpack: (config) => {
+    config.resolve.alias.set('shared', path.resolve(__dirname, '../shared'))
+  },
   configureWebpack: (config) => {
     // webpack 5 not polyfill node crypto
     // crypto used in amazon-cognito-identity-js
