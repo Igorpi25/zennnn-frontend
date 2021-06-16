@@ -27,16 +27,19 @@ export interface Notify {
   icon?: string
 }
 
-export type NotifyOptions = Exclude<Notify, 'id'>
+export type NotifyOptions = Omit<Notify, 'id'>
 
-export interface NotifyInstance {
-  notify: (payload: string | NotifyOptions) => void
+type NotifyInstanceFn = (payload: string | NotifyOptions) => void
+
+interface NotifyInstanceAdv {
   clear: () => void
-  error: (text: string, options: NotifyOptions) => void
-  warn: (text: string, options: NotifyOptions) => void
-  success: (text: string, options: NotifyOptions) => void
-  info: (text: string, options: NotifyOptions) => void
+  error: (text: string, options?: NotifyOptions) => void
+  Warn: (text: string, options?: NotifyOptions) => void
+  success: (text: string, options?: NotifyOptions) => void
+  info: (text: string, options?: NotifyOptions) => void
 }
+
+export type NotifyInstance = NotifyInstanceFn & NotifyInstanceAdv
 
 interface NotifyInstanceOptions {
   timeout?: number
@@ -56,13 +59,13 @@ export const createNotify = (options: NotifyInstanceOptions = {}) => {
   const _timeout = options.timeout || DEFAULT_TIMEOUT
   const _zIndex = options.zIndex || DEFAULT_Z_INDEX
 
-  const showError = (text: string, options: NotifyOptions) =>
+  const showError = (text: string, options?: NotifyOptions) =>
     showNotify('error', text, options)
-  const showWarn = (text: string, options: NotifyOptions) =>
+  const showWarn = (text: string, options?: NotifyOptions) =>
     showNotify('warn', text, options)
-  const showSuccess = (text: string, options: NotifyOptions) =>
+  const showSuccess = (text: string, options?: NotifyOptions) =>
     showNotify('success', text, options)
-  const showInfo = (text: string, options: NotifyOptions) =>
+  const showInfo = (text: string, options?: NotifyOptions) =>
     showNotify('info', text, options)
 
   const showNotify = (
@@ -159,14 +162,15 @@ export const createNotify = (options: NotifyInstanceOptions = {}) => {
     document.body.appendChild(containerVNode.el as HTMLElement)
   }
 
-  const instance = {
-    notify: notify,
+  const instance = notify
+
+  Object.assign(instance, {
     clear: clearItems,
     error: showError,
     warn: showWarn,
     success: showSuccess,
     info: showInfo,
-  }
+  })
 
   renderContainer()
 
