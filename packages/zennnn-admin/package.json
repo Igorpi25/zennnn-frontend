@@ -6,7 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint --mode production"
+    "lint": "vue-cli-service lint --mode production",
+    "schema": "apollo service:download --endpoint=http://localhost:9000/graphql schema.json",
+    "schema-generate": "apollo codegen:generate src/graphql/types --localSchemaFile=schema.json,src/graphql/schema/client.graphql --target=typescript --tagName=gql --includes=src/graphql/**/*.tsx --outputFlat"
   },
   "dependencies": {
     "@zennnn/core": "^0.36.7",

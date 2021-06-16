@@ -7,10 +7,8 @@ import {
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 import Logger from 'shared/plugins/logger'
-// @ts-ignore
 import { typeDefs, resolvers } from '../graphql'
-// @ts-ignore
-import { GET_IS_LOGGED_IN } from '../../graphql/queries'
+import { GET_IS_LOGGED_IN } from '../graphql/queries'
 import { auth, emitter } from '.'
 
 const logger = new Logger('Apollo')
