@@ -87,7 +87,10 @@ export default class Auth {
     this.user = null
   }
 
-  public signIn(username: string, password?: string) {
+  public signIn(
+    username: string,
+    password?: string
+  ): Promise<CognitoUser | any> {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
@@ -142,7 +145,7 @@ export default class Auth {
     user: CognitoUser | any,
     password: string,
     requiredAttributes: any = {}
-  ) {
+  ): Promise<CognitoUser | any> {
     if (!password) {
       return Promise.reject(new Error('Password cannot be empty'))
     }
@@ -163,7 +166,7 @@ export default class Auth {
     })
   }
 
-  public resendSignUp(username: string) {
+  public resendSignUp(username: string): Promise<any> {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
@@ -182,7 +185,7 @@ export default class Auth {
     })
   }
 
-  public forgotPassword(username: string) {
+  public forgotPassword(username: string): Promise<any> {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
@@ -206,7 +209,7 @@ export default class Auth {
     username: string,
     code: string,
     password: string
-  ) {
+  ): Promise<void> {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
@@ -217,7 +220,7 @@ export default class Auth {
     return new Promise((resolve, reject) => {
       cognitoUser.confirmPassword(code, password, {
         onSuccess: () => {
-          resolve(true)
+          resolve()
         },
         onFailure: (err) => {
           reject(err)
@@ -227,7 +230,7 @@ export default class Auth {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public async signOut(opts: { global?: boolean }) {
+  public async signOut(opts: { global?: boolean }): Promise<any> {
     // eslint-disable-line
     this._cleanCachedItems()
     if (this.userPool) {
@@ -248,7 +251,9 @@ export default class Auth {
    * Get current authenticated user
    * @return - A promise resolves to current authenticated CognitoUser if success
    */
-  public currentUserPoolUser(params?: { bypassCache: boolean }) {
+  public currentUserPoolUser(params?: {
+    bypassCache: boolean
+  }): Promise<CognitoUser | any> {
     if (!this.userPool) {
       return Promise.reject(new Error('No user pool.'))
     }
@@ -358,7 +363,7 @@ export default class Auth {
    * @param {Object} user - The CognitoUser object
    * @return - A promise resolves to the session
    */
-  public userSession(user: CognitoUser) {
+  public userSession(user: CognitoUser): Promise<CognitoUserSession> {
     if (!user) {
       logger.debug('the user is null')
       return Promise.reject(new Error('no user session.'))
@@ -398,7 +403,10 @@ export default class Auth {
     this._storage.clear()
   }
 
-  private _createCognitoUser(username: string, forceMemoryStorage = false) {
+  private _createCognitoUser(
+    username: string,
+    forceMemoryStorage = false
+  ): CognitoUser {
     const userData: ICognitoUserData = {
       Username: username,
       Pool: this.userPool,
