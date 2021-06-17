@@ -31,9 +31,11 @@ async function* getFiles(dir) {
     const data = result.data
     if (data) {
       const path = getSvgPath(data, filename)
+      if (!path) warnCount++
       paths[transformedName] = path
       console.log(`SUCCESS: File ${filename} processed.`)
     } else {
+      console.log(`WARN: File ${filepath} no svgo result data.`)
       warnCount++
     }
   }
