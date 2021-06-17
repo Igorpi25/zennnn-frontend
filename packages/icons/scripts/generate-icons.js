@@ -20,7 +20,10 @@ async function* getFiles(dir) {
 
 ;(async () => {
   const paths = {}
+  let filesCount = 0
+  let warnCount = 0
   for await (const filepath of getFiles(dirname)) {
+    filesCount++
     const file = await fs.readFile(filepath, 'utf8')
     const filename = path.parse(filepath).name
     const transformedName = `zi${upperFirst(camelCase(filename))}`
@@ -30,8 +33,14 @@ async function* getFiles(dir) {
       const path = getSvgPath(data, filename)
       paths[transformedName] = path
       console.log(`SUCCESS: File ${filename} processed.`)
+    } else {
+      warnCount++
     }
   }
+  console.log(`
+    Files count: ${filesCount}
+    Warnings count: ${warnCount}
+  `)
   let jsData = ''
   Object.keys(paths).forEach((k) => {
     const v = paths[k]
