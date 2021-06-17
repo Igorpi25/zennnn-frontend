@@ -89,6 +89,7 @@ export declare const ziMoneyTernover: string;
 export declare const ziMoney: string;
 export declare const ziMoon: string;
 export declare const ziMove: string;
+export declare const ziNo: string;
 export declare const ziNone: string;
 export declare const ziNumberOffDocument: string;
 export declare const ziOk: string;
