@@ -40,6 +40,10 @@
     "HIDDEN": "Hidden",
     "ALL": "All"
   },
+  "notFound": {
+    "text": "Sorry, the page has been deleted or&nbsp;never existed. Try starting from the homepage",
+    "toHome": "Home"
+  },
   "header": {
     "requisites": "Company details",
     "myCompanies": "My accounts",

@@ -60,7 +60,7 @@ export default defineComponent({
           <div class="flex space-x-12">
             <router-link
               to="/"
-              class="focus:outline-none focus:ring focus:ring-blue-400 rounded"
+              class="rounded text-gray-900 dark:text-white focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible"
             >
               <Logo />
             </router-link>

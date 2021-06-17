@@ -1,5 +1,3 @@
-import { gql } from '@apollo/client/core'
-
-const typeDefs = gql``
+const typeDefs = ''
 
 export default typeDefs

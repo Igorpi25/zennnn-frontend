@@ -1,15 +1,24 @@
+import { ref } from 'vue'
 import mitt from 'mitt'
 import localforage from 'localforage'
-// import { DefaultApolloClient } from '@vue/apollo-composable'
+import { DefaultApolloClient } from '@vue/apollo-composable'
 
-import { createDisplay, DisplaySymbol } from 'shared/composables/display'
-import { createTheme, ThemeSymbol } from 'shared/composables/theme'
-import { createNotify, NotifySymbol } from 'shared/composables/notify'
+import {
+  createDisplay,
+  useDisplay,
+  DisplaySymbol,
+} from 'shared/composables/display'
+import { createTheme, useTheme, ThemeSymbol } from 'shared/composables/theme'
+import {
+  createNotify,
+  useNotify,
+  NotifySymbol,
+} from 'shared/composables/notify'
 
 import Auth from 'shared/plugins/auth'
 import Logger from 'shared/plugins/logger'
 import i18nInstance from './i18n'
-// import apolloClient from './apollo'
+import apolloClient from './apollo'
 
 import type { App } from 'vue'
 
@@ -34,7 +43,19 @@ const store = localforage.createInstance({
 
 const emitter = mitt()
 
-export { i18n, auth, logger, store, emitter }
+const isLoggedIn = ref(false)
+
+export {
+  i18n,
+  auth,
+  logger,
+  store,
+  emitter,
+  isLoggedIn,
+  useDisplay,
+  useTheme,
+  useNotify,
+}
 
 export default {
   install(app: App) {
@@ -44,6 +65,6 @@ export default {
     app.provide(ThemeSymbol, theme)
     app.provide(NotifySymbol, notify)
 
-    // app.provide(DefaultApolloClient, apolloClient)
+    app.provide(DefaultApolloClient, apolloClient)
   },
 }

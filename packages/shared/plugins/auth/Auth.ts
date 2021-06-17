@@ -230,7 +230,7 @@ export default class Auth {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public async signOut(opts: { global?: boolean }): Promise<any> {
+  public async signOut(opts?: { global?: boolean }): Promise<any> {
     // eslint-disable-line
     this._cleanCachedItems()
     if (this.userPool) {
