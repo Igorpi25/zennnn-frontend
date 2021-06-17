@@ -45,6 +45,8 @@
     "toHome": "Home"
   },
   "header": {
+    "goToZennnn": "Go to ZENNNN",
+    "darkMode": "Dark Mode",
     "requisites": "Company details",
     "myCompanies": "My accounts",
     "dictionary": "Dictionary",

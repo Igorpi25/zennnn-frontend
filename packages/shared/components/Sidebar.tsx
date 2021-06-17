@@ -57,7 +57,7 @@ export default defineComponent({
         <nav
           ref={rootRef}
           v-show={isActive.value}
-          class="w-68 md:w-80 bg-white dark:bg-gray-650 md:py-4"
+          class="w-68 md:w-80 bg-white dark:bg-gray-650 py-4"
           v-click-outside={[
             {
               handler: closeSidebar,
@@ -69,7 +69,7 @@ export default defineComponent({
             },
           ]}
         >
-          <div class="flex justify-end md:hidden p-4">
+          <div class="flex justify-end md:hidden p-4 pt-0">
             <Btn
               icon
               class="bg-light-gray-300 dark:bg-gray-900 text-gray-900 dark:text-white hover:text-white"

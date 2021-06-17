@@ -1,7 +1,8 @@
 import { defineComponent, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useApolloClient } from '@vue/apollo-composable'
-import { ziMenu, ziSettings, ziUsers, ziExit } from '@zennnn/icons'
+import { ziMenu, ziSettings, ziUsers, ziExit, ziZSign } from '@zennnn/icons'
 import { Icon, Switch } from '@zennnn/core'
 import Navbar from 'shared/components/Navbar'
 import ListItem from 'shared/components/ListItem'
@@ -15,6 +16,7 @@ export default defineComponent({
 
   setup() {
     const router = useRouter()
+    const { t } = useI18n()
     const { resolveClient } = useApolloClient()
     const { isDark } = useTheme()
     const isSidebarActive = ref(false)
@@ -22,16 +24,21 @@ export default defineComponent({
 
     watch(isLoggedIn, setCurrentuser)
 
+    const zennnnHostname = (process.env.VUE_APP_HOSTNAME || '').replace(
+      'admin.',
+      ''
+    )
+
     function toggleSidebar() {
       isSidebarActive.value = !isSidebarActive.value
     }
 
-    function toggleTheme() {
-      isDark.value = !isDark.value
-    }
-
     function closeSidebar() {
       isSidebarActive.value = false
+    }
+
+    function toggleTheme() {
+      isDark.value = !isDark.value
     }
 
     async function setCurrentuser(val: boolean) {
@@ -119,11 +126,21 @@ export default defineComponent({
 
             <SidebarItem
               v-slots={{
+                start: () => <Icon>{ziZSign}</Icon>,
+              }}
+              extLink={zennnnHostname}
+              onClick={closeSidebar}
+            >
+              <span>{t('header.goToZennnn')}</span>
+            </SidebarItem>
+
+            <SidebarItem
+              v-slots={{
                 start: () => <Icon>{ziExit}</Icon>,
               }}
               onClick={logout}
             >
-              <div>Log out</div>
+              <span>{t('header.signout')}</span>
             </SidebarItem>
 
             <Divider class="m-6" />
@@ -133,7 +150,7 @@ export default defineComponent({
                 start: () => <img class="w-6 h-6" />,
               }}
             >
-              <div>English</div>
+              <span>English</span>
             </SidebarItem>
             {/* TODO: can't control stroke on svg tag, need set class to svg in Icon from attrs or prop, outline icons has 1.6 stroke, check all other icons, mb need convert to path */}
             <SidebarItem
@@ -170,7 +187,7 @@ export default defineComponent({
               retainFocusOnClick={true}
               onClick={toggleTheme}
             >
-              <div>Dark Mode</div>
+              <span>{t('header.darkMode')}</span>
             </SidebarItem>
           </Sidebar>
         )}
