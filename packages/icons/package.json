@@ -11,7 +11,8 @@
     "es5": "tsc",
     "commonjs": "tsc --module commonjs --outDir commonjs",
     "gen:icons": "node ./scripts/generate-icons.js",
-    "gen:favicon": "node ./scripts/generate-favicon.js"
+    "gen:favicon": "node ./scripts/generate-favicon.js",
+    "gen:placeholder": "node ./scripts/generate-image-placeholder.js"
   },
   "peerDependencies": {
     "sharp": "^0.27.1",

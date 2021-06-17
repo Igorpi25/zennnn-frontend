@@ -2,11 +2,11 @@ const path = require('path')
 const fs = require('fs').promises
 const upperFirst = require('lodash/upperFirst')
 const camelCase = require('lodash/camelCase')
-const { removeSvgAttrs, mergeSvgPaths, getPath } = require('./svgo-process')
+const { optimizeSvg, getSvgPath } = require('../helpers')
 
 const dirname = path.join(__dirname, '../source')
 
-async function* getFiles (dir) {
+async function* getFiles(dir) {
   const dirents = await fs.readdir(dir, { withFileTypes: true })
   for (const dirent of dirents) {
     const res = path.resolve(dir, dirent.name)
@@ -24,17 +24,16 @@ async function* getFiles (dir) {
     const file = await fs.readFile(filepath, 'utf8')
     const filename = path.parse(filepath).name
     const transformedName = `zi${upperFirst(camelCase(filename))}`
-    const clearedResult = await removeSvgAttrs(file)
-    const result = await mergeSvgPaths(clearedResult.data)
+    const result = optimizeSvg(file)
     const data = result.data
     if (data) {
-      const path = getPath(data, filename)
+      const path = getSvgPath(data, filename)
       paths[transformedName] = path
       console.log(`SUCCESS: File ${filename} processed.`)
     }
   }
   let jsData = ''
-  Object.keys(paths).forEach(k => {
+  Object.keys(paths).forEach((k) => {
     const v = paths[k]
     jsData += `export const ${k}: string = '${v}'\n`
   })
