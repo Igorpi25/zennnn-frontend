@@ -7,9 +7,7 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint --mode production",
-    "build:admin": "vue-cli-service build src/admin.js --dest dist_admin --mode admin",
-    "build:stable": "vue-cli-service build --mode stable",
-    "serve:admin": "vue-cli-service serve src/admin.js --mode admin.dev"
+    "build:stable": "vue-cli-service build --mode stable"
   },
   "dependencies": {
     "@shopify/draggable": "^1.0.0-beta.11",

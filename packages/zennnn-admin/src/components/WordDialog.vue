@@ -78,7 +78,9 @@
         <div
           :class="[
             'flex px-2.5 pt-5',
-            hasNavigateToDictionary ? 'justify-between' : 'justify-end',
+            hasNavigateToDictionary || isAdmin
+              ? 'justify-between'
+              : 'justify-end',
           ]"
         >
           <router-link
@@ -99,6 +101,21 @@
             </Icon>
             <span>{{ $t('header.dictionary') }}</span>
           </router-link>
+          <div v-else-if="isAdmin">
+            <div class="flex items-center">
+              <span class="w-1/2 text-right mr-1"
+                >{{ $t('words.defaultLanguage') }}:</span
+              >
+              <Select
+                v-model="defaultLocaleLazy"
+                :items="locales"
+                :show-arrow="false"
+                solo
+                hide-details
+                class="w-1/2"
+              />
+            </div>
+          </div>
           <button
             class="
               inline-flex
@@ -219,6 +236,7 @@ export default {
     productId: String,
     title: String,
     actionText: String,
+    isAdmin: Boolean,
     submitResult: Boolean,
   },
   emits: ['update:modelValue'],
@@ -253,6 +271,9 @@ export default {
   },
   computed: {
     defaultLocale() {
+      if (this.isAdmin) {
+        return this.defaultLocaleLazy
+      }
       if (this.create) {
         return this.$i18n.locale
       } else {
@@ -269,7 +290,7 @@ export default {
       return result
     },
     hasNavigateToDictionary() {
-      return this.$route.name !== 'dictionary'
+      return this.$route.name !== 'dictionary' && !this.isAdmin
     },
     locales() {
       const locale = this.$i18n.locale
@@ -387,8 +408,9 @@ export default {
       const text = this.model[this.defaultLocale]
       try {
         this.translateLoading = true
+        const query = this.isAdmin ? ADMIN_TRANSLATE_WORD : TRANSLATE_WORD
         const response = await this.apolloClient.query({
-          query: TRANSLATE_WORD,
+          query,
           variables: {
             orgId: this.orgId,
             text,
@@ -419,16 +441,19 @@ export default {
       try {
         this.loading = true
         const input = {
-          defaultLocale: this.$i18n.locale,
+          defaultLocale: this.isAdmin ? this.defaultLocale : this.$i18n.locale,
           values: this.getValues(),
         }
+        const mutation = this.isAdmin ? ADMIN_CREATE_WORD : CREATE_WORD
         const variables = {
           input,
-          orgId: this.orgId,
-          productId: this.productId,
+        }
+        if (!this.isAdmin) {
+          variables.orgId = this.orgId
+          variables.productId = this.productId
         }
         const response = await this.apolloClient.mutate({
-          mutation: CREATE_WORD,
+          mutation,
           variables,
         })
         const result = response && response.data && response.data.createWord
@@ -448,12 +473,18 @@ export default {
           id,
           values: this.getValues(),
         }
+        if (this.isAdmin) {
+          input.defaultLocale = this.defaultLocale
+        }
+        const mutation = this.isAdmin ? ADMIN_UPDATE_WORD : UPDATE_WORD
         const variables = {
           input,
-          orgId: this.orgId,
+        }
+        if (!this.isAdmin) {
+          variables.orgId = this.orgId
         }
         const response = await this.apolloClient.mutate({
-          mutation: UPDATE_WORD,
+          mutation,
           variables,
         })
         const result = response && response.data && response.data.updateWord

@@ -8,8 +8,6 @@ const version = `v${pkgVersion}-${commitHash}`
 const path = require('path')
 // const PrerenderSPAPlugin = require('prerender-spa-plugin')
 
-const isAdmin = process.env.VUE_APP_NAME === 'admin'
-
 // PrerenderSPAPlugin not working with webpack 5
 //
 // const productionPlugins = [
@@ -39,36 +37,6 @@ const isAdmin = process.env.VUE_APP_NAME === 'admin'
 // ]
 
 module.exports = {
-  pages: {
-    index: {
-      // entry for the page
-      entry: 'src/main.js',
-      // the source template
-      template: 'public/index.html',
-      // output as dist/index.html
-      filename: 'index.html',
-      // when using title option,
-      // template title tag needs to be <title><%= htmlWebpackPlugin.options.title %></title>
-      title: 'ZENNNN',
-      // chunks to include on this page, by default includes
-      // extracted common chunks and vendor chunks.
-      chunks: ['chunk-vendors', 'chunk-common', 'index'],
-    },
-    // admin: {
-    //   // entry for the page
-    //   entry: 'src/admin.js',
-    //   // the source template
-    //   template: 'public/index.html',
-    //   // output as dist/index.html
-    //   filename: 'admin/index.html',
-    //   // when using title option,
-    //   // template title tag needs to be <title><%= htmlWebpackPlugin.options.title %></title>
-    //   title: 'ZENNNN | ADMIN',
-    //   // chunks to include on this page, by default includes
-    //   // extracted common chunks and vendor chunks.
-    //   chunks: ['chunk-vendors', 'chunk-common', 'admin'],
-    // },
-  },
   // chainWebpack: config => {
   //   // remove the prefetch plugin
   //   // config.plugins.delete('prefetch')
@@ -104,12 +72,9 @@ module.exports = {
     const copyPlugin = new CopyWebpackPlugin({
       patterns: [{ from: 'src/sw.js', to: 'service-worker.js' }],
     })
-    config.plugins.push(definePlugin)
-    if (!isAdmin) {
-      config.plugins.push(copyPlugin)
-      // if (process.env.NODE_ENV === 'production') {
-      //   config.plugins.push(...productionPlugins)
-      // }
-    }
+    config.plugins.push(definePlugin, copyPlugin)
+    // if (process.env.NODE_ENV === 'production') {
+    //   config.plugins.push(...productionPlugins)
+    // }
   },
 }
