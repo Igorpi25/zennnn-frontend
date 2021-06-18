@@ -15,7 +15,6 @@
         <div class="p-6">
           <div class="p-4">
             <Select
-              ref="searchRef"
               v-model="searchModel"
               :items="items"
               :max-height="304"
