@@ -73,6 +73,7 @@ export default defineComponent({
       await auth.signOut()
       const client = resolveClient()
       client.resetStore()
+      closeSidebar()
       await router.push({ name: 'Login' })
     }
 
@@ -94,7 +95,7 @@ export default defineComponent({
                         'hover:bg-light-gray-400 dark:hover:bg-gray-200': true,
                         'focus:outline-none focus:ring focus:ring-blue-400 focus:ring-inset with-focus-visible':
                           true,
-                        'bg-light-gray-400 dark:bg-gray-200': active,
+                        'bg-light-gray-200 dark:bg-gray-500': active,
                       }}
                       role="button"
                       tabindex="0"
@@ -160,14 +161,25 @@ export default defineComponent({
               v-slots={{
                 end: () => <Icon>{ziSettings}</Icon>,
               }}
+              class="group"
               onClick={closeSidebar}
             >
               <Icon class="flex-grow-0">{ziUsers}</Icon>
               <ListItem
+                v-slots={{
+                  title: () => (
+                    <span class="group-hover:text-white">
+                      {currentUser.value?.username}
+                    </span>
+                  ),
+                  subtitle: () => (
+                    <span class="group-hover:text-light-gray-400">
+                      {currentUser.value?.role}
+                    </span>
+                  ),
+                }}
                 class="flex-grow"
                 hideAvatar
-                title={currentUser.value?.username}
-                subtitle={currentUser.value?.role}
               />
             </SidebarItem>
 
@@ -177,8 +189,11 @@ export default defineComponent({
               v-slots={{
                 start: () => <Icon>{ziZSign}</Icon>,
               }}
-              extLink={zennnnHostname}
+              href={zennnnHostname}
               onClick={closeSidebar}
+              {...{
+                target: '_blank',
+              }}
             >
               <span>{t('header.goToZennnn')}</span>
             </SidebarItem>
@@ -197,6 +212,7 @@ export default defineComponent({
             <LocalePicker
               v-slots={{
                 activator: ({
+                  active,
                   text,
                   icon,
                   locale,
@@ -215,6 +231,10 @@ export default defineComponent({
                         />
                       ),
                     }}
+                    class={
+                      active ? 'bg-light-gray-200 dark:bg-gray-500' : undefined
+                    }
+                    retainFocusOnClick={true}
                   >
                     <span>{text}</span>
                   </SidebarItem>

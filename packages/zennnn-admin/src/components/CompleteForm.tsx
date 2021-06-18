@@ -76,7 +76,7 @@ export default defineComponent({
           placeholder={t('signin.login')}
           class="pb-6"
           name="username"
-          aria-label="username input"
+          ariaLabel="username input"
           readonly
         />
         <TextField
@@ -88,7 +88,7 @@ export default defineComponent({
           class="pb-6"
           name="new-password"
           autocomplete="new-password"
-          aria-label="new password input"
+          ariaLabel="new password input"
           minlength="8"
           validateOnBlur
           stateIcon

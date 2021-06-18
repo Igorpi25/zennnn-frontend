@@ -5,10 +5,10 @@ import { Btn } from '@zennnn/core'
 const SidebarItem: FunctionalComponent<{
   class?: string
   to?: RouteLocationRaw
-  extLink?: string
+  href?: string
   retainFocusOnClick?: boolean
   onClick?: (e: MouseEvent) => void
-}> = (props, { slots }) => {
+}> = (props, { slots, attrs }) => {
   function genSlot(name: 'start' | 'end') {
     if (!slots[name]) return undefined
     const data = {
@@ -31,14 +31,11 @@ const SidebarItem: FunctionalComponent<{
     <Btn
       primary={false}
       to={props.to}
-      href={props.extLink}
-      // TODO: add target prop to Btn for external links
-      {...{
-        target: props.extLink ? '_blank' : undefined,
-      }}
+      href={props.href}
       retainFocusOnClick={props.retainFocusOnClick}
-      class="dark:text-white hover:bg-light-gray-200 dark:hover:bg-gray-800 w-full justify-start text-left rounded-none ring-inset"
+      class="hover:text-white hover:bg-blue-400 dark:hover:bg-blue-400 w-full justify-start text-left rounded-none ring-inset"
       contentClass="w-full space-x-4"
+      {...attrs}
     >
       {genSlot('start')}
       {genDefaultSlot()}

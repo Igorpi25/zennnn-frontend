@@ -76,7 +76,7 @@ export default defineComponent({
           class="pb-6"
           name="login"
           autocomplete="username"
-          aria-label="login input"
+          ariaLabel="login input"
           autofocus
           validateOnBlur
         />
@@ -89,7 +89,7 @@ export default defineComponent({
           class="pb-6"
           name="password"
           autocomplete="current-password"
-          aria-label="password input"
+          ariaLabel="password input"
           minlength="8"
           validateOnBlur
         >

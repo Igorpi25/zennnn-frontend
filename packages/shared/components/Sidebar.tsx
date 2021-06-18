@@ -49,26 +49,12 @@ export default defineComponent({
         v-model={isActive.value}
         transition={transition.value}
         class="md:container flex justify-end items-start min-h-0 h-full md:h-auto"
-        content-class="h-full md:h-auto rounded-none md:rounded-lg overflow-auto m-0 md:-mx-6"
+        contentClass="h-full md:h-auto rounded-none md:rounded-lg overflow-auto m-0 md:-mx-6"
+        overlayClass="bg-transparent"
         top="0"
-        hideOverlay
         hideOverflow
       >
-        <nav
-          ref={rootRef}
-          v-show={isActive.value}
-          class="w-68 md:w-80 bg-white dark:bg-gray-650 py-4"
-          v-click-outside={[
-            {
-              handler: closeSidebar,
-              closeConditional: (e: Event) => {
-                const target = e.target as Element
-                const wrapper = rootRef.value as Element
-                return isActive.value && !(wrapper && wrapper.contains(target))
-              },
-            },
-          ]}
-        >
+        <nav ref={rootRef} class="w-68 md:w-80 bg-white dark:bg-gray-650 py-4">
           <div class="flex justify-end md:hidden p-4 pt-0">
             <Btn
               icon
