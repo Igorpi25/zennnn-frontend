@@ -20,6 +20,8 @@ yarn build
   - `social` - social icons
   - `special` - icons needed for components and not presented in figma
 - `scripts` - scripts folder
+- `colorfull` - colored icons
+- `flags` - flags icons
 
 ## Scripts
 
@@ -39,6 +41,12 @@ Generate base64 string with `sharp`(peerDependencies) from image, params `--name
 
 Generate favicon with `sharp` and `to-ico`(peerDependencies), input file `temp/favicon.svg`, output `dist/favicon.svg`.
 
+### Optimize colorfull icons with svgo
+
+```
+yarn svgo -f ./colorfull -o ./colorfull
+```
+
 ## Notes
 
 - `Common/No..svg` copied to `common/No.svg`. TODO: rename to `common/No.svg` and remove `common/No..svg`
@@ -54,7 +62,7 @@ icon-big
 - `Icon Big/Stop32.svg` -> `icon-big/Stop.svg`
 - `Icon Big/Template32.svg` -> `icon-big/Template.svg` (removed \*-rule tags)
 - `Icon Big/Video32.svg` -> `icon-big/Video.svg` (removed \*-rule tags)
-- `Icon Big/Check48.svg` -> `colorfull/Check48.svg`
+- `Icon Big/Check48.svg` -> `colorfull/Check48.svg`, figma incorrect export, outline circle should be child object
 - `Icon Big/Hello.svg` -> `colorfull/Hello.svg`
 
 colorfull
