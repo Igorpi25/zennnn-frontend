@@ -7,7 +7,7 @@ const SidebarItem: FunctionalComponent<{
   to?: RouteLocationRaw
   extLink?: string
   retainFocusOnClick?: boolean
-  onClick?: (e?: MouseEvent) => void
+  onClick?: (e: MouseEvent) => void
 }> = (props, { slots }) => {
   function genSlot(name: 'start' | 'end') {
     if (!slots[name]) return undefined
