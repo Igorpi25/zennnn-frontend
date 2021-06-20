@@ -1,9 +1,7 @@
 import { computed, defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Menu, MenuItem } from '@zennnn/core'
-import { CURRENT_LOCALE_STORE_KEY } from '../config'
-
-import type { PropType } from 'vue'
+import { CURRENT_LOCALE_STORE_KEY, LOCALES_LIST } from '../config'
 
 export interface Locale {
   text: string
@@ -26,18 +24,16 @@ export default defineComponent({
       default: 16,
     },
     skidding: Number,
-    locales: {
-      type: Array as PropType<Locale[]>,
-      default: [],
-    },
   },
 
   setup(props, { slots }) {
     const { locale } = useI18n()
     const isActive = ref(false)
 
+    const localesList = LOCALES_LIST as Locale[]
+
     const currentLocale = computed(() =>
-      props.locales.find((item) => item.value === locale.value)
+      localesList.find((item) => item.value === locale.value)
     )
 
     function changeLocale(val: string) {
@@ -67,7 +63,7 @@ export default defineComponent({
           'onUpdate:value': changeLocale,
         }}
       >
-        {props.locales.map((item, i) => (
+        {localesList.map((item, i) => (
           <MenuItem key={item.value} index={i} value={item.value} class="px-4">
             <img
               src={require(`@zennnn/icons/flags/${item.icon}.svg`).default}

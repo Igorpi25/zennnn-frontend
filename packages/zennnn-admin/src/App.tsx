@@ -32,11 +32,6 @@ export default defineComponent({
     const isSidebarActive = ref(false)
     const currentUser = ref()
 
-    const locales = [
-      { value: 'en', text: 'English', icon: 'United-Kingdom' },
-      { value: 'ru', text: 'Русский', icon: 'Russia' },
-    ]
-
     watch(isLoggedIn, setCurrentuser)
 
     const zennnnHostname = (process.env.VUE_APP_HOSTNAME || '').replace(
@@ -111,7 +106,6 @@ export default defineComponent({
                     </div>
                   ),
                 }}
-                locales={locales}
               />
 
               <div class="h-5 mx-3 border-r border-light-gray-300 dark:border-gray-300" />
@@ -240,7 +234,6 @@ export default defineComponent({
                   </SidebarItem>
                 ),
               }}
-              locales={locales}
               placementStart
               distance={8}
               skidding={8}
