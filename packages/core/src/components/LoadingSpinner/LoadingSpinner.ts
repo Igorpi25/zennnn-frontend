@@ -5,7 +5,7 @@ const RAYS_COUNT = 12
 const SPEED = 1.2
 
 const LoadingSpinner: FunctionalComponent<{
-  size: number | string
+  size?: number | string
 }> = (props) => {
   const size = Number(props.size || DEFAULT_SIZE)
   const radius = size * 0.35
