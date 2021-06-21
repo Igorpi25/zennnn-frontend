@@ -67,7 +67,7 @@ export const CREATE_WORD_WITH_PRODUCTS = gql`
 `
 
 export const ADD_PRODUCTS_TO_WORD = gql`
-  mutation addProductsToWord($productsIds: [ID!], $wordId: ID!) {
+  mutation AddProductsToWord($productsIds: [ID!], $wordId: ID!) {
     addProductsToWord(productsIds: $productsIds, wordId: $wordId)
   }
 `

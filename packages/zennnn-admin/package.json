@@ -7,8 +7,8 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint --mode production",
-    "schema": "apollo service:download --endpoint=http://localhost:9000/graphql schema.json",
-    "schema-generate": "apollo codegen:generate src/graphql/types --localSchemaFile=schema.json,src/graphql/schema/client.graphql --target=typescript --tagName=gql --includes=src/graphql/**/*.tsx --outputFlat"
+    "schema": "apollo-codegen introspect-schema http://localhost:9000/graphql --output schema.json",
+    "schema-generate": "apollo-codegen generate src/graphql/**/*.tsx --schema schema.json --target typescript --output src/graphql/types.ts && prettier --write src/graphql/types.ts"
   },
   "dependencies": {
     "@zennnn/core": "^0.36.7",

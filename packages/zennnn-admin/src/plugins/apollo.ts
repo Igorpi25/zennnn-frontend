@@ -8,7 +8,6 @@ import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 import Logger from 'shared/plugins/logger'
 import { typeDefs, resolvers } from '../graphql'
-import { GET_IS_LOGGED_IN } from '../graphql/queries'
 import { auth, emitter } from '.'
 
 const logger = new Logger('Apollo')
@@ -65,18 +64,6 @@ export const apolloClient = new ApolloClient({
   typeDefs,
   resolvers,
   connectToDevTools: true,
-})
-
-cache.writeQuery({
-  query: GET_IS_LOGGED_IN,
-  data: { isLoggedIn: false },
-})
-
-apolloClient.onResetStore(async () => {
-  cache.writeQuery({
-    query: GET_IS_LOGGED_IN,
-    data: { isLoggedIn: false },
-  })
 })
 
 export default apolloClient
