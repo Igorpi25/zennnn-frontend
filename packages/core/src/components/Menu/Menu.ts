@@ -419,7 +419,7 @@ export default defineComponent({
       }
 
       const content = withDirectives(
-        h('div', data, [genContent(), genArrow()]),
+        h('div', data, [genArrow(), genContent()]),
         [[vShow, isVisible.value]]
       )
 
