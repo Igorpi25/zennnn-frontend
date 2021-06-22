@@ -34,7 +34,7 @@ const SidebarItem: FunctionalComponent<{
       href={props.href}
       retainFocusOnClick={props.retainFocusOnClick}
       class="hover:text-white hover:bg-blue-400 dark:hover:bg-blue-400 w-full justify-start text-left rounded-none ring-inset"
-      contentClass="w-full space-x-4"
+      contentClass="w-full space-x-4 leading-normal"
       {...attrs}
     >
       {genSlot('start')}
