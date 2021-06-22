@@ -50,6 +50,7 @@ export default defineComponent({
     },
     trueValue: null,
     falseValue: null,
+    id: String,
   },
 
   emits: [
@@ -60,7 +61,7 @@ export default defineComponent({
   ],
 
   setup(props, { slots, emit }) {
-    const id: string = uid('checkbox-')
+    const id: string = props.id || uid('checkbox-')
     const rootElement = ref<HTMLElement>()
 
     const { internalValue, isFocused, genInput, genLabel } = useInput(props, {
