@@ -37,6 +37,7 @@ const i18n = createI18n({
     ru: slavicPluralRule,
     uk: slavicPluralRule,
   },
+  legacy: false,
 })
 
 export default i18n

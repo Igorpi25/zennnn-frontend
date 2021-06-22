@@ -12,7 +12,26 @@ import { auth, emitter } from '.'
 
 const logger = new Logger('Apollo')
 
-const cache = new InMemoryCache()
+const typePolicies = {
+  Query: {
+    fields: {
+      listWords: {
+        merge: false,
+      },
+    },
+  },
+  Word: {
+    fields: {
+      products: {
+        merge: false,
+      },
+    },
+  },
+}
+
+const cache = new InMemoryCache({
+  typePolicies,
+})
 
 const authLink = setContext(async (_, { headers }) => {
   let token = null

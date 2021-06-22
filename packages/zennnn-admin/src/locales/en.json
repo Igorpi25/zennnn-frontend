@@ -36,7 +36,7 @@
     "wordFromDictionary": "Dictionary word",
     "DRAFT": "Draft",
     "APPROVED": "Approved",
-    "DUPLICATES": "Duplicates",
+    "DUPLICATE": "Duplicates",
     "HIDDEN": "Hidden",
     "ALL": "All"
   },
