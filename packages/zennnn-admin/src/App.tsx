@@ -84,7 +84,7 @@ export default defineComponent({
                     icon,
                     locale,
                   }: LocaleActivatorSlotProps) => (
-                    <div
+                    <button
                       class={{
                         'h-14 flex items-center cursor-pointer px-3': true,
                         'hover:bg-light-gray-400 dark:hover:bg-gray-200': true,
@@ -92,8 +92,6 @@ export default defineComponent({
                           true,
                         'bg-light-gray-200 dark:bg-gray-500': active,
                       }}
-                      role="button"
-                      tabindex="0"
                     >
                       <img
                         src={
@@ -103,22 +101,20 @@ export default defineComponent({
                         }
                         alt={locale}
                       />
-                    </div>
+                    </button>
                   ),
                 }}
               />
 
               <div class="h-5 mx-3 border-r border-light-gray-300 dark:border-gray-300" />
 
-              <div
+              <button
                 class={{
                   'h-14 flex items-center cursor-pointer pl-3 pr-2 -mr-2': true,
                   'hover:bg-light-gray-400 dark:hover:bg-gray-200': true,
                   'focus:outline-none focus:ring focus:ring-blue-400 focus:ring-inset with-focus-visible':
                     true,
                 }}
-                role="button"
-                tabindex="0"
                 onClick={toggleSidebar}
                 onKeydown={(e: KeyboardEvent) => {
                   if (
@@ -145,7 +141,7 @@ export default defineComponent({
                   }
                   infoClass="text-right hidden md:flex"
                 />
-              </div>
+              </button>
             </div>
           )}
         </Navbar>
