@@ -28,8 +28,8 @@
   </Modal>
   <Modal
     v-model="model2"
-    class="flex items-end min-h-full h-full"
-    content-class="max-h-[256px] w-full h-full rounded-none overflow-auto m-0"
+    class="flex items-end min-h-full h-full px-0"
+    content-class="max-h-[256px] w-full h-full rounded-none overflow-auto my-0"
     top="auto"
     :hide-overflow="true"
     :transition="{

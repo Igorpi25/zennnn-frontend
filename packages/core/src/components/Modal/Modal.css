@@ -1,8 +1,8 @@
 .modal {
-  @apply min-h-screen text-center;
+  @apply min-h-screen text-center px-4;
 }
 .modal--fullscreen {
-  @apply min-h-full h-full;
+  @apply min-h-full h-full px-0;
 }
 
 .modal-content {
@@ -10,12 +10,12 @@
   @apply transform transition-transform;
   @apply inline-block align-middle overflow-hidden;
   @apply focus:outline-none shadow-main-day dark:shadow-main-night;
-  @apply rounded-lg m-4;
+  @apply rounded-lg my-4;
   @apply origin-center;
 }
 
 .modal-content--fullscreen {
-  @apply w-full h-full rounded-none overflow-auto m-0;
+  @apply w-full h-full rounded-none overflow-auto my-0;
 }
 
 .modal-overlay {

@@ -48,8 +48,8 @@ export default defineComponent({
       <Modal
         v-model={isActive.value}
         transition={transition.value}
-        class="md:container flex justify-end items-start min-h-0 h-full md:h-auto"
-        contentClass="h-full md:h-auto rounded-none md:rounded-lg overflow-auto m-0 md:-mx-6"
+        class="md:container flex justify-end items-start min-h-0 h-full md:h-auto px-0"
+        contentClass="h-full md:h-auto rounded-none md:rounded-lg overflow-auto md:-mx-6 my-0"
         overlayClass="bg-transparent"
         top="0"
         hideOverflow

@@ -115,7 +115,7 @@ export default defineComponent({
         }}
         width="100%"
         maxWidth="1162px"
-        contentClass="sm:!mx-2"
+        class="sm:px-2"
         fullscreen={mobile.value}
       >
         <div class="dark:bg-gray-900 p-4">

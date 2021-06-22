@@ -14,7 +14,6 @@ export default defineComponent({
         }}
         width="100%"
         maxWidth="448px"
-        contentClass="!mx-4"
       >
         <div class="bg-light-gray-300 dark:bg-gray-500 flex items-center space-x-2 p-4">
           <Icon large>{ziUserCircle}</Icon>

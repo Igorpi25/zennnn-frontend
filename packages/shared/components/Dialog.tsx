@@ -23,10 +23,7 @@ export default defineComponent({
       default: true,
     },
     closeClass: String,
-    contentClass: {
-      type: String,
-      default: '!mx-4',
-    },
+    contentClass: String,
     bodyClass: {
       type: String,
       default: 'px-4 py-6',
