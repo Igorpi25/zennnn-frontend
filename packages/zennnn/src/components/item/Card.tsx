@@ -102,8 +102,7 @@ export default defineComponent({
 
     // start observe on menu activated
     watch(isMenuBooted, () => {
-      useResizeObserver(footerRef, (entries, observer) => {
-        console.log('entries', entries, 'observer', observer)
+      useResizeObserver(footerRef, (entries) => {
         const rect = entries[0]?.contentRect
         if (rect) {
           menuWidth.value = rect.width + 32

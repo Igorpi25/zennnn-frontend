@@ -1,22 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import { theme } from '../plugins/theme'
-import { i18n } from '../plugins/i18n'
-import { notify } from '../plugins/notify'
-import { checkAuth } from '../plugins/auth/checkAuth'
+import { CURRENT_LOCALE_STORE_KEY } from 'shared/config'
+import { CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config'
+import { auth, isLoggedIn, i18n, theme, emitter } from '../plugins'
 import { apolloClient } from '../plugins/apollo'
+
 import {
   CHECK_INVITATION,
   GET_ROLE_IN_PROJECT,
   GET_ORGS,
   GET_PROFILE,
 } from '../graphql/queries'
-
-import {
-  CURRENT_LOCALE_STORE_KEY,
-  CURRENT_ORG_STORE_KEY,
-  PAPER_SID_STORE_KEY,
-} from '../config/globals'
 
 import SignIn from '../views/SignIn.vue'
 import Registration from '../views/Registration.vue'
@@ -45,6 +39,41 @@ import Staff from '../views/Staff.vue'
 import Invitation from '../views/Invitation.vue'
 
 import Paper from '../views/Paper.vue'
+
+import type { FunctionalComponent } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
+import type { NotifyOptions } from 'shared/composables/notify'
+
+/**
+ * Check auth of current user
+ * @return {boolean} - logged in
+ */
+export const checkAuth = async () => {
+  try {
+    const session = await auth.currentSession()
+    const loggedIn = !!session.getIdToken().getJwtToken()
+    if (loggedIn) {
+      // check profile
+      await apolloClient.query({
+        query: GET_PROFILE,
+        fetchPolicy: 'cache-first',
+      })
+    }
+    isLoggedIn.value = loggedIn
+    return loggedIn
+  } catch (error) {
+    isLoggedIn.value = false
+    return false
+  }
+}
+
+const EmptyComponent: FunctionalComponent = () => {
+  return undefined
+}
+
+const showNotify = (payload: string | NotifyOptions) => {
+  emitter.emit('show-notify', payload)
+}
 
 const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
 
@@ -80,7 +109,7 @@ const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 
 // const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/main',
     component: () => import(/* webpackChunkName: "main" */ '../views/Main'),
@@ -118,7 +147,7 @@ const routes = [
         if (!getOrgs || getOrgs.length === 0) {
           throw new Error('Not found')
         }
-        const orgId = to.params.orgId
+        const orgId = to.params.orgId as string
         if (!orgId) {
           const [org] = getOrgs
           if (org && org.id) {
@@ -128,7 +157,7 @@ const routes = [
             localStorage.removeItem(CURRENT_ORG_STORE_KEY)
             throw new Error('Not found')
           }
-        } else if (getOrgs.some((el) => el.id === orgId)) {
+        } else if (getOrgs.some((el: any) => el.id === orgId)) {
           localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
           return true
         } else {
@@ -357,7 +386,10 @@ const routes = [
           throw new Error('No valid link!')
         }
       } catch (error) {
-        notify.show({ color: 'error', text: error.message || '' })
+        showNotify({
+          color: 'error',
+          text: error.message || '',
+        })
         return { name: 'not-found' }
       }
     },
@@ -383,7 +415,7 @@ const routes = [
         console.log('Error on navigation to overview.', error)
       }
       if (to.query.sid) {
-        localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid)
+        localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid as string)
         return {
           name: 'paper',
           params: { specId: to.params.specId },
@@ -400,7 +432,7 @@ const routes = [
       if (!to.params.docNo || !window.opener) {
         return false
       }
-      notify.show({
+      showNotify({
         color: 'primary',
         text: i18n.t('message.documentGenerateLoading'),
         timeout: 0,
@@ -439,22 +471,25 @@ const routes = [
     beforeEnter: (to) => {
       if (to.query.username) {
         if (to.query.state === 'success') {
-          notify.show({
+          showNotify({
             color: 'success',
             text: i18n.t('message.emailConfirmed'),
           })
         } else if (to.query.state === 'confirmed') {
-          notify.show({
+          showNotify({
             color: 'warn',
             text: i18n.t('message.emailAlreadyConfirmed'),
           })
         } else if (to.query.state === 'error') {
-          notify.show({ color: 'error', text: to.query.message })
-          // Add message to Analytics
+          showNotify({
+            color: 'error',
+            text: to.query.message as string,
+          })
         }
       }
       return { name: 'signin' }
     },
+    component: EmptyComponent,
   },
   {
     path: '/password-restore',
@@ -471,7 +506,7 @@ const routes = [
         return true
       } else {
         // Incorrect request to restore password
-        notify.show({
+        showNotify({
           color: 'error',
           text: i18n.t('message.incorrectRestorePassword'),
         })
@@ -482,68 +517,77 @@ const routes = [
   // docs
   {
     path: '/agreenemt',
-    beforeEnter: (to, from, next) => {
-      window.location = '/docs/AGREEMENT.pdf'
-      next(false)
+    beforeEnter: () => {
+      window.location.href = '/docs/AGREEMENT.pdf'
+      return false
     },
+    component: EmptyComponent,
   },
   {
     path: '/policy',
-    beforeEnter: (to, from, next) => {
-      window.location = '/docs/PRIVACY%20POLICY.pdf'
-      next(false)
+    beforeEnter: () => {
+      window.location.href = '/docs/PRIVACY%20POLICY.pdf'
+      return false
     },
+    component: EmptyComponent,
   },
   // alias for policy, for link in documents
   {
     path: '/privacy',
-    beforeEnter: (to, from, next) => {
-      window.location = '/docs/PRIVACY%20POLICY.pdf'
-      next(false)
+    beforeEnter: () => {
+      window.location.href = '/docs/PRIVACY%20POLICY.pdf'
+      return false
     },
+    component: EmptyComponent,
   },
   {
     path: '/cloud',
-    beforeEnter: (to, from, next) => {
-      window.location = '/docs/ZENNNN%20CLOUD%20HOSTING.pdf'
-      next(false)
+    beforeEnter: () => {
+      window.location.href = '/docs/ZENNNN%20CLOUD%20HOSTING.pdf'
+      return false
     },
+    component: EmptyComponent,
   },
   {
     path: '/security',
-    beforeEnter: (to, from, next) => {
-      window.location = '/docs/SECURITY%20POLICY.pdf'
-      next(false)
+    beforeEnter: () => {
+      window.location.href = '/docs/SECURITY%20POLICY.pdf'
+      return false
     },
+    component: EmptyComponent,
   },
   {
     path: '/dicslosure',
-    beforeEnter: (to, from, next) => {
-      window.location = '/docs/RESPONSIBLE%20DISCLOSURE.pdf'
-      next(false)
+    beforeEnter: () => {
+      window.location.href = '/docs/RESPONSIBLE%20DISCLOSURE.pdf'
+      return false
     },
+    component: EmptyComponent,
   },
   {
     path: '/acceptable',
-    beforeEnter: (to, from, next) => {
-      window.location = '/docs/ACCEPTABLE%20USE%20POLICY%20(CLOUD).pdf'
-      next(false)
+    beforeEnter: () => {
+      window.location.href = '/docs/ACCEPTABLE%20USE%20POLICY%20(CLOUD).pdf'
+      return false
     },
+    component: EmptyComponent,
   },
   {
     path: '/policy_iap',
-    beforeEnter: (to, from, next) => {
-      window.location = '/docs/IAP%20PRIVACY%20POLICY.pdf'
-      next(false)
+    beforeEnter: () => {
+      window.location.href = '/docs/IAP%20PRIVACY%20POLICY.pdf'
+      return false
     },
+    component: EmptyComponent,
   },
   // alias for policy_iap, for link in documents
   {
     path: '/privacy_iap',
-    beforeEnter: (to, from, next) => {
-      window.location = '/docs/IAP%20PRIVACY%20POLICY.pdf'
-      next(false)
+    beforeEnter: () => {
+      window.location.href = '/docs/IAP%20PRIVACY%20POLICY.pdf'
+      return false
     },
+    component: EmptyComponent,
   },
   {
     path: '/:pathMatch(.*)*',
@@ -572,7 +616,9 @@ router.beforeEach(async (to, from) => {
   const localLang = localStorage.getItem(CURRENT_LOCALE_STORE_KEY)
   if (!localLang) {
     const defaultLang = process.env.VUE_APP_I18N_LOCALE || 'en'
-    const userLang = navigator.language || navigator.userLanguage || ''
+    // @ts-ignore
+    const userLanguage = navigator.userLanguage
+    const userLang = navigator.language || userLanguage || ''
     // is not default lang
     if (!userLang.startsWith(defaultLang)) {
       const supportedLangs = i18n.availableLocales
@@ -600,7 +646,7 @@ router.beforeEach(async (to, from) => {
     return {
       name: 'signin',
       query:
-        to.fullPath && (to.fullPath !== '/' || to.fullPath !== '/signin')
+        to.fullPath && to.fullPath !== '/' && to.fullPath !== '/signin'
           ? { redirect: to.fullPath }
           : {},
     }

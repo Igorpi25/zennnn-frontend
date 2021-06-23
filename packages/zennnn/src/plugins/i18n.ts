@@ -1,17 +1,20 @@
 import { createI18n } from 'vue-i18n'
 
-import { CURRENT_LOCALE_STORE_KEY } from '../../config/globals'
+import { CURRENT_LOCALE_STORE_KEY } from 'shared/config'
 
-import { datetimeFormats, numberFormats } from './formats'
-import { slavicPluralRule } from './pluralizationRules'
+import {
+  datetimeFormats,
+  numberFormats,
+  slavicPluralRule,
+} from 'shared/plugins/i18n'
 
 function loadLocaleMessages() {
   const locales = require.context(
-    '../../locales/admin',
+    '../locales',
     true,
     /[A-Za-z0-9-_,\s]+\.json$/i
   )
-  const messages = {}
+  const messages = {} as any
   locales.keys().forEach((key) => {
     const matched = key.match(/([A-Za-z0-9-_]+)\./i)
     if (matched && matched.length > 1) {

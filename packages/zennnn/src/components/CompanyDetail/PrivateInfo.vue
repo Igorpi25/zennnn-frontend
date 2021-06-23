@@ -293,7 +293,7 @@ import {
   DatePicker,
 } from '@zennnn/core'
 
-import { LOCALES_LIST } from '../../config/globals'
+import { LOCALES_LIST } from 'shared/config'
 
 import clientDetail from '../../mixins/clientDetail'
 

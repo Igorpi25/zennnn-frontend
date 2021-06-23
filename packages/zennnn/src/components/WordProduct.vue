@@ -176,8 +176,6 @@
 </template>
 
 <script>
-import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
-
 import {
   ziFullScreen,
   ziArrowLeft,
@@ -185,6 +183,8 @@ import {
   ziCloseWindow,
 } from '@zennnn/icons'
 import { Icon, Menu, Image, LoadingSpinner } from '@zennnn/core'
+
+import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from 'shared/config'
 
 export default {
   name: 'WordProduct',

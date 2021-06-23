@@ -273,7 +273,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApolloClient } from '@vue/apollo-composable'
 
-import { DEFAULT_CURRENCY } from '../config/globals'
+import { DEFAULT_CURRENCY } from '../config'
 
 import { GET_SPEC, GET_IS_SPEC_SYNC } from '../graphql/queries'
 import { UPDATE_INVOICE } from '../graphql/mutations'

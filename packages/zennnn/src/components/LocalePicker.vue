@@ -52,7 +52,7 @@ import { useI18n } from 'vue-i18n'
 import { ziChevronDown } from '@zennnn/icons'
 import { Icon, Menu, MenuItem } from '@zennnn/core'
 
-import { CURRENT_LOCALE_STORE_KEY, LOCALES_LIST } from '../config/globals'
+import { CURRENT_LOCALE_STORE_KEY, LOCALES_LIST } from 'shared/config'
 
 export default {
   name: 'LocalePicker',

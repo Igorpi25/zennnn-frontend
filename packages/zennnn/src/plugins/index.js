@@ -1,8 +1,0 @@
-// import './date-fns'
-// import './notify'
-// import './sentry'
-// export { default as Logger } from './logger'
-// export { default as i18n } from './i18n'
-// export { default as Auth } from './auth'
-// export { default as apolloProvider } from './apollo'
-// export { default as store } from './localforage'

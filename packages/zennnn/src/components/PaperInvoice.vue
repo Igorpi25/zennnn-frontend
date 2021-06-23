@@ -264,9 +264,9 @@ import { Scroll, convertToUnit, isNumber } from 'vue-supp'
 import { ziOpenInNew } from '@zennnn/icons'
 import { Icon, Image, LoadingSpinner } from '@zennnn/core'
 
-import { ProductStatus } from '../graphql/enums'
+import { DEFAULT_CURRENCY } from '../config'
 
-import { DEFAULT_CURRENCY } from '../config/globals'
+import { ProductStatus } from '../graphql/enums'
 
 import ProductImage from './ProductImage.vue'
 import Comments from './Comments.vue'

@@ -280,7 +280,7 @@ import { Scroll } from 'vue-supp'
 import { ziLink, ziChat, ziQr } from '@zennnn/icons'
 import { Icon, DataTable } from '@zennnn/core'
 
-import { DEFAULT_CURRENCY } from '../config/globals'
+import { DEFAULT_CURRENCY } from '../config'
 
 import { SpecCurrency, InvoiceProfitType, Role } from '../graphql/enums'
 import {

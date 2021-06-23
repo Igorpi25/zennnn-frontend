@@ -9,27 +9,19 @@ import { WebSocketLink } from '@apollo/client/link/ws'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 import { getMainDefinition } from '@apollo/client/utilities'
-
-import { typeDefs, resolvers } from '../../graphql'
+import Logger from 'shared/plugins/logger'
+import { BACKEND_VERSION_HEADER_KEY } from 'shared/config'
+import { PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../config'
+import { typeDefs, resolvers } from '../graphql'
 import {
   GET_BACKEND_VERSION,
   GET_IS_LOGGED_IN,
   GET_IS_SPEC_SYNC,
   SPEC_SIMPLE_UI_OFF,
-} from '../../graphql/queries'
-import {
-  BACKEND_VERSION_HEADER_KEY,
-  PAPER_SID_STORE_KEY,
-  SPEC_SIMPLE_UI_OFF_STORE_KEY,
-} from '../../config/globals'
-import router from '../../router'
-import { getUsername } from '../../graphql/resolvers'
-import emitter from '../mitt'
-import { store } from '../localforage'
-import { notify } from '../notify'
-import { Logger } from '../logger'
-import { i18n } from '../i18n'
-import { auth } from '../auth'
+} from '../graphql/queries'
+import { getUsername } from '../graphql/resolvers'
+import router from '../router'
+import { auth, i18n, emitter, store } from '.'
 
 const logger = new Logger('Apollo')
 
@@ -164,7 +156,7 @@ const httpLink = createHttpLink({
 
 // Create the subscription websocket link
 export const wsLink = new WebSocketLink({
-  uri: process.env.VUE_APP_GRAPHQL_WS_ENDPOINT,
+  uri: process.env.VUE_APP_GRAPHQL_WS_ENDPOINT as string,
   options: {
     reconnect: true,
     lazy: true,
@@ -194,9 +186,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
           router.push({
             name: 'signin',
             query:
-              router.currentRoute.fullPath &&
-              router.currentRoute.fullPath !== '/'
-                ? { redirect: router.currentRoute.fullPath }
+              router.currentRoute.value.fullPath &&
+              router.currentRoute.value.fullPath !== '/'
+                ? { redirect: router.currentRoute.value.fullPath }
                 : {},
           })
           break
@@ -205,9 +197,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
           )
           if (message === 'ForbiddenError: Insufficient access rights') {
-            emitter.emit('system-message', message)
+            emitter.emit('show-system-message', message)
           } else if (message && message.includes('Forbidden')) {
-            notify.show({ color: 'warn', text: 'Forbidden' })
+            emitter.emit('show-notify', { color: 'warn', text: 'Forbidden' })
           }
       }
     }

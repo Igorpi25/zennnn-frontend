@@ -1,15 +1,14 @@
 import { isProxy } from 'vue'
 
-import { store } from '../plugins/localforage'
-import { auth } from '../plugins/auth'
+import { auth, store } from '../plugins'
 import {
   SPEC_ACTIVE_TAB_STORE_KEY,
   SPEC_EXPANDED_INVOICES_STORE_KEY,
   PAPER_STORE_KEY_PREFIX,
   SPEC_SIMPLE_UI_OFF_STORE_KEY,
-} from '../config/globals'
-import { emptyInvoice, emptyProduct } from '../graphql/enums'
-import { SPEC_SIMPLE_UI_OFF } from '../graphql/queries'
+} from '../config'
+import { emptyInvoice, emptyProduct } from './enums'
+import { SPEC_SIMPLE_UI_OFF } from './queries'
 
 export const getUsername = async (defaultUsername = '') => {
   defaultUsername = defaultUsername || 'Username'
@@ -17,16 +16,21 @@ export const getUsername = async (defaultUsername = '') => {
   try {
     const session = await auth.currentSession()
     if (session) {
+      // @ts-ignore
       const payload = session.accessToken && session.accessToken.payload
       username = (payload && payload.username) || defaultUsername
     }
-  } catch (error) { // eslint-disable-line
+  } catch (error) {
+    // eslint-disable-line
     username = defaultUsername
   }
   return username
 }
 
-export const getSpecExpandedInvoices = async (specId, prefix) => {
+export const getSpecExpandedInvoices = async (
+  specId: string,
+  prefix?: string
+) => {
   const username = await getUsername()
   let key = prefix ? `${prefix}.` : ''
   key += `${username}.${specId}.${SPEC_EXPANDED_INVOICES_STORE_KEY}`
@@ -34,7 +38,7 @@ export const getSpecExpandedInvoices = async (specId, prefix) => {
   return ids === null ? null : ids || []
 }
 
-export const getSpecActiveTab = async (specId, prefix) => {
+export const getSpecActiveTab = async (specId: string, prefix?: string) => {
   const username = await getUsername()
   let key = prefix ? `${prefix}.` : ''
   key += `${username}.${specId}.${SPEC_ACTIVE_TAB_STORE_KEY}`
@@ -44,7 +48,7 @@ export const getSpecActiveTab = async (specId, prefix) => {
 
 const resolvers = {
   Query: {
-    getSpec: async (data) => {
+    getSpec: async (data: any) => {
       const spec = data.getSpec
       if (!spec) return spec
       const specId = spec.id
@@ -52,7 +56,7 @@ const resolvers = {
       const expandedInvoices = await getSpecExpandedInvoices(specId)
       const invoices = spec.invoices
       const emptyId = `empty-${specId}`
-      const emptyIndex = invoices.findIndex((el) => el.id === emptyId)
+      const emptyIndex = invoices.findIndex((el: any) => el.id === emptyId)
       if (emptyIndex === -1) {
         invoices.push(
           Object.assign({}, emptyInvoice, { id: emptyId, products: [] })
@@ -61,7 +65,7 @@ const resolvers = {
       }
       return { ...spec, activeTab, expandedInvoices }
     },
-    getPaperSpec: async (data) => {
+    getPaperSpec: async (data: any) => {
       const spec = data.getPaperSpec
       if (!spec) return spec
       const specId = spec.id
@@ -73,7 +77,7 @@ const resolvers = {
     },
   },
   Mutation: {
-    initSpecSimpleUI: async (_, args, { cache }) => {
+    initSpecSimpleUI: async (_: unknown, args: any, { cache }: any) => {
       const username = await getUsername()
       const key = `${username}.${SPEC_SIMPLE_UI_OFF_STORE_KEY}`
       const value = await store.getItem(key)
@@ -83,7 +87,7 @@ const resolvers = {
       })
       return true
     },
-    setSpecSimpleUI: async (_, { value }, { cache }) => {
+    setSpecSimpleUI: async (_: unknown, { value }: any, { cache }: any) => {
       const username = await getUsername()
       const key = `${username}.${SPEC_SIMPLE_UI_OFF_STORE_KEY}`
       cache.writeQuery({
@@ -93,13 +97,16 @@ const resolvers = {
       await store.setItem(key, value)
       return true
     },
-    setSpecActiveTab: async (_, { specId, tab }) => {
+    setSpecActiveTab: async (_: unknown, { specId, tab }: any) => {
       const username = await getUsername()
       const key = `${username}.${specId}.${SPEC_ACTIVE_TAB_STORE_KEY}`
       await store.setItem(key, tab)
       return true
     },
-    setSpecExpandedInvoices: async (_, { specId, ids, prefix }) => {
+    setSpecExpandedInvoices: async (
+      _: unknown,
+      { specId, ids, prefix }: any
+    ) => {
       const username = await getUsername()
       let key = prefix ? `${prefix}.` : ''
       key += `${username}.${specId}.${SPEC_EXPANDED_INVOICES_STORE_KEY}`
@@ -108,13 +115,16 @@ const resolvers = {
       await store.setItem(key, idsArr)
       return true
     },
-    addSpecExpandedInvoices: async (_, { specId, ids, prefix }) => {
+    addSpecExpandedInvoices: async (
+      _: unknown,
+      { specId, ids, prefix }: any
+    ) => {
       const username = await getUsername()
       let key = prefix ? `${prefix}.` : ''
       key += `${username}.${specId}.${SPEC_EXPANDED_INVOICES_STORE_KEY}`
-      const invoicesIds = (await store.getItem(key)) || []
+      const invoicesIds = ((await store.getItem(key)) as any[]) || []
       ids = ids || []
-      ids.forEach((id) => {
+      ids.forEach((id: any) => {
         if (!invoicesIds.includes(id)) {
           invoicesIds.push(id)
         }
@@ -122,21 +132,24 @@ const resolvers = {
       await store.setItem(key, invoicesIds)
       return true
     },
-    removeSpecExpandedInvoices: async (_, { specId, ids, prefix }) => {
+    removeSpecExpandedInvoices: async (
+      _: any,
+      { specId, ids, prefix }: any
+    ) => {
       const username = await getUsername()
       let key = prefix ? `${prefix}.` : ''
       key += `${username}.${specId}.${SPEC_EXPANDED_INVOICES_STORE_KEY}`
-      const invoicesIds = (await store.getItem(key)) || []
-      const result = invoicesIds.filter((id) => !ids.includes(id))
+      const invoicesIds = ((await store.getItem(key)) as any[]) || []
+      const result = invoicesIds.filter((id: any) => !ids.includes(id))
       await store.setItem(key, result)
       return true
     },
   },
   Invoice: {
-    products: (invoice) => {
+    products: (invoice: any) => {
       const products = invoice.products
       const emptyId = `empty-${invoice.id}`
-      const emptyIndex = products.findIndex((el) => el.id === emptyId)
+      const emptyIndex = products.findIndex((el: any) => el.id === emptyId)
       if (emptyIndex === -1) {
         products.push(Object.assign({}, emptyProduct, { id: emptyId }))
         invoice.products = products

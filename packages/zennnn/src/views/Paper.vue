@@ -945,7 +945,7 @@ import {
   PAPER_STORE_KEY_PREFIX,
   DEFAULT_CURRENCY,
   PAPER_ORG_ID_STORE_KEY,
-} from '../config/globals'
+} from '../config'
 
 import { Typename, Operation, InvoiceStatus } from '../graphql/enums'
 import { GET_PAPER_SPEC, GET_PROFILE } from '../graphql/queries'

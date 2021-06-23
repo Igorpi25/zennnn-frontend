@@ -134,11 +134,11 @@ import {
   WindowItem,
 } from '@zennnn/core'
 
+import { LOCALES_LIST } from 'shared/config'
+
 import { Role } from '../graphql/enums'
 import { GET_INVITE_USER_TO_ORG } from '../graphql/queries'
 import { INVITE_USER_TO_ORG } from '../graphql/mutations'
-
-import { LOCALES_LIST } from '../config/globals'
 
 import Dialog from './Dialog'
 

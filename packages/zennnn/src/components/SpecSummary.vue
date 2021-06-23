@@ -243,6 +243,8 @@ import PrintSettings from '../components/PrintSettings.vue'
 import SpecShipment from '../components/SpecShipment.vue'
 import SpecCustoms from '../components/SpecCustoms.vue'
 
+import { DEFAULT_CURRENCY, PAPER_ORG_ID_STORE_KEY } from '../config'
+
 import { SpecCurrency, Role } from '../graphql/enums'
 import {
   LIST_ORG_CONTRACTS,
@@ -259,7 +261,6 @@ import {
   SET_SPEC_CONTAINER_SIZE,
   SET_SPEC_CONTAINER_CUSTOM_CAPACITY,
 } from '../graphql/mutations'
-import { DEFAULT_CURRENCY, PAPER_ORG_ID_STORE_KEY } from '../config/globals'
 
 import printInvoice from '../components/printInvoice'
 

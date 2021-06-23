@@ -463,7 +463,7 @@ import FileUploader from './FileUploader.vue'
 import LocalePicker from './LocalePicker.vue'
 import SystemMessageModal from '../components/SystemMessageModal.vue'
 
-import emitter from '../plugins/mitt'
+import { emitter } from '../plugins'
 
 export default {
   name: 'Header',
@@ -636,7 +636,7 @@ export default {
   mounted() {
     this.favorites =
       JSON.parse(localStorage.getItem(this.favoritesKeyStore)) || []
-    emitter.on('system-message', (message) => {
+    emitter.on('show-system-message', (message) => {
       this.systemMessage =
         message === 'ForbiddenError: Insufficient access rights'
           ? this.$t('systemMessageModal.needPayment')

@@ -107,7 +107,8 @@ import { useApolloClient } from '@vue/apollo-composable'
 import { ziSearch, ziCloseDelete } from '@zennnn/icons'
 import { Icon, Image, LoadingSpinner } from '@zennnn/core'
 
-import { ICON_IMAGE_POSTFIX } from '../config/globals'
+import { ICON_IMAGE_POSTFIX } from 'shared/config'
+
 import { ADD_PRODUCT_IMAGE, REMOVE_PRODUCT_IMAGE } from '../graphql/mutations'
 
 import ProductImage from './ProductImage.vue'

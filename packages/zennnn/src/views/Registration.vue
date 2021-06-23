@@ -151,7 +151,7 @@ import Header from '../components/Header.vue'
 import Social from '../components/Social.vue'
 import Copyright from '../components/Copyright.vue'
 
-import { auth } from '../plugins/auth'
+import { auth } from '../plugins'
 
 export default {
   name: 'Registration',

@@ -192,12 +192,12 @@
 </template>
 
 <script>
-import { LOCALES_LIST } from '../../config/globals'
+import { TextField, Select, Switch } from '@zennnn/core'
+import { LOCALES_LIST } from 'shared/config'
+
+import Phone from '../Phone.vue'
 
 import clientDetail from '../../mixins/clientDetail'
-
-import { TextField, Select, Switch } from '@zennnn/core'
-import Phone from '../Phone.vue'
 
 export default {
   name: 'LegalInfo',

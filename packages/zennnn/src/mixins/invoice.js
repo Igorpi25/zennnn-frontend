@@ -2,6 +2,8 @@ import { Scroll } from 'vue-supp'
 
 import apolloClient from '../plugins/apollo'
 
+import { DEFAULT_CURRENCY } from '../config'
+
 import { GET_SPEC, GET_IS_SPEC_SYNC } from '../graphql/queries'
 import {
   UPDATE_INVOICE,
@@ -9,8 +11,6 @@ import {
   CREATE_PRODUCT_WITH_INVOICE,
 } from '../graphql/mutations'
 import { InvoiceProfitType, SpecCurrency } from '../graphql/enums'
-
-import { DEFAULT_CURRENCY } from '../config/globals'
 
 export default {
   directives: {

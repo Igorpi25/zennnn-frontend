@@ -63,10 +63,8 @@ module.exports = {
     config.resolve.fallback = { crypto: false }
 
     const definePlugin = new webpack.DefinePlugin({
-      'process.env': {
-        FRONTEND_VERSION: JSON.stringify(version),
-        COMMIT_HASH: JSON.stringify(commitHash),
-      },
+      'process.env.FRONTEND_VERSION': JSON.stringify(version),
+      'process.env.COMMIT_HASH': JSON.stringify(commitHash),
     })
     // TODO: replace with pwa plugin
     const copyPlugin = new CopyWebpackPlugin({

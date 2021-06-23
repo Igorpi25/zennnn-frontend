@@ -102,10 +102,11 @@
 </template>
 
 <script>
-import { DEFAULT_CURRENCY } from '../config/globals'
-import { SpecCurrency, Role } from '../graphql/enums'
-
 import { TextField } from '@zennnn/core'
+
+import { DEFAULT_CURRENCY } from '../config'
+
+import { SpecCurrency, Role } from '../graphql/enums'
 
 export default {
   name: 'SpecCost',

@@ -177,24 +177,12 @@ import {
   ziLanguages,
   ziCheckedSm,
 } from '@zennnn/icons'
-import {
-  Btn,
-  Modal,
-  Progress,
-  Icon,
-  Form,
-  Select,
-  TextField,
-} from '@zennnn/core'
+import { Btn, Modal, Progress, Icon, Form, TextField } from '@zennnn/core'
 
-import { LOCALES_LIST } from '../config/globals'
+import { LOCALES_LIST } from 'shared/config'
+
 import { CREATE_WORD, UPDATE_WORD } from '../graphql/mutations'
-import {
-  CREATE_WORD as ADMIN_CREATE_WORD,
-  UPDATE_WORD as ADMIN_UPDATE_WORD,
-} from '../graphql/admin/mutations'
 import { TRANSLATE_WORD } from '../graphql/queries'
-import { TRANSLATE_WORD as ADMIN_TRANSLATE_WORD } from '../graphql/admin/queries'
 
 export default {
   name: 'WordDialog',
@@ -204,7 +192,6 @@ export default {
     Progress,
     Icon,
     Form,
-    Select,
     TextField,
   },
   props: {

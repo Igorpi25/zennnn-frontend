@@ -311,9 +311,9 @@ import {
 } from '@zennnn/icons'
 import { Btn, Icon, Progress, TextField, DataTable } from '@zennnn/core'
 
-import { LIST_WORDS } from '../graphql/queries'
+import { LOCALES_LIST } from 'shared/config'
 
-import { LOCALES_LIST } from '../config/globals'
+import { LIST_WORDS } from '../graphql/queries'
 
 import WordDialog from '../components/WordDialog.vue'
 import WordSpecs from '../components/WordSpecs.vue'

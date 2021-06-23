@@ -381,10 +381,11 @@ import {
 } from '@zennnn/icons'
 import { Icon, Menu, Image, LoadingSpinner } from '@zennnn/core'
 
-import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from '../config/globals'
+import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from 'shared/config'
+
 import { ADD_PRODUCT_IMAGE, UPDATE_PRODUCT_INFO } from '../graphql/mutations'
 
-import Sortable from '../plugins/draggable/Sortable'
+import Sortable from '../components/draggable/Sortable'
 import FileUploader from '../components/FileUploader.vue'
 
 export default {
