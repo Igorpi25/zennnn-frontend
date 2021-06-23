@@ -172,6 +172,7 @@
 
   #app {
     @apply flex flex-col min-h-full;
+    /* -webkit-tap-highlight-color: rgba(0, 0, 0, 0); */
   }
 
   img {
@@ -208,10 +209,101 @@
     max-width: 1178px; /* max width 1130 + padding 48px = 1178px */
     @apply mx-auto px-4 sm:px-6;
   }
+
+  /* Used in Welcome, PasswordRestore, PasswordRestoreConfirm, Paper, NotFound, SignInByPhone, Registration, LoginRestore */
+  .content {
+    @apply flex-grow flex flex-col relative overflow-x-hidden;
+  }
+
+  /* Signin, Signup views */
+  .auth-left {
+    width: 44% !important;
+  }
+  .auth-left--bg {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: -300px 380px;
+    background-image: url(../img/cloud.svg);
+  }
+
+  /* override draggable */
+  .draggable-mirror {
+    z-index: 500 !important;
+  }
 }
 
 @layer utilities {
-  .flex-2 {
-    flex: 2 1 0%;
+  .border-spacing-y-px {
+    border-spacing: 0 1px;
+  }
+  .border-spacing-y-1 {
+    border-spacing: 0 4px;
+  }
+  .border-spacing-y-2 {
+    border-spacing: 0 8px;
+  }
+
+  .placeholder-sm::placeholder {
+    font-size: 14px;
+  }
+  .placeholder-base::placeholder {
+    font-size: 16px;
+  }
+
+  .leading-12 {
+    line-height: 3rem;
+  }
+
+  @variants responsive {
+    .list-cols-1 {
+      columns: 1;
+    }
+    .list-cols-2 {
+      columns: 2;
+    }
+    .list-cols-3 {
+      columns: 3;
+    }
+  }
+
+  /* DOTS */
+  .dots {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: clip;
+  }
+  .dots::before {
+    display: block;
+    content: '. . . . . . . . . . . . . . . . . . . . '
+      '. . . . . . . . . . . . . . . . . . . . '
+      '. . . . . . . . . . . . . . . . . . . . '
+      '. . . . . . . . . . . . . . . . . . . . ';
+  }
+
+  /* Hide scrollbar */
+  .scrollbar-hidden {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+  .scrollbar-hidden::-webkit-scrollbar-track {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    background-color: transparent;
+  }
+  .scrollbar-hidden::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    background-color: transparent;
+  }
+  .scrollbar-hidden::-webkit-scrollbar-thumb {
+    width: 0 !important;
+    height: 0 !important;
+    background-color: transparent;
+  }
+  /*nobody needs this little scrollbar corner, I mean really, get rid of it haha*/
+  .scrollbar-hidden::-webkit-scrollbar-corner {
+    display: none;
+    height: 0px;
+    width: 0px;
   }
 }

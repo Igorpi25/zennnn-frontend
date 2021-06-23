@@ -18,7 +18,7 @@ import theme from './plugins/theme'
 import { createDisplay, DisplaySymbol } from './composables/display'
 
 // Tailwindcss
-import './assets/css/main.css'
+import './index.css'
 
 import './registerServiceWorker'
 
