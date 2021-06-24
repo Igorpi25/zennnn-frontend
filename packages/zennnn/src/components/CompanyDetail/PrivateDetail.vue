@@ -411,7 +411,7 @@ import {
   ExpandTransition,
 } from '@zennnn/core'
 
-import Countries from '../../config/countries-iso3.json'
+import Countries from '@/assets/countries/codes.json'
 
 import clientDetail from '../../mixins/clientDetail'
 

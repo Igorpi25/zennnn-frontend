@@ -183,10 +183,11 @@
 </template>
 
 <script>
-import { CustomsTerms, CustomsTermsMore, ShipmentType } from '../graphql/enums'
-import Countries from '../config/countries-iso3.json'
-
 import { TextField, TextArea, Select } from '@zennnn/core'
+
+import { CustomsTerms, CustomsTermsMore, ShipmentType } from '@/graphql/enums'
+
+import Countries from '@/assets/countries/codes.json'
 
 export default {
   name: 'SpecCustoms',

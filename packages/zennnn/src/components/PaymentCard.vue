@@ -220,9 +220,9 @@ import {
   CREATE_PROMO_SUBSCRIPTION,
   ATTACH_PAYMENT_METHOD,
   SET_BILLING_ADDRESS,
-} from '../graphql/mutations'
+} from '@/graphql/mutations'
 
-import Countries from '../config/countries-iso3.json'
+import Countries from '@/assets/countries/codes.json'
 
 import {
   Btn,

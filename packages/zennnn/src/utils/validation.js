@@ -1,5 +1,5 @@
-import phonesMask from '../config/countries-phones-unformatted.json'
-import { ShipmentType } from '../graphql/enums'
+import phonesMask from '@/assets/countries/phones-unformatted.json'
+import { ShipmentType } from '@/graphql/enums'
 
 const VALIDATION_TYPE = {
   PERSON: 1,

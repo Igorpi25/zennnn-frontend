@@ -1,9 +1,9 @@
 import axios from 'axios'
 import parseISO from 'date-fns/parseISO'
 import fromUnixTime from 'date-fns/fromUnixTime'
-import { i18n } from '../plugins'
-import { ShipmentType, ClientType } from '../graphql/enums'
-import Countries from '../config/countries-iso3.json'
+import { i18n } from '@/plugins'
+import { ShipmentType, ClientType } from '@/graphql/enums'
+import Countries from '@/assets/countries/codes.json'
 
 const parseDate = (date) => {
   if (!date) return ''
