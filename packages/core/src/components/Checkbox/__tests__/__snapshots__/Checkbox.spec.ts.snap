@@ -7,7 +7,7 @@ exports[`Checkbox.ts should render checked component and match snapshot 1`] = `
     <div class="checkbox__control__input"><input id="checkbox-1" class="checkbox__input" type="checkbox" value="false" role="checkbox" aria-checked="true">
       <div class="checkbox__control__icon"><i class="icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px" role="img" aria-hidden="true" style="font-size: 20px; height: 20px; width: 20px;">
             <g fill="currentColor">
-              <path d="M20.003 8.552l-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
+              <path d="m20.003 8.552-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
             </g>
           </svg></i></div>
     </div><label for="checkbox-1" class="checkbox__label">Label</label>
@@ -23,7 +23,7 @@ exports[`Checkbox.ts should render component and match snapshot 1`] = `
     <div class="checkbox__control__input"><input id="checkbox-1" class="checkbox__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
       <div class="checkbox__control__icon"><i class="icon" aria-hidden="true" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px" role="img" aria-hidden="true" style="font-size: 20px; height: 20px; width: 20px;">
             <g fill="currentColor">
-              <path d="M20.003 8.552l-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
+              <path d="m20.003 8.552-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
             </g>
           </svg></i></div>
     </div><label for="checkbox-1" class="checkbox__label">Label</label>
@@ -39,7 +39,7 @@ exports[`Checkbox.ts should render component with disabled prop and match snapsh
     <div class="checkbox__control__input"><input disabled="" id="checkbox-1" class="checkbox__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
       <div class="checkbox__control__icon"><i class="icon" aria-hidden="true" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px" role="img" aria-hidden="true" style="font-size: 20px; height: 20px; width: 20px;">
             <g fill="currentColor">
-              <path d="M20.003 8.552l-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
+              <path d="m20.003 8.552-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
             </g>
           </svg></i></div>
     </div><label for="checkbox-1" class="checkbox__label">Label</label>
@@ -77,7 +77,7 @@ exports[`Checkbox.ts should render component with label prop and match snapshot 
     <div class="checkbox__control__input"><input id="checkbox-1" class="checkbox__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
       <div class="checkbox__control__icon"><i class="icon" aria-hidden="true" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px" role="img" aria-hidden="true" style="font-size: 20px; height: 20px; width: 20px;">
             <g fill="currentColor">
-              <path d="M20.003 8.552l-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
+              <path d="m20.003 8.552-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
             </g>
           </svg></i></div>
     </div><label for="checkbox-1" class="checkbox__label">Checkbox label</label>
@@ -93,7 +93,7 @@ exports[`Checkbox.ts should render component with name, required, readonly props
     <div class="checkbox__control__input"><input name="simple-input" required="" readonly="" id="checkbox-1" class="checkbox__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
       <div class="checkbox__control__icon"><i class="icon" aria-hidden="true" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px" role="img" aria-hidden="true" style="font-size: 20px; height: 20px; width: 20px;">
             <g fill="currentColor">
-              <path d="M20.003 8.552l-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
+              <path d="m20.003 8.552-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
             </g>
           </svg></i></div>
     </div><label for="checkbox-1" class="checkbox__label">Label</label>
@@ -109,7 +109,7 @@ exports[`Checkbox.ts should render focused component and match snapshot 1`] = `
     <div class="checkbox__control__input"><input id="checkbox-1" class="checkbox__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
       <div class="checkbox__control__icon"><i class="icon" aria-hidden="true" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px" role="img" aria-hidden="true" style="font-size: 20px; height: 20px; width: 20px;">
             <g fill="currentColor">
-              <path d="M20.003 8.552l-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
+              <path d="m20.003 8.552-8.871 8.827L4.8 11.188l2.517-2.574 3.793 3.709L17.464 6l2.54 2.552z"></path>
             </g>
           </svg></i></div>
     </div><label for="checkbox-1" class="checkbox__label">Label</label>

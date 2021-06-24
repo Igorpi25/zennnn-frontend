@@ -17,7 +17,7 @@ exports[`Select.ts should render component and match snapshot 1`] = `
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
-          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+          <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
       </svg></button>
     <!---->
@@ -42,7 +42,7 @@ exports[`Select.ts should render component with dense prop and match snapshot 1`
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
-          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+          <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
       </svg></button>
     <!---->
@@ -67,7 +67,7 @@ exports[`Select.ts should render component with disabled prop and match snapshot
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-gray-400 cursor-not-allowed" role="button" aria-hidden="false" tabindex="-1" disabled=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
-          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+          <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
       </svg></button>
     <!---->
@@ -92,7 +92,7 @@ exports[`Select.ts should render component with loading prop and match snapshot 
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
-          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+          <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
       </svg></button>
     <!---->
@@ -117,7 +117,7 @@ exports[`Select.ts should render component with name, required, readonly props a
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
-          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+          <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
       </svg></button>
     <!---->
@@ -136,7 +136,7 @@ exports[`Select.ts should render component with singleLine prop and match snapsh
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
-          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+          <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
       </svg></button>
     <!---->
@@ -163,7 +163,7 @@ exports[`Select.ts should render component with slots and match snapshot 1`] = `
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
-          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+          <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
       </svg></button>
     <!---->
@@ -182,7 +182,7 @@ exports[`Select.ts should render component with solo prop and match snapshot 1`]
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
-          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+          <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
       </svg></button>
     <!---->
@@ -193,6 +193,7 @@ exports[`Select.ts should render component with solo prop and match snapshot 1`]
 exports[`Select.ts should render items on focused and match snapshot 1`] = `
 <div style="z-index: 10;" data-popper-root="" data-popper-visible-on-reference-hidden="">
   <div id="listbox-1" role="listbox" tabindex="-1" class="popper__box menu__box select-box shadow-none dark:shadow-none rounded-t-none" style="width: 100%; display: none;">
+    <!---->
     <div class="menu__content bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-t-none">
       <div id="listbox-1-option-1" role="option" tabindex="-1" class="menu__item listbox__option h-10 pl-0">
         <div class="w-8 flex justify-center flex-shrink-0"></div>
@@ -207,7 +208,6 @@ exports[`Select.ts should render items on focused and match snapshot 1`] = `
         <div class="truncate">three</div>
       </div>
     </div>
-    <!---->
   </div>
 </div>
 `;
@@ -229,7 +229,7 @@ exports[`Select.ts should render items on focused and match snapshot 2`] = `
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transform transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400 rotate-180" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
-          <path d="M7.5 8.25l6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
+          <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
       </svg></button>
     <!---->
