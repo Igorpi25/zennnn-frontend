@@ -961,7 +961,7 @@ import {
   PAPER_PRODUCT_FRAGMENT,
   PAPER_SPEC_INVOICES_FRAGMENT,
   PAPER_INVOICE_PRODUCTS_FRAGMENT,
-} from '../graphql/typeDefs'
+} from '../graphql/fragments'
 import { getSpecExpandedInvoices } from '../graphql/resolvers'
 
 import printInvoice from '../components/printInvoice'

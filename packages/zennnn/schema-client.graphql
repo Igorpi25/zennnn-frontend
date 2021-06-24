@@ -1,0 +1,75 @@
+# sub schema
+enum Operation {
+  INSERT_PRODUCT
+  INSERT_INVOICE
+  INSERT_SPEC
+  UPDATE_PRODUCT
+  UPDATE_INVOICE
+  UPDATE_INVOICE_WITH_PRODUCTS
+  UPDATE_SPEC
+  UPDATE_SPEC_WITH_INVOICES
+  DELETE_PRODUCT
+  DELETE_INVOICE
+  DELETE_SPEC
+  INSERT_CLIENT
+  UPDATE_CLIENT
+  DELETE_CLIENT
+  SET_REQUISITES
+  UPDATE_REQUISITES
+}
+
+union SpecDeltaObject =
+    Spec
+  | Invoice
+  | Product
+  | PayloadFields
+  | Client
+  | RequisiteItems
+
+type SpecDelta {
+  operation: Operation
+  parentId: ID
+  payload: SpecDeltaObject
+}
+
+type PaymentData {
+  operation: String
+  payload: JSON
+}
+
+type Subscription {
+  # Home screen subs, sub on spec create/delete for creater/owner
+  delta: SpecDelta
+  specDelta(specId: ID!): SpecDelta
+  paymentData: PaymentData
+}
+
+schema {
+  subscription: Subscription
+}
+
+# paper-sub schema
+union PaperSpecDeltaObject =
+    PaperSpec
+  | PaperInvoice
+  | PaperProduct
+  | PayloadFields
+
+type PaperSpecDelta {
+  operation: Operation
+  parentId: ID
+  payload: PaperSpecDeltaObject
+}
+
+extend type Subscription {
+  paperSpecDelta(specId: ID!): PaperSpecDelta
+}
+
+# @client types
+extend type PaperSpec {
+  expandedInvoices: [ID!]
+}
+extend type Spec {
+  activeTab: Int
+  expandedInvoices: [ID!]
+}

@@ -13,7 +13,7 @@ import {
   PAPER_SPEC_FRAGMENT,
   PAPER_INVOICE_FRAGMENT,
   PAPER_PRODUCT_FRAGMENT,
-} from './typeDefs'
+} from './fragments'
 
 export const LIST_WORDS = gql`
   query ListWords($orgId: ID!) {
@@ -455,21 +455,6 @@ export const LIST_STAFF = gql`
         invitationFamilyName
         invitationRole
         status
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`
-
-export const LIST_ITEMS = gql`
-  query ListItems($orgId: ID!) {
-    listItems(orgId: $orgId) {
-      items {
-        id
-        createdBy
-        removedFromOwner
-        currentOwner
         createdAt
         updatedAt
       }

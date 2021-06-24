@@ -9,7 +9,7 @@ import {
   ORG_CONTRACT_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
   BANK_DETAIL_FRAGMENT,
-} from './typeDefs'
+} from './fragments'
 
 export const CREATE_WORD = gql`
   mutation CreateWord($orgId: ID!, $input: CreateWordInput!) {
@@ -703,14 +703,14 @@ export const SET_SPEC_CONTAINER_CUSTOM_CAPACITY = gql`
   mutation SetSpecContainerCustomCapacity(
     $specId: ID!
     $containerId: ID!
-    $capacity: Float
-    $shrink: Float
+    $inputCapacity: Float
+    $inputShrink: Float
   ) {
     setSpecContainerCustomCapacity(
       specId: $specId
       containerId: $containerId
-      capacity: $capacity
-      shrink: $shrink
+      inputCapacity: $inputCapacity
+      inputShrink: $inputShrink
     )
   }
 `

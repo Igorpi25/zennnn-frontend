@@ -8,7 +8,7 @@ import {
   PAPER_PRODUCT_FRAGMENT,
   CLIENT_FRAGMENT,
   ORG_REQUISITE_FRAGMENT,
-} from './typeDefs'
+} from './fragments'
 
 export const PAYMENT_DATA = gql`
   subscription PaymentData {

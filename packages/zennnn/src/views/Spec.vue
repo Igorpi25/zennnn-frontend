@@ -21,7 +21,13 @@ import Owner from '@/components/Spec/Owner.vue'
 // import Warehouseman from '@/components/Spec/Warehouseman.vue'
 // import Freelancer from '@/components/Spec/Freelancer.vue'
 
-import { Role, Typename, Operation, emptyInvoice, emptyProduct } from '../graphql/enums' // eslint-disable-line
+import {
+  Role,
+  Typename,
+  Operation,
+  emptyInvoice,
+  emptyProduct,
+} from '../graphql/enums' // eslint-disable-line
 import {
   SPEC_FRAGMENT,
   INVOICE_FRAGMENT,
@@ -29,7 +35,7 @@ import {
   SPEC_INVOICES_FRAGMENT,
   INVOICE_PRODUCTS_FRAGMENT,
   CLIENT_FRAGMENT,
-} from '../graphql/typeDefs'
+} from '../graphql/fragments'
 import {
   GET_SPEC,
   GET_ROLE_IN_PROJECT,

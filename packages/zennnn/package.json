@@ -5,9 +5,11 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:stable": "vue-cli-service build --mode stable",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint --mode production",
-    "build:stable": "vue-cli-service build --mode stable"
+    "schema-download": "apollo client:download-schema --endpoint http://localhost:3000/graphql schema.json",
+    "schema-generate": "apollo codegen:generate --includes=src/graphql/fragments.ts,src/graphql/queries.ts,src/graphql/mutations.ts,src/graphql/subscriptions.ts --localSchemaFile=schema.json,schema-client.graphql --target=typescript --tagName=gql --no-addTypename --outputFlat src/graphql/types.ts"
   },
   "dependencies": {
     "@shopify/draggable": "^1.0.0-beta.11",

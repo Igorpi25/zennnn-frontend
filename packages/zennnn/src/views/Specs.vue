@@ -555,7 +555,7 @@ import {
   SpecStatus,
   ClientType,
 } from '../graphql/enums'
-import { SPEC_FRAGMENT } from '../graphql/typeDefs'
+import { SPEC_FRAGMENT } from '../graphql/fragments'
 import {
   GET_SPECS,
   GET_ORGS,
