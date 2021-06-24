@@ -8,8 +8,8 @@
     "build:stable": "vue-cli-service build --mode stable",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint --mode production",
-    "schema-download": "apollo client:download-schema --endpoint http://localhost:9000/graphql schema.json",
-    "schema-generate": "apollo codegen:generate --includes=src/graphql/queries.ts,src/graphql/mutations.ts --localSchemaFile=schema.json --target=typescript --tagName=gql --no-addTypename --outputFlat src/graphql/types.ts"
+    "download-schema": "apollo client:download-schema --endpoint http://localhost:9000/graphql schema.json",
+    "codegen": "apollo codegen:generate --includes=src/graphql/queries.ts,src/graphql/mutations.ts --localSchemaFile=schema.json --target=typescript --tagName=gql --no-addTypename --outputFlat src/graphql/types.ts"
   },
   "dependencies": {
     "@zennnn/core": "^0.36.7",
