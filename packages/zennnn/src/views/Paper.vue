@@ -166,7 +166,9 @@
               <Comments
                 :items="spec.comments"
                 :spec-id="specId"
-                :placement="$breakpoint.lgAndUp ? 'left-start' : 'right-start'"
+                :placement="
+                  $breakpoint.lgAndUp.value ? 'left-start' : 'right-start'
+                "
                 is-paper
               >
                 <template v-slot:activator>
@@ -872,7 +874,7 @@
                   :items="spec.comments"
                   :spec-id="specId"
                   :placement="
-                    $breakpoint.lgAndUp ? 'left-start' : 'right-start'
+                    $breakpoint.lgAndUp.value ? 'left-start' : 'right-start'
                   "
                   is-paper
                 >

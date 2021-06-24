@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import { CURRENT_LOCALE_STORE_KEY } from 'shared/config'
 import { CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config'
-import { auth, isLoggedIn, i18n, theme, emitter } from '../plugins'
-import { apolloClient } from '../plugins/apollo'
+import { auth, i18n, theme, emitter } from '../plugins'
+import { apolloClient, isLoggedIn } from '../plugins/apollo'
 
 import {
   CHECK_INVITATION,
@@ -59,10 +59,10 @@ export const checkAuth = async () => {
         fetchPolicy: 'cache-first',
       })
     }
-    isLoggedIn.value = loggedIn
+    isLoggedIn(loggedIn)
     return loggedIn
   } catch (error) {
-    isLoggedIn.value = false
+    isLoggedIn(false)
     return false
   }
 }

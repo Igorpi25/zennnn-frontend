@@ -4,6 +4,7 @@ import {
   split,
   createHttpLink,
   InMemoryCache,
+  makeVar,
 } from '@apollo/client/core'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { setContext } from '@apollo/client/link/context'
@@ -15,13 +16,16 @@ import { PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../config'
 import { typeDefs, resolvers } from '../graphql'
 import {
   GET_BACKEND_VERSION,
-  GET_IS_LOGGED_IN,
   GET_IS_SPEC_SYNC,
   SPEC_SIMPLE_UI_OFF,
 } from '../graphql/queries'
 import { getUsername } from '../graphql/resolvers'
 import router from '../router'
 import { auth, i18n, emitter, store } from '.'
+
+import type { ReactiveVar } from '@apollo/client/core'
+
+export const isLoggedIn: ReactiveVar<boolean> = makeVar<boolean>(false)
 
 const logger = new Logger('Apollo')
 
@@ -46,6 +50,11 @@ const possibleTypes = {
 const typePolicies = {
   Query: {
     fields: {
+      isLoggedIn: {
+        read() {
+          return isLoggedIn()
+        },
+      },
       getSpecs: {
         merge: false,
       },
@@ -233,10 +242,7 @@ export const apolloClient = new ApolloClient({
 })
 
 const setData = async () => {
-  cache.writeQuery({
-    query: GET_IS_LOGGED_IN,
-    data: { isLoggedIn: false },
-  })
+  isLoggedIn(false)
   cache.writeQuery({
     query: GET_IS_SPEC_SYNC,
     data: { isSpecSync: false },

@@ -2,7 +2,6 @@ import { gql } from '@apollo/client/core'
 
 const typeDefs = gql`
   extend type Query {
-    isLoggedIn: Boolean
     backendVersion: Boolean
     isSpecSync: Boolean
     specSimpleUIOff: Boolean

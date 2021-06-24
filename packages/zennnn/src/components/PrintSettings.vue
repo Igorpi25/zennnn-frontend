@@ -475,7 +475,7 @@
     <Modal
       ref="requisiteDialog"
       v-model="requisiteDialog"
-      :fullscreen="$breakpoint.xs"
+      :fullscreen="$breakpoint.xs.value"
       scrollable
       max-width="1024"
       content-class="text-gray-100"
@@ -492,7 +492,7 @@
     <Modal
       ref="clientDialog"
       v-model="clientDialog"
-      :fullscreen="$breakpoint.xs"
+      :fullscreen="$breakpoint.xs.value"
       scrollable
       max-width="1110"
       content-class="dialog-full-height scrolling-touch"

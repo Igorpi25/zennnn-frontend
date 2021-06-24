@@ -494,7 +494,7 @@
       ref="clientDialog"
       v-if="canCreateSpec"
       v-model="clientDialog"
-      :fullscreen="$breakpoint.smAndDown"
+      :fullscreen="$breakpoint.smAndDown.value"
       scrollable
       max-width="1110"
       content-class="scrolling-touch"

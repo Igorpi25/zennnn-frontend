@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import mitt from 'mitt'
 import localforage from 'localforage'
 import { DefaultApolloClient } from '@vue/apollo-composable'
@@ -46,15 +45,12 @@ const store = localforage.createInstance({
 
 const emitter = mitt()
 
-const isLoggedIn = ref(false)
-
 export {
   i18n,
   auth,
   logger,
   store,
   emitter,
-  isLoggedIn,
   theme,
   useDisplay,
   useTheme,

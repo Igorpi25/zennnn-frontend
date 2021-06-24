@@ -202,7 +202,7 @@
       v-if="isOwnerOrManager"
       ref="supplierDialog"
       v-model="supplierDialog"
-      :fullscreen="$breakpoint.smAndDown"
+      :fullscreen="$breakpoint.smAndDown.value"
       scrollable
       max-width="1110"
       content-class="dialog-full-height scrolling-touch"

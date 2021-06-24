@@ -189,7 +189,7 @@
             <div class="absolute right-0" style="bottom: 85px; left: 105px">
               <Image
                 :src="
-                  $breakpoint.width > 1440
+                  $breakpoint.width.value > 1440
                     ? '/static/img/main-deals_lg.png'
                     : '/static/img/main-deals.png'
                 "
@@ -866,7 +866,7 @@
                 >
                   <Image
                     :src="
-                      $breakpoint.width > 1440
+                      $breakpoint.width.value > 1440
                         ? '/static/img/client-cabinet_lg.png'
                         : '/static/img/client-cabinet.png'
                     "

@@ -417,7 +417,7 @@
     <Modal
       ref="clientDialog"
       v-model="clientDialog"
-      :fullscreen="$breakpoint.xs"
+      :fullscreen="$breakpoint.xs.value"
       scrollable
       max-width="1110"
       content-class="dialog-full-height scrolling-touch"

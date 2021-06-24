@@ -11,7 +11,7 @@
 
     <Modal
       v-model="paperConfigurator"
-      :fullscreen="$breakpoint.xs || $breakpoint.sm"
+      :fullscreen="$breakpoint.xs.value || $breakpoint.sm.value"
       content-class="dialog-full-height rounded-none paper-configurator-dialog"
       max-width="906"
       scrollable
@@ -28,7 +28,7 @@
 
     <Modal
       v-model="printDialog"
-      :fullscreen="$breakpoint.smAndDown"
+      :fullscreen="$breakpoint.smAndDown.value"
       content-class="dialog-full-height scrolling-touch"
       max-width="1130"
       scrollable

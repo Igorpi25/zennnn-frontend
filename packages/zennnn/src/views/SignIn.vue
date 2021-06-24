@@ -299,7 +299,7 @@ import {
   Checkbox,
 } from '@zennnn/core'
 
-import { GET_PROFILE, GET_ORGS, GET_IS_LOGGED_IN } from '../graphql/queries'
+import { GET_PROFILE, GET_ORGS } from '../graphql/queries'
 import {
   COMPLITE_REGISTRATION,
   INIT_SPEC_SIMPLE_UI,
@@ -400,10 +400,6 @@ export default {
             // TODO: save user to cache and redirect to Registration.vue view
             // this.$router.push({ name: 'registration', query: this.$route.query })
           } else {
-            this.apolloClient.writeQuery({
-              query: GET_IS_LOGGED_IN,
-              data: { isLoggedIn: true },
-            })
             await this.apolloClient.mutate({
               mutation: INIT_SPEC_SIMPLE_UI,
             })

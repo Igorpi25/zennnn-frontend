@@ -721,21 +721,11 @@ export default {
       // TODO with Cache and FederatedInfo
       // const federatedInfo = Cache.getItem('federatedInfo')
       const isGoogleUser = username.startsWith('Google_')
-      const response = await this.$auth.signOut()
-      // falsy isLoggedIn in cache before route to signin
-      client.writeQuery({
-        query: GET_IS_LOGGED_IN,
-        data: { isLoggedIn: false },
-      })
-      this.$logger.info('Sign Out: ', response)
+      await this.$auth.signOut()
       if (!isGoogleUser) {
-        this.$router.replace({ name: 'signin' }).then(() => {
-          // reset store after redirect to signin
-          client.resetStore()
-        })
-      } else {
-        client.resetStore()
+        await this.$router.replace({ name: 'signin' })
       }
+      client.resetStore()
       // close ws client on logout for update connectionParams
       wsLink.subscriptionClient.close(true)
     },
