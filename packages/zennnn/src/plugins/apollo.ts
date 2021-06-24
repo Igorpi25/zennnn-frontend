@@ -14,18 +14,15 @@ import Logger from 'shared/plugins/logger'
 import { BACKEND_VERSION_HEADER_KEY } from 'shared/config'
 import { PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../config'
 import { typeDefs, resolvers } from '../graphql'
-import {
-  GET_BACKEND_VERSION,
-  GET_IS_SPEC_SYNC,
-  SPEC_SIMPLE_UI_OFF,
-} from '../graphql/queries'
+import { GET_IS_SPEC_SYNC, SPEC_SIMPLE_UI_OFF } from '../graphql/queries'
 import { getUsername } from '../graphql/resolvers'
 import router from '../router'
 import { auth, i18n, emitter, store } from '.'
 
 import type { ReactiveVar } from '@apollo/client/core'
 
-export const isLoggedIn: ReactiveVar<boolean> = makeVar<boolean>(false)
+export const isLoggedInVar: ReactiveVar<boolean> = makeVar<boolean>(false)
+export const backendVersionVar: ReactiveVar<string> = makeVar<string>('')
 
 const logger = new Logger('Apollo')
 
@@ -52,7 +49,12 @@ const typePolicies = {
     fields: {
       isLoggedIn: {
         read() {
-          return isLoggedIn()
+          return isLoggedInVar()
+        },
+      },
+      backendVersion: {
+        read() {
+          return backendVersionVar()
         },
       },
       getSpecs: {
@@ -145,12 +147,7 @@ const reponseHeaders = new ApolloLink((operation, forward) => {
     if (headers) {
       const backendVersion = headers.get(BACKEND_VERSION_HEADER_KEY)
       if (backendVersion) {
-        apolloClient.writeQuery({
-          query: GET_BACKEND_VERSION,
-          data: {
-            backendVersion,
-          },
-        })
+        backendVersionVar(backendVersion)
       }
     }
     return response
@@ -242,7 +239,7 @@ export const apolloClient = new ApolloClient({
 })
 
 const setData = async () => {
-  isLoggedIn(false)
+  isLoggedInVar(false)
   cache.writeQuery({
     query: GET_IS_SPEC_SYNC,
     data: { isSpecSync: false },

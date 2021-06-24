@@ -1,7 +1,7 @@
 <template>
   <div class="my-auto text-sm text-gray-200 leading-snug">
     <div>
-      ©2019 ZENNNN.
+      ©2021 ZENNNN.
       <router-link
         v-if="!hideUserAgreement"
         v-html="$t('app.userAgreement')"
@@ -20,9 +20,9 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useQuery } from '@vue/apollo-composable'
 
-import { GET_BACKEND_VERSION } from '../graphql/queries'
+import { GET_BACKEND_VERSION } from '@/graphql/queries'
 
 export default {
   name: 'Copyright',
@@ -30,21 +30,19 @@ export default {
     hideUserAgreement: Boolean,
   },
   setup() {
-    const { result } = useQuery(GET_BACKEND_VERSION)
-    const backendVersion = useResult(result)
+    const { result: backendVersionResult } = useQuery(GET_BACKEND_VERSION)
 
     const frontendVersion = ref(process.env.FRONTEND_VERSION || '')
 
     const version = computed(() => {
-      return backendVersion.value
-        ? `front/${frontendVersion.value} | backend/${backendVersion.value}`
+      const backendVersion = backendVersionResult.value.backendVersion
+      return backendVersion
+        ? `front/${frontendVersion.value} | backend/${backendVersion}`
         : `front/${frontendVersion.value}`
     })
 
     return {
       version,
-      backendVersion,
-      frontendVersion,
     }
   },
 }
