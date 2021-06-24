@@ -60,7 +60,8 @@ function sortItems<T extends any = any>(
       let sortB = getObjectValueByPath(b, sortKey)
 
       if (sortDesc[i]) {
-        [sortA, sortB] = [sortB, sortA]
+        // eslint-disable-next-line @typescript-eslint/no-extra-semi
+        ;[sortA, sortB] = [sortB, sortA]
       }
 
       if (customSorters && customSorters[sortKey]) {
@@ -76,7 +77,8 @@ function sortItems<T extends any = any>(
         continue
       }
 
-      [sortA, sortB] = [sortA, sortB].map((s) =>
+      // eslint-disable-next-line @typescript-eslint/no-extra-semi
+      ;[sortA, sortB] = [sortA, sortB].map((s) =>
         (s || '').toString().toLocaleLowerCase()
       )
 

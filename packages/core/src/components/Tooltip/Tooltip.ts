@@ -155,6 +155,7 @@ export default defineComponent({
           ...props.transition,
           onBeforeEnter(el: Element) {
             if (props.origin) {
+              // eslint-disable-next-line @typescript-eslint/no-extra-semi
               ;(el as HTMLElement).style.transformOrigin = props.origin
               ;(el as HTMLElement).style.webkitTransformOrigin = props.origin
             }
