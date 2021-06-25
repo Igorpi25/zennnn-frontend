@@ -70,10 +70,9 @@ export default defineComponent({
 
     async function logout() {
       await auth.signOut()
-      const client = resolveClient()
-      client.resetStore()
+      resolveClient().resetStore()
       closeSidebar()
-      await router.push({ name: 'Login' })
+      await router.replace({ name: 'Login' })
     }
 
     return () => (
