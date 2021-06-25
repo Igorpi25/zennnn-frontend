@@ -4037,32 +4037,6 @@ export interface GetRoleInProjectVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GetIsLoggedIn
-// ====================================================
-
-export interface GetIsLoggedIn {
-  isLoggedIn: boolean | null;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// @generated
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: GetBackendVersion
-// ====================================================
-
-export interface GetBackendVersion {
-  backendVersion: boolean | null;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// @generated
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: GetIsSpecSync
 // ====================================================
 

@@ -266,12 +266,15 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 import { ziChevronRight, ziInfinity } from '@zennnn/icons'
 import { Btn, Icon } from '@zennnn/core'
 
+import { useReactiveVar } from 'shared/composables/reactiveVar'
+import { isLoggedInVar } from '@/plugins/apollo'
+
 import PriceList from '../components/PriceList.vue'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import LocalePicker from '../components/LocalePicker.vue'
 
-import { GET_IS_LOGGED_IN, GET_PROFILE } from '../graphql/queries'
+import { GET_PROFILE } from '../graphql/queries'
 
 export default {
   name: 'Pricing',
@@ -288,8 +291,7 @@ export default {
     const ogTitle = computed(() => t('app.title'))
     const ogDescription = computed(() => t('app.description'))
 
-    const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
-    const isLoggedIn = useResult(result1)
+    const isLoggedIn = useReactiveVar(isLoggedInVar)
 
     const { result: result2 } = useQuery(GET_PROFILE)
     const getProfile = useResult(result2, null, () => ({

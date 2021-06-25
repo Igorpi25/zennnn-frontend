@@ -47,16 +47,6 @@ const possibleTypes = {
 const typePolicies = {
   Query: {
     fields: {
-      isLoggedIn: {
-        read() {
-          return isLoggedInVar()
-        },
-      },
-      backendVersion: {
-        read() {
-          return backendVersionVar()
-        },
-      },
       getSpecs: {
         merge: false,
       },

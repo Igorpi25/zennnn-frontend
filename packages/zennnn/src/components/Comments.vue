@@ -68,8 +68,10 @@ import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 
 import { ziChat } from '@zennnn/icons'
 import { Icon, Menu } from '@zennnn/core'
+import { useReactiveVar } from 'shared/composables/reactiveVar'
+import { isLoggedInVar } from '@/plugins/apollo'
 
-import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
+import { GET_PROFILE } from '../graphql/queries'
 import {
   ADD_COMMENT_TO_SPEC,
   ADD_COMMENT_TO_PRODUCT,
@@ -126,8 +128,7 @@ export default {
   },
   setup() {
     const { resolveClient } = useApolloClient()
-    const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
-    const isLoggedIn = useResult(result1)
+    const isLoggedIn = useReactiveVar(isLoggedInVar)
 
     const { result: result2 } = useQuery(GET_PROFILE)
     const getProfile = useResult(result2, null, () => ({

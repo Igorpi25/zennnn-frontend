@@ -16,10 +16,14 @@
 <script>
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
-import { GET_IS_LOGGED_IN, GET_PROFILE } from '../graphql/queries'
+import { Modal } from '@zennnn/core'
+
+import { useReactiveVar } from 'shared/composables/reactiveVar'
+import { isLoggedInVar } from '@/plugins/apollo'
+
+import { GET_PROFILE } from '../graphql/queries'
 import { NOTE_GREETING } from '../graphql/mutations'
 
-import { Modal } from '@zennnn/core'
 import RequisiteCard from '../components/RequisiteCard.vue'
 import WelcomeModal from '../components/WelcomeModal.vue'
 
@@ -37,8 +41,7 @@ export default {
     },
   },
   setup() {
-    const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
-    const isLoggedIn = useResult(result1)
+    const isLoggedIn = useReactiveVar(isLoggedInVar)
 
     const { result: result2 } = useQuery(GET_PROFILE)
     const getProfile = useResult(result2, null, () => ({

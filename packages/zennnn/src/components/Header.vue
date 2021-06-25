@@ -446,7 +446,7 @@ import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 import { ziStar, ziStarOutline, ziUserCircle, ziMenu } from '@zennnn/icons'
 
 import { Role } from '../graphql/enums'
-import { GET_ORGS, GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
+import { GET_ORGS, GET_PROFILE } from '../graphql/queries'
 import { SET_ORG_AVATAR } from '../graphql/mutations'
 import { wsLink } from '../plugins/apollo'
 
@@ -459,6 +459,8 @@ import {
   MenuItem,
   Modal,
 } from '@zennnn/core'
+import { useReactiveVar } from 'shared/composables/reactiveVar'
+import { isLoggedInVar } from '@/plugins/apollo'
 import FileUploader from './FileUploader.vue'
 import LocalePicker from './LocalePicker.vue'
 import SystemMessageModal from '../components/SystemMessageModal.vue'
@@ -489,8 +491,7 @@ export default {
   },
   setup() {
     const { resolveClient } = useApolloClient()
-    const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
-    const isLoggedIn = useResult(result1)
+    const isLoggedIn = useReactiveVar(isLoggedInVar)
 
     const { result: result2 } = useQuery(GET_PROFILE, null, () => ({
       enabled: isLoggedIn.value,

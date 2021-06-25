@@ -134,7 +134,10 @@ import {
 } from '@zennnn/icons'
 import { Icon } from '@zennnn/core'
 
-import { GET_PROFILE, GET_IS_LOGGED_IN } from '../graphql/queries'
+import { useReactiveVar } from 'shared/composables/reactiveVar'
+import { isLoggedInVar } from '@/plugins/apollo'
+
+import { GET_PROFILE } from '../graphql/queries'
 
 import Copyright from '../components/Copyright.vue'
 
@@ -145,8 +148,7 @@ export default {
     Copyright,
   },
   setup() {
-    const { result: result1 } = useQuery(GET_IS_LOGGED_IN)
-    const isLoggedIn = useResult(result1)
+    const isLoggedIn = useReactiveVar(isLoggedInVar)
 
     const { result: result2 } = useQuery(GET_PROFILE)
     const getProfile = useResult(result2, null, () => ({

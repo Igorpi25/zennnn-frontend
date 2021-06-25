@@ -20,9 +20,9 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { useQuery } from '@vue/apollo-composable'
 
-import { GET_BACKEND_VERSION } from '@/graphql/queries'
+import { useReactiveVar } from 'shared/composables/reactiveVar'
+import { backendVersionVar } from '@/plugins/apollo'
 
 export default {
   name: 'Copyright',
@@ -30,14 +30,13 @@ export default {
     hideUserAgreement: Boolean,
   },
   setup() {
-    const { result: backendVersionResult } = useQuery(GET_BACKEND_VERSION)
+    const backendVersion = useReactiveVar(backendVersionVar)
 
     const frontendVersion = ref(process.env.FRONTEND_VERSION || '')
 
     const version = computed(() => {
-      const backendVersion = backendVersionResult.value.backendVersion
-      return backendVersion
-        ? `front/${frontendVersion.value} | backend/${backendVersion}`
+      return backendVersion.value
+        ? `front/${frontendVersion.value} | backend/${backendVersion.value}`
         : `front/${frontendVersion.value}`
     })
 

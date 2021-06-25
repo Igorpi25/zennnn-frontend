@@ -127,18 +127,6 @@ export const GET_ROLE_IN_PROJECT = gql`
   }
 `
 
-export const GET_IS_LOGGED_IN = gql`
-  query GetIsLoggedIn {
-    isLoggedIn @client
-  }
-`
-
-export const GET_BACKEND_VERSION = gql`
-  query GetBackendVersion {
-    backendVersion @client
-  }
-`
-
 export const GET_IS_SPEC_SYNC = gql`
   query GetIsSpecSync {
     isSpecSync @client
