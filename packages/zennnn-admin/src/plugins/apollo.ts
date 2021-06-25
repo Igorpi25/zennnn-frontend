@@ -3,12 +3,16 @@ import {
   ApolloLink,
   createHttpLink,
   InMemoryCache,
+  makeVar,
 } from '@apollo/client/core'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 import Logger from 'shared/plugins/logger'
-import { typeDefs, resolvers } from '../graphql'
 import { auth, emitter } from '.'
+
+import type { ReactiveVar } from '@apollo/client/core'
+
+export const isLoggedInVar: ReactiveVar<boolean> = makeVar<boolean>(false)
 
 const logger = new Logger('Apollo')
 
@@ -80,9 +84,11 @@ const link = authLink.concat(httpLink)
 export const apolloClient = new ApolloClient({
   link: ApolloLink.from([errorLink, link]),
   cache,
-  typeDefs,
-  resolvers,
   connectToDevTools: true,
+})
+
+apolloClient.onResetStore(async () => {
+  isLoggedInVar(false)
 })
 
 export default apolloClient

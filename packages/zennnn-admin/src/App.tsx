@@ -17,7 +17,9 @@ import Sidebar from 'shared/components/Sidebar'
 import Divider from 'shared/components/Divider'
 import SidebarItem from 'shared/components/SidebarItem'
 import LocalePicker from 'shared/components/LocalePicker'
-import { isLoggedIn, auth, useTheme } from '@/plugins'
+import { useReactiveVar } from 'shared/composables/reactiveVar'
+import { auth, useTheme } from '@/plugins'
+import { isLoggedInVar } from '@/plugins/apollo'
 
 import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'
 
@@ -31,6 +33,8 @@ export default defineComponent({
     const { isDark } = useTheme()
     const isSidebarActive = ref(false)
     const currentUser = ref()
+
+    const isLoggedIn = useReactiveVar(isLoggedInVar)
 
     watch(isLoggedIn, setCurrentuser)
 

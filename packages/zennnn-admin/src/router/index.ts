@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { auth, isLoggedIn } from '../plugins'
+import { auth } from '../plugins'
+import { isLoggedInVar } from '../plugins/apollo'
 
 import type { RouteRecordRaw } from 'vue-router'
 
@@ -11,10 +12,10 @@ export const checkAuth = async () => {
   try {
     const session = await auth.currentSession()
     const loggedIn = !!session.getIdToken().getJwtToken()
-    isLoggedIn.value = loggedIn
+    isLoggedInVar(loggedIn)
     return loggedIn
   } catch (error) {
-    isLoggedIn.value = false
+    isLoggedInVar(false)
     return false
   }
 }

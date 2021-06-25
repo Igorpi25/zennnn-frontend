@@ -33,9 +33,10 @@ import {
 
 import { LOCALES_LIST } from 'shared/config'
 import Dialog from 'shared/components/Dialog'
+import { useReactiveVar } from 'shared/composables/reactiveVar'
 import WordProducts from '@/components/WordProducts'
 import WordForm from '@/components/WordForm'
-import { isLoggedIn } from '@/plugins'
+import { isLoggedInVar } from '@/plugins/apollo'
 
 import type {
   ListWords,
@@ -114,6 +115,8 @@ export default defineComponent({
         all: currentFilter.value === CustomFilter.ALL,
       }
     })
+
+    const isLoggedIn = useReactiveVar(isLoggedInVar)
 
     const { result: listWordsResult, loading: listWordsLoading } = useQuery<
       ListWords,
