@@ -84,7 +84,7 @@ const link = authLink.concat(httpLink)
 export const apolloClient = new ApolloClient({
   link: ApolloLink.from([errorLink, link]),
   cache,
-  connectToDevTools: true,
+  connectToDevTools: process.env.NODE_ENV === 'development',
 })
 
 apolloClient.onResetStore(async () => {

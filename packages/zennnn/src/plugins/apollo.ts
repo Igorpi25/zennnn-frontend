@@ -235,7 +235,7 @@ export const apolloClient = new ApolloClient({
   cache,
   typeDefs,
   resolvers,
-  connectToDevTools: true,
+  connectToDevTools: process.env.NODE_ENV === 'development',
 })
 
 const setData = async () => {
