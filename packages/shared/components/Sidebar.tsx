@@ -11,6 +11,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    altMode: Boolean,
   },
 
   directives: { ClickOutside },
@@ -22,7 +23,6 @@ export default defineComponent({
     const { smAndDown } = useDisplay()
 
     const isActive = useModel(props, 'modelValue')
-    const rootRef = ref<HTMLElement>()
 
     function closeSidebar() {
       isActive.value = false
@@ -54,11 +54,19 @@ export default defineComponent({
         top="0"
         hideOverflow
       >
-        <nav ref={rootRef} class="w-68 md:w-80 bg-white dark:bg-gray-650 py-4">
+        <nav
+          class={[
+            'w-68 md:w-80 h-full py-4',
+            props.altMode
+              ? 'bg-white dark:bg-gray-650 text-gray-900 dark:text-white md:py-6'
+              : 'bg-light-gray-100 dark:bg-gray-500 text-gray-200 dark:text-gray-100',
+          ]}
+        >
           <div class="flex justify-end md:hidden p-4 pt-0">
             <Btn
               icon
-              class="bg-light-gray-300 dark:bg-gray-900 text-gray-900 dark:text-white hover:text-white"
+              primary={false}
+              class="bg-light-gray-300 dark:bg-gray-900 hover:bg-blue-400 dark:hover:bg-blue-400 hover:text-white"
               {...{
                 onClick: closeSidebar,
               }}
