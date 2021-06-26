@@ -602,7 +602,7 @@ export default defineComponent({
                       class={{
                         'group rounded pl-2 pr-0': true,
                         'text-gray-900 dark:text-gray-100': true,
-                        'text-blue-400 dark:text-blue-400': filterMenu.value,
+                        'text-blue-550 dark:text-blue-550': filterMenu.value,
                       }}
                       contentClass="space-x-2 text-base"
                     >
@@ -614,7 +614,7 @@ export default defineComponent({
                         class={{
                           'text-gray-100 dark:text-gray-200 group-hover:!text-blue-400':
                             true,
-                          '!text-blue-400': filterMenu.value,
+                          '!text-blue-550': filterMenu.value,
                         }}
                       >
                         {currentFilter.value ? ziFilter : ziFilterOutline}
