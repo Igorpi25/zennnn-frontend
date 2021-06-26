@@ -1,6 +1,8 @@
-import { FunctionalComponent, cloneVNode } from 'vue'
-import { RouteLocationRaw } from 'vue-router'
+import { cloneVNode } from 'vue'
 import { Btn } from '@zennnn/core'
+
+import type { FunctionalComponent } from 'vue'
+import type { RouteLocationRaw } from 'vue-router'
 
 const SidebarItem: FunctionalComponent<{
   class?: string

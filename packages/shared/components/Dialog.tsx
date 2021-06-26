@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue'
 import { useDimensionProps, useModel } from 'vue-supp'
 import { ziCloseWindow } from '@zennnn/icons'
-import { Modal, Icon, Btn } from '@zennnn/core'
+import { Modal, Icon } from '@zennnn/core'
 
 export default defineComponent({
   props: {

@@ -1,4 +1,6 @@
-import { FunctionalComponent, computed } from 'vue'
+import { computed } from 'vue'
+
+import type { FunctionalComponent } from 'vue'
 
 const Badge: FunctionalComponent<{
   class?: string
