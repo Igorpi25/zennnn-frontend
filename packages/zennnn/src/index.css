@@ -210,7 +210,7 @@
     @apply mx-auto px-4 sm:px-6;
   }
 
-  /* Used in Welcome, PasswordRestore, PasswordRestoreConfirm, Paper, NotFound, SignInByPhone, Registration, LoginRestore */
+  /* Used in Welcome, PasswordRestore, PasswordRestoreConfirm, Paper, NotFound, Registration */
   .content {
     @apply flex-grow flex flex-col relative overflow-x-hidden;
   }
