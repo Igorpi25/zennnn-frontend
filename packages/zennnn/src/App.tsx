@@ -1,4 +1,5 @@
 import { defineComponent } from 'vue'
+import { RouterView } from 'vue-router'
 import { emitter, useNotify } from '@/plugins'
 // import PhotoSwipeWrapper from './components/PhotoSwipeTemplate.vue'
 
@@ -21,7 +22,7 @@ export default defineComponent({
     })
 
     return () => (
-      <router-view />
+      <RouterView />
       // Root element of PhotoSwipe. Must have class pswp.
       // <PhotoSwipeWrapper />
     )

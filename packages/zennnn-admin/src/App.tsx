@@ -1,5 +1,5 @@
 import { defineComponent, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, RouterView } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useApolloClient } from '@vue/apollo-composable'
 import {
@@ -263,7 +263,7 @@ export default defineComponent({
             </SidebarItem>
           </Sidebar>
         )}
-        <router-view />
+        <RouterView />
       </div>
     )
   },
