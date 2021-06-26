@@ -265,9 +265,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Word",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Word",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,
@@ -593,9 +597,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "WordSearchItem",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "WordSearchItem",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,

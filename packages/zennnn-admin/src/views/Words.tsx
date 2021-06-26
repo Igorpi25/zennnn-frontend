@@ -147,9 +147,9 @@ export default defineComponent({
         if (data?.listWords?.items) {
           const _items = data.listWords.items
           selected.value.forEach((id) => {
-            const index = _items.findIndex((el) => el!.id === id)
+            const index = _items.findIndex((el) => el.id === id)
             if (index !== -1) {
-              const item = _items[index]!
+              const item = _items[index]
               cache.modify({
                 id: cache.identify({
                   // @ts-ignore
@@ -184,9 +184,9 @@ export default defineComponent({
           const _items = data.listWords.items
           if (filters.value.showHiddens) {
             selected.value.forEach((id) => {
-              const index = _items.findIndex((el) => el!.id === id)
+              const index = _items.findIndex((el) => el.id === id)
               if (index !== -1) {
-                const item = _items[index]!
+                const item = _items[index]
                 cache.modify({
                   id: cache.identify({
                     // @ts-ignore
@@ -209,7 +209,7 @@ export default defineComponent({
               data: {
                 listWords: {
                   items: _items.filter(
-                    (item) => !selected.value.includes(item!.id)
+                    (item) => !selected.value.includes(item.id)
                   ),
                 },
               },
@@ -266,7 +266,7 @@ export default defineComponent({
         // Add our tag from the mutation to the end
         if (data?.listWords?.items && result?.mergeWords) {
           const _items = data.listWords.items.filter(
-            (item) => !selected.value.includes(item!.id)
+            (item) => !selected.value.includes(item.id)
           )
           // Write our data back to the cache.
           cache.writeQuery({
@@ -379,7 +379,7 @@ export default defineComponent({
       return items.map((item) => {
         let duplicatesSearch = ''
         const result = Object.assign({}, item) as DataTableItem
-        const values = item?.values || []
+        const values = item.values || []
         LOCALES_LIST.forEach((localeItem) => {
           const key = localeItem.value
           const value = values.find((v) => v.k === key)

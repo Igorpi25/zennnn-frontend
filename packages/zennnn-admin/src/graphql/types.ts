@@ -197,7 +197,7 @@ export interface ListWords_listWords_items {
 }
 
 export interface ListWords_listWords {
-  items: (ListWords_listWords_items | null)[] | null;
+  items: ListWords_listWords_items[] | null;
 }
 
 export interface ListWords {
@@ -256,7 +256,7 @@ export interface SearchWords_searchWords_items {
 }
 
 export interface SearchWords_searchWords {
-  items: (SearchWords_searchWords_items | null)[] | null;
+  items: SearchWords_searchWords_items[] | null;
 }
 
 export interface SearchWords {

@@ -4011,7 +4011,7 @@ export interface GetOrgs_getOrgs {
 }
 
 export interface GetOrgs {
-  getOrgs: (GetOrgs_getOrgs | null)[] | null;
+  getOrgs: GetOrgs_getOrgs[] | null;
 }
 
 /* tslint:disable */
@@ -4139,7 +4139,7 @@ export interface GetSpecs_getSpecs {
 }
 
 export interface GetSpecs {
-  getSpecs: (GetSpecs_getSpecs | null)[] | null;
+  getSpecs: GetSpecs_getSpecs[] | null;
 }
 
 export interface GetSpecsVariables {
@@ -5580,7 +5580,7 @@ export interface ListOrgRequisites_listOrgRequisites {
 }
 
 export interface ListOrgRequisites {
-  listOrgRequisites: (ListOrgRequisites_listOrgRequisites | null)[] | null;
+  listOrgRequisites: ListOrgRequisites_listOrgRequisites[] | null;
 }
 
 export interface ListOrgRequisitesVariables {
@@ -5620,7 +5620,7 @@ export interface ListOrgContracts_listOrgContracts {
 }
 
 export interface ListOrgContracts {
-  listOrgContracts: (ListOrgContracts_listOrgContracts | null)[] | null;
+  listOrgContracts: ListOrgContracts_listOrgContracts[] | null;
 }
 
 export interface ListOrgContractsVariables {
@@ -5677,7 +5677,7 @@ export interface ListOrgInvitations_listOrgInvitations {
 }
 
 export interface ListOrgInvitations {
-  listOrgInvitations: (ListOrgInvitations_listOrgInvitations | null)[] | null;
+  listOrgInvitations: ListOrgInvitations_listOrgInvitations[] | null;
 }
 
 export interface ListOrgInvitationsVariables {

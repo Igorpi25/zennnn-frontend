@@ -108,7 +108,7 @@ export default defineComponent({
           searchWordsResult.value.searchWords.items) ||
         []
       return items.map((item) => {
-        const values = item?.values || []
+        const values = item.values || []
         const result = {} as SearchWords_searchWords_items & {
           [x: string]: string
         }
