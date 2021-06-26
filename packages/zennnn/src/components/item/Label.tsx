@@ -1,6 +1,6 @@
 import { defineComponent, computed, PropType, CSSProperties } from 'vue'
 import { convertToUnit } from 'vue-supp'
-import { LabelTypes } from './Card'
+import { LabelTypes } from '@/components/item/Card'
 
 export interface ItemLabelProps {
   preset?: LabelTypes

@@ -16,8 +16,8 @@ import {
 } from '@/graphql/mutations'
 
 import Dialog from 'shared/components/Dialog'
-import WordProduct from './WordProduct'
-import WordForm from './WordForm'
+import WordProduct from '@/components/WordProduct'
+import WordForm from '@/components/WordForm'
 
 import type { PropType } from 'vue'
 import type {

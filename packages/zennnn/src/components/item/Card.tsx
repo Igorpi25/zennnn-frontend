@@ -11,7 +11,7 @@ import {
   ziShare,
 } from '@zennnn/icons'
 import { Icon, Image, Menu, MenuItem, Modal, Btn } from '@zennnn/core'
-import ItemLabel, { ItemLabelProps } from './Label'
+import ItemLabel, { ItemLabelProps } from '@/components/item/Label'
 
 export enum LabelTypes {
   New = 'NEW',

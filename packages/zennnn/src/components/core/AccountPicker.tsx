@@ -3,7 +3,7 @@ import { ziUserCircle, ziStarOutlineLg, ziSettings } from '@zennnn/icons'
 import { Modal, Icon } from '@zennnn/core'
 import Avatar from 'shared/components/Avatar'
 import ListItem from 'shared/components/ListItem'
-import SubscriptionLabel from './SubscriptionLabel'
+import SubscriptionLabel from '@/components/core/SubscriptionLabel'
 
 export default defineComponent({
   setup(props, { slots }) {
