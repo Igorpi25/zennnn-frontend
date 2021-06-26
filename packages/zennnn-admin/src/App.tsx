@@ -11,7 +11,7 @@ import {
   ziMoonOutline,
 } from '@zennnn/icons'
 import { Icon, Switch } from '@zennnn/core'
-import Navbar from 'shared/components/Navbar'
+import AppBar from 'shared/components/AppBar'
 import ListItem from 'shared/components/ListItem'
 import Sidebar from 'shared/components/Sidebar'
 import Divider from 'shared/components/Divider'
@@ -77,7 +77,7 @@ export default defineComponent({
 
     return () => (
       <div class="flex-grow flex flex-col items-center">
-        <Navbar>
+        <AppBar>
           {isLoggedIn.value && (
             <div class="flex items-center">
               <LocalePicker
@@ -147,7 +147,7 @@ export default defineComponent({
               </button>
             </div>
           )}
-        </Navbar>
+        </AppBar>
         {isLoggedIn.value && (
           <Sidebar v-model={isSidebarActive.value}>
             <SidebarItem

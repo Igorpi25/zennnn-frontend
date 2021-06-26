@@ -17,7 +17,7 @@ import {
   ziRocket,
 } from '@zennnn/icons'
 import { Btn, Icon, Switch } from '@zennnn/core'
-import Navbar from 'shared/components/Navbar'
+import AppBar from 'shared/components/AppBar'
 import Sidebar from 'shared/components/Sidebar'
 import SidebarItem from 'shared/components/SidebarItem'
 import Divider from 'shared/components/Divider'
@@ -135,7 +135,7 @@ export default defineComponent({
 
     return () => (
       <>
-        <Navbar
+        <AppBar
           v-slots={{
             start: () => (
               <nav class="hidden lg:flex space-x-12">
@@ -279,7 +279,7 @@ export default defineComponent({
               <Icon>{ziMenu}</Icon>
             </Btn>
           </div>
-        </Navbar>
+        </AppBar>
 
         <Sidebar v-model={isSidebarActive.value} altMode>
           {isLoggedIn.value && (
