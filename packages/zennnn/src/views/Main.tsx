@@ -151,7 +151,6 @@ export default defineComponent({
               </nav>
             ),
           }}
-          altMode
         >
           <div class="flex space-x-2">
             <Btn
@@ -281,7 +280,7 @@ export default defineComponent({
           </div>
         </AppBar>
 
-        <Sidebar v-model={isSidebarActive.value} altMode>
+        <Sidebar v-model={isSidebarActive.value}>
           {isLoggedIn.value && (
             <>
               <AccountPicker

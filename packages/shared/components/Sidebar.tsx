@@ -58,8 +58,8 @@ export default defineComponent({
           class={[
             'w-68 md:w-80 h-full py-4',
             props.altMode
-              ? 'bg-white dark:bg-gray-650 text-gray-900 dark:text-white md:py-6'
-              : 'bg-light-gray-100 dark:bg-gray-500 text-gray-200 dark:text-gray-100',
+              ? 'bg-light-gray-100 dark:bg-gray-500 text-gray-200 dark:text-gray-100'
+              : 'bg-white dark:bg-gray-650 text-gray-900 dark:text-white md:py-6',
           ]}
         >
           <div class="flex justify-end md:hidden p-4 pt-0">

@@ -82,7 +82,7 @@ export default defineComponent({
 
     return () => (
       <div class="flex-grow flex flex-col items-center">
-        <AppBar>
+        <AppBar altMode>
           {isLoggedIn.value && (
             <div class="flex items-center">
               <LocalePicker
@@ -154,7 +154,7 @@ export default defineComponent({
           )}
         </AppBar>
         {isLoggedIn.value && (
-          <Sidebar v-model={isSidebarActive.value}>
+          <Sidebar v-model={isSidebarActive.value} altMode>
             <SidebarItem
               v-slots={{
                 end: () => <Icon>{ziSettings}</Icon>,
