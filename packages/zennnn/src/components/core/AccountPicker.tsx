@@ -1,8 +1,8 @@
 import { defineComponent } from 'vue'
 import { ziUserCircle, ziStarOutlineLg, ziSettings } from '@zennnn/icons'
 import { Modal, Icon } from '@zennnn/core'
-import Avatar from './Avatar'
-import AccountInfo from './AccountInfo'
+import Avatar from 'shared/components/Avatar'
+import ListItem from 'shared/components/ListItem'
 import SubscriptionLabel from './SubscriptionLabel'
 
 export default defineComponent({
@@ -47,11 +47,11 @@ export default defineComponent({
             </div>
 
             <div class="bg-light-gray-300 dark:bg-gray-600 flex items-center justify-between rounded space-x-2 p-2">
-              <AccountInfo
+              <ListItem
                 avatarSize={40}
-                avatarSrc="https://via.placeholder.com/48x48"
                 avatarClass="mr-2"
                 infoClass="space-y-1"
+                avatarSrc="https://via.placeholder.com/48x48"
                 title="Чайная мама"
                 subtitle="Александр Игнатович"
               />
@@ -59,11 +59,11 @@ export default defineComponent({
             </div>
 
             <div class="bg-light-gray-300 dark:bg-gray-600 flex items-center justify-between rounded space-x-2 p-2">
-              <AccountInfo
+              <ListItem
                 avatarSize={40}
-                avatarSrc="https://via.placeholder.com/48x48"
                 avatarClass="mr-2"
                 infoClass="space-y-1"
+                avatarSrc="https://via.placeholder.com/48x48"
                 title="ivanleunte@gmail.com"
                 subtitle="Михаил Болтенков"
               />
@@ -75,11 +75,11 @@ export default defineComponent({
 
           <div class="space-y-4">
             <div class="bg-light-gray-300 dark:bg-gray-600 flex items-center justify-between rounded space-x-2 p-2">
-              <AccountInfo
+              <ListItem
                 avatarSize={40}
-                avatarSrc="https://via.placeholder.com/48x48"
                 avatarClass="mr-2"
                 infoClass="space-y-1"
+                avatarSrc="https://via.placeholder.com/48x48"
                 title="Чайная мама"
                 subtitle="Николай Слоквенко"
               />

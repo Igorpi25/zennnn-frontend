@@ -1,6 +1,5 @@
-import { defineComponent, ref, computed, PropType, watch } from 'vue'
+import { defineComponent, ref, computed, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useResizeObserver } from 'vue-supp'
 import {
   ziBolt,
   ziStatusPointSm,
@@ -11,7 +10,7 @@ import {
   ziImages,
   ziShare,
 } from '@zennnn/icons'
-import { Icon, Image, Menu, MenuItem } from '@zennnn/core'
+import { Icon, Image, Menu, MenuItem, Modal, Btn } from '@zennnn/core'
 import ItemLabel, { ItemLabelProps } from './Label'
 
 export enum LabelTypes {
@@ -60,9 +59,6 @@ export default defineComponent({
   setup(props) {
     const { n } = useI18n()
     const isMenuActive = ref(false)
-    const isMenuBooted = ref(false)
-    const menuWidth = ref(228)
-    const footerRef = ref<HTMLElement>()
 
     const statusColor = computed(() => {
       const rate = (props.item.rate && props.item.rate.percent) || 0
@@ -95,20 +91,6 @@ export default defineComponent({
         text: 'Share',
       },
     ])
-
-    watch(isMenuActive, () => {
-      isMenuBooted.value = true
-    })
-
-    // start observe on menu activated
-    watch(isMenuBooted, () => {
-      useResizeObserver(footerRef, (entries) => {
-        const rect = entries[0]?.contentRect
-        if (rect) {
-          menuWidth.value = rect.width + 32
-        }
-      })
-    })
 
     return () => (
       <div
@@ -210,7 +192,6 @@ export default defineComponent({
           </div>
         )}
         <div
-          ref={footerRef}
           class={{
             'flex space-x-2 items-start justify-start w-full p-4 pt-2': true,
             'absolute inset-x-0 bottom-0 z-1': props.pictureOnly,
@@ -259,34 +240,82 @@ export default defineComponent({
               </div>
             )}
           </div>
-          <Menu
-            v-model={[isMenuActive.value]}
-            v-slots={{
-              activator: () => (
-                <Icon
-                  class={{
-                    'text-gray-100 dark:text-gray-200 flex-shrink-0': true,
-                    'stroke-white stroke-1': props.pictureOnly,
+          {props.isMobile ? (
+            <Modal
+              v-slots={{
+                activator: () => (
+                  <Icon
+                    class={{
+                      'text-gray-100 dark:text-gray-200 flex-shrink-0': true,
+                      'stroke-white stroke-1': props.pictureOnly,
+                    }}
+                  >
+                    {ziAction}
+                  </Icon>
+                ),
+              }}
+              v-model={[isMenuActive.value]}
+              class="flex items-end min-h-full h-full px-0"
+              contentClass="bg-white dark:bg-gray-900 w-full h-auto flex flex-col space-y-2 rounded-none overflow-auto px-6 py-12 my-0"
+              overlayClass="bg-gray-900 dark:bg-white bg-opacity-60 dark:bg-opacity-60 backdrop-filter backdrop-blur-lg"
+              top="auto"
+              hideOverflow
+              transition={{
+                appear: true,
+                enterActiveClass: 'transition ease-out duration-300',
+                enterFromClass: 'transform translate-y-full',
+                enterToClass: 'transform translate-y-0',
+                leaveActiveClass: 'transition ease-in duration-300',
+                leaveFromClass: 'transform translate-y-0',
+                leaveToClass: 'transform translate-y-full',
+              }}
+            >
+              {menuItems.value.map((item) => (
+                <Btn
+                  outlined
+                  class="text-gray-900 dark:text-white"
+                  {...{
+                    onClick: () => {
+                      isMenuActive.value = false
+                    },
                   }}
                 >
-                  {ziAction}
-                </Icon>
-              ),
-            }}
-            width={menuWidth.value}
-            arrow={false}
-            distance={-40}
-            skidding={16}
-            placement="top-end"
-            openDelay={75}
-          >
-            {menuItems.value.map((item, i) => (
-              <MenuItem index={i} class="h-12 px-4">
-                <Icon class="flex-shrink-0 mr-2">{item.icon}</Icon>
-                <div>{item.text}</div>
-              </MenuItem>
-            ))}
-          </Menu>
+                  <Icon class="flex-shrink-0 mr-2">{item.icon}</Icon>
+                  <div>{item.text}</div>
+                </Btn>
+              ))}
+            </Modal>
+          ) : (
+            <Menu
+              v-model={[isMenuActive.value]}
+              v-slots={{
+                activator: () => (
+                  <Icon
+                    class={{
+                      'text-gray-100 dark:text-gray-200 flex-shrink-0': true,
+                      'stroke-white stroke-1': props.pictureOnly,
+                    }}
+                  >
+                    {ziAction}
+                  </Icon>
+                ),
+              }}
+              arrow={false}
+              distance={-40}
+              skidding={16}
+              placement="top-end"
+              openDelay={75}
+              attach={false}
+              class="menu-item-card"
+            >
+              {menuItems.value.map((item, i) => (
+                <MenuItem index={i} class="h-12 px-4">
+                  <Icon class="flex-shrink-0 mr-2">{item.icon}</Icon>
+                  <div>{item.text}</div>
+                </MenuItem>
+              ))}
+            </Menu>
+          )}
         </div>
       </div>
     )

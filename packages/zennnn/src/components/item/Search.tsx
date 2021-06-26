@@ -8,7 +8,7 @@ import {
   ziChevronDown,
 } from '@zennnn/icons'
 import { TextField, Icon, Btn, Modal } from '@zennnn/core'
-import { useDisplay } from '@/composables/display'
+import { useDisplay } from '@/plugins'
 
 export default defineComponent({
   props: {
@@ -116,6 +116,9 @@ export default defineComponent({
         width="100%"
         maxWidth="1162px"
         class="sm:px-2"
+        contentClass="origin-top"
+        overlayClass="bg-gray-900 dark:bg-white bg-opacity-60 dark:bg-opacity-60 backdrop-filter backdrop-blur-lg"
+        top={80} // 96px(header height) - 16px (modal padding-top)
         fullscreen={mobile.value}
       >
         <div class="dark:bg-gray-900 p-4">

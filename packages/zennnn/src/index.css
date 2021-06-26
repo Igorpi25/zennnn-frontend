@@ -230,6 +230,14 @@
   .draggable-mirror {
     z-index: 500 !important;
   }
+
+  /* TODO: refactor Menu for manually disable popper and add remove root wrapper */
+  .menu-item-card [data-popper-root] {
+    transform: none !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+  }
 }
 
 @layer utilities {
