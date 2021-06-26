@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import Logo from './icons/Logo'
+import Logo from './Logo'
 
 export default defineComponent({
   props: {
