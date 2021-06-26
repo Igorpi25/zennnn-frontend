@@ -22,7 +22,7 @@ export default defineComponent({
             props.altMode ? 'h-14' : 'h-20 sm:h-24',
           ]}
         >
-          <div class="flex space-x-12">
+          <div class="flex space-x-4">
             <router-link
               to="/"
               class={[

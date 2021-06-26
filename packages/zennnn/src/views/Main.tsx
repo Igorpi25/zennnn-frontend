@@ -46,7 +46,7 @@ export default defineComponent({
     const isPictureOnly = ref(false)
     const isSearchActive = ref(false)
 
-    const zennnnHostname = process.env.VUE_APP_HOSTNAME || ''
+    const zennnnHostname = process.env.VUE_APP_HOSTNAME
 
     {
       /* TODO: add to locales */
@@ -138,12 +138,12 @@ export default defineComponent({
         <AppBar
           v-slots={{
             start: () => (
-              <nav class="hidden lg:flex space-x-12">
+              <nav class="hidden lg:flex space-x-4 pl-4">
                 {navItems.value.map((item) => (
                   <Btn
                     text
                     to={item.to}
-                    class="text-gray-900 dark:text-white h-auto px-0"
+                    class="text-gray-900 dark:text-white h-auto px-4"
                   >
                     {item.text}
                   </Btn>
