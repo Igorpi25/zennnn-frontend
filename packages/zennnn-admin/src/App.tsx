@@ -18,7 +18,7 @@ import Divider from 'shared/components/Divider'
 import SidebarItem from 'shared/components/SidebarItem'
 import LocalePicker from 'shared/components/LocalePicker'
 import { useReactiveVar } from 'shared/composables/reactiveVar'
-import { auth, useTheme } from '@/plugins'
+import { auth, emitter, useNotify, useTheme } from '@/plugins'
 import { isLoggedInVar } from '@/plugins/apollo'
 
 import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'
@@ -30,18 +30,23 @@ export default defineComponent({
     const router = useRouter()
     const { t } = useI18n()
     const { resolveClient } = useApolloClient()
+    const notify = useNotify()
     const { isDark } = useTheme()
     const isSidebarActive = ref(false)
     const currentUser = ref()
 
     const isLoggedIn = useReactiveVar(isLoggedInVar)
 
-    watch(isLoggedIn, setCurrentuser)
-
     const zennnnHostname = (process.env.VUE_APP_HOSTNAME || '').replace(
       'admin.',
       ''
     )
+
+    watch(isLoggedIn, setCurrentuser)
+
+    emitter.on('show-notify', (payload) => {
+      notify(payload)
+    })
 
     function toggleSidebar() {
       isSidebarActive.value = !isSidebarActive.value

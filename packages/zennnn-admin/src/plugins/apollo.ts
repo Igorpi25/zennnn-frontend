@@ -69,12 +69,15 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
           )
           if (message && message.includes('Forbidden')) {
-            emitter.emit('apollo-notify', { color: 'warn', text: 'Forbidden' })
+            emitter.emit('show-notify', { color: 'warn', text: 'Forbidden' })
+          } else {
+            emitter.emit('show-notify', { color: 'error', text: message })
           }
       }
     }
   }
   if (networkError) {
+    emitter.emit('show-notify', { color: 'error', text: networkError.message })
     logger.warn(`[Network error]: ${networkError}`)
   }
 })

@@ -6,7 +6,7 @@ import { Btn, Progress, Icon, Form, Select, TextField } from '@zennnn/core'
 import { TRANSLATE_WORD } from '@/graphql/queries'
 import { LOCALES_LIST } from 'shared/config'
 import { useRender } from 'shared/composables/render'
-import { logger, useNotify } from '@/plugins'
+import { logger } from '@/plugins'
 
 import type { PropType } from 'vue'
 import type { Locale } from 'shared/components/LocalePicker'
@@ -38,7 +38,6 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const { t, locale } = useI18n()
-    const notify = useNotify()
     const { resolveClient } = useApolloClient()
     const apolloClient = resolveClient()
 
@@ -159,7 +158,6 @@ export default defineComponent({
           translations.value[key] = item.tr
         })
       } catch (error) {
-        notify.error(error.message)
         throw new Error(error)
       } finally {
         translateWordLoading.value = false
