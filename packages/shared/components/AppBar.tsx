@@ -1,4 +1,6 @@
 import { defineComponent } from 'vue'
+import { RouterLink } from 'vue-router'
+
 import Logo from './Logo'
 
 export default defineComponent({
@@ -23,17 +25,17 @@ export default defineComponent({
           ]}
         >
           <div class="flex space-x-4">
-            <router-link
+            <RouterLink
               to="/"
               class={[
-                'rounded focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible',
+                'focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible',
                 props.altMode
                   ? 'text-gray-200 dark:text-gray-100'
                   : 'text-gray-900 dark:text-white',
               ]}
             >
               <Logo />
-            </router-link>
+            </RouterLink>
             {slots.start?.()}
           </div>
           {slots.default ? slots.default() : slots.end?.()}
