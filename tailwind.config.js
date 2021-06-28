@@ -114,11 +114,6 @@ module.exports = {
         900: '#3D242D', // error color
       },
     },
-    gradientColorStops: {
-      'gray-900': 'rgba(30, 30, 30, 1)',
-      'gray-900-a-0': 'rgba(30, 30, 30, 0)',
-      'gray-900-a-50': 'rgba(30, 30, 30, 0.5)',
-    },
     extend: {
       letterSpacing: {
         widest: '.15em',
@@ -184,6 +179,11 @@ module.exports = {
         '2-264': 'repeat(2, 264px)',
         '3-264': 'repeat(3, 264px)',
         '4-264': 'repeat(4, 264px)',
+      },
+      gradientColorStops: {
+        'gray-900': 'rgba(30, 30, 30, 1)',
+        'gray-900-a-0': 'rgba(30, 30, 30, 0)',
+        'gray-900-a-50': 'rgba(30, 30, 30, 0.5)',
       },
     },
   },

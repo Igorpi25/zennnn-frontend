@@ -241,6 +241,10 @@
 }
 
 @layer utilities {
+  .translate-z-0 {
+    transform: translateZ(0);
+  }
+
   .border-spacing-y-px {
     border-spacing: 0 1px;
   }
