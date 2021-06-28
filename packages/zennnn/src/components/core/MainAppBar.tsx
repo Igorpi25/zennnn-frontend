@@ -43,7 +43,7 @@ export default defineComponent({
     searchActive: Boolean,
   },
 
-  emits: ['logout'],
+  emits: ['logout', 'update:pictureOnly', 'update:searchActive'],
 
   setup(props, { emit }) {
     const { t } = useI18n()
