@@ -17,12 +17,16 @@ import { typeDefs, resolvers } from '../graphql'
 import { GET_IS_SPEC_SYNC, SPEC_SIMPLE_UI_OFF } from '../graphql/queries'
 import { getUsername } from '../graphql/resolvers'
 import router from '../router'
+import { CURRENT_ORG_STORE_KEY } from '../config'
 import { auth, i18n, emitter, store } from '.'
 
 import type { ReactiveVar } from '@apollo/client/core'
 
 export const isLoggedInVar: ReactiveVar<boolean> = makeVar<boolean>(false)
 export const backendVersionVar: ReactiveVar<string> = makeVar<string>('')
+export const currentOrgIdVar: ReactiveVar<string | null> = makeVar<
+  string | null
+>(localStorage.getItem(CURRENT_ORG_STORE_KEY))
 
 const logger = new Logger('Apollo')
 

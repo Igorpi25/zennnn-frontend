@@ -1,7 +1,6 @@
 import { defineComponent, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useQuery, useResult } from '@vue/apollo-composable'
 import {
   ziFacebook,
   ziTelegram,
@@ -13,26 +12,17 @@ import {
 import { Icon } from '@zennnn/core'
 
 import Logo from 'shared/components/Logo'
-import { useReactiveVar } from 'shared/composables/reactiveVar'
-import { isLoggedInVar } from '@/plugins/apollo'
-
-import { GET_PROFILE } from '@/graphql/queries'
+import { useProfile } from '@/composables/profile'
 
 import Copyright from '@/components/core/Copyright'
 
 export default defineComponent({
   setup() {
     const mailTo = process.env.VUE_APP_MAILTO
-    const isLoggedIn = useReactiveVar(isLoggedInVar)
     const { t } = useI18n()
+    const { profile } = useProfile()
 
-    const { result: result2 } = useQuery(GET_PROFILE)
-    const getProfile = useResult(result2, null, () => ({
-      enabled: isLoggedIn.value,
-      fetchPolicy: 'cache-only',
-    }))
-
-    const hasSubscription = computed(() => getProfile.value)
+    const hasSubscription = computed(() => profile.value)
 
     const aboutLinks = computed(() => [
       {

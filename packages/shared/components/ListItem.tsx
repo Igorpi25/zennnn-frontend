@@ -37,7 +37,7 @@ export default defineComponent({
             class={['flex flex-col justify-center truncate', props.infoClass]}
           >
             <div
-              class="text-gray-900 dark:text-white"
+              class="text-gray-900 dark:text-white truncate"
               style="line-height: 19px;"
             >
               {slots.title ? slots.title() : props.title}

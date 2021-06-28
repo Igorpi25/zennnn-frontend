@@ -2,7 +2,7 @@ import { computed, FunctionalComponent } from 'vue'
 
 const SubscriptionLabel: FunctionalComponent<{
   class?: string
-  status?: string
+  status?: 'trial' | 'paid' | 'expired' | undefined
 }> = (props, { slots }) => {
   const statusClass = computed(() => {
     switch (props.status) {
