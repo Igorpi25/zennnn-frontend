@@ -16,7 +16,7 @@ import {
 } from '@zennnn/icons'
 import { Icon, Switch } from '@zennnn/core'
 import AppBar from 'shared/components/AppBar'
-import ListItem from 'shared/components/ListItem'
+import AccountListItem from 'shared/components/AccountListItem'
 import Sidebar from 'shared/components/Sidebar'
 import Divider from 'shared/components/Divider'
 import Badge from 'shared/components/Badge'
@@ -119,7 +119,7 @@ export default defineComponent({
               }}
             >
               <Icon class="mr-2">{ziMenu}</Icon>
-              <ListItem
+              <AccountListItem
                 class="flex-row-reverse"
                 avatarSize={32}
                 avatarSrc={currentOrg.value?.picture || undefined}
@@ -148,7 +148,7 @@ export default defineComponent({
                   class="group"
                 >
                   <Icon class="flex-grow-0">{ziUsers}</Icon>
-                  <ListItem
+                  <AccountListItem
                     v-slots={{
                       title: () => (
                         <div class="group-hover:text-white truncate">

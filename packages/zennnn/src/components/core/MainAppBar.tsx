@@ -22,7 +22,7 @@ import AppBar from 'shared/components/AppBar'
 import Sidebar from 'shared/components/Sidebar'
 import SidebarItem from 'shared/components/SidebarItem'
 import Divider from 'shared/components/Divider'
-import ListItem from 'shared/components/ListItem'
+import AccountListItem from 'shared/components/AccountListItem'
 import LocalePicker from 'shared/components/LocalePicker'
 import Badge from 'shared/components/Badge'
 import { useReactiveVar } from 'shared/composables/reactiveVar'
@@ -210,7 +210,7 @@ export default defineComponent({
                   }
                 }}
               >
-                <ListItem
+                <AccountListItem
                   class="flex-row-reverse"
                   avatarSize={48}
                   avatarSrc={currentOrg.value?.picture || undefined}
@@ -272,7 +272,7 @@ export default defineComponent({
                       class="group"
                     >
                       <Icon class="flex-grow-0">{ziUsers}</Icon>
-                      <ListItem
+                      <AccountListItem
                         v-slots={{
                           title: () => (
                             <div class="group-hover:text-white truncate">

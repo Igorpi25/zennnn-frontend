@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { ziUserCircle, ziStarOutlineLg, ziSettings } from '@zennnn/icons'
 import { Icon } from '@zennnn/core'
 import Avatar from 'shared/components/Avatar'
-import ListItem from 'shared/components/ListItem'
+import AccountListItem from 'shared/components/AccountListItem'
 import Dialog from 'shared/components/Dialog'
 import { useOrgs } from '@/composables/orgs'
 import { RoleInProject } from '@/graphql/types'
@@ -75,7 +75,7 @@ export default defineComponent({
                       },
                     }}
                   >
-                    <ListItem
+                    <AccountListItem
                       avatarSize={40}
                       avatarClass="mr-2"
                       infoClass="space-y-1"
