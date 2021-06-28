@@ -166,14 +166,14 @@ export default defineComponent({
               <ListItem
                 v-slots={{
                   title: () => (
-                    <span class="group-hover:text-white">
+                    <div class="group-hover:text-white truncate">
                       {currentUser.value?.username}
-                    </span>
+                    </div>
                   ),
                   subtitle: () => (
-                    <span class="group-hover:text-light-gray-400">
+                    <div class="group-hover:text-light-gray-400">
                       {currentUser.value?.role}
-                    </span>
+                    </div>
                   ),
                 }}
                 class="flex-grow"
