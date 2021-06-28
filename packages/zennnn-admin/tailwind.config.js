@@ -12,10 +12,12 @@ module.exports = {
   ],
   theme: {
     ...base.theme,
-    fontFamily: {
-      myriad: ['MyriadPro', 'sans-serif'],
-      'myriad-cond': ['MyriadPro-Cond', 'sans-serif'],
-      montserrat: ['Montserrat', 'sans-serif'],
+    extend: {
+      ...base.theme.extend,
+      fontFamily: {
+        myriad: ['MyriadPro', 'sans-serif'],
+        'myriad-cond': ['MyriadPro-Cond', 'sans-serif'],
+      },
     },
   },
   plugins: [...base.plugins, aspectRatioPlugin],
