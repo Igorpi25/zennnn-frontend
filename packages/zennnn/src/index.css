@@ -278,6 +278,13 @@
     }
   }
 
+  .break-inside-auto {
+    break-inside: auto;
+  }
+  .break-inside-avoid {
+    break-inside: avoid;
+  }
+
   /* DOTS */
   .dots {
     overflow: hidden;

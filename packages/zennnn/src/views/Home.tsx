@@ -108,6 +108,7 @@ export default defineComponent({
           <meta property="og:url" content={ogUrl} />
           <meta property="og:image" content={ogImage} />
         </Teleport>
+
         <MainAppBar />
 
         <main class="container pt-[4vh] sm:pt-[8vh] flex-grow">
