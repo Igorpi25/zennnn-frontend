@@ -172,7 +172,7 @@ export default defineComponent({
                   <Btn
                     icon
                     class={{
-                      'bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white':
+                      'w-12 bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white':
                         true,
                       'bg-blue-550 dark:bg-blue-550': active,
                     }}
