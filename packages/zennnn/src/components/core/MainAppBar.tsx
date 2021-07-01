@@ -45,7 +45,7 @@ export default defineComponent({
 
   emits: ['logout', 'update:pictureOnly', 'update:searchActive'],
 
-  setup(props, { emit }) {
+  setup(props, { slots, attrs, emit }) {
     const { t } = useI18n()
     const { resolveClient } = useApolloClient()
     const { isDark } = useTheme()
@@ -110,20 +110,24 @@ export default defineComponent({
       <>
         <AppBar
           v-slots={{
-            start: () => (
-              <nav class="hidden lg:flex space-x-4 pl-4">
-                {navItems.value.map((item) => (
-                  <Btn
-                    text
-                    to={item.to}
-                    class="text-gray-900 dark:text-white h-auto px-4"
-                  >
-                    {item.text}
-                  </Btn>
-                ))}
-              </nav>
-            ),
+            start: () =>
+              slots.nav ? (
+                slots.nav()
+              ) : (
+                <nav class="hidden lg:flex space-x-4 pl-4">
+                  {navItems.value.map((item) => (
+                    <Btn
+                      text
+                      to={item.to}
+                      class="text-gray-900 dark:text-white h-auto px-4"
+                    >
+                      {item.text}
+                    </Btn>
+                  ))}
+                </nav>
+              ),
           }}
+          {...attrs}
         >
           <div class="flex items-center space-x-2">
             {props.hasSearch && (

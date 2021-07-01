@@ -1,6 +1,6 @@
-import type { FunctionalComponent } from 'vue'
+import type { FunctionalComponent, HTMLAttributes } from 'vue'
 
-const Logo: FunctionalComponent = () => {
+const Logo: FunctionalComponent<HTMLAttributes> = (_, { attrs }) => {
   return (
     <svg
       width="113"
@@ -8,6 +8,7 @@ const Logo: FunctionalComponent = () => {
       viewBox="0 0 113 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...attrs}
     >
       <g clip-path="url(#clip0)">
         <path

@@ -140,10 +140,13 @@ module.exports = {
       },
       fontSize: {
         13: '13px',
+        22: '22px', // about
         28: '28px',
         32: '32px',
         40: '40px',
+        46: '46px', // about, leading-tight (56px)
         56: '56px',
+        58: '58px', // about, leading-tight (71px)
       },
       spacing: {
         4.5: '1.125rem', // 18px
