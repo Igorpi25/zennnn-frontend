@@ -245,6 +245,7 @@ export default class Auth {
     } else {
       logger.debug('no Congito User pool')
     }
+    this.user = null
   }
 
   /**
