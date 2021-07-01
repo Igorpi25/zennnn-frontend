@@ -34,7 +34,7 @@ type NotifyInstanceFn = (payload: string | NotifyOptions) => void
 interface NotifyInstanceAdv {
   clear: () => void
   error: (text: string, options?: NotifyOptions) => void
-  Warn: (text: string, options?: NotifyOptions) => void
+  warn: (text: string, options?: NotifyOptions) => void
   success: (text: string, options?: NotifyOptions) => void
   info: (text: string, options?: NotifyOptions) => void
 }
