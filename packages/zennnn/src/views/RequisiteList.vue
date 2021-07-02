@@ -63,15 +63,13 @@
         role="menu"
         class="
           grid
-          sm:grid-cols-2-264
-          lg:grid-cols-3-264
-          xl:grid-cols-4-264
           gap-x-6 gap-y-8
           justify-center
           sm:justify-between
           pt-6
           pb-10
         "
+        style="grid-template-columns: repeat(auto-fit, minmax(264px, 1fr))"
       >
         <div
           v-for="item in filteredItems"
@@ -159,13 +157,12 @@
                 <div
                   class="
                     absolute
-                    w-26
-                    h-26
+                    w-[6.5rem]
+                    h-[6.5rem]
                     rounded-full
                     bg-gray-400
                     top-0
                     left-1/2
-                    transform
                     -translate-x-1/2 -translate-y-1/2
                     flex
                     items-center
@@ -193,7 +190,7 @@
                       inline-flex
                       items-center
                       justify-center
-                      rounded-20
+                      rounded-[20px]
                       px-4
                     "
                   >

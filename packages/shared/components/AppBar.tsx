@@ -15,7 +15,7 @@ export default defineComponent({
           'sticky top-0 z-10 w-full',
           props.altMode
             ? 'bg-light-gray-550 dark:bg-gray-400'
-            : 'bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-70 backdrop-filter backdrop-blur-xl',
+            : 'bg-white dark:bg-gray-900 bg-opacity-70 dark:bg-opacity-70 backdrop-blur-xl',
         ]}
       >
         <div

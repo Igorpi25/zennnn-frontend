@@ -152,7 +152,7 @@
                     opacity-50
                     bg-gradient-to-b
                     from-gray-900
-                    to-gray-900-a-0
+                    to-gray-900/0
                     -mt-1
                   "
                 />
@@ -166,7 +166,7 @@
                     opacity-50
                     bg-gradient-to-t
                     from-gray-900
-                    to-gray-900-a-0
+                    to-gray-900/0
                   "
                 />
               </td>
@@ -210,7 +210,6 @@
                         text-gray-300
                         absolute
                         right-0
-                        transform
                         translate-x-full
                         pl-1
                       "
@@ -226,7 +225,6 @@
                         text-gray-300
                         absolute
                         right-0
-                        transform
                         translate-x-full
                         pl-1
                       "

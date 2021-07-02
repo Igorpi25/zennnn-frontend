@@ -8,11 +8,11 @@
     :transition="{
       appear: true,
       enterActiveClass: 'transition ease-out duration-300',
-      enterFromClass: 'transform translate-x-full',
-      enterToClass: 'transform translate-x-0',
+      enterFromClass: 'translate-x-full',
+      enterToClass: 'translate-x-0',
       leaveActiveClass: 'transition ease-in duration-300',
-      leaveFromClass: 'transform translate-x-0',
-      leaveToClass: 'transform translate-x-full',
+      leaveFromClass: 'translate-x-0',
+      leaveToClass: 'translate-x-full',
     }"
   >
     <template v-slot:activator>
@@ -35,11 +35,11 @@
     :transition="{
       appear: true,
       enterActiveClass: 'transition ease-out duration-300',
-      enterFromClass: 'transform translate-y-full',
-      enterToClass: 'transform translate-y-0',
+      enterFromClass: 'translate-y-full',
+      enterToClass: 'translate-y-0',
       leaveActiveClass: 'transition ease-in duration-300',
-      leaveFromClass: 'transform translate-y-0',
-      leaveToClass: 'transform translate-y-full',
+      leaveFromClass: 'translate-y-0',
+      leaveToClass: 'translate-y-full',
     }"
   >
     <template v-slot:activator>

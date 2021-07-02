@@ -152,7 +152,7 @@ export default defineComponent({
                   aspect-ratio="1"
                 />
               </div>
-              <div class="absolute inset-x-0 top-0 h-20 rounded-t overflow-hidden pointer-events-none bg-gradient-to-b from-gray-900-a-50 to-gray-900-a-0">
+              <div class="absolute inset-x-0 top-0 h-20 rounded-t overflow-hidden pointer-events-none bg-gradient-to-b from-gray-900/50 to-gray-900/0">
                 <a
                   href={`${currentImage.value.url}-original`}
                   target="_blank"
@@ -162,7 +162,7 @@ export default defineComponent({
                 </a>
               </div>
               <div class="absolute inset-x-0 bottom-0 h-20 rounded-b overflow-hidden pointer-events-none text-gray-100">
-                <div class="absolute inset-0 bg-gradient-to-t from-gray-900-a-50 to-gray-900-a-0" />
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-gray-900/0" />
                 {imagesList.value.length > 1 && (
                   <div class="absolute inset-x-0 bottom-0 text-center leading-tight pb-2">
                     <span class="text-white">

@@ -14,7 +14,7 @@
         dark:bg-gray-650
         bg-opacity-70
         dark:bg-opacity-70
-        backdrop-filter backdrop-blur-xl
+        backdrop-blur-xl
         h-12
         flex
         items-center
@@ -39,7 +39,7 @@
     <div class="md:flex">
       <div
         :class="[
-          'transform -translate-x-full md:translate-x-0 transition-transform duration-200 fixed md:sticky top-12 z-10 w-64 xl:w-72 bg-white dark:bg-gray-650 border-r md:border-r-0 border-light-gray-400 dark:border-gray-700 overflow-y-auto h-[calc(100vh-3rem)] pb-6',
+          '-translate-x-full md:translate-x-0 transition-transform duration-200 fixed md:sticky top-12 z-10 w-64 xl:w-72 bg-white dark:bg-gray-650 border-r md:border-r-0 border-light-gray-400 dark:border-gray-700 overflow-y-auto h-[calc(100vh-3rem)] pb-6',
           { 'translate-x-0': isSidebarOpen },
         ]"
       >

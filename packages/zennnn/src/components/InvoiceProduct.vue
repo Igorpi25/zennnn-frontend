@@ -518,7 +518,7 @@
                 inline-flex
                 items-center
                 justify-center
-                rounded-50
+                rounded-[50px]
                 px-1
                 pt-px
               "

@@ -7,11 +7,10 @@
 
 .modal-content {
   @apply text-left bg-white dark:bg-gray-650;
-  @apply transform transition-transform;
   @apply inline-block align-middle overflow-hidden;
   @apply focus:outline-none shadow-main-day dark:shadow-main-night;
   @apply rounded-lg my-4;
-  @apply origin-center;
+  @apply origin-center transition-transform;
 }
 
 .modal-content--fullscreen {

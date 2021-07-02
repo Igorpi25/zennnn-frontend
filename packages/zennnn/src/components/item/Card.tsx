@@ -257,17 +257,17 @@ export default defineComponent({
               v-model={[isMenuActive.value]}
               class="flex items-end min-h-full h-full px-0"
               contentClass="bg-white dark:bg-gray-900 w-full h-auto flex flex-col space-y-2 rounded-none overflow-auto px-6 py-12 my-0"
-              overlayClass="bg-gray-900 dark:bg-white bg-opacity-60 dark:bg-opacity-60 backdrop-filter backdrop-blur-lg"
+              overlayClass="bg-gray-900 dark:bg-white bg-opacity-60 dark:bg-opacity-60 backdrop-blur-lg"
               top="auto"
               hideOverflow
               transition={{
                 appear: true,
                 enterActiveClass: 'transition ease-out duration-300',
-                enterFromClass: 'transform translate-y-full',
-                enterToClass: 'transform translate-y-0',
+                enterFromClass: 'translate-y-full',
+                enterToClass: 'translate-y-0',
                 leaveActiveClass: 'transition ease-in duration-300',
-                leaveFromClass: 'transform translate-y-0',
-                leaveToClass: 'transform translate-y-full',
+                leaveFromClass: 'translate-y-0',
+                leaveToClass: 'translate-y-full',
               }}
             >
               {menuItems.value.map((item) => (

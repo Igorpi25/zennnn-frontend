@@ -279,7 +279,7 @@ export default defineComponent({
               <div class="text-xl">{item.title}</div>
               <div
                 class={[
-                  'h-9 flex items-center text-gray-200 rounded-50 px-2',
+                  'h-9 flex items-center text-gray-200 rounded-[50px] px-2',
                   item.name === 'Advanced'
                     ? 'bg-white dark:bg-gray-800'
                     : 'bg-light-gray-100 dark:bg-gray-700',

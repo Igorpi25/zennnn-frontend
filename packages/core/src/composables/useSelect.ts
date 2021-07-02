@@ -122,7 +122,7 @@ export const useSelect = (
         tabindex: '-1',
         disabled: isDisabled.value,
         class: [
-          'focus:outline-none origin-center transform transition-transform duration-200 ease-in-out',
+          'focus:outline-none origin-center transition-transform duration-200 ease-in-out',
           isDisabled.value
             ? 'text-gray-400 cursor-not-allowed'
             : 'text-blue-500 hover:text-blue-400 focus:text-blue-400',

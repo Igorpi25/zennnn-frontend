@@ -46,7 +46,6 @@
                   right-0
                   text-13
                   font-semibold
-                  transform
                   translate-x-full
                   -mt-1
                   -mr-1

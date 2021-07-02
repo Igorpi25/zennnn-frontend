@@ -25,7 +25,7 @@
                 px-2.5
                 bg-cold-blue-400
                 text-white
-                rounded-50
+                rounded-[50px]
               "
             >
               {{ $t('paper.shipped') }}
@@ -312,7 +312,7 @@
                   <Icon
                     class="transition-transform"
                     :class="{
-                      'transform rotate-90': expanded.includes(item.id),
+                      'rotate-90': expanded.includes(item.id),
                     }"
                   >
                     {{ icons.ziChevronRight }}

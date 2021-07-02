@@ -192,7 +192,7 @@
       <Icon
         class="transition-transform"
         :title="isExpanded ? $t('action.collapse') : $t('action.expand')"
-        :class="{ 'transform rotate-90': isExpanded }"
+        :class="{ 'rotate-90': isExpanded }"
       >
         {{ icons.ziChevronRight }}
       </Icon>

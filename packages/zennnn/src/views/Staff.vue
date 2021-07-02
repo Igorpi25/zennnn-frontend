@@ -231,7 +231,7 @@
                     <Icon
                       class="transition-transform"
                       :class="{
-                        'transform rotate-90': expanded.includes(item.id),
+                        'rotate-90': expanded.includes(item.id),
                       }"
                     >
                       {{ icons.ziChevronRight }}
@@ -256,7 +256,7 @@
                       h-6
                       bg-gradient-to-b
                       from-gray-900
-                      to-gray-900-a-0
+                      to-gray-900/0
                       -mt-1
                     "
                   />

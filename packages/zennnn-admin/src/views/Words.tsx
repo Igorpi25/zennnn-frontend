@@ -825,8 +825,9 @@ export default defineComponent({
                                     'w-6 h-6 rounded text-blue-500 hover:text-blue-400':
                                       true,
                                     'transition-transform': true,
-                                    'transform rotate-90':
-                                      expanded.value.includes(item.id),
+                                    'rotate-90': expanded.value.includes(
+                                      item.id
+                                    ),
                                   }}
                                   retainFocusOnClick
                                 >
@@ -868,7 +869,7 @@ export default defineComponent({
                           >
                             <WordProducts item={item} />
                           </div>
-                          <div class="absolute inset-x-0 top-0 pointer-events-none opacity-20 dark:opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900-a-0 -mt-1" />
+                          <div class="absolute inset-x-0 top-0 pointer-events-none opacity-20 dark:opacity-50 h-6 bg-gradient-to-b from-gray-900 to-gray-900/0 -mt-1" />
                         </td>
                       </tr>
                     )}

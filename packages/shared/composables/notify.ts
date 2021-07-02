@@ -147,10 +147,10 @@ export const createNotify = (options: NotifyInstanceOptions = {}) => {
           zIndex: _zIndex,
         },
         enterActiveClass: 'transition duration-200 ease-out',
-        enterFromClass: 'transform -translate-y-4 opacity-0',
-        moveClass: 'transform duration-500',
+        enterFromClass: '-translate-y-4 opacity-0',
+        moveClass: 'duration-500',
         leaveActiveClass: 'transition duration-200 ease-out',
-        leaveToClass: 'transform -translate-y-4 opacity-0',
+        leaveToClass: '-translate-y-4 opacity-0',
       },
       {
         default: () => genItems(),

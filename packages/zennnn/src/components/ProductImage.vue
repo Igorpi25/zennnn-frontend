@@ -250,8 +250,8 @@
               overflow-hidden
               pointer-events-none
               bg-gradient-to-b
-              from-gray-900-a-50
-              to-gray-900-a-0
+              from-gray-900/50
+              to-gray-900/0
             "
           >
             <a
@@ -293,8 +293,8 @@
                 absolute
                 inset-0
                 bg-gradient-to-t
-                from-gray-900-a-50
-                to-gray-900-a-0
+                from-gray-900/50
+                to-gray-900/0
               "
             />
             <div

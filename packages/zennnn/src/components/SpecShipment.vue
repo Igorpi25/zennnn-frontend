@@ -29,7 +29,7 @@
 
       <div class="flex justify-center w-full lg:w-auto px-1 xl:px-2">
         <svg
-          class="transform rotate-90 lg:rotate-0"
+          class="rotate-90 lg:rotate-0"
           width="32"
           height="5"
           viewBox="0 0 32 5"
@@ -57,7 +57,7 @@
 
       <div class="flex justify-center w-full lg:w-auto px-1 xl:px-2">
         <svg
-          class="transform rotate-90 lg:rotate-0"
+          class="rotate-90 lg:rotate-0"
           width="32"
           height="5"
           viewBox="0 0 32 5"

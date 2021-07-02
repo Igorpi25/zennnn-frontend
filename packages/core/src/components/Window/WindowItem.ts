@@ -74,8 +74,8 @@ export default defineComponent({
         enterActiveClass: 'transition-transform ease-out-quart duration-300',
         leaveActiveClass: 'transition-transform ease-out-quart duration-300',
         leaveFromClass: 'absolute top-0 w-full',
-        leaveToClass: `absolute top-0 w-full transform ${leaveTranslate}`,
-        enterFromClass: `transform ${enterTranslate}`,
+        leaveToClass: `absolute top-0 w-full ${leaveTranslate}`,
+        enterFromClass: enterTranslate,
       }
 
       const hooks = {

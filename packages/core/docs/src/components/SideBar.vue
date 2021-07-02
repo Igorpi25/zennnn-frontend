@@ -6,7 +6,7 @@
   />
   <nav
     :class="[
-      'h-[calc(100vh-3rem)] bg-white border-r md:border-r-0 border-light-gray-400 w-64 xl:w-72 fixed md:sticky top-12 z-10 overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-200 py-6 px-4',
+      'h-[calc(100vh-3rem)] bg-white border-r md:border-r-0 border-light-gray-400 w-64 xl:w-72 fixed md:sticky top-12 z-10 overflow-y-auto -translate-x-full md:translate-x-0 transition-transform duration-200 py-6 px-4',
       { 'translate-x-0': open },
     ]"
   >

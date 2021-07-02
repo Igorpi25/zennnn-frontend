@@ -39,8 +39,8 @@ export default defineComponent({
     ...useLazyContentProps(),
     ...useTransitionProps({
       enterActiveClass: 'transition ease-out duration-150',
-      enterFromClass: 'transform scale-50 opacity-0',
-      enterToClass: 'transform scale-100 opacity-100',
+      enterFromClass: 'scale-50 opacity-0',
+      enterToClass: 'scale-100 opacity-100',
       leaveActiveClass: 'transition ease-out duration-75',
       leaveFromClass: 'opacity-100',
       leaveToClass: 'opacity-0',

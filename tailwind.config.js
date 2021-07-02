@@ -139,14 +139,14 @@ module.exports = {
         shake: 'shake .6s cubic-bezier(0.25, 0.8, 0.5, 1)',
       },
       fontSize: {
-        13: '13px',
-        22: '22px', // about
-        28: '28px',
-        32: '32px',
-        40: '40px',
-        46: '46px', // about, leading-tight (56px)
-        56: '56px',
-        58: '58px', // about, leading-tight (71px)
+        13: '0.8125rem', // 13px
+        22: '1.375rem', // 22px, about
+        28: '1.75rem', // 28px, home
+        32: '2rem', // 32px
+        40: '2.5rem', // 40px
+        46: '2.875rem', // 46px, about, leading-tight (56px)
+        56: '3.5rem', // 56px, home
+        58: '3.625rem', // 58px, about, leading-tight (71px)
       },
       spacing: {
         4.5: '1.125rem', // 18px
@@ -154,9 +154,6 @@ module.exports = {
         13: '3.25rem', // 52px
         15: '3.75rem', // 60px
         18: '4.5rem', // 72px
-        26: '6.5rem', // 104px
-        38: '9.5rem', // 152px
-        68: '17rem', // 272px, sidebar width
       },
       zIndex: {
         1: '1',
@@ -171,22 +168,6 @@ module.exports = {
       },
       transitionTimingFunction: {
         'out-quart': 'cubic-bezier(0.25, 0.8, 0.5, 1)',
-      },
-      borderRadius: {
-        10: '10px',
-        20: '20px',
-        50: '50px',
-      },
-      gridTemplateColumns: {
-        // Complex site-specific column configuration
-        '2-264': 'repeat(2, 264px)',
-        '3-264': 'repeat(3, 264px)',
-        '4-264': 'repeat(4, 264px)',
-      },
-      gradientColorStops: {
-        'gray-900': 'rgba(30, 30, 30, 1)',
-        'gray-900-a-0': 'rgba(30, 30, 30, 0)',
-        'gray-900-a-50': 'rgba(30, 30, 30, 0.5)',
       },
     },
   },

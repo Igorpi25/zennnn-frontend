@@ -151,19 +151,19 @@ export default defineComponent({
                 src={require('@/assets/img/home/main.png').default}
                 alt="image"
                 lazySrc="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAABCcAAAQnAEmzTo0AAAB7klEQVQoz2VTy3LiQAzkP8D4ATZgsOdtDKTyI9n/v25VbolT0rZkJ0vtHlStmdG0Wu3xarfbcV3XnOc559stF0XB+/2ey7L8QamR/S3O83zL26VWc2Am+RxfK1yiEAL1fU/WWmqahtbrNWVZ9hSbf9YZbTbzHoTMMTecVqLgfLnw6XTSACFXVQVVe8XnkNpv5XXdLFFL0H6eclpVZcV2cOyi55hu7L3j4XpDfuUYE/I7x2HUtfeenXMcgufreOeEfanHPvkQpOm0qtEtPXBxHPh2f+WUEvBFL1zHkW+PV5COSg5rgBE1UWu0cdQ9knMlLAqMbC/c9R33xvEF4xtg3xtEz8Z6RFguJ5wZDecDlEWtscaSR11ZlSDEF2vghXh3OBwWPHKDXPyRtaCzVhV2XaeE0ljIZgGGDATAX4wMD40edPAnaHFI8CaIGgslSZUIkXhoF2JBCz+lRl6JeKuEu7og6wyejCcXEqGAQhwJI5GxTiOlAc/KkJgvaoRA0Lqg9fDxL2FdZfy4j/z29ks9NKIACkXZ7FWE2sUrnOkEISxe2v8VlmUhCxqGgU5tS3iLhPEVj4eDKsBohJFV1fcPINjrGkrFQ6MefspXfm/bdjoejx/n8/nzOdp2RhivCFLN0fwnl308tQ80mPB7/v4D4IppMMl/iWUAAAAASUVORK5CYII="
-                class="w-full rounded-xl filter drop-shadow-2xl transform translate-z-0"
+                class="w-full rounded-xl drop-shadow-2xl translate-z-0"
                 cover
               />
             </div>
             <img
               width="264"
               src={require('@/assets/img/home/tabs.png').default}
-              class="absolute left-0 bottom-[40%] w-[23%] sm:left-[38px] filter drop-shadow-2xl"
+              class="absolute left-0 bottom-[40%] w-[23%] sm:left-[38px] drop-shadow-2xl"
             />
             <img
               width="246"
               src={require('@/assets/img/home/container.png').default}
-              class="absolute right-0 bottom-[16%] w-[21.7%] sm:right-6 filter drop-shadow-2xl"
+              class="absolute right-0 bottom-[16%] w-[21.7%] sm:right-6 drop-shadow-2xl"
             />
           </div>
           <div class="pt-20 pb-20 px-2 sm:px-18">
@@ -179,7 +179,7 @@ export default defineComponent({
                   <Image
                     aspectRatio={2.5}
                     src={require('@/assets/img/home/banner-1.png').default}
-                    class="bg-gradient-to-b from-gray-800 to-gray-900 filter drop-shadow-2xl transform translate-z-0 rounded-md"
+                    class="bg-gradient-to-b from-gray-800 to-gray-900 drop-shadow-2xl translate-z-0 rounded-md"
                   />
                   <div class="absolute inset-0 flex">
                     <div class="flex flex-col w-1/2 pl-8 lg:pl-13 pt-6 md:pt-4 lg:pt-8 xl:pt-12">
@@ -190,7 +190,7 @@ export default defineComponent({
                       <div class="h-full max-h-12 flex items-end mb-2">
                         <Icon
                           large
-                          class="text-blue-500 transform group-hover:translate-x-2 transition-transform duration-150 ease-out"
+                          class="text-blue-500 group-hover:translate-x-2 transition-transform duration-150 ease-out"
                         >
                           {ziArrowRight}
                         </Icon>
@@ -212,7 +212,7 @@ export default defineComponent({
                   <Image
                     aspectRatio={2.5}
                     src={require('@/assets/img/home/banner-2.png').default}
-                    class="bg-gradient-to-b from-gray-800 to-gray-900 filter drop-shadow-2xl transform translate-z-0 rounded-md"
+                    class="bg-gradient-to-b from-gray-800 to-gray-900 drop-shadow-2xl translate-z-0 rounded-md"
                   />
                   <div class="absolute inset-0 flex">
                     <div class="flex flex-col w-1/2 pl-8 lg:pl-13 pt-6 md:pt-4 lg:pt-8 xl:pt-12">
@@ -223,7 +223,7 @@ export default defineComponent({
                       <div class="h-full max-h-12 flex items-end mb-2">
                         <Icon
                           large
-                          class="text-blue-500 transform group-hover:translate-x-2 transition-transform duration-150 ease-out"
+                          class="text-blue-500 group-hover:translate-x-2 transition-transform duration-150 ease-out"
                         >
                           {ziArrowRight}
                         </Icon>

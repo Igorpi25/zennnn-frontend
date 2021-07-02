@@ -117,7 +117,7 @@ export default defineComponent({
         maxWidth="1162px"
         class="sm:px-2"
         contentClass="origin-top"
-        overlayClass="bg-gray-900 dark:bg-white bg-opacity-60 dark:bg-opacity-60 backdrop-filter backdrop-blur-lg"
+        overlayClass="bg-gray-900 dark:bg-white bg-opacity-60 dark:bg-opacity-60 backdrop-blur-lg"
         top={80} // 96px(header height) - 16px (modal padding-top)
         fullscreen={mobile.value}
       >

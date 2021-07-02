@@ -272,7 +272,6 @@
                   absolute
                   left-0
                   top-0
-                  transform
                   translate-y-1/2
                   border-transparent
                   -ml-2
@@ -416,7 +415,6 @@
                     absolute
                     left-0
                     top-0
-                    transform
                     translate-y-1/2
                     border-transparent
                     -ml-2

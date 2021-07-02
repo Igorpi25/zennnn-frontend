@@ -35,11 +35,11 @@ export default defineComponent({
         ? {
             appear: true,
             enterActiveClass: 'transition ease-out duration-300',
-            enterFromClass: 'transform translate-x-full',
-            enterToClass: 'transform translate-x-0',
+            enterFromClass: 'translate-x-full',
+            enterToClass: 'translate-x-0',
             leaveActiveClass: 'transition ease-in duration-300',
-            leaveFromClass: 'transform translate-x-0',
-            leaveToClass: 'transform translate-x-full',
+            leaveFromClass: 'translate-x-0',
+            leaveToClass: 'translate-x-full',
           }
         : undefined
     )
@@ -56,7 +56,7 @@ export default defineComponent({
       >
         <nav
           class={[
-            'w-68 md:w-80 h-full py-4',
+            'w-[17rem] md:w-80 h-full py-4',
             props.altMode
               ? 'bg-light-gray-100 dark:bg-gray-500 text-gray-200 dark:text-gray-100'
               : 'bg-white dark:bg-gray-650 text-gray-900 dark:text-white md:py-6',

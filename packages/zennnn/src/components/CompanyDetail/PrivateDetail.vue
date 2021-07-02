@@ -35,10 +35,7 @@
           "
           @click="toggleExpand"
         >
-          <Icon
-            class="transition-transform"
-            :class="{ 'transform rotate-90': expanded }"
-          >
+          <Icon class="transition-transform" :class="{ 'rotate-90': expanded }">
             {{ icons.ziChevronRight }}
           </Icon>
         </button>
