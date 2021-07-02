@@ -210,7 +210,7 @@
     @apply mx-auto px-4 sm:px-6;
   }
 
-  /* Used in Paper, NotFound */
+  /* Used in Paper */
   .content {
     @apply flex-grow flex flex-col relative overflow-x-hidden;
   }
@@ -230,6 +230,10 @@
 }
 
 @layer utilities {
+  .flex-2 {
+    flex: 2 1 0%;
+  }
+
   .translate-z-0 {
     transform: translateZ(0);
   }

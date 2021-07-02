@@ -37,8 +37,6 @@ const showNotify = (payload: string | NotifyOptions) => {
 
 const EmptyLayout = () =>
   import(/* webpackChunkName: "layout" */ '../views/layouts/Empty')
-const NotFound = () =>
-  import(/* webpackChunkName: "not-found" */ '../views/NotFound.vue')
 
 const Print = () =>
   import(/* webpackChunkName: "common" */ '../views/Print.vue')
@@ -540,9 +538,16 @@ const routes: RouteRecordRaw[] = [
     component: EmptyLayout,
   },
   {
+    path: '/forbidden',
+    name: 'forbidden',
+    component: () =>
+      import(/* webpackChunkName: "common" */ '../views/Forbidden'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
-    component: NotFound,
+    component: () =>
+      import(/* webpackChunkName: "common" */ '../views/NotFound'),
   },
 ]
 
