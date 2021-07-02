@@ -969,7 +969,7 @@ import { getSpecExpandedInvoices } from '../graphql/resolvers'
 import printInvoice from '../components/printInvoice'
 
 import Header from '../components/Header'
-import Copyright from '../components/Copyright'
+import Copyright from '@/components/core/Copyright'
 import Comments from '../components/Comments'
 import PaperInvoice from '../components/PaperInvoice'
 

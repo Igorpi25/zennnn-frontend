@@ -206,7 +206,7 @@ export default defineComponent({
         <div class="container h-20 flex items-center">
           <div class="flex md:pl-6">
             <RouterLink
-              to={{ name: 'home' }}
+              to="/"
               class="focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible"
             >
               <Logo />

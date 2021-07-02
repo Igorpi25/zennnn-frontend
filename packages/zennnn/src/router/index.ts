@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import { CURRENT_LOCALE_STORE_KEY } from 'shared/config'
 import { CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config'
-import { auth, i18n, theme, emitter } from '../plugins'
+import { auth, i18n, emitter } from '../plugins'
 import { apolloClient, isLoggedInVar } from '../plugins/apollo'
 
 import {
@@ -12,35 +12,6 @@ import {
   GET_PROFILE,
 } from '../graphql/queries'
 
-import SignIn from '../views/SignIn.vue'
-import Registration from '../views/Registration.vue'
-import SignUp from '../views/SignUp.vue'
-import Welcome from '../views/Welcome.vue'
-import PasswordRestore from '../views/PasswordRestore.vue'
-import PasswordRestoreConfirm from '../views/PasswordRestoreConfirm.vue'
-import Print from '../views/Print.vue'
-import NotFound from '../views/NotFound.vue'
-
-import Pricing from '../views/Pricing.vue'
-import OrgLayout from '../views/OrgLayout.vue'
-import Payment from '../views/Payment.vue'
-import Subscription from '../views/Subscription.vue'
-import WordList from '../views/WordList.vue'
-import RequisiteList from '../views/RequisiteList.vue'
-import RequisiteItem from '../views/RequisiteItem.vue'
-import ItemList from '../views/ItemList.vue'
-import Specs from '../views/Specs.vue'
-import Spec from '../views/Spec.vue'
-import ClientItem from '../views/ClientItem.vue'
-import ClientList from '../views/ClientList.vue'
-import SupplierItem from '../views/SupplierItem.vue'
-import SupplierList from '../views/SupplierList.vue'
-import Staff from '../views/Staff.vue'
-import Invitation from '../views/Invitation.vue'
-
-import Paper from '../views/Paper.vue'
-
-import type { FunctionalComponent } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import type { NotifyOptions } from 'shared/composables/notify'
 
@@ -52,13 +23,6 @@ export const checkAuth = async () => {
   try {
     const session = await auth.currentSession()
     const loggedIn = !!session.getIdToken().getJwtToken()
-    if (loggedIn) {
-      // check profile
-      await apolloClient.query({
-        query: GET_PROFILE,
-        fetchPolicy: 'cache-first',
-      })
-    }
     isLoggedInVar(loggedIn)
     return loggedIn
   } catch (error) {
@@ -67,57 +31,70 @@ export const checkAuth = async () => {
   }
 }
 
-const EmptyComponent: FunctionalComponent = () => {
-  return undefined
-}
-
 const showNotify = (payload: string | NotifyOptions) => {
   emitter.emit('show-notify', payload)
 }
 
-const Home = () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+const EmptyLayout = () =>
+  import(/* webpackChunkName: "layout" */ '../views/layouts/Empty')
+const NotFound = () =>
+  import(/* webpackChunkName: "not-found" */ '../views/NotFound.vue')
 
-const About = () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+const Print = () =>
+  import(/* webpackChunkName: "common" */ '../views/Print.vue')
 
-// Tailwind utility and components layers sort not working with lazy loading routes
+const Payment = () =>
+  import(/* webpackChunkName: "common" */ '../views/Payment.vue')
+const Subscription = () =>
+  import(/* webpackChunkName: "common" */ '../views/Subscription.vue')
+const WordList = () =>
+  import(/* webpackChunkName: "common" */ '../views/WordList.vue')
+const RequisiteList = () =>
+  import(/* webpackChunkName: "common" */ '../views/RequisiteList.vue')
+const RequisiteItem = () =>
+  import(/* webpackChunkName: "common" */ '../views/RequisiteItem.vue')
+const ItemList = () =>
+  import(/* webpackChunkName: "common" */ '../views/ItemList.vue')
+const Specs = () =>
+  import(/* webpackChunkName: "common" */ '../views/Specs.vue')
+const Spec = () => import(/* webpackChunkName: "common" */ '../views/Spec.vue')
+const ClientItem = () =>
+  import(/* webpackChunkName: "common" */ '../views/ClientItem.vue')
+const ClientList = () =>
+  import(/* webpackChunkName: "common" */ '../views/ClientList.vue')
+const SupplierItem = () =>
+  import(/* webpackChunkName: "common" */ '../views/SupplierItem.vue')
+const SupplierList = () =>
+  import(/* webpackChunkName: "common" */ '../views/SupplierList.vue')
+const Staff = () =>
+  import(/* webpackChunkName: "common" */ '../views/Staff.vue')
+const Invitation = () =>
+  import(/* webpackChunkName: "common" */ '../views/Invitation.vue')
 
-// const SignIn = () => import(/* webpackChunkName: "common" */ '../views/SignIn.vue')
-// const Registration = () => import(/* webpackChunkName: "common" */ '../views/Registration.vue')
-// const SignUp = () => import(/* webpackChunkName: "common" */ '../views/SignUp.vue')
-// const Welcome = () => import(/* webpackChunkName: "common" */ '../views/Welcome.vue')
-// const PasswordRestore = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestore.vue')
-// const PasswordRestoreConfirm = () => import(/* webpackChunkName: "common" */ '../views/PasswordRestoreConfirm.vue')
-// const Print = () => import(/* webpackChunkName: "common" */ '../views/Print.vue')
-// const NotFound = () => import(/* webpackChunkName: "common" */ '../views/NotFound.vue')
-
-// const Pricing = () => import(/* webpackChunkName: "common" */ '../views/Pricing.vue')
-// const OrgLayout = () => import(/* webpackChunkName: "common" */ '../views/OrgLayout.vue')
-// const Payment = () => import(/* webpackChunkName: "common" */ '../views/Payment.vue')
-// const Subscription = () => import(/* webpackChunkName: "common" */ '../views/Subscription.vue')
-// const WordList = () => import(/* webpackChunkName: "common" */ '../views/WordList.vue')
-// const RequisiteList = () => import(/* webpackChunkName: "common" */ '../views/RequisiteList.vue')
-// const RequisiteItem = () => import(/* webpackChunkName: "common" */ '../views/RequisiteItem.vue')
-// const ItemList = () => import(/* webpackChunkName: "common" */ '../views/ItemList.vue')
-// const Specs = () => import(/* webpackChunkName: "common" */ '../views/Specs.vue')
-// const Spec = () => import(/* webpackChunkName: "common" */ '../views/Spec.vue')
-// const ClientItem = () => import(/* webpackChunkName: "common" */ '../views/ClientItem.vue')
-// const ClientList = () => import(/* webpackChunkName: "common" */ '../views/ClientList.vue')
-// const SupplierItem = () => import(/* webpackChunkName: "common" */ '../views/SupplierItem.vue')
-// const SupplierList = () => import(/* webpackChunkName: "common" */ '../views/SupplierList.vue')
-// const Staff = () => import(/* webpackChunkName: "common" */ '../views/Staff.vue')
-// const Invitation = () => import(/* webpackChunkName: "common" */ '../views/Invitation.vue')
-
-// const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
+const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/main',
-    component: () => import(/* webpackChunkName: "main" */ '../views/Main'),
+    path: '/home',
+    name: 'home',
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home'),
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import(/* webpackChunkName: "about" */ '../views/About'),
+  },
+  {
+    path: '/pricing',
+    name: 'pricing',
+    meta: { scrollToTop: true },
+    component: () =>
+      import(/* webpackChunkName: "pricing" */ '../views/Pricing'),
   },
   {
     path: '/',
-    name: 'home',
-    component: Home,
+    name: 'main',
+    component: () => import(/* webpackChunkName: "main" */ '../views/Main'),
     beforeEnter: async () => {
       try {
         const loggedIn = await checkAuth()
@@ -135,7 +112,8 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/zn/:orgId?',
     meta: { requiresAuth: true },
-    component: OrgLayout,
+    component: () =>
+      import(/* webpackChunkName: "layout" */ '../views/layouts/Zn'),
     beforeEnter: async (to) => {
       try {
         const {
@@ -283,30 +261,6 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/pricing',
-    name: 'pricing',
-    meta: { scrollToTop: true },
-    component: Pricing,
-    beforeEnter: async () => {
-      try {
-        const loggedIn = await checkAuth()
-        if (loggedIn) {
-          await apolloClient.query({
-            query: GET_ORGS,
-            fetchPolicy: 'cache-first',
-          })
-          await apolloClient.query({
-            query: GET_PROFILE,
-            fetchPolicy: 'cache-first',
-          })
-        }
-      } catch (error) {
-        // eslint-disable-next-line
-        console.log('Error on navigation to pricing.', error)
-      }
-    },
-  },
-  {
     path: '/payment/:type(change|promo|invoice)',
     name: 'payment',
     meta: { requiresAuth: true, scrollToTop: true },
@@ -395,11 +349,6 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/about',
-    name: 'about',
-    component: About,
-  },
-  {
     path: '/paper/:specId',
     name: 'paper',
     component: Paper,
@@ -440,34 +389,32 @@ const routes: RouteRecordRaw[] = [
       })
     },
   },
+  // Auth
   {
     path: '/signin',
     name: 'signin',
     meta: { requiresNotAuth: true },
-    component: SignIn,
-  },
-  // TODO: need check
-  {
-    path: '/registration',
-    name: 'registration',
-    meta: { requiresNotAuth: true },
-    component: Registration,
+    component: () =>
+      import(/* webpackChunkName: "auth" */ '../views/auth/SignIn'),
   },
   {
     path: '/signup',
     name: 'signup',
     meta: { requiresNotAuth: true },
-    component: SignUp,
+    component: () =>
+      import(/* webpackChunkName: "auth" */ '../views/auth/SignUp'),
   },
   {
     path: '/welcome',
     name: 'welcome',
     meta: { requiresNotAuth: true },
-    component: Welcome,
+    component: () =>
+      import(/* webpackChunkName: "auth" */ '../views/auth/Welcome'),
   },
   {
     path: '/email-confirm',
     name: 'email-confirm',
+    component: EmptyLayout,
     beforeEnter: (to) => {
       if (to.query.username) {
         if (to.query.state === 'success') {
@@ -489,18 +436,21 @@ const routes: RouteRecordRaw[] = [
       }
       return { name: 'signin' }
     },
-    component: EmptyComponent,
   },
   {
     path: '/password-restore',
     name: 'password-restore',
     meta: { requiresNotAuth: true },
-    component: PasswordRestore,
+    component: () =>
+      import(/* webpackChunkName: "auth" */ '../views/auth/PasswordRestore'),
   },
   {
     path: '/password-restore/confirm',
     name: 'password-restore-confirm',
-    component: PasswordRestoreConfirm,
+    component: () =>
+      import(
+        /* webpackChunkName: "auth" */ '../views/auth/PasswordRestoreConfirm'
+      ),
     beforeEnter: (to) => {
       if (to.query.username && to.query.code && to.query.email) {
         return true
@@ -514,14 +464,14 @@ const routes: RouteRecordRaw[] = [
       }
     },
   },
-  // docs
+  // Docs
   {
-    path: '/agreenemt',
+    path: '/agreement',
     beforeEnter: () => {
       window.location.href = '/docs/AGREEMENT.pdf'
       return false
     },
-    component: EmptyComponent,
+    component: EmptyLayout,
   },
   {
     path: '/policy',
@@ -529,7 +479,7 @@ const routes: RouteRecordRaw[] = [
       window.location.href = '/docs/PRIVACY%20POLICY.pdf'
       return false
     },
-    component: EmptyComponent,
+    component: EmptyLayout,
   },
   // alias for policy, for link in documents
   {
@@ -538,7 +488,7 @@ const routes: RouteRecordRaw[] = [
       window.location.href = '/docs/PRIVACY%20POLICY.pdf'
       return false
     },
-    component: EmptyComponent,
+    component: EmptyLayout,
   },
   {
     path: '/cloud',
@@ -546,7 +496,7 @@ const routes: RouteRecordRaw[] = [
       window.location.href = '/docs/ZENNNN%20CLOUD%20HOSTING.pdf'
       return false
     },
-    component: EmptyComponent,
+    component: EmptyLayout,
   },
   {
     path: '/security',
@@ -554,7 +504,7 @@ const routes: RouteRecordRaw[] = [
       window.location.href = '/docs/SECURITY%20POLICY.pdf'
       return false
     },
-    component: EmptyComponent,
+    component: EmptyLayout,
   },
   {
     path: '/dicslosure',
@@ -562,7 +512,7 @@ const routes: RouteRecordRaw[] = [
       window.location.href = '/docs/RESPONSIBLE%20DISCLOSURE.pdf'
       return false
     },
-    component: EmptyComponent,
+    component: EmptyLayout,
   },
   {
     path: '/acceptable',
@@ -570,7 +520,7 @@ const routes: RouteRecordRaw[] = [
       window.location.href = '/docs/ACCEPTABLE%20USE%20POLICY%20(CLOUD).pdf'
       return false
     },
-    component: EmptyComponent,
+    component: EmptyLayout,
   },
   {
     path: '/policy_iap',
@@ -578,7 +528,7 @@ const routes: RouteRecordRaw[] = [
       window.location.href = '/docs/IAP%20PRIVACY%20POLICY.pdf'
       return false
     },
-    component: EmptyComponent,
+    component: EmptyLayout,
   },
   // alias for policy_iap, for link in documents
   {
@@ -587,7 +537,7 @@ const routes: RouteRecordRaw[] = [
       window.location.href = '/docs/IAP%20PRIVACY%20POLICY.pdf'
       return false
     },
-    component: EmptyComponent,
+    component: EmptyLayout,
   },
   {
     path: '/:pathMatch(.*)*',
@@ -611,7 +561,7 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to) => {
   // browser language detect
   const localLang = localStorage.getItem(CURRENT_LOCALE_STORE_KEY)
   if (!localLang) {
@@ -651,34 +601,7 @@ router.beforeEach(async (to, from) => {
           : {},
     }
   } else if (to.meta.requiresNotAuth && loggedIn) {
-    return { name: 'home' }
-  } else {
-    // set light theme permanently
-    const fromUndef = from.name === undefined && from.path === '/'
-    if (
-      fromUndef &&
-      (to.name === 'paper' ||
-        to.name === 'about' ||
-        to.name === 'pricing' ||
-        to.name === 'payment' ||
-        to.name === 'subscription')
-    ) {
-      theme.isDark.value = false
-    }
-  }
-})
-
-router.beforeResolve((to) => {
-  if (
-    to.name === 'paper' ||
-    to.name === 'about' ||
-    to.name === 'pricing' ||
-    to.name === 'payment' ||
-    to.name === 'subscription'
-  ) {
-    theme.isDark.value = false
-  } else {
-    theme.isDark.value = true
+    return '/'
   }
 })
 

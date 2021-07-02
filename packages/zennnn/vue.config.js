@@ -6,35 +6,6 @@ const pkgVersion = pkg.version
 const commitHash = execSync('git rev-parse HEAD').toString().trim().slice(0, 7)
 const version = `v${pkgVersion}-${commitHash}`
 const path = require('path')
-// const PrerenderSPAPlugin = require('prerender-spa-plugin')
-
-// PrerenderSPAPlugin not working with webpack 5
-//
-// const productionPlugins = [
-//   new PrerenderSPAPlugin({
-//     // Required - The path to the webpack-outputted app to prerender.
-//     staticDir: path.join(__dirname, 'dist'),
-
-//     // Optional - The path your rendered app should be output to.
-//     // (Defaults to staticDir.)
-//     // outputDir: path.join(__dirname, 'dist'),
-
-//     // Optional - The location of index.html
-//     // indexPath: path.join(__dirname, 'src', 'about.html'),
-
-//     // Required - Routes to render.
-//     routes: ['/', '/about'],
-
-//     postProcess (renderedRoute) {
-//       if (renderedRoute.route === '/') {
-//         renderedRoute.outputPath = path.join(__dirname, 'dist', '/home/index.html')
-//       } else {
-//         renderedRoute.outputPath = path.join(__dirname, 'dist', `${renderedRoute.route}/index.html`)
-//       }
-//       return renderedRoute
-//     },
-//   }),
-// ]
 
 module.exports = {
   // chainWebpack: config => {
@@ -71,8 +42,5 @@ module.exports = {
       patterns: [{ from: 'src/sw.js', to: 'service-worker.js' }],
     })
     config.plugins.push(definePlugin, copyPlugin)
-    // if (process.env.NODE_ENV === 'production') {
-    //   config.plugins.push(...productionPlugins)
-    // }
   },
 }

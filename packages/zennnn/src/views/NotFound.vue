@@ -45,7 +45,7 @@
               outlined
               borderless
               class="mt-8 mx-auto"
-              @click="$router.push({ name: 'home' })"
+              @click="$router.push({ name: 'main' })"
             >
               <span>{{ $t('notFound.toHome') }}</span>
             </Btn>

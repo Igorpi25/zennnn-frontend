@@ -55,7 +55,7 @@ export default defineComponent({
             if (route.query.redirect) {
               await router.replace({ path: route.query.redirect as string })
             } else {
-              await router.replace({ name: 'home' })
+              await router.replace({ name: 'main' })
             }
           }
         }
@@ -77,7 +77,7 @@ export default defineComponent({
         if (route.query.redirect) {
           await router.replace({ path: route.query.redirect as string })
         } else {
-          await router.replace({ name: 'home' })
+          await router.replace({ name: 'main' })
         }
       } catch (error) {
         logger.warn('[SignIn]: ', error.message || error)

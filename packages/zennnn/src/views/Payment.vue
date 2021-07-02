@@ -185,7 +185,7 @@
         <h3 class="text-2xl pb-4">{{ $t('payment.contactTitle') }}:</h3>
         <div class="flex flex-wrap">
           <div class="w-full sm:w-1/2 sm:pr-5">
-            <PriceContactForm />
+            <ContactForm />
           </div>
           <div
             class="w-full sm:w-1/2 sm:pl-5 pt-8"
@@ -521,9 +521,9 @@ import {
 import { PAYMENT_DATA } from '../graphql/subscriptions'
 
 import Header from '../components/Header.vue'
-import Footer from '../components/Footer.vue'
+import Footer from '@/components/core/Footer'
+import ContactForm from '@/components/price/ContactForm'
 import PaymentCard from '../components/PaymentCard.vue'
-import PriceContactForm from '../components/PriceContactForm.vue'
 
 export default {
   name: 'Payment',
@@ -536,7 +536,7 @@ export default {
     Header,
     Footer,
     PaymentCard,
-    PriceContactForm,
+    ContactForm,
   },
   setup() {
     const { resolveClient } = useApolloClient()

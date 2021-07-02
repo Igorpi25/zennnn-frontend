@@ -107,7 +107,7 @@ export default {
             id: this.invitationId,
           },
         })
-        this.$router.push({ name: 'home' })
+        this.$router.push({ name: 'main' })
       } catch (error) {
         throw new Error(error)
       } finally {

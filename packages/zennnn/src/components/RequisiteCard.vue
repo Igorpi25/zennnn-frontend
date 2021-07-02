@@ -273,7 +273,7 @@ export default {
     },
     goBack() {
       if (this.showFillLaterButton) {
-        this.$router.push({ name: 'home' })
+        this.$router.push({ name: 'main' })
       } else {
         this.$router.go(-1)
       }

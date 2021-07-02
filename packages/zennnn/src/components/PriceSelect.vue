@@ -82,7 +82,7 @@
                 {{ $t('pricing.contact') }}
               </Btn>
             </template>
-            <PriceContactForm
+            <ContactForm
               ref="contactForm"
               has-cancel
               @cancel="contactDialog = false"
@@ -115,7 +115,7 @@ import { Btn, Icon } from '@zennnn/core'
 import { LIST_PRICES } from '../graphql/queries'
 
 import Dialog from './Dialog'
-import PriceContactForm from './PriceContactForm.vue'
+import ContactForm from '@/components/price/ContactForm'
 
 export default {
   name: 'PriceSelect',
@@ -123,7 +123,7 @@ export default {
     Btn,
     Icon,
     Dialog,
-    PriceContactForm,
+    ContactForm,
   },
 
   props: {

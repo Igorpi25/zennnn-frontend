@@ -603,7 +603,7 @@ import {
 import { PAYMENT_DATA } from '../graphql/subscriptions'
 
 import Header from '../components/Header.vue'
-import Footer from '../components/Footer.vue'
+import Footer from '@/components/core/Footer'
 import PaymentCard from '../components/PaymentCard.vue'
 import PriceSelect from '../components/PriceSelect.vue'
 
