@@ -572,9 +572,10 @@ export default defineComponent({
                     {navItems.value.map((item, i) => (
                       <Btn
                         text
+                        link
                         href={`#${item.sectionId}`}
                         class={{
-                          'text-light-gray-700 hover:text-cold-blue-500 h-auto px-4':
+                          'text-light-gray-700 hover:text-cold-blue-500 px-4':
                             true,
                           'text-cold-blue-500': activeNav.value === i,
                         }}

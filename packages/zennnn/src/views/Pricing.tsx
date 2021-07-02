@@ -1,5 +1,4 @@
 import { defineComponent, computed, Teleport } from 'vue'
-import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 import { ziInfinity, ziRocket } from '@zennnn/icons'
@@ -362,13 +361,10 @@ export default defineComponent({
                 {t('pricing.title')}
               </h1>
               {hasSubscription.value && (
-                <RouterLink
-                  to={{ name: 'subscription' }}
-                  class=" inline-flex items-center focus:outline-none text-blue-500 hover:text-blue-400 focus:text-blue-400 select-none whitespace-nowrap"
-                >
-                  <span class="mr-2">{t('footer.subscriptionManagement')}</span>
-                  <Icon>{ziRocket}</Icon>
-                </RouterLink>
+                <Btn text to={{ name: 'subscription' }}>
+                  <span>{t('footer.subscriptionManagement')}</span>
+                  <Icon right>{ziRocket}</Icon>
+                </Btn>
               )}
             </div>
             {!isLoggedIn.value && (

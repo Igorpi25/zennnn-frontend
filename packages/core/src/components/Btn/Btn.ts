@@ -1,8 +1,11 @@
-import { h, ref, computed, defineComponent, VNode, PropType } from 'vue'
-import { RouterLink, RouteLocationRaw } from 'vue-router'
+import { h, ref, computed, defineComponent } from 'vue'
+import { RouterLink } from 'vue-router'
 import { convertToUnit } from 'vue-supp'
 
 import Progress from '../Progress'
+
+import type { VNode, PropType } from 'vue'
+import type { RouteLocationRaw } from 'vue-router'
 
 export default defineComponent({
   name: 'Btn',
@@ -26,6 +29,7 @@ export default defineComponent({
     xSmall: Boolean,
     mini: Boolean,
     text: Boolean,
+    link: Boolean,
     icon: Boolean,
     small: Boolean,
     light: Boolean,
@@ -44,7 +48,7 @@ export default defineComponent({
     const MIN_WIDTH = 128
     const MIN_WIDTH_SMALL = 96
 
-    const rootElement = ref<HTMLElement>()
+    const rootRef = ref<HTMLElement>()
 
     const isDisabled = computed(() => {
       return props.disabled || props.loading
@@ -58,6 +62,7 @@ export default defineComponent({
         'btn--outlined': !props.text && props.outlined,
         'btn--block': props.block,
         'btn--text': props.text,
+        'btn--link': props.link,
         'btn--icon': props.icon,
         'btn--dark-icon': props.darkIcon,
         'btn--small': props.small,
@@ -72,7 +77,13 @@ export default defineComponent({
 
     const styles = computed(() => {
       let minWidth = null
-      if (!props.icon && !props.text && !props.xSmall && !props.mini) {
+      if (
+        !props.icon &&
+        !props.text &&
+        !props.link &&
+        !props.xSmall &&
+        !props.mini
+      ) {
         minWidth = props.small ? MIN_WIDTH_SMALL : MIN_WIDTH
       }
       return {
@@ -107,7 +118,7 @@ export default defineComponent({
       )
     }
 
-    const genRouterLink = (data: any, children: VNode[]) => {
+    const genRouterLink = (data: any, children: VNode[] | undefined) => {
       Object.assign(data, {
         to: props.to,
         replace: props.replace,
@@ -117,7 +128,7 @@ export default defineComponent({
       })
     }
 
-    const genButton = (data: any, children: VNode[]) => {
+    const genButton = (data: any, children: VNode[] | undefined) => {
       const tag = (props.href && 'a') || props.tag || 'div'
       if (tag === 'a') {
         // TODO: data href="null" not remove href from element
@@ -130,13 +141,13 @@ export default defineComponent({
         data.disabled = isDisabled.value || null
       }
       data.onClick = () => {
-        !props.retainFocusOnClick && rootElement.value?.blur()
+        !props.retainFocusOnClick && rootRef.value?.blur()
       }
       return h(tag, data, children)
     }
 
     return {
-      rootElement,
+      rootRef,
       classes,
       styles,
       genContent,
@@ -147,12 +158,11 @@ export default defineComponent({
   },
 
   render() {
-    const children = [
-      this.genContent(),
-      this.loading && this.genLoader(),
-    ] as VNode[]
+    const children = this.link
+      ? this.$slots.default?.()
+      : ([this.genContent(), this.loading && this.genLoader()] as VNode[])
     const data = {
-      ref: 'rootElement',
+      ref: 'rootRef',
       class: this.classes,
       style: this.styles,
     }

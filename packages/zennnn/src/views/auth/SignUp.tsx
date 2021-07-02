@@ -163,12 +163,14 @@ export default defineComponent({
                 />
                 <div class="sm:inline-block w-full sm:w-auto text-center py-5 sm:py-0">
                   <span class="pr-1">{t('signup.hasAccount')}</span>
-                  <RouterLink
+                  <Btn
+                    text
+                    link
                     to={{ name: 'signin' }}
-                    class="text-blue-500 hover:text-blue-400 focus:ring focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 focus:outline-none with-focus-visible"
+                    class="focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                   >
                     <span>{t('signup.signin')}</span>
-                  </RouterLink>
+                  </Btn>
                 </div>
               </div>
             </div>

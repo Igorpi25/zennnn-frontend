@@ -30,7 +30,7 @@ export default defineComponent({
               v-html={t('app.userAgreement')}
               text
               small
-              class="h-auto p-0"
+              link
               to="/agreement"
             />
           )}

@@ -82,6 +82,10 @@
   @apply disabled:text-gray-100;
 }
 
+.btn--link {
+  @apply h-auto rounded-none p-0;
+}
+
 .btn--loading .btn__content {
   @apply opacity-0;
 }

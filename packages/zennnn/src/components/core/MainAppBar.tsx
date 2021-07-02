@@ -118,8 +118,9 @@ export default defineComponent({
                   {navItems.value.map((item) => (
                     <Btn
                       text
+                      link
                       to={item.to}
-                      class="text-gray-900 dark:text-white h-auto px-4"
+                      class="text-gray-900 dark:text-white px-4"
                     >
                       {item.text}
                     </Btn>

@@ -161,12 +161,14 @@ export default defineComponent({
                   />
                   <div class="sm:inline-block w-full sm:w-auto text-center py-5 sm:py-0">
                     <span class="pr-1">{t('signin.noAccount')}</span>
-                    <RouterLink
+                    <Btn
+                      text
+                      link
                       to={{ name: 'signup' }}
-                      class="text-blue-500 hover:text-blue-400 focus:ring focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 focus:outline-none with-focus-visible"
+                      class="focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                     >
                       {t('signin.signup')}
-                    </RouterLink>
+                    </Btn>
                   </div>
                 </div>
               </div>
@@ -228,12 +230,14 @@ export default defineComponent({
                   }}
                 />
                 <div class="pb-6">
-                  <RouterLink
+                  <Btn
+                    text
+                    link
                     to={{ name: 'password-restore' }}
-                    class="text-blue-500 hover:text-blue-400 focus:ring focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900 focus:outline-none with-focus-visible"
+                    class="focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                   >
                     {t('signin.forgotPassword')}
-                  </RouterLink>
+                  </Btn>
                 </div>
                 <Btn
                   disabled={!formValidity.value}

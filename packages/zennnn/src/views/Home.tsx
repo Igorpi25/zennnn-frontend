@@ -130,7 +130,7 @@ export default defineComponent({
             ))}
           </div>
           <div class="flex justify-center">
-            <Btn to={{ name: 'signup' }} class="text-center leading-none">
+            <Btn to={{ name: 'signup' }}>
               <div class="flex items-center px-2">
                 <span>{t('home.cty')}</span>
                 <Icon size="20" class="ml-2.5">
