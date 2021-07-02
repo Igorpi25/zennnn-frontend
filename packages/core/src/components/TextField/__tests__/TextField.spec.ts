@@ -13,7 +13,12 @@ describe('TextField.ts', () => {
       return mount(TextField, {
         ...options,
         global: {
-          plugins: [createI18n()],
+          plugins: [
+            createI18n({
+              silentTranslationWarn: true,
+              silentFallbackWarn: true,
+            }),
+          ],
         },
       })
     }

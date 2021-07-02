@@ -17,7 +17,12 @@ describe('Autocomplete.ts', () => {
       return mount(Autocomplete, {
         ...options,
         global: {
-          plugins: [createI18n()],
+          plugins: [
+            createI18n({
+              silentTranslationWarn: true,
+              silentFallbackWarn: true,
+            }),
+          ],
         },
       })
     }

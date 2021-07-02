@@ -17,7 +17,12 @@ describe('Select.ts', () => {
       return mount(Select, {
         ...options,
         global: {
-          plugins: [createI18n()],
+          plugins: [
+            createI18n({
+              silentTranslationWarn: true,
+              silentFallbackWarn: true,
+            }),
+          ],
         },
       })
     }
