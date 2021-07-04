@@ -2,14 +2,20 @@ import { defineComponent, ref, reactive, computed } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useMutation } from '@vue/apollo-composable'
-import { ziVisible, ziHide, ziChecked } from '@zennnn/icons'
+import {
+  ziVisible,
+  ziHide,
+  ziChecked,
+  ziMoon,
+  ziMoonOutline,
+} from '@zennnn/icons'
 import { Btn, Icon, Form, TextField, Checkbox } from '@zennnn/core'
 import Logo from 'shared/components/Logo'
 import LocalePicker from 'shared/components/LocalePicker'
 import Social from '@/components/core/Social'
 import Copyright from '@/components/core/Copyright'
 import { SIGNUP } from '@/graphql/mutations'
-import { logger, useNotify } from '@/plugins'
+import { logger, useNotify, useTheme } from '@/plugins'
 
 import type { Signup, SignupVariables } from '@/graphql/types'
 import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'
@@ -19,6 +25,8 @@ export default defineComponent({
     const router = useRouter()
     const { t, locale } = useI18n()
     const notify = useNotify()
+    const { isDark } = useTheme()
+
     const { mutate } = useMutation<Signup, SignupVariables>(SIGNUP)
 
     const formRef = ref()
@@ -131,36 +139,51 @@ export default defineComponent({
                 >
                   <Logo />
                 </RouterLink>
-                <LocalePicker
-                  v-slots={{
-                    activator: ({
-                      active,
-                      icon,
-                      locale,
-                    }: LocaleActivatorSlotProps) => (
-                      <Btn
-                        icon
-                        small
-                        class={{
-                          'bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white':
-                            true,
-                          'bg-blue-550 dark:bg-blue-550': active,
-                        }}
-                      >
-                        <img
-                          src={
-                            icon
-                              ? require(`@zennnn/icons/flags/${icon}.svg`)
-                                  .default
-                              : undefined
-                          }
-                          alt={locale}
-                        />
-                      </Btn>
-                    ),
-                  }}
-                  class="sm:pr-4"
-                />
+                <div class="flex space-x-2">
+                  <Btn
+                    icon
+                    small
+                    retainFocusOnClick
+                    class="bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
+                    {...{
+                      onClick: () => {
+                        isDark.value = !isDark.value
+                      },
+                    }}
+                  >
+                    <Icon>{isDark.value ? ziMoon : ziMoonOutline}</Icon>
+                  </Btn>
+                  <LocalePicker
+                    v-slots={{
+                      activator: ({
+                        active,
+                        icon,
+                        locale,
+                      }: LocaleActivatorSlotProps) => (
+                        <Btn
+                          icon
+                          small
+                          class={{
+                            'w-10 bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white':
+                              true,
+                            'bg-blue-550 dark:bg-blue-550': active,
+                          }}
+                        >
+                          <img
+                            src={
+                              icon
+                                ? require(`@zennnn/icons/flags/${icon}.svg`)
+                                    .default
+                                : undefined
+                            }
+                            alt={locale}
+                          />
+                        </Btn>
+                      ),
+                    }}
+                    class="sm:pr-4"
+                  />
+                </div>
                 <div class="sm:inline-block w-full sm:w-auto text-center py-5 sm:py-0">
                   <span class="pr-1">{t('signup.hasAccount')}</span>
                   <Btn

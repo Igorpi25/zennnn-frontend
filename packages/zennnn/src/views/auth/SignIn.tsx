@@ -1,14 +1,14 @@
 import { defineComponent, ref, reactive } from 'vue'
 import { useRouter, useRoute, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ziVisible, ziHide } from '@zennnn/icons'
+import { ziVisible, ziHide, ziMoon, ziMoonOutline } from '@zennnn/icons'
 import { Icon, Btn, Form, TextField, Modal } from '@zennnn/core'
 import Logo from 'shared/components/Logo'
 import LocalePicker from 'shared/components/LocalePicker'
 import Social from '@/components/core/Social'
 import Copyright from '@/components/core/Copyright'
 import AuthCompleteForm from '@/components/AuthCompleteForm'
-import { auth, logger, useNotify } from '@/plugins'
+import { auth, logger, useNotify, useTheme } from '@/plugins'
 
 import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'
 
@@ -18,6 +18,7 @@ export default defineComponent({
     const router = useRouter()
     const { t } = useI18n()
     const notify = useNotify()
+    const { isDark } = useTheme()
 
     const cognitoUser = ref<any>()
     const completeFormDialog = ref(false)
@@ -129,36 +130,51 @@ export default defineComponent({
                   >
                     <Logo />
                   </RouterLink>
-                  <LocalePicker
-                    v-slots={{
-                      activator: ({
-                        active,
-                        icon,
-                        locale,
-                      }: LocaleActivatorSlotProps) => (
-                        <Btn
-                          icon
-                          small
-                          class={{
-                            'bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white':
-                              true,
-                            'bg-blue-550 dark:bg-blue-550': active,
-                          }}
-                        >
-                          <img
-                            src={
-                              icon
-                                ? require(`@zennnn/icons/flags/${icon}.svg`)
-                                    .default
-                                : undefined
-                            }
-                            alt={locale}
-                          />
-                        </Btn>
-                      ),
-                    }}
-                    class="sm:pr-4"
-                  />
+                  <div class="flex space-x-2">
+                    <Btn
+                      icon
+                      small
+                      retainFocusOnClick
+                      class="bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
+                      {...{
+                        onClick: () => {
+                          isDark.value = !isDark.value
+                        },
+                      }}
+                    >
+                      <Icon>{isDark.value ? ziMoon : ziMoonOutline}</Icon>
+                    </Btn>
+                    <LocalePicker
+                      v-slots={{
+                        activator: ({
+                          active,
+                          icon,
+                          locale,
+                        }: LocaleActivatorSlotProps) => (
+                          <Btn
+                            icon
+                            small
+                            class={{
+                              'w-10 bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white':
+                                true,
+                              'bg-blue-550 dark:bg-blue-550': active,
+                            }}
+                          >
+                            <img
+                              src={
+                                icon
+                                  ? require(`@zennnn/icons/flags/${icon}.svg`)
+                                      .default
+                                  : undefined
+                              }
+                              alt={locale}
+                            />
+                          </Btn>
+                        ),
+                      }}
+                      class="sm:pr-4"
+                    />
+                  </div>
                   <div class="sm:inline-block w-full sm:w-auto text-center py-5 sm:py-0">
                     <span class="pr-1">{t('signin.noAccount')}</span>
                     <Btn
@@ -206,8 +222,8 @@ export default defineComponent({
                   rules={[rules.required, rules.passwordMinLength]}
                   hideDetails={false}
                   class="pb-6"
-                  controlClass="bg-light-gray-300 dark:bg-gray-800"
-                  inputClass="placeholder-gray-200"
+                  controlClass="bg-light-gray-300 dark:bg-gray-800" // for autofill: h-10 justify-end pr-0
+                  inputClass="placeholder-gray-200" // for autofill: absolute w-full pr-9
                   name="password"
                   autocomplete="current-password"
                   ariaLabel="password input"
@@ -216,7 +232,7 @@ export default defineComponent({
                   v-slots={{
                     append: () => (
                       <Icon
-                        class="text-gray-200 dark:text-gray-500 hover:text-gray-300 mr-1"
+                        class="text-gray-200 dark:text-gray-500 hover:text-gray-300 mr-1" // for autofill: relative mr-2
                         {...{
                           onClick: (e: MouseEvent) => {
                             e.preventDefault()
