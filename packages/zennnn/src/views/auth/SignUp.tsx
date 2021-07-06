@@ -77,9 +77,6 @@ export default defineComponent({
           const user = data?.signup
           logger.info('Registered user', user)
           const username = (user && user.email) || ''
-          // set username to sessionStorage and check on Welcome page mounted
-          // moved from on apollo cache, removed on page reload
-          // sessionStorage.setItem('Cognito-registered-username', username)
           await router.push({ name: 'welcome', query: { username } })
         }
       } catch (error) {
