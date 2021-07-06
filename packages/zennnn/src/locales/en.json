@@ -1248,6 +1248,7 @@
     "unit": "item"
   },
   "action": {
+    "delete": "Delete",
     "cancel": "Cancel",
     "apply": "Apply",
     "save": "Save",

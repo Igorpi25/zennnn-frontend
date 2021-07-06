@@ -1216,6 +1216,7 @@
     "unit": "article"
   },
   "action": {
+    "delete": "Éliminer",
     "cancel": "Annuler",
     "apply": "Appliquer",
     "save": "Enregistrer",

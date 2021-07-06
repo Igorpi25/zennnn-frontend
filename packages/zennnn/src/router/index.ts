@@ -58,8 +58,6 @@ const Specs = () =>
 const Spec = () => import(/* webpackChunkName: "common" */ '../views/Spec.vue')
 const ClientItem = () =>
   import(/* webpackChunkName: "common" */ '../views/ClientItem.vue')
-const ClientList = () =>
-  import(/* webpackChunkName: "common" */ '../views/ClientList.vue')
 const SupplierItem = () =>
   import(/* webpackChunkName: "common" */ '../views/SupplierItem.vue')
 const SupplierList = () =>
@@ -185,7 +183,8 @@ const routes: RouteRecordRaw[] = [
         path: 'clients',
         name: 'clients',
         meta: { requiresAuth: true },
-        component: ClientList,
+        component: () =>
+          import(/* webpackChunkName: "clients" */ '../views/clients'),
       },
       {
         path: 'clients/:groupId?/create',

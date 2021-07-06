@@ -1219,6 +1219,7 @@
     "unit": "个"
   },
   "action": {
+    "delete": "删除",
     "cancel": "取消",
     "apply": "確認",
     "save": "保存",
