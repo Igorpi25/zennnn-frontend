@@ -60,8 +60,6 @@ const ClientItem = () =>
   import(/* webpackChunkName: "common" */ '../views/ClientItem.vue')
 const SupplierItem = () =>
   import(/* webpackChunkName: "common" */ '../views/SupplierItem.vue')
-const SupplierList = () =>
-  import(/* webpackChunkName: "common" */ '../views/SupplierList.vue')
 const Staff = () =>
   import(/* webpackChunkName: "common" */ '../views/Staff.vue')
 const Invitation = () =>
@@ -203,7 +201,8 @@ const routes: RouteRecordRaw[] = [
         path: 'suppliers',
         name: 'suppliers',
         meta: { requiresAuth: true },
-        component: SupplierList,
+        component: () =>
+          import(/* webpackChunkName: "suppliers" */ '../views/suppliers'),
       },
       {
         path: 'suppliers/create',
