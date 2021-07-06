@@ -123,7 +123,7 @@ export default defineComponent({
                 class="flex-row-reverse"
                 avatarSize={32}
                 avatarSrc={currentOrg.value?.picture || undefined}
-                avatarClass="md:ml-2"
+                avatarClass="text-lg md:ml-2"
                 title={currentOrg.value?.name || undefined}
                 subtitle={
                   currentOrg.value?.role
