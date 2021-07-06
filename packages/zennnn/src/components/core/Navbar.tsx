@@ -16,7 +16,7 @@ export default defineComponent({
       const isOwnerOrManager = isOwner.value || isManager.value
       return [
         {
-          name: 'main',
+          name: 'specs',
           text: t('navbar.deals'),
         },
         {
