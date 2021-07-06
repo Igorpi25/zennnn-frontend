@@ -275,7 +275,7 @@ export default defineComponent({
               'bg-light-gray-100 dark:bg-gray-700': item.name === 'Advanced',
             }}
           >
-            <div class="flex items-center justify-between font-semibold pb-7.5">
+            <div class="flex items-center justify-between font-semibold pb-[1.875rem]">
               <div class="text-xl">{item.title}</div>
               <div
                 class={[
@@ -291,7 +291,7 @@ export default defineComponent({
             </div>
             <div class="py-6">
               <div class="h-8">
-                <span class="text-32 font-semibold">{item.aPrice}</span>
+                <span class="text-[2rem] font-semibold">{item.aPrice}</span>
                 {item.aPriceInCurrency && (
                   <>
                     <span>~</span>

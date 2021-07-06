@@ -357,7 +357,7 @@ export default defineComponent({
         <main class="flex-grow bg-light-gray-100 dark:bg-gray-700 dark:text-white">
           <div class="container pt-16">
             <div class="flex flex-wrap justify-between">
-              <h1 class="text-40 font-bold leading-tight mb-6">
+              <h1 class="text-[2.5rem] font-bold leading-tight mb-6">
                 {t('pricing.title')}
               </h1>
               {hasSubscription.value && (
@@ -385,7 +385,7 @@ export default defineComponent({
               <List orgId={orgId.value || undefined} />
             </div>
             <div class="pb-20">
-              <h2 class="font-semibold text-32 leading-tight pb-10">
+              <h2 class="font-semibold text-[2rem] leading-tight pb-10">
                 {t('pricing.specsTitle')}
               </h2>
               <div class="overflow-x-auto scrolling-touch">
@@ -457,7 +457,7 @@ export default defineComponent({
               </div>
             </div>
             <div>
-              <h2 class="font-semibold text-32 leading-tight pb-10">
+              <h2 class="font-semibold text-[2rem] leading-tight pb-10">
                 {t('pricing.funcTitle')}
               </h2>
               <div class="flex flex-wrap -mx-3">
@@ -482,7 +482,7 @@ export default defineComponent({
               </div>
             </div>
             <div class="pb-4">
-              <h2 class="font-semibold text-32 leading-tight pb-10">
+              <h2 class="font-semibold text-[2rem] leading-tight pb-10">
                 {t('pricing.faqTitle')}
               </h2>
               <ul class="md:list-cols-2 lg:list-cols-3">

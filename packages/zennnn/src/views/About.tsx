@@ -654,7 +654,7 @@ export default defineComponent({
                       </div>
                     </div>
                   </div>
-                  <h2 class="text-58 leading-tight font-bold pb-10 mb-1">
+                  <h2 class="text-[3.625rem] leading-tight font-bold pb-10 mb-1">
                     Пер&shy;вый.
                     <br />
                     Муль&shy;ти&shy;я&shy;зыч&shy;ный.
@@ -808,12 +808,12 @@ export default defineComponent({
             {/* <!-- / VIDEO --> */}
             <div id="video">
               <h3
-                class="text-46 leading-tight font-bold text-center mx-auto mt-10"
+                class="text-[2.875rem] leading-tight font-bold text-center mx-auto mt-10"
                 style="max-width: 772px"
               >
                 <span v-html={video.value.title} />
               </h3>
-              <div class="w-15 h-px py-0.5 my-6 mx-auto bg-cold-blue-500" />
+              <div class="w-[3.75rem] h-px py-0.5 my-6 mx-auto bg-cold-blue-500" />
               <div class="pb-6"></div>
               <div class="relative">
                 <div style="max-width: 1000px">
@@ -872,9 +872,9 @@ export default defineComponent({
                 <div class="w-full flex-shrink-0" style="max-width: 532px">
                   <h3
                     v-html={security.value.title}
-                    class="text-46 leading-tight font-bold"
+                    class="text-[2.875rem] leading-tight font-bold"
                   />
-                  <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
+                  <div class="w-[3.75rem] h-px py-0.5 my-6 bg-cold-blue-500" />
                   <div
                     v-html={security.value.text}
                     class="text-lg leading-relaxed text-light-gray-900"
@@ -906,7 +906,7 @@ export default defineComponent({
                       </div>
                       <h4
                         v-html={item.title}
-                        class="leading-tight font-bold text-22 mb-6"
+                        class="leading-tight font-bold text-[1.375rem] mb-6"
                       />
                       <p
                         v-html={item.text}
@@ -931,7 +931,10 @@ export default defineComponent({
                           activeFeature.value = item.value
                         }}
                       >
-                        <span v-html={item.title} class="inline-block mb-7.5" />
+                        <span
+                          v-html={item.title}
+                          class="inline-block mb-[1.875rem]"
+                        />
                         <div
                           class={{
                             'absolute bottom-0 w-full h-px py-0.5 bg-transparent transition-colors duration-100 ease-out':
@@ -1007,9 +1010,9 @@ export default defineComponent({
                 <div class="w-full flex-shrink-0" style="max-width: 849px">
                   <h3
                     v-html={issue.value.title}
-                    class="text-46 leading-tight font-bold"
+                    class="text-[2.875rem] leading-tight font-bold"
                   />
-                  <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
+                  <div class="w-[3.75rem] h-px py-0.5 my-6 bg-cold-blue-500" />
                 </div>
                 <div class="order-first xl:order-none flex-grow h-0 relative">
                   <div class="absolute xl:left-0 bottom-0 right-0 xl:right-[-40px] xl:-mb-16">
@@ -1039,7 +1042,7 @@ export default defineComponent({
                       </div>
                       <h4
                         v-html={item.title}
-                        class="leading-tight font-bold text-22 mb-6"
+                        class="leading-tight font-bold text-[1.375rem] mb-6"
                       />
                       <p
                         v-html={item.text}
@@ -1062,7 +1065,7 @@ export default defineComponent({
                         class="font-bold text-center mx-auto"
                         style="max-width: 510px; min-height: 88px; font-size: 36px; line-height: 44px;"
                       />
-                      <div class="w-15 h-px py-0.5 my-5 mx-auto bg-cold-blue-500" />
+                      <div class="w-[3.75rem] h-px py-0.5 my-5 mx-auto bg-cold-blue-500" />
                       <div
                         class="text-lg text-light-gray-900 w-full text-center mx-auto px-4 md:px-0"
                         style="max-width: 646px; line-height: 32px; min-height: 128px"
@@ -1121,9 +1124,9 @@ export default defineComponent({
                 <div class="w-full flex-shrink-0" style="max-width: 578px">
                   <h3
                     v-html={power.value.title}
-                    class="text-46 leading-tight font-bold"
+                    class="text-[2.875rem] leading-tight font-bold"
                   />
-                  <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
+                  <div class="w-[3.75rem] h-px py-0.5 my-6 bg-cold-blue-500" />
                 </div>
                 <div class="order-first xl:order-none flex-grow h-0 relative">
                   <div class="absolute xl:left-0 bottom-0 right-0 xl:right-auto lg:-mb-40 xl:pl-64">
@@ -1153,7 +1156,7 @@ export default defineComponent({
                       </div>
                       <h4
                         v-html={item.title}
-                        class="leading-tight font-bold text-22 mb-6"
+                        class="leading-tight font-bold text-[1.375rem] mb-6"
                       />
                       <p
                         v-html={item.text}
@@ -1184,10 +1187,10 @@ export default defineComponent({
               </div>
               <div class="container flex pt-32 pb-10 lg:mt-6">
                 <div class="w-full flex-shrink-0" style="max-width: 518px">
-                  <h3 class="text-46 leading-tight font-bold">
+                  <h3 class="text-[2.875rem] leading-tight font-bold">
                     Кабинет клиента
                   </h3>
-                  <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
+                  <div class="w-[3.75rem] h-px py-0.5 my-6 bg-cold-blue-500" />
                   <div class="text-lg leading-relaxed text-light-gray-900">
                     На время сделки у вашего клиента появится свой личный
                     кабинет.Система вовлекает клиента в работу над заказом и
@@ -1248,7 +1251,7 @@ export default defineComponent({
                     мощнейшего проекта в меж&shy;ду&shy;на&shy;род&shy;ной
                     торговле
                   </h3>
-                  <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
+                  <div class="w-[3.75rem] h-px py-0.5 my-6 bg-cold-blue-500" />
                   <div
                     class="text-xl leading-normal text-white opacity-50 pb-8"
                     style="max-width: 600px"
@@ -1322,7 +1325,7 @@ export default defineComponent({
               <div class="w-full lg:w-1/2 sm:px-10 lg:pt-16">
                 <div class="pl-6 ml-1">
                   <Logo style={{ width: 'auto', height: '46px' }} />
-                  <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
+                  <div class="w-[3.75rem] h-px py-0.5 my-6 bg-cold-blue-500" />
                   <div class="text-lg leading-relaxed text-light-gray-900 pb-8">
                     {userInterface.value.text}
                   </div>
@@ -1361,7 +1364,7 @@ export default defineComponent({
                   class="pb-6 md:pb-0 mr-4 lg:mr-16 xl:mr-32"
                   style="max-width: 245px"
                 >
-                  <div class="text-46 leading-tight text-white font-bold pb-12">
+                  <div class="text-[2.875rem] leading-tight text-white font-bold pb-12">
                     Отзывы наших клиентов
                   </div>
                   <div class="flex">
@@ -1476,12 +1479,12 @@ export default defineComponent({
             <!-- / TEAM --> */}
             <div class="bg-light-gray-200 py-24">
               <div class="container pt-2.5">
-                <h3 class="text-46 leading-tight font-bold">
+                <h3 class="text-[2.875rem] leading-tight font-bold">
                   Cильная команда
                   <br />
                   практиков
                 </h3>
-                <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
+                <div class="w-[3.75rem] h-px py-0.5 my-6 bg-cold-blue-500" />
                 <div class="">
                   <div class="flex flex-wrap -mb-4">
                     {team.value.map((item) => (
@@ -1514,12 +1517,12 @@ export default defineComponent({
               <div class="container pt-5 pb-2.5">
                 <div class="flex flex-col items-center text-center">
                   <h3
-                    class="text-46 leading-tight font-bold text-white"
+                    class="text-[2.875rem] leading-tight font-bold text-white"
                     style="max-width: 643px"
                   >
                     Убедитесь, что ZENNNN полезен вашему бизнесу
                   </h3>
-                  <div class="w-15 h-px py-0.5 my-6 bg-cold-blue-500" />
+                  <div class="w-[3.75rem] h-px py-0.5 my-6 bg-cold-blue-500" />
                   <div class="text-white text-xl pb-10">
                     Если бы биты и пиксели умели любить,
                     <br />

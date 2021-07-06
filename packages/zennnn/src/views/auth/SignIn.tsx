@@ -88,7 +88,7 @@ export default defineComponent({
     return () => (
       <>
         <div class="flex-grow flex">
-          <div class="w-[44%] container flex-shrink-0 hidden sm:flex flex-col bg-light-gray-100 dark:bg-gray-700 px-4 md:px-6 xl:px-18">
+          <div class="w-[44%] container flex-shrink-0 hidden sm:flex flex-col bg-light-gray-100 dark:bg-gray-700 px-4 md:px-6 xl:px-[4.5rem]">
             <div class="sm:pt-[25vh] lg:pt-[30vh] flex-grow lg:pl-8">
               <div
                 class="bg-fixed bg-no-repeat absolute pointer-events-none inset-0"
@@ -120,7 +120,7 @@ export default defineComponent({
             </div>
             <Social class="mb-2 py-6 md:pb-8 lg:pl-20" />
           </div>
-          <div class="container flex-grow flex flex-col px-4 md:px-6 xl:px-18">
+          <div class="container flex-grow flex flex-col px-4 md:px-6 xl:px-[4.5rem]">
             <div class="relative">
               <div class="sm:absolute sm:top-0 sm:right-0">
                 <div class="max-w-sm mx-auto sm:max-w-none sm:mx-0 flex items-center justify-between sm:justify-end flex-wrap sm:flex-nowrap text-gray-200 lg:pr-20 pt-5 sm:pt-7">

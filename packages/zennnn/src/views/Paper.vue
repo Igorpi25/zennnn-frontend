@@ -464,7 +464,7 @@
                   overflow-hidden
                 "
               >
-                <div class="flex-grow py-7.5 leading-4">
+                <div class="flex-grow py-[1.875rem] leading-4">
                   <div
                     v-for="(container, i) of containers"
                     :key="i"

@@ -372,7 +372,7 @@
                 />
               </svg>
             </div>
-            <div class="text-13">
+            <div class="text-[0.8125rem]">
               {{ $t('shipping.linkFile') }}
             </div>
           </div>

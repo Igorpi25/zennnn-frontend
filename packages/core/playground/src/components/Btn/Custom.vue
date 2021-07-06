@@ -90,8 +90,8 @@
           flex
           items-center
           justify-center
-          w-4.5
-          h-4.5
+          w-[1.125rem]
+          h-[1.125rem]
           rounded-full
           bg-purple-500
           ml-2

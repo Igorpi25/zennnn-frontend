@@ -114,7 +114,7 @@ export default defineComponent({
         <main class="container pt-[4vh] sm:pt-[8vh] flex-grow">
           <h1
             v-html={t('home.title')}
-            class="text-4xl sm:text-56 dark:text-light-gray-400 text-center font-semibold leading-tight mb-10"
+            class="text-4xl sm:text-[3.5rem] dark:text-light-gray-400 text-center font-semibold leading-tight mb-10"
           />
           <div class="flex flex-wrap justify-center pb-12">
             {subtitleItems.value.map((item) => (
@@ -145,7 +145,7 @@ export default defineComponent({
               src={require('@/assets/img/home/list.png').default}
               class="absolute top-0 right-0 z-[-1] w-[26%]"
             />
-            <div class="px-4 sm:px-18">
+            <div class="px-4 sm:px-[4.5rem]">
               <Image
                 aspectRatio={1.6}
                 src={require('@/assets/img/home/main.png').default}
@@ -166,13 +166,13 @@ export default defineComponent({
               class="absolute right-0 bottom-[16%] w-[21.7%] sm:right-6 drop-shadow-2xl"
             />
           </div>
-          <div class="pt-20 pb-20 px-2 sm:px-18">
+          <div class="pt-20 pb-20 px-2 sm:px-[4.5rem]">
             <div
               v-html={t('home.info')}
               class="border-l-2 sm:border-l-4 border-blue-500 text-lg sm:text-xl leading-relaxed px-4 sm:px-10"
             />
           </div>
-          <div class="flex flex-wrap leading-tight pt-8 pb-20 px-2 sm:px-18">
+          <div class="flex flex-wrap leading-tight pt-8 pb-20 px-2 sm:px-[4.5rem]">
             <div class="w-full md:w-1/2 lg:pr-3.5 pb-12 lg:pb-0">
               <RouterLink to="/about/#video" class="group">
                 <div class="relative">
@@ -182,10 +182,10 @@ export default defineComponent({
                     class="bg-gradient-to-b from-gray-800 to-gray-900 drop-shadow-2xl translate-z-0 rounded-md"
                   />
                   <div class="absolute inset-0 flex">
-                    <div class="flex flex-col w-1/2 pl-8 lg:pl-13 pt-6 md:pt-4 lg:pt-8 xl:pt-12">
+                    <div class="flex flex-col w-1/2 pl-8 lg:pl-[3.25rem] pt-6 md:pt-4 lg:pt-8 xl:pt-12">
                       <div
                         v-html={t('home.about')}
-                        class="text-xl lg:text-28 text-white relative z-1"
+                        class="text-xl lg:text-[1.75rem] text-white relative z-1"
                       />
                       <div class="h-full max-h-12 flex items-end mb-2">
                         <Icon
@@ -215,10 +215,10 @@ export default defineComponent({
                     class="bg-gradient-to-b from-gray-800 to-gray-900 drop-shadow-2xl translate-z-0 rounded-md"
                   />
                   <div class="absolute inset-0 flex">
-                    <div class="flex flex-col w-1/2 pl-8 lg:pl-13 pt-6 md:pt-4 lg:pt-8 xl:pt-12">
+                    <div class="flex flex-col w-1/2 pl-8 lg:pl-[3.25rem] pt-6 md:pt-4 lg:pt-8 xl:pt-12">
                       <div
                         v-html={t('home.video')}
-                        class="text-xl lg:text-28 text-white relative z-1"
+                        class="text-xl lg:text-[1.75rem] text-white relative z-1"
                       />
                       <div class="h-full max-h-12 flex items-end mb-2">
                         <Icon
@@ -240,7 +240,7 @@ export default defineComponent({
               </RouterLink>
             </div>
           </div>
-          <div class="flex flex-wrap sm:text-lg leading-tight px-2 sm:px-18">
+          <div class="flex flex-wrap sm:text-lg leading-tight px-2 sm:px-[4.5rem]">
             <div class="w-full md:w-1/2 md:pr-4">
               {features1.value.map((item) => (
                 <div class="flex pb-6">
@@ -272,7 +272,7 @@ export default defineComponent({
               ))}
             </div>
           </div>
-          <div class="border border-gray-100 dark:border-gray-400 mt-18 mb-20 mx-2 sm:mx-18" />
+          <div class="border border-gray-100 dark:border-gray-400 mt-[4.5rem] mb-20 mx-2 sm:mx-[4.5rem]" />
           <div class="flex flex-wrap justify-center pb-10 sm:px-6">
             {techStack.value.map((item) => (
               <div class="pb-16 px-2 sm:px-12">

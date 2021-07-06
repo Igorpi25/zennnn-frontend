@@ -2,7 +2,7 @@
   <div class="relative bg-gray-600">
     <div class="text-center pt-10 pb-12 px-12">
       <div class="flex justify-center pb-6">
-        <Icon :base="false" class="text-40 text-yellow-500">
+        <Icon :base="false" class="text-[2.5rem] text-yellow-500">
           {{ icons.ziInfoBig }}
         </Icon>
       </div>

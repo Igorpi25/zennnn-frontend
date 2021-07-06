@@ -16,7 +16,7 @@
     <!-- HEADER / -->
     <!-- / MAIN -->
     <main class="container flex-grow max-w-screen-md mx-auto pt-16 pb-32">
-      <h1 class="text-40 font-bold leading-tight mb-6">
+      <h1 class="text-[2.5rem] font-bold leading-tight mb-6">
         {{ $t('payment.title') }}
       </h1>
       <!-- PROFILE -->

@@ -54,7 +54,7 @@ export default defineComponent({
       <>
         <MainAppBar class="static" />
         <main class="flex-grow container pt-[5vh] sm:pt-[15vh]">
-          <h2 class="text-32 dark:text-light-gray-400 font-semibold leading-none pb-6">
+          <h2 class="text-[2rem] dark:text-light-gray-400 font-semibold leading-none pb-6">
             {t('passwordRestore.accessRecoveryHead')}
           </h2>
           <div class="w-full md:w-1/2">

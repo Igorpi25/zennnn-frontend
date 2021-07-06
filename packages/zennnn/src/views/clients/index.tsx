@@ -478,7 +478,7 @@ export default defineComponent({
                 }}
               >
                 <span class="relative">
-                  <div class="absolute -top-1 -right-1 text-13 font-semibold translate-x-full">
+                  <div class="absolute -top-1 -right-1 text-[0.8125rem] font-semibold translate-x-full">
                     <Transition
                       name="scale-transition"
                       v-slots={{

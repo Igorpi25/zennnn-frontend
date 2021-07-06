@@ -126,7 +126,7 @@
                     />
                   </svg>
                 </div>
-                <div class="text-13">
+                <div class="text-[0.8125rem]">
                   {{ $t('companyDetail.placeholder.attachFile') }}
                 </div>
               </div>
