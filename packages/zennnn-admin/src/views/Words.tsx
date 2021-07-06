@@ -903,7 +903,6 @@ export default defineComponent({
           title={t('words.addWordTitle')}
           icon={ziLanguages}
           maxWidth={720}
-          bodyClass="p-6"
         >
           <WordForm
             ref={createFormRef}
@@ -924,7 +923,6 @@ export default defineComponent({
           title={t('words.editWord')}
           icon={ziLanguages}
           maxWidth={720}
-          bodyClass="p-6"
         >
           <WordForm
             ref={editFormRef}
@@ -946,7 +944,6 @@ export default defineComponent({
           title={t('words.mergeWords')}
           icon={ziLanguages}
           maxWidth={720}
-          bodyClass="p-6"
         >
           <WordForm
             ref={mergeFormRef}

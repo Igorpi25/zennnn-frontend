@@ -217,7 +217,6 @@ export default defineComponent({
           title={t('words.addWordTitle')}
           icon={ziLanguages}
           maxWidth={720}
-          bodyClass="p-6"
         >
           <WordForm
             ref={createFormRef}
@@ -242,7 +241,6 @@ export default defineComponent({
           v-model={addToDialog.value}
           title={t('words.addToWord')}
           icon={ziPlusOutline}
-          bodyClass="p-6"
         >
           <Autocomplete
             v-model={[search.value, 'search']}

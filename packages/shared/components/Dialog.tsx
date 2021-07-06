@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue'
 import { useDimensionProps, useModel } from 'vue-supp'
 import { ziCloseWindow } from '@zennnn/icons'
-import { Modal, Icon } from '@zennnn/core'
+import { Modal, Icon, Btn } from '@zennnn/core'
 
 export default defineComponent({
   props: {
@@ -26,8 +26,16 @@ export default defineComponent({
     contentClass: String,
     bodyClass: {
       type: String,
-      default: 'px-4 py-6',
+      default: 'p-6',
     },
+    hideOverlay: Boolean,
+    showActions: Boolean,
+    actionsClass: {
+      type: String,
+      default: 'flex justify-between p-6 pt-2',
+    },
+    loading: Boolean,
+    cancelText: String,
   },
 
   setup(props, { slots }) {
@@ -43,6 +51,7 @@ export default defineComponent({
         width={props.width}
         maxWidth={props.maxWidth}
         contentClass={props.contentClass}
+        hideOverlay={props.hideOverlay}
       >
         <div class="bg-light-gray-300 dark:bg-gray-500 flex items-center space-x-2 p-4">
           {props.icon && (
@@ -77,6 +86,24 @@ export default defineComponent({
           )}
         </div>
         <div class={props.bodyClass}>{slots.default?.()}</div>
+        {props.showActions && (
+          <div class={props.actionsClass}>
+            {slots.actionStart?.()}
+            <Btn
+              disabled={props.loading}
+              outlined
+              minWidth="none"
+              {...{
+                onClick: () => {
+                  model.value = false
+                },
+              }}
+            >
+              {props.cancelText}
+            </Btn>
+            {slots.actionEnd?.()}
+          </div>
+        )}
       </Modal>
     )
   },

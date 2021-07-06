@@ -326,7 +326,6 @@ export default defineComponent({
                       </Btn>
                     ),
                   }}
-                  bodyClass="p-6"
                 >
                   <ContactForm
                     ref={contactForm}
