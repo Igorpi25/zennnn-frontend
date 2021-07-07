@@ -25,7 +25,7 @@ import type {
   ListSuppliers,
   ListSuppliersVariables,
   DeleteSupplier,
-  DeleteSupplierShopVariables,
+  DeleteSupplierVariables,
   ListSuppliers_listSuppliers_items,
 } from '@/graphql/types'
 
@@ -43,6 +43,11 @@ export default defineComponent({
     const { profile } = useProfile()
 
     const orgId = route.params.orgId
+    const sortBy = ref([])
+    const sortDesc = ref([])
+    const search = ref<string>()
+    // TODO: add id on deleteSupplier mutation
+    const deleteSupplierId = ref<string>()
 
     const { result: listSuppliersResult, loading: listSuppliersLoading } =
       useQuery<ListSuppliers, ListSuppliersVariables>(
@@ -59,45 +64,35 @@ export default defineComponent({
     )
 
     const { mutate: deleteSupplierMutate, loading: deleteSupplierLoading } =
-      useMutation<DeleteSupplier, DeleteSupplierShopVariables>(
-        DELETE_SUPPLIER,
-        {
-          update: (cache, { data: result }) => {
-            const id = deleteLoading.value
-            // TODO: return in result id
-            logger.info('Suppliers delete', result?.deleteSupplier)
+      useMutation<DeleteSupplier, DeleteSupplierVariables>(DELETE_SUPPLIER, {
+        update: (cache, { data: result }) => {
+          const id = deleteSupplierId.value
+          // TODO: return in result id
+          logger.info('Suppliers delete', result?.deleteSupplier)
 
-            const data = cache.readQuery<ListSuppliers, ListSuppliersVariables>(
-              {
-                query: LIST_SUPPLIERS,
-                variables: {
-                  orgId: orgId as string,
+          const data = cache.readQuery<ListSuppliers, ListSuppliersVariables>({
+            query: LIST_SUPPLIERS,
+            variables: {
+              orgId: orgId as string,
+            },
+          })
+          if (data?.listSuppliers?.items?.some((item) => item.id === id)) {
+            cache.writeQuery({
+              query: LIST_SUPPLIERS,
+              variables: {
+                orgId: orgId,
+              },
+              data: {
+                listSuppliers: {
+                  items: data.listSuppliers.items.filter(
+                    (item) => item.id !== id
+                  ),
                 },
-              }
-            )
-            if (data?.listSuppliers?.items?.some((item) => item.id === id)) {
-              cache.writeQuery({
-                query: LIST_SUPPLIERS,
-                variables: {
-                  orgId: orgId,
-                },
-                data: {
-                  listSuppliers: {
-                    items: data.listSuppliers.items.filter(
-                      (item) => item.id !== id
-                    ),
-                  },
-                },
-              })
-            }
-          },
-        }
-      )
-
-    const sortBy = ref([])
-    const sortDesc = ref([])
-    const search = ref<string | undefined>()
-    const deleteLoading = ref<string | undefined>()
+              },
+            })
+          }
+        },
+      })
 
     const groupBy = computed(() =>
       sortBy.value.length === 0 || sortBy.value[0] === 'companyName'
@@ -114,25 +109,37 @@ export default defineComponent({
       {
         text: t('suppliers.companyName'),
         value: 'companyName',
-        align: 'left',
+        align: 'left' as const,
         width: 222,
         minWidth: 222,
         sortable: true,
       },
       { text: '', value: 'dealsCount', width: 46, sortable: true },
-      { text: '', value: 'cost', align: 'right', width: 100, sortable: true },
-      { text: '', value: 'debt', align: 'right', width: 100, sortable: true },
+      {
+        text: '',
+        value: 'cost',
+        align: 'right' as const,
+        width: 100,
+        sortable: true,
+      },
+      {
+        text: '',
+        value: 'debt',
+        align: 'right' as const,
+        width: 100,
+        sortable: true,
+      },
       {
         text: '',
         value: 'totalCost',
-        align: 'right',
+        align: 'right' as const,
         width: 100,
         sortable: true,
       },
       {
         text: t('suppliers.contactPerson'),
         value: 'contactPersonFullName',
-        align: 'left',
+        align: 'left' as const,
         width: 186,
         class: 'pl-8 pr-2',
         sortable: true,
@@ -140,14 +147,14 @@ export default defineComponent({
       {
         text: t('suppliers.tags'),
         value: 'tagsString',
-        align: 'left',
+        align: 'left' as const,
         width: 122,
         sortable: true,
       },
       {
         text: '',
         value: 'contactPhone',
-        align: 'left',
+        align: 'left' as const,
         width: 64,
         minWidth: 64,
         class: 'pl-1',
@@ -156,7 +163,7 @@ export default defineComponent({
       {
         text: t('suppliers.usn'),
         value: 'uid',
-        align: 'right',
+        align: 'right' as const,
         width: 60,
         minWidth: 60,
         class: 'whitespace-nowrap',
@@ -280,14 +287,14 @@ export default defineComponent({
       })
     }
 
-    async function deleteSupplier(id: string) {
+    async function deleteSupplier(variables: DeleteSupplierVariables) {
       try {
-        deleteLoading.value = id
-        await deleteSupplierMutate({ id })
+        deleteSupplierId.value = variables.id
+        await deleteSupplierMutate(variables)
       } catch (error) {
         logger.warn('[DeleteSupplier]: ', error)
       } finally {
-        deleteLoading.value = undefined
+        deleteSupplierId.value = undefined
       }
     }
 
@@ -312,7 +319,7 @@ export default defineComponent({
             [sortBy.value, 'sortBy'],
             [sortDesc.value, 'sortDesc'],
           ]}
-          headers={headers.value as any}
+          headers={headers.value}
           items={items.value}
           search={search.value}
           customFilter={customFilter}
@@ -526,7 +533,7 @@ export default defineComponent({
                               primary={false}
                               class="text-white bg-red-700 hover:bg-red-600 active:bg-red-600 focus:ring-red-600"
                               {...{
-                                onClick: () => deleteSupplier(item.id),
+                                onClick: () => deleteSupplier({ id: item.id }),
                               }}
                             >
                               {t('action.delete')}
@@ -558,13 +565,9 @@ export default defineComponent({
           block
           outlined
           class="mt-4"
-          {...{
-            onClick: () => {
-              router.push({
-                name: 'supplier-create',
-                params: { orgId },
-              })
-            },
+          to={{
+            name: 'supplier-create',
+            params: { orgId },
           }}
         >
           <Icon left>{ziBoxes}</Icon>

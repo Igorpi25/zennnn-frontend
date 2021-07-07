@@ -52,6 +52,12 @@ export default defineComponent({
     const { profile } = useProfile()
 
     const orgId = route.params.orgId
+    const sortBy = ref([])
+    const sortDesc = ref([])
+    const clientType = ref(ClientType.LEGAL)
+    const search = ref<string>()
+    // TODO: add id on deleteClient mutation
+    const deleteClientId = ref<string>()
 
     const { result: listClientsResult, loading: listClientsLoading } = useQuery<
       ListClients,
@@ -72,7 +78,7 @@ export default defineComponent({
     const { mutate: deleteClientMutate, loading: deleteClientLoading } =
       useMutation<DeleteClient, DeleteClientVariables>(DELETE_CLIENT, {
         update: (cache, { data: result }) => {
-          const id = deleteLoading.value
+          const id = deleteClientId.value
           // TODO: return in result id
           logger.info('Clients delete', result?.deleteClient)
 
@@ -99,12 +105,6 @@ export default defineComponent({
           }
         },
       })
-
-    const sortBy = ref([])
-    const sortDesc = ref([])
-    const clientType = ref(ClientType.LEGAL)
-    const search = ref<string | undefined>()
-    const deleteLoading = ref<string | undefined>()
 
     const tabs = computed(() => [
       {
@@ -142,7 +142,7 @@ export default defineComponent({
             ? t('clients.clientName')
             : t('clients.companyName'),
         value: 'fullName',
-        align: 'left',
+        align: 'left' as const,
         width: 190,
         minWidth: 190,
         sortable: true,
@@ -152,22 +152,28 @@ export default defineComponent({
       {
         text: '',
         value: 'prepayment',
-        align: 'right',
+        align: 'right' as const,
         width: 100,
         sortable: true,
       },
-      { text: '', value: 'debt', align: 'right', width: 100, sortable: true },
+      {
+        text: '',
+        value: 'debt',
+        align: 'right' as const,
+        width: 100,
+        sortable: true,
+      },
       {
         text: '',
         value: 'turnover',
-        align: 'right',
+        align: 'right' as const,
         width: 100,
         sortable: true,
       },
       {
         text: t('clients.contactPerson'),
         value: 'contactPersonFullName',
-        align: 'left',
+        align: 'left' as const,
         width: 186,
         class: 'pl-8 pr-2',
         sortable: true,
@@ -175,14 +181,14 @@ export default defineComponent({
       {
         text: t('clients.tags'),
         value: 'tagsString',
-        align: 'left',
+        align: 'left' as const,
         width: 122,
         sortable: true,
       },
       {
         text: '',
         value: 'contactPhone',
-        align: 'left',
+        align: 'left' as const,
         width: 64,
         minWidth: 64,
         class: 'pl-1',
@@ -191,7 +197,7 @@ export default defineComponent({
       {
         text: t('clients.ucn'),
         value: 'uid',
-        align: 'right',
+        align: 'right' as const,
         width: 60,
         minWidth: 60,
         class: 'whitespace-nowrap',
@@ -412,26 +418,14 @@ export default defineComponent({
       })
     }
 
-    function goToClientSpecs(item: ListClients_listClients_items) {
-      router.push({
-        name: 'specs',
-        params: {
-          orgId: orgId,
-        },
-        query: {
-          clients: [item.id],
-        },
-      })
-    }
-
-    async function deleteClient(id: string) {
+    async function deleteClient(variables: DeleteClientVariables) {
       try {
-        deleteLoading.value = id
-        await deleteClientMutate({ id })
+        deleteClientId.value = variables.id
+        await deleteClientMutate(variables)
       } catch (error) {
         logger.warn('[DeleteClient]: ', error)
       } finally {
-        deleteLoading.value = undefined
+        deleteClientId.value = undefined
       }
     }
 
@@ -451,7 +445,7 @@ export default defineComponent({
           />
           <div class="h-11 flex lg:inline-flex space-x-1 overflow-x-auto scrolling-touch">
             {tabs.value.map((item) => (
-              <div
+              <button
                 aria-selected={clientType.value === item.value}
                 key={item.value}
                 class={[
@@ -468,12 +462,6 @@ export default defineComponent({
                 role={item.disabled ? undefined : 'tab'}
                 tabindex={item.disabled ? undefined : 0}
                 onClick={() => switchClientType(item.value)}
-                onKeydown={(e: KeyboardEvent) => {
-                  if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) return
-                  if (e.key === 'Enter') {
-                    switchClientType(item.value)
-                  }
-                }}
               >
                 <span class="relative">
                   <div class="absolute -top-1 -right-1 text-[0.8125rem] font-semibold translate-x-full">
@@ -495,7 +483,7 @@ export default defineComponent({
                   </div>
                   {item.text}
                 </span>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -505,7 +493,7 @@ export default defineComponent({
             [sortBy.value, 'sortBy'],
             [sortDesc.value, 'sortDesc'],
           ]}
-          headers={headers.value as any}
+          headers={headers.value}
           items={items.value}
           search={search.value}
           customFilter={customFilter}
@@ -671,7 +659,15 @@ export default defineComponent({
                         text
                         mini
                         class="text-gray-200"
-                        {...{ onClick: () => goToClientSpecs(item) }}
+                        to={{
+                          name: 'specs',
+                          params: {
+                            orgId: orgId,
+                          },
+                          query: {
+                            clients: [item.id],
+                          },
+                        }}
                       >
                         <Icon>{ziSearch}</Icon>
                       </Btn>
@@ -752,7 +748,7 @@ export default defineComponent({
                               primary={false}
                               class="text-white bg-red-700 hover:bg-red-600 active:bg-red-600 focus:ring-red-600"
                               {...{
-                                onClick: () => deleteClient(item.id),
+                                onClick: () => deleteClient({ id: item.id }),
                               }}
                             >
                               {t('action.delete')}
@@ -784,14 +780,10 @@ export default defineComponent({
           block
           outlined
           class="mt-4"
-          {...{
-            onClick: () => {
-              router.push({
-                name: 'client-create',
-                params: { orgId },
-                query: { clientType: clientType.value },
-              })
-            },
+          to={{
+            name: 'client-create',
+            params: { orgId },
+            query: { clientType: clientType.value },
           }}
         >
           <Icon left>{ziUserPlus}</Icon>
