@@ -51,8 +51,6 @@ const RequisiteList = () =>
   import(/* webpackChunkName: "common" */ '../views/RequisiteList.vue')
 const RequisiteItem = () =>
   import(/* webpackChunkName: "common" */ '../views/RequisiteItem.vue')
-const ItemList = () =>
-  import(/* webpackChunkName: "common" */ '../views/ItemList.vue')
 const Specs = () =>
   import(/* webpackChunkName: "common" */ '../views/Specs.vue')
 const Spec = () => import(/* webpackChunkName: "common" */ '../views/Spec.vue')
@@ -248,10 +246,11 @@ const routes: RouteRecordRaw[] = [
         component: RequisiteItem,
       },
       {
-        path: 'goods',
+        path: 'items',
         name: 'items',
         meta: { requiresAuth: true },
-        component: ItemList,
+        component: () =>
+          import(/* webpackChunkName: "items" */ '../views/items'),
       },
     ],
   },
