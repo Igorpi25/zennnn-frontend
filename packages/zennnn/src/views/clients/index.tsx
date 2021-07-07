@@ -439,7 +439,7 @@ export default defineComponent({
               search.value ? 'ring-1 ring-blue-500 ring-inset' : undefined
             }
             prependIcon={ziSearch}
-            class="w-full lg:w-auto lg:flex-grow md:max-w-md pb-4 lg:pr-8"
+            class="w-full lg:w-auto lg:flex-grow pb-4 lg:pr-8"
             inputClass="placeholder-blue-500 dark:placeholder-blue-500"
             clearable
           />
