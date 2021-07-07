@@ -89,10 +89,10 @@ export default defineComponent({
             },
           })
           if (data?.listClients?.items?.some((item) => item.id === id)) {
-            cache.writeQuery({
+            cache.writeQuery<ListClients, ListClientsVariables>({
               query: LIST_CLIENTS,
               variables: {
-                orgId: orgId,
+                orgId: orgId as string,
               },
               data: {
                 listClients: {

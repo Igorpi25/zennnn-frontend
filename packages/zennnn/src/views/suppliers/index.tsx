@@ -77,10 +77,10 @@ export default defineComponent({
             },
           })
           if (data?.listSuppliers?.items?.some((item) => item.id === id)) {
-            cache.writeQuery({
+            cache.writeQuery<ListSuppliers, ListSuppliersVariables>({
               query: LIST_SUPPLIERS,
               variables: {
-                orgId: orgId,
+                orgId: orgId as string,
               },
               data: {
                 listSuppliers: {
@@ -300,19 +300,17 @@ export default defineComponent({
 
     return () => (
       <div class="container pt-4 pb-10">
-        <div class="flex flex-wrap sm:flex-nowrap items-end justify-between pb-4">
-          <TextField
-            v-model={search.value}
-            placeholder={t('placeholder.pageSearch')}
-            controlClass={
-              search.value ? 'ring-1 ring-blue-500 ring-inset' : undefined
-            }
-            prependIcon={ziSearch}
-            class="w-full"
-            inputClass="placeholder-blue-500 dark:placeholder-blue-500"
-            clearable
-          />
-        </div>
+        <TextField
+          v-model={search.value}
+          placeholder={t('placeholder.pageSearch')}
+          controlClass={
+            search.value ? 'ring-1 ring-blue-500 ring-inset' : undefined
+          }
+          prependIcon={ziSearch}
+          class="w-full pb-4"
+          inputClass="placeholder-blue-500 dark:placeholder-blue-500"
+          clearable
+        />
 
         <DataTable
           v-models={[
