@@ -105,7 +105,7 @@ import { Select, TextField, Icon } from '@zennnn/core'
 import phonesPlaceholder from '@/assets/countries/phones-placeholder.json'
 import phonesMask from '@/assets/countries/phones-mask.json'
 import phonesCode from '@/assets/countries/phones-code.json'
-import defaultFilter from '@/utils/defaultFilter'
+import { defaultFilter } from '@/utils/defaultFilter'
 
 export default {
   name: 'Phone',

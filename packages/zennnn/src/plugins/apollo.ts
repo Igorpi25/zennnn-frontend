@@ -60,6 +60,9 @@ const typePolicies = {
       listSuppliers: {
         merge: false,
       },
+      listOrgRequisites: {
+        merge: false,
+      },
     },
   },
   Client: {

@@ -47,8 +47,6 @@ const Subscription = () =>
   import(/* webpackChunkName: "common" */ '../views/Subscription.vue')
 const WordList = () =>
   import(/* webpackChunkName: "common" */ '../views/WordList.vue')
-const RequisiteList = () =>
-  import(/* webpackChunkName: "common" */ '../views/RequisiteList.vue')
 const RequisiteItem = () =>
   import(/* webpackChunkName: "common" */ '../views/RequisiteItem.vue')
 const Specs = () =>
@@ -227,10 +225,11 @@ const routes: RouteRecordRaw[] = [
         component: WordList,
       },
       {
-        path: 'requisites',
-        name: 'requisites',
+        path: 'companies',
+        name: 'companies',
         meta: { requiresAuth: true },
-        component: RequisiteList,
+        component: () =>
+          import(/* webpackChunkName: "companies" */ '../views/companies'),
       },
       {
         path: 'requisites/create',

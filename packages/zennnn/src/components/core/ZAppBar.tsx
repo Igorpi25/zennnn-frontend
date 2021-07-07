@@ -1,5 +1,5 @@
 import { defineComponent, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useApolloClient } from '@vue/apollo-composable'
 import {
@@ -34,6 +34,7 @@ export default defineComponent({
   name: 'App',
 
   setup() {
+    const route = useRoute()
     const router = useRouter()
     const { t } = useI18n()
     const { resolveClient } = useApolloClient()
@@ -190,6 +191,7 @@ export default defineComponent({
             v-slots={{
               start: () => <Icon>{ziAddressCard}</Icon>,
             }}
+            to={{ name: 'companies', params: { orgId: route.params.orgId } }}
           >
             {/* TODO: add to locales */}
             <div>My Companies</div>

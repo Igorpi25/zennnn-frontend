@@ -1,4 +1,4 @@
-export const defaultFilter = (value, search) => {
+export function defaultFilter(value: any, search: string | null) {
   return (
     value != null &&
     search != null &&
@@ -7,5 +7,3 @@ export const defaultFilter = (value, search) => {
       -1
   )
 }
-
-export default defaultFilter

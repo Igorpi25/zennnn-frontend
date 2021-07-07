@@ -32,7 +32,7 @@
         "
       >
         <router-link
-          :to="{ name: 'requisites', params: { orgId } }"
+          :to="{ name: 'companies', params: { orgId } }"
           class="
             text-gray-200
             hover:text-white
