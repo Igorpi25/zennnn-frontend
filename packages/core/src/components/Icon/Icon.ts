@@ -94,6 +94,7 @@ export default defineComponent({
             'icon--link': clickable,
           },
           role: clickable ? 'button' : undefined,
+          type: clickable || tag === 'button' ? 'button' : undefined,
           'aria-hidden': !clickable,
         },
         genSvg()

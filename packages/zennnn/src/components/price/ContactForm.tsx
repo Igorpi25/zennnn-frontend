@@ -101,6 +101,7 @@ export default defineComponent({
           {props.hasCancel && (
             <Btn
               outlined
+              type="button"
               minWidth="none"
               class="justify-self-start"
               {...{ onClick: onCancel }}

@@ -42,6 +42,7 @@ export default defineComponent({
     maxWidth: [String, Number] as PropType<string | number>,
     darkIcon: Boolean,
     retainFocusOnClick: Boolean,
+    type: String as PropType<'submit' | 'reset' | 'button'>,
   },
 
   setup(props, { slots }) {
@@ -138,6 +139,7 @@ export default defineComponent({
         }
       }
       if (tag === 'button') {
+        data.type = props.type
         data.disabled = isDisabled.value || null
       }
       data.onClick = () => {

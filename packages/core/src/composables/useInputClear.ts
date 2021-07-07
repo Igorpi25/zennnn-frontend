@@ -50,6 +50,7 @@ export const useInputClear = (
           invisible: disabled,
         },
         disabled: disabled,
+        type: 'button',
         'aria-label': 'clear icon',
         onClick: (e: MouseEvent) => {
           e.preventDefault()

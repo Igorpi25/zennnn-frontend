@@ -53,7 +53,7 @@ export default defineComponent({
     lazyValidation: Boolean,
   },
 
-  emits: ['update:valid'],
+  emits: ['update:valid', 'submit'],
 
   setup(props, { emit }) {
     const id: string = uid('form-')
@@ -183,9 +183,10 @@ export default defineComponent({
         ref: 'rootElement',
         id: this.id,
         novalidate: true,
-        onSubmit(e: Event) {
+        onSubmit: (e: Event) => {
           e.preventDefault()
           e.stopPropagation()
+          this.$emit('submit', e)
         },
       },
       this.$slots.default?.()

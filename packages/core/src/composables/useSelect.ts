@@ -120,6 +120,7 @@ export const useSelect = (
         tag: 'button',
         size: 24,
         tabindex: '-1',
+        type: 'button',
         disabled: isDisabled.value,
         class: [
           'focus:outline-none origin-center transition-transform duration-200 ease-in-out',
