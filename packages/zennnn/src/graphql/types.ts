@@ -5734,8 +5734,8 @@ export interface ListStaff_listStaff_invitations {
 }
 
 export interface ListStaff_listStaff {
-  items: (ListStaff_listStaff_items | null)[] | null;
-  invitations: (ListStaff_listStaff_invitations | null)[] | null;
+  items: ListStaff_listStaff_items[] | null;
+  invitations: ListStaff_listStaff_invitations[] | null;
 }
 
 export interface ListStaff {

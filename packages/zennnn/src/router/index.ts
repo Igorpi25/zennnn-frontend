@@ -60,8 +60,6 @@ const ClientItem = () =>
   import(/* webpackChunkName: "common" */ '../views/ClientItem.vue')
 const SupplierItem = () =>
   import(/* webpackChunkName: "common" */ '../views/SupplierItem.vue')
-const Staff = () =>
-  import(/* webpackChunkName: "common" */ '../views/Staff.vue')
 const Invitation = () =>
   import(/* webpackChunkName: "common" */ '../views/Invitation.vue')
 
@@ -221,7 +219,8 @@ const routes: RouteRecordRaw[] = [
         path: 'staff',
         name: 'staff',
         meta: { requiresAuth: true },
-        component: Staff,
+        component: () =>
+          import(/* webpackChunkName: "staff" */ '../views/staff'),
       },
       {
         path: 'dictionary',
