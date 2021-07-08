@@ -17,7 +17,7 @@ exports[`Icon.ts should not set size style on base prop false and match snapshot
 `;
 
 exports[`Icon.ts should render "button" tag on attrs.onClick exists and match snapshot 1`] = `
-<button class="icon icon--link" role="button" aria-hidden="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+<button class="icon icon--link" role="button" type="button" aria-hidden="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
     <g fill="currentColor">
       <path d="M18 12a6 6 0 11-12 0 6 6 0 0112 0z"></path>
     </g>

@@ -15,7 +15,7 @@ exports[`Select.ts should render component and match snapshot 1`] = `
     <!----><input id="select-1" class="input__input select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!---->
-    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
@@ -40,7 +40,7 @@ exports[`Select.ts should render component with dense prop and match snapshot 1`
     <!----><input id="select-1" class="input__input input__input--dense select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!---->
-    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
@@ -65,7 +65,7 @@ exports[`Select.ts should render component with disabled prop and match snapshot
     <!----><input id="select-1" class="input__input select__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="" disabled="">
     <!---->
     <!---->
-    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-gray-400 cursor-not-allowed" role="button" aria-hidden="false" tabindex="-1" disabled=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-gray-400 cursor-not-allowed" role="button" type="button" aria-hidden="false" tabindex="-1" disabled=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
@@ -90,7 +90,7 @@ exports[`Select.ts should render component with loading prop and match snapshot 
     <!----><input id="select-1" class="input__input select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!---->
-    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
@@ -115,7 +115,7 @@ exports[`Select.ts should render component with name, required, readonly props a
     <!----><input id="select-1" class="input__input select__input" name="text-field-name" required="" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!---->
-    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
@@ -134,7 +134,7 @@ exports[`Select.ts should render component with singleLine prop and match snapsh
     <!----><input id="select-1" class="input__input select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!---->
-    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
@@ -161,7 +161,7 @@ exports[`Select.ts should render component with slots and match snapshot 1`] = `
           </g>
         </svg></i></div>
     <!---->
-    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
@@ -180,7 +180,7 @@ exports[`Select.ts should render component with solo prop and match snapshot 1`]
     <!----><input id="select-1" class="input__input input__input--dense select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!---->
-    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>
@@ -227,7 +227,7 @@ exports[`Select.ts should render items on focused and match snapshot 2`] = `
     <!----><input id="select-1" class="input__input select__input cursor-pointer pl-8" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="" aria-expanded="true" aria-controls="listbox-1">
     <!---->
     <!---->
-    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400 rotate-180" role="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400 rotate-180" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>
         </g>

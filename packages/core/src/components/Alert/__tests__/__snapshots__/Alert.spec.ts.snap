@@ -67,7 +67,7 @@ exports[`Alert.ts should render component with close prop and match snapshot 1`]
           <path d="M12 6.045a1.251 1.251 0 0 0 0 2.5 1.251 1.251 0 0 0 0-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 1 0 0 18.4 9.2 9.2 0 0 0 0-18.4z"></path>
         </g>
       </svg></i>
-    <div class="alert__content">Alert</div><button class="icon icon--link alert__close" role="button" aria-hidden="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <div class="alert__content">Alert</div><button class="icon icon--link alert__close" role="button" type="button" aria-hidden="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 10.586 8.466 7.05 7.051 8.465 10.586 12l-3.535 3.536 1.414 1.414 3.536-3.536 3.535 3.536 1.414-1.414L13.415 12l3.535-3.535-1.414-1.415-3.535 3.536z"></path>
         </g>
@@ -95,7 +95,7 @@ exports[`Alert.ts should render component with custom class props and match snap
           <path d="M12 6.045a1.251 1.251 0 0 0 0 2.5 1.251 1.251 0 0 0 0-2.5zm-1.25 5.101c0-.658.56-1.192 1.25-1.192s1.25.534 1.25 1.192v5.87c0 .658-.56 1.192-1.25 1.192s-1.25-.534-1.25-1.192v-5.87zM1.2 12C1.2 6.035 6.036 1.2 12 1.2c5.965 0 10.8 4.835 10.8 10.8 0 5.965-4.835 10.8-10.8 10.8-5.964 0-10.8-4.835-10.8-10.8zM12 2.8a9.2 9.2 0 1 0 0 18.4 9.2 9.2 0 0 0 0-18.4z"></path>
         </g>
       </svg></i>
-    <div class="alert__content content-custom-class">Alert</div><button class="icon icon--link alert__close custom-close-class" role="button" aria-hidden="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <div class="alert__content content-custom-class">Alert</div><button class="icon icon--link alert__close custom-close-class" role="button" type="button" aria-hidden="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 10.586 8.466 7.05 7.051 8.465 10.586 12l-3.535 3.536 1.414 1.414 3.536-3.536 3.535 3.536 1.414-1.414L13.415 12l3.535-3.535-1.414-1.415-3.535 3.536z"></path>
         </g>
@@ -123,7 +123,7 @@ exports[`Alert.ts should render component with icon slot and match snapshot 1`] 
           <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm.646-6.535a1.25 1.25 0 0 1-1.805.01l-3.567-3.683a1.25 1.25 0 1 1 1.796-1.74l2.659 2.746 4.442-4.689a1.25 1.25 0 1 1 1.815 1.72z"></path>
         </g>
       </svg></i>
-    <div class="alert__content">Alert</div><button class="icon icon--link alert__close" role="button" aria-hidden="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+    <div class="alert__content">Alert</div><button class="icon icon--link alert__close" role="button" type="button" aria-hidden="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="M12 10.586 8.466 7.05 7.051 8.465 10.586 12l-3.535 3.536 1.414 1.414 3.536-3.536 3.535 3.536 1.414-1.414L13.415 12l3.535-3.535-1.414-1.415-3.535 3.536z"></path>
         </g>
