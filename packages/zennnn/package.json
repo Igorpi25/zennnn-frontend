@@ -3,7 +3,7 @@
   "version": "0.36.7",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "TAILWIND_MODE=watch vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:stable": "vue-cli-service build --mode stable",
     "test:unit": "vue-cli-service test:unit",
