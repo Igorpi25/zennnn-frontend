@@ -214,6 +214,7 @@ export default defineComponent({
                   ariaLabel="email input"
                   autofocus
                   validateOnBlur
+                  required
                 />
                 <TextField
                   v-model={formModel.password}
@@ -229,6 +230,7 @@ export default defineComponent({
                   ariaLabel="password input"
                   minlength="8"
                   validateOnBlur
+                  required
                   v-slots={{
                     append: () => (
                       <Icon
