@@ -74,11 +74,14 @@ export default defineComponent({
           rules={[rules.required]}
           hideDetails={false}
           class="pb-6"
+          controlClass="bg-light-gray-300 dark:bg-gray-800"
+          inputClass="placeholder-gray-200"
           name="login"
           autocomplete="username"
           ariaLabel="login input"
           autofocus
           validateOnBlur
+          required
         />
         <TextField
           v-model={formModel.password}
@@ -87,26 +90,30 @@ export default defineComponent({
           rules={[rules.required, rules.passwordMinLength]}
           hideDetails={false}
           class="pb-6"
+          controlClass="bg-light-gray-300 dark:bg-gray-800"
+          inputClass="placeholder-gray-200"
           name="password"
           autocomplete="current-password"
           ariaLabel="password input"
           minlength="8"
           validateOnBlur
-        >
-          <template v-slot:append>
-            <Icon
-              class="text-gray-500 hover:text-gray-300 pr-1"
-              {...{
-                onClick: (e: MouseEvent) => {
-                  e.preventDefault()
-                  showPassword.value = !showPassword.value
-                },
-              }}
-            >
-              {showPassword.value ? ziVisible : ziHide}
-            </Icon>
-          </template>
-        </TextField>
+          required
+          v-slots={{
+            append: () => (
+              <Icon
+                class="text-gray-200 dark:text-gray-500 hover:text-gray-300 pr-1"
+                {...{
+                  onClick: (e: MouseEvent) => {
+                    e.preventDefault()
+                    showPassword.value = !showPassword.value
+                  },
+                }}
+              >
+                {showPassword.value ? ziVisible : ziHide}
+              </Icon>
+            ),
+          }}
+        />
         <Btn
           loading={loading.value}
           class="w-full sm:w-48"

@@ -75,8 +75,12 @@ export default defineComponent({
           modelValue={username.value}
           placeholder={t('signin.login')}
           class="pb-6"
+          controlClass="bg-light-gray-300 dark:bg-gray-900"
+          inputClass="placeholder-gray-200"
           name="username"
           ariaLabel="username input"
+          stateIcon
+          required
           readonly
         />
         <TextField
@@ -86,6 +90,8 @@ export default defineComponent({
           rules={[rules.required, rules.passwordMinLength]}
           hideDetails={false}
           class="pb-6"
+          controlClass="bg-light-gray-300 dark:bg-gray-900"
+          inputClass="placeholder-gray-200"
           name="new-password"
           autocomplete="new-password"
           ariaLabel="new password input"
@@ -93,21 +99,22 @@ export default defineComponent({
           validateOnBlur
           stateIcon
           required
-        >
-          <template v-slot:append>
-            <Icon
-              class="text-gray-500 hover:text-gray-300 pr-1"
-              {...{
-                onClick: (e: MouseEvent) => {
-                  e.preventDefault()
-                  showPassword.value = !showPassword.value
-                },
-              }}
-            >
-              {showPassword.value ? ziVisible : ziHide}
-            </Icon>
-          </template>
-        </TextField>
+          v-slots={{
+            append: () => (
+              <Icon
+                class="text-gray-200 dark:text-gray-500 hover:text-gray-300 pr-1"
+                {...{
+                  onClick: (e: MouseEvent) => {
+                    e.preventDefault()
+                    showPassword.value = !showPassword.value
+                  },
+                }}
+              >
+                {showPassword.value ? ziVisible : ziHide}
+              </Icon>
+            ),
+          }}
+        />
         <Alert
           v-model={errorMessage.value}
           close

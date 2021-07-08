@@ -14,7 +14,7 @@ export default defineComponent({
 
     return () => (
       <>
-        <div class="dark:bg-gray-800 w-full flex-grow flex flex-col items-center">
+        <div class="w-full flex-grow flex flex-col items-center">
           <div class="flex-1"></div>
           <div class="container flex-grow">
             <div class="flex flex-col justify-center w-full max-w-sm mx-auto">
