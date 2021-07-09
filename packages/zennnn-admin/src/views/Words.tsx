@@ -203,7 +203,7 @@ export default defineComponent({
             })
           } else {
             // Write our data back to the cache.
-            cache.writeQuery({
+            cache.writeQuery<ListWords, ListWordsVariables>({
               query: LIST_WORDS,
               variables: { filters: filters.value },
               data: {
@@ -233,12 +233,15 @@ export default defineComponent({
         // Add our tag from the mutation to the end
         if (data?.listWords?.items && result?.createWord) {
           // Write our data back to the cache.
-          cache.writeQuery({
+          cache.writeQuery<ListWords, ListWordsVariables>({
             query: LIST_WORDS,
             variables: { filters: filters.value },
             data: {
               listWords: {
-                items: [...data.listWords.items, result.createWord],
+                items: [
+                  ...data.listWords.items,
+                  result.createWord as ListWords_listWords_items,
+                ],
               },
             },
           })
@@ -269,12 +272,15 @@ export default defineComponent({
             (item) => !selected.value.includes(item.id)
           )
           // Write our data back to the cache.
-          cache.writeQuery({
+          cache.writeQuery<ListWords, ListWordsVariables>({
             query: LIST_WORDS,
             variables: { filters: filters.value },
             data: {
               listWords: {
-                items: [..._items, result.mergeWords],
+                items: [
+                  ..._items,
+                  result.mergeWords as ListWords_listWords_items,
+                ],
               },
             },
           })
