@@ -1,23 +1,14 @@
-import {
-  computed,
-  defineComponent,
-  nextTick,
-  onBeforeMount,
-  onMounted,
-  ref,
-  watch,
-} from 'vue'
+import { computed, defineComponent, nextTick, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useQuery } from '@vue/apollo-composable'
-import axios from 'axios'
 import { ziChecked, ziUsers, ziEmail } from '@zennnn/icons'
 import { Btn, Icon } from '@zennnn/core'
 import Dialog from 'shared/components/Dialog'
 import { useReactiveVar } from 'shared/composables/reactiveVar'
 import { LIST_PRICES } from '@/graphql/queries'
 import ContactForm from '@/components/price/ContactForm'
-import { logger } from '@/plugins'
+import { useCurrencyRates } from '@/composables/currencyRates'
 import { isLoggedInVar } from '@/plugins/apollo'
 
 import type { ListPrices } from '@/graphql/types'
@@ -53,12 +44,12 @@ export default defineComponent({
   setup(props, { emit }) {
     const router = useRouter()
     const { locale, t } = useI18n()
+    const { currencyRates } = useCurrencyRates()
 
     const { result } = useQuery<ListPrices>(LIST_PRICES)
 
     const isLoggedIn = useReactiveVar(isLoggedInVar)
 
-    const currencyRates = ref<Record<string, number>>({})
     const selectedProductId = ref('')
     const contactDialog = ref(false)
     const contactForm = ref()
@@ -234,19 +225,6 @@ export default defineComponent({
       }
     }
 
-    async function getRates() {
-      try {
-        const response = await axios.get(
-          'https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,CNY,HKD,RUB,EUR,GBP'
-        )
-        if (response.data && response.data.success) {
-          currencyRates.value = response.data.rates
-        }
-      } catch (error) {
-        logger.info('Error on get currency rates', error)
-      }
-    }
-
     function getRoundedPriceFromPenny(value: string | number) {
       value = +value
       if (Number.isNaN(value)) return 0
@@ -256,8 +234,6 @@ export default defineComponent({
     function closeContactDialog() {
       contactDialog.value = false
     }
-
-    onBeforeMount(getRates)
 
     onMounted(() => {
       if (props.currentProductId) {
