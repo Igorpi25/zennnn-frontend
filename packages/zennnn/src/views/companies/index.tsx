@@ -1,7 +1,7 @@
 import { defineComponent, ref, computed, Transition } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useQuery, useMutation, useApolloClient } from '@vue/apollo-composable'
+import { useQuery, useMutation } from '@vue/apollo-composable'
 import { getObjectValueByPath } from 'vue-supp'
 import {
   ziStarLg,
@@ -14,7 +14,7 @@ import {
 } from '@zennnn/icons'
 import { Icon, Progress, TextField, Btn } from '@zennnn/core'
 import Dialog from 'shared/components/Dialog'
-import { LIST_ORG_REQUISITES, GET_ORGS } from '@/graphql/queries'
+import { LIST_ORG_REQUISITES } from '@/graphql/queries'
 import { DELETE_REQUISITE, SET_DEFAULT_REQUISITE } from '@/graphql/mutations'
 import { defaultFilter } from '@/utils/defaultFilter'
 import { useOrgs } from '@/composables/orgs'
@@ -34,9 +34,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const { t } = useI18n()
-    const { resolveClient } = useApolloClient()
-    const apolloClient = resolveClient()
-    const { currentOrg } = useOrgs()
+    const { currentOrg, refetch: getOrgsRefetch } = useOrgs()
 
     const orgId = route.params.orgId
     const search = ref()
@@ -137,10 +135,7 @@ export default defineComponent({
         await setDefaultRequisiteMutate(variables)
         // update orgs query
         // TODO: should be on subscription
-        await apolloClient.query({
-          query: GET_ORGS,
-          fetchPolicy: 'network-only',
-        })
+        getOrgsRefetch()
       } catch (error) {
         logger.info('[SetDefaultRequisite]: ', error)
       } finally {
