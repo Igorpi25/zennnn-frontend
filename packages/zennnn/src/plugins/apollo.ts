@@ -63,6 +63,9 @@ const typePolicies = {
       listOrgRequisites: {
         merge: false,
       },
+      listWords: {
+        merge: false,
+      },
     },
   },
   Client: {

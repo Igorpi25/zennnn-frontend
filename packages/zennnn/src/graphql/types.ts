@@ -3820,7 +3820,7 @@ export interface ListWords_listWords_items {
 }
 
 export interface ListWords_listWords {
-  items: (ListWords_listWords_items | null)[] | null;
+  items: ListWords_listWords_items[] | null;
 }
 
 export interface ListWords {
@@ -3882,7 +3882,7 @@ export interface GetWordSpecs_getWordSpecs {
 }
 
 export interface GetWordSpecs {
-  getWordSpecs: (GetWordSpecs_getWordSpecs | null)[] | null;
+  getWordSpecs: GetWordSpecs_getWordSpecs[] | null;
 }
 
 export interface GetWordSpecsVariables {

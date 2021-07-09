@@ -211,6 +211,7 @@ export default defineComponent({
             v-slots={{
               start: () => <Icon>{ziLanguages}</Icon>,
             }}
+            to={{ name: 'dictionary', params: { orgId: route.params.orgId } }}
           >
             {/* TODO: add to locales */}
             <div>Dictionary</div>
