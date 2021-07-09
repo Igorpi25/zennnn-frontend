@@ -11,6 +11,8 @@ import { logger } from '@/plugins'
 import type { PropType } from 'vue'
 import type { Locale } from 'shared/components/LocalePicker'
 import type {
+  TranslateWord,
+  TranslateWordVariables,
   WordTranslationInput,
   ListWords_listWords_items,
 } from '@/graphql/types'
@@ -133,9 +135,13 @@ export default defineComponent({
       if (!formRef.value.validate(true)) return
 
       const text = formModel.value[defaultLocale.value]
+      if (!text) return
       try {
         translateWordLoading.value = true
-        const response = await apolloClient.query({
+        const response = await apolloClient.query<
+          TranslateWord,
+          TranslateWordVariables
+        >({
           query: TRANSLATE_WORD,
           variables: {
             text,
