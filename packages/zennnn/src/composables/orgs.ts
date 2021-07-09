@@ -24,7 +24,7 @@ export function useOrgs() {
   const route = useRoute()
   const currentOrgId = useReactiveVar(currentOrgIdVar)
 
-  const { result, loading } = useQuery<GetOrgs>(GET_ORGS, null, {
+  const { result, loading, refetch } = useQuery<GetOrgs>(GET_ORGS, null, {
     fetchPolicy: 'cache-only',
   })
 
@@ -78,6 +78,7 @@ export function useOrgs() {
 
   return {
     loading,
+    refetch,
     orgs,
     currentOrg,
     orgsByRole,

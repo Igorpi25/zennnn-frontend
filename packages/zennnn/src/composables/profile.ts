@@ -8,7 +8,7 @@ import type { GetProfile } from '@/graphql/types'
 export function useProfile() {
   const { t } = useI18n()
 
-  const { result, loading } = useQuery<GetProfile>(GET_PROFILE, null, {
+  const { result, loading, refetch } = useQuery<GetProfile>(GET_PROFILE, null, {
     fetchPolicy: 'cache-only',
   })
 
@@ -56,6 +56,7 @@ export function useProfile() {
 
   return {
     loading,
+    refetch,
     profile,
     fullName,
     productName,

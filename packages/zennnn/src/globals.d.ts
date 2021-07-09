@@ -1,4 +1,5 @@
-// import { VNode } from 'vue'
+// eslint-disable-next-line
+import { VNode } from 'vue'
 
 declare global {
   interface Window {
