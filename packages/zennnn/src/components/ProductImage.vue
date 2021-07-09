@@ -265,8 +265,7 @@
                 cursor-pointer
                 text-2xl text-light-gray-400
                 hover:text-white
-                focus:text-white
-                focus:outline-none
+                focus:text-white focus:outline-none
                 pt-2.5
                 pr-2.5
               "

@@ -1,4 +1,4 @@
-import { VNode } from 'vue'
+// import { VNode } from 'vue'
 
 declare global {
   interface Window {

@@ -51,8 +51,7 @@
                     w-6
                     flex-shrink-0
                     text-gray-200
-                    focus:outline-none
-                    focus:text-gray-100
+                    focus:outline-none focus:text-gray-100
                     hover:text-gray-100
                   "
                   @click="clearClientFilter(filter.value)"
@@ -348,8 +347,7 @@
                       class="
                         text-gray-200
                         hover:text-gray-100
-                        focus:text-gray-100
-                        focus:outline-none
+                        focus:text-gray-100 focus:outline-none
                       "
                     >
                       {{ icons.ziPhone }}

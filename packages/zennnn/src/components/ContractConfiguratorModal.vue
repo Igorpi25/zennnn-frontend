@@ -310,8 +310,7 @@
                 md:w-1/2
                 mt-8
                 -ml-5
-                md:ml-0
-                md:mt-0
+                md:ml-0 md:mt-0
                 paper-buyer-details
               "
             >

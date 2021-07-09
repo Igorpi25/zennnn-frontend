@@ -27,8 +27,7 @@
             h-8
             text-blue-500
             hover:text-blue-400
-            focus:outline-none
-            focus:ring
+            focus:outline-none focus:ring
           "
           @click="internal = false"
         >

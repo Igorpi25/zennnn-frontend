@@ -49,8 +49,7 @@
                   items-center
                   text-gray-200
                   hover:text-gray-100
-                  focus:text-gray-100
-                  focus:outline-none
+                  focus:text-gray-100 focus:outline-none
                   select-none
                 "
                 @click="expandAll"
@@ -65,8 +64,7 @@
                   items-center
                   text-gray-200
                   hover:text-gray-100
-                  focus:text-gray-100
-                  focus:outline-none
+                  focus:text-gray-100 focus:outline-none
                   select-none
                 "
                 @click="collapseAll"

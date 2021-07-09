@@ -24,9 +24,7 @@
             order-first
             sm:order-none
             ml-auto
-            sm:absolute
-            sm:bottom-0
-            sm:right-0
+            sm:absolute sm:bottom-0 sm:right-0
             mb-3.5
           "
         >

@@ -20,8 +20,7 @@
           class="
             text-blue-500
             group-hover:text-blue-400
-            focus:text-blue-400
-            focus:outline-none
+            focus:text-blue-400 focus:outline-none
           "
         >
           {{ icons.ziChevronDown }}

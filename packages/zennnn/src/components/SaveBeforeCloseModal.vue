@@ -24,8 +24,7 @@
             border-gray-200
             sm:flex-1
             mb-3
-            sm:mb-0
-            sm:mr-2
+            sm:mb-0 sm:mr-2
             whitespace-nowrap
           "
           @click="$emit('dontSave')"
@@ -39,8 +38,7 @@
             border-gray-200
             sm:flex-1
             mb-3
-            sm:mb-0
-            sm:mx-2
+            sm:mb-0 sm:mx-2
             whitespace-nowrap
           "
           @click="$emit('cancel')"

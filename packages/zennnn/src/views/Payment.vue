@@ -73,10 +73,7 @@
             border-light-gray-400
             pt-4
             mt-4
-            sm:mt-0
-            sm:pt-0
-            sm:ml-6
-            sm:pl-6
+            sm:mt-0 sm:pt-0 sm:ml-6 sm:pl-6
           "
         >
           <div class="flex justify-between">

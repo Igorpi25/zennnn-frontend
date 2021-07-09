@@ -100,10 +100,7 @@
             border-light-gray-400
             pt-4
             mt-4
-            sm:mt-0
-            sm:pt-0
-            sm:ml-6
-            sm:pl-6
+            sm:mt-0 sm:pt-0 sm:ml-6 sm:pl-6
           "
         >
           <div class="flex justify-between">
@@ -227,8 +224,7 @@
                   hover:bg-pink-600
                   focus:bg-pink-600
                   mb-3
-                  sm:mb-0
-                  sm:mr-3
+                  sm:mb-0 sm:mr-3
                 "
                 @click="cancelSubscription"
               >
@@ -356,8 +352,7 @@
                         align-middle
                         invisible
                         group-hover:visible
-                        focus:outline-none
-                        focus:text-blue-400
+                        focus:outline-none focus:text-blue-400
                         hover:text-blue-400
                         pb-1
                       "
@@ -413,8 +408,7 @@
                         align-middle
                         invisible
                         group-hover:visible
-                        focus:outline-none
-                        focus:text-blue-400
+                        focus:outline-none focus:text-blue-400
                         hover:text-blue-400
                       "
                       @click="detachPaymentMethod(item.id)"
@@ -539,8 +533,7 @@
                     v-if="item.status === 'open'"
                     class="
                       text-blue-500
-                      focus:outline-none
-                      focus:text-blue-400
+                      focus:outline-none focus:text-blue-400
                       hover:text-blue-400
                     "
                     @click="openInvoice(item)"

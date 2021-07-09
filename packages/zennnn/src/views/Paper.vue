@@ -71,8 +71,7 @@
                   rounded-md
                   border border-transparent
                   select-none
-                  focus:outline-none
-                  focus:border-blue-500
+                  focus:outline-none focus:border-blue-500
                   transition-colors
                   duration-100
                   ease-out
@@ -116,8 +115,7 @@
                   rounded-md
                   border border-transparent
                   select-none
-                  focus:outline-none
-                  focus:border-blue-500
+                  focus:outline-none focus:border-blue-500
                   transition-colors
                   duration-100
                   ease-out
@@ -180,8 +178,7 @@
                       rounded-md
                       border border-transparent
                       select-none
-                      focus:outline-none
-                      focus:border-blue-500
+                      focus:outline-none focus:border-blue-500
                       hover:border-blue-500
                       transition-colors
                       duration-100
@@ -223,8 +220,7 @@
                   rounded-md
                   border border-transparent
                   select-none
-                  focus:outline-none
-                  focus:border-blue-500
+                  focus:outline-none focus:border-blue-500
                   hover:border-blue-500
                   transition-colors
                   duration-100
@@ -770,8 +766,7 @@
                     rounded-md
                     border border-light-gray-400
                     select-none
-                    focus:outline-none
-                    focus:border-blue-500
+                    focus:outline-none focus:border-blue-500
                     transition-colors
                     duration-100
                     ease-out
@@ -818,8 +813,7 @@
                     rounded-md
                     border border-light-gray-400
                     select-none
-                    focus:outline-none
-                    focus:border-blue-500
+                    focus:outline-none focus:border-blue-500
                     transition-colors
                     duration-100
                     ease-out
@@ -887,8 +881,7 @@
                         rounded-md
                         border border-light-gray-400
                         select-none
-                        focus:outline-none
-                        focus:border-blue-500
+                        focus:outline-none focus:border-blue-500
                         hover:border-blue-500
                         transition-colors
                         duration-100

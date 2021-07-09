@@ -400,8 +400,7 @@
                 inline-flex
                 text-gray-200
                 hover:text-gray-100
-                focus:text-gray-100
-                focus:outline-none
+                focus:text-gray-100 focus:outline-none
                 select-none
               "
             >
@@ -424,8 +423,7 @@
                   bg-gray-800
                   text-center text-gray-300
                   hover:text-gray-100
-                  focus:text-gray-100
-                  focus:outline-none
+                  focus:text-gray-100 focus:outline-none
                   select-none
                 "
                 @click="$refs['link-input'].focus()"
@@ -546,8 +544,7 @@
                   text-blue-500
                   border border-gray-400
                   hover:border-blue-500
-                  focus:border-blue-500
-                  focus:outline-none
+                  focus:border-blue-500 focus:outline-none
                   select-none
                   transition-colors
                   duration-100
@@ -570,8 +567,7 @@
           justify-end
           text-gray-200
           hover:text-gray-100
-          focus:text-gray-100
-          focus:outline-none
+          focus:text-gray-100 focus:outline-none
           pr-3
           md:pr-3.5
           ml-auto

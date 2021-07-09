@@ -186,8 +186,7 @@
                   items-center
                   text-gray-200
                   hover:text-gray-100
-                  focus:text-gray-100
-                  focus:outline-none
+                  focus:text-gray-100 focus:outline-none
                   select-none
                 "
                 @click="expandAll"
@@ -204,8 +203,7 @@
                   items-center
                   text-gray-200
                   hover:text-gray-100
-                  focus:text-gray-100
-                  focus:outline-none
+                  focus:text-gray-100 focus:outline-none
                   select-none
                 "
                 @click="collapseAll"
@@ -401,8 +399,7 @@
               w-full
               flex-shrink-0
               text-base
-              lg:max-w-sm
-              lg:pl-3
+              lg:max-w-sm lg:pl-3
             "
           />
         </div>

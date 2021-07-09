@@ -32,8 +32,7 @@
         class="
           w-full
           sm:w-auto
-          lg:w-32
-          lg:flex-shrink-0
+          lg:w-32 lg:flex-shrink-0
           sm:flex-grow
           md:flex-grow-0
           mb-2
@@ -184,8 +183,7 @@
       class="
         text-blue-500
         hover:text-blue-400
-        focus:text-blue-400
-        focus:outline-none
+        focus:text-blue-400 focus:outline-none
       "
       @click="$emit('click', item.id)"
     >

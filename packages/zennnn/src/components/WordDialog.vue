@@ -89,8 +89,7 @@
               items-center
               text-blue-500
               hover:text-blue-400
-              focus:text-blue-400
-              focus:outline-none
+              focus:text-blue-400 focus:outline-none
               mr-2
             "
           >
@@ -106,8 +105,7 @@
               items-center
               text-blue-500
               hover:text-blue-400
-              focus:text-blue-400
-              focus:outline-none
+              focus:text-blue-400 focus:outline-none
             "
             @click="translateWord"
           >
