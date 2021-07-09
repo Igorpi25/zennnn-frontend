@@ -173,9 +173,11 @@ export default defineComponent({
           clearable
         />
 
-        <div class="font-semibold text-white text-2xl leading-tight whitespace-nowrap overflow-x-auto scrolling-touch pb-4">
+        <div class="font-semibold text-white text-2xl leading-tight whitespace-nowrap overflow-x-auto scrolling-touch pb-4 px-1">
           <span class="relative">
-            {t('requisites.title')}
+            <span class="text-gray-900 dark:text-white">
+              {t('requisites.title')}
+            </span>
             <Transition
               name="fade-transition"
               v-slots={{
@@ -190,7 +192,7 @@ export default defineComponent({
           </span>
           <RouterLink
             to={{ name: 'dictionary', params: { orgId } }}
-            class="text-gray-200 hover:text-white focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible transition-colors duration-75 ease-out ml-6 px-4"
+            class="text-gray-200 hover:text-gray-900 dark:hover:text-white focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible transition-colors duration-75 ease-out ml-10"
           >
             {t('header.dictionary')}
           </RouterLink>
@@ -200,7 +202,7 @@ export default defineComponent({
           {filteredItems.value.map((item) => (
             <div class="cursor-pointer">
               <button
-                class="w-full bg-gray-800 bg-opacity-90 rounded-md focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible border border-transparent hover:border-blue-400 p-2.5 pt-4"
+                class="w-full bg-light-gray-100 dark:bg-gray-800 bg-opacity-90 rounded-md focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible border border-transparent hover:border-blue-400 p-2.5 pt-4"
                 onClick={() => {
                   goToRequisite(item.id)
                 }}
@@ -278,16 +280,16 @@ export default defineComponent({
                 </div>
                 <div class="pt-16 leading-tight">
                   <div
-                    class="flex flex-col relative bg-gray-600 rounded-md text-center pt-16 px-6"
+                    class="flex flex-col relative bg-white dark:bg-gray-600 rounded-md text-center pt-16 px-6"
                     style="height: 282px"
                   >
                     {/* <!-- TODO: add image upload --> */}
-                    <div class="absolute w-[6.5rem] h-[6.5rem] rounded-full bg-gray-400 top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center border border-gray-200">
-                      <Icon large class="text-gray-200">
+                    <div class="absolute w-[6.5rem] h-[6.5rem] rounded-full bg-light-gray-550 dark:bg-gray-400 top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center border border-light-gray-200 dark:border-gray-200">
+                      <Icon large class="text-gray-100 dark:text-gray-200">
                         {ziUser}
                       </Icon>
                     </div>
-                    <div class="font-bold text-white min-h-[1.25rem] mb-2 mt-1">
+                    <div class="font-bold text-gray-900 dark:text-white min-h-[1.25rem] mb-2 mt-1">
                       {item.companyName}
                     </div>
                     <div class="flex-grow text-sm pb-2">
@@ -295,7 +297,7 @@ export default defineComponent({
                     </div>
                     {item.companyOwner && item.companyOwner.fullName && (
                       <div>
-                        <div class="text-white bg-gray-800 bg-opacity-90 text-sm h-8 inline-flex items-center justify-center rounded-[20px] px-4">
+                        <div class="text-gray-900 dark:text-white bg-light-gray-100 dark:bg-gray-800 bg-opacity-90 text-sm h-8 inline-flex items-center justify-center rounded-[20px] px-4">
                           {t('role.OWNER')}
                         </div>
                       </div>
@@ -322,13 +324,13 @@ export default defineComponent({
           ))}
           <div style="min-height: 476px" class="h-full">
             <button
-              class="w-full border border-gray-400 focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible hover:border-blue-400 rounded-md h-full flex items-center justify-center cursor-pointer"
+              class="w-full border border-light-gray-400 dark:border-gray-400 focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible hover:border-blue-400 rounded-md h-full flex items-center justify-center cursor-pointer"
               onClick={() => {
                 router.push({ name: 'requisite-create', params: { orgId } })
               }}
             >
               <div class="flex flex-col items-center pb-8">
-                <Icon size={106} class="text-gray-200">
+                <Icon size={106} class="text-gray-100 dark:text-gray-200">
                   {ziPlusOutline}
                 </Icon>
                 <div class="text-blue-500 pt-6">
