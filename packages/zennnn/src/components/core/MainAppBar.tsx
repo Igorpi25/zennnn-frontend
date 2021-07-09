@@ -29,7 +29,7 @@ import { useReactiveVar } from 'shared/composables/reactiveVar'
 import AccountPicker from '@/components/core/AccountPicker'
 import SubscriptionLabel from '@/components/core/SubscriptionLabel'
 import { useOrgs } from '@/composables/orgs'
-import { useProfile } from '@/composables/profile'
+import { useSubscription } from '@/composables/subscription'
 import { auth, useTheme } from '@/plugins'
 import { isLoggedInVar } from '@/plugins/apollo'
 
@@ -55,7 +55,7 @@ export default defineComponent({
     const isSearchActive = useModel(props, 'searchActive')
 
     const { currentOrg } = useOrgs()
-    const { productName, subscriptionStatus } = useProfile()
+    const { productName, status } = useSubscription()
 
     const zennnnHostname = process.env.VUE_APP_HOSTNAME || ''
 
@@ -337,7 +337,7 @@ export default defineComponent({
                 v-slots={{
                   start: () => <Icon>{ziRocket}</Icon>,
                   end: () => (
-                    <SubscriptionLabel status={subscriptionStatus.value}>
+                    <SubscriptionLabel status={status.value}>
                       {productName.value}
                     </SubscriptionLabel>
                   ),

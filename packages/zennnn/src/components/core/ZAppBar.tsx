@@ -25,7 +25,7 @@ import LocalePicker from 'shared/components/LocalePicker'
 import AccountPicker from '@/components/core/AccountPicker'
 import SubscriptionLabel from '@/components/core/SubscriptionLabel'
 import { useOrgs } from '@/composables/orgs'
-import { useProfile } from '@/composables/profile'
+import { useSubscription } from '@/composables/subscription'
 import { auth, useTheme } from '@/plugins'
 
 import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'
@@ -40,7 +40,7 @@ export default defineComponent({
     const { resolveClient } = useApolloClient()
     const { isDark } = useTheme()
     const { currentOrg } = useOrgs()
-    const { productName, subscriptionStatus } = useProfile()
+    const { productName, status } = useSubscription()
 
     const isSidebarActive = ref(false)
 
@@ -221,7 +221,7 @@ export default defineComponent({
             v-slots={{
               start: () => <Icon>{ziRocket}</Icon>,
               end: () => (
-                <SubscriptionLabel status={subscriptionStatus.value}>
+                <SubscriptionLabel status={status.value}>
                   {productName.value}
                 </SubscriptionLabel>
               ),
