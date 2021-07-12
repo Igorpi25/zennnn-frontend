@@ -27,7 +27,7 @@
 }
 
 .data-table thead {
-  @apply bg-light-gray-100 dark:bg-gray-800 text-center select-none text-gray-200 dark:text-gray-300;
+  @apply text-center select-none text-gray-200 dark:text-gray-300;
 }
 .data-table--rounded thead {
   @apply text-gray-200 dark:text-gray-400;
@@ -55,7 +55,7 @@
 
 .data-table--hoverable tbody tr:hover,
 .data-table--hoverable tbody tr:focus {
-  @apply bg-light-gray-400 dark:bg-gray-500;
+  @apply bg-light-gray-300 dark:bg-gray-500;
 }
 .data-table--hoverable tbody tr:focus {
   @apply outline-none;

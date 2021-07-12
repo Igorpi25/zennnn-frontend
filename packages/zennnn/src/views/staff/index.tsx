@@ -449,8 +449,7 @@ export default defineComponent({
           groupBy={['type']}
           groupDesc={[true]}
           loading={listStaffLoading.value}
-          table-width="100%"
-          table-class="table-fixed"
+          tableClass="w-full table-fixed"
           v-slots={{
             'header-content-processing': () => (
               <span class="truncate inline-block max-w-full align-middle pl-6">

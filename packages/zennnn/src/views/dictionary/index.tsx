@@ -331,8 +331,7 @@ export default defineComponent({
             groupDesc={groupDesc.value}
             customGroup={customGroup}
             loading={listWordsLoading.value}
-            table-width="100%"
-            table-class="table-fixed rounded-t-none"
+            tableClass="w-full table-fixed rounded-t-none"
             class="pt-6"
             hoverable
             v-slots={{

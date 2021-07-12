@@ -501,8 +501,7 @@ export default defineComponent({
           groupDesc={groupDesc.value}
           customGroup={customGroup}
           loading={listClientsLoading.value}
-          table-width="100%"
-          table-class="table-fixed rounded-tl-none lg:rounded-tl-md rounded-tr-none sm:rounded-tr-md md:rounded-tr-none"
+          tableClass="w-full table-fixed rounded-tl-none lg:rounded-tl-md rounded-tr-none sm:rounded-tr-md md:rounded-tr-none"
           hoverable
           v-slots={{
             'header-content-dealsSearch': () => (

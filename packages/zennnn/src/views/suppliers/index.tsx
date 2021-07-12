@@ -325,8 +325,7 @@ export default defineComponent({
           groupDesc={groupDesc.value}
           customGroup={customGroup}
           loading={listSuppliersLoading.value}
-          table-width="100%"
-          table-class="table-fixed"
+          tableClass="w-full table-fixed"
           hoverable
           v-slots={{
             'header-content-dealsCount': () => (

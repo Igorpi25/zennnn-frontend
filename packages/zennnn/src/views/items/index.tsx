@@ -350,8 +350,7 @@ export default defineComponent({
           groupDesc={groupDesc.value}
           customGroup={customGroup}
           loading={listItemsLoading.value}
-          table-width="100%"
-          table-class="table-fixed rounded-tl-none"
+          tableClass="w-full table-fixed rounded-tl-none"
           hoverable
           v-slots={{
             'header-content-price': ({
