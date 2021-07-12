@@ -5,11 +5,7 @@ import { CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config'
 import { auth, i18n, emitter } from '../plugins'
 import { apolloClient, isLoggedInVar } from '../plugins/apollo'
 
-import {
-  CHECK_INVITATION,
-  GET_ROLE_IN_PROJECT,
-  GET_ORGS,
-} from '../graphql/queries'
+import { GET_ROLE_IN_PROJECT, GET_ORGS } from '../graphql/queries'
 
 import type { RouteRecordRaw } from 'vue-router'
 import type { NotifyOptions } from 'shared/composables/notify'
@@ -46,8 +42,6 @@ const ClientItem = () =>
   import(/* webpackChunkName: "common" */ '../views/ClientItem.vue')
 const SupplierItem = () =>
   import(/* webpackChunkName: "common" */ '../views/SupplierItem.vue')
-const Invitation = () =>
-  import(/* webpackChunkName: "common" */ '../views/Invitation.vue')
 
 const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
 
@@ -263,29 +257,17 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/invitations/:invitationId',
     name: 'invitation',
-    component: Invitation,
+    component: () =>
+      import(/* webpackChunkName: "invitation" */ '../views/Invitation'),
     beforeEnter: async (to) => {
       try {
         const id = to.params.invitationId
         if (!id) {
           throw new Error('No valid link')
         }
-
         const loggedIn = await checkAuth()
         if (!loggedIn) {
           return { name: 'signin', query: { redirect: `/invitations/${id}` } }
-        }
-
-        const {
-          data: { checkInvitation },
-        } = await apolloClient.query({
-          query: CHECK_INVITATION,
-          variables: { id },
-          fetchPolicy: 'network-only',
-        })
-
-        if (!checkInvitation) {
-          throw new Error('No valid link!')
         }
       } catch (error) {
         showNotify({
