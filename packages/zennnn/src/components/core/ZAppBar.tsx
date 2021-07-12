@@ -123,9 +123,9 @@ export default defineComponent({
               <AccountListItem
                 class="flex-row-reverse"
                 avatarSize={32}
-                avatarSrc={currentOrg.value?.picture || undefined}
+                avatarSrc={currentOrg.value?.picture}
                 avatarClass="text-lg md:ml-2"
-                title={currentOrg.value?.name || undefined}
+                title={currentOrg.value?.name}
                 subtitle={
                   currentOrg.value?.role
                     ? t(`header.role.${currentOrg.value.role}`)

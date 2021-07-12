@@ -21,7 +21,7 @@ export function setOrgId(orgId: string | undefined) {
 }
 
 interface OrgsProps {
-  orgId?: string
+  orgId?: string | null
 }
 
 export function useOrgs(props?: OrgsProps) {

@@ -41,7 +41,7 @@ export default defineComponent({
                   <div class="bg-light-gray-550 dark:bg-gray-400 small-form-day dark:small-form-night rounded-lg flex space-x-4 p-4">
                     <Avatar
                       size={88}
-                      src={item.picture || undefined}
+                      src={item.picture}
                       class="bg-light-gray-400 dark:bg-gray-700 text-4xl"
                     >
                       {item?.name?.charAt(0).toUpperCase()}
@@ -79,8 +79,8 @@ export default defineComponent({
                       avatarSize={40}
                       avatarClass="mr-2"
                       infoClass="space-y-1"
-                      avatarSrc={item.picture || undefined}
-                      title={item?.name || undefined}
+                      avatarSrc={item.picture}
+                      title={item?.name}
                       subtitle={[item.owner?.givenName, item.owner?.familyName]
                         .filter((e) => !!e)
                         .join(' ')}

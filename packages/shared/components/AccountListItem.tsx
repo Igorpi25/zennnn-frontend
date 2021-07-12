@@ -1,10 +1,12 @@
 import { defineComponent } from 'vue'
 import Avatar from './Avatar'
 
+import type { PropType } from 'vue'
+
 export default defineComponent({
   props: {
     hideAvatar: Boolean,
-    avatarSrc: String,
+    avatarSrc: String as PropType<string | null>,
     avatarSize: {
       type: Number,
       default: 48,
@@ -12,8 +14,8 @@ export default defineComponent({
     avatarClass: String,
     hideInfo: Boolean,
     infoClass: String,
-    title: String,
-    subtitle: String,
+    title: String as PropType<string | null>,
+    subtitle: String as PropType<string | null>,
     initials: String,
   },
 

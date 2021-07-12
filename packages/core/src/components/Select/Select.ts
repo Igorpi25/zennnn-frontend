@@ -35,6 +35,8 @@ import uid from '../../utils/uid'
 import Icon from '../Icon'
 import { Menu, MenuItem } from '../Menu'
 
+import type { PropType } from 'vue'
+
 const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ')
 
 export default defineComponent({
@@ -48,7 +50,9 @@ export default defineComponent({
     ...useFilterProps(),
     ...useDelayProps(),
     modelValue: {
-      type: [String, Number, Date, Object],
+      type: [String, Number, Date, Object] as PropType<
+        string | number | Date | object | null
+      >,
       default: null,
     },
     mask: String,

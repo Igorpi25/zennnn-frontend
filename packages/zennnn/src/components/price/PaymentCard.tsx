@@ -42,9 +42,9 @@ export default defineComponent({
       type: String as PropType<PaymentType>,
       required: true,
     },
-    defaultPaymentMethodId: String,
-    invoiceId: String,
-    selectedPriceId: String,
+    defaultPaymentMethodId: String as PropType<string | null>,
+    invoiceId: String as PropType<string | null>,
+    selectedPriceId: String as PropType<string | null>,
   },
 
   emits: ['complete', 'back'],

@@ -17,8 +17,8 @@ import { defaultFilter } from '@/utils/defaultFilter'
 import type { PropType } from 'vue'
 
 interface PhoneInput {
-  countryCode?: string
-  phone?: string
+  countryCode?: string | null
+  phone?: string | null
 }
 
 interface PhoneItem {
@@ -36,10 +36,10 @@ const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ')
 export default defineComponent({
   props: {
     modelValue: {
-      type: Object as PropType<PhoneInput>,
+      type: Object as PropType<PhoneInput | null>,
       default: () => ({}),
     },
-    locale: String,
+    locale: String as PropType<string | null>,
     loading: Boolean,
     solo: Boolean,
     dense: Boolean,

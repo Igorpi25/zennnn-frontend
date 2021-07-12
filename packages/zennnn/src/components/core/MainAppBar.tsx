@@ -34,11 +34,12 @@ import { useSubscription } from '@/composables/subscription'
 import { auth, useTheme } from '@/plugins'
 import { isLoggedInVar } from '@/plugins/apollo'
 
+import type { PropType } from 'vue'
 import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'
 
 export default defineComponent({
   props: {
-    orgId: String,
+    orgId: String as PropType<string | null>,
     hasPictureOnly: Boolean,
     pictureOnly: Boolean,
     hasSearch: Boolean,
@@ -224,9 +225,9 @@ export default defineComponent({
                 <AccountListItem
                   class="flex-row-reverse"
                   avatarSize={48}
-                  avatarSrc={currentOrg.value?.picture || undefined}
+                  avatarSrc={currentOrg.value?.picture}
                   avatarClass="md:ml-2"
-                  title={currentOrg.value?.name || undefined}
+                  title={currentOrg.value?.name}
                   subtitle={
                     currentOrg.value?.role
                       ? t(`header.role.${currentOrg.value.role}`)

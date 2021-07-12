@@ -31,6 +31,8 @@ import { useInputMessage } from '../../composables/useInputMessage'
 
 import uid from '../../utils/uid'
 
+import type { PropType } from 'vue'
+
 export default defineComponent({
   name: 'TextField',
 
@@ -42,7 +44,7 @@ export default defineComponent({
     ...useInputControlProps(),
     ...useInputLazyProps(),
     modelValue: {
-      type: [String, Number, Date],
+      type: [String, Number, Date] as PropType<string | number | Date | null>,
       default: null,
     },
     mask: String,

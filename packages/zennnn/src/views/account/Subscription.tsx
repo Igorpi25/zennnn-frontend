@@ -54,7 +54,7 @@ export default defineComponent({
     const detachPaymentMethodId = ref<string>()
     const addPaymentMethodDialog = ref(false)
 
-    const orgId = computed(() => profile.value?.account?.org || undefined)
+    const orgId = computed(() => profile.value?.account?.org)
 
     const {
       result: listPaymentMethodsResult,

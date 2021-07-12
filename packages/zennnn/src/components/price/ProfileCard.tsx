@@ -28,7 +28,7 @@ export default defineComponent({
     const changeDialog = ref(false)
     const contactDialog = ref(false)
     const contactFormRef = ref()
-    const selectedProductId = ref<string>()
+    const selectedProductId = ref<string | null>()
 
     const isAnnually = computed(() => {
       const priceId = profile.value?.account?.priceId
@@ -52,7 +52,7 @@ export default defineComponent({
 
     watch(changeDialog, (val) => {
       if (val) {
-        selectedProductId.value = profile.value?.account?.productId || undefined
+        selectedProductId.value = profile.value?.account?.productId
       }
     })
 
@@ -69,7 +69,7 @@ export default defineComponent({
         <div class="flex md:flex-1 items-center w-full">
           <Avatar
             size={64}
-            src={profile.value?.picture || undefined}
+            src={profile.value?.picture}
             class="bg-gray-100 dark:bg-gray-200 flex-shrink-0"
           >
             <Icon large class="text-light-gray-400 dark:text-gray-400">

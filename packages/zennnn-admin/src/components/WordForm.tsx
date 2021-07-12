@@ -178,8 +178,8 @@ export default defineComponent({
       LOCALES_LIST.forEach((el) => {
         const v = values.find((val) => val.k === el.value)
         if (v) {
-          valuesMap[el.value] = v.v || v.tr || undefined
-          trMap[el.value] = v.tr || undefined
+          valuesMap[el.value] = v.v || v.tr
+          trMap[el.value] = v.tr
         }
       })
       formModel.value = valuesMap
@@ -213,7 +213,7 @@ export default defineComponent({
                 if (el) inputRefs.value[item.value] = el
               }}
               key={item.value}
-              modelValue={formModel.value[item.value] || undefined}
+              modelValue={formModel.value[item.value]}
               placeholder={item.text}
               rules={
                 item.value === defaultLocale.value

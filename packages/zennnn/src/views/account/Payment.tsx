@@ -38,7 +38,7 @@ export default defineComponent({
     const billingType = ref(BillingType.MONTHLY)
     const selectedProductModel = ref()
 
-    const orgId = computed(() => profile.value?.account?.org || undefined)
+    const orgId = computed(() => profile.value?.account?.org)
 
     const { result: listPaymentMethodsResult } = useQuery<ListPaymentMethods>(
       LIST_PAYMENT_METHODS,
@@ -56,7 +56,7 @@ export default defineComponent({
           account?.subscriptionStatus === 'past_due'
             ? account.latestInvoiceId
             : null
-        return (route.query.invoiceId as string) || latestInvoiceId || undefined
+        return (route.query.invoiceId as string) || latestInvoiceId
       }
       return undefined
     })
@@ -442,7 +442,7 @@ export default defineComponent({
                         {billingType.value === BillingType.ANNUALLY
                           ? selectedProduct.value.aPriceInCurrency ||
                             selectedProduct.value.aPrice
-                          : selectedProduct.value.mPriceInCurrency || undefined}
+                          : selectedProduct.value.mPriceInCurrency || ''}
                       </span>
                       <span class="pl-1">{t('payment.inMonth')}</span>
                     </div>

@@ -1,9 +1,11 @@
 import { defineComponent } from 'vue'
 import { convertToUnit } from 'vue-supp'
 
+import type { PropType } from 'vue'
+
 export default defineComponent({
   props: {
-    src: String,
+    src: String as PropType<string | null>,
     size: {
       type: [Number, String],
       default: 48,

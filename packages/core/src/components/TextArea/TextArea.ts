@@ -26,6 +26,8 @@ import { useInputMessage } from '../../composables/useInputMessage'
 
 import uid from '../../utils/uid'
 
+import type { PropType } from 'vue'
+
 export default defineComponent({
   name: 'TextArea',
 
@@ -36,7 +38,7 @@ export default defineComponent({
     ...useInputControlProps(),
     ...useInputLazyProps(),
     modelValue: {
-      type: String,
+      type: String as PropType<string | null>,
       default: null,
     },
     autoGrow: {
