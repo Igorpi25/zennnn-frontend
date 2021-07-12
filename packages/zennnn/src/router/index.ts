@@ -37,9 +37,6 @@ const showNotify = (payload: string | NotifyOptions) => {
 const EmptyLayout = () =>
   import(/* webpackChunkName: "layout" */ '../views/layouts/Empty')
 
-const Print = () =>
-  import(/* webpackChunkName: "common" */ '../views/Print.vue')
-
 const RequisiteItem = () =>
   import(/* webpackChunkName: "common" */ '../views/RequisiteItem.vue')
 const Specs = () =>
@@ -327,17 +324,11 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/print/:docNo',
     name: 'print',
-    component: Print,
+    component: () => import(/* webpackChunkName: "print" */ '../views/Print'),
     beforeEnter: (to) => {
       if (!to.params.docNo || !window.opener) {
-        return false
+        return '/'
       }
-      showNotify({
-        color: 'primary',
-        text: i18n.t('message.documentGenerateLoading'),
-        timeout: 0,
-        close: false,
-      })
     },
   },
   // Auth
