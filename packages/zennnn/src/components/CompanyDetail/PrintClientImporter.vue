@@ -143,7 +143,7 @@
 import clientDetail from '../../mixins/clientDetail'
 
 import { TextField } from '@zennnn/core'
-import Phone from '../Phone.vue'
+import Phone from '../Phone'
 
 export default {
   name: 'PrintClientImporter',

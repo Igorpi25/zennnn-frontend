@@ -297,7 +297,7 @@ import { LOCALES_LIST } from 'shared/config'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import Phone from '../Phone.vue'
+import Phone from '../Phone'
 
 export default {
   name: 'PrivateInfo',

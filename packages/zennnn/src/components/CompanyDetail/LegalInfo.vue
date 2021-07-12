@@ -195,7 +195,7 @@
 import { TextField, Select, Switch } from '@zennnn/core'
 import { LOCALES_LIST } from 'shared/config'
 
-import Phone from '../Phone.vue'
+import Phone from '../Phone'
 
 import clientDetail from '../../mixins/clientDetail'
 

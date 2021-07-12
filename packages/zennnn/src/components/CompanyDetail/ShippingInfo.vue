@@ -162,7 +162,7 @@ import { Icon, Alert, Switch, TextField, ExpandTransition } from '@zennnn/core'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import Phone from '../Phone.vue'
+import Phone from '../Phone'
 
 export default {
   name: 'ShippingInfo',

@@ -373,7 +373,7 @@
 import clientDetail from '../../mixins/clientDetail'
 
 import { Alert, Radio, Switch, TextField } from '@zennnn/core'
-import Phone from '../Phone.vue'
+import Phone from '../Phone'
 
 export default {
   name: 'CompanyInfo',

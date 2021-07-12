@@ -278,7 +278,7 @@ import clientDetail from '../../mixins/clientDetail'
 
 import { UPDATE_COMPANY_BANK_DETAIL } from '../../graphql/mutations'
 
-import Phone from '../Phone.vue'
+import Phone from '../Phone'
 
 export default {
   name: 'CompanyInfoPrint',

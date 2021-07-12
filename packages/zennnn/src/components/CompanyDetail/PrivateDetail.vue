@@ -411,7 +411,7 @@ import Countries from '@/assets/countries/codes.json'
 
 import clientDetail from '../../mixins/clientDetail'
 
-import Phone from '../Phone.vue'
+import Phone from '../Phone'
 
 export default {
   name: 'PrivateDetail',

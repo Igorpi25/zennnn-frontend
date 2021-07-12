@@ -148,7 +148,7 @@ import { Icon, Tooltip, Select, TextField } from '@zennnn/core'
 
 import { BranchType, ContactType } from '../../graphql/enums'
 
-import Phone from '../Phone.vue'
+import Phone from '../Phone'
 import ContactItem from './ContactItem.vue'
 
 export default {

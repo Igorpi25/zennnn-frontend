@@ -189,7 +189,7 @@ import clientDetail from '../../mixins/clientDetail'
 
 import { ClientType } from '../../graphql/enums'
 
-import Phone from '../Phone.vue'
+import Phone from '../Phone'
 
 export default {
   name: 'PrintClient',
