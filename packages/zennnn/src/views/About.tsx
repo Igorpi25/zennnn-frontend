@@ -571,7 +571,6 @@ export default defineComponent({
                   <nav class="hidden lg:flex font-medium space-x-4 pl-4">
                     {navItems.value.map((item, i) => (
                       <Btn
-                        text
                         link
                         href={`#${item.sectionId}`}
                         class={{

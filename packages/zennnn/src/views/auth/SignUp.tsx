@@ -184,7 +184,6 @@ export default defineComponent({
                 <div class="sm:inline-block w-full sm:w-auto text-center py-5 sm:py-0">
                   <span class="pr-1">{t('signup.hasAccount')}</span>
                   <Btn
-                    text
                     link
                     to={{ name: 'signin' }}
                     class="focus:ring-offset-2 dark:focus:ring-offset-gray-900"

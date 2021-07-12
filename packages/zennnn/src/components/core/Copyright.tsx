@@ -26,13 +26,7 @@ export default defineComponent({
         <div>
           <span>&copy; 2021 ZENNNN. </span>
           {!props.hideUserAgreement && (
-            <Btn
-              v-html={t('app.userAgreement')}
-              text
-              small
-              link
-              to="/agreement"
-            />
+            <Btn v-html={t('app.userAgreement')} small link to="/agreement" />
           )}
         </div>
         <div>{version.value}</div>

@@ -59,7 +59,10 @@ export default defineComponent({
       return {
         btn: true,
         'btn--primary':
-          !props.text && !props.outlined && props.primary !== false,
+          !props.text &&
+          !props.link &&
+          !props.outlined &&
+          props.primary !== false,
         'btn--outlined': !props.text && props.outlined,
         'btn--block': props.block,
         'btn--text': props.text,

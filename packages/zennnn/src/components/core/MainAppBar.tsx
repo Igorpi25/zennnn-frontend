@@ -124,7 +124,6 @@ export default defineComponent({
                 <nav class="hidden lg:flex space-x-4 pl-4">
                   {navItems.value.map((item) => (
                     <Btn
-                      text
                       link
                       to={item.to}
                       class="text-gray-900 dark:text-white px-4"

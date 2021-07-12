@@ -178,7 +178,6 @@ export default defineComponent({
                   <div class="sm:inline-block w-full sm:w-auto text-center py-5 sm:py-0">
                     <span class="pr-1">{t('signin.noAccount')}</span>
                     <Btn
-                      text
                       link
                       to={{ name: 'signup' }}
                       class="focus:ring-offset-2 dark:focus:ring-offset-gray-900"
@@ -249,7 +248,6 @@ export default defineComponent({
                 />
                 <div class="pb-6">
                   <Btn
-                    text
                     link
                     to={{ name: 'password-restore' }}
                     class="focus:ring-offset-2 dark:focus:ring-offset-gray-900"
