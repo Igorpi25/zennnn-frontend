@@ -1,4 +1,5 @@
 import { defineComponent, ref, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useApolloClient } from '@vue/apollo-composable'
 import { useModel } from 'vue-supp'
@@ -37,6 +38,7 @@ import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'
 
 export default defineComponent({
   props: {
+    orgId: String,
     hasPictureOnly: Boolean,
     pictureOnly: Boolean,
     hasSearch: Boolean,
@@ -46,6 +48,8 @@ export default defineComponent({
   emits: ['logout', 'update:pictureOnly', 'update:searchActive'],
 
   setup(props, { slots, attrs, emit }) {
+    const route = useRoute()
+    const router = useRouter()
     const { t } = useI18n()
     const { resolveClient } = useApolloClient()
     const { isDark } = useTheme()
@@ -54,7 +58,7 @@ export default defineComponent({
     const isPictureOnly = useModel(props, 'pictureOnly')
     const isSearchActive = useModel(props, 'searchActive')
 
-    const { currentOrg } = useOrgs()
+    const { currentOrg } = useOrgs(props)
     const { productName, status } = useSubscription()
 
     const zennnnHostname = process.env.VUE_APP_HOSTNAME || ''
@@ -104,6 +108,9 @@ export default defineComponent({
       resolveClient().resetStore()
       closeSidebar()
       emit('logout')
+      if (route.meta.requiresAuth) {
+        await router.replace({ name: 'signin' })
+      }
     }
 
     return () => (

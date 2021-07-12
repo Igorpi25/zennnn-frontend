@@ -23,8 +23,6 @@ export default defineComponent({
 
     const { profile } = useProfile()
 
-    const orgId = computed(() => profile.value?.account?.org)
-
     const hasSubscription = computed(
       () => profile.value?.account?.subscriptionId
     )
@@ -382,7 +380,7 @@ export default defineComponent({
               </div>
             )}
             <div class="pb-20">
-              <List orgId={orgId.value || undefined} />
+              <List />
             </div>
             <div class="pb-20">
               <h2 class="font-semibold text-[2rem] leading-tight pb-10">

@@ -20,7 +20,11 @@ export function setOrgId(orgId: string | undefined) {
   }
 }
 
-export function useOrgs() {
+interface OrgsProps {
+  orgId?: string
+}
+
+export function useOrgs(props?: OrgsProps) {
   const route = useRoute()
   const currentOrgId = useReactiveVar(currentOrgIdVar)
 
@@ -30,7 +34,9 @@ export function useOrgs() {
 
   const orgs = computed(() => result.value?.getOrgs || [])
 
-  const orgId = computed(() => route.params.orgId || currentOrgId.value)
+  const orgId = computed(
+    () => props?.orgId || route.params.orgId || currentOrgId.value
+  )
 
   const currentOrg = computed(
     () => orgs.value.find((el) => el.id === orgId.value) || orgs.value[0]

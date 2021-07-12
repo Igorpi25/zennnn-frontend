@@ -226,6 +226,7 @@ export default defineComponent({
                 </SubscriptionLabel>
               ),
             }}
+            to={{ name: 'subscription' }}
           >
             {/* TODO: add to locales */}
             <div>Subscription</div>

@@ -9,7 +9,6 @@ import {
   CHECK_INVITATION,
   GET_ROLE_IN_PROJECT,
   GET_ORGS,
-  GET_PROFILE,
 } from '../graphql/queries'
 
 import type { RouteRecordRaw } from 'vue-router'
@@ -41,10 +40,6 @@ const EmptyLayout = () =>
 const Print = () =>
   import(/* webpackChunkName: "common" */ '../views/Print.vue')
 
-const Payment = () =>
-  import(/* webpackChunkName: "common" */ '../views/Payment.vue')
-const Subscription = () =>
-  import(/* webpackChunkName: "common" */ '../views/Subscription.vue')
 const RequisiteItem = () =>
   import(/* webpackChunkName: "common" */ '../views/RequisiteItem.vue')
 const Specs = () =>
@@ -253,56 +248,20 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/payment/:type(change|promo|invoice)',
+    path: '/payment/:type(CHANGE|PROMO|INVOICE)',
     name: 'payment',
     meta: { requiresAuth: true, scrollToTop: true },
-    component: Payment,
-    beforeEnter: async () => {
-      try {
-        await apolloClient.query({
-          query: GET_ORGS,
-          fetchPolicy: 'cache-first',
-        })
-        const {
-          data: { getProfile },
-        } = await apolloClient.query({
-          query: GET_PROFILE,
-          fetchPolicy: 'cache-first',
-        })
-        const orgId = getProfile && getProfile.account && getProfile.account.org
-        if (!orgId) {
-          return false
-        }
-      } catch (error) {
-        throw new Error(error)
-      }
-    },
+    component: () =>
+      import(/* webpackChunkName: "payment" */ '../views/account/Payment'),
   },
   {
     path: '/subscription',
     name: 'subscription',
     meta: { requiresAuth: true, scrollToTop: true },
-    component: Subscription,
-    beforeEnter: async () => {
-      try {
-        await apolloClient.query({
-          query: GET_ORGS,
-          fetchPolicy: 'cache-first',
-        })
-        const {
-          data: { getProfile },
-        } = await apolloClient.query({
-          query: GET_PROFILE,
-          fetchPolicy: 'cache-first',
-        })
-        const orgId = getProfile && getProfile.account && getProfile.account.org
-        if (!orgId) {
-          return false
-        }
-      } catch (error) {
-        throw new Error(error)
-      }
-    },
+    component: () =>
+      import(
+        /* webpackChunkName: "subscription" */ '../views/account/Subscription'
+      ),
   },
   {
     path: '/invitations/:invitationId',

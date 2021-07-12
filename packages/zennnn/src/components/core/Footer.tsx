@@ -80,7 +80,6 @@ export default defineComponent({
             {
               text: t('footer.subscriptionManagement'),
               to: { name: 'subscription' },
-              href: '#',
             },
           ]
         : items

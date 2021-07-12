@@ -55,6 +55,7 @@
     "@tailwindcss/jit": "^0.1.18",
     "@types/jest": "^26.0.20",
     "@types/lodash-es": "^4.17.4",
+    "@types/stripe-v3": "^3.1.25",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "@typescript-eslint/parser": "^4.20.0",
     "@vitejs/plugin-vue": "^1.2.3",
