@@ -215,7 +215,7 @@ export default defineComponent({
             width="241"
             height="241"
             class="mx-auto mb-4"
-            src={require('@/assets/img/IMG_8AACC873C31E-1.png').default}
+            src={require('@/assets/img/happy.png').default}
             alt="ok"
           />
           <h2 class="text-center font-semibold text-2xl mb-8">
