@@ -181,7 +181,9 @@ export default defineComponent({
           }}
           v-slots={{
             prepend: () => (
-              <Icon class="flex-shrink-0">{selectedIcon.value}</Icon>
+              <Icon class="text-gray-200 dark:text-gray-100 flex-shrink-0">
+                {selectedIcon.value}
+              </Icon>
             ),
             'append-outer': () => (
               <TextField
@@ -216,11 +218,19 @@ export default defineComponent({
               selected: boolean
             }) => (
               <>
-                <Icon class={['mx-2', { 'text-white': active }]}>
+                <Icon
+                  class={[
+                    'mx-2',
+                    active ? 'text-white' : 'text-gray-200 dark:text-gray-100',
+                  ]}
+                >
                   {item.icon}
                 </Icon>
                 <div
-                  class={['w-8 flex items-center', { 'text-white': active }]}
+                  class={[
+                    'w-8 flex items-center',
+                    active ? 'text-white' : 'text-gray-200 dark:text-gray-100',
+                  ]}
                 >
                   {selected && <Icon>{ziChecked}</Icon>}
                 </div>
