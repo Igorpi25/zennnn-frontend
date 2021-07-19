@@ -33,17 +33,16 @@ const showNotify = (payload: string | NotifyOptions) => {
 const EmptyLayout = () =>
   import(/* webpackChunkName: "layout" */ '../views/layouts/Empty')
 
-const RequisiteItem = () =>
-  import(/* webpackChunkName: "common" */ '../views/RequisiteItem.vue')
 const Specs = () =>
   import(/* webpackChunkName: "common" */ '../views/Specs.vue')
 const Spec = () => import(/* webpackChunkName: "common" */ '../views/Spec.vue')
-const ClientItem = () =>
-  import(/* webpackChunkName: "common" */ '../views/ClientItem.vue')
-const SupplierItem = () =>
-  import(/* webpackChunkName: "common" */ '../views/SupplierItem.vue')
-
 const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
+const ClientCard = () =>
+  import(/* webpackChunkName: "clients" */ '../views/clients/Card')
+const SupplierCard = () =>
+  import(/* webpackChunkName: "suppliers" */ '../views/suppliers/Card')
+const CompanyCard = () =>
+  import(/* webpackChunkName: "companies" */ '../views/companies/Card')
 
 const routes: RouteRecordRaw[] = [
   {
@@ -163,17 +162,17 @@ const routes: RouteRecordRaw[] = [
           import(/* webpackChunkName: "clients" */ '../views/clients'),
       },
       {
-        path: 'clients/:groupId?/create',
+        path: 'clients/create/:groupId?',
         name: 'client-create',
         meta: { requiresAuth: true, scrollToTop: true },
         props: { create: true },
-        component: ClientItem,
+        component: ClientCard,
       },
       {
         path: 'clients/:groupId/:clientId',
         name: 'client',
         meta: { requiresAuth: true, scrollToTop: true },
-        component: ClientItem,
+        component: ClientCard,
       },
       {
         path: 'suppliers',
@@ -187,13 +186,13 @@ const routes: RouteRecordRaw[] = [
         name: 'supplier-create',
         meta: { requiresAuth: true, scrollToTop: true },
         props: { create: true },
-        component: SupplierItem,
+        component: SupplierCard,
       },
       {
         path: 'suppliers/:supplierId',
         name: 'supplier',
         meta: { requiresAuth: true, scrollToTop: true },
-        component: SupplierItem,
+        component: SupplierCard,
       },
       {
         path: 'staff',
@@ -217,17 +216,17 @@ const routes: RouteRecordRaw[] = [
           import(/* webpackChunkName: "companies" */ '../views/companies'),
       },
       {
-        path: 'requisites/create',
-        name: 'requisite-create',
+        path: 'companies/create',
+        name: 'company-create',
         meta: { requiresAuth: true },
         props: { create: true },
-        component: RequisiteItem,
+        component: CompanyCard,
       },
       {
-        path: 'requisites/:reqId',
-        name: 'requisite',
+        path: 'companies/:companyId',
+        name: 'company',
         meta: { requiresAuth: true, scrollToTop: true },
-        component: RequisiteItem,
+        component: CompanyCard,
       },
       {
         path: 'items',

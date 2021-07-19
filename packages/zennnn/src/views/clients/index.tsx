@@ -782,7 +782,7 @@ export default defineComponent({
           to={{
             name: 'client-create',
             params: { orgId },
-            query: { clientType: clientType.value },
+            query: { clientType: getClientTypeNumeric(clientType.value) },
           }}
         >
           <Icon left>{ziUserPlus}</Icon>

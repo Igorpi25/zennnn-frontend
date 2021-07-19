@@ -2785,14 +2785,14 @@ export interface UpdateSupplierBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: DeleteSupplierShop
+// GraphQL mutation operation: DeleteSupplierBranch
 // ====================================================
 
-export interface DeleteSupplierShop {
+export interface DeleteSupplierBranch {
   deleteSupplierBranch: number | null;
 }
 
-export interface DeleteSupplierShopVariables {
+export interface DeleteSupplierBranchVariables {
   id: string;
 }
 
@@ -4780,9 +4780,9 @@ export interface GetClient_getClient {
   expireDate: string | null;
   issuedBy: string | null;
   avatar: string | null;
-  contacts: (GetClient_getClient_contacts | null)[] | null;
-  tags: (string | null)[] | null;
-  files: (GetClient_getClient_files | null)[] | null;
+  contacts: GetClient_getClient_contacts[] | null;
+  tags: string[] | null;
+  files: GetClient_getClient_files[] | null;
   fullName: string | null;
   isRequiredFilled: boolean | null;
   isOptionalFilled: boolean | null;
@@ -4883,7 +4883,7 @@ export interface GetClientsById_getClientsById_items {
   createdAt: string | null;
   updatedAt: string | null;
   contactPerson: GetClientsById_getClientsById_items_contactPerson | null;
-  tags: (string | null)[] | null;
+  tags: string[] | null;
 }
 
 export interface GetClientsById_getClientsById {
@@ -5157,7 +5157,7 @@ export interface GetSupplier_getSupplier_branches {
   contactPerson: GetSupplier_getSupplier_branches_contactPerson | null;
   workPhone: GetSupplier_getSupplier_branches_workPhone | null;
   mobilePhone: GetSupplier_getSupplier_branches_mobilePhone | null;
-  contacts: (GetSupplier_getSupplier_branches_contacts | null)[] | null;
+  contacts: GetSupplier_getSupplier_branches_contacts[] | null;
 }
 
 export interface GetSupplier_getSupplier {
@@ -5195,9 +5195,9 @@ export interface GetSupplier_getSupplier {
   correspondentBankName: string | null;
   correspondentAccountNumber: string | null;
   note: string | null;
-  contacts: (GetSupplier_getSupplier_contacts | null)[] | null;
-  tags: (string | null)[] | null;
-  files: (GetSupplier_getSupplier_files | null)[] | null;
+  contacts: GetSupplier_getSupplier_contacts[] | null;
+  tags: string[] | null;
+  files: GetSupplier_getSupplier_files[] | null;
   isRequiredFilled: boolean | null;
   isOptionalFilled: boolean | null;
   branches: GetSupplier_getSupplier_branches[] | null;
@@ -5458,8 +5458,8 @@ export interface GetOrgRequisite_getOrgRequisite {
   importerMobilePhone: GetOrgRequisite_getOrgRequisite_importerMobilePhone | null;
   importerPhone: GetOrgRequisite_getOrgRequisite_importerPhone | null;
   importerEmail: string | null;
-  contacts: (GetOrgRequisite_getOrgRequisite_contacts | null)[] | null;
-  tags: (string | null)[] | null;
+  contacts: GetOrgRequisite_getOrgRequisite_contacts[] | null;
+  tags: string[] | null;
   isRequiredFilled: boolean | null;
   isOptionalFilled: boolean | null;
 }
@@ -10437,9 +10437,9 @@ export interface CreateClientInput {
   expireDate?: string | null;
   issuedBy?: string | null;
   avatar?: string | null;
-  contacts?: (ContactInput | null)[] | null;
-  tags?: (string | null)[] | null;
-  files?: (AttachFileInput | null)[] | null;
+  contacts?: ContactInput[] | null;
+  tags?: string[] | null;
+  files?: AttachFileInput[] | null;
 }
 
 export interface CreateContractInput {
@@ -10491,9 +10491,9 @@ export interface CreateSupplierInput {
   correspondentBankName?: string | null;
   correspondentAccountNumber?: string | null;
   note?: string | null;
-  contacts?: (ContactInput | null)[] | null;
-  tags?: (string | null)[] | null;
-  files?: (AttachFileInput | null)[] | null;
+  contacts?: ContactInput[] | null;
+  tags?: string[] | null;
+  files?: AttachFileInput[] | null;
   branches?: SupplierBranchInput[] | null;
 }
 
@@ -10584,8 +10584,8 @@ export interface RequisiteInput {
   importerMobilePhone?: PhoneInput | null;
   importerPhone?: PhoneInput | null;
   importerEmail?: string | null;
-  contacts?: (ContactInput | null)[] | null;
-  tags?: (string | null)[] | null;
+  contacts?: ContactInput[] | null;
+  tags?: string[] | null;
 }
 
 export interface ShipmentAirInput {
@@ -10718,9 +10718,9 @@ export interface UpdateClientInput {
   expireDate?: string | null;
   issuedBy?: string | null;
   avatar?: string | null;
-  contacts?: (ContactInput | null)[] | null;
-  tags?: (string | null)[] | null;
-  files?: (AttachFileInput | null)[] | null;
+  contacts?: ContactInput[] | null;
+  tags?: string[] | null;
+  files?: AttachFileInput[] | null;
 }
 
 export interface UpdateContractInput {
@@ -10782,9 +10782,9 @@ export interface UpdateSupplierInput {
   correspondentBankName?: string | null;
   correspondentAccountNumber?: string | null;
   note?: string | null;
-  contacts?: (ContactInput | null)[] | null;
-  tags?: (string | null)[] | null;
-  files?: (AttachFileInput | null)[] | null;
+  contacts?: ContactInput[] | null;
+  tags?: string[] | null;
+  files?: AttachFileInput[] | null;
   branches?: SupplierBranchInput[] | null;
 }
 

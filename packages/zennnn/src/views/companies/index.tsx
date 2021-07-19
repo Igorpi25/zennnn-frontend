@@ -119,12 +119,12 @@ export default defineComponent({
       return filtered
     })
 
-    function goToRequisite(reqId: string) {
+    function goToCompany(companyId: string) {
       router.push({
-        name: 'requisite',
+        name: 'company',
         params: {
           orgId: orgId,
-          reqId,
+          companyId,
         },
       })
     }
@@ -199,7 +199,7 @@ export default defineComponent({
               <button
                 class="w-full bg-light-gray-100 dark:bg-gray-800 bg-opacity-90 rounded-md focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible border border-transparent hover:border-blue-400 p-2.5 pt-4"
                 onClick={() => {
-                  goToRequisite(item.id)
+                  goToCompany(item.id)
                 }}
               >
                 <div class="h-10 w-full flex justify-between px-2">
@@ -321,7 +321,7 @@ export default defineComponent({
             <button
               class="w-full border border-light-gray-400 dark:border-gray-400 focus:outline-none focus:ring focus:ring-blue-400 with-focus-visible hover:border-blue-400 rounded-md h-full flex items-center justify-center cursor-pointer"
               onClick={() => {
-                router.push({ name: 'requisite-create', params: { orgId } })
+                router.push({ name: 'company-create', params: { orgId } })
               }}
             >
               <div class="flex flex-col items-center pb-8">

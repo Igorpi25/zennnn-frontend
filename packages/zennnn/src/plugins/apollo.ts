@@ -73,6 +73,9 @@ const typePolicies = {
       contacts: {
         merge: false,
       },
+      files: {
+        merge: false,
+      },
     },
   },
   Supplier: {
@@ -81,6 +84,9 @@ const typePolicies = {
         merge: false,
       },
       branches: {
+        merge: false,
+      },
+      files: {
         merge: false,
       },
     },

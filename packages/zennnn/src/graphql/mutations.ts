@@ -417,7 +417,7 @@ export const UPDATE_SUPPLIER_BRANCH = gql`
 `
 
 export const DELETE_SUPPLIER_BRANCH = gql`
-  mutation DeleteSupplierShop($id: ID!) {
+  mutation DeleteSupplierBranch($id: ID!) {
     deleteSupplierBranch(id: $id)
   }
 `
