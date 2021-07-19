@@ -257,7 +257,7 @@ export default defineComponent({
           </div>
           <div class="pb-2 lg:pb-1">
             <div class="flex flex-col">
-              <label class="label justify-between">
+              <label class="label label__content justify-between">
                 <span class="truncate">
                   {t('companyDetail.label.familyName')}
                 </span>
@@ -354,7 +354,7 @@ export default defineComponent({
               }}
             />
             <div class="w-1/2 pl-4 opacity-40">
-              <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+              <label class="label label__content">
                 {t('companyDetail.label.avatar')}
               </label>
               <div class="h-10 flex justify-start relative pl-12">
@@ -367,10 +367,10 @@ export default defineComponent({
             </div>
           </div>
           <div>
-            <label class="block text-base text-gray-100 whitespace-nowrap leading-5 py-2">
+            <label class="label label__content">
               {t('companyDetail.label.ucn')}
             </label>
-            <div class="h-10 flex items-center text-white mb-2 px-2">
+            <div class="h-10 flex items-center text-gray-900 dark:text-white mb-2 px-2">
               {props.item.uid || props.uid || 'B00001'}
             </div>
             <div class="text-sm text-gray-200 leading-tight pl-2 pb-2 lg:pb-0">

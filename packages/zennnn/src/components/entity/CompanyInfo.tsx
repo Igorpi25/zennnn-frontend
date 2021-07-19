@@ -107,7 +107,7 @@ export default defineComponent({
         <div class="w-full lg:w-1/2 lg:pr-5">
           <div class="pb-2 lg:pb-1">
             <div class="flex flex-col">
-              <label class="label justify-between">
+              <label class="label label__content justify-between">
                 <span class="truncate">
                   {t('companyDetail.label.companyName')}
                 </span>
@@ -344,7 +344,7 @@ export default defineComponent({
           </div>
           <div class="pb-2 lg:pb-1">
             <div class="flex flex-col">
-              <label class="label justify-between">
+              <label class="label label__content justify-between">
                 <span class="truncate">
                   {t('companyDetail.label.mailingAddressPostcode')}
                 </span>

@@ -116,7 +116,7 @@ export default defineComponent({
             </div>
             <div class="pb-2 lg:pb-1">
               <div class="flex flex-col">
-                <label class="label justify-between">
+                <label class="label label__content justify-between">
                   <span class="truncate">
                     {t('companyDetail.label.deliveryAddressPostcode')}
                   </span>
@@ -210,8 +210,8 @@ export default defineComponent({
                 }}
               />
             </div>
-            <div class="pt-6 lg:pt-10">
-              {props.company && (
+            {props.company && (
+              <div class="pt-6 lg:pt-10">
                 <Alert
                   modelValue={true}
                   close={false}
@@ -221,8 +221,8 @@ export default defineComponent({
                 >
                   {t('companyDetail.hint.companyLocale')}
                 </Alert>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </Expand>

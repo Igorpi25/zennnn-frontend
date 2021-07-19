@@ -225,7 +225,7 @@ export default defineComponent({
         <div class="w-full lg:w-1/2 lg:pl-5">
           <div class="pb-2 lg:pb-1">
             <div class="flex flex-col">
-              <label class="label justify-between">
+              <label class="label label__content justify-between">
                 <span class="truncate">
                   {t('companyDetail.label.companyName')}
                 </span>
@@ -293,8 +293,10 @@ export default defineComponent({
             />
           </div>
           <div>
-            <label class="label">{t('companyDetail.label.ucn')}</label>
-            <div class="h-10 flex items-center text-white mb-2 px-2">
+            <label class="label label__content">
+              {t('companyDetail.label.ucn')}
+            </label>
+            <div class="h-10 flex items-center text-gray-900 dark:text-white mb-2 px-2">
               {props.item.uid || props.uid || uidPlaceholder.value}
             </div>
             <div class="text-sm text-gray-200 leading-tight pl-2 pb-2 lg:pb-0">

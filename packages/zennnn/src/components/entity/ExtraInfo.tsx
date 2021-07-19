@@ -176,7 +176,9 @@ export default defineComponent({
           </div>
           {!props.company && (
             <div class="inline-flex flex-col">
-              <label class="label">{t('companyDetail.label.attachFile')}</label>
+              <label class="label label__content">
+                {t('companyDetail.label.attachFile')}
+              </label>
               <FileUploader
                 loading={attachFileLoading.value}
                 v-model={[fileUploadLoading.value, 'uploading']}

@@ -47,7 +47,7 @@ export default defineComponent({
         <div class="lg:w-1/2 lg:pr-5">
           <div class="pb-2 lg:pb-1">
             <div class="flex flex-col">
-              <label class="label justify-between">
+              <label class="label label__content justify-between">
                 <span class="truncate">
                   {t('companyDetail.label.bankName')}
                 </span>

@@ -125,7 +125,9 @@ export default defineComponent({
     return () => (
       <div>
         <div class="pb-2">
-          <label class="label">{t('companyDetail.label.branchType')}</label>
+          <label class="label label__content">
+            {t('companyDetail.label.branchType')}
+          </label>
           <div class="flex justify-end items-center">
             <Transition name="fade-transition">
               {isWarehouse.value && (

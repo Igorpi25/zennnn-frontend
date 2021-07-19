@@ -165,7 +165,7 @@ export default defineComponent({
             </div>
             <div class="pb-2 lg:pb-1">
               <div class="flex flex-col">
-                <label class="label justify-between">
+                <label class="label label__content justify-between">
                   <span class="truncate">
                     {t('companyDetail.label.mailingAddressPostcode')}
                   </span>
