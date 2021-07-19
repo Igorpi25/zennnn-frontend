@@ -214,8 +214,8 @@ export default defineComponent({
                         primary={false}
                         small
                         class={[
-                          'ring-inset bg-gray-900 text-[0.8125rem] text-gray-200 hover:text-gray-100 dark:hover:text-gray-100 rounded px-2',
-                          { 'text-gray-100': isDragOver },
+                          'ring-inset bg-white dark:bg-gray-900 text-[0.8125rem] text-gray-100 dark:text-gray-200 hover:text-gray-200 dark:hover:text-gray-100 rounded px-2',
+                          { 'text-gray-200 dark:text-gray-100': isDragOver },
                           { 'cursor-wait': loading },
                         ]}
                         v-slots={{

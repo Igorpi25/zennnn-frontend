@@ -38,7 +38,7 @@ export default defineComponent({
     return () => (
       <div>
         <div class="relative flex flex-wrap pb-4">
-          <h1 class="w-full text-2xl text-white font-semibold leading-tight">
+          <h1 class="w-full text-2xl text-gray-900 dark:text-white font-semibold leading-tight">
             {props.create ? t('supplier.createTitle') : t('supplier.editTitle')}
           </h1>
           {slots.back && (
@@ -47,8 +47,8 @@ export default defineComponent({
             </div>
           )}
         </div>
-        <div class="bg-gray-800 rounded-md p-2.5 mb-12">
-          <div class="h-11 flex items-center justify-end text-gray-100">
+        <div class="bg-light-gray-300 dark:bg-gray-800 rounded-md p-2.5 mb-12">
+          <div class="h-11 flex items-center justify-end text-gray-200 dark:text-gray-100">
             <Transition name="slide-x-reverse-transition">
               {!props.item.isRequiredFilled && (
                 <div class="flex items-center whitespace-nowrap pr-5 pb-1">
@@ -66,14 +66,14 @@ export default defineComponent({
               )}
             </Transition>
           </div>
-          <div class="bg-gray-600 rounded-md p-4 sm:p-5">
+          <div class="bg-light-gray-100 dark:bg-gray-600 rounded-md p-4 sm:p-5">
             <CompanyInfo
               loading={props.loading}
               item={props.item}
               create={props.create}
               {...{ onUpdate: updateValue }}
             />
-            <div class="mt-10 border-t border-gray-400" />
+            <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
             <BankDetailList
               loading={props.loading}
               emitChanges={props.create}
@@ -84,7 +84,7 @@ export default defineComponent({
               create={props.create}
               {...{ onUpdate: updateValue }}
             />
-            <div class="mt-10 border-t border-gray-400" />
+            <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
             <ContactList
               loading={props.loading}
               expanded={!props.create}
@@ -92,7 +92,7 @@ export default defineComponent({
               create={props.create}
               {...{ onUpdate: updateValue }}
             />
-            <div class="mt-10 border-t border-gray-400" />
+            <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
             <ShippingInfo
               loading={props.loading}
               expanded={!props.create}

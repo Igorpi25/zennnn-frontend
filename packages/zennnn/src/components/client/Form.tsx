@@ -115,11 +115,11 @@ export default defineComponent({
 
     return () => (
       <div>
-        <h1 class="text-2xl text-white font-semibold leading-tight mb-4">
+        <h1 class="text-2xl text-gray-900 dark:text-white font-semibold leading-tight mb-4">
           {props.create ? t('client.createTitle') : t('client.editTitle')}
         </h1>
-        <div class="bg-gray-800 rounded-md p-2.5 mb-12">
-          <div class="lg:h-11 flex flex-wrap lg:flex-nowrap">
+        <div class="bg-light-gray-300 dark:bg-gray-800 rounded-md p-2.5 mb-12">
+          <div class="lg:h-11 flex flex-wrap lg:flex-nowrap text-gray-200 dark:text-gray-100">
             <div class="h-11 flex order-last lg:order-none space-x-1 overflow-x-auto scrolling-touch">
               {tabs.value.map((item) => (
                 <button
@@ -133,7 +133,7 @@ export default defineComponent({
                     'bg-light-gray-100 dark:bg-gray-600',
                     clientType.value === item.value
                       ? 'text-gray-900 dark:text-white'
-                      : 'text-gray-200 dark:text-gray-100 bg-opacity-30 dark:bg-opacity-30',
+                      : 'bg-opacity-30 dark:bg-opacity-30',
                   ]}
                   role="tab"
                   tabindex="0"
@@ -168,7 +168,7 @@ export default defineComponent({
           {isLegalType.value ? (
             <div
               key="legal"
-              class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-4 sm:p-5"
+              class="bg-light-gray-100 dark:bg-gray-600 rounded-b-md sm:rounded-tr-md p-4 sm:p-5"
             >
               <LegalInfo
                 loading={props.loading}
@@ -177,7 +177,7 @@ export default defineComponent({
                 create={props.create}
                 {...{ onUpdate: updateValue }}
               />
-              <div class="mt-10 border-t border-gray-400" />
+              <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
               <LegalDetail
                 loading={props.loading}
                 expanded={!props.create}
@@ -185,7 +185,7 @@ export default defineComponent({
                 create={props.create}
                 {...{ onUpdate: updateValue }}
               />
-              <div class="mt-10 border-t border-gray-400" />
+              <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
               <ContactList
                 loading={props.loading}
                 expanded={!props.create}
@@ -193,7 +193,7 @@ export default defineComponent({
                 create={props.create}
                 {...{ onUpdate: updateValue }}
               />
-              <div class="mt-10 border-t border-gray-400" />
+              <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
               <div class="flex flex-wrap pb-5">
                 <div class="w-full lg:w-1/2 lg:pr-5">
                   <ShippingInfo
@@ -218,7 +218,7 @@ export default defineComponent({
           ) : isPrivateType.value ? (
             <div
               key="private"
-              class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-4 sm:p-5"
+              class="bg-light-gray-100 dark:bg-gray-600 rounded-b-md sm:rounded-tr-md p-4 sm:p-5"
             >
               <PrivateInfo
                 loading={props.loading}
@@ -227,7 +227,7 @@ export default defineComponent({
                 create={props.create}
                 {...{ onUpdate: updateValue }}
               />
-              <div class="mt-10 border-t border-gray-400" />
+              <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
               <PrivateDetail
                 loading={props.loading}
                 expanded={!props.create}
@@ -235,7 +235,7 @@ export default defineComponent({
                 create={props.create}
                 {...{ onUpdate: updateValue }}
               />
-              <div class="mt-10 border-t border-gray-400" />
+              <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
               <ContactList
                 loading={props.loading}
                 expanded={!props.create}
@@ -243,7 +243,7 @@ export default defineComponent({
                 create={props.create}
                 {...{ onUpdate: updateValue }}
               />
-              <div class="mt-10 border-t border-gray-400" />
+              <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
               <div class="flex flex-wrap pb-5">
                 <div class="w-full lg:w-1/2 lg:pr-5">
                   <ShippingInfo
@@ -269,7 +269,7 @@ export default defineComponent({
           ) : isOtherType.value ? (
             <div
               key="other"
-              class="bg-gray-600 rounded-b-md sm:rounded-tr-md p-4 sm:p-5"
+              class="bg-light-gray-100 dark:bg-gray-600 rounded-b-md sm:rounded-tr-md p-4 sm:p-5"
             >
               <LegalInfo
                 loading={props.loading}
@@ -278,7 +278,7 @@ export default defineComponent({
                 create={props.create}
                 {...{ onUpdate: updateValue }}
               />
-              <div class="mt-10 border-t border-gray-400" />
+              <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
               <LegalDetail
                 loading={props.loading}
                 expanded={!props.create}
@@ -286,7 +286,7 @@ export default defineComponent({
                 create={props.create}
                 {...{ onUpdate: updateValue }}
               />
-              <div class="mt-10 border-t border-gray-400" />
+              <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
               <ContactList
                 loading={props.loading}
                 expanded={!props.create}
@@ -294,7 +294,7 @@ export default defineComponent({
                 create={props.create}
                 {...{ onUpdate: updateValue }}
               />
-              <div class="mt-10 border-t border-gray-400" />
+              <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
               <div class="flex flex-wrap pb-5">
                 <div class="w-full lg:w-1/2 lg:pr-5">
                   <ShippingInfo

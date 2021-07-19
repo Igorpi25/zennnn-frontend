@@ -216,8 +216,12 @@ export default defineComponent({
               selected: boolean
             }) => (
               <>
-                <Icon class="mx-2">{item.icon}</Icon>
-                <div class="w-8 flex items-center">
+                <Icon class={['mx-2', { 'text-white': active }]}>
+                  {item.icon}
+                </Icon>
+                <div
+                  class={['w-8 flex items-center', { 'text-white': active }]}
+                >
                   {selected && <Icon>{ziChecked}</Icon>}
                 </div>
                 <span class={['ml-1', { 'text-white': active }]}>
