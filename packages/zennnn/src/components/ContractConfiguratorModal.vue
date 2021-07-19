@@ -28,8 +28,8 @@
       max-width="1024"
       :fullscreen="$breakpoint.xs.value"
     >
-      <RequisiteCard
-        ref="requisiteCard"
+      <CompanyForm
+        ref="companyForm"
         :org-id="$route.params.orgId"
         create
         is-component
@@ -474,14 +474,14 @@ import { CREATE_CONTRACT, UPDATE_CONTRACT } from '../graphql/mutations'
 
 // import ContractCompanyListModal from '@/components/ContractCompanyListModal.vue'
 import SaveBeforeCloseModal from '@/components/SaveBeforeCloseModal.vue'
-import RequisiteCard from '@/components/RequisiteCard.vue'
+import CompanyForm from '@/components/company/Form'
 
 export default {
   name: 'ContractConfiguratorModal',
   components: {
     // ContractCompanyListModal,
     SaveBeforeCloseModal,
-    RequisiteCard,
+    CompanyForm,
   },
   props: {
     blank: {
@@ -664,7 +664,7 @@ export default {
       this.requisiteDialog = false
       this.requisiteList = false
       setTimeout(() => {
-        this.$refs.requisiteCard.reset()
+        this.$refs.companyForm.reset()
         if (this.$refs.requisiteDialog.$refs.dialog) {
           this.$refs.requisiteDialog.$refs.dialog.scrollTop = 0
         }

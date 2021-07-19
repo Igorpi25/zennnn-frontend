@@ -497,8 +497,8 @@
       max-width="1110"
       content-class="scrolling-touch"
     >
-      <ClientCard
-        ref="clientCard"
+      <ClientForm
+        ref="clientForm"
         :org-id="orgId"
         create
         is-component
@@ -563,7 +563,7 @@ import {
 import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
 import { SPECS_DELTA } from '../graphql/subscriptions'
 
-import ClientCard from '../components/ClientCard.vue'
+import ClientForm from '@/components/client/Form'
 import Dialog from '../components/Dialog'
 
 import { confirmDialog } from '../utils/confirmDialog'
@@ -580,7 +580,7 @@ export default {
     DataTable,
     TextField,
     Select,
-    ClientCard,
+    ClientForm,
     Dialog,
   },
   setup() {
@@ -1127,8 +1127,8 @@ export default {
     createClient() {
       this.clientDialog = true
       this.$nextTick(() => {
-        if (this.$refs.clientCard) {
-          this.$refs.clientCard.reset()
+        if (this.$refs.clientForm) {
+          this.$refs.clientForm.reset()
           if (this.$refs.clientDialog.$refs.dialog) {
             this.$refs.clientDialog.$refs.dialog.scrollTop = 0
           }

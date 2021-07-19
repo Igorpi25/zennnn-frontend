@@ -108,7 +108,7 @@
             {{ $t('shipping.supplierSubtitle') }}
           </span>
         </h5>
-        <PrintCompanyInfo
+        <CompanyInfo
           class="pt-3"
           :item="requisite"
           :items="requisites"
@@ -128,11 +128,11 @@
             {{ $t('shipping.clientSubtitle') }}
           </span>
         </h5>
-        <PrintClient
+        <Client
           class="pt-3"
           v-model:search="clientSearch"
-          :client="specClient"
-          :clients="clients"
+          :item="specClient"
+          :items="clients"
           :readonly="!hasClient"
           @update="updateClient"
           @select-client="setSpecClient"
@@ -151,9 +151,9 @@
             </span>
           </h5>
         </Switch>
-        <PrintClientImporter
+        <ClientImporter
           class="pt-3"
-          :client="specClient"
+          :item="specClient"
           :readonly="!hasClient"
           :disabled="!isImporterActive"
           @update="updateClient"
@@ -166,7 +166,7 @@
             {{ $t('shipping.forDeliver') }}
           </span>
         </h5>
-        <PrintDelivery
+        <Shipment
           :item="shipment"
           class="pt-3"
           @update="$emit('update', $event)"
@@ -480,8 +480,8 @@
       max-width="1024"
       content-class="text-gray-100"
     >
-      <RequisiteCard
-        ref="requisiteCard"
+      <CompanyForm
+        ref="companyForm"
         :org-id="orgId"
         create
         is-component
@@ -497,8 +497,8 @@
       max-width="1110"
       content-class="dialog-full-height scrolling-touch"
     >
-      <ClientCard
-        ref="clientCard"
+      <ClientForm
+        ref="clientForm"
         :org-id="orgId"
         create
         is-component
@@ -526,12 +526,12 @@ import {
 
 import Countries from '@/assets/countries/codes.json'
 
-import PrintCompanyInfo from './CompanyDetail/PrintCompanyInfo.vue'
-import PrintClient from './CompanyDetail/PrintClient.vue'
-import PrintClientImporter from './CompanyDetail/PrintClientImporter.vue'
-import PrintDelivery from './CompanyDetail/PrintDelivery.vue'
-import RequisiteCard from './RequisiteCard.vue'
-import ClientCard from './ClientCard.vue'
+import CompanyInfo from '@/components/print/CompanyInfo'
+import Client from '@/components/print/Client'
+import ClientImporter from '@/components/print/ClientImporter'
+import Shipment from '@/components/print/Shipment'
+import CompanyForm from '@/components/company/Form'
+import ClientForm from '@/components/client/Form'
 
 import {
   UPDATE_CLIENT,
@@ -558,12 +558,12 @@ export default {
     Select,
     TextField,
     TextArea,
-    PrintCompanyInfo,
-    PrintDelivery,
-    PrintClient,
-    PrintClientImporter,
-    RequisiteCard,
-    ClientCard,
+    CompanyInfo,
+    Shipment,
+    Client,
+    ClientImporter,
+    CompanyForm,
+    ClientForm,
   },
   props: {
     orgId: String,
@@ -861,8 +861,8 @@ export default {
     createRequisite() {
       this.requisiteDialog = true
       this.$nextTick(() => {
-        if (this.$refs.requisiteCard) {
-          this.$refs.requisiteCard.reset()
+        if (this.$refs.companyForm) {
+          this.$refs.companyForm.reset()
           if (this.$refs.requisiteDialog.$refs.dialog) {
             this.$refs.requisiteDialog.$refs.dialog.scrollTop = 0
           }
@@ -876,8 +876,8 @@ export default {
     createClient() {
       this.clientDialog = true
       this.$nextTick(() => {
-        if (this.$refs.clientCard) {
-          this.$refs.clientCard.reset()
+        if (this.$refs.clientForm) {
+          this.$refs.clientForm.reset()
           if (this.$refs.clientDialog.$refs.dialog) {
             this.$refs.clientDialog.$refs.dialog.scrollTop = 0
           }

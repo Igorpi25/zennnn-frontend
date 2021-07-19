@@ -439,8 +439,8 @@
       max-width="1110"
       content-class="dialog-full-height scrolling-touch"
     >
-      <ClientCard
-        ref="clientCard"
+      <ClientForm
+        ref="clientForm"
         :org-id="orgId"
         create
         is-component
@@ -514,7 +514,7 @@ import {
 import InvoiceHeader from '../InvoiceHeader.vue'
 import InvoiceContent from '../InvoiceContent.vue'
 import SpecSummary from '../SpecSummary.vue'
-import ClientCard from '../ClientCard.vue'
+import ClientForm from '@/components/client/Form'
 import Comments from '../Comments.vue'
 import SpecShipping from '../SpecShipping.vue'
 import SpecCost from '../SpecCost.vue'
@@ -534,7 +534,7 @@ export default {
     InvoiceHeader,
     InvoiceContent,
     SpecSummary,
-    ClientCard,
+    ClientForm,
     Comments,
     SpecShipping,
     SpecCost,
@@ -911,8 +911,8 @@ export default {
     createClient() {
       this.clientDialog = true
       this.$nextTick(() => {
-        if (this.$refs.clientCard) {
-          this.$refs.clientCard.reset()
+        if (this.$refs.clientForm) {
+          this.$refs.clientForm.reset()
           if (this.$refs.clientDialog.$refs.dialog) {
             this.$refs.clientDialog.$refs.dialog.scrollTop = 0
           }

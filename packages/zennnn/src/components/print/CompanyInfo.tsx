@@ -42,7 +42,7 @@ export default defineComponent({
       email: (v: EmptyString) => (v && /.+@.+\..+/.test(v)) || t('rule.email'),
     })
 
-    const { mutate: updateMutate, loading: updateLoading } = useMutation<
+    const { mutate: updateMutate } = useMutation<
       UpdateCompanyBankDetail,
       UpdateCompanyBankDetailVariables
     >(UPDATE_COMPANY_BANK_DETAIL)

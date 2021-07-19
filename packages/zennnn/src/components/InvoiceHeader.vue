@@ -205,8 +205,8 @@
       max-width="1110"
       content-class="dialog-full-height scrolling-touch"
     >
-      <SupplierCard
-        ref="supplierCard"
+      <SupplierForm
+        ref="supplierForm"
         :org-id="orgId"
         create
         is-component
@@ -236,7 +236,7 @@ import { InvoiceStatus, Role } from '../graphql/enums'
 import { SEARCH_SUPPLIERS } from '../graphql/queries'
 import { SET_INVOICE_SUPPLIER } from '../graphql/mutations'
 
-import SupplierCard from './SupplierCard.vue'
+import SupplierForm from '@/components/supplier/Form'
 
 export default {
   name: 'InvoiceHeader',
@@ -247,7 +247,7 @@ export default {
     Checkbox,
     TextField,
     DatePicker,
-    SupplierCard,
+    SupplierForm,
   },
   props: {
     item: {
@@ -348,7 +348,7 @@ export default {
       this.createSupplierInvoice = null
       this.searchSuppliersRefetch()
       setTimeout(() => {
-        this.$refs.supplierCard.reset()
+        this.$refs.supplierForm.reset()
         if (this.$refs.supplierDialog.$refs.dialog) {
           this.$refs.supplierDialog.$refs.dialog.scrollTop = 0
         }
