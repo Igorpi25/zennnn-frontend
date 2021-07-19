@@ -514,7 +514,6 @@ import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApolloClient, useQuery, useResult } from '@vue/apollo-composable'
 import { wrapInArray } from 'vue-supp'
-
 import {
   ziFilter,
   ziFilterOutline,
@@ -533,7 +532,6 @@ import {
   ziMoneyTernover,
   ziNumberOffDocument,
 } from '@zennnn/icons'
-
 import {
   Btn,
   Icon,
@@ -545,7 +543,7 @@ import {
   Select,
   DataTable,
 } from '@zennnn/core'
-
+import Dialog from 'shared/components/Dialog'
 import {
   Role,
   Typename,
@@ -564,7 +562,6 @@ import { CREATE_SPEC, DELETE_SPEC } from '../graphql/mutations'
 import { SPECS_DELTA } from '../graphql/subscriptions'
 
 import ClientForm from '@/components/client/Form'
-import Dialog from '../components/Dialog'
 
 import { confirmDialog } from '../utils/confirmDialog'
 

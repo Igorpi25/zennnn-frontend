@@ -33,7 +33,7 @@ import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'
 export default defineComponent({
   name: 'App',
 
-  setup() {
+  setup(props, { slots }) {
     const route = useRoute()
     const router = useRouter()
     const { t } = useI18n()
@@ -67,7 +67,12 @@ export default defineComponent({
 
     return () => (
       <>
-        <AppBar altMode>
+        <AppBar
+          altMode
+          v-slots={{
+            start: () => slots.start?.(),
+          }}
+        >
           <div class="flex items-center">
             <LocalePicker
               v-slots={{

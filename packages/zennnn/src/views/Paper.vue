@@ -1,6 +1,12 @@
 <template>
   <div class="content">
-    <Header :paper-org-name="spec.orgName" :org="orgId" />
+    <ZAppBar>
+      <template v-slot:start>
+        <span class="w-px h-5 border-light-gray-300 dark:border-gray-300" />
+        <span class="text-lg text-white leading-none">{{ spec.orgName }}</span>
+      </template>
+    </ZAppBar>
+
     <div class="container mb-12">
       <div class="pt-8 pb-16">
         <div
@@ -961,7 +967,7 @@ import { getSpecExpandedInvoices } from '../graphql/resolvers'
 
 import printInvoice from '../components/printInvoice'
 
-import Header from '../components/Header'
+import ZAppBar from '@/components/core/ZAppBar'
 import Copyright from '@/components/core/Copyright'
 import Comments from '../components/Comments'
 import PaperInvoice from '../components/PaperInvoice'
@@ -971,7 +977,7 @@ export default {
   components: {
     Icon,
     Progress,
-    Header,
+    ZAppBar,
     Copyright,
     Comments,
     PaperInvoice,
