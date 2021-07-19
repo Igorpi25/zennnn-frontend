@@ -232,7 +232,7 @@ export default defineComponent({
                 )}
                 <img
                   src={
-                    require('@/assets/icons/colorful/Check-blue-xs.svg').default
+                    require('@zennnn/icons/colorfull/Check-blue-xs.svg').default
                   }
                   alt="verified"
                   class="absolute top-0 left-0 w-full h-full"
