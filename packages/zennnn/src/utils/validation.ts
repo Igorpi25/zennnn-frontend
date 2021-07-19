@@ -1,12 +1,24 @@
 import phonesMask from '@/assets/countries/phones-unformatted.json'
-import { ShipmentType } from '@/graphql/enums'
+import { ShipmentType } from '@/graphql/types'
 
-const VALIDATION_TYPE = {
-  PERSON: 1,
-  PHONE: 2,
-  EMAIL: 3,
-  LOCALE: 4,
-  REQUIRE: 5,
+import type {
+  ClientFragment,
+  SupplierFragment,
+  OrgRequisiteFragment,
+  PersonFragment,
+  PhoneFragment,
+  BankDetailFragment,
+  ShipmentFragment,
+  CustomsFragment,
+} from '@/graphql/types'
+import type { EmptyString } from '@/types'
+
+enum VALIDATION_TYPE {
+  PERSON = 1,
+  PHONE = 2,
+  EMAIL = 3,
+  LOCALE = 4,
+  REQUIRE = 5,
 }
 
 const LEGAL_CLIENT_VALIDATION_FIELDS = {
@@ -66,6 +78,15 @@ const LEGAL_CLIENT_VALIDATION_FIELDS = {
       type: VALIDATION_TYPE.PHONE,
     },
   ],
+} as {
+  REQUIRED: {
+    path: keyof ClientFragment
+    type: VALIDATION_TYPE
+  }[]
+  OPTIONAL: {
+    path: keyof ClientFragment
+    type: VALIDATION_TYPE
+  }[]
 }
 
 const PRIVATE_CLIENT_VALIDATION_FIELDS = {
@@ -97,6 +118,15 @@ const PRIVATE_CLIENT_VALIDATION_FIELDS = {
       type: VALIDATION_TYPE.REQUIRE,
     },
   ],
+} as {
+  REQUIRED: {
+    path: keyof ClientFragment
+    type: VALIDATION_TYPE
+  }[]
+  OPTIONAL: {
+    path: keyof ClientFragment
+    type: VALIDATION_TYPE
+  }[]
 }
 
 const SUPPLIER_VALIDATION_FIELDS = {
@@ -140,6 +170,15 @@ const SUPPLIER_VALIDATION_FIELDS = {
       type: VALIDATION_TYPE.PHONE,
     },
   ],
+} as {
+  REQUIRED: {
+    path: keyof SupplierFragment
+    type: VALIDATION_TYPE
+  }[]
+  OPTIONAL: {
+    path: keyof SupplierFragment
+    type: VALIDATION_TYPE
+  }[]
 }
 
 const COMPANY_DETAIL_VALIDATION_FIELDS = {
@@ -179,6 +218,15 @@ const COMPANY_DETAIL_VALIDATION_FIELDS = {
       type: VALIDATION_TYPE.REQUIRE,
     },
   ],
+} as {
+  REQUIRED: {
+    path: keyof OrgRequisiteFragment
+    type: VALIDATION_TYPE
+  }[]
+  OPTIONAL: {
+    path: keyof OrgRequisiteFragment
+    type: VALIDATION_TYPE
+  }[]
 }
 
 const COMPANY_BANK_DETAIL_VALIDATION_FIELDS = {
@@ -202,9 +250,18 @@ const COMPANY_BANK_DETAIL_VALIDATION_FIELDS = {
       type: VALIDATION_TYPE.REQUIRE,
     },
   ],
+} as {
+  REQUIRED: {
+    path: keyof BankDetailFragment
+    type: VALIDATION_TYPE
+  }[]
+  OPTIONAL: {
+    path: keyof BankDetailFragment
+    type: VALIDATION_TYPE
+  }[]
 }
 
-const validatePerson = (val) => {
+const validatePerson = (val: PersonFragment) => {
   const person = val || {}
   let result = false
   if (person.isName) {
@@ -215,7 +272,7 @@ const validatePerson = (val) => {
   return result
 }
 
-const validatePhone = (val) => {
+const validatePhone = (val: PhoneFragment) => {
   const countryCode = val && val.countryCode
   if (!countryCode) return false
   const mask = phonesMask[countryCode]
@@ -225,13 +282,13 @@ const validatePhone = (val) => {
   return phone.length === mask.length
 }
 
-const validateEmail = (val) => {
+const validateEmail = (val: EmptyString) => {
   return val && /.+@.+\..+/.test(val)
 }
 
-const validateRequire = (val) => !!val
+const validateRequire = (val: any) => !!val
 
-const validateValue = (type, value) => {
+const validateValue = (type: VALIDATION_TYPE, value: any) => {
   switch (type) {
     case VALIDATION_TYPE.PERSON:
       return validatePerson(value)
@@ -247,7 +304,7 @@ const validateValue = (type, value) => {
   }
 }
 
-export const validateLegalClient = (doc) => {
+export const validateLegalClient = (doc: ClientFragment) => {
   const isRequiredFilled = LEGAL_CLIENT_VALIDATION_FIELDS.REQUIRED.every(
     (field) => {
       const value = doc[field.path]
@@ -266,7 +323,7 @@ export const validateLegalClient = (doc) => {
   }
 }
 
-export const validatePrivateClient = (doc) => {
+export const validatePrivateClient = (doc: ClientFragment) => {
   const isRequiredFilled = PRIVATE_CLIENT_VALIDATION_FIELDS.REQUIRED.every(
     (field) => {
       const value = doc[field.path]
@@ -285,7 +342,7 @@ export const validatePrivateClient = (doc) => {
   }
 }
 
-export const validateSupplier = (doc) => {
+export const validateSupplier = (doc: SupplierFragment) => {
   const isRequiredFilled = SUPPLIER_VALIDATION_FIELDS.REQUIRED.every(
     (field) => {
       const value = doc[field.path]
@@ -304,8 +361,8 @@ export const validateSupplier = (doc) => {
   }
 }
 
-export const validateCompanyDetail = (doc) => {
-  const bankDetails = doc.bankDetails || []
+export const validateCompanyDetail = (doc: OrgRequisiteFragment) => {
+  const bankDetails = doc.bankDetails
   let isRequiredFilled = COMPANY_DETAIL_VALIDATION_FIELDS.REQUIRED.every(
     (field) => {
       const value = doc[field.path]
@@ -318,7 +375,7 @@ export const validateCompanyDetail = (doc) => {
       return validateValue(field.type, value)
     }
   )
-  if (bankDetails.length > 0) {
+  if (bankDetails && bankDetails.length > 0) {
     if (isRequiredFilled) {
       isRequiredFilled = bankDetails.every((item) => {
         return COMPANY_BANK_DETAIL_VALIDATION_FIELDS.REQUIRED.every((field) => {
@@ -327,7 +384,7 @@ export const validateCompanyDetail = (doc) => {
         })
       })
     }
-    if (isOptionalFilled) {
+    if (isOptionalFilled && bankDetails) {
       isOptionalFilled = bankDetails.every((item) => {
         return COMPANY_BANK_DETAIL_VALIDATION_FIELDS.OPTIONAL.every((field) => {
           const value = item[field.path]
@@ -343,12 +400,12 @@ export const validateCompanyDetail = (doc) => {
 }
 
 export const validateInvoicePrint = (
-  company,
-  client,
-  shipment,
-  customs,
-  amountInWords,
-  amountInWordsClientLang
+  company: OrgRequisiteFragment,
+  client: ClientFragment,
+  shipment: ShipmentFragment,
+  customs: CustomsFragment,
+  amountInWords: EmptyString,
+  amountInWordsClientLang: EmptyString
 ) => {
   const requireValidations = []
   const optionalValidations = []
@@ -362,21 +419,20 @@ export const validateInvoicePrint = (
   requireValidations.push(validateValue(VALIDATION_TYPE.PHONE, company.phone))
   requireValidations.push(validateValue(VALIDATION_TYPE.EMAIL, company.email))
   // bank details
-  const bankDetail =
-    (company.bankDetails || []).find(
-      (el) => el.id === company.defaultBankDetail
-    ) || {}
-  requireValidations.push(
-    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.bankName)
+  const bankDetail = (company.bankDetails || []).find(
+    (el) => el.id === company.defaultBankDetail
   )
   requireValidations.push(
-    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.bankAddress)
+    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail?.bankName)
   )
   requireValidations.push(
-    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.bankAccountNumber)
+    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail?.bankAddress)
   )
   requireValidations.push(
-    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail.swift)
+    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail?.bankAccountNumber)
+  )
+  requireValidations.push(
+    validateValue(VALIDATION_TYPE.REQUIRE, bankDetail?.swift)
   )
 
   optionalValidations.push(validateValue(VALIDATION_TYPE.REQUIRE, company.vat))
@@ -421,48 +477,48 @@ export const validateInvoicePrint = (
 
   if (shipmentType !== ShipmentType.UNDEFINED) {
     if (shipmentType === ShipmentType.MARINE) {
-      const marine = shipment.marine || {}
+      const marine = shipment.marine
       requireValidations.push(customs.terms)
-      requireValidations.push(marine.billOfLadingNo)
-      requireValidations.push(marine.containersCount)
-      optionalValidations.push(marine.ship)
-      optionalValidations.push(marine.containersNo)
-      optionalValidations.push(marine.exportDate)
+      requireValidations.push(marine?.billOfLadingNo)
+      requireValidations.push(marine?.containersCount)
+      optionalValidations.push(marine?.ship)
+      optionalValidations.push(marine?.containersNo)
+      optionalValidations.push(marine?.exportDate)
     } else if (shipmentType === ShipmentType.AIR) {
-      const air = shipment.air || {}
-      requireValidations.push(air.airWaybillNo)
-      requireValidations.push(air.numbersOfPkg)
-      optionalValidations.push(air.flight)
+      const air = shipment.air
+      requireValidations.push(air?.airWaybillNo)
+      requireValidations.push(air?.numbersOfPkg)
+      optionalValidations.push(air?.flight)
     } else if (shipmentType === ShipmentType.RAILWAY) {
-      const railway = shipment.railway || {}
+      const railway = shipment.railway
       requireValidations.push(customs.terms)
-      requireValidations.push(railway.internationalWaybillNo)
-      requireValidations.push(railway.containersCount)
-      optionalValidations.push(railway.train)
-      optionalValidations.push(railway.containersNo)
-      optionalValidations.push(railway.exportDate)
+      requireValidations.push(railway?.internationalWaybillNo)
+      requireValidations.push(railway?.containersCount)
+      optionalValidations.push(railway?.train)
+      optionalValidations.push(railway?.containersNo)
+      optionalValidations.push(railway?.exportDate)
     } else if (shipmentType === ShipmentType.CAR) {
-      const car = shipment.car || {}
+      const car = shipment.car
       requireValidations.push(customs.terms)
-      requireValidations.push(car.internationalWaybillNo)
-      optionalValidations.push(car.vehicleNo)
-      optionalValidations.push(car.semitrailerNo)
-      optionalValidations.push(car.exportDate)
+      requireValidations.push(car?.internationalWaybillNo)
+      optionalValidations.push(car?.vehicleNo)
+      optionalValidations.push(car?.semitrailerNo)
+      optionalValidations.push(car?.exportDate)
     } else if (shipmentType === ShipmentType.MIXED) {
-      const mixed = shipment.mixed || {}
+      const mixed = shipment.mixed
       requireValidations.push(customs.terms)
-      requireValidations.push(mixed.internationalWaybillNo)
-      optionalValidations.push(mixed.ship)
-      optionalValidations.push(mixed.flight)
-      optionalValidations.push(mixed.train)
-      optionalValidations.push(mixed.vehicleNo)
-      optionalValidations.push(mixed.containersNo)
-      optionalValidations.push(mixed.exportDate)
+      requireValidations.push(mixed?.internationalWaybillNo)
+      optionalValidations.push(mixed?.ship)
+      optionalValidations.push(mixed?.flight)
+      optionalValidations.push(mixed?.train)
+      optionalValidations.push(mixed?.vehicleNo)
+      optionalValidations.push(mixed?.containersNo)
+      optionalValidations.push(mixed?.exportDate)
     } else if (shipmentType === ShipmentType.EXPRESS) {
-      const express = shipment.express || {}
-      requireValidations.push(express.postalNo)
-      requireValidations.push(express.numbersOfPkg)
-      optionalValidations.push(express.deliveryService)
+      const express = shipment.express
+      requireValidations.push(express?.postalNo)
+      requireValidations.push(express?.numbersOfPkg)
+      optionalValidations.push(express?.deliveryService)
     }
   }
   optionalValidations.push(amountInWords)
