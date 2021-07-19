@@ -202,9 +202,9 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       (val) => {
-        if (!val) return
         setValue(val)
-      }
+      },
+      { immediate: true }
     )
 
     watch(
@@ -293,7 +293,7 @@ export default defineComponent({
       return result
     }
 
-    function setValue(val: PhoneInput) {
+    function setValue(val: PhoneInput | null) {
       let value = val && val.phone
       if (value === unmasked.value) return
       value = value || ''
@@ -355,10 +355,10 @@ export default defineComponent({
         itemText="code"
         class="phone"
         controlClass={classNames(
-          'pl-2 pr-0 bg-light-gray-400 dark:bg-gray-400 ',
+          'pl-2 pr-0 bg-light-gray-400 dark:bg-gray-400',
           codeInputRef.value?.isMenuActive || 'rounded'
         )}
-        inputClass="flex-shrink-0 whitespace-nowrap"
+        inputClass="flex-shrink-0 whitespace-nowrap w-auto"
         contentOnIntersect
         {...{
           'onUpdate:modelValue': onCodeSelect,
@@ -424,7 +424,6 @@ export default defineComponent({
                 'rounded-l-none pl-2',
                 codeInputRef.value?.isMenuActive && 'rounded-br-none'
               )}
-              inputClass="w-0"
               {...{
                 onFocus: () => {
                   codeInputRef.value?.closeMenu()
