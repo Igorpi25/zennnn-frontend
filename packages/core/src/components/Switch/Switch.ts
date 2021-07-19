@@ -30,6 +30,7 @@ export default defineComponent({
     trueValue: null,
     falseValue: null,
     small: Boolean,
+    controlClass: String,
   },
 
   emits: ['update:modelValue', 'update:error', 'change'],
@@ -144,9 +145,7 @@ export default defineComponent({
       return h(
         'div',
         {
-          class: {
-            switch__control: true,
-          },
+          class: ['switch__control', props.controlClass],
         },
         [genSwitch(), genSwitchLabel()]
       )
