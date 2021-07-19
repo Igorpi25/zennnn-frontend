@@ -50,6 +50,7 @@
 }
 
 .input__input {
+  @apply max-w-full min-w-0 w-full;
   @apply flex-auto rounded p-2;
   @apply appearance-none focus:outline-none truncate;
   @apply transition-colors duration-100 ease-out;
