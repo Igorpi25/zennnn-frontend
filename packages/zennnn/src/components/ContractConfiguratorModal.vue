@@ -529,8 +529,8 @@ export default {
     orgId() {
       return this.$route.params.orgId
     },
-    reqId() {
-      return this.contract.requisiteId || ''
+    companyId() {
+      return this.contract.companyId || ''
     },
   },
   watch: {
@@ -608,7 +608,7 @@ export default {
           })
         })
 
-        input.requisiteId = this.reqId
+        input.requisiteId = this.companyId
 
         this.$set(input, 'items', items)
         this.$set(input, 'specItems', specItems)
