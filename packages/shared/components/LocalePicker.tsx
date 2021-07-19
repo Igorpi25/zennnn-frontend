@@ -16,6 +16,14 @@ export interface LocaleActivatorSlotProps {
   locale?: string
 }
 
+export function getLocaleIcon(value: string): string {
+  const item = LOCALES_LIST.find((el) => el.value === value)
+  if (item) {
+    return item.icon
+  }
+  return 'USA.svg'
+}
+
 export default defineComponent({
   props: {
     placementStart: Boolean,
