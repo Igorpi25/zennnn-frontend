@@ -1,9 +1,7 @@
-import { defineComponent, Transition, computed } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuery } from '@vue/apollo-composable'
 import { useModel } from 'vue-supp'
-import { ziStatusPointSm } from '@zennnn/icons'
-import { Icon } from '@zennnn/core'
 import { GET_ORG_NEXT_CLIENT_UID } from '@/graphql/queries'
 import { ClientType } from '@/graphql/types'
 import PrivateInfo from '@/components/entity/PrivateInfo'
@@ -13,6 +11,7 @@ import LegalDetail from '@/components/entity/LegalDetail'
 import ContactList from '@/components/entity/ContactList'
 import ShippingInfo from '@/components/entity/ShippingInfo'
 import ExtraInfo from '@/components/entity/ExtraInfo'
+import ValidationStatus from '@/components/entity/ValidationStatus'
 import { replaceAt } from '@/utils/replaceAt'
 
 import type { PropType } from 'vue'
@@ -146,24 +145,11 @@ export default defineComponent({
 
             <div class="flex-grow" />
 
-            <div class="w-full lg:w-auto flex items-center justify-end">
-              <Transition name="slide-x-reverse-transition">
-                {!props.item.isRequiredFilled && (
-                  <div class="flex items-center whitespace-nowrap pr-5 pb-1">
-                    <Icon class="text-pink-500">{ziStatusPointSm}</Icon>
-                    <span>{t('print.required')}</span>
-                  </div>
-                )}
-              </Transition>
-              <Transition name="slide-x-reverse-transition">
-                {!props.item.isOptionalFilled && (
-                  <div class="flex items-center whitespace-nowrap pr-5 pb-1">
-                    <Icon class="text-yellow-500">{ziStatusPointSm}</Icon>
-                    <span>{t('print.warning')}</span>
-                  </div>
-                )}
-              </Transition>
-            </div>
+            <ValidationStatus
+              requiredFilled={props.item.isRequiredFilled}
+              optionalFilled={props.item.isOptionalFilled}
+              class="w-full lg:w-auto"
+            />
           </div>
           {isLegalType.value ? (
             <div
