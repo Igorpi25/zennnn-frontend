@@ -1,8 +1,8 @@
 import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useMutation } from '@vue/apollo-composable'
-import { ziChevronRight, ziCloseDelete } from '@zennnn/icons'
-import { Btn, Icon, ExpandTransition } from '@zennnn/core'
+import { ziCloseDelete } from '@zennnn/icons'
+import { Btn, Icon } from '@zennnn/core'
 import { GET_ORG_REQUISITE } from '@/graphql/queries'
 import {
   CREATE_COMPANY_BANK_DETAIL,
@@ -11,6 +11,7 @@ import {
 } from '@/graphql/mutations'
 import { validateCompanyDetail } from '../../utils/validation'
 import BankDetailItem from './BankDetailItem'
+import Expand from './Expand'
 
 import type { PropType } from 'vue'
 import type {
@@ -51,7 +52,6 @@ export default defineComponent({
 
     // TODO: return id of deleted item
     const deleteItemId = ref<string>()
-    const expanded = ref(props.expanded)
 
     const { mutate: createMutate, loading: createLoading } = useMutation<
       CreateCompanyBankDetail,
@@ -133,10 +133,6 @@ export default defineComponent({
       },
     })
 
-    function toggleExpand() {
-      expanded.value = !expanded.value
-    }
-
     function addData() {
       if (props.emitChanges) {
         emit('update', { bankDetails: [...props.items, {}] })
@@ -182,81 +178,60 @@ export default defineComponent({
     }
 
     return () => (
-      <div>
-        <div class="flex items-center text-lg leading-tight pt-10">
-          <div class="flex-grow text-white font-semibold tracking-widest uppercase">
-            {t('companyDetail.bankDetail')}
-          </div>
-          <div>
-            <Btn icon mini text {...{ onClick: toggleExpand }}>
-              <Icon
-                class={{
-                  'transition-transform': true,
-                  'rotate-90': expanded,
-                }}
-              >
-                {ziChevronRight}
-              </Icon>
-            </Btn>
+      <Expand title={t('companyDetail.bankDetail')} expanded={props.expanded}>
+        <div>
+          <div class="flex flex-wrap pt-4">
+            {props.items.length > 0 ? (
+              props.items.map((item, i) => (
+                <div class="w-full relative">
+                  {i > 0 && <div class="mt-10 mb-8 border-b border-gray-400" />}
+                  {i > 0 && (
+                    <div class="absolute top-0 right-0 pt-12">
+                      <Btn
+                        icon
+                        text
+                        mini
+                        class="text-gray-200"
+                        {...{ onClick: () => deleteData(i, item.id) }}
+                      >
+                        <Icon>{ziCloseDelete}</Icon>
+                      </Btn>
+                    </div>
+                  )}
+                  <BankDetailItem
+                    loading={props.loading}
+                    create={i === props.items.length - 1}
+                    createLoading={createLoading.value}
+                    item={item}
+                    mainBankDetail={Boolean(
+                      item.id && item.id === props.defaultBankDetail
+                    )}
+                    {...{
+                      onCreate: addData,
+                      onUpdate: (val: any) => updateData(i, item, val),
+                      onDelete: () => deleteData(i, item.id),
+                      onSetMainBankDetail: (val: string) =>
+                        emit('update', { defaultBankDetail: val }),
+                    }}
+                  />
+                </div>
+              ))
+            ) : (
+              <div class="w-full lg:w-1/2 pt-10">
+                <Btn
+                  loading={createLoading.value}
+                  block
+                  outlined
+                  small
+                  {...{ onClick: addData }}
+                >
+                  {t('companyDetail.addBankDetail')}
+                </Btn>
+              </div>
+            )}
           </div>
         </div>
-        <ExpandTransition>
-          <div v-show={expanded.value}>
-            <div class="flex flex-wrap pt-4">
-              {props.items.length > 0 ? (
-                props.items.map((item, i) => (
-                  <div class="w-full relative">
-                    {i > 0 && (
-                      <div class="mt-10 mb-8 border-b border-gray-400" />
-                    )}
-                    {i > 0 && (
-                      <div class="absolute top-0 right-0 pt-12">
-                        <Btn
-                          icon
-                          text
-                          mini
-                          class="text-gray-200"
-                          {...{ onClick: () => deleteData(i, item.id) }}
-                        >
-                          <Icon>{ziCloseDelete}</Icon>
-                        </Btn>
-                      </div>
-                    )}
-                    <BankDetailItem
-                      loading={props.loading}
-                      create={i === props.items.length - 1}
-                      createLoading={createLoading.value}
-                      item={item}
-                      mainBankDetail={Boolean(
-                        item.id && item.id === props.defaultBankDetail
-                      )}
-                      {...{
-                        onCreate: addData,
-                        onUpdate: (val: any) => updateData(i, item, val),
-                        onDelete: () => deleteData(i, item.id),
-                        onSetMainBankDetail: (val: string) =>
-                          emit('update', { defaultBankDetail: val }),
-                      }}
-                    />
-                  </div>
-                ))
-              ) : (
-                <div class="w-full lg:w-1/2 pt-10">
-                  <Btn
-                    loading={createLoading.value}
-                    block
-                    outlined
-                    small
-                    {...{ onClick: addData }}
-                  >
-                    {t('companyDetail.addBankDetail')}
-                  </Btn>
-                </div>
-              )}
-            </div>
-          </div>
-        </ExpandTransition>
-      </div>
+      </Expand>
     )
   },
 })

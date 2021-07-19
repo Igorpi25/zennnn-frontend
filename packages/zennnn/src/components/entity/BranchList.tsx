@@ -1,8 +1,7 @@
 import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useMutation } from '@vue/apollo-composable'
-import { ziChevronRight } from '@zennnn/icons'
-import { Btn, Icon, ExpandTransition } from '@zennnn/core'
+import { Btn } from '@zennnn/core'
 import { BranchType } from '@/graphql/types'
 import { GET_SUPPLIER } from '@/graphql/queries'
 import {
@@ -11,6 +10,7 @@ import {
   DELETE_SUPPLIER_BRANCH,
 } from '@/graphql/mutations'
 import BranchItem from './BranchItem'
+import Expand from './Expand'
 
 import type { PropType } from 'vue'
 import type {
@@ -50,7 +50,6 @@ export default defineComponent({
 
     // TODO: return id of deleted item
     const deleteItemId = ref<string>()
-    const expanded = ref(props.expanded)
 
     const { mutate: createMutate, loading: createLoading } = useMutation<
       CreateSupplierBranch,
@@ -120,10 +119,6 @@ export default defineComponent({
       },
     })
 
-    function toggleExpand() {
-      expanded.value = !expanded.value
-    }
-
     function addData() {
       if (props.emitChanges) {
         emit('update', {
@@ -170,63 +165,47 @@ export default defineComponent({
     }
 
     return () => (
-      <div>
-        <div class="flex items-center text-lg leading-tight pt-10">
-          <div class="flex-grow text-white font-semibold tracking-widest uppercase">
-            {t('companyDetail.supplierBranchList')}
+      <Expand
+        title={t('companyDetail.supplierBranchList')}
+        expanded={props.expanded}
+      >
+        <div>
+          <div class="grid md:grid-cols-2 gap-x-4 lg:gap-x-10 pt-4">
+            {props.items.map((item, i) => (
+              <div>
+                {i > 0 && (
+                  <div
+                    class={[
+                      'mt-10 mb-8 border-b border-gray-400',
+                      { 'md:hidden': i === 1 },
+                    ]}
+                  />
+                )}
+                <BranchItem
+                  loading={props.loading}
+                  item={item}
+                  locale={props.locale}
+                  {...{
+                    onUpdate: (val: any) => updateData(i, item, val),
+                    onDelete: () => deleteData(i, item.id),
+                  }}
+                />
+              </div>
+            ))}
           </div>
-          <div>
-            <Btn icon mini text {...{ onClick: toggleExpand }}>
-              <Icon
-                class={{
-                  'transition-transform': true,
-                  'rotate-90': expanded,
-                }}
-              >
-                {ziChevronRight}
-              </Icon>
+          <div class="grid md:grid-cols-2 gap-x-4 lg:gap-x-10 pt-10">
+            <Btn
+              loading={createLoading.value}
+              block
+              outlined
+              small
+              {...{ onClick: addData }}
+            >
+              {t('companyDetail.addBranch')}
             </Btn>
           </div>
         </div>
-        <ExpandTransition>
-          <div v-show={expanded.value}>
-            <div class="grid md:grid-cols-2 gap-x-4 lg:gap-x-10 pt-4">
-              {props.items.map((item, i) => (
-                <div>
-                  {i > 0 && (
-                    <div
-                      class={[
-                        'mt-10 mb-8 border-b border-gray-400',
-                        { 'md:hidden': i === 1 },
-                      ]}
-                    />
-                  )}
-                  <BranchItem
-                    loading={props.loading}
-                    item={item}
-                    locale={props.locale}
-                    {...{
-                      onUpdate: (val: any) => updateData(i, item, val),
-                      onDelete: () => deleteData(i, item.id),
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-            <div class="grid md:grid-cols-2 gap-x-4 lg:gap-x-10 pt-10">
-              <Btn
-                loading={createLoading.value}
-                block
-                outlined
-                small
-                {...{ onClick: addData }}
-              >
-                {t('companyDetail.addBranch')}
-              </Btn>
-            </div>
-          </div>
-        </ExpandTransition>
-      </div>
+      </Expand>
     )
   },
 })

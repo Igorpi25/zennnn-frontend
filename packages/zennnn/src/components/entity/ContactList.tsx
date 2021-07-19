@@ -1,9 +1,9 @@
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ziChevronRight } from '@zennnn/icons'
-import { Btn, Icon, ExpandTransition } from '@zennnn/core'
+import { Btn } from '@zennnn/core'
 import { ContactType } from '@/graphql/types'
 import ContactItem from './ContactItem'
+import Expand from './Expand'
 
 import type { PropType } from 'vue'
 import type { ContactInput } from '@/graphql/types'
@@ -28,9 +28,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = useI18n()
 
-    const expanded = ref(props.expanded)
-
-    // TODO: in typescript should remove __typename?
     // filter items fron __typename for fully array update
     const clearedItems = computed(() =>
       props.items.map((item) => ({
@@ -38,10 +35,6 @@ export default defineComponent({
         contact: item.contact,
       }))
     )
-
-    function toggleExpand() {
-      expanded.value = !expanded.value
-    }
 
     function addData() {
       emit('update', {
@@ -63,58 +56,39 @@ export default defineComponent({
     }
 
     return () => (
-      <div>
-        <div class="flex items-center text-lg leading-tight pt-10">
-          <div class="flex-grow text-white font-semibold tracking-widest uppercase">
-            {t('companyDetail.contactList')}
-          </div>
-          <div>
-            <Btn icon mini text {...{ onClick: toggleExpand }}>
-              <Icon
-                class={{
-                  'transition-transform': true,
-                  'rotate-90': expanded,
+      <Expand title={t('companyDetail.contactList')} expanded={props.expanded}>
+        <div>
+          <div
+            class={[
+              clearedItems.value.length > 0 ? 'pt-10' : 'pt-4',
+              'grid md:grid-cols-2 gap-y-10 gap-x-4 lg:gap-x-10',
+            ]}
+          >
+            {clearedItems.value.map((item, i) => (
+              <ContactItem
+                loading={props.loading}
+                item={item}
+                {...{
+                  onUpdate: (val: ContactInput) => updateData(i, item, val),
+                  onDelete: () => deleteData(i),
                 }}
-              >
-                {ziChevronRight}
-              </Icon>
+              />
+            ))}
+          </div>
+          <div class="grid md:grid-cols-2 gap-y-10 gap-x-4 lg:gap-x-10 pt-10">
+            <Btn
+              block
+              outlined
+              small
+              {...{
+                onClick: addData,
+              }}
+            >
+              {t('companyDetail.addContact')}
             </Btn>
           </div>
         </div>
-        <ExpandTransition>
-          <div v-show={expanded.value}>
-            <div
-              class={[
-                clearedItems.value.length > 0 ? 'pt-10' : 'pt-4',
-                'grid md:grid-cols-2 gap-y-10 gap-x-4 lg:gap-x-10',
-              ]}
-            >
-              {clearedItems.value.map((item, i) => (
-                <ContactItem
-                  loading={props.loading}
-                  item={item}
-                  {...{
-                    onUpdate: (val: ContactInput) => updateData(i, item, val),
-                    onDelete: () => deleteData(i),
-                  }}
-                />
-              ))}
-            </div>
-            <div class="grid md:grid-cols-2 gap-y-10 gap-x-4 lg:gap-x-10 pt-10">
-              <Btn
-                block
-                outlined
-                small
-                {...{
-                  onClick: addData,
-                }}
-              >
-                {t('companyDetail.addContact')}
-              </Btn>
-            </div>
-          </div>
-        </ExpandTransition>
-      </div>
+      </Expand>
     )
   },
 })
