@@ -5,9 +5,7 @@
  * @param {string} replacement replace value
  * @returns {string} result
  */
-export const replaceAt = (str, index, replacement) => {
+export function replaceAt(str: string, index: number, replacement: string) {
   if (!str) return str
   return str.substring(0, index) + replacement + str.substring(index + 1)
 }
-
-export default replaceAt
