@@ -16,7 +16,7 @@ export default defineComponent({
       const isOwnerOrManager = isOwner.value || isManager.value
       return [
         {
-          name: 'specs',
+          name: 'deals',
           text: t('navbar.deals'),
         },
         {
@@ -60,8 +60,8 @@ export default defineComponent({
                           'border-b-2 border-transparent whitespace-nowrap h-full flex items-center',
                           {
                             'text-gray-900 dark:text-white border-blue-500 relative':
-                              props.route.name === 'specs'
-                                ? route.name === 'specs' ||
+                              props.route.name === 'deals'
+                                ? route.name === 'deals' ||
                                   route.name === 'spec'
                                 : route.path.startsWith(props.route.path),
                           },

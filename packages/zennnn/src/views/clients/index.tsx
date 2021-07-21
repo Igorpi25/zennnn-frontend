@@ -659,7 +659,7 @@ export default defineComponent({
                         mini
                         class="text-gray-200"
                         to={{
-                          name: 'specs',
+                          name: 'deals',
                           params: {
                             orgId: orgId,
                           },

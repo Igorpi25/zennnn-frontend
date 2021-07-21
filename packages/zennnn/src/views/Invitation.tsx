@@ -72,7 +72,7 @@ export default defineComponent({
 
     onAcceptInvitationDone(() => {
       router.push({
-        name: 'specs',
+        name: 'deals',
         params: { orgId: invitation.value?.orgId as string },
       })
     })

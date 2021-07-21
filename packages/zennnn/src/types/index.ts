@@ -44,3 +44,16 @@ export enum CustomsTermsMore {
   CFR = 'CFR',
   CIF = 'CIF',
 }
+
+export const Typename = {
+  SPEC: 'Spec',
+  INVOICE: 'Invoice',
+  PRODUCT: 'Product',
+  PAPER_SPEC: 'PaperSpec',
+  PAPER_INVOICE: 'PaperInvoice',
+  PAPER_PRODUCT: 'PaperProduct',
+  CLIENT: 'Client',
+  SUPPLIER: 'Supplier',
+  REQUISITE: 'Requisite',
+  REQUISITE_ITEMS: 'RequisiteItems',
+}

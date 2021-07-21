@@ -33,8 +33,6 @@ const showNotify = (payload: string | NotifyOptions) => {
 const EmptyLayout = () =>
   import(/* webpackChunkName: "layout" */ '../views/layouts/Empty')
 
-const Specs = () =>
-  import(/* webpackChunkName: "common" */ '../views/Specs.vue')
 const Spec = () => import(/* webpackChunkName: "common" */ '../views/Spec.vue')
 const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
 const ClientCard = () =>
@@ -73,7 +71,7 @@ const routes: RouteRecordRaw[] = [
           return true
         }
         const orgId = localStorage.getItem(CURRENT_ORG_STORE_KEY) || ''
-        return { name: 'specs', params: { orgId } }
+        return { name: 'deals', params: { orgId } }
       } catch (error) {
         // eslint-disable-next-line
         console.warn('Error on / before route enter', error.message)
@@ -101,7 +99,7 @@ const routes: RouteRecordRaw[] = [
           const [org] = getOrgs
           if (org && org.id) {
             localStorage.setItem(CURRENT_ORG_STORE_KEY, orgId)
-            return { name: 'specs', params: { orgId: org.id } }
+            return { name: 'deals', params: { orgId: org.id } }
           } else {
             localStorage.removeItem(CURRENT_ORG_STORE_KEY)
             throw new Error('Not found')
@@ -124,9 +122,10 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        name: 'specs',
+        name: 'deals',
         meta: { requiresAuth: true },
-        component: Specs,
+        component: () =>
+          import(/* webpackChunkName: "deals" */ '../views/deals'),
       },
       {
         path: 'spec/:specId',
