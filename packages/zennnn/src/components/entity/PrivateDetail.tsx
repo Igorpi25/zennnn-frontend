@@ -8,7 +8,6 @@ import Countries from '@/assets/countries/codes.json'
 import Expand from './Expand'
 
 import type { PropType } from 'vue'
-import type { Locale } from 'shared/components/LocalePicker'
 import type {
   GetClient_getClient,
   CreateClientInput,
@@ -118,20 +117,20 @@ export default defineComponent({
                             .default
                         }
                         alt={props.item.citizenship}
-                        class="h-6 w-6 rounded-full mx-2"
+                        class="h-6 w-6 mx-2"
                       />
                     ) : (
                       <Icon class="mx-2">{ziGlobe}</Icon>
                     ),
-                  item: ({ item }: { item: Locale }) => (
+                  item: ({ item }: { item: typeof countries.value[0] }) => (
                     <>
                       <img
                         src={
-                          require(`@/assets/img/flags/square/${item.icon}.svg`)
+                          require(`@/assets/img/flags/square/${item.value}.svg`)
                             .default
                         }
                         alt={item.value}
-                        class="h-6 w-6 rounded-full mx-3"
+                        class="h-6 w-6 ml-1 mr-3"
                       />
                       <span>{item.text}</span>
                     </>
