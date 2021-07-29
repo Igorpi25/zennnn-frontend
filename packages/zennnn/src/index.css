@@ -265,20 +265,6 @@
     break-inside: avoid;
   }
 
-  /* DOTS */
-  .dots {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: clip;
-  }
-  .dots::before {
-    display: block;
-    content: '. . . . . . . . . . . . . . . . . . . . '
-      '. . . . . . . . . . . . . . . . . . . . '
-      '. . . . . . . . . . . . . . . . . . . . '
-      '. . . . . . . . . . . . . . . . . . . . ';
-  }
-
   /* Hide scrollbar */
   .scrollbar-hidden {
     scrollbar-width: none; /* Firefox */
