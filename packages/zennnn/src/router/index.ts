@@ -123,7 +123,7 @@ const routes: RouteRecordRaw[] = [
         name: 'deals',
         meta: { requiresAuth: true },
         component: () =>
-          import(/* webpackChunkName: "deals" */ '../views/deals'),
+          import(/* webpackChunkName: "deals" */ '../views/deals/List'),
       },
       {
         path: 'deal/:specId',
@@ -186,7 +186,7 @@ const routes: RouteRecordRaw[] = [
         name: 'clients',
         meta: { requiresAuth: true },
         component: () =>
-          import(/* webpackChunkName: "clients" */ '../views/clients'),
+          import(/* webpackChunkName: "clients" */ '../views/clients/List'),
       },
       {
         path: 'clients/create/:groupId?',
@@ -206,7 +206,7 @@ const routes: RouteRecordRaw[] = [
         name: 'suppliers',
         meta: { requiresAuth: true },
         component: () =>
-          import(/* webpackChunkName: "suppliers" */ '../views/suppliers'),
+          import(/* webpackChunkName: "suppliers" */ '../views/suppliers/List'),
       },
       {
         path: 'suppliers/create',
@@ -226,21 +226,23 @@ const routes: RouteRecordRaw[] = [
         name: 'staff',
         meta: { requiresAuth: true },
         component: () =>
-          import(/* webpackChunkName: "staff" */ '../views/staff'),
+          import(/* webpackChunkName: "staff" */ '../views/staff/List'),
       },
       {
         path: 'dictionary',
         name: 'dictionary',
         meta: { requiresAuth: true },
         component: () =>
-          import(/* webpackChunkName: "dictionary" */ '../views/dictionary'),
+          import(
+            /* webpackChunkName: "dictionary" */ '../views/dictionary/List'
+          ),
       },
       {
         path: 'companies',
         name: 'companies',
         meta: { requiresAuth: true },
         component: () =>
-          import(/* webpackChunkName: "companies" */ '../views/companies'),
+          import(/* webpackChunkName: "companies" */ '../views/companies/List'),
       },
       {
         path: 'companies/create',
@@ -260,7 +262,7 @@ const routes: RouteRecordRaw[] = [
         name: 'items',
         meta: { requiresAuth: true },
         component: () =>
-          import(/* webpackChunkName: "items" */ '../views/items'),
+          import(/* webpackChunkName: "items" */ '../views/items/List'),
       },
     ],
   },
