@@ -2,7 +2,7 @@ import { defineComponent, ref, reactive, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ziDocument, ziCloudUpload } from '@zennnn/icons'
 import { Icon, TextField, TextArea, Btn } from '@zennnn/core'
-import FileUploader from '@/components/core/FileUploader'
+import FileUploader from '@/components/FileUploader'
 import Expand from './Expand'
 
 import type { PropType } from 'vue'

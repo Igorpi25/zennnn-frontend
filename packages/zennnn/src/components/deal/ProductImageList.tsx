@@ -4,7 +4,7 @@ import { ziSearch, ziCloseDelete } from '@zennnn/icons'
 import { Icon, Image, LoadingSpinner } from '@zennnn/core'
 import { ICON_IMAGE_POSTFIX } from 'shared/config'
 import { ADD_PRODUCT_IMAGE, REMOVE_PRODUCT_IMAGE } from '@/graphql/mutations'
-import FileUploader from '@/components/core/FileUploader'
+import FileUploader from '@/components/FileUploader'
 import ProductImage from './ProductImage'
 
 import type { PropType } from 'vue'

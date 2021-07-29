@@ -10,7 +10,7 @@ import { Icon, Menu, Image, LoadingSpinner } from '@zennnn/core'
 import { ICON_IMAGE_POSTFIX, PREVIEW_IMAGE_POSTFIX } from 'shared/config'
 import { ADD_PRODUCT_IMAGE, UPDATE_PRODUCT_INFO } from '@/graphql/mutations'
 import Sortable from '@/components/draggable/Sortable'
-import FileUploader from '@/components/core/FileUploader'
+import FileUploader from '@/components/FileUploader'
 
 import type { PropType } from 'vue'
 import type {
