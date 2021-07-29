@@ -369,8 +369,7 @@ export default defineComponent({
             codeInput.value && (
               <img
                 src={
-                  require(`@/assets/img/flags/square/${codeInput.value}.svg`)
-                    .default
+                  require(`@/assets/img/flags/${codeInput.value}.svg`).default
                 }
                 class="w-6 flex-shrink-0"
                 aria-hidden="true"
@@ -444,9 +443,7 @@ export default defineComponent({
                 {selected && <Icon>{ziChecked}</Icon>}
               </div>
               <img
-                src={
-                  require(`@/assets/img/flags/square/${item.value}.svg`).default
-                }
+                src={require(`@/assets/img/flags/${item.value}.svg`).default}
                 alt={item.value}
                 class="w-6 flex-shrink-0 mr-2"
                 aria-hidden="true"

@@ -107,7 +107,7 @@ export default defineComponent({
                   props.item?.countryOfOrigin ? (
                     <img
                       src={
-                        require(`@/assets/img/flags/square/${props.item.countryOfOrigin}.svg`)
+                        require(`@/assets/img/flags/${props.item.countryOfOrigin}.svg`)
                           .default
                       }
                       alt={props.item.countryOfOrigin}
@@ -120,8 +120,7 @@ export default defineComponent({
                   <>
                     <img
                       src={
-                        require(`@/assets/img/flags/square/${item.value}.svg`)
-                          .default
+                        require(`@/assets/img/flags/${item.value}.svg`).default
                       }
                       alt={item.value}
                       class="h-6 w-6 ml-1 mr-3"
