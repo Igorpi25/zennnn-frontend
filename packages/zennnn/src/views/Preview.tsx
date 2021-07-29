@@ -743,7 +743,7 @@ export default defineComponent({
                                   {item.size === ContainerSize._20 ? (
                                     <img
                                       src={
-                                        require('@/assets/icons/c20_2x.png')
+                                        require('@/assets/img/containers/c20_2x.png')
                                           .default
                                       }
                                       alt="20'"
@@ -751,7 +751,7 @@ export default defineComponent({
                                   ) : (
                                     <img
                                       src={
-                                        require('@/assets/icons/c40_2x.png')
+                                        require('@/assets/img/containers/c40_2x.png')
                                           .default
                                       }
                                       alt="40'"
@@ -806,14 +806,16 @@ export default defineComponent({
                               {item.size === ContainerSize._20 ? (
                                 <img
                                   src={
-                                    require('@/assets/icons/c20_2x.png').default
+                                    require('@/assets/img/containers/c20_2x.png')
+                                      .default
                                   }
                                   alt="20'"
                                 />
                               ) : (
                                 <img
                                   src={
-                                    require('@/assets/icons/c40_2x.png').default
+                                    require('@/assets/img/containers/c40_2x.png')
+                                      .default
                                   }
                                   alt="40'"
                                 />
