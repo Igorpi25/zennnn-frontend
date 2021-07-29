@@ -50,7 +50,7 @@ export default defineComponent({
           <ValidationStatus
             requiredFilled={props.item.isRequiredFilled}
             optionalFilled={props.item.isOptionalFilled}
-            class="h-11"
+            class="h-11 pr-5 pb-1"
           />
           <div class="bg-light-gray-100 dark:bg-gray-600 rounded-md p-4 sm:p-5">
             <CompanyInfo

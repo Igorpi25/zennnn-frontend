@@ -1,23 +1,44 @@
 import axios from 'axios'
-import parseISO from 'date-fns/parseISO'
-import fromUnixTime from 'date-fns/fromUnixTime'
-import { i18n } from '@/plugins'
-import { ShipmentType, ClientType } from '@/graphql/enums'
+import { parseDate } from 'shared/utils/date'
+import { ShipmentType, ClientType } from '@/graphql/types'
 import Countries from '@/assets/countries/codes.json'
+import { i18n } from '@/plugins'
 
-const parseDate = (date) => {
-  if (!date) return ''
-  const isUnixTime = !Number.isNaN(Number(date))
-  return isUnixTime ? fromUnixTime(date / 1000) : parseISO(date)
-}
+import type {
+  GetSpec_getSpec,
+  ListOrgRequisites_listOrgRequisites,
+  GetSpec_getSpec_client,
+  GetSpec_getSpec_shipment,
+  GetSpec_getSpec_customs,
+  GetSpec_getSpec_invoices,
+  GetPaperSpec_getPaperSpec,
+  GetPaperSpec_getPaperSpec_client,
+  GetPaperSpec_getPaperSpec_shipment,
+  GetPaperSpec_getPaperSpec_customs,
+  GetPaperSpec_getPaperSpec_invoices,
+  GetPaperSpec_getPaperSpec_requisite,
+  GetSpec_getSpec_invoices_products,
+  GetPaperSpec_getPaperSpec_invoices_products,
+} from '@/graphql/types'
 
-const genLabel = (path, clientLang, opt = {}) => {
+type Spec = GetSpec_getSpec | GetPaperSpec_getPaperSpec
+type Client = GetSpec_getSpec_client | GetPaperSpec_getPaperSpec_client
+type Shipment = GetSpec_getSpec_shipment | GetPaperSpec_getPaperSpec_shipment
+type Customs = GetSpec_getSpec_customs | GetPaperSpec_getPaperSpec_customs
+type Invoice = GetSpec_getSpec_invoices | GetPaperSpec_getPaperSpec_invoices
+type Company =
+  | ListOrgRequisites_listOrgRequisites
+  | GetPaperSpec_getPaperSpec_requisite
+type Product = GetSpec_getSpec_invoices_products &
+  GetPaperSpec_getPaperSpec_invoices_products
+
+const genLabel = (path: string, clientLang: string, opt = {} as any) => {
   const flat = opt.flat
   const secondary = opt.secondary
   const value = opt.value
   const fallback = opt.fallback || ''
   const args = opt.args || {}
-  const defaultLang = i18n.fallbackLocale
+  const defaultLang = i18n.fallbackLocale.toString()
   const isDefaultLang = clientLang === defaultLang
   const title = i18n.te(path, defaultLang)
     ? i18n.t(path, defaultLang, args)
@@ -62,7 +83,8 @@ const genLabel = (path, clientLang, opt = {}) => {
   }
   return stack
 }
-const genValues = (...args) => {
+
+const genValues = (...args: any[]) => {
   let result = ''
   if (args.length > 0) {
     args.forEach((v) => {
@@ -72,7 +94,8 @@ const genValues = (...args) => {
   }
   return result
 }
-const genBillToBody = (client, clientLang) => {
+
+const genBillToBody = (client: Client, clientLang: string) => {
   const items = [
     [
       {
@@ -142,8 +165,9 @@ const genBillToBody = (client, clientLang) => {
           {
             text: genValues(
               client.deliveryAddress,
-              client.importerPhone && client.importerPhone.phone,
-              client.importerFax && client.importerFax.phone
+              client.importerPhone && client.importerPhone.phone
+              // TODO: importer fax
+              // client.importerFax && client.importerFax.phone
             ),
           },
         ],
@@ -164,7 +188,8 @@ const genBillToBody = (client, clientLang) => {
   }
   return items
 }
-const genDeliveryInfoTable = (shipment, clientLang) => {
+
+const genDeliveryInfoTable = (shipment: Shipment, clientLang: string) => {
   const widths = shipment.sentThrough
     ? ['auto', '*', 'auto', '*', 'auto', '*']
     : ['auto', '*', '50%']
@@ -235,7 +260,12 @@ const genDeliveryInfoTable = (shipment, clientLang) => {
     body: [shipment.sentThrough ? row1 : row2, row],
   }
 }
-const genShipmentBody = (shipment, customs, clientLang) => {
+
+const genShipmentBody = (
+  shipment: Shipment,
+  customs: Customs,
+  clientLang: string
+) => {
   const result = []
   if (shipment.activeType === ShipmentType.MARINE) {
     result.push([
@@ -253,7 +283,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.marine.containersCount,
+            text: shipment.marine?.containersCount,
           },
         ],
       },
@@ -265,7 +295,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.marine.billOfLadingNo,
+            text: shipment.marine?.billOfLadingNo,
           },
         ],
       },
@@ -275,7 +305,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.marine.containersNo || '',
+            text: shipment.marine?.containersNo || '',
           },
         ],
       },
@@ -287,7 +317,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.marine.ship || '',
+            text: shipment.marine?.ship || '',
           },
         ],
       },
@@ -297,9 +327,9 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.marine.exportDate
+            text: shipment.marine?.exportDate
               ? i18n.d(
-                  parseDate(shipment.marine.exportDate),
+                  parseDate(shipment.marine.exportDate) as Date,
                   'short',
                   clientLang
                 )
@@ -336,7 +366,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.air.numbersOfPkg,
+            text: shipment.air?.numbersOfPkg,
           },
         ],
       },
@@ -348,7 +378,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.air.airWaybillNo,
+            text: shipment.air?.airWaybillNo,
           },
         ],
       },
@@ -358,7 +388,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.air.flight || '',
+            text: shipment.air?.flight || '',
           },
         ],
       },
@@ -379,7 +409,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.railway.containersCount,
+            text: shipment.railway?.containersCount,
           },
         ],
       },
@@ -391,7 +421,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.railway.internationalWaybillNo,
+            text: shipment.railway?.internationalWaybillNo,
           },
         ],
       },
@@ -401,7 +431,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.railway.containersNo || '',
+            text: shipment.railway?.containersNo || '',
           },
         ],
       },
@@ -413,7 +443,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.railway.train || '',
+            text: shipment.railway?.train || '',
           },
         ],
       },
@@ -423,9 +453,9 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.railway.exportDate
+            text: shipment.railway?.exportDate
               ? i18n.d(
-                  parseDate(shipment.railway.exportDate),
+                  parseDate(shipment.railway.exportDate) as Date,
                   'short',
                   clientLang
                 )
@@ -464,7 +494,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.car.vehicleNo || '',
+            text: shipment.car?.vehicleNo || '',
           },
         ],
       },
@@ -476,7 +506,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.car.internationalWaybillNo,
+            text: shipment.car?.internationalWaybillNo,
           },
         ],
       },
@@ -486,7 +516,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.car.semitrailerNo || '',
+            text: shipment.car?.semitrailerNo || '',
           },
         ],
       },
@@ -508,8 +538,12 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.car.exportDate
-              ? i18n.d(parseDate(shipment.car.exportDate), 'short', clientLang)
+            text: shipment.car?.exportDate
+              ? i18n.d(
+                  parseDate(shipment.car.exportDate) as Date,
+                  'short',
+                  clientLang
+                )
               : '',
           },
         ],
@@ -535,7 +569,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.mixed.internationalWaybillNo,
+            text: shipment.mixed?.internationalWaybillNo,
           },
         ],
       },
@@ -545,7 +579,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.mixed.containersNo || '',
+            text: shipment.mixed?.containersNo || '',
           },
         ],
       },
@@ -557,7 +591,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.mixed.ship || '',
+            text: shipment.mixed?.ship || '',
           },
         ],
       },
@@ -567,7 +601,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.mixed.flight || '',
+            text: shipment.mixed?.flight || '',
           },
         ],
       },
@@ -579,7 +613,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.mixed.train || '',
+            text: shipment.mixed?.train || '',
           },
         ],
       },
@@ -589,7 +623,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.mixed.vehicleNo || '',
+            text: shipment.mixed?.vehicleNo || '',
           },
         ],
       },
@@ -611,9 +645,9 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.mixed.exportDate
+            text: shipment.mixed?.exportDate
               ? i18n.d(
-                  parseDate(shipment.mixed.exportDate),
+                  parseDate(shipment.mixed.exportDate) as Date,
                   'short',
                   clientLang
                 )
@@ -638,7 +672,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.express.numbersOfPkg || '',
+            text: shipment.express?.numbersOfPkg || '',
           },
         ],
       },
@@ -650,7 +684,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.express.postalNo,
+            text: shipment.express?.postalNo,
           },
         ],
       },
@@ -660,7 +694,7 @@ const genShipmentBody = (shipment, customs, clientLang) => {
       {
         stack: [
           {
-            text: shipment.express.deliveryService || '',
+            text: shipment.express?.deliveryService || '',
           },
         ],
       },
@@ -687,84 +721,88 @@ const genShipmentBody = (shipment, customs, clientLang) => {
   ])
   return result
 }
-const genItemBody = (invoices, clientLang) => {
+
+const genItemBody = (invoices: Invoice[], clientLang: string) => {
   let index = 0
-  const items = []
-  // filter dummy invoices
-  invoices
-    .filter((el) => !el.id.startsWith('empty-'))
-    .forEach((invoice) => {
-      // filter dummy products
-      const products = (invoice.products || []).filter(
-        (el) => !el.id.startsWith('empty-')
-      )
-      products.forEach((product) => {
-        index++
-        const price =
-          (product.cost && product.cost.price) || product.costPrice || 0
-        const amount =
-          (product.cost && product.cost.amount) || product.costAmount || 0
-        const lang = clientLang
-        const word = product.name || {}
-        const wordDefaultLocale = word.defaultLocale
-        const wordValues = word.values || []
-        const result = {}
-        wordValues.forEach((el) => {
-          const v = el.v || el.tr
-          if (v) {
-            result[el.k] = v
-          }
-        })
-        let name = result.en || ''
-        if (clientLang !== 'en') {
-          const s = result[lang] || result[wordDefaultLocale] || ''
-          name += name && s ? ` / ${s}` : s || ''
+  const items = [] as any[]
+  invoices.forEach((invoice) => {
+    const products = (invoice.products || []) as any[]
+    products.forEach((product: Product) => {
+      index++
+      const price =
+        product?.cost?.price ||
+        (product as unknown as GetPaperSpec_getPaperSpec_invoices_products)
+          ?.costPrice ||
+        0
+      const amount =
+        product?.cost?.amount ||
+        (product as unknown as GetPaperSpec_getPaperSpec_invoices_products)
+          ?.costAmount ||
+        0
+      const lang = clientLang
+      const word = product?.name
+      const wordDefaultLocale = word?.defaultLocale || 'en'
+      const wordValues = word?.values || []
+      const result = {} as any
+      wordValues.forEach((el) => {
+        const v = el.v || el.tr
+        if (v) {
+          result[el.k] = v
         }
-        if (product.article) {
-          name += ` / ${product.article}`
-        }
-        const description =
-          (product.info && product.info.description) || product.description
-        if (description) {
-          name += `\n${description}`
-        }
-        const unit = product.unit || 'pcs'
-        const unitText = genLabel(`unit.${unit}`, clientLang, {
-          flat: true,
-          secondary: true,
-        })
-        const item = [
-          { text: `${index}`, alignment: 'center' },
-          name,
-          { text: `${product.qty || 0} ${unitText}`, alignment: 'right' },
-          { text: i18n.n(price, 'currency', 'en'), alignment: 'right' },
-          { text: i18n.n(amount, 'currency', 'en'), alignment: 'right' },
-        ]
-        items.push(item)
       })
-      if (invoice.discountInCurrency) {
-        const item = [
-          '',
-          {
-            text: genLabel('print.supplierDiscount', clientLang, {
-              flat: true,
-              secondary: true,
-            }),
-            colSpan: 3,
-          },
-          '',
-          '',
-          {
-            text: `-${i18n.n(invoice.discountInCurrency, 'currency', 'en')}`,
-            alignment: 'right',
-          },
-        ]
-        items.push(item)
+      let name = result.en || ''
+      if (clientLang !== 'en') {
+        const s = result[lang] || result[wordDefaultLocale] || ''
+        name += name && s ? ` / ${s}` : s || ''
       }
+      if (product?.article) {
+        name += ` / ${product.article}`
+      }
+      const description =
+        product?.info?.description ||
+        (product as unknown as GetPaperSpec_getPaperSpec_invoices_products)
+          ?.description
+      if (description) {
+        name += `\n${description}`
+      }
+      const unit = product?.unit || 'pcs'
+      const unitText = genLabel(`unit.${unit}`, clientLang, {
+        flat: true,
+        secondary: true,
+      })
+      const item = [
+        { text: `${index}`, alignment: 'center' },
+        name,
+        { text: `${product?.qty || 0} ${unitText}`, alignment: 'right' },
+        { text: i18n.n(price, 'currency', 'en'), alignment: 'right' },
+        { text: i18n.n(amount, 'currency', 'en'), alignment: 'right' },
+      ]
+      items.push(item)
     })
+    if (invoice.discountInCurrency) {
+      const item = [
+        '',
+        {
+          text: genLabel('print.supplierDiscount', clientLang, {
+            flat: true,
+            secondary: true,
+          }),
+          colSpan: 3,
+        },
+        '',
+        '',
+        {
+          text: `-${i18n.n(invoice.discountInCurrency, 'currency', 'en')}`,
+          alignment: 'right',
+        },
+      ]
+      items.push(item)
+    }
+  })
   return items
 }
-const genItemsAmounts = (spec, customs, clientLang) => {
+
+const genItemsAmounts = (spec: Spec, customs: Customs, clientLang: string) => {
   const body = [
     [
       '',
@@ -779,7 +817,7 @@ const genItemsAmounts = (spec, customs, clientLang) => {
         alignment: 'right',
       },
     ],
-  ]
+  ] as any[]
   if (customs.discount) {
     body.push([
       '',
@@ -882,7 +920,12 @@ const genItemsAmounts = (spec, customs, clientLang) => {
     margin: [0, 0, 0, 20],
   }
 }
-const genAmountBody = (spec, depositDueDate, clientLang) => {
+
+const genAmountBody = (
+  spec: Spec,
+  depositDueDate: Date | null,
+  clientLang: string
+) => {
   const border = depositDueDate
     ? [false, false, false, true]
     : [false, false, false, false]
@@ -902,7 +945,7 @@ const genAmountBody = (spec, depositDueDate, clientLang) => {
         fontSize: 13.3,
       },
     ],
-  ]
+  ] as any[]
   if (depositDueDate) {
     const date = i18n.d(depositDueDate, 'short', clientLang)
     result.push([
@@ -915,15 +958,16 @@ const genAmountBody = (spec, depositDueDate, clientLang) => {
         alignment: 'right',
       },
       {
-        text: i18n.n(spec.depositDue, 'currency', 'en'),
+        text: i18n.n(spec.depositDue || 0, 'currency', 'en'),
         alignment: 'right',
       },
     ])
   }
   return result
 }
-const genAmountInWords = (spec, clientLang) => {
-  const defaultLang = i18n.fallbackLocale
+
+const genAmountInWords = (spec: Spec, clientLang: string) => {
+  const defaultLang = i18n.fallbackLocale.toString()
   const isDefaultLang = clientLang === defaultLang
   const result = []
   if (spec.amountInWords) {
@@ -962,27 +1006,29 @@ const genAmountInWords = (spec, clientLang) => {
 }
 
 export default async (
-  spec,
-  requisite,
-  client,
-  shipment,
-  customs,
-  method = 'open',
+  spec: Spec,
+  requisite: Company,
+  client: Client,
+  shipment: Shipment,
+  customs: Customs,
+  method = 'open' as 'open' | 'download' | 'print',
   isDraft = true
 ) => {
   try {
-    const bankDetail =
-      (requisite.bankDetails || []).find(
-        (el) => el.id === requisite.defaultBankDetail
-      ) || {}
+    const bankDetail = requisite?.bankDetails?.find(
+      (el) => el.id === requisite.defaultBankDetail
+    )
     let win = null
     if (method !== 'download') {
       win = window.open(`/print/${spec.specNo}`, '_blank')
     }
-    const defaultLang = i18n.fallbackLocale
+    const defaultLang = i18n.fallbackLocale.toString()
     const clientLang = client.locale || defaultLang
     const pdfMake = (
-      await import(/* webpackChunkName: "pdfMake" */ 'pdfmake/build/pdfmake')
+      await import(
+        // @ts-ignore
+        /* webpackChunkName: "pdfMake" */ 'pdfmake/build/pdfmake'
+      )
     ).default
     let font
     let pdfFonts
@@ -1022,7 +1068,8 @@ export default async (
       font = 'MyriadPro'
       pdfFonts = (
         await import(
-          /* webpackChunkName: "pdfFonts" */ '../plugins/pdfmake/vfs_fonts'
+          // @ts-ignore
+          /* webpackChunkName: "pdfFonts" */ '../../plugins/pdfmake/vfs_fonts'
         )
       ).default
       pdfMake.fonts = {
@@ -1036,13 +1083,13 @@ export default async (
     }
     const vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs
     pdfMake.vfs = vfs
-    const specCreatedAt = parseDate(spec.createdAt)
-    const specDueDate = parseDate(spec.createdAt)
+    const specCreatedAt = parseDate(spec.createdAt) as Date
+    const specDueDate = parseDate(spec.createdAt) as Date
     const specDepositDueDate = spec.depositDueDate
-      ? parseDate(spec.depositDueDate)
+      ? (parseDate(spec.depositDueDate) as Date)
       : null
     specDueDate.setTime(specDueDate.getTime() + 7 * 86400000)
-    const dd = {
+    const dd: any = {
       info: {
         title: spec.specNo,
         creator: window.location.hostname,
@@ -1069,7 +1116,7 @@ export default async (
           },
         ]
       },
-      footer: (currentPage, pageCount) => {
+      footer: (currentPage: any, pageCount: any) => {
         return [
           {
             columns: [
@@ -1137,19 +1184,20 @@ export default async (
                 {
                   stack: genLabel('print.beneficiyBank', clientLang),
                 },
-                bankDetail.bankName || '',
+                bankDetail?.bankName || '',
               ],
               [
                 {
                   stack: genLabel('print.bankAddress', clientLang),
                 },
-                bankDetail.bankAddress || '',
+                bankDetail?.bankAddress || '',
               ],
               [
                 {
                   stack: genLabel('print.accountNumberSwift', clientLang),
                 },
-                genValues(requisite.bankAccountNumber, bankDetail.swift),
+                // TODO: check bankAccountNumber, replaced `requisite?.bankAccountNumber`
+                genValues(bankDetail?.bankAccountNumber, bankDetail?.swift),
               ],
             ],
           },
@@ -1202,7 +1250,7 @@ export default async (
             body: genBillToBody(client, clientLang),
           },
           layout: {
-            hLineWidth: function (i, node) {
+            hLineWidth: function (i: number, node: any) {
               return i === 0 || i === 2 || i === node.table.body.length ? 1 : 0
             },
             vLineWidth: function () {
@@ -1244,7 +1292,9 @@ export default async (
                     `countries.${customs.countryOfOrigin}`,
                     clientLang,
                     {
-                      fallback: Countries[customs.countryOfOrigin],
+                      fallback: customs.countryOfOrigin
+                        ? Countries[customs.countryOfOrigin]
+                        : '',
                       secondary: true,
                     }
                   ),
@@ -1264,7 +1314,7 @@ export default async (
             margin: [0, 0, 0, 20],
           },
           layout: {
-            hLineWidth: function (i) {
+            hLineWidth: function (i: number) {
               return i === 0 ? 1 : 0
             },
             vLineWidth: function () {
@@ -1308,12 +1358,12 @@ export default async (
                   alignment: 'right',
                 },
               ],
-              ...genItemBody(spec.invoices || [], clientLang),
+              ...genItemBody((spec.invoices || []) as Invoice[], clientLang),
             ],
           },
           headerRows: 1,
           layout: {
-            hLineWidth: function (i, node) {
+            hLineWidth: function (i: number, node: any) {
               return i === 1 || i === node.table.body.length ? 1 : 0
             },
             vLineWidth: function () {
@@ -1398,7 +1448,7 @@ export default async (
             ],
           },
           layout: {
-            hLineWidth: function (i, node) {
+            hLineWidth: function (i: number, node: any) {
               return i === 0 || i === node.table.body.length ? 1 : 0
             },
             vLineWidth: function () {

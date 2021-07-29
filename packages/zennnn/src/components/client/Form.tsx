@@ -148,7 +148,7 @@ export default defineComponent({
             <ValidationStatus
               requiredFilled={props.item.isRequiredFilled}
               optionalFilled={props.item.isOptionalFilled}
-              class="w-full lg:w-auto"
+              class="w-full lg:w-auto pr-5 pb-1"
             />
           </div>
           {isLegalType.value ? (

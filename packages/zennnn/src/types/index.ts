@@ -57,3 +57,9 @@ export const Typename = {
   REQUISITE: 'Requisite',
   REQUISITE_ITEMS: 'RequisiteItems',
 }
+
+export const WordStatus = {
+  DRAFT: 'DRAFT',
+  DUPLICATE: 'DUPLICATE',
+  APPROVED: 'APPROVED',
+}

@@ -31,8 +31,6 @@ import { auth, useTheme } from '@/plugins'
 import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'
 
 export default defineComponent({
-  name: 'App',
-
   setup(props, { slots }) {
     const route = useRoute()
     const router = useRouter()

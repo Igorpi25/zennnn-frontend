@@ -15,6 +15,7 @@ import type {
   TranslateWordVariables,
   WordTranslationInput,
   ListWords_listWords_items,
+  GetSpec_getSpec_invoices_products_name,
 } from '@/graphql/types'
 
 export interface WordFormSubmitInput {
@@ -32,7 +33,9 @@ export default defineComponent({
     create: Boolean,
     initValue: String,
     item: {
-      type: Object as PropType<ListWords_listWords_items>,
+      type: Object as PropType<
+        ListWords_listWords_items | GetSpec_getSpec_invoices_products_name
+      >,
       default: () => ({}),
     },
     actionText: String,

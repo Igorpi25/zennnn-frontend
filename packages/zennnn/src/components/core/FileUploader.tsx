@@ -11,6 +11,7 @@ import {
 import { useRoute } from 'vue-router'
 import { ziCloseDelete, ziPlus } from '@zennnn/icons'
 import { Icon, Progress, Btn } from '@zennnn/core'
+import { useRender } from 'shared/composables/render'
 import { ICON_IMAGE_POSTFIX, UPLOAD_FILE_SIZE_MB } from 'shared/config'
 import { auth, logger, useNotify } from '@/plugins'
 
@@ -302,7 +303,7 @@ export default defineComponent({
       e.stopPropagation()
     }
 
-    return () => (
+    useRender(() => (
       <div class="relative">
         <div
           class={[
@@ -400,6 +401,11 @@ export default defineComponent({
           onChange={onChange}
         />
       </div>
-    )
+    ))
+
+    return {
+      internalSrc,
+      filePreview,
+    }
   },
 })

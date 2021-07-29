@@ -4577,7 +4577,7 @@ export interface GetSpec_getSpec_invoices {
   totalPkgQty: number | null;
   createdAt: string | null;
   updatedAt: string | null;
-  products: (GetSpec_getSpec_invoices_products | null)[] | null;
+  products: GetSpec_getSpec_invoices_products[] | null;
 }
 
 export interface GetSpec_getSpec {
@@ -4617,7 +4617,7 @@ export interface GetSpec_getSpec {
   readyToPrint: boolean | null;
   createdAt: string | null;
   updatedAt: string | null;
-  invoices: (GetSpec_getSpec_invoices | null)[] | null;
+  invoices: GetSpec_getSpec_invoices[] | null;
 }
 
 export interface GetSpec {
@@ -6184,7 +6184,7 @@ export interface GetPaperSpec_getPaperSpec_invoices {
   createdAt: string | null;
   updatedAt: string | null;
   discountInCurrency: number | null;
-  products: (GetPaperSpec_getPaperSpec_invoices_products | null)[] | null;
+  products: GetPaperSpec_getPaperSpec_invoices_products[] | null;
 }
 
 export interface GetPaperSpec_getPaperSpec {
@@ -6225,7 +6225,7 @@ export interface GetPaperSpec_getPaperSpec {
   balanceDue: number | null;
   amountInWords: string | null;
   amountInWordsClientLang: string | null;
-  invoices: (GetPaperSpec_getPaperSpec_invoices | null)[] | null;
+  invoices: GetPaperSpec_getPaperSpec_invoices[] | null;
 }
 
 export interface GetPaperSpec {

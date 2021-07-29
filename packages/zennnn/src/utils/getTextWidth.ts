@@ -6,15 +6,17 @@
  *
  * @see https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
  */
-export function getTextWidth(text, font) {
+export function getTextWidth(text: string, font: string) {
   // re-use canvas object for better performance
-  const canvas =
+  const canvas: HTMLCanvasElement =
+    // @ts-ignore
     getTextWidth.canvas ||
+    // @ts-ignore
     (getTextWidth.canvas = document.createElement('canvas'))
   const context = canvas.getContext('2d')
-  context.font = font
-  const metrics = context.measureText(text)
-  return metrics.width
+  if (context) {
+    context.font = font
+    const metrics = context.measureText(text)
+    return metrics.width
+  }
 }
-
-export default getTextWidth

@@ -202,11 +202,6 @@
     @apply mx-auto px-4 sm:px-6;
   }
 
-  /* Used in Paper */
-  .content {
-    @apply flex-grow flex flex-col relative overflow-x-hidden;
-  }
-
   /* override draggable */
   .draggable-mirror {
     z-index: 500 !important;

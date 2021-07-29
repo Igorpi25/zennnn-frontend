@@ -12,13 +12,15 @@ import { onError } from '@apollo/client/link/error'
 import { getMainDefinition } from '@apollo/client/utilities'
 import Logger from 'shared/plugins/logger'
 import { BACKEND_VERSION_HEADER_KEY } from 'shared/config'
-import { PAPER_SID_STORE_KEY, SPEC_SIMPLE_UI_OFF_STORE_KEY } from '../config'
-import { typeDefs, resolvers } from '../graphql'
-import { GET_IS_SPEC_SYNC, SPEC_SIMPLE_UI_OFF } from '../graphql/queries'
-import { getUsername } from '../graphql/resolvers'
+import {
+  PREVIEW_SID_STORE_KEY,
+  DEAL_SIMPLE_UI_OFF_STORE_KEY,
+  DEAL_EXPANDED_INVOICES_STORE_KEY,
+  CURRENT_ORG_STORE_KEY,
+  DEAL_ACTIVE_TAB_STORE_KEY,
+} from '../config'
 import router from '../router'
-import { CURRENT_ORG_STORE_KEY } from '../config'
-import { auth, i18n, emitter, store } from '.'
+import { auth, i18n, emitter, store, getUsername } from '.'
 
 import type { ReactiveVar } from '@apollo/client/core'
 
@@ -27,8 +29,81 @@ export const backendVersionVar: ReactiveVar<string> = makeVar<string>('')
 export const currentOrgIdVar: ReactiveVar<string | null> = makeVar<
   string | null
 >(localStorage.getItem(CURRENT_ORG_STORE_KEY))
+export const isDealSimpleOffVar: ReactiveVar<boolean> = makeVar<boolean>(false)
+export const isDealSyncVar: ReactiveVar<boolean> = makeVar<boolean>(false)
 
 const logger = new Logger('Apollo')
+
+export async function getDealSimpleOff() {
+  try {
+    const username = await getUsername()
+    const key = `${username}.${DEAL_SIMPLE_UI_OFF_STORE_KEY}`
+    const result = await store.getItem(key)
+    return !!result
+  } catch (error) {
+    logger.warn('[getDealSimpleOff]:', error)
+  }
+}
+
+export async function setDealSimpleOff(val: boolean) {
+  try {
+    isDealSimpleOffVar(val)
+    const username = await getUsername()
+    const key = `${username}.${DEAL_SIMPLE_UI_OFF_STORE_KEY}`
+    await store.setItem(key, val)
+  } catch (error) {
+    logger.warn('[setDealSimpleOff]:', error)
+  }
+}
+
+export async function getDealActiveTab(id: string) {
+  try {
+    const username = await getUsername()
+    const key = `${username}.${id}.${DEAL_ACTIVE_TAB_STORE_KEY}`
+    const activeTab = await store.getItem(key)
+    const parsed = parseInt(activeTab as string, 10)
+    return !isNaN(parsed) ? parsed : 0
+  } catch (error) {
+    logger.warn('[getDealActiveTab]:', error)
+  }
+}
+
+export async function setDealActiveTab(id: string, tab: number) {
+  try {
+    const username = await getUsername()
+    const key = `${username}.${id}.${DEAL_ACTIVE_TAB_STORE_KEY}`
+    await store.setItem(key, tab)
+  } catch (error) {
+    logger.warn('[setDealActiveTab]:', error)
+  }
+}
+
+export async function getDealExpandedInvoices(id: string, prefix?: string) {
+  try {
+    const username = await getUsername()
+    let key = prefix ? `${prefix}.` : ''
+    key += `${username}.${id}.${DEAL_EXPANDED_INVOICES_STORE_KEY}`
+    const ids = await store.getItem(key)
+    return ids === null ? null : ((ids || []) as string[])
+  } catch (error) {
+    logger.warn('[getDealExpandedInvoices]:', error)
+  }
+}
+
+export async function setDealExpandedInvoices(
+  id: string,
+  ids: string[],
+  prefix?: string
+) {
+  try {
+    const username = await getUsername()
+    let key = prefix ? `${prefix}.` : ''
+    key += `${username}.${id}.${DEAL_EXPANDED_INVOICES_STORE_KEY}`
+    await store.setItem(key, ids)
+  } catch (error) {
+    logger.warn('[setDealExpandedInvoices]:', error)
+  }
+}
 
 // hardcoded TODO with https://www.apollographql.com/docs/react/data/fragments/#defining-possibletypes-manually
 const possibleTypes = {
@@ -124,7 +199,7 @@ const authLink = setContext(async (request, { headers }) => {
     operationName === 'Signup' ||
     operationName === 'ListPrices'
   ) {
-    sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
+    sid = localStorage.getItem(PREVIEW_SID_STORE_KEY) || null
     try {
       const session = await auth.currentSession()
       token = session.getIdToken().getJwtToken()
@@ -175,7 +250,7 @@ export const wsLink = new WebSocketLink({
     connectionParams: async () => {
       const session = await auth.currentSession()
       const token = session.getIdToken().getJwtToken()
-      const sid = localStorage.getItem(PAPER_SID_STORE_KEY) || null
+      const sid = localStorage.getItem(PREVIEW_SID_STORE_KEY) || null
       return {
         authToken: token ? `Bearer ${token}` : '',
         sid,
@@ -239,28 +314,13 @@ const link = split(
 export const apolloClient = new ApolloClient({
   link: ApolloLink.from([errorLink, link]),
   cache,
-  typeDefs,
-  resolvers,
   connectToDevTools: process.env.NODE_ENV === 'development',
 })
 
-const setData = async () => {
+apolloClient.onResetStore(async () => {
   isLoggedInVar(false)
-  cache.writeQuery({
-    query: GET_IS_SPEC_SYNC,
-    data: { isSpecSync: false },
-  })
-
-  const username = await getUsername()
-  const key = `${username}.${SPEC_SIMPLE_UI_OFF_STORE_KEY}`
-  const specSimpleUIOff = await store.getItem(key)
-  cache.writeQuery({
-    query: SPEC_SIMPLE_UI_OFF,
-    data: { specSimpleUIOff },
-  })
-}
-
-setData()
-apolloClient.onResetStore(() => setData())
+  isDealSyncVar(false)
+  isDealSimpleOffVar(false)
+})
 
 export default apolloClient

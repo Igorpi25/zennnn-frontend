@@ -45,6 +45,20 @@ const store = localforage.createInstance({
 
 const emitter = mitt()
 
+const getUsername = async (defaultUsername = '_') => {
+  let username = defaultUsername
+  try {
+    const user = await auth.currentUserPoolUser()
+    if (user) {
+      username = user.getUsername()
+    }
+  } catch (error) {
+    // eslint-disable-line
+    username = defaultUsername
+  }
+  return username
+}
+
 export {
   i18n,
   auth,
@@ -55,6 +69,7 @@ export {
   useDisplay,
   useTheme,
   useNotify,
+  getUsername,
 }
 
 export default {

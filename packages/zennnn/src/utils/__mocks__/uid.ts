@@ -3,9 +3,9 @@ beforeEach(() => {
   uidCounter = {}
 })
 
-let uidCounter = {}
+let uidCounter: Record<string, number> = {}
 
-const uid = (prefix = '$default') => {
+const uid = (prefix = '$default'): string => {
   if (!uidCounter[prefix]) {
     uidCounter[prefix] = 0
   }

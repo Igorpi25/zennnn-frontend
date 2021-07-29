@@ -127,18 +127,6 @@ export const GET_ROLE_IN_PROJECT = gql`
   }
 `
 
-export const GET_IS_SPEC_SYNC = gql`
-  query GetIsSpecSync {
-    isSpecSync @client
-  }
-`
-
-export const SPEC_SIMPLE_UI_OFF = gql`
-  query SpecSimpleUIOff {
-    specSimpleUIOff @client
-  }
-`
-
 export const GET_PROFILE = gql`
   query GetProfile {
     getProfile {

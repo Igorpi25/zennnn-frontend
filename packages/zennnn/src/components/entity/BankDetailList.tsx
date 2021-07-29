@@ -184,19 +184,21 @@ export default defineComponent({
             {props.items.length > 0 ? (
               props.items.map((item, i) => (
                 <div class="w-full relative">
-                  {i > 0 && <div class="mt-10 mb-8 border-b border-gray-400" />}
                   {i > 0 && (
-                    <div class="absolute top-0 right-0 pt-12">
-                      <Btn
-                        icon
-                        text
-                        mini
-                        class="text-gray-200"
-                        {...{ onClick: () => deleteData(i, item.id) }}
-                      >
-                        <Icon>{ziCloseDelete}</Icon>
-                      </Btn>
-                    </div>
+                    <>
+                      <div class="mt-10 mb-8 border-b border-gray-400" />
+                      <div class="absolute top-0 right-0 pt-12">
+                        <Btn
+                          icon
+                          text
+                          mini
+                          class="text-gray-200"
+                          {...{ onClick: () => deleteData(i, item.id) }}
+                        >
+                          <Icon>{ziCloseDelete}</Icon>
+                        </Btn>
+                      </div>
+                    </>
                   )}
                   <BankDetailItem
                     loading={props.loading}

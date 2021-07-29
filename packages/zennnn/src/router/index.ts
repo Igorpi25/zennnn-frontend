@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import { CURRENT_LOCALE_STORE_KEY } from 'shared/config'
-import { CURRENT_ORG_STORE_KEY, PAPER_SID_STORE_KEY } from '../config'
+import { CURRENT_ORG_STORE_KEY, PREVIEW_SID_STORE_KEY } from '../config'
 import { auth, i18n, emitter } from '../plugins'
 import { apolloClient, isLoggedInVar } from '../plugins/apollo'
 
@@ -33,8 +33,6 @@ const showNotify = (payload: string | NotifyOptions) => {
 const EmptyLayout = () =>
   import(/* webpackChunkName: "layout" */ '../views/layouts/Empty')
 
-const Spec = () => import(/* webpackChunkName: "common" */ '../views/Spec.vue')
-const Paper = () => import(/* webpackChunkName: "paper" */ '../views/Paper.vue')
 const ClientCard = () =>
   import(/* webpackChunkName: "clients" */ '../views/clients/Card')
 const SupplierCard = () =>
@@ -128,10 +126,37 @@ const routes: RouteRecordRaw[] = [
           import(/* webpackChunkName: "deals" */ '../views/deals'),
       },
       {
-        path: 'spec/:specId',
+        path: 'deal/:specId',
         name: 'spec',
         meta: { requiresAuth: true, scrollToTop: true },
-        component: Spec,
+        component: () =>
+          import(/* webpackChunkName: "deals" */ '../views/deals/Item'),
+        children: [
+          {
+            path: 'share',
+            name: 'deal-share',
+            meta: { toFromScrollPrevent: true },
+            component: () =>
+              import(/* webpackChunkName: "deals" */ '../views/deals/Share'),
+          },
+          {
+            path: 'print',
+            name: 'deal-print',
+            meta: { toFromScrollPrevent: true },
+            component: () =>
+              import(/* webpackChunkName: "deals" */ '../views/deals/Print'),
+            children: [
+              {
+                path: 'generate',
+                name: 'deal-print-generate',
+                component: () =>
+                  import(
+                    /* webpackChunkName: "deals" */ '../views/deals/PrintGenerate'
+                  ),
+              },
+            ],
+          },
+        ],
         beforeEnter: async (to) => {
           try {
             const specId = to.params.specId
@@ -149,6 +174,9 @@ const routes: RouteRecordRaw[] = [
               throw new Error('No have access!')
             }
           } catch (error) {
+            if (error.message === 'No have access!') {
+              return { name: 'forbidden' }
+            }
             throw new Error(error)
           }
         },
@@ -277,22 +305,14 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/paper/:specId',
-    name: 'paper',
-    component: Paper,
+    path: '/preview/:specId',
+    name: 'preview',
+    component: () =>
+      import(/* webpackChunkName: "preview" */ '../views/Preview'),
     meta: { requiresAuth: true, scrollToTop: true },
     beforeEnter: async (to) => {
-      try {
-        await apolloClient.query({
-          query: GET_ORGS,
-          fetchPolicy: 'cache-first',
-        })
-      } catch (error) {
-        // eslint-disable-next-line
-        console.log('Error on navigation to overview.', error)
-      }
       if (to.query.sid) {
-        localStorage.setItem(PAPER_SID_STORE_KEY, to.query.sid as string)
+        localStorage.setItem(PREVIEW_SID_STORE_KEY, to.query.sid as string)
         return {
           name: 'paper',
           params: { specId: to.params.specId },
@@ -478,6 +498,9 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   scrollBehavior(to, from, savedPosition) {
+    if (to.meta.toFromScrollPrevent || from.meta.toFromScrollPrevent) {
+      return
+    }
     if (to.matched.some((m) => m.meta.scrollToTop)) {
       return { left: 0, top: 0 }
     }
