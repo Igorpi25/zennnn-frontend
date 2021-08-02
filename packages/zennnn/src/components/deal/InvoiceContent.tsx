@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useMutation } from '@vue/apollo-composable'
 import { Scroll } from 'vue-supp'
 import { ziLink, ziChat, ziQr } from '@zennnn/icons'
-import { Icon, DataTable } from '@zennnn/core'
+import { Icon, DataTable, Select } from '@zennnn/core'
 import { DEFAULT_CURRENCY } from '@/config'
 import { SpecCurrency, InvoiceProfitType, RoleInProject } from '@/graphql/types'
 import {
@@ -25,6 +25,7 @@ import type {
   GetSpec_getSpec_invoices_products,
   ProductInput,
 } from '@/graphql/types'
+import type { EmptyNumber } from '@/types'
 
 interface DataTableHeaderProp {
   text: string
@@ -639,30 +640,39 @@ export default defineComponent({
                           )}
                           <span>{item.text}</span>
                           {item.value === 1 && isOwnerOrManager.value && (
-                            <select
-                              value={props.currency}
+                            <Select
+                              modelValue={props.currency}
+                              items={currencies.value}
                               disabled={props.activeTab !== item.value}
-                              class={[
-                                'simple-select text-sm ml-px',
-                                {
-                                  'text-gray-100':
-                                    props.activeTab === item.value,
+                              controlClass="px-0"
+                              inputClass="w-0 min-h-0 h-0 !m-0"
+                              class="inline-flex"
+                              solo
+                              {...{
+                                onClick: () => {
+                                  if (props.activeTab !== item.value) {
+                                    switchTab(item.value)
+                                  }
                                 },
-                                {
-                                  'pointer-events-none':
-                                    props.activeTab !== item.value,
-                                },
-                              ]}
-                              onChange={(e: any) =>
-                                emit('update:currency', e.target.value)
-                              }
-                            >
-                              {currencies.value.map((item) => (
-                                <option key={item.value} value={item.value}>
-                                  {item.text}
-                                </option>
-                              ))}
-                            </select>
+                                'onUpdate:modelValue': (val: EmptyNumber) =>
+                                  emit('update:currency', val),
+                              }}
+                              // TODO: in select replace input to div
+                              v-slots={{
+                                prepend: () => (
+                                  <span class="text-sm pt-0.5 pl-1">
+                                    {props.currency}
+                                  </span>
+                                ),
+                                item: ({
+                                  item,
+                                }: {
+                                  item: typeof currencies.value[0]
+                                }) => (
+                                  <span class="text-sm px-1">{item.text}</span>
+                                ),
+                              }}
+                            />
                           )}
                         </button>
                       ))}
