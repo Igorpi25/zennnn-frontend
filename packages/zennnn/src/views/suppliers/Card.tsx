@@ -59,17 +59,17 @@ export default defineComponent({
 
     async function onUpdate(input: any) {
       if (props.create) {
-        const { data } = await createMutate({
+        const response = await createMutate({
           orgId: route.params.orgId as string,
           input: input,
         })
-        if (data?.createSupplier) {
+        if (response?.data?.createSupplier) {
           notify(t('supplier.created'))
           await router.replace({
             name: 'supplier',
             params: {
               orgId: route.params.orgId,
-              supplierId: data.createSupplier.id,
+              supplierId: response.data.createSupplier.id,
             },
           })
         }

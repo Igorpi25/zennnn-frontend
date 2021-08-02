@@ -67,14 +67,14 @@ export default defineComponent({
         const isValid = formRef.value.validate()
         if (isValid) {
           const { firstName, lastName, email, password } = formModel
-          const { data } = await mutate({
+          const response = await mutate({
             email,
             password,
             givenName: firstName,
             familyName: lastName,
             locale: locale.value,
           })
-          const user = data?.signup
+          const user = response?.data?.signup
           logger.info('Registered user', user)
           const username = (user && user.email) || ''
           await router.push({ name: 'welcome', query: { username } })

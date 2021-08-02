@@ -1189,7 +1189,7 @@ export default defineComponent({
                             orgId: orgId as string,
                             input: createClientInput.value,
                           })
-                          if (response.data?.createClient) {
+                          if (response?.data?.createClient) {
                             createDealClientItem.value =
                               response.data.createClient
                             createClientDialog.value = false

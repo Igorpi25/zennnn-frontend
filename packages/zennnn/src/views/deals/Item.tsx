@@ -626,7 +626,7 @@ export default defineComponent({
           specId: route.params.specId as string,
           input: input,
         })
-        const id = response.data?.createInvoice?.id
+        const id = response?.data?.createInvoice?.id
         if (id) {
           expanded.value.push(id)
           setDealExpandedInvoices(route.params.specId as string, [
@@ -1116,7 +1116,7 @@ export default defineComponent({
                         input: createClientInput.value,
                       })
                       // TODO: handle errors and no specId
-                      if (response.data?.createClient) {
+                      if (response?.data?.createClient) {
                         await setDealClientMutate({
                           specId: route.params.specId as string,
                           clientId: response.data?.createClient.id,

@@ -31,7 +31,7 @@ export function useRoleInProject(props: RoleInProjectProps) {
   function hasAccess(...roles: RoleInProject[]) {
     const accessRoles = roles.reduce(
       (acc, r) => [...acc, ...getAccessRoles(r)],
-      [] as RoleInProject[]
+      [] as (RoleInProject | undefined)[]
     )
     return accessRoles.includes(roleInProject.value)
   }

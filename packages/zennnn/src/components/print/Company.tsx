@@ -429,7 +429,7 @@ export default defineComponent({
                         orgId: props.orgId,
                         input: createInput.value,
                       })
-                      if (response.data?.createRequisite) {
+                      if (response?.data?.createRequisite) {
                         emit('update', {
                           requisite: response.data.createRequisite.id,
                         })

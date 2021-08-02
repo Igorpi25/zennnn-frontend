@@ -531,7 +531,7 @@ export default defineComponent({
                       orgId: route.params.orgId as string,
                       input,
                     })
-                    if (response.data?.createWord?.id) {
+                    if (response?.data?.createWord?.id) {
                       await createOrUpdateProduct({
                         name: response.data.createWord.id,
                       })

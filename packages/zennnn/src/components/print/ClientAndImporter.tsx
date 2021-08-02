@@ -498,7 +498,7 @@ export default defineComponent({
                         orgId: props.orgId,
                         input: createInput.value,
                       })
-                      if (response.data?.createClient) {
+                      if (response?.data?.createClient) {
                         await setSpecClientMutate({
                           specId: props.specId,
                           clientId: response.data?.createClient.id,

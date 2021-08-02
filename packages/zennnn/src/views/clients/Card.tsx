@@ -108,7 +108,7 @@ export default defineComponent({
 
     async function onUpdate(input: any) {
       if (props.create) {
-        const { data } = await createMutate({
+        const response = await createMutate({
           orgId: route.params.orgId as string,
           groupId: clientGroup.value?.id ? clientGroup.value.id : undefined,
           input: {
@@ -116,14 +116,14 @@ export default defineComponent({
             clientType: clientType.value,
           },
         })
-        if (data?.createClient) {
+        if (response?.data?.createClient) {
           notify(t('client.created'))
           await router.replace({
             name: 'client',
             params: {
               orgId: route.params.orgId,
-              clientId: data.createClient.id,
-              groupId: data.createClient.groupId,
+              clientId: response.data.createClient.id,
+              groupId: response.data.createClient.groupId,
             },
             query: {
               clientType: clientTypeNumeric.value,

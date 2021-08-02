@@ -296,13 +296,13 @@ export default defineComponent({
         loading.value = false
       } else {
         if (notHasBillingAddress.value) {
-          const { data } = await setBillingAddressMutate({
+          const response = await setBillingAddressMutate({
             country: formModel.country,
             city: formModel.city,
             street: formModel.street,
             postcode: formModel.postcode,
           })
-          logger.info('SetBillingAddress', data)
+          logger.info('SetBillingAddress', response?.data)
           // TODO: try catch?
           // if (data.error) {
           //   logger.info(
@@ -336,20 +336,20 @@ export default defineComponent({
     }) {
       try {
         loading.value = true
-        const { data } = await retryInvoiceWithNewPaymentMethodMutate({
+        const response = await retryInvoiceWithNewPaymentMethodMutate({
           paymentMethodId,
           invoiceId,
         })
-        const response = data?.retryInvoiceWithNewPaymentMethod
-        if (response.error) {
+        const data = response?.data?.retryInvoiceWithNewPaymentMethod
+        if (data.error) {
           // The card had an error when trying to attach it to a customer.
-          throw response
+          throw data
         }
         // Normalize the response to contain the object returned by Stripe.
         // Add the addional details we need.
         const result = {
           paymentMethodId,
-          invoice: response,
+          invoice: data,
           isRetry: true,
           priceId: props.selectedPriceId,
         }
@@ -397,7 +397,7 @@ export default defineComponent({
       try {
         loading.value = true
 
-        const { data } = isPromo.value
+        const response = isPromo.value
           ? await createPromoSubscriptionMutate({
               paymentMethodId,
             })
@@ -406,20 +406,21 @@ export default defineComponent({
               priceId,
             })
 
-        const response = isPromo.value
-          ? (data as CreatePromoSubscription).createPromoSubscription
-          : (data as UpdatePaymentSubscription).updatePaymentSubscription
+        const data = isPromo.value
+          ? (response?.data as CreatePromoSubscription).createPromoSubscription
+          : (response?.data as UpdatePaymentSubscription)
+              .updatePaymentSubscription
 
-        if (response.error) {
+        if (data.error) {
           // The card had an error when trying to attach it to a customer.
-          throw response
+          throw data
         }
         // Normalize the response to contain the object returned by Stripe.
         // Add the addional details we need.
         const result = {
           paymentMethodId,
           priceId,
-          subscription: response,
+          subscription: data,
         }
         // Some payment methods require a customer to be on session
         // to complete the payment process. Check the status of the

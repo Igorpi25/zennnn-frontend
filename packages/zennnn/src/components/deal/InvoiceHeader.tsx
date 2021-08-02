@@ -362,7 +362,7 @@ export default defineComponent({
                           orgId: route.params.orgId as string,
                           input: createSupplierInput.value,
                         })
-                        if (response.data?.createSupplier) {
+                        if (response?.data?.createSupplier) {
                           setSupplier(response.data.createSupplier.id)
                           createSupplierDialog.value = false
                           createSupplierInput.value = {}
