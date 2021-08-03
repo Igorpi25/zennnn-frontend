@@ -3,7 +3,8 @@ import { RouterView } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useQuery } from '@vue/apollo-composable'
 import { useReactiveVar } from 'shared/composables/reactiveVar'
-import { emitter, useNotify } from '@/plugins'
+import { useNotify } from 'shared/composables/notify'
+import { emitter } from '@/plugins'
 import {
   isLoggedInVar,
   getDealSimpleOff,

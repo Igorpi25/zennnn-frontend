@@ -1,11 +1,12 @@
 import { defineComponent, ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useNotify } from 'shared/composables/notify'
 import { ziVisible, ziHide } from '@zennnn/icons'
 import { Btn, Icon, Form, TextField } from '@zennnn/core'
 import MainAppBar from '@/components/core/MainAppBar'
 import Copyright from '@/components/core/Copyright'
-import { auth, logger, useNotify } from '@/plugins'
+import { auth, logger } from '@/plugins'
 
 export default defineComponent({
   setup() {

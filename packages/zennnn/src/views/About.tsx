@@ -16,8 +16,8 @@ import { ziChecked, ziPlay } from '@zennnn/icons'
 import { Icon, Image, Window, WindowItem, Alert, Btn } from '@zennnn/core'
 import Avatar from 'shared/components/Avatar'
 import Logo from 'shared/components/Logo'
+import { useDisplay } from 'shared/composables/display'
 import MainAppBar from '@/components/core/MainAppBar'
-import { useDisplay } from '@/plugins'
 
 const INFO_ALERT_TOP = 90
 const INFO_ALERT_TOP_DESKTOP = 106

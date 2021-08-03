@@ -3,7 +3,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ziHide, ziVisible } from '@zennnn/icons'
 import { Btn, Form, TextField, Icon } from '@zennnn/core'
-import { auth, logger, useNotify } from '@/plugins'
+import { useNotify } from 'shared/composables/notify'
+import { auth, logger } from '@/plugins'
 
 export default defineComponent({
   emits: {

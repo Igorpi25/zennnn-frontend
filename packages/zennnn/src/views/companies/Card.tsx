@@ -1,9 +1,10 @@
 import { defineComponent, ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useQuery, useMutation } from '@vue/apollo-composable'
 import { Progress, Btn } from '@zennnn/core'
 import Dialog from 'shared/components/Dialog'
-import { useQuery, useMutation } from '@vue/apollo-composable'
+import { useNotify } from 'shared/composables/notify'
 import { GET_ORG_REQUISITE } from '@/graphql/queries'
 import {
   CREATE_REQUISITE,
@@ -12,7 +13,6 @@ import {
 } from '@/graphql/mutations'
 import Form from '@/components/company/Form'
 import { useProfile } from '@/composables/profile'
-import { useNotify } from '@/plugins'
 
 import type {
   GetOrgRequisite,

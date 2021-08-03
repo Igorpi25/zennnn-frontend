@@ -3,17 +3,9 @@ import localforage from 'localforage'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 import Auth from '@aws-amplify/auth'
 
-import {
-  createDisplay,
-  useDisplay,
-  DisplaySymbol,
-} from 'shared/composables/display'
-import { createTheme, useTheme, ThemeSymbol } from 'shared/composables/theme'
-import {
-  createNotify,
-  useNotify,
-  NotifySymbol,
-} from 'shared/composables/notify'
+import { createDisplay, DisplaySymbol } from 'shared/composables/display'
+import { createTheme, ThemeSymbol } from 'shared/composables/theme'
+import { createNotify, NotifySymbol } from 'shared/composables/notify'
 
 import Logger from 'shared/plugins/logger'
 import i18nInstance from './i18n'
@@ -44,7 +36,7 @@ const store = localforage.createInstance({
 
 const emitter = mitt()
 
-export { i18n, auth, logger, store, emitter, useDisplay, useTheme, useNotify }
+export { i18n, auth, logger, store, emitter }
 
 export default {
   install(app: App) {

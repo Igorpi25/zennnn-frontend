@@ -1,9 +1,10 @@
 import { defineComponent, ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Btn, Form, TextField } from '@zennnn/core'
+import { useNotify } from 'shared/composables/notify'
 import MainAppBar from '@/components/core/MainAppBar'
 import Copyright from '@/components/core/Copyright'
-import { auth, logger, useNotify } from '@/plugins'
+import { auth, logger } from '@/plugins'
 
 export default defineComponent({
   setup() {

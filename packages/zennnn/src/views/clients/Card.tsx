@@ -3,11 +3,11 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Progress } from '@zennnn/core'
 import { useQuery, useMutation } from '@vue/apollo-composable'
+import { useNotify } from 'shared/composables/notify'
 import { GET_CLIENT, GET_CLIENT_GROUP } from '@/graphql/queries'
 import { CREATE_CLIENT, UPDATE_CLIENT } from '@/graphql/mutations'
 import { ClientType } from '@/graphql/types'
 import Form from '@/components/client/Form'
-import { useNotify } from '@/plugins'
 
 import type {
   GetClient,

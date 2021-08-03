@@ -22,11 +22,12 @@ import Divider from 'shared/components/Divider'
 import Badge from 'shared/components/Badge'
 import SidebarItem from 'shared/components/SidebarItem'
 import LocalePicker from 'shared/components/LocalePicker'
+import { useTheme } from 'shared/composables/theme'
 import AccountPicker from '@/components/core/AccountPicker'
 import SubscriptionLabel from '@/components/core/SubscriptionLabel'
 import { useOrgs } from '@/composables/orgs'
 import { useSubscription } from '@/composables/subscription'
-import { auth, useTheme } from '@/plugins'
+import { auth } from '@/plugins'
 
 import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'
 

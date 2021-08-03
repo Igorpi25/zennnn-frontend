@@ -3,10 +3,10 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Progress } from '@zennnn/core'
 import { useQuery, useMutation } from '@vue/apollo-composable'
+import { useNotify } from 'shared/composables/notify'
 import { GET_SUPPLIER } from '@/graphql/queries'
 import { CREATE_SUPPLIER, UPDATE_SUPPLIER } from '@/graphql/mutations'
 import Form from '@/components/supplier/Form'
-import { useNotify } from '@/plugins'
 
 import type {
   GetSupplier,

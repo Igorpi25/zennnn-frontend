@@ -13,7 +13,8 @@ import { ziCloseDelete, ziPlus } from '@zennnn/icons'
 import { Icon, Progress, Btn } from '@zennnn/core'
 import { useRender } from 'shared/composables/render'
 import { ICON_IMAGE_POSTFIX, UPLOAD_FILE_SIZE_MB } from 'shared/config'
-import { auth, logger, useNotify } from '@/plugins'
+import { useNotify } from 'shared/composables/notify'
+import { auth, logger } from '@/plugins'
 
 export default defineComponent({
   props: {

@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { useMutation } from '@vue/apollo-composable'
 import { ziPlusOutline, ziStatusPointSm } from '@zennnn/icons'
 import { TextField, Icon, Btn, Autocomplete, Select, Modal } from '@zennnn/core'
+import { useNotify } from 'shared/composables/notify'
 import {
   UPDATE_COMPANY_BANK_DETAIL,
   UPDATE_REQUISITE,
@@ -10,7 +11,6 @@ import {
 } from '@/graphql/mutations'
 import Phone from '@/components/Phone'
 import CompanyForm from '@/components/company/Form'
-import { useNotify } from '@/plugins'
 
 import type { PropType } from 'vue'
 import type {

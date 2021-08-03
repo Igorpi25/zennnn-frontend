@@ -1,11 +1,11 @@
 import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-
 import { Btn } from '@zennnn/core'
+import { useNotify } from 'shared/composables/notify'
 import MainAppBar from '@/components/core/MainAppBar'
 import Copyright from '@/components/core/Copyright'
-import { auth, logger, useNotify } from '@/plugins'
+import { auth, logger } from '@/plugins'
 
 export default defineComponent({
   setup() {

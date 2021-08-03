@@ -12,10 +12,12 @@ import {
 import { Btn, Icon, Form, TextField, Checkbox } from '@zennnn/core'
 import Logo from 'shared/components/Logo'
 import LocalePicker from 'shared/components/LocalePicker'
+import { useNotify } from 'shared/composables/notify'
+import { useTheme } from 'shared/composables/theme'
 import Social from '@/components/core/Social'
 import Copyright from '@/components/core/Copyright'
 import { SIGNUP } from '@/graphql/mutations'
-import { logger, useNotify, useTheme } from '@/plugins'
+import { logger } from '@/plugins'
 
 import type { Signup, SignupVariables } from '@/graphql/types'
 import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'

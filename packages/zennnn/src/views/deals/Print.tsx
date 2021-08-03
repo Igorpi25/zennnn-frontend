@@ -4,6 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { useQuery, useMutation } from '@vue/apollo-composable'
 import { ziCloseWindow } from '@zennnn/icons'
 import { Btn, Icon, Modal } from '@zennnn/core'
+import { useNotify } from 'shared/composables/notify'
+import { useDisplay } from 'shared/composables/display'
 import { GET_SPEC, LIST_ORG_REQUISITES } from '@/graphql/queries'
 import { UPDATE_SPEC } from '@/graphql/mutations'
 import ValidationStatus from '@/components/entity/ValidationStatus'
@@ -13,7 +15,6 @@ import CustomsAndPayment from '@/components/print/CustomsAndPayment'
 import Shipment from '@/components/print/Shipment'
 import printInvoice from '@/components/print/printInvoice'
 import { validateInvoicePrint } from '@/utils/validation'
-import { useNotify, useDisplay } from '@/plugins'
 
 import type {
   GetSpec,

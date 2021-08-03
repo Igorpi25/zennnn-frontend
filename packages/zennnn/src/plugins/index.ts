@@ -3,17 +3,9 @@ import localforage from 'localforage'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 import Auth from '@aws-amplify/auth'
 
-import {
-  createDisplay,
-  useDisplay,
-  DisplaySymbol,
-} from 'shared/composables/display'
-import { createTheme, useTheme, ThemeSymbol } from 'shared/composables/theme'
-import {
-  createNotify,
-  useNotify,
-  NotifySymbol,
-} from 'shared/composables/notify'
+import { createDisplay, DisplaySymbol } from 'shared/composables/display'
+import { createTheme, ThemeSymbol } from 'shared/composables/theme'
+import { createNotify, NotifySymbol } from 'shared/composables/notify'
 
 import Logger from 'shared/plugins/logger'
 import { parseDate, toISOString } from 'shared/utils/date'
@@ -61,18 +53,7 @@ const getUsername = async (defaultUsername = '_') => {
   return username
 }
 
-export {
-  i18n,
-  auth,
-  logger,
-  store,
-  emitter,
-  theme,
-  useDisplay,
-  useTheme,
-  useNotify,
-  getUsername,
-}
+export { i18n, auth, logger, store, emitter, getUsername }
 
 export default {
   install(app: App) {

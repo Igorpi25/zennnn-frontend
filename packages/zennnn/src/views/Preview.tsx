@@ -16,6 +16,8 @@ import {
   ziComment,
 } from '@zennnn/icons'
 import { Btn, Icon } from '@zennnn/core'
+import { useNotify } from 'shared/composables/notify'
+import { useDisplay } from 'shared/composables/display'
 import { parseDate } from 'shared/utils/date'
 import { PREVIEW_STORE_KEY_PREFIX, DEFAULT_CURRENCY } from '@/config'
 import {
@@ -42,7 +44,7 @@ import ZAppBar from '@/components/core/ZAppBar'
 import Copyright from '@/components/core/Copyright'
 import CommentList from '@/components/comment/List'
 import PreviewInvoice from '@/components/deal/PreviewInvoice'
-import { logger, useNotify, useDisplay } from '@/plugins'
+import { logger } from '@/plugins'
 import { Typename } from '@/types'
 
 import type {

@@ -10,6 +10,8 @@ import {
   ExpandTransition,
   Autocomplete,
 } from '@zennnn/core'
+import { useTheme } from 'shared/composables/theme'
+import { useNotify } from 'shared/composables/notify'
 import {
   RETRY_INVOICE_WITH_NEW_PAYMENT_METHOD,
   UPDATE_PAYMENT_SUBSCRIPTION,
@@ -19,7 +21,7 @@ import {
 } from '@/graphql/mutations'
 import countriesCodes from '@/assets/countries/codes.json'
 import { useProfile } from '@/composables/profile'
-import { logger, useNotify, useTheme } from '@/plugins'
+import { logger } from '@/plugins'
 import { PaymentMethod, PaymentType } from '@/types'
 
 import type { PropType } from 'vue'

@@ -1,8 +1,8 @@
 import { defineComponent, ref } from 'vue'
+import { useDisplay } from 'shared/composables/display'
 import Search from '@/components/item/Search'
 import Card, { CardItem, LabelTypes } from '@/components/item/Card'
 import MainAppBar from '@/components/core/MainAppBar'
-import { useDisplay } from '@/plugins'
 
 export default defineComponent({
   setup() {

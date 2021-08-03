@@ -5,6 +5,7 @@ import { useQuery, useMutation } from '@vue/apollo-composable'
 import { ziCloseDelete, ziShare, ziCopy } from '@zennnn/icons'
 import { TextField, Btn, Icon, LoadingSpinner, Tooltip } from '@zennnn/core'
 import Dialog from 'shared/components/Dialog'
+import { useNotify } from 'shared/composables/notify'
 import { GET_SPEC_LINK_ACCESS, GET_SPEC_EMAIL_ACCESS } from '@/graphql/queries'
 import {
   REMOVE_EMAIL_ACCESS_TO_SPEC,
@@ -12,7 +13,7 @@ import {
   OPEN_LINK_ACCESS,
   CLOSE_LINK_ACCESS,
 } from '@/graphql/mutations'
-import { useNotify, logger } from '@/plugins'
+import { logger } from '@/plugins'
 
 import type {
   GetSpecLinkAccess,

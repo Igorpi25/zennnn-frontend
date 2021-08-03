@@ -5,10 +5,12 @@ import { ziVisible, ziHide, ziMoon, ziMoonOutline } from '@zennnn/icons'
 import { Icon, Btn, Form, TextField, Modal } from '@zennnn/core'
 import Logo from 'shared/components/Logo'
 import LocalePicker from 'shared/components/LocalePicker'
+import { useNotify } from 'shared/composables/notify'
+import { useTheme } from 'shared/composables/theme'
 import Social from '@/components/core/Social'
 import Copyright from '@/components/core/Copyright'
 import AuthCompleteForm from '@/components/AuthCompleteForm'
-import { auth, logger, useNotify, useTheme } from '@/plugins'
+import { auth, logger } from '@/plugins'
 
 import type { LocaleActivatorSlotProps } from 'shared/components/LocalePicker'
 

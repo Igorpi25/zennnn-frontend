@@ -8,7 +8,7 @@ import {
   ziChevronDown,
 } from '@zennnn/icons'
 import { TextField, Icon, Btn, Modal } from '@zennnn/core'
-import { useDisplay } from '@/plugins'
+import { useDisplay } from 'shared/composables/display'
 
 export default defineComponent({
   props: {
