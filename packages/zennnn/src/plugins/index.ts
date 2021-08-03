@@ -1,6 +1,7 @@
 import mitt from 'mitt'
 import localforage from 'localforage'
 import { DefaultApolloClient } from '@vue/apollo-composable'
+import Auth from '@aws-amplify/auth'
 
 import {
   createDisplay,
@@ -14,7 +15,6 @@ import {
   NotifySymbol,
 } from 'shared/composables/notify'
 
-import Auth from 'shared/plugins/auth'
 import Logger from 'shared/plugins/logger'
 import { parseDate, toISOString } from 'shared/utils/date'
 
@@ -29,11 +29,13 @@ const display = createDisplay()
 const theme = createTheme()
 const notify = createNotify()
 
-const auth = new Auth({
+Auth.configure({
   region: process.env.VUE_APP_AWS_COGNITO_REGION,
   userPoolId: process.env.VUE_APP_AWS_COGNITO_USER_POOL_ID,
   userPoolWebClientId: process.env.VUE_APP_AWS_COGNITO_USER_POOL_WEB_CLIENT_ID,
 })
+const auth = Auth
+
 const logger = new Logger(
   null,
   process.env.NODE_ENV === 'production' ? 'WARN' : 'INFO'

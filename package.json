@@ -22,10 +22,10 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.15",
+    "@aws-amplify/auth": "^4.2.0",
     "@sentry/browser": "^6.7.2",
     "@sentry/tracing": "^6.7.2",
     "@vue/apollo-composable": "^4.0.0-alpha.14",
-    "amazon-cognito-identity-js": "^4.6.0",
     "axios": "^0.21.0",
     "clone-deep": "^4.0.1",
     "core-js": "^3.14.0",

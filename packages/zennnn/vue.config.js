@@ -26,13 +26,6 @@ module.exports = {
     config.resolve.alias.set('shared', path.resolve(__dirname, '../shared'))
   },
   configureWebpack: (config) => {
-    // webpack 5 not polyfill node crypto
-    // crypto used in amazon-cognito-identity-js
-    // can polyfill with
-    // resolve.fallback: { crypto: require.resolve('crypto-browserify') }
-    //
-    config.resolve.fallback = { crypto: false }
-
     const definePlugin = new webpack.DefinePlugin({
       'process.env.FRONTEND_VERSION': JSON.stringify(version),
       'process.env.COMMIT_HASH': JSON.stringify(commitHash),
