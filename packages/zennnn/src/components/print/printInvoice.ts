@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { parseDate } from 'shared/utils/date'
 import { ShipmentType, ClientType } from '@/graphql/types'
 import Countries from '@/assets/countries/codes.json'
@@ -38,13 +37,13 @@ const genLabel = (path: string, clientLang: string, opt = {} as any) => {
   const value = opt.value
   const fallback = opt.fallback || ''
   const args = opt.args || {}
-  const defaultLang = i18n.fallbackLocale.toString()
+  const defaultLang = i18n.fallbackLocale.value.toString()
   const isDefaultLang = clientLang === defaultLang
   const title = i18n.te(path, defaultLang)
-    ? i18n.t(path, defaultLang, args)
+    ? i18n.t(path, args, { locale: defaultLang })
     : fallback
   const subtitle = i18n.te(path, clientLang)
-    ? i18n.t(path, clientLang, args)
+    ? i18n.t(path, args, { locale: clientLang })
     : ''
   if (flat) {
     const v = subtitle && !isDefaultLang ? `${title} / ${subtitle}` : `${title}`
@@ -967,16 +966,15 @@ const genAmountBody = (
 }
 
 const genAmountInWords = (spec: Spec, clientLang: string) => {
-  const defaultLang = i18n.fallbackLocale.toString()
+  const defaultLang = i18n.fallbackLocale.value.toString()
   const isDefaultLang = clientLang === defaultLang
   const result = []
   if (spec.amountInWords) {
     result.push([
       {
-        text: `${i18n.t(
-          'print.amountInWords',
-          defaultLang
-        )}: ${spec.amountInWords.toUpperCase()}`,
+        text: `${i18n.t('print.amountInWords', '', {
+          locale: defaultLang,
+        })}: ${spec.amountInWords.toUpperCase()}`,
         alignment: 'right',
       },
     ])
@@ -984,7 +982,7 @@ const genAmountInWords = (spec: Spec, clientLang: string) => {
   if (!isDefaultLang && spec.amountInWordsClientLang) {
     result.push([
       {
-        text: `${i18n.t('print.amountInWords', clientLang)}: ${
+        text: `${i18n.t('print.amountInWords', '', { locale: clientLang })}: ${
           spec.amountInWordsClientLang
         }`,
         alignment: 'right',
@@ -1022,7 +1020,7 @@ export default async (
     if (method !== 'download') {
       win = window.open(`/print/${spec.specNo}`, '_blank')
     }
-    const defaultLang = i18n.fallbackLocale.toString()
+    const defaultLang = i18n.fallbackLocale.value.toString()
     const clientLang = client.locale || defaultLang
     const pdfMake = (
       await import(
@@ -1030,59 +1028,40 @@ export default async (
         /* webpackChunkName: "pdfMake" */ 'pdfmake/build/pdfmake'
       )
     ).default
+
     let font
-    let pdfFonts
     if (clientLang === 'zh-Hans') {
       font = 'NotoSansCJKsc'
-      const response = await axios.get(
-        `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKsc.json`
-      )
-      pdfFonts = {
-        vfs: response.data,
-      }
       pdfMake.fonts = {
         NotoSansCJKsc: {
-          normal: 'NotoSansCJKsc-Regular.ttf',
-          bold: 'NotoSansCJKsc-Medium.ttf',
-          italics: 'NotoSansCJKsc-Regular.ttf',
-          bolditalics: 'NotoSansCJKsc-Medium.ttf',
+          normal: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/NotoSansCJKsc/NotoSansCJKsc-Regular.ttf`,
+          bold: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/NotoSansCJKsc/NotoSansCJKsc-Medium.ttf`,
+          italics: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/NotoSansCJKsc/NotoSansCJKsc-Regular.ttf`,
+          bolditalics: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/NotoSansCJKsc/NotoSansCJKsc-Medium.ttf`,
         },
       }
     } else if (clientLang === 'zh-Hant') {
       font = 'NotoSansCJKtc'
-      const response = await axios.get(
-        `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/vfs/vfs_fonts_NotoSansCJKtc.json`
-      )
-      pdfFonts = {
-        vfs: response.data,
-      }
       pdfMake.fonts = {
         NotoSansCJKtc: {
-          normal: 'NotoSansCJKtc-Regular.ttf',
-          bold: 'NotoSansCJKtc-Medium.ttf',
-          italics: 'NotoSansCJKtc-Regular.ttf',
-          bolditalics: 'NotoSansCJKtc-Medium.ttf',
+          normal: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/NotoSansCJKtc/NotoSansCJKtc-Regular.ttf`,
+          bold: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/NotoSansCJKtc/NotoSansCJKtc-Medium.ttf`,
+          italics: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/NotoSansCJKtc/NotoSansCJKtc-Regular.ttf`,
+          bolditalics: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/NotoSansCJKtc/NotoSansCJKtc-Medium.ttf`,
         },
       }
     } else {
       font = 'MyriadPro'
-      pdfFonts = (
-        await import(
-          // @ts-ignore
-          /* webpackChunkName: "pdfFonts" */ '../../plugins/pdfmake/vfs_fonts'
-        )
-      ).default
       pdfMake.fonts = {
         MyriadPro: {
-          normal: 'MyriadPro-Regular.ttf',
-          bold: 'MyriadPro-Bold.ttf',
-          italics: 'MyriadPro-It.ttf',
-          bolditalics: 'MyriadPro-BoldIt.ttf',
+          normal: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/MyriadPro/MyriadPro-Regular.ttf`,
+          bold: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/MyriadPro/MyriadPro-Bold.ttf`,
+          italics: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/MyriadPro/MyriadPro-It.ttf`,
+          bolditalics: `${process.env.VUE_APP_IMAGE_DOWNLOAD_HOSTNAME}/pdf/fonts/MyriadPro/MyriadPro-BoldIt.ttf`,
         },
       }
     }
-    const vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs
-    pdfMake.vfs = vfs
+
     const specCreatedAt = parseDate(spec.createdAt) as Date
     const specDueDate = parseDate(spec.createdAt) as Date
     const specDepositDueDate = spec.depositDueDate
@@ -1116,7 +1095,7 @@ export default async (
           },
         ]
       },
-      footer: (currentPage: any, pageCount: any) => {
+      footer: (currentPage: number, pageCount: number) => {
         return [
           {
             columns: [
@@ -1132,8 +1111,8 @@ export default async (
                   flat: true,
                   secondary: true,
                   args: {
-                    p: currentPage,
-                    t: pageCount,
+                    p: currentPage.toString(),
+                    t: pageCount.toString(),
                   },
                 }),
                 alignment: 'right',
