@@ -18,7 +18,7 @@ export default defineComponent({
     const systemMessage = ref('')
     const systemMessageDialog = ref(false)
 
-    emitter.on('show-system-message', (message) => {
+    emitter.on('showSystemMessage', (message) => {
       systemMessage.value =
         message === 'ForbiddenError: Insufficient access rights'
           ? t('systemMessageModal.needPayment')

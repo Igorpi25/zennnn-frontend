@@ -49,7 +49,7 @@ export default defineComponent({
 
     const notify = useNotify()
 
-    emitter.on('show-notify', (payload) => {
+    emitter.on('showNotify', (payload) => {
       notify(payload)
     })
 

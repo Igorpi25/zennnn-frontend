@@ -27,7 +27,7 @@ export const checkAuth = async () => {
 }
 
 const showNotify = (payload: string | NotifyOptions) => {
-  emitter.emit('show-notify', payload)
+  emitter.emit('showNotify', payload)
 }
 
 const EmptyLayout = () =>

@@ -284,9 +284,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
           )
           if (message === 'ForbiddenError: Insufficient access rights') {
-            emitter.emit('show-system-message', message)
+            emitter.emit('showSystemMessage', message)
           } else if (message && message.includes('Forbidden')) {
-            emitter.emit('show-notify', { color: 'warn', text: 'Forbidden' })
+            emitter.emit('showNotify', { color: 'warn', text: 'Forbidden' })
           }
       }
     }

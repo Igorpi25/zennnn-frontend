@@ -15,6 +15,7 @@ import apolloClient from './apollo'
 import sentry from './sentry'
 
 import type { App } from 'vue'
+import type { NotifyOptions } from 'shared/composables/notify'
 
 const i18n = i18nInstance.global
 const display = createDisplay()
@@ -37,7 +38,10 @@ const store = localforage.createInstance({
   name: 'zn',
 })
 
-const emitter = mitt()
+const emitter = mitt<{
+  showNotify: string | NotifyOptions
+  showSystemMessage: string
+}>()
 
 const getUsername = async (defaultUsername = '_') => {
   let username = defaultUsername

@@ -46,7 +46,7 @@ export default defineComponent({
 
     watch(isLoggedIn, setCurrentuser)
 
-    emitter.on('show-notify', (payload) => {
+    emitter.on('showNotify', (payload) => {
       notify(payload)
     })
 
