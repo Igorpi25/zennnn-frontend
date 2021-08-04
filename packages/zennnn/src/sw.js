@@ -8,7 +8,7 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   const resourcesRe =
-    /^https:\/\/s3.ap-northeast-1.amazonaws.com\/.+\/pdf\/vfs\/vfs_fonts.+\.json$/
+    /^https:\/\/(s3\.ap-northeast-1\.amazonaws\.com|images\.zennnn-dev\.com|images.zennnn\.com)\/.+\/pdf\/fonts\/.+\.ttf$/
   const googleFontsRe =
     /^https:\/\/fonts.googleapis\.com\/css\?family=Montserrat.*/
   const localFontsRe = /\/fonts\/.*/
