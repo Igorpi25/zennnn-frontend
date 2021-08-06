@@ -1,6 +1,7 @@
 import path from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueI18n from '@intlify/vite-plugin-vue-i18n'
 import viteComponents from 'vite-plugin-components'
 
@@ -19,12 +20,13 @@ export default defineConfig({
       {
         find: '/@shared',
         replacement: path.join(__dirname, '../shared'),
-      }
+      },
     ],
   },
 
   plugins: [
     vue(),
+    vueJsx(),
     vueI18n({
       include: path.resolve(__dirname, '../shared/plugins/i18n/locales/**'),
     }),
