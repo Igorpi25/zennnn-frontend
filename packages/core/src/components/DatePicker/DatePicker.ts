@@ -127,9 +127,8 @@ export default defineComponent({
         {
           outlined: true,
           xSmall: true,
-          darkIcon: !isMenuActive.value,
           class: {
-            'bg-blue-400 border-blue-400 dark:border-blue-400 text-white':
+            'bg-blue-550 border-blue-550 dark:border-blue-550 text-white':
               isMenuActive.value,
           },
         },
@@ -139,7 +138,16 @@ export default defineComponent({
             return (
               value || [
                 h('span', placeholder),
-                h(Icon, { right: true }, { default: () => ziCalendar }),
+                h(
+                  Icon,
+                  {
+                    right: true,
+                    class: {
+                      'text-gray-100 dark:text-gray-200': !isMenuActive.value,
+                    },
+                  },
+                  { default: () => ziCalendar }
+                ),
               ]
             )
           },

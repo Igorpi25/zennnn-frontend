@@ -136,12 +136,9 @@ export default defineComponent({
                     <Btn
                       icon
                       small
-                      retainFocusOnClick
-                      class="bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
-                      {...{
-                        onClick: () => {
-                          isDark.value = !isDark.value
-                        },
+                      class="bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white"
+                      onClick={() => {
+                        isDark.value = !isDark.value
                       }}
                     >
                       <Icon>{isDark.value ? ziMoon : ziMoonOutline}</Icon>
@@ -157,7 +154,7 @@ export default defineComponent({
                             icon
                             small
                             class={{
-                              'w-10 bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white':
+                              'w-10 bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white':
                                 true,
                               'bg-blue-550 dark:bg-blue-550': active,
                             }}
@@ -261,7 +258,7 @@ export default defineComponent({
                   disabled={!formValidity.value}
                   loading={loading.value}
                   class="w-full sm:w-48"
-                  {...{ onClick: onSubmit }}
+                  onClick={onSubmit}
                 >
                   {t('signin.submit')}
                 </Btn>

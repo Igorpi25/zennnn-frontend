@@ -177,16 +177,18 @@ export default defineComponent({
                   <Btn
                     disabled={!hasPrev.value}
                     text
-                    class="h-12 w-12 rounded-full bg-gray-900 bg-opacity-80 flex items-center justify-center pointer-events-auto"
-                    {...{ onClick: prev }}
+                    icon
+                    class="rounded-full bg-gray-900 bg-opacity-80 flex items-center justify-center pointer-events-auto"
+                    onClick={prev}
                   >
                     <Icon>{ziArrowLeft}</Icon>
                   </Btn>
                   <Btn
                     disabled={!hasNext.value}
                     text
-                    class="h-12 w-12 rounded-full bg-gray-900 bg-opacity-80 flex items-center justify-center pointer-events-auto"
-                    {...{ onClick: next }}
+                    icon
+                    class="rounded-full bg-gray-900 bg-opacity-80 flex items-center justify-center pointer-events-auto"
+                    onClick={next}
                   >
                     <Icon>{ziArrowRight}</Icon>
                   </Btn>

@@ -76,14 +76,7 @@ export default defineComponent({
             ))}
           </div>
           <div class="grid md:grid-cols-2 gap-y-10 gap-x-4 lg:gap-x-10 pt-10">
-            <Btn
-              block
-              outlined
-              small
-              {...{
-                onClick: addData,
-              }}
-            >
+            <Btn block outlined small onClick={addData}>
               {t('companyDetail.addContact')}
             </Btn>
           </div>

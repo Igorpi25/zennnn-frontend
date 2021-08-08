@@ -260,11 +260,7 @@ export default defineComponent({
           ))}
         </Form>
         <div class="flex justify-end pt-4">
-          <Btn
-            text
-            {...{ onClick: translateWord }}
-            class="place-self-end h-10 px-4"
-          >
+          <Btn text class="place-self-end h-10 px-4" onClick={translateWord}>
             {translateWordLoading.value ? (
               <Progress indeterminate size="24" width="2" class="mr-2" />
             ) : (
@@ -278,15 +274,13 @@ export default defineComponent({
             disabled={props.loading}
             outlined
             minWidth={96}
-            {...{
-              onClick: () => {
-                emit('cancel', true)
-              },
+            onClick={() => {
+              emit('cancel', true)
             }}
           >
             <span>{t('action.cancel')}</span>
           </Btn>
-          <Btn loading={props.loading} {...{ onClick: onSubmit }}>
+          <Btn loading={props.loading} onClick={onSubmit}>
             {props.actionText}
           </Btn>
         </div>

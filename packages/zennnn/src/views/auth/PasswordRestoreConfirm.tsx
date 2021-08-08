@@ -146,7 +146,7 @@ export default defineComponent({
               </Form>
             </div>
             <div class="pb-6">
-              <Btn loading={loading.value} {...{ onClick: onSubmit }}>
+              <Btn loading={loading.value} onClick={onSubmit}>
                 <span>{t('passwordRestoreConfirm.submit')}</span>
               </Btn>
             </div>

@@ -710,10 +710,8 @@ export default defineComponent({
           ) : (
             <Btn
               outlined
-              {...{
-                onClick: () => {
-                  emit('back')
-                },
+              onClick={() => {
+                emit('back')
               }}
             >
               {isNewPaymentMethod.value
@@ -722,7 +720,7 @@ export default defineComponent({
             </Btn>
           )}
           <div class="flex-grow" />
-          <Btn loading={loading.value} {...{ onClick: onCardFormSubmit }}>
+          <Btn loading={loading.value} onClick={onCardFormSubmit}>
             {isNewPaymentMethod.value ? t('payment.add') : t('payment.buy')}
           </Btn>
         </div>

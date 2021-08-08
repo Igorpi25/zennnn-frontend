@@ -385,7 +385,7 @@ export default defineComponent({
                     mini
                     text
                     class="text-gray-200 pointer-events-auto"
-                    {...{ onClick: cancelUpload }}
+                    onClick={cancelUpload}
                   >
                     <Icon>{ziCloseDelete}</Icon>
                   </Btn>

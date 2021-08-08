@@ -8,7 +8,6 @@ const SidebarItem: FunctionalComponent<{
   class?: string
   to?: RouteLocationRaw
   href?: string
-  retainFocusOnClick?: boolean
   onClick?: (e: MouseEvent) => void
 }> = (props, { slots, attrs }) => {
   function genSlot(name: 'start' | 'end') {
@@ -34,9 +33,7 @@ const SidebarItem: FunctionalComponent<{
       primary={false}
       to={props.to}
       href={props.href}
-      retainFocusOnClick={props.retainFocusOnClick}
-      class="hover:text-white hover:bg-blue-400 dark:hover:bg-blue-400 w-full justify-start text-left rounded-none ring-inset"
-      contentClass="w-full space-x-4 leading-normal"
+      class="space-x-4 leading-normal hover:text-white hover:bg-blue-400 active:bg-blue-550 active:text-white w-full justify-start text-left rounded-none ring-inset"
       {...attrs}
     >
       {genSlot('start')}

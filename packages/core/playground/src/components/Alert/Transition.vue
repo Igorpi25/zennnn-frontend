@@ -1,12 +1,16 @@
 <template>
   <div class="space-y-6">
     <div class="text-center">
-      <Btn retain-focus-on-click @click="model = !model">
-        Toggle
-      </Btn>
+      <Btn @click="model = !model"> Toggle </Btn>
     </div>
     <div class="h-24">
-      <Alert v-model="model" color="warn" transition="scale-transition" mode="out-in" class="origin-top-left">
+      <Alert
+        v-model="model"
+        color="warn"
+        transition="scale-transition"
+        mode="out-in"
+        class="origin-top-left"
+      >
         Alert with transition.
       </Alert>
     </div>

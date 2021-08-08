@@ -177,7 +177,7 @@ export default defineComponent({
               text
               mini
               class="text-gray-200 ml-1"
-              {...{ onClick: () => emit('delete', props.item.id) }}
+              onClick={() => emit('delete', props.item.id)}
             >
               <Icon>{ziCloseDelete}</Icon>
             </Btn>

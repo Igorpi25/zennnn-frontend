@@ -65,11 +65,8 @@ export default defineComponent({
           <div class="flex justify-end md:hidden p-4 pt-0">
             <Btn
               icon
-              primary={false}
-              class="bg-light-gray-300 dark:bg-gray-900 hover:bg-blue-400 dark:hover:bg-blue-400 hover:text-white"
-              {...{
-                onClick: closeSidebar,
-              }}
+              class="bg-light-gray-300 dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+              onClick={closeSidebar}
             >
               <Icon>{ziCloseWindow}</Icon>
             </Btn>

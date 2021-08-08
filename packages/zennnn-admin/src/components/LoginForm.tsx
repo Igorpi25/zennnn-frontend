@@ -115,13 +115,7 @@ export default defineComponent({
             ),
           }}
         />
-        <Btn
-          loading={loading.value}
-          class="w-full sm:w-48"
-          {...{
-            onClick: onSubmit,
-          }}
-        >
+        <Btn loading={loading.value} class="w-full sm:w-48" onClick={onSubmit}>
           {t('signin.submit')}
         </Btn>
       </Form>

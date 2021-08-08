@@ -1,24 +1,17 @@
 <template>
   <div>
-    <Btn icon outlined dark-icon class="mr-4 mb-6">
-      <Icon>
+    <Btn icon outlined class="mr-4 mb-6">
+      <Icon class="text-gray-100 dark:text-gray-200">
         {{ ziAddCart }}
       </Icon>
     </Btn>
-    <Btn icon outlined dark-icon disabled class="mr-4 mb-6">
-      <Icon>
+    <Btn icon outlined disabled class="mr-4 mb-6">
+      <Icon class="text-gray-100 dark:text-gray-200">
         {{ ziAddCart }}
       </Icon>
     </Btn>
-    <Btn
-      icon
-      outlined
-      dark-icon
-      :loading="loading"
-      class="mb-6"
-      @click="toggleLoading"
-    >
-      <Icon>
+    <Btn icon outlined :loading="loading" class="mb-6" @click="toggleLoading">
+      <Icon class="text-gray-100 dark:text-gray-200">
         {{ ziAddCart }}
       </Icon>
     </Btn>
@@ -119,21 +112,6 @@
         {{ ziQr }}
       </Icon>
       Create New Product
-    </Btn>
-  </div>
-  <div class="-mb-6">
-    <Btn
-      :primary="false"
-      class="
-        text-white
-        bg-blue-500
-        hover:bg-blue-400
-        active:bg-blue-550
-        mr-4
-        mb-6
-      "
-    >
-      Custom active
     </Btn>
   </div>
 </template>

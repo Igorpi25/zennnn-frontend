@@ -193,7 +193,7 @@ export default defineComponent({
                           text
                           mini
                           class="text-gray-200"
-                          {...{ onClick: () => deleteData(i, item.id) }}
+                          onClick={() => deleteData(i, item.id)}
                         >
                           <Icon>{ziCloseDelete}</Icon>
                         </Btn>
@@ -225,7 +225,7 @@ export default defineComponent({
                   block
                   outlined
                   small
-                  {...{ onClick: addData }}
+                  onClick={addData}
                 >
                   {t('companyDetail.addBankDetail')}
                 </Btn>

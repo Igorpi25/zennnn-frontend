@@ -58,7 +58,7 @@ export default defineComponent({
               </Tooltip>
             )}
           </div>
-          <Btn icon mini text retainFocusOnClick {...{ onClick: toggleExpand }}>
+          <Btn icon mini text onClick={toggleExpand}>
             <Icon
               class={{
                 'transition-transform': true,

@@ -100,14 +100,14 @@ export default defineComponent({
                 disabled={acceptInvitationLoading.value}
                 loading={declineInvitationLoading.value}
                 outlined
-                {...{ onClick: () => declineInvitationMutate() }}
+                onClick={() => declineInvitationMutate()}
               >
                 {t('invitation.decline')}
               </Btn>
               <Btn
                 disabled={declineInvitationLoading.value}
                 loading={acceptInvitationLoading.value}
-                {...{ onClick: () => acceptInvitationMutate() }}
+                onClick={() => acceptInvitationMutate()}
               >
                 {t('invitation.accept')}
               </Btn>

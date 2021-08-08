@@ -234,11 +234,9 @@ export default defineComponent({
                     icon
                     mini
                     text
-                    class="text-gray-300 mr-2"
-                    {...{
-                      onClick: () => {
-                        createSupplierDialog.value = true
-                      },
+                    class="text-gray-200 mr-2"
+                    onClick={() => {
+                      createSupplierDialog.value = true
                     }}
                   >
                     <Icon>{ziPlusOutline}</Icon>
@@ -306,14 +304,7 @@ export default defineComponent({
         )}
 
         {!props.create ? (
-          <Btn
-            icon
-            mini
-            text
-            {...{
-              onClick: () => emit('click', props.item?.id),
-            }}
-          >
+          <Btn icon mini text onClick={() => emit('click', props.item?.id)}>
             <Icon
               // @ts-ignore
               title={
@@ -356,19 +347,17 @@ export default defineComponent({
                     loading={createSupplierLoading.value}
                     outlined
                     class="w-40"
-                    {...{
-                      onClick: async () => {
-                        const response = await createSupplierMutate({
-                          orgId: route.params.orgId as string,
-                          input: createSupplierInput.value,
-                        })
-                        if (response?.data?.createSupplier) {
-                          setSupplier(response.data.createSupplier.id)
-                          createSupplierDialog.value = false
-                          createSupplierInput.value = {}
-                          searchSuppliersRefetch()
-                        }
-                      },
+                    onClick={async () => {
+                      const response = await createSupplierMutate({
+                        orgId: route.params.orgId as string,
+                        input: createSupplierInput.value,
+                      })
+                      if (response?.data?.createSupplier) {
+                        setSupplier(response.data.createSupplier.id)
+                        createSupplierDialog.value = false
+                        createSupplierInput.value = {}
+                        searchSuppliersRefetch()
+                      }
                     }}
                   >
                     {t('action.create')}

@@ -54,7 +54,7 @@ export default defineComponent({
             <div class="text-sm mb-8">
               <p v-html={t('forbidden.text')}></p>
             </div>
-            <Btn small {...{ onClick: logout }}>
+            <Btn small onClick={logout}>
               {t('forbidden.logout')}
             </Btn>
           </div>

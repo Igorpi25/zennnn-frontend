@@ -195,7 +195,7 @@ export default defineComponent({
               <Tooltip
                 v-slots={{
                   activator: () => (
-                    <Btn icon text mini {...{ onClick: copyLink }}>
+                    <Btn icon text mini onClick={copyLink}>
                       <Icon>{ziCopy}</Icon>
                     </Btn>
                   ),
@@ -221,13 +221,12 @@ export default defineComponent({
         />
         <Btn
           loading={sendLinkAccessToEmailLoading.value}
-          {...{
-            onClick: () =>
-              sendLinkAccessToEmailMutate({
-                specId: route.params.specId as string,
-                email: emailAccessInput.value,
-              }),
-          }}
+          onClick={() =>
+            sendLinkAccessToEmailMutate({
+              specId: route.params.specId as string,
+              email: emailAccessInput.value,
+            })
+          }
         >
           {t('shipping.sendEmail')}
         </Btn>
@@ -244,20 +243,18 @@ export default defineComponent({
                   mini
                   loading={removeEmailAccessToSpecEmail.value === item.email}
                   class="text-gray-200"
-                  {...{
-                    onClick: async () => {
-                      try {
-                        removeEmailAccessToSpecEmail.value = item.email
-                        await removeEmailAccessToSpecMutate({
-                          specId: route.params.specId as string,
-                          email: item.email,
-                        })
-                      } catch (error) {
-                        // eslint-disable-line
-                      } finally {
-                        removeEmailAccessToSpecEmail.value = undefined
-                      }
-                    },
+                  onClick={async () => {
+                    try {
+                      removeEmailAccessToSpecEmail.value = item.email
+                      await removeEmailAccessToSpecMutate({
+                        specId: route.params.specId as string,
+                        email: item.email,
+                      })
+                    } catch (error) {
+                      // eslint-disable-line
+                    } finally {
+                      removeEmailAccessToSpecEmail.value = undefined
+                    }
                   }}
                 >
                   <Icon>{ziCloseDelete}</Icon>

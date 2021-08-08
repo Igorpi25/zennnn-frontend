@@ -190,9 +190,7 @@ export default defineComponent({
                 block
                 outlined
                 small
-                {...{
-                  onClick: () => emit('create'),
-                }}
+                onClick={() => emit('create')}
               >
                 {t('companyDetail.addBankDetail')}
               </Btn>

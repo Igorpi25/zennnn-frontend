@@ -180,10 +180,8 @@ export default defineComponent({
                   'prepend-item': () => (
                     <Btn
                       link
-                      {...{
-                        onClick: () => {
-                          createDialog.value = true
-                        },
+                      onClick={() => {
+                        createDialog.value = true
                       }}
                     >
                       <Icon class="mr-2">{ziPlusOutline}</Icon>
@@ -492,20 +490,18 @@ export default defineComponent({
                   loading={createClientLoading.value}
                   outlined
                   class="w-40"
-                  {...{
-                    onClick: async () => {
-                      const response = await createClientMutate({
-                        orgId: props.orgId,
-                        input: createInput.value,
+                  onClick={async () => {
+                    const response = await createClientMutate({
+                      orgId: props.orgId,
+                      input: createInput.value,
+                    })
+                    if (response?.data?.createClient) {
+                      await setSpecClientMutate({
+                        specId: props.specId,
+                        clientId: response.data?.createClient.id,
                       })
-                      if (response?.data?.createClient) {
-                        await setSpecClientMutate({
-                          specId: props.specId,
-                          clientId: response.data?.createClient.id,
-                        })
-                        createDialog.value = false
-                      }
-                    },
+                      createDialog.value = false
+                    }
                   }}
                 >
                   {t('client.save')}

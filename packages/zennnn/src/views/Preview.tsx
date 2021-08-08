@@ -498,19 +498,19 @@ export default defineComponent({
               <Btn
                 icon
                 loading={printLoading.value}
-                class="bg-light-gray-100 dark:bg-gray-650 text-blue-500 dark:text-blue-500 hover:text-white dark:hover:text-white"
-                {...{ onClick: printPdf }}
+                class="bg-light-gray-100 dark:bg-gray-650 text-blue-500 dark:text-blue-500"
+                onClick={printPdf}
               >
                 <Icon>{ziPrint}</Icon>
               </Btn>
               <Btn
                 icon
                 loading={downloadLoading.value}
-                class="bg-light-gray-100 dark:bg-gray-650 text-blue-500 dark:text-blue-500 hover:text-white dark:hover:text-white"
-                {...{ onClick: downloadPdf }}
+                class="bg-light-gray-100 dark:bg-gray-650 text-blue-500 dark:text-blue-500"
+                onClick={downloadPdf}
               >
                 {/* TODO: add icon to missing */}
-                <i class="text-blue-500 text-2xl">
+                <i class="text-2xl">
                   <svg
                     width="21"
                     height="21"
@@ -536,8 +536,7 @@ export default defineComponent({
                   activator: () => (
                     <Btn
                       icon
-                      class="bg-light-gray-100 dark:bg-gray-650 text-blue-500 dark:text-blue-500 hover:text-white dark:hover:text-white"
-                      contentClass="relative"
+                      class="relative bg-light-gray-100 dark:bg-gray-650 text-blue-500 dark:text-blue-500"
                     >
                       {hasNewComments.value && (
                         <div class="absolute top-0 right-0 w-2.5 h-2.5 rounded-full border-2 bg-light-gray-100 border-light-gray-100 transition-colors duration-100 ease-out -mt-0.5 -mr-1">
@@ -551,8 +550,8 @@ export default defineComponent({
               />
               <Btn
                 icon
-                class="bg-light-gray-100 dark:bg-gray-650 text-blue-500 dark:text-blue-500 hover:text-white dark:hover:text-white"
-                {...{ onClick: toggleExpandAll }}
+                class="bg-light-gray-100 dark:bg-gray-650 text-blue-500 dark:text-blue-500"
+                onClick={toggleExpandAll}
               >
                 <Icon>
                   {expanded.value.length === 0 ? ziExpand : ziCollapse}
@@ -971,22 +970,23 @@ export default defineComponent({
                 loading={printLoading.value}
                 minWidth={85}
                 outlined
-                darkIcon
                 class="w-full md:w-auto px-3"
-                {...{ onClick: printPdf }}
+                onClick={printPdf}
               >
-                <Icon class="mr-2">{ziPrint}</Icon>
+                <Icon class="text-gray-100 dark:text-gray-200 mr-2">
+                  {ziPrint}
+                </Icon>
                 <span>{t('paper.print')}</span>
               </Btn>
               <Btn
                 loading={downloadLoading.value}
                 minWidth={85}
                 outlined
-                darkIcon
                 class="w-full md:w-auto px-3"
-                {...{ onClick: downloadPdf }}
+                onClick={downloadPdf}
               >
-                <i class="icon mr-2">
+                {/* TODO: add icon to missing */}
+                <i class="icon text-gray-100 dark:text-gray-200 text-2xl mr-2">
                   <svg
                     width="21"
                     height="21"
@@ -1012,12 +1012,7 @@ export default defineComponent({
                 class="w-full md:w-auto md:flex-grow flex justify-end"
                 v-slots={{
                   activator: () => (
-                    <Btn
-                      minWidth={85}
-                      outlined
-                      darkIcon
-                      class="w-full md:w-auto px-3"
-                    >
+                    <Btn minWidth={85} outlined class="w-full md:w-auto px-3">
                       {t('paper.comment')}
                     </Btn>
                   ),

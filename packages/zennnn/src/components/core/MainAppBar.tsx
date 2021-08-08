@@ -142,10 +142,8 @@ export default defineComponent({
             {props.hasSearch && (
               <Btn
                 icon
-                class="sm:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
-                {...{
-                  onClick: toggleSearch,
-                }}
+                class="sm:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white"
+                onClick={toggleSearch}
               >
                 <Icon>{ziSearch}</Icon>
               </Btn>
@@ -154,11 +152,8 @@ export default defineComponent({
             {props.hasPictureOnly && (
               <Btn
                 icon
-                retainFocusOnClick
-                class="hidden xs:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
-                {...{
-                  onClick: togglePictureOnly,
-                }}
+                class="hidden xs:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white"
+                onClick={togglePictureOnly}
               >
                 <Icon>{ziThLargeOutlines}</Icon>
               </Btn>
@@ -166,11 +161,8 @@ export default defineComponent({
 
             <Btn
               icon
-              retainFocusOnClick
-              class="hidden md:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
-              {...{
-                onClick: toggleTheme,
-              }}
+              class="hidden md:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white"
+              onClick={toggleTheme}
             >
               <Icon>{isDark.value ? ziMoon : ziMoonOutline}</Icon>
             </Btn>
@@ -185,7 +177,7 @@ export default defineComponent({
                   <Btn
                     icon
                     class={{
-                      'w-12 bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white':
+                      'w-12 bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white':
                         true,
                       'bg-blue-550 dark:bg-blue-550': active,
                     }}
@@ -242,7 +234,7 @@ export default defineComponent({
               <>
                 <Btn
                   minWidth="none"
-                  class="w-12 sm:w-auto bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white sm:px-3"
+                  class="w-12 sm:w-auto bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white sm:px-3"
                   to="/signin"
                 >
                   <Icon class="sm:hidden">{ziUser}</Icon>
@@ -251,7 +243,7 @@ export default defineComponent({
                 </Btn>
                 <Btn
                   minWidth="none"
-                  class="hidden md:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white px-3"
+                  class="hidden md:flex bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white px-3"
                   to="/signup"
                 >
                   {/* TODO: add to locales */}
@@ -262,10 +254,8 @@ export default defineComponent({
 
             <Btn
               icon
-              class="lg:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
-              {...{
-                onClick: toggleSidebar,
-              }}
+              class="lg:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white"
+              onClick={toggleSidebar}
             >
               <Icon>{ziMenu}</Icon>
             </Btn>
@@ -406,7 +396,6 @@ export default defineComponent({
                       ? 'bg-blue-550 dark:bg-blue-550 text-white dark:text-white'
                       : undefined
                   }
-                  retainFocusOnClick
                 >
                   <span>{text}</span>
                 </SidebarItem>
@@ -434,7 +423,6 @@ export default defineComponent({
                   />
                 ),
               }}
-              retainFocusOnClick
               class="md:hidden"
               onClick={togglePictureOnly}
             >
@@ -458,7 +446,6 @@ export default defineComponent({
                 />
               ),
             }}
-            retainFocusOnClick
             class="md:hidden"
             onClick={toggleTheme}
           >

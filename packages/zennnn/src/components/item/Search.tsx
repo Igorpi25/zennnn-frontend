@@ -126,11 +126,9 @@ export default defineComponent({
             {mobile.value && (
               <Btn
                 icon
-                class="sm:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white hover:text-white"
-                {...{
-                  onClick() {
-                    isActive.value = !isActive.value
-                  },
+                class="sm:hidden bg-light-gray-300 dark:bg-gray-650 text-gray-900 dark:text-white"
+                onClick={() => {
+                  isActive.value = !isActive.value
                 }}
               >
                 <Icon>{ziCloseWindow}</Icon>
@@ -162,8 +160,7 @@ export default defineComponent({
               <Btn
                 outlined
                 minWidth="none"
-                class="text-gray-900 dark:text-white w-12 sm:w-28 md:w-[182px] px-3 sm:pl-4"
-                contentClass="w-full justify-between sm:space-x-2"
+                class="justify-between text-gray-900 dark:text-white w-12 sm:w-28 md:w-[182px] px-3 sm:pl-4 sm:space-x-2"
               >
                 <Icon class="hidden sm:inline-flex">{ziFilterOutline}</Icon>
                 <div class="hidden md:block flex-grow text-left">By Newest</div>

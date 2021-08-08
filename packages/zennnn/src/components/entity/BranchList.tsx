@@ -199,7 +199,7 @@ export default defineComponent({
               block
               outlined
               small
-              {...{ onClick: addData }}
+              onClick={addData}
             >
               {t('companyDetail.addBranch')}
             </Btn>

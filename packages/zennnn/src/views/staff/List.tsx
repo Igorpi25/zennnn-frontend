@@ -632,20 +632,18 @@ export default defineComponent({
                                   cancelInvitationLoading.value
                                 }
                                 primary={false}
-                                class="text-white bg-red-700 hover:bg-red-600 active:bg-red-600 focus:ring-red-600"
-                                {...{
-                                  onClick: () => {
-                                    if (item.isStaff) {
-                                      removeUser({
-                                        orgId: orgId as string,
-                                        userId: item.id,
-                                      })
-                                    } else {
-                                      cancelInvitation({
-                                        id: item.id,
-                                      })
-                                    }
-                                  },
+                                class="text-white bg-red-700 hover:bg-red-600 active:bg-red-700 active:brightness-90 focus:ring-red-600"
+                                onClick={() => {
+                                  if (item.isStaff) {
+                                    removeUser({
+                                      orgId: orgId as string,
+                                      userId: item.id,
+                                    })
+                                  } else {
+                                    cancelInvitation({
+                                      id: item.id,
+                                    })
+                                  }
                                 }}
                               >
                                 {t('action.delete')}
@@ -682,12 +680,9 @@ export default defineComponent({
                             icon
                             text
                             mini
-                            retainFocusOnClick
-                            {...{
-                              onClick: (e: MouseEvent) => {
-                                e.stopPropagation()
-                                toggleExpanded(item.id)
-                              },
+                            onClick={(e: MouseEvent) => {
+                              e.stopPropagation()
+                              toggleExpanded(item.id)
                             }}
                           >
                             <Icon
@@ -910,10 +905,8 @@ export default defineComponent({
           block
           outlined
           class="mt-4"
-          {...{
-            onClick: () => {
-              createStaffDialog.value = true
-            },
+          onClick={() => {
+            createStaffDialog.value = true
           }}
         >
           <Icon left>{ziUserPlus}</Icon>

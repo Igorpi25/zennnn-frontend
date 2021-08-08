@@ -274,10 +274,8 @@ export default defineComponent({
                 <Btn
                   outlined
                   class="text-gray-900 dark:text-white"
-                  {...{
-                    onClick: () => {
-                      isMenuActive.value = false
-                    },
+                  onClick={() => {
+                    isMenuActive.value = false
                   }}
                 >
                   <Icon class="flex-shrink-0 mr-2">{item.icon}</Icon>

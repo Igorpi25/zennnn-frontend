@@ -688,7 +688,7 @@ export default defineComponent({
                         mini
                         text
                         class="flex-shrink-0 text-gray-200"
-                        {...{ onClick: () => removeClientFilter(item.value) }}
+                        onClick={() => removeClientFilter(item.value)}
                       >
                         <Icon>{ziCloseDelete}</Icon>
                       </Btn>
@@ -701,19 +701,15 @@ export default defineComponent({
                 clientsIds.value.length > 0 &&
                 !search.value && (
                   <Btn
-                    primary={false}
                     icon
                     mini
-                    class="absolute right-1"
-                    {...{
-                      onClick: () => {
-                        clientsIds.value = []
-                      },
+                    text
+                    class="absolute right-1 text-gray-200"
+                    onClick={() => {
+                      clientsIds.value = []
                     }}
                   >
-                    <Icon class="text-gray-200 hover:text-gray-400 dark:hover:text-gray-100">
-                      {ziCloseDelete}
-                    </Icon>
+                    <Icon>{ziCloseDelete}</Icon>
                   </Btn>
                 ),
             }}
@@ -723,24 +719,24 @@ export default defineComponent({
               v-slots={{
                 activator: () => (
                   <Btn
-                    darkIcon
                     text
                     small
-                    class={{
-                      'group rounded pl-2 pr-0': true,
-                      'text-gray-900 dark:text-gray-100': true,
-                      'text-blue-550 dark:text-blue-550': filterMenu.value,
-                    }}
-                    contentClass="space-x-2 text-base"
+                    class={[
+                      'group space-x-2 text-base rounded pl-2 pr-0',
+                      filterMenu.value
+                        ? 'text-blue-550'
+                        : 'text-gray-900 dark:text-gray-100',
+                    ]}
                   >
                     <span>{currentFilterText.value}</span>
                     <Icon
                       right
-                      class={{
-                        'text-gray-100 dark:text-gray-200 group-hover:!text-blue-400':
-                          true,
-                        '!text-blue-550': filterMenu.value,
-                      }}
+                      class={[
+                        'group-hover:text-blue-400 group-active:text-blue-550',
+                        filterMenu.value
+                          ? 'text-blue-550'
+                          : 'text-gray-100 dark:text-gray-200',
+                      ]}
                     >
                       {currentFilter.value ? ziFilter : ziFilterOutline}
                     </Icon>
@@ -1046,10 +1042,8 @@ export default defineComponent({
                             <Btn
                               loading={deleteDealLoading.value}
                               primary={false}
-                              class="text-white bg-red-700 hover:bg-red-600 active:bg-red-600 focus:ring-red-600"
-                              {...{
-                                onClick: () => deleteDeal({ id: item.id }),
-                              }}
+                              class="text-white bg-red-700 hover:bg-red-600 active:bg-red-700 active:brightness-90 focus:ring-red-600"
+                              onClick={() => deleteDeal({ id: item.id })}
                             >
                               {t('action.delete')}
                             </Btn>
@@ -1086,10 +1080,8 @@ export default defineComponent({
               block
               outlined
               class="mt-4"
-              {...{
-                onClick: () => {
-                  createDealDialog.value = true
-                },
+              onClick={() => {
+                createDealDialog.value = true
               }}
             >
               <Icon left>{ziBagDeal}</Icon>
@@ -1138,7 +1130,7 @@ export default defineComponent({
                   disabled={createWithClientLoading.value}
                   loading={createWithoutClientLoading.value}
                   outlined
-                  {...{ onClick: () => createDeal(true) }}
+                  onClick={() => createDeal(true)}
                 >
                   {t('deals.createSpecDialogWithoutClient')}
                 </Btn>
@@ -1146,7 +1138,7 @@ export default defineComponent({
                   <Btn
                     disabled={createWithoutClientLoading.value}
                     loading={createWithClientLoading.value}
-                    {...{ onClick: () => createDeal() }}
+                    onClick={() => createDeal()}
                   >
                     {t('deals.createSpecDialogAdd')}
                   </Btn>
@@ -1183,23 +1175,21 @@ export default defineComponent({
                       loading={createClientLoading.value}
                       outlined
                       class="w-40"
-                      {...{
-                        onClick: async () => {
-                          const response = await createClientMutate({
-                            orgId: orgId as string,
-                            input: createClientInput.value,
+                      onClick={async () => {
+                        const response = await createClientMutate({
+                          orgId: orgId as string,
+                          input: createClientInput.value,
+                        })
+                        if (response?.data?.createClient) {
+                          createDealClientItem.value =
+                            response.data.createClient
+                          createClientDialog.value = false
+                          nextTick(() => {
+                            createClientInput.value = {
+                              clientType: ClientType.LEGAL,
+                            }
                           })
-                          if (response?.data?.createClient) {
-                            createDealClientItem.value =
-                              response.data.createClient
-                            createClientDialog.value = false
-                            nextTick(() => {
-                              createClientInput.value = {
-                                clientType: ClientType.LEGAL,
-                              }
-                            })
-                          }
-                        },
+                        }
                       }}
                     >
                       {t('client.save')}

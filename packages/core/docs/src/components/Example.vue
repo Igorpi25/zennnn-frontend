@@ -13,7 +13,6 @@
       :primary="false"
       icon
       x-small
-      retain-focus-on-click
       class="text-gray-200 hover:text-blue-500 active:text-blue-500"
       @click="dark = !dark"
     >
@@ -30,7 +29,6 @@
       }"
       :primary="false"
       x-small
-      retain-focus-on-click
       @click="switchTab(item.value)"
     >
       {{ item.text }}

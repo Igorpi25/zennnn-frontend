@@ -132,7 +132,7 @@ export default defineComponent({
           }}
           v-slots={{
             back: () => (
-              <Btn outlined {...{ onClick: goBack }}>
+              <Btn outlined onClick={goBack}>
                 {showFillLaterButton.value
                   ? t('requisite.fillLater')
                   : t('requisite.back')}
@@ -166,20 +166,12 @@ export default defineComponent({
               </p>
             </div>
             <div class="flex justify-between">
-              <Btn
-                outlined
-                {...{
-                  onClick: goBack,
-                }}
-              >
+              <Btn outlined onClick={goBack}>
                 {t('requisite.fillLater')}
               </Btn>
               <Btn
-                primary
-                {...{
-                  onClick: () => {
-                    welcomeDialog.value = false
-                  },
+                onClick={() => {
+                  welcomeDialog.value = false
                 }}
               >
                 {t('welcomeModal.fillRequisites')}

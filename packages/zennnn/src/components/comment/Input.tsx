@@ -99,28 +99,24 @@ export default defineComponent({
             <div class="flex-grow" />
             <Btn
               outlined
-              class="h-8 text-gray-900 border-gray-100 dark:text-white dark:border-gray-200 mr-2"
-              contentClass="w-full flex items-center justify-center text-xs"
-              minWidth="68"
-              {...{
-                onClick: blur,
-              }}
+              class="h-8 text-xs text-gray-900 dark:text-white border-gray-100 dark:border-gray-200 mr-2"
+              minWidth={68}
+              onClick={blur}
             >
               {t('action.cancel')}
             </Btn>
             <Btn
               disabled={!comment.value}
               loading={props.loading}
-              class={
-                !comment.value
-                  ? 'h-8 bg-gray-100 text-light-gray-400 dark:bg-gray-300'
-                  : 'h-8'
-              }
-              contentClass="w-full flex items-center justify-center text-xs"
-              minWidth="68"
-              {...{
-                onClick: submitComment,
-              }}
+              class={[
+                'h-8 text-xs',
+                {
+                  'bg-gray-100 dark:bg-gray-300 text-light-gray-400 dark:text-gray-200':
+                    !comment.value,
+                },
+              ]}
+              minWidth={68}
+              onClick={submitComment}
             >
               {t('comments.post')}
             </Btn>

@@ -248,9 +248,7 @@ export default defineComponent({
             text
             mini
             class="flex-shrink-0 text-gray-200 ml-1"
-            {...{
-              onClick: () => emit('delete'),
-            }}
+            onClick={() => emit('delete')}
           >
             <Icon>{ziCloseDelete}</Icon>
           </Btn>

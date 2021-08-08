@@ -173,12 +173,10 @@ export default defineComponent({
                               block
                               outlined
                               small
-                              {...{
-                                onClick: () => {
-                                  if (item.isCustomPrice) return
-                                  selectedProductId.value = item.id
-                                  goToPayment(item.id)
-                                },
+                              onClick={() => {
+                                if (item.isCustomPrice) return
+                                selectedProductId.value = item.id
+                                goToPayment(item.id)
                               }}
                             >
                               {t('payment.select')}

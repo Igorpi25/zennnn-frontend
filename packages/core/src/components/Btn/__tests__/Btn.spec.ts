@@ -268,7 +268,7 @@ describe('Btn.ts', () => {
     expect(wrapper.classes('btn--outlined')).toBe(true)
   })
 
-  it('should not have btn--outlined class when using text prop', () => {
+  it('should not have btn--outlined class when using text or link prop', () => {
     const wrapper = mountFunction({
       props: {
         text: true,
@@ -276,46 +276,19 @@ describe('Btn.ts', () => {
     })
 
     expect(wrapper.classes('btn--outlined')).toBe(false)
-  })
 
-  it('should have btn--light and btn--dark class when using light and dark props', async () => {
-    const wrapper = mountFunction({
-      props: {
-        light: true,
-      },
-    })
+    wrapper.setProps({ link: true })
 
-    expect(wrapper.classes('btn--light')).toBe(true)
-
-    await wrapper.setProps({ dark: true })
-
-    expect(wrapper.classes('btn--dark')).toBe(true)
+    expect(wrapper.classes('btn--outlined')).toBe(false)
   })
 
   it('should have correct custom classes', () => {
     const wrapper = mountFunction({
       propsData: {
         class: 'foo',
-        contentClass: 'bar',
       },
     })
 
     expect(wrapper.element.className).toBe('btn btn--primary foo')
-    expect(wrapper.get('.btn__content').element.className).toBe(
-      'btn__content bar'
-    )
-  })
-
-  // Events
-
-  it('should lose focus when clicked', async () => {
-    const wrapper = mountFunction()
-    const event = new MouseEvent('click', { detail: 1 })
-    const blur = jest.fn()
-
-    ;(wrapper.element as HTMLElement).blur = blur
-    wrapper.element.dispatchEvent(event)
-
-    expect(blur).toHaveBeenCalled()
   })
 })

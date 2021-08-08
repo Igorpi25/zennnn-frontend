@@ -240,7 +240,8 @@ export default defineComponent({
             <div class="text-right">
               <Btn
                 loading={getUserFormLoading.value}
-                {...{ onClick: getInviteUserToOrg }}
+                type="submit"
+                onClick={getInviteUserToOrg}
               >
                 <span>{t('staff.next')}</span>
               </Btn>
@@ -311,19 +312,17 @@ export default defineComponent({
                 disabled={inviteFormLoading.value}
                 minWidth="none"
                 outlined
-                type="button"
-                {...{
-                  onClick: () => {
-                    step.value = 1
-                    focus()
-                  },
+                onClick={() => {
+                  step.value = 1
+                  focus()
                 }}
               >
                 {t('staff.back')}
               </Btn>
               <Btn
                 loading={inviteFormLoading.value}
-                {...{ onClick: inviteUserToOrg }}
+                type="submit"
+                onClick={inviteUserToOrg}
               >
                 {t('staff.invite')}
               </Btn>

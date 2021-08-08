@@ -28,74 +28,66 @@ export default defineComponent({
               <Btn
                 href={`/preview/${route.params.specId}`}
                 outlined
-                darkIcon
                 class="w-full px-3"
-                contentClass="w-full flex items-center"
-                {...{
-                  target: '_blank',
-                }}
+                target="_blank"
               >
-                <Icon class="text-gray-100 mr-2.5">{ziVisible}</Icon>
+                <Icon left class="text-gray-100 dark:text-gray-200">
+                  {ziVisible}
+                </Icon>
                 {t('shipping.previewAsCustomer')}
               </Btn>
             </div>
             <div class="w-full md:w-auto p-2">
               <Btn
                 outlined
-                darkIcon
                 class="w-full border-transparent dark:border-transparent px-3"
-                contentClass="w-full flex items-center"
-                {...{
-                  onClick: () => {
-                    emit('document')
-                  },
+                onClick={() => {
+                  emit('document')
                 }}
               >
-                <Icon class="text-gray-100 mr-2.5">{ziSettings}</Icon>
+                <Icon left class="text-gray-100 dark:text-gray-200">
+                  {ziSettings}
+                </Icon>
                 {t('shipping.paperConfigurator')}
               </Btn>
             </div>
             <div class="w-full md:w-auto p-2">
               <Btn
                 outlined
-                darkIcon
                 class="w-full border-transparent dark:border-transparent px-3"
-                contentClass="w-full flex items-center"
-                {...{
-                  onClick: () => {
-                    emit('print')
-                  },
+                onClick={() => {
+                  emit('print')
                 }}
               >
-                <Icon class="text-gray-100 mr-2.5">{ziPrint}</Icon>
+                <Icon left class="text-gray-100 dark:text-gray-200">
+                  {ziPrint}
+                </Icon>
                 {t('shipping.print')}
               </Btn>
             </div>
             <div class="w-full md:w-auto p-2">
               <Btn
                 outlined
-                darkIcon
                 class="w-full border-transparent dark:border-transparent px-3"
-                contentClass="w-full flex items-center"
-                {...{
-                  onClick: () => {
-                    emit('share')
-                  },
+                onClick={() => {
+                  emit('share')
                 }}
               >
-                <Icon class="text-gray-100 mr-2.5">{ziUserPlus}</Icon>
+                <Icon left class="text-gray-100 dark:text-gray-200">
+                  {ziUserPlus}
+                </Icon>
                 {t('shipping.inviteCustomer')}
               </Btn>
             </div>
             <div class="w-full md:w-auto p-2">
               <Btn
                 outlined
-                darkIcon
                 disabled
-                class="w-full !border-transparent dark:!border-transparent px-3"
-                contentClass="w-full flex items-center"
+                class="w-full disabled:border-transparent dark:disabled:border-transparent px-3"
               >
-                <Icon class="mr-2.5">{ziEmail}</Icon>
+                <Icon left class="text-gray-100 dark:text-gray-200">
+                  {ziEmail}
+                </Icon>
                 {t('shipping.notifyCustomer')}
               </Btn>
             </div>

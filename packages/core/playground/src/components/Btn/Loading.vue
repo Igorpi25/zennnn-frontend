@@ -16,16 +16,35 @@
     </Btn>
   </div>
   <div class="-mb-6">
-    <Btn :loading="loading" small @click="toggleLoading" class="mr-4 mb-6">
+    <Btn
+      outlined
+      :loading="loading"
+      small
+      @click="toggleLoading"
+      class="mr-4 mb-6"
+    >
       <Icon left>
         {{ ziVisible }}
       </Icon>
       Text icon
     </Btn>
-    <Btn :loading="loading" small @click="toggleLoading" class="mr-4 mb-6">
+    <Btn
+      outlined
+      :loading="loading"
+      small
+      @click="toggleLoading"
+      class="mr-4 mb-6"
+    >
       Text
     </Btn>
-    <Btn :loading="loading" small @click="toggleLoading" icon class="mb-6">
+    <Btn
+      outlined
+      :loading="loading"
+      small
+      @click="toggleLoading"
+      icon
+      class="mb-6"
+    >
       <Icon>
         {{ ziVisible }}
       </Icon>
@@ -39,7 +58,7 @@ import { ziVisible } from '@zennnn/icons'
 
 const loading = ref(false)
 
-function toggleLoading () {
+function toggleLoading() {
   loading.value = true
   setTimeout(() => {
     loading.value = false

@@ -93,10 +93,8 @@ export default defineComponent({
               disabled={props.loading}
               outlined
               minWidth="none"
-              {...{
-                onClick: () => {
-                  model.value = false
-                },
+              onClick={() => {
+                model.value = false
               }}
             >
               {props.cancelText}

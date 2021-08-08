@@ -145,10 +145,8 @@ export default defineComponent({
                   'prepend-item': () => (
                     <Btn
                       link
-                      {...{
-                        onClick: () => {
-                          createDialog.value = true
-                        },
+                      onClick={() => {
+                        createDialog.value = true
                       }}
                     >
                       <Icon class="mr-2">{ziPlusOutline}</Icon>
@@ -423,19 +421,17 @@ export default defineComponent({
                   loading={createRequisiteLoading.value}
                   outlined
                   class="w-40"
-                  {...{
-                    onClick: async () => {
-                      const response = await createRequisiteMutate({
-                        orgId: props.orgId,
-                        input: createInput.value,
+                  onClick={async () => {
+                    const response = await createRequisiteMutate({
+                      orgId: props.orgId,
+                      input: createInput.value,
+                    })
+                    if (response?.data?.createRequisite) {
+                      emit('update', {
+                        requisite: response.data.createRequisite.id,
                       })
-                      if (response?.data?.createRequisite) {
-                        emit('update', {
-                          requisite: response.data.createRequisite.id,
-                        })
-                      }
-                      createDialog.value = false
-                    },
+                    }
+                    createDialog.value = false
                   }}
                 >
                   {t('action.create')}

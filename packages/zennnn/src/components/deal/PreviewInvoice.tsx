@@ -353,17 +353,12 @@ export default defineComponent({
                     isProduct
                     isPreview
                     placement="left-start"
-                    class="inline-block align-middle text-gray-200 focus:text-gray-400 hover:text-gray-400 transition-colors duration-100 ease-out mr-2.5"
+                    class="text-gray-200"
                   />
                 </td>
                 <td class="bg-white dark:bg-gray-900 rounded-r-md text-center p-2">
-                  <Btn
-                    icon
-                    mini
-                    text
-                    class="text-light-gray-200 dark:text-gray-200"
-                  >
-                    <Icon class="align-middle ">{ziOpenInNew}</Icon>
+                  <Btn icon mini text class="text-gray-200">
+                    <Icon>{ziOpenInNew}</Icon>
                   </Btn>
                 </td>
               </tr>

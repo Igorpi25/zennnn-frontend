@@ -1109,21 +1109,19 @@ export default defineComponent({
                   loading={createClientLoading.value}
                   outlined
                   class="w-40"
-                  {...{
-                    onClick: async () => {
-                      const response = await createClientMutate({
-                        orgId: route.params.orgId as string,
-                        input: createClientInput.value,
+                  onClick={async () => {
+                    const response = await createClientMutate({
+                      orgId: route.params.orgId as string,
+                      input: createClientInput.value,
+                    })
+                    // TODO: handle errors and no specId
+                    if (response?.data?.createClient) {
+                      await setDealClientMutate({
+                        specId: route.params.specId as string,
+                        clientId: response.data?.createClient.id,
                       })
-                      // TODO: handle errors and no specId
-                      if (response?.data?.createClient) {
-                        await setDealClientMutate({
-                          specId: route.params.specId as string,
-                          clientId: response.data?.createClient.id,
-                        })
-                        createClientDialog.value = false
-                      }
-                    },
+                      createClientDialog.value = false
+                    }
                   }}
                 >
                   {t('client.save')}

@@ -47,7 +47,7 @@ export default defineComponent({
                   {route.query.username}
                 </p>
                 <div class="pb-6">
-                  <Btn loading={loading.value} {...{ onClick: resendSignUp }}>
+                  <Btn loading={loading.value} onClick={resendSignUp}>
                     <span>{t('welcome.resend')}</span>
                   </Btn>
                 </div>

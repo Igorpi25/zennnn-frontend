@@ -223,11 +223,8 @@ export default defineComponent({
             {t('payment.subscriptionPaid')}
           </h2>
           <Btn
-            primary
-            {...{
-              onClick: () => {
-                successDialog.value = false
-              },
+            onClick={() => {
+              successDialog.value = false
             }}
           >
             {t('payment.ok')}
@@ -247,7 +244,10 @@ export default defineComponent({
                 <Dialog
                   v-slots={{
                     activator: () => (
-                      <Btn link class="text-red-600 hover:text-pink-500">
+                      <Btn
+                        link
+                        class="text-red-700 hover:text-red-600 dark:hover:text-red-600 active:text-red-700 dark:active:text-red-700 focus:ring-red-600"
+                      >
                         {t('payment.cancelSubscription')}
                       </Btn>
                     ),
@@ -255,8 +255,8 @@ export default defineComponent({
                       <Btn
                         loading={cancelPaymentSubscriptionLoading.value}
                         primary={false}
-                        class="text-white bg-red-700 hover:bg-red-600 active:bg-red-600 focus:ring-red-600"
-                        {...{ onClick: cancelPaymentSubscriptionMutate }}
+                        class="text-white bg-red-700 hover:bg-red-600 active:bg-red-700 active:brightness-90 focus:ring-red-600"
+                        onClick={cancelPaymentSubscriptionMutate}
                       >
                         {t('payment.cancelSubscription')}
                       </Btn>
@@ -373,19 +373,17 @@ export default defineComponent({
                                 setDefaultPaymentMethodId.value === item.id
                               }
                               class="align-middle invisible group-hover:visible text-gray-200 dark:text-gray-100"
-                              {...{
-                                onClick: async () => {
-                                  try {
-                                    setDefaultPaymentMethodId.value = item.id
-                                    await setDefaultPaymentMethodMutate({
-                                      paymentMethodId: item.id,
-                                    })
-                                  } catch (error) {
-                                    // eslint-disable-line
-                                  } finally {
-                                    setDefaultPaymentMethodId.value = undefined
-                                  }
-                                },
+                              onClick={async () => {
+                                try {
+                                  setDefaultPaymentMethodId.value = item.id
+                                  await setDefaultPaymentMethodMutate({
+                                    paymentMethodId: item.id,
+                                  })
+                                } catch (error) {
+                                  // eslint-disable-line
+                                } finally {
+                                  setDefaultPaymentMethodId.value = undefined
+                                }
                               }}
                             >
                               <Icon>{ziStarOutlineLg}</Icon>
@@ -427,19 +425,17 @@ export default defineComponent({
                                 detachPaymentMethodId.value === item.id
                               }
                               class="align-middle invisible group-hover:visible text-gray-200 dark:text-gray-100"
-                              {...{
-                                onClick: async () => {
-                                  try {
-                                    detachPaymentMethodId.value = item.id
-                                    await detachPaymentMethodMutate({
-                                      paymentMethodId: item.id,
-                                    })
-                                  } catch (error) {
-                                    // eslint-disable-line
-                                  } finally {
-                                    detachPaymentMethodId.value = undefined
-                                  }
-                                },
+                              onClick={async () => {
+                                try {
+                                  detachPaymentMethodId.value = item.id
+                                  await detachPaymentMethodMutate({
+                                    paymentMethodId: item.id,
+                                  })
+                                } catch (error) {
+                                  // eslint-disable-line
+                                } finally {
+                                  detachPaymentMethodId.value = undefined
+                                }
                               }}
                             >
                               <Icon class="align-middle">{ziDelete}</Icon>
@@ -530,20 +526,19 @@ export default defineComponent({
                           </td>
                           <td class="px-1">
                             {item.status === 'open' && (
-                              <Btn
-                                link
-                                {...{ onClick: () => openInvoice(item) }}
-                              >
+                              <Btn link onClick={() => openInvoice(item)}>
                                 {t('payment.invoicePay')}
                               </Btn>
                             )}
                           </td>
                           <td class="rounded-r-md px-4">
                             <Btn
-                              link
+                              text
+                              icon
+                              mini
                               href={item.invoice_pdf}
+                              target="_blank"
                               class="invisible group-hover:visible text-gray-200"
-                              {...{ target: '_blank' }}
                             >
                               <Icon>{ziDownload}</Icon>
                             </Btn>

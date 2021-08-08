@@ -213,9 +213,7 @@ export default defineComponent({
           disabled={!formValidity.value}
           loading={loading.value}
           class="w-full sm:w-48"
-          {...{
-            onClick: onSubmit,
-          }}
+          onClick={onSubmit}
         >
           {t('signup.submit')}
         </Btn>

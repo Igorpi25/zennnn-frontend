@@ -528,10 +528,8 @@ export default defineComponent({
                             <Btn
                               loading={deleteSupplierLoading.value}
                               primary={false}
-                              class="text-white bg-red-700 hover:bg-red-600 active:bg-red-600 focus:ring-red-600"
-                              {...{
-                                onClick: () => deleteSupplier({ id: item.id }),
-                              }}
+                              class="text-white bg-red-700 hover:bg-red-600 active:bg-red-700 active:brightness-90 focus:ring-red-600"
+                              onClick={() => deleteSupplier({ id: item.id })}
                             >
                               {t('action.delete')}
                             </Btn>

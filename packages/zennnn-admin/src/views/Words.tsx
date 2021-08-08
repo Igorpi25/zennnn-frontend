@@ -602,26 +602,26 @@ export default defineComponent({
                 v-slots={{
                   activator: () => (
                     <Btn
-                      darkIcon
                       text
                       small
-                      class={{
-                        'group rounded pl-2 pr-0': true,
-                        'text-gray-900 dark:text-gray-100': true,
-                        'text-blue-550 dark:text-blue-550': filterMenu.value,
-                      }}
-                      contentClass="space-x-2 text-base"
+                      class={[
+                        'group space-x-2 text-base rounded pl-2 pr-0',
+                        filterMenu.value
+                          ? 'text-blue-550'
+                          : 'text-gray-900 dark:text-gray-100',
+                      ]}
                     >
                       <span>
                         {t(`words.${currentFilter.value || 'noFilter'}`)}
                       </span>
                       <Icon
                         right
-                        class={{
-                          'text-gray-100 dark:text-gray-200 group-hover:!text-blue-400':
-                            true,
-                          '!text-blue-550': filterMenu.value,
-                        }}
+                        class={[
+                          'group-hover:text-blue-400 group-active:text-blue-550',
+                          filterMenu.value
+                            ? 'text-blue-550'
+                            : 'text-gray-100 dark:text-gray-200',
+                        ]}
                       >
                         {currentFilter.value ? ziFilter : ziFilterOutline}
                       </Icon>
@@ -657,13 +657,11 @@ export default defineComponent({
               disabled={selected.value.length === 0}
               xSmall
               minWidth={80}
-              {...{
-                onClick: () => {
-                  if (selected.value.length === 0) return
-                  approveWordsMutate({
-                    ids: selected.value,
-                  })
-                },
+              onClick={() => {
+                if (selected.value.length === 0) return
+                approveWordsMutate({
+                  ids: selected.value,
+                })
               }}
             >
               {t('words.approve')}
@@ -674,13 +672,11 @@ export default defineComponent({
               outlined
               xSmall
               minWidth={80}
-              {...{
-                onClick: () => {
-                  if (selected.value.length === 0) return
-                  hideWordsMutate({
-                    ids: selected.value,
-                  })
-                },
+              onClick={() => {
+                if (selected.value.length === 0) return
+                hideWordsMutate({
+                  ids: selected.value,
+                })
               }}
             >
               {t('words.hide')}
@@ -691,7 +687,7 @@ export default defineComponent({
               outlined
               xSmall
               minWidth={80}
-              {...{ onClick: openMergeDialog }}
+              onClick={openMergeDialog}
             >
               {t('words.merge')}
             </Btn>
@@ -811,30 +807,25 @@ export default defineComponent({
                               <div class="inline-flex items-center justify-end align-middle space-x-2">
                                 <Btn
                                   icon
-                                  primary={false}
-                                  class="w-6 h-6 rounded text-blue-500 hover:text-blue-400"
-                                  {...{
-                                    onClick: (e: MouseEvent) => {
-                                      e.preventDefault()
-                                      e.stopPropagation()
-                                      openEditDialog(item)
-                                    },
+                                  mini
+                                  text
+                                  onClick={(e: MouseEvent) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    openEditDialog(item)
                                   }}
                                 >
                                   <Icon small>{ziEdit}</Icon>
                                 </Btn>
                                 <Btn
                                   icon
-                                  primary={false}
+                                  mini
+                                  text
                                   class={{
-                                    'w-6 h-6 rounded text-blue-500 hover:text-blue-400':
-                                      true,
                                     'transition-transform': true,
-                                    'rotate-90': expanded.value.includes(
-                                      item.id
-                                    ),
+                                    'transform rotate-90':
+                                      expanded.value.includes(item.id),
                                   }}
-                                  retainFocusOnClick
                                 >
                                   <Icon>{ziChevronRight}</Icon>
                                 </Btn>
@@ -892,13 +883,13 @@ export default defineComponent({
             block
             outlined
             class="mt-4"
-            {...{
-              onClick: () => {
-                createDialog.value = true
-              },
+            onClick={() => {
+              createDialog.value = true
             }}
           >
-            <Icon left>{ziEdit}</Icon>
+            <Icon left small>
+              {ziEdit}
+            </Icon>
             <span>{t('words.addWord')}</span>
           </Btn>
         </div>

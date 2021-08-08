@@ -101,10 +101,9 @@ export default defineComponent({
           {props.hasCancel && (
             <Btn
               outlined
-              type="button"
               minWidth="none"
               class="justify-self-start"
-              {...{ onClick: onCancel }}
+              onClick={onCancel}
             >
               {t('pricing.cancel')}
             </Btn>
@@ -113,7 +112,7 @@ export default defineComponent({
             loading={loading.value}
             disabled={!validity.value}
             class="justify-self-end"
-            {...{ onClick: onSubmit }}
+            onClick={onSubmit}
           >
             {t('pricing.send')}
           </Btn>

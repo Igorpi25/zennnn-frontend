@@ -476,12 +476,7 @@ export default defineComponent({
                   <span class="truncate">{item.text}</span>
                 ),
                 'prepend-item': () => (
-                  <Btn
-                    class="inline-flex"
-                    {...{
-                      onClick: openWordCreateDialog,
-                    }}
-                  >
+                  <Btn onClick={openWordCreateDialog}>
                     <Icon class="mr-1">{ziPlusOutline}</Icon>
                     <span>{t('words.addWord')}</span>
                   </Btn>
@@ -1083,14 +1078,12 @@ export default defineComponent({
                 icon
                 text
                 class="flex justify-end text-gray-200 pr-3 md:pr-3.5 ml-auto"
-                {...{
-                  onClick: () => {
-                    if (props.item?.id) {
-                      deleteProductMutate({
-                        id: props.item.id,
-                      })
-                    }
-                  },
+                onClick={() => {
+                  if (props.item?.id) {
+                    deleteProductMutate({
+                      id: props.item.id,
+                    })
+                  }
                 }}
               >
                 <Icon>{ziCloseDelete}</Icon>

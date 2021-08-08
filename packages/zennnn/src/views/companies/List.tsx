@@ -212,22 +212,21 @@ export default defineComponent({
                         setDefaultRequisiteLoading.value &&
                         setDefaultRequisiteId.value === item.id
                       }
-                      class={
+                      class={[
+                        'hover:text-green-400 dark:hover:text-green-400 active:text-green-500 dark:active:text-green-500',
                         item.id === currentOrg.value.defaultRequisite
-                          ? 'text-green-500 hover:!text-green-400'
-                          : 'text-gray-200'
-                      }
-                      {...{
-                        onClick: (e: MouseEvent) => {
-                          e.preventDefault()
-                          e.stopPropagation()
-                          if (item.id === currentOrg.value.defaultRequisite)
-                            return
-                          setDefaultRequisite({
-                            orgId: orgId as string,
-                            id: item.id,
-                          })
-                        },
+                          ? 'text-green-500'
+                          : 'text-gray-200',
+                      ]}
+                      onClick={(e: MouseEvent) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        if (item.id === currentOrg.value.defaultRequisite)
+                          return
+                        setDefaultRequisite({
+                          orgId: orgId as string,
+                          id: item.id,
+                        })
                       }}
                     >
                       <Icon>
@@ -248,10 +247,8 @@ export default defineComponent({
                         <Btn
                           loading={deleteRequisiteLoading.value}
                           primary={false}
-                          class="text-white bg-red-700 hover:bg-red-600 active:bg-red-600 focus:ring-red-600"
-                          {...{
-                            onClick: () => deleteRequisite({ id: item.id }),
-                          }}
+                          class="text-white bg-red-700 hover:bg-red-600 active:bg-red-700 active:brightness-90 focus:ring-red-600"
+                          onClick={() => deleteRequisite({ id: item.id })}
                         >
                           {t('action.delete')}
                         </Btn>

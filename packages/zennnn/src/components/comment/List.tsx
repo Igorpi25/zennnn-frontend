@@ -2,7 +2,7 @@ import { defineComponent, ref, computed, watch, Transition } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useMutation } from '@vue/apollo-composable'
 import { ziChat } from '@zennnn/icons'
-import { Icon, Menu } from '@zennnn/core'
+import { Btn, Icon, Menu } from '@zennnn/core'
 import { parseDate } from 'shared/utils/date'
 import {
   ADD_COMMENT_TO_SPEC,
@@ -57,7 +57,7 @@ export default defineComponent({
     sm: Boolean,
   },
 
-  setup(props, { slots }) {
+  setup(props, { slots, attrs }) {
     const { t } = useI18n()
 
     const commentInputRef = ref()
@@ -280,9 +280,9 @@ export default defineComponent({
         v-slots={{
           activator: () =>
             slots.activator ? (
-              slots.activator()
+              slots.activator({ count: newCommentsCount })
             ) : (
-              <div class="relative flex items-center">
+              <Btn icon mini text class={['relative', attrs.class]}>
                 <Transition name="scale-transition">
                   {newCommentsCount.value > 0 && (
                     <div
@@ -299,8 +299,8 @@ export default defineComponent({
                     </div>
                   )}
                 </Transition>
-                <Icon class="cursor-pointer select-none">{ziChat}</Icon>
-              </div>
+                <Icon>{ziChat}</Icon>
+              </Btn>
             ),
         }}
       >

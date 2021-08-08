@@ -124,13 +124,7 @@ export default defineComponent({
         >
           {errorMessage.value}
         </Alert>
-        <Btn
-          loading={loading.value}
-          class="w-full sm:w-48"
-          {...{
-            onClick: onSubmit,
-          }}
-        >
+        <Btn loading={loading.value} class="w-full sm:w-48" onClick={onSubmit}>
           {t('signin.submit')}
         </Btn>
       </Form>

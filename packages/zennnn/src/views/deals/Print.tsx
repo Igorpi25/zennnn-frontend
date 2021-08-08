@@ -153,7 +153,7 @@ export default defineComponent({
           icon
           mini
           class="absolute top-1 right-1 z-1 text-gray-100 dark:text-gray-200"
-          {...{ onClick: goBack }}
+          onClick={goBack}
         >
           <Icon>{ziCloseWindow}</Icon>
         </Btn>
@@ -176,7 +176,7 @@ export default defineComponent({
                   disabled={!validationState.value?.isRequiredFilled}
                   loading={loading.value}
                   minWidth={150}
-                  {...{ onClick: print }}
+                  onClick={print}
                 >
                   {t('shipping.doPrint')}
                 </Btn>
@@ -251,7 +251,7 @@ export default defineComponent({
                 outlined
                 minWidth={150}
                 class="order-last md:order-none mt-4 md:mt-0"
-                {...{ onClick: goBack }}
+                onClick={goBack}
               >
                 {t('shipping.cancelPrint')}
               </Btn>
@@ -264,7 +264,7 @@ export default defineComponent({
                 disabled={!validationState.value?.isRequiredFilled}
                 loading={loading.value}
                 minWidth={150}
-                {...{ onClick: print }}
+                onClick={print}
               >
                 {t('shipping.doPrint')}
               </Btn>

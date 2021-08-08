@@ -407,30 +407,25 @@ export default defineComponent({
                               <div class="inline-flex items-center justify-end align-middle space-x-2">
                                 <Btn
                                   icon
-                                  primary={false}
-                                  class="w-6 h-6 rounded text-blue-500 hover:text-blue-400"
-                                  {...{
-                                    onClick: (e: MouseEvent) => {
-                                      e.preventDefault()
-                                      e.stopPropagation()
-                                      openEditDialog(item)
-                                    },
+                                  mini
+                                  text
+                                  onClick={(e: MouseEvent) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    openEditDialog(item)
                                   }}
                                 >
                                   <Icon small>{ziEdit}</Icon>
                                 </Btn>
                                 <Btn
                                   icon
-                                  primary={false}
+                                  mini
+                                  text
                                   class={{
-                                    'w-6 h-6 rounded text-blue-500 hover:text-blue-400':
-                                      true,
                                     'transition-transform': true,
-                                    'rotate-90': expanded.value.includes(
-                                      item.id
-                                    ),
+                                    'transform rotate-90':
+                                      expanded.value.includes(item.id),
                                   }}
-                                  retainFocusOnClick
                                 >
                                   <Icon>{ziChevronRight}</Icon>
                                 </Btn>
@@ -491,10 +486,8 @@ export default defineComponent({
             block
             outlined
             class="mt-4"
-            {...{
-              onClick: () => {
-                createDialog.value = true
-              },
+            onClick={() => {
+              createDialog.value = true
             }}
           >
             <Icon left>{ziEdit}</Icon>

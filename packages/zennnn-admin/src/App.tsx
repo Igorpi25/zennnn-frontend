@@ -231,8 +231,7 @@ export default defineComponent({
                         />
                       ),
                     }}
-                    class={active ? 'bg-white dark:bg-gray-600' : undefined}
-                    retainFocusOnClick
+                    class={active ? 'bg-blue-550 text-white' : undefined}
                   >
                     <span>{text}</span>
                   </SidebarItem>
@@ -258,7 +257,6 @@ export default defineComponent({
                   />
                 ),
               }}
-              retainFocusOnClick
               onClick={toggleTheme}
             >
               <span>{t('header.darkMode')}</span>

@@ -185,25 +185,21 @@ export default defineComponent({
             <div class="col-span-4 justify-self-end space-x-3 pt-2">
               <Btn
                 loading={addProductsToWordLoading.value}
-                minWidth="100px"
+                minWidth={100}
                 xSmall
-                {...{
-                  onClick: () => {
-                    addToDialog.value = true
-                  },
+                onClick={() => {
+                  addToDialog.value = true
                 }}
               >
                 {t('words.addToWord')}
               </Btn>
               <Btn
                 loading={createWordWithProductsLoading.value}
-                minWidth="100px"
+                minWidth={100}
                 xSmall
                 outlined
-                {...{
-                  onClick: () => {
-                    createDialog.value = true
-                  },
+                onClick={() => {
+                  createDialog.value = true
                 }}
               >
                 {t('words.newWord')}
@@ -264,13 +260,11 @@ export default defineComponent({
                   text
                   block
                   class="h-10 justify-start px-2"
-                  {...{
-                    onClick: () => {
-                      addToDialog.value = false
-                      nextTick(() => {
-                        createDialog.value = true
-                      })
-                    },
+                  onClick={() => {
+                    addToDialog.value = false
+                    nextTick(() => {
+                      createDialog.value = true
+                    })
                   }}
                 >
                   <Icon class="mr-1">{ziPlusOutline}</Icon>
@@ -285,10 +279,8 @@ export default defineComponent({
               disabled={addProductsToWordLoading.value}
               outlined
               minWidth={96}
-              {...{
-                onClick: () => {
-                  addToDialog.value = false
-                },
+              onClick={() => {
+                addToDialog.value = false
               }}
             >
               <span>{t('action.cancel')}</span>
@@ -296,13 +288,11 @@ export default defineComponent({
             <Btn
               loading={addProductsToWordLoading.value}
               disabled={!selectedItemId.value}
-              {...{
-                onClick: () => {
-                  addProductsToWordMutate({
-                    productsIds: selected.value,
-                    wordId: selectedItemId.value as string,
-                  })
-                },
+              onClick={() => {
+                addProductsToWordMutate({
+                  productsIds: selected.value,
+                  wordId: selectedItemId.value as string,
+                })
               }}
             >
               {t('action.add')}
