@@ -1,13 +1,21 @@
 import { h, ref, watch, defineComponent } from 'vue'
 import { convertToUnit } from 'vue-supp'
 
+import type { PropType } from 'vue'
+
+interface BtnToggleItem {
+  value: string | number
+  text: string
+  disabled?: boolean
+}
+
 export default defineComponent({
   name: 'BtnToggle',
 
   props: {
     modelValue: [String, Number],
     items: {
-      type: Array,
+      type: Array as PropType<BtnToggleItem[]>,
       default: () => [],
     },
     disabled: Boolean,
@@ -26,7 +34,7 @@ export default defineComponent({
       emit('update:modelValue', val)
     })
 
-    const genButton = ({ value, text, disabled }: any) => {
+    function genButton({ value, text, disabled }: BtnToggleItem) {
       return h(
         'button',
         {
@@ -46,7 +54,7 @@ export default defineComponent({
       )
     }
 
-    const genContent = () => {
+    function genContent() {
       return props.items.map(genButton)
     }
 
