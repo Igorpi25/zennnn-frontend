@@ -1,21 +1,11 @@
-import {
-  h,
-  ref,
-  computed,
-  watch,
-  onBeforeMount,
-  onBeforeUnmount,
-  Ref,
-  PropType,
-} from 'vue'
-
-import { EmitFn } from '../../types'
-
+import { h, ref, computed, watch, onBeforeMount, onBeforeUnmount } from 'vue'
 import { ziCheckedSm, ziStatusPointSm } from '@zennnn/icons' // TODO: use/input
-
 import { useFormContext } from '../components/Form/Form' // TODO: use/input
 import Messages from '../components/Messages' // TODO: use/input
 import Icon from '../components/Icon' // TODO: use/input
+
+import type { Ref, PropType } from 'vue'
+import type { EmitFn } from '../../types'
 
 export interface InputValidationProps {
   rules: any[]
@@ -105,32 +95,26 @@ export const useInputValidation = (
     () => props.readonly || (!!formApi && formApi.readonly)
   )
 
-  const isInteractive = computed(() => {
-    return !isDisabled.value && !isReadonly.value
-  })
+  const isInteractive = computed(() => !isDisabled.value && !isReadonly.value)
 
-  const internalErrorMessages = computed(() => {
-    return props.error ? props.errorMessages : []
-  })
+  const internalErrorMessages = computed(() =>
+    props.error ? props.errorMessages : []
+  )
 
-  const hasError = computed(() => {
-    return (
-      errorBucket.value.length > 0 || internalErrorMessages.value.length > 0
-    )
-  })
+  const hasError = computed(
+    () => errorBucket.value.length > 0 || internalErrorMessages.value.length > 0
+  )
 
-  const hasMessages = computed(() => {
-    return (
+  const hasMessages = computed(
+    () =>
       errorMessages.value.length > 0 || internalErrorMessages.value.length > 0
-    )
-  })
+  )
 
-  const showDetails = computed(() => {
-    return (
+  const showDetails = computed(
+    () =>
       props.hideDetails === false ||
       (props.hideDetails === 'auto' && hasMessages.value)
-    )
-  })
+  )
 
   const errorMessages = computed(() => {
     if (internalErrorMessages.value.length > 0) {
@@ -140,9 +124,9 @@ export const useInputValidation = (
     } else return []
   })
 
-  const messagesToDisplay = computed(() => {
-    return errorMessages.value.slice(0, props.errorCount)
-  })
+  const messagesToDisplay = computed(() =>
+    errorMessages.value.slice(0, props.errorCount)
+  )
 
   const shouldValidate = computed(() => {
     if (props.forceValidate) return true
@@ -153,9 +137,7 @@ export const useInputValidation = (
       : hasInput.value || hasFocused.value
   })
 
-  const hasSuccess = computed(() => {
-    return !props.validateOnBlur || valid.value
-  })
+  const hasSuccess = computed(() => !props.validateOnBlur || valid.value)
 
   const hasState = computed(() => {
     if (isDisabled.value || !props.stateIcon) return false
@@ -163,9 +145,7 @@ export const useInputValidation = (
     return hasSuccess.value || (shouldValidate.value && hasError.value)
   })
 
-  const validationState = computed(() => {
-    return valid.value ? 'success' : 'error'
-  })
+  const validationState = computed(() => (valid.value ? 'success' : 'error'))
 
   watch(internalValue, () => {
     hasInput.value = true
@@ -205,16 +185,16 @@ export const useInputValidation = (
     formApi && formApi.unregister(input)
   })
 
-  const reset = () => {
+  function reset() {
     isResetting.value = true
     internalValue.value = Array.isArray(internalValue.value) ? [] : undefined
   }
 
-  const resetValidation = () => {
+  function resetValidation() {
     isResetting.value = true
   }
 
-  const validate = (force = false, value?: any): boolean => {
+  function validate(force = false, value?: any): boolean {
     const _errorBucket = []
     value = value || internalValue.value
 
@@ -228,7 +208,9 @@ export const useInputValidation = (
         _errorBucket.push(valid || '')
       } else if (typeof valid !== 'boolean') {
         // eslint-disable-next-line
-        console.log(`Rules should return a string or boolean, received '${typeof valid}' instead`)
+        console.log(
+          `Rules should return a string or boolean, received '${typeof valid}' instead`
+        )
       }
     }
 
@@ -239,7 +221,7 @@ export const useInputValidation = (
   }
 
   // TODO: use/input
-  const genMessages = () => {
+  function genMessages() {
     if (!showDetails.value) return undefined
 
     return h(Messages, {
@@ -250,7 +232,7 @@ export const useInputValidation = (
   }
 
   // TODO: use/input
-  const genStateIcon = () => {
+  function genStateIcon() {
     if (!hasState.value) return undefined
     const successIcon = props.stateSuccessIcon || ziCheckedSm
     const errorIcon = props.stateErrorIcon || ziStatusPointSm

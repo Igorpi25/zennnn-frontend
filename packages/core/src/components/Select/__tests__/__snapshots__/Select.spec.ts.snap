@@ -11,9 +11,7 @@ exports[`Select.ts should render component and match snapshot 1`] = `
   </label>
   <!---->
   <div class="input__control input__control--has-append select__control">
-    <!---->
-    <!----><input id="select-1" class="input__input select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
-    <!---->
+    <!----><input id="select-1" class="input__input input__input--has-append select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -36,9 +34,7 @@ exports[`Select.ts should render component with dense prop and match snapshot 1`
   </label>
   <!---->
   <div class="input__control input__control--has-append select__control">
-    <!---->
-    <!----><input id="select-1" class="input__input input__input--dense select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
-    <!---->
+    <!----><input id="select-1" class="input__input input__input--dense input__input--has-append select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -61,9 +57,7 @@ exports[`Select.ts should render component with disabled prop and match snapshot
   </label>
   <!---->
   <div class="input__control input__control--has-append select__control">
-    <!---->
-    <!----><input id="select-1" class="input__input select__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="" disabled="">
-    <!---->
+    <!----><input id="select-1" class="input__input input__input--has-append select__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="" disabled="">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-gray-400 cursor-not-allowed" role="button" type="button" aria-hidden="false" tabindex="-1" disabled=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -86,9 +80,7 @@ exports[`Select.ts should render component with loading prop and match snapshot 
   </label>
   <!---->
   <div class="input__control input__control--has-append select__control">
-    <!---->
-    <!----><input id="select-1" class="input__input select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
-    <!---->
+    <!----><input id="select-1" class="input__input input__input--has-append select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -111,9 +103,7 @@ exports[`Select.ts should render component with name, required, readonly props a
   </label>
   <!---->
   <div class="input__control input__control--has-append select__control select__control--is-active">
-    <!---->
-    <!----><input id="select-1" class="input__input select__input" name="text-field-name" required="" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
-    <!---->
+    <!----><input id="select-1" class="input__input input__input--has-append select__input" name="text-field-name" required="" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -130,9 +120,7 @@ exports[`Select.ts should render component with singleLine prop and match snapsh
   <!---->
   <!---->
   <div class="input__control input__control--has-append select__control">
-    <!---->
-    <!----><input id="select-1" class="input__input select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
-    <!---->
+    <!----><input id="select-1" class="input__input input__input--has-append select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -149,17 +137,15 @@ exports[`Select.ts should render component with slots and match snapshot 1`] = `
   <!---->
   <!---->
   <div class="input__control input__control--has-prepend input__control--has-append select__control">
-    <!---->
-    <div class="flex items-center flex-shrink-0"><i class="icon text-gray-200 dark:text-gray-300" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
-          <g fill="currentColor">
-            <path d="prepend-icon"></path>
-          </g>
-        </svg></i>Prepend slot</div><input id="select-1" class="input__input select__input cursor-pointer" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
-    <div class="flex items-center flex-shrink-0">Append slot<i class="icon text-gray-200 dark:text-gray-300" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
-          <g fill="currentColor">
-            <path d="append-icon"></path>
-          </g>
-        </svg></i></div>
+    <!----><i class="icon text-gray-100 dark:text-gray-200 flex-shrink-0" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="prepend-icon"></path>
+        </g>
+      </svg></i>Prepend slot<input id="select-1" class="input__input input__input--has-prepend input__input--has-append select__input cursor-pointer" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">Append slot<i class="icon text-gray-100 dark:text-gray-200 flex-shrink-0" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="append-icon"></path>
+        </g>
+      </svg></i>
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -176,9 +162,7 @@ exports[`Select.ts should render component with solo prop and match snapshot 1`]
   <!---->
   <!---->
   <div class="input__control input__control--solo input__control--has-append select__control">
-    <!---->
-    <!----><input id="select-1" class="input__input input__input--dense select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
-    <!---->
+    <!----><input id="select-1" class="input__input input__input--dense input__input--has-append select__input cursor-pointer" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -223,9 +207,7 @@ exports[`Select.ts should render items on focused and match snapshot 2`] = `
   </label>
   <!---->
   <div class="input__control input__control--has-append select__control select__control--is-active select__control--is-menu-active">
-    <!---->
-    <!----><input id="select-1" class="input__input select__input cursor-pointer pl-8" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="" aria-expanded="true" aria-controls="listbox-1">
-    <!---->
+    <!----><input id="select-1" class="input__input input__input--has-append select__input cursor-pointer pl-8" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="" aria-expanded="true" aria-controls="listbox-1">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400 rotate-180" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">

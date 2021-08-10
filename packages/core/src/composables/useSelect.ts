@@ -1,10 +1,9 @@
-import { h, ref, computed, Ref, ComputedRef, Slots } from 'vue'
-
+import { h, ref, computed } from 'vue'
 import { ziChevronDown } from '@zennnn/icons'
-
 import { useI18n } from 'vue-i18n'
-
 import Icon from '../components/Icon'
+
+import type { Ref, ComputedRef, Slots } from 'vue'
 
 const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ')
 
@@ -84,7 +83,7 @@ export const useSelect = (
     })
   })
 
-  const toggleMenu = () => {
+  function toggleMenu() {
     if (isDisabled.value) return
     if (isMenuActive.value) {
       closeMenu()
@@ -93,26 +92,26 @@ export const useSelect = (
     }
   }
 
-  const openMenu = () => {
+  function openMenu() {
     if (isDisabled.value || isReadonly.value) return
     isMenuActive.value = true
     // update dimensions, has problem on attached like modal
     // updateClientRect()
   }
 
-  const closeMenu = () => {
+  function closeMenu() {
     isMenuActive.value = false
   }
 
-  const genPrependOuterSlot = () => {
+  function genPrependOuterSlot() {
     return slots['prepend-outer'] ? slots['prepend-outer']() : undefined
   }
 
-  const genAppendOuterSlot = () => {
+  function genAppendOuterSlot() {
     return slots['append-outer'] ? slots['append-outer']() : undefined
   }
 
-  const genArrow = () => {
+  function genArrow() {
     if (!props.showArrow) return undefined
     return h(
       Icon,
@@ -149,14 +148,14 @@ export const useSelect = (
     )
   }
 
-  const genDivider = (index: number) => {
+  function genDivider(index: number) {
     return h('div', {
       key: `divider-${index}`,
       class: 'border-b border-blue-500',
     })
   }
 
-  const genNoData = () => {
+  function genNoData() {
     return slots['no-data']
       ? slots['no-data']()
       : h(
@@ -180,7 +179,7 @@ export const useSelect = (
         )
   }
 
-  const genNoResult = () => {
+  function genNoResult() {
     return slots['no-result']
       ? slots['no-result']()
       : h(

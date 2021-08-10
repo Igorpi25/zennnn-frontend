@@ -1,12 +1,11 @@
-import { h, ref, computed, onMounted, Slots } from 'vue'
-
+import { h, ref, computed, onMounted } from 'vue'
 import { ziQuestionSign } from '@zennnn/icons'
-
-import { EmitFn } from '../../types'
-
 import Label from '../components/Label'
 import Tooltip from '../components/Tooltip'
 import Icon from '../components/Icon'
+
+import type { Slots } from 'vue'
+import type { EmitFn } from '../../types'
 
 export interface InputProps {
   modelValue?: any
@@ -66,16 +65,26 @@ export const useInput = (
   const isFocused = ref(false)
   const badInput = ref(false)
 
-  const hasLabel = computed(() => {
-    return !!(slots.label || props.label) && !props.singleLine && !props.solo
-  })
+  const hasLabel = computed(
+    () => !!(slots.label || props.label) && !props.singleLine && !props.solo
+  )
 
-  const isDirty = computed(() => {
-    return (
+  const isDirty = computed(
+    () =>
       (internalValue.value && internalValue.value.toString().length > 0) ||
       badInput.value
-    )
-  })
+  )
+
+  const inputData = computed(() => ({
+    ref: inputElement,
+    name: props.name,
+    required: props.required,
+    readonly: props.readonly,
+    disabled: props.disabled,
+    tabindex: props.tabindex,
+    onFocus: onFocus,
+    onBlur: onBlur,
+  }))
 
   onMounted(() => {
     if (props.autofocus) {
@@ -83,39 +92,25 @@ export const useInput = (
     }
   })
 
-  const focus = () => {
+  function focus() {
     inputElement.value?.focus()
   }
 
-  const blur = () => {
+  function blur() {
     // Safari tab order gets broken if called synchronous
     window.requestAnimationFrame(() => {
       inputElement.value?.blur()
     })
   }
 
-  const onFocus = () => {
+  function onFocus() {
     isFocused.value = true
   }
-  const onBlur = () => {
+  function onBlur() {
     isFocused.value = false
   }
 
-  const genInput = (data: Record<string, unknown>) => {
-    return h('input', {
-      ref: inputElement,
-      name: props.name,
-      required: props.required,
-      readonly: props.readonly,
-      disabled: props.disabled,
-      tabindex: props.tabindex,
-      onFocus: onFocus,
-      onBlur: onBlur,
-      ...data,
-    })
-  }
-
-  const genLabelHint = () => {
+  function genLabelHint() {
     if (!props.labelHint) return undefined
     return h(
       Tooltip,
@@ -144,7 +139,7 @@ export const useInput = (
     )
   }
 
-  const genLabel = () => {
+  function genLabel() {
     return hasLabel.value
       ? h(
           Label,
@@ -163,18 +158,19 @@ export const useInput = (
       : undefined
   }
 
-  const emitChange = () => {
+  function emitChange() {
     const val = internalValue.value
     if (val !== props.modelValue) {
       emit?.('update:modelValue', val)
     }
   }
 
-  const setInternalValue = (val: any) => {
+  function setInternalValue(val: any) {
     internalValue.value = val
   }
 
   return {
+    inputData,
     inputElement,
     internalValue,
     isFocused,
@@ -182,7 +178,6 @@ export const useInput = (
     badInput,
     focus,
     blur,
-    genInput,
     genLabel,
     emitChange,
     setInternalValue,

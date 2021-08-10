@@ -11,9 +11,7 @@ exports[`Autocomplete.ts should render component and match snapshot 1`] = `
   </label>
   <!---->
   <div class="input__control input__control--has-append autocomplete__control">
-    <!---->
-    <!----><input id="autocomplete-1" class="input__input autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
-    <!---->
+    <!----><input id="autocomplete-1" class="input__input input__input--has-append autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -36,9 +34,7 @@ exports[`Autocomplete.ts should render component with dense prop and match snaps
   </label>
   <!---->
   <div class="input__control input__control--has-append autocomplete__control">
-    <!---->
-    <!----><input id="autocomplete-1" class="input__input input__input--dense autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
-    <!---->
+    <!----><input id="autocomplete-1" class="input__input input__input--dense input__input--has-append autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -61,9 +57,7 @@ exports[`Autocomplete.ts should render component with disabled prop and match sn
   </label>
   <!---->
   <div class="input__control input__control--has-append autocomplete__control">
-    <!---->
-    <!----><input id="autocomplete-1" class="input__input autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" disabled="">
-    <!---->
+    <!----><input id="autocomplete-1" class="input__input input__input--has-append autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" disabled="">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-gray-400 cursor-not-allowed" role="button" type="button" aria-hidden="false" tabindex="-1" disabled=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -86,9 +80,7 @@ exports[`Autocomplete.ts should render component with loading prop and match sna
   </label>
   <!---->
   <div class="input__control input__control--has-append autocomplete__control">
-    <!---->
-    <!----><input id="autocomplete-1" class="input__input autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
-    <!---->
+    <!----><input id="autocomplete-1" class="input__input input__input--has-append autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -111,9 +103,7 @@ exports[`Autocomplete.ts should render component with name, required, readonly p
   </label>
   <!---->
   <div class="input__control input__control--has-append autocomplete__control autocomplete__control--is-active">
-    <!---->
-    <!----><input id="autocomplete-1" class="input__input autocomplete__input" name="text-field-name" required="" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
-    <!---->
+    <!----><input id="autocomplete-1" class="input__input input__input--has-append autocomplete__input" name="text-field-name" required="" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true" readonly="">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -130,9 +120,7 @@ exports[`Autocomplete.ts should render component with singleLine prop and match 
   <!---->
   <!---->
   <div class="input__control input__control--has-append autocomplete__control">
-    <!---->
-    <!----><input id="autocomplete-1" class="input__input autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
-    <!---->
+    <!----><input id="autocomplete-1" class="input__input input__input--has-append autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -149,17 +137,15 @@ exports[`Autocomplete.ts should render component with slots and match snapshot 1
   <!---->
   <!---->
   <div class="input__control input__control--has-prepend input__control--has-append autocomplete__control">
-    <!---->
-    <div class="flex items-center flex-shrink-0"><i class="icon text-gray-200 dark:text-gray-300" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
-          <g fill="currentColor">
-            <path d="prepend-icon"></path>
-          </g>
-        </svg></i>Prepend slot</div><input id="autocomplete-1" class="input__input autocomplete__input" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
-    <div class="flex items-center flex-shrink-0">Append slot<i class="icon text-gray-200 dark:text-gray-300" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
-          <g fill="currentColor">
-            <path d="append-icon"></path>
-          </g>
-        </svg></i></div>
+    <!----><i class="icon text-gray-100 dark:text-gray-200 flex-shrink-0" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="prepend-icon"></path>
+        </g>
+      </svg></i>Prepend slot<input id="autocomplete-1" class="input__input input__input--has-prepend input__input--has-append autocomplete__input" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">Append slot<i class="icon text-gray-100 dark:text-gray-200 flex-shrink-0" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="append-icon"></path>
+        </g>
+      </svg></i>
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -176,9 +162,7 @@ exports[`Autocomplete.ts should render component with solo prop and match snapsh
   <!---->
   <!---->
   <div class="input__control input__control--solo input__control--has-append autocomplete__control">
-    <!---->
-    <!----><input id="autocomplete-1" class="input__input input__input--dense autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
-    <!---->
+    <!----><input id="autocomplete-1" class="input__input input__input--dense input__input--has-append autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
@@ -203,9 +187,7 @@ exports[`Autocomplete.ts should render items on focused and match snapshot 2`] =
   </label>
   <!---->
   <div class="input__control input__control--has-append autocomplete__control autocomplete__control--is-active">
-    <!---->
-    <!----><input id="autocomplete-1" class="input__input autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
-    <!---->
+    <!----><input id="autocomplete-1" class="input__input input__input--has-append autocomplete__input" placeholder="Default" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
     <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">

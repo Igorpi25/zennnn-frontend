@@ -33,9 +33,9 @@ export const useInputMessage = (
   // set message to display before enable
   const internalMessage = ref<string | undefined>()
 
-  const showPatternMismatch = computed(() => {
-    return isPatternMismatch && isPatternMismatch.value && props.patternMessage
-  })
+  const showPatternMismatch = computed(
+    () => isPatternMismatch && isPatternMismatch.value && props.patternMessage
+  )
 
   const showPopupMessage = computed(() => {
     const showError =
@@ -54,7 +54,7 @@ export const useInputMessage = (
     }
   })
 
-  const genInputMessages = () => {
+  function genInputMessages() {
     if (!showDetails.value) return undefined
 
     const content = withDirectives(

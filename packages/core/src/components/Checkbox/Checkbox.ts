@@ -7,19 +7,16 @@ import {
   vShow,
   withDirectives,
   defineComponent,
+  mergeProps,
 } from 'vue'
 import { deepEqual } from 'vue-supp'
-
 import { ziCheckboxMarked, ziMinus } from '@zennnn/icons'
-
 import { useInputProps, useInput } from '../../composables/useInput'
 import {
   useInputValidationProps,
   useInputValidation,
 } from '../../composables/useInputValidation'
-
 import uid from '../../utils/uid'
-
 import Icon from '../Icon'
 
 export default defineComponent({
@@ -64,7 +61,7 @@ export default defineComponent({
     const id: string = props.id || uid('checkbox-')
     const rootElement = ref<HTMLElement>()
 
-    const { internalValue, isFocused, genInput, genLabel } = useInput(props, {
+    const { internalValue, isFocused, inputData, genLabel } = useInput(props, {
       slots,
       id,
     })
@@ -126,7 +123,7 @@ export default defineComponent({
       emit('update:modelValue', val)
     })
 
-    const onChange = () => {
+    function onChange() {
       if (!isInteractive.value) return
 
       const value = props.value
@@ -161,7 +158,7 @@ export default defineComponent({
       emit('change', internalValue.value)
     }
 
-    const genCheckboxLabel = () => {
+    function genCheckboxLabel() {
       const children = slots.default?.()
       if (!children) return undefined
       return h(
@@ -174,7 +171,7 @@ export default defineComponent({
       )
     }
 
-    const genCheckboxIcon = () => {
+    function genCheckboxIcon() {
       return h(
         'div',
         {
@@ -196,23 +193,25 @@ export default defineComponent({
       )
     }
 
-    const genCheckboxInput = () => {
-      const data = {
-        id,
-        class: 'checkbox__input',
-        value: props.value,
-        checked: isActive.value,
-        type: 'checkbox',
-        role: 'checkbox',
-        readonly: isReadonly.value,
-        disabled: isDisabled.value,
-        'aria-checked': inputIndeterminate.value ? 'mixed' : isActive.value,
-        onChange: onChange,
-      }
-      return genInput(data)
+    function genCheckboxInput() {
+      return h(
+        'input',
+        mergeProps(inputData.value, {
+          id,
+          class: 'checkbox__input',
+          value: props.value,
+          checked: isActive.value,
+          type: 'checkbox',
+          role: 'checkbox',
+          readonly: isReadonly.value,
+          disabled: isDisabled.value,
+          'aria-checked': inputIndeterminate.value ? 'mixed' : isActive.value,
+          onChange: onChange,
+        })
+      )
     }
 
-    const genCheckbox = () => {
+    function genCheckbox() {
       return h(
         'div',
         {
@@ -222,7 +221,7 @@ export default defineComponent({
       )
     }
 
-    const genControl = () => {
+    function genControl() {
       return h(
         'div',
         {

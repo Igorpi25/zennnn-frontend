@@ -7,7 +7,6 @@ import {
   onMounted,
   defineComponent,
 } from 'vue'
-
 import { useInputProps, useInput } from '../../composables/useInput'
 import {
   useInputClearProps,
@@ -23,7 +22,6 @@ import {
 } from '../../composables/useInputValidation'
 import { useInputLazyProps, useInputLazy } from '../../composables/useInputLazy'
 import { useInputMessage } from '../../composables/useInputMessage'
-
 import uid from '../../utils/uid'
 
 import type { PropType } from 'vue'
@@ -141,16 +139,20 @@ export default defineComponent({
     const { hasDebounce, debounceInput, cancelDebounce, clearableCallback } =
       useInputLazy(props, { isFocused, setInternalValue, emitChange })
 
-    const classes = computed(() => {
-      return {
-        input: true,
-        'input--focused': isFocused.value,
-        'input--disabled': isDisabled.value,
-        'input--has-error':
-          hasMessages.value && hasError.value && showDetails.value,
-        'text-area': true,
-      }
-    })
+    const classes = computed(() => ({
+      input: true,
+      'input--focused': isFocused.value,
+      'input--disabled': isDisabled.value,
+      'input--has-error':
+        hasMessages.value && hasError.value && showDetails.value,
+      'text-area': true,
+    }))
+
+    const hasPrepend = computed(() => hasPrependSlot.value)
+
+    const hasAppend = computed(
+      () => hasAppendSlot.value || hasState.value || props.clearable
+    )
 
     watch(
       () => props.modelValue,
@@ -176,7 +178,7 @@ export default defineComponent({
       }, 0)
     })
 
-    const onFocus = (e: Event) => {
+    function onFocus(e: Event) {
       if (document.activeElement !== inputElement.value) {
         inputElement.value?.focus()
       }
@@ -187,7 +189,7 @@ export default defineComponent({
       }
     }
 
-    const onBlur = (e: Event) => {
+    function onBlur(e: Event) {
       isFocused.value = false
 
       // immediate call changes
@@ -200,7 +202,7 @@ export default defineComponent({
       e && nextTick(() => emit('blur', e))
     }
 
-    const onInput = (e: Event) => {
+    function onInput(e: Event) {
       const target = e.target as HTMLInputElement
       const value = target.value || ''
 
@@ -219,7 +221,7 @@ export default defineComponent({
       }
     }
 
-    const onChange = (e: Event) => {
+    function onChange(e: Event) {
       if (props.lazy) {
         emitChange()
       }
@@ -227,7 +229,7 @@ export default defineComponent({
       emit('change', e)
     }
 
-    const onKeydown = (e: KeyboardEvent) => {
+    function onKeydown(e: KeyboardEvent) {
       // on esc set value from store
       if (e.key === 'Esc' || e.key === 'Escape') {
         cancelDebounce()
@@ -246,7 +248,7 @@ export default defineComponent({
       emit('keydown', e)
     }
 
-    const calculateInputHeight = () => {
+    function calculateInputHeight() {
       if (!inputElement.value) return
 
       inputElement.value.style.height = '0'
@@ -257,13 +259,15 @@ export default defineComponent({
       inputElement.value.style.height = Math.max(minHeight, height) + 'px'
     }
 
-    const genTextAreaInput = () => {
+    function genTextAreaInput() {
       const data = {
         id,
         ref: inputElement,
         value: internalValue.value,
         class: {
           input__input: true,
+          'input__input--has-prepend': hasPrepend.value,
+          'input__input--has-append': hasAppend.value,
           'text-area__input': true,
           'resize-none': props.noResize || props.autoGrow,
           [props.inputClass.trim()]: true,
@@ -285,16 +289,15 @@ export default defineComponent({
       return h('textarea', data)
     }
 
-    const genControl = () => {
+    function genControl() {
       return h(
         'div',
         {
           ref: controlElement,
           class: {
             input__control: true,
-            'input__control--has-prepend': hasPrependSlot.value,
-            'input__control--has-append':
-              hasAppendSlot.value || hasState.value || props.clearable,
+            'input__control--has-prepend': hasPrepend.value,
+            'input__control--has-append': hasAppend.value,
             'text-area__control': true,
             [props.controlClass.trim()]: true,
           },
@@ -303,9 +306,9 @@ export default defineComponent({
           onMouseup: onControlMouseUp,
         },
         [
-          genPrependSlot(),
+          ...genPrependSlot(),
           genTextAreaInput(),
-          genAppendSlot(),
+          ...genAppendSlot(),
           genStateIcon(),
           genClearInput(clearableCallback),
         ]

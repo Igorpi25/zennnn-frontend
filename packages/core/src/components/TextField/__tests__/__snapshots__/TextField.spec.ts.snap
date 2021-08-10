@@ -10,9 +10,7 @@ exports[`TextField.ts should render component and match snapshot 1`] = `
     </div>
   </label>
   <!---->
-  <div class="input__control text-field__control">
-    <!----><input id="text-field-1" class="input__input text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
-    <!---->
+  <div class="input__control text-field__control"><input id="text-field-1" class="input__input text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
     <!---->
     <!---->
   </div>
@@ -23,9 +21,7 @@ exports[`TextField.ts should render component with custom classes and match snap
 <div class="input text-field">
   <!---->
   <!---->
-  <div class="input__control input__control--solo text-field__control dark:bg-transparent">
-    <!----><input id="text-field-1" class="input__input input__input--dense text-field__input dark:placeholder-blue-500" placeholder="Solo custom" type="text" inputmode="text" autocomplete="off">
-    <!---->
+  <div class="input__control input__control--solo text-field__control dark:bg-transparent"><input id="text-field-1" class="input__input input__input--dense text-field__input dark:placeholder-blue-500" placeholder="Solo custom" type="text" inputmode="text" autocomplete="off">
     <!---->
     <!---->
   </div>
@@ -42,9 +38,7 @@ exports[`TextField.ts should render component with dense prop and match snapshot
     </div>
   </label>
   <!---->
-  <div class="input__control text-field__control">
-    <!----><input id="text-field-1" class="input__input input__input--dense text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
-    <!---->
+  <div class="input__control text-field__control"><input id="text-field-1" class="input__input input__input--dense text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
     <!---->
     <!---->
   </div>
@@ -61,9 +55,7 @@ exports[`TextField.ts should render component with disabled prop and match snaps
     </div>
   </label>
   <!---->
-  <div class="input__control text-field__control">
-    <!----><input id="text-field-1" class="input__input text-field__input" placeholder="Default" type="text" inputmode="text" disabled="" autocomplete="off">
-    <!---->
+  <div class="input__control text-field__control"><input id="text-field-1" class="input__input text-field__input" placeholder="Default" type="text" inputmode="text" disabled="" autocomplete="off">
     <!---->
     <!---->
   </div>
@@ -80,9 +72,7 @@ exports[`TextField.ts should render component with loading prop and match snapsh
     </div>
   </label>
   <!---->
-  <div class="input__control text-field__control">
-    <!----><input id="text-field-1" class="input__input text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
-    <!---->
+  <div class="input__control text-field__control"><input id="text-field-1" class="input__input text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
     <!---->
     <!---->
   </div>
@@ -99,9 +89,7 @@ exports[`TextField.ts should render component with name, required, readonly prop
     </div>
   </label>
   <!---->
-  <div class="input__control text-field__control">
-    <!----><input id="text-field-1" class="input__input text-field__input" name="text-field-name" required="" placeholder="Default" type="text" inputmode="text" readonly="" autocomplete="off">
-    <!---->
+  <div class="input__control text-field__control"><input id="text-field-1" class="input__input text-field__input" name="text-field-name" required="" placeholder="Default" type="text" inputmode="text" readonly="" autocomplete="off">
     <!---->
     <!---->
   </div>
@@ -112,9 +100,7 @@ exports[`TextField.ts should render component with singleLine prop and match sna
 <div class="input text-field">
   <!---->
   <!---->
-  <div class="input__control text-field__control">
-    <!----><input id="text-field-1" class="input__input text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
-    <!---->
+  <div class="input__control text-field__control"><input id="text-field-1" class="input__input text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
     <!---->
     <!---->
   </div>
@@ -125,17 +111,15 @@ exports[`TextField.ts should render component with slots and match snapshot 1`] 
 <div class="input text-field">
   <!---->
   <!---->
-  <div class="input__control input__control--has-prepend input__control--has-append text-field__control">
-    <div class="flex items-center flex-shrink-0"><i class="icon text-gray-200 dark:text-gray-300" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
-          <g fill="currentColor">
-            <path d="prepend-icon"></path>
-          </g>
-        </svg></i>Prepend slot</div><input id="text-field-1" class="input__input text-field__input" type="text" inputmode="text" autocomplete="off">
-    <div class="flex items-center flex-shrink-0">Append slot<i class="icon text-gray-200 dark:text-gray-300" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
-          <g fill="currentColor">
-            <path d="append-icon"></path>
-          </g>
-        </svg></i></div>
+  <div class="input__control input__control--has-prepend input__control--has-append text-field__control"><i class="icon text-gray-100 dark:text-gray-200 flex-shrink-0" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="prepend-icon"></path>
+        </g>
+      </svg></i>Prepend slot<input id="text-field-1" class="input__input input__input--has-prepend input__input--has-append text-field__input" type="text" inputmode="text" autocomplete="off">Append slot<i class="icon text-gray-100 dark:text-gray-200 flex-shrink-0" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+        <g fill="currentColor">
+          <path d="append-icon"></path>
+        </g>
+      </svg></i>
     <!---->
     <!---->
   </div>
@@ -146,9 +130,7 @@ exports[`TextField.ts should render component with solo prop and match snapshot 
 <div class="input text-field">
   <!---->
   <!---->
-  <div class="input__control input__control--solo text-field__control">
-    <!----><input id="text-field-1" class="input__input input__input--dense text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
-    <!---->
+  <div class="input__control input__control--solo text-field__control"><input id="text-field-1" class="input__input input__input--dense text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
     <!---->
     <!---->
   </div>
@@ -165,9 +147,7 @@ exports[`TextField.ts should render focused component and match snapshot 1`] = `
     </div>
   </label>
   <!---->
-  <div class="input__control text-field__control">
-    <!----><input id="text-field-1" class="input__input text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
-    <!---->
+  <div class="input__control text-field__control"><input id="text-field-1" class="input__input text-field__input" placeholder="Default" type="text" inputmode="text" autocomplete="off">
     <!---->
     <!---->
   </div>

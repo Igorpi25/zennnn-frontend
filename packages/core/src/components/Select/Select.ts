@@ -8,11 +8,8 @@ import {
   onBeforeMount,
   defineComponent,
 } from 'vue'
-
 import { useFilterProps, useFilter, Mask } from 'vue-supp'
-
 import { ziChecked } from '@zennnn/icons'
-
 import { useInputProps, useInput } from '../../composables/useInput'
 import {
   useInputClearProps,
@@ -29,9 +26,7 @@ import {
 import { useInputMessage } from '../../composables/useInputMessage'
 import { useSelect } from '../../composables/useSelect'
 import { useDelayProps } from '../../composables/useDelay'
-
 import uid from '../../utils/uid'
-
 import Icon from '../Icon'
 import { Menu, MenuItem } from '../Menu'
 
@@ -207,23 +202,29 @@ export default defineComponent({
       slots,
     })
 
-    const classes = computed(() => {
-      return {
-        input: true,
-        'input--focused': isFocused.value,
-        'input--disabled': isDisabled.value,
-        'input--dirty': internalValue.value,
-        'input--has-error':
-          ((hasMessages.value && hasError.value) || isPatternMismatch.value) &&
-          showDetails.value,
-        select: true,
-        'select--is-menu-active': isMenuActive.value,
-      }
-    })
+    const classes = computed(() => ({
+      input: true,
+      'input--focused': isFocused.value,
+      'input--disabled': isDisabled.value,
+      'input--dirty': internalValue.value,
+      'input--has-error':
+        ((hasMessages.value && hasError.value) || isPatternMismatch.value) &&
+        showDetails.value,
+      select: true,
+      'select--is-menu-active': isMenuActive.value,
+    }))
 
-    const isActive = computed(() => {
-      return isFocused.value || isMenuActive.value
-    })
+    const hasPrepend = computed(() => hasPrependSlot.value)
+
+    const hasAppend = computed(
+      () =>
+        hasAppendSlot.value ||
+        hasState.value ||
+        props.clearable ||
+        props.showArrow
+    )
+
+    const isActive = computed(() => isFocused.value || isMenuActive.value)
 
     watch(isFocused, (val) => {
       val && openMenu()
@@ -242,18 +243,18 @@ export default defineComponent({
       setSelectedItem(props.returnObject ? props.modelValue : undefined)
     })
 
-    const setInternalValue = (val: any) => {
+    function setInternalValue(val: any) {
       internalValue.value = getValue(val)
       setSelectedItem(props.returnObject ? val : undefined)
     }
 
-    const select = (val: any) => {
+    function select(val: any) {
       selectedItem.value = val
       const value = props.returnObject ? val : getValue(val)
       emit('update:modelValue', value)
     }
 
-    const setSelectedItem = (val: any) => {
+    function setSelectedItem(val: any) {
       if (!val) {
         selectedItem.value = items.value.find(
           (item) => getValue(item) === internalValue.value
@@ -263,7 +264,7 @@ export default defineComponent({
       }
     }
 
-    const onFocus = (e: Event) => {
+    function onFocus(e: Event) {
       if (document.activeElement !== inputElement.value) {
         inputElement.value?.focus()
       }
@@ -278,7 +279,7 @@ export default defineComponent({
       }
     }
 
-    const onBlur = (e: Event) => {
+    function onBlur(e: Event) {
       isFocused.value = false
 
       // clear pattern mismatch
@@ -287,7 +288,7 @@ export default defineComponent({
       e && nextTick(() => emit('blur', e))
     }
 
-    const onInput = (e: Event) => {
+    function onInput(e: Event) {
       const target = e.target as HTMLInputElement
 
       badInput.value = target.validity && target.validity.badInput
@@ -295,7 +296,7 @@ export default defineComponent({
       if (!isMenuActive.value) openMenu()
     }
 
-    const onEnter = (e: KeyboardEvent) => {
+    function onEnter(e: KeyboardEvent) {
       e.preventDefault()
       const menu = menuRef.value!
       if (!isMenuActive.value) {
@@ -304,7 +305,8 @@ export default defineComponent({
         menu.activeItem.click()
       }
     }
-    const onArrowUp = (e: KeyboardEvent) => {
+
+    function onArrowUp(e: KeyboardEvent) {
       e.preventDefault()
       const menu = menuRef.value!
       if (!isMenuActive.value) {
@@ -314,7 +316,8 @@ export default defineComponent({
         menu.goToPrevItem()
       }
     }
-    const onArrowDown = (e: KeyboardEvent) => {
+
+    function onArrowDown(e: KeyboardEvent) {
       e.preventDefault()
       const menu = menuRef.value!
       if (!isMenuActive.value) {
@@ -324,7 +327,8 @@ export default defineComponent({
         menu.goToNextItem()
       }
     }
-    const onTab = (e: KeyboardEvent) => {
+
+    function onTab(e: KeyboardEvent) {
       const menu = menuRef.value!
       if (isMenuActive.value) {
         if (menu.activeItem) {
@@ -339,7 +343,7 @@ export default defineComponent({
       }
     }
 
-    const onKeydown = (e: KeyboardEvent) => {
+    function onKeydown(e: KeyboardEvent) {
       if (e.key === 'Esc' || e.key === 'Escape') {
         if (isMenuActive.value) {
           e.stopPropagation()
@@ -362,7 +366,7 @@ export default defineComponent({
       emit('keydown', e)
     }
 
-    const genSelectInput = () => {
+    function genSelectInput() {
       const data: Record<string, unknown> = {
         id,
         ref: inputElement,
@@ -370,9 +374,11 @@ export default defineComponent({
         class: {
           input__input: true,
           'input__input--dense': props.dense || props.solo,
+          'input__input--has-prepend': hasPrepend.value,
+          'input__input--has-append': hasAppend.value,
           select__input: true,
           'cursor-pointer': !isDisabled.value && !isReadonly.value,
-          'pl-8': isMenuActive.value && !hasPrependSlot.value,
+          'pl-8': isMenuActive.value && !hasPrepend.value,
           [props.inputClass.trim()]: true,
         },
         name: props.name,
@@ -409,7 +415,7 @@ export default defineComponent({
       return h('input', data)
     }
 
-    const genControl = () => {
+    function genControl() {
       return h(
         'div',
         {
@@ -417,12 +423,8 @@ export default defineComponent({
           class: {
             input__control: true,
             'input__control--solo': props.solo,
-            'input__control--has-prepend': hasPrependSlot.value,
-            'input__control--has-append':
-              hasAppendSlot.value ||
-              hasState.value ||
-              props.clearable ||
-              props.showArrow,
+            'input__control--has-prepend': hasPrepend.value,
+            'input__control--has-append': hasAppend.value,
             select__control: true,
             'select__control--is-active': isActive.value,
             'select__control--is-menu-active': isMenuActive.value,
@@ -434,9 +436,9 @@ export default defineComponent({
         },
         [
           genPrependOuterSlot(),
-          genPrependSlot(),
+          ...genPrependSlot(),
           genSelectInput(),
-          genAppendSlot(),
+          ...genAppendSlot(),
           genStateIcon(),
           genClearInput(),
           genArrow(),
@@ -445,7 +447,7 @@ export default defineComponent({
       )
     }
 
-    const genMenu = () => {
+    function genMenu() {
       return h(
         Menu,
         {
@@ -498,7 +500,7 @@ export default defineComponent({
       )
     }
 
-    const genMenuItems = () => {
+    function genMenuItems() {
       const itemClassNames = classNames(
         'listbox__option',
         props.solo || props.dense ? 'h-8' : 'h-10',

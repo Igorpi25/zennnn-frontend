@@ -1,6 +1,7 @@
-import { ref, computed, watch, onBeforeMount, nextTick, Ref } from 'vue'
-
+import { ref, computed, watch, onBeforeMount, nextTick } from 'vue'
 import { debounce } from 'lodash-es'
+
+import type { Ref } from 'vue'
 
 export interface InputLazyProps {
   modelValue?: any
@@ -34,9 +35,7 @@ export const useInputLazy = (
 ) => {
   const debounceInput = ref<any>()
 
-  const hasDebounce = computed(() => {
-    return props.debounce && !props.lazy
-  })
+  const hasDebounce = computed(() => !!(props.debounce && !props.lazy))
 
   watch(
     () => props.modelValue,
@@ -57,13 +56,13 @@ export const useInputLazy = (
     }
   })
 
-  const cancelDebounce = () => {
+  function cancelDebounce() {
     if (hasDebounce.value) {
       debounceInput.value.cancel()
     }
   }
 
-  const clearableCallback = () => {
+  function clearableCallback() {
     nextTick(() => {
       setInternalValue(null)
       cancelDebounce()

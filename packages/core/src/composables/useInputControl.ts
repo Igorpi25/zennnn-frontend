@@ -1,8 +1,8 @@
-import { h, ref, computed, PropType, Ref, Slots, ComputedRef } from 'vue'
-
-import { EmitFn } from '../../types'
-
+import { h, ref, computed } from 'vue'
 import Icon from '../components/Icon'
+
+import type { PropType, Ref, Slots, ComputedRef } from 'vue'
+import type { EmitFn } from '../../types'
 
 export interface InputControlProps {
   controlClass: string
@@ -39,29 +39,25 @@ export const useInputControl = (
   const controlElement = ref<HTMLElement>()
   const hasMouseDown = ref<boolean>(false)
 
-  const hasPrependSlot = computed(() => {
-    return props.prependIcon || slots.prepend
-  })
+  const hasPrependSlot = computed(() => !!(props.prependIcon || slots.prepend))
 
-  const hasAppendSlot = computed(() => {
-    return props.appendIcon || slots.append
-  })
+  const hasAppendSlot = computed(() => !!(props.appendIcon || slots.append))
 
-  const isContains = (target: HTMLElement) => {
+  function isContains(target: HTMLElement) {
     if (!props.dependencies) return false
     return props.dependencies.some(
       (el: HTMLElement) => el && el.contains(target)
     )
   }
 
-  const onControlClick = (e: MouseEvent) => {
+  function onControlClick(e: MouseEvent) {
     if (isContains(e.target as HTMLElement)) return
 
     if (isFocused.value || isDisabled.value || !inputElement.value) return
     inputElement.value.focus()
   }
 
-  const onControlMouseDown = (e: MouseEvent) => {
+  function onControlMouseDown(e: MouseEvent) {
     if (isContains(e.target as HTMLElement)) return
 
     // Prevent input from being blurred
@@ -74,7 +70,7 @@ export const useInputControl = (
     emit?.('mousedown', e)
   }
 
-  const onControlMouseUp = (e: MouseEvent) => {
+  function onControlMouseUp(e: MouseEvent) {
     if (hasMouseDown.value) inputElement.value?.focus()
 
     hasMouseDown.value = false
@@ -82,7 +78,11 @@ export const useInputControl = (
     emit?.('mouseup', e)
   }
 
-  const genIcon = (icon: string, classes?: string, $size?: number) => {
+  function genIcon(
+    icon: string,
+    classes = 'text-gray-100 dark:text-gray-200 flex-shrink-0',
+    $size?: number
+  ) {
     const size = $size || 24
     return h(
       Icon,
@@ -96,36 +96,20 @@ export const useInputControl = (
     )
   }
 
-  const genPrependSlot = () => {
-    if (!hasPrependSlot.value) return undefined
-    return h(
-      'div',
-      {
-        class: 'flex items-center flex-shrink-0',
-      },
-      [
-        props.prependIcon
-          ? genIcon(props.prependIcon, 'text-gray-200 dark:text-gray-300')
-          : undefined,
-        slots.prepend?.({ focused: isFocused.value }),
-      ]
-    )
+  function genPrependSlot() {
+    if (!hasPrependSlot.value) return []
+    return [
+      props.prependIcon ? genIcon(props.prependIcon) : undefined,
+      slots.prepend?.({ focused: isFocused.value }),
+    ]
   }
 
-  const genAppendSlot = () => {
-    if (!hasAppendSlot.value) return undefined
-    return h(
-      'div',
-      {
-        class: 'flex items-center flex-shrink-0',
-      },
-      [
-        slots.append?.({ focused: isFocused.value }),
-        props.appendIcon
-          ? genIcon(props.appendIcon, 'text-gray-200 dark:text-gray-300')
-          : undefined,
-      ]
-    )
+  function genAppendSlot() {
+    if (!hasAppendSlot.value) return []
+    return [
+      slots.append?.({ focused: isFocused.value }),
+      props.appendIcon ? genIcon(props.appendIcon) : undefined,
+    ]
   }
 
   return {
@@ -136,7 +120,6 @@ export const useInputControl = (
     onControlClick,
     onControlMouseDown,
     onControlMouseUp,
-    genIcon,
     genPrependSlot,
     genAppendSlot,
   }

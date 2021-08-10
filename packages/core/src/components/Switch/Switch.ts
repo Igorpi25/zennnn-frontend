@@ -1,12 +1,10 @@
-import { h, ref, computed, watch, defineComponent } from 'vue'
+import { h, ref, computed, watch, defineComponent, mergeProps } from 'vue'
 import { deepEqual } from 'vue-supp'
-
 import { useInputProps, useInput } from '../../composables/useInput'
 import {
   useInputValidationProps,
   useInputValidation,
 } from '../../composables/useInputValidation'
-
 import uid from '../../utils/uid'
 
 export default defineComponent({
@@ -39,7 +37,7 @@ export default defineComponent({
     const id: string = uid('switch-')
     const rootElement = ref<HTMLElement>()
 
-    const { internalValue, isFocused, genInput, genLabel } = useInput(props, {
+    const { internalValue, isFocused, inputData, genLabel } = useInput(props, {
       slots,
       id,
     })
@@ -69,7 +67,7 @@ export default defineComponent({
       emit('update:modelValue', val)
     })
 
-    const onChange = () => {
+    function onChange() {
       if (!isInteractive.value) return
 
       const value = props.value
@@ -89,7 +87,7 @@ export default defineComponent({
       emit('change', internalValue.value)
     }
 
-    const onKeydown = (e: KeyboardEvent) => {
+    function onKeydown(e: KeyboardEvent) {
       if (
         ((e.key === 'ArrowLeft' || e.key === 'Left') && isActive.value) ||
         ((e.key === 'ArrowRight' || e.key === 'Right') && !isActive.value)
@@ -97,7 +95,7 @@ export default defineComponent({
         onChange()
     }
 
-    const genSwitchLabel = () => {
+    function genSwitchLabel() {
       const children = slots.default?.()
       if (!children) return undefined
       return h(
@@ -110,24 +108,26 @@ export default defineComponent({
       )
     }
 
-    const genSwitchInput = () => {
-      const data = {
-        id,
-        class: 'switch__input',
-        value: props.value,
-        checked: isActive.value,
-        type: 'checkbox',
-        role: 'checkbox',
-        readonly: isReadonly.value,
-        disabled: isDisabled.value,
-        'aria-checked': isActive.value,
-        onChange: onChange,
-        onKeydown: onKeydown,
-      }
-      return genInput(data)
+    function genSwitchInput() {
+      return h(
+        'input',
+        mergeProps(inputData.value, {
+          id,
+          class: 'switch__input',
+          value: props.value,
+          checked: isActive.value,
+          type: 'checkbox',
+          role: 'checkbox',
+          readonly: isReadonly.value,
+          disabled: isDisabled.value,
+          'aria-checked': isActive.value,
+          onChange: onChange,
+          onKeydown: onKeydown,
+        })
+      )
     }
 
-    const genSwitch = () => {
+    function genSwitch() {
       return h(
         'div',
         {
@@ -141,7 +141,7 @@ export default defineComponent({
       )
     }
 
-    const genControl = () => {
+    function genControl() {
       return h(
         'div',
         {

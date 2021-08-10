@@ -1,10 +1,10 @@
-import { h, nextTick, Ref, ComputedRef } from 'vue'
-
+import { h, nextTick } from 'vue'
 import { ziCloseDelete } from '@zennnn/icons'
-
-import { EmitFn } from '../../types'
-
+import Btn from '../components/Btn'
 import Icon from '../components/Icon'
+
+import type { Ref, ComputedRef } from 'vue'
+import type { EmitFn } from '../../types'
 
 export interface InputClearProps {
   clearable?: boolean
@@ -35,22 +35,22 @@ export const useInputClear = (
     setInternalValue,
   }: InputClearContext
 ) => {
-  const genClearInput = (cb?: () => void) => {
+  function genClearInput(cb?: () => void) {
     if (!props.clearable) return undefined
 
     const disabled = !isDirty.value
 
     return h(
-      Icon,
+      Btn,
       {
-        tag: 'button',
-        size: 24,
+        text: true,
+        icon: true,
+        mini: true,
         class: {
-          'text-gray-200 hover:text-gray-400 dark:hover:text-gray-100': true,
+          'rounded-full ring-inset': true,
           invisible: disabled,
         },
         disabled: disabled,
-        type: 'button',
         'aria-label': 'clear icon',
         onClick: (e: MouseEvent) => {
           e.preventDefault()
@@ -63,12 +63,22 @@ export const useInputClear = (
         },
       },
       {
-        default: () => ziCloseDelete,
+        default: () =>
+          h(
+            Icon,
+            {
+              base: false,
+              class: 'rounded-full text-lg bg-light-gray-200 dark:bg-gray-600',
+            },
+            {
+              default: () => ziCloseDelete,
+            }
+          ),
       }
     )
   }
 
-  const clearableCallback = () => {
+  function clearableCallback() {
     nextTick(() => {
       setInternalValue(null)
       emitChange()

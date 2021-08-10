@@ -1,7 +1,7 @@
 import { h, Ref } from 'vue'
 
-export const useTextHighlight = (search: Ref<string | null | undefined>) => {
-  const genFilteredText = (text: string | null | undefined) => {
+export function useTextHighlight(search: Ref<string | null | undefined>) {
+  function genFilteredText(text: string | null | undefined) {
     text = text || ''
 
     if (!search.value) return text
@@ -11,7 +11,7 @@ export const useTextHighlight = (search: Ref<string | null | undefined>) => {
     return h('span', [start, genHighlight(middle), end])
   }
 
-  const genHighlight = (text: string) => {
+  function genHighlight(text: string) {
     return h(
       'span',
       {
@@ -21,7 +21,7 @@ export const useTextHighlight = (search: Ref<string | null | undefined>) => {
     )
   }
 
-  const getMaskedCharacters = (text: string) => {
+  function getMaskedCharacters(text: string) {
     const searchInput = (search.value || '').toString().toLocaleLowerCase()
     const index = text.toLocaleLowerCase().indexOf(searchInput)
 

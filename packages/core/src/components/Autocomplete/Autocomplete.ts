@@ -8,7 +8,6 @@ import {
   onBeforeMount,
   defineComponent,
 } from 'vue'
-
 import {
   useFilterProps,
   useFilter,
@@ -16,7 +15,6 @@ import {
   setCursor,
   getPropertyFromItem,
 } from 'vue-supp'
-
 import { useInputProps, useInput } from '../../composables/useInput'
 import {
   useInputClearProps,
@@ -34,9 +32,7 @@ import { useInputMessage } from '../../composables/useInputMessage'
 import { useSelect } from '../../composables/useSelect'
 import { useTextHighlight } from '../../composables/useTextHighlight'
 import { useDelayProps } from '../../composables/useDelay'
-
 import uid from '../../utils/uid'
-
 import { Menu, MenuItem } from '../Menu'
 
 import type { PropType } from 'vue'
@@ -218,27 +214,33 @@ export default defineComponent({
 
     const { genFilteredText } = useTextHighlight(search)
 
-    const classes = computed(() => {
-      return {
-        input: true,
-        'input--focused': isFocused.value,
-        'input--disabled': isDisabled.value,
-        'input--dirty': internalValue.value,
-        'input--has-error':
-          ((hasMessages.value && hasError.value) || isPatternMismatch.value) &&
-          showDetails.value,
-        autocomplete: true,
-        'autocomplete--is-menu-active': isMenuActive.value,
-      }
-    })
+    const classes = computed(() => ({
+      input: true,
+      'input--focused': isFocused.value,
+      'input--disabled': isDisabled.value,
+      'input--dirty': internalValue.value,
+      'input--has-error':
+        ((hasMessages.value && hasError.value) || isPatternMismatch.value) &&
+        showDetails.value,
+      autocomplete: true,
+      'autocomplete--is-menu-active': isMenuActive.value,
+    }))
 
-    const isActive = computed(() => {
-      return isFocused.value || isMenuActive.value
-    })
+    const hasPrepend = computed(() => hasPrependSlot.value)
 
-    const isSearching = computed(() => {
-      return searchIsDirty.value && search.value !== getText(selectedItem.value)
-    })
+    const hasAppend = computed(
+      () =>
+        hasAppendSlot.value ||
+        hasState.value ||
+        props.clearable ||
+        props.showArrow
+    )
+
+    const isActive = computed(() => isFocused.value || isMenuActive.value)
+
+    const isSearching = computed(
+      () => searchIsDirty.value && search.value !== getText(selectedItem.value)
+    )
 
     const filteredItems = computed(() => {
       if (props.noFilter || !isSearching.value || search.value == null)
@@ -278,20 +280,20 @@ export default defineComponent({
       setSearch()
     })
 
-    const setInternalValue = (val: any) => {
+    function setInternalValue(val: any) {
       internalValue.value = getValue(val)
       setSelectedItem(props.returnObject ? val : undefined)
       setSearch()
     }
 
-    const select = (val: any) => {
+    function select(val: any) {
       selectedItem.value = val
       const value = props.returnObject ? val : getValue(val)
       emit('update:modelValue', value)
       setSearch()
     }
 
-    const setSelectedItem = (val: any) => {
+    function setSelectedItem(val: any) {
       if (!val) {
         selectedItem.value = items.value.find(
           (item) => getValue(item) === internalValue.value
@@ -301,7 +303,7 @@ export default defineComponent({
       }
     }
 
-    const setSearch = () => {
+    function setSearch() {
       // Wait for nextTick so selectedItem
       // has had time to update
       nextTick(() => {
@@ -311,7 +313,7 @@ export default defineComponent({
       })
     }
 
-    const updateSelf = () => {
+    function updateSelf() {
       if (!searchIsDirty.value && !internalValue.value) return
 
       if (search.value !== internalValue.value) {
@@ -319,7 +321,7 @@ export default defineComponent({
       }
     }
 
-    const onFocus = (e: Event) => {
+    function onFocus(e: Event) {
       if (document.activeElement !== inputElement.value) {
         inputElement.value?.focus()
       }
@@ -330,7 +332,7 @@ export default defineComponent({
       }
     }
 
-    const onBlur = (e: Event) => {
+    function onBlur(e: Event) {
       isFocused.value = false
 
       // clear pattern mismatch
@@ -339,7 +341,7 @@ export default defineComponent({
       e && nextTick(() => emit('blur', e))
     }
 
-    const onInput = (e: Event) => {
+    function onInput(e: Event) {
       const target = e.target as HTMLInputElement
 
       badInput.value = target.validity && target.validity.badInput
@@ -364,7 +366,7 @@ export default defineComponent({
       search.value = value
     }
 
-    const onKeydown = (e: KeyboardEvent) => {
+    function onKeydown(e: KeyboardEvent) {
       const menu = menuRef.value!
       if (e.key === 'Esc' || e.key === 'Escape') {
         if (isMenuActive.value) {
@@ -419,7 +421,7 @@ export default defineComponent({
       emit('keydown', e)
     }
 
-    const genSelectInput = () => {
+    function genSelectInput() {
       const data: Record<string, unknown> = {
         id,
         ref: inputElement,
@@ -427,6 +429,8 @@ export default defineComponent({
         class: {
           input__input: true,
           'input__input--dense': props.dense || props.solo,
+          'input__input--has-prepend': hasPrepend.value,
+          'input__input--has-append': hasAppend.value,
           autocomplete__input: true,
           [props.inputClass.trim()]: true,
         },
@@ -459,7 +463,7 @@ export default defineComponent({
       return h('input', data)
     }
 
-    const genControl = () => {
+    function genControl() {
       return h(
         'div',
         {
@@ -467,12 +471,8 @@ export default defineComponent({
           class: {
             input__control: true,
             'input__control--solo': props.solo,
-            'input__control--has-prepend': hasPrependSlot.value,
-            'input__control--has-append':
-              hasAppendSlot.value ||
-              hasState.value ||
-              props.clearable ||
-              props.showArrow,
+            'input__control--has-prepend': hasPrepend.value,
+            'input__control--has-append': hasAppend.value,
             autocomplete__control: true,
             'autocomplete__control--is-active': isActive.value,
             'autocomplete__control--is-menu-active': isMenuActive.value,
@@ -484,9 +484,9 @@ export default defineComponent({
         },
         [
           genPrependOuterSlot(),
-          genPrependSlot(),
+          ...genPrependSlot(),
           genSelectInput(),
-          genAppendSlot(),
+          ...genAppendSlot(),
           genStateIcon(),
           genClearInput(),
           genArrow(),
@@ -495,7 +495,7 @@ export default defineComponent({
       )
     }
 
-    const genMenu = () => {
+    function genMenu() {
       return h(
         Menu,
         {
@@ -549,7 +549,7 @@ export default defineComponent({
       )
     }
 
-    const genMenuItems = () => {
+    function genMenuItems() {
       const itemClassNames = classNames(
         'listbox__option',
         props.solo || props.dense ? 'h-8' : 'h-10'

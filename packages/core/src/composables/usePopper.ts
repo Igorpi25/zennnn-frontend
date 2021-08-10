@@ -1,13 +1,8 @@
-import {
-  h,
-  ref,
-  shallowRef,
-  computed,
-  onUnmounted,
-  ComponentPublicInstance,
-  PropType,
-} from 'vue'
-import { createPopper, VirtualElement, Instance, Options } from '@popperjs/core'
+import { h, ref, shallowRef, computed, onUnmounted } from 'vue'
+import { createPopper } from '@popperjs/core'
+
+import type { ComponentPublicInstance, PropType } from 'vue'
+import type { VirtualElement, Instance, Options } from '@popperjs/core'
 
 type Placement = Options['placement']
 type Modifiers = Options['modifiers']
@@ -171,7 +166,7 @@ export const usePopper = (
     ] as Modifiers
   })
 
-  const create = () => {
+  function create() {
     destroy()
 
     if (!popper.value) return
@@ -192,7 +187,7 @@ export const usePopper = (
     })
   }
 
-  const destroy = () => {
+  function destroy() {
     if (instance.value) {
       instance.value.destroy()
       instance.value = undefined
@@ -201,7 +196,7 @@ export const usePopper = (
 
   onUnmounted(destroy)
 
-  const isCursorOutside = (e: MouseEvent): boolean => {
+  function isCursorOutside(e: MouseEvent): boolean {
     const target = e.target as Element
     const referenceEl = ((reference.value as ComponentPublicInstance)?.$el ||
       reference.value) as Element
@@ -246,7 +241,7 @@ export const usePopper = (
     return exceedsTop || exceedsBottom || exceedsLeft || exceedsRight
   }
 
-  const genArrow = () => {
+  function genArrow() {
     return props.arrow
       ? h('div', {
           class: 'popper__arrow',

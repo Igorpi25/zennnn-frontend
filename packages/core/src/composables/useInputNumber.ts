@@ -1,10 +1,12 @@
-import { ref, computed, watch, onBeforeMount, PropType, Ref } from 'vue'
+import { ref, computed, watch, onBeforeMount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   formatNumber as format,
   unformatNumber as unformat,
   isNumber,
 } from 'vue-supp'
+
+import type { PropType, Ref } from 'vue'
 
 const COMMA_SEPARATE_LOCALES = ['fr', 'ru', 'uk']
 
@@ -48,9 +50,7 @@ export const useInputNumber = (
 
   const formattedNumber = ref<string | number | null>()
 
-  const numberDecimal = computed(() => {
-    return getLocaleDecimal(locale.value)
-  })
+  const numberDecimal = computed(() => getLocaleDecimal(locale.value))
 
   const numberPrecision = computed(() => {
     const isFixed =
@@ -67,10 +67,10 @@ export const useInputNumber = (
     return props.inputmode || 'text'
   })
 
-  const computedPlaceholder = computed(() => {
-    // ignore placeholder on number
-    return props.number ? '' : props.placeholder
-  })
+  // ignore placeholder on number
+  const computedPlaceholder = computed(() =>
+    props.number ? '' : props.placeholder
+  )
 
   watch(locale, () => {
     if (props.number) {
@@ -84,11 +84,11 @@ export const useInputNumber = (
     }
   })
 
-  const getLocaleDecimal = (val: string): ',' | '.' => {
+  function getLocaleDecimal(val: string): ',' | '.' {
     return COMMA_SEPARATE_LOCALES.includes(val) ? ',' : '.'
   }
 
-  const formatNumber = (val: any, decimal?: string): string => {
+  function formatNumber(val: any, decimal?: string): string {
     const parsed = unformat(val, decimal || numberDecimal.value)
     return isNumber(parsed)
       ? n(parsed || 0, props.numberFormat)
@@ -96,18 +96,18 @@ export const useInputNumber = (
   }
 
   // TODO: format removed value when entered '--'
-  const formatInputNumber = (val: any, decimal?: string): string | null => {
+  function formatInputNumber(val: any, decimal?: string): string | null {
     return format(val, {
       precision: numberPrecision.value,
       decimal: decimal || numberDecimal.value,
     })
   }
 
-  const unformatNumber = (val: any, decimal?: string): number | null => {
+  function unformatNumber(val: any, decimal?: string): number | null {
     return unformat(val, decimal || numberDecimal.value)
   }
 
-  const setInternalValue = (val: any) => {
+  function setInternalValue(val: any) {
     if (props.number) {
       formattedNumber.value = isFocused.value
         ? formatInputNumber(val)
