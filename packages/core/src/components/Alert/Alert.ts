@@ -44,6 +44,8 @@ export default defineComponent({
     containerClass: String,
   },
 
+  slots: ['icon', 'close', 'default'],
+
   emits: ['update:modelValue'],
 
   setup(props, { slots }) {

@@ -2,13 +2,13 @@
   "props": {
     "block": "Expands the button to 100% of available space.",
     "contentClass": "Applies a custom class to content wrapper.",
-    "dark": "Applies the dark theme variant to the component.",
-    "darkIcon": "Icon dark color decortion.",
     "disabled": "Removes the ability to click or target the component.",
     "href": "Designates the component as anchor and applies the href attribute.",
-    "icon": "Removes `min-width`/`height` styles.",
-    "light": "Applies the light theme variant to the component.",
+    "icon": "Removes `padding` styles.",
+    "link": "Removes `padding`/`height`/`border-radius` styles and align text left.",
     "loading": "Adds a loading icon animation.",
+    "loaderClass": "Loading state classes.",
+    "loaderSize": "Size of loding Progress.",
     "maxWidth": "Sets the maximum width for the component.",
     "minWidth": "Sets the minimum width for the component. Default size has `128px` and **small** has `96px`.",
     "mini": "Makes the component mini.",
@@ -18,8 +18,10 @@
     "retainFocusOnClick": "Don’t blur on click.",
     "small": "Makes the component small.",
     "tag": "Specify a custom tag used on the root element.",
+    "target": "The Anchor element attribute(https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attr-target).",
     "text": "Makes the background transparent.",
     "to": "Denotes the target route of the link.",
+    "type": "Button native type attribute(https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type).",
     "xSmall": "Makes the component extra small."
   },
   "slots": {
