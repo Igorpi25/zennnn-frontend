@@ -581,16 +581,10 @@ export default defineComponent({
         <div class="pt-4 pb-10">
           <div class="flex flex-wrap sm:flex-nowrap items-center justify-between sm:space-x-6 pb-4">
             <TextField
-              v-slots={{
-                prepend: () => (
-                  <Icon class="text-gray-200 dark:text-gray-100">
-                    {ziSearch}
-                  </Icon>
-                ),
-              }}
               v-model={search.value}
               placeholder={t('placeholder.pageSearch')}
               class="flex-grow"
+              prependIcon={ziSearch}
               controlClass={
                 search.value ? 'ring-1 ring-blue-500 ring-inset px-2' : 'px-2'
               }

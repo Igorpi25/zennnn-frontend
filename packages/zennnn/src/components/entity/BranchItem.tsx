@@ -21,6 +21,7 @@ import type {
   PhoneInput,
   ContactInput,
 } from '@/graphql/types'
+import { EmptyString } from '@/types'
 
 type UpdateKeys = keyof SupplierBranchInput
 type UpdateValues =
@@ -30,12 +31,12 @@ type UpdateValues =
   | PhoneInput
   | ContactInput
   | null
+  | undefined
 
 export default defineComponent({
   props: {
     locale: String as PropType<string | null>,
     loading: Boolean,
-    create: Boolean,
     item: {
       type: Object as PropType<GetSupplier_getSupplier_branches>,
       default: () => ({}),
@@ -167,10 +168,7 @@ export default defineComponent({
               items={branchTypeItems.value}
               placeholder={t('placeholder.notChosen')}
               loading={props.loading}
-              {...{
-                'onUpdate:modelValue': (val: BranchType) =>
-                  updateData('branchType', val),
-              }}
+              onSelect={(val: BranchType) => updateData('branchType', val)}
             />
             <Btn
               icon
@@ -193,9 +191,7 @@ export default defineComponent({
           stateIcon
           stateErrorColor="none"
           class="pb-2"
-          {...{
-            'onUpdate:modelValue': (val: string) => updateData('name', val),
-          }}
+          onInput={(val: EmptyString) => updateData('name', val)}
         />
         <TextField
           modelValue={props.item.address}
@@ -207,9 +203,7 @@ export default defineComponent({
           stateIcon
           stateErrorColor="none"
           class="pb-2"
-          {...{
-            'onUpdate:modelValue': (val: string) => updateData('address', val),
-          }}
+          onInput={(val: EmptyString) => updateData('address', val)}
         />
         <div class="flex items-end pb-2">
           <TextField
@@ -243,10 +237,7 @@ export default defineComponent({
           stateErrorColor="none"
           required
           class="pb-2"
-          {...{
-            'onUpdate:modelValue': (val: PhoneInput) =>
-              updateData('mobilePhone', val),
-          }}
+          onChange={(val: PhoneInput) => updateData('mobilePhone', val)}
         />
         <Phone
           modelValue={props.item.workPhone}
@@ -256,10 +247,7 @@ export default defineComponent({
           stateIcon
           stateErrorColor="none"
           required
-          {...{
-            'onUpdate:modelValue': (val: PhoneInput) =>
-              updateData('workPhone', val),
-          }}
+          onChange={(val: PhoneInput) => updateData('workPhone', val)}
         />
         <div class="flex flex-wrap -mx-5">
           {contactItems.value.map((item, i) => (

@@ -231,17 +231,18 @@ export default defineComponent({
                   required
                   v-slots={{
                     append: () => (
-                      <Icon
-                        class="text-gray-200 dark:text-gray-500 hover:text-gray-300 mr-1" // for autofill: relative mr-2
-                        {...{
-                          onClick: (e: MouseEvent) => {
-                            e.preventDefault()
-                            showPassword.value = !showPassword.value
-                          },
+                      <Btn
+                        icon
+                        mini
+                        text
+                        class="text-gray-200 dark:text-gray-500 mr-1" // for autofill: relative mr-2
+                        onClick={(e: MouseEvent) => {
+                          e.preventDefault()
+                          showPassword.value = !showPassword.value
                         }}
                       >
-                        {showPassword.value ? ziVisible : ziHide}
-                      </Icon>
+                        <Icon>{showPassword.value ? ziVisible : ziHide}</Icon>
+                      </Btn>
                     ),
                   }}
                 />

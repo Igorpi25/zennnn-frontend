@@ -1,6 +1,6 @@
 import { defineComponent, ref, reactive, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Btn, Switch, TextField } from '@zennnn/core'
+import { Switch, TextField } from '@zennnn/core'
 
 import type { PropType } from 'vue'
 import type {
@@ -12,8 +12,6 @@ import type { EmptyString } from '@/types'
 export default defineComponent({
   props: {
     loading: Boolean,
-    createLoading: Boolean,
-    create: Boolean,
     item: {
       type: Object as PropType<GetOrgRequisite_getOrgRequisite_bankDetails>,
       default: () => ({}),
@@ -21,9 +19,11 @@ export default defineComponent({
     mainBankDetail: Boolean,
   },
 
-  emits: ['create', 'update', 'set-main-bank-detail'],
+  slots: ['append'],
 
-  setup(props, { emit }) {
+  emits: ['update', 'setMainBankDetail'],
+
+  setup(props, { emit, slots }) {
     const { t } = useI18n()
 
     const isMainBankDetail = ref(props.mainBankDetail)
@@ -65,17 +65,14 @@ export default defineComponent({
                   stateIcon
                   required
                   class="flex-grow pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      updateData({ bankName: val }),
-                  }}
+                  onInput={(val: EmptyString) => updateData({ bankName: val })}
                 />
                 <Switch
                   v-model={isMainBankDetail.value}
                   class="flex-shrink-0 ml-2.5"
                   controlClass="h-10"
                   {...{
-                    onChange: () => emit('set-main-bank-detail', props.item.id),
+                    onChange: () => emit('setMainBankDetail', props.item.id),
                   }}
                 />
               </div>
@@ -95,10 +92,7 @@ export default defineComponent({
               debounce={500}
               rules={[rules.required]}
               stateIcon
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ bankAddress: val }),
-              }}
+              onInput={(val: EmptyString) => updateData({ bankAddress: val })}
             />
           </div>
           <div class="pb-2">
@@ -111,10 +105,9 @@ export default defineComponent({
               rules={[rules.required]}
               stateIcon
               required
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ bankAccountNumber: val }),
-              }}
+              onInput={(val: EmptyString) =>
+                updateData({ bankAccountNumber: val })
+              }
             />
           </div>
         </div>
@@ -130,10 +123,7 @@ export default defineComponent({
               stateIcon
               required
               class="w-1/2 md:w-48 flex-shrink-0 pr-2.5"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ swift: val }),
-              }}
+              onInput={(val: EmptyString) => updateData({ swift: val })}
             />
             <TextField
               modelValue={props.item.bic}
@@ -145,10 +135,7 @@ export default defineComponent({
               stateIcon
               stateErrorColor="none"
               class="flex-grow"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ bic: val }),
-              }}
+              onInput={(val: EmptyString) => updateData({ bic: val })}
             />
           </div>
           <div class="pb-2">
@@ -161,10 +148,9 @@ export default defineComponent({
               rules={[rules.required]}
               stateIcon
               stateErrorColor="none"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ correspondentBankName: val }),
-              }}
+              onInput={(val: EmptyString) =>
+                updateData({ correspondentBankName: val })
+              }
             />
           </div>
           <div class="pb-2">
@@ -177,25 +163,12 @@ export default defineComponent({
               rules={[rules.required]}
               stateIcon
               stateErrorColor="none"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ correspondentAccountNumber: val }),
-              }}
+              onInput={(val: EmptyString) =>
+                updateData({ correspondentAccountNumber: val })
+              }
             />
           </div>
-          {props.create && (
-            <div class="w-full pt-9">
-              <Btn
-                loading={props.createLoading}
-                block
-                outlined
-                small
-                onClick={() => emit('create')}
-              >
-                {t('companyDetail.addBankDetail')}
-              </Btn>
-            </div>
-          )}
+          {slots.append?.()}
         </div>
       </div>
     )

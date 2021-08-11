@@ -669,15 +669,13 @@ export default defineComponent({
             class="flex-grow"
             inputClass="placeholder-blue-500 dark:placeholder-blue-500"
             clearable
-            {...{
-              'onClick:clear': () => {
-                clientsIds.value = []
-              },
+            onClearClick={() => {
+              clientsIds.value = []
             }}
             v-slots={{
               prepend: () => (
                 <>
-                  <Icon class="text-gray-200 dark:text-gray-300">
+                  <Icon class="text-gray-100 dark:text-gray-200 flex-shrink-0">
                     {ziSearch}
                   </Icon>
                   {clientsFilters.value.map((item) => (
@@ -704,12 +702,17 @@ export default defineComponent({
                     icon
                     mini
                     text
-                    class="absolute right-1 text-gray-200"
+                    class="absolute right-1 rounded-full ring-inset"
                     onClick={() => {
                       clientsIds.value = []
                     }}
                   >
-                    <Icon>{ziCloseDelete}</Icon>
+                    <Icon
+                      base={false}
+                      class="rounded-full text-lg bg-light-gray-200 dark:bg-gray-600"
+                    >
+                      {ziCloseDelete}
+                    </Icon>
                   </Btn>
                 ),
             }}
@@ -1111,7 +1114,7 @@ export default defineComponent({
                 stateErrorColor="none"
                 loading={searchClientsLoading.value}
                 v-slots={{
-                  'prepend-item': () => (
+                  prependItem: () => (
                     <div
                       role="option"
                       class="flex items-center jusitfy-center text-blue-500 hover:text-blue-400 cursor-pointer h-10 px-4"

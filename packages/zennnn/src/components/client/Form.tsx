@@ -160,7 +160,6 @@ export default defineComponent({
                 loading={props.loading}
                 uid={uid.value}
                 item={props.item}
-                create={props.create}
                 {...{ onUpdate: updateValue }}
               />
               <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -168,7 +167,6 @@ export default defineComponent({
                 loading={props.loading}
                 expanded={!props.create}
                 item={props.item}
-                create={props.create}
                 {...{ onUpdate: updateValue }}
               />
               <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -176,7 +174,6 @@ export default defineComponent({
                 loading={props.loading}
                 expanded={!props.create}
                 items={props.item.contacts || []}
-                create={props.create}
                 {...{ onUpdate: updateValue }}
               />
               <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -186,7 +183,6 @@ export default defineComponent({
                     loading={props.loading}
                     expanded={!props.create}
                     item={props.item}
-                    create={props.create}
                     {...{ onUpdate: updateValue }}
                   />
                 </div>
@@ -195,7 +191,6 @@ export default defineComponent({
                     loading={props.loading}
                     expanded={!props.create}
                     item={props.item as any}
-                    create={props.create}
                     {...{ onUpdate: updateValue }}
                   />
                 </div>
@@ -210,7 +205,6 @@ export default defineComponent({
                 loading={props.loading}
                 uid={uid.value}
                 item={props.item}
-                create={props.create}
                 {...{ onUpdate: updateValue }}
               />
               <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -218,7 +212,6 @@ export default defineComponent({
                 loading={props.loading}
                 expanded={!props.create}
                 item={props.item}
-                create={props.create}
                 {...{ onUpdate: updateValue }}
               />
               <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -226,7 +219,6 @@ export default defineComponent({
                 loading={props.loading}
                 expanded={!props.create}
                 items={props.item.contacts || []}
-                create={props.create}
                 {...{ onUpdate: updateValue }}
               />
               <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -236,7 +228,6 @@ export default defineComponent({
                     loading={props.loading}
                     expanded={!props.create}
                     item={props.item}
-                    create={props.create}
                     private
                     {...{ onUpdate: updateValue }}
                   />
@@ -246,7 +237,6 @@ export default defineComponent({
                     loading={props.loading}
                     expanded={!props.create}
                     item={props.item as any}
-                    create={props.create}
                     {...{ onUpdate: updateValue }}
                   />
                 </div>
@@ -261,7 +251,6 @@ export default defineComponent({
                 loading={props.loading}
                 uid={uid.value}
                 item={props.item}
-                create={props.create}
                 {...{ onUpdate: updateValue }}
               />
               <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -269,7 +258,6 @@ export default defineComponent({
                 loading={props.loading}
                 expanded={!props.create}
                 item={props.item}
-                create={props.create}
                 {...{ onUpdate: updateValue }}
               />
               <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -277,7 +265,6 @@ export default defineComponent({
                 loading={props.loading}
                 expanded={!props.create}
                 items={props.item.contacts || []}
-                create={props.create}
                 {...{ onUpdate: updateValue }}
               />
               <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -287,7 +274,6 @@ export default defineComponent({
                     loading={props.loading}
                     expanded={!props.create}
                     item={props.item}
-                    create={props.create}
                     {...{ onUpdate: updateValue }}
                   />
                 </div>
@@ -296,7 +282,6 @@ export default defineComponent({
                     loading={props.loading}
                     expanded={!props.create}
                     item={props.item as any}
-                    create={props.create}
                     {...{ onUpdate: updateValue }}
                   />
                 </div>

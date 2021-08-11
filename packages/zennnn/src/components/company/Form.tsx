@@ -56,7 +56,6 @@ export default defineComponent({
             <CompanyInfo
               loading={props.loading}
               item={props.item}
-              create={props.create}
               {...{ onUpdate: updateValue }}
             />
             <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -67,7 +66,6 @@ export default defineComponent({
               expanded={!props.create}
               defaultBankDetail={props.item.defaultBankDetail}
               items={props.item.bankDetails || []}
-              create={props.create}
               {...{ onUpdate: updateValue }}
             />
             <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -75,7 +73,6 @@ export default defineComponent({
               loading={props.loading}
               expanded={!props.create}
               items={props.item.contacts || []}
-              create={props.create}
               {...{ onUpdate: updateValue }}
             />
             <div class="mt-10 border-t border-light-gray-400 dark:border-gray-400" />
@@ -83,7 +80,6 @@ export default defineComponent({
               loading={props.loading}
               expanded={!props.create}
               item={props.item}
-              create={props.create}
               company
               {...{ onUpdate: updateValue }}
             />
@@ -93,7 +89,6 @@ export default defineComponent({
                   loading={props.loading}
                   expanded={!props.create}
                   item={props.item as any}
-                  create={props.create}
                   company
                   {...{ onUpdate: updateValue }}
                 />

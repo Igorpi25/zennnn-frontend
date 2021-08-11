@@ -140,17 +140,14 @@ export default defineComponent({
                 modelValue={props.item?.profitPercent}
                 debounce={600}
                 placeholder={t('placeholder.emptyNumber')}
-                lazy
                 solo
                 number
                 class="w-16 mr-2"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyNumber) => {
-                    updateInvoice({
-                      profitPercent: val,
-                    })
-                  },
-                }}
+                onChange={(val: EmptyNumber) =>
+                  updateInvoice({
+                    profitPercent: val,
+                  })
+                }
                 v-slots={{
                   append: () => (
                     <span class="text-base text-gray-100 pl-0.5 pr-2.5">%</span>
@@ -192,17 +189,14 @@ export default defineComponent({
                 modelValue={props.item?.discount}
                 debounce={600}
                 placeholder={t('placeholder.emptyNumber')}
-                lazy
                 solo
                 number
                 numberFormat="currency"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyNumber) => {
-                    updateInvoice({
-                      discount: val,
-                    })
-                  },
-                }}
+                onChange={(val: EmptyNumber) =>
+                  updateInvoice({
+                    discount: val,
+                  })
+                }
                 v-slots={{
                   append: () => (
                     <span class="text-base text-gray-100 pl-0.5 pr-2.5">
@@ -231,17 +225,14 @@ export default defineComponent({
                 modelValue={props.item?.prepayment}
                 debounce={600}
                 placeholder={t('placeholder.emptyNumber')}
-                lazy
                 solo
                 number
                 numberFormat="currency"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyNumber) => {
-                    updateInvoice({
-                      prepayment: val,
-                    })
-                  },
-                }}
+                onChange={(val: EmptyNumber) =>
+                  updateInvoice({
+                    prepayment: val,
+                  })
+                }
                 v-slots={{
                   append: () => (
                     <span class="text-base text-gray-100 pl-0.5 pr-2.5">

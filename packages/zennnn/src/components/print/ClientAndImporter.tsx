@@ -169,15 +169,14 @@ export default defineComponent({
                 itemText="fullName"
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: string) =>
-                    setSpecClientMutate({
-                      specId: props.specId,
-                      clientId: val,
-                    }),
-                }}
+                onSelect={(val: string) =>
+                  setSpecClientMutate({
+                    specId: props.specId,
+                    clientId: val,
+                  })
+                }
                 v-slots={{
-                  'prepend-item': () => (
+                  prependItem: () => (
                     <Btn
                       link
                       onClick={() => {
@@ -221,10 +220,9 @@ export default defineComponent({
                 debounce={500}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ legalAddress: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateData({ legalAddress: val })
+                }
               />
             </div>
             <div class="flex items-end pb-2">
@@ -240,10 +238,9 @@ export default defineComponent({
                 stateIcon
                 required
                 class="w-1/2 md:w-56 flex-shrink-0 pr-2.5"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateContactPerson({ firstName: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateContactPerson({ firstName: val })
+                }
               />
               <TextField
                 modelValue={contactPerson.value?.lastName}
@@ -256,10 +253,9 @@ export default defineComponent({
                 stateIcon
                 required
                 class="flex-grow"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateContactPerson({ lastName: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateContactPerson({ lastName: val })
+                }
               />
             </div>
           </div>
@@ -274,10 +270,7 @@ export default defineComponent({
                 stateIcon
                 required
                 class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-2.5"
-                {...{
-                  'onUpdate:modelValue': (val: PhoneInput) =>
-                    updateData({ phone: val }),
-                }}
+                onChange={(val: PhoneInput) => updateData({ phone: val })}
               />
               <TextField
                 modelValue={props.item?.phoneOption}
@@ -290,10 +283,7 @@ export default defineComponent({
                 stateIcon
                 stateErrorColor="none"
                 class="w-full sm:w-auto lg:w-full max-w-xs"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ phoneOption: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ phoneOption: val })}
               />
             </div>
             <div class="pb-2">
@@ -307,10 +297,7 @@ export default defineComponent({
                 stateErrorColor="none"
                 required
                 class="sm:w-4/6 max-w-xs sm:pr-2.5"
-                {...{
-                  'onUpdate:modelValue': (val: PhoneInput) =>
-                    updateData({ fax: val }),
-                }}
+                onChange={(val: PhoneInput) => updateData({ fax: val })}
               />
             </div>
             <div class="pb-2">
@@ -325,10 +312,7 @@ export default defineComponent({
                 debounce={500}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ email: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ email: val })}
               />
             </div>
           </div>
@@ -369,10 +353,9 @@ export default defineComponent({
                 hideDetails={false}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ importerCompanyName: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateData({ importerCompanyName: val })
+                }
               />
             </div>
             <div class="pb-2">
@@ -388,10 +371,9 @@ export default defineComponent({
                 debounce={500}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ deliveryAddress: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateData({ deliveryAddress: val })
+                }
               />
             </div>
             <div class="flex items-end pb-2">
@@ -408,10 +390,9 @@ export default defineComponent({
                 stateIcon
                 required
                 class="w-1/2 md:w-56 flex-shrink-0 pr-2.5"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateContactPerson({ firstName: val }, true),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateContactPerson({ firstName: val }, true)
+                }
               />
               <TextField
                 modelValue={importerContactPerson.value?.lastName}
@@ -425,10 +406,9 @@ export default defineComponent({
                 stateIcon
                 required
                 class="flex-grow"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateContactPerson({ lastName: val }, true),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateContactPerson({ lastName: val }, true)
+                }
               />
             </div>
           </div>
@@ -444,10 +424,9 @@ export default defineComponent({
                 stateIcon
                 required
                 class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-2.5"
-                {...{
-                  'onUpdate:modelValue': (val: PhoneInput) =>
-                    updateData({ importerPhone: val }),
-                }}
+                onChange={(val: PhoneInput) =>
+                  updateData({ importerPhone: val })
+                }
               />
             </div>
             <div class="pb-2">
@@ -463,10 +442,9 @@ export default defineComponent({
                 debounce={500}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ importerEmail: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateData({ importerEmail: val })
+                }
               />
             </div>
           </div>

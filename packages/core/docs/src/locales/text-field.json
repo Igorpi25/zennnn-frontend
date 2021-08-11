@@ -15,14 +15,12 @@
     "error": "Puts the input in a manual error state.",
     "errorCount": "The total number of errors that should display at once.",
     "errorMessages": "Puts the input in an error state and passes through custom error messages. Will be combined with any validations that occur from the **rules** prop. This field will not trigger validation.",
-    "forceUpdate": "Force update model value.",
     "forceValidate": "Should force validate.",
     "hideDetails": "Hides hint and validation errors. When set to auto messages will be rendered only if there’s a message (hint, error message, counter value etc) to display.",
     "inputClass": "Applies a custom class to input.",
     "inputmode": "Sets input [inputmode](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inputmode) attribute.",
     "label": "Sets input label.",
     "labelHint": "Add hint to `Label`.",
-    "lazy": "Designates lazely emit of input value.",
     "loading": "Loading state.",
     "mask": "Mask pattern.",
     "maxlength": "Sets input [maxlength](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/maxlength) attribute.",
@@ -52,9 +50,10 @@
     "validateOnBlur": "Delays validation until blur event."
   },
   "emits": {
+    "input": "Emitted when the model value updated (same as 'update:modelValue').",
     "update:modelValue": "Emitted when the model value updated.",
     "update:error": "Emitted when the **error** updated.",
-    "click:clear": "Emitted when clearable icon clicked.",
+    "clearClick": "Emitted when clearable icon clicked.",
     "change": "Emitted when the input is changed by user interaction.",
     "focus": "Emitted when component is focused.",
     "blur": "Emitted when the input is blurred.",
@@ -63,7 +62,6 @@
     "mouseup": "Emitted when click is released."
   },
   "slots": {
-    "default": "The default Vue slot.",
     "label": "Replaces the default label.",
     "prepend": "Adds an item inside the input and after input content.",
     "append": "Adds an item outside the input and before input content."

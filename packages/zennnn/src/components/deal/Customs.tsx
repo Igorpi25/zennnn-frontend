@@ -97,11 +97,9 @@ export default defineComponent({
               placeholder={t('shipping.countryOfOrigin')}
               items={countries.value}
               dense
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) => {
-                  emit('update', { customs: { countryOfOrigin: val } })
-                },
-              }}
+              onSelect={(val: EmptyString) =>
+                emit('update', { customs: { countryOfOrigin: val } })
+              }
               v-slots={{
                 prepend: () =>
                   props.item?.countryOfOrigin ? (
@@ -145,11 +143,9 @@ export default defineComponent({
                 items={customsTerms.value}
                 disabled={isTermsDisabled.value}
                 dense
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) => {
-                    emit('update', { customs: { terms: val } })
-                  },
-                }}
+                onSelect={(val: EmptyString) =>
+                  emit('update', { customs: { terms: val } })
+                }
               />
             </div>
           </div>
@@ -164,15 +160,12 @@ export default defineComponent({
               <TextField
                 modelValue={props.item?.cost}
                 placeholder={t('placeholder.emptyNumber')}
-                lazy
                 dense
                 number
                 numberFormat="currency"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyNumber) => {
-                    emit('update', { customs: { cost: val } })
-                  },
-                }}
+                onChange={(val: EmptyNumber) =>
+                  emit('update', { customs: { cost: val } })
+                }
                 v-slots={{
                   append: () => (
                     <span class="text-base text-white pl-0.5 pr-2.5">
@@ -195,15 +188,12 @@ export default defineComponent({
               <TextField
                 modelValue={props.item?.discount}
                 placeholder={t('placeholder.emptyNumber')}
-                lazy
                 dense
                 number
                 numberFormat="currency"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyNumber) => {
-                    emit('update', { customs: { discount: val } })
-                  },
-                }}
+                onChange={(val: EmptyNumber) =>
+                  emit('update', { customs: { discount: val } })
+                }
                 v-slots={{
                   append: () => (
                     <span class="text-base text-white pl-0.5 pr-2.5">
@@ -258,11 +248,9 @@ export default defineComponent({
               debounce={250}
               placeholder={t('shipping.amountInWords')}
               rows="2"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) => {
-                  emit('update', { amountInWords: val })
-                },
-              }}
+              onInput={(val: EmptyString) =>
+                emit('update', { amountInWords: val })
+              }
             />
           </div>
           <div>
@@ -271,11 +259,9 @@ export default defineComponent({
               debounce={250}
               placeholder={t('shipping.amountInWordsClientLang')}
               rows="2"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) => {
-                  emit('update', { amountInWordsClientLang: val })
-                },
-              }}
+              onInput={(val: EmptyString) =>
+                emit('update', { amountInWordsClientLang: val })
+              }
             />
           </div>
         </div>

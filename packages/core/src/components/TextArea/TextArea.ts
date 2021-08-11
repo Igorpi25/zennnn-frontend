@@ -60,12 +60,23 @@ export default defineComponent({
     minlength: String,
     maxlength: String,
     placeholder: String,
+    onInput: Function as PropType<(val: any) => void>,
+    onChange: Function as PropType<(val: any) => void>,
+    onClearClick: Function as PropType<(e: MouseEvent) => void>,
+    onFocus: Function as PropType<(e: Event) => void>,
+    onBlur: Function as PropType<(e: Event) => void>,
+    onKeydown: Function as PropType<(e: KeyboardEvent) => void>,
+    onMousedown: Function as PropType<(e: MouseEvent) => void>,
+    onMouseup: Function as PropType<(e: MouseEvent) => void>,
   },
 
+  slots: ['label', 'prepend', 'append'],
+
   emits: [
+    'input',
     'update:modelValue',
     'update:error',
-    'click:clear',
+    'clearClick',
     'focus',
     'blur',
     'change',
@@ -136,8 +147,10 @@ export default defineComponent({
       showDetails,
     })
 
-    const { hasDebounce, debounceInput, cancelDebounce, clearableCallback } =
-      useInputLazy(props, { isFocused, setInternalValue, emitChange })
+    const { debounceInput, cancelDebounce, clearableCallback } = useInputLazy(
+      props,
+      { isFocused, setInternalValue, emitChange }
+    )
 
     const classes = computed(() => ({
       input: true,
@@ -192,12 +205,9 @@ export default defineComponent({
     function onBlur(e: Event) {
       isFocused.value = false
 
-      // immediate call changes
-      if (!props.lazy) {
-        // cancel debounced
-        cancelDebounce()
-        emitChange()
-      }
+      // immediate cancel debounced and call changes
+      cancelDebounce()
+      emitChange()
 
       e && nextTick(() => emit('blur', e))
     }
@@ -212,21 +222,17 @@ export default defineComponent({
 
       props.autoGrow && calculateInputHeight()
 
-      if (!props.lazy) {
-        if (hasDebounce.value) {
-          debounceInput.value()
-        } else {
-          emitChange()
-        }
+      if (debounceInput.value) {
+        debounceInput.value()
+      } else {
+        emitChange()
       }
     }
 
-    function onChange(e: Event) {
-      if (props.lazy) {
-        emitChange()
-      }
+    function onChange() {
+      emitChange()
 
-      emit('change', e)
+      emit('change', internalValue.value)
     }
 
     function onKeydown(e: KeyboardEvent) {
@@ -237,12 +243,8 @@ export default defineComponent({
 
         e.preventDefault()
       } else if (e.key === 'Enter') {
-        // not lazy, immediate call emit changes
-        // on lazy, will be called onChange
-        if (!props.lazy) {
-          cancelDebounce()
-          emitChange()
-        }
+        cancelDebounce()
+        emitChange()
       }
 
       emit('keydown', e)
@@ -264,14 +266,16 @@ export default defineComponent({
         id,
         ref: inputElement,
         value: internalValue.value,
-        class: {
-          input__input: true,
-          'input__input--has-prepend': hasPrepend.value,
-          'input__input--has-append': hasAppend.value,
-          'text-area__input': true,
-          'resize-none': props.noResize || props.autoGrow,
-          [props.inputClass.trim()]: true,
-        },
+        class: [
+          {
+            input__input: true,
+            'input__input--has-prepend': hasPrepend.value,
+            'input__input--has-append': hasAppend.value,
+            'text-area__input': true,
+            'resize-none': props.noResize || props.autoGrow,
+          },
+          props.inputClass,
+        ],
         name: props.name,
         required: props.required,
         placeholder: props.placeholder,
@@ -294,13 +298,15 @@ export default defineComponent({
         'div',
         {
           ref: controlElement,
-          class: {
-            input__control: true,
-            'input__control--has-prepend': hasPrepend.value,
-            'input__control--has-append': hasAppend.value,
-            'text-area__control': true,
-            [props.controlClass.trim()]: true,
-          },
+          class: [
+            {
+              input__control: true,
+              'input__control--has-prepend': hasPrepend.value,
+              'input__control--has-append': hasAppend.value,
+              'text-area__control': true,
+            },
+            props.controlClass,
+          ],
           onClick: onControlClick,
           onMousedown: onControlMouseDown,
           onMouseup: onControlMouseUp,
@@ -308,9 +314,9 @@ export default defineComponent({
         [
           ...genPrependSlot(),
           genTextAreaInput(),
+          genClearInput(clearableCallback),
           ...genAppendSlot(),
           genStateIcon(),
-          genClearInput(clearableCallback),
         ]
       )
     }

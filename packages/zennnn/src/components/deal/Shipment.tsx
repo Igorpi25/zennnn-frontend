@@ -7,6 +7,7 @@ import { ShipmentType } from '@/graphql/types'
 
 import type { PropType } from 'vue'
 import type { GetSpec_getSpec_shipment } from '@/graphql/types'
+import type { EmptyString } from '@/types'
 
 export default defineComponent({
   props: {
@@ -42,11 +43,9 @@ export default defineComponent({
               debounce={250}
               placeholder={t('shipping.sentFrom')}
               dense
-              {...{
-                'onUpdate:modelValue': (val: any) => {
-                  emit('update', { shipment: { sentFrom: val } })
-                },
-              }}
+              onInput={(val: EmptyString) =>
+                emit('update', { shipment: { sentFrom: val } })
+              }
             />
           </div>
 
@@ -62,11 +61,9 @@ export default defineComponent({
               debounce={250}
               placeholder={t('shipping.sentThrough')}
               dense
-              {...{
-                'onUpdate:modelValue': (val: any) => {
-                  emit('update', { shipment: { sentThrough: val } })
-                },
-              }}
+              onInput={(val: EmptyString) =>
+                emit('update', { shipment: { sentThrough: val } })
+              }
             />
           </div>
 
@@ -82,11 +79,9 @@ export default defineComponent({
               debounce={250}
               placeholder={t('shipping.destination')}
               dense
-              {...{
-                'onUpdate:modelValue': (val: any) => {
-                  emit('update', { shipment: { sentDestination: val } })
-                },
-              }}
+              onInput={(val: EmptyString) =>
+                emit('update', { shipment: { sentDestination: val } })
+              }
             />
           </div>
         </div>
@@ -101,11 +96,9 @@ export default defineComponent({
               placeholder={t('shipping.shipmentType')}
               items={shipmentTypes.value}
               dense
-              {...{
-                'onUpdate:modelValue': (val: any) => {
-                  emit('update', { shipment: { activeType: val } })
-                },
-              }}
+              onSelect={(val: ShipmentType | null | undefined) =>
+                emit('update', { shipment: { activeType: val } })
+              }
             />
           </div>
           <div class="w-full sm:w-2/3 md:w-full lg:w-2/3 px-1 pb-2">
@@ -121,13 +114,11 @@ export default defineComponent({
                   placeholder={t('shipping.billOfLadingNo')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', {
-                        shipment: { marine: { billOfLadingNo: val } },
-                      })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { marine: { billOfLadingNo: val } },
+                    })
+                  }
                 />
                 <TextField
                   modelValue={props.item?.marine?.ship}
@@ -135,11 +126,9 @@ export default defineComponent({
                   placeholder={t('shipping.ship')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', { shipment: { marine: { ship: val } } })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { marine: { ship: val } } })
+                  }
                 />
               </div>
               <div class="w-full sm:w-2/3 md:w-full lg:w-2/3">
@@ -156,13 +145,11 @@ export default defineComponent({
                       debounce={250}
                       placeholder={t('placeholder.notIndicated')}
                       dense
-                      {...{
-                        'onUpdate:modelValue': (val: any) => {
-                          emit('update', {
-                            shipment: { marine: { containersCount: val } },
-                          })
-                        },
-                      }}
+                      onInput={(val: EmptyString) =>
+                        emit('update', {
+                          shipment: { marine: { containersCount: val } },
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -172,13 +159,11 @@ export default defineComponent({
                     debounce={250}
                     placeholder={t('shipping.containersNo')}
                     dense
-                    {...{
-                      'onUpdate:modelValue': (val: any) => {
-                        emit('update', {
-                          shipment: { marine: { containersNo: val } },
-                        })
-                      },
-                    }}
+                    onInput={(val: EmptyString) =>
+                      emit('update', {
+                        shipment: { marine: { containersNo: val } },
+                      })
+                    }
                   />
                 </div>
                 <div class="flex items-center pb-2">
@@ -231,13 +216,11 @@ export default defineComponent({
                   placeholder={t('shipping.airWaybillNo')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', {
-                        shipment: { air: { airWaybillNo: val } },
-                      })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { air: { airWaybillNo: val } },
+                    })
+                  }
                 />
                 <TextField
                   modelValue={props.item?.air?.flight}
@@ -245,11 +228,9 @@ export default defineComponent({
                   placeholder={t('shipping.flight')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', { shipment: { air: { flight: val } } })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { air: { flight: val } } })
+                  }
                 />
               </div>
               <div class="w-full sm:w-2/3 md:w-full lg:w-2/3">
@@ -266,13 +247,11 @@ export default defineComponent({
                       debounce={250}
                       placeholder={t('placeholder.notIndicated')}
                       dense
-                      {...{
-                        'onUpdate:modelValue': (val: any) => {
-                          emit('update', {
-                            shipment: { air: { numbersOfPkg: val } },
-                          })
-                        },
-                      }}
+                      onInput={(val: EmptyString) =>
+                        emit('update', {
+                          shipment: { air: { numbersOfPkg: val } },
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -289,13 +268,11 @@ export default defineComponent({
                   placeholder={t('shipping.internationalWaybillNo')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', {
-                        shipment: { railway: { internationalWaybillNo: val } },
-                      })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { railway: { internationalWaybillNo: val } },
+                    })
+                  }
                 />
                 <TextField
                   modelValue={props.item?.railway?.train}
@@ -303,11 +280,9 @@ export default defineComponent({
                   placeholder={t('shipping.train')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', { shipment: { railway: { train: val } } })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { railway: { train: val } } })
+                  }
                 />
               </div>
               <div class="w-full sm:w-2/3 md:w-full lg:w-2/3">
@@ -324,13 +299,11 @@ export default defineComponent({
                       debounce={250}
                       placeholder={t('placeholder.notIndicated')}
                       dense
-                      {...{
-                        'onUpdate:modelValue': (val: any) => {
-                          emit('update', {
-                            shipment: { railway: { containersCount: val } },
-                          })
-                        },
-                      }}
+                      onInput={(val: EmptyString) =>
+                        emit('update', {
+                          shipment: { railway: { containersCount: val } },
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -340,13 +313,11 @@ export default defineComponent({
                     debounce={250}
                     placeholder={t('shipping.trainContainersNo')}
                     dense
-                    {...{
-                      'onUpdate:modelValue': (val: any) => {
-                        emit('update', {
-                          shipment: { railway: { containersNo: val } },
-                        })
-                      },
-                    }}
+                    onInput={(val: EmptyString) =>
+                      emit('update', {
+                        shipment: { railway: { containersNo: val } },
+                      })
+                    }
                   />
                 </div>
                 <div class="flex items-center pb-2">
@@ -399,13 +370,11 @@ export default defineComponent({
                   placeholder={t('shipping.internationalWaybillNo')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', {
-                        shipment: { car: { internationalWaybillNo: val } },
-                      })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { car: { internationalWaybillNo: val } },
+                    })
+                  }
                 />
                 <TextField
                   modelValue={props.item?.car?.vehicleNo}
@@ -413,11 +382,9 @@ export default defineComponent({
                   placeholder={t('shipping.vehicleNo')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', { shipment: { car: { vehicleNo: val } } })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { car: { vehicleNo: val } } })
+                  }
                 />
               </div>
               <div class="w-full sm:w-2/3 md:w-full lg:w-2/3">
@@ -434,13 +401,11 @@ export default defineComponent({
                       debounce={250}
                       placeholder={t('placeholder.notIndicated')}
                       dense
-                      {...{
-                        'onUpdate:modelValue': (val: any) => {
-                          emit('update', {
-                            shipment: { car: { semitrailerNo: val } },
-                          })
-                        },
-                      }}
+                      onInput={(val: EmptyString) =>
+                        emit('update', {
+                          shipment: { car: { semitrailerNo: val } },
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -494,13 +459,11 @@ export default defineComponent({
                   placeholder={t('shipping.internationalWaybillNo')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', {
-                        shipment: { mixed: { internationalWaybillNo: val } },
-                      })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { mixed: { internationalWaybillNo: val } },
+                    })
+                  }
                 />
                 <TextField
                   modelValue={props.item?.mixed?.ship}
@@ -508,11 +471,9 @@ export default defineComponent({
                   placeholder={t('shipping.ship')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', { shipment: { mixed: { ship: val } } })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { mixed: { ship: val } } })
+                  }
                 />
                 <TextField
                   modelValue={props.item?.mixed?.train}
@@ -520,11 +481,9 @@ export default defineComponent({
                   placeholder={t('shipping.train')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', { shipment: { mixed: { train: val } } })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { mixed: { train: val } } })
+                  }
                 />
                 <TextField
                   modelValue={props.item?.mixed?.flight}
@@ -532,11 +491,9 @@ export default defineComponent({
                   placeholder={t('shipping.flight')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', { shipment: { mixed: { flight: val } } })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { mixed: { flight: val } } })
+                  }
                 />
               </div>
               <div class="w-full sm:w-2/3 md:w-full lg:w-2/3">
@@ -553,13 +510,11 @@ export default defineComponent({
                       debounce={250}
                       placeholder={t('placeholder.notIndicated')}
                       dense
-                      {...{
-                        'onUpdate:modelValue': (val: any) => {
-                          emit('update', {
-                            shipment: { mixed: { vehicleNo: val } },
-                          })
-                        },
-                      }}
+                      onInput={(val: EmptyString) =>
+                        emit('update', {
+                          shipment: { mixed: { vehicleNo: val } },
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -570,13 +525,11 @@ export default defineComponent({
                     placeholder={t('shipping.containersNo')}
                     dense
                     class="pb-2"
-                    {...{
-                      'onUpdate:modelValue': (val: any) => {
-                        emit('update', {
-                          shipment: { mixed: { containersNo: val } },
-                        })
-                      },
-                    }}
+                    onInput={(val: EmptyString) =>
+                      emit('update', {
+                        shipment: { mixed: { containersNo: val } },
+                      })
+                    }
                   />
                 </div>
                 <div class="flex items-center pb-2">
@@ -629,13 +582,11 @@ export default defineComponent({
                   placeholder={t('shipping.postalNo')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', {
-                        shipment: { express: { postalNo: val } },
-                      })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { express: { postalNo: val } },
+                    })
+                  }
                 />
                 <TextField
                   modelValue={props.item?.express?.deliveryService}
@@ -643,13 +594,11 @@ export default defineComponent({
                   placeholder={t('shipping.deliveryService')}
                   dense
                   class="pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      emit('update', {
-                        shipment: { express: { deliveryService: val } },
-                      })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { express: { deliveryService: val } },
+                    })
+                  }
                 />
               </div>
               <div class="w-full sm:w-2/3 md:w-full lg:w-2/3">
@@ -666,13 +615,11 @@ export default defineComponent({
                       debounce={250}
                       placeholder={t('placeholder.notIndicated')}
                       dense
-                      {...{
-                        'onUpdate:modelValue': (val: any) => {
-                          emit('update', {
-                            shipment: { express: { numbersOfPkg: val } },
-                          })
-                        },
-                      }}
+                      onInput={(val: EmptyString) =>
+                        emit('update', {
+                          shipment: { express: { numbersOfPkg: val } },
+                        })
+                      }
                     />
                   </div>
                 </div>

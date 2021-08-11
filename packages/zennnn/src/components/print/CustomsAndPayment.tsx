@@ -107,11 +107,9 @@ export default defineComponent({
                 rules={[rules.required]}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) => {
-                    emit('update', { customs: { countryOfOrigin: val } })
-                  },
-                }}
+                onSelect={(val: EmptyString) =>
+                  emit('update', { customs: { countryOfOrigin: val } })
+                }
                 v-slots={{
                   prepend: () =>
                     props.item?.countryOfOrigin ? (
@@ -153,11 +151,9 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   required
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) => {
-                      emit('update', { customs: { terms: val } })
-                    },
-                  }}
+                  onSelect={(val: EmptyString) =>
+                    emit('update', { customs: { terms: val } })
+                  }
                 />
               </div>
               <div class="w-1/2">
@@ -165,14 +161,11 @@ export default defineComponent({
                   modelValue={props.item?.cost}
                   label={t('shipping.costLabel')}
                   placeholder={t('placeholder.notChosen')}
-                  lazy
                   number
                   numberFormat="currency"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyNumber) => {
-                      emit('update', { customs: { cost: val } })
-                    },
-                  }}
+                  onChange={(val: EmptyNumber) =>
+                    emit('update', { customs: { cost: val } })
+                  }
                   v-slots={{
                     append: () => (
                       <span class="text-base w-auto pl-0.5 pr-2.5">
@@ -206,14 +199,11 @@ export default defineComponent({
                   modelValue={props.item?.discount}
                   label={t('shipping.discountLabel')}
                   placeholder={t('placeholder.notChosen')}
-                  lazy
                   number
                   numberFormat="currency"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyNumber) => {
-                      emit('update', { customs: { discount: val } })
-                    },
-                  }}
+                  onChange={(val: EmptyNumber) =>
+                    emit('update', { customs: { discount: val } })
+                  }
                   v-slots={{
                     append: () => (
                       <span class="text-base w-auto pl-0.5 pr-2.5">
@@ -279,11 +269,9 @@ export default defineComponent({
               rows="2"
               stateIcon
               stateErrorColor="warn"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) => {
-                  emit('update', { amountInWords: val })
-                },
-              }}
+              onInput={(val: EmptyString) =>
+                emit('update', { amountInWords: val })
+              }
             />
           </div>
           <div class="w-full lg:w-1/2 lg:pl-5">
@@ -297,11 +285,9 @@ export default defineComponent({
               rows="2"
               stateIcon
               stateErrorColor="warn"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) => {
-                  emit('update', { amountInWordsClientLang: val })
-                },
-              }}
+              onInput={(val: EmptyString) =>
+                emit('update', { amountInWordsClientLang: val })
+              }
             />
           </div>
         </div>

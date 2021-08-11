@@ -5,8 +5,6 @@ import Icon from '../components/Icon'
 
 import type { Ref, ComputedRef, Slots } from 'vue'
 
-const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ')
-
 interface MenuRef {
   id: string
   isActive: boolean
@@ -104,11 +102,11 @@ export const useSelect = (
   }
 
   function genPrependOuterSlot() {
-    return slots['prepend-outer'] ? slots['prepend-outer']() : undefined
+    return slots.prependOuter?.()
   }
 
   function genAppendOuterSlot() {
-    return slots['append-outer'] ? slots['append-outer']() : undefined
+    return slots.appendOuter?.()
   }
 
   function genArrow() {
@@ -156,15 +154,15 @@ export const useSelect = (
   }
 
   function genNoData() {
-    return slots['no-data']
-      ? slots['no-data']()
+    return slots.noData
+      ? slots.noData()
       : h(
           'div',
           {
-            class: classNames(
+            class: [
               'flex items-center px-4',
-              props.solo || props.dense ? 'h-8' : 'h-10'
-            ),
+              props.solo || props.dense ? 'h-8' : 'h-10',
+            ],
             onMousedown: (e: MouseEvent) => {
               e.preventDefault()
             },
@@ -180,15 +178,15 @@ export const useSelect = (
   }
 
   function genNoResult() {
-    return slots['no-result']
-      ? slots['no-result']()
+    return slots.noResult
+      ? slots.noResult()
       : h(
           'div',
           {
-            class: classNames(
+            class: [
               'flex items-center px-4',
-              props.solo || props.dense ? 'h-8' : 'h-10'
-            ),
+              props.solo || props.dense ? 'h-8' : 'h-10',
+            ],
             onMousedown: (e: MouseEvent) => {
               e.preventDefault()
             },

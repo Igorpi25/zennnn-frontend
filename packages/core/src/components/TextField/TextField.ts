@@ -67,12 +67,23 @@ export default defineComponent({
     ariaLabel: String,
     ariaAutocomplete: String,
     placeholder: String,
+    onInput: Function as PropType<(val: any) => void>,
+    onChange: Function as PropType<(val: any) => void>,
+    onClearClick: Function as PropType<(e: MouseEvent) => void>,
+    onFocus: Function as PropType<(e: Event) => void>,
+    onBlur: Function as PropType<(e: Event) => void>,
+    onKeydown: Function as PropType<(e: KeyboardEvent) => void>,
+    onMousedown: Function as PropType<(e: MouseEvent) => void>,
+    onMouseup: Function as PropType<(e: MouseEvent) => void>,
   },
 
+  slots: ['label', 'prepend', 'append'],
+
   emits: [
+    'input',
     'update:modelValue',
     'update:error',
-    'click:clear',
+    'clearClick',
     'focus',
     'blur',
     'change',
@@ -160,8 +171,10 @@ export default defineComponent({
       setInternalValue,
     })
 
-    const { hasDebounce, debounceInput, cancelDebounce, clearableCallback } =
-      useInputLazy(props, { isFocused, setInternalValue, emitChange })
+    const { debounceInput, cancelDebounce, clearableCallback } = useInputLazy(
+      props,
+      { isFocused, setInternalValue, emitChange }
+    )
 
     const classes = computed(() => ({
       input: true,
@@ -206,12 +219,9 @@ export default defineComponent({
       if (props.number) {
         formattedNumber.value = formatNumber(internalValue.value)
       }
-      // immediate call changes
-      if (!props.lazy) {
-        // cancel debounced
-        cancelDebounce()
-        emitChange()
-      }
+      // immediate cancel debounced and call changes
+      cancelDebounce()
+      emitChange()
 
       // clear pattern mismatch
       isPatternMismatch.value = false
@@ -249,21 +259,17 @@ export default defineComponent({
 
       internalValue.value = value
 
-      if (!props.lazy) {
-        if (hasDebounce.value) {
-          debounceInput.value()
-        } else {
-          emitChange()
-        }
+      if (debounceInput.value) {
+        debounceInput.value()
+      } else {
+        emitChange()
       }
     }
 
-    function onChange(e: Event) {
-      if (props.lazy) {
-        emitChange()
-      }
+    function onChange() {
+      emitChange()
 
-      emit('change', e)
+      emit('change', internalValue.value)
     }
 
     function onKeydown(e: KeyboardEvent) {
@@ -274,12 +280,8 @@ export default defineComponent({
 
         e.preventDefault()
       } else if (e.key === 'Enter') {
-        // not lazy, immediate call emit changes
-        // on lazy, will be called onChange
-        if (!props.lazy) {
-          cancelDebounce()
-          emitChange()
-        }
+        cancelDebounce()
+        emitChange()
       }
 
       emit('keydown', e)
@@ -290,14 +292,16 @@ export default defineComponent({
         id,
         ref: inputElement,
         value: props.number ? formattedNumber.value : internalValue.value,
-        class: {
-          input__input: true,
-          'input__input--dense': props.dense || props.solo,
-          'input__input--has-prepend': hasPrepend.value,
-          'input__input--has-append': hasAppend.value,
-          'text-field__input': true,
-          [props.inputClass.trim()]: true,
-        },
+        class: [
+          {
+            input__input: true,
+            'input__input--dense': props.dense || props.solo,
+            'input__input--has-prepend': hasPrepend.value,
+            'input__input--has-append': hasAppend.value,
+            'text-field__input': true,
+          },
+          props.inputClass,
+        ],
         name: props.name,
         required: props.required,
         placeholder: computedPlaceholder.value,
@@ -330,14 +334,16 @@ export default defineComponent({
         'div',
         {
           ref: controlElement,
-          class: {
-            input__control: true,
-            'input__control--solo': props.solo,
-            'input__control--has-prepend': hasPrepend.value,
-            'input__control--has-append': hasAppend.value,
-            'text-field__control': true,
-            [props.controlClass.trim()]: true,
-          },
+          class: [
+            {
+              input__control: true,
+              'input__control--solo': props.solo,
+              'input__control--has-prepend': hasPrepend.value,
+              'input__control--has-append': hasAppend.value,
+              'text-field__control': true,
+            },
+            props.controlClass,
+          ],
           onClick: onControlClick,
           onMousedown: onControlMouseDown,
           onMouseup: onControlMouseUp,
@@ -345,9 +351,9 @@ export default defineComponent({
         [
           ...genPrependSlot(),
           genTextFieldInput(),
+          genClearInput(clearableCallback),
           ...genAppendSlot(),
           genStateIcon(),
-          genClearInput(clearableCallback),
         ]
       )
     }

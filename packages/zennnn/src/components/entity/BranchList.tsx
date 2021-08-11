@@ -36,7 +36,6 @@ export default defineComponent({
       default: () => [],
     },
     loading: Boolean,
-    create: Boolean,
     expanded: {
       type: Boolean,
       default: true,

@@ -29,7 +29,6 @@ export default defineComponent({
     private: Boolean,
     company: Boolean,
     loading: Boolean,
-    create: Boolean,
     expanded: {
       type: Boolean,
       default: true,
@@ -107,11 +106,9 @@ export default defineComponent({
                 stateIcon
                 stateErrorColor={hasStateIcon.value ? 'warn' : 'none'}
                 debounce={500}
-                lazy={props.create}
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ deliveryAddress: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateData({ deliveryAddress: val })
+                }
               />
             </div>
             <div class="pb-2 lg:pb-1">
@@ -134,12 +131,10 @@ export default defineComponent({
                     stateIcon
                     stateErrorColor={hasStateIcon.value ? 'warn' : 'none'}
                     debounce={500}
-                    lazy={props.create}
                     class="w-48 pb-2"
-                    {...{
-                      'onUpdate:modelValue': (val: EmptyString) =>
-                        updateData({ deliveryAddressPostcode: val }),
-                    }}
+                    onInput={(val: EmptyString) =>
+                      updateData({ deliveryAddressPostcode: val })
+                    }
                   />
                   <Switch
                     v-model={isDeliveryAddressMatch.value}
@@ -171,12 +166,10 @@ export default defineComponent({
                 stateIcon
                 stateErrorColor={hasStateIcon.value ? 'warn' : 'none'}
                 debounce={500}
-                lazy={props.create}
+                onInput={(val: EmptyString) =>
+                  updateContactPerson({ firstName: val })
+                }
                 class="w-1/2 md:w-56 flex-shrink-0 pr-2.5"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateContactPerson({ firstName: val }),
-                }}
               />
               <TextField
                 modelValue={importerContactPerson.value?.lastName}
@@ -186,12 +179,10 @@ export default defineComponent({
                 stateIcon
                 stateErrorColor={hasStateIcon.value ? 'warn' : 'none'}
                 debounce={500}
-                lazy={props.create}
                 class="flex-grow"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateContactPerson({ lastName: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateContactPerson({ lastName: val })
+                }
               />
             </div>
             <div>
@@ -202,12 +193,10 @@ export default defineComponent({
                 loading={props.loading}
                 stateErrorColor={hasStateIcon.value ? 'warn' : 'none'}
                 stateIcon
-                lazy={props.create}
                 required
-                {...{
-                  'onUpdate:modelValue': (val: PhoneInput) =>
-                    updateData({ importerMobilePhone: val }),
-                }}
+                onChange={(val: PhoneInput) =>
+                  updateData({ importerMobilePhone: val })
+                }
               />
             </div>
             {props.company && (

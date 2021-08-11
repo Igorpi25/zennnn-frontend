@@ -126,10 +126,9 @@ export default defineComponent({
                 inputClass="w-0 min-h-0 h-0 !m-0"
                 class="inline-flex"
                 solo
-                {...{
-                  'onUpdate:modelValue': (val: EmptyNumber) =>
-                    emit('update', { currency: val }),
-                }}
+                onSelect={(val: EmptyNumber) =>
+                  emit('update', { currency: val })
+                }
                 // TODO: in select replace input to div
                 v-slots={{
                   prepend: () => (
@@ -146,13 +145,10 @@ export default defineComponent({
                 modelValue={props.currencyRate}
                 placeholder={t('placeholder.emptyNumber')}
                 disabled={isCurrencyDisabled.value}
-                lazy
                 number
-                {...{
-                  'onUpdate:modelValue': (val: EmptyNumber) => {
-                    emit('update', { currencyRate: val })
-                  },
-                }}
+                onChange={(val: EmptyNumber) =>
+                  emit('update', { currencyRate: val })
+                }
               />
             </div>
             <div class="text-gray-200">{t('currency.USD.iso-4217')}</div>

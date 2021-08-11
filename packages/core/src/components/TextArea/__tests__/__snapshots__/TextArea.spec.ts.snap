@@ -104,12 +104,12 @@ exports[`TextArea.ts should render component with slots and match snapshot 1`] =
         <g fill="currentColor">
           <path d="prepend-icon"></path>
         </g>
-      </svg></i>Prepend slot<textarea id="text-area-1" class="input__input input__input--has-prepend input__input--has-append text-area__input resize-none"></textarea>Append slot<i class="icon text-gray-100 dark:text-gray-200 flex-shrink-0" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+      </svg></i>Prepend slot<textarea id="text-area-1" class="input__input input__input--has-prepend input__input--has-append text-area__input resize-none"></textarea>
+    <!---->Append slot<i class="icon text-gray-100 dark:text-gray-200 flex-shrink-0" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="append-icon"></path>
         </g>
       </svg></i>
-    <!---->
     <!---->
   </div>
 </div>

@@ -105,7 +105,7 @@ export default defineComponent({
       })
     }
 
-    function onInput(key: string, value: string) {
+    function onInput(key: string, value: string | null | undefined) {
       formModel.value[key] = value
     }
 
@@ -231,12 +231,10 @@ export default defineComponent({
               hideDetails={item.value !== defaultLocale.value}
               stateIcon={item.value === defaultLocale.value}
               required={item.value === defaultLocale.value}
-              {...{
-                onBlur: () => onBlur(item.value),
-                'onUpdate:modelValue': (v: string) => onInput(item.value, v),
-              }}
               controlClass="bg-light-gray-300 px-2"
               inputClass="placeholder-gray-200"
+              onBlur={() => onBlur(item.value)}
+              onInput={(v: string | null | undefined) => onInput(item.value, v)}
               v-slots={{
                 prepend: () => (
                   <img
@@ -249,9 +247,11 @@ export default defineComponent({
                 append: () =>
                   item.value !== defaultLocale.value &&
                   googleTranslateIconMap.value[item.value] ? (
-                    <Icon base={false}>{ziLanguages}</Icon>
+                    <Icon base={false} class="flex-shrink-0">
+                      {ziLanguages}
+                    </Icon>
                   ) : formModel.value[item.value] ? (
-                    <Icon base={false} class="text-blue-500">
+                    <Icon base={false} class="text-blue-500 flex-shrink-0">
                       {ziUser}
                     </Icon>
                   ) : undefined,

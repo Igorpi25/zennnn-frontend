@@ -35,7 +35,6 @@ export default defineComponent({
     },
     supplier: Boolean,
     loading: Boolean,
-    create: Boolean,
   },
 
   emits: ['update'],
@@ -107,14 +106,12 @@ export default defineComponent({
               ]}
               hideDetails={false}
               debounce={500}
-              lazy={props.create}
               stateIcon
               required
               class="w-1/2 md:w-56 flex-shrink-0 pr-2.5"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateContactPerson({ firstName: val }),
-              }}
+              onInput={(val: EmptyString) =>
+                updateContactPerson({ firstName: val })
+              }
             />
             <TextField
               modelValue={contactPerson.value?.lastName}
@@ -126,14 +123,12 @@ export default defineComponent({
               ]}
               hideDetails={false}
               debounce={500}
-              lazy={props.create}
               stateIcon
               required
               class="flex-grow"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateContactPerson({ lastName: val }),
-              }}
+              onInput={(val: EmptyString) =>
+                updateContactPerson({ lastName: val })
+              }
             />
           </div>
           <div class="pb-2">
@@ -144,13 +139,9 @@ export default defineComponent({
               labelHint={t('companyDetail.hint.mobilePhone')}
               errorMessage={t('companyDetail.rule.notificationMobilePhone')}
               loading={props.loading}
-              lazy={props.create}
               stateIcon
               required
-              {...{
-                'onUpdate:modelValue': (val: PhoneInput) =>
-                  updateData({ mobilePhone: val }),
-              }}
+              onChange={(val: PhoneInput) => updateData({ mobilePhone: val })}
             />
           </div>
           <div class="pb-2">
@@ -163,13 +154,9 @@ export default defineComponent({
               rules={[rules.email]}
               hideDetails={false}
               debounce={500}
-              lazy={props.create}
               stateIcon
               required
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ email: val }),
-              }}
+              onInput={(val: EmptyString) => updateData({ email: val })}
             />
           </div>
           <div>
@@ -184,10 +171,7 @@ export default defineComponent({
               stateIcon
               required
               class="pb-2"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ locale: val }),
-              }}
+              onSelect={(val: EmptyString) => updateData({ locale: val })}
               v-slots={{
                 prepend: () =>
                   props.item.locale ? (
@@ -243,15 +227,12 @@ export default defineComponent({
                   ]}
                   hideDetails={false}
                   debounce={500}
-                  lazy={props.create}
                   stateIcon
                   required
                   class="flex-grow pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) => {
-                      updateData({ companyName: val })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    updateData({ companyName: val })
+                  }
                 />
                 <Switch
                   v-model={isCompanyNameMatch.value}
@@ -283,13 +264,11 @@ export default defineComponent({
               ]}
               hideDetails={false}
               debounce={500}
-              lazy={props.create}
               stateIcon
               required
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ companyNameLocal: val }),
-              }}
+              onInput={(val: EmptyString) =>
+                updateData({ companyNameLocal: val })
+              }
             />
           </div>
           <div>

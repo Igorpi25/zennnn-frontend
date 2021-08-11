@@ -152,13 +152,14 @@ export default defineComponent({
               modelValue={props.item?.invoiceNo}
               debounce={250}
               placeholder={t('shipping.invoiceNo')}
-              lazy={props.create}
               solo
               class="w-full sm:w-auto lg:w-32 lg:flex-shrink-0 sm:flex-grow md:flex-grow-0 mb-2 md:mb-0 mr-2"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) => {
-                  updateInvoice({ invoiceNo: val })
-                },
+              onInput={(val: EmptyString) => {
+                if (props.create) return
+                updateInvoice({ invoiceNo: val })
+              }}
+              onChange={(val: EmptyString) => {
+                if (props.create) updateInvoice({ invoiceNo: val })
               }}
               // TODO: add icon to missed
               v-slots={{
@@ -202,7 +203,9 @@ export default defineComponent({
                         class="w-full sm:w-36 mb-2 md:mb-0 mr-2"
                         v-slots={{
                           prepend: () => (
-                            <Icon class="text-gray-300 mr-2">{ziCalendar}</Icon>
+                            <Icon class="text-gray-300 flex-shrink-0 mr-2">
+                              {ziCalendar}
+                            </Icon>
                           ),
                         }}
                       />
@@ -223,11 +226,7 @@ export default defineComponent({
               itemValue="id"
               itemText="companyName"
               class="w-full sm:w-auto xl:w-full lg:flex-shrink-0 sm:flex-grow md:flex-grow-0 lg:flex-grow xl:flex-grow-0 max-w-sm mb-2 md:mb-0 mr-2"
-              {...{
-                'onUpdate:modelValue': (val: string) => {
-                  setSupplier(val)
-                },
-              }}
+              onSelect={(val: string) => setSupplier(val)}
               v-slots={{
                 prepend: () => (
                   <Btn
@@ -267,7 +266,9 @@ export default defineComponent({
                         class="lg:flex-shrink-0 w-full sm:w-36 mr-2"
                         v-slots={{
                           prepend: () => (
-                            <Icon class="text-gray-300 mr-2">{ziCalendar}</Icon>
+                            <Icon class="text-gray-300 flex-shrink-0 mr-2">
+                              {ziCalendar}
+                            </Icon>
                           ),
                         }}
                       />

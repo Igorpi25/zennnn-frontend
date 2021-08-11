@@ -46,10 +46,7 @@ export const useInputProps = () => {
     labelHint: String,
     loading: Boolean,
     singleLine: Boolean,
-    inputClass: {
-      type: String,
-      default: '',
-    },
+    inputClass: String,
     tabindex: String,
   }
 }
@@ -162,6 +159,7 @@ export const useInput = (
     const val = internalValue.value
     if (val !== props.modelValue) {
       emit?.('update:modelValue', val)
+      emit?.('input', val)
     }
   }
 

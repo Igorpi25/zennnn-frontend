@@ -38,7 +38,7 @@ import {
   UPDATE_WORD,
 } from '@/graphql/mutations'
 import { useRoleInProject } from '@/composables/roleInProject'
-import { EmptyString, WordStatus } from '@/types'
+import { WordStatus } from '@/types'
 import { isDealSyncVar } from '@/plugins/apollo'
 import { isLink } from '@/utils/isLink'
 import CommentList from '@/components/comment/List'
@@ -73,6 +73,7 @@ import type {
   UpdateWordVariables,
 } from '@/graphql/types'
 import type { WordFormSubmitInput } from '@/components/word/Form'
+import type { EmptyString, EmptyNumber } from '@/types'
 
 export default defineComponent({
   props: {
@@ -452,7 +453,6 @@ export default defineComponent({
                   ? t('words.noTranslation')
                   : t('shipping.name')
               }
-              // lazy={props.create}
               v-model={[wordSearch.value, 'search']}
               items={words.value}
               showArrow={false}
@@ -467,15 +467,12 @@ export default defineComponent({
               solo
               noFilter
               class="relative"
-              {...{
-                'onUpdate:modelValue': (val: any) =>
-                  createOrUpdateProduct({ name: val }),
-              }}
+              onSelect={(val: any) => createOrUpdateProduct({ name: val })}
               v-slots={{
                 item: ({ item }: any) => (
                   <span class="truncate">{item.text}</span>
                 ),
-                'prepend-item': () => (
+                prependItem: () => (
                   <Btn onClick={openWordCreateDialog}>
                     <Icon class="mr-1">{ziPlusOutline}</Icon>
                     <span>{t('words.addWord')}</span>
@@ -489,10 +486,8 @@ export default defineComponent({
                       mini
                       text
                       class="mr-2.5"
-                      {...{
-                        onClick: () => {
-                          wordEditDialog.value = true
-                        },
+                      onClick={() => {
+                        wordEditDialog.value = true
                       }}
                     >
                       <Icon>{ziEdit}</Icon>
@@ -569,11 +564,15 @@ export default defineComponent({
             <TextField
               modelValue={props.item?.article}
               placeholder={t('shipping.model')}
-              lazy={props.create}
               solo
-              {...{
-                'onUpdate:modelValue': (val: any) =>
-                  createOrUpdateProduct({ article: val }),
+              onInput={(val: EmptyString) => {
+                if (props.create) return
+                updateProduct({ article: val })
+              }}
+              onChange={(val: EmptyString) => {
+                if (props.create) {
+                  emit('create', { article: val })
+                }
               }}
             />
           ) : (
@@ -586,13 +585,9 @@ export default defineComponent({
               <TextField
                 modelValue={props.item?.qty}
                 placeholder={t('placeholder.emptyNumber')}
-                lazy
                 solo
                 number
-                {...{
-                  'onUpdate:modelValue': (val: any) =>
-                    updateProduct({ qty: val }),
-                }}
+                onChange={(val: EmptyNumber) => updateProduct({ qty: val })}
               />
             ) : (
               <span class="pl-2.5">{n(props.item?.qty || 0)}</span>
@@ -606,10 +601,7 @@ export default defineComponent({
                 modelValue={props.item?.unit || 'pcs'}
                 class="text-gray-100 text-base"
                 items={unitsItems.value}
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateProduct({ unit: val }),
-                }}
+                onSelect={(val: EmptyString) => updateProduct({ unit: val })}
               />
             ) : (
               <span>{t(`unit.${props.item?.unit || 'pcs'}`)}</span>
@@ -635,19 +627,16 @@ export default defineComponent({
                     inputClass={
                       hasCustomPurchasePrice.value ? 'text-blue-900' : ''
                     }
-                    lazy
                     solo
                     number
                     numberFormat="currency"
-                    {...{
-                      'onUpdate:modelValue': (val: any) => {
-                        if (props.item?.id) {
-                          updateProductCostMutate({
-                            id: props.item.id,
-                            input: { purchasePrice: val },
-                          })
-                        }
-                      },
+                    onChange={(val: EmptyNumber) => {
+                      if (props.item?.id) {
+                        updateProductCostMutate({
+                          id: props.item.id,
+                          input: { purchasePrice: val },
+                        })
+                      }
                     }}
                   />
                 </td>
@@ -670,19 +659,16 @@ export default defineComponent({
                     inputClass={
                       hasCustomClientPrice.value ? 'text-blue-900' : ''
                     }
-                    lazy
                     solo
                     number
                     numberFormat="currency"
-                    {...{
-                      'onUpdate:modelValue': (val: any) => {
-                        if (props.item?.id) {
-                          updateProductCostMutate({
-                            id: props.item.id,
-                            input: { clientPrice: val },
-                          })
-                        }
-                      },
+                    onChange={(val: EmptyNumber) => {
+                      if (props.item?.id) {
+                        updateProductCostMutate({
+                          id: props.item.id,
+                          input: { clientPrice: val },
+                        })
+                      }
                     }}
                   />
                 </td>
@@ -714,16 +700,15 @@ export default defineComponent({
                   modelValue={store.value?.net}
                   placeholder={t('placeholder.emptyNumber')}
                   solo
+                  debounce={250}
                   number
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      if (props.item?.id) {
-                        updateProductStoreMutate({
-                          id: props.item.id,
-                          input: { net: val },
-                        })
-                      }
-                    },
+                  onInput={(val: EmptyNumber) => {
+                    if (props.item?.id) {
+                      updateProductStoreMutate({
+                        id: props.item.id,
+                        input: { net: val },
+                      })
+                    }
                   }}
                 />
               </td>
@@ -732,16 +717,15 @@ export default defineComponent({
                   modelValue={store.value?.gross}
                   placeholder={t('placeholder.emptyNumber')}
                   solo
+                  debounce={250}
                   number
-                  {...{
-                    'onUpdate:modelValue': (val: any) => {
-                      if (props.item?.id) {
-                        updateProductStoreMutate({
-                          id: props.item.id,
-                          input: { gross: val },
-                        })
-                      }
-                    },
+                  onInput={(val: EmptyNumber) => {
+                    if (props.item?.id) {
+                      updateProductStoreMutate({
+                        id: props.item.id,
+                        input: { gross: val },
+                      })
+                    }
                   }}
                 />
               </td>
@@ -751,48 +735,45 @@ export default defineComponent({
                     modelValue={store.value?.width}
                     placeholder={t('placeholder.emptyNumber')}
                     solo
+                    debounce={250}
                     number
-                    {...{
-                      'onUpdate:modelValue': (val: any) => {
-                        if (props.item?.id) {
-                          updateProductStoreMutate({
-                            id: props.item.id,
-                            input: { width: val },
-                          })
-                        }
-                      },
+                    onInput={(val: EmptyNumber) => {
+                      if (props.item?.id) {
+                        updateProductStoreMutate({
+                          id: props.item.id,
+                          input: { width: val },
+                        })
+                      }
                     }}
                   />
                   <TextField
                     modelValue={store.value?.height}
                     placeholder={t('placeholder.emptyNumber')}
                     solo
+                    debounce={250}
                     number
-                    {...{
-                      'onUpdate:modelValue': (val: any) => {
-                        if (props.item?.id) {
-                          updateProductStoreMutate({
-                            id: props.item.id,
-                            input: { height: val },
-                          })
-                        }
-                      },
+                    onInput={(val: EmptyNumber) => {
+                      if (props.item?.id) {
+                        updateProductStoreMutate({
+                          id: props.item.id,
+                          input: { height: val },
+                        })
+                      }
                     }}
                   />
                   <TextField
                     modelValue={store.value?.length}
                     placeholder={t('placeholder.emptyNumber')}
                     solo
+                    debounce={250}
                     number
-                    {...{
-                      'onUpdate:modelValue': (val: any) => {
-                        if (props.item?.id) {
-                          updateProductStoreMutate({
-                            id: props.item.id,
-                            input: { length: val },
-                          })
-                        }
-                      },
+                    onInput={(val: EmptyNumber) => {
+                      if (props.item?.id) {
+                        updateProductStoreMutate({
+                          id: props.item.id,
+                          input: { length: val },
+                        })
+                      }
                     }}
                   />
                 </div>
@@ -803,17 +784,16 @@ export default defineComponent({
                     modelValue={store.value?.pkgQty}
                     placeholder={t('placeholder.emptyNumber')}
                     solo
+                    debounce={250}
                     number
                     numberFormat="integer"
-                    {...{
-                      'onUpdate:modelValue': (val: any) => {
-                        if (props.item?.id) {
-                          updateProductStoreMutate({
-                            id: props.item.id,
-                            input: { pkgQty: val },
-                          })
-                        }
-                      },
+                    onInput={(val: EmptyNumber) => {
+                      if (props.item?.id) {
+                        updateProductStoreMutate({
+                          id: props.item.id,
+                          input: { pkgQty: val },
+                        })
+                      }
                     }}
                   />
                 )}
@@ -824,17 +804,16 @@ export default defineComponent({
                     modelValue={store.value?.pkgNo}
                     placeholder={t('placeholder.emptyNumber')}
                     solo
+                    debounce={250}
                     number
                     numberFormat="integer"
-                    {...{
-                      'onUpdate:modelValue': (val: any) => {
-                        if (props.item?.id) {
-                          updateProductStoreMutate({
-                            id: props.item.id,
-                            input: { pkgNo: val },
-                          })
-                        }
-                      },
+                    onInput={(val: EmptyNumber) => {
+                      if (props.item?.id) {
+                        updateProductStoreMutate({
+                          id: props.item.id,
+                          input: { pkgNo: val },
+                        })
+                      }
                     }}
                   />
                 )}
@@ -889,15 +868,14 @@ export default defineComponent({
                     modelValue={info.value?.description}
                     placeholder={t('placeholder.emptyText')}
                     solo
-                    {...{
-                      'onUpdate:modelValue': (val: any) => {
-                        if (props.item?.id) {
-                          updateProductInfoMutate({
-                            id: props.item.id,
-                            input: { description: val },
-                          })
-                        }
-                      },
+                    debounce={250}
+                    onInput={(val: EmptyString) => {
+                      if (props.item?.id) {
+                        updateProductInfoMutate({
+                          id: props.item.id,
+                          input: { description: val },
+                        })
+                      }
                     }}
                   />
                 ) : (
@@ -947,22 +925,21 @@ export default defineComponent({
                       modelValue={link.value?.url}
                       placeholder={t('placeholder.emptyText')}
                       solo
+                      debounce={250}
                       class="flex-grow"
-                      {...{
-                        onFocus: () => {
-                          isLinkUrlFocus.value = true
-                        },
-                        onBlur: () => {
-                          isLinkUrlFocus.value = false
-                        },
-                        'onUpdate:modelValue': (val: any) => {
-                          if (props.item?.id) {
-                            updateProductLinkMutate({
-                              id: props.item.id,
-                              input: { url: val },
-                            })
-                          }
-                        },
+                      onFocus={() => {
+                        isLinkUrlFocus.value = true
+                      }}
+                      onBlur={() => {
+                        isLinkUrlFocus.value = false
+                      }}
+                      onInput={(val: EmptyString) => {
+                        if (props.item?.id) {
+                          updateProductLinkMutate({
+                            id: props.item.id,
+                            input: { url: val },
+                          })
+                        }
                       }}
                     />
                     <a
@@ -977,10 +954,8 @@ export default defineComponent({
                       <div class="absolute inset-0 flex items-center justify-end">
                         <button
                           class="h-8 w-full flex items-center justify-center rounded bg-gray-800 text-center text-gray-300 hover:text-gray-100 focus:text-gray-100 focus:outline-none select-none"
-                          {...{
-                            onClick: () => {
-                              linkInputRef.value?.focus()
-                            },
+                          onClick={() => {
+                            linkInputRef.value?.focus()
                           }}
                         >
                           <Icon class="mr-2.5">{ziLink}</Icon>

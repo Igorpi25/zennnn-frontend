@@ -64,10 +64,11 @@
     "validateOnBlur": "Delays validation until blur event."
   },
   "emits": {
+    "select": "Emitted when the model value updated (same as 'update:modelValue').",
     "update:modelValue": "Emitted when the model value updated.",
     "update:search": "Emitted when the **search** updated.",
     "update:error": "Emitted when the **error** updated.",
-    "click:clear": "Emitted when clearable icon clicked.",
+    "clearClick": "Emitted when clearable icon clicked.",
     "change": "Emitted when the input is changed by user interaction.",
     "focus": "Emitted when component is focused.",
     "blur": "Emitted when the input is blurred.",
@@ -76,16 +77,15 @@
     "mouseup": "Emitted when click is released."
   },
   "slots": {
-    "default": "The default Vue slot.",
     "label": "Replaces the default label.",
     "prepend": "Adds an item inside the input and after input content.",
     "append": "Adds an item outside the input and before input content.",
-    "prepend-outer": "Adds an item inside the input and before input content.",
-    "append-outer": "Adds an item outside the input and after input content.",
+    "prependOuter": "Adds an item inside the input and before input content.",
+    "appendOuter": "Adds an item outside the input and after input content.",
     "item": "Define a custom selection appearance.",
-    "prepend-item": "Adds an item before menu content.",
-    "append-item": "Adds an item after menu content.",
-    "no-data": "Replaces the default no data.",
-    "no-result": "Replaces the default no result."
+    "prependItem": "Adds an item before menu content.",
+    "appendItem": "Adds an item after menu content.",
+    "noData": "Replaces the default no data.",
+    "noResult": "Replaces the default no result."
   }
 }

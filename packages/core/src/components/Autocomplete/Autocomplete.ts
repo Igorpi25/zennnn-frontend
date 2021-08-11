@@ -37,7 +37,7 @@ import { Menu, MenuItem } from '../Menu'
 
 import type { PropType } from 'vue'
 
-const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ')
+const classNames = (...classes: unknown[]) => classes.filter(Boolean).join(' ')
 
 export default defineComponent({
   name: 'Autocomplete',
@@ -94,25 +94,40 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
-    boxClass: {
-      type: String,
-      default: '',
-    },
-    contentClass: {
-      type: String,
-      default: '',
-    },
+    boxClass: String,
+    contentClass: String,
     contentOnIntersect: Boolean,
     ariaLabel: String,
     ariaAutocomplete: String,
     placeholder: String,
+    onSelect: Function as PropType<(val: any) => void>,
+    onClearClick: Function as PropType<(e: MouseEvent) => void>,
+    onFocus: Function as PropType<(e: Event) => void>,
+    onBlur: Function as PropType<(e: Event) => void>,
+    onKeydown: Function as PropType<(e: KeyboardEvent) => void>,
+    onMousedown: Function as PropType<(e: MouseEvent) => void>,
+    onMouseup: Function as PropType<(e: MouseEvent) => void>,
   },
 
+  slots: [
+    'label',
+    'prepend',
+    'append',
+    'prependOuter',
+    'appendOuter',
+    'item',
+    'prependItem',
+    'appendItem',
+    'noData',
+    'noResult',
+  ],
+
   emits: [
+    'select',
     'update:modelValue',
     'update:search',
     'update:error',
-    'click:clear',
+    'clearClick',
     'focus',
     'blur',
     'keydown',
@@ -290,6 +305,7 @@ export default defineComponent({
       selectedItem.value = val
       const value = props.returnObject ? val : getValue(val)
       emit('update:modelValue', value)
+      emit('select', value)
       setSearch()
     }
 
@@ -426,14 +442,16 @@ export default defineComponent({
         id,
         ref: inputElement,
         value: search.value,
-        class: {
-          input__input: true,
-          'input__input--dense': props.dense || props.solo,
-          'input__input--has-prepend': hasPrepend.value,
-          'input__input--has-append': hasAppend.value,
-          autocomplete__input: true,
-          [props.inputClass.trim()]: true,
-        },
+        class: [
+          {
+            input__input: true,
+            'input__input--dense': props.dense || props.solo,
+            'input__input--has-prepend': hasPrepend.value,
+            'input__input--has-append': hasAppend.value,
+            autocomplete__input: true,
+          },
+          props.inputClass,
+        ],
         name: props.name,
         required: props.required,
         placeholder: props.placeholder,
@@ -468,16 +486,18 @@ export default defineComponent({
         'div',
         {
           ref: controlElement,
-          class: {
-            input__control: true,
-            'input__control--solo': props.solo,
-            'input__control--has-prepend': hasPrepend.value,
-            'input__control--has-append': hasAppend.value,
-            autocomplete__control: true,
-            'autocomplete__control--is-active': isActive.value,
-            'autocomplete__control--is-menu-active': isMenuActive.value,
-            [props.controlClass.trim()]: true,
-          },
+          class: [
+            {
+              input__control: true,
+              'input__control--solo': props.solo,
+              'input__control--has-prepend': hasPrepend.value,
+              'input__control--has-append': hasAppend.value,
+              autocomplete__control: true,
+              'autocomplete__control--is-active': isActive.value,
+              'autocomplete__control--is-menu-active': isMenuActive.value,
+            },
+            props.controlClass,
+          ],
           onClick: onControlClick,
           onMousedown: onControlMouseDown,
           onMouseup: onControlMouseUp,
@@ -486,9 +506,9 @@ export default defineComponent({
           genPrependOuterSlot(),
           ...genPrependSlot(),
           genSelectInput(),
+          genClearInput(),
           ...genAppendSlot(),
           genStateIcon(),
-          genClearInput(),
           genArrow(),
           genAppendOuterSlot(),
         ]
@@ -526,13 +546,13 @@ export default defineComponent({
           visibleOnReferenceHidden: true,
           boxClass: classNames(
             'autocomplete-box shadow-none dark:shadow-none rounded-t-none',
-            props.solo || props.dense ? 'autocomplete-box--dense' : '',
-            isSearching.value && !slots.item ? 'listbox--searching' : '',
-            props.boxClass.trim()
+            props.solo || props.dense ? 'autocomplete-box--dense' : undefined,
+            isSearching.value && !slots.item ? 'listbox--searching' : undefined,
+            props.boxClass
           ),
           contentClass: classNames(
             'bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-t-none',
-            props.contentClass.trim()
+            props.contentClass
           ),
           includeElements: [controlElement.value],
           role: 'listbox',
@@ -602,8 +622,8 @@ export default defineComponent({
       } else if (filteredItems.value.length === 0) {
         children.push(genNoResult())
       }
-      slots['prepend-item'] && children.unshift(slots['prepend-item']())
-      slots['append-item'] && children.push(slots['append-item']())
+      slots.prependItem && children.unshift(slots.prependItem())
+      slots.appendItem && children.push(slots.appendItem())
       return children
     }
 

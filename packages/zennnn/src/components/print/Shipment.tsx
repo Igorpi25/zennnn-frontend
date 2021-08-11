@@ -90,10 +90,9 @@ export default defineComponent({
                 hideDetails={false}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    emit('update', { shipment: { sentFrom: val } }),
-                }}
+                onInput={(val: EmptyString) =>
+                  emit('update', { shipment: { sentFrom: val } })
+                }
               />
             </div>
             <div class="pb-2">
@@ -105,10 +104,9 @@ export default defineComponent({
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="warn"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    emit('update', { shipment: { sentThrough: val } }),
-                }}
+                onInput={(val: EmptyString) =>
+                  emit('update', { shipment: { sentThrough: val } })
+                }
               />
             </div>
             <div class="pb-2">
@@ -121,10 +119,9 @@ export default defineComponent({
                 hideDetails={false}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    emit('update', { shipment: { sentDestination: val } }),
-                }}
+                onInput={(val: EmptyString) =>
+                  emit('update', { shipment: { sentDestination: val } })
+                }
               />
             </div>
             <div v-show={hasExportDate.value} class="pr-2">
@@ -148,7 +145,10 @@ export default defineComponent({
                         readonly
                         v-slots={{
                           prepend: () => (
-                            <Icon small class="text-gray-200 mr-2.5">
+                            <Icon
+                              small
+                              class="text-gray-200 flex-shrink-0 mr-2.5"
+                            >
                               {ziCalendar}
                             </Icon>
                           ),
@@ -171,10 +171,9 @@ export default defineComponent({
                 hideDetails={false}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: ShipmentType) =>
-                    emit('update', { shipment: { activeType: val } }),
-                }}
+                onSelect={(val: ShipmentType) =>
+                  emit('update', { shipment: { activeType: val } })
+                }
               />
             </div>
             {/* <!-- MARINE --> */}
@@ -191,12 +190,11 @@ export default defineComponent({
                 hideDetails={false}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    emit('update', {
-                      shipment: { marine: { containersCount: val } },
-                    }),
-                }}
+                onInput={(val: EmptyString) =>
+                  emit('update', {
+                    shipment: { marine: { containersCount: val } },
+                  })
+                }
               />
               <div class="pb-2">
                 <TextField
@@ -208,12 +206,11 @@ export default defineComponent({
                   hideDetails={false}
                   stateIcon
                   required
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { marine: { billOfLadingNo: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { marine: { billOfLadingNo: val } },
+                    })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -225,10 +222,9 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', { shipment: { marine: { ship: val } } }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { marine: { ship: val } } })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -240,12 +236,11 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { marine: { containersNo: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { marine: { containersNo: val } },
+                    })
+                  }
                 />
               </div>
             </div>
@@ -261,12 +256,11 @@ export default defineComponent({
                   hideDetails={false}
                   stateIcon
                   required
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { air: { airWaybillNo: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { air: { airWaybillNo: val } },
+                    })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -278,10 +272,9 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', { shipment: { air: { flight: val } } }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { air: { flight: val } } })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -294,12 +287,11 @@ export default defineComponent({
                   hideDetails={false}
                   stateIcon
                   required
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { air: { numbersOfPkg: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { air: { numbersOfPkg: val } },
+                    })
+                  }
                 />
               </div>
             </div>
@@ -318,12 +310,11 @@ export default defineComponent({
                   hideDetails={false}
                   stateIcon
                   required
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { railway: { internationalWaybillNo: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { railway: { internationalWaybillNo: val } },
+                    })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -335,10 +326,9 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', { shipment: { railway: { train: val } } }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { railway: { train: val } } })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -351,12 +341,11 @@ export default defineComponent({
                   hideDetails={false}
                   stateIcon
                   required
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { railway: { containersCount: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { railway: { containersCount: val } },
+                    })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -368,12 +357,11 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { railway: { containersNo: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { railway: { containersNo: val } },
+                    })
+                  }
                 />
               </div>
             </div>
@@ -389,12 +377,11 @@ export default defineComponent({
                   hideDetails={false}
                   stateIcon
                   required
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { car: { internationalWaybillNo: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { car: { internationalWaybillNo: val } },
+                    })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -406,10 +393,9 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', { shipment: { car: { vehicleNo: val } } }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { car: { vehicleNo: val } } })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -421,12 +407,11 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { car: { semitrailerNo: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { car: { semitrailerNo: val } },
+                    })
+                  }
                 />
               </div>
             </div>
@@ -445,12 +430,11 @@ export default defineComponent({
                   hideDetails={false}
                   stateIcon
                   required
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { mixed: { internationalWaybillNo: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { mixed: { internationalWaybillNo: val } },
+                    })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -462,10 +446,9 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', { shipment: { mixed: { ship: val } } }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { mixed: { ship: val } } })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -477,10 +460,9 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', { shipment: { mixed: { train: val } } }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { mixed: { train: val } } })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -492,10 +474,9 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', { shipment: { mixed: { flight: val } } }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', { shipment: { mixed: { flight: val } } })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -507,12 +488,11 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { mixed: { vehicleNo: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { mixed: { vehicleNo: val } },
+                    })
+                  }
                 />
               </div>
               <div class="pb-4">
@@ -524,12 +504,11 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { mixed: { containersNo: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { mixed: { containersNo: val } },
+                    })
+                  }
                 />
               </div>
             </div>
@@ -548,12 +527,11 @@ export default defineComponent({
                   hideDetails={false}
                   stateIcon
                   required
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { express: { postalNo: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { express: { postalNo: val } },
+                    })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -565,12 +543,11 @@ export default defineComponent({
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="warn"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { express: { deliveryService: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { express: { deliveryService: val } },
+                    })
+                  }
                 />
               </div>
               <div class="pb-2">
@@ -583,12 +560,11 @@ export default defineComponent({
                   hideDetails={false}
                   stateIcon
                   required
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) =>
-                      emit('update', {
-                        shipment: { express: { numbersOfPkg: val } },
-                      }),
-                  }}
+                  onInput={(val: EmptyString) =>
+                    emit('update', {
+                      shipment: { express: { numbersOfPkg: val } },
+                    })
+                  }
                 />
               </div>
             </div>

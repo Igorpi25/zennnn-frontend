@@ -56,7 +56,7 @@ export const useInputClear = (
           e.preventDefault()
           e.stopPropagation()
 
-          emit?.('click:clear', e)
+          emit?.('clearClick', e)
 
           inputElement.value?.focus()
           cb ? cb() : clearableCallback()

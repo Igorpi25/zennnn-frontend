@@ -776,16 +776,14 @@ export default defineComponent({
                   itemText="fullName"
                   solo
                   class="inline-flex justify-end ml-2"
-                  {...{
-                    'onUpdate:modelValue': (val: string) => {
-                      setDealClientMutate({
-                        specId: route.params.specId as string,
-                        clientId: val,
-                      })
-                    },
+                  onSelect={(val: string) => {
+                    setDealClientMutate({
+                      specId: route.params.specId as string,
+                      clientId: val,
+                    })
                   }}
                   v-slots={{
-                    'prepend-item': () => (
+                    prependItem: () => (
                       <span
                         class="flex items-center jusitfy-center text-blue-500"
                         onClick={() => {

@@ -222,10 +222,8 @@ export default defineComponent({
               type="email"
               name="email"
               class="pb-8"
-              {...{
-                'onUpdate:modelValue': () => {
-                  getUserErrorMessage.value = ''
-                },
+              onInput={() => {
+                getUserErrorMessage.value = ''
               }}
             />
             <Alert

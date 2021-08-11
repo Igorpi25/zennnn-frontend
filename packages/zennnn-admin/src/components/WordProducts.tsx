@@ -249,13 +249,11 @@ export default defineComponent({
             itemValue="id"
             itemText="text"
             noFilter
-            {...{
-              'onUpdate:modelValue': (v: string) => {
-                selectedItemId.value = v
-              },
+            onSelect={(v: string) => {
+              selectedItemId.value = v
             }}
             v-slots={{
-              'prepend-item': () => (
+              prependItem: () => (
                 <Btn
                   text
                   block

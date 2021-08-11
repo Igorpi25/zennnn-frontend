@@ -141,12 +141,12 @@ exports[`Autocomplete.ts should render component with slots and match snapshot 1
         <g fill="currentColor">
           <path d="prepend-icon"></path>
         </g>
-      </svg></i>Prepend slot<input id="autocomplete-1" class="input__input input__input--has-prepend input__input--has-append autocomplete__input" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">Append slot<i class="icon text-gray-100 dark:text-gray-200 flex-shrink-0" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
+      </svg></i>Prepend slot<input id="autocomplete-1" class="input__input input__input--has-prepend input__input--has-append autocomplete__input" type="text" inputmode="text" autocomplete="off" aria-haspopup="true">
+    <!---->Append slot<i class="icon text-gray-100 dark:text-gray-200 flex-shrink-0" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="append-icon"></path>
         </g>
       </svg></i>
-    <!---->
     <!----><button class="icon icon--link focus:outline-none origin-center transition-transform duration-200 ease-in-out text-blue-500 hover:text-blue-400 focus:text-blue-400" role="button" type="button" aria-hidden="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" role="img" aria-hidden="true" style="font-size: 24px; height: 24px; width: 24px;">
         <g fill="currentColor">
           <path d="m7.5 8.25 6 6-1.5 1.5-6-6 1.5-1.5zM18 9.75l-6 6-1.5-1.5 6-6 1.5 1.5z"></path>

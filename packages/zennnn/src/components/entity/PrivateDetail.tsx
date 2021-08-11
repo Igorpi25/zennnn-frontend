@@ -25,7 +25,6 @@ export default defineComponent({
       default: () => ({}),
     },
     loading: Boolean,
-    create: Boolean,
     expanded: {
       type: Boolean,
       default: true,
@@ -84,14 +83,10 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.passportId')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ passportId: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ passportId: val })}
               />
             </div>
             <div class="pb-2">
@@ -104,10 +99,9 @@ export default defineComponent({
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ citizenship: val }),
-                }}
+                onSelect={(val: EmptyString) =>
+                  updateData({ citizenship: val })
+                }
                 v-slots={{
                   prepend: () =>
                     props.item.citizenship ? (
@@ -164,7 +158,10 @@ export default defineComponent({
                           readonly
                           v-slots={{
                             prepend: () => (
-                              <Icon small class="text-gray-200 mr-2.5">
+                              <Icon
+                                small
+                                class="text-gray-200 flex-shrink-0 mr-2.5"
+                              >
                                 {ziCalendar}
                               </Icon>
                             ),
@@ -198,7 +195,10 @@ export default defineComponent({
                           readonly
                           v-slots={{
                             prepend: () => (
-                              <Icon small class="text-gray-200 mr-2.5">
+                              <Icon
+                                small
+                                class="text-gray-200 flex-shrink-0 mr-2.5"
+                              >
                                 {ziCalendar}
                               </Icon>
                             ),
@@ -217,14 +217,10 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.issuedBy')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ issuedBy: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ issuedBy: val })}
               />
             </div>
             <div class="pb-2">
@@ -234,15 +230,12 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.address')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) => {
-                    updateData({ legalAddress: val })
-                  },
-                }}
+                onInput={(val: EmptyString) =>
+                  updateData({ legalAddress: val })
+                }
               />
             </div>
             <div class="pb-2">
@@ -252,16 +245,13 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.postcode')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
                 class="w-48"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) => {
-                    updateData({ legalAddressPostcode: val })
-                  },
-                }}
+                onInput={(val: EmptyString) =>
+                  updateData({ legalAddressPostcode: val })
+                }
               />
             </div>
             <div class="pb-2">
@@ -272,15 +262,12 @@ export default defineComponent({
                 disabled={isMailingAddressMatch.value}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) => {
-                    updateData({ mailingAddress: val })
-                  },
-                }}
+                onInput={(val: EmptyString) =>
+                  updateData({ mailingAddress: val })
+                }
               />
             </div>
             <div class="pb-2 lg:pb-1">
@@ -300,16 +287,13 @@ export default defineComponent({
                     loading={props.loading}
                     disabled={isMailingAddressMatch.value}
                     debounce={500}
-                    lazy={props.create}
                     rules={[rules.required]}
                     stateIcon
                     stateErrorColor="none"
                     class="w-48 pb-2"
-                    {...{
-                      'onUpdate:modelValue': (val: EmptyString) => {
-                        updateData({ mailingAddressPostcode: val })
-                      },
-                    }}
+                    onInput={(val: EmptyString) =>
+                      updateData({ mailingAddressPostcode: val })
+                    }
                   />
                   <Switch
                     v-model={isMailingAddressMatch.value}
@@ -338,14 +322,10 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.vat')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ vat: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ vat: val })}
               />
             </div>
             <div class="pb-2">
@@ -355,14 +335,10 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.bankName')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ bankName: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ bankName: val })}
               />
             </div>
             <div class="pb-2">
@@ -372,14 +348,10 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.bankAddress')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ bankAddress: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ bankAddress: val })}
               />
             </div>
             <div class="pb-2">
@@ -389,14 +361,12 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.bankAccountNumber')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ bankAccountNumber: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateData({ bankAccountNumber: val })
+                }
               />
             </div>
             <div class="flex items-end pb-2">
@@ -406,15 +376,11 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.swift')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
                 class="w-1/2 md:w-48 flex-shrink-0 pr-2.5"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ swift: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ swift: val })}
               />
               <TextField
                 modelValue={props.item.bic}
@@ -422,15 +388,11 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.bic')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
                 class="flex-grow"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ bic: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ bic: val })}
               />
             </div>
             <div>
@@ -440,30 +402,22 @@ export default defineComponent({
                   locale={props.item.locale}
                   label={t('companyDetail.label.phone')}
                   loading={props.loading}
-                  lazy={props.create}
                   stateIcon
                   stateErrorColor="none"
                   required
                   class="w-1/2 pr-2"
-                  {...{
-                    'onUpdate:modelValue': (val: PhoneInput) =>
-                      updateData({ phone: val }),
-                  }}
+                  onChange={(val: PhoneInput) => updateData({ phone: val })}
                 />
                 <Phone
                   modelValue={props.item.fax}
                   locale={props.item.locale}
                   label={t('companyDetail.label.fax')}
                   loading={props.loading}
-                  lazy={props.create}
                   stateIcon
                   stateErrorColor="none"
                   required
                   class="w-1/2 pl-2"
-                  {...{
-                    'onUpdate:modelValue': (val: PhoneInput) =>
-                      updateData({ fax: val }),
-                  }}
+                  onChange={(val: PhoneInput) => updateData({ fax: val })}
                 />
               </div>
               <div class="text-sm text-gray-200 leading-tight pl-2.5 pb-2 lg:pb-0">

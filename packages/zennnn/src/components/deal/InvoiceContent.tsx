@@ -648,14 +648,15 @@ export default defineComponent({
                               inputClass="w-0 min-h-0 h-0 !m-0"
                               class="inline-flex"
                               solo
+                              onSelect={(val: EmptyNumber) =>
+                                emit('update:currency', val)
+                              }
                               {...{
                                 onClick: () => {
                                   if (props.activeTab !== item.value) {
                                     switchTab(item.value)
                                   }
                                 },
-                                'onUpdate:modelValue': (val: EmptyNumber) =>
-                                  emit('update:currency', val),
                               }}
                               // TODO: in select replace input to div
                               v-slots={{

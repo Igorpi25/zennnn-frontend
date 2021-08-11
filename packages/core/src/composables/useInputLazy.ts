@@ -1,13 +1,12 @@
-import { ref, computed, watch, onBeforeMount, nextTick } from 'vue'
+import { ref, watch, onBeforeMount, nextTick } from 'vue'
 import { debounce } from 'lodash-es'
 
 import type { Ref } from 'vue'
+import type { DebouncedFunc } from 'lodash-es'
 
 export interface InputLazyProps {
   modelValue?: any
-  lazy?: boolean
   debounce?: number
-  forceUpdate?: boolean
 }
 
 export interface InputLazyContext {
@@ -19,12 +18,10 @@ export interface InputLazyContext {
 // Props
 export const useInputLazyProps = () => {
   return {
-    lazy: Boolean,
     debounce: {
       type: Number,
       default: 0,
     },
-    forceUpdate: Boolean,
   }
 }
 
@@ -33,17 +30,11 @@ export const useInputLazy = (
   props: InputLazyProps,
   { isFocused, setInternalValue, emitChange }: InputLazyContext
 ) => {
-  const debounceInput = ref<any>()
-
-  const hasDebounce = computed(() => !!(props.debounce && !props.lazy))
+  const debounceInput = ref<DebouncedFunc<() => void>>()
 
   watch(
     () => props.modelValue,
     (val) => {
-      if (props.forceUpdate) {
-        setInternalValue(val)
-        return
-      }
       // do not update value from watcher, for subscription self update
       if (isFocused.value) return
       setInternalValue(val)
@@ -51,13 +42,13 @@ export const useInputLazy = (
   )
 
   onBeforeMount(() => {
-    if (hasDebounce.value) {
+    if (props.debounce) {
       debounceInput.value = debounce(emitChange, props.debounce)
     }
   })
 
   function cancelDebounce() {
-    if (hasDebounce.value) {
+    if (debounceInput.value) {
       debounceInput.value.cancel()
     }
   }
@@ -71,7 +62,6 @@ export const useInputLazy = (
   }
 
   return {
-    hasDebounce,
     debounceInput,
     cancelDebounce,
     clearableCallback,

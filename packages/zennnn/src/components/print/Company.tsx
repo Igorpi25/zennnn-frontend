@@ -137,12 +137,9 @@ export default defineComponent({
                 itemText="companyName"
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: string) =>
-                    emit('update', { requisite: val }),
-                }}
+                onSelect={(val: string) => emit('update', { requisite: val })}
                 v-slots={{
-                  'prepend-item': () => (
+                  prependItem: () => (
                     <Btn
                       link
                       onClick={() => {
@@ -177,10 +174,9 @@ export default defineComponent({
                 debounce={500}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ legalAddress: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateData({ legalAddress: val })
+                }
               />
             </div>
             <div class="flex flex-wrap lg:flex-nowrap pb-2">
@@ -192,10 +188,7 @@ export default defineComponent({
                 stateIcon
                 required
                 class="w-full sm:w-4/6 max-w-xs flex-shrink-0 pb-2 sm:pb-0 sm:pr-2.5"
-                {...{
-                  'onUpdate:modelValue': (val: PhoneInput) =>
-                    updateData({ phone: val }),
-                }}
+                onChange={(val: PhoneInput) => updateData({ phone: val })}
               />
               <TextField
                 modelValue={props.item?.phoneOption}
@@ -208,10 +201,7 @@ export default defineComponent({
                 stateIcon
                 stateErrorColor="none"
                 class="w-full sm:w-auto lg:w-full max-w-xs"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ phoneOption: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ phoneOption: val })}
               />
             </div>
             <div class="pb-2">
@@ -224,10 +214,7 @@ export default defineComponent({
                 stateErrorColor="none"
                 required
                 class="sm:w-4/6 max-w-xs sm:pr-2.5"
-                {...{
-                  'onUpdate:modelValue': (val: PhoneInput) =>
-                    updateData({ fax: val }),
-                }}
+                onChange={(val: PhoneInput) => updateData({ fax: val })}
               />
             </div>
             <div class="pb-2">
@@ -243,10 +230,7 @@ export default defineComponent({
                 stateIcon
                 stateErrorColor="warn"
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ email: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ email: val })}
               />
             </div>
             <div>
@@ -260,10 +244,7 @@ export default defineComponent({
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ website: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ website: val })}
               />
             </div>
           </div>
@@ -280,7 +261,7 @@ export default defineComponent({
                 itemText="bankName"
                 stateIcon
                 required
-                {...{ 'onUpdate:modelValue': setDefaultBankDetail }}
+                onSelect={setDefaultBankDetail}
                 v-slots={{
                   item: ({ item }: any) =>
                     item.bankName ? (
@@ -306,10 +287,9 @@ export default defineComponent({
                 hideDetails={false}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateBankDetail({ bankAddress: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateBankDetail({ bankAddress: val })
+                }
               />
             </div>
             <div class="pb-2">
@@ -324,10 +304,9 @@ export default defineComponent({
                 hideDetails={false}
                 stateIcon
                 required
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateBankDetail({ bankAccountNumber: val }),
-                }}
+                onInput={(val: EmptyString) =>
+                  updateBankDetail({ bankAccountNumber: val })
+                }
               />
             </div>
             <div class="flex items-end pb-2">
@@ -343,10 +322,7 @@ export default defineComponent({
                 stateIcon
                 required
                 class="w-1/2 md:w-48 flex-shrink-0 pr-2.5"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateBankDetail({ swift: val }),
-                }}
+                onInput={(val: EmptyString) => updateBankDetail({ swift: val })}
               />
               <TextField
                 modelValue={bankDetailItem.value?.bic}
@@ -359,10 +335,7 @@ export default defineComponent({
                 stateIcon
                 stateErrorColor="none"
                 class="flex-grow"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateBankDetail({ bic: val }),
-                }}
+                onInput={(val: EmptyString) => updateBankDetail({ bic: val })}
               />
             </div>
             <div class="flex pb-2">
@@ -377,10 +350,7 @@ export default defineComponent({
                 stateIcon
                 stateErrorColor="none"
                 class="w-7/12 pr-2.5"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ vat: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ vat: val })}
               />
               <TextField
                 modelValue={props.item?.okpo}
@@ -393,10 +363,7 @@ export default defineComponent({
                 stateIcon
                 stateErrorColor="none"
                 class="flex-grow"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ okpo: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ okpo: val })}
               />
             </div>
           </div>

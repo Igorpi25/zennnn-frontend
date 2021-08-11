@@ -31,7 +31,7 @@ interface PhoneItem {
   mask: any
 }
 
-const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ')
+const classNames = (...classes: unknown[]) => classes.filter(Boolean).join(' ')
 
 export default defineComponent({
   props: {
@@ -61,7 +61,6 @@ export default defineComponent({
     // warn, none or tailwindcss text class
     stateErrorColor: String,
     errorMessage: String,
-    lazy: Boolean,
     messagesOnFocused: {
       type: Boolean,
       default: true,
@@ -70,9 +69,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    onChange: Function as PropType<(val: PhoneInput) => void>,
   },
 
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'change'],
 
   setup(props, { emit }) {
     const { t, locale } = useI18n()
@@ -265,7 +265,7 @@ export default defineComponent({
       }
     }
 
-    function onPhoneInput(val?: string) {
+    function onPhoneInput(val: string | null | undefined) {
       phoneInput.value = val
       emitChange()
     }
@@ -308,7 +308,9 @@ export default defineComponent({
       const oldVal = props.modelValue && props.modelValue.phone
       if (oldVal === unmasked.value && oldCode === codeInput.value) return
       const phone = unmasked.value
-      emit('update:modelValue', { countryCode: codeInput.value, phone })
+      const val = { countryCode: codeInput.value, phone }
+      emit('update:modelValue', val)
+      emit('change', val)
     }
 
     function maskValue(value: string | undefined, masked = true) {
@@ -360,10 +362,8 @@ export default defineComponent({
         )}
         inputClass="flex-shrink-0 whitespace-nowrap w-auto"
         contentOnIntersect
-        {...{
-          'onUpdate:modelValue': onCodeSelect,
-          onKeydown: onCodeKeydown,
-        }}
+        onSelect={onCodeSelect}
+        onKeydown={onCodeKeydown}
         v-slots={{
           prepend: () =>
             codeInput.value && (
@@ -375,7 +375,7 @@ export default defineComponent({
                 aria-hidden="true"
               />
             ),
-          'prepend-item': () => (
+          prependItem: () => (
             <TextField
               ref={searchInputRef}
               v-model={search.value}
@@ -383,19 +383,17 @@ export default defineComponent({
               clearable
               class="sticky top-0"
               controlClass="input__control--no-shadow rounded-none"
-              {...{
-                onKeydown: onSearchKeydown,
-              }}
+              onKeydown={onSearchKeydown}
               v-slots={{
                 prepend: () => (
-                  <Icon class="text-gray-100 dark:text-gray-200 ml-1">
+                  <Icon class="text-gray-100 dark:text-gray-200 flex-shrink-0 ml-1">
                     {ziSearch}
                   </Icon>
                 ),
               }}
             />
           ),
-          'append-outer': () => (
+          appendOuter: () => (
             <TextField
               ref={phoneInputRef}
               modelValue={phoneInput.value}
@@ -406,7 +404,6 @@ export default defineComponent({
               placeholder={currentPlaceholder.value}
               mask={currentMask.value}
               rules={computedRules.value}
-              lazy={props.lazy}
               required={props.required}
               stateIcon={props.stateIcon}
               stateSuccessIcon={props.stateSuccessIcon}
@@ -423,12 +420,10 @@ export default defineComponent({
                 'rounded-l-none pl-2',
                 codeInputRef.value?.isMenuActive && 'rounded-br-none'
               )}
-              {...{
-                onFocus: () => {
-                  codeInputRef.value?.closeMenu()
-                },
-                'onUpdate:modelValue': onPhoneInput,
+              onFocus={() => {
+                codeInputRef.value?.closeMenu()
               }}
+              onInput={onPhoneInput}
             />
           ),
           item: ({

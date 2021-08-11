@@ -20,7 +20,7 @@ import { ContactType } from '@/graphql/types'
 import type { PropType } from 'vue'
 import type { ContactInput } from '@/graphql/types'
 
-const classNames = (...classes: string[]) => classes.filter(Boolean).join(' ')
+const classNames = (...classes: unknown[]) => classes.filter(Boolean).join(' ')
 
 export default defineComponent({
   props: {
@@ -143,6 +143,8 @@ export default defineComponent({
     }
 
     function emitChange() {
+      if (props.create) return
+
       const contact = inputValue.value
       const contactType = selectValue.value
       if (
@@ -176,22 +178,19 @@ export default defineComponent({
           dependencies={dependencies.value}
           class="flex-grow"
           inputClass="w-0"
-          {...{
-            'onUpdate:modelValue': onContactTypeSelect,
-          }}
+          onSelect={onContactTypeSelect}
           v-slots={{
             prepend: () => (
               <Icon class="text-gray-200 dark:text-gray-100 flex-shrink-0">
                 {selectedIcon.value}
               </Icon>
             ),
-            'append-outer': () => (
+            appendOuter: () => (
               <TextField
                 ref={inputRef}
                 v-model={inputValue.value}
                 loading={props.loading}
                 placeholder={selectedPlaceholder.value}
-                lazy={props.create}
                 rules={[rules.required]}
                 debounce={props.debounce}
                 stateIcon
@@ -201,10 +200,13 @@ export default defineComponent({
                   'rounded-l-none pl-2',
                   selectRef.value?.isMenuActive && 'rounded-br-none'
                 )}
-                {...{
-                  onFocus: onFocus,
-                  onBlur: onBlur,
-                  'onUpdate:modelValue': emitChange,
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onInput={emitChange}
+                onChange={() => {
+                  if (props.create) {
+                    emitChange()
+                  }
                 }}
               />
             ),

@@ -24,7 +24,6 @@ export default defineComponent({
       default: () => ({}),
     },
     loading: Boolean,
-    create: Boolean,
   },
 
   emits: ['update'],
@@ -124,15 +123,12 @@ export default defineComponent({
                     (v: any) => !!v || t('companyDetail.rule.companyName'),
                   ]}
                   debounce={500}
-                  lazy={props.create}
                   stateIcon
                   required
                   class="flex-grow pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) => {
-                      updateData({ companyName: val })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    updateData({ companyName: val })
+                  }
                 />
                 <Switch
                   v-model={isCompanyNameMatch.value}
@@ -163,13 +159,11 @@ export default defineComponent({
                 (v: any) => !!v || t('companyDetail.rule.companyNameLocal'),
               ]}
               debounce={500}
-              lazy={props.create}
               stateIcon
               required
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ companyNameLocal: val }),
-              }}
+              onInput={(val: EmptyString) =>
+                updateData({ companyNameLocal: val })
+              }
             />
           </div>
           <div class="relative lg:h-56 pt-4 mb-4 lg:pt-9 lg:mb-7">
@@ -189,14 +183,10 @@ export default defineComponent({
               modelValue={props.item.phone}
               label={t('companyDetail.label.phone')}
               loading={props.loading}
-              lazy={props.create}
               stateIcon
               required
               class="w-full md:w-1/2 lg:w-full lg:max-w-xs flex-shrink-0 pb-2 md:pb-0 md:pr-2.5"
-              {...{
-                'onUpdate:modelValue': (val: PhoneInput) =>
-                  updateData({ phone: val }),
-              }}
+              onChange={(val: PhoneInput) => updateData({ phone: val })}
             />
             <TextField
               modelValue={props.item.phoneOption}
@@ -204,15 +194,11 @@ export default defineComponent({
               placeholder={t('companyDetail.placeholder.phoneOption')}
               loading={props.loading}
               debounce={500}
-              lazy={props.create}
               rules={[rules.required]}
               stateIcon
               stateErrorColor="none"
               class="w-auto lg:w-full lg:max-w-xs"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ phoneOption: val }),
-              }}
+              onInput={(val: EmptyString) => updateData({ phoneOption: val })}
             />
           </div>
           <div class="pb-2">
@@ -220,15 +206,11 @@ export default defineComponent({
               modelValue={props.item.fax}
               label={t('companyDetail.label.fax')}
               loading={props.loading}
-              lazy={props.create}
               stateIcon
               stateErrorColor="none"
               required
               class="w-full md:w-1/2 lg:w-full lg:max-w-xs md:pr-2.5"
-              {...{
-                'onUpdate:modelValue': (val: PhoneInput) =>
-                  updateData({ fax: val }),
-              }}
+              onChange={(val: PhoneInput) => updateData({ fax: val })}
             />
           </div>
           <div class="pb-2">
@@ -238,15 +220,11 @@ export default defineComponent({
               placeholder={t('companyDetail.placeholder.site')}
               loading={props.loading}
               debounce={500}
-              lazy={props.create}
               rules={[rules.required]}
               stateIcon
               stateErrorColor="none"
               required
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ website: val }),
-              }}
+              onInput={(val: EmptyString) => updateData({ website: val })}
             />
           </div>
           <div class="pb-2">
@@ -258,14 +236,10 @@ export default defineComponent({
               loading={props.loading}
               rules={[rules.required, rules.email]}
               debounce={500}
-              lazy={props.create}
               stateIcon
               stateErrorColor="warn"
               required
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ email: val }),
-              }}
+              onInput={(val: EmptyString) => updateData({ email: val })}
             />
           </div>
         </div>
@@ -278,13 +252,9 @@ export default defineComponent({
               loading={props.loading}
               rules={[rules.required]}
               debounce={500}
-              lazy={props.create}
               stateIcon
               stateErrorColor="warn"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ vat: val }),
-              }}
+              onInput={(val: EmptyString) => updateData({ vat: val })}
             />
           </div>
           <div class="pb-2">
@@ -295,14 +265,9 @@ export default defineComponent({
               loading={props.loading}
               rules={[rules.required]}
               debounce={500}
-              lazy={props.create}
               stateIcon
               required
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) => {
-                  updateData({ legalAddress: val })
-                },
-              }}
+              onInput={(val: EmptyString) => updateData({ legalAddress: val })}
             />
           </div>
           <div class="pb-2">
@@ -313,14 +278,11 @@ export default defineComponent({
               loading={props.loading}
               rules={[rules.required]}
               debounce={500}
-              lazy={props.create}
               stateIcon
               class="w-48"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) => {
-                  updateData({ legalAddressPostcode: val })
-                },
-              }}
+              onInput={(val: EmptyString) =>
+                updateData({ legalAddressPostcode: val })
+              }
             />
           </div>
           <div class="pb-2">
@@ -331,15 +293,12 @@ export default defineComponent({
               loading={props.loading}
               disabled={isMailingAddressMatch.value}
               debounce={500}
-              lazy={props.create}
               rules={[rules.required]}
               stateIcon
               stateErrorColor="none"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) => {
-                  updateData({ mailingAddress: val })
-                },
-              }}
+              onInput={(val: EmptyString) =>
+                updateData({ mailingAddress: val })
+              }
             />
           </div>
           <div class="pb-2 lg:pb-1">
@@ -359,16 +318,13 @@ export default defineComponent({
                   loading={props.loading}
                   disabled={isMailingAddressMatch.value}
                   debounce={500}
-                  lazy={props.create}
                   rules={[rules.required]}
                   stateIcon
                   stateErrorColor="none"
                   class="w-48 pb-2"
-                  {...{
-                    'onUpdate:modelValue': (val: EmptyString) => {
-                      updateData({ mailingAddressPostcode: val })
-                    },
-                  }}
+                  onInput={(val: EmptyString) =>
+                    updateData({ mailingAddressPostcode: val })
+                  }
                 />
                 <Switch
                   v-model={isMailingAddressMatch.value}
@@ -395,15 +351,11 @@ export default defineComponent({
               placeholder={t('companyDetail.placeholder.iec')}
               loading={props.loading}
               debounce={500}
-              lazy={props.create}
               rules={[rules.required]}
               stateIcon
               stateErrorColor="none"
               class="w-1/2 md:w-48 flex-shrink-0 pr-2.5"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ iec: val }),
-              }}
+              onInput={(val: EmptyString) => updateData({ iec: val })}
             />
             <TextField
               modelValue={props.item.okpo}
@@ -411,15 +363,11 @@ export default defineComponent({
               placeholder={t('companyDetail.placeholder.okpo')}
               loading={props.loading}
               debounce={500}
-              lazy={props.create}
               rules={[rules.required]}
               stateIcon
               stateErrorColor="none"
               class="flex-grow"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ okpo: val }),
-              }}
+              onInput={(val: EmptyString) => updateData({ okpo: val })}
             />
           </div>
           <div class="pb-2">
@@ -429,14 +377,10 @@ export default defineComponent({
               placeholder={t('companyDetail.placeholder.psrn')}
               loading={props.loading}
               debounce={500}
-              lazy={props.create}
               rules={[rules.required]}
               stateIcon
               stateErrorColor="none"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateData({ psrn: val }),
-              }}
+              onInput={(val: EmptyString) => updateData({ psrn: val })}
             />
           </div>
           <div class="flex items-end pb-2">
@@ -463,14 +407,12 @@ export default defineComponent({
               disabled={isOwnerName.value}
               rules={[rules.required]}
               debounce={500}
-              lazy={props.create}
               stateIcon
               required
               class="w-1/2 md:w-56 flex-shrink-0 pr-2.5"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateCompanyOwner({ firstName: val }),
-              }}
+              onInput={(val: EmptyString) =>
+                updateCompanyOwner({ firstName: val })
+              }
             />
             <TextField
               modelValue={companyOwner.value?.lastName}
@@ -479,14 +421,12 @@ export default defineComponent({
               disabled={isOwnerName.value}
               rules={[rules.required]}
               debounce={500}
-              lazy={props.create}
               class="flex-grow"
               stateIcon
               required
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateCompanyOwner({ lastName: val }),
-              }}
+              onInput={(val: EmptyString) =>
+                updateCompanyOwner({ lastName: val })
+              }
             />
           </div>
           <div class="flex items-end pb-2">
@@ -513,14 +453,10 @@ export default defineComponent({
               disabled={!isOwnerName.value}
               rules={[rules.required]}
               debounce={500}
-              lazy={props.create}
               stateIcon
               required
               class="w-full"
-              {...{
-                'onUpdate:modelValue': (val: EmptyString) =>
-                  updateCompanyOwner({ name: val }),
-              }}
+              onInput={(val: EmptyString) => updateCompanyOwner({ name: val })}
             />
           </div>
         </div>

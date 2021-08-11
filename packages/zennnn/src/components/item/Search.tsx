@@ -140,7 +140,7 @@ export default defineComponent({
               inputClass="min-h-[3rem] placeholder-base pl-4"
               placeholder="Search product"
               v-slots={{
-                append: () => <Icon>{ziSearch}</Icon>,
+                append: () => <Icon class="flex-shrink-0">{ziSearch}</Icon>,
               }}
             />
             <div class="flex space-x-4">

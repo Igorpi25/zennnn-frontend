@@ -5,7 +5,7 @@ import type { PropType, Ref, Slots, ComputedRef } from 'vue'
 import type { EmitFn } from '../../types'
 
 export interface InputControlProps {
-  controlClass: string
+  controlClass?: string
   dependencies?: HTMLElement[]
   prependIcon?: string
   appendIcon?: string
@@ -22,10 +22,7 @@ export interface InputControlContext {
 // Props
 export const useInputControlProps = () => {
   return {
-    controlClass: {
-      type: String,
-      default: '',
-    },
+    controlClass: String,
     dependencies: Array as PropType<HTMLElement[]>,
     prependIcon: String,
     appendIcon: String,

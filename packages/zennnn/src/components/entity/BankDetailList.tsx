@@ -38,7 +38,6 @@ export default defineComponent({
       default: () => [],
     },
     loading: Boolean,
-    create: Boolean,
     expanded: {
       type: Boolean,
       default: true,
@@ -202,18 +201,30 @@ export default defineComponent({
                   )}
                   <BankDetailItem
                     loading={props.loading}
-                    create={i === props.items.length - 1}
-                    createLoading={createLoading.value}
                     item={item}
                     mainBankDetail={Boolean(
                       item.id && item.id === props.defaultBankDetail
                     )}
                     {...{
-                      onCreate: addData,
                       onUpdate: (val: any) => updateData(i, item, val),
-                      onDelete: () => deleteData(i, item.id),
                       onSetMainBankDetail: (val: string) =>
                         emit('update', { defaultBankDetail: val }),
+                    }}
+                    v-slots={{
+                      append: () =>
+                        i === props.items.length - 1 ? (
+                          <div class="w-full pt-9">
+                            <Btn
+                              loading={createLoading.value}
+                              block
+                              outlined
+                              small
+                              onClick={addData}
+                            >
+                              {t('companyDetail.addBankDetail')}
+                            </Btn>
+                          </div>
+                        ) : undefined,
                     }}
                   />
                 </div>

@@ -277,17 +277,14 @@ export default defineComponent({
                           solo
                           showArrow={true}
                           inputClass="w-0 !m-0"
-                          {...{
-                            'onUpdate:modelValue': (
-                              val: typeof containerTypes.value[0]
-                            ) =>
-                              setSpecContainerSizeMutate({
-                                specId: props.specId,
-                                containerId: item.id,
-                                inputSize: val.size,
-                                inputMode: val.mode,
-                              }),
-                          }}
+                          onSelect={(val: typeof containerTypes.value[0]) =>
+                            setSpecContainerSizeMutate({
+                              specId: props.specId,
+                              containerId: item.id,
+                              inputSize: val.size,
+                              inputMode: val.mode,
+                            })
+                          }
                           // TODO: in select replace input to div
                           v-slots={{
                             prepend: () => (

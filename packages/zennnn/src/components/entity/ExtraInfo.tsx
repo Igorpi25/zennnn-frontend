@@ -31,7 +31,6 @@ export default defineComponent({
     supplier: Boolean,
     company: Boolean,
     loading: Boolean,
-    create: Boolean,
     expanded: {
       type: Boolean,
       default: true,
@@ -127,14 +126,10 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.note')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 rows="4"
-                {...{
-                  'onUpdate:modelValue': (val: EmptyString) =>
-                    updateData({ note: val }),
-                }}
+                onInput={(val: EmptyString) => updateData({ note: val })}
               />
             </div>
           )}
@@ -146,7 +141,6 @@ export default defineComponent({
                 placeholder={t('companyDetail.placeholder.supplierType')}
                 loading={props.loading}
                 debounce={500}
-                lazy={props.create}
                 rules={[rules.required]}
                 stateIcon
                 stateErrorColor="none"
@@ -160,8 +154,7 @@ export default defineComponent({
               label={t('companyDetail.label.tags')}
               placeholder={t('companyDetail.placeholder.tags')}
               loading={props.loading}
-              lazy
-              {...{ onChange: updateTags }}
+              onChange={updateTags}
               v-slots={{
                 label: () => (
                   <>
@@ -239,7 +232,7 @@ export default defineComponent({
               </div>
               <button
                 class="opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity duration-100 ease-out"
-                {...{ onClick: () => removeFile(i) }}
+                onClick={() => removeFile(i)}
               >
                 <img
                   src={
