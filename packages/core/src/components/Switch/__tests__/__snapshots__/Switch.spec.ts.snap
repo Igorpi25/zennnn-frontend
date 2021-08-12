@@ -1,13 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Switch.ts should render checked component and match snapshot 1`] = `
-<div class="switch switch--active">
+<div class="switch">
   <!---->
-  <div class="switch__control">
-    <div class="switch__control__input"><input id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="true">
-      <div class="switch__track"></div>
-      <div class="switch__thumb"></div>
-    </div><label for="switch-1" class="switch__label">Label</label>
+  <div class="switch__control"><input id="switch-1" class="peer sr-only" type="checkbox" value="false" role="checkbox" aria-checked="true">
+    <div class="switch__icon"></div><label for="switch-1" class="switch__label">Label</label>
   </div>
   <!---->
 </div>
@@ -16,11 +13,8 @@ exports[`Switch.ts should render checked component and match snapshot 1`] = `
 exports[`Switch.ts should render component and match snapshot 1`] = `
 <div class="switch">
   <!---->
-  <div class="switch__control">
-    <div class="switch__control__input"><input id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
-      <div class="switch__track"></div>
-      <div class="switch__thumb"></div>
-    </div><label for="switch-1" class="switch__label">Label</label>
+  <div class="switch__control"><input id="switch-1" class="peer sr-only" type="checkbox" value="false" role="checkbox" aria-checked="false">
+    <div class="switch__icon"></div><label for="switch-1" class="switch__label">Label</label>
   </div>
   <!---->
 </div>
@@ -29,11 +23,8 @@ exports[`Switch.ts should render component and match snapshot 1`] = `
 exports[`Switch.ts should render component with disabled prop and match snapshot 1`] = `
 <div class="switch switch--disabled">
   <!---->
-  <div class="switch__control">
-    <div class="switch__control__input"><input disabled="" id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
-      <div class="switch__track"></div>
-      <div class="switch__thumb"></div>
-    </div><label for="switch-1" class="switch__label">Label</label>
+  <div class="switch__control"><input disabled="" id="switch-1" class="peer sr-only" type="checkbox" value="false" role="checkbox" aria-checked="false">
+    <div class="switch__icon"></div><label for="switch-1" class="switch__label">Label</label>
   </div>
   <!---->
 </div>
@@ -48,11 +39,8 @@ exports[`Switch.ts should render component with label prop and match snapshot 1`
       <!---->
     </div>
   </label>
-  <div class="switch__control">
-    <div class="switch__control__input"><input id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
-      <div class="switch__track"></div>
-      <div class="switch__thumb"></div>
-    </div><label for="switch-1" class="switch__label">Switch label</label>
+  <div class="switch__control"><input id="switch-1" class="peer sr-only" type="checkbox" value="false" role="checkbox" aria-checked="false">
+    <div class="switch__icon"></div><label for="switch-1" class="switch__label">Switch label</label>
   </div>
   <!---->
 </div>
@@ -61,24 +49,18 @@ exports[`Switch.ts should render component with label prop and match snapshot 1`
 exports[`Switch.ts should render component with name, required, readonly props and match snapshot 1`] = `
 <div class="switch switch--readonly">
   <!---->
-  <div class="switch__control">
-    <div class="switch__control__input"><input name="simple-input" required="" readonly="" id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
-      <div class="switch__track"></div>
-      <div class="switch__thumb"></div>
-    </div><label for="switch-1" class="switch__label">Label</label>
+  <div class="switch__control"><input name="simple-input" required="" readonly="" id="switch-1" class="peer sr-only" type="checkbox" value="false" role="checkbox" aria-checked="false">
+    <div class="switch__icon"></div><label for="switch-1" class="switch__label">Label</label>
   </div>
   <!---->
 </div>
 `;
 
 exports[`Switch.ts should render focused component and match snapshot 1`] = `
-<div class="switch switch--focused">
+<div class="switch">
   <!---->
-  <div class="switch__control">
-    <div class="switch__control__input"><input id="switch-1" class="switch__input" type="checkbox" value="false" role="checkbox" aria-checked="false">
-      <div class="switch__track"></div>
-      <div class="switch__thumb"></div>
-    </div><label for="switch-1" class="switch__label">Label</label>
+  <div class="switch__control"><input id="switch-1" class="peer sr-only" type="checkbox" value="false" role="checkbox" aria-checked="false">
+    <div class="switch__icon"></div><label for="switch-1" class="switch__label">Label</label>
   </div>
   <!---->
 </div>

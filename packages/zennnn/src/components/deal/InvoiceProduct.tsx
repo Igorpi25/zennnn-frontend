@@ -825,15 +825,13 @@ export default defineComponent({
                       modelValue={!!store.value?.atWhouse}
                       small
                       class="absolute left-0 top-0"
-                      {...{
-                        onChange: (val: boolean) => {
-                          if (props.item?.id) {
-                            updateProductStoreMutate({
-                              id: props.item.id,
-                              input: { atWhouse: val },
-                            })
-                          }
-                        },
+                      onChange={(val: boolean) => {
+                        if (props.item?.id) {
+                          updateProductStoreMutate({
+                            id: props.item.id,
+                            input: { atWhouse: val },
+                          })
+                        }
                       }}
                     />
                   </div>

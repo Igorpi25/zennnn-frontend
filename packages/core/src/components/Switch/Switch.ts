@@ -7,6 +7,8 @@ import {
 } from '../../composables/useInputValidation'
 import uid from '../../utils/uid'
 
+import type { PropType } from 'vue'
+
 export default defineComponent({
   name: 'Switch',
 
@@ -29,7 +31,10 @@ export default defineComponent({
     falseValue: null,
     small: Boolean,
     controlClass: String,
+    onChange: Function as PropType<(val: any) => void>,
   },
+
+  slots: ['label', 'default'],
 
   emits: ['update:modelValue', 'update:error', 'change'],
 
@@ -37,10 +42,11 @@ export default defineComponent({
     const id: string = uid('switch-')
     const rootElement = ref<HTMLElement>()
 
-    const { internalValue, isFocused, inputData, genLabel } = useInput(props, {
-      slots,
-      id,
-    })
+    const { inputElement, internalValue, isFocused, inputData, genLabel } =
+      useInput(props, {
+        slots,
+        id,
+      })
 
     const { showDetails, isDisabled, isReadonly, isInteractive, genMessages } =
       useInputValidation(props, { emit, id, internalValue, isFocused })
@@ -66,6 +72,11 @@ export default defineComponent({
     watch(internalValue, (val) => {
       emit('update:modelValue', val)
     })
+
+    function onIconClick() {
+      if (isDisabled.value || isReadonly.value) return
+      ;(inputElement.value as HTMLInputElement).click()
+    }
 
     function onChange() {
       if (!isInteractive.value) return
@@ -113,7 +124,7 @@ export default defineComponent({
         'input',
         mergeProps(inputData.value, {
           id,
-          class: 'switch__input',
+          class: 'peer sr-only',
           value: props.value,
           checked: isActive.value,
           type: 'checkbox',
@@ -127,27 +138,32 @@ export default defineComponent({
       )
     }
 
-    function genSwitch() {
-      return h(
-        'div',
-        {
-          class: 'switch__control__input',
-        },
-        [
-          genSwitchInput(),
-          h('div', { class: 'switch__track' }),
-          h('div', { class: 'switch__thumb' }),
-        ]
-      )
+    function genSwitchIcon() {
+      return h('div', {
+        class: [
+          'switch__icon',
+          {
+            'switch__icon--small': props.small,
+          },
+          props.inputClass,
+        ],
+        onClick: onIconClick,
+      })
     }
 
     function genControl() {
       return h(
         'div',
         {
-          class: ['switch__control', props.controlClass],
+          class: [
+            'switch__control',
+            {
+              'switch__control--show-details': showDetails.value,
+            },
+            props.controlClass,
+          ],
         },
-        [genSwitch(), genSwitchLabel()]
+        [genSwitchInput(), genSwitchIcon(), genSwitchLabel()]
       )
     }
 
@@ -158,12 +174,8 @@ export default defineComponent({
           ref: rootElement,
           class: {
             switch: true,
-            'switch--small': props.small,
-            'switch--active': isActive.value,
-            'switch--focused': isFocused.value,
             'switch--disabled': isDisabled.value,
             'switch--readonly': isReadonly.value,
-            'switch--show-details': showDetails.value,
           },
         },
         [genLabel(), genControl(), genMessages()]

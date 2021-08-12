@@ -1,13 +1,15 @@
 {
   "props": {
     "autofocus": "Enables autofocus.",
+    "checkedIcon": "Replace checked icon.",
+    "controlClass": "Applies a custom class to control wrapper.",
     "disabled": "Disable the input.",
     "error": "Puts the input in a manual error state.",
     "errorCount": "The total number of errors that should display at once.",
     "errorMessages": "Puts the input in an error state and passes through custom error messages. Will be combined with any validations that occur from the **rules** prop. This field will not trigger validation.",
     "forceValidate": "Should force validate.",
     "hideDetails": "Hides hint and validation errors. When set to auto messages will be rendered only if there’s a message (hint, error message, counter value etc) to display.",
-    "inputClass": "Applies a custom class to input.",
+    "inputClass": "Applies a custom class to input icon.",
     "label": "Sets input label.",
     "labelHint": "Add hint to `Label`.",
     "loading": "Loading state.",

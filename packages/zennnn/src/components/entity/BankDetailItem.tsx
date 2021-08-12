@@ -71,9 +71,7 @@ export default defineComponent({
                   v-model={isMainBankDetail.value}
                   class="flex-shrink-0 ml-2.5"
                   controlClass="h-10"
-                  {...{
-                    onChange: () => emit('setMainBankDetail', props.item.id),
-                  }}
+                  onChange={() => emit('setMainBankDetail', props.item.id)}
                 />
               </div>
             </div>

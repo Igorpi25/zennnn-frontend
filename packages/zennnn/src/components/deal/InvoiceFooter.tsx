@@ -156,12 +156,10 @@ export default defineComponent({
               />
               <Switch
                 modelValue={!!props.item?.profitForAll}
-                {...{
-                  'onUpdate:modelValue': (val: boolean) => {
-                    updateInvoice({
-                      profitForAll: val,
-                    })
-                  },
+                onChange={(val: boolean) => {
+                  updateInvoice({
+                    profitForAll: val,
+                  })
                 }}
               >
                 <span class="text-white">{t('shipping.forAll')}</span>

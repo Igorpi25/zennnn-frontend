@@ -19,6 +19,8 @@ import {
 import uid from '../../utils/uid'
 import Icon from '../Icon'
 
+import type { PropType } from 'vue'
+
 export default defineComponent({
   name: 'Checkbox',
 
@@ -48,7 +50,13 @@ export default defineComponent({
     trueValue: null,
     falseValue: null,
     id: String,
+    controlClass: String,
+    checkedIcon: String,
+    indeterminateIcon: String,
+    onChange: Function as PropType<(val: any) => void>,
   },
+
+  slots: ['label', 'default'],
 
   emits: [
     'update:modelValue',
@@ -59,12 +67,12 @@ export default defineComponent({
 
   setup(props, { slots, emit }) {
     const id: string = props.id || uid('checkbox-')
-    const rootElement = ref<HTMLElement>()
 
-    const { internalValue, isFocused, inputData, genLabel } = useInput(props, {
-      slots,
-      id,
-    })
+    const { inputElement, internalValue, isFocused, inputData, genLabel } =
+      useInput(props, {
+        slots,
+        id,
+      })
 
     const { showDetails, isDisabled, isReadonly, isInteractive, genMessages } =
       useInputValidation(props, { emit, id, internalValue, isFocused })
@@ -94,6 +102,12 @@ export default defineComponent({
         (props.multiple === null && Array.isArray(internalValue.value))
     )
 
+    const icon = computed(() => {
+      const checkedIcon = props.checkedIcon || ziCheckboxMarked
+      const indeterminateIcon = props.indeterminateIcon || ziMinus
+      return inputIndeterminate.value ? indeterminateIcon : checkedIcon
+    })
+
     watch(
       () => props.modelValue,
       (val) => {
@@ -122,6 +136,11 @@ export default defineComponent({
     watch(internalValue, (val) => {
       emit('update:modelValue', val)
     })
+
+    function onIconClick() {
+      if (isDisabled.value || isReadonly.value) return
+      ;(inputElement.value as HTMLInputElement).click()
+    }
 
     function onChange() {
       if (!isInteractive.value) return
@@ -175,7 +194,8 @@ export default defineComponent({
       return h(
         'div',
         {
-          class: 'checkbox__control__icon',
+          class: ['checkbox__icon', props.inputClass],
+          onClick: onIconClick,
         },
         withDirectives(
           h(
@@ -184,8 +204,7 @@ export default defineComponent({
               size: 20,
             },
             {
-              default: () =>
-                inputIndeterminate.value ? ziMinus : ziCheckboxMarked,
+              default: () => icon.value,
             }
           ),
           [[vShow, isActive.value || inputIndeterminate.value]]
@@ -198,26 +217,17 @@ export default defineComponent({
         'input',
         mergeProps(inputData.value, {
           id,
-          class: 'checkbox__input',
+          class: 'peer sr-only',
           value: props.value,
           checked: isActive.value,
           type: 'checkbox',
           role: 'checkbox',
           readonly: isReadonly.value,
           disabled: isDisabled.value,
+          indeterminate: inputIndeterminate.value,
           'aria-checked': inputIndeterminate.value ? 'mixed' : isActive.value,
           onChange: onChange,
         })
-      )
-    }
-
-    function genCheckbox() {
-      return h(
-        'div',
-        {
-          class: 'checkbox__control__input',
-        },
-        [genCheckboxInput(), genCheckboxIcon()]
       )
     }
 
@@ -225,11 +235,15 @@ export default defineComponent({
       return h(
         'div',
         {
-          class: {
-            checkbox__control: true,
-          },
+          class: [
+            'checkbox__control',
+            {
+              'checkbox__control--show-details': showDetails.value,
+            },
+            props.controlClass,
+          ],
         },
-        [genCheckbox(), genCheckboxLabel()]
+        [genCheckboxInput(), genCheckboxIcon(), genCheckboxLabel()]
       )
     }
 
@@ -237,15 +251,10 @@ export default defineComponent({
       return h(
         'div',
         {
-          ref: rootElement,
           class: {
             checkbox: true,
-            'checkbox--active': isActive.value,
-            'checkbox--focused': isFocused.value,
             'checkbox--disabled': isDisabled.value,
             'checkbox--readonly': isReadonly.value,
-            'checkbox--indeterminate': inputIndeterminate.value,
-            'checkbox--show-details': showDetails.value,
           },
         },
         [genLabel(), genControl(), genMessages()]

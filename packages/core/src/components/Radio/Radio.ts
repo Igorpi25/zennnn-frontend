@@ -18,6 +18,8 @@ import {
 import uid from '../../utils/uid'
 import Icon from '../Icon'
 
+import type { PropType } from 'vue'
+
 export default defineComponent({
   name: 'Radio',
 
@@ -36,7 +38,12 @@ export default defineComponent({
       type: Function,
       default: deepEqual,
     },
+    controlClass: String,
+    checkedIcon: String,
+    onChange: Function as PropType<(val: any) => void>,
   },
+
+  slots: ['label', 'default'],
 
   emits: ['update:modelValue', 'update:error', 'change'],
 
@@ -44,10 +51,11 @@ export default defineComponent({
     const id: string = uid('radio-')
     const rootElement = ref<HTMLElement>()
 
-    const { internalValue, isFocused, inputData, genLabel } = useInput(props, {
-      slots,
-      id,
-    })
+    const { inputElement, internalValue, isFocused, inputData, genLabel } =
+      useInput(props, {
+        slots,
+        id,
+      })
 
     const { showDetails, isDisabled, isReadonly, genMessages } =
       useInputValidation(props, { emit, id, internalValue, isFocused })
@@ -81,6 +89,11 @@ export default defineComponent({
       emit('change', value)
     }
 
+    function onIconClick() {
+      if (isDisabled.value || isReadonly.value) return
+      ;(inputElement.value as HTMLInputElement).click()
+    }
+
     function genRadioLabel() {
       const children = slots.default?.()
       if (!children) return undefined
@@ -98,7 +111,8 @@ export default defineComponent({
       return h(
         'div',
         {
-          class: 'radio__control__icon',
+          class: ['radio__icon', props.inputClass],
+          onClick: onIconClick,
         },
         withDirectives(
           h(
@@ -107,7 +121,7 @@ export default defineComponent({
               size: 16,
             },
             {
-              default: () => ziStatusPoint,
+              default: () => props.checkedIcon || ziStatusPoint,
             }
           ),
           [[vShow, isActive.value]]
@@ -120,7 +134,7 @@ export default defineComponent({
         'input',
         mergeProps(inputData.value, {
           id,
-          class: 'radio__input',
+          class: 'peer sr-only',
           value: props.value,
           checked: isActive.value,
           type: 'radio',
@@ -133,25 +147,19 @@ export default defineComponent({
       )
     }
 
-    function genRadio() {
-      return h(
-        'div',
-        {
-          class: 'radio__control__input',
-        },
-        [genRadioInput(), genRadioIcon()]
-      )
-    }
-
     function genControl() {
       return h(
         'div',
         {
-          class: {
-            radio__control: true,
-          },
+          class: [
+            'radio__control',
+            {
+              'radio__control--show-details': showDetails.value,
+            },
+            props.controlClass,
+          ],
         },
-        [genRadio(), genRadioLabel()]
+        [genRadioInput(), genRadioIcon(), genRadioLabel()]
       )
     }
 
@@ -162,11 +170,8 @@ export default defineComponent({
           ref: rootElement,
           class: {
             radio: true,
-            'radio--active': isActive.value,
-            'radio--focused': isFocused.value,
             'radio--disabled': isDisabled.value,
             'radio--readonly': isReadonly.value,
-            'radio--show-details': showDetails.value,
           },
         },
         [genLabel(), genControl(), genMessages()]

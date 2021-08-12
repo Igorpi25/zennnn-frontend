@@ -323,9 +323,7 @@ export default defineComponent({
         <Switch
           modelValue={!!props.item?.importerActive}
           disabled={!props.readonly}
-          {...{
-            onChange: (val: boolean) => updateData({ importerActive: val }),
-          }}
+          onChange={(val: boolean) => updateData({ importerActive: val })}
           class="mb-3"
         >
           <h5 class="flex-grow text-lg leading-tight space-x-1 pt-1 ml-3">

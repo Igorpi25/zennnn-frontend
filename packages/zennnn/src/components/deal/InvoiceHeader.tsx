@@ -137,7 +137,11 @@ export default defineComponent({
         ]}
       >
         {isOwnerOrManager.value && (
-          <Checkbox disabled class="bg-gray-800 border-gray-800 mr-3 md:mr-5" />
+          <Checkbox
+            disabled
+            class="mr-3 md:mr-5"
+            inputClass="peer-disabled:peer-checked:bg-gray-800 peer-disabled:border-gray-800"
+          />
         )}
 
         <div

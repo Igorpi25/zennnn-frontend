@@ -724,10 +724,8 @@ export default defineComponent({
               <Switch
                 modelValue={!isDealSimpleOff.value}
                 class="inline-flex"
-                {...{
-                  onChange: (val: boolean) => {
-                    setDealSimpleOff(!val)
-                  },
+                onChange={(val: boolean) => {
+                  setDealSimpleOff(!val)
                 }}
               >
                 <span class="mx-2">{t('shipping.simpleInterface')}</span>
@@ -804,12 +802,9 @@ export default defineComponent({
             <div class="h-12 flex items-center">
               <div class="flex items-center pl-5 sm:pr-2.5">
                 <Checkbox disabled class="pt-0.5">
-                  <button
-                    disabled
-                    class="flex text-blue-500 focus:outline-none cursor-not-allowed"
-                  >
+                  <Btn icon mini text disabled>
                     <Icon>{ziChevronDown}</Icon>
-                  </button>
+                  </Btn>
                 </Checkbox>
               </div>
               <button

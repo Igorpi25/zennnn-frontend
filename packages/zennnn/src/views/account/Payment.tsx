@@ -317,7 +317,6 @@ export default defineComponent({
                         <Radio
                           v-model={billingType.value}
                           value={BillingType.MONTHLY}
-                          hideDetails
                           class="sm:w-64"
                         >
                           <span class="ml-4">{t('payment.monthly')}</span>

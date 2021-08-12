@@ -709,7 +709,7 @@ export default defineComponent({
                       [selectAllIndeterminate.value, 'indeterminate'],
                     ]}
                     class="ml-3"
-                    {...{ onChange: onSelectAll }}
+                    onChange={onSelectAll}
                   />
                 </td>
               ),

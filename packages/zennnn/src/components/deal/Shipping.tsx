@@ -301,10 +301,8 @@ export default defineComponent({
                         />
                         <Switch
                           modelValue={props.shipped}
-                          {...{
-                            onChange: (val: boolean) => {
-                              emit('update', { shipped: val })
-                            },
+                          onChange={(val: boolean) => {
+                            emit('update', { shipped: val })
                           }}
                         >
                           <span class="ml-2">{t('shipping.setShipped')}</span>

@@ -238,10 +238,8 @@ export default defineComponent({
                   v-model={isCompanyNameMatch.value}
                   class="flex-shrink-0 ml-2.5"
                   controlClass="h-10"
-                  {...{
-                    onChange: (val: boolean) => {
-                      updateData({ isCompanyNameMatch: val })
-                    },
+                  onChange={(val: boolean) => {
+                    updateData({ isCompanyNameMatch: val })
                   }}
                 />
               </div>

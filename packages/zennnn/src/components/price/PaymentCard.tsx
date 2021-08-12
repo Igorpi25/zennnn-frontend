@@ -703,7 +703,7 @@ export default defineComponent({
           {isNewPaymentMethod.value ? (
             <Checkbox
               v-model={attachPaymentMethodSetDefault.value}
-              class="flex items-center"
+              controlClass="flex items-center"
             >
               <span class="ml-3">{t('payment.setAsDefault')}</span>
             </Checkbox>

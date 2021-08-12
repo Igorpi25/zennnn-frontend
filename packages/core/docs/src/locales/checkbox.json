@@ -1,6 +1,8 @@
 {
   "props": {
     "autofocus": "Enables autofocus.",
+    "checkedIcon": "Replace checked icon.",
+    "controlClass": "Applies a custom class to control wrapper.",
     "disabled": "Disable the input.",
     "error": "Puts the input in a manual error state.",
     "errorCount": "The total number of errors that should display at once.",
@@ -9,7 +11,8 @@
     "forceValidate": "Should force validate.",
     "hideDetails": "Hides hint and validation errors. When set to auto messages will be rendered only if there’s a message (hint, error message, counter value etc) to display.",
     "indeterminate": "Sets an indeterminate state for the checkbox.",
-    "inputClass": "Applies a custom class to input.",
+    "indeterminateIcon": "Replace indeterminate icon.",
+    "inputClass": "Applies a custom class to input icon.",
     "label": "Sets input label.",
     "labelHint": "Add hint to `Label`.",
     "loading": "Loading state.",
